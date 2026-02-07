@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Logging;
 using Syncfusion.Maui.Toolkit.Hosting;
+using System.Net.Http;
 
 namespace AniSprinkles
 {
@@ -24,8 +25,9 @@ namespace AniSprinkles
             builder.Services.AddLogging(configure => configure.AddDebug());
 #endif
 
-            builder.Services.AddSingleton<IAuthService, MockAuthService>();
-            builder.Services.AddSingleton<IAniListClient, MockAniListClient>();
+            builder.Services.AddSingleton(new HttpClient());
+            builder.Services.AddSingleton<IAuthService, AuthService>();
+            builder.Services.AddSingleton<IAniListClient, AniListClient>();
             builder.Services.AddTransient<PageModels.MyAnimePageModel>();
             builder.Services.AddTransient<Pages.MyAnimePage>();
 

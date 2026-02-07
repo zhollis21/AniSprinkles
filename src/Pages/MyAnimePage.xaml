@@ -7,10 +7,30 @@
              x:DataType="pageModels:MyAnimePageModel"
              Title="{Binding Title}">
 
-    <Grid Padding="24" RowDefinitions="Auto,*" RowSpacing="16">
-        <Label Text="My Anime" FontSize="28" FontAttributes="Bold" />
+    <Grid Padding="24" RowDefinitions="Auto,Auto,*" RowSpacing="12">
+        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+            <Label Text="My Anime" FontSize="28" FontAttributes="Bold" VerticalOptions="Center" />
+            <Button Grid.Column="1"
+                    Text="Sign In"
+                    Command="{Binding SignInCommand}"
+                    IsVisible="{Binding IsNotAuthenticated}" />
+            <Button Grid.Column="2"
+                    Text="Sign Out"
+                    Command="{Binding SignOutCommand}"
+                    IsVisible="{Binding IsAuthenticated}" />
+        </Grid>
 
-        <CollectionView Grid.Row="1" ItemsSource="{Binding Entries}">
+        <HorizontalStackLayout Grid.Row="1" Spacing="12">
+            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
+            <Label Text="{Binding StatusMessage}"
+                   IsVisible="{Binding HasStatusMessage}"
+                   FontSize="12"
+                   TextColor="{StaticResource Gray400}" />
+        </HorizontalStackLayout>
+
+        <CollectionView Grid.Row="2"
+                        ItemsSource="{Binding Entries}"
+                        IsVisible="{Binding IsAuthenticated}">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:MediaListEntry">
                     <Grid Padding="12" RowSpacing="6">
@@ -37,7 +57,7 @@
                                FontSize="12"
                                TextColor="{StaticResource Gray400}" />
                         <Label Grid.Row="1" Grid.Column="1"
-                               Text="{Binding Score, StringFormat='Score: {0}'}"
+                               Text="{Binding ScoreDisplay, StringFormat='Score: {0}'}"
                                FontSize="12"
                                HorizontalOptions="End"
                                TextColor="{StaticResource Gray400}" />
