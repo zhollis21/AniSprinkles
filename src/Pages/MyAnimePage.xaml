@@ -6,6 +6,7 @@
              xmlns:views="clr-namespace:AniSprinkles.Views"
              x:Class="AniSprinkles.Pages.MyAnimePage"
              x:DataType="pageModels:MyAnimePageModel"
+             x:Name="MyAnimePageRoot"
              Title="{Binding Title}">
 
     <Grid Padding="24" RowDefinitions="Auto,Auto,Auto,Auto,*" RowSpacing="12">
@@ -53,7 +54,8 @@
                         ItemsSource="{Binding Sections}"
                         IsGrouped="True"
                         ItemSizingStrategy="MeasureFirstItem"
-                        SelectionMode="None"
+                        SelectionMode="Single"
+                        SelectionChanged="OnSelectionChanged"
                         IsVisible="{Binding IsAuthenticated}">
             <CollectionView.GroupHeaderTemplate>
                 <DataTemplate x:DataType="pageModels:MediaListSection">

@@ -20,8 +20,6 @@ namespace AniSprinkles.Services
             _logger = logger;
         }
 
-        public bool IsAuthenticated => !string.IsNullOrWhiteSpace(_accessToken) && !IsExpired();
-
         public async Task<string?> GetAccessTokenAsync(CancellationToken cancellationToken = default)
         {
             if (_accessToken is null)

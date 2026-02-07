@@ -57,6 +57,7 @@ namespace AniSprinkles.PageModels
             try
             {
                 _logger.LogInformation("Loading My Anime list.");
+                Sentry.SentrySdk.AddBreadcrumb("Load My Anime list", "navigation", "state");
                 var token = await _authService.GetAccessTokenAsync();
                 IsAuthenticated = !string.IsNullOrWhiteSpace(token);
 
@@ -74,6 +75,7 @@ namespace AniSprinkles.PageModels
                 StatusMessage = string.Empty;
                 ErrorDetails = string.Empty;
                 IsErrorDetailsVisible = false;
+                Sentry.SentrySdk.AddBreadcrumb("Fetching AniList list", "http", "state");
                 var list = await _aniListClient.GetMyAnimeListAsync();
                 Sections = BuildSections(list);
             }
@@ -107,12 +109,22 @@ namespace AniSprinkles.PageModels
             try
             {
                 _logger.LogInformation("Sign-in requested.");
+                Sentry.SentrySdk.AddBreadcrumb("Sign-in requested", "auth", "user");
                 var signedIn = await _authService.SignInAsync();
                 if (!signedIn)
                 {
                     StatusMessage = "Sign in canceled.";
+                    Sentry.SentrySdk.AddBreadcrumb("Sign-in canceled", "auth", "user");
                     return;
                 }
+                Sentry.SentrySdk.AddBreadcrumb("Sign-in successful", "auth", "user");
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = "Sign in failed. Tap Details for more.";
+                ErrorDetails = _errorReportService.Record(ex, "Sign in");
+                IsErrorDetailsVisible = false;
+                return;
             }
             finally
             {
@@ -126,8 +138,30 @@ namespace AniSprinkles.PageModels
         private async Task SignOut()
         {
             _logger.LogInformation("Sign-out requested.");
+            Sentry.SentrySdk.AddBreadcrumb("Sign-out requested", "auth", "user");
             await _authService.SignOutAsync();
             await LoadAsync();
+        }
+
+        [RelayCommand]
+        private async Task OpenDetails(MediaListEntry? entry)
+        {
+            if (entry is null)
+                return;
+
+            var mediaId = entry.MediaId != 0 ? entry.MediaId : entry.Media?.Id ?? 0;
+            if (mediaId <= 0)
+            {
+                StatusMessage = "Unable to open details.";
+                return;
+            }
+
+            Sentry.SentrySdk.AddBreadcrumb($"Open details {mediaId}", "navigation", "state");
+            await Shell.Current.GoToAsync("media-details", new Dictionary<string, object>
+            {
+                ["mediaId"] = mediaId,
+                ["listEntry"] = entry
+            });
         }
 
         private static ObservableCollection<MediaListSection> BuildSections(IReadOnlyList<MediaListEntry> entries)
@@ -153,16 +187,28 @@ namespace AniSprinkles.PageModels
             };
 
             var unknown = new MediaListSection("Other", false);
+            var buckets = sections.ToDictionary(section => section, _ => new List<MediaListEntry>());
+            var unknownBucket = new List<MediaListEntry>();
 
             foreach (var entry in entries)
             {
                 if (entry.Status is null || !map.TryGetValue(entry.Status.Value, out var section))
                 {
-                    unknown.AddItem(entry);
+                    unknownBucket.Add(entry);
                     continue;
                 }
 
-                section.AddItem(entry);
+                buckets[section].Add(entry);
+            }
+
+            foreach (var section in sections)
+            {
+                section.AddItems(buckets[section]);
+            }
+
+            if (unknownBucket.Count > 0)
+            {
+                unknown.AddItems(unknownBucket);
             }
 
             var result = new ObservableCollection<MediaListSection>(

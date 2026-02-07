@@ -5,6 +5,7 @@ namespace AniSprinkles
         public AppShell()
         {
             InitializeComponent();
+            Routing.RegisterRoute("media-details", typeof(MediaDetailsPage));
         }
     }
 }

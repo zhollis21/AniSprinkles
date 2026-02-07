@@ -16,3 +16,6 @@ MVP features
 Planning docs
 - `docs/PLAN.md` for decisions, theme tokens, and open questions
 - `docs/TODO.md` for the working task list
+
+Telemetry
+- Sentry crash reporting only (no PII, no performance tracing yet)

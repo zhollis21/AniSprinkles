@@ -5,7 +5,8 @@ namespace AniSprinkles.Models
         public int Id { get; set; }
         public string? Name { get; set; }
         public int? Rank { get; set; }
-        public bool? IsSpoiler { get; set; }
+        public bool? IsMediaSpoiler { get; set; }
+        public bool? IsGeneralSpoiler { get; set; }
         public bool? IsAdult { get; set; }
         public string? Description { get; set; }
         public string? Category { get; set; }

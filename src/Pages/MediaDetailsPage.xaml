@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pageModels="clr-namespace:AniSprinkles.PageModels"
+             x:Class="AniSprinkles.Pages.MediaDetailsPage"
+             x:DataType="pageModels:MediaDetailsPageModel"
+             Title="{Binding PageTitle}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="16">
+            <Label Text="{Binding PageTitle}"
+                   FontSize="28"
+                   FontAttributes="Bold" />
+
+            <HorizontalStackLayout Spacing="16">
+                <Image WidthRequest="120"
+                       HeightRequest="170"
+                       Aspect="AspectFill"
+                       Source="{Binding CoverImageUrl}"
+                       IsVisible="{Binding CoverImageUrl, Converter={StaticResource StringNotNullOrEmptyConverter}}" />
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="{Binding Media.Format, TargetNullValue='-'}"
+                           FontSize="12"
+                           TextColor="{StaticResource Gray400}" />
+                    <Label Text="{Binding Media.Status, TargetNullValue='-'}"
+                           FontSize="12"
+                           TextColor="{StaticResource Gray400}" />
+                    <Label Text="{Binding Media.Episodes, StringFormat='Episodes: {0}', TargetNullValue='Episodes: -'}"
+                           FontSize="12"
+                           TextColor="{StaticResource Gray400}" />
+                    <Label Text="{Binding Media.SeasonYear, StringFormat='Year: {0}', TargetNullValue='Year: -'}"
+                           FontSize="12"
+                           TextColor="{StaticResource Gray400}" />
+                    <Label Text="{Binding Media.AverageScore, StringFormat='Avg Score: {0}', TargetNullValue='Avg Score: -'}"
+                           FontSize="12"
+                           TextColor="{StaticResource Gray400}" />
+                </VerticalStackLayout>
+            </HorizontalStackLayout>
+
+            <VerticalStackLayout Spacing="6"
+                                 IsVisible="{Binding HasListEntry}">
+                <Label Text="Your List"
+                       FontSize="16"
+                       FontAttributes="Bold" />
+                <Label Text="{Binding ListEntry.StatusDisplay, StringFormat='Status: {0}'}"
+                       FontSize="12"
+                       TextColor="{StaticResource Gray400}" />
+                <Label Text="{Binding ListEntry.ProgressDisplay, StringFormat='Progress: {0}'}"
+                       FontSize="12"
+                       TextColor="{StaticResource Gray400}" />
+                <Label Text="{Binding ListEntry.ScoreDisplay, StringFormat='Score: {0}'}"
+                       FontSize="12"
+                       TextColor="{StaticResource Gray400}" />
+            </VerticalStackLayout>
+
+            <Label Text="Description"
+                   FontSize="16"
+                   FontAttributes="Bold"
+                   IsVisible="{Binding Media.Description, Converter={StaticResource StringNotNullOrEmptyConverter}}" />
+            <Label Text="{Binding Media.Description}"
+                   TextType="Html"
+                   FontSize="12"
+                   TextColor="{StaticResource Gray400}"
+                   IsVisible="{Binding Media.Description, Converter={StaticResource StringNotNullOrEmptyConverter}}" />
+
+            <HorizontalStackLayout Spacing="12">
+                <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
+                <Label Text="{Binding StatusMessage}"
+                       IsVisible="{Binding HasStatusMessage}"
+                       FontSize="12"
+                       TextColor="{StaticResource Gray400}" />
+                <Button Text="Details"
+                        Command="{Binding ToggleDetailsCommand}"
+                        IsVisible="{Binding HasErrorDetails}" />
+            </HorizontalStackLayout>
+
+            <VerticalStackLayout Spacing="8"
+                                 IsVisible="{Binding IsErrorDetailsVisible}">
+                <ScrollView HeightRequest="160">
+                    <Label Text="{Binding ErrorDetails}"
+                           FontSize="12"
+                           LineBreakMode="WordWrap"
+                           TextColor="{StaticResource Gray400}" />
+                </ScrollView>
+                <HorizontalStackLayout Spacing="12">
+                    <Button Text="Copy" Command="{Binding CopyErrorCommand}" />
+                    <Button Text="Share" Command="{Binding ShareErrorCommand}" />
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
