@@ -16,6 +16,11 @@ captures/
 *.apk
 output-metadata.json
 
+# VS
+.vs/
+bin/
+obj/
+
 # IntelliJ
 *.iml
 .idea/
@@ -32,3 +37,45 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+# .NET / Visual Studio
+*.user
+*.suo
+*.sln.iml
+.vscode/
+
+# NuGet
+packages/
+.nuget/
+
+# Build outputs
+dist/
+publish/
+*.nupkg
+
+# Mac / iOS development
+.DS_Store
+xcuserdata/
+*.xcworkspace/
+Pods/
+*.xcarchive
+
+# Windows
+Thumbs.db
+*.lnk
+
+# IDE / Editor
+*.swp
+*.swo
+*~
+.idea/vcs.xml
+
+# Environment/Secrets (IMPORTANT!)
+.env
+.env.local
+*.pfx
+
+# Runtime/Temp files
+*.aps
+*.db
+*.sqlite

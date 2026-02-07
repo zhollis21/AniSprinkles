@@ -1,0 +1,14 @@
+using AniSprinkles.Models;
+
+namespace AniSprinkles.Pages
+{
+    public partial class ProjectDetailPage : ContentPage
+    {
+        public ProjectDetailPage(ProjectDetailPageModel model)
+        {
+            InitializeComponent();
+
+            BindingContext = model;
+        }
+    }
+}
