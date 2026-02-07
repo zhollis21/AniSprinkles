@@ -24,6 +24,7 @@ UI
 - [ ] Add a "celebration" moment style (future Neon Clock theme)
 - [x] Add My Anime page with example list
 - [x] Use grouped CollectionView for collapsible My Anime sections (avoid nested list perf issues)
+- [x] Add Settings page with sign-in/out and flyout navigation
 
 Process
 - [ ] Decide where to track future decisions (PLAN.md or ADRs)

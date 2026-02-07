@@ -39,6 +39,8 @@ namespace AniSprinkles
             builder.Services.AddSingleton<IAniListClient, AniListClient>();
             builder.Services.AddTransient<MyAnimePageModel>();
             builder.Services.AddTransient<MyAnimePage>();
+            builder.Services.AddTransient<SettingsPageModel>();
+            builder.Services.AddTransient<SettingsPage>();
 
             return builder.Build();
         }

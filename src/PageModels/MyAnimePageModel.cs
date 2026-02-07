@@ -20,9 +20,6 @@ namespace AniSprinkles.PageModels
         private bool _isAuthenticated;
 
         [ObservableProperty]
-        private bool _isNotAuthenticated = true;
-
-        [ObservableProperty]
         private string _title = "My Anime";
 
         [ObservableProperty]
@@ -99,8 +96,6 @@ namespace AniSprinkles.PageModels
         partial void OnErrorDetailsChanged(string value)
             => HasErrorDetails = !string.IsNullOrWhiteSpace(value);
 
-        partial void OnIsAuthenticatedChanged(bool value)
-            => IsNotAuthenticated = !value;
 
         [RelayCommand]
         private async Task SignIn()
