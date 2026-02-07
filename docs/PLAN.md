@@ -1,6 +1,6 @@
 # AniSprinkles Plan
 
-Status: planning only, no app code changes yet.
+Status: domain cleanup started; template project/task domain removed and Android-only scaffold in place. My Anime page uses mock data.
 
 Goals
 - First Android app integrating with AniList
@@ -14,17 +14,40 @@ MVP features
 - Add titles to my list
 - Edit list entries (status, episode progress, rating, etc.)
 
+MVP data contract (screen -> required fields -> source)
+List (auth required)
+- Media: id, title.romaji/english/native, coverImage.medium/large, format, episodes, status, season, seasonYear, averageScore, popularity
+- List entry: status, progress, score, repeat, updatedAt
+- Source: MediaListCollection (user anime list)
+
+Search (public)
+- Media: id, title.romaji/english/native, coverImage.medium/large, format, episodes, status, season, seasonYear, averageScore, popularity, genres
+- Source: Page { media(type: ANIME, search: ...) }
+
+Details (public)
+- Media: id, title.*, coverImage.*, bannerImage, description (HTML), format, status, episodes, duration, season, seasonYear, genres, averageScore, meanScore, popularity, favourites, studios, tags
+- Source: Media (by id)
+
+Add/Edit list entry (auth required)
+- Media id, status, progress, score, repeat, notes, private, hiddenFromStatusLists
+- Source: SaveMediaListEntry mutation (create/update)
+
+Auth visibility
+- List and Add/Edit require auth
+- Search and Details can be public
+
 Decisions so far
 - No backend if possible
 - MVP is fully online (no offline caching yet)
+- Android-only target for now (iOS/Mac/Windows removed)
 - Theme: Midnight Minimal for MVP
 - Future: Neon Clock theme (rainbow LED inspiration)
+- Mock auth and mock AniList client in place for early UI work
 
 Auth strategy (tentative)
-- Prefer Authorization Code + PKCE if AniList supports public clients
-- Fallback to implicit flow if PKCE is not supported
-- Redirect approach for MVP: custom URL scheme unless we decide App Links are required
-- Action: confirm AniList OAuth requirements and exact redirect constraints
+- Implicit grant for MVP (no backend)
+- Redirect approach for MVP: custom URL scheme (exact value TBD)
+- Action: create AniList client, set redirect URI, and capture client ID
 
 Rate limit strategy (tentative)
 - Use response headers: X-RateLimit-Limit, X-RateLimit-Remaining
@@ -53,7 +76,5 @@ Future theme plan (Neon Clock)
 - Avoid full rainbow gradients except for celebration moments
 
 Open questions
-- Does AniList support Authorization Code + PKCE for public clients?
-- If not, is implicit flow acceptable for the MVP?
-- Preferred redirect type for Android: custom scheme or App Links?
+- Preferred redirect value for Android (custom scheme)
 - App name and store listing constraints with AniList naming rules
