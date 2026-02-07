@@ -3,22 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:pageModels="clr-namespace:AniSprinkles.PageModels"
              xmlns:models="clr-namespace:AniSprinkles.Models"
+             xmlns:views="clr-namespace:AniSprinkles.Views"
              x:Class="AniSprinkles.Pages.MyAnimePage"
              x:DataType="pageModels:MyAnimePageModel"
              Title="{Binding Title}">
 
-    <Grid Padding="24" RowDefinitions="Auto,Auto,Auto,*" RowSpacing="12">
-        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
-            <Label Text="My Anime" FontSize="28" FontAttributes="Bold" VerticalOptions="Center" />
-            <Button Grid.Column="1"
-                    Text="Sign In"
-                    Command="{Binding SignInCommand}"
-                    IsVisible="{Binding IsNotAuthenticated}" />
-            <Button Grid.Column="2"
-                    Text="Sign Out"
-                    Command="{Binding SignOutCommand}"
-                    IsVisible="{Binding IsAuthenticated}" />
-        </Grid>
+    <Grid Padding="24" RowDefinitions="Auto,Auto,Auto,Auto,*" RowSpacing="12">
+        <Label Text="My Anime"
+               FontSize="28"
+               FontAttributes="Bold"
+               VerticalOptions="Center" />
 
         <HorizontalStackLayout Grid.Row="1" Spacing="12">
             <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
@@ -46,7 +40,16 @@
             </HorizontalStackLayout>
         </VerticalStackLayout>
 
-        <CollectionView Grid.Row="3"
+        <VerticalStackLayout Grid.Row="3"
+                             Spacing="8"
+                             IsVisible="{Binding IsAuthenticated, Converter={StaticResource InvertedBoolConverter}}">
+            <Label Text="Sign in to AniList to view and update your anime lists:"
+                   FontSize="12"
+                   TextColor="{StaticResource Gray400}" />
+            <views:AuthActionsView />
+        </VerticalStackLayout>
+
+        <CollectionView Grid.Row="4"
                         ItemsSource="{Binding Sections}"
                         IsGrouped="True"
                         ItemSizingStrategy="MeasureFirstItem"

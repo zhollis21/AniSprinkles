@@ -49,6 +49,7 @@ Decisions so far
 - Logging upgrade implemented (HTTP logging handler + error details UI)
 - File logging deferred (optional if debug session instability persists)
 - Using CommunityToolkit.Maui; My Anime uses a grouped CollectionView for collapsible sections (avoid nested list perf issues)
+- Navigation uses a flyout menu with My Anime + Settings; sign-in/out lives in Settings with a sign-in prompt on My Anime
 
 Auth strategy
 - Implicit grant for MVP (no backend)
