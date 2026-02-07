@@ -1,3 +1,4 @@
+using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using Syncfusion.Maui.Toolkit.Hosting;
 using System.Net.Http;
@@ -11,6 +12,7 @@ namespace AniSprinkles
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseMauiCommunityToolkit()
                 .ConfigureSyncfusionToolkit()
                 .ConfigureFonts(fonts =>
                 {
@@ -25,11 +27,18 @@ namespace AniSprinkles
             builder.Services.AddLogging(configure => configure.AddDebug());
 #endif
 
-            builder.Services.AddSingleton(new HttpClient());
+            builder.Services.AddSingleton<ErrorReportService>();
+            builder.Services.AddTransient<LoggingHandler>();
+            builder.Services.AddSingleton(sp =>
+            {
+                var handler = sp.GetRequiredService<LoggingHandler>();
+                handler.InnerHandler = new HttpClientHandler();
+                return new HttpClient(handler);
+            });
             builder.Services.AddSingleton<IAuthService, AuthService>();
             builder.Services.AddSingleton<IAniListClient, AniListClient>();
-            builder.Services.AddTransient<PageModels.MyAnimePageModel>();
-            builder.Services.AddTransient<Pages.MyAnimePage>();
+            builder.Services.AddTransient<MyAnimePageModel>();
+            builder.Services.AddTransient<MyAnimePage>();
 
             return builder.Build();
         }

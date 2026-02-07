@@ -4,14 +4,14 @@ namespace AniSprinkles.Pages
 {
     public partial class MyAnimePage : ContentPage
     {
-        private readonly PageModels.MyAnimePageModel _viewModel;
+        private readonly MyAnimePageModel _viewModel;
 
         public MyAnimePage()
             : this(ResolveViewModel())
         {
         }
 
-        public MyAnimePage(PageModels.MyAnimePageModel viewModel)
+        public MyAnimePage(MyAnimePageModel viewModel)
         {
             InitializeComponent();
             _viewModel = viewModel;
@@ -24,13 +24,13 @@ namespace AniSprinkles.Pages
             await _viewModel.LoadAsync();
         }
 
-        private static PageModels.MyAnimePageModel ResolveViewModel()
+        private static MyAnimePageModel ResolveViewModel()
         {
             var services = Application.Current?.Handler?.MauiContext?.Services;
             if (services is null)
                 throw new InvalidOperationException("Service provider not available.");
 
-            return services.GetRequiredService<PageModels.MyAnimePageModel>();
+            return services.GetRequiredService<MyAnimePageModel>();
         }
     }
 }

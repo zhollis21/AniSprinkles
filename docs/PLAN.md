@@ -1,6 +1,6 @@
 # AniSprinkles Plan
 
-Status: auth works, but live list call still fails (400 "No query or mutation"). Debug session instability reported.
+Status: auth works and live list loads. Logging UX improved with details/copy/share.
 
 Goals
 - First Android app integrating with AniList
@@ -40,17 +40,20 @@ Decisions so far
 - No backend if possible
 - MVP is fully online (no offline caching yet)
 - Android-only target for now (iOS/Mac/Windows removed)
+- UI direction: simple, clean, standard UX/components, follow UI best practices
 - Theme: Midnight Minimal for MVP
 - Future: Neon Clock theme (rainbow LED inspiration)
 - Replaced mock auth and mock AniList client with real implicit auth and live AniList GraphQL client
 - Auth uses MAUI WebAuthenticator with SecureStorage token persistence (Android custom-scheme callback)
-- Log and debug workflow needs to be documented (VS Logcat / adb / in-app logging)
+- Debugging workflow documented in docs/DEBUGGING.md
+- Logging upgrade implemented (HTTP logging handler + error details UI)
+- File logging deferred (optional if debug session instability persists)
+- Using CommunityToolkit.Maui; My Anime uses a grouped CollectionView for collapsible sections (avoid nested list perf issues)
 
 Auth strategy
 - Implicit grant for MVP (no backend)
 - Redirect URI: anisprinkles://auth
 - AniList client ID: 35674
-- Known issue: list fetch returns 400 "No query or mutation" even after JSON camelCase change. Need request/response logging to confirm payload.
 
 Rate limit strategy (tentative)
 - Use response headers: X-RateLimit-Limit, X-RateLimit-Remaining
@@ -58,6 +61,13 @@ Rate limit strategy (tentative)
 - Start conservative (30 requests/min) until headers indicate higher
 - Limit concurrency to avoid burst limiting
 - Batch GraphQL queries to reduce total calls
+
+Logging upgrade plan (code)
+- Add ILogger injection to services/view models
+- Add HttpClient delegating handler to log GraphQL request/response metadata (method, status, latency) with token redaction
+- Surface a user-friendly error view with expandable details + copy/share button
+- Add in-memory last-error store for quick copy even if UI truncates
+- Optionally add file logging in Debug builds for export
 
 Theme tokens (Midnight Minimal, MVP)
 - background: #0B0B10

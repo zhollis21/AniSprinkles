@@ -1,7 +1,10 @@
+using System.Diagnostics;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using AniSprinkles.Models;
+using Microsoft.Extensions.Logging;
 
 namespace AniSprinkles.Services
 {
@@ -16,11 +19,13 @@ namespace AniSprinkles.Services
 
         private readonly HttpClient _httpClient;
         private readonly IAuthService _authService;
+        private readonly ILogger<AniListClient> _logger;
 
-        public AniListClient(HttpClient httpClient, IAuthService authService)
+        public AniListClient(HttpClient httpClient, IAuthService authService, ILogger<AniListClient> logger)
         {
             _httpClient = httpClient;
             _authService = authService;
+            _logger = logger;
 
             if (_httpClient.BaseAddress is null)
             {
@@ -34,6 +39,7 @@ namespace AniSprinkles.Services
             var viewer = await GetViewerAsync(token, cancellationToken);
 
             var data = await SendAsync<MediaListCollectionData>(
+                "MediaListCollection",
                 MediaListQuery,
                 new { userId = viewer.Id },
                 token,
@@ -62,6 +68,7 @@ namespace AniSprinkles.Services
 
             var token = await _authService.GetAccessTokenAsync(cancellationToken);
             var data = await SendAsync<SearchData>(
+                "Search",
                 SearchQuery,
                 new { search, page, perPage },
                 token,
@@ -77,6 +84,7 @@ namespace AniSprinkles.Services
         {
             var token = await _authService.GetAccessTokenAsync(cancellationToken);
             var data = await SendAsync<MediaData>(
+                "Media",
                 MediaQuery,
                 new { id },
                 token,
@@ -101,6 +109,7 @@ namespace AniSprinkles.Services
             };
 
             var data = await SendAsync<SaveEntryData>(
+                "SaveMediaListEntry",
                 SaveEntryMutation,
                 variables,
                 token,
@@ -120,15 +129,21 @@ namespace AniSprinkles.Services
 
         private async Task<Viewer> GetViewerAsync(string token, CancellationToken cancellationToken)
         {
-            var data = await SendAsync<ViewerData>(ViewerQuery, null, token, cancellationToken);
+            var data = await SendAsync<ViewerData>("Viewer", ViewerQuery, null, token, cancellationToken);
             if (data.Viewer is null)
                 throw new InvalidOperationException("AniList viewer not available.");
 
             return data.Viewer;
         }
 
-        private async Task<T> SendAsync<T>(string query, object? variables, string? token, CancellationToken cancellationToken)
+        private async Task<T> SendAsync<T>(string operationName, string query, object? variables, string? token, CancellationToken cancellationToken)
         {
+            if (string.IsNullOrWhiteSpace(query))
+                throw new InvalidOperationException($"AniList GraphQL {operationName} query is empty.");
+
+            var stopwatch = Stopwatch.StartNew();
+            _logger.LogInformation("GraphQL {Operation} request", operationName);
+
             using var request = new HttpRequestMessage(HttpMethod.Post, GraphQlEndpoint);
 
             if (!string.IsNullOrWhiteSpace(token))
@@ -139,7 +154,8 @@ namespace AniSprinkles.Services
             var payload = new GraphQlRequest
             {
                 Query = query,
-                Variables = variables
+                Variables = variables,
+                OperationName = operationName
             };
 
             request.Content = new StringContent(
@@ -153,7 +169,7 @@ namespace AniSprinkles.Services
             if (!response.IsSuccessStatusCode)
             {
                 var trimmed = content?.Length > 500 ? content[..500] + "..." : content;
-                throw new HttpRequestException($"AniList request failed ({(int)response.StatusCode}). {trimmed}");
+                throw new HttpRequestException($"AniList request failed ({(int)response.StatusCode}) for {operationName}. {trimmed}");
             }
 
             var graphQl = JsonSerializer.Deserialize<GraphQlResponse<T>>(content, JsonOptions);
@@ -168,6 +184,9 @@ namespace AniSprinkles.Services
 
             if (graphQl.Data is null)
                 throw new InvalidOperationException("AniList response data missing.");
+
+            stopwatch.Stop();
+            _logger.LogInformation("GraphQL {Operation} response ok in {Elapsed}ms", operationName, stopwatch.ElapsedMilliseconds);
 
             return graphQl.Data;
         }
@@ -250,8 +269,12 @@ namespace AniSprinkles.Services
 
         private sealed class GraphQlRequest
         {
+            [JsonPropertyName("query")]
             public string Query { get; set; } = string.Empty;
+            [JsonPropertyName("variables")]
             public object? Variables { get; set; }
+            [JsonPropertyName("operationName")]
+            public string? OperationName { get; set; }
         }
 
         private sealed class GraphQlResponse<T>
@@ -355,7 +378,7 @@ namespace AniSprinkles.Services
         }
 
         private const string ViewerQuery = @"
-query {
+query Viewer {
   Viewer {
     id
     name
@@ -363,7 +386,7 @@ query {
 }";
 
         private const string MediaListQuery = @"
-query ($userId: Int) {
+query MediaListCollection($userId: Int) {
   MediaListCollection(userId: $userId, type: ANIME) {
     lists {
       name
@@ -396,7 +419,7 @@ query ($userId: Int) {
 }";
 
         private const string SearchQuery = @"
-query ($search: String!, $page: Int, $perPage: Int) {
+query Search($search: String!, $page: Int, $perPage: Int) {
   Page(page: $page, perPage: $perPage) {
     media(type: ANIME, search: $search, sort: SEARCH_MATCH) {
       id
@@ -415,7 +438,7 @@ query ($search: String!, $page: Int, $perPage: Int) {
 }";
 
         private const string MediaQuery = @"
-query ($id: Int!) {
+query Media($id: Int!) {
   Media(id: $id, type: ANIME) {
     id
     title { romaji english native }
@@ -439,7 +462,7 @@ query ($id: Int!) {
 }";
 
         private const string SaveEntryMutation = @"
-mutation ($mediaId: Int, $status: MediaListStatus, $progress: Int, $score: Float, $repeat: Int, $notes: String, $private: Boolean, $hiddenFromStatusLists: Boolean) {
+mutation SaveMediaListEntry($mediaId: Int, $status: MediaListStatus, $progress: Int, $score: Float, $repeat: Int, $notes: String, $private: Boolean, $hiddenFromStatusLists: Boolean) {
   SaveMediaListEntry(mediaId: $mediaId, status: $status, progress: $progress, score: $score, repeat: $repeat, notes: $notes, private: $private, hiddenFromStatusLists: $hiddenFromStatusLists) {
     id
     mediaId

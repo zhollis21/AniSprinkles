@@ -7,7 +7,7 @@
              x:DataType="pageModels:MyAnimePageModel"
              Title="{Binding Title}">
 
-    <Grid Padding="24" RowDefinitions="Auto,Auto,*" RowSpacing="12">
+    <Grid Padding="24" RowDefinitions="Auto,Auto,Auto,*" RowSpacing="12">
         <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
             <Label Text="My Anime" FontSize="28" FontAttributes="Bold" VerticalOptions="Center" />
             <Button Grid.Column="1"
@@ -26,11 +26,61 @@
                    IsVisible="{Binding HasStatusMessage}"
                    FontSize="12"
                    TextColor="{StaticResource Gray400}" />
+            <Button Text="Details"
+                    Command="{Binding ToggleDetailsCommand}"
+                    IsVisible="{Binding HasErrorDetails}" />
         </HorizontalStackLayout>
 
-        <CollectionView Grid.Row="2"
-                        ItemsSource="{Binding Entries}"
+        <VerticalStackLayout Grid.Row="2"
+                             Spacing="8"
+                             IsVisible="{Binding IsErrorDetailsVisible}">
+            <ScrollView HeightRequest="160">
+                <Label Text="{Binding ErrorDetails}"
+                       FontSize="12"
+                       LineBreakMode="WordWrap"
+                       TextColor="{StaticResource Gray400}" />
+            </ScrollView>
+            <HorizontalStackLayout Spacing="12">
+                <Button Text="Copy" Command="{Binding CopyErrorCommand}" />
+                <Button Text="Share" Command="{Binding ShareErrorCommand}" />
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+
+        <CollectionView Grid.Row="3"
+                        ItemsSource="{Binding Sections}"
+                        IsGrouped="True"
+                        ItemSizingStrategy="MeasureFirstItem"
+                        SelectionMode="None"
                         IsVisible="{Binding IsAuthenticated}">
+            <CollectionView.GroupHeaderTemplate>
+                <DataTemplate x:DataType="pageModels:MediaListSection">
+                    <Grid Padding="8" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ToggleCommand}" />
+                        </Grid.GestureRecognizers>
+
+                        <Label Text=">"
+                               FontSize="14"
+                               FontAttributes="Bold"
+                               VerticalOptions="Center"
+                               TextColor="{StaticResource Gray400}">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label" Binding="{Binding IsExpanded}" Value="True">
+                                    <Setter Property="Rotation" Value="90" />
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                        <Label Grid.Column="1"
+                               Text="{Binding Title}"
+                               FontAttributes="Bold"
+                               VerticalOptions="Center" />
+                        <Label Grid.Column="2"
+                               Text="{Binding TotalCount, StringFormat='({0})'}"
+                               TextColor="{StaticResource Gray400}"
+                               VerticalOptions="Center" />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.GroupHeaderTemplate>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:MediaListEntry">
                     <Grid Padding="12" RowSpacing="6">
