@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/Solution/">
+    <File Path=".gitignore" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="src/AniSprinkles.csproj">
+    <Deploy Solution="Debug|*" />
+  </Project>
+</Solution>
