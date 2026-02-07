@@ -2,13 +2,14 @@
 
 Planning
 - [ ] Confirm AniList OAuth flow and PKCE support
-- [ ] Choose redirect approach (custom scheme vs App Links)
+- [x] Choose redirect approach (custom scheme)
 - [ ] Decide app name and verify AniList naming rules
-- [ ] Finalize auth decision and document it in PLAN.md
+- [x] Finalize auth decision and document it in PLAN.md
 - [ ] Finalize rate limit behavior and document retry rules
 - [x] Remove template domain and add AniList model/service scaffolding
-- [ ] Replace mock auth and mock AniList client with real GraphQL implementation
-- [ ] Create AniList client, set redirect URI, and record client ID
+- [x] Replace mock auth and mock AniList client with real GraphQL implementation
+- [x] Create AniList client, set redirect URI, and record client ID
+- [ ] Fix live list 400 error ("No query or mutation") and confirm list loads
 
 MVP scope
 - [ ] Decide initial list view sorting and filters
@@ -25,3 +26,6 @@ UI
 Process
 - [ ] Decide where to track future decisions (PLAN.md or ADRs)
 - [x] Add reminder for Codex to read docs/PLAN.md and docs/TODO.md (AGENTS.md or README)
+- [ ] Document MAUI Android logging and debugging workflow
+- [ ] Investigate and fix debug session crash (collect repro + logs)
+- [ ] Improve failure logging UX (capture full error, copy/share, no truncated messages)

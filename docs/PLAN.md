@@ -1,6 +1,6 @@
 # AniSprinkles Plan
 
-Status: domain cleanup started; template project/task domain removed and Android-only scaffold in place. My Anime page uses mock data.
+Status: auth works, but live list call still fails (400 "No query or mutation"). Debug session instability reported.
 
 Goals
 - First Android app integrating with AniList
@@ -42,12 +42,15 @@ Decisions so far
 - Android-only target for now (iOS/Mac/Windows removed)
 - Theme: Midnight Minimal for MVP
 - Future: Neon Clock theme (rainbow LED inspiration)
-- Mock auth and mock AniList client in place for early UI work
+- Replaced mock auth and mock AniList client with real implicit auth and live AniList GraphQL client
+- Auth uses MAUI WebAuthenticator with SecureStorage token persistence (Android custom-scheme callback)
+- Log and debug workflow needs to be documented (VS Logcat / adb / in-app logging)
 
-Auth strategy (tentative)
+Auth strategy
 - Implicit grant for MVP (no backend)
-- Redirect approach for MVP: custom URL scheme (exact value TBD)
-- Action: create AniList client, set redirect URI, and capture client ID
+- Redirect URI: anisprinkles://auth
+- AniList client ID: 35674
+- Known issue: list fetch returns 400 "No query or mutation" even after JSON camelCase change. Need request/response logging to confirm payload.
 
 Rate limit strategy (tentative)
 - Use response headers: X-RateLimit-Limit, X-RateLimit-Remaining
@@ -76,5 +79,4 @@ Future theme plan (Neon Clock)
 - Avoid full rainbow gradients except for celebration moments
 
 Open questions
-- Preferred redirect value for Android (custom scheme)
 - App name and store listing constraints with AniList naming rules

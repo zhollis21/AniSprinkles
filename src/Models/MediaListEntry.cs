@@ -27,5 +27,8 @@ namespace AniSprinkles.Models
                 return total is null ? $"{Progress}" : $"{Progress}/{total}";
             }
         }
+
+        public string ScoreDisplay
+            => Score is null ? "-" : Score.Value.ToString("0.0");
     }
 }
