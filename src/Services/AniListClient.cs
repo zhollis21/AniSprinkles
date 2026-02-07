@@ -456,7 +456,7 @@ query Media($id: Int!) {
     meanScore
     popularity
     favourites
-    tags { id name rank isSpoiler isAdult description category }
+    tags { id name rank isMediaSpoiler isGeneralSpoiler isAdult description category }
     studios(isMain: true) { nodes { id name isAnimationStudio } }
   }
 }";

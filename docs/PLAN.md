@@ -50,6 +50,9 @@ Decisions so far
 - File logging deferred (optional if debug session instability persists)
 - Using CommunityToolkit.Maui; My Anime uses a grouped CollectionView for collapsible sections (avoid nested list perf issues)
 - Navigation uses a flyout menu with My Anime + Settings; sign-in/out lives in Settings with a sign-in prompt on My Anime
+- Telemetry: Sentry crash reporting only, no PII, tracing disabled for now
+- Telemetry: add breadcrumbs for navigation, auth, and HTTP requests; capture handled exceptions
+- Added a read-only details page for list items (navigated from My Anime)
 
 Auth strategy
 - Implicit grant for MVP (no backend)

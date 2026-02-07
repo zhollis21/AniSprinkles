@@ -24,6 +24,19 @@ namespace AniSprinkles.Pages
             await _viewModel.LoadAsync();
         }
 
+        private async void OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
+        {
+            if (e.CurrentSelection.FirstOrDefault() is not MediaListEntry entry)
+                return;
+
+            await _viewModel.OpenDetailsCommand.ExecuteAsync(entry);
+
+            if (sender is CollectionView collectionView)
+            {
+                collectionView.SelectedItem = null;
+            }
+        }
+
         private static MyAnimePageModel ResolveViewModel()
         {
             var services = Application.Current?.Handler?.MauiContext?.Services;

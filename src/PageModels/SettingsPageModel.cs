@@ -28,6 +28,7 @@ namespace AniSprinkles.PageModels
         {
             await RefreshAuthStateAsync();
             StatusMessage = IsAuthenticated ? "Signed in to AniList." : "Not signed in.";
+            Sentry.SentrySdk.AddBreadcrumb("Settings loaded", "navigation", "state");
         }
 
 
@@ -38,15 +39,34 @@ namespace AniSprinkles.PageModels
         private async Task SignIn()
         {
             _logger.LogInformation("Sign-in requested from Settings.");
-            var signedIn = await _authService.SignInAsync();
-            await RefreshAuthStateAsync();
-            StatusMessage = signedIn ? "Signed in to AniList." : "Sign in canceled.";
+            try
+            {
+                Sentry.SentrySdk.AddBreadcrumb("Sign-in requested (Settings)", "auth", "user");
+                var signedIn = await _authService.SignInAsync();
+                await RefreshAuthStateAsync();
+                StatusMessage = signedIn ? "Signed in to AniList." : "Sign in canceled.";
+                Sentry.SentrySdk.AddBreadcrumb(
+                    signedIn ? "Sign-in successful (Settings)" : "Sign-in canceled (Settings)",
+                    "auth",
+                    "user");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Sign-in failed.");
+                Sentry.SentrySdk.AddBreadcrumb(
+                    message: "Sign-in failed (Settings)",
+                    category: "auth",
+                    type: "user",
+                    level: Sentry.BreadcrumbLevel.Error);
+                StatusMessage = "Sign in failed. Try again.";
+            }
         }
 
         [RelayCommand]
         private async Task SignOut()
         {
             _logger.LogInformation("Sign-out requested from Settings.");
+            Sentry.SentrySdk.AddBreadcrumb("Sign-out requested (Settings)", "auth", "user");
             await _authService.SignOutAsync();
             await RefreshAuthStateAsync();
             StatusMessage = "Signed out.";

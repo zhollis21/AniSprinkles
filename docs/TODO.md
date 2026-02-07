@@ -15,7 +15,7 @@ MVP scope
 - [ ] Decide initial list view sorting and filters
 - [x] Group My Anime list by status with collapsible sections
 - [ ] Decide search result layout and metadata shown
-- [ ] Decide title details fields and layout
+- [x] Add read-only details page for list items (using current authenticated list)
 - [ ] Define list edit fields and validation rules
 
 UI
@@ -32,3 +32,5 @@ Process
 - [x] Document MAUI Android logging and debugging workflow
 - [ ] Investigate and fix debug session crash (collect repro + logs)
 - [x] Improve failure logging UX (capture full error, copy/share, no truncated messages)
+- [ ] Decide telemetry opt-in/out and add a Settings toggle
+- [ ] When adding new features/refactors, add/verify telemetry breadcrumbs and exception capture

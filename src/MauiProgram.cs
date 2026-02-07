@@ -1,5 +1,6 @@
 using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
+using Sentry.Maui;
 using Syncfusion.Maui.Toolkit.Hosting;
 using System.Net.Http;
 
@@ -12,6 +13,18 @@ namespace AniSprinkles
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseSentry(options =>
+                {
+                    options.Dsn = "https://57d120d6c4a16af09b4e71229a8f727c@o4510846094802944.ingest.us.sentry.io/4510846128422912";
+                    options.SendDefaultPii = false;
+                    options.TracesSampleRate = 0.0;
+#if DEBUG
+                    options.Environment = "Development";
+                    options.Debug = true;
+#else
+                    options.Environment = "Production";
+#endif
+                })
                 .UseMauiCommunityToolkit()
                 .ConfigureSyncfusionToolkit()
                 .ConfigureFonts(fonts =>
@@ -24,7 +37,6 @@ namespace AniSprinkles
 
 #if DEBUG
             builder.Logging.AddDebug();
-            builder.Services.AddLogging(configure => configure.AddDebug());
 #endif
 
             builder.Services.AddSingleton<ErrorReportService>();
@@ -41,6 +53,8 @@ namespace AniSprinkles
             builder.Services.AddTransient<MyAnimePage>();
             builder.Services.AddTransient<SettingsPageModel>();
             builder.Services.AddTransient<SettingsPage>();
+            builder.Services.AddTransient<MediaDetailsPageModel>();
+            builder.Services.AddTransient<MediaDetailsPage>();
 
             return builder.Build();
         }

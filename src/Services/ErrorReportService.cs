@@ -1,5 +1,6 @@
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
+using Sentry;
 
 namespace AniSprinkles.Services
 {
@@ -15,10 +16,6 @@ namespace AniSprinkles.Services
             _logger = logger;
         }
 
-        public string? LastErrorSummary { get; private set; }
-        public string? LastErrorDetails { get; private set; }
-        public DateTimeOffset? LastErrorAt { get; private set; }
-
         public string Record(Exception ex, string context)
         {
             var summary = $"{context}: {ex.Message}";
@@ -27,20 +24,10 @@ namespace AniSprinkles.Services
             summary = Redact(summary);
             details = Redact(details);
 
-            LastErrorSummary = summary;
-            LastErrorDetails = details;
-            LastErrorAt = DateTimeOffset.Now;
-
             _logger.LogError(ex, "{Context}", context);
+            SentrySdk.CaptureException(ex);
 
             return details;
-        }
-
-        public void Clear()
-        {
-            LastErrorSummary = null;
-            LastErrorDetails = null;
-            LastErrorAt = null;
         }
 
         private static string Redact(string value)

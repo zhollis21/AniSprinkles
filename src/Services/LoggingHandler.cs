@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Microsoft.Extensions.Logging;
+using Sentry;
 
 namespace AniSprinkles.Services
 {
@@ -16,6 +17,16 @@ namespace AniSprinkles.Services
         {
             var stopwatch = Stopwatch.StartNew();
             _logger.LogInformation("HTTP {Method} {Uri}", request.Method, request.RequestUri);
+            var breadcrumbsUri = request.RequestUri?.GetLeftPart(UriPartial.Path) ?? request.RequestUri?.ToString() ?? "unknown";
+            SentrySdk.AddBreadcrumb(
+                message: $"HTTP {request.Method} {breadcrumbsUri}",
+                category: "http",
+                type: "http",
+                data: new Dictionary<string, string>
+                {
+                    ["method"] = request.Method.Method,
+                    ["uri"] = breadcrumbsUri
+                });
 
             try
             {
@@ -26,6 +37,15 @@ namespace AniSprinkles.Services
                     request.Method,
                     request.RequestUri,
                     stopwatch.ElapsedMilliseconds);
+                SentrySdk.AddBreadcrumb(
+                    message: $"HTTP {(int)response.StatusCode} {request.Method} {breadcrumbsUri}",
+                    category: "http",
+                    type: "http",
+                    data: new Dictionary<string, string>
+                    {
+                        ["status"] = ((int)response.StatusCode).ToString(),
+                        ["elapsed_ms"] = stopwatch.ElapsedMilliseconds.ToString()
+                    });
                 return response;
             }
             catch (Exception ex)
@@ -35,6 +55,15 @@ namespace AniSprinkles.Services
                     request.Method,
                     request.RequestUri,
                     stopwatch.ElapsedMilliseconds);
+                SentrySdk.AddBreadcrumb(
+                    message: $"HTTP failed {request.Method} {breadcrumbsUri}",
+                    category: "http",
+                    type: "http",
+                    level: BreadcrumbLevel.Error,
+                    data: new Dictionary<string, string>
+                    {
+                        ["elapsed_ms"] = stopwatch.ElapsedMilliseconds.ToString()
+                    });
                 throw;
             }
         }
