@@ -1,6 +1,8 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
+using Microsoft.Maui.ApplicationModel.DataTransfer;
 
 namespace AniSprinkles.PageModels
 {
@@ -8,6 +10,8 @@ namespace AniSprinkles.PageModels
     {
         private readonly IAniListClient _aniListClient;
         private readonly IAuthService _authService;
+        private readonly ErrorReportService _errorReportService;
+        private readonly ILogger<MyAnimePageModel> _logger;
 
         [ObservableProperty]
         private bool _isBusy;
@@ -22,7 +26,7 @@ namespace AniSprinkles.PageModels
         private string _title = "My Anime";
 
         [ObservableProperty]
-        private ObservableCollection<MediaListEntry> _entries = [];
+        private ObservableCollection<MediaListSection> _sections = [];
 
         [ObservableProperty]
         private string _statusMessage = string.Empty;
@@ -30,10 +34,21 @@ namespace AniSprinkles.PageModels
         [ObservableProperty]
         private bool _hasStatusMessage;
 
-        public MyAnimePageModel(IAniListClient aniListClient, IAuthService authService)
+        [ObservableProperty]
+        private string _errorDetails = string.Empty;
+
+        [ObservableProperty]
+        private bool _hasErrorDetails;
+
+        [ObservableProperty]
+        private bool _isErrorDetailsVisible;
+
+        public MyAnimePageModel(IAniListClient aniListClient, IAuthService authService, ErrorReportService errorReportService, ILogger<MyAnimePageModel> logger)
         {
             _aniListClient = aniListClient;
             _authService = authService;
+            _errorReportService = errorReportService;
+            _logger = logger;
         }
 
         public async Task LoadAsync()
@@ -44,6 +59,7 @@ namespace AniSprinkles.PageModels
             IsBusy = true;
             try
             {
+                _logger.LogInformation("Loading My Anime list.");
                 var token = await _authService.GetAccessTokenAsync();
                 IsAuthenticated = !string.IsNullOrWhiteSpace(token);
 
@@ -51,19 +67,25 @@ namespace AniSprinkles.PageModels
                 {
                     Title = "Sign in required";
                     StatusMessage = "Sign in to see your AniList.";
-                    Entries = [];
+                    ErrorDetails = string.Empty;
+                    IsErrorDetailsVisible = false;
+                    Sections = [];
                     return;
                 }
 
                 Title = "My Anime";
                 StatusMessage = string.Empty;
+                ErrorDetails = string.Empty;
+                IsErrorDetailsVisible = false;
                 var list = await _aniListClient.GetMyAnimeListAsync();
-                Entries = new ObservableCollection<MediaListEntry>(list);
+                Sections = BuildSections(list);
             }
             catch (Exception ex)
             {
-                StatusMessage = ex.Message;
-                Entries = [];
+                StatusMessage = "Failed to load list. Tap Details for more.";
+                ErrorDetails = _errorReportService.Record(ex, "Load My Anime");
+                IsErrorDetailsVisible = false;
+                Sections = [];
             }
             finally
             {
@@ -73,6 +95,9 @@ namespace AniSprinkles.PageModels
 
         partial void OnStatusMessageChanged(string value)
             => HasStatusMessage = !string.IsNullOrWhiteSpace(value);
+
+        partial void OnErrorDetailsChanged(string value)
+            => HasErrorDetails = !string.IsNullOrWhiteSpace(value);
 
         partial void OnIsAuthenticatedChanged(bool value)
             => IsNotAuthenticated = !value;
@@ -86,6 +111,7 @@ namespace AniSprinkles.PageModels
             IsBusy = true;
             try
             {
+                _logger.LogInformation("Sign-in requested.");
                 var signedIn = await _authService.SignInAsync();
                 if (!signedIn)
                 {
@@ -104,8 +130,87 @@ namespace AniSprinkles.PageModels
         [RelayCommand]
         private async Task SignOut()
         {
+            _logger.LogInformation("Sign-out requested.");
             await _authService.SignOutAsync();
             await LoadAsync();
+        }
+
+        private static ObservableCollection<MediaListSection> BuildSections(IReadOnlyList<MediaListEntry> entries)
+        {
+            var sections = new List<MediaListSection>
+            {
+                new("Watching", true),
+                new("Planning", true),
+                new("Completed", false),
+                new("Paused", false),
+                new("Dropped", false),
+                new("Repeating", false)
+            };
+
+            var map = new Dictionary<MediaListStatus, MediaListSection>
+            {
+                [MediaListStatus.Current] = sections[0],
+                [MediaListStatus.Planning] = sections[1],
+                [MediaListStatus.Completed] = sections[2],
+                [MediaListStatus.Paused] = sections[3],
+                [MediaListStatus.Dropped] = sections[4],
+                [MediaListStatus.Repeating] = sections[5]
+            };
+
+            var unknown = new MediaListSection("Other", false);
+
+            foreach (var entry in entries)
+            {
+                if (entry.Status is null || !map.TryGetValue(entry.Status.Value, out var section))
+                {
+                    unknown.AddItem(entry);
+                    continue;
+                }
+
+                section.AddItem(entry);
+            }
+
+            var result = new ObservableCollection<MediaListSection>(
+                sections.Where(s => s.TotalCount > 0));
+
+            if (unknown.TotalCount > 0)
+            {
+                result.Add(unknown);
+            }
+
+            return result;
+        }
+
+        [RelayCommand]
+        private void ToggleDetails()
+        {
+            if (!HasErrorDetails)
+                return;
+
+            IsErrorDetailsVisible = !IsErrorDetailsVisible;
+        }
+
+        [RelayCommand]
+        private async Task CopyError()
+        {
+            if (!HasErrorDetails)
+                return;
+
+            await Clipboard.Default.SetTextAsync(ErrorDetails);
+            StatusMessage = "Error details copied.";
+        }
+
+        [RelayCommand]
+        private async Task ShareError()
+        {
+            if (!HasErrorDetails)
+                return;
+
+            await Share.Default.RequestAsync(new ShareTextRequest
+            {
+                Text = ErrorDetails,
+                Title = "AniSprinkles Error Details"
+            });
         }
     }
 }

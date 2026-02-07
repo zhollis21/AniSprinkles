@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Authentication;
 using Microsoft.Maui.Storage;
 
@@ -10,8 +11,14 @@ namespace AniSprinkles.Services
         private const string TokenKey = "anilist_access_token";
         private const string TokenExpiryKey = "anilist_access_token_expires_at";
 
+        private readonly ILogger<AuthService> _logger;
         private string? _accessToken;
         private DateTimeOffset? _expiresAt;
+
+        public AuthService(ILogger<AuthService> logger)
+        {
+            _logger = logger;
+        }
 
         public bool IsAuthenticated => !string.IsNullOrWhiteSpace(_accessToken) && !IsExpired();
 
@@ -24,6 +31,7 @@ namespace AniSprinkles.Services
 
             if (IsExpired())
             {
+                _logger.LogInformation("AniList access token expired.");
                 await SignOutAsync();
                 return null;
             }
@@ -52,6 +60,8 @@ namespace AniSprinkles.Services
                 _accessToken = accessToken;
                 _expiresAt = ParseExpiresAt(result);
 
+                _logger.LogInformation("AniList sign-in successful. Expires at {ExpiresAt}.", _expiresAt);
+
                 await SecureStorage.Default.SetAsync(TokenKey, _accessToken);
                 if (_expiresAt is not null)
                 {
@@ -66,12 +76,14 @@ namespace AniSprinkles.Services
             }
             catch (TaskCanceledException)
             {
+                _logger.LogInformation("AniList sign-in canceled.");
                 return false;
             }
         }
 
         public Task SignOutAsync()
         {
+            _logger.LogInformation("AniList sign-out.");
             _accessToken = null;
             _expiresAt = null;
             SecureStorage.Default.Remove(TokenKey);

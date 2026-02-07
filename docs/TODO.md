@@ -9,10 +9,11 @@ Planning
 - [x] Remove template domain and add AniList model/service scaffolding
 - [x] Replace mock auth and mock AniList client with real GraphQL implementation
 - [x] Create AniList client, set redirect URI, and record client ID
-- [ ] Fix live list 400 error ("No query or mutation") and confirm list loads
+- [x] Fix live list 400 error ("No query or mutation") and confirm list loads
 
 MVP scope
 - [ ] Decide initial list view sorting and filters
+- [x] Group My Anime list by status with collapsible sections
 - [ ] Decide search result layout and metadata shown
 - [ ] Decide title details fields and layout
 - [ ] Define list edit fields and validation rules
@@ -22,10 +23,11 @@ UI
 - [ ] Define dominant accent per screen for MVP
 - [ ] Add a "celebration" moment style (future Neon Clock theme)
 - [x] Add My Anime page with example list
+- [x] Use grouped CollectionView for collapsible My Anime sections (avoid nested list perf issues)
 
 Process
 - [ ] Decide where to track future decisions (PLAN.md or ADRs)
 - [x] Add reminder for Codex to read docs/PLAN.md and docs/TODO.md (AGENTS.md or README)
-- [ ] Document MAUI Android logging and debugging workflow
+- [x] Document MAUI Android logging and debugging workflow
 - [ ] Investigate and fix debug session crash (collect repro + logs)
-- [ ] Improve failure logging UX (capture full error, copy/share, no truncated messages)
+- [x] Improve failure logging UX (capture full error, copy/share, no truncated messages)
