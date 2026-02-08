@@ -1,6 +1,4 @@
 using Microsoft.Extensions.Logging;
-using Microsoft.Maui.Authentication;
-using Microsoft.Maui.Storage;
 
 namespace AniSprinkles.Services
 {

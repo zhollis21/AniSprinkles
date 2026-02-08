@@ -1,5 +1,3 @@
-using Microsoft.Extensions.DependencyInjection;
-
 namespace AniSprinkles.Pages
 {
     public partial class MyAnimePage : ContentPage

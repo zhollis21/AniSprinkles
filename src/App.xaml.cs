@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-
-namespace AniSprinkles
+﻿namespace AniSprinkles
 {
     public partial class App : Application
     {

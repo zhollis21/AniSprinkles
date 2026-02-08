@@ -1,6 +1,3 @@
-using AniSprinkles.PageModels;
-using Microsoft.Extensions.DependencyInjection;
-
 namespace AniSprinkles.Pages
 {
     public partial class SettingsPage : ContentPage
