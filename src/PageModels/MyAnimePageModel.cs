@@ -2,7 +2,6 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
-using Microsoft.Maui.ApplicationModel.DataTransfer;
 
 namespace AniSprinkles.PageModels
 {
@@ -12,6 +11,7 @@ namespace AniSprinkles.PageModels
         private readonly IAuthService _authService;
         private readonly ErrorReportService _errorReportService;
         private readonly ILogger<MyAnimePageModel> _logger;
+        private bool _hasLoaded;
 
         [ObservableProperty]
         private bool _isBusy;
@@ -48,7 +48,7 @@ namespace AniSprinkles.PageModels
             _logger = logger;
         }
 
-        public async Task LoadAsync()
+        public async Task LoadAsync(bool forceReload = false)
         {
             if (IsBusy)
                 return;
@@ -59,7 +59,14 @@ namespace AniSprinkles.PageModels
                 _logger.LogInformation("Loading My Anime list.");
                 Sentry.SentrySdk.AddBreadcrumb("Load My Anime list", "navigation", "state");
                 var token = await _authService.GetAccessTokenAsync();
-                IsAuthenticated = !string.IsNullOrWhiteSpace(token);
+                var isAuthenticated = !string.IsNullOrWhiteSpace(token);
+
+                if (_hasLoaded && !forceReload && isAuthenticated == IsAuthenticated)
+                {
+                    return;
+                }
+
+                IsAuthenticated = isAuthenticated;
 
                 if (!IsAuthenticated)
                 {
@@ -68,6 +75,7 @@ namespace AniSprinkles.PageModels
                     ErrorDetails = string.Empty;
                     IsErrorDetailsVisible = false;
                     Sections = [];
+                    _hasLoaded = true;
                     return;
                 }
 
@@ -78,6 +86,7 @@ namespace AniSprinkles.PageModels
                 Sentry.SentrySdk.AddBreadcrumb("Fetching AniList list", "http", "state");
                 var list = await _aniListClient.GetMyAnimeListAsync();
                 Sections = BuildSections(list);
+                _hasLoaded = true;
             }
             catch (Exception ex)
             {
@@ -85,6 +94,7 @@ namespace AniSprinkles.PageModels
                 ErrorDetails = _errorReportService.Record(ex, "Load My Anime");
                 IsErrorDetailsVisible = false;
                 Sections = [];
+                _hasLoaded = false;
             }
             finally
             {
@@ -131,7 +141,7 @@ namespace AniSprinkles.PageModels
                 IsBusy = false;
             }
 
-            await LoadAsync();
+            await LoadAsync(forceReload: true);
         }
 
         [RelayCommand]
@@ -140,7 +150,7 @@ namespace AniSprinkles.PageModels
             _logger.LogInformation("Sign-out requested.");
             Sentry.SentrySdk.AddBreadcrumb("Sign-out requested", "auth", "user");
             await _authService.SignOutAsync();
-            await LoadAsync();
+            await LoadAsync(forceReload: true);
         }
 
         [RelayCommand]

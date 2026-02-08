@@ -1,8 +1,6 @@
 using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
-using Sentry.Maui;
 using Syncfusion.Maui.Toolkit.Hosting;
-using System.Net.Http;
 
 namespace AniSprinkles
 {

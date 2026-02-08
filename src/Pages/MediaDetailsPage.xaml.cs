@@ -1,5 +1,3 @@
-using Microsoft.Extensions.DependencyInjection;
-
 namespace AniSprinkles.Pages
 {
     public partial class MediaDetailsPage : ContentPage, IQueryAttributable
@@ -16,6 +14,12 @@ namespace AniSprinkles.Pages
             InitializeComponent();
             _viewModel = viewModel;
             BindingContext = _viewModel;
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            _ = Shell.Current.GoToAsync("..");
+            return true;
         }
 
         public void ApplyQueryAttributes(IDictionary<string, object> query)

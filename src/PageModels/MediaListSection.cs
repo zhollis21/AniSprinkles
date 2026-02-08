@@ -1,7 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using AniSprinkles.Models;
 using CommunityToolkit.Mvvm.Input;
 
 namespace AniSprinkles.PageModels
