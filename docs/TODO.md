@@ -16,6 +16,9 @@ MVP scope
 - [x] Group My Anime list by status with collapsible sections
 - [ ] Decide search result layout and metadata shown
 - [x] Add read-only details page for list items (using current authenticated list)
+- [x] Expand details page metadata coverage (release/airing, synonyms, tags, rankings, links)
+- [x] Harden details JSON parsing for mixed AniList scalar types (`externalLinks.siteId`)
+- [x] Perf pass on details page (cache derived lists, simplify nested list UI)
 - [ ] Define list edit fields and validation rules
 
 UI
@@ -29,7 +32,11 @@ UI
 Process
 - [ ] Decide where to track future decisions (PLAN.md or ADRs)
 - [x] Add reminder for Codex to read docs/PLAN.md and docs/TODO.md (AGENTS.md or README)
+- [x] Add reminder for Codex to read docs/DEBUGGING.md and pull device logs during troubleshooting
+- [x] Add reminder to include `adb logcat` scan as part of troubleshooting confirmations
+- [x] Add reminder to follow repository `.editorconfig` standards
 - [x] Document MAUI Android logging and debugging workflow
+- [x] Add debug file logging for app output (rotating log files)
 - [ ] Investigate and fix debug session crash (collect repro + logs)
 - [x] Improve failure logging UX (capture full error, copy/share, no truncated messages)
 - [ ] Decide telemetry opt-in/out and add a Settings toggle

@@ -46,13 +46,19 @@ Decisions so far
 - Replaced mock auth and mock AniList client with real implicit auth and live AniList GraphQL client
 - Auth uses MAUI WebAuthenticator with SecureStorage token persistence (Android custom-scheme callback)
 - Debugging workflow documented in docs/DEBUGGING.md
+- Troubleshooting workflow: pull device app logs into `logs/anisprinkles.device.log` before analysis
+- Confirmation workflow: include current-process `adb logcat` scan for crashes/exceptions/perf warnings
+- Development workflow: follow repository `.editorconfig` standards for style/formatting/naming
 - Logging upgrade implemented (HTTP logging handler + error details UI)
-- File logging deferred (optional if debug session instability persists)
+- Debug file logging implemented (rotating file logger under app data)
 - Using CommunityToolkit.Maui; My Anime uses a grouped CollectionView for collapsible sections (avoid nested list perf issues)
 - Navigation uses a flyout menu with My Anime + Settings; sign-in/out lives in Settings with a sign-in prompt on My Anime
 - Telemetry: Sentry crash reporting only, no PII, tracing disabled for now
 - Telemetry: add breadcrumbs for navigation, auth, and HTTP requests; capture handled exceptions
 - Added a read-only details page for list items (navigated from My Anime)
+- Expanded details page to fetch and render richer AniList metadata (release window, airing info, synonyms, tags, rankings, external links, streaming episodes, and trailer/site links)
+- Hardened AniList details parsing for mixed scalar types (example: externalLinks.siteId may be numeric)
+- Details page perf pass: cache derived lists in page model and remove nested `CollectionView` sections inside page `ScrollView`
 
 Auth strategy
 - Implicit grant for MVP (no backend)

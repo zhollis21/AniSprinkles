@@ -2,71 +2,70 @@
 using Android.Content.PM;
 using Android.OS;
 
-namespace AniSprinkles
+namespace AniSprinkles.Platforms.Android;
+
+[Activity(Theme = "@style/Maui.SplashTheme", MainLauncher = true, LaunchMode = LaunchMode.SingleTop, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density)]
+public class MainActivity : MauiAppCompatActivity
 {
-    [Activity(Theme = "@style/Maui.SplashTheme", MainLauncher = true, LaunchMode = LaunchMode.SingleTop, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density)]
-    public class MainActivity : MauiAppCompatActivity
+    protected override void OnCreate(Bundle? savedInstanceState)
     {
-        protected override void OnCreate(Bundle? savedInstanceState)
-        {
-            base.OnCreate(savedInstanceState);
+        base.OnCreate(savedInstanceState);
 
-            // Handle back navigation through Shell instead of closing the app
-            var callback = new ShellBackPressedCallback(this);
-            OnBackPressedDispatcher.AddCallback(this, callback);
+        // Handle back navigation through Shell instead of closing the app
+        var callback = new ShellBackPressedCallback(this);
+        OnBackPressedDispatcher.AddCallback(this, callback);
+    }
+
+    private class ShellBackPressedCallback : AndroidX.Activity.OnBackPressedCallback
+    {
+        private Activity Activity { get; }
+
+        public ShellBackPressedCallback(Activity activity) : base(true)
+        {
+            Activity = activity;
         }
 
-        private class ShellBackPressedCallback : AndroidX.Activity.OnBackPressedCallback
+        public override async void HandleOnBackPressed()
         {
-            private readonly Activity _activity;
-
-            public ShellBackPressedCallback(Activity activity) : base(true)
+            // Attempt Shell navigation first
+            if (Shell.Current != null)
             {
-                _activity = activity;
+                try
+                {
+                    await Shell.Current.GoToAsync("..");
+                }
+                catch (Exception ex)
+                {
+                    // Only fall back to default behavior if Shell navigation fails
+                    System.Diagnostics.Debug.WriteLine($"Shell navigation failed: {ex.Message}");
+                    Activity.Finish();
+                }
             }
-
-            public override async void HandleOnBackPressed()
+            else
             {
-                // Attempt Shell navigation first
-                if (Shell.Current != null)
-                {
-                    try
-                    {
-                        await Shell.Current.GoToAsync("..");
-                    }
-                    catch (Exception ex)
-                    {
-                        // Only fall back to default behavior if Shell navigation fails
-                        System.Diagnostics.Debug.WriteLine($"Shell navigation failed: {ex.Message}");
-                        _activity.Finish();
-                    }
-                }
-                else
-                {
-                    // Shell not initialized yet, use default behavior
-                    _activity.Finish();
-                }
+                // Shell not initialized yet, use default behavior
+                Activity.Finish();
             }
         }
+    }
 
-        protected override void OnDestroy()
+    protected override void OnDestroy()
+    {
+        // Suppress ObjectDisposedException that occurs when Shell tries to access 
+        // the service provider after it has been disposed during activity destruction.
+        // This is a known issue with MAUI on Android where the service provider 
+        // is disposed before the Shell cleanup is complete.
+        try
         {
-            // Suppress ObjectDisposedException that occurs when Shell tries to access 
-            // the service provider after it has been disposed during activity destruction.
-            // This is a known issue with MAUI on Android where the service provider 
-            // is disposed before the Shell cleanup is complete.
-            try
-            {
-                base.OnDestroy();
-            }
-            catch (ObjectDisposedException ode) when (ode.ObjectName?.Contains("IServiceProvider") == true)
-            {
-                // Safe to ignore - the service provider cleanup issue
-            }
-            catch (Exception ex) when (ex.GetType().Name == "JavaProxyThrowable" && ex.InnerException is ObjectDisposedException ode && ode.ObjectName?.Contains("IServiceProvider") == true)
-            {
-                // Same issue but wrapped in Java exception
-            }
+            base.OnDestroy();
+        }
+        catch (ObjectDisposedException ode) when (ode.ObjectName?.Contains("IServiceProvider") == true)
+        {
+            // Safe to ignore - the service provider cleanup issue
+        }
+        catch (Exception ex) when (ex.GetType().Name == "JavaProxyThrowable" && ex.InnerException is ObjectDisposedException ode && ode.ObjectName?.Contains("IServiceProvider") == true)
+        {
+            // Same issue but wrapped in Java exception
         }
     }
 }

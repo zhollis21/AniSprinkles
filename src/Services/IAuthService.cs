@@ -1,9 +1,8 @@
-namespace AniSprinkles.Services
+namespace AniSprinkles.Services;
+
+public interface IAuthService
 {
-    public interface IAuthService
-    {
-        Task<string?> GetAccessTokenAsync(CancellationToken cancellationToken = default);
-        Task<bool> SignInAsync(CancellationToken cancellationToken = default);
-        Task SignOutAsync();
-    }
+    Task<string?> GetAccessTokenAsync(CancellationToken cancellationToken = default);
+    Task<bool> SignInAsync(CancellationToken cancellationToken = default);
+    Task SignOutAsync();
 }

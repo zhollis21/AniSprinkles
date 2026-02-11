@@ -1,12 +1,11 @@
-namespace AniSprinkles.Models
+namespace AniSprinkles.Models;
+
+public enum MediaListStatus
 {
-    public enum MediaListStatus
-    {
-        Current,
-        Planning,
-        Completed,
-        Dropped,
-        Paused,
-        Repeating
-    }
+    Current,
+    Planning,
+    Completed,
+    Dropped,
+    Paused,
+    Repeating
 }
