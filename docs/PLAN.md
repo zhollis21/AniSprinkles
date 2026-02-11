@@ -51,6 +51,7 @@ Decisions so far
 - Troubleshooting workflow: pull device app logs into `logs/anisprinkles.device.log` before analysis
 - Confirmation workflow: include current-process `adb logcat` scan for crashes/exceptions/perf warnings
 - Development workflow: follow repository `.editorconfig` standards for style/formatting/naming
+- Development workflow: comments on non-obvious logic should explain intent/tradeoffs ("why"), not restate obvious code flow
 - Logging upgrade implemented (HTTP logging handler + error details UI)
 - Debug file logging implemented (rotating file logger under app data)
 - Performance hardening: file logger writes asynchronously and filters noisy framework/Sentry categories
@@ -67,6 +68,12 @@ Decisions so far
 - AniList list loading requires viewer context (`userId`), so My Anime now uses `Viewer` + `MediaListCollection` with viewer ID caching to minimize repeat viewer calls
 - My Anime section grouping/build is moved off the UI thread before binding
 - Debug logging filters now apply globally (including Debug output), and Sentry diagnostic verbosity is set to warning level
+- My Anime now uses a 5-minute stale refresh window to avoid frequent reload/rebind work on back navigation
+- My Anime preserves section expanded/collapsed state across refreshes and keeps cached sections visible if refresh fails
+- My Anime default first-load expansion is now `Watching` only (other sections collapsed) to reduce first-render work
+- Details page now uses default Shell back behavior; re-validation confirmed custom Android back override is not required
+- Details page model no longer sets partial list media before full fetch, reducing duplicate detail-page rebind/layout work
+- AniList client now pre-shapes details collections (tags/rankings/external links/streaming episodes) before UI binding
 
 Auth strategy
 - Implicit grant for MVP (no backend)

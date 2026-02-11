@@ -10,6 +10,8 @@ namespace AniSprinkles.PageModels;
         private readonly IAniListClient _aniListClient;
         private readonly ErrorReportService _errorReportService;
         private readonly ILogger<MediaDetailsPageModel> _logger;
+        // Tracks the last fully loaded media to avoid duplicate fetch/rebind when the same query is applied again.
+        private int? _loadedMediaId;
 
     [ObservableProperty]
     private bool _isBusy;
@@ -125,6 +127,17 @@ namespace AniSprinkles.PageModels;
             return;
         }
 
+        if (_loadedMediaId == mediaId && Media is not null)
+        {
+            // Query attributes can be re-applied on resume/back transitions. Keep existing media and only
+            // refresh list-context/error state so we avoid a second network call and full layout pass.
+            ListEntry = listEntry;
+            StatusMessage = string.Empty;
+            ErrorDetails = string.Empty;
+            IsErrorDetailsVisible = false;
+            return;
+        }
+
         IsBusy = true;
         try
         {
@@ -132,7 +145,6 @@ namespace AniSprinkles.PageModels;
             SentrySdk.AddBreadcrumb($"Load media details {mediaId}", "navigation", "state");
 
             ListEntry = listEntry;
-            Media = listEntry?.Media;
             StatusMessage = string.Empty;
             ErrorDetails = string.Empty;
             IsErrorDetailsVisible = false;
@@ -145,12 +157,14 @@ namespace AniSprinkles.PageModels;
             }
 
             Media = media;
+            _loadedMediaId = mediaId;
         }
         catch (Exception ex)
         {
             StatusMessage = "Failed to load details. Tap Details for more.";
             ErrorDetails = _errorReportService.Record(ex, "Load details");
             IsErrorDetailsVisible = false;
+            _loadedMediaId = null;
         }
         finally
         {
@@ -166,25 +180,15 @@ namespace AniSprinkles.PageModels;
 
     partial void OnMediaChanged(Media? value)
     {
-            Genres = value is null ? Array.Empty<string>() : value.Genres;
-            Synonyms = value is null ? Array.Empty<string>() : value.Synonyms;
-            Studios = value is null ? Array.Empty<Studio>() : value.Studios;
-            Tags = value?.Tags?
-                .OrderByDescending(tag => tag.Rank ?? -1)
-                .Take(15)
-                .ToArray() ?? Array.Empty<MediaTag>();
-            Rankings = value?.Rankings?
-                .OrderBy(rank => rank.Rank ?? int.MaxValue)
-                .Take(12)
-                .ToArray() ?? Array.Empty<MediaRanking>();
-            ExternalLinks = value?.ExternalLinks?
-                .Where(link => link.IsDisabled is not true)
-                .Take(12)
-                .ToArray() ?? Array.Empty<MediaExternalLink>();
-            StreamingEpisodes = value?.StreamingEpisodes?
-                .Take(12)
-                .ToArray() ?? Array.Empty<MediaStreamingEpisode>();
-            TrailerUrl = BuildTrailerUrl(value?.Trailer);
+        // These collections are pre-shaped in AniListClient so this UI-thread handler stays lightweight.
+        Genres = value is null ? Array.Empty<string>() : value.Genres;
+        Synonyms = value is null ? Array.Empty<string>() : value.Synonyms;
+        Studios = value is null ? Array.Empty<Studio>() : value.Studios;
+        Tags = value is null ? Array.Empty<MediaTag>() : value.Tags;
+        Rankings = value is null ? Array.Empty<MediaRanking>() : value.Rankings;
+        ExternalLinks = value is null ? Array.Empty<MediaExternalLink>() : value.ExternalLinks;
+        StreamingEpisodes = value is null ? Array.Empty<MediaStreamingEpisode>() : value.StreamingEpisodes;
+        TrailerUrl = BuildTrailerUrl(value?.Trailer);
 
         OnPropertyChanged(nameof(PageTitle));
         OnPropertyChanged(nameof(CoverImageUrl));
