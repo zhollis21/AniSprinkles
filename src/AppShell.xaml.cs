@@ -1,11 +1,10 @@
-namespace AniSprinkles
+namespace AniSprinkles;
+
+public partial class AppShell : Shell
 {
-    public partial class AppShell : Shell
+    public AppShell()
     {
-        public AppShell()
-        {
-            InitializeComponent();
-            Routing.RegisterRoute("media-details", typeof(MediaDetailsPage));
-        }
+        InitializeComponent();
+        Routing.RegisterRoute("media-details", typeof(MediaDetailsPage));
     }
 }

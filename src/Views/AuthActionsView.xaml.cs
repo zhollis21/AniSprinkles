@@ -1,10 +1,9 @@
-namespace AniSprinkles.Views
+namespace AniSprinkles.Views;
+
+public partial class AuthActionsView : ContentView
 {
-    public partial class AuthActionsView : ContentView
+    public AuthActionsView()
     {
-        public AuthActionsView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

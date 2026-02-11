@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:AniSprinkles.Models"
              xmlns:pageModels="clr-namespace:AniSprinkles.PageModels"
              x:Class="AniSprinkles.Pages.MediaDetailsPage"
              x:DataType="pageModels:MediaDetailsPageModel"
@@ -8,9 +9,10 @@
 
     <ScrollView>
         <VerticalStackLayout Padding="24" Spacing="16">
-            <Label Text="{Binding PageTitle}"
-                   FontSize="28"
-                   FontAttributes="Bold" />
+            <Image HeightRequest="150"
+                   Aspect="AspectFill"
+                   Source="{Binding BannerImageUrl}"
+                   IsVisible="{Binding HasBannerImage}" />
 
             <HorizontalStackLayout Spacing="16">
                 <Image WidthRequest="120"
@@ -18,24 +20,57 @@
                        Aspect="AspectFill"
                        Source="{Binding CoverImageUrl}"
                        IsVisible="{Binding CoverImageUrl, Converter={StaticResource StringNotNullOrEmptyConverter}}" />
+
                 <VerticalStackLayout Spacing="6">
-                    <Label Text="{Binding Media.Format, TargetNullValue='-'}"
+                    <Label Text="{Binding PageTitle}"
+                           FontSize="24"
+                           FontAttributes="Bold" />
+                    <Label Text="{Binding Media.Title.Romaji, StringFormat='Romaji: {0}'}"
+                           FontSize="12"
+                           TextColor="{StaticResource Gray400}"
+                           IsVisible="{Binding Media.Title.Romaji, Converter={StaticResource StringNotNullOrEmptyConverter}}" />
+                    <Label Text="{Binding Media.Title.Native, StringFormat='Native: {0}'}"
+                           FontSize="12"
+                           TextColor="{StaticResource Gray400}"
+                           IsVisible="{Binding Media.Title.Native, Converter={StaticResource StringNotNullOrEmptyConverter}}" />
+                    <Label Text="{Binding Media.Id, StringFormat='AniList ID: {0}'}"
                            FontSize="12"
                            TextColor="{StaticResource Gray400}" />
-                    <Label Text="{Binding Media.Status, TargetNullValue='-'}"
+                    <Label Text="{Binding Media.IdMal, StringFormat='MAL ID: {0}'}"
                            FontSize="12"
-                           TextColor="{StaticResource Gray400}" />
-                    <Label Text="{Binding Media.Episodes, StringFormat='Episodes: {0}', TargetNullValue='Episodes: -'}"
-                           FontSize="12"
-                           TextColor="{StaticResource Gray400}" />
-                    <Label Text="{Binding Media.SeasonYear, StringFormat='Year: {0}', TargetNullValue='Year: -'}"
-                           FontSize="12"
-                           TextColor="{StaticResource Gray400}" />
-                    <Label Text="{Binding Media.AverageScore, StringFormat='Avg Score: {0}', TargetNullValue='Avg Score: -'}"
-                           FontSize="12"
-                           TextColor="{StaticResource Gray400}" />
+                           TextColor="{StaticResource Gray400}"
+                           IsVisible="{Binding HasMalId}" />
                 </VerticalStackLayout>
             </HorizontalStackLayout>
+
+            <Grid ColumnDefinitions="*,*"
+                  RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
+                  ColumnSpacing="12"
+                  RowSpacing="6">
+                <Label Grid.Row="0" Grid.Column="0" Text="{Binding Media.Format, StringFormat='Format: {0}', TargetNullValue='Format: -'}" FontSize="12" TextColor="{StaticResource Gray400}" />
+                <Label Grid.Row="0" Grid.Column="1" Text="{Binding Media.Status, StringFormat='Status: {0}', TargetNullValue='Status: -'}" FontSize="12" TextColor="{StaticResource Gray400}" />
+
+                <Label Grid.Row="1" Grid.Column="0" Text="{Binding Media.Episodes, StringFormat='Episodes: {0}', TargetNullValue='Episodes: -'}" FontSize="12" TextColor="{StaticResource Gray400}" />
+                <Label Grid.Row="1" Grid.Column="1" Text="{Binding DurationDisplay, StringFormat='Duration: {0}'}" FontSize="12" TextColor="{StaticResource Gray400}" />
+
+                <Label Grid.Row="2" Grid.Column="0" Text="{Binding SeasonDisplay, StringFormat='Season: {0}'}" FontSize="12" TextColor="{StaticResource Gray400}" />
+                <Label Grid.Row="2" Grid.Column="1" Text="{Binding SourceDisplay, StringFormat='Source: {0}'}" FontSize="12" TextColor="{StaticResource Gray400}" />
+
+                <Label Grid.Row="3" Grid.Column="0" Text="{Binding CountryDisplay, StringFormat='Country: {0}'}" FontSize="12" TextColor="{StaticResource Gray400}" />
+                <Label Grid.Row="3" Grid.Column="1" Text="{Binding AdultDisplay, StringFormat='Content: {0}'}" FontSize="12" TextColor="{StaticResource Gray400}" />
+
+                <Label Grid.Row="4" Grid.Column="0" Text="{Binding LicensedDisplay, StringFormat='Licensed: {0}'}" FontSize="12" TextColor="{StaticResource Gray400}" />
+                <Label Grid.Row="4" Grid.Column="1" Text="{Binding ReleaseWindowDisplay, StringFormat='Release: {0}'}" FontSize="12" TextColor="{StaticResource Gray400}" />
+
+                <Label Grid.Row="5" Grid.Column="0" Text="{Binding NextAiringDisplay, StringFormat='Next Airing: {0}'}" FontSize="12" TextColor="{StaticResource Gray400}" />
+                <Label Grid.Row="5" Grid.Column="1" Text="{Binding Media.AverageScore, StringFormat='Avg Score: {0}', TargetNullValue='Avg Score: -'}" FontSize="12" TextColor="{StaticResource Gray400}" />
+
+                <Label Grid.Row="6" Grid.Column="0" Text="{Binding Media.MeanScore, StringFormat='Mean Score: {0}', TargetNullValue='Mean Score: -'}" FontSize="12" TextColor="{StaticResource Gray400}" />
+                <Label Grid.Row="6" Grid.Column="1" Text="{Binding Media.Popularity, StringFormat='Popularity: {0}', TargetNullValue='Popularity: -'}" FontSize="12" TextColor="{StaticResource Gray400}" />
+
+                <Label Grid.Row="7" Grid.Column="0" Text="{Binding Media.Favourites, StringFormat='Favourites: {0}', TargetNullValue='Favourites: -'}" FontSize="12" TextColor="{StaticResource Gray400}" />
+                <Label Grid.Row="7" Grid.Column="1" Text="{Binding Media.Trending, StringFormat='Trending: {0}', TargetNullValue='Trending: -'}" FontSize="12" TextColor="{StaticResource Gray400}" />
+            </Grid>
 
             <VerticalStackLayout Spacing="6"
                                  IsVisible="{Binding HasListEntry}">
@@ -51,6 +86,226 @@
                 <Label Text="{Binding ListEntry.ScoreDisplay, StringFormat='Score: {0}'}"
                        FontSize="12"
                        TextColor="{StaticResource Gray400}" />
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="8"
+                                 IsVisible="{Binding HasGenres}">
+                <Label Text="Genres"
+                       FontSize="16"
+                       FontAttributes="Bold" />
+                <FlexLayout Wrap="Wrap"
+                            BindableLayout.ItemsSource="{Binding Genres}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <Border Padding="6,4"
+                                    Margin="0,0,8,8"
+                                    Stroke="{StaticResource Gray500}"
+                                    StrokeThickness="1">
+                                <Label Text="{Binding .}"
+                                       FontSize="12"
+                                       TextColor="{StaticResource Gray300}" />
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </FlexLayout>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="8"
+                                 IsVisible="{Binding HasSynonyms}">
+                <Label Text="Synonyms"
+                       FontSize="16"
+                       FontAttributes="Bold" />
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding Synonyms}"
+                                     Spacing="2">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <Label Text="{Binding .}"
+                                   FontSize="12"
+                                   TextColor="{StaticResource Gray400}" />
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="8"
+                                 IsVisible="{Binding HasStudios}">
+                <Label Text="Studios"
+                       FontSize="16"
+                       FontAttributes="Bold" />
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding Studios}"
+                                     Spacing="2">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="models:Studio">
+                            <VerticalStackLayout Padding="0,2" Spacing="2">
+                                <Label Text="{Binding Name}"
+                                       FontSize="12"
+                                       TextColor="{StaticResource Gray400}" />
+                                <Label Text="Animation Studio"
+                                       FontSize="11"
+                                       TextColor="{StaticResource Gray500}"
+                                       IsVisible="{Binding IsAnimationStudio}" />
+                            </VerticalStackLayout>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="8"
+                                 IsVisible="{Binding HasTags}">
+                <Label Text="Top Tags"
+                       FontSize="16"
+                       FontAttributes="Bold" />
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding Tags}"
+                                     Spacing="2">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="models:MediaTag">
+                            <Grid ColumnDefinitions="*,Auto"
+                                  ColumnSpacing="10"
+                                  Padding="0,4">
+                                <Label Text="{Binding Name}"
+                                       FontSize="12"
+                                       TextColor="{StaticResource Gray300}" />
+                                <Label Grid.Column="1"
+                                       Text="{Binding Rank, StringFormat='Rank {0}'}"
+                                       FontSize="12"
+                                       TextColor="{StaticResource Gray500}" />
+                            </Grid>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="8"
+                                 IsVisible="{Binding HasRankings}">
+                <Label Text="Rankings"
+                       FontSize="16"
+                       FontAttributes="Bold" />
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding Rankings}"
+                                     Spacing="2">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="models:MediaRanking">
+                            <Grid ColumnDefinitions="Auto,*"
+                                  ColumnSpacing="10"
+                                  Padding="0,4">
+                                <Label Text="{Binding Rank, StringFormat='#{0}'}"
+                                       FontSize="12"
+                                       FontAttributes="Bold" />
+                                <Label Grid.Column="1"
+                                       FontSize="12"
+                                       TextColor="{StaticResource Gray400}">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding Context}" />
+                                            <Span Text=" - " />
+                                            <Span Text="{Binding Type}" />
+                                            <Span Text=" " />
+                                            <Span Text="{Binding Year}" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </Grid>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="8"
+                                 IsVisible="{Binding HasExternalLinks}">
+                <Label Text="Links"
+                       FontSize="16"
+                       FontAttributes="Bold" />
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding ExternalLinks}"
+                                     Spacing="2">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="models:MediaExternalLink">
+                            <Grid ColumnDefinitions="*,Auto"
+                                  ColumnSpacing="10"
+                                  Padding="0,4">
+                                <VerticalStackLayout Grid.Column="0" Spacing="2">
+                                    <Label Text="{Binding Site}"
+                                           FontSize="12"
+                                           FontAttributes="Bold" />
+                                    <Label Text="{Binding Url}"
+                                           FontSize="11"
+                                           LineBreakMode="TailTruncation"
+                                           TextColor="{StaticResource Gray500}" />
+                                </VerticalStackLayout>
+                                <Label Grid.Column="1"
+                                       Text="Open"
+                                       FontSize="12"
+                                       TextColor="{StaticResource Primary}"
+                                       VerticalTextAlignment="Center">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.OpenUrlCommand}"
+                                                              CommandParameter="{Binding Url}" />
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </Grid>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="8"
+                                 IsVisible="{Binding HasStreamingEpisodes}">
+                <Label Text="Streaming Episodes"
+                       FontSize="16"
+                       FontAttributes="Bold" />
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding StreamingEpisodes}"
+                                     Spacing="2">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="models:MediaStreamingEpisode">
+                            <Grid ColumnDefinitions="*,Auto"
+                                  ColumnSpacing="10"
+                                  Padding="0,4">
+                                <VerticalStackLayout Grid.Column="0" Spacing="2">
+                                    <Label Text="{Binding Title}"
+                                           FontSize="12"
+                                           TextColor="{StaticResource Gray300}" />
+                                    <Label Text="{Binding Site}"
+                                           FontSize="11"
+                                           TextColor="{StaticResource Gray500}" />
+                                </VerticalStackLayout>
+                                <Label Grid.Column="1"
+                                       Text="Open"
+                                       FontSize="12"
+                                       TextColor="{StaticResource Primary}"
+                                       VerticalTextAlignment="Center">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.OpenUrlCommand}"
+                                                              CommandParameter="{Binding Url}" />
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </Grid>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="8"
+                                 IsVisible="{Binding HasTrailer}">
+                <Label Text="Trailer"
+                       FontSize="16"
+                       FontAttributes="Bold" />
+                <Label Text="{Binding TrailerUrl}"
+                       FontSize="12"
+                       TextColor="{StaticResource Gray400}" />
+                <Button Text="Open Trailer"
+                        Command="{Binding OpenUrlCommand}"
+                        CommandParameter="{Binding TrailerUrl}" />
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="8"
+                                 IsVisible="{Binding Media.SiteUrl, Converter={StaticResource StringNotNullOrEmptyConverter}}">
+                <Label Text="AniList Page"
+                       FontSize="16"
+                       FontAttributes="Bold" />
+                <Label Text="{Binding Media.SiteUrl}"
+                       FontSize="12"
+                       TextColor="{StaticResource Gray400}" />
+                <Button Text="Open AniList"
+                        Command="{Binding OpenUrlCommand}"
+                        CommandParameter="{Binding Media.SiteUrl}" />
             </VerticalStackLayout>
 
             <Label Text="Description"
