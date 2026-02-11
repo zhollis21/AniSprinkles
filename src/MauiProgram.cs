@@ -20,7 +20,6 @@ public static class MauiProgram
                 options.TracesSampleRate = 0.0;
 #if DEBUG
                 options.Environment = "Development";
-                options.Debug = true;
 #else
                 options.Environment = "Production";
 #endif
@@ -37,7 +36,11 @@ public static class MauiProgram
 
 #if DEBUG
         var logDirectory = Path.Combine(FileSystem.Current.AppDataDirectory, "logs");
-        builder.Logging.AddProvider(new FileLoggerProvider(logDirectory));
+        builder.Logging.AddProvider(new FileLoggerProvider(logDirectory, minimumLevel: LogLevel.Information));
+        builder.Logging.AddFilter<FileLoggerProvider>(string.Empty, LogLevel.Information);
+        builder.Logging.AddFilter<FileLoggerProvider>("Microsoft", LogLevel.Warning);
+        builder.Logging.AddFilter<FileLoggerProvider>("System", LogLevel.Warning);
+        builder.Logging.AddFilter<FileLoggerProvider>("Sentry", LogLevel.Warning);
         builder.Logging.AddDebug();
 #endif
 
@@ -51,9 +54,9 @@ public static class MauiProgram
         });
         builder.Services.AddSingleton<IAuthService, AuthService>();
         builder.Services.AddSingleton<IAniListClient, AniListClient>();
-        builder.Services.AddTransient<MyAnimePageModel>();
+        builder.Services.AddSingleton<MyAnimePageModel>();
         builder.Services.AddTransient<MyAnimePage>();
-        builder.Services.AddTransient<SettingsPageModel>();
+        builder.Services.AddSingleton<SettingsPageModel>();
         builder.Services.AddTransient<SettingsPage>();
         builder.Services.AddTransient<MediaDetailsPageModel>();
         builder.Services.AddTransient<MediaDetailsPage>();

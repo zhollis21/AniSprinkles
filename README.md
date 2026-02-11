@@ -26,3 +26,4 @@ Telemetry
 
 Debug logging
 - Debug builds write rotating app logs to `files/logs/anisprinkles.log` inside app storage on Android
+- File logging is asynchronous and filtered to reduce UI-thread jank from noisy framework/Sentry categories

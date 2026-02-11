@@ -46,11 +46,16 @@ Decisions so far
 - Replaced mock auth and mock AniList client with real implicit auth and live AniList GraphQL client
 - Auth uses MAUI WebAuthenticator with SecureStorage token persistence (Android custom-scheme callback)
 - Debugging workflow documented in docs/DEBUGGING.md
+- MAUI/Android engineering guidance documented in docs/BestPractices-MAUI-Android.md (official Android + MAUI 10 references)
+- Agent startup workflow now requires reading docs/BestPractices-MAUI-Android.md with PLAN/TODO/DEBUGGING/README
 - Troubleshooting workflow: pull device app logs into `logs/anisprinkles.device.log` before analysis
 - Confirmation workflow: include current-process `adb logcat` scan for crashes/exceptions/perf warnings
 - Development workflow: follow repository `.editorconfig` standards for style/formatting/naming
 - Logging upgrade implemented (HTTP logging handler + error details UI)
 - Debug file logging implemented (rotating file logger under app data)
+- Performance hardening: file logger writes asynchronously and filters noisy framework/Sentry categories
+- Performance hardening: Sentry SDK verbose debug mode disabled in Debug builds
+- Performance hardening: My Anime and Settings page models use singleton lifetime to avoid repeated expensive reload paths
 - Using CommunityToolkit.Maui; My Anime uses a grouped CollectionView for collapsible sections (avoid nested list perf issues)
 - Navigation uses a flyout menu with My Anime + Settings; sign-in/out lives in Settings with a sign-in prompt on My Anime
 - Telemetry: Sentry crash reporting only, no PII, tracing disabled for now
@@ -59,6 +64,9 @@ Decisions so far
 - Expanded details page to fetch and render richer AniList metadata (release window, airing info, synonyms, tags, rankings, external links, streaming episodes, and trailer/site links)
 - Hardened AniList details parsing for mixed scalar types (example: externalLinks.siteId may be numeric)
 - Details page perf pass: cache derived lists in page model and remove nested `CollectionView` sections inside page `ScrollView`
+- AniList list loading requires viewer context (`userId`), so My Anime now uses `Viewer` + `MediaListCollection` with viewer ID caching to minimize repeat viewer calls
+- My Anime section grouping/build is moved off the UI thread before binding
+- Debug logging filters now apply globally (including Debug output), and Sentry diagnostic verbosity is set to warning level
 
 Auth strategy
 - Implicit grant for MVP (no backend)
