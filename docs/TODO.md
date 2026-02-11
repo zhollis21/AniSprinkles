@@ -19,6 +19,8 @@ MVP scope
 - [x] Expand details page metadata coverage (release/airing, synonyms, tags, rankings, links)
 - [x] Harden details JSON parsing for mixed AniList scalar types (`externalLinks.siteId`)
 - [x] Perf pass on details page (cache derived lists, simplify nested list UI)
+- [x] Move section grouping off the UI thread
+- [x] Restore required AniList viewer-context flow (`Viewer` + `MediaListCollection`) and cache viewer ID for repeated list loads
 - [ ] Define list edit fields and validation rules
 
 UI
@@ -33,11 +35,16 @@ Process
 - [ ] Decide where to track future decisions (PLAN.md or ADRs)
 - [x] Add reminder for Codex to read docs/PLAN.md and docs/TODO.md (AGENTS.md or README)
 - [x] Add reminder for Codex to read docs/DEBUGGING.md and pull device logs during troubleshooting
+- [x] Add reminder for Codex to read docs/BestPractices-MAUI-Android.md at session start
 - [x] Add reminder to include `adb logcat` scan as part of troubleshooting confirmations
 - [x] Add reminder to follow repository `.editorconfig` standards
+- [x] Add MAUI/Android best-practices reference doc with official source links
 - [x] Document MAUI Android logging and debugging workflow
 - [x] Add debug file logging for app output (rotating log files)
+- [x] Reduce debug logging overhead (async file sink + category filters + quieter Sentry debug setup)
+- [x] Apply global debug-log category filters (Sentry/Microsoft/System) to reduce noisy output cost
 - [ ] Investigate and fix debug session crash (collect repro + logs)
 - [x] Improve failure logging UX (capture full error, copy/share, no truncated messages)
 - [ ] Decide telemetry opt-in/out and add a Settings toggle
+- [ ] Investigate Sentry Android warning/error logs (transport EOF/response -1, cache/delete noise) and tune SDK config
 - [ ] When adding new features/refactors, add/verify telemetry breadcrumbs and exception capture

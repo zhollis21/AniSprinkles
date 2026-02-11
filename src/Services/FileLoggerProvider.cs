@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using System.Threading.Channels;
 
 namespace AniSprinkles.Services;
 
@@ -69,11 +70,13 @@ public sealed class FileLoggerProvider : ILoggerProvider
 
     private sealed class FileLogWriter : IDisposable
     {
-        private readonly object _sync = new();
         private readonly string _logDirectory;
         private readonly string _baseFileName;
         private readonly long _maxFileSizeBytes;
         private readonly int _retainedFiles;
+        private readonly Channel<string> _queue;
+        private readonly CancellationTokenSource _disposeTokenSource = new();
+        private readonly Task _backgroundWriterTask;
         private bool _disposed;
         private bool _isFaulted;
 
@@ -92,6 +95,15 @@ public sealed class FileLoggerProvider : ILoggerProvider
             {
                 _isFaulted = true;
             }
+
+            _queue = Channel.CreateBounded<string>(new BoundedChannelOptions(2048)
+            {
+                SingleReader = true,
+                SingleWriter = false,
+                FullMode = BoundedChannelFullMode.DropOldest
+            });
+
+            _backgroundWriterTask = Task.Run(ProcessQueueAsync);
         }
 
         public string CurrentFilePath => GetCurrentFilePath();
@@ -108,30 +120,64 @@ public sealed class FileLoggerProvider : ILoggerProvider
             var exceptionText = exception is null ? string.Empty : $" | {exception}";
             var line = $"{timestamp} [{logLevel}] {category} ({eventId}) {normalizedMessage}{exceptionText}";
 
-            lock (_sync)
-            {
-                if (_disposed || _isFaulted)
-                {
-                    return;
-                }
-
-                try
-                {
-                    Directory.CreateDirectory(_logDirectory);
-                    RotateIfNeeded();
-                    File.AppendAllText(GetCurrentFilePath(), line + Environment.NewLine);
-                }
-                catch (Exception ex) when (IsFileAccessException(ex))
-                {
-                    // Never throw from app logging; disable file sink after first failure.
-                    _isFaulted = true;
-                }
-            }
+            // Never block caller threads on disk IO.
+            _queue.Writer.TryWrite(line);
         }
 
         public void Dispose()
         {
+            if (_disposed)
+            {
+                return;
+            }
+
             _disposed = true;
+            _queue.Writer.TryComplete();
+            _disposeTokenSource.Cancel();
+
+            try
+            {
+                _backgroundWriterTask.Wait(TimeSpan.FromSeconds(1));
+            }
+            catch
+            {
+                // Never throw from logging shutdown.
+            }
+            finally
+            {
+                _disposeTokenSource.Dispose();
+            }
+        }
+
+        private async Task ProcessQueueAsync()
+        {
+            try
+            {
+                await foreach (var line in _queue.Reader.ReadAllAsync(_disposeTokenSource.Token))
+                {
+                    if (_disposed || _isFaulted)
+                    {
+                        return;
+                    }
+
+                    try
+                    {
+                        Directory.CreateDirectory(_logDirectory);
+                        RotateIfNeeded();
+                        File.AppendAllText(GetCurrentFilePath(), line + Environment.NewLine);
+                    }
+                    catch (Exception ex) when (IsFileAccessException(ex))
+                    {
+                        // Never throw from app logging; disable file sink after first failure.
+                        _isFaulted = true;
+                        return;
+                    }
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                // Normal shutdown path.
+            }
         }
 
         private void RotateIfNeeded()
