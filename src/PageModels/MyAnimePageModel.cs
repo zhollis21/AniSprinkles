@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
@@ -8,6 +9,7 @@ namespace AniSprinkles.PageModels;
 public partial class MyAnimePageModel : ObservableObject
 {
     private static readonly TimeSpan ListRefreshInterval = TimeSpan.FromMinutes(5);
+    private const string DetailsRoute = "media-details";
 
     private readonly IAniListClient _aniListClient;
     private readonly IAuthService _authService;
@@ -18,6 +20,12 @@ public partial class MyAnimePageModel : ObservableObject
 
     [ObservableProperty]
     private bool _isBusy;
+
+    // Keep list loading UX aligned with details page: a single centered first-load indicator.
+    public bool IsInitialLoading => IsBusy && IsAuthenticated && Sections.Count == 0;
+
+    [ObservableProperty]
+    private bool _isNavigatingToDetails;
 
     [ObservableProperty]
     private bool _isAuthenticated;
@@ -146,6 +154,15 @@ public partial class MyAnimePageModel : ObservableObject
     partial void OnErrorDetailsChanged(string value)
         => HasErrorDetails = !string.IsNullOrWhiteSpace(value);
 
+    partial void OnIsBusyChanged(bool value)
+        => OnPropertyChanged(nameof(IsInitialLoading));
+
+    partial void OnIsAuthenticatedChanged(bool value)
+        => OnPropertyChanged(nameof(IsInitialLoading));
+
+    partial void OnSectionsChanged(ObservableCollection<MediaListSection> value)
+        => OnPropertyChanged(nameof(IsInitialLoading));
+
 
     [RelayCommand]
     private async Task SignIn()
@@ -197,7 +214,7 @@ public partial class MyAnimePageModel : ObservableObject
     [RelayCommand]
     private async Task OpenDetails(MediaListEntry? entry)
     {
-        if (entry is null)
+        if (entry is null || IsNavigatingToDetails)
         {
             return;
         }
@@ -209,12 +226,39 @@ public partial class MyAnimePageModel : ObservableObject
             return;
         }
 
-        SentrySdk.AddBreadcrumb($"Open details {mediaId}", "navigation", "state");
-        await Shell.Current.GoToAsync("media-details", new Dictionary<string, object>
+        // SelectionChanged can fire again before navigation completes on fast repeat taps.
+        // Gate route pushes so we do not stack multiple details pages for the same user action.
+        IsNavigatingToDetails = true;
+        try
         {
-            ["mediaId"] = mediaId,
-            ["listEntry"] = entry
-        });
+            var navTraceId = $"{mediaId}-{Environment.TickCount64}";
+            var navStartUtc = DateTimeOffset.UtcNow;
+            var navStopwatch = Stopwatch.StartNew();
+            _logger.LogInformation(
+                "NAVTRACE {TraceId} tap accepted for media {MediaId} at {StartedUtc:O}",
+                navTraceId,
+                mediaId,
+                navStartUtc);
+            SentrySdk.AddBreadcrumb($"Open details {mediaId}", "navigation", "state");
+            // Keep route payload minimal so navigation is not blocked by passing a full list-entry graph.
+            // Use a non-animated push here: the details page intentionally shows its own loading shell,
+            // and disabling the slide transition avoids occasional partial-frame ("sliver") artifacts.
+            await Shell.Current.GoToAsync(DetailsRoute, animate: false, new Dictionary<string, object>
+            {
+                ["mediaId"] = mediaId,
+                ["navTraceId"] = navTraceId,
+                ["navStartUtcTicks"] = navStartUtc.UtcTicks
+            });
+            navStopwatch.Stop();
+            _logger.LogInformation(
+                "NAVTRACE {TraceId} GoToAsync completed in {ElapsedMs}ms",
+                navTraceId,
+                navStopwatch.ElapsedMilliseconds);
+        }
+        finally
+        {
+            IsNavigatingToDetails = false;
+        }
     }
 
     private static ObservableCollection<MediaListSection> BuildSections(

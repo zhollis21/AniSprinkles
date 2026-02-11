@@ -41,3 +41,5 @@ Confirmation Pass (Issue Checks)
   `Select-String -Path logs/adb.device.pid.log -Pattern "FATAL EXCEPTION|AndroidRuntime|Unhandled exception|ObjectDisposedException|JavaProxyThrowable" -CaseSensitive:$false`
 - Scan quickly for perf/jank warnings:
   `Select-String -Path logs/adb.device.pid.log -Pattern "Skipped [0-9]+ frames|Davey|GC freed" -CaseSensitive:$false`
+- For MyAnime -> Details transition timing, scan app file logs for `NAVTRACE` markers:
+  `Select-String -Path logs/anisprinkles.device.log -Pattern "NAVTRACE" -CaseSensitive:$false`
