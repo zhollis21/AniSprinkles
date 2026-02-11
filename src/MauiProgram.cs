@@ -1,4 +1,5 @@
 using CommunityToolkit.Maui;
+using Sentry;
 using Microsoft.Extensions.Logging;
 using AniSprinkles.Services;
 using Syncfusion.Maui.Toolkit.Hosting;
@@ -18,6 +19,8 @@ public static class MauiProgram
                 options.Dsn = "https://57d120d6c4a16af09b4e71229a8f727c@o4510846094802944.ingest.us.sentry.io/4510846128422912";
                 options.SendDefaultPii = false;
                 options.TracesSampleRate = 0.0;
+                options.Debug = false;
+                options.DiagnosticLevel = SentryLevel.Warning;
 #if DEBUG
                 options.Environment = "Development";
 #else
@@ -36,6 +39,9 @@ public static class MauiProgram
 
 #if DEBUG
         var logDirectory = Path.Combine(FileSystem.Current.AppDataDirectory, "logs");
+        builder.Logging.AddFilter("Microsoft", LogLevel.Warning);
+        builder.Logging.AddFilter("System", LogLevel.Warning);
+        builder.Logging.AddFilter("Sentry", LogLevel.Warning);
         builder.Logging.AddProvider(new FileLoggerProvider(logDirectory, minimumLevel: LogLevel.Information));
         builder.Logging.AddFilter<FileLoggerProvider>(string.Empty, LogLevel.Information);
         builder.Logging.AddFilter<FileLoggerProvider>("Microsoft", LogLevel.Warning);

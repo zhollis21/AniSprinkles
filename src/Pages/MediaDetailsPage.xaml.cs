@@ -16,12 +16,6 @@ public partial class MediaDetailsPage : ContentPage, IQueryAttributable
         BindingContext = ViewModel;
     }
 
-    protected override bool OnBackButtonPressed()
-    {
-        _ = Shell.Current.GoToAsync("..");
-        return true;
-    }
-
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
         var mediaId = 0;

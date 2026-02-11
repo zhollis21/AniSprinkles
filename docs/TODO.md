@@ -21,6 +21,10 @@ MVP scope
 - [x] Perf pass on details page (cache derived lists, simplify nested list UI)
 - [x] Move section grouping off the UI thread
 - [x] Restore required AniList viewer-context flow (`Viewer` + `MediaListCollection`) and cache viewer ID for repeated list loads
+- [x] Reduce repeat list reload work on navigation (stale-window cache + cached fallback on refresh errors)
+- [x] Preserve My Anime section expand/collapse state across refreshes
+- [x] Reduce details-page duplicate bind work (remove prefetch media set + client-side metadata shaping)
+- [x] Re-evaluate custom details back-button override after reproducing prior crash path
 - [ ] Define list edit fields and validation rules
 
 UI
@@ -38,6 +42,7 @@ Process
 - [x] Add reminder for Codex to read docs/BestPractices-MAUI-Android.md at session start
 - [x] Add reminder to include `adb logcat` scan as part of troubleshooting confirmations
 - [x] Add reminder to follow repository `.editorconfig` standards
+- [x] Clarify comment guidance: prefer concise "why/tradeoff" comments for non-obvious logic
 - [x] Add MAUI/Android best-practices reference doc with official source links
 - [x] Document MAUI Android logging and debugging workflow
 - [x] Add debug file logging for app output (rotating log files)
@@ -48,3 +53,4 @@ Process
 - [ ] Decide telemetry opt-in/out and add a Settings toggle
 - [ ] Investigate Sentry Android warning/error logs (transport EOF/response -1, cache/delete noise) and tune SDK config
 - [ ] When adding new features/refactors, add/verify telemetry breadcrumbs and exception capture
+- [ ] Validate latest performance pass with post-change device logs (`logs/anisprinkles.device.log` + `logs/adb.device.pid.log` + skipped-frame scan)

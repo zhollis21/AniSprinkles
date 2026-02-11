@@ -29,7 +29,7 @@ public class LoggingHandler : DelegatingHandler
 
         try
         {
-            var response = await base.SendAsync(request, cancellationToken);
+            var response = await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
             stopwatch.Stop();
             _logger.LogInformation("HTTP {StatusCode} {Method} {Uri} in {Elapsed}ms",
                 (int)response.StatusCode,

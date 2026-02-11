@@ -19,6 +19,8 @@ public class AniListClient : IAniListClient
     private readonly HttpClient _httpClient;
     private readonly IAuthService _authService;
     private readonly ILogger<AniListClient> _logger;
+    private int? _cachedViewerId;
+    private string? _cachedViewerToken;
 
     public AniListClient(HttpClient httpClient, IAuthService authService, ILogger<AniListClient> logger)
     {
@@ -34,15 +36,15 @@ public class AniListClient : IAniListClient
 
     public async Task<IReadOnlyList<MediaListEntry>> GetMyAnimeListAsync(CancellationToken cancellationToken = default)
     {
-        var token = await RequireAccessTokenAsync(cancellationToken);
-        var viewer = await GetViewerAsync(token, cancellationToken);
+        var token = await RequireAccessTokenAsync(cancellationToken).ConfigureAwait(false);
+        var viewerId = await GetViewerIdAsync(token, cancellationToken).ConfigureAwait(false);
 
         var data = await SendAsync<MediaListCollectionData>(
             "MediaListCollection",
             MediaListQuery,
-            new { userId = viewer.Id },
+            new { userId = viewerId },
             token,
-            cancellationToken);
+            cancellationToken).ConfigureAwait(false);
 
         var results = new List<MediaListEntry>();
         foreach (var list in data.MediaListCollection?.Lists ?? [])
@@ -60,6 +62,29 @@ public class AniListClient : IAniListClient
         return results;
     }
 
+    private async Task<int> GetViewerIdAsync(string token, CancellationToken cancellationToken)
+    {
+        // MediaListCollection requires userId; cache viewer id per token to avoid a repeated Viewer round-trip.
+        if (_cachedViewerId.HasValue && string.Equals(_cachedViewerToken, token, StringComparison.Ordinal))
+        {
+            return _cachedViewerId.Value;
+        }
+
+        var viewer = await SendAsync<ViewerData>(
+            "Viewer",
+            ViewerQuery,
+            null,
+            token,
+            cancellationToken).ConfigureAwait(false);
+
+        var viewerId = viewer.Viewer?.Id
+            ?? throw new InvalidOperationException("AniList viewer id missing.");
+
+        _cachedViewerId = viewerId;
+        _cachedViewerToken = token;
+        return viewerId;
+    }
+
     public async Task<IReadOnlyList<Media>> SearchAnimeAsync(string search, int page = 1, int perPage = 20, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(search))
@@ -67,13 +92,13 @@ public class AniListClient : IAniListClient
             return Array.Empty<Media>();
         }
 
-        var token = await _authService.GetAccessTokenAsync(cancellationToken);
+        var token = await _authService.GetAccessTokenAsync(cancellationToken).ConfigureAwait(false);
         var data = await SendAsync<SearchData>(
             "Search",
             SearchQuery,
             new { search, page, perPage },
             token,
-            cancellationToken);
+            cancellationToken).ConfigureAwait(false);
 
         return data.Page?.Media?
             .Where(m => m is not null)
@@ -83,20 +108,20 @@ public class AniListClient : IAniListClient
 
     public async Task<Media?> GetMediaAsync(int id, CancellationToken cancellationToken = default)
     {
-        var token = await _authService.GetAccessTokenAsync(cancellationToken);
+        var token = await _authService.GetAccessTokenAsync(cancellationToken).ConfigureAwait(false);
         var data = await SendAsync<MediaData>(
             "Media",
             MediaQuery,
             new { id },
             token,
-            cancellationToken);
+            cancellationToken).ConfigureAwait(false);
 
         return data.Media is null ? null : MapMedia(data.Media);
     }
 
     public async Task<MediaListEntry?> SaveMediaListEntryAsync(MediaListEntry entry, CancellationToken cancellationToken = default)
     {
-        var token = await RequireAccessTokenAsync(cancellationToken);
+        var token = await RequireAccessTokenAsync(cancellationToken).ConfigureAwait(false);
         var variables = new
         {
             mediaId = entry.MediaId,
@@ -114,31 +139,20 @@ public class AniListClient : IAniListClient
             SaveEntryMutation,
             variables,
             token,
-            cancellationToken);
+            cancellationToken).ConfigureAwait(false);
 
         return data.SaveMediaListEntry is null ? null : MapEntry(data.SaveMediaListEntry);
     }
 
     private async Task<string> RequireAccessTokenAsync(CancellationToken cancellationToken)
     {
-        var token = await _authService.GetAccessTokenAsync(cancellationToken);
+        var token = await _authService.GetAccessTokenAsync(cancellationToken).ConfigureAwait(false);
         if (string.IsNullOrWhiteSpace(token))
         {
             throw new InvalidOperationException("Not authenticated.");
         }
 
         return token;
-    }
-
-    private async Task<Viewer> GetViewerAsync(string token, CancellationToken cancellationToken)
-    {
-        var data = await SendAsync<ViewerData>("Viewer", ViewerQuery, null, token, cancellationToken);
-        if (data.Viewer is null)
-        {
-            throw new InvalidOperationException("AniList viewer not available.");
-        }
-
-        return data.Viewer;
     }
 
     private async Task<T> SendAsync<T>(string operationName, string query, object? variables, string? token, CancellationToken cancellationToken)
@@ -170,8 +184,8 @@ public class AniListClient : IAniListClient
             Encoding.UTF8,
             "application/json");
 
-        using var response = await _httpClient.SendAsync(request, cancellationToken);
-        var content = await response.Content.ReadAsStringAsync(cancellationToken);
+        using var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
+        var content = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
 
         if (!response.IsSuccessStatusCode)
         {
@@ -229,6 +243,7 @@ public class AniListClient : IAniListClient
 
     private static Media MapMedia(MediaDto dto)
     {
+        // Pre-shape potentially large metadata lists once here so details binding avoids extra UI-thread sorting/filtering.
         return new Media
         {
             Id = dto.Id,
@@ -260,11 +275,22 @@ public class AniListClient : IAniListClient
             Trailer = dto.Trailer,
             Synonyms = dto.Synonyms ?? [],
             Genres = dto.Genres ?? [],
-            Tags = dto.Tags ?? [],
+            Tags = dto.Tags?
+                .OrderByDescending(tag => tag.Rank ?? -1)
+                .Take(15)
+                .ToList() ?? [],
             Studios = dto.Studios?.Nodes ?? [],
-            Rankings = dto.Rankings ?? [],
-            ExternalLinks = dto.ExternalLinks ?? [],
-            StreamingEpisodes = dto.StreamingEpisodes ?? []
+            Rankings = dto.Rankings?
+                .OrderBy(rank => rank.Rank ?? int.MaxValue)
+                .Take(12)
+                .ToList() ?? [],
+            ExternalLinks = dto.ExternalLinks?
+                .Where(link => link.IsDisabled is not true)
+                .Take(12)
+                .ToList() ?? [],
+            StreamingEpisodes = dto.StreamingEpisodes?
+                .Take(12)
+                .ToList() ?? []
         };
     }
 
@@ -315,17 +341,6 @@ public class AniListClient : IAniListClient
     private sealed class GraphQlError
     {
         public string? Message { get; set; }
-    }
-
-    private sealed class ViewerData
-    {
-        public Viewer? Viewer { get; set; }
-    }
-
-    private sealed class Viewer
-    {
-        public int Id { get; set; }
-        public string? Name { get; set; }
     }
 
     private sealed class MediaListCollectionData
@@ -379,6 +394,16 @@ public class AniListClient : IAniListClient
         public MediaListEntryDto? SaveMediaListEntry { get; set; }
     }
 
+    private sealed class ViewerData
+    {
+        public ViewerDto? Viewer { get; set; }
+    }
+
+    private sealed class ViewerDto
+    {
+        public int Id { get; set; }
+    }
+
     private sealed class MediaDto
     {
         public int Id { get; set; }
@@ -426,7 +451,6 @@ public class AniListClient : IAniListClient
 query Viewer {
   Viewer {
     id
-    name
   }
 }";
 

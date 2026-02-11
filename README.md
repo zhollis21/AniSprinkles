@@ -15,11 +15,13 @@ MVP features
 
 Current details view
 - Pulls and displays expanded AniList metadata for titles (release/airing info, scores, tags, rankings, links, trailer, and streaming entries when available)
+- My Anime list loading uses AniList `Viewer` + `MediaListCollection` (AniList requires user context); viewer ID is cached in-memory between loads
 
 Planning docs
 - `docs/PLAN.md` for decisions, theme tokens, and open questions
 - `docs/TODO.md` for the working task list
 - `docs/DEBUGGING.md` for Android debugging/log capture workflow
+- `docs/BestPractices-MAUI-Android.md` for verified Android + MAUI 10 implementation patterns
 
 Telemetry
 - Sentry crash reporting only (no PII, no performance tracing yet)
@@ -27,3 +29,4 @@ Telemetry
 Debug logging
 - Debug builds write rotating app logs to `files/logs/anisprinkles.log` inside app storage on Android
 - File logging is asynchronous and filtered to reduce UI-thread jank from noisy framework/Sentry categories
+- Global Debug logging filters reduce noisy framework/Sentry output during troubleshooting sessions

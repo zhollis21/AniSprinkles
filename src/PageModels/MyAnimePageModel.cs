@@ -7,11 +7,14 @@ namespace AniSprinkles.PageModels;
 
 public partial class MyAnimePageModel : ObservableObject
 {
+    private static readonly TimeSpan ListRefreshInterval = TimeSpan.FromMinutes(5);
+
     private readonly IAniListClient _aniListClient;
     private readonly IAuthService _authService;
     private readonly ErrorReportService _errorReportService;
     private readonly ILogger<MyAnimePageModel> _logger;
     private bool _hasLoaded;
+    private DateTimeOffset _lastSuccessfulLoadUtc;
 
     [ObservableProperty]
     private bool _isBusy;
@@ -55,18 +58,37 @@ public partial class MyAnimePageModel : ObservableObject
             return;
         }
 
+        var token = await _authService.GetAccessTokenAsync();
+        var isAuthenticated = !string.IsNullOrWhiteSpace(token);
+        // OnAppearing can fire often; keep list navigation snappy by skipping refreshes inside a short stale window.
+        var isFresh = _lastSuccessfulLoadUtc != default &&
+            DateTimeOffset.UtcNow - _lastSuccessfulLoadUtc < ListRefreshInterval;
+
+        if (_hasLoaded && !forceReload && isAuthenticated == IsAuthenticated)
+        {
+            if (!isAuthenticated || isFresh)
+            {
+                return;
+            }
+        }
+
+        if (forceReload)
+        {
+            _lastSuccessfulLoadUtc = default;
+        }
+
+        var hadExistingSections = Sections.Count > 0;
+        // Keep user context (expanded/collapsed groups) when data refreshes.
+        var expandedStates = Sections.ToDictionary(
+            section => section.Title,
+            section => section.IsExpanded,
+            StringComparer.Ordinal);
+
         IsBusy = true;
         try
         {
             _logger.LogInformation("Loading My Anime list.");
             SentrySdk.AddBreadcrumb("Load My Anime list", "navigation", "state");
-            var token = await _authService.GetAccessTokenAsync();
-            var isAuthenticated = !string.IsNullOrWhiteSpace(token);
-
-            if (_hasLoaded && !forceReload && isAuthenticated == IsAuthenticated)
-            {
-                return;
-            }
 
             IsAuthenticated = isAuthenticated;
 
@@ -78,6 +100,7 @@ public partial class MyAnimePageModel : ObservableObject
                 IsErrorDetailsVisible = false;
                 Sections = [];
                 _hasLoaded = true;
+                _lastSuccessfulLoadUtc = default;
                 return;
             }
 
@@ -87,16 +110,29 @@ public partial class MyAnimePageModel : ObservableObject
             IsErrorDetailsVisible = false;
             SentrySdk.AddBreadcrumb("Fetching AniList list", "http", "state");
             var list = await _aniListClient.GetMyAnimeListAsync();
-            Sections = BuildSections(list);
+            // Grouping can be heavy on large lists; build sections off the UI thread.
+            var sections = await Task.Run(() => BuildSections(list, expandedStates));
+            Sections = sections;
             _hasLoaded = true;
+            _lastSuccessfulLoadUtc = DateTimeOffset.UtcNow;
         }
         catch (Exception ex)
         {
-            StatusMessage = "Failed to load list. Tap Details for more.";
+            if (hadExistingSections && IsAuthenticated)
+            {
+                // Prefer stale data over blank UI when refresh fails after a previously successful load.
+                StatusMessage = "Refresh failed. Showing cached list.";
+                _hasLoaded = true;
+            }
+            else
+            {
+                StatusMessage = "Failed to load list. Tap Details for more.";
+                Sections = [];
+                _hasLoaded = false;
+            }
+
             ErrorDetails = _errorReportService.Record(ex, "Load My Anime");
             IsErrorDetailsVisible = false;
-            Sections = [];
-            _hasLoaded = false;
         }
         finally
         {
@@ -181,16 +217,18 @@ public partial class MyAnimePageModel : ObservableObject
         });
     }
 
-    private static ObservableCollection<MediaListSection> BuildSections(IReadOnlyList<MediaListEntry> entries)
+    private static ObservableCollection<MediaListSection> BuildSections(
+        IReadOnlyList<MediaListEntry> entries,
+        IReadOnlyDictionary<string, bool> expandedStates)
     {
         var sections = new List<MediaListSection>
         {
-            new("Watching", true),
-            new("Planning", true),
-            new("Completed", false),
-            new("Paused", false),
-            new("Dropped", false),
-            new("Repeating", false)
+            CreateSection("Watching", defaultExpanded: true, expandedStates),
+            CreateSection("Planning", defaultExpanded: false, expandedStates),
+            CreateSection("Completed", defaultExpanded: false, expandedStates),
+            CreateSection("Paused", defaultExpanded: false, expandedStates),
+            CreateSection("Dropped", defaultExpanded: false, expandedStates),
+            CreateSection("Repeating", defaultExpanded: false, expandedStates)
         };
 
         var map = new Dictionary<MediaListStatus, MediaListSection>
@@ -203,7 +241,7 @@ public partial class MyAnimePageModel : ObservableObject
             [MediaListStatus.Repeating] = sections[5]
         };
 
-        var unknown = new MediaListSection("Other", false);
+        var unknown = CreateSection("Other", defaultExpanded: false, expandedStates);
         var buckets = sections.ToDictionary(section => section, _ => new List<MediaListEntry>());
         var unknownBucket = new List<MediaListEntry>();
 
@@ -237,6 +275,19 @@ public partial class MyAnimePageModel : ObservableObject
         }
 
         return result;
+    }
+
+    private static MediaListSection CreateSection(
+        string title,
+        bool defaultExpanded,
+        IReadOnlyDictionary<string, bool> expandedStates)
+    {
+        if (expandedStates.TryGetValue(title, out var expanded))
+        {
+            return new MediaListSection(title, expanded);
+        }
+
+        return new MediaListSection(title, defaultExpanded);
     }
 
     [RelayCommand]
