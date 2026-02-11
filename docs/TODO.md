@@ -25,6 +25,22 @@ MVP scope
 - [x] Preserve My Anime section expand/collapse state across refreshes
 - [x] Reduce details-page duplicate bind work (remove prefetch media set + client-side metadata shaping)
 - [x] Re-evaluate custom details back-button override after reproducing prior crash path
+- [x] Improve details transition loading UX (always-visible status row + centered first-load indicator + defer heavy content until media is loaded)
+- [x] Prevent duplicate details navigation route pushes from rapid My Anime selection taps
+- [x] Remove obsolete Android custom back callback override from `MainActivity`
+- [x] Add details skeleton first-load layout (immediate placeholder UI + loading spinner while fetch runs)
+- [x] Stage extended details metadata sections to render after the initial header frame
+- [x] Add temporary `media-details-smoke` blank-page route to baseline raw My Anime -> details navigation latency
+- [x] Reduce details-route parameter payload to lightweight values (`mediaId` + trace fields only)
+- [x] Lazy-instantiate extended details metadata UI in a deferred `ContentView` host
+- [x] Switch details UX to spinner-first + full-content swap (no partial section reveal during initial load)
+- [x] Show details first-load spinner immediately on entry (avoid blank frame before `IsBusy` flips)
+- [x] Defer My Anime selection clear until after details navigation to reduce tap-to-route UI-thread work
+- [x] Harden page service resolution with `IPlatformApplication.Current.Services` fallback for Shell flyout/activity startup timing
+- [x] Move flyout root page viewmodel resolution from constructors to lazy handler/appearance resolution to avoid Shell startup race crashes
+- [x] Defer details API load until after details page appears (first-frame yield + short delay) to reduce transition hitching
+- [x] Disable My Anime -> details transition animation to eliminate intermittent partial-frame/sliver artifacts
+- [x] Replace My Anime top-left loading spinner with centered first-load spinner overlay
 - [ ] Define list edit fields and validation rules
 
 UI

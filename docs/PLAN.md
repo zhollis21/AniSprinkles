@@ -74,6 +74,23 @@ Decisions so far
 - Details page now uses default Shell back behavior; re-validation confirmed custom Android back override is not required
 - Details page model no longer sets partial list media before full fetch, reducing duplicate detail-page rebind/layout work
 - AniList client now pre-shapes details collections (tags/rankings/external links/streaming episodes) before UI binding
+- Details page now uses an explicit first-load state (top status + centered loading indicator) and keeps heavy scroll content hidden until media data is present
+- My Anime details navigation now guards against rapid repeat taps to avoid duplicate route pushes during transition
+- Details poster now prefers AniList `coverImage.medium` for the details header image to reduce decode pressure on navigation
+- Removed Android custom back callback override in `MainActivity`; app now uses default MAUI/Shell back behavior
+- Details first-load UX is spinner-first: the lightweight details shell appears immediately while data fetch runs
+- Initial details render now swaps in full content in one step after data is ready (no partial above-the-fold/extended stagger during first load)
+- Temporary diagnostics route `media-details-smoke` exists for quick baseline checks of raw Shell navigation latency
+- My Anime -> details navigation now passes lightweight route params (`mediaId` + trace ids) instead of full `listEntry` objects
+- Details extended metadata sections are now lazy-instantiated via `MediaDetailsExtendedSectionsView` after the initial details frame
+- Details page now follows spinner-first flow: lightweight shell page appears immediately, then the full details content view is instantiated and shown after fetch/bind completes
+- Details first-load spinner visibility is now based on `Media == null` (and no error/status) so the page never shows a blank pre-fetch frame
+- My Anime selection clear now happens after details navigation begins/completes to avoid spending tap-to-route time on source-list reselection layout
+- Page constructor DI lookups now fall back to `IPlatformApplication.Current.Services` when `Application.Current.Handler` is not ready, reducing Shell flyout startup null crashes during Android activity lifecycle transitions
+- Flyout root pages (`MyAnimePage`, `SettingsPage`) now resolve view models lazily on handler/appearance instead of constructor time so Shell flyout renderer can initialize even when service-provider wiring is still in progress
+- Details fetch is now deferred until after details page `OnAppearing` plus a short first-frame yield delay, so route transition animation can finish before API/binding work starts
+- My Anime -> details navigation now uses a non-animated Shell push so the spinner-first details shell appears immediately and avoids intermittent partial-frame transition artifacts
+- My Anime now uses the same centered first-load spinner pattern (instead of a top status-row spinner) so loading feedback is consistent and visually anchored in the content area
 
 Auth strategy
 - Implicit grant for MVP (no backend)

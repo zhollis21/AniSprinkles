@@ -16,7 +16,6 @@
                VerticalOptions="Center" />
 
         <HorizontalStackLayout Grid.Row="1" Spacing="12">
-            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
             <Label Text="{Binding StatusMessage}"
                    IsVisible="{Binding HasStatusMessage}"
                    FontSize="12"
@@ -50,75 +49,87 @@
             <views:AuthActionsView />
         </VerticalStackLayout>
 
-        <CollectionView Grid.Row="4"
-                        ItemsSource="{Binding Sections}"
-                        IsGrouped="True"
-                        ItemSizingStrategy="MeasureFirstItem"
-                        SelectionMode="Single"
-                        SelectionChanged="OnSelectionChanged"
-                        IsVisible="{Binding IsAuthenticated}">
-            <CollectionView.GroupHeaderTemplate>
-                <DataTemplate x:DataType="pageModels:MediaListSection">
-                    <Grid Padding="8" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
-                        <Grid.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding ToggleCommand}" />
-                        </Grid.GestureRecognizers>
+        <Grid Grid.Row="4">
+            <CollectionView ItemsSource="{Binding Sections}"
+                            IsGrouped="True"
+                            ItemSizingStrategy="MeasureFirstItem"
+                            SelectionMode="Single"
+                            SelectionChanged="OnSelectionChanged"
+                            IsVisible="{Binding IsAuthenticated}">
+                <CollectionView.GroupHeaderTemplate>
+                    <DataTemplate x:DataType="pageModels:MediaListSection">
+                        <Grid Padding="8" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ToggleCommand}" />
+                            </Grid.GestureRecognizers>
 
-                        <Label Text=">"
-                               FontSize="14"
-                               FontAttributes="Bold"
-                               VerticalOptions="Center"
-                               TextColor="{StaticResource Gray400}">
-                            <Label.Triggers>
-                                <DataTrigger TargetType="Label" Binding="{Binding IsExpanded}" Value="True">
-                                    <Setter Property="Rotation" Value="90" />
-                                </DataTrigger>
-                            </Label.Triggers>
-                        </Label>
-                        <Label Grid.Column="1"
-                               Text="{Binding Title}"
-                               FontAttributes="Bold"
-                               VerticalOptions="Center" />
-                        <Label Grid.Column="2"
-                               Text="{Binding TotalCount, StringFormat='({0})'}"
-                               TextColor="{StaticResource Gray400}"
-                               VerticalOptions="Center" />
-                    </Grid>
-                </DataTemplate>
-            </CollectionView.GroupHeaderTemplate>
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="models:MediaListEntry">
-                    <Grid Padding="12" RowSpacing="6">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
+                            <Label Text=">"
+                                   FontSize="14"
+                                   FontAttributes="Bold"
+                                   VerticalOptions="Center"
+                                   TextColor="{StaticResource Gray400}">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label" Binding="{Binding IsExpanded}" Value="True">
+                                        <Setter Property="Rotation" Value="90" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                            <Label Grid.Column="1"
+                                   Text="{Binding Title}"
+                                   FontAttributes="Bold"
+                                   VerticalOptions="Center" />
+                            <Label Grid.Column="2"
+                                   Text="{Binding TotalCount, StringFormat='({0})'}"
+                                   TextColor="{StaticResource Gray400}"
+                                   VerticalOptions="Center" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.GroupHeaderTemplate>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:MediaListEntry">
+                        <Grid Padding="12" RowSpacing="6">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
 
-                        <Label Grid.Row="0" Grid.Column="0"
-                               Text="{Binding Media.DisplayTitle}"
-                               FontSize="16"
-                               LineBreakMode="TailTruncation" />
-                        <Label Grid.Row="0" Grid.Column="1"
-                               Text="{Binding StatusDisplay}"
-                               FontSize="12"
-                               HorizontalOptions="End" />
+                            <Label Grid.Row="0" Grid.Column="0"
+                                   Text="{Binding Media.DisplayTitle}"
+                                   FontSize="16"
+                                   LineBreakMode="TailTruncation" />
+                            <Label Grid.Row="0" Grid.Column="1"
+                                   Text="{Binding StatusDisplay}"
+                                   FontSize="12"
+                                   HorizontalOptions="End" />
 
-                        <Label Grid.Row="1" Grid.Column="0"
-                               Text="{Binding ProgressDisplay}"
-                               FontSize="12"
-                               TextColor="{StaticResource Gray400}" />
-                        <Label Grid.Row="1" Grid.Column="1"
-                               Text="{Binding ScoreDisplay, StringFormat='Score: {0}'}"
-                               FontSize="12"
-                               HorizontalOptions="End"
-                               TextColor="{StaticResource Gray400}" />
-                    </Grid>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+                            <Label Grid.Row="1" Grid.Column="0"
+                                   Text="{Binding ProgressDisplay}"
+                                   FontSize="12"
+                                   TextColor="{StaticResource Gray400}" />
+                            <Label Grid.Row="1" Grid.Column="1"
+                                   Text="{Binding ScoreDisplay, StringFormat='Score: {0}'}"
+                                   FontSize="12"
+                                   HorizontalOptions="End"
+                                   TextColor="{StaticResource Gray400}" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <VerticalStackLayout Spacing="8"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center"
+                                 IsVisible="{Binding IsInitialLoading}">
+                <ActivityIndicator IsRunning="{Binding IsInitialLoading}"
+                                   IsVisible="{Binding IsInitialLoading}" />
+                <Label Text="Loading anime list..."
+                       FontSize="12"
+                       TextColor="{StaticResource Gray400}" />
+            </VerticalStackLayout>
+        </Grid>
     </Grid>
 </ContentPage>

@@ -1,7 +1,9 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 using System.Globalization;
+using System.Threading;
 
 namespace AniSprinkles.PageModels;
 
@@ -12,6 +14,7 @@ namespace AniSprinkles.PageModels;
         private readonly ILogger<MediaDetailsPageModel> _logger;
         // Tracks the last fully loaded media to avoid duplicate fetch/rebind when the same query is applied again.
         private int? _loadedMediaId;
+        private int _loadRequestSequence;
 
     [ObservableProperty]
     private bool _isBusy;
@@ -50,8 +53,9 @@ namespace AniSprinkles.PageModels;
     public string PageTitle => Media?.DisplayTitle ?? "Details";
 
     public string? CoverImageUrl =>
-        Media?.CoverImage?.Large ??
+        // A 120x170 poster does not need a "large" image payload; prefer medium to reduce decode cost on navigation.
         Media?.CoverImage?.Medium ??
+        Media?.CoverImage?.Large ??
         Media?.CoverImage?.ExtraLarge;
 
     public string? BannerImageUrl => Media?.BannerImage;
@@ -98,6 +102,12 @@ namespace AniSprinkles.PageModels;
 
     public bool HasTrailer => !string.IsNullOrWhiteSpace(TrailerUrl);
 
+    public bool HasMedia => Media is not null;
+
+    // Show the first-load spinner whenever we have no media yet and no terminal status.
+    // This avoids a blank page between route navigation and the async fetch starting.
+    public bool IsInitialLoading => Media is null && string.IsNullOrWhiteSpace(StatusMessage);
+
         public IReadOnlyList<string> Genres { get; private set; } = [];
 
         public IReadOnlyList<string> Synonyms { get; private set; } = [];
@@ -116,14 +126,21 @@ namespace AniSprinkles.PageModels;
 
     public async Task LoadAsync(int mediaId, MediaListEntry? listEntry)
     {
+        var loadRequestId = Interlocked.Increment(ref _loadRequestSequence);
+        var loadStopwatch = Stopwatch.StartNew();
+
         if (IsBusy)
         {
+            _logger.LogInformation("NAVTRACE load#{LoadRequestId} skipped because details view model is already busy.", loadRequestId);
             return;
         }
 
         if (mediaId <= 0)
         {
+            Media = null;
+            _loadedMediaId = null;
             StatusMessage = "Details unavailable.";
+            _logger.LogInformation("NAVTRACE load#{LoadRequestId} aborted due to invalid media id {MediaId}.", loadRequestId, mediaId);
             return;
         }
 
@@ -135,13 +152,25 @@ namespace AniSprinkles.PageModels;
             StatusMessage = string.Empty;
             ErrorDetails = string.Empty;
             IsErrorDetailsVisible = false;
+            _logger.LogInformation(
+                "NAVTRACE load#{LoadRequestId} reused already-loaded media {MediaId} in {ElapsedMs}ms.",
+                loadRequestId,
+                mediaId,
+                loadStopwatch.ElapsedMilliseconds);
             return;
+        }
+
+        // Query updates can happen on the same page instance. Clear previous media for a different id
+        // so we display an intentional loading state instead of stale details during transition.
+        if (_loadedMediaId != mediaId)
+        {
+            Media = null;
         }
 
         IsBusy = true;
         try
         {
-            _logger.LogInformation("Loading details for media {MediaId}.", mediaId);
+            _logger.LogInformation("NAVTRACE load#{LoadRequestId} starting details fetch for media {MediaId}.", loadRequestId, mediaId);
             SentrySdk.AddBreadcrumb($"Load media details {mediaId}", "navigation", "state");
 
             ListEntry = listEntry;
@@ -149,15 +178,29 @@ namespace AniSprinkles.PageModels;
             ErrorDetails = string.Empty;
             IsErrorDetailsVisible = false;
 
+            var fetchStopwatch = Stopwatch.StartNew();
             var media = await _aniListClient.GetMediaAsync(mediaId);
+            fetchStopwatch.Stop();
+            _logger.LogInformation(
+                "NAVTRACE load#{LoadRequestId} media fetch completed in {FetchElapsedMs}ms for media {MediaId}.",
+                loadRequestId,
+                fetchStopwatch.ElapsedMilliseconds,
+                mediaId);
+
             if (media is null)
             {
                 StatusMessage = "Details unavailable.";
+                _logger.LogWarning("NAVTRACE load#{LoadRequestId} returned null media for media id {MediaId}.", loadRequestId, mediaId);
                 return;
             }
 
             Media = media;
             _loadedMediaId = mediaId;
+            _logger.LogInformation(
+                "NAVTRACE load#{LoadRequestId} media bound in {ElapsedMs}ms for media {MediaId}.",
+                loadRequestId,
+                loadStopwatch.ElapsedMilliseconds,
+                mediaId);
         }
         catch (Exception ex)
         {
@@ -165,35 +208,45 @@ namespace AniSprinkles.PageModels;
             ErrorDetails = _errorReportService.Record(ex, "Load details");
             IsErrorDetailsVisible = false;
             _loadedMediaId = null;
+            _logger.LogError(
+                ex,
+                "NAVTRACE load#{LoadRequestId} failed in {ElapsedMs}ms for media {MediaId}.",
+                loadRequestId,
+                loadStopwatch.ElapsedMilliseconds,
+                mediaId);
         }
         finally
         {
             IsBusy = false;
+            loadStopwatch.Stop();
+            _logger.LogInformation(
+                "NAVTRACE load#{LoadRequestId} finished in {ElapsedMs}ms for media {MediaId}.",
+                loadRequestId,
+                loadStopwatch.ElapsedMilliseconds,
+                mediaId);
         }
     }
 
     partial void OnStatusMessageChanged(string value)
-        => HasStatusMessage = !string.IsNullOrWhiteSpace(value);
+    {
+        HasStatusMessage = !string.IsNullOrWhiteSpace(value);
+        OnPropertyChanged(nameof(IsInitialLoading));
+    }
 
     partial void OnErrorDetailsChanged(string value)
         => HasErrorDetails = !string.IsNullOrWhiteSpace(value);
 
     partial void OnMediaChanged(Media? value)
     {
-        // These collections are pre-shaped in AniListClient so this UI-thread handler stays lightweight.
-        Genres = value is null ? Array.Empty<string>() : value.Genres;
-        Synonyms = value is null ? Array.Empty<string>() : value.Synonyms;
-        Studios = value is null ? Array.Empty<Studio>() : value.Studios;
-        Tags = value is null ? Array.Empty<MediaTag>() : value.Tags;
-        Rankings = value is null ? Array.Empty<MediaRanking>() : value.Rankings;
-        ExternalLinks = value is null ? Array.Empty<MediaExternalLink>() : value.ExternalLinks;
-        StreamingEpisodes = value is null ? Array.Empty<MediaStreamingEpisode>() : value.StreamingEpisodes;
-        TrailerUrl = BuildTrailerUrl(value?.Trailer);
+        // Bind all metadata at once so the page can swap from spinner to complete content in one step.
+        ApplyExtendedCollections(value);
 
         OnPropertyChanged(nameof(PageTitle));
         OnPropertyChanged(nameof(CoverImageUrl));
         OnPropertyChanged(nameof(BannerImageUrl));
         OnPropertyChanged(nameof(HasBannerImage));
+        OnPropertyChanged(nameof(HasMedia));
+        OnPropertyChanged(nameof(IsInitialLoading));
         OnPropertyChanged(nameof(HasMalId));
         OnPropertyChanged(nameof(SeasonDisplay));
         OnPropertyChanged(nameof(DurationDisplay));
@@ -204,6 +257,19 @@ namespace AniSprinkles.PageModels;
         OnPropertyChanged(nameof(ReleaseWindowDisplay));
         OnPropertyChanged(nameof(NextAiringDisplay));
         OnPropertyChanged(nameof(HasNextAiringInfo));
+    }
+
+    private void ApplyExtendedCollections(Media? value)
+    {
+        Genres = value is null ? Array.Empty<string>() : value.Genres;
+        Synonyms = value is null ? Array.Empty<string>() : value.Synonyms;
+        Studios = value is null ? Array.Empty<Studio>() : value.Studios;
+        Tags = value is null ? Array.Empty<MediaTag>() : value.Tags;
+        Rankings = value is null ? Array.Empty<MediaRanking>() : value.Rankings;
+        ExternalLinks = value is null ? Array.Empty<MediaExternalLink>() : value.ExternalLinks;
+        StreamingEpisodes = value is null ? Array.Empty<MediaStreamingEpisode>() : value.StreamingEpisodes;
+        TrailerUrl = BuildTrailerUrl(value?.Trailer);
+
         OnPropertyChanged(nameof(Genres));
         OnPropertyChanged(nameof(HasGenres));
         OnPropertyChanged(nameof(Synonyms));
