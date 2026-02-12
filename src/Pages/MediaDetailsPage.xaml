@@ -4,7 +4,8 @@
              xmlns:pageModels="clr-namespace:AniSprinkles.PageModels"
              x:Class="AniSprinkles.Pages.MediaDetailsPage"
              x:DataType="pageModels:MediaDetailsPageModel"
-             Title="{Binding PageTitle}">
+             Title="{Binding PageTitle}"
+             Shell.TitleColor="{Binding PageTitle, Converter={StaticResource RainbowAccentConverter}}">
 
     <Grid Padding="24" RowDefinitions="Auto,Auto,*" RowSpacing="12">
         <HorizontalStackLayout Spacing="12">

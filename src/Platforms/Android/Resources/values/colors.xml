@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#512BD4</color>
-    <color name="colorPrimaryDark">#2B0B98</color>
-    <color name="colorAccent">#2B0B98</color>
+	<!--
+      AniSprinkles - Rainbow Ring inspired Android theme colors
+      Note: Android theme colors are single values (no gradients), so we pick
+      vibrant representatives and also define rainbow stop colors for reuse.
+    -->
+
+	<!-- Theme colors used by Android styles -->
+	<color name="colorPrimary">#0F0F14</color>
+	<color name="colorPrimaryDark">#0F0F14</color>
+	<color name="colorAccent">#00C2FF</color>
+	
+	<!-- Optional: rainbow ring stops (handy for native styling or future use) -->
+	<color name="rainbowRed">#FF3B30</color>
+	<color name="rainbowOrange">#FF9500</color>
+	<color name="rainbowYellow">#FFCC00</color>
+	<color name="rainbowGreen">#34C759</color>
+	<color name="rainbowCyan">#00C2FF</color>
+	<color name="rainbowBlue">#0A84FF</color>
+	<color name="rainbowPurple">#8E44FF</color>
+	<color name="rainbowPink">#FF2D95</color>
+
+	<!-- Optional neutrals -->
+	<color name="surfaceDark">#121212</color>
+	<color name="surfaceLight">#FFFFFF</color>
 </resources>

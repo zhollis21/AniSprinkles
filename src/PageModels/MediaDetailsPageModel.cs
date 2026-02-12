@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using System.Globalization;
-using System.Threading;
 
 namespace AniSprinkles.PageModels;
 
