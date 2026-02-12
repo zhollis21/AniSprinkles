@@ -46,18 +46,21 @@ public partial class MyAnimePage : ContentPage
             return;
         }
 
+        // Clear selection immediately in same frame as navigation to avoid visual artifacts.
+        // This prevents the selected item from remaining highlighted while transitioning.
+        if (sender is CollectionView collectionView)
+        {
+            collectionView.SelectedItem = null;
+        }
+
         try
         {
             await _viewModel.OpenDetailsCommand.ExecuteAsync(entry);
         }
-        finally
+        catch (Exception ex)
         {
-            if (sender is CollectionView collectionView)
-            {
-                // Clearing selection can trigger a list visual update; defer it until after navigation is underway
-                // so we do not spend tap-to-route budget re-rendering the source list.
-                collectionView.SelectedItem = null;
-            }
+            // Navigation failed; state will be handled by ViewModel
+            _viewModel.StatusMessage = "Navigation failed. Please try again.";
         }
     }
 
