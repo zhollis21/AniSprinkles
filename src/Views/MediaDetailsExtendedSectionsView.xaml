@@ -14,7 +14,7 @@
             <FlexLayout Wrap="Wrap"
                         BindableLayout.ItemsSource="{Binding Genres}">
                 <BindableLayout.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="x:String">
                         <Border Padding="12,8"
                                 Margin="0,0,8,8"
                                 Stroke="{StaticResource Gray500}"
