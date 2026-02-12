@@ -45,8 +45,9 @@
                              IsVisible="{Binding IsAuthenticated, Converter={StaticResource InvertedBoolConverter}}">
             <Label Text="Sign in to AniList to view and update your anime lists:"
                    FontSize="12"
-                   TextColor="{StaticResource Gray400}" />
-            <views:AuthActionsView />
+                   TextColor="{StaticResource Gray400}"
+                   IsVisible="{Binding IsAuthenticationPending, Converter={StaticResource InvertedBoolConverter}}" />
+            <views:AuthActionsView IsVisible="{Binding IsAuthenticationPending, Converter={StaticResource InvertedBoolConverter}}" />
         </VerticalStackLayout>
 
         <Grid Grid.Row="4">
@@ -119,6 +120,17 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+
+            <VerticalStackLayout Spacing="8"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center"
+                                 IsVisible="{Binding IsAuthenticationPending}">
+                <ActivityIndicator IsRunning="True"
+                                   IsVisible="True" />
+                <Label Text="Checking authentication..."
+                       FontSize="12"
+                       TextColor="{StaticResource Gray400}" />
+            </VerticalStackLayout>
 
             <VerticalStackLayout Spacing="8"
                                  HorizontalOptions="Center"
