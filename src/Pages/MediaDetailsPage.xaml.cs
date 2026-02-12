@@ -20,7 +20,10 @@ public partial class MediaDetailsPage : ContentPage, IQueryAttributable
     private int _scheduledQueryVersion;
 
     public MediaDetailsPage()
-        : this(ResolveViewModel(), ResolveLogger())
+        : this(
+            GetServiceProvider()!.GetRequiredService<MediaDetailsPageModel>(),
+            GetServiceProvider()!.GetRequiredService<ILogger<MediaDetailsPage>>()
+        )
     {
     }
 
@@ -31,6 +34,17 @@ public partial class MediaDetailsPage : ContentPage, IQueryAttributable
         Logger = logger;
         BindingContext = ViewModel;
         ViewModel.PropertyChanged += OnViewModelPropertyChanged;
+    }
+
+    protected override void OnHandlerChanged()
+    {
+        base.OnHandlerChanged();
+
+        if (Handler is null)
+        {
+            // Cleanup when the page handler is removed (page destroyed on Android)
+            ViewModel.PropertyChanged -= OnViewModelPropertyChanged;
+        }
     }
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
@@ -115,7 +129,20 @@ public partial class MediaDetailsPage : ContentPage, IQueryAttributable
         var navTraceId = _activeNavTraceId;
         var navStartUtc = _activeNavStartUtc;
 
-        _ = RunDeferredLoadAsync(queryVersion, mediaId, entry, navTraceId, navStartUtc);
+        RunDeferredLoadAsync(queryVersion, mediaId, entry, navTraceId, navStartUtc)
+            .ContinueWith(
+                task =>
+                {
+                    if (task.IsFaulted)
+                    {
+                        Logger.LogError(
+                            task.Exception,
+                            "NAVTRACE {TraceId} deferred load task faulted for media {MediaId}",
+                            navTraceId,
+                            mediaId);
+                    }
+                },
+                TaskScheduler.FromCurrentSynchronizationContext());
     }
 
     private async Task RunDeferredLoadAsync(
@@ -179,30 +206,19 @@ public partial class MediaDetailsPage : ContentPage, IQueryAttributable
         }
     }
 
-    private static MediaDetailsPageModel ResolveViewModel()
+    private static readonly Lazy<IServiceProvider?> CachedServiceProvider = new(
+        () => Application.Current?.Handler?.MauiContext?.Services
+            ?? IPlatformApplication.Current?.Services
+    );
+
+    private static IServiceProvider? GetServiceProvider()
     {
-        // Route materialization can occur before Handler wiring is complete after activity restarts.
-        // Use platform services fallback to avoid null service-provider lookups during early page creation.
-        var services = Application.Current?.Handler?.MauiContext?.Services
-            ?? IPlatformApplication.Current?.Services;
-        if (services is null)
+        var provider = CachedServiceProvider.Value;
+        if (provider is null)
         {
             throw new InvalidOperationException("Service provider not available.");
         }
-
-        return services.GetRequiredService<MediaDetailsPageModel>();
-    }
-
-    private static ILogger<MediaDetailsPage> ResolveLogger()
-    {
-        var services = Application.Current?.Handler?.MauiContext?.Services
-            ?? IPlatformApplication.Current?.Services;
-        if (services is null)
-        {
-            throw new InvalidOperationException("Service provider not available.");
-        }
-
-        return services.GetRequiredService<ILogger<MediaDetailsPage>>();
+        return provider;
     }
 
     private static string ParseTraceId(IDictionary<string, object> query)

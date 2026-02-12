@@ -241,8 +241,8 @@ public partial class MyAnimePageModel : ObservableObject
                 navStartUtc);
             SentrySdk.AddBreadcrumb($"Open details {mediaId}", "navigation", "state");
             // Keep route payload minimal so navigation is not blocked by passing a full list-entry graph.
-            // Use a non-animated push here: the details page intentionally shows its own loading shell,
-            // and disabling the slide transition avoids occasional partial-frame ("sliver") artifacts.
+            // Use non-animated transition: the details page shows its own loading shell immediately,
+            // and disabling the slide transition allows destination page to render without animation overhead.
             await Shell.Current.GoToAsync(DetailsRoute, animate: false, new Dictionary<string, object>
             {
                 ["mediaId"] = mediaId,

@@ -130,6 +130,13 @@
                        FontSize="12"
                        TextColor="{StaticResource Gray400}" />
             </VerticalStackLayout>
+
+            <ActivityIndicator Grid.Row="0"
+                               IsRunning="{Binding IsNavigatingToDetails}"
+                               IsVisible="{Binding IsNavigatingToDetails}"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"
+                               Opacity="0.8" />
         </Grid>
     </Grid>
 </ContentPage>
