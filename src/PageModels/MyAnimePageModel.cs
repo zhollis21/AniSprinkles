@@ -21,6 +21,9 @@ public partial class MyAnimePageModel : ObservableObject
     [ObservableProperty]
     private bool _isBusy;
 
+    [ObservableProperty]
+    private bool _isAuthenticationPending = true;
+
     // Keep list loading UX aligned with details page: a single centered first-load indicator.
     public bool IsInitialLoading => IsBusy && IsAuthenticated && Sections.Count == 0;
 
@@ -99,6 +102,7 @@ public partial class MyAnimePageModel : ObservableObject
             SentrySdk.AddBreadcrumb("Load My Anime list", "navigation", "state");
 
             IsAuthenticated = isAuthenticated;
+            IsAuthenticationPending = false;
 
             if (!IsAuthenticated)
             {
@@ -145,6 +149,7 @@ public partial class MyAnimePageModel : ObservableObject
         finally
         {
             IsBusy = false;
+            IsAuthenticationPending = false;
         }
     }
 
