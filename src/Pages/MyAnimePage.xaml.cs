@@ -1,8 +1,12 @@
+using Microsoft.Extensions.Logging;
+using AniSprinkles.Utilities;
+
 namespace AniSprinkles.Pages;
 
 public partial class MyAnimePage : ContentPage
 {
     private MyAnimePageModel? _viewModel;
+    private ILogger<MyAnimePage>? _logger;
 
     public MyAnimePage()
     {
@@ -59,7 +63,12 @@ public partial class MyAnimePage : ContentPage
         }
         catch (Exception ex)
         {
-            // Navigation failed; state will be handled by ViewModel
+            // Log the exception for debugging and crash analysis
+            EnsureLogger();
+            var mediaId = entry.MediaId != 0 ? entry.MediaId : entry.Media?.Id ?? 0;
+            _logger?.LogError(ex, "Navigation to media details failed for media entry {MediaId}", mediaId);
+
+            // Inform user via UI
             _viewModel.StatusMessage = "Navigation failed. Please try again.";
         }
     }
@@ -71,18 +80,41 @@ public partial class MyAnimePage : ContentPage
             return;
         }
 
-        // Shell can build flyout pages before Application.Current.Handler is ready.
-        // Resolve lazily from whichever service provider is available at handler/appearance time.
-        var services = Handler?.MauiContext?.Services
-            ?? IPlatformApplication.Current?.Services
-            ?? Application.Current?.Handler?.MauiContext?.Services;
-        var viewModel = services?.GetService<MyAnimePageModel>();
-        if (viewModel is null)
+        try
+        {
+            var services = ServiceProviderHelper.GetServiceProvider();
+            var viewModel = services?.GetService<MyAnimePageModel>();
+            if (viewModel is null)
+            {
+                return;
+            }
+
+            SetViewModel(viewModel);
+        }
+        catch (InvalidOperationException)
+        {
+            // Service provider not available yet (early startup on Android)
+            // This is normal during Shell page initialization
+            return;
+        }
+    }
+
+    private void EnsureLogger()
+    {
+        if (_logger is not null)
         {
             return;
         }
 
-        SetViewModel(viewModel);
+        try
+        {
+            var services = ServiceProviderHelper.GetServiceProvider();
+            _logger = services?.GetService<ILogger<MyAnimePage>>();
+        }
+        catch (InvalidOperationException)
+        {
+            // Logger not available, logging will be skipped
+        }
     }
 
     private void SetViewModel(MyAnimePageModel viewModel)

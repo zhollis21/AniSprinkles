@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.ComponentModel;
 using Microsoft.Extensions.Logging;
+using AniSprinkles.Utilities;
 
 namespace AniSprinkles.Pages;
 
@@ -21,8 +22,8 @@ public partial class MediaDetailsPage : ContentPage, IQueryAttributable
 
     public MediaDetailsPage()
         : this(
-            GetServiceProvider()!.GetRequiredService<MediaDetailsPageModel>(),
-            GetServiceProvider()!.GetRequiredService<ILogger<MediaDetailsPage>>()
+            ServiceProviderHelper.GetServiceProvider()!.GetRequiredService<MediaDetailsPageModel>(),
+            ServiceProviderHelper.GetServiceProvider()!.GetRequiredService<ILogger<MediaDetailsPage>>()
         )
     {
     }
@@ -52,8 +53,8 @@ public partial class MediaDetailsPage : ContentPage, IQueryAttributable
         LoadedContentHost.Content = null;
         _hasCreatedLoadedContent = false;
 
-        _activeNavTraceId = ParseTraceId(query);
-        _activeNavStartUtc = ParseNavigationStart(query);
+        _activeNavTraceId = NavigationTelemetryHelper.ParseTraceId(query);
+        _activeNavStartUtc = NavigationTelemetryHelper.ParseNavigationStart(query);
         var mediaId = 0;
         if (query.TryGetValue("mediaId", out var rawId))
         {
@@ -82,7 +83,7 @@ public partial class MediaDetailsPage : ContentPage, IQueryAttributable
             _activeNavTraceId,
             mediaId,
             DateTimeOffset.UtcNow,
-            GetElapsedFromTapMilliseconds(_activeNavStartUtc));
+            NavigationTelemetryHelper.GetElapsedFromTapMilliseconds(_activeNavStartUtc));
 
         // Queue requested media; actual load starts after the page has appeared and yielded a frame.
         // This keeps Shell transition animation smooth instead of competing with immediate details work.
@@ -101,7 +102,7 @@ public partial class MediaDetailsPage : ContentPage, IQueryAttributable
             "NAVTRACE {TraceId} MediaDetailsPage.OnAppearing at {NowUtc:O} (+{SinceTapMs}ms)",
             _activeNavTraceId,
             DateTimeOffset.UtcNow,
-            GetElapsedFromTapMilliseconds(_activeNavStartUtc));
+            NavigationTelemetryHelper.GetElapsedFromTapMilliseconds(_activeNavStartUtc));
         TryScheduleDeferredLoad();
     }
 
@@ -166,7 +167,7 @@ public partial class MediaDetailsPage : ContentPage, IQueryAttributable
                 "NAVTRACE {TraceId} deferred details load dispatch at {NowUtc:O} (+{SinceTapMs}ms)",
                 navTraceId,
                 DateTimeOffset.UtcNow,
-                GetElapsedFromTapMilliseconds(navStartUtc));
+                NavigationTelemetryHelper.GetElapsedFromTapMilliseconds(navStartUtc));
 
             await LoadWithTraceAsync(mediaId, entry, navTraceId, navStartUtc);
         }
@@ -189,7 +190,7 @@ public partial class MediaDetailsPage : ContentPage, IQueryAttributable
                 "NAVTRACE {TraceId} details load start media {MediaId} (+{SinceTapMs}ms)",
                 navTraceId,
                 mediaId,
-                GetElapsedFromTapMilliseconds(navStartUtc));
+                NavigationTelemetryHelper.GetElapsedFromTapMilliseconds(navStartUtc));
 
             await ViewModel.LoadAsync(mediaId, entry);
 
@@ -198,63 +199,12 @@ public partial class MediaDetailsPage : ContentPage, IQueryAttributable
                 "NAVTRACE {TraceId} details load finished in {ElapsedMs}ms (+{SinceTapMs}ms)",
                 navTraceId,
                 stopwatch.ElapsedMilliseconds,
-                GetElapsedFromTapMilliseconds(navStartUtc));
+                NavigationTelemetryHelper.GetElapsedFromTapMilliseconds(navStartUtc));
         }
         catch (Exception ex)
         {
             Logger.LogError(ex, "NAVTRACE {TraceId} details load failed for media {MediaId}", navTraceId, mediaId);
         }
-    }
-
-    private static readonly Lazy<IServiceProvider?> CachedServiceProvider = new(
-        () => Application.Current?.Handler?.MauiContext?.Services
-            ?? IPlatformApplication.Current?.Services
-    );
-
-    private static IServiceProvider? GetServiceProvider()
-    {
-        var provider = CachedServiceProvider.Value;
-        if (provider is null)
-        {
-            throw new InvalidOperationException("Service provider not available.");
-        }
-        return provider;
-    }
-
-    private static string ParseTraceId(IDictionary<string, object> query)
-    {
-        if (query.TryGetValue("navTraceId", out var rawTraceId) && rawTraceId is string traceId && !string.IsNullOrWhiteSpace(traceId))
-        {
-            return traceId;
-        }
-
-        return "unknown";
-    }
-
-    private static DateTimeOffset? ParseNavigationStart(IDictionary<string, object> query)
-    {
-        if (!query.TryGetValue("navStartUtcTicks", out var rawStart))
-        {
-            return null;
-        }
-
-        return rawStart switch
-        {
-            long ticks => new DateTimeOffset(ticks, TimeSpan.Zero),
-            int ticks => new DateTimeOffset(ticks, TimeSpan.Zero),
-            string text when long.TryParse(text, out var parsedTicks) => new DateTimeOffset(parsedTicks, TimeSpan.Zero),
-            _ => null
-        };
-    }
-
-    private static long GetElapsedFromTapMilliseconds(DateTimeOffset? navigationStartUtc)
-    {
-        if (!navigationStartUtc.HasValue)
-        {
-            return -1;
-        }
-
-        return Math.Max((long)(DateTimeOffset.UtcNow - navigationStartUtc.Value).TotalMilliseconds, 0);
     }
 
     private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
