@@ -15,13 +15,20 @@
                         BindableLayout.ItemsSource="{Binding Genres}">
                 <BindableLayout.ItemTemplate>
                     <DataTemplate>
-                        <Border Padding="6,4"
+                        <Border Padding="12,8"
                                 Margin="0,0,8,8"
                                 Stroke="{StaticResource Gray500}"
-                                StrokeThickness="1">
-                            <Label Text="{Binding .}"
-                                   FontSize="12"
-                                   TextColor="{StaticResource Gray300}" />
+                                StrokeThickness="1"
+                                Background="{StaticResource Gray600}"
+                                StrokeShape="RoundRectangle 6,6,6,6">
+                            <VerticalStackLayout Padding="0" VerticalOptions="Center" HorizontalOptions="Center">
+                                <Label Text="{Binding .}"
+                                       FontSize="12"
+                                       TextColor="White"
+                                       VerticalTextAlignment="Center"
+                                       HorizontalTextAlignment="Center"
+                                       LineBreakMode="NoWrap" />
+                            </VerticalStackLayout>
                         </Border>
                     </DataTemplate>
                 </BindableLayout.ItemTemplate>
