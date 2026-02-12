@@ -1,9 +1,6 @@
 using CommunityToolkit.Maui;
-using Sentry;
 using Microsoft.Extensions.Logging;
-using AniSprinkles.Services;
 using Syncfusion.Maui.Toolkit.Hosting;
-using AniSprinkles.Resources.Fonts;
 
 namespace AniSprinkles;
 

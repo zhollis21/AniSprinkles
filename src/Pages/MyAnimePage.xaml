@@ -7,120 +7,160 @@
              x:Class="AniSprinkles.Pages.MyAnimePage"
              x:DataType="pageModels:MyAnimePageModel"
              x:Name="MyAnimePageRoot"
-             Title="{Binding Title}">
+             Title="{Binding Title}"
+             Shell.TitleColor="{Binding Title, Converter={StaticResource RainbowAccentConverter}}">
 
-    <Grid Padding="24" RowDefinitions="Auto,Auto,Auto,Auto,*" RowSpacing="12">
-        <Label Text="My Anime"
-               FontSize="28"
-               FontAttributes="Bold"
-               VerticalOptions="Center" />
+    <!-- Use your LayoutPadding token instead of hard-coded 24 -->
+    <Grid Padding="{StaticResource LayoutPadding}"
+          RowDefinitions="Auto,Auto,Auto,Auto,*"
+          RowSpacing="12">
 
+        <!-- Status + Details -->
         <HorizontalStackLayout Grid.Row="1" Spacing="12">
             <Label Text="{Binding StatusMessage}"
                    IsVisible="{Binding HasStatusMessage}"
-                   FontSize="12"
+                   Style="{StaticResource Caption1}"
                    TextColor="{StaticResource Gray400}" />
+
+            <!-- Buttons already have a global style; no need to set font/size here -->
             <Button Text="Details"
                     Command="{Binding ToggleDetailsCommand}"
                     IsVisible="{Binding HasErrorDetails}" />
         </HorizontalStackLayout>
 
+        <!-- Error details -->
         <VerticalStackLayout Grid.Row="2"
                              Spacing="8"
                              IsVisible="{Binding IsErrorDetailsVisible}">
-            <ScrollView HeightRequest="160">
-                <Label Text="{Binding ErrorDetails}"
-                       FontSize="12"
-                       LineBreakMode="WordWrap"
-                       TextColor="{StaticResource Gray400}" />
-            </ScrollView>
+
+            <!-- Give the error details a card-like container -->
+            <Border Style="{StaticResource CardStyle}"
+                    Padding="12">
+                <ScrollView HeightRequest="160">
+                    <Label Text="{Binding ErrorDetails}"
+                           Style="{StaticResource Caption1}"
+                           LineBreakMode="WordWrap"
+                           TextColor="{StaticResource Gray400}" />
+                </ScrollView>
+            </Border>
+
             <HorizontalStackLayout Spacing="12">
                 <Button Text="Copy" Command="{Binding CopyErrorCommand}" />
                 <Button Text="Share" Command="{Binding ShareErrorCommand}" />
             </HorizontalStackLayout>
         </VerticalStackLayout>
 
+        <!-- Sign in prompt -->
         <VerticalStackLayout Grid.Row="3"
                              Spacing="8"
                              IsVisible="{Binding IsAuthenticated, Converter={StaticResource InvertedBoolConverter}}">
+
             <Label Text="Sign in to AniList to view and update your anime lists:"
-                   FontSize="12"
+                   Style="{StaticResource Caption1}"
                    TextColor="{StaticResource Gray400}"
                    IsVisible="{Binding IsAuthenticationPending, Converter={StaticResource InvertedBoolConverter}}" />
+
             <views:AuthActionsView IsVisible="{Binding IsAuthenticationPending, Converter={StaticResource InvertedBoolConverter}}" />
         </VerticalStackLayout>
 
+        <!-- Main content -->
         <Grid Grid.Row="4">
+
             <CollectionView ItemsSource="{Binding Sections}"
                             IsGrouped="True"
                             ItemSizingStrategy="MeasureFirstItem"
                             SelectionMode="Single"
                             SelectionChanged="OnSelectionChanged"
                             IsVisible="{Binding IsAuthenticated}">
+
+                <!-- Group header -->
                 <CollectionView.GroupHeaderTemplate>
                     <DataTemplate x:DataType="pageModels:MediaListSection">
-                        <Grid Padding="8" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
-                            <Grid.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding ToggleCommand}" />
-                            </Grid.GestureRecognizers>
+                        <!-- Make headers feel like tappable sections -->
+                        <Border Style="{StaticResource CardStyle}"
+                                Padding="10"
+                                Margin="0,6,0,0"
+                                StrokeThickness="1"
+                                Stroke="{AppThemeBinding Light={StaticResource RainbowPurple}, Dark={StaticResource RainbowCyan}}">
+                            <Grid ColumnDefinitions="Auto,*,Auto"
+                                  ColumnSpacing="10">
 
-                            <Label Text=">"
-                                   FontSize="14"
-                                   FontAttributes="Bold"
-                                   VerticalOptions="Center"
-                                   TextColor="{StaticResource Gray400}">
-                                <Label.Triggers>
-                                    <DataTrigger TargetType="Label" Binding="{Binding IsExpanded}" Value="True">
-                                        <Setter Property="Rotation" Value="90" />
-                                    </DataTrigger>
-                                </Label.Triggers>
-                            </Label>
-                            <Label Grid.Column="1"
-                                   Text="{Binding Title}"
-                                   FontAttributes="Bold"
-                                   VerticalOptions="Center" />
-                            <Label Grid.Column="2"
-                                   Text="{Binding TotalCount, StringFormat='({0})'}"
-                                   TextColor="{StaticResource Gray400}"
-                                   VerticalOptions="Center" />
-                        </Grid>
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding ToggleCommand}" />
+                                </Grid.GestureRecognizers>
+
+                                <!-- Caret -->
+                                <Label Text=">"
+                                       Style="{StaticResource Caption1Strong}"
+                                       VerticalOptions="Center"
+                                       TextColor="{StaticResource Gray400}">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label" Binding="{Binding IsExpanded}" Value="True">
+                                            <Setter Property="Rotation" Value="90" />
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+
+                                <Label Grid.Column="1"
+                                       Text="{Binding Title}"
+                                       Style="{StaticResource Body1Strong}"
+                                       VerticalOptions="Center" />
+
+                                <Label Grid.Column="2"
+                                       Text="{Binding TotalCount, StringFormat='({0})'}"
+                                       Style="{StaticResource Caption1}"
+                                       TextColor="{StaticResource Gray400}"
+                                       VerticalOptions="Center" />
+                            </Grid>
+                        </Border>
                     </DataTemplate>
                 </CollectionView.GroupHeaderTemplate>
+
+                <!-- Items -->
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:MediaListEntry">
-                        <Grid Padding="12" RowSpacing="6">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
+                        <!-- Each row as a subtle card -->
+                        <Border Style="{StaticResource CardStyle}"
+                                Padding="12"
+                                Margin="0,6,0,0">
+                            <Grid RowSpacing="6">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
 
-                            <Label Grid.Row="0" Grid.Column="0"
-                                   Text="{Binding Media.DisplayTitle}"
-                                   FontSize="16"
-                                   LineBreakMode="TailTruncation" />
-                            <Label Grid.Row="0" Grid.Column="1"
-                                   Text="{Binding StatusDisplay}"
-                                   FontSize="12"
-                                   HorizontalOptions="End" />
+                                <Label Grid.Row="0" Grid.Column="0"
+                                       Text="{Binding Media.DisplayTitle}"
+                                       Style="{StaticResource Body1Strong}"
+                                       LineBreakMode="TailTruncation" />
 
-                            <Label Grid.Row="1" Grid.Column="0"
-                                   Text="{Binding ProgressDisplay}"
-                                   FontSize="12"
-                                   TextColor="{StaticResource Gray400}" />
-                            <Label Grid.Row="1" Grid.Column="1"
-                                   Text="{Binding ScoreDisplay, StringFormat='Score: {0}'}"
-                                   FontSize="12"
-                                   HorizontalOptions="End"
-                                   TextColor="{StaticResource Gray400}" />
-                        </Grid>
+                                <Label Grid.Row="0" Grid.Column="1"
+                                       Text="{Binding StatusDisplay}"
+                                       Style="{StaticResource Caption1}"
+                                       HorizontalOptions="End"
+                                       TextColor="{StaticResource Gray400}" />
+
+                                <Label Grid.Row="1" Grid.Column="0"
+                                       Text="{Binding ProgressDisplay}"
+                                       Style="{StaticResource Caption1}"
+                                       TextColor="{StaticResource Gray400}" />
+
+                                <Label Grid.Row="1" Grid.Column="1"
+                                       Text="{Binding ScoreDisplay, StringFormat='Score: {0}'}"
+                                       Style="{StaticResource Caption1}"
+                                       HorizontalOptions="End"
+                                       TextColor="{StaticResource Gray400}" />
+                            </Grid>
+                        </Border>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
+            <!-- Auth pending overlay -->
             <VerticalStackLayout Spacing="8"
                                  HorizontalOptions="Center"
                                  VerticalOptions="Center"
@@ -128,10 +168,11 @@
                 <ActivityIndicator IsRunning="True"
                                    IsVisible="True" />
                 <Label Text="Checking authentication..."
-                       FontSize="12"
+                       Style="{StaticResource Caption1}"
                        TextColor="{StaticResource Gray400}" />
             </VerticalStackLayout>
 
+            <!-- Initial loading overlay -->
             <VerticalStackLayout Spacing="8"
                                  HorizontalOptions="Center"
                                  VerticalOptions="Center"
@@ -139,12 +180,12 @@
                 <ActivityIndicator IsRunning="{Binding IsInitialLoading}"
                                    IsVisible="{Binding IsInitialLoading}" />
                 <Label Text="Loading anime list..."
-                       FontSize="12"
+                       Style="{StaticResource Caption1}"
                        TextColor="{StaticResource Gray400}" />
             </VerticalStackLayout>
 
-            <ActivityIndicator Grid.Row="0"
-                               IsRunning="{Binding IsNavigatingToDetails}"
+            <!-- Navigating overlay spinner -->
+            <ActivityIndicator IsRunning="{Binding IsNavigatingToDetails}"
                                IsVisible="{Binding IsNavigatingToDetails}"
                                VerticalOptions="Center"
                                HorizontalOptions="Center"

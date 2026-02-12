@@ -17,14 +17,14 @@
                     <DataTemplate x:DataType="x:String">
                         <Border Padding="12,8"
                                 Margin="0,0,8,8"
-                                Stroke="{StaticResource Gray500}"
+                                Stroke="{StaticResource Gray600}"
                                 StrokeThickness="1"
-                                Background="{StaticResource Gray600}"
+                                Background="{StaticResource Gray300}"
                                 StrokeShape="RoundRectangle 6,6,6,6">
                             <VerticalStackLayout Padding="0" VerticalOptions="Center" HorizontalOptions="Center">
                                 <Label Text="{Binding .}"
                                        FontSize="12"
-                                       TextColor="White"
+                                       TextColor="{Binding ., Converter={StaticResource RainbowAccentConverter}}"
                                        VerticalTextAlignment="Center"
                                        HorizontalTextAlignment="Center"
                                        LineBreakMode="NoWrap" />

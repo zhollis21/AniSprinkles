@@ -5,27 +5,68 @@
 
     <!-- Note: For Android please see also Platforms\Android\Resources\values\colors.xml -->
 
-    <Color x:Key="Primary">#512BD4</Color>
-    <Color x:Key="PrimaryDark">#ac99ea</Color>
-    <Color x:Key="PrimaryDarkText">#242424</Color>
-    <Color x:Key="Secondary">#DFD8F7</Color>
-    <Color x:Key="SecondaryDarkText">#9880e5</Color>
-    <Color x:Key="Tertiary">#2B0B98</Color>
+    <!--
+      AniSprinkles "Rainbow Ring" palette
+      Strategy:
+        - Keep your existing semantic keys (Primary/Secondary/Tertiary/etc.) so nothing breaks.
+        - Add explicit rainbow stop colors for future gradient/ring usage.
+        - Keep neutral surfaces readable so the rainbow stays an accent, not a crime scene.
+    -->
 
-    <Color x:Key="DarkBackground">#17171a</Color>
-    <Color x:Key="LightOnDarkBackground">#C3C3C3</Color>
-    <Color x:Key="LightBackground">#F2F2F2</Color>
+    <!-- Rainbow stops (useful for future ring UI, badges, etc.) -->
+    <Color x:Key="RainbowRed">#FF3B30</Color>
+    <Color x:Key="RainbowOrange">#FF9500</Color>
+    <Color x:Key="RainbowYellow">#FFCC00</Color>
+    <Color x:Key="RainbowGreen">#34C759</Color>
+    <Color x:Key="RainbowCyan">#00C2FF</Color>
+    <Color x:Key="RainbowBlue">#0A84FF</Color>
+    <Color x:Key="RainbowPurple">#8E44FF</Color>
+    <Color x:Key="RainbowPink">#FF2D95</Color>
+
+    <!-- Core theme tokens (kept names, updated values) -->
+    <!-- Primary = bright “ring highlight” (cyan) -->
+    <Color x:Key="Primary">#00C2FF</Color>
+
+    <!-- A deeper primary shade for dark areas / contrast -->
+    <Color x:Key="PrimaryDark">#3A0CA3</Color>
+
+    <!-- Text on light surfaces -->
+    <Color x:Key="PrimaryDarkText">#0D0D0D</Color>
+
+    <!-- Secondary = soft, sprinkle-friendly pastel surface tint -->
+    <Color x:Key="Secondary">#E9E4FF</Color>
+
+    <!-- Previously used as a dark-theme accent text (Shell uses this in your Styles.xaml).
+         Set it to a vibrant accent (cyan) for the “rainbow clock” vibe. -->
+    <Color x:Key="SecondaryDarkText">#00C2FF</Color>
+
+    <!-- Tertiary = deep indigo anchor (keeps things grounded) -->
+    <Color x:Key="Tertiary">#3A0CA3</Color>
+
+    <!-- Backgrounds / foregrounds -->
+    <Color x:Key="DarkBackground">#0F0F14</Color>
+    <Color x:Key="LightOnDarkBackground">#E6E6E6</Color>
+
+    <Color x:Key="LightBackground">#F7F7FB</Color>
     <Color x:Key="DarkOnLightBackground">#0D0D0D</Color>
 
-    <Color x:Key="LightSecondaryBackground">#E0E0E0</Color>
-    <Color x:Key="DarkSecondaryBackground">#222228</Color>
+    <!-- Card/surface backgrounds -->
+    <Color x:Key="LightSecondaryBackground">#FFFFFF</Color>
+    <Color x:Key="DarkSecondaryBackground">#1A1A24</Color>
 
+    <!-- Common named colors (kept keys; updated to match vibe) -->
     <Color x:Key="White">White</Color>
     <Color x:Key="Black">Black</Color>
-    <Color x:Key="Magenta">#D600AA</Color>
-    <Color x:Key="MidnightBlue">#190649</Color>
-    <Color x:Key="OffBlack">#1f1f1f</Color>
 
+    <!-- Keep Magenta but tune it to the ring pink -->
+    <Color x:Key="Magenta">#FF2D95</Color>
+
+    <!-- MidnightBlue becomes your deep indigo anchor -->
+    <Color x:Key="MidnightBlue">#3A0CA3</Color>
+
+    <Color x:Key="OffBlack">#15151A</Color>
+
+    <!-- Neutral grays (unchanged; these are good) -->
     <Color x:Key="Gray100">#E1E1E1</Color>
     <Color x:Key="Gray200">#C8C8C8</Color>
     <Color x:Key="Gray300">#ACACAC</Color>
@@ -35,6 +76,7 @@
     <Color x:Key="Gray900">#212121</Color>
     <Color x:Key="Gray950">#141414</Color>
 
+    <!-- Brushes -->
     <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}"/>
     <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource Secondary}"/>
     <SolidColorBrush x:Key="TertiaryBrush" Color="{StaticResource Tertiary}"/>
@@ -49,4 +91,9 @@
     <SolidColorBrush x:Key="Gray600Brush" Color="{StaticResource Gray600}"/>
     <SolidColorBrush x:Key="Gray900Brush" Color="{StaticResource Gray900}"/>
     <SolidColorBrush x:Key="Gray950Brush" Color="{StaticResource Gray950}"/>
+
+    <!-- Optional rainbow brushes (handy later) -->
+    <SolidColorBrush x:Key="RainbowCyanBrush" Color="{StaticResource RainbowCyan}"/>
+    <SolidColorBrush x:Key="RainbowPinkBrush" Color="{StaticResource RainbowPink}"/>
+    <SolidColorBrush x:Key="RainbowPurpleBrush" Color="{StaticResource RainbowPurple}"/>
 </ResourceDictionary>
