@@ -72,43 +72,49 @@
                             SelectionMode="Single"
                             SelectionChanged="OnSelectionChanged"
                             IsVisible="{Binding IsAuthenticated}">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="8" />
+                </CollectionView.ItemsLayout>
+
 
                 <!-- Group header -->
                 <CollectionView.GroupHeaderTemplate>
                     <DataTemplate x:DataType="pageModels:MediaListSection">
-                        <!-- Make headers feel like tappable sections -->
-                        <Border Style="{StaticResource CardStyle}"
-                                Padding="10"
-                                Margin="0,6,0,0"
-                                StrokeThickness="1"
+                        <Border Style="{StaticResource SectionHeaderStyle}"
                                 Background="{Binding Title, Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}">
                             <Grid ColumnDefinitions="Auto,*,Auto"
-                                  ColumnSpacing="10">
+                                  ColumnSpacing="12"
+                                  VerticalOptions="Center">
 
                                 <Grid.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding ToggleCommand}" />
                                 </Grid.GestureRecognizers>
 
-                                <!-- Caret -->
-                                <Label Text=">"
-                                       Style="{StaticResource Caption1Strong}"
+                                <!-- Chevron Icon -->
+                                <Image Source="{StaticResource IconChevronRight}"
+                                       WidthRequest="{StaticResource size200}"
+                                       HeightRequest="{StaticResource size200}"
                                        VerticalOptions="Center">
-                                    <Label.Triggers>
-                                        <DataTrigger TargetType="Label" Binding="{Binding IsExpanded}" Value="True">
+                                    <Image.Triggers>
+                                        <DataTrigger TargetType="Image" Binding="{Binding IsExpanded}" Value="True">
                                             <Setter Property="Rotation" Value="90" />
                                         </DataTrigger>
-                                    </Label.Triggers>
-                                </Label>
+                                    </Image.Triggers>
+                                </Image>
 
                                 <Label Grid.Column="1"
                                        Text="{Binding Title}"
-                                       Style="{StaticResource Body1Strong}"
+                                       Style="{StaticResource Title3}"
                                        VerticalOptions="Center" />
 
-                                <Label Grid.Column="2"
-                                       Text="{Binding TotalCount, StringFormat='({0})'}"
-                                       Style="{StaticResource Caption1}"
-                                       VerticalOptions="Center" />
+                                <Border Grid.Column="2"
+                                        Style="{StaticResource CountBadgeStyle}"
+                                        VerticalOptions="Center">
+                                    <Label Text="{Binding TotalCount}"
+                                           Style="{StaticResource Caption1Strong}"
+                                           HorizontalTextAlignment="Center"
+                                           VerticalTextAlignment="Center" />
+                                </Border>
                             </Grid>
                         </Border>
                     </DataTemplate>
@@ -117,37 +123,37 @@
                 <!-- Items -->
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:MediaListEntry">
-                        <!-- Each row as a subtle card -->
-                        <Border Style="{StaticResource CardStyle}"
-                                Padding="12"
-                                Margin="0,6,0,0">
-                            <Grid RowSpacing="6">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
+                        <Border Style="{StaticResource ListRowStyle}">
+                            <Grid ColumnDefinitions="4,*,Auto"
+                                  RowDefinitions="Auto,Auto"
+                                  ColumnSpacing="12"
+                                  RowSpacing="6"
+                                  Padding="12">
 
-                                <Label Grid.Row="0" Grid.Column="0"
+                                <!-- Accent strip -->
+                                <BoxView Grid.RowSpan="2"
+                                         BackgroundColor="{Binding StatusDisplay, Converter={StaticResource RainbowAccentConverter}}"
+                                         WidthRequest="4"
+                                         CornerRadius="2"
+                                         VerticalOptions="Fill" />
+
+                                <Label Grid.Column="1"
                                        Text="{Binding Media.DisplayTitle}"
                                        Style="{StaticResource Body1Strong}"
                                        LineBreakMode="TailTruncation" />
 
-                                <Label Grid.Row="0" Grid.Column="1"
+                                <Label Grid.Column="2"
                                        Text="{Binding StatusDisplay}"
                                        Style="{StaticResource Caption1}"
                                        HorizontalOptions="End"
                                        TextColor="{StaticResource Gray400}" />
 
-                                <Label Grid.Row="1" Grid.Column="0"
+                                <Label Grid.Row="1" Grid.Column="1"
                                        Text="{Binding ProgressDisplay}"
                                        Style="{StaticResource Caption1}"
                                        TextColor="{StaticResource Gray400}" />
 
-                                <Label Grid.Row="1" Grid.Column="1"
+                                <Label Grid.Row="1" Grid.Column="2"
                                        Text="{Binding ScoreDisplay, StringFormat='Score: {0}'}"
                                        Style="{StaticResource Caption1}"
                                        HorizontalOptions="End"
