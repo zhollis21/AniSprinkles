@@ -296,7 +296,7 @@
         <Setter Property="StrokeThickness" Value="1" />
         <Setter Property="StrokeShape" Value="RoundRectangle 10" />
         <Setter Property="Background"
-                Value="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource DarkSecondaryBackground}}" />
+                Value="{AppThemeBinding Light={StaticResource DarkOnLightBackground}, Dark={StaticResource LightOnDarkBackground}}" />
         <Setter Property="Stroke"
                 Value="{AppThemeBinding Light={StaticResource RainbowBlue}, Dark={StaticResource RainbowCyan}}" />
     </Style>

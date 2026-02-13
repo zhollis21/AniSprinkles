@@ -36,6 +36,15 @@ public sealed class RainbowAccentConverter : IValueConverter
 
         if (Application.Current?.Resources.TryGetValue(colorKey, out var res) == true && res is Color c)
         {
+            bool.TryParse(parameter?.ToString(), out var isTransparent);
+            if (isTransparent)
+            {
+                var theme = Application.Current?.RequestedTheme ?? AppTheme.Unspecified;
+                var alpha = theme == AppTheme.Dark ? 0.28f : 0.14f;
+
+                c = c.WithAlpha(alpha);
+            }
+
             return c;
         }
 
