@@ -144,6 +144,12 @@ public class AniListClient : IAniListClient
         return data.SaveMediaListEntry is null ? null : MapEntry(data.SaveMediaListEntry);
     }
 
+    public async Task<int> GetCurrentUserIdAsync(CancellationToken cancellationToken = default)
+    {
+        var token = await RequireAccessTokenAsync(cancellationToken).ConfigureAwait(false);
+        return await GetViewerIdAsync(token, cancellationToken).ConfigureAwait(false);
+    }
+
     private async Task<string> RequireAccessTokenAsync(CancellationToken cancellationToken)
     {
         var token = await _authService.GetAccessTokenAsync(cancellationToken).ConfigureAwait(false);
