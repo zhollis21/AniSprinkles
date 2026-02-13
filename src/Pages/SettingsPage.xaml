@@ -16,5 +16,12 @@
                TextColor="{StaticResource Gray400}"
                IsVisible="{Binding HasStatusMessage}" />
         <views:AuthActionsView />
+
+        <Label Text="AniList User ID" FontSize="16" FontAttributes="Bold" Margin="0,12,0,0"
+               IsVisible="{Binding AniListUserId, Converter={StaticResource StringNotNullOrEmptyConverter}}" />
+        <Label Text="{Binding AniListUserId}"
+               FontSize="14"
+               TextColor="{Binding AniListUserId, Converter={StaticResource RainbowAccentConverter}}"
+               IsVisible="{Binding AniListUserId, Converter={StaticResource StringNotNullOrEmptyConverter}}" />
     </VerticalStackLayout>
 </ContentPage>

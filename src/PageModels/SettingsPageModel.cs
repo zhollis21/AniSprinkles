@@ -7,6 +7,7 @@ namespace AniSprinkles.PageModels;
 public partial class SettingsPageModel : ObservableObject
 {
     private readonly IAuthService _authService;
+    private readonly IAniListClient _aniListClient;
     private readonly ILogger<SettingsPageModel> _logger;
 
     [ObservableProperty]
@@ -18,9 +19,13 @@ public partial class SettingsPageModel : ObservableObject
     [ObservableProperty]
     private bool _hasStatusMessage;
 
-    public SettingsPageModel(IAuthService authService, ILogger<SettingsPageModel> logger)
+    [ObservableProperty]
+    private string _aniListUserId = string.Empty;
+
+    public SettingsPageModel(IAuthService authService, IAniListClient aniListClient, ILogger<SettingsPageModel> logger)
     {
         _authService = authService;
+        _aniListClient = aniListClient;
         _logger = logger;
     }
 
@@ -28,6 +33,26 @@ public partial class SettingsPageModel : ObservableObject
     {
         await RefreshAuthStateAsync();
         StatusMessage = IsAuthenticated ? "Signed in to AniList." : "Not signed in.";
+
+        // If authenticated, fetch the user ID from AniList
+        if (IsAuthenticated)
+        {
+            try
+            {
+                var userId = await _aniListClient.GetCurrentUserIdAsync();
+                AniListUserId = userId.ToString();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to fetch AniList user ID");
+                AniListUserId = string.Empty;
+            }
+        }
+        else
+        {
+            AniListUserId = string.Empty;
+        }
+
         SentrySdk.AddBreadcrumb("Settings loaded", "navigation", "state");
     }
 
@@ -44,7 +69,26 @@ public partial class SettingsPageModel : ObservableObject
             SentrySdk.AddBreadcrumb("Sign-in requested (Settings)", "auth", "user");
             var signedIn = await _authService.SignInAsync();
             await RefreshAuthStateAsync();
-            StatusMessage = signedIn ? "Signed in to AniList." : "Sign in canceled.";
+
+            if (signedIn)
+            {
+                // Fetch the user ID after successful sign-in
+                try
+                {
+                    var userId = await _aniListClient.GetCurrentUserIdAsync();
+                    AniListUserId = userId.ToString();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Failed to fetch user ID after sign-in");
+                }
+                StatusMessage = "Signed in to AniList.";
+            }
+            else
+            {
+                StatusMessage = "Sign in canceled.";
+            }
+
             SentrySdk.AddBreadcrumb(
                 signedIn ? "Sign-in successful (Settings)" : "Sign-in canceled (Settings)",
                 "auth",
@@ -53,11 +97,7 @@ public partial class SettingsPageModel : ObservableObject
         catch (Exception ex)
         {
             _logger.LogError(ex, "Sign-in failed.");
-            SentrySdk.AddBreadcrumb(
-                message: "Sign-in failed (Settings)",
-                category: "auth",
-                type: "user",
-                level: BreadcrumbLevel.Error);
+            SentrySdk.AddBreadcrumb("Sign-in failed (Settings)", "auth", "user");
             StatusMessage = "Sign in failed. Try again.";
         }
     }
@@ -69,6 +109,7 @@ public partial class SettingsPageModel : ObservableObject
         SentrySdk.AddBreadcrumb("Sign-out requested (Settings)", "auth", "user");
         await _authService.SignOutAsync();
         await RefreshAuthStateAsync();
+        AniListUserId = string.Empty;
         StatusMessage = "Signed out.";
     }
 
