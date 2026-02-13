@@ -81,7 +81,7 @@
                                 Padding="10"
                                 Margin="0,6,0,0"
                                 StrokeThickness="1"
-                                Stroke="{AppThemeBinding Light={StaticResource RainbowPurple}, Dark={StaticResource RainbowCyan}}">
+                                Background="{Binding Title, Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}">
                             <Grid ColumnDefinitions="Auto,*,Auto"
                                   ColumnSpacing="10">
 
@@ -92,8 +92,7 @@
                                 <!-- Caret -->
                                 <Label Text=">"
                                        Style="{StaticResource Caption1Strong}"
-                                       VerticalOptions="Center"
-                                       TextColor="{StaticResource Gray400}">
+                                       VerticalOptions="Center">
                                     <Label.Triggers>
                                         <DataTrigger TargetType="Label" Binding="{Binding IsExpanded}" Value="True">
                                             <Setter Property="Rotation" Value="90" />
@@ -109,7 +108,6 @@
                                 <Label Grid.Column="2"
                                        Text="{Binding TotalCount, StringFormat='({0})'}"
                                        Style="{StaticResource Caption1}"
-                                       TextColor="{StaticResource Gray400}"
                                        VerticalOptions="Center" />
                             </Grid>
                         </Border>
