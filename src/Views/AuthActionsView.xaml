@@ -5,9 +5,11 @@
     <HorizontalStackLayout Spacing="12">
         <Button Text="Sign In"
                 Command="{Binding SignInCommand}"
+                Background="{Binding IsAuthenticated, Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}"
                 IsVisible="{Binding IsAuthenticated, Converter={StaticResource InvertedBoolConverter}}" />
         <Button Text="Sign Out"
                 Command="{Binding SignOutCommand}"
+                Background="{Binding IsAuthenticated, Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}"
                 IsVisible="{Binding IsAuthenticated}" />
     </HorizontalStackLayout>
 </ContentView>
