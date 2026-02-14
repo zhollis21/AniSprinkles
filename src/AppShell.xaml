@@ -5,7 +5,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:pages="clr-namespace:AniSprinkles.Pages"
     Title="AniSprinkles"
-    FlyoutBehavior="Flyout">
+    FlyoutBehavior="Flyout"
+    NavBarHasShadow="False">
 
     <FlyoutItem Title="My Anime" Route="my-anime">
         <ShellContent ContentTemplate="{DataTemplate pages:MyAnimePage}" />

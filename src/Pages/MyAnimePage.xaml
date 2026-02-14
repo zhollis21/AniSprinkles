@@ -10,7 +10,6 @@
              Title="{Binding Title}"
              Shell.TitleColor="{Binding Title, Converter={StaticResource RainbowAccentConverter}}">
 
-    <!-- Use your LayoutPadding token instead of hard-coded 24 -->
     <Grid Padding="{StaticResource LayoutPadding}"
           RowDefinitions="Auto,Auto,Auto,Auto,*"
           RowSpacing="12">
@@ -194,6 +193,6 @@
                                VerticalOptions="Center"
                                HorizontalOptions="Center"
                                Opacity="0.8" />
+            </Grid>
         </Grid>
-    </Grid>
 </ContentPage>
