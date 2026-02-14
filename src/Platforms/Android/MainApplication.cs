@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Runtime;
 
-namespace AniSprinkles.Platforms.Android;
+namespace AniSprinkles;
 
 [Application]
 public class MainApplication : MauiApplication
