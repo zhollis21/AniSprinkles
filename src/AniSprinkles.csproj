@@ -49,13 +49,19 @@
 		<PackageReference Include="Syncfusion.Maui.Toolkit" Version="1.0.7" />
 	</ItemGroup>
 
-	<PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
-		<PublishTrimmed>true</PublishTrimmed>
-		<AndroidEnableProguard>true</AndroidEnableProguard>
-		<AndroidLinkTool>r8</AndroidLinkTool>
+	<!-- Debug Android Configuration -->
+	<PropertyGroup Condition="'$(Configuration)' == 'Debug' AND $([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
+		<AndroidLinkMode>None</AndroidLinkMode>
+		<EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
+		<UseInterpreter>true</UseInterpreter>
 	</PropertyGroup>
 
+	<!-- Release Android Configuration -->
 	<PropertyGroup Condition="'$(Configuration)' == 'Release' AND $([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
+		<PublishTrimmed>true</PublishTrimmed>
+		<EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+		<AotAssemblies>True</AotAssemblies>
+		<AndroidLinkTool>r8</AndroidLinkTool>
 		<!-- Generate native debug symbols for crash reporting (e.g., Sentry, Play Console) -->
 		<AndroidGenerateNativeDebugSymbols>true</AndroidGenerateNativeDebugSymbols>
 	</PropertyGroup>
