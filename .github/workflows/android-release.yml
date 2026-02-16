@@ -142,8 +142,22 @@ jobs:
             exit 1
           fi
           echo "::notice::Found $AAB_COUNT AAB file(s)"
-          echo "::notice::Checking for debug symbols and mapping files..."
-          find output -type f \( -name "*.so" -o -name "*.dbg" -o -name "*.txt" -o -name "*.zip" \) | head -20
+          echo "::notice::Checking for ProGuard mapping..."
+          find output -type f -name "mapping.txt" | head -5
+          echo "::notice::Checking for native debug symbols in obj folder..."
+          find src/obj/Release/net10.0-android/app_shared_libraries -type f -name "*.so" 2>/dev/null | head -20 || echo "No native symbols found"
+
+      - name: Package Native Debug Symbols
+        run: |
+          SYMBOLS_DIR="src/obj/Release/net10.0-android/app_shared_libraries"
+          if [ -d "$SYMBOLS_DIR" ]; then
+            cd "$SYMBOLS_DIR"
+            # Zip all ABI folders (arm64-v8a, x86_64, etc.) for Play Console upload
+            zip -r ${{ github.workspace }}/output/native-symbols.zip . -i "*.so"
+            echo "::notice::Native symbols packaged: $(stat -c%s ${{ github.workspace }}/output/native-symbols.zip 2>/dev/null || stat -f%z ${{ github.workspace }}/output/native-symbols.zip) bytes"
+          else
+            echo "::warning::Native symbols directory not found at $SYMBOLS_DIR"
+          fi
 
       - name: Generate AAB Checksum
         run: |
@@ -179,9 +193,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: native-symbols-${{ env.VERSION_CODE }}
-          path: |
-            output/**/*.so
-            output/**/*.so.dbg
+          path: output/native-symbols.zip
           retention-days: 90
           if-no-files-found: warn
 
