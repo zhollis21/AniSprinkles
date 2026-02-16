@@ -98,7 +98,17 @@ jobs:
 
       - name: Decode Keystore
         run: |
-          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > ${{ github.workspace }}/keystore.jks
+          # Debug: Check if secret is available (show length, not content)
+          KEYSTORE_SECRET="${{ secrets.ANDROID_KEYSTORE_BASE_64 }}"
+          SECRET_LENGTH=${#KEYSTORE_SECRET}
+          echo "::notice::Secret length: $SECRET_LENGTH characters"
+          
+          if [ "$SECRET_LENGTH" -eq 0 ]; then
+            echo "::error::ANDROID_KEYSTORE_BASE_64 secret is empty or not set"
+            exit 1
+          fi
+          
+          echo "$KEYSTORE_SECRET" | base64 -d > ${{ github.workspace }}/keystore.jks
           if [ ! -f "${{ github.workspace }}/keystore.jks" ]; then
             echo "::error::Keystore decoding failed - file not created"
             exit 1
