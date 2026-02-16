@@ -6,11 +6,11 @@ name: Android Release Build
 on:
   release:
     types: [published]
-  
+
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version number (e.g., 1.2.3)'
+        description: "Version number (e.g., 1.2.3)"
         required: true
         type: string
 
@@ -23,22 +23,22 @@ jobs:
     name: Build Signed AAB
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    
+
     # Prevent concurrent builds to ensure unique version codes per release
     # Builds queue instead of running in parallel
     concurrency:
       group: android-release
       cancel-in-progress: false
-    
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-      
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '10.0.x'
-      
+          dotnet-version: "10.0.x"
+
       - name: Cache NuGet Packages
         uses: actions/cache@v4
         with:
@@ -46,7 +46,7 @@ jobs:
           key: ${{ runner.os }}-nuget-${{ hashFiles('src/AniSprinkles.csproj') }}
           restore-keys: |
             ${{ runner.os }}-nuget-
-      
+
       - name: Cache MAUI Workload
         uses: actions/cache@v4
         with:
@@ -56,10 +56,10 @@ jobs:
           key: ${{ runner.os }}-maui-${{ hashFiles('src/AniSprinkles.csproj') }}
           restore-keys: |
             ${{ runner.os }}-maui-
-      
+
       - name: Install MAUI Workload
         run: dotnet workload install maui
-      
+
       - name: Set Version Numbers
         id: version
         run: |
@@ -72,7 +72,7 @@ jobs:
             echo "::error::This workflow must be triggered by a release or manual workflow_dispatch"
             exit 1
           fi
-          
+
           # Validate version name format (semantic versioning)
           # Allowed: X.Y.Z or X.Y.Z-suffix (e.g., 1.2.3, 1.2.3-beta, 1.2.3-rc.1)
           # Rejected: trailing dash, empty suffix, dot-only suffix
@@ -80,20 +80,20 @@ jobs:
             echo "::error::Invalid version format '$VERSION_NAME'. Expected: X.Y.Z or X.Y.Z-suffix"
             exit 1
           fi
-          
+
           # Generate date-based version code with minute precision (YYMMDDHHNN)
           # Format: YY=year, MM=month, DD=day, HH=hour, NN=minute (UTC)
           # Example: Feb 15, 2026 14:30 UTC -> 2602151430
           VERSION_CODE=$(date -u '+%y%m%d%H%M')
-          
+
           # Sanitize version for artifact naming (GitHub artifacts disallow + and / chars)
           ARTIFACT_VERSION=$(echo "$VERSION_NAME" | tr '+/' '-')
-          
+
           echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_ENV
           echo "VERSION_CODE=$VERSION_CODE" >> $GITHUB_ENV
           echo "ARTIFACT_VERSION=$ARTIFACT_VERSION" >> $GITHUB_ENV
           echo "::notice::Building version $VERSION_NAME (code: $VERSION_CODE)"
-      
+
       - name: Decode Keystore
         run: |
           echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > ${{ github.workspace }}/keystore.jks
@@ -107,10 +107,10 @@ jobs:
             exit 1
           fi
           echo "::notice::Keystore decoded successfully ($FILE_SIZE bytes)"
-      
+
       - name: Restore NuGet Packages
         run: dotnet restore src/AniSprinkles.csproj
-      
+
       - name: Build Signed AAB
         run: |
           dotnet publish src/AniSprinkles.csproj \
@@ -125,7 +125,7 @@ jobs:
             -p:AndroidSigningKeyPass=${{ secrets.ANDROID_KEYSTORE_PASSWORD }} \
             -p:AndroidSigningStorePass=${{ secrets.ANDROID_KEYSTORE_PASSWORD }} \
             -o ${{ github.workspace }}/output
-      
+
       - name: Verify AAB Output
         run: |
           echo "Build output contents:"
@@ -136,14 +136,14 @@ jobs:
             exit 1
           fi
           echo "::notice::Found $AAB_COUNT AAB file(s)"
-      
+
       - name: Generate AAB Checksum
         run: |
           cd output
           find . -name "*.aab" -exec sha256sum {} \; > aab-checksums.txt
           echo "AAB Checksums:"
           cat aab-checksums.txt
-      
+
       - name: Upload AAB Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -151,14 +151,14 @@ jobs:
           path: output/**/*.aab
           retention-days: 90
           if-no-files-found: error
-      
+
       - name: Upload Checksums
         uses: actions/upload-artifact@v4
         with:
           name: checksums-${{ env.VERSION_CODE }}
           path: output/aab-checksums.txt
           if-no-files-found: warn
-      
+
       - name: Upload ProGuard Mapping
         uses: actions/upload-artifact@v4
         with:
@@ -166,7 +166,7 @@ jobs:
           path: output/**/mapping.txt
           retention-days: 90
           if-no-files-found: warn
-      
+
       - name: Upload Native Debug Symbols
         uses: actions/upload-artifact@v4
         with:
@@ -176,7 +176,7 @@ jobs:
             output/**/*.so.dbg
           retention-days: 90
           if-no-files-found: warn
-      
+
       - name: Upload Build Logs
         if: always() && env.VERSION_CODE != ''
         uses: actions/upload-artifact@v4
@@ -187,7 +187,7 @@ jobs:
             output/**/*.binlog
           retention-days: 30
           if-no-files-found: ignore
-      
+
       - name: Generate Build Summary
         if: success()
         run: |
@@ -207,7 +207,7 @@ jobs:
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
           cat output/aab-checksums.txt >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-      
+
       - name: Generate Failure Summary
         if: failure()
         run: |
@@ -227,7 +227,7 @@ jobs:
           echo "- Keystore secret corrupted or invalid" >> $GITHUB_STEP_SUMMARY
           echo "- Build compilation errors (check workflow logs)" >> $GITHUB_STEP_SUMMARY
           echo "- Missing or incorrect GitHub secrets/variables" >> $GITHUB_STEP_SUMMARY
-      
+
       - name: Clean Up Keystore
         if: always()
         run: |

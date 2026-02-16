@@ -3,11 +3,13 @@
 Status: auth works and live list loads. Logging UX improved with details/copy/share.
 
 Goals
+
 - First Android app integrating with AniList
 - Stack: .NET MAUI (C#)
 - Scope: anime only
 
 MVP features
+
 - See my list titles
 - Search for new titles
 - View title details
@@ -16,27 +18,33 @@ MVP features
 
 MVP data contract (screen -> required fields -> source)
 List (auth required)
+
 - Media: id, title.romaji/english/native, coverImage.medium/large, format, episodes, status, season, seasonYear, averageScore, popularity
 - List entry: status, progress, score, repeat, updatedAt
 - Source: MediaListCollection (user anime list)
 
 Search (public)
+
 - Media: id, title.romaji/english/native, coverImage.medium/large, format, episodes, status, season, seasonYear, averageScore, popularity, genres
 - Source: Page { media(type: ANIME, search: ...) }
 
 Details (public)
-- Media: id, title.*, coverImage.*, bannerImage, description (HTML), format, status, episodes, duration, season, seasonYear, genres, averageScore, meanScore, popularity, favourites, studios, tags
+
+- Media: id, title._, coverImage._, bannerImage, description (HTML), format, status, episodes, duration, season, seasonYear, genres, averageScore, meanScore, popularity, favourites, studios, tags
 - Source: Media (by id)
 
 Add/Edit list entry (auth required)
+
 - Media id, status, progress, score, repeat, notes, private, hiddenFromStatusLists
 - Source: SaveMediaListEntry mutation (create/update)
 
 Auth visibility
+
 - List and Add/Edit require auth
 - Search and Details can be public
 
 Decisions so far
+
 - No backend if possible
 - MVP is fully online (no offline caching yet)
 - Android-only target for now (iOS/Mac/Windows removed)
@@ -96,11 +104,13 @@ Decisions so far
 - My Anime now uses the same centered first-load spinner pattern (instead of a top status-row spinner) so loading feedback is consistent and visually anchored in the content area
 
 Auth strategy
+
 - Implicit grant for MVP (no backend)
 - Redirect URI: anisprinkles://auth
 - AniList client ID: 35674
 
 Rate limit strategy (tentative)
+
 - Use response headers: X-RateLimit-Limit, X-RateLimit-Remaining
 - On 429, respect Retry-After and X-RateLimit-Reset
 - Start conservative (30 requests/min) until headers indicate higher
@@ -108,6 +118,7 @@ Rate limit strategy (tentative)
 - Batch GraphQL queries to reduce total calls
 
 Logging upgrade plan (code)
+
 - Add ILogger injection to services/view models
 - Add HttpClient delegating handler to log GraphQL request/response metadata (method, status, latency) with token redaction
 - Surface a user-friendly error view with expandable details + copy/share button
@@ -115,6 +126,7 @@ Logging upgrade plan (code)
 - Optionally add file logging in Debug builds for export
 
 Theme tokens (Midnight Minimal, MVP)
+
 - background: #0B0B10
 - surface: #12121A
 - surface_elevated: #181823
@@ -127,6 +139,7 @@ Theme tokens (Midnight Minimal, MVP)
 - accent_tertiary: #7CFF3B
 
 Future theme plan (Neon Clock)
+
 - Same neutrals as above
 - Accents: cyan, electric blue, violet, magenta, hot pink, lime, yellow, orange, aqua
 - Accents should be 10 to 20 percent of any screen
@@ -134,4 +147,5 @@ Future theme plan (Neon Clock)
 - Avoid full rainbow gradients except for celebration moments
 
 Open questions
+
 - App name and store listing constraints with AniList naming rules
