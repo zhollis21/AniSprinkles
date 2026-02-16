@@ -52,13 +52,17 @@ jobs:
         with:
           path: |
             ~/.dotnet/sdk-manifests
-            ~/.dotnet/workloads
+            ~/.dotnet/metadata/workloads
           key: ${{ runner.os }}-maui-${{ hashFiles('src/AniSprinkles.csproj') }}
           restore-keys: |
             ${{ runner.os }}-maui-
 
       - name: Install MAUI Workload
-        run: dotnet workload install maui-android
+        run: |
+          dotnet workload install maui-android
+          echo "::notice::Checking workload installation paths..."
+          ls -la ~/.dotnet/sdk-manifests 2>/dev/null || echo "No sdk-manifests found"
+          ls -la ~/.dotnet/metadata/workloads 2>/dev/null || echo "No metadata/workloads found"
 
       - name: Set Version Numbers
         id: version
@@ -152,6 +156,8 @@ jobs:
             exit 1
           fi
           echo "::notice::Found $AAB_COUNT AAB file(s)"
+          echo "::notice::Checking for debug symbols and mapping files..."
+          find output -type f -name "*.zip" -o -name "*.txt" -o -name "*.dbg" | head -20
 
       - name: Generate AAB Checksum
         run: |
