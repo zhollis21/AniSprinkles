@@ -52,6 +52,9 @@ Decisions so far
 - Confirmation workflow: include current-process `adb logcat` scan for crashes/exceptions/perf warnings
 - Development workflow: follow repository `.editorconfig` standards for style/formatting/naming
 - Development workflow: comments on non-obvious logic should explain intent/tradeoffs ("why"), not restate obvious code flow
+- CI/CD: GitHub Actions workflow builds signed AAB on release publication
+- CI/CD: ApplicationDisplayVersion (versionName) from release tag; ApplicationVersion (versionCode) from UTC timestamp (YYMMDDHHNN)
+- CI/CD: versionCode format enables minute-precision builds, auto-increments monotonically (Android requirement)
 - Logging upgrade implemented (HTTP logging handler + error details UI)
 - Debug file logging implemented (rotating file logger under app data)
 - Performance hardening: file logger writes asynchronously and filters noisy framework/Sentry categories

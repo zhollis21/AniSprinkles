@@ -13,6 +13,12 @@ MVP features
 - Add titles to my list
 - Edit list entries (status, episode progress, rating, etc.)
 
+Build & Release
+- GitHub Actions workflow builds signed AAB on release publication
+- ApplicationDisplayVersion (versionName) extracted from release tag (e.g., v1.2.3 → 1.2.3)
+- ApplicationVersion (versionCode) auto-generated from UTC timestamp (YYMMDDHHNN format)
+- Signed AAB and ProGuard mapping uploaded as artifacts (90-day retention)
+
 Current details view
 - Pulls and displays expanded AniList metadata for titles (release/airing info, scores, tags, rankings, links, trailer, and streaming entries when available)
 - My Anime list loading uses AniList `Viewer` + `MediaListCollection` (AniList requires user context); viewer ID is cached in-memory between loads

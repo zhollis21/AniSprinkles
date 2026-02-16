@@ -1,0 +1,235 @@
+# Builds signed Android AAB for AniSprinkles
+# Triggers: Release publication or manual dispatch
+# Outputs: Signed AAB, ProGuard mapping, native debug symbols, checksums
+name: Android Release Build
+
+on:
+  release:
+    types: [published]
+  
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version number (e.g., 1.2.3)'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  build:
+    name: Build Signed AAB
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
+    # Prevent concurrent builds to ensure unique version codes per release
+    # Builds queue instead of running in parallel
+    concurrency:
+      group: android-release
+      cancel-in-progress: false
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      
+      - name: Cache NuGet Packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('src/AniSprinkles.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+      
+      - name: Cache MAUI Workload
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.dotnet/sdk-manifests
+            ~/.dotnet/workloads
+          key: ${{ runner.os }}-maui-${{ hashFiles('src/AniSprinkles.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-maui-
+      
+      - name: Install MAUI Workload
+        run: dotnet workload install maui
+      
+      - name: Set Version Numbers
+        id: version
+        run: |
+          # Extract display version from release tag or workflow input
+          if [[ "${{ github.event_name }}" == "release" ]]; then
+            VERSION_NAME=${GITHUB_REF#refs/tags/v}
+          elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            VERSION_NAME="${{ inputs.version }}"
+          else
+            echo "::error::This workflow must be triggered by a release or manual workflow_dispatch"
+            exit 1
+          fi
+          
+          # Validate version name format (semantic versioning)
+          # Allowed: X.Y.Z or X.Y.Z-suffix (e.g., 1.2.3, 1.2.3-beta, 1.2.3-rc.1)
+          # Rejected: trailing dash, empty suffix, dot-only suffix
+          if [[ ! "$VERSION_NAME" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9]+(\.[a-zA-Z0-9]+)*)?$ ]]; then
+            echo "::error::Invalid version format '$VERSION_NAME'. Expected: X.Y.Z or X.Y.Z-suffix"
+            exit 1
+          fi
+          
+          # Generate date-based version code with minute precision (YYMMDDHHNN)
+          # Format: YY=year, MM=month, DD=day, HH=hour, NN=minute (UTC)
+          # Example: Feb 15, 2026 14:30 UTC -> 2602151430
+          VERSION_CODE=$(date -u '+%y%m%d%H%M')
+          
+          # Sanitize version for artifact naming (GitHub artifacts disallow + and / chars)
+          ARTIFACT_VERSION=$(echo "$VERSION_NAME" | tr '+/' '-')
+          
+          echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_ENV
+          echo "VERSION_CODE=$VERSION_CODE" >> $GITHUB_ENV
+          echo "ARTIFACT_VERSION=$ARTIFACT_VERSION" >> $GITHUB_ENV
+          echo "::notice::Building version $VERSION_NAME (code: $VERSION_CODE)"
+      
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > ${{ github.workspace }}/keystore.jks
+          if [ ! -f "${{ github.workspace }}/keystore.jks" ]; then
+            echo "::error::Keystore decoding failed - file not created"
+            exit 1
+          fi
+          FILE_SIZE=$(stat -c%s "${{ github.workspace }}/keystore.jks" 2>/dev/null || stat -f%z "${{ github.workspace }}/keystore.jks")
+          if [ "$FILE_SIZE" -lt 100 ]; then
+            echo "::error::Keystore file suspiciously small ($FILE_SIZE bytes)"
+            exit 1
+          fi
+          echo "::notice::Keystore decoded successfully ($FILE_SIZE bytes)"
+      
+      - name: Restore NuGet Packages
+        run: dotnet restore src/AniSprinkles.csproj
+      
+      - name: Build Signed AAB
+        run: |
+          dotnet publish src/AniSprinkles.csproj \
+            -c Release \
+            -f net10.0-android \
+            -p:AndroidPackageFormat=aab \
+            -p:ApplicationDisplayVersion=${{ env.VERSION_NAME }} \
+            -p:ApplicationVersion=${{ env.VERSION_CODE }} \
+            -p:AndroidKeyStore=true \
+            -p:AndroidSigningKeyStore=${{ github.workspace }}/keystore.jks \
+            -p:AndroidSigningKeyAlias=${{ vars.ANDROID_KEYSTORE_ALIAS }} \
+            -p:AndroidSigningKeyPass=${{ secrets.ANDROID_KEYSTORE_PASSWORD }} \
+            -p:AndroidSigningStorePass=${{ secrets.ANDROID_KEYSTORE_PASSWORD }} \
+            -o ${{ github.workspace }}/output
+      
+      - name: Verify AAB Output
+        run: |
+          echo "Build output contents:"
+          find output -name "*.aab" -type f
+          AAB_COUNT=$(find output -name "*.aab" -type f | wc -l)
+          if [ $AAB_COUNT -eq 0 ]; then
+            echo "::error::No AAB file found in output directory"
+            exit 1
+          fi
+          echo "::notice::Found $AAB_COUNT AAB file(s)"
+      
+      - name: Generate AAB Checksum
+        run: |
+          cd output
+          find . -name "*.aab" -exec sha256sum {} \; > aab-checksums.txt
+          echo "AAB Checksums:"
+          cat aab-checksums.txt
+      
+      - name: Upload AAB Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: anisprinkles-${{ env.ARTIFACT_VERSION }}-${{ env.VERSION_CODE }}
+          path: output/**/*.aab
+          retention-days: 90
+          if-no-files-found: error
+      
+      - name: Upload Checksums
+        uses: actions/upload-artifact@v4
+        with:
+          name: checksums-${{ env.VERSION_CODE }}
+          path: output/aab-checksums.txt
+          if-no-files-found: warn
+      
+      - name: Upload ProGuard Mapping
+        uses: actions/upload-artifact@v4
+        with:
+          name: mapping-${{ env.VERSION_CODE }}
+          path: output/**/mapping.txt
+          retention-days: 90
+          if-no-files-found: warn
+      
+      - name: Upload Native Debug Symbols
+        uses: actions/upload-artifact@v4
+        with:
+          name: native-symbols-${{ env.VERSION_CODE }}
+          path: |
+            output/**/symbols.zip
+            output/**/*.so.dbg
+          retention-days: 90
+          if-no-files-found: warn
+      
+      - name: Upload Build Logs
+        if: always() && env.VERSION_CODE != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logs-${{ env.VERSION_CODE }}
+          path: |
+            output/**/*.log
+            output/**/*.binlog
+          retention-days: 30
+          if-no-files-found: ignore
+      
+      - name: Generate Build Summary
+        if: success()
+        run: |
+          echo "## ✅ Build Successful" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Version Name:** ${{ env.VERSION_NAME }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Version Code:** ${{ env.VERSION_CODE }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Build Time:** $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📦 Artifacts" >> $GITHUB_STEP_SUMMARY
+          echo "- **Signed AAB:** \`anisprinkles-${{ env.ARTIFACT_VERSION }}-${{ env.VERSION_CODE }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **ProGuard Mapping:** \`mapping-${{ env.VERSION_CODE }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **Native Symbols:** \`native-symbols-${{ env.VERSION_CODE }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **Checksums:** \`checksums-${{ env.VERSION_CODE }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🔐 Checksums" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          cat output/aab-checksums.txt >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+      
+      - name: Generate Failure Summary
+        if: failure()
+        run: |
+          echo "## ❌ Build Failed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -n "${{ env.VERSION_NAME }}" ]; then
+            echo "**Version Name:** ${{ env.VERSION_NAME }}" >> $GITHUB_STEP_SUMMARY
+            echo "**Version Code:** ${{ env.VERSION_CODE }}" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "**Build Time:** $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Check the build logs artifact for details (if VERSION_CODE was set)." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🔍 Common Issues" >> $GITHUB_STEP_SUMMARY
+          echo "- Invalid version format (must be X.Y.Z or X.Y.Z-suffix)" >> $GITHUB_STEP_SUMMARY
+          echo "- Keystore secret corrupted or invalid" >> $GITHUB_STEP_SUMMARY
+          echo "- Build compilation errors (check workflow logs)" >> $GITHUB_STEP_SUMMARY
+          echo "- Missing or incorrect GitHub secrets/variables" >> $GITHUB_STEP_SUMMARY
+      
+      - name: Clean Up Keystore
+        if: always()
+        run: |
+          rm -f ${{ github.workspace }}/keystore.jks
+          echo "Keystore cleaned up"
