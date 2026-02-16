@@ -83,10 +83,14 @@ jobs:
             exit 1
           fi
 
-          # Generate date-based version code with minute precision (YYMMDDHHNN)
-          # Format: YY=year, MM=month, DD=day, HH=hour, NN=minute (UTC)
-          # Example: Feb 15, 2026 14:30 UTC -> 2602151430
-          VERSION_CODE=$(date -u '+%y%m%d%H%M')
+          # Generate date-based version code with build number (YYMMDDNNN)
+          # Format: YY=year, MM=month, DD=day, NNN=last 3 digits of run_number
+          # Example: Feb 15, 2026, run #123 -> 260215 + 123 -> 260215123
+          # Range: 20010100 1 to 99123199 9 - safely under Android's 2,147,483,647 limit
+          # Monotonically increasing, supports 1000 builds per day, works through 2099
+          DATE_PART=$(date -u '+%y%m%d')
+          BUILD_NUM=$(printf "%03d" $((${{ github.run_number }} % 1000)))
+          VERSION_CODE="${DATE_PART}${BUILD_NUM}"
 
           # Sanitize version for artifact naming (GitHub artifacts disallow + and / chars)
           ARTIFACT_VERSION=$(echo "$VERSION_NAME" | tr '+/' '-')
@@ -102,12 +106,12 @@ jobs:
           KEYSTORE_SECRET="${{ secrets.ANDROID_KEYSTORE_BASE_64 }}"
           SECRET_LENGTH=${#KEYSTORE_SECRET}
           echo "::notice::Secret length: $SECRET_LENGTH characters"
-          
+
           if [ "$SECRET_LENGTH" -eq 0 ]; then
             echo "::error::ANDROID_KEYSTORE_BASE_64 secret is empty or not set"
             exit 1
           fi
-          
+
           echo "$KEYSTORE_SECRET" | base64 -d > ${{ github.workspace }}/keystore.jks
           if [ ! -f "${{ github.workspace }}/keystore.jks" ]; then
             echo "::error::Keystore decoding failed - file not created"
