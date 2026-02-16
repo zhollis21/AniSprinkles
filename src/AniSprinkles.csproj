@@ -54,4 +54,9 @@
 		<AndroidEnableProguard>true</AndroidEnableProguard>
 		<AndroidLinkTool>r8</AndroidLinkTool>
 	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)' == 'Release' AND $([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
+		<!-- Generate native debug symbols for crash reporting (e.g., Sentry, Play Console) -->
+		<AndroidGenerateNativeDebugSymbols>true</AndroidGenerateNativeDebugSymbols>
+	</PropertyGroup>
 </Project>

@@ -51,8 +51,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
+            ~/.dotnet/packs
             ~/.dotnet/sdk-manifests
-            ~/.dotnet/metadata/workloads
+            ~/.dotnet/metadata
           key: ${{ runner.os }}-maui-${{ hashFiles('src/AniSprinkles.csproj') }}
           restore-keys: |
             ${{ runner.os }}-maui-
@@ -60,9 +61,10 @@ jobs:
       - name: Install MAUI Workload
         run: |
           dotnet workload install maui-android
-          echo "::notice::Checking workload installation paths..."
-          ls -la ~/.dotnet/sdk-manifests 2>/dev/null || echo "No sdk-manifests found"
-          ls -la ~/.dotnet/metadata/workloads 2>/dev/null || echo "No metadata/workloads found"
+          echo "::notice::Workload installed - checking paths:"
+          du -sh ~/.dotnet/packs 2>/dev/null || echo "No packs directory"
+          du -sh ~/.dotnet/sdk-manifests 2>/dev/null || echo "No sdk-manifests"
+          du -sh ~/.dotnet/metadata 2>/dev/null || echo "No metadata"
 
       - name: Set Version Numbers
         id: version
@@ -194,7 +196,7 @@ jobs:
         with:
           name: native-symbols-${{ env.VERSION_CODE }}
           path: |
-            output/**/symbols.zip
+            output/**/*.so
             output/**/*.so.dbg
           retention-days: 90
           if-no-files-found: warn
