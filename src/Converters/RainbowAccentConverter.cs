@@ -22,7 +22,8 @@ public sealed class RainbowAccentConverter : IValueConverter
 
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        var key = value?.ToString();
+        // Prefer parameter over value (useful for static strings in ConverterParameter)
+        var key = parameter?.ToString() ?? value?.ToString();
         if (string.IsNullOrWhiteSpace(key))
         {
             return Colors.Transparent;
