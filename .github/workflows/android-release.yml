@@ -47,24 +47,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nuget-
 
-      - name: Cache MAUI Workload
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.dotnet/packs
-            ~/.dotnet/sdk-manifests
-            ~/.dotnet/metadata
-          key: ${{ runner.os }}-maui-${{ hashFiles('src/AniSprinkles.csproj') }}
-          restore-keys: |
-            ${{ runner.os }}-maui-
-
       - name: Install MAUI Workload
-        run: |
-          dotnet workload install maui-android
-          echo "::notice::Workload installed - checking paths:"
-          du -sh ~/.dotnet/packs 2>/dev/null || echo "No packs directory"
-          du -sh ~/.dotnet/sdk-manifests 2>/dev/null || echo "No sdk-manifests"
-          du -sh ~/.dotnet/metadata 2>/dev/null || echo "No metadata"
+        run: dotnet workload install maui-android
 
       - name: Set Version Numbers
         id: version
@@ -159,20 +143,20 @@ jobs:
           fi
           echo "::notice::Found $AAB_COUNT AAB file(s)"
           echo "::notice::Checking for debug symbols and mapping files..."
-          find output -type f -name "*.zip" -o -name "*.txt" -o -name "*.dbg" | head -20
+          find output -type f \( -name "*.so" -o -name "*.dbg" -o -name "*.txt" -o -name "*.zip" \) | head -20
 
       - name: Generate AAB Checksum
         run: |
           cd output
-          find . -name "*.aab" -exec sha256sum {} \; > aab-checksums.txt
-          echo "AAB Checksums:"
+          find . -name "*-Signed.aab" -exec sha256sum {} \; > aab-checksums.txt
+          echo "Signed AAB Checksum:"
           cat aab-checksums.txt
 
-      - name: Upload AAB Artifact
+      - name: Upload Signed AAB Artifact
         uses: actions/upload-artifact@v4
         with:
           name: anisprinkles-${{ env.ARTIFACT_VERSION }}-${{ env.VERSION_CODE }}
-          path: output/**/*.aab
+          path: output/**/*-Signed.aab
           retention-days: 90
           if-no-files-found: error
 
