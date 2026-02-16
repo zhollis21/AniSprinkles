@@ -54,6 +54,36 @@ public partial class MyAnimePageModel : ObservableObject
     [ObservableProperty]
     private bool _isErrorDetailsVisible;
 
+    // ── Sort / Filter state ───────────────────────────────────────────
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(SortFieldDisplay))]
+    [NotifyPropertyChangedFor(nameof(SortDirectionIcon))]
+    private SortField _currentSortField = SortField.LastUpdated;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(SortDirectionIcon))]
+    private bool _sortAscending;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(HasSearchText))]
+    private string _searchText = string.Empty;
+
+    [ObservableProperty]
+    private bool _isFilterBarVisible;
+
+    public bool HasSearchText => !string.IsNullOrWhiteSpace(SearchText);
+
+    public string SortFieldDisplay => CurrentSortField switch
+    {
+        SortField.Title => "Title",
+        SortField.Score => "Score",
+        SortField.Progress => "Progress",
+        _ => "Updated",
+    };
+
+    public string SortDirectionIcon => SortAscending ? "↑" : "↓";
+
     public MyAnimePageModel(IAniListClient aniListClient, IAuthService authService, ErrorReportService errorReportService, ILogger<MyAnimePageModel> logger)
     {
         _aniListClient = aniListClient;
@@ -123,7 +153,10 @@ public partial class MyAnimePageModel : ObservableObject
             SentrySdk.AddBreadcrumb("Fetching AniList list", "http", "state");
             var list = await _aniListClient.GetMyAnimeListAsync();
             // Grouping can be heavy on large lists; build sections off the UI thread.
-            var sections = await Task.Run(() => BuildSections(list, expandedStates));
+            var sortField = CurrentSortField;
+            var sortAscending = SortAscending;
+            var filterText = SearchText;
+            var sections = await Task.Run(() => BuildSections(list, expandedStates, sortField, sortAscending, filterText));
             Sections = sections;
             _hasLoaded = true;
             _lastSuccessfulLoadUtc = DateTimeOffset.UtcNow;
@@ -268,7 +301,10 @@ public partial class MyAnimePageModel : ObservableObject
 
     private static ObservableCollection<MediaListSection> BuildSections(
         IReadOnlyList<MediaListEntry> entries,
-        IReadOnlyDictionary<string, bool> expandedStates)
+        IReadOnlyDictionary<string, bool> expandedStates,
+        SortField sortField,
+        bool sortAscending,
+        string filterText)
     {
         var sections = new List<MediaListSection>
         {
@@ -315,6 +351,25 @@ public partial class MyAnimePageModel : ObservableObject
             unknown.AddItems(unknownBucket);
         }
 
+        // Apply current sort and filter to every section.
+        foreach (var section in sections)
+        {
+            section.ApplySort(sortField, sortAscending);
+            if (!string.IsNullOrWhiteSpace(filterText))
+            {
+                section.ApplyFilter(filterText);
+            }
+        }
+
+        if (unknown.TotalCount > 0)
+        {
+            unknown.ApplySort(sortField, sortAscending);
+            if (!string.IsNullOrWhiteSpace(filterText))
+            {
+                unknown.ApplyFilter(filterText);
+            }
+        }
+
         var result = new ObservableCollection<MediaListSection>(
             sections.Where(s => s.TotalCount > 0));
 
@@ -338,6 +393,81 @@ public partial class MyAnimePageModel : ObservableObject
 
         return new MediaListSection(title, defaultExpanded);
     }
+
+    // ── Sort / Filter commands ──────────────────────────────────────
+
+    [RelayCommand]
+    private void ToggleFilterBar()
+    {
+        IsFilterBarVisible = !IsFilterBarVisible;
+
+        if (!IsFilterBarVisible && HasSearchText)
+        {
+            SearchText = string.Empty;
+            ApplyFilterToSections();
+        }
+    }
+
+    [RelayCommand]
+    private void SetSortField(string field)
+    {
+        if (!Enum.TryParse<SortField>(field, out var parsed))
+        {
+            return;
+        }
+
+        if (CurrentSortField == parsed)
+        {
+            // Same field tapped → toggle direction.
+            SortAscending = !SortAscending;
+        }
+        else
+        {
+            CurrentSortField = parsed;
+            // Default direction per field type.
+            SortAscending = parsed == SortField.Title;
+        }
+
+        ApplySortToSections();
+    }
+
+    [RelayCommand]
+    private void ToggleSortDirection()
+    {
+        SortAscending = !SortAscending;
+        ApplySortToSections();
+    }
+
+    [RelayCommand]
+    private void ClearSearch()
+    {
+        SearchText = string.Empty;
+        ApplyFilterToSections();
+    }
+
+    partial void OnSearchTextChanged(string value)
+    {
+        OnPropertyChanged(nameof(HasSearchText));
+        ApplyFilterToSections();
+    }
+
+    private void ApplySortToSections()
+    {
+        foreach (var section in Sections)
+        {
+            section.ApplySort(CurrentSortField, SortAscending);
+        }
+    }
+
+    private void ApplyFilterToSections()
+    {
+        foreach (var section in Sections)
+        {
+            section.ApplyFilter(SearchText);
+        }
+    }
+
+    // ── Details / Error commands ─────────────────────────────────────
 
     [RelayCommand]
     private void ToggleDetails()
