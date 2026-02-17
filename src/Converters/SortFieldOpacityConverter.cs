@@ -16,7 +16,7 @@ public sealed class SortFieldOpacityConverter : IValueConverter
             && parameter is string name
             && Enum.TryParse<SortField>(name, out var target))
         {
-            return current == target ? 1.0 : 0.4;
+            return current == target ? 1.0 : 0.6;
         }
 
         return 0.4;
