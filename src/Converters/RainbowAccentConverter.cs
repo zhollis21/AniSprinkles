@@ -22,8 +22,18 @@ public sealed class RainbowAccentConverter : IValueConverter
 
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        // Prefer parameter over value (useful for static strings in ConverterParameter)
-        var key = parameter?.ToString() ?? value?.ToString();
+        string? key;
+        
+        var isParameterBool = bool.TryParse(parameter?.ToString(), out var isTransparent);
+        if (parameter == null || isParameterBool)
+        {
+            key = value?.ToString();
+        }
+        else // If the parameter isn't a bool, lets treat it as the key
+        {
+            key = parameter?.ToString();
+        }
+
         if (string.IsNullOrWhiteSpace(key))
         {
             return Colors.Transparent;
@@ -37,7 +47,6 @@ public sealed class RainbowAccentConverter : IValueConverter
 
         if (Application.Current?.Resources.TryGetValue(colorKey, out var res) == true && res is Color c)
         {
-            bool.TryParse(parameter?.ToString(), out var isTransparent);
             if (isTransparent)
             {
                 var theme = Application.Current?.RequestedTheme ?? AppTheme.Unspecified;
