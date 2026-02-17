@@ -78,6 +78,7 @@
 
                 <Border Style="{StaticResource ChipBorderStyle}"
                         Padding="10,6"
+                        Stroke="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=LastUpdated}"
                         Opacity="{Binding CurrentSortField, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=LastUpdated}">
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SetSortFieldCommand}" CommandParameter="LastUpdated" />
@@ -92,6 +93,7 @@
 
                 <Border Style="{StaticResource ChipBorderStyle}"
                         Padding="10,6"
+                        Stroke="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Title}"
                         Opacity="{Binding CurrentSortField, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=Title}">
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SetSortFieldCommand}" CommandParameter="Title" />
@@ -106,6 +108,7 @@
 
                 <Border Style="{StaticResource ChipBorderStyle}"
                         Padding="10,6"
+                        Stroke="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Score}"
                         Opacity="{Binding CurrentSortField, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=Score}">
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SetSortFieldCommand}" CommandParameter="Score" />
@@ -120,6 +123,7 @@
 
                 <Border Style="{StaticResource ChipBorderStyle}"
                         Padding="10,6"
+                        Stroke="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Progress}"
                         Opacity="{Binding CurrentSortField, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=Progress}">
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SetSortFieldCommand}" CommandParameter="Progress" />
@@ -133,16 +137,27 @@
                 </Border>
 
                 <!-- Sort direction toggle -->
-                <Label Text="{Binding SortDirectionIcon}"
-                       FontSize="20"
-                       FontAttributes="Bold"
-                       Padding="8,0"
-                       VerticalOptions="Center"
-                       TextColor="{AppThemeBinding Light={StaticResource RainbowBlue}, Dark={StaticResource RainbowCyan}}">
-                    <Label.GestureRecognizers>
+                <Border BackgroundColor="Transparent"
+                        Padding="12,0,12,4"
+                        Stroke="Transparent"
+                        StrokeThickness="3">
+                    <Border.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding ToggleSortDirectionCommand}" />
-                    </Label.GestureRecognizers>
-                </Label>
+                    </Border.GestureRecognizers>
+                    <Label Text="{Binding SortDirectionIcon}"
+                           FontSize="32"
+                           FontAttributes="Bold"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center"
+                           TextColor="{AppThemeBinding Light={StaticResource RainbowBlue}, Dark={StaticResource RainbowCyan}}">
+                        <Label.Shadow>
+                            <Shadow Brush="{AppThemeBinding Light={StaticResource RainbowBlue}, Dark={StaticResource RainbowCyan}}"
+                                    Opacity="0.3"
+                                    Radius="1"
+                                    Offset="0,0" />
+                        </Label.Shadow>
+                    </Label>
+                </Border>
             </HorizontalStackLayout>
 
             <!-- Search toggle button -->

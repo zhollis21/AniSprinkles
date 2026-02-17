@@ -11,6 +11,7 @@
             <converters:StringNotNullOrEmptyConverter x:Key="StringNotNullOrEmptyConverter" />
             <converters:RainbowAccentConverter x:Key="RainbowAccentConverter" />
             <converters:SortFieldOpacityConverter x:Key="SortFieldOpacityConverter" />
+            <converters:SortFieldStrokeConverter x:Key="SortFieldStrokeConverter" />
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
