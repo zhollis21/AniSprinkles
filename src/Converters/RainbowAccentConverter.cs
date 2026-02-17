@@ -8,7 +8,7 @@ namespace AniSprinkles.Converters;
 public sealed class RainbowAccentConverter : IValueConverter
 {
     // Order matters: this is your "clock ring" sequence.
-    private static readonly string[] RainbowKeys =
+    private static readonly string[] _rainbowKeys =
     [
         "RainbowRed",
         "RainbowOrange",
@@ -20,10 +20,22 @@ public sealed class RainbowAccentConverter : IValueConverter
         "RainbowPink",
     ];
 
+    /// <summary>
+    /// Maps certain keys to other keys before hashing, ensuring related concepts
+    /// get the same color. For example, "Current" status maps to "Watching" section.
+    /// </summary>
+    private static readonly Dictionary<string, string> _keyMappings = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ["Current"] = "Watching",
+        ["LastUpdated"] = "Updated",
+        // Add more mappings as needed:
+        // ["AliasKey"] = "CanonicalKey",
+    };
+
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
         string? key;
-        
+
         var isParameterBool = bool.TryParse(parameter?.ToString(), out var isTransparent);
         if (parameter == null || isParameterBool)
         {
@@ -39,11 +51,17 @@ public sealed class RainbowAccentConverter : IValueConverter
             return Colors.Transparent;
         }
 
+        // Apply key mapping if one exists (e.g., "Current" → "Watching")
+        if (_keyMappings.TryGetValue(key, out var mappedKey))
+        {
+            key = mappedKey;
+        }
+
         // Deterministic hash (stable across runs)
         var hash = StableHash(key);
 
-        var idx = Math.Abs(hash) % RainbowKeys.Length;
-        var colorKey = RainbowKeys[idx];
+        var idx = Math.Abs(hash) % _rainbowKeys.Length;
+        var colorKey = _rainbowKeys[idx];
 
         if (Application.Current?.Resources.TryGetValue(colorKey, out var res) == true && res is Color c)
         {
