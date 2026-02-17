@@ -3,25 +3,565 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:pageModels="clr-namespace:AniSprinkles.PageModels"
              xmlns:views="clr-namespace:AniSprinkles.Views"
+             xmlns:f="clr-namespace:AniSprinkles.Resources.Fonts"
              x:Class="AniSprinkles.Pages.SettingsPage"
              x:DataType="pageModels:SettingsPageModel"
-             Title="Settings">
+             Title="Settings"
+             Shell.TitleColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Settings'}">
 
-    <VerticalStackLayout Padding="24" Spacing="16">
-        <Label Text="Settings" FontSize="28" FontAttributes="Bold" />
+    <ScrollView>
+        <VerticalStackLayout Padding="{StaticResource LayoutPadding}" Spacing="16">
 
-        <Label Text="Account" FontSize="16" FontAttributes="Bold" />
-        <Label Text="{Binding StatusMessage}"
-               FontSize="12"
-               TextColor="{StaticResource Gray400}"
-               IsVisible="{Binding HasStatusMessage}" />
-        <views:AuthActionsView />
+            <!-- Loading indicator -->
+            <ActivityIndicator IsRunning="{Binding IsLoading}"
+                               IsVisible="{Binding IsLoading}"
+                               HorizontalOptions="Center"
+                               Margin="0,20,0,0" />
 
-        <Label Text="AniList User ID" FontSize="16" FontAttributes="Bold" Margin="0,12,0,0"
-               IsVisible="{Binding AniListUserId, Converter={StaticResource StringNotNullOrEmptyConverter}}" />
-        <Label Text="{Binding AniListUserId}"
-               FontSize="14"
-               TextColor="{Binding AniListUserId, Converter={StaticResource RainbowAccentConverter}}"
-               IsVisible="{Binding AniListUserId, Converter={StaticResource StringNotNullOrEmptyConverter}}" />
-    </VerticalStackLayout>
+            <!-- ════════════════════════════════════════════ -->
+            <!-- NOT AUTHENTICATED STATE -->
+            <!-- ════════════════════════════════════════════ -->
+            <VerticalStackLayout Spacing="16"
+                                 IsVisible="{Binding IsAuthenticated, Converter={StaticResource InvertedBoolConverter}}">
+
+                <Border Style="{StaticResource CardStyle}" Padding="20">
+                    <VerticalStackLayout Spacing="12" HorizontalOptions="Center">
+                        <Image HorizontalOptions="Center" WidthRequest="48" HeightRequest="48">
+                            <Image.Source>
+                                <FontImageSource Glyph="{x:Static f:FluentUI.person_24_regular}"
+                                                 FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                                 Color="{StaticResource Gray400}"
+                                                 Size="48" />
+                            </Image.Source>
+                        </Image>
+                        <Label Text="Sign in to AniList"
+                               Style="{StaticResource Title3}"
+                               HorizontalTextAlignment="Center" />
+                        <Label Text="Connect your account to view your profile, stats, and manage your preferences."
+                               Style="{StaticResource Caption1}"
+                               TextColor="{StaticResource Gray400}"
+                               HorizontalTextAlignment="Center" />
+                        <views:AuthActionsView HorizontalOptions="Center" Margin="0,4,0,0" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Label Text="{Binding StatusMessage}"
+                       Style="{StaticResource Caption1}"
+                       TextColor="{StaticResource Gray400}"
+                       HorizontalTextAlignment="Center"
+                       IsVisible="{Binding HasStatusMessage}" />
+            </VerticalStackLayout>
+
+            <!-- ════════════════════════════════════════════ -->
+            <!-- AUTHENTICATED STATE -->
+            <!-- ════════════════════════════════════════════ -->
+            <VerticalStackLayout Spacing="16"
+                                 IsVisible="{Binding IsAuthenticated}">
+
+                <!-- Status message -->
+                <Label Text="{Binding StatusMessage}"
+                       Style="{StaticResource Caption1}"
+                       TextColor="{StaticResource Gray400}"
+                       HorizontalTextAlignment="Center"
+                       IsVisible="{Binding HasStatusMessage}" />
+
+                <!-- ═══════ 1. PROFILE HERO ═══════ -->
+                <Border Style="{StaticResource CardStyle}" Padding="0">
+                    <Grid RowDefinitions="140,*">
+                        <!-- Banner -->
+                        <Image Grid.Row="0"
+                               Source="{Binding BannerUrl}"
+                               Aspect="AspectFill"
+                               IsVisible="{Binding HasBanner}">
+                            <Image.Clip>
+                                <RoundRectangleGeometry Rect="0,0,800,140" CornerRadius="16,16,0,0" />
+                            </Image.Clip>
+                        </Image>
+                        <!-- Banner fallback gradient -->
+                        <BoxView Grid.Row="0"
+                                 BackgroundColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Profile'}"
+                                 Opacity="0.3"
+                                 IsVisible="{Binding HasBanner, Converter={StaticResource InvertedBoolConverter}}" />
+
+                        <!-- Profile info overlay -->
+                        <VerticalStackLayout Grid.Row="0" Grid.RowSpan="2"
+                                             Spacing="8"
+                                             VerticalOptions="End"
+                                             Padding="16,0,16,16"
+                                             HorizontalOptions="Center">
+
+                            <!-- Avatar -->
+                            <Border WidthRequest="80" HeightRequest="80"
+                                    StrokeShape="RoundRectangle 40"
+                                    StrokeThickness="3"
+                                    Stroke="{AppThemeBinding Light={StaticResource LightSecondaryBackground}, Dark={StaticResource DarkSecondaryBackground}}"
+                                    HorizontalOptions="Center"
+                                    Margin="0,60,0,0">
+                                <Image Source="{Binding AvatarUrl}"
+                                       Aspect="AspectFill"
+                                       WidthRequest="80"
+                                       HeightRequest="80" />
+                            </Border>
+
+                            <!-- Username -->
+                            <Label Text="{Binding UserName}"
+                                   Style="{StaticResource Title1}"
+                                   HorizontalTextAlignment="Center"
+                                   TextColor="{Binding UserName, Converter={StaticResource RainbowAccentConverter}}" />
+
+                            <!-- About -->
+                            <Label Text="{Binding UserAbout}"
+                                   Style="{StaticResource Caption1}"
+                                   TextColor="{StaticResource Gray400}"
+                                   HorizontalTextAlignment="Center"
+                                   MaxLines="3"
+                                   LineBreakMode="TailTruncation"
+                                   IsVisible="{Binding HasAbout}" />
+
+                            <!-- Profile link chip -->
+                            <Border StrokeShape="RoundRectangle 12"
+                                    StrokeThickness="1"
+                                    Stroke="{StaticResource Gray600}"
+                                    Padding="12,6"
+                                    BackgroundColor="Transparent"
+                                    HorizontalOptions="Center">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding OpenAniListProfileCommand}" />
+                                </Border.GestureRecognizers>
+                                <HorizontalStackLayout Spacing="6">
+                                    <Image WidthRequest="14" HeightRequest="14" VerticalOptions="Center">
+                                        <Image.Source>
+                                            <FontImageSource Glyph="{x:Static f:FluentUI.globe_24_regular}"
+                                                             FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                                             Color="{StaticResource Gray400}"
+                                                             Size="14" />
+                                        </Image.Source>
+                                    </Image>
+                                    <Label Text="View AniList Profile"
+                                           Style="{StaticResource Caption1}"
+                                           TextColor="{StaticResource Gray400}"
+                                           VerticalTextAlignment="Center" />
+                                </HorizontalStackLayout>
+                            </Border>
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+
+                <!-- ═══════ 2. ANIME STATISTICS ═══════ -->
+                <Border Style="{StaticResource AccentCardBorderStyle}" Padding="16">
+                    <VerticalStackLayout Spacing="12">
+                        <HorizontalStackLayout Spacing="8">
+                            <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
+                                <Image.Source>
+                                    <FontImageSource Glyph="{x:Static f:FluentUI.data_bar_vertical_24_regular}"
+                                                     FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                                     Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Stats'}"
+                                                     Size="20" />
+                                </Image.Source>
+                            </Image>
+                            <Label Text="Anime Stats"
+                                   Style="{StaticResource Title3}"
+                                   TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Stats'}" />
+                        </HorizontalStackLayout>
+
+                        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto"
+                              ColumnSpacing="12" RowSpacing="12">
+                            <Border Grid.Row="0" Grid.Column="0"
+                                    Style="{StaticResource CardStyle}" Padding="12">
+                                <VerticalStackLayout Spacing="2" HorizontalOptions="Center">
+                                    <Label Text="{Binding TotalAnime}"
+                                           Style="{StaticResource Title2}"
+                                           HorizontalTextAlignment="Center"
+                                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Anime'}" />
+                                    <Label Text="Total Anime"
+                                           Style="{StaticResource Caption1}"
+                                           TextColor="{StaticResource Gray400}"
+                                           HorizontalTextAlignment="Center" />
+                                </VerticalStackLayout>
+                            </Border>
+                            <Border Grid.Row="0" Grid.Column="1"
+                                    Style="{StaticResource CardStyle}" Padding="12">
+                                <VerticalStackLayout Spacing="2" HorizontalOptions="Center">
+                                    <Label Text="{Binding EpisodesWatched}"
+                                           Style="{StaticResource Title2}"
+                                           HorizontalTextAlignment="Center"
+                                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Episodes'}" />
+                                    <Label Text="Episodes"
+                                           Style="{StaticResource Caption1}"
+                                           TextColor="{StaticResource Gray400}"
+                                           HorizontalTextAlignment="Center" />
+                                </VerticalStackLayout>
+                            </Border>
+                            <Border Grid.Row="1" Grid.Column="0"
+                                    Style="{StaticResource CardStyle}" Padding="12">
+                                <VerticalStackLayout Spacing="2" HorizontalOptions="Center">
+                                    <Label Text="{Binding DaysWatched}"
+                                           Style="{StaticResource Title2}"
+                                           HorizontalTextAlignment="Center"
+                                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Days'}" />
+                                    <Label Text="Days Watched"
+                                           Style="{StaticResource Caption1}"
+                                           TextColor="{StaticResource Gray400}"
+                                           HorizontalTextAlignment="Center" />
+                                </VerticalStackLayout>
+                            </Border>
+                            <Border Grid.Row="1" Grid.Column="1"
+                                    Style="{StaticResource CardStyle}" Padding="12">
+                                <VerticalStackLayout Spacing="2" HorizontalOptions="Center">
+                                    <Label Text="{Binding MeanScore}"
+                                           Style="{StaticResource Title2}"
+                                           HorizontalTextAlignment="Center"
+                                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Score'}" />
+                                    <Label Text="Mean Score"
+                                           Style="{StaticResource Caption1}"
+                                           TextColor="{StaticResource Gray400}"
+                                           HorizontalTextAlignment="Center" />
+                                </VerticalStackLayout>
+                            </Border>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- ═══════ 3. DISPLAY PREFERENCES ═══════ -->
+                <Border Style="{StaticResource SectionHeaderStyle}"
+                        Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}">
+                    <HorizontalStackLayout Spacing="8">
+                        <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
+                            <Image.Source>
+                                <FontImageSource Glyph="{x:Static f:FluentUI.translate_24_regular}"
+                                                 FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                                 Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Display'}"
+                                                 Size="20" />
+                            </Image.Source>
+                        </Image>
+                        <Label Text="Display Preferences"
+                               Style="{StaticResource Title3}"
+                               TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Display'}" />
+                    </HorizontalStackLayout>
+                </Border>
+
+                <Border Style="{StaticResource CardStyle}" Padding="16">
+                    <VerticalStackLayout Spacing="16">
+                        <!-- Title Language -->
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="Title Language" Style="{StaticResource Body1Strong}" />
+                            <FlexLayout Wrap="Wrap" JustifyContent="Start" AlignItems="Center">
+                                <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
+                                        Stroke="{Binding SelectedTitleLanguage, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Romaji}"
+                                        Opacity="{Binding SelectedTitleLanguage, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=Romaji}">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding SetTitleLanguageCommand}" CommandParameter="Romaji" />
+                                    </Border.GestureRecognizers>
+                                    <Label Text="Romaji" Style="{StaticResource ChipLabelStyle}"
+                                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Romaji'}" />
+                                </Border>
+                                <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
+                                        Stroke="{Binding SelectedTitleLanguage, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=English}"
+                                        Opacity="{Binding SelectedTitleLanguage, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=English}">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding SetTitleLanguageCommand}" CommandParameter="English" />
+                                    </Border.GestureRecognizers>
+                                    <Label Text="English" Style="{StaticResource ChipLabelStyle}"
+                                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='English'}" />
+                                </Border>
+                                <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
+                                        Stroke="{Binding SelectedTitleLanguage, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Native}"
+                                        Opacity="{Binding SelectedTitleLanguage, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=Native}">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding SetTitleLanguageCommand}" CommandParameter="Native" />
+                                    </Border.GestureRecognizers>
+                                    <Label Text="Native" Style="{StaticResource ChipLabelStyle}"
+                                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Native'}" />
+                                </Border>
+                                <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
+                                        Stroke="{Binding SelectedTitleLanguage, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=RomajiStylised}"
+                                        Opacity="{Binding SelectedTitleLanguage, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=RomajiStylised}">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding SetTitleLanguageCommand}" CommandParameter="RomajiStylised" />
+                                    </Border.GestureRecognizers>
+                                    <Label Text="Romaji Stylised" Style="{StaticResource ChipLabelStyle}"
+                                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='RomajiStylised'}" />
+                                </Border>
+                                <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
+                                        Stroke="{Binding SelectedTitleLanguage, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=EnglishStylised}"
+                                        Opacity="{Binding SelectedTitleLanguage, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=EnglishStylised}">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding SetTitleLanguageCommand}" CommandParameter="EnglishStylised" />
+                                    </Border.GestureRecognizers>
+                                    <Label Text="English Stylised" Style="{StaticResource ChipLabelStyle}"
+                                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='EnglishStylised'}" />
+                                </Border>
+                                <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
+                                        Stroke="{Binding SelectedTitleLanguage, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=NativeStylised}"
+                                        Opacity="{Binding SelectedTitleLanguage, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=NativeStylised}">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding SetTitleLanguageCommand}" CommandParameter="NativeStylised" />
+                                    </Border.GestureRecognizers>
+                                    <Label Text="Native Stylised" Style="{StaticResource ChipLabelStyle}"
+                                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='NativeStylised'}" />
+                                </Border>
+                            </FlexLayout>
+                        </VerticalStackLayout>
+
+                        <!-- Staff Name Language -->
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="Staff Name Language" Style="{StaticResource Body1Strong}" />
+                            <HorizontalStackLayout Spacing="6">
+                                <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6"
+                                        Stroke="{Binding SelectedStaffNameLanguage, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=RomajiWestern}"
+                                        Opacity="{Binding SelectedStaffNameLanguage, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=RomajiWestern}">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding SetStaffNameLanguageCommand}" CommandParameter="RomajiWestern" />
+                                    </Border.GestureRecognizers>
+                                    <Label Text="Western" Style="{StaticResource ChipLabelStyle}"
+                                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='RomajiWestern'}" />
+                                </Border>
+                                <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6"
+                                        Stroke="{Binding SelectedStaffNameLanguage, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Romaji}"
+                                        Opacity="{Binding SelectedStaffNameLanguage, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=Romaji}">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding SetStaffNameLanguageCommand}" CommandParameter="Romaji" />
+                                    </Border.GestureRecognizers>
+                                    <Label Text="Romaji" Style="{StaticResource ChipLabelStyle}"
+                                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Romaji'}" />
+                                </Border>
+                                <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6"
+                                        Stroke="{Binding SelectedStaffNameLanguage, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Native}"
+                                        Opacity="{Binding SelectedStaffNameLanguage, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=Native}">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding SetStaffNameLanguageCommand}" CommandParameter="Native" />
+                                    </Border.GestureRecognizers>
+                                    <Label Text="Native" Style="{StaticResource ChipLabelStyle}"
+                                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Native'}" />
+                                </Border>
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+
+                        <!-- Score Format -->
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="Score Format" Style="{StaticResource Body1Strong}" />
+                            <FlexLayout Wrap="Wrap" JustifyContent="Start" AlignItems="Center">
+                                <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
+                                        Stroke="{Binding SelectedScoreFormat, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Point100}"
+                                        Opacity="{Binding SelectedScoreFormat, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=Point100}">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding SetScoreFormatCommand}" CommandParameter="Point100" />
+                                    </Border.GestureRecognizers>
+                                    <Label Text="100 Point" Style="{StaticResource ChipLabelStyle}"
+                                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Point100'}" />
+                                </Border>
+                                <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
+                                        Stroke="{Binding SelectedScoreFormat, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Point10Decimal}"
+                                        Opacity="{Binding SelectedScoreFormat, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=Point10Decimal}">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding SetScoreFormatCommand}" CommandParameter="Point10Decimal" />
+                                    </Border.GestureRecognizers>
+                                    <Label Text="10 Decimal" Style="{StaticResource ChipLabelStyle}"
+                                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Point10Decimal'}" />
+                                </Border>
+                                <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
+                                        Stroke="{Binding SelectedScoreFormat, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Point10}"
+                                        Opacity="{Binding SelectedScoreFormat, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=Point10}">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding SetScoreFormatCommand}" CommandParameter="Point10" />
+                                    </Border.GestureRecognizers>
+                                    <Label Text="10 Point" Style="{StaticResource ChipLabelStyle}"
+                                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Point10'}" />
+                                </Border>
+                                <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
+                                        Stroke="{Binding SelectedScoreFormat, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Point5}"
+                                        Opacity="{Binding SelectedScoreFormat, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=Point5}">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding SetScoreFormatCommand}" CommandParameter="Point5" />
+                                    </Border.GestureRecognizers>
+                                    <Label Text="5 Star" Style="{StaticResource ChipLabelStyle}"
+                                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Point5'}" />
+                                </Border>
+                                <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
+                                        Stroke="{Binding SelectedScoreFormat, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Point3}"
+                                        Opacity="{Binding SelectedScoreFormat, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=Point3}">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding SetScoreFormatCommand}" CommandParameter="Point3" />
+                                    </Border.GestureRecognizers>
+                                    <Label Text="3 Smiley" Style="{StaticResource ChipLabelStyle}"
+                                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Point3'}" />
+                                </Border>
+                            </FlexLayout>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- ═══════ 4. CONTENT & PRIVACY ═══════ -->
+                <Border Style="{StaticResource SectionHeaderStyle}"
+                        Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}">
+                    <HorizontalStackLayout Spacing="8">
+                        <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
+                            <Image.Source>
+                                <FontImageSource Glyph="{x:Static f:FluentUI.shield_lock_24_regular}"
+                                                 FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                                 Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Privacy'}"
+                                                 Size="20" />
+                            </Image.Source>
+                        </Image>
+                        <Label Text="Content &amp; Privacy"
+                               Style="{StaticResource Title3}"
+                               TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Privacy'}" />
+                    </HorizontalStackLayout>
+                </Border>
+
+                <Border Style="{StaticResource CardStyle}" Padding="16">
+                    <VerticalStackLayout Spacing="4">
+                        <Grid ColumnDefinitions="*,Auto" Padding="0,8">
+                            <VerticalStackLayout VerticalOptions="Center">
+                                <Label Text="Display Adult Content" Style="{StaticResource Body1Strong}" />
+                                <Label Text="Show 18+ content in search and lists"
+                                       Style="{StaticResource Caption1}" TextColor="{StaticResource Gray400}" />
+                            </VerticalStackLayout>
+                            <Switch Grid.Column="1" IsToggled="{Binding DisplayAdultContent}" VerticalOptions="Center" />
+                        </Grid>
+
+                        <BoxView HeightRequest="1"
+                                 Color="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}" />
+
+                        <Grid ColumnDefinitions="*,Auto" Padding="0,8">
+                            <VerticalStackLayout VerticalOptions="Center">
+                                <Label Text="Airing Notifications" Style="{StaticResource Body1Strong}" />
+                                <Label Text="Get notified when watched anime airs"
+                                       Style="{StaticResource Caption1}" TextColor="{StaticResource Gray400}" />
+                            </VerticalStackLayout>
+                            <Switch Grid.Column="1" IsToggled="{Binding AiringNotifications}" VerticalOptions="Center" />
+                        </Grid>
+
+                        <BoxView HeightRequest="1"
+                                 Color="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}" />
+
+                        <Grid ColumnDefinitions="*,Auto" Padding="0,8">
+                            <VerticalStackLayout VerticalOptions="Center">
+                                <Label Text="Restrict Messages" Style="{StaticResource Body1Strong}" />
+                                <Label Text="Only receive messages from users you follow"
+                                       Style="{StaticResource Caption1}" TextColor="{StaticResource Gray400}" />
+                            </VerticalStackLayout>
+                            <Switch Grid.Column="1" IsToggled="{Binding RestrictMessagesToFollowing}" VerticalOptions="Center" />
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- ═══════ 5. NOTIFICATION PREFERENCES ═══════ -->
+                <Border Style="{StaticResource SectionHeaderStyle}"
+                        Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}">
+                    <HorizontalStackLayout Spacing="8">
+                        <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
+                            <Image.Source>
+                                <FontImageSource Glyph="{x:Static f:FluentUI.alert_24_regular}"
+                                                 FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                                 Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Notifications'}"
+                                                 Size="20" />
+                            </Image.Source>
+                        </Image>
+                        <Label Text="Notifications"
+                               Style="{StaticResource Title3}"
+                               TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Notifications'}" />
+                    </HorizontalStackLayout>
+                </Border>
+
+                <Border Style="{StaticResource CardStyle}" Padding="12,4">
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding NotificationItems}" Spacing="0">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="pageModels:NotificationToggleItem">
+                                <Grid ColumnDefinitions="Auto,*,Auto" Padding="4,8" ColumnSpacing="10">
+                                    <Label Grid.Column="0"
+                                           Text="{Binding Category}"
+                                           Style="{StaticResource Caption2}"
+                                           TextColor="{Binding Category, Converter={StaticResource RainbowAccentConverter}}"
+                                           WidthRequest="50"
+                                           VerticalTextAlignment="Center" />
+                                    <Label Grid.Column="1"
+                                           Text="{Binding DisplayName}"
+                                           Style="{StaticResource Body2}"
+                                           VerticalTextAlignment="Center" />
+                                    <Switch Grid.Column="2"
+                                            IsToggled="{Binding IsEnabled}"
+                                            VerticalOptions="Center" />
+                                </Grid>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- ═══════ 6. ACCOUNT ═══════ -->
+                <Border Style="{StaticResource SectionHeaderStyle}"
+                        Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}">
+                    <HorizontalStackLayout Spacing="8">
+                        <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
+                            <Image.Source>
+                                <FontImageSource Glyph="{x:Static f:FluentUI.person_24_regular}"
+                                                 FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                                 Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Account'}"
+                                                 Size="20" />
+                            </Image.Source>
+                        </Image>
+                        <Label Text="Account"
+                               Style="{StaticResource Title3}"
+                               TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Account'}" />
+                    </HorizontalStackLayout>
+                </Border>
+
+                <Border Style="{StaticResource CardStyle}" Padding="16">
+                    <VerticalStackLayout Spacing="12">
+                        <views:AuthActionsView />
+                        <Grid ColumnDefinitions="*,Auto"
+                              IsVisible="{Binding AniListUserId, Converter={StaticResource StringNotNullOrEmptyConverter}}">
+                            <Label Text="User ID" Style="{StaticResource Caption1}"
+                                   TextColor="{StaticResource Gray400}" VerticalTextAlignment="Center" />
+                            <Label Grid.Column="1" Text="{Binding AniListUserId}"
+                                   Style="{StaticResource Body2Strong}"
+                                   TextColor="{Binding AniListUserId, Converter={StaticResource RainbowAccentConverter}}"
+                                   VerticalTextAlignment="Center" />
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- ═══════ 7. SAVE BUTTON ═══════ -->
+                <Button Text="Save Settings"
+                        Command="{Binding SaveCommand}"
+                        IsVisible="{Binding HasUnsavedChanges}"
+                        Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        Margin="0,4" />
+
+                <ActivityIndicator IsRunning="{Binding IsSaving}"
+                                   IsVisible="{Binding IsSaving}"
+                                   HorizontalOptions="Center" />
+
+                <!-- ═══════ 8. ABOUT APP ═══════ -->
+                <Border Style="{StaticResource CardStyle}" Padding="16" Margin="0,8,0,24">
+                    <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
+                        <HorizontalStackLayout Spacing="8" HorizontalOptions="Center">
+                            <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
+                                <Image.Source>
+                                    <FontImageSource Glyph="{x:Static f:FluentUI.info_24_regular}"
+                                                     FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                                     Color="{StaticResource Gray400}"
+                                                     Size="20" />
+                                </Image.Source>
+                            </Image>
+                            <Label Text="AniSprinkles"
+                                   Style="{StaticResource Title3}"
+                                   HorizontalTextAlignment="Center" />
+                        </HorizontalStackLayout>
+                        <Label Text="{Binding AppVersion}"
+                               Style="{StaticResource Caption1}"
+                               TextColor="{StaticResource Gray400}"
+                               HorizontalTextAlignment="Center" />
+                        <Label Text="Powered by AniList API"
+                               Style="{StaticResource Caption2}"
+                               TextColor="{StaticResource Gray400}"
+                               HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </Border>
+
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

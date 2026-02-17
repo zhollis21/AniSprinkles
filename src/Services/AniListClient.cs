@@ -150,6 +150,86 @@ public class AniListClient : IAniListClient
         return await GetViewerIdAsync(token, cancellationToken).ConfigureAwait(false);
     }
 
+    public async Task<AniListUser> GetViewerAsync(CancellationToken cancellationToken = default)
+    {
+        var token = await RequireAccessTokenAsync(cancellationToken).ConfigureAwait(false);
+        var data = await SendAsync<ViewerFullData>(
+            "ViewerFull",
+            ViewerFullQuery,
+            null,
+            token,
+            cancellationToken).ConfigureAwait(false);
+
+        var viewer = data.Viewer ?? throw new InvalidOperationException("AniList viewer data missing.");
+
+        // Cache viewer id while we have it
+        _cachedViewerId = viewer.Id;
+        _cachedViewerToken = token;
+
+        return MapUser(viewer);
+    }
+
+    public async Task<AniListUser> UpdateUserAsync(UpdateUserRequest request, CancellationToken cancellationToken = default)
+    {
+        var token = await RequireAccessTokenAsync(cancellationToken).ConfigureAwait(false);
+
+        var variables = new Dictionary<string, object?>();
+        if (request.TitleLanguage.HasValue)
+        {
+            variables["titleLanguage"] = ToTitleLanguageString(request.TitleLanguage.Value);
+        }
+
+        if (request.DisplayAdultContent.HasValue)
+        {
+            variables["displayAdultContent"] = request.DisplayAdultContent.Value;
+        }
+
+        if (request.AiringNotifications.HasValue)
+        {
+            variables["airingNotifications"] = request.AiringNotifications.Value;
+        }
+
+        if (request.ScoreFormat.HasValue)
+        {
+            variables["scoreFormat"] = ToScoreFormatString(request.ScoreFormat.Value);
+        }
+
+        if (request.ProfileColor is not null)
+        {
+            variables["profileColor"] = request.ProfileColor;
+        }
+
+        if (request.StaffNameLanguage.HasValue)
+        {
+            variables["staffNameLanguage"] = ToStaffNameLanguageString(request.StaffNameLanguage.Value);
+        }
+
+        if (request.RestrictMessagesToFollowing.HasValue)
+        {
+            variables["restrictMessagesToFollowing"] = request.RestrictMessagesToFollowing.Value;
+        }
+
+        if (request.ActivityMergeTime.HasValue)
+        {
+            variables["activityMergeTime"] = request.ActivityMergeTime.Value;
+        }
+
+        if (request.NotificationOptions is not null)
+        {
+            variables["notificationOptions"] = request.NotificationOptions.Select(n => new { type = n.Type, enabled = n.Enabled }).ToList();
+        }
+
+        var data = await SendAsync<UpdateUserData>(
+            "UpdateUser",
+            UpdateUserMutation,
+            variables,
+            token,
+            cancellationToken).ConfigureAwait(false);
+
+        var user = data.UpdateUser ?? throw new InvalidOperationException("AniList update user response missing.");
+        return MapUser(user);
+    }
+
     private async Task<string> RequireAccessTokenAsync(CancellationToken cancellationToken)
     {
         var token = await _authService.GetAccessTokenAsync(cancellationToken).ConfigureAwait(false);
@@ -328,6 +408,121 @@ public class AniListClient : IAniListClient
         };
     }
 
+    private static AniListUser MapUser(ViewerFullDto dto)
+    {
+        return new AniListUser
+        {
+            Id = dto.Id,
+            Name = dto.Name ?? string.Empty,
+            About = dto.About,
+            AvatarLarge = dto.Avatar?.Large,
+            AvatarMedium = dto.Avatar?.Medium,
+            BannerImage = dto.BannerImage,
+            SiteUrl = dto.SiteUrl,
+            DonatorTier = dto.DonatorTier,
+            DonatorBadge = dto.DonatorBadge,
+            ScoreFormat = ParseScoreFormat(dto.MediaListOptions?.ScoreFormat),
+            RowOrder = dto.MediaListOptions?.RowOrder,
+            Options = new UserOptions
+            {
+                TitleLanguage = ParseTitleLanguage(dto.Options?.TitleLanguage),
+                DisplayAdultContent = dto.Options?.DisplayAdultContent ?? false,
+                AiringNotifications = dto.Options?.AiringNotifications ?? false,
+                ProfileColor = dto.Options?.ProfileColor ?? string.Empty,
+                Timezone = dto.Options?.Timezone,
+                ActivityMergeTime = dto.Options?.ActivityMergeTime ?? 0,
+                StaffNameLanguage = ParseStaffNameLanguage(dto.Options?.StaffNameLanguage),
+                RestrictMessagesToFollowing = dto.Options?.RestrictMessagesToFollowing ?? false,
+                NotificationOptions = dto.Options?.NotificationOptions?
+                    .Select(n => new NotificationOption { Type = n.Type ?? string.Empty, Enabled = n.Enabled ?? false })
+                    .ToList() ?? []
+            },
+            AnimeStatistics = new UserAnimeStatistics
+            {
+                Count = dto.Statistics?.Anime?.Count ?? 0,
+                MeanScore = dto.Statistics?.Anime?.MeanScore ?? 0,
+                MinutesWatched = dto.Statistics?.Anime?.MinutesWatched ?? 0,
+                EpisodesWatched = dto.Statistics?.Anime?.EpisodesWatched ?? 0
+            }
+        };
+    }
+
+    private static UserTitleLanguage ParseTitleLanguage(string? value)
+    {
+        return value?.ToUpperInvariant() switch
+        {
+            "ROMAJI" => UserTitleLanguage.Romaji,
+            "ENGLISH" => UserTitleLanguage.English,
+            "NATIVE" => UserTitleLanguage.Native,
+            "ROMAJI_STYLISED" => UserTitleLanguage.RomajiStylised,
+            "ENGLISH_STYLISED" => UserTitleLanguage.EnglishStylised,
+            "NATIVE_STYLISED" => UserTitleLanguage.NativeStylised,
+            _ => UserTitleLanguage.Romaji
+        };
+    }
+
+    private static string ToTitleLanguageString(UserTitleLanguage value)
+    {
+        return value switch
+        {
+            UserTitleLanguage.Romaji => "ROMAJI",
+            UserTitleLanguage.English => "ENGLISH",
+            UserTitleLanguage.Native => "NATIVE",
+            UserTitleLanguage.RomajiStylised => "ROMAJI_STYLISED",
+            UserTitleLanguage.EnglishStylised => "ENGLISH_STYLISED",
+            UserTitleLanguage.NativeStylised => "NATIVE_STYLISED",
+            _ => "ROMAJI"
+        };
+    }
+
+    private static ScoreFormat ParseScoreFormat(string? value)
+    {
+        return value?.ToUpperInvariant() switch
+        {
+            "POINT_100" => ScoreFormat.Point100,
+            "POINT_10_DECIMAL" => ScoreFormat.Point10Decimal,
+            "POINT_10" => ScoreFormat.Point10,
+            "POINT_5" => ScoreFormat.Point5,
+            "POINT_3" => ScoreFormat.Point3,
+            _ => ScoreFormat.Point10
+        };
+    }
+
+    private static string ToScoreFormatString(ScoreFormat value)
+    {
+        return value switch
+        {
+            ScoreFormat.Point100 => "POINT_100",
+            ScoreFormat.Point10Decimal => "POINT_10_DECIMAL",
+            ScoreFormat.Point10 => "POINT_10",
+            ScoreFormat.Point5 => "POINT_5",
+            ScoreFormat.Point3 => "POINT_3",
+            _ => "POINT_10"
+        };
+    }
+
+    private static UserStaffNameLanguage ParseStaffNameLanguage(string? value)
+    {
+        return value?.ToUpperInvariant() switch
+        {
+            "ROMAJI_WESTERN" => UserStaffNameLanguage.RomajiWestern,
+            "ROMAJI" => UserStaffNameLanguage.Romaji,
+            "NATIVE" => UserStaffNameLanguage.Native,
+            _ => UserStaffNameLanguage.RomajiWestern
+        };
+    }
+
+    private static string ToStaffNameLanguageString(UserStaffNameLanguage value)
+    {
+        return value switch
+        {
+            UserStaffNameLanguage.RomajiWestern => "ROMAJI_WESTERN",
+            UserStaffNameLanguage.Romaji => "ROMAJI",
+            UserStaffNameLanguage.Native => "NATIVE",
+            _ => "ROMAJI_WESTERN"
+        };
+    }
+
     private sealed class GraphQlRequest
     {
         [JsonPropertyName("query")]
@@ -408,6 +603,75 @@ public class AniListClient : IAniListClient
     private sealed class ViewerDto
     {
         public int Id { get; set; }
+    }
+
+    private sealed class ViewerFullData
+    {
+        public ViewerFullDto? Viewer { get; set; }
+    }
+
+    private sealed class UpdateUserData
+    {
+        public ViewerFullDto? UpdateUser { get; set; }
+    }
+
+    private sealed class ViewerFullDto
+    {
+        public int Id { get; set; }
+        public string? Name { get; set; }
+        public string? About { get; set; }
+        public UserAvatarDto? Avatar { get; set; }
+        public string? BannerImage { get; set; }
+        public string? SiteUrl { get; set; }
+        public int? DonatorTier { get; set; }
+        public string? DonatorBadge { get; set; }
+        public UserOptionsDto? Options { get; set; }
+        public MediaListOptionsDto? MediaListOptions { get; set; }
+        public UserStatisticTypesDto? Statistics { get; set; }
+    }
+
+    private sealed class UserAvatarDto
+    {
+        public string? Large { get; set; }
+        public string? Medium { get; set; }
+    }
+
+    private sealed class UserOptionsDto
+    {
+        public string? TitleLanguage { get; set; }
+        public bool? DisplayAdultContent { get; set; }
+        public bool? AiringNotifications { get; set; }
+        public string? ProfileColor { get; set; }
+        public string? Timezone { get; set; }
+        public int? ActivityMergeTime { get; set; }
+        public string? StaffNameLanguage { get; set; }
+        public bool? RestrictMessagesToFollowing { get; set; }
+        public List<NotificationOptionDto>? NotificationOptions { get; set; }
+    }
+
+    private sealed class NotificationOptionDto
+    {
+        public string? Type { get; set; }
+        public bool? Enabled { get; set; }
+    }
+
+    private sealed class MediaListOptionsDto
+    {
+        public string? ScoreFormat { get; set; }
+        public string? RowOrder { get; set; }
+    }
+
+    private sealed class UserStatisticTypesDto
+    {
+        public UserStatisticsDto? Anime { get; set; }
+    }
+
+    private sealed class UserStatisticsDto
+    {
+        public int? Count { get; set; }
+        public double? MeanScore { get; set; }
+        public int? MinutesWatched { get; set; }
+        public int? EpisodesWatched { get; set; }
     }
 
     private sealed class MediaDto
@@ -576,6 +840,80 @@ mutation SaveMediaListEntry($mediaId: Int, $status: MediaListStatus, $progress: 
       seasonYear
       averageScore
       popularity
+    }
+  }
+}";
+
+    private const string ViewerFullQuery = @"
+query ViewerFull {
+  Viewer {
+    id
+    name
+    about
+    avatar { large medium }
+    bannerImage
+    siteUrl
+    donatorTier
+    donatorBadge
+    options {
+      titleLanguage
+      displayAdultContent
+      airingNotifications
+      profileColor
+      timezone
+      activityMergeTime
+      staffNameLanguage
+      restrictMessagesToFollowing
+      notificationOptions { type enabled }
+    }
+    mediaListOptions {
+      scoreFormat
+      rowOrder
+    }
+    statistics {
+      anime {
+        count
+        meanScore
+        minutesWatched
+        episodesWatched
+      }
+    }
+  }
+}";
+
+    private const string UpdateUserMutation = @"
+mutation UpdateUser($titleLanguage: UserTitleLanguage, $displayAdultContent: Boolean, $airingNotifications: Boolean, $scoreFormat: ScoreFormat, $profileColor: String, $staffNameLanguage: UserStaffNameLanguage, $restrictMessagesToFollowing: Boolean, $activityMergeTime: Int, $notificationOptions: [NotificationOptionInput]) {
+  UpdateUser(titleLanguage: $titleLanguage, displayAdultContent: $displayAdultContent, airingNotifications: $airingNotifications, scoreFormat: $scoreFormat, profileColor: $profileColor, staffNameLanguage: $staffNameLanguage, restrictMessagesToFollowing: $restrictMessagesToFollowing, activityMergeTime: $activityMergeTime, notificationOptions: $notificationOptions) {
+    id
+    name
+    about
+    avatar { large medium }
+    bannerImage
+    siteUrl
+    donatorTier
+    donatorBadge
+    options {
+      titleLanguage
+      displayAdultContent
+      airingNotifications
+      profileColor
+      timezone
+      activityMergeTime
+      staffNameLanguage
+      restrictMessagesToFollowing
+      notificationOptions { type enabled }
+    }
+    mediaListOptions {
+      scoreFormat
+      rowOrder
+    }
+    statistics {
+      anime {
+        count
+        meanScore
+        minutesWatched
+        episodesWatched
+      }
     }
   }
 }";

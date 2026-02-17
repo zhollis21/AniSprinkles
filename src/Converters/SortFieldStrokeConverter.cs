@@ -1,12 +1,11 @@
 using System.Globalization;
-using AniSprinkles.PageModels;
 using Microsoft.Maui.Graphics;
 
 namespace AniSprinkles.Converters;
 
 /// <summary>
-/// Returns a rainbow accent color when the bound <see cref="SortField"/> matches the
-/// <c>ConverterParameter</c>, and Gray600 otherwise. Used to highlight the active sort chip's border.
+/// Returns a rainbow accent color when the bound value's string representation matches the
+/// <c>ConverterParameter</c>, and Gray600 otherwise. Used to highlight the active chip's border.
 /// </summary>
 public sealed class SortFieldStrokeConverter : IValueConverter
 {
@@ -14,11 +13,10 @@ public sealed class SortFieldStrokeConverter : IValueConverter
 
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is SortField current
-            && parameter is string name
-            && Enum.TryParse<SortField>(name, out var target))
+        if (value is not null && parameter is string name)
         {
-            if (current == target)
+            var currentName = value.ToString();
+            if (string.Equals(currentName, name, StringComparison.Ordinal))
             {
                 // Selected: use rainbow accent color
                 return RainbowConverter.Convert(name, targetType, null, culture);

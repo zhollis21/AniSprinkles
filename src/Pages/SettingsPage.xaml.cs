@@ -2,7 +2,11 @@ namespace AniSprinkles.Pages;
 
 public partial class SettingsPage : ContentPage
 {
+    private static readonly TimeSpan DeferredLoadDelay = TimeSpan.FromMilliseconds(120);
+
     private SettingsPageModel? _viewModel;
+    private bool _hasAppeared;
+    private int _loadVersion;
 
     public SettingsPage()
     {
@@ -18,13 +22,31 @@ public partial class SettingsPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
+        _hasAppeared = true;
         EnsureViewModel();
         if (_viewModel is null)
         {
             return;
         }
 
+        // Let Shell transition animation complete before loading heavy data.
+        var version = ++_loadVersion;
+        await Task.Yield();
+        await Task.Delay(DeferredLoadDelay);
+
+        if (!_hasAppeared || version != _loadVersion)
+        {
+            return;
+        }
+
         await _viewModel.LoadAsync();
+    }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+        _hasAppeared = false;
+        _loadVersion++;
     }
 
     protected override void OnHandlerChanged()

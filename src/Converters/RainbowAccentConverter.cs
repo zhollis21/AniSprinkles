@@ -97,6 +97,7 @@ public sealed class RainbowAccentConverter : IValueConverter
                 hash ^= ch;
                 hash *= fnvPrime;
             }
+
             return hash;
         }
     }

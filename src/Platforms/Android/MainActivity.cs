@@ -26,6 +26,13 @@ public class MainActivity : MauiAppCompatActivity
     {
         base.OnCreate(savedInstanceState);
 
+        // Catch unhandled exceptions from Java/Android side
+        Android.Runtime.AndroidEnvironment.UnhandledExceptionRaiser += (sender, args) =>
+        {
+            Log.Error(nameof(MainActivity), $"Unhandled Android exception: {args.Exception}");
+            args.Handled = true;
+        };
+
         try
         {
             var window = Window;
@@ -93,7 +100,9 @@ public class MainActivity : MauiAppCompatActivity
         {
             var app = Microsoft.Maui.Controls.Application.Current;
             if (app == null)
+            {
                 return AndroidColors.White;
+            }
 
             // Get the appropriate background color based on theme
             var isDarkTheme = app.RequestedTheme == AppTheme.Dark;
