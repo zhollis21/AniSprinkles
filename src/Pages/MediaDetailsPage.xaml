@@ -7,33 +7,38 @@
              Title="{Binding PageTitle}"
              Shell.TitleColor="{Binding PageTitle, Converter={StaticResource RainbowAccentConverter}}">
 
-    <Grid Padding="24" RowDefinitions="Auto,Auto,*" RowSpacing="12">
-        <HorizontalStackLayout Spacing="12">
-            <Label Text="{Binding StatusMessage}"
-                   IsVisible="{Binding HasStatusMessage}"
-                   FontSize="12"
-                   TextColor="{StaticResource Gray400}" />
-            <Button Text="Details"
-                    Command="{Binding ToggleDetailsCommand}"
-                    IsVisible="{Binding HasErrorDetails}" />
-        </HorizontalStackLayout>
-
-        <VerticalStackLayout Grid.Row="1"
-                             Spacing="8"
-                             IsVisible="{Binding IsErrorDetailsVisible}">
-            <ScrollView HeightRequest="160">
-                <Label Text="{Binding ErrorDetails}"
-                       FontSize="12"
-                       LineBreakMode="WordWrap"
-                       TextColor="{StaticResource Gray400}" />
-            </ScrollView>
+    <Grid Padding="24" RowDefinitions="Auto,*" RowSpacing="8">
+        <!-- Row 0: Status/Error (consolidated) -->
+        <VerticalStackLayout Grid.Row="0" Spacing="8">
+            <!-- Status + Details -->
             <HorizontalStackLayout Spacing="12">
-                <Button Text="Copy" Command="{Binding CopyErrorCommand}" />
-                <Button Text="Share" Command="{Binding ShareErrorCommand}" />
+                <Label Text="{Binding StatusMessage}"
+                       IsVisible="{Binding HasStatusMessage}"
+                       FontSize="12"
+                       TextColor="{StaticResource Gray400}" />
+                <Button Text="Details"
+                        Command="{Binding ToggleDetailsCommand}"
+                        IsVisible="{Binding HasErrorDetails}" />
             </HorizontalStackLayout>
+
+            <!-- Error details -->
+            <VerticalStackLayout Spacing="8"
+                                 IsVisible="{Binding IsErrorDetailsVisible}">
+                <ScrollView HeightRequest="160">
+                    <Label Text="{Binding ErrorDetails}"
+                           FontSize="12"
+                           LineBreakMode="WordWrap"
+                           TextColor="{StaticResource Gray400}" />
+                </ScrollView>
+                <HorizontalStackLayout Spacing="12">
+                    <Button Text="Copy" Command="{Binding CopyErrorCommand}" />
+                    <Button Text="Share" Command="{Binding ShareErrorCommand}" />
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
         </VerticalStackLayout>
 
-        <Grid Grid.Row="2">
+        <!-- Row 1: Main content -->
+        <Grid Grid.Row="1">
             <ContentView x:Name="LoadedContentHost" />
 
             <VerticalStackLayout Spacing="8"
