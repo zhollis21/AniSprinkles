@@ -1,22 +1,20 @@
 using System.Globalization;
-using AniSprinkles.PageModels;
 
 namespace AniSprinkles.Converters;
 
 /// <summary>
-/// Returns full opacity (1.0) when the bound <see cref="SortField"/> matches the
-/// <c>ConverterParameter</c> (parsed as a <see cref="SortField"/> name), and a
-/// dimmed value (0.4) otherwise.  Used to visually highlight the active sort chip.
+/// Returns full opacity (1.0) when the bound value's string representation matches the
+/// <c>ConverterParameter</c>, and a dimmed value (0.6) otherwise. Falls back to 0.4
+/// when value is null. Used to visually highlight the active chip.
 /// </summary>
 public sealed class SortFieldOpacityConverter : IValueConverter
 {
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is SortField current
-            && parameter is string name
-            && Enum.TryParse<SortField>(name, out var target))
+        if (value is not null && parameter is string name)
         {
-            return current == target ? 1.0 : 0.6;
+            var currentName = value.ToString();
+            return string.Equals(currentName, name, StringComparison.Ordinal) ? 1.0 : 0.6;
         }
 
         return 0.4;
