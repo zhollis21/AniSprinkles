@@ -24,8 +24,23 @@ public partial class MyAnimePageModel : ObservableObject
     [ObservableProperty]
     private bool _isAuthenticationPending = true;
 
+    // Set by the page code-behind during the fast-path deferred rebuild to
+    // keep a spinner visible while a new content-view instance is being created.
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsInitialLoading))]
+    private bool _isRebuilding;
+
     // Keep list loading UX aligned with details page: a single centered first-load indicator.
-    public bool IsInitialLoading => IsBusy && IsAuthenticated && Sections.Count == 0;
+    // Also true while IsRebuilding so the fast-path return trip shows a spinner
+    // instead of a blank page during the Shell-transition deferred delay.
+    public bool IsInitialLoading => (IsBusy && IsAuthenticated && Sections.Count == 0) || IsRebuilding;
+
+    /// <summary>
+    /// True when the singleton ViewModel already has data that can be shown
+    /// immediately (e.g. when a new page instance is created on back-navigation
+    /// but the ViewModel's cached sections are still valid).
+    /// </summary>
+    public bool HasLoadedData => _hasLoaded && Sections.Count > 0;
 
     [ObservableProperty]
     private bool _isNavigatingToDetails;

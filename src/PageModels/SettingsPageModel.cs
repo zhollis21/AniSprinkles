@@ -35,7 +35,17 @@ public partial class SettingsPageModel : ObservableObject
     private string _aniListUserId = string.Empty;
 
     [ObservableProperty]
-    private bool _isLoading;
+    private bool _isLoading = true;
+
+    // Gate the login prompt behind IsLoading so we never flash login UI
+    // while auth state is still being determined.
+    public bool ShowLoginPrompt => !IsAuthenticated && !IsLoading;
+
+    /// <summary>
+    /// True when the singleton ViewModel already has authenticated profile data
+    /// available for immediate display (e.g. after a flyout page switch).
+    /// </summary>
+    public bool HasLoadedData => _loadedUser is not null;
 
     [ObservableProperty]
     private bool _isSaving;
@@ -132,31 +142,39 @@ public partial class SettingsPageModel : ObservableObject
 
     public async Task LoadAsync()
     {
-        await RefreshAuthStateAsync();
-        StatusMessage = IsAuthenticated ? "Signed in to AniList." : "Not signed in.";
-
-        if (IsAuthenticated)
+        // Only show the spinner for the initial load (no cached data).
+        // On refresh-with-cached-data the content view is already visible;
+        // flipping IsLoading would overlay the spinner on top of it.
+        var isRefresh = _loadedUser is not null;
+        if (!isRefresh)
         {
             IsLoading = true;
-            try
+        }
+
+        try
+        {
+            await RefreshAuthStateAsync();
+            StatusMessage = IsAuthenticated ? "Signed in to AniList." : "Not signed in.";
+
+            if (IsAuthenticated)
             {
                 var user = await _aniListClient.GetViewerAsync();
                 _loadedUser = user;
                 PopulateFromUser(user);
             }
-            catch (Exception ex)
+            else
             {
-                _logger.LogError(ex, "Failed to fetch AniList viewer data");
-                StatusMessage = "Failed to load profile.";
-            }
-            finally
-            {
-                IsLoading = false;
+                ClearUserData();
             }
         }
-        else
+        catch (Exception ex)
         {
-            ClearUserData();
+            _logger.LogError(ex, "Failed to fetch AniList viewer data");
+            StatusMessage = "Failed to load profile.";
+        }
+        finally
+        {
+            IsLoading = false;
         }
 
         SentrySdk.AddBreadcrumb("Settings loaded", "navigation", "state");
@@ -285,6 +303,12 @@ public partial class SettingsPageModel : ObservableObject
 
     partial void OnStatusMessageChanged(string value)
         => HasStatusMessage = !string.IsNullOrWhiteSpace(value);
+
+    partial void OnIsLoadingChanged(bool value)
+        => OnPropertyChanged(nameof(ShowLoginPrompt));
+
+    partial void OnIsAuthenticatedChanged(bool value)
+        => OnPropertyChanged(nameof(ShowLoginPrompt));
 
     [RelayCommand]
     private async Task SignIn()

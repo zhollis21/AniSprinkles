@@ -158,17 +158,19 @@ Android
 
 .NET MAUI / .NET for Android
 - https://learn.microsoft.com/en-us/dotnet/maui/whats-new/dotnet-10?view=net-maui-10.0
-- https://learn.microsoft.com/en-us/dotnet/maui/deployment/performance?view=net-maui-10.0
+- https://learn.microsoft.com/en-us/dotnet/maui/fundamentals/shell/lifecycle?view=net-maui-10.0 (Appearing fires before platform makes page visible)
+- https://learn.microsoft.com/en-us/dotnet/maui/fundamentals/shell/pages?view=net-maui-10.0 (DataTemplate lazy page creation, avoid pre-creating pages)
+- https://learn.microsoft.com/en-us/dotnet/maui/fundamentals/shell/navigation?view=net-maui-10.0 (GoToAsync completes after animation, PresentationMode)
 - https://learn.microsoft.com/en-us/dotnet/maui/platform-integration/appmodel/main-thread?view=net-maui-10.0
 - https://learn.microsoft.com/en-us/dotnet/maui/user-interface/controls/collectionview/?view=net-maui-10.0
 - https://learn.microsoft.com/en-us/dotnet/maui/user-interface/controls/refreshview?view=net-maui-10.0
 - https://learn.microsoft.com/en-us/dotnet/maui/user-interface/controls/activityindicator?view=net-maui-10.0
-- https://learn.microsoft.com/en-us/dotnet/maui/fundamentals/shell/navigation?view=net-maui-10.0
 - https://learn.microsoft.com/en-us/dotnet/maui/platform-integration/communication/authentication?view=net-maui-10.0
 - https://learn.microsoft.com/en-us/dotnet/maui/platform-integration/storage/secure-storage?view=net-maui-10.0
 - https://learn.microsoft.com/en-us/dotnet/core/extensions/httpclient-factory
 - https://learn.microsoft.com/en-us/dotnet/fundamentals/networking/http/httpclient-guidelines
 - https://learn.microsoft.com/en-us/dotnet/android/building-apps/build-properties
+- https://devblogs.microsoft.com/dotnet/performance-improvements-in-dotnet-maui/ (defer init, lazy loggers, reduce Shell startup)
 
 Last updated
-- 2026-02-11
+- 2026-02-15

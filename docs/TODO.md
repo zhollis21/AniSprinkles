@@ -41,6 +41,9 @@ MVP scope
 - [x] Defer details API load until after details page appears (first-frame yield + short delay) to reduce transition hitching
 - [x] Disable My Anime -> details transition animation to eliminate intermittent partial-frame/sliver artifacts
 - [x] Replace My Anime top-left loading spinner with centered first-load spinner overlay
+- [x] Fix Settings page login-view flash: gate login prompt behind `ShowLoginPrompt` and wrap entire `LoadAsync` in `IsLoading`
+- [x] Fix My Anime blank screen on back-navigation: immediate content rebuild from cached ViewModel data when `HasLoadedData`
+- [x] Align both flyout pages on consistent three-branch `OnAppearing` pattern (content-alive / fast-path cached / slow first-load)
 - [ ] Define list edit fields and validation rules
 
 UI
