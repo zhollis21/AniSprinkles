@@ -98,6 +98,10 @@ Decisions so far
 - Details first-load spinner visibility is now based on `Media == null` (and no error/status) so the page never shows a blank pre-fetch frame
 - My Anime selection clear now happens after details navigation begins/completes to avoid spending tap-to-route time on source-list reselection layout
 - Page constructor DI lookups now fall back to `IPlatformApplication.Current.Services` when `Application.Current.Handler` is not ready, reducing Shell flyout startup null crashes during Android activity lifecycle transitions
+- Settings page loading UX fixed: `IsLoading` now wraps entire auth-check + data-fetch flow; login prompt gated behind `ShowLoginPrompt` (= `!IsAuthenticated && !IsLoading`) to prevent login-view flash on first visit
+- Both flyout pages (My Anime, Settings) now use a fast-path in `OnAppearing`: when the singleton ViewModel already has cached data (`HasLoadedData`) the content view is rebuilt immediately from existing data instead of showing a blank page with a deferred delay
+- Both flyout pages follow a consistent three-branch `OnAppearing` pattern: (1) content-alive → background refresh, (2) content-gone + cached data → immediate rebuild + background refresh, (3) first-ever load → spinner + deferred fetch + content build
+- Decided against a shared base page class for now; the pattern is kept consistent across pages for easy extraction if a third flyout page is added
 - Flyout root pages (`MyAnimePage`, `SettingsPage`) now resolve view models lazily on handler/appearance instead of constructor time so Shell flyout renderer can initialize even when service-provider wiring is still in progress
 - Details fetch is now deferred until after details page `OnAppearing` plus a short first-frame yield delay, so route transition animation can finish before API/binding work starts
 - My Anime -> details navigation now uses a non-animated Shell push so the spinner-first details shell appears immediately and avoids intermittent partial-frame transition artifacts

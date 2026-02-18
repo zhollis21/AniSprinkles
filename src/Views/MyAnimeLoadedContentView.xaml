@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pageModels="clr-namespace:AniSprinkles.PageModels"
+             xmlns:models="clr-namespace:AniSprinkles.Models"
+             xmlns:f="clr-namespace:AniSprinkles.Resources.Fonts"
+             x:Class="AniSprinkles.Views.MyAnimeLoadedContentView"
+             x:DataType="pageModels:MyAnimePageModel">
+    <Grid RowDefinitions="Auto,Auto,*" RowSpacing="8">
+
+        <!-- Row 0: Sort + Filter toolbar -->
+        <Grid ColumnDefinitions="*,Auto"
+              ColumnSpacing="8"
+              Margin="0,-4,0,-4"
+              IsVisible="{Binding IsAuthenticated}">
+            <HorizontalStackLayout Spacing="6">
+                <Label Text="Sort:"
+                       Style="{StaticResource Caption1}"
+                       TextColor="{StaticResource Gray400}"
+                       VerticalOptions="Center" />
+                <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6"
+                        Stroke="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=LastUpdated}"
+                        Opacity="{Binding CurrentSortField, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=LastUpdated}">
+                    <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding SetSortFieldCommand}" CommandParameter="LastUpdated" /></Border.GestureRecognizers>
+                    <Label Text="Updated" FontSize="12" FontAttributes="Bold" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"
+                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Updated'}" />
+                </Border>
+                <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6"
+                        Stroke="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Title}"
+                        Opacity="{Binding CurrentSortField, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=Title}">
+                    <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding SetSortFieldCommand}" CommandParameter="Title" /></Border.GestureRecognizers>
+                    <Label Text="Title" FontSize="12" FontAttributes="Bold" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"
+                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Title'}" />
+                </Border>
+                <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6"
+                        Stroke="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Score}"
+                        Opacity="{Binding CurrentSortField, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=Score}">
+                    <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding SetSortFieldCommand}" CommandParameter="Score" /></Border.GestureRecognizers>
+                    <Label Text="Score" FontSize="12" FontAttributes="Bold" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"
+                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Score'}" />
+                </Border>
+                <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6"
+                        Stroke="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Progress}"
+                        Opacity="{Binding CurrentSortField, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=Progress}">
+                    <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding SetSortFieldCommand}" CommandParameter="Progress" /></Border.GestureRecognizers>
+                    <Label Text="Progress" FontSize="12" FontAttributes="Bold" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"
+                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Progress'}" />
+                </Border>
+                <Border BackgroundColor="Transparent" Padding="12,0,12,4" Stroke="Transparent" StrokeThickness="3">
+                    <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding ToggleSortDirectionCommand}" /></Border.GestureRecognizers>
+                    <Label Text="{Binding SortDirectionIcon}" FontSize="32" FontAttributes="Bold"
+                           VerticalOptions="Center" HorizontalOptions="Center"
+                           TextColor="{AppThemeBinding Light={StaticResource RainbowBlue}, Dark={StaticResource RainbowCyan}}">
+                        <Label.Shadow>
+                            <Shadow Brush="{AppThemeBinding Light={StaticResource RainbowBlue}, Dark={StaticResource RainbowCyan}}"
+                                    Opacity="0.3" Radius="1" Offset="0,0" />
+                        </Label.Shadow>
+                    </Label>
+                </Border>
+            </HorizontalStackLayout>
+            <ImageButton Grid.Column="1" WidthRequest="36" HeightRequest="36" Padding="6"
+                         VerticalOptions="Center" BackgroundColor="Transparent"
+                         Command="{Binding ToggleFilterBarCommand}">
+                <ImageButton.Source>
+                    <FontImageSource Glyph="{x:Static f:FluentUI.search_20_regular}"
+                                     FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                     Color="{AppThemeBinding Light={StaticResource DarkOnLightBackground}, Dark={StaticResource LightOnDarkBackground}}"
+                                     Size="20" />
+                </ImageButton.Source>
+            </ImageButton>
+        </Grid>
+
+        <!-- Row 1: Search bar (expandable) -->
+        <Border Grid.Row="1" Style="{StaticResource CardStyle}" Padding="8,4"
+                IsVisible="{Binding IsFilterBarVisible}">
+            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+                <Image VerticalOptions="Center">
+                    <Image.Source>
+                        <FontImageSource Glyph="{x:Static f:FluentUI.search_20_regular}"
+                                         FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                         Color="{StaticResource Gray400}" Size="18" />
+                    </Image.Source>
+                </Image>
+                <Entry Grid.Column="1" Placeholder="Search titles..." Text="{Binding SearchText}"
+                       ClearButtonVisibility="Never" BackgroundColor="Transparent" FontSize="15" VerticalOptions="Center" />
+                <ImageButton Grid.Column="2" WidthRequest="28" HeightRequest="28" Padding="4"
+                             VerticalOptions="Center" BackgroundColor="Transparent"
+                             Command="{Binding ClearSearchCommand}" IsVisible="{Binding HasSearchText}">
+                    <ImageButton.Source>
+                        <FontImageSource Glyph="{x:Static f:FluentUI.dismiss_circle_20_regular}"
+                                         FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                         Color="{StaticResource Gray400}" Size="18" />
+                    </ImageButton.Source>
+                </ImageButton>
+            </Grid>
+        </Border>
+
+        <!-- Row 2: Main content -->
+        <Grid Grid.Row="2">
+            <CollectionView x:Name="AnimeCollectionView"
+                            ItemsSource="{Binding Sections}"
+                            IsGrouped="True"
+                            SelectionMode="Single"
+                            IsVisible="{Binding IsAuthenticated}">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="8" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.GroupHeaderTemplate>
+                    <DataTemplate x:DataType="pageModels:MediaListSection">
+                        <Border Style="{StaticResource SectionHeaderStyle}"
+                                Background="{Binding Title, Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}">
+                            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12" VerticalOptions="Center">
+                                <Grid.GestureRecognizers><TapGestureRecognizer Command="{Binding ToggleCommand}" /></Grid.GestureRecognizers>
+                                <Image Source="{StaticResource IconChevronRight}"
+                                       WidthRequest="{StaticResource size200}" HeightRequest="{StaticResource size200}" VerticalOptions="Center">
+                                    <Image.Triggers>
+                                        <DataTrigger TargetType="Image" Binding="{Binding IsExpanded}" Value="True">
+                                            <Setter Property="Rotation" Value="90" />
+                                        </DataTrigger>
+                                    </Image.Triggers>
+                                </Image>
+                                <Label Grid.Column="1" Text="{Binding Title}" Style="{StaticResource Title3}" VerticalOptions="Center" />
+                                <Border Grid.Column="2" Style="{StaticResource CountBadgeStyle}" VerticalOptions="Center">
+                                    <Label Text="{Binding DisplayCount}" Style="{StaticResource Caption1Strong}"
+                                           HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.GroupHeaderTemplate>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:MediaListEntry">
+                        <Border Style="{StaticResource ListRowStyle}" HeightRequest="72">
+                            <Grid ColumnDefinitions="4,*,Auto" RowDefinitions="Auto,Auto"
+                                  ColumnSpacing="12" RowSpacing="6" Padding="12">
+                                <BoxView Grid.RowSpan="2"
+                                         BackgroundColor="{Binding StatusDisplay, Converter={StaticResource RainbowAccentConverter}}"
+                                         WidthRequest="4" CornerRadius="2" VerticalOptions="Fill" />
+                                <Label Grid.Column="1" Text="{Binding Media.DisplayTitle}"
+                                       Style="{StaticResource Body1Strong}" LineBreakMode="TailTruncation" />
+                                <Label Grid.Column="2" Text="{Binding StatusDisplay}"
+                                       Style="{StaticResource Caption1}" HorizontalOptions="End" TextColor="{StaticResource Gray400}" />
+                                <Label Grid.Row="1" Grid.Column="1" Text="{Binding ProgressDisplay}"
+                                       Style="{StaticResource Caption1}" TextColor="{StaticResource Gray400}" />
+                                <Label Grid.Row="1" Grid.Column="2" Text="{Binding ScoreDisplay, StringFormat='Score: {0}'}"
+                                       Style="{StaticResource Caption1}" HorizontalOptions="End" TextColor="{StaticResource Gray400}" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <ActivityIndicator IsRunning="{Binding IsNavigatingToDetails}"
+                               IsVisible="{Binding IsNavigatingToDetails}"
+                               VerticalOptions="Center" HorizontalOptions="Center" Opacity="0.8" />
+        </Grid>
+    </Grid>
+</ContentView>

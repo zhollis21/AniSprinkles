@@ -6,6 +6,7 @@ public partial class SettingsPage : ContentPage
 
     private SettingsPageModel? _viewModel;
     private bool _hasAppeared;
+    private bool _hasCreatedLoadedContent;
     private int _loadVersion;
 
     public SettingsPage()
@@ -29,8 +30,52 @@ public partial class SettingsPage : ContentPage
             return;
         }
 
-        // Let Shell transition animation complete before loading heavy data.
-        var version = ++_loadVersion;
+        // Content survived the flyout switch — just refresh data in background.
+        if (LoadedContentHost.Content is not null)
+        {
+            await _viewModel.LoadAsync();
+            return;
+        }
+
+        // Content needs to be (re)created. Reset tracking flag.
+        _hasCreatedLoadedContent = false;
+
+        int version;
+
+        // Fast path: the singleton ViewModel already has cached profile data
+        // from a previous visit. We still defer view creation so the Shell
+        // transition animation completes first (InitializeComponent of the
+        // heavy content view blocks the UI thread), but we skip the API call.
+        // IsLoading=true keeps the spinner visible during the delay so the user
+        // sees a spinner instead of a blank page.
+        if (_viewModel.HasLoadedData)
+        {
+            _viewModel.IsLoading = true;
+            version = ++_loadVersion;
+            await Task.Yield();
+            await Task.Delay(DeferredLoadDelay);
+
+            if (!_hasAppeared || version != _loadVersion)
+            {
+                _viewModel.IsLoading = false;
+                return;
+            }
+
+            UpdateLoadedContentHost();
+            _viewModel.IsLoading = false;
+            // Background refresh with existing data visible.
+            await _viewModel.LoadAsync();
+            return;
+        }
+
+        // Slow path (first load): ensure the spinner is visible for the very
+        // first frame. The ViewModel defaults IsLoading=true, but if this is a
+        // return visit on the same singleton it may have been set to false.
+        _viewModel.IsLoading = true;
+
+        // Yield so the Shell transition animation can complete before we run
+        // the data fetch (which will create the heavy XAML content view).
+        version = ++_loadVersion;
         await Task.Yield();
         await Task.Delay(DeferredLoadDelay);
 
@@ -40,6 +85,7 @@ public partial class SettingsPage : ContentPage
         }
 
         await _viewModel.LoadAsync();
+        UpdateLoadedContentHost();
     }
 
     protected override void OnDisappearing()
@@ -55,6 +101,23 @@ public partial class SettingsPage : ContentPage
         EnsureViewModel();
     }
 
+    private void UpdateLoadedContentHost()
+    {
+        if (_viewModel?.IsAuthenticated == true && !_hasCreatedLoadedContent)
+        {
+            LoadedContentHost.Content = new Views.SettingsLoadedContentView
+            {
+                BindingContext = _viewModel
+            };
+            _hasCreatedLoadedContent = true;
+        }
+        else if (_viewModel?.IsAuthenticated != true && _hasCreatedLoadedContent)
+        {
+            LoadedContentHost.Content = null;
+            _hasCreatedLoadedContent = false;
+        }
+    }
+
     private void EnsureViewModel()
     {
         if (_viewModel is not null)
@@ -62,8 +125,6 @@ public partial class SettingsPage : ContentPage
             return;
         }
 
-        // Shell can build flyout pages before Application.Current.Handler is ready.
-        // Resolve lazily from whichever service provider is available at handler/appearance time.
         var services = Handler?.MauiContext?.Services
             ?? IPlatformApplication.Current?.Services
             ?? Application.Current?.Handler?.MauiContext?.Services;
