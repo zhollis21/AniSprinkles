@@ -23,7 +23,10 @@ public partial class MyAnimePageModel : ObservableObject
     private bool _isBusy;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ShowLoginPrompt))]
     private bool _isAuthenticationPending = true;
+
+    public bool ShowLoginPrompt => !IsAuthenticated && !IsAuthenticationPending;
 
     // Set by the page code-behind during the fast-path deferred rebuild to
     // keep a spinner visible while a new content-view instance is being created.
@@ -212,7 +215,10 @@ public partial class MyAnimePageModel : ObservableObject
         => OnPropertyChanged(nameof(IsInitialLoading));
 
     partial void OnIsAuthenticatedChanged(bool value)
-        => OnPropertyChanged(nameof(IsInitialLoading));
+    {
+        OnPropertyChanged(nameof(IsInitialLoading));
+        OnPropertyChanged(nameof(ShowLoginPrompt));
+    }
 
     partial void OnSectionsChanged(ObservableCollection<MediaListSection> value)
         => OnPropertyChanged(nameof(IsInitialLoading));
