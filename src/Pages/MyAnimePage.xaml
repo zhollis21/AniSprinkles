@@ -9,12 +9,69 @@
              Title="{Binding Title}"
              Shell.TitleColor="{Binding Title, Converter={StaticResource RainbowAccentConverter}}">
 
-    <Grid Padding="{StaticResource LayoutPadding}"
-          RowDefinitions="Auto,*"
-          RowSpacing="8">
+    <Grid Padding="{StaticResource LayoutPadding}">
+        <!-- Not authenticated state -->
+        <VerticalStackLayout Spacing="16"
+                             VerticalOptions="Center"
+                             IsVisible="{Binding ShowLoginPrompt}">
+            <Border Style="{StaticResource CardStyle}" Padding="20">
+                <VerticalStackLayout Spacing="12" HorizontalOptions="Center">
+                    <Image HorizontalOptions="Center" WidthRequest="48" HeightRequest="48">
+                        <Image.Source>
+                            <FontImageSource Glyph="{x:Static f:FluentUI.apps_list_24_regular}"
+                                             FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                             Color="{StaticResource Gray400}"
+                                             Size="48" />
+                        </Image.Source>
+                    </Image>
+                    <Label Text="Sign in to AniList"
+                           Style="{StaticResource Title3}"
+                           HorizontalTextAlignment="Center" />
+                    <Label Text="Connect your account to view and update your anime lists."
+                           Style="{StaticResource Caption1}"
+                           TextColor="{StaticResource Gray400}"
+                           HorizontalTextAlignment="Center" />
+                    <views:AuthActionsView HorizontalOptions="Center" Margin="0,4,0,0" />
+                </VerticalStackLayout>
+            </Border>
 
-        <!-- Row 0: Status/Error/Sign-in (lightweight, always present) -->
-        <VerticalStackLayout Grid.Row="0" Spacing="8">
+            <Label Text="{Binding StatusMessage}"
+                   Style="{StaticResource Caption1}"
+                   TextColor="{StaticResource Gray400}"
+                   HorizontalTextAlignment="Center"
+                   IsVisible="{Binding HasStatusMessage}" />
+        </VerticalStackLayout>
+
+        <!-- Auth pending overlay -->
+        <VerticalStackLayout Spacing="8"
+                             HorizontalOptions="Center"
+                             VerticalOptions="Center"
+                             IsVisible="{Binding IsAuthenticationPending}">
+            <ActivityIndicator IsRunning="True" IsVisible="True" />
+            <Label Text="Checking authentication..."
+                   Style="{StaticResource Caption1}"
+                   TextColor="{StaticResource Gray400}" />
+        </VerticalStackLayout>
+
+        <!-- Loading overlay -->
+        <VerticalStackLayout Spacing="8"
+                             HorizontalOptions="Center"
+                             VerticalOptions="Center"
+                             IsVisible="{Binding IsInitialLoading}">
+            <ActivityIndicator IsRunning="{Binding IsInitialLoading}"
+                               IsVisible="{Binding IsInitialLoading}" />
+            <Label Text="Loading anime list..."
+                   Style="{StaticResource Caption1}"
+                   TextColor="{StaticResource Gray400}" />
+        </VerticalStackLayout>
+
+        <!-- Loaded content host: heavy UI created programmatically after data loads -->
+        <ContentView x:Name="LoadedContentHost" />
+
+        <!-- Error details overlay (visible when API fails) -->
+        <VerticalStackLayout Spacing="8"
+                             VerticalOptions="Start"
+                             IsVisible="{Binding HasErrorDetails}">
             <HorizontalStackLayout Spacing="12">
                 <Label Text="{Binding StatusMessage}"
                        IsVisible="{Binding HasStatusMessage}"
@@ -24,7 +81,6 @@
                         Command="{Binding ToggleDetailsCommand}"
                         IsVisible="{Binding HasErrorDetails}" />
             </HorizontalStackLayout>
-
             <VerticalStackLayout Spacing="8"
                                  IsVisible="{Binding IsErrorDetailsVisible}">
                 <Border Style="{StaticResource CardStyle}" Padding="12">
@@ -40,44 +96,6 @@
                     <Button Text="Share" Command="{Binding ShareErrorCommand}" />
                 </HorizontalStackLayout>
             </VerticalStackLayout>
-
-            <VerticalStackLayout Spacing="8"
-                                 IsVisible="{Binding IsAuthenticated, Converter={StaticResource InvertedBoolConverter}}">
-                <Label Text="Sign in to AniList to view and update your anime lists:"
-                       Style="{StaticResource Caption1}"
-                       TextColor="{StaticResource Gray400}"
-                       IsVisible="{Binding IsAuthenticationPending, Converter={StaticResource InvertedBoolConverter}}" />
-                <views:AuthActionsView IsVisible="{Binding IsAuthenticationPending, Converter={StaticResource InvertedBoolConverter}}" />
-            </VerticalStackLayout>
         </VerticalStackLayout>
-
-        <!-- Row 1: Content area -->
-        <Grid Grid.Row="1">
-            <!-- Loaded content host: heavy UI created programmatically after data loads -->
-            <ContentView x:Name="LoadedContentHost" />
-
-            <!-- Auth pending overlay -->
-            <VerticalStackLayout Spacing="8"
-                                 HorizontalOptions="Center"
-                                 VerticalOptions="Center"
-                                 IsVisible="{Binding IsAuthenticationPending}">
-                <ActivityIndicator IsRunning="True" IsVisible="True" />
-                <Label Text="Checking authentication..."
-                       Style="{StaticResource Caption1}"
-                       TextColor="{StaticResource Gray400}" />
-            </VerticalStackLayout>
-
-            <!-- Initial loading overlay -->
-            <VerticalStackLayout Spacing="8"
-                                 HorizontalOptions="Center"
-                                 VerticalOptions="Center"
-                                 IsVisible="{Binding IsInitialLoading}">
-                <ActivityIndicator IsRunning="{Binding IsInitialLoading}"
-                                   IsVisible="{Binding IsInitialLoading}" />
-                <Label Text="Loading anime list..."
-                       Style="{StaticResource Caption1}"
-                       TextColor="{StaticResource Gray400}" />
-            </VerticalStackLayout>
-        </Grid>
     </Grid>
 </ContentPage>
