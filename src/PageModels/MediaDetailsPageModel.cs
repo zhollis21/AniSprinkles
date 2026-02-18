@@ -9,9 +9,9 @@ namespace AniSprinkles.PageModels;
     public partial class MediaDetailsPageModel : ObservableObject
     {
         private readonly IAniListClient _aniListClient;
+        private readonly IAuthService _authService;
         private readonly ErrorReportService _errorReportService;
         private readonly ILogger<MediaDetailsPageModel> _logger;
-        // Tracks the last fully loaded media to avoid duplicate fetch/rebind when the same query is applied again.
         private int? _loadedMediaId;
         private int _loadRequestSequence;
 
@@ -25,6 +25,7 @@ namespace AniSprinkles.PageModels;
     private MediaListEntry? _listEntry;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CanAddToList))]
     private bool _hasListEntry;
 
     [ObservableProperty]
@@ -42,9 +43,31 @@ namespace AniSprinkles.PageModels;
     [ObservableProperty]
     private bool _isErrorDetailsVisible;
 
-    public MediaDetailsPageModel(IAniListClient aniListClient, ErrorReportService errorReportService, ILogger<MediaDetailsPageModel> logger)
+    [ObservableProperty]
+    private bool _isDescriptionExpanded;
+
+    [ObservableProperty]
+    private bool _isStatusExpanded;
+
+    [ObservableProperty]
+    private bool _isEditingListEntry;
+
+    [ObservableProperty]
+    private MediaListStatus _editStatus;
+
+    [ObservableProperty]
+    private int _editProgress;
+
+    [ObservableProperty]
+    private double _editScore;
+
+    [ObservableProperty]
+    private bool _isSavingListEntry;
+
+    public MediaDetailsPageModel(IAniListClient aniListClient, IAuthService authService, ErrorReportService errorReportService, ILogger<MediaDetailsPageModel> logger)
     {
         _aniListClient = aniListClient;
+        _authService = authService;
         _errorReportService = errorReportService;
         _logger = logger;
     }
@@ -89,6 +112,8 @@ namespace AniSprinkles.PageModels;
 
     public bool HasSynonyms => Synonyms.Count > 0;
 
+    public string SynonymsDisplay => Synonyms.Count > 0 ? string.Join(", ", Synonyms) : "-";
+
     public bool HasTags => Tags.Count > 0;
 
     public bool HasStudios => Studios.Count > 0;
@@ -103,25 +128,89 @@ namespace AniSprinkles.PageModels;
 
     public bool HasMedia => Media is not null;
 
-    // Show the first-load spinner whenever we have no media yet and no terminal status.
-    // This avoids a blank page between route navigation and the async fetch starting.
     public bool IsInitialLoading => Media is null && string.IsNullOrWhiteSpace(StatusMessage);
 
-        public IReadOnlyList<string> Genres { get; private set; } = [];
+    public bool HasDescription => !string.IsNullOrWhiteSpace(Media?.Description);
 
-        public IReadOnlyList<string> Synonyms { get; private set; } = [];
+    public int DescriptionMaxLines => IsDescriptionExpanded ? int.MaxValue : 8;
 
-        public IReadOnlyList<MediaTag> Tags { get; private set; } = [];
+    public string ScorePercentDisplay => Media?.AverageScore is > 0 ? $"{Media.AverageScore}%" : "--";
 
-        public IReadOnlyList<Studio> Studios { get; private set; } = [];
+    public string PopularityDisplay => Media?.Popularity is > 0 ? $"{Media.Popularity:N0}" : "--";
 
-        public IReadOnlyList<MediaRanking> Rankings { get; private set; } = [];
+    public string FavouritesDisplay => Media?.Favourites is > 0 ? $"{Media.Favourites:N0}" : "--";
 
-        public IReadOnlyList<MediaExternalLink> ExternalLinks { get; private set; } = [];
+    public string FormatDisplay => Media?.Format?.Replace("_", " ") ?? "--";
 
-        public IReadOnlyList<MediaStreamingEpisode> StreamingEpisodes { get; private set; } = [];
+    public string StatusFormatted => Media?.Status?.Replace("_", " ") is { } s
+        ? CultureInfo.InvariantCulture.TextInfo.ToTitleCase(s.ToLowerInvariant())
+        : "--";
 
-        public string? TrailerUrl { get; private set; }
+    public string MainStudioName => Media?.Studios.FirstOrDefault(s => s.IsAnimationStudio == true)?.Name
+        ?? Media?.Studios.FirstOrDefault()?.Name ?? "";
+
+    public bool HasMainStudio => !string.IsNullOrWhiteSpace(MainStudioName);
+
+    public string EpisodesDisplay => Media?.Episodes is > 0 ? $"{Media.Episodes} eps" : "";
+
+    public string DurationPillDisplay => Media?.Duration is > 0 ? $"{Media.Duration} min" : "";
+
+    public string SeasonYearDisplay => SeasonDisplay != "-" ? SeasonDisplay : "";
+
+    public bool HasRelations => Relations.Count > 0;
+
+    public bool HasCharacters => Characters.Count > 0;
+
+    public bool HasRecommendations => Recommendations.Count > 0;
+
+    public bool HasStats => ScoreDistribution.Count > 0 || StatusDistribution.Count > 0;
+
+    public bool HasStaff => Staff.Count > 0;
+
+    public bool IsAuthenticated { get; private set; }
+
+    public bool CanAddToList => IsAuthenticated && !HasListEntry;
+
+    public string ListStatusDisplay => ListEntry?.Status switch
+    {
+        MediaListStatus.Current => "Watching",
+        MediaListStatus.Planning => "Plan to Watch",
+        MediaListStatus.Completed => "Completed",
+        MediaListStatus.Dropped => "Dropped",
+        MediaListStatus.Paused => "Paused",
+        MediaListStatus.Repeating => "Rewatching",
+        _ => "Add to List",
+    };
+
+    public string CurrentStatusKey => ListEntry?.Status?.ToString() ?? "";
+
+    public IReadOnlyList<string> Genres { get; private set; } = [];
+
+    public IReadOnlyList<string> Synonyms { get; private set; } = [];
+
+    public IReadOnlyList<MediaTag> Tags { get; private set; } = [];
+
+    public IReadOnlyList<Studio> Studios { get; private set; } = [];
+
+    public IReadOnlyList<MediaRanking> Rankings { get; private set; } = [];
+
+    public IReadOnlyList<MediaExternalLink> ExternalLinks { get; private set; } = [];
+
+    public IReadOnlyList<MediaStreamingEpisode> StreamingEpisodes { get; private set; } = [];
+
+    public string? TrailerUrl { get; private set; }
+
+    public IReadOnlyList<MediaRelationEdge> Relations { get; private set; } = [];
+
+    public IReadOnlyList<CharacterEdge> Characters { get; private set; } = [];
+
+    public IReadOnlyList<MediaRecommendationNode> Recommendations { get; private set; } = [];
+
+    public IReadOnlyList<ScoreDistributionItem> ScoreDistribution { get; private set; } = [];
+
+    public IReadOnlyList<StatusDistribution> StatusDistribution { get; private set; } = [];
+
+    public IReadOnlyList<StaffEdge> Staff { get; private set; } = [];
 
     public async Task LoadAsync(int mediaId, MediaListEntry? listEntry)
     {
@@ -166,6 +255,10 @@ namespace AniSprinkles.PageModels;
             Media = null;
         }
 
+        var token = await _authService.GetAccessTokenAsync();
+        IsAuthenticated = !string.IsNullOrWhiteSpace(token);
+        OnPropertyChanged(nameof(CanAddToList));
+
         IsBusy = true;
         try
         {
@@ -178,7 +271,7 @@ namespace AniSprinkles.PageModels;
             IsErrorDetailsVisible = false;
 
             var fetchStopwatch = Stopwatch.StartNew();
-            var media = await _aniListClient.GetMediaAsync(mediaId);
+            var result = await _aniListClient.GetMediaAsync(mediaId);
             fetchStopwatch.Stop();
             _logger.LogInformation(
                 "NAVTRACE load#{LoadRequestId} media fetch completed in {FetchElapsedMs}ms for media {MediaId}.",
@@ -186,14 +279,19 @@ namespace AniSprinkles.PageModels;
                 fetchStopwatch.ElapsedMilliseconds,
                 mediaId);
 
-            if (media is null)
+            if (result.Media is null)
             {
                 StatusMessage = "Details unavailable.";
                 _logger.LogWarning("NAVTRACE load#{LoadRequestId} returned null media for media id {MediaId}.", loadRequestId, mediaId);
                 return;
             }
 
-            Media = media;
+            // Prefer the API-returned list entry over the navigation-passed one (it's always fresh).
+            var entry = result.ListEntry ?? listEntry;
+            if (entry is not null)
+                entry.Media = result.Media;
+            ListEntry = entry;
+            Media = result.Media;
             _loadedMediaId = mediaId;
             _logger.LogInformation(
                 "NAVTRACE load#{LoadRequestId} media bound in {ElapsedMs}ms for media {MediaId}.",
@@ -237,7 +335,6 @@ namespace AniSprinkles.PageModels;
 
     partial void OnMediaChanged(Media? value)
     {
-        // Bind all metadata at once so the page can swap from spinner to complete content in one step.
         ApplyExtendedCollections(value);
 
         OnPropertyChanged(nameof(PageTitle));
@@ -256,23 +353,42 @@ namespace AniSprinkles.PageModels;
         OnPropertyChanged(nameof(ReleaseWindowDisplay));
         OnPropertyChanged(nameof(NextAiringDisplay));
         OnPropertyChanged(nameof(HasNextAiringInfo));
+        OnPropertyChanged(nameof(HasDescription));
+        OnPropertyChanged(nameof(ScorePercentDisplay));
+        OnPropertyChanged(nameof(PopularityDisplay));
+        OnPropertyChanged(nameof(FavouritesDisplay));
+        OnPropertyChanged(nameof(FormatDisplay));
+        OnPropertyChanged(nameof(StatusFormatted));
+        OnPropertyChanged(nameof(MainStudioName));
+        OnPropertyChanged(nameof(HasMainStudio));
+        OnPropertyChanged(nameof(EpisodesDisplay));
+        OnPropertyChanged(nameof(DurationPillDisplay));
+        OnPropertyChanged(nameof(SeasonYearDisplay));
+        OnPropertyChanged(nameof(CanAddToList));
     }
 
     private void ApplyExtendedCollections(Media? value)
     {
-        Genres = value is null ? Array.Empty<string>() : value.Genres;
-        Synonyms = value is null ? Array.Empty<string>() : value.Synonyms;
-        Studios = value is null ? Array.Empty<Studio>() : value.Studios;
-        Tags = value is null ? Array.Empty<MediaTag>() : value.Tags;
-        Rankings = value is null ? Array.Empty<MediaRanking>() : value.Rankings;
-        ExternalLinks = value is null ? Array.Empty<MediaExternalLink>() : value.ExternalLinks;
-        StreamingEpisodes = value is null ? Array.Empty<MediaStreamingEpisode>() : value.StreamingEpisodes;
+        Genres = value?.Genres ?? [];
+        Synonyms = value?.Synonyms ?? [];
+        Studios = value?.Studios ?? [];
+        Tags = value?.Tags ?? [];
+        Rankings = value?.Rankings ?? [];
+        ExternalLinks = value?.ExternalLinks ?? [];
+        StreamingEpisodes = value?.StreamingEpisodes ?? [];
         TrailerUrl = BuildTrailerUrl(value?.Trailer);
+        Relations = value?.Relations ?? [];
+        Characters = value?.Characters ?? [];
+        Recommendations = value?.Recommendations ?? [];
+        ScoreDistribution = value?.ScoreDistribution ?? [];
+        StatusDistribution = value?.StatusDistribution ?? [];
+        Staff = value?.Staff ?? [];
 
         OnPropertyChanged(nameof(Genres));
         OnPropertyChanged(nameof(HasGenres));
         OnPropertyChanged(nameof(Synonyms));
         OnPropertyChanged(nameof(HasSynonyms));
+        OnPropertyChanged(nameof(SynonymsDisplay));
         OnPropertyChanged(nameof(Tags));
         OnPropertyChanged(nameof(HasTags));
         OnPropertyChanged(nameof(Studios));
@@ -285,10 +401,25 @@ namespace AniSprinkles.PageModels;
         OnPropertyChanged(nameof(HasStreamingEpisodes));
         OnPropertyChanged(nameof(TrailerUrl));
         OnPropertyChanged(nameof(HasTrailer));
+        OnPropertyChanged(nameof(Relations));
+        OnPropertyChanged(nameof(HasRelations));
+        OnPropertyChanged(nameof(Characters));
+        OnPropertyChanged(nameof(HasCharacters));
+        OnPropertyChanged(nameof(Recommendations));
+        OnPropertyChanged(nameof(HasRecommendations));
+        OnPropertyChanged(nameof(ScoreDistribution));
+        OnPropertyChanged(nameof(StatusDistribution));
+        OnPropertyChanged(nameof(HasStats));
+        OnPropertyChanged(nameof(Staff));
+        OnPropertyChanged(nameof(HasStaff));
     }
 
     partial void OnListEntryChanged(MediaListEntry? value)
-        => HasListEntry = value is not null;
+    {
+        HasListEntry = value is not null;
+        OnPropertyChanged(nameof(ListStatusDisplay));
+        OnPropertyChanged(nameof(CurrentStatusKey));
+    }
 
     [RelayCommand]
     private void ToggleDetails()
@@ -326,6 +457,187 @@ namespace AniSprinkles.PageModels;
             Text = ErrorDetails,
             Title = "AniSprinkles Error Details"
         });
+    }
+
+    [RelayCommand]
+    private async Task NavigateToMedia(int mediaId)
+    {
+        if (mediaId <= 0)
+        {
+            return;
+        }
+
+        await Shell.Current.GoToAsync("media-details", animate: false, new Dictionary<string, object>
+        {
+            ["mediaId"] = mediaId,
+        });
+    }
+
+    [RelayCommand]
+    private void ToggleDescription()
+    {
+        IsDescriptionExpanded = !IsDescriptionExpanded;
+        OnPropertyChanged(nameof(DescriptionMaxLines));
+    }
+
+    [RelayCommand]
+    private void ToggleStatusExpanded()
+    {
+        IsStatusExpanded = !IsStatusExpanded;
+    }
+
+    [RelayCommand]
+    private async Task QuickSetStatus(string value)
+    {
+        if (Media is null || !Enum.TryParse<MediaListStatus>(value, out var status))
+        {
+            return;
+        }
+
+        IsSavingListEntry = true;
+        try
+        {
+            var entry = ListEntry ?? new MediaListEntry { MediaId = Media.Id };
+            entry.Status = status;
+
+            var saved = await _aniListClient.SaveMediaListEntryAsync(entry);
+            if (saved is not null)
+            {
+                saved.Media = Media;
+                ListEntry = saved;
+                IsStatusExpanded = false;
+                OnPropertyChanged(nameof(CanAddToList));
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to set status for media {MediaId}.", Media.Id);
+            StatusMessage = "Failed to update status. Try again.";
+        }
+        finally
+        {
+            IsSavingListEntry = false;
+        }
+    }
+
+    [RelayCommand]
+    private void EditListEntry()
+    {
+        if (ListEntry is null)
+        {
+            return;
+        }
+
+        EditStatus = ListEntry.Status ?? MediaListStatus.Current;
+        EditProgress = ListEntry.Progress ?? 0;
+        EditScore = ListEntry.Score ?? 0;
+        IsEditingListEntry = true;
+    }
+
+    [RelayCommand]
+    private void CancelEdit()
+    {
+        IsEditingListEntry = false;
+    }
+
+    [RelayCommand]
+    private async Task SaveListEntry()
+    {
+        if (Media is null)
+        {
+            return;
+        }
+
+        IsSavingListEntry = true;
+        try
+        {
+            var entry = ListEntry ?? new MediaListEntry { MediaId = Media.Id };
+            entry.Status = EditStatus;
+            entry.Progress = EditProgress;
+            entry.Score = EditScore;
+
+            var saved = await _aniListClient.SaveMediaListEntryAsync(entry);
+            if (saved is not null)
+            {
+                saved.Media = Media;
+                ListEntry = saved;
+                IsEditingListEntry = false;
+                OnPropertyChanged(nameof(CanAddToList));
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to save list entry for media {MediaId}.", Media.Id);
+            StatusMessage = "Failed to save. Try again.";
+        }
+        finally
+        {
+            IsSavingListEntry = false;
+        }
+    }
+
+    [RelayCommand]
+    private async Task AddToList()
+    {
+        if (Media is null)
+        {
+            return;
+        }
+
+        IsSavingListEntry = true;
+        try
+        {
+            var entry = new MediaListEntry
+            {
+                MediaId = Media.Id,
+                Status = MediaListStatus.Planning,
+            };
+
+            var saved = await _aniListClient.SaveMediaListEntryAsync(entry);
+            if (saved is not null)
+            {
+                saved.Media = Media;
+                ListEntry = saved;
+                OnPropertyChanged(nameof(CanAddToList));
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to add media {MediaId} to list.", Media.Id);
+            StatusMessage = "Failed to add to list. Try again.";
+        }
+        finally
+        {
+            IsSavingListEntry = false;
+        }
+    }
+
+    [RelayCommand]
+    private void SetEditStatus(string value)
+    {
+        if (Enum.TryParse<MediaListStatus>(value, out var status))
+        {
+            EditStatus = status;
+        }
+    }
+
+    [RelayCommand]
+    private void IncrementProgress()
+    {
+        var max = Media?.Episodes ?? int.MaxValue;
+        if (EditProgress < max)
+        {
+            EditProgress++;
+        }
+    }
+
+    [RelayCommand]
+    private void DecrementProgress()
+    {
+        if (EditProgress > 0)
+        {
+            EditProgress--;
+        }
     }
 
     [RelayCommand]

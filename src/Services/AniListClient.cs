@@ -106,7 +106,7 @@ public class AniListClient : IAniListClient
             .ToList() ?? [];
     }
 
-    public async Task<Media?> GetMediaAsync(int id, CancellationToken cancellationToken = default)
+    public async Task<(Media? Media, MediaListEntry? ListEntry)> GetMediaAsync(int id, CancellationToken cancellationToken = default)
     {
         var token = await _authService.GetAccessTokenAsync(cancellationToken).ConfigureAwait(false);
         var data = await SendAsync<MediaData>(
@@ -116,7 +116,14 @@ public class AniListClient : IAniListClient
             token,
             cancellationToken).ConfigureAwait(false);
 
-        return data.Media is null ? null : MapMedia(data.Media);
+        if (data.Media is null)
+        {
+            return (null, null);
+        }
+
+        var media = MapMedia(data.Media);
+        var listEntry = MapEntry(data.Media.MediaListEntry);
+        return (media, listEntry);
     }
 
     public async Task<MediaListEntry?> SaveMediaListEntryAsync(MediaListEntry entry, CancellationToken cancellationToken = default)
@@ -376,8 +383,96 @@ public class AniListClient : IAniListClient
                 .ToList() ?? [],
             StreamingEpisodes = dto.StreamingEpisodes?
                 .Take(12)
-                .ToList() ?? []
+                .ToList() ?? [],
+            Relations = dto.Relations?.Edges?
+                .Where(e => e.Node is not null)
+                .Select(e => new MediaRelationEdge
+                {
+                    RelationType = FormatRelationType(e.RelationType),
+                    Node = MapRelatedMedia(e.Node!),
+                })
+                .ToList() ?? [],
+            Characters = dto.Characters?.Edges?
+                .Where(e => e.Node is not null)
+                .Select(e => new CharacterEdge
+                {
+                    Node = new Character
+                    {
+                        Id = e.Node!.Id,
+                        Name = e.Node.Name,
+                        Image = e.Node.Image,
+                    },
+                    Role = e.Role,
+                    VoiceActors = e.VoiceActors?
+                        .Where(va => va.Language is "Japanese" or "English")
+                        .Select(va => new VoiceActor
+                        {
+                            Id = va.Id,
+                            Name = va.Name,
+                            Image = va.Image,
+                            Language = va.Language,
+                        })
+                        .ToList() ?? [],
+                })
+                .ToList() ?? [],
+            Recommendations = dto.Recommendations?.Nodes?
+                .Where(n => n.MediaRecommendation is not null)
+                .Select(n => new MediaRecommendationNode
+                {
+                    Rating = n.Rating,
+                    MediaRecommendation = MapRelatedMedia(n.MediaRecommendation!),
+                })
+                .ToList() ?? [],
+            ScoreDistribution = MapScoreDistribution(dto.Stats?.ScoreDistribution),
+            StatusDistribution = dto.Stats?.StatusDistribution ?? [],
+            Staff = dto.Staff?.Edges?
+                .Where(e => e.Node is not null)
+                .Select(e => new StaffEdge
+                {
+                    Node = new StaffNode
+                    {
+                        Id = e.Node!.Id,
+                        Name = e.Node.Name,
+                        Image = e.Node.Image,
+                    },
+                    Role = e.Role,
+                })
+                .ToList() ?? [],
         };
+    }
+
+    private static RelatedMedia MapRelatedMedia(RelatedMediaDto dto) => new()
+    {
+        Id = dto.Id,
+        Title = dto.Title,
+        Format = dto.Format,
+        Type = dto.Type,
+        Status = dto.Status,
+        CoverImage = dto.CoverImage,
+        AverageScore = dto.AverageScore,
+    };
+
+    private static string? FormatRelationType(string? raw) =>
+        raw?.Replace("_", " ") is { } s
+            ? System.Globalization.CultureInfo.InvariantCulture.TextInfo.ToTitleCase(s.ToLowerInvariant())
+            : null;
+
+    private static List<ScoreDistributionItem> MapScoreDistribution(List<ScoreDistributionDto>? items)
+    {
+        if (items is null || items.Count == 0)
+        {
+            return [];
+        }
+
+        var maxAmount = items.Max(s => s.Amount ?? 0);
+        return items
+            .Select(s => new ScoreDistributionItem
+            {
+                Score = s.Score ?? 0,
+                Amount = s.Amount ?? 0,
+                BarHeight = maxAmount > 0 ? (double)(s.Amount ?? 0) / maxAmount * 100 : 0,
+            })
+            .ToList();
     }
 
     private static MediaListStatus? ParseStatus(string? status)
@@ -704,11 +799,107 @@ public class AniListClient : IAniListClient
         public List<MediaRanking>? Rankings { get; set; }
         public List<MediaExternalLink>? ExternalLinks { get; set; }
         public List<MediaStreamingEpisode>? StreamingEpisodes { get; set; }
+        public MediaRelationConnectionDto? Relations { get; set; }
+        public CharacterConnectionDto? Characters { get; set; }
+        public RecommendationConnectionDto? Recommendations { get; set; }
+        public MediaStatsDto? Stats { get; set; }
+        public StaffConnectionDto? Staff { get; set; }
+        public MediaListEntryDto? MediaListEntry { get; set; }
     }
 
     private sealed class StudioConnection
     {
         public List<Studio>? Nodes { get; set; }
+    }
+
+    private sealed class MediaRelationConnectionDto
+    {
+        public List<MediaRelationEdgeDto>? Edges { get; set; }
+    }
+
+    private sealed class MediaRelationEdgeDto
+    {
+        public string? RelationType { get; set; }
+        public RelatedMediaDto? Node { get; set; }
+    }
+
+    private sealed class RelatedMediaDto
+    {
+        public int Id { get; set; }
+        public MediaTitle? Title { get; set; }
+        public string? Format { get; set; }
+        public string? Type { get; set; }
+        public string? Status { get; set; }
+        public MediaCoverImage? CoverImage { get; set; }
+        public int? AverageScore { get; set; }
+    }
+
+    private sealed class CharacterConnectionDto
+    {
+        public List<CharacterEdgeDto>? Edges { get; set; }
+    }
+
+    private sealed class CharacterEdgeDto
+    {
+        public CharacterNodeDto? Node { get; set; }
+        public string? Role { get; set; }
+        public List<VoiceActorDto>? VoiceActors { get; set; }
+    }
+
+    private sealed class CharacterNodeDto
+    {
+        public int Id { get; set; }
+        public CharacterName? Name { get; set; }
+        public CharacterImage? Image { get; set; }
+    }
+
+    private sealed class VoiceActorDto
+    {
+        public int Id { get; set; }
+        public CharacterName? Name { get; set; }
+        public CharacterImage? Image { get; set; }
+        public string? Language { get; set; }
+    }
+
+    private sealed class RecommendationConnectionDto
+    {
+        public List<RecommendationNodeDto>? Nodes { get; set; }
+    }
+
+    private sealed class RecommendationNodeDto
+    {
+        public int? Rating { get; set; }
+        public RelatedMediaDto? MediaRecommendation { get; set; }
+    }
+
+    private sealed class MediaStatsDto
+    {
+        public List<ScoreDistributionDto>? ScoreDistribution { get; set; }
+        public List<StatusDistribution>? StatusDistribution { get; set; }
+    }
+
+    private sealed class ScoreDistributionDto
+    {
+        public int? Score { get; set; }
+        public int? Amount { get; set; }
+    }
+
+    private sealed class StaffConnectionDto
+    {
+        public List<StaffEdgeDto>? Edges { get; set; }
+    }
+
+    private sealed class StaffEdgeDto
+    {
+        public StaffNodeDto? Node { get; set; }
+        public string? Role { get; set; }
+    }
+
+    private sealed class StaffNodeDto
+    {
+        public int Id { get; set; }
+        public CharacterName? Name { get; set; }
+        public CharacterImage? Image { get; set; }
     }
 
     private const string ViewerQuery = @"
@@ -808,6 +999,73 @@ query Media($id: Int!) {
     rankings { rank type format year season allTime context }
     externalLinks { id url site siteId type language color isDisabled }
     streamingEpisodes { title thumbnail url site }
+    relations {
+      edges {
+        relationType(version: 2)
+        node {
+          id
+          title { romaji english native }
+          format
+          type
+          status
+          coverImage { medium large }
+        }
+      }
+    }
+    characters(page: 1, perPage: 10, sort: [ROLE, RELEVANCE, ID]) {
+      edges {
+        node {
+          id
+          name { full native }
+          image { medium large }
+        }
+        role
+        voiceActors(sort: [RELEVANCE, ID]) {
+          id
+          name { full native }
+          image { medium }
+          language
+        }
+      }
+    }
+    recommendations(page: 1, perPage: 8, sort: [RATING_DESC]) {
+      nodes {
+        rating
+        mediaRecommendation {
+          id
+          title { romaji english native }
+          format
+          coverImage { medium large }
+          averageScore
+        }
+      }
+    }
+    stats {
+      scoreDistribution { score amount }
+      statusDistribution { status amount }
+    }
+    staff(page: 1, perPage: 10, sort: [RELEVANCE, ID]) {
+      edges {
+        node {
+          id
+          name { full native }
+          image { medium }
+        }
+        role
+      }
+    }
+    mediaListEntry {
+      id
+      mediaId
+      status
+      progress
+      score
+      repeat
+      notes
+      private
+      hiddenFromStatusLists
+      updatedAt
+    }
   }
 }";
 
