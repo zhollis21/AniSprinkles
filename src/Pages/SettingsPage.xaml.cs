@@ -137,9 +137,23 @@ public partial class SettingsPage : ContentPage
         SetViewModel(viewModel);
     }
 
+    private void OnViewModelPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(SettingsPageModel.IsAuthenticated) && _hasAppeared)
+        {
+            UpdateLoadedContentHost();
+        }
+    }
+
     private void SetViewModel(SettingsPageModel viewModel)
     {
+        if (_viewModel is not null)
+        {
+            _viewModel.PropertyChanged -= OnViewModelPropertyChanged;
+        }
+
         _viewModel = viewModel;
+        _viewModel.PropertyChanged += OnViewModelPropertyChanged;
         BindingContext = viewModel;
     }
 }

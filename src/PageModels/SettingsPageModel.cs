@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
+using AniSprinkles.Utilities;
 
 namespace AniSprinkles.PageModels;
 
@@ -223,6 +224,12 @@ public partial class SettingsPageModel : ObservableObject
         _loadedRestrictMessages = RestrictMessagesToFollowing;
         _loadedActivityMergeTime = ActivityMergeTime;
 
+        // Sync local app settings from user profile
+        AppSettings.TitleLanguage = SelectedTitleLanguage;
+        AppSettings.ScoreFormat = SelectedScoreFormat;
+        AppSettings.DisplayAdultContent = DisplayAdultContent;
+        AppSettings.Save();
+
         OnPropertyChanged(nameof(HasUnsavedChanges));
     }
 
@@ -238,11 +245,6 @@ public partial class SettingsPageModel : ObservableObject
             ("ACTIVITY_LIKE", "Likes", "Activity"),
             ("ACTIVITY_REPLY_LIKE", "Reply Likes", "Activity"),
             ("ACTIVITY_REPLY_SUBSCRIBED", "Reply Subscribed", "Activity"),
-            ("THREAD_COMMENT_MENTION", "Comment Mentions", "Forum"),
-            ("THREAD_SUBSCRIBED", "Subscribed Threads", "Forum"),
-            ("THREAD_COMMENT_REPLY", "Comment Replies", "Forum"),
-            ("THREAD_LIKE", "Thread Likes", "Forum"),
-            ("THREAD_COMMENT_LIKE", "Comment Likes", "Forum"),
             ("AIRING", "Airing", "Media"),
             ("RELATED_MEDIA_ADDITION", "Related Media", "Media"),
             ("MEDIA_DATA_CHANGE", "Data Changes", "Media"),

@@ -451,12 +451,9 @@ public class AniListClient : IAniListClient
     {
         return value?.ToUpperInvariant() switch
         {
-            "ROMAJI" => UserTitleLanguage.Romaji,
-            "ENGLISH" => UserTitleLanguage.English,
-            "NATIVE" => UserTitleLanguage.Native,
-            "ROMAJI_STYLISED" => UserTitleLanguage.RomajiStylised,
-            "ENGLISH_STYLISED" => UserTitleLanguage.EnglishStylised,
-            "NATIVE_STYLISED" => UserTitleLanguage.NativeStylised,
+            "ROMAJI" or "ROMAJI_STYLISED" => UserTitleLanguage.Romaji,
+            "ENGLISH" or "ENGLISH_STYLISED" => UserTitleLanguage.English,
+            "NATIVE" or "NATIVE_STYLISED" => UserTitleLanguage.Native,
             _ => UserTitleLanguage.Romaji
         };
     }
@@ -468,9 +465,6 @@ public class AniListClient : IAniListClient
             UserTitleLanguage.Romaji => "ROMAJI",
             UserTitleLanguage.English => "ENGLISH",
             UserTitleLanguage.Native => "NATIVE",
-            UserTitleLanguage.RomajiStylised => "ROMAJI_STYLISED",
-            UserTitleLanguage.EnglishStylised => "ENGLISH_STYLISED",
-            UserTitleLanguage.NativeStylised => "NATIVE_STYLISED",
             _ => "ROMAJI"
         };
     }
@@ -751,6 +745,7 @@ query MediaListCollection($userId: Int) {
           seasonYear
           averageScore
           popularity
+          isAdult
         }
       }
     }
