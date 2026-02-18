@@ -213,9 +213,25 @@ public partial class MyAnimePage : ContentPage
         }
     }
 
+    private void OnViewModelPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(MyAnimePageModel.IsAuthenticated)
+            && _hasAppeared
+            && _viewModel?.IsAuthenticated == true)
+        {
+            UpdateLoadedContentHost();
+        }
+    }
+
     private void SetViewModel(MyAnimePageModel viewModel)
     {
+        if (_viewModel is not null)
+        {
+            _viewModel.PropertyChanged -= OnViewModelPropertyChanged;
+        }
+
         _viewModel = viewModel;
+        _viewModel.PropertyChanged += OnViewModelPropertyChanged;
         BindingContext = viewModel;
     }
 }

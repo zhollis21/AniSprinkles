@@ -1,3 +1,5 @@
+using AniSprinkles.Utilities;
+
 namespace AniSprinkles.Models;
 
 public class Media
@@ -37,6 +39,12 @@ public class Media
     public List<MediaExternalLink> ExternalLinks { get; set; } = [];
     public List<MediaStreamingEpisode> StreamingEpisodes { get; set; } = [];
 
-    public string DisplayTitle =>
-        Title?.English ?? Title?.Romaji ?? Title?.Native ?? "Unknown Title";
+    public string DisplayTitle => AppSettings.TitleLanguage switch
+    {
+        UserTitleLanguage.English
+            => Title?.English ?? Title?.Romaji ?? Title?.Native ?? "Unknown Title",
+        UserTitleLanguage.Native
+            => Title?.Native ?? Title?.Romaji ?? Title?.English ?? "Unknown Title",
+        _ => Title?.Romaji ?? Title?.English ?? Title?.Native ?? "Unknown Title",
+    };
 }

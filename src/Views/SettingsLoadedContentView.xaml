@@ -6,7 +6,20 @@
              xmlns:f="clr-namespace:AniSprinkles.Resources.Fonts"
              x:Class="AniSprinkles.Views.SettingsLoadedContentView"
              x:DataType="pageModels:SettingsPageModel">
-    <ScrollView>
+    <Grid RowDefinitions="Auto,*">
+        <!-- Sticky save bar -->
+        <Grid Grid.Row="0" Padding="{StaticResource LayoutPadding}" ColumnDefinitions="*,Auto" ColumnSpacing="12"
+              Margin="0,0,0,4"
+              IsVisible="{Binding HasUnsavedChanges}">
+            <Button Text="Save Settings"
+                    Command="{Binding SaveCommand}"
+                    Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}"
+                    FontAttributes="Bold"
+                    FontSize="16" />
+            <ActivityIndicator Grid.Column="1" IsRunning="{Binding IsSaving}" IsVisible="{Binding IsSaving}" VerticalOptions="Center" />
+        </Grid>
+
+        <ScrollView Grid.Row="1">
         <VerticalStackLayout Padding="{StaticResource LayoutPadding}" Spacing="16">
 
             <!-- Status message -->
@@ -176,24 +189,6 @@
                                 <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding SetTitleLanguageCommand}" CommandParameter="Native" /></Border.GestureRecognizers>
                                 <Label Text="Native" Style="{StaticResource ChipLabelStyle}" TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Native'}" />
                             </Border>
-                            <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
-                                    Stroke="{Binding SelectedTitleLanguage, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=RomajiStylised}"
-                                    Opacity="{Binding SelectedTitleLanguage, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=RomajiStylised}">
-                                <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding SetTitleLanguageCommand}" CommandParameter="RomajiStylised" /></Border.GestureRecognizers>
-                                <Label Text="Romaji Stylised" Style="{StaticResource ChipLabelStyle}" TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='RomajiStylised'}" />
-                            </Border>
-                            <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
-                                    Stroke="{Binding SelectedTitleLanguage, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=EnglishStylised}"
-                                    Opacity="{Binding SelectedTitleLanguage, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=EnglishStylised}">
-                                <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding SetTitleLanguageCommand}" CommandParameter="EnglishStylised" /></Border.GestureRecognizers>
-                                <Label Text="English Stylised" Style="{StaticResource ChipLabelStyle}" TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='EnglishStylised'}" />
-                            </Border>
-                            <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
-                                    Stroke="{Binding SelectedTitleLanguage, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=NativeStylised}"
-                                    Opacity="{Binding SelectedTitleLanguage, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=NativeStylised}">
-                                <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding SetTitleLanguageCommand}" CommandParameter="NativeStylised" /></Border.GestureRecognizers>
-                                <Label Text="Native Stylised" Style="{StaticResource ChipLabelStyle}" TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='NativeStylised'}" />
-                            </Border>
                         </FlexLayout>
                     </VerticalStackLayout>
                     <VerticalStackLayout Spacing="8">
@@ -361,17 +356,7 @@
                 </VerticalStackLayout>
             </Border>
 
-            <!-- 7. SAVE BUTTON -->
-            <Button Text="Save Settings"
-                    Command="{Binding SaveCommand}"
-                    IsVisible="{Binding HasUnsavedChanges}"
-                    Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}"
-                    FontAttributes="Bold"
-                    FontSize="16"
-                    Margin="0,4" />
-            <ActivityIndicator IsRunning="{Binding IsSaving}" IsVisible="{Binding IsSaving}" HorizontalOptions="Center" />
-
-            <!-- 8. ABOUT APP -->
+            <!-- 7. ABOUT APP -->
             <Border Style="{StaticResource CardStyle}" Padding="16" Margin="0,8,0,24">
                 <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
                     <HorizontalStackLayout Spacing="8" HorizontalOptions="Center">
@@ -392,4 +377,5 @@
 
         </VerticalStackLayout>
     </ScrollView>
+    </Grid>
 </ContentView>

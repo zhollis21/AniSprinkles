@@ -1,10 +1,13 @@
-﻿namespace AniSprinkles;
+﻿using AniSprinkles.Utilities;
+
+namespace AniSprinkles;
 
 public partial class App : Application
 {
     public App()
     {
         InitializeComponent();
+        AppSettings.Load();
 
         AppDomain.CurrentDomain.UnhandledException += (_, e) =>
         {

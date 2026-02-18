@@ -3,6 +3,7 @@ using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
+using AniSprinkles.Utilities;
 
 namespace AniSprinkles.PageModels;
 
@@ -345,8 +346,15 @@ public partial class MyAnimePageModel : ObservableObject
         var buckets = sections.ToDictionary(section => section, _ => new List<MediaListEntry>());
         var unknownBucket = new List<MediaListEntry>();
 
+        var hideAdult = !AppSettings.DisplayAdultContent;
+
         foreach (var entry in entries)
         {
+            if (hideAdult && entry.Media?.IsAdult == true)
+            {
+                continue;
+            }
+
             if (entry.Status is null || !map.TryGetValue(entry.Status.Value, out var section))
             {
                 unknownBucket.Add(entry);
