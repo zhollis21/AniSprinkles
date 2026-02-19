@@ -335,7 +335,13 @@ namespace AniSprinkles.PageModels;
         {
             // Query attributes can be re-applied on resume/back transitions. Keep existing media and only
             // refresh list-context/error state so we avoid a second network call and full layout pass.
-            ListEntry = listEntry;
+            // Don't overwrite ListEntry — our in-memory copy reflects any saves the user made.
+            // Only accept the navigation parameter if we have no entry yet.
+            if (ListEntry is null && listEntry is not null)
+            {
+                ListEntry = listEntry;
+            }
+
             StatusMessage = string.Empty;
             ErrorDetails = string.Empty;
             IsErrorDetailsVisible = false;
@@ -364,6 +370,9 @@ namespace AniSprinkles.PageModels;
             _logger.LogInformation("NAVTRACE load#{LoadRequestId} starting details fetch for media {MediaId}.", loadRequestId, mediaId);
             SentrySdk.AddBreadcrumb($"Load media details {mediaId}", "navigation", "state");
 
+            _logger.LogInformation(
+                "DATATRACE load#{LoadRequestId} nav-param listEntry: Progress={Progress}, Score={Score}, EntryId={EntryId}",
+                loadRequestId, listEntry?.Progress, listEntry?.Score, listEntry?.Id);
             ListEntry = listEntry;
             StatusMessage = string.Empty;
             ErrorDetails = string.Empty;
@@ -378,6 +387,10 @@ namespace AniSprinkles.PageModels;
                 fetchStopwatch.ElapsedMilliseconds,
                 mediaId);
 
+            _logger.LogInformation(
+                "DATATRACE load#{LoadRequestId} API result.ListEntry: Progress={Progress}, Score={Score}, EntryId={EntryId}",
+                loadRequestId, result.ListEntry?.Progress, result.ListEntry?.Score, result.ListEntry?.Id);
+
             if (result.Media is null)
             {
                 StatusMessage = "Details unavailable.";
@@ -389,6 +402,10 @@ namespace AniSprinkles.PageModels;
             var entry = result.ListEntry ?? listEntry;
             if (entry is not null)
                 entry.Media = result.Media;
+            _logger.LogInformation(
+                "DATATRACE load#{LoadRequestId} final entry (before set): Progress={Progress}, Score={Score}, EntryId={EntryId}, Source={Source}",
+                loadRequestId, entry?.Progress, entry?.Score, entry?.Id,
+                result.ListEntry is not null ? "API" : "nav-param");
             ListEntry = entry;
             Media = result.Media;
             _loadedMediaId = mediaId;
@@ -531,6 +548,10 @@ namespace AniSprinkles.PageModels;
 
     partial void OnListEntryChanged(MediaListEntry? value)
     {
+        _logger.LogInformation(
+            "DATATRACE OnListEntryChanged: Progress={Progress}, Score={Score}, EntryId={EntryId}, MediaId={MediaId}",
+            value?.Progress, value?.Score, value?.Id, value?.MediaId);
+
         HasListEntry = value is not null;
         OnPropertyChanged(nameof(ListStatusDisplay));
         OnPropertyChanged(nameof(CurrentStatusKey));
@@ -646,6 +667,38 @@ namespace AniSprinkles.PageModels;
     }
 
     [RelayCommand]
+    private async Task RemoveFromList()
+    {
+        if (Media is null || ListEntry is null || ListEntry.Id == 0)
+        {
+            return;
+        }
+
+        IsSavingListEntry = true;
+        try
+        {
+            var deleted = await _aniListClient.DeleteMediaListEntryAsync(ListEntry.Id);
+            if (deleted)
+            {
+                ListEntry = null;
+                IsStatusExpanded = false;
+                OnPropertyChanged(nameof(CanAddToList));
+                OnPropertyChanged(nameof(HasListEntry));
+                NotifyListEntryDisplayChanged();
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to remove media {MediaId} from list.", Media.Id);
+            StatusMessage = "Failed to remove from list. Try again.";
+        }
+        finally
+        {
+            IsSavingListEntry = false;
+        }
+    }
+
+    [RelayCommand]
     private async Task AddToList()
     {
         if (Media is null)
@@ -749,6 +802,9 @@ namespace AniSprinkles.PageModels;
 
     partial void OnSliderProgressChanged(double value)
     {
+        _logger.LogInformation(
+            "DATATRACE OnSliderProgressChanged: value={Value}, ListEntry.Progress={CurrentProgress}",
+            value, ListEntry?.Progress);
         if (ListEntry is null) return;
         var rounded = (int)Math.Round(value);
         // Snap the slider thumb to the nearest whole number

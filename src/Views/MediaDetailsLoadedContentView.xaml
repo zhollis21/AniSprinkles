@@ -271,7 +271,11 @@
                         </Border>
 
                         <!-- ── Dropdown list ── -->
-                        <VerticalStackLayout Spacing="0" IsVisible="{Binding IsStatusExpanded}" Margin="0,10,0,0">
+                        <Border StrokeShape="RoundRectangle 10" StrokeThickness="1"
+                                Stroke="{StaticResource Gray600}" BackgroundColor="Transparent"
+                                Padding="4,4" Margin="0,10,0,0"
+                                IsVisible="{Binding IsStatusExpanded}">
+                        <VerticalStackLayout Spacing="0">
                             <!-- Watching -->
                             <Border StrokeShape="RoundRectangle 8" StrokeThickness="0" Padding="10,10"
                                     Background="{Binding CurrentStatusKey, Converter={StaticResource SortFieldBackgroundConverter}, ConverterParameter=Current}">
@@ -343,164 +347,178 @@
                                     <Label Grid.Column="1" Text="Rewatching" Style="{StaticResource Body2}" TextColor="{Binding CurrentStatusKey, Converter={StaticResource SortFieldSelectedTextConverter}, ConverterParameter='Repeating'}" VerticalTextAlignment="Center" />
                                 </Grid>
                             </Border>
+                            <!-- Remove from List -->
+                            <BoxView HeightRequest="1" Color="{StaticResource Gray600}" Opacity="0.3"
+                                     IsVisible="{Binding HasListEntry}" />
+                            <Border StrokeShape="RoundRectangle 8" StrokeThickness="0" Padding="10,10"
+                                    BackgroundColor="Transparent"
+                                    IsVisible="{Binding HasListEntry}">
+                                <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding RemoveFromListCommand}" /></Border.GestureRecognizers>
+                                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                                    <Image Grid.Column="0" WidthRequest="18" HeightRequest="18" VerticalOptions="Center">
+                                        <Image.Source><FontImageSource Glyph="{x:Static f:FluentUI.delete_24_regular}" FontFamily="{x:Static f:FluentUI.FontFamily}" Color="{StaticResource Gray400}" Size="18" /></Image.Source>
+                                    </Image>
+                                    <Label Grid.Column="1" Text="Remove from List" Style="{StaticResource Body2}" TextColor="{StaticResource Gray400}" VerticalTextAlignment="Center" />
+                                </Grid>
+                            </Border>
                         </VerticalStackLayout>
+                        </Border>
                     </VerticalStackLayout>
 
-                    <!-- ── Progress slider + stepper (when on list) ── -->
-                    <VerticalStackLayout Spacing="4" IsVisible="{Binding HasListEntry}">
-                        <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="8">
-                            <Label Grid.Column="0" Text="Progress" Style="{StaticResource Caption1}"
-                                   TextColor="{StaticResource Gray400}" VerticalTextAlignment="Center" />
-                            <Label Grid.Column="1" Text="{Binding ProgressLabel}"
-                                   Style="{StaticResource Caption1Strong}" HorizontalTextAlignment="End"
+                    <!-- ── Progress ── -->
+                    <VerticalStackLayout Spacing="6" IsVisible="{Binding HasListEntry}">
+                        <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto" ColumnSpacing="8">
+                            <Image Grid.Column="0" WidthRequest="16" HeightRequest="16" VerticalOptions="Center">
+                                <Image.Source>
+                                    <FontImageSource Glyph="{x:Static f:FluentUI.play_24_regular}"
+                                                     FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                                     Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Progress'}" Size="16" />
+                                </Image.Source>
+                            </Image>
+                            <Label Grid.Column="1" Text="Progress" Style="{StaticResource Caption1Strong}"
+                                   TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Progress'}" VerticalTextAlignment="Center" />
+                            <Label Grid.Column="2" Text="{Binding ProgressLabel}"
+                                   Style="{StaticResource Body2Strong}" HorizontalTextAlignment="End"
                                    VerticalTextAlignment="Center" />
                             <!-- Minus button -->
-                            <Border Grid.Column="2" StrokeShape="RoundRectangle 14" StrokeThickness="0"
-                                    Background="{AppThemeBinding Light={StaticResource LightSecondaryBackground},Dark={StaticResource DarkSecondaryBackground}}"
-                                    Padding="4" HeightRequest="28" WidthRequest="28">
+                            <Border Grid.Column="3" StrokeShape="RoundRectangle 18" StrokeThickness="1"
+                                    Stroke="{StaticResource Gray600}" BackgroundColor="Transparent"
+                                    Padding="0" HeightRequest="36" WidthRequest="36">
                                 <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding DecrementProgressCommand}" /></Border.GestureRecognizers>
-                                <Image WidthRequest="14" HeightRequest="14" HorizontalOptions="Center" VerticalOptions="Center">
+                                <Image WidthRequest="18" HeightRequest="18" HorizontalOptions="Center" VerticalOptions="Center">
                                     <Image.Source>
                                         <FontImageSource Glyph="{x:Static f:FluentUI.subtract_24_regular}"
                                                          FontFamily="{x:Static f:FluentUI.FontFamily}"
-                                                         Color="{StaticResource Gray400}" Size="14" />
+                                                         Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Progress'}" Size="18" />
                                     </Image.Source>
                                 </Image>
                             </Border>
                             <!-- Plus button -->
-                            <Border Grid.Column="3" StrokeShape="RoundRectangle 14" StrokeThickness="0"
-                                    Background="{AppThemeBinding Light={StaticResource LightSecondaryBackground},Dark={StaticResource DarkSecondaryBackground}}"
-                                    Padding="4" HeightRequest="28" WidthRequest="28">
+                            <Border Grid.Column="4" StrokeShape="RoundRectangle 18" StrokeThickness="1"
+                                    Stroke="{StaticResource Gray600}" BackgroundColor="Transparent"
+                                    Padding="0" HeightRequest="36" WidthRequest="36">
                                 <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding IncrementProgressCommand}" /></Border.GestureRecognizers>
-                                <Image WidthRequest="14" HeightRequest="14" HorizontalOptions="Center" VerticalOptions="Center">
+                                <Image WidthRequest="18" HeightRequest="18" HorizontalOptions="Center" VerticalOptions="Center">
                                     <Image.Source>
                                         <FontImageSource Glyph="{x:Static f:FluentUI.add_24_regular}"
                                                          FontFamily="{x:Static f:FluentUI.FontFamily}"
-                                                         Color="{StaticResource Gray400}" Size="14" />
+                                                         Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Progress'}" Size="18" />
                                     </Image.Source>
                                 </Image>
                             </Border>
                         </Grid>
                         <Slider Minimum="0" Maximum="{Binding ProgressSliderMax}"
                                 Value="{Binding SliderProgress}"
-                                MinimumTrackColor="{Binding ListStatusDisplay, Converter={StaticResource RainbowAccentConverter}}"
-                                ThumbColor="{Binding ListStatusDisplay, Converter={StaticResource RainbowAccentConverter}}" />
+                                MinimumTrackColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Progress'}"
+                                ThumbColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Progress'}" />
                     </VerticalStackLayout>
 
-                    <!-- ── Score section (when on list) ── -->
-                    <VerticalStackLayout Spacing="6" IsVisible="{Binding HasListEntry}">
-                        <Label Text="Score" Style="{StaticResource Caption1}" TextColor="{StaticResource Gray400}" />
+                    <!-- Divider -->
+                    <BoxView HeightRequest="1" Color="{StaticResource Gray600}" Opacity="0.3"
+                             IsVisible="{Binding HasListEntry}" />
+
+                    <!-- ── Score ── -->
+                    <VerticalStackLayout Spacing="8" IsVisible="{Binding HasListEntry}">
+                        <HorizontalStackLayout Spacing="6">
+                            <Image WidthRequest="16" HeightRequest="16" VerticalOptions="Center">
+                                <Image.Source>
+                                    <FontImageSource Glyph="{x:Static f:FluentUI.star_24_regular}"
+                                                     FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                                     Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='MyScore'}" Size="16" />
+                                </Image.Source>
+                            </Image>
+                            <Label Text="Score" Style="{StaticResource Caption1Strong}"
+                                   TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='MyScore'}" />
+                        </HorizontalStackLayout>
 
                         <!-- Stars (Point5) -->
-                        <HorizontalStackLayout Spacing="8" IsVisible="{Binding ScoreFormatIsStars}">
-                            <Image WidthRequest="28" HeightRequest="28">
+                        <HorizontalStackLayout Spacing="12" HorizontalOptions="Center" IsVisible="{Binding ScoreFormatIsStars}">
+                            <Image WidthRequest="40" HeightRequest="40">
                                 <Image.GestureRecognizers><TapGestureRecognizer Command="{Binding SetStarRatingCommand}" CommandParameter="1" /></Image.GestureRecognizers>
                                 <Image.Source>
                                     <FontImageSource Glyph="{x:Static f:FluentUI.star_24_regular}"
                                                      FontFamily="{x:Static f:FluentUI.FontFamily}"
                                                      Color="{Binding Star1Filled, Converter={StaticResource RainbowAccentConverter}}"
-                                                     Size="28" />
+                                                     Size="40" />
                                 </Image.Source>
                             </Image>
-                            <Image WidthRequest="28" HeightRequest="28">
+                            <Image WidthRequest="40" HeightRequest="40">
                                 <Image.GestureRecognizers><TapGestureRecognizer Command="{Binding SetStarRatingCommand}" CommandParameter="2" /></Image.GestureRecognizers>
                                 <Image.Source>
                                     <FontImageSource Glyph="{x:Static f:FluentUI.star_24_regular}"
                                                      FontFamily="{x:Static f:FluentUI.FontFamily}"
                                                      Color="{Binding Star2Filled, Converter={StaticResource RainbowAccentConverter}}"
-                                                     Size="28" />
+                                                     Size="40" />
                                 </Image.Source>
                             </Image>
-                            <Image WidthRequest="28" HeightRequest="28">
+                            <Image WidthRequest="40" HeightRequest="40">
                                 <Image.GestureRecognizers><TapGestureRecognizer Command="{Binding SetStarRatingCommand}" CommandParameter="3" /></Image.GestureRecognizers>
                                 <Image.Source>
                                     <FontImageSource Glyph="{x:Static f:FluentUI.star_24_regular}"
                                                      FontFamily="{x:Static f:FluentUI.FontFamily}"
                                                      Color="{Binding Star3Filled, Converter={StaticResource RainbowAccentConverter}}"
-                                                     Size="28" />
+                                                     Size="40" />
                                 </Image.Source>
                             </Image>
-                            <Image WidthRequest="28" HeightRequest="28">
+                            <Image WidthRequest="40" HeightRequest="40">
                                 <Image.GestureRecognizers><TapGestureRecognizer Command="{Binding SetStarRatingCommand}" CommandParameter="4" /></Image.GestureRecognizers>
                                 <Image.Source>
                                     <FontImageSource Glyph="{x:Static f:FluentUI.star_24_regular}"
                                                      FontFamily="{x:Static f:FluentUI.FontFamily}"
                                                      Color="{Binding Star4Filled, Converter={StaticResource RainbowAccentConverter}}"
-                                                     Size="28" />
+                                                     Size="40" />
                                 </Image.Source>
                             </Image>
-                            <Image WidthRequest="28" HeightRequest="28">
+                            <Image WidthRequest="40" HeightRequest="40">
                                 <Image.GestureRecognizers><TapGestureRecognizer Command="{Binding SetStarRatingCommand}" CommandParameter="5" /></Image.GestureRecognizers>
                                 <Image.Source>
                                     <FontImageSource Glyph="{x:Static f:FluentUI.star_24_regular}"
                                                      FontFamily="{x:Static f:FluentUI.FontFamily}"
                                                      Color="{Binding Star5Filled, Converter={StaticResource RainbowAccentConverter}}"
-                                                     Size="28" />
+                                                     Size="40" />
                                 </Image.Source>
                             </Image>
                         </HorizontalStackLayout>
 
                         <!-- Smileys (Point3) -->
-                        <HorizontalStackLayout Spacing="16" IsVisible="{Binding ScoreFormatIsSmileys}">
-                            <Image WidthRequest="32" HeightRequest="32" Opacity="{Binding SmileyHappySelected, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=True}">
+                        <HorizontalStackLayout Spacing="24" HorizontalOptions="Center" IsVisible="{Binding ScoreFormatIsSmileys}">
+                            <Image WidthRequest="44" HeightRequest="44" Opacity="{Binding SmileyHappySelected, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=True}">
                                 <Image.GestureRecognizers><TapGestureRecognizer Command="{Binding SetSmileyRatingCommand}" CommandParameter="3" /></Image.GestureRecognizers>
                                 <Image.Source>
                                     <FontImageSource Glyph="{x:Static f:FluentUI.emoji_laugh_24_regular}"
                                                      FontFamily="{x:Static f:FluentUI.FontFamily}"
-                                                     Color="{StaticResource RainbowGreen}" Size="32" />
+                                                     Color="{StaticResource RainbowGreen}" Size="44" />
                                 </Image.Source>
                             </Image>
-                            <Image WidthRequest="32" HeightRequest="32" Opacity="{Binding SmileyNeutralSelected, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=True}">
+                            <Image WidthRequest="44" HeightRequest="44" Opacity="{Binding SmileyNeutralSelected, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=True}">
                                 <Image.GestureRecognizers><TapGestureRecognizer Command="{Binding SetSmileyRatingCommand}" CommandParameter="2" /></Image.GestureRecognizers>
                                 <Image.Source>
                                     <FontImageSource Glyph="{x:Static f:FluentUI.emoji_meh_24_regular}"
                                                      FontFamily="{x:Static f:FluentUI.FontFamily}"
-                                                     Color="{StaticResource RainbowYellow}" Size="32" />
+                                                     Color="{StaticResource RainbowYellow}" Size="44" />
                                 </Image.Source>
                             </Image>
-                            <Image WidthRequest="32" HeightRequest="32" Opacity="{Binding SmileySadSelected, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=True}">
+                            <Image WidthRequest="44" HeightRequest="44" Opacity="{Binding SmileySadSelected, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=True}">
                                 <Image.GestureRecognizers><TapGestureRecognizer Command="{Binding SetSmileyRatingCommand}" CommandParameter="1" /></Image.GestureRecognizers>
                                 <Image.Source>
                                     <FontImageSource Glyph="{x:Static f:FluentUI.emoji_sad_24_regular}"
                                                      FontFamily="{x:Static f:FluentUI.FontFamily}"
-                                                     Color="{StaticResource RainbowRed}" Size="32" />
+                                                     Color="{StaticResource RainbowRed}" Size="44" />
                                 </Image.Source>
                             </Image>
                         </HorizontalStackLayout>
 
                         <!-- Numeric slider (Point100, Point10, Point10Decimal) -->
-                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10"
-                              IsVisible="{Binding ScoreFormatIsNumeric}">
-                            <Slider Grid.Column="0" Minimum="0" Maximum="{Binding NumericScoreMax}"
+                        <VerticalStackLayout Spacing="4" IsVisible="{Binding ScoreFormatIsNumeric}">
+                            <Label Text="{Binding NumericScoreLabel}"
+                                   Style="{StaticResource Title2}" HorizontalTextAlignment="Center"
+                                   TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='MyScore'}" />
+                            <Slider Minimum="0" Maximum="{Binding NumericScoreMax}"
                                     Value="{Binding SliderScore}"
-                                    MinimumTrackColor="{Binding ListStatusDisplay, Converter={StaticResource RainbowAccentConverter}}"
-                                    ThumbColor="{Binding ListStatusDisplay, Converter={StaticResource RainbowAccentConverter}}" />
-                            <Label Grid.Column="1" Text="{Binding NumericScoreLabel}"
-                                   Style="{StaticResource Caption1Strong}" VerticalTextAlignment="Center"
-                                   MinimumWidthRequest="60" HorizontalTextAlignment="End" />
-                        </Grid>
+                                    MinimumTrackColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='MyScore'}"
+                                    ThumbColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='MyScore'}" />
+                        </VerticalStackLayout>
                     </VerticalStackLayout>
-
-                    <!-- ── Add to list (when NOT on list) ── -->
-                    <Border StrokeShape="RoundRectangle 12" StrokeThickness="1"
-                            Stroke="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='AddToList'}"
-                            BackgroundColor="Transparent" Padding="12,10"
-                            IsVisible="{Binding CanAddToList}">
-                        <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding AddToListCommand}" /></Border.GestureRecognizers>
-                        <HorizontalStackLayout Spacing="8" HorizontalOptions="Center">
-                            <Image WidthRequest="18" HeightRequest="18" VerticalOptions="Center">
-                                <Image.Source>
-                                    <FontImageSource Glyph="{x:Static f:FluentUI.add_circle_24_regular}"
-                                                     FontFamily="{x:Static f:FluentUI.FontFamily}"
-                                                     Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='AddToList'}"
-                                                     Size="18" />
-                                </Image.Source>
-                            </Image>
-                            <Label Text="Add to List" Style="{StaticResource Body2Strong}"
-                                   TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='AddToList'}"
-                                   VerticalTextAlignment="Center" />
-                        </HorizontalStackLayout>
-                    </Border>
 
                 </VerticalStackLayout>
             </Border>
@@ -673,71 +691,53 @@
                             <Label Grid.Column="2" Text="{Binding AdultDisplay}" Style="{StaticResource Caption1Strong}" VerticalTextAlignment="Center" />
                         </Grid>
 
-                        <!-- Synonyms -->
-                        <BoxView HeightRequest="1" Color="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}" Opacity="0.3"
-                                 IsVisible="{Binding HasSynonyms}" />
-                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10" Padding="0,8"
-                              IsVisible="{Binding HasSynonyms}">
-                            <Image Grid.Column="0" WidthRequest="16" HeightRequest="16" VerticalOptions="Start" Margin="0,2,0,0">
-                                <Image.Source>
-                                    <FontImageSource Glyph="{x:Static f:FluentUI.text_quote_24_regular}"
-                                                     FontFamily="{x:Static f:FluentUI.FontFamily}"
-                                                     Color="{StaticResource Gray400}" Size="16" />
-                                </Image.Source>
-                            </Image>
-                            <VerticalStackLayout Grid.Column="1" Spacing="2">
-                                <Label Text="Synonyms" Style="{StaticResource Caption1}" TextColor="{StaticResource Gray400}" />
-                                <Label Text="{Binding SynonymsDisplay}" Style="{StaticResource Caption1Strong}"
-                                       MaxLines="3" LineBreakMode="TailTruncation" />
-                            </VerticalStackLayout>
-                        </Grid>
                     </VerticalStackLayout>
 
-                    <!-- Trailer button -->
-                    <Border StrokeShape="RoundRectangle 12" StrokeThickness="1" Stroke="{StaticResource Gray600}"
-                            Padding="12,8" BackgroundColor="Transparent"
-                            HorizontalOptions="Start"
-                            IsVisible="{Binding HasTrailer}">
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding OpenUrlCommand}" CommandParameter="{Binding TrailerUrl}" />
-                        </Border.GestureRecognizers>
-                        <HorizontalStackLayout Spacing="8">
-                            <Image WidthRequest="16" HeightRequest="16" VerticalOptions="Center">
-                                <Image.Source>
-                                    <FontImageSource Glyph="{x:Static f:FluentUI.play_24_regular}"
-                                                     FontFamily="{x:Static f:FluentUI.FontFamily}"
-                                                     Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Trailer'}"
-                                                     Size="16" />
-                                </Image.Source>
-                            </Image>
-                            <Label Text="Watch Trailer" Style="{StaticResource Caption1Strong}"
-                                   TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Trailer'}"
-                                   VerticalTextAlignment="Center" />
-                        </HorizontalStackLayout>
-                    </Border>
-
-                    <!-- AniList link -->
-                    <Border StrokeShape="RoundRectangle 12" StrokeThickness="1" Stroke="{StaticResource Gray600}"
-                            Padding="12,8" BackgroundColor="Transparent"
-                            HorizontalOptions="Start"
-                            IsVisible="{Binding Media.SiteUrl, Converter={StaticResource StringNotNullOrEmptyConverter}}">
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding OpenUrlCommand}" CommandParameter="{Binding Media.SiteUrl}" />
-                        </Border.GestureRecognizers>
-                        <HorizontalStackLayout Spacing="8">
-                            <Image WidthRequest="16" HeightRequest="16" VerticalOptions="Center">
-                                <Image.Source>
-                                    <FontImageSource Glyph="{x:Static f:FluentUI.globe_24_regular}"
-                                                     FontFamily="{x:Static f:FluentUI.FontFamily}"
-                                                     Color="{StaticResource Gray400}"
-                                                     Size="16" />
-                                </Image.Source>
-                            </Image>
-                            <Label Text="View on AniList" Style="{StaticResource Caption1Strong}"
-                                   TextColor="{StaticResource Gray400}"
-                                   VerticalTextAlignment="Center" />
-                        </HorizontalStackLayout>
-                    </Border>
+                    <!-- Trailer + AniList link (inline) -->
+                    <Grid ColumnDefinitions="Auto,*,Auto">
+                        <!-- Trailer button (left) -->
+                        <Border Grid.Column="0" StrokeShape="RoundRectangle 12" StrokeThickness="1" Stroke="{StaticResource Gray600}"
+                                Padding="12,8" BackgroundColor="Transparent"
+                                IsVisible="{Binding HasTrailer}">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding OpenUrlCommand}" CommandParameter="{Binding TrailerUrl}" />
+                            </Border.GestureRecognizers>
+                            <HorizontalStackLayout Spacing="8">
+                                <Image WidthRequest="16" HeightRequest="16" VerticalOptions="Center">
+                                    <Image.Source>
+                                        <FontImageSource Glyph="{x:Static f:FluentUI.play_24_regular}"
+                                                         FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                                         Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Trailer'}"
+                                                         Size="16" />
+                                    </Image.Source>
+                                </Image>
+                                <Label Text="Watch Trailer" Style="{StaticResource Caption1Strong}"
+                                       TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Trailer'}"
+                                       VerticalTextAlignment="Center" />
+                            </HorizontalStackLayout>
+                        </Border>
+                        <!-- AniList link (right) -->
+                        <Border Grid.Column="2" StrokeShape="RoundRectangle 12" StrokeThickness="1" Stroke="{StaticResource Gray600}"
+                                Padding="12,8" BackgroundColor="Transparent"
+                                IsVisible="{Binding Media.SiteUrl, Converter={StaticResource StringNotNullOrEmptyConverter}}">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding OpenUrlCommand}" CommandParameter="{Binding Media.SiteUrl}" />
+                            </Border.GestureRecognizers>
+                            <HorizontalStackLayout Spacing="8">
+                                <Image WidthRequest="16" HeightRequest="16" VerticalOptions="Center">
+                                    <Image.Source>
+                                        <FontImageSource Glyph="{x:Static f:FluentUI.globe_24_regular}"
+                                                         FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                                         Color="{StaticResource Gray400}"
+                                                         Size="16" />
+                                    </Image.Source>
+                                </Image>
+                                <Label Text="View on AniList" Style="{StaticResource Caption1Strong}"
+                                       TextColor="{StaticResource Gray400}"
+                                       VerticalTextAlignment="Center" />
+                            </HorizontalStackLayout>
+                        </Border>
+                    </Grid>
                 </VerticalStackLayout>
             </Border>
 
@@ -746,18 +746,17 @@
             <!-- ============================================ -->
             <VerticalStackLayout Spacing="10" IsVisible="{Binding HasRelations}">
                 <Border Style="{StaticResource SectionHeaderStyle}"
-                        Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}">
+                        Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='RelationsHeader'}">
                     <HorizontalStackLayout Spacing="8">
                         <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
                             <Image.Source>
                                 <FontImageSource Glyph="{x:Static f:FluentUI.link_24_regular}"
                                                  FontFamily="{x:Static f:FluentUI.FontFamily}"
-                                                 Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Relations'}"
+                                                 Color="{AppThemeBinding Light=Black, Dark=White}"
                                                  Size="20" />
                             </Image.Source>
                         </Image>
-                        <Label Text="Relations" Style="{StaticResource Title3}"
-                               TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Relations'}" />
+                        <Label Text="Relations" Style="{StaticResource Title3}" TextColor="{AppThemeBinding Light=Black, Dark=White}" />
                     </HorizontalStackLayout>
                 </Border>
                 <ScrollView Orientation="Horizontal">
@@ -802,18 +801,17 @@
             <!-- ============================================ -->
             <VerticalStackLayout Spacing="10" IsVisible="{Binding HasCharacters}">
                 <Border Style="{StaticResource SectionHeaderStyle}"
-                        Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}">
+                        Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='CharactersHeader'}">
                     <HorizontalStackLayout Spacing="8">
                         <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
                             <Image.Source>
                                 <FontImageSource Glyph="{x:Static f:FluentUI.people_24_regular}"
                                                  FontFamily="{x:Static f:FluentUI.FontFamily}"
-                                                 Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Characters'}"
+                                                 Color="{AppThemeBinding Light=Black, Dark=White}"
                                                  Size="20" />
                             </Image.Source>
                         </Image>
-                        <Label Text="Characters" Style="{StaticResource Title3}"
-                               TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Characters'}" />
+                        <Label Text="Characters" Style="{StaticResource Title3}" TextColor="{AppThemeBinding Light=Black, Dark=White}" />
                     </HorizontalStackLayout>
                 </Border>
                 <ScrollView Orientation="Horizontal">
@@ -854,18 +852,17 @@
             <!-- ============================================ -->
             <VerticalStackLayout Spacing="10" IsVisible="{Binding HasTags}">
                 <Border Style="{StaticResource SectionHeaderStyle}"
-                        Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}">
+                        Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='TagsHeader'}">
                     <HorizontalStackLayout Spacing="8">
                         <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
                             <Image.Source>
                                 <FontImageSource Glyph="{x:Static f:FluentUI.tag_24_regular}"
                                                  FontFamily="{x:Static f:FluentUI.FontFamily}"
-                                                 Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Tags'}"
+                                                 Color="{AppThemeBinding Light=Black, Dark=White}"
                                                  Size="20" />
                             </Image.Source>
                         </Image>
-                        <Label Text="Tags" Style="{StaticResource Title3}"
-                               TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Tags'}" />
+                        <Label Text="Tags" Style="{StaticResource Title3}" TextColor="{AppThemeBinding Light=Black, Dark=White}" />
                     </HorizontalStackLayout>
                 </Border>
                 <Border Style="{StaticResource CardStyle}" Padding="12">
@@ -880,6 +877,7 @@
                                              WidthRequest="{Binding BarWidth}"
                                              CornerRadius="3"
                                              Color="{Binding Name, Converter={StaticResource RainbowAccentConverter}}"
+                                             BackgroundColor="Transparent"
                                              HorizontalOptions="Start" VerticalOptions="Center" />
                                     <Label Grid.Column="2" Text="{Binding Rank, StringFormat='{0}%'}"
                                            Style="{StaticResource Caption2}"
@@ -897,18 +895,17 @@
             <!-- ============================================ -->
             <VerticalStackLayout Spacing="10" IsVisible="{Binding HasStats}">
                 <Border Style="{StaticResource SectionHeaderStyle}"
-                        Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}">
+                        Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='StatsHeader'}">
                     <HorizontalStackLayout Spacing="8">
                         <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
                             <Image.Source>
                                 <FontImageSource Glyph="{x:Static f:FluentUI.data_bar_vertical_24_regular}"
                                                  FontFamily="{x:Static f:FluentUI.FontFamily}"
-                                                 Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Stats'}"
+                                                 Color="{AppThemeBinding Light=Black, Dark=White}"
                                                  Size="20" />
                             </Image.Source>
                         </Image>
-                        <Label Text="Stats" Style="{StaticResource Title3}"
-                               TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Stats'}" />
+                        <Label Text="Stats" Style="{StaticResource Title3}" TextColor="{AppThemeBinding Light=Black, Dark=White}" />
                     </HorizontalStackLayout>
                 </Border>
                 <Border Style="{StaticResource CardStyle}" Padding="16">
@@ -926,6 +923,7 @@
                                                      WidthRequest="20"
                                                      CornerRadius="3"
                                                      Color="{Binding Score, Converter={StaticResource RainbowAccentConverter}}"
+                                                     BackgroundColor="Transparent"
                                                      VerticalOptions="End"
                                                      HorizontalOptions="Center" />
                                             <Label Grid.Row="1"
@@ -948,7 +946,7 @@
                                     <DataTemplate x:DataType="models:StatusDistribution">
                                         <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6">
                                             <HorizontalStackLayout Spacing="6">
-                                                <Label Text="{Binding Status}" Style="{StaticResource ChipLabelStyle}"
+                                                <Label Text="{Binding StatusDisplay}" Style="{StaticResource ChipLabelStyle}"
                                                        TextColor="{Binding Status, Converter={StaticResource RainbowAccentConverter}}" />
                                                 <Label Text="{Binding Amount}" Style="{StaticResource Caption2}"
                                                        TextColor="{StaticResource Gray400}" VerticalTextAlignment="Center" />
@@ -967,18 +965,17 @@
             <!-- ============================================ -->
             <VerticalStackLayout Spacing="10" IsVisible="{Binding HasRecommendations}">
                 <Border Style="{StaticResource SectionHeaderStyle}"
-                        Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}">
+                        Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='RecsHeader'}">
                     <HorizontalStackLayout Spacing="8">
                         <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
                             <Image.Source>
                                 <FontImageSource Glyph="{x:Static f:FluentUI.sparkle_24_regular}"
                                                  FontFamily="{x:Static f:FluentUI.FontFamily}"
-                                                 Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Recommendations'}"
+                                                 Color="{AppThemeBinding Light=Black, Dark=White}"
                                                  Size="20" />
                             </Image.Source>
                         </Image>
-                        <Label Text="Recommendations" Style="{StaticResource Title3}"
-                               TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Recommendations'}" />
+                        <Label Text="Recommendations" Style="{StaticResource Title3}" TextColor="{AppThemeBinding Light=Black, Dark=White}" />
                     </HorizontalStackLayout>
                 </Border>
                 <ScrollView Orientation="Horizontal">
@@ -1019,18 +1016,17 @@
             <!-- ============================================ -->
             <VerticalStackLayout Spacing="10" IsVisible="{Binding HasStaff}">
                 <Border Style="{StaticResource SectionHeaderStyle}"
-                        Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}">
+                        Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='StaffHeader'}">
                     <HorizontalStackLayout Spacing="8">
                         <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
                             <Image.Source>
                                 <FontImageSource Glyph="{x:Static f:FluentUI.person_24_regular}"
                                                  FontFamily="{x:Static f:FluentUI.FontFamily}"
-                                                 Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Staff'}"
+                                                 Color="{AppThemeBinding Light=Black, Dark=White}"
                                                  Size="20" />
                             </Image.Source>
                         </Image>
-                        <Label Text="Staff" Style="{StaticResource Title3}"
-                               TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Staff'}" />
+                        <Label Text="Staff" Style="{StaticResource Title3}" TextColor="{AppThemeBinding Light=Black, Dark=White}" />
                     </HorizontalStackLayout>
                 </Border>
                 <ScrollView Orientation="Horizontal">
@@ -1040,14 +1036,31 @@
                             <DataTemplate x:DataType="models:StaffEdge">
                                 <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="110">
                                     <VerticalStackLayout>
-                                        <Image Source="{Binding Node.Image.Medium}"
-                                               Aspect="AspectFill"
-                                               HeightRequest="140"
-                                               WidthRequest="110">
-                                            <Image.Clip>
-                                                <RoundRectangleGeometry Rect="0,0,110,140" CornerRadius="16,16,0,0" />
-                                            </Image.Clip>
-                                        </Image>
+                                        <Grid HeightRequest="140" WidthRequest="110">
+                                            <!-- Person silhouette placeholder (underneath, always rendered) -->
+                                            <Border BackgroundColor="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray900}}"
+                                                    StrokeThickness="0" Padding="0"
+                                                    StrokeShape="RoundRectangle 16,16,0,0">
+                                                <Image HorizontalOptions="Center" VerticalOptions="Center"
+                                                       WidthRequest="40" HeightRequest="40">
+                                                    <Image.Source>
+                                                        <FontImageSource Glyph="{x:Static f:FluentUI.person_48_regular}"
+                                                                         FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                                                         Color="{StaticResource Gray500}" Size="40" />
+                                                    </Image.Source>
+                                                </Image>
+                                            </Border>
+                                            <!-- Actual staff image (covers placeholder when URL exists) -->
+                                            <Image Source="{Binding Node.Image.Medium}"
+                                                   Aspect="AspectFill"
+                                                   HeightRequest="140"
+                                                   WidthRequest="110"
+                                                   IsVisible="{Binding Node.Image.Medium, Converter={StaticResource StringNotNullOrEmptyConverter}}">
+                                                <Image.Clip>
+                                                    <RoundRectangleGeometry Rect="0,0,110,140" CornerRadius="16,16,0,0" />
+                                                </Image.Clip>
+                                            </Image>
+                                        </Grid>
                                         <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
                                             <Label Text="{Binding Node.Name.Full}"
                                                    Style="{StaticResource Caption1}"
@@ -1071,18 +1084,17 @@
             <!-- ============================================ -->
             <VerticalStackLayout Spacing="10" IsVisible="{Binding HasStreamingEpisodes}">
                 <Border Style="{StaticResource SectionHeaderStyle}"
-                        Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}">
+                        Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='StreamHeader'}">
                     <HorizontalStackLayout Spacing="8">
                         <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
                             <Image.Source>
                                 <FontImageSource Glyph="{x:Static f:FluentUI.play_24_regular}"
                                                  FontFamily="{x:Static f:FluentUI.FontFamily}"
-                                                 Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Streaming'}"
+                                                 Color="{AppThemeBinding Light=Black, Dark=White}"
                                                  Size="20" />
                             </Image.Source>
                         </Image>
-                        <Label Text="Streaming" Style="{StaticResource Title3}"
-                               TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Streaming'}" />
+                        <Label Text="Streaming" Style="{StaticResource Title3}" TextColor="{AppThemeBinding Light=Black, Dark=White}" />
                     </HorizontalStackLayout>
                 </Border>
                 <VerticalStackLayout Spacing="8"
@@ -1120,18 +1132,17 @@
             <!-- ============================================ -->
             <VerticalStackLayout Spacing="10" IsVisible="{Binding HasExternalLinks}">
                 <Border Style="{StaticResource SectionHeaderStyle}"
-                        Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}">
+                        Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='LinksHeader'}">
                     <HorizontalStackLayout Spacing="8">
                         <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
                             <Image.Source>
                                 <FontImageSource Glyph="{x:Static f:FluentUI.globe_24_regular}"
                                                  FontFamily="{x:Static f:FluentUI.FontFamily}"
-                                                 Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Links'}"
+                                                 Color="{AppThemeBinding Light=Black, Dark=White}"
                                                  Size="20" />
                             </Image.Source>
                         </Image>
-                        <Label Text="External Links" Style="{StaticResource Title3}"
-                               TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Links'}" />
+                        <Label Text="External Links" Style="{StaticResource Title3}" TextColor="{AppThemeBinding Light=Black, Dark=White}" />
                     </HorizontalStackLayout>
                 </Border>
                 <FlexLayout Wrap="Wrap" JustifyContent="Start" AlignItems="Center"
