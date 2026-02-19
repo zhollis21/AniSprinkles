@@ -10,4 +10,7 @@ public class MediaTag
     public bool? IsAdult { get; set; }
     public string? Description { get; set; }
     public string? Category { get; set; }
+
+    /// <summary>Width of the rank bar (0–80), proportional to rank percentage.</summary>
+    public double BarWidth => (Rank ?? 0) * 0.8;
 }

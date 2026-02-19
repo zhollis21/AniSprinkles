@@ -51,6 +51,8 @@ public partial class SettingsPageModel : ObservableObject
     [ObservableProperty]
     private bool _isSaving;
 
+    private CancellationTokenSource? _saveDebounceCts;
+
     // --- Profile hero ---
     [ObservableProperty]
     private string _userName = string.Empty;
@@ -259,7 +261,7 @@ public partial class SettingsPageModel : ObservableObject
         {
             var enabled = lookup.TryGetValue(type, out var val) && val;
             var item = new NotificationToggleItem(type, displayName, category, enabled);
-            item.PropertyChanged += (_, _) => OnPropertyChanged(nameof(HasUnsavedChanges));
+            item.PropertyChanged += (_, _) => { OnPropertyChanged(nameof(HasUnsavedChanges)); TriggerAutoSave(); };
             NotificationItems.Add(item);
         }
     }
@@ -306,6 +308,74 @@ public partial class SettingsPageModel : ObservableObject
     partial void OnStatusMessageChanged(string value)
         => HasStatusMessage = !string.IsNullOrWhiteSpace(value);
 
+    partial void OnSelectedTitleLanguageChanged(UserTitleLanguage value) => TriggerAutoSave();
+    partial void OnSelectedStaffNameLanguageChanged(UserStaffNameLanguage value) => TriggerAutoSave();
+    partial void OnSelectedScoreFormatChanged(ScoreFormat value) => TriggerAutoSave();
+    partial void OnDisplayAdultContentChanged(bool value) => TriggerAutoSave();
+    partial void OnAiringNotificationsChanged(bool value) => TriggerAutoSave();
+    partial void OnRestrictMessagesToFollowingChanged(bool value) => TriggerAutoSave();
+    partial void OnActivityMergeTimeChanged(int value) => TriggerAutoSave();
+
+    private void TriggerAutoSave()
+    {
+        if (_loadedUser is null || !HasUnsavedChanges) return;
+        _ = DebouncedSaveAsync();
+    }
+
+    private async Task DebouncedSaveAsync()
+    {
+        _saveDebounceCts?.Cancel();
+        _saveDebounceCts = new CancellationTokenSource();
+        var token = _saveDebounceCts.Token;
+
+        try
+        {
+            await Task.Delay(1500, token);
+            if (HasUnsavedChanges)
+            {
+                await SaveSettingsAsync();
+            }
+        }
+        catch (TaskCanceledException) { }
+    }
+
+    private async Task SaveSettingsAsync()
+    {
+        if (IsSaving) return;
+
+        IsSaving = true;
+        try
+        {
+            var request = new UpdateUserRequest
+            {
+                TitleLanguage = SelectedTitleLanguage,
+                DisplayAdultContent = DisplayAdultContent,
+                AiringNotifications = AiringNotifications,
+                ScoreFormat = SelectedScoreFormat,
+                StaffNameLanguage = SelectedStaffNameLanguage,
+                RestrictMessagesToFollowing = RestrictMessagesToFollowing,
+                ActivityMergeTime = ActivityMergeTime,
+                NotificationOptions = NotificationItems
+                    .Select(n => new NotificationOptionInput { Type = n.Type, Enabled = n.IsEnabled })
+                    .ToList()
+            };
+
+            var updatedUser = await _aniListClient.UpdateUserAsync(request);
+            _loadedUser = updatedUser;
+            PopulateFromUser(updatedUser);
+            SentrySdk.AddBreadcrumb("Settings auto-saved", "settings", "user");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to auto-save settings");
+            StatusMessage = "Failed to save settings.";
+        }
+        finally
+        {
+            IsSaving = false;
+        }
+    }
+
     partial void OnIsLoadingChanged(bool value)
         => OnPropertyChanged(nameof(ShowLoginPrompt));
 
@@ -351,6 +421,7 @@ public partial class SettingsPageModel : ObservableObject
         _logger.LogInformation("Sign-out requested from Settings.");
         SentrySdk.AddBreadcrumb("Sign-out requested (Settings)", "auth", "user");
         await _authService.SignOutAsync();
+        AppSettings.Clear();
         await RefreshAuthStateAsync();
         ClearUserData();
         StatusMessage = "Signed out.";
@@ -386,44 +457,8 @@ public partial class SettingsPageModel : ObservableObject
     [RelayCommand]
     private async Task Save()
     {
-        if (!HasUnsavedChanges || IsSaving)
-        {
-            return;
-        }
-
-        IsSaving = true;
-        StatusMessage = "Saving...";
-        try
-        {
-            var request = new UpdateUserRequest
-            {
-                TitleLanguage = SelectedTitleLanguage,
-                DisplayAdultContent = DisplayAdultContent,
-                AiringNotifications = AiringNotifications,
-                ScoreFormat = SelectedScoreFormat,
-                StaffNameLanguage = SelectedStaffNameLanguage,
-                RestrictMessagesToFollowing = RestrictMessagesToFollowing,
-                ActivityMergeTime = ActivityMergeTime,
-                NotificationOptions = NotificationItems
-                    .Select(n => new NotificationOptionInput { Type = n.Type, Enabled = n.IsEnabled })
-                    .ToList()
-            };
-
-            var updatedUser = await _aniListClient.UpdateUserAsync(request);
-            _loadedUser = updatedUser;
-            PopulateFromUser(updatedUser);
-            StatusMessage = "Settings saved!";
-            SentrySdk.AddBreadcrumb("Settings saved", "settings", "user");
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Failed to save settings");
-            StatusMessage = "Failed to save settings. Try again.";
-        }
-        finally
-        {
-            IsSaving = false;
-        }
+        if (!HasUnsavedChanges || IsSaving) return;
+        await SaveSettingsAsync();
     }
 
     [RelayCommand]
