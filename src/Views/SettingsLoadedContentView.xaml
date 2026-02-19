@@ -7,17 +7,12 @@
              x:Class="AniSprinkles.Views.SettingsLoadedContentView"
              x:DataType="pageModels:SettingsPageModel">
     <Grid RowDefinitions="Auto,*">
-        <!-- Sticky save bar -->
-        <Grid Grid.Row="0" Padding="{StaticResource LayoutPadding}" ColumnDefinitions="*,Auto" ColumnSpacing="12"
-              Margin="0,0,0,4"
-              IsVisible="{Binding HasUnsavedChanges}">
-            <Button Text="Save Settings"
-                    Command="{Binding SaveCommand}"
-                    Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}"
-                    FontAttributes="Bold"
-                    FontSize="16" />
-            <ActivityIndicator Grid.Column="1" IsRunning="{Binding IsSaving}" IsVisible="{Binding IsSaving}" VerticalOptions="Center" />
-        </Grid>
+        <!-- Auto-saving indicator -->
+        <HorizontalStackLayout Grid.Row="0" Spacing="8" HorizontalOptions="Center" Padding="0,6"
+                               IsVisible="{Binding IsSaving}">
+            <ActivityIndicator IsRunning="{Binding IsSaving}" WidthRequest="16" HeightRequest="16" VerticalOptions="Center" />
+            <Label Text="Saving..." Style="{StaticResource Caption1}" TextColor="{StaticResource Gray400}" VerticalTextAlignment="Center" />
+        </HorizontalStackLayout>
 
         <ScrollView Grid.Row="1">
         <VerticalStackLayout Padding="{StaticResource LayoutPadding}" Spacing="16">

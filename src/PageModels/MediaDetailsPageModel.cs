@@ -1,3 +1,4 @@
+using AniSprinkles.Utilities;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
@@ -50,19 +51,13 @@ namespace AniSprinkles.PageModels;
     private bool _isStatusExpanded;
 
     [ObservableProperty]
-    private bool _isEditingListEntry;
-
-    [ObservableProperty]
-    private MediaListStatus _editStatus;
-
-    [ObservableProperty]
-    private int _editProgress;
-
-    [ObservableProperty]
-    private double _editScore;
-
-    [ObservableProperty]
     private bool _isSavingListEntry;
+
+    [ObservableProperty]
+    private double _sliderScore;
+
+    [ObservableProperty]
+    private double _sliderProgress;
 
     public MediaDetailsPageModel(IAniListClient aniListClient, IAuthService authService, ErrorReportService errorReportService, ILogger<MediaDetailsPageModel> logger)
     {
@@ -89,7 +84,7 @@ namespace AniSprinkles.PageModels;
     public string SeasonDisplay =>
         string.IsNullOrWhiteSpace(Media?.Season) && Media?.SeasonYear is null
             ? "-"
-            : $"{Media?.Season?.ToUpperInvariant()} {Media?.SeasonYear}".Trim();
+            : $"{CultureInfo.InvariantCulture.TextInfo.ToTitleCase((Media?.Season ?? "").ToLowerInvariant())} {Media?.SeasonYear}".Trim();
 
     public string DurationDisplay =>
         Media?.Duration is > 0 ? $"{Media.Duration} min/ep" : "-";
@@ -108,6 +103,41 @@ namespace AniSprinkles.PageModels;
 
     public bool HasNextAiringInfo => Media?.NextAiringEpisode?.Episode is not null;
 
+    public string NextAiringEpisodeLabel => Media?.NextAiringEpisode?.Episode is { } ep ? $"Episode {ep}" : "";
+
+    public string NextAiringCountdownCompact
+    {
+        get
+        {
+            var seconds = Math.Max(Media?.NextAiringEpisode?.TimeUntilAiring ?? 0, 0);
+            var span = TimeSpan.FromSeconds(seconds);
+            var parts = new List<string>();
+            if ((int)span.TotalDays > 0) parts.Add($"{(int)span.TotalDays}d");
+            if (span.Hours > 0) parts.Add($"{span.Hours}h");
+            if (span.Minutes > 0) parts.Add($"{span.Minutes}m");
+            return parts.Count > 0 ? string.Join(" ", parts) : "now";
+        }
+    }
+
+    public bool IsAiringToday
+    {
+        get
+        {
+            var seconds = Math.Max(Media?.NextAiringEpisode?.TimeUntilAiring ?? 0, 0);
+            return seconds > 0 && seconds < 86400;
+        }
+    }
+
+    public string NextAiringDateDisplay
+    {
+        get
+        {
+            if (Media?.NextAiringEpisode?.AiringAt is not { } airingAt) return "";
+            var dt = DateTimeOffset.FromUnixTimeSeconds(airingAt).LocalDateTime;
+            return dt.ToString("ddd, MMM d 'at' h:mm tt", CultureInfo.InvariantCulture);
+        }
+    }
+
     public bool HasGenres => Genres.Count > 0;
 
     public bool HasSynonyms => Synonyms.Count > 0;
@@ -118,7 +148,7 @@ namespace AniSprinkles.PageModels;
 
     public bool HasStudios => Studios.Count > 0;
 
-    public bool HasRankings => Rankings.Count > 0;
+    public bool HasRankings => RankingGroups.Count > 0;
 
     public bool HasExternalLinks => ExternalLinks.Count > 0;
 
@@ -151,9 +181,9 @@ namespace AniSprinkles.PageModels;
 
     public bool HasMainStudio => !string.IsNullOrWhiteSpace(MainStudioName);
 
-    public string EpisodesDisplay => Media?.Episodes is > 0 ? $"{Media.Episodes} eps" : "";
+    public string EpisodesDisplay => Media?.Episodes is > 0 ? $"{Media.Episodes} Episodes" : "";
 
-    public string DurationPillDisplay => Media?.Duration is > 0 ? $"{Media.Duration} min" : "";
+    public string DurationPillDisplay => Media?.Duration is > 0 ? $"{Media.Duration} min/ep" : "";
 
     public string SeasonYearDisplay => SeasonDisplay != "-" ? SeasonDisplay : "";
 
@@ -184,6 +214,75 @@ namespace AniSprinkles.PageModels;
 
     public string CurrentStatusKey => ListEntry?.Status?.ToString() ?? "";
 
+    public string StatusIconGlyph => ListEntry?.Status switch
+    {
+        MediaListStatus.Current => Resources.Fonts.FluentUI.eye_24_regular,
+        MediaListStatus.Planning => Resources.Fonts.FluentUI.bookmark_24_regular,
+        MediaListStatus.Completed => Resources.Fonts.FluentUI.checkmark_circle_24_regular,
+        MediaListStatus.Paused => Resources.Fonts.FluentUI.pause_circle_24_regular,
+        MediaListStatus.Dropped => Resources.Fonts.FluentUI.dismiss_circle_24_regular,
+        MediaListStatus.Repeating => Resources.Fonts.FluentUI.arrow_repeat_all_24_regular,
+        _ => Resources.Fonts.FluentUI.add_circle_24_regular,
+    };
+
+    // --- Progress properties ---
+    public string ProgressLabel
+    {
+        get
+        {
+            var progress = ListEntry?.Progress ?? 0;
+            return Media?.Episodes is > 0 ? $"{progress} / {Media.Episodes}" : $"{progress}";
+        }
+    }
+
+    public double ProgressFraction
+    {
+        get
+        {
+            if (Media?.Episodes is not > 0) return 0;
+            return Math.Clamp((ListEntry?.Progress ?? 0) / (double)Media.Episodes, 0, 1);
+        }
+    }
+
+    public bool HasKnownEpisodeCount => Media?.Episodes is > 0;
+
+    public double ProgressSliderMax => Media?.Episodes is > 0 ? Media.Episodes.Value : 100;
+
+    // --- Score format properties ---
+    public bool ScoreFormatIsStars => AppSettings.ScoreFormat == ScoreFormat.Point5;
+    public bool ScoreFormatIsSmileys => AppSettings.ScoreFormat == ScoreFormat.Point3;
+    public bool ScoreFormatIsNumeric => AppSettings.ScoreFormat is ScoreFormat.Point100 or ScoreFormat.Point10 or ScoreFormat.Point10Decimal;
+
+    public double NumericScoreMax => AppSettings.ScoreFormat switch
+    {
+        ScoreFormat.Point100 => 100,
+        _ => 10,
+    };
+
+    public string NumericScoreLabel
+    {
+        get
+        {
+            var score = ListEntry?.Score ?? 0;
+            var max = NumericScoreMax;
+            return AppSettings.ScoreFormat == ScoreFormat.Point10Decimal
+                ? $"{score:0.0} / {max:0}"
+                : $"{score:0} / {max:0}";
+        }
+    }
+
+    public int StarRating => (int)(ListEntry?.Score ?? 0);
+    public bool Star1Filled => StarRating >= 1;
+    public bool Star2Filled => StarRating >= 2;
+    public bool Star3Filled => StarRating >= 3;
+    public bool Star4Filled => StarRating >= 4;
+    public bool Star5Filled => StarRating >= 5;
+
+    public int SmileyRating => (int)(ListEntry?.Score ?? 0);
+    public bool SmileyHappySelected => SmileyRating >= 3;
+    public bool SmileyNeutralSelected => SmileyRating == 2;
+    public bool SmileySadSelected => SmileyRating == 1;
+
     public IReadOnlyList<string> Genres { get; private set; } = [];
 
     public IReadOnlyList<string> Synonyms { get; private set; } = [];
@@ -192,7 +291,7 @@ namespace AniSprinkles.PageModels;
 
     public IReadOnlyList<Studio> Studios { get; private set; } = [];
 
-    public IReadOnlyList<MediaRanking> Rankings { get; private set; } = [];
+    public IReadOnlyList<RankingGroup> RankingGroups { get; private set; } = [];
 
     public IReadOnlyList<MediaExternalLink> ExternalLinks { get; private set; } = [];
 
@@ -353,6 +452,10 @@ namespace AniSprinkles.PageModels;
         OnPropertyChanged(nameof(ReleaseWindowDisplay));
         OnPropertyChanged(nameof(NextAiringDisplay));
         OnPropertyChanged(nameof(HasNextAiringInfo));
+        OnPropertyChanged(nameof(NextAiringEpisodeLabel));
+        OnPropertyChanged(nameof(NextAiringCountdownCompact));
+        OnPropertyChanged(nameof(IsAiringToday));
+        OnPropertyChanged(nameof(NextAiringDateDisplay));
         OnPropertyChanged(nameof(HasDescription));
         OnPropertyChanged(nameof(ScorePercentDisplay));
         OnPropertyChanged(nameof(PopularityDisplay));
@@ -365,6 +468,15 @@ namespace AniSprinkles.PageModels;
         OnPropertyChanged(nameof(DurationPillDisplay));
         OnPropertyChanged(nameof(SeasonYearDisplay));
         OnPropertyChanged(nameof(CanAddToList));
+        OnPropertyChanged(nameof(HasKnownEpisodeCount));
+        OnPropertyChanged(nameof(ProgressSliderMax));
+        OnPropertyChanged(nameof(ProgressLabel));
+        OnPropertyChanged(nameof(ProgressFraction));
+        OnPropertyChanged(nameof(ScoreFormatIsStars));
+        OnPropertyChanged(nameof(ScoreFormatIsSmileys));
+        OnPropertyChanged(nameof(ScoreFormatIsNumeric));
+        OnPropertyChanged(nameof(NumericScoreMax));
+        OnPropertyChanged(nameof(NumericScoreLabel));
     }
 
     private void ApplyExtendedCollections(Media? value)
@@ -373,7 +485,10 @@ namespace AniSprinkles.PageModels;
         Synonyms = value?.Synonyms ?? [];
         Studios = value?.Studios ?? [];
         Tags = value?.Tags ?? [];
-        Rankings = value?.Rankings ?? [];
+        RankingGroups = (value?.Rankings ?? [])
+            .GroupBy(r => r.ScopeKey)
+            .Select(g => new RankingGroup { Title = g.Key, Items = g.OrderBy(r => r.Rank).ToList() })
+            .ToList();
         ExternalLinks = value?.ExternalLinks ?? [];
         StreamingEpisodes = value?.StreamingEpisodes ?? [];
         TrailerUrl = BuildTrailerUrl(value?.Trailer);
@@ -393,7 +508,7 @@ namespace AniSprinkles.PageModels;
         OnPropertyChanged(nameof(HasTags));
         OnPropertyChanged(nameof(Studios));
         OnPropertyChanged(nameof(HasStudios));
-        OnPropertyChanged(nameof(Rankings));
+        OnPropertyChanged(nameof(RankingGroups));
         OnPropertyChanged(nameof(HasRankings));
         OnPropertyChanged(nameof(ExternalLinks));
         OnPropertyChanged(nameof(HasExternalLinks));
@@ -419,6 +534,22 @@ namespace AniSprinkles.PageModels;
         HasListEntry = value is not null;
         OnPropertyChanged(nameof(ListStatusDisplay));
         OnPropertyChanged(nameof(CurrentStatusKey));
+        OnPropertyChanged(nameof(StatusIconGlyph));
+        OnPropertyChanged(nameof(ProgressLabel));
+        OnPropertyChanged(nameof(ProgressFraction));
+        OnPropertyChanged(nameof(NumericScoreLabel));
+        OnPropertyChanged(nameof(StarRating));
+        OnPropertyChanged(nameof(Star1Filled));
+        OnPropertyChanged(nameof(Star2Filled));
+        OnPropertyChanged(nameof(Star3Filled));
+        OnPropertyChanged(nameof(Star4Filled));
+        OnPropertyChanged(nameof(Star5Filled));
+        OnPropertyChanged(nameof(SmileyRating));
+        OnPropertyChanged(nameof(SmileyHappySelected));
+        OnPropertyChanged(nameof(SmileyNeutralSelected));
+        OnPropertyChanged(nameof(SmileySadSelected));
+        SliderScore = value?.Score ?? 0;
+        SliderProgress = value?.Progress ?? 0;
     }
 
     [RelayCommand]
@@ -481,12 +612,6 @@ namespace AniSprinkles.PageModels;
     }
 
     [RelayCommand]
-    private void ToggleStatusExpanded()
-    {
-        IsStatusExpanded = !IsStatusExpanded;
-    }
-
-    [RelayCommand]
     private async Task QuickSetStatus(string value)
     {
         if (Media is null || !Enum.TryParse<MediaListStatus>(value, out var status))
@@ -513,62 +638,6 @@ namespace AniSprinkles.PageModels;
         {
             _logger.LogError(ex, "Failed to set status for media {MediaId}.", Media.Id);
             StatusMessage = "Failed to update status. Try again.";
-        }
-        finally
-        {
-            IsSavingListEntry = false;
-        }
-    }
-
-    [RelayCommand]
-    private void EditListEntry()
-    {
-        if (ListEntry is null)
-        {
-            return;
-        }
-
-        EditStatus = ListEntry.Status ?? MediaListStatus.Current;
-        EditProgress = ListEntry.Progress ?? 0;
-        EditScore = ListEntry.Score ?? 0;
-        IsEditingListEntry = true;
-    }
-
-    [RelayCommand]
-    private void CancelEdit()
-    {
-        IsEditingListEntry = false;
-    }
-
-    [RelayCommand]
-    private async Task SaveListEntry()
-    {
-        if (Media is null)
-        {
-            return;
-        }
-
-        IsSavingListEntry = true;
-        try
-        {
-            var entry = ListEntry ?? new MediaListEntry { MediaId = Media.Id };
-            entry.Status = EditStatus;
-            entry.Progress = EditProgress;
-            entry.Score = EditScore;
-
-            var saved = await _aniListClient.SaveMediaListEntryAsync(entry);
-            if (saved is not null)
-            {
-                saved.Media = Media;
-                ListEntry = saved;
-                IsEditingListEntry = false;
-                OnPropertyChanged(nameof(CanAddToList));
-            }
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Failed to save list entry for media {MediaId}.", Media.Id);
-            StatusMessage = "Failed to save. Try again.";
         }
         finally
         {
@@ -612,31 +681,146 @@ namespace AniSprinkles.PageModels;
         }
     }
 
-    [RelayCommand]
-    private void SetEditStatus(string value)
-    {
-        if (Enum.TryParse<MediaListStatus>(value, out var status))
-        {
-            EditStatus = status;
-        }
-    }
+    private CancellationTokenSource? _saveDebounceCts;
 
     [RelayCommand]
     private void IncrementProgress()
     {
+        if (ListEntry is null) return;
         var max = Media?.Episodes ?? int.MaxValue;
-        if (EditProgress < max)
+        if ((ListEntry.Progress ?? 0) < max)
         {
-            EditProgress++;
+            ListEntry.Progress = (ListEntry.Progress ?? 0) + 1;
+            SliderProgress = ListEntry.Progress ?? 0;
+            NotifyListEntryDisplayChanged();
+            _ = DebouncedSaveAsync();
         }
     }
 
     [RelayCommand]
     private void DecrementProgress()
     {
-        if (EditProgress > 0)
+        if (ListEntry is null) return;
+        if ((ListEntry.Progress ?? 0) > 0)
         {
-            EditProgress--;
+            ListEntry.Progress = (ListEntry.Progress ?? 0) - 1;
+            SliderProgress = ListEntry.Progress ?? 0;
+            NotifyListEntryDisplayChanged();
+            _ = DebouncedSaveAsync();
+        }
+    }
+
+    [RelayCommand]
+    private void SetStarRating(string value)
+    {
+        if (ListEntry is null || !int.TryParse(value, out var stars)) return;
+        // Tapping the same star clears the rating
+        ListEntry.Score = StarRating == stars ? 0 : stars;
+        NotifyListEntryDisplayChanged();
+        _ = DebouncedSaveAsync();
+    }
+
+    [RelayCommand]
+    private void SetSmileyRating(string value)
+    {
+        if (ListEntry is null || !int.TryParse(value, out var rating)) return;
+        ListEntry.Score = SmileyRating == rating ? 0 : rating;
+        NotifyListEntryDisplayChanged();
+        _ = DebouncedSaveAsync();
+    }
+
+    partial void OnSliderScoreChanged(double value)
+    {
+        if (ListEntry is null) return;
+        var rounded = AppSettings.ScoreFormat == ScoreFormat.Point10Decimal
+            ? Math.Round(value * 2, MidpointRounding.AwayFromZero) / 2.0  // snap to 0.5 increments
+            : Math.Round(value);
+        // Snap the slider thumb to the nearest valid position
+        if (Math.Abs(value - rounded) > 0.01)
+        {
+            SliderScore = rounded;
+            return; // will re-enter with snapped value
+        }
+        if (Math.Abs((ListEntry.Score ?? 0) - rounded) < 0.01) return;
+        ListEntry.Score = rounded;
+        NotifyListEntryDisplayChanged();
+        _ = DebouncedSaveAsync();
+    }
+
+    partial void OnSliderProgressChanged(double value)
+    {
+        if (ListEntry is null) return;
+        var rounded = (int)Math.Round(value);
+        // Snap the slider thumb to the nearest whole number
+        if (Math.Abs(value - rounded) > 0.01)
+        {
+            SliderProgress = rounded;
+            return; // will re-enter with snapped value
+        }
+        if ((ListEntry.Progress ?? 0) == rounded) return;
+        ListEntry.Progress = rounded;
+        NotifyListEntryDisplayChanged();
+        _ = DebouncedSaveAsync();
+    }
+
+    [RelayCommand]
+    private void ToggleStatusExpanded()
+    {
+        IsStatusExpanded = !IsStatusExpanded;
+    }
+
+    private void NotifyListEntryDisplayChanged()
+    {
+        OnPropertyChanged(nameof(ProgressLabel));
+        OnPropertyChanged(nameof(ProgressFraction));
+        OnPropertyChanged(nameof(NumericScoreLabel));
+        OnPropertyChanged(nameof(StarRating));
+        OnPropertyChanged(nameof(Star1Filled));
+        OnPropertyChanged(nameof(Star2Filled));
+        OnPropertyChanged(nameof(Star3Filled));
+        OnPropertyChanged(nameof(Star4Filled));
+        OnPropertyChanged(nameof(Star5Filled));
+        OnPropertyChanged(nameof(SmileyRating));
+        OnPropertyChanged(nameof(SmileyHappySelected));
+        OnPropertyChanged(nameof(SmileyNeutralSelected));
+        OnPropertyChanged(nameof(SmileySadSelected));
+    }
+
+    private async Task DebouncedSaveAsync()
+    {
+        _saveDebounceCts?.Cancel();
+        _saveDebounceCts = new CancellationTokenSource();
+        var token = _saveDebounceCts.Token;
+
+        try
+        {
+            await Task.Delay(1500, token);
+            await SaveCurrentEntryAsync();
+        }
+        catch (TaskCanceledException) { }
+    }
+
+    private async Task SaveCurrentEntryAsync()
+    {
+        if (Media is null || ListEntry is null) return;
+        IsSavingListEntry = true;
+        try
+        {
+            var saved = await _aniListClient.SaveMediaListEntryAsync(ListEntry);
+            if (saved is not null)
+            {
+                saved.Media = Media;
+                ListEntry = saved;
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to save list entry for media {MediaId}.", Media.Id);
+            StatusMessage = "Failed to save. Try again.";
+        }
+        finally
+        {
+            IsSavingListEntry = false;
         }
     }
 
@@ -686,10 +870,12 @@ namespace AniSprinkles.PageModels;
 
         if (date.Day is null)
         {
-            return $"{date.Year:D4}-{date.Month:D2}";
+            var monthOnly = new DateOnly(date.Year.Value, date.Month.Value, 1);
+            return monthOnly.ToString("MMM yyyy", CultureInfo.InvariantCulture);
         }
 
-        return $"{date.Year:D4}-{date.Month:D2}-{date.Day:D2}";
+        var full = new DateOnly(date.Year.Value, date.Month.Value, date.Day.Value);
+        return full.ToString("MMM d, yyyy", CultureInfo.InvariantCulture);
     }
 
     private static string FormatNextAiring(MediaAiringEpisode? next)

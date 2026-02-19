@@ -7,8 +7,6 @@ namespace AniSprinkles.Pages;
 
 public partial class MediaDetailsPage : ContentPage, IQueryAttributable
 {
-    private static readonly TimeSpan DeferredInitialLoadDelay = TimeSpan.FromMilliseconds(120);
-
     private MediaDetailsPageModel ViewModel { get; }
     private ILogger<MediaDetailsPage> Logger { get; }
     private string _activeNavTraceId = "none";
@@ -156,7 +154,6 @@ public partial class MediaDetailsPage : ContentPage, IQueryAttributable
         try
         {
             await Task.Yield();
-            await Task.Delay(DeferredInitialLoadDelay);
 
             if (!_hasAppeared || queryVersion != _pendingQueryVersion)
             {

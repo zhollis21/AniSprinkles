@@ -280,6 +280,7 @@
         <Setter Property="StrokeShape" Value="RoundRectangle 20"/>
         <Setter Property="Padding" Value="14,12"/>
         <Setter Property="Margin" Value="0,12,0,0"/>
+        <Setter Property="BackgroundColor" Value="Transparent"/>
         <!-- Background is typically provided by a converter (tinted accent). If not, fall back to a neutral surface. -->
         <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource LightSecondaryBackground},Dark={StaticResource DarkSecondaryBackground}}"/>
     </Style>

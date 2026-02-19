@@ -169,6 +169,25 @@ public partial class MyAnimePageModel : ObservableObject
             StatusMessage = string.Empty;
             ErrorDetails = string.Empty;
             IsErrorDetailsVisible = false;
+
+            // On first authenticated load (fresh install or after sign-in on another device),
+            // sync display preferences from AniList before fetching the list.
+            if (!AppSettings.HasSynced)
+            {
+                try
+                {
+                    var viewer = await _aniListClient.GetViewerAsync();
+                    AppSettings.TitleLanguage = viewer.Options.TitleLanguage;
+                    AppSettings.ScoreFormat = viewer.ScoreFormat;
+                    AppSettings.DisplayAdultContent = viewer.Options.DisplayAdultContent;
+                    AppSettings.Save();
+                }
+                catch (Exception viewerEx)
+                {
+                    _logger.LogWarning(viewerEx, "Failed to sync viewer preferences on first load");
+                }
+            }
+
             SentrySdk.AddBreadcrumb("Fetching AniList list", "http", "state");
             var list = await _aniListClient.GetMyAnimeListAsync();
             // Grouping can be heavy on large lists; build sections off the UI thread.
@@ -268,6 +287,7 @@ public partial class MyAnimePageModel : ObservableObject
         _logger.LogInformation("Sign-out requested.");
         SentrySdk.AddBreadcrumb("Sign-out requested", "auth", "user");
         await _authService.SignOutAsync();
+        AppSettings.Clear();
         await LoadAsync(forceReload: true);
     }
 
