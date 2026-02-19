@@ -121,8 +121,17 @@ public class AniListClient : IAniListClient
             return (null, null);
         }
 
+        _logger.LogInformation(
+            "DATATRACE GetMediaAsync raw API: mediaListEntry.progress={Progress}, score={Score}, id={EntryId}",
+            data.Media.MediaListEntry?.Progress, data.Media.MediaListEntry?.Score, data.Media.MediaListEntry?.Id);
+
         var media = MapMedia(data.Media);
         var listEntry = MapEntry(data.Media.MediaListEntry);
+
+        _logger.LogInformation(
+            "DATATRACE GetMediaAsync mapped: listEntry.Progress={Progress}, Score={Score}, Id={EntryId}",
+            listEntry?.Progress, listEntry?.Score, listEntry?.Id);
+
         return (media, listEntry);
     }
 
@@ -149,6 +158,19 @@ public class AniListClient : IAniListClient
             cancellationToken).ConfigureAwait(false);
 
         return data.SaveMediaListEntry is null ? null : MapEntry(data.SaveMediaListEntry);
+    }
+
+    public async Task<bool> DeleteMediaListEntryAsync(int entryId, CancellationToken cancellationToken = default)
+    {
+        var token = await RequireAccessTokenAsync(cancellationToken).ConfigureAwait(false);
+        var data = await SendAsync<DeleteEntryData>(
+            "DeleteMediaListEntry",
+            DeleteEntryMutation,
+            new { id = entryId },
+            token,
+            cancellationToken).ConfigureAwait(false);
+
+        return data.DeleteMediaListEntry?.Deleted == true;
     }
 
     public async Task<int> GetCurrentUserIdAsync(CancellationToken cancellationToken = default)
@@ -684,6 +706,16 @@ public class AniListClient : IAniListClient
         public MediaListEntryDto? SaveMediaListEntry { get; set; }
     }
 
+    private sealed class DeleteEntryData
+    {
+        public DeletedResult? DeleteMediaListEntry { get; set; }
+    }
+
+    private sealed class DeletedResult
+    {
+        public bool Deleted { get; set; }
+    }
+
     private sealed class ViewerData
     {
         public ViewerDto? Viewer { get; set; }
@@ -1094,6 +1126,13 @@ mutation SaveMediaListEntry($mediaId: Int, $status: MediaListStatus, $progress: 
       averageScore
       popularity
     }
+  }
+}";
+
+    private const string DeleteEntryMutation = @"
+mutation DeleteMediaListEntry($id: Int!) {
+  DeleteMediaListEntry(id: $id) {
+    deleted
   }
 }";
 

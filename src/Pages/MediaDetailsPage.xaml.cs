@@ -218,13 +218,23 @@ public partial class MediaDetailsPage : ContentPage, IQueryAttributable
         {
             if (!_hasCreatedLoadedContent)
             {
-                // Keep first navigation frame lightweight: create the heavy details subtree only after
-                // data has loaded, so the user sees the loading page instantly.
-                LoadedContentHost.Content = new Views.MediaDetailsLoadedContentView
+                try
                 {
-                    BindingContext = ViewModel
-                };
-                _hasCreatedLoadedContent = true;
+                    // Keep first navigation frame lightweight: create the heavy details subtree only after
+                    // data has loaded, so the user sees the loading page instantly.
+                    LoadedContentHost.Content = new Views.MediaDetailsLoadedContentView
+                    {
+                        BindingContext = ViewModel
+                    };
+                    _hasCreatedLoadedContent = true;
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogError(ex, "Failed to create MediaDetailsLoadedContentView");
+                    ViewModel.StatusMessage = "Failed to render details. Tap Details for more.";
+                    ViewModel.ErrorDetails = $"{ex.GetType().Name}: {ex.Message}\n\n{ex.StackTrace}";
+                    ViewModel.IsErrorDetailsVisible = false;
+                }
             }
         }
         else if (_hasCreatedLoadedContent)
