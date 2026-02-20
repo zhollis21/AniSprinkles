@@ -5,7 +5,8 @@
              xmlns:models="clr-namespace:AniSprinkles.Models"
              xmlns:f="clr-namespace:AniSprinkles.Resources.Fonts"
              x:Class="AniSprinkles.Views.MediaDetailsLoadedContentView"
-             x:DataType="pageModels:MediaDetailsPageModel">
+             x:DataType="pageModels:MediaDetailsPageModel"
+             x:Name="RootView">
 
     <ScrollView>
         <VerticalStackLayout Padding="{StaticResource LayoutPadding}" Spacing="16">
@@ -780,7 +781,8 @@
                             <DataTemplate x:DataType="models:MediaRelationEdge">
                                 <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130">
                                     <Border.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type pageModels:MediaDetailsPageModel}}, Path=NavigateToMediaCommand}"
+                                        <TapGestureRecognizer x:DataType="{x:Null}"
+                                                              Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToMediaCommand}"
                                                               CommandParameter="{Binding Node.Id}" />
                                     </Border.GestureRecognizers>
                                     <VerticalStackLayout>
@@ -999,7 +1001,8 @@
                             <DataTemplate x:DataType="models:MediaRecommendationNode">
                                 <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130">
                                     <Border.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type pageModels:MediaDetailsPageModel}}, Path=NavigateToMediaCommand}"
+                                        <TapGestureRecognizer x:DataType="{x:Null}"
+                                                              Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToMediaCommand}"
                                                               CommandParameter="{Binding MediaRecommendation.Id}" />
                                     </Border.GestureRecognizers>
                                     <VerticalStackLayout>
@@ -1117,7 +1120,8 @@
                         <DataTemplate x:DataType="models:MediaExternalLink">
                             <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6">
                                 <Border.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type pageModels:MediaDetailsPageModel}}, Path=OpenUrlCommand}"
+                                    <TapGestureRecognizer x:DataType="{x:Null}"
+                                                          Command="{Binding Source={x:Reference RootView}, Path=BindingContext.OpenUrlCommand}"
                                                           CommandParameter="{Binding Url}" />
                                 </Border.GestureRecognizers>
                                 <Label Text="{Binding Site}" Style="{StaticResource ChipLabelStyle}"

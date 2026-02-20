@@ -622,8 +622,10 @@ namespace AniSprinkles.PageModels;
     [RelayCommand]
     private async Task NavigateToMedia(int mediaId)
     {
+        _logger.LogInformation("NAVTRACE NavigateToMedia called with mediaId={MediaId}", mediaId);
         if (mediaId <= 0)
         {
+            _logger.LogWarning("NAVTRACE NavigateToMedia aborted — invalid mediaId {MediaId}", mediaId);
             return;
         }
 
