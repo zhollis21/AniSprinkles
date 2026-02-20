@@ -109,9 +109,6 @@ public partial class MediaDetailsPage : ContentPage, IQueryAttributable
         base.OnDisappearing();
         _hasAppeared = false;
         _pendingQueryVersion++;
-        // Reset deferred content so each details navigation starts with a minimal page tree.
-        LoadedContentHost.Content = null;
-        _hasCreatedLoadedContent = false;
     }
 
     private void TryScheduleDeferredLoad()
