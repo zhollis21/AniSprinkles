@@ -16,6 +16,12 @@ public class AniListClient : IAniListClient
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
     };
 
+    private static readonly JsonSerializerOptions JsonWriteOptions = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+    };
+
     private readonly HttpClient _httpClient;
     private readonly IAuthService _authService;
     private readonly ILogger<AniListClient> _logger;
@@ -295,7 +301,7 @@ public class AniListClient : IAniListClient
         };
 
         request.Content = new StringContent(
-            JsonSerializer.Serialize(payload, JsonOptions),
+            JsonSerializer.Serialize(payload, JsonWriteOptions),
             Encoding.UTF8,
             "application/json");
 
@@ -401,9 +407,6 @@ public class AniListClient : IAniListClient
                 .ToList() ?? [],
             ExternalLinks = dto.ExternalLinks?
                 .Where(link => link.IsDisabled is not true)
-                .Take(12)
-                .ToList() ?? [],
-            StreamingEpisodes = dto.StreamingEpisodes?
                 .Take(12)
                 .ToList() ?? [],
             Relations = dto.Relations?.Edges?
@@ -830,7 +833,6 @@ public class AniListClient : IAniListClient
         public StudioConnection? Studios { get; set; }
         public List<MediaRanking>? Rankings { get; set; }
         public List<MediaExternalLink>? ExternalLinks { get; set; }
-        public List<MediaStreamingEpisode>? StreamingEpisodes { get; set; }
         public MediaRelationConnectionDto? Relations { get; set; }
         public CharacterConnectionDto? Characters { get; set; }
         public RecommendationConnectionDto? Recommendations { get; set; }
@@ -1030,7 +1032,6 @@ query Media($id: Int!) {
     studios(isMain: true) { nodes { id name isAnimationStudio } }
     rankings { rank type format year season allTime context }
     externalLinks { id url site siteId type language color isDisabled }
-    streamingEpisodes { title thumbnail url site }
     relations {
       edges {
         relationType(version: 2)

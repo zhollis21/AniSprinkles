@@ -377,9 +377,22 @@
                             </Image>
                             <Label Grid.Column="1" Text="Progress" Style="{StaticResource Caption1Strong}"
                                    TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Progress'}" VerticalTextAlignment="Center" />
-                            <Label Grid.Column="2" Text="{Binding ProgressLabel}"
-                                   Style="{StaticResource Body2Strong}" HorizontalTextAlignment="End"
-                                   VerticalTextAlignment="Center" />
+                            <Border Grid.Column="2" StrokeShape="RoundRectangle 8" StrokeThickness="1"
+                                    Stroke="{StaticResource Gray600}" BackgroundColor="Transparent"
+                                    Padding="8,4" VerticalOptions="Center">
+                                <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding EditProgressCommand}" /></Border.GestureRecognizers>
+                                <HorizontalStackLayout Spacing="6">
+                                    <Label Text="{Binding ProgressLabel}"
+                                           Style="{StaticResource Body2Strong}" VerticalTextAlignment="Center" />
+                                    <Image WidthRequest="14" HeightRequest="14" VerticalOptions="Center">
+                                        <Image.Source>
+                                            <FontImageSource Glyph="{x:Static f:FluentUI.edit_24_regular}"
+                                                             FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                                             Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Progress'}" Size="14" />
+                                        </Image.Source>
+                                    </Image>
+                                </HorizontalStackLayout>
+                            </Border>
                             <!-- Minus button -->
                             <Border Grid.Column="3" StrokeShape="RoundRectangle 18" StrokeThickness="1"
                                     Stroke="{StaticResource Gray600}" BackgroundColor="Transparent"
@@ -409,6 +422,7 @@
                         </Grid>
                         <Slider Minimum="0" Maximum="{Binding ProgressSliderMax}"
                                 Value="{Binding SliderProgress}"
+                                IsVisible="{Binding HasProgressSliderMax}"
                                 MinimumTrackColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Progress'}"
                                 ThumbColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Progress'}" />
                     </VerticalStackLayout>
@@ -1077,54 +1091,6 @@
                         </BindableLayout.ItemTemplate>
                     </HorizontalStackLayout>
                 </ScrollView>
-            </VerticalStackLayout>
-
-            <!-- ============================================ -->
-            <!-- 13. STREAMING EPISODES -->
-            <!-- ============================================ -->
-            <VerticalStackLayout Spacing="10" IsVisible="{Binding HasStreamingEpisodes}">
-                <Border Style="{StaticResource SectionHeaderStyle}"
-                        Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='StreamHeader'}">
-                    <HorizontalStackLayout Spacing="8">
-                        <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
-                            <Image.Source>
-                                <FontImageSource Glyph="{x:Static f:FluentUI.play_24_regular}"
-                                                 FontFamily="{x:Static f:FluentUI.FontFamily}"
-                                                 Color="{AppThemeBinding Light=Black, Dark=White}"
-                                                 Size="20" />
-                            </Image.Source>
-                        </Image>
-                        <Label Text="Streaming" Style="{StaticResource Title3}" TextColor="{AppThemeBinding Light=Black, Dark=White}" />
-                    </HorizontalStackLayout>
-                </Border>
-                <VerticalStackLayout Spacing="8"
-                                     BindableLayout.ItemsSource="{Binding StreamingEpisodes}">
-                    <BindableLayout.ItemTemplate>
-                        <DataTemplate x:DataType="models:MediaStreamingEpisode">
-                            <Border Style="{StaticResource ListRowStyle}" Padding="0">
-                                <Border.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type pageModels:MediaDetailsPageModel}}, Path=OpenUrlCommand}"
-                                                          CommandParameter="{Binding Url}" />
-                                </Border.GestureRecognizers>
-                                <Grid ColumnDefinitions="80,*" ColumnSpacing="10">
-                                    <Image Grid.Column="0" Source="{Binding Thumbnail}"
-                                           Aspect="AspectFill"
-                                           WidthRequest="80" HeightRequest="50">
-                                        <Image.Clip>
-                                            <RoundRectangleGeometry Rect="0,0,80,50" CornerRadius="14,0,0,14" />
-                                        </Image.Clip>
-                                    </Image>
-                                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2" Padding="0,8,8,8">
-                                        <Label Text="{Binding Title}" Style="{StaticResource Caption1}"
-                                               MaxLines="2" LineBreakMode="TailTruncation" />
-                                        <Label Text="{Binding Site}" Style="{StaticResource Caption2}"
-                                               TextColor="{Binding Site, Converter={StaticResource RainbowAccentConverter}}" />
-                                    </VerticalStackLayout>
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </BindableLayout.ItemTemplate>
-                </VerticalStackLayout>
             </VerticalStackLayout>
 
             <!-- ============================================ -->

@@ -152,8 +152,6 @@ namespace AniSprinkles.PageModels;
 
     public bool HasExternalLinks => ExternalLinks.Count > 0;
 
-    public bool HasStreamingEpisodes => StreamingEpisodes.Count > 0;
-
     public bool HasTrailer => !string.IsNullOrWhiteSpace(TrailerUrl);
 
     public bool HasMedia => Media is not null;
@@ -226,12 +224,23 @@ namespace AniSprinkles.PageModels;
     };
 
     // --- Progress properties ---
+
+    /// <summary>
+    /// The effective maximum episode number: known total episodes, or next airing episode, or null.
+    /// Used consistently for slider max, progress label denominator, increment cap, and edit prompt.
+    /// </summary>
+    private int? EffectiveMaxEpisodes =>
+        Media?.Episodes is > 0 ? Media.Episodes :
+        Media?.NextAiringEpisode?.Episode is > 0 ? Media.NextAiringEpisode.Episode :
+        null;
+
     public string ProgressLabel
     {
         get
         {
             var progress = ListEntry?.Progress ?? 0;
-            return Media?.Episodes is > 0 ? $"{progress} / {Media.Episodes}" : $"{progress}";
+            var max = EffectiveMaxEpisodes;
+            return max is > 0 ? $"{progress} / {max}" : $"{progress}";
         }
     }
 
@@ -239,14 +248,17 @@ namespace AniSprinkles.PageModels;
     {
         get
         {
-            if (Media?.Episodes is not > 0) return 0;
-            return Math.Clamp((ListEntry?.Progress ?? 0) / (double)Media.Episodes, 0, 1);
+            var max = EffectiveMaxEpisodes;
+            if (max is not > 0) return 0;
+            return Math.Clamp((ListEntry?.Progress ?? 0) / (double)max, 0, 1);
         }
     }
 
     public bool HasKnownEpisodeCount => Media?.Episodes is > 0;
 
-    public double ProgressSliderMax => Media?.Episodes is > 0 ? Media.Episodes.Value : 100;
+    public bool HasProgressSliderMax => EffectiveMaxEpisodes is > 0;
+
+    public double ProgressSliderMax => EffectiveMaxEpisodes is > 0 ? EffectiveMaxEpisodes.Value : 100;
 
     // --- Score format properties ---
     public bool ScoreFormatIsStars => AppSettings.ScoreFormat == ScoreFormat.Point5;
@@ -294,8 +306,6 @@ namespace AniSprinkles.PageModels;
     public IReadOnlyList<RankingGroup> RankingGroups { get; private set; } = [];
 
     public IReadOnlyList<MediaExternalLink> ExternalLinks { get; private set; } = [];
-
-    public IReadOnlyList<MediaStreamingEpisode> StreamingEpisodes { get; private set; } = [];
 
     public string? TrailerUrl { get; private set; }
 
@@ -486,6 +496,7 @@ namespace AniSprinkles.PageModels;
         OnPropertyChanged(nameof(SeasonYearDisplay));
         OnPropertyChanged(nameof(CanAddToList));
         OnPropertyChanged(nameof(HasKnownEpisodeCount));
+        OnPropertyChanged(nameof(HasProgressSliderMax));
         OnPropertyChanged(nameof(ProgressSliderMax));
         OnPropertyChanged(nameof(ProgressLabel));
         OnPropertyChanged(nameof(ProgressFraction));
@@ -507,7 +518,6 @@ namespace AniSprinkles.PageModels;
             .Select(g => new RankingGroup { Title = g.Key, Items = g.OrderBy(r => r.Rank).ToList() })
             .ToList();
         ExternalLinks = value?.ExternalLinks ?? [];
-        StreamingEpisodes = value?.StreamingEpisodes ?? [];
         TrailerUrl = BuildTrailerUrl(value?.Trailer);
         Relations = value?.Relations ?? [];
         Characters = value?.Characters ?? [];
@@ -529,8 +539,6 @@ namespace AniSprinkles.PageModels;
         OnPropertyChanged(nameof(HasRankings));
         OnPropertyChanged(nameof(ExternalLinks));
         OnPropertyChanged(nameof(HasExternalLinks));
-        OnPropertyChanged(nameof(StreamingEpisodes));
-        OnPropertyChanged(nameof(HasStreamingEpisodes));
         OnPropertyChanged(nameof(TrailerUrl));
         OnPropertyChanged(nameof(HasTrailer));
         OnPropertyChanged(nameof(Relations));
@@ -658,7 +666,7 @@ namespace AniSprinkles.PageModels;
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to set status for media {MediaId}.", Media.Id);
-            StatusMessage = "Failed to update status. Try again.";
+            await ShowErrorAlertAsync("Failed to update status. Please try again.");
         }
         finally
         {
@@ -690,7 +698,7 @@ namespace AniSprinkles.PageModels;
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to remove media {MediaId} from list.", Media.Id);
-            StatusMessage = "Failed to remove from list. Try again.";
+            await ShowErrorAlertAsync("Failed to remove from list. Please try again.");
         }
         finally
         {
@@ -726,7 +734,7 @@ namespace AniSprinkles.PageModels;
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to add media {MediaId} to list.", Media.Id);
-            StatusMessage = "Failed to add to list. Try again.";
+            await ShowErrorAlertAsync("Failed to add to list. Please try again.");
         }
         finally
         {
@@ -737,10 +745,34 @@ namespace AniSprinkles.PageModels;
     private CancellationTokenSource? _saveDebounceCts;
 
     [RelayCommand]
+    private async Task EditProgress()
+    {
+        if (ListEntry is null || Shell.Current is null) return;
+
+        var max = EffectiveMaxEpisodes;
+        var prompt = max is > 0 ? $"Enter episode (0–{max})" : "Enter episode";
+        var current = (ListEntry.Progress ?? 0).ToString();
+
+        var input = await Shell.Current.DisplayPromptAsync(
+            "Progress", prompt, "OK", "Cancel",
+            initialValue: current, maxLength: 5, keyboard: Keyboard.Numeric);
+
+        if (string.IsNullOrWhiteSpace(input) || !int.TryParse(input, out var value)) return;
+
+        var clamped = Math.Max(0, max is > 0 ? Math.Min(value, max.Value) : value);
+        if ((ListEntry.Progress ?? 0) == clamped) return;
+
+        ListEntry.Progress = clamped;
+        SliderProgress = clamped;
+        NotifyListEntryDisplayChanged();
+        _ = DebouncedSaveAsync();
+    }
+
+    [RelayCommand]
     private void IncrementProgress()
     {
         if (ListEntry is null) return;
-        var max = Media?.Episodes ?? int.MaxValue;
+        var max = EffectiveMaxEpisodes ?? int.MaxValue;
         if ((ListEntry.Progress ?? 0) < max)
         {
             ListEntry.Progress = (ListEntry.Progress ?? 0) + 1;
@@ -872,7 +904,7 @@ namespace AniSprinkles.PageModels;
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to save list entry for media {MediaId}.", Media.Id);
-            StatusMessage = "Failed to save. Try again.";
+            await ShowErrorAlertAsync("Failed to save changes. Please try again.");
         }
         finally
         {
@@ -948,6 +980,21 @@ namespace AniSprinkles.PageModels;
             : $"{span.Hours}h {span.Minutes}m";
 
         return $"Episode {next.Episode} in {countdown}";
+    }
+
+    private static async Task ShowErrorAlertAsync(string message)
+    {
+        try
+        {
+            if (Shell.Current is not null)
+            {
+                await Shell.Current.DisplayAlert("Error", message, "OK");
+            }
+        }
+        catch
+        {
+            // Swallow — alert display should never crash the app.
+        }
     }
 
     private static string? BuildTrailerUrl(MediaTrailer? trailer)

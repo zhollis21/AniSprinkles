@@ -37,7 +37,6 @@ public class Media
     public List<Studio> Studios { get; set; } = [];
     public List<MediaRanking> Rankings { get; set; } = [];
     public List<MediaExternalLink> ExternalLinks { get; set; } = [];
-    public List<MediaStreamingEpisode> StreamingEpisodes { get; set; } = [];
     public List<MediaRelationEdge> Relations { get; set; } = [];
     public List<CharacterEdge> Characters { get; set; } = [];
     public List<MediaRecommendationNode> Recommendations { get; set; } = [];
