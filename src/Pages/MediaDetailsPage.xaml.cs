@@ -48,9 +48,6 @@ public partial class MediaDetailsPage : ContentPage, IQueryAttributable
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
-        LoadedContentHost.Content = null;
-        _hasCreatedLoadedContent = false;
-
         _activeNavTraceId = NavigationTelemetryHelper.ParseTraceId(query);
         _activeNavStartUtc = NavigationTelemetryHelper.ParseNavigationStart(query);
         var mediaId = 0;
@@ -82,6 +79,15 @@ public partial class MediaDetailsPage : ContentPage, IQueryAttributable
             mediaId,
             DateTimeOffset.UtcNow,
             NavigationTelemetryHelper.GetElapsedFromTapMilliseconds(_activeNavStartUtc));
+
+        // Only tear down the heavy content view when navigating to a different media.
+        // On back navigation Shell re-applies the same query attributes, so keep the existing
+        // view intact to avoid a costly XAML re-inflation that causes a multi-second hang.
+        if (mediaId != _pendingMediaId || !_hasCreatedLoadedContent)
+        {
+            LoadedContentHost.Content = null;
+            _hasCreatedLoadedContent = false;
+        }
 
         // Queue requested media; actual load starts after the page has appeared and yielded a frame.
         // This keeps Shell transition animation smooth instead of competing with immediate details work.
