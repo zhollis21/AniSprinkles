@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:pageModels="clr-namespace:AniSprinkles.PageModels"
              xmlns:views="clr-namespace:AniSprinkles.Views"
-             xmlns:f="clr-namespace:AniSprinkles.Resources.Fonts"
+             xmlns:icons="clr-namespace:IconFont.Maui.FluentIcons;assembly=IconFont.Maui.FluentIcons"
              x:Class="AniSprinkles.Pages.MyAnimePage"
              x:DataType="pageModels:MyAnimePageModel"
              Title="{Binding Title}"
@@ -18,8 +18,8 @@
                 <VerticalStackLayout Spacing="12" HorizontalOptions="Center">
                     <Image HorizontalOptions="Center" WidthRequest="48" HeightRequest="48">
                         <Image.Source>
-                            <FontImageSource Glyph="{x:Static f:FluentUI.apps_list_24_regular}"
-                                             FontFamily="{x:Static f:FluentUI.FontFamily}"
+                            <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.AppsList24}"
+                                             FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                              Color="{StaticResource Gray400}"
                                              Size="48" />
                         </Image.Source>
