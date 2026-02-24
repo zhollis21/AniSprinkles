@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:pageModels="clr-namespace:AniSprinkles.PageModels"
              xmlns:views="clr-namespace:AniSprinkles.Views"
-             xmlns:f="clr-namespace:AniSprinkles.Resources.Fonts"
+             xmlns:icons="clr-namespace:IconFont.Maui.FluentIcons;assembly=IconFont.Maui.FluentIcons"
              x:Class="AniSprinkles.Views.SettingsLoadedContentView"
              x:DataType="pageModels:SettingsPageModel">
     <Grid RowDefinitions="Auto,*">
@@ -79,8 +79,8 @@
                             <HorizontalStackLayout Spacing="6">
                                 <Image WidthRequest="14" HeightRequest="14" VerticalOptions="Center">
                                     <Image.Source>
-                                        <FontImageSource Glyph="{x:Static f:FluentUI.globe_24_regular}"
-                                                         FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                        <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Globe24}"
+                                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                          Color="{StaticResource Gray400}"
                                                          Size="14" />
                                     </Image.Source>
@@ -101,8 +101,8 @@
                     <HorizontalStackLayout Spacing="8">
                         <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
                             <Image.Source>
-                                <FontImageSource Glyph="{x:Static f:FluentUI.data_bar_vertical_24_regular}"
-                                                 FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.DataBarVertical24}"
+                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                  Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Stats'}"
                                                  Size="20" />
                             </Image.Source>
@@ -151,8 +151,8 @@
                 <HorizontalStackLayout Spacing="8">
                     <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
                         <Image.Source>
-                            <FontImageSource Glyph="{x:Static f:FluentUI.translate_24_regular}"
-                                             FontFamily="{x:Static f:FluentUI.FontFamily}"
+                            <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Translate24}"
+                                             FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                              Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Display'}"
                                              Size="20" />
                         </Image.Source>
@@ -253,8 +253,8 @@
                 <HorizontalStackLayout Spacing="8">
                     <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
                         <Image.Source>
-                            <FontImageSource Glyph="{x:Static f:FluentUI.shield_lock_24_regular}"
-                                             FontFamily="{x:Static f:FluentUI.FontFamily}"
+                            <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.ShieldLock24}"
+                                             FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                              Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Privacy'}"
                                              Size="20" />
                         </Image.Source>
@@ -297,8 +297,8 @@
                 <HorizontalStackLayout Spacing="8">
                     <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
                         <Image.Source>
-                            <FontImageSource Glyph="{x:Static f:FluentUI.alert_24_regular}"
-                                             FontFamily="{x:Static f:FluentUI.FontFamily}"
+                            <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Alert24}"
+                                             FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                              Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Notifications'}"
                                              Size="20" />
                         </Image.Source>
@@ -329,8 +329,8 @@
                 <HorizontalStackLayout Spacing="8">
                     <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
                         <Image.Source>
-                            <FontImageSource Glyph="{x:Static f:FluentUI.person_24_regular}"
-                                             FontFamily="{x:Static f:FluentUI.FontFamily}"
+                            <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Person24}"
+                                             FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                              Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Account'}"
                                              Size="20" />
                         </Image.Source>
@@ -357,8 +357,8 @@
                     <HorizontalStackLayout Spacing="8" HorizontalOptions="Center">
                         <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
                             <Image.Source>
-                                <FontImageSource Glyph="{x:Static f:FluentUI.info_24_regular}"
-                                                 FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Info24}"
+                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                  Color="{StaticResource Gray400}"
                                                  Size="20" />
                             </Image.Source>

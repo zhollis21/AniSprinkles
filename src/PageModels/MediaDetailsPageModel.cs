@@ -214,13 +214,13 @@ namespace AniSprinkles.PageModels;
 
     public string StatusIconGlyph => ListEntry?.Status switch
     {
-        MediaListStatus.Current => Resources.Fonts.FluentUI.eye_24_regular,
-        MediaListStatus.Planning => Resources.Fonts.FluentUI.bookmark_24_regular,
-        MediaListStatus.Completed => Resources.Fonts.FluentUI.checkmark_circle_24_regular,
-        MediaListStatus.Paused => Resources.Fonts.FluentUI.pause_circle_24_regular,
-        MediaListStatus.Dropped => Resources.Fonts.FluentUI.dismiss_circle_24_regular,
-        MediaListStatus.Repeating => Resources.Fonts.FluentUI.arrow_repeat_all_24_regular,
-        _ => Resources.Fonts.FluentUI.add_circle_24_regular,
+        MediaListStatus.Current => FluentIconsRegular.Eye24,
+        MediaListStatus.Planning => FluentIconsRegular.Bookmark24,
+        MediaListStatus.Completed => FluentIconsRegular.CheckmarkCircle24,
+        MediaListStatus.Paused => FluentIconsRegular.PauseCircle24,
+        MediaListStatus.Dropped => FluentIconsRegular.DismissCircle24,
+        MediaListStatus.Repeating => FluentIconsRegular.ArrowRepeatAll24,
+        _ => FluentIconsRegular.AddCircle24,
     };
 
     // --- Progress properties ---

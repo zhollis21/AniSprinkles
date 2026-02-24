@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:pageModels="clr-namespace:AniSprinkles.PageModels"
              xmlns:models="clr-namespace:AniSprinkles.Models"
-             xmlns:f="clr-namespace:AniSprinkles.Resources.Fonts"
+             xmlns:icons="clr-namespace:IconFont.Maui.FluentIcons;assembly=IconFont.Maui.FluentIcons"
              x:Class="AniSprinkles.Views.MediaDetailsLoadedContentView"
              x:DataType="pageModels:MediaDetailsPageModel"
              x:Name="RootView">
@@ -99,8 +99,8 @@
                     <VerticalStackLayout Spacing="2" HorizontalOptions="Center">
                         <Image WidthRequest="18" HeightRequest="18" HorizontalOptions="Center">
                             <Image.Source>
-                                <FontImageSource Glyph="{x:Static f:FluentUI.star_24_regular}"
-                                                 FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Star24}"
+                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                  Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Score'}"
                                                  Size="18" />
                             </Image.Source>
@@ -115,8 +115,8 @@
                     <VerticalStackLayout Spacing="2" HorizontalOptions="Center">
                         <Image WidthRequest="18" HeightRequest="18" HorizontalOptions="Center">
                             <Image.Source>
-                                <FontImageSource Glyph="{x:Static f:FluentUI.people_24_regular}"
-                                                 FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.People24}"
+                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                  Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Popularity'}"
                                                  Size="18" />
                             </Image.Source>
@@ -131,8 +131,8 @@
                     <VerticalStackLayout Spacing="2" HorizontalOptions="Center">
                         <Image WidthRequest="18" HeightRequest="18" HorizontalOptions="Center">
                             <Image.Source>
-                                <FontImageSource Glyph="{x:Static f:FluentUI.heart_24_regular}"
-                                                 FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Heart24}"
+                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                  Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Favourites'}"
                                                  Size="18" />
                             </Image.Source>
@@ -180,8 +180,8 @@
                     <Image Grid.Column="0" Grid.RowSpan="2" WidthRequest="20" HeightRequest="20"
                            VerticalOptions="Center">
                         <Image.Source>
-                            <FontImageSource Glyph="{x:Static f:FluentUI.live_24_regular}"
-                                             FontFamily="{x:Static f:FluentUI.FontFamily}"
+                            <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Live24}"
+                                             FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                              Color="{StaticResource RainbowCyan}" Size="20" />
                         </Image.Source>
                     </Image>
@@ -239,7 +239,7 @@
                                 <Image Grid.Column="0" WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
                                     <Image.Source>
                                         <FontImageSource Glyph="{Binding StatusIconGlyph}"
-                                                         FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                          Color="{Binding ListStatusDisplay, Converter={StaticResource RainbowAccentConverter}}"
                                                          Size="20" />
                                     </Image.Source>
@@ -254,8 +254,8 @@
                                 <Image Grid.Column="3" WidthRequest="16" HeightRequest="16" VerticalOptions="Center"
                                        IsVisible="{Binding IsStatusExpanded, Converter={StaticResource InvertedBoolConverter}}">
                                     <Image.Source>
-                                        <FontImageSource Glyph="{x:Static f:FluentUI.chevron_down_24_regular}"
-                                                         FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                        <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.ChevronDown24}"
+                                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                          Color="{StaticResource Gray400}" Size="16" />
                                     </Image.Source>
                                 </Image>
@@ -263,8 +263,8 @@
                                 <Image Grid.Column="3" WidthRequest="16" HeightRequest="16" VerticalOptions="Center"
                                        IsVisible="{Binding IsStatusExpanded}">
                                     <Image.Source>
-                                        <FontImageSource Glyph="{x:Static f:FluentUI.chevron_up_24_regular}"
-                                                         FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                        <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.ChevronUp24}"
+                                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                          Color="{StaticResource Gray400}" Size="16" />
                                     </Image.Source>
                                 </Image>
@@ -283,7 +283,7 @@
                                 <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding QuickSetStatusCommand}" CommandParameter="Current" /></Border.GestureRecognizers>
                                 <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
                                     <Image Grid.Column="0" WidthRequest="18" HeightRequest="18" VerticalOptions="Center">
-                                        <Image.Source><FontImageSource Glyph="{x:Static f:FluentUI.eye_24_regular}" FontFamily="{x:Static f:FluentUI.FontFamily}" Color="{Binding CurrentStatusKey, Converter={StaticResource SortFieldSelectedTextConverter}, ConverterParameter='Current'}" Size="18" /></Image.Source>
+                                        <Image.Source><FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Eye24}" FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}" Color="{Binding CurrentStatusKey, Converter={StaticResource SortFieldSelectedTextConverter}, ConverterParameter='Current'}" Size="18" /></Image.Source>
                                     </Image>
                                     <Label Grid.Column="1" Text="Watching" Style="{StaticResource Body2}" TextColor="{Binding CurrentStatusKey, Converter={StaticResource SortFieldSelectedTextConverter}, ConverterParameter='Current'}" VerticalTextAlignment="Center" />
                                 </Grid>
@@ -295,7 +295,7 @@
                                 <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding QuickSetStatusCommand}" CommandParameter="Planning" /></Border.GestureRecognizers>
                                 <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
                                     <Image Grid.Column="0" WidthRequest="18" HeightRequest="18" VerticalOptions="Center">
-                                        <Image.Source><FontImageSource Glyph="{x:Static f:FluentUI.bookmark_24_regular}" FontFamily="{x:Static f:FluentUI.FontFamily}" Color="{Binding CurrentStatusKey, Converter={StaticResource SortFieldSelectedTextConverter}, ConverterParameter='Planning'}" Size="18" /></Image.Source>
+                                        <Image.Source><FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Bookmark24}" FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}" Color="{Binding CurrentStatusKey, Converter={StaticResource SortFieldSelectedTextConverter}, ConverterParameter='Planning'}" Size="18" /></Image.Source>
                                     </Image>
                                     <Label Grid.Column="1" Text="Plan to Watch" Style="{StaticResource Body2}" TextColor="{Binding CurrentStatusKey, Converter={StaticResource SortFieldSelectedTextConverter}, ConverterParameter='Planning'}" VerticalTextAlignment="Center" />
                                 </Grid>
@@ -307,7 +307,7 @@
                                 <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding QuickSetStatusCommand}" CommandParameter="Completed" /></Border.GestureRecognizers>
                                 <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
                                     <Image Grid.Column="0" WidthRequest="18" HeightRequest="18" VerticalOptions="Center">
-                                        <Image.Source><FontImageSource Glyph="{x:Static f:FluentUI.checkmark_circle_24_regular}" FontFamily="{x:Static f:FluentUI.FontFamily}" Color="{Binding CurrentStatusKey, Converter={StaticResource SortFieldSelectedTextConverter}, ConverterParameter='Completed'}" Size="18" /></Image.Source>
+                                        <Image.Source><FontImageSource Glyph="{x:Static icons:FluentIconsRegular.CheckmarkCircle24}" FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}" Color="{Binding CurrentStatusKey, Converter={StaticResource SortFieldSelectedTextConverter}, ConverterParameter='Completed'}" Size="18" /></Image.Source>
                                     </Image>
                                     <Label Grid.Column="1" Text="Completed" Style="{StaticResource Body2}" TextColor="{Binding CurrentStatusKey, Converter={StaticResource SortFieldSelectedTextConverter}, ConverterParameter='Completed'}" VerticalTextAlignment="Center" />
                                 </Grid>
@@ -319,7 +319,7 @@
                                 <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding QuickSetStatusCommand}" CommandParameter="Paused" /></Border.GestureRecognizers>
                                 <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
                                     <Image Grid.Column="0" WidthRequest="18" HeightRequest="18" VerticalOptions="Center">
-                                        <Image.Source><FontImageSource Glyph="{x:Static f:FluentUI.pause_circle_24_regular}" FontFamily="{x:Static f:FluentUI.FontFamily}" Color="{Binding CurrentStatusKey, Converter={StaticResource SortFieldSelectedTextConverter}, ConverterParameter='Paused'}" Size="18" /></Image.Source>
+                                        <Image.Source><FontImageSource Glyph="{x:Static icons:FluentIconsRegular.PauseCircle24}" FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}" Color="{Binding CurrentStatusKey, Converter={StaticResource SortFieldSelectedTextConverter}, ConverterParameter='Paused'}" Size="18" /></Image.Source>
                                     </Image>
                                     <Label Grid.Column="1" Text="Paused" Style="{StaticResource Body2}" TextColor="{Binding CurrentStatusKey, Converter={StaticResource SortFieldSelectedTextConverter}, ConverterParameter='Paused'}" VerticalTextAlignment="Center" />
                                 </Grid>
@@ -331,7 +331,7 @@
                                 <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding QuickSetStatusCommand}" CommandParameter="Dropped" /></Border.GestureRecognizers>
                                 <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
                                     <Image Grid.Column="0" WidthRequest="18" HeightRequest="18" VerticalOptions="Center">
-                                        <Image.Source><FontImageSource Glyph="{x:Static f:FluentUI.dismiss_circle_24_regular}" FontFamily="{x:Static f:FluentUI.FontFamily}" Color="{Binding CurrentStatusKey, Converter={StaticResource SortFieldSelectedTextConverter}, ConverterParameter='Dropped'}" Size="18" /></Image.Source>
+                                        <Image.Source><FontImageSource Glyph="{x:Static icons:FluentIconsRegular.DismissCircle24}" FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}" Color="{Binding CurrentStatusKey, Converter={StaticResource SortFieldSelectedTextConverter}, ConverterParameter='Dropped'}" Size="18" /></Image.Source>
                                     </Image>
                                     <Label Grid.Column="1" Text="Dropped" Style="{StaticResource Body2}" TextColor="{Binding CurrentStatusKey, Converter={StaticResource SortFieldSelectedTextConverter}, ConverterParameter='Dropped'}" VerticalTextAlignment="Center" />
                                 </Grid>
@@ -343,7 +343,7 @@
                                 <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding QuickSetStatusCommand}" CommandParameter="Repeating" /></Border.GestureRecognizers>
                                 <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
                                     <Image Grid.Column="0" WidthRequest="18" HeightRequest="18" VerticalOptions="Center">
-                                        <Image.Source><FontImageSource Glyph="{x:Static f:FluentUI.arrow_repeat_all_24_regular}" FontFamily="{x:Static f:FluentUI.FontFamily}" Color="{Binding CurrentStatusKey, Converter={StaticResource SortFieldSelectedTextConverter}, ConverterParameter='Repeating'}" Size="18" /></Image.Source>
+                                        <Image.Source><FontImageSource Glyph="{x:Static icons:FluentIconsRegular.ArrowRepeatAll24}" FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}" Color="{Binding CurrentStatusKey, Converter={StaticResource SortFieldSelectedTextConverter}, ConverterParameter='Repeating'}" Size="18" /></Image.Source>
                                     </Image>
                                     <Label Grid.Column="1" Text="Rewatching" Style="{StaticResource Body2}" TextColor="{Binding CurrentStatusKey, Converter={StaticResource SortFieldSelectedTextConverter}, ConverterParameter='Repeating'}" VerticalTextAlignment="Center" />
                                 </Grid>
@@ -357,7 +357,7 @@
                                 <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding RemoveFromListCommand}" /></Border.GestureRecognizers>
                                 <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
                                     <Image Grid.Column="0" WidthRequest="18" HeightRequest="18" VerticalOptions="Center">
-                                        <Image.Source><FontImageSource Glyph="{x:Static f:FluentUI.delete_24_regular}" FontFamily="{x:Static f:FluentUI.FontFamily}" Color="{StaticResource Gray400}" Size="18" /></Image.Source>
+                                        <Image.Source><FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Delete24}" FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}" Color="{StaticResource Gray400}" Size="18" /></Image.Source>
                                     </Image>
                                     <Label Grid.Column="1" Text="Remove from List" Style="{StaticResource Body2}" TextColor="{StaticResource Gray400}" VerticalTextAlignment="Center" />
                                 </Grid>
@@ -371,8 +371,8 @@
                         <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto" ColumnSpacing="8">
                             <Image Grid.Column="0" WidthRequest="16" HeightRequest="16" VerticalOptions="Center">
                                 <Image.Source>
-                                    <FontImageSource Glyph="{x:Static f:FluentUI.play_24_regular}"
-                                                     FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                    <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Play24}"
+                                                     FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                      Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Progress'}" Size="16" />
                                 </Image.Source>
                             </Image>
@@ -387,8 +387,8 @@
                                            Style="{StaticResource Body2Strong}" VerticalTextAlignment="Center" />
                                     <Image WidthRequest="14" HeightRequest="14" VerticalOptions="Center">
                                         <Image.Source>
-                                            <FontImageSource Glyph="{x:Static f:FluentUI.edit_24_regular}"
-                                                             FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                            <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Edit24}"
+                                                             FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                              Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Progress'}" Size="14" />
                                         </Image.Source>
                                     </Image>
@@ -401,8 +401,8 @@
                                 <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding DecrementProgressCommand}" /></Border.GestureRecognizers>
                                 <Image WidthRequest="18" HeightRequest="18" HorizontalOptions="Center" VerticalOptions="Center">
                                     <Image.Source>
-                                        <FontImageSource Glyph="{x:Static f:FluentUI.subtract_24_regular}"
-                                                         FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                        <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Subtract24}"
+                                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                          Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Progress'}" Size="18" />
                                     </Image.Source>
                                 </Image>
@@ -414,8 +414,8 @@
                                 <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding IncrementProgressCommand}" /></Border.GestureRecognizers>
                                 <Image WidthRequest="18" HeightRequest="18" HorizontalOptions="Center" VerticalOptions="Center">
                                     <Image.Source>
-                                        <FontImageSource Glyph="{x:Static f:FluentUI.add_24_regular}"
-                                                         FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                        <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Add24}"
+                                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                          Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Progress'}" Size="18" />
                                     </Image.Source>
                                 </Image>
@@ -437,8 +437,8 @@
                         <HorizontalStackLayout Spacing="6">
                             <Image WidthRequest="16" HeightRequest="16" VerticalOptions="Center">
                                 <Image.Source>
-                                    <FontImageSource Glyph="{x:Static f:FluentUI.star_24_regular}"
-                                                     FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                    <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Star24}"
+                                                     FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                      Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='MyScore'}" Size="16" />
                                 </Image.Source>
                             </Image>
@@ -451,8 +451,8 @@
                             <Image WidthRequest="40" HeightRequest="40">
                                 <Image.GestureRecognizers><TapGestureRecognizer Command="{Binding SetStarRatingCommand}" CommandParameter="1" /></Image.GestureRecognizers>
                                 <Image.Source>
-                                    <FontImageSource Glyph="{x:Static f:FluentUI.star_24_regular}"
-                                                     FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                    <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Star24}"
+                                                     FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                      Color="{Binding Star1Filled, Converter={StaticResource RainbowAccentConverter}}"
                                                      Size="40" />
                                 </Image.Source>
@@ -460,8 +460,8 @@
                             <Image WidthRequest="40" HeightRequest="40">
                                 <Image.GestureRecognizers><TapGestureRecognizer Command="{Binding SetStarRatingCommand}" CommandParameter="2" /></Image.GestureRecognizers>
                                 <Image.Source>
-                                    <FontImageSource Glyph="{x:Static f:FluentUI.star_24_regular}"
-                                                     FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                    <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Star24}"
+                                                     FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                      Color="{Binding Star2Filled, Converter={StaticResource RainbowAccentConverter}}"
                                                      Size="40" />
                                 </Image.Source>
@@ -469,8 +469,8 @@
                             <Image WidthRequest="40" HeightRequest="40">
                                 <Image.GestureRecognizers><TapGestureRecognizer Command="{Binding SetStarRatingCommand}" CommandParameter="3" /></Image.GestureRecognizers>
                                 <Image.Source>
-                                    <FontImageSource Glyph="{x:Static f:FluentUI.star_24_regular}"
-                                                     FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                    <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Star24}"
+                                                     FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                      Color="{Binding Star3Filled, Converter={StaticResource RainbowAccentConverter}}"
                                                      Size="40" />
                                 </Image.Source>
@@ -478,8 +478,8 @@
                             <Image WidthRequest="40" HeightRequest="40">
                                 <Image.GestureRecognizers><TapGestureRecognizer Command="{Binding SetStarRatingCommand}" CommandParameter="4" /></Image.GestureRecognizers>
                                 <Image.Source>
-                                    <FontImageSource Glyph="{x:Static f:FluentUI.star_24_regular}"
-                                                     FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                    <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Star24}"
+                                                     FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                      Color="{Binding Star4Filled, Converter={StaticResource RainbowAccentConverter}}"
                                                      Size="40" />
                                 </Image.Source>
@@ -487,8 +487,8 @@
                             <Image WidthRequest="40" HeightRequest="40">
                                 <Image.GestureRecognizers><TapGestureRecognizer Command="{Binding SetStarRatingCommand}" CommandParameter="5" /></Image.GestureRecognizers>
                                 <Image.Source>
-                                    <FontImageSource Glyph="{x:Static f:FluentUI.star_24_regular}"
-                                                     FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                    <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Star24}"
+                                                     FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                      Color="{Binding Star5Filled, Converter={StaticResource RainbowAccentConverter}}"
                                                      Size="40" />
                                 </Image.Source>
@@ -500,24 +500,24 @@
                             <Image WidthRequest="44" HeightRequest="44" Opacity="{Binding SmileyHappySelected, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=True}">
                                 <Image.GestureRecognizers><TapGestureRecognizer Command="{Binding SetSmileyRatingCommand}" CommandParameter="3" /></Image.GestureRecognizers>
                                 <Image.Source>
-                                    <FontImageSource Glyph="{x:Static f:FluentUI.emoji_laugh_24_regular}"
-                                                     FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                    <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.EmojiLaugh24}"
+                                                     FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                      Color="{StaticResource RainbowGreen}" Size="44" />
                                 </Image.Source>
                             </Image>
                             <Image WidthRequest="44" HeightRequest="44" Opacity="{Binding SmileyNeutralSelected, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=True}">
                                 <Image.GestureRecognizers><TapGestureRecognizer Command="{Binding SetSmileyRatingCommand}" CommandParameter="2" /></Image.GestureRecognizers>
                                 <Image.Source>
-                                    <FontImageSource Glyph="{x:Static f:FluentUI.emoji_meh_24_regular}"
-                                                     FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                    <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.EmojiMeh24}"
+                                                     FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                      Color="{StaticResource RainbowYellow}" Size="44" />
                                 </Image.Source>
                             </Image>
                             <Image WidthRequest="44" HeightRequest="44" Opacity="{Binding SmileySadSelected, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=True}">
                                 <Image.GestureRecognizers><TapGestureRecognizer Command="{Binding SetSmileyRatingCommand}" CommandParameter="1" /></Image.GestureRecognizers>
                                 <Image.Source>
-                                    <FontImageSource Glyph="{x:Static f:FluentUI.emoji_sad_24_regular}"
-                                                     FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                    <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.EmojiSad24}"
+                                                     FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                      Color="{StaticResource RainbowRed}" Size="44" />
                                 </Image.Source>
                             </Image>
@@ -608,8 +608,8 @@
                                                 <HorizontalStackLayout Spacing="8">
                                                     <Image WidthRequest="16" HeightRequest="16" VerticalOptions="Center">
                                                         <Image.Source>
-                                                            <FontImageSource Glyph="{x:Static f:FluentUI.trophy_24_regular}"
-                                                                             FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                                            <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Trophy24}"
+                                                                             FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                                              Color="{Binding Type, Converter={StaticResource RainbowAccentConverter}}"
                                                                              Size="16" />
                                                         </Image.Source>
@@ -641,8 +641,8 @@
                         <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10" Padding="0,8">
                             <Image Grid.Column="0" WidthRequest="16" HeightRequest="16" VerticalOptions="Center">
                                 <Image.Source>
-                                    <FontImageSource Glyph="{x:Static f:FluentUI.calendar_ltr_24_regular}"
-                                                     FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                    <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Calendar24}"
+                                                     FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                      Color="{StaticResource Gray400}" Size="16" />
                                 </Image.Source>
                             </Image>
@@ -655,8 +655,8 @@
                         <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10" Padding="0,8">
                             <Image Grid.Column="0" WidthRequest="16" HeightRequest="16" VerticalOptions="Center">
                                 <Image.Source>
-                                    <FontImageSource Glyph="{x:Static f:FluentUI.book_24_regular}"
-                                                     FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                    <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Book24}"
+                                                     FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                      Color="{StaticResource Gray400}" Size="16" />
                                 </Image.Source>
                             </Image>
@@ -669,8 +669,8 @@
                         <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10" Padding="0,8">
                             <Image Grid.Column="0" WidthRequest="16" HeightRequest="16" VerticalOptions="Center">
                                 <Image.Source>
-                                    <FontImageSource Glyph="{x:Static f:FluentUI.globe_24_regular}"
-                                                     FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                    <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Globe24}"
+                                                     FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                      Color="{StaticResource Gray400}" Size="16" />
                                 </Image.Source>
                             </Image>
@@ -683,8 +683,8 @@
                         <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10" Padding="0,8">
                             <Image Grid.Column="0" WidthRequest="16" HeightRequest="16" VerticalOptions="Center">
                                 <Image.Source>
-                                    <FontImageSource Glyph="{x:Static f:FluentUI.checkmark_circle_24_regular}"
-                                                     FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                    <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.CheckmarkCircle24}"
+                                                     FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                      Color="{StaticResource Gray400}" Size="16" />
                                 </Image.Source>
                             </Image>
@@ -697,8 +697,8 @@
                         <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10" Padding="0,8">
                             <Image Grid.Column="0" WidthRequest="16" HeightRequest="16" VerticalOptions="Center">
                                 <Image.Source>
-                                    <FontImageSource Glyph="{x:Static f:FluentUI.shield_24_regular}"
-                                                     FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                    <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Shield24}"
+                                                     FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                      Color="{StaticResource Gray400}" Size="16" />
                                 </Image.Source>
                             </Image>
@@ -720,8 +720,8 @@
                             <HorizontalStackLayout Spacing="8">
                                 <Image WidthRequest="16" HeightRequest="16" VerticalOptions="Center">
                                     <Image.Source>
-                                        <FontImageSource Glyph="{x:Static f:FluentUI.play_24_regular}"
-                                                         FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                        <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Play24}"
+                                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                          Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Trailer'}"
                                                          Size="16" />
                                     </Image.Source>
@@ -741,8 +741,8 @@
                             <HorizontalStackLayout Spacing="8">
                                 <Image WidthRequest="16" HeightRequest="16" VerticalOptions="Center">
                                     <Image.Source>
-                                        <FontImageSource Glyph="{x:Static f:FluentUI.globe_24_regular}"
-                                                         FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                        <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Globe24}"
+                                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                          Color="{StaticResource Gray400}"
                                                          Size="16" />
                                     </Image.Source>
@@ -765,8 +765,8 @@
                     <HorizontalStackLayout Spacing="8">
                         <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
                             <Image.Source>
-                                <FontImageSource Glyph="{x:Static f:FluentUI.link_24_regular}"
-                                                 FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Link24}"
+                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                  Color="{AppThemeBinding Light=Black, Dark=White}"
                                                  Size="20" />
                             </Image.Source>
@@ -821,8 +821,8 @@
                     <HorizontalStackLayout Spacing="8">
                         <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
                             <Image.Source>
-                                <FontImageSource Glyph="{x:Static f:FluentUI.people_24_regular}"
-                                                 FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.People24}"
+                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                  Color="{AppThemeBinding Light=Black, Dark=White}"
                                                  Size="20" />
                             </Image.Source>
@@ -872,8 +872,8 @@
                     <HorizontalStackLayout Spacing="8">
                         <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
                             <Image.Source>
-                                <FontImageSource Glyph="{x:Static f:FluentUI.tag_24_regular}"
-                                                 FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Tag24}"
+                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                  Color="{AppThemeBinding Light=Black, Dark=White}"
                                                  Size="20" />
                             </Image.Source>
@@ -915,8 +915,8 @@
                     <HorizontalStackLayout Spacing="8">
                         <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
                             <Image.Source>
-                                <FontImageSource Glyph="{x:Static f:FluentUI.data_bar_vertical_24_regular}"
-                                                 FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.DataBarVertical24}"
+                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                  Color="{AppThemeBinding Light=Black, Dark=White}"
                                                  Size="20" />
                             </Image.Source>
@@ -985,8 +985,8 @@
                     <HorizontalStackLayout Spacing="8">
                         <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
                             <Image.Source>
-                                <FontImageSource Glyph="{x:Static f:FluentUI.sparkle_24_regular}"
-                                                 FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Sparkle24}"
+                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                  Color="{AppThemeBinding Light=Black, Dark=White}"
                                                  Size="20" />
                             </Image.Source>
@@ -1037,8 +1037,8 @@
                     <HorizontalStackLayout Spacing="8">
                         <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
                             <Image.Source>
-                                <FontImageSource Glyph="{x:Static f:FluentUI.person_24_regular}"
-                                                 FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Person24}"
+                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                  Color="{AppThemeBinding Light=Black, Dark=White}"
                                                  Size="20" />
                             </Image.Source>
@@ -1061,8 +1061,8 @@
                                                 <Image HorizontalOptions="Center" VerticalOptions="Center"
                                                        WidthRequest="40" HeightRequest="40">
                                                     <Image.Source>
-                                                        <FontImageSource Glyph="{x:Static f:FluentUI.person_48_regular}"
-                                                                         FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                                        <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Person48}"
+                                                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                                          Color="{StaticResource Gray500}" Size="40" />
                                                     </Image.Source>
                                                 </Image>
@@ -1105,8 +1105,8 @@
                     <HorizontalStackLayout Spacing="8">
                         <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
                             <Image.Source>
-                                <FontImageSource Glyph="{x:Static f:FluentUI.globe_24_regular}"
-                                                 FontFamily="{x:Static f:FluentUI.FontFamily}"
+                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Globe24}"
+                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                  Color="{AppThemeBinding Light=Black, Dark=White}"
                                                  Size="20" />
                             </Image.Source>
