@@ -41,4 +41,114 @@ public class MediaListEntry
         ScoreFormat.Point3 => Score.Value switch { >= 3 => "\U0001F60A", >= 2 => "\U0001F610", _ => "\U0001F61E" },
         _ => Score.Value.ToString("0.0"),
     };
+
+    /// <summary>
+    /// Maximum episode count for +1 cap logic.
+    /// Uses the next airing episode number (latest aired = episode - 1) if available,
+    /// otherwise falls back to the total episode count.
+    /// </summary>
+    public int? MaxEpisodes => Media?.Episodes;
+
+    /// <summary>
+    /// Number of episodes behind for currently airing shows.
+    /// Null if not applicable (not airing, or progress is current).
+    /// </summary>
+    public int? EpisodesBehind
+    {
+        get
+        {
+            if (Media?.NextAiringEpisode?.Episode is not int nextEp)
+            {
+                return null;
+            }
+
+            var watched = Progress ?? 0;
+            var aired = nextEp - 1; // next ep hasn't aired yet
+            var behind = aired - watched;
+            return behind > 0 ? behind : null;
+        }
+    }
+
+    /// <summary>
+    /// Display string for airing info, e.g. "2 ep behind · Ep 8 in 3d".
+    /// Null if the show is not currently airing.
+    /// </summary>
+    public string? AiringInfoDisplay
+    {
+        get
+        {
+            if (Media?.NextAiringEpisode is null)
+            {
+                return null;
+            }
+
+            var parts = new List<string>();
+            var behind = EpisodesBehind;
+
+            if (behind > 0)
+            {
+                parts.Add(behind == 1 ? "1 ep behind" : $"{behind} eps behind");
+            }
+
+            if (Media.NextAiringEpisode.AiringAt is int airingAt)
+            {
+                var airingDate = DateTimeOffset.FromUnixTimeSeconds(airingAt);
+                var timeUntil = airingDate - DateTimeOffset.UtcNow;
+
+                if (timeUntil.TotalSeconds > 0)
+                {
+                    if (timeUntil.TotalHours < 1)
+                    {
+                        parts.Add($"Ep {Media.NextAiringEpisode.Episode} in {timeUntil.Minutes}m");
+                    }
+                    else if (timeUntil.TotalDays < 1)
+                    {
+                        parts.Add($"Ep {Media.NextAiringEpisode.Episode} in {(int)timeUntil.TotalHours}h");
+                    }
+                    else if (timeUntil.TotalDays < 7)
+                    {
+                        parts.Add($"Ep {Media.NextAiringEpisode.Episode} in {(int)timeUntil.TotalDays}d");
+                    }
+                    else
+                    {
+                        parts.Add($"Ep {Media.NextAiringEpisode.Episode} {airingDate.LocalDateTime:MMM d}");
+                    }
+                }
+            }
+
+            return parts.Count > 0 ? string.Join(" · ", parts) : null;
+        }
+    }
+
+    public bool HasAiringInfo => AiringInfoDisplay is not null;
+
+    /// <summary>
+    /// Combined single-line metadata: "3/12 · 8 · 2 eps behind · Ep 8 in 3d".
+    /// Used by the standard list template to show all info on one line.
+    /// </summary>
+    public string MetadataDisplay
+    {
+        get
+        {
+            var parts = new List<string> { ProgressDisplay };
+
+            if (Score is not null)
+            {
+                parts.Add(ScoreDisplay);
+            }
+
+            var airing = AiringInfoDisplay;
+            if (airing is not null)
+            {
+                parts.Add(airing);
+            }
+
+            return string.Join(" \u00b7 ", parts);
+        }
+    }
+
+    /// <summary>
+    /// True when the +1 increment button should be shown (only for Watching and Rewatching lists).
+    /// </summary>
+    public bool CanIncrementProgress => Status is MediaListStatus.Current or MediaListStatus.Repeating;
 }

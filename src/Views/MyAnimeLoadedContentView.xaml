@@ -4,13 +4,460 @@
              xmlns:pageModels="clr-namespace:AniSprinkles.PageModels"
              xmlns:models="clr-namespace:AniSprinkles.Models"
              xmlns:icons="clr-namespace:IconFont.Maui.FluentIcons;assembly=IconFont.Maui.FluentIcons"
+             xmlns:pullToRefresh="clr-namespace:Syncfusion.Maui.Toolkit.PullToRefresh;assembly=Syncfusion.Maui.Toolkit"
              x:Class="AniSprinkles.Views.MyAnimeLoadedContentView"
-             x:DataType="pageModels:MyAnimePageModel">
-	<Grid RowDefinitions="Auto,Auto,*" RowSpacing="8">
+             x:DataType="pageModels:MyAnimePageModel"
+             x:Name="RootView">
 
-		<ActivityIndicator IsRunning="{Binding IsNavigatingToDetails}"
-				   IsVisible="{Binding IsNavigatingToDetails}"
-				   VerticalOptions="Center" HorizontalOptions="Center" Opacity="0.8" />
+    <ContentView.Resources>
+        <ResourceDictionary>
 
-	</Grid>
+            <!-- ============================================ -->
+            <!-- STANDARD ITEM TEMPLATE (list rows)           -->
+            <!-- ============================================ -->
+            <DataTemplate x:Key="StandardItemTemplate" x:DataType="models:MediaListEntry">
+                <Border Style="{StaticResource ListRowStyle}" Margin="0,0,0,6">
+                    <Grid ColumnDefinitions="70,*,Auto" ColumnSpacing="0" Padding="0">
+                        <!-- Cover image -->
+                        <Image Grid.Column="0"
+                               Source="{Binding Media.CoverImage.Medium}"
+                               Aspect="AspectFill"
+                               WidthRequest="70" MinimumHeightRequest="100">
+                            <Image.Clip>
+                                <RoundRectangleGeometry Rect="0,0,70,120" CornerRadius="14,0,0,14" />
+                            </Image.Clip>
+                        </Image>
+
+                        <!-- Info stack -->
+                        <VerticalStackLayout Grid.Column="1" Spacing="3" VerticalOptions="Center" Padding="10,6">
+                            <Label Text="{Binding Media.DisplayTitle}"
+                                   Style="{StaticResource Body2Strong}"
+                                   MaxLines="2"
+                                   LineBreakMode="TailTruncation" />
+                            <HorizontalStackLayout Spacing="8">
+                                <Label Text="{Binding ProgressDisplay}"
+                                       Style="{StaticResource Caption1}"
+                                       TextColor="{StaticResource Gray400}" />
+                                <Label Text="{Binding ScoreDisplay}"
+                                       Style="{StaticResource Caption1}"
+                                       TextColor="{StaticResource Gray400}" />
+                            </HorizontalStackLayout>
+                            <!-- Airing info -->
+                            <Label Text="{Binding AiringInfoDisplay}"
+                                   Style="{StaticResource Caption2}"
+                                   TextColor="{StaticResource RainbowCyan}"
+                                   IsVisible="{Binding HasAiringInfo}" />
+                        </VerticalStackLayout>
+
+                        <!-- +1 button (only on Watching / Rewatching) -->
+                        <Border Grid.Column="2"
+                                StrokeShape="RoundRectangle 18"
+                                StrokeThickness="1"
+                                Stroke="{StaticResource Gray600}"
+                                BackgroundColor="Transparent"
+                                Padding="0"
+                                HeightRequest="36" WidthRequest="36"
+                                VerticalOptions="Center"
+                                Margin="0,0,10,0"
+                                IsVisible="{Binding CanIncrementProgress}">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer x:DataType="{x:Null}"
+                                    Command="{Binding BindingContext.IncrementProgressCommand, Source={RelativeSource AncestorType={x:Type CollectionView}}}"
+                                    CommandParameter="{Binding .}" />
+                            </Border.GestureRecognizers>
+                            <Image WidthRequest="18" HeightRequest="18"
+                                   HorizontalOptions="Center" VerticalOptions="Center">
+                                <Image.Source>
+                                    <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Add24}"
+                                                     FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                     Color="{Binding Media.DisplayTitle, Converter={StaticResource RainbowAccentConverter}}"
+                                                     Size="18" />
+                                </Image.Source>
+                            </Image>
+                        </Border>
+                    </Grid>
+                </Border>
+            </DataTemplate>
+
+            <!-- ============================================ -->
+            <!-- LARGE ITEM TEMPLATE (2-col grid cards)       -->
+            <!-- ============================================ -->
+            <DataTemplate x:Key="LargeItemTemplate" x:DataType="models:MediaListEntry">
+                <Border Style="{StaticResource CardStyle}" Padding="0" Margin="4">
+                    <Grid RowDefinitions="180,Auto">
+                        <!-- Cover image -->
+                        <Image Grid.Row="0"
+                               Source="{Binding Media.CoverImage.Large}"
+                               Aspect="AspectFill"
+                               HeightRequest="180">
+                            <Image.Clip>
+                                <RoundRectangleGeometry Rect="0,0,999,180" CornerRadius="16,16,0,0" />
+                            </Image.Clip>
+                        </Image>
+
+                        <!-- Score badge overlay -->
+                        <Border Grid.Row="0"
+                                StrokeShape="RoundRectangle 10"
+                                StrokeThickness="0"
+                                BackgroundColor="#99000000"
+                                Padding="6,3"
+                                HorizontalOptions="End"
+                                VerticalOptions="End"
+                                Margin="0,0,6,6">
+                            <Label Text="{Binding ScoreDisplay}"
+                                   Style="{StaticResource Caption2}"
+                                   TextColor="White" />
+                        </Border>
+
+                        <!-- Info below cover -->
+                        <VerticalStackLayout Grid.Row="1" Padding="8,6,8,8" Spacing="3">
+                            <Label Text="{Binding Media.DisplayTitle}"
+                                   Style="{StaticResource Caption1Strong}"
+                                   MaxLines="2"
+                                   LineBreakMode="TailTruncation" />
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="6">
+                                <Label Grid.Column="0"
+                                       Text="{Binding ProgressDisplay}"
+                                       Style="{StaticResource Caption2}"
+                                       TextColor="{StaticResource Gray400}"
+                                       VerticalTextAlignment="Center" />
+                                <!-- +1 button (only on Watching / Rewatching) -->
+                                <Border Grid.Column="1"
+                                        StrokeShape="RoundRectangle 12"
+                                        StrokeThickness="1"
+                                        Stroke="{StaticResource Gray600}"
+                                        BackgroundColor="Transparent"
+                                        Padding="0"
+                                        HeightRequest="24" WidthRequest="24"
+                                        VerticalOptions="Center"
+                                        IsVisible="{Binding CanIncrementProgress}">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer x:DataType="{x:Null}"
+                                            Command="{Binding BindingContext.IncrementProgressCommand, Source={RelativeSource AncestorType={x:Type CollectionView}}}"
+                                            CommandParameter="{Binding .}" />
+                                    </Border.GestureRecognizers>
+                                    <Image WidthRequest="14" HeightRequest="14"
+                                           HorizontalOptions="Center" VerticalOptions="Center">
+                                        <Image.Source>
+                                            <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Add24}"
+                                                             FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                             Color="{Binding Media.DisplayTitle, Converter={StaticResource RainbowAccentConverter}}"
+                                                             Size="14" />
+                                        </Image.Source>
+                                    </Image>
+                                </Border>
+                            </Grid>
+                            <!-- Airing info -->
+                            <Label Text="{Binding AiringInfoDisplay}"
+                                   Style="{StaticResource Caption2}"
+                                   TextColor="{StaticResource RainbowCyan}"
+                                   IsVisible="{Binding HasAiringInfo}" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+            </DataTemplate>
+
+            <!-- ============================================ -->
+            <!-- COMPACT ITEM TEMPLATE (text-only rows)       -->
+            <!-- ============================================ -->
+            <DataTemplate x:Key="CompactItemTemplate" x:DataType="models:MediaListEntry">
+                <Grid ColumnDefinitions="*,Auto,Auto,32"
+                      ColumnSpacing="8"
+                      Padding="12,7"
+                      MinimumHeightRequest="36">
+                    <Label Grid.Column="0"
+                           Text="{Binding Media.DisplayTitle}"
+                           Style="{StaticResource Body2}"
+                           MaxLines="1"
+                           LineBreakMode="TailTruncation"
+                           VerticalTextAlignment="Center" />
+                    <Label Grid.Column="1"
+                           Text="{Binding ProgressDisplay}"
+                           Style="{StaticResource Caption1}"
+                           TextColor="{StaticResource Gray400}"
+                           VerticalTextAlignment="Center" />
+                    <Label Grid.Column="2"
+                           Text="{Binding ScoreDisplay}"
+                           Style="{StaticResource Caption1}"
+                           TextColor="{StaticResource Gray400}"
+                           VerticalTextAlignment="Center" />
+                    <!-- +1 button (only on Watching / Rewatching) -->
+                    <Border Grid.Column="3"
+                            StrokeShape="RoundRectangle 14"
+                            StrokeThickness="1"
+                            Stroke="{StaticResource Gray600}"
+                            BackgroundColor="Transparent"
+                            Padding="0"
+                            HeightRequest="28" WidthRequest="28"
+                            VerticalOptions="Center"
+                            IsVisible="{Binding CanIncrementProgress}">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer x:DataType="{x:Null}"
+                                Command="{Binding BindingContext.IncrementProgressCommand, Source={RelativeSource AncestorType={x:Type CollectionView}}}"
+                                CommandParameter="{Binding .}" />
+                        </Border.GestureRecognizers>
+                        <Image WidthRequest="14" HeightRequest="14"
+                               HorizontalOptions="Center" VerticalOptions="Center">
+                            <Image.Source>
+                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Add24}"
+                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                 Color="{Binding Media.DisplayTitle, Converter={StaticResource RainbowAccentConverter}}"
+                                                 Size="14" />
+                            </Image.Source>
+                        </Image>
+                    </Border>
+                </Grid>
+            </DataTemplate>
+
+            <!-- ============================================ -->
+            <!-- SECTION HEADER TEMPLATE                      -->
+            <!-- ============================================ -->
+            <DataTemplate x:Key="SectionHeaderTemplate" x:DataType="pageModels:MediaListSection">
+                <Border Style="{StaticResource SectionHeaderStyle}"
+                        Background="{Binding Title, Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ToggleCommand}" />
+                    </Border.GestureRecognizers>
+                    <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="10">
+                        <!-- Section icon -->
+                        <Image Grid.Column="0" WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
+                            <Image.Source>
+                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.List24}"
+                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                 Color="{Binding Title, Converter={StaticResource RainbowAccentConverter}}"
+                                                 Size="20" />
+                            </Image.Source>
+                        </Image>
+                        <!-- Section title -->
+                        <Label Grid.Column="1"
+                               Text="{Binding Title}"
+                               Style="{StaticResource Title3}"
+                               TextColor="{Binding Title, Converter={StaticResource RainbowAccentConverter}}"
+                               VerticalTextAlignment="Center" />
+                        <!-- Count badge -->
+                        <Border Grid.Column="2" Style="{StaticResource CountBadgeStyle}">
+                            <Label Text="{Binding DisplayCount}"
+                                   Style="{StaticResource Caption1Strong}"
+                                   TextColor="{Binding Title, Converter={StaticResource RainbowAccentConverter}}" />
+                        </Border>
+                        <!-- Chevron -->
+                        <Image Grid.Column="3" WidthRequest="16" HeightRequest="16" VerticalOptions="Center">
+                            <Image.Source>
+                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.ChevronDown24}"
+                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                 Color="{Binding Title, Converter={StaticResource RainbowAccentConverter}}"
+                                                 Size="16" />
+                            </Image.Source>
+                        </Image>
+                    </Grid>
+                </Border>
+            </DataTemplate>
+
+        </ResourceDictionary>
+    </ContentView.Resources>
+
+    <pullToRefresh:SfPullToRefresh IsRefreshing="{Binding IsBusy}"
+                                   RefreshCommand="{Binding RefreshCommand}">
+        <pullToRefresh:SfPullToRefresh.PullableContent>
+            <Grid RowDefinitions="Auto,Auto,Auto,Auto,*" RowSpacing="8">
+
+                <!-- Row 0: Navigating to details spinner -->
+                <ActivityIndicator Grid.Row="0"
+                                   IsRunning="{Binding IsNavigatingToDetails}"
+                                   IsVisible="{Binding IsNavigatingToDetails}"
+                                   VerticalOptions="Center" HorizontalOptions="Center" Opacity="0.8" />
+
+                <!-- Row 1: Status message -->
+                <Label Grid.Row="1"
+                       Text="{Binding StatusMessage}"
+                       Style="{StaticResource Caption1}"
+                       TextColor="{StaticResource Gray400}"
+                       HorizontalTextAlignment="Center"
+                       IsVisible="{Binding HasStatusMessage}"
+                       Margin="0,4" />
+
+                <!-- Row 2: Expandable search bar -->
+                <Border Grid.Row="2"
+                        Style="{StaticResource CardStyle}"
+                        Padding="4,0"
+                        IsVisible="{Binding IsSearchVisible}">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <Image Grid.Column="0" WidthRequest="18" HeightRequest="18"
+                               VerticalOptions="Center" Margin="8,0,0,0">
+                            <Image.Source>
+                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Search24}"
+                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                 Color="{StaticResource Gray400}"
+                                                 Size="18" />
+                            </Image.Source>
+                        </Image>
+                        <Entry Grid.Column="1"
+                               Placeholder="Search anime..."
+                               Text="{Binding SearchText}"
+                               ClearButtonVisibility="WhileEditing"
+                               FontSize="15"
+                               BackgroundColor="Transparent"
+                               VerticalOptions="Center" />
+                    </Grid>
+                </Border>
+
+                <!-- Row 3: Sort chips (horizontal scroll) -->
+                <ScrollView Grid.Row="3" Orientation="Horizontal"
+                            HorizontalScrollBarVisibility="Never"
+                            Padding="0,2">
+                    <HorizontalStackLayout Spacing="8">
+
+                        <!-- Updated chip -->
+                        <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6"
+                                Stroke="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=LastUpdated}"
+                                Background="{Binding CurrentSortField, Converter={StaticResource SortFieldBackgroundConverter}, ConverterParameter=LastUpdated}">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SetSortCommand}" CommandParameter="LastUpdated" />
+                            </Border.GestureRecognizers>
+                            <HorizontalStackLayout Spacing="4">
+                                <Image WidthRequest="14" HeightRequest="14" VerticalOptions="Center">
+                                    <Image.Source>
+                                        <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Clock24}"
+                                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                         Color="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=LastUpdated}"
+                                                         Size="14" />
+                                    </Image.Source>
+                                </Image>
+                                <Label Text="Updated" Style="{StaticResource ChipLabelStyle}"
+                                       TextColor="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=LastUpdated}" />
+                                <Image WidthRequest="12" HeightRequest="12" VerticalOptions="Center"
+                                       IsVisible="{Binding CurrentSortField, Converter={StaticResource SortFieldActiveConverter}, ConverterParameter=LastUpdated}">
+                                    <Image.Source>
+                                        <FontImageSource Glyph="{Binding SortDirectionGlyph}"
+                                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                         Color="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=LastUpdated}"
+                                                         Size="12" />
+                                    </Image.Source>
+                                </Image>
+                            </HorizontalStackLayout>
+                        </Border>
+
+                        <!-- Title chip -->
+                        <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6"
+                                Stroke="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Title}"
+                                Background="{Binding CurrentSortField, Converter={StaticResource SortFieldBackgroundConverter}, ConverterParameter=Title}">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SetSortCommand}" CommandParameter="Title" />
+                            </Border.GestureRecognizers>
+                            <HorizontalStackLayout Spacing="4">
+                                <Image WidthRequest="14" HeightRequest="14" VerticalOptions="Center">
+                                    <Image.Source>
+                                        <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Book24}"
+                                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                         Color="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Title}"
+                                                         Size="14" />
+                                    </Image.Source>
+                                </Image>
+                                <Label Text="Title" Style="{StaticResource ChipLabelStyle}"
+                                       TextColor="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Title}" />
+                                <Image WidthRequest="12" HeightRequest="12" VerticalOptions="Center"
+                                       IsVisible="{Binding CurrentSortField, Converter={StaticResource SortFieldActiveConverter}, ConverterParameter=Title}">
+                                    <Image.Source>
+                                        <FontImageSource Glyph="{Binding SortDirectionGlyph}"
+                                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                         Color="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Title}"
+                                                         Size="12" />
+                                    </Image.Source>
+                                </Image>
+                            </HorizontalStackLayout>
+                        </Border>
+
+                        <!-- My Score chip -->
+                        <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6"
+                                Stroke="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Score}"
+                                Background="{Binding CurrentSortField, Converter={StaticResource SortFieldBackgroundConverter}, ConverterParameter=Score}">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SetSortCommand}" CommandParameter="Score" />
+                            </Border.GestureRecognizers>
+                            <HorizontalStackLayout Spacing="4">
+                                <Image WidthRequest="14" HeightRequest="14" VerticalOptions="Center">
+                                    <Image.Source>
+                                        <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Star24}"
+                                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                         Color="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Score}"
+                                                         Size="14" />
+                                    </Image.Source>
+                                </Image>
+                                <Label Text="My Score" Style="{StaticResource ChipLabelStyle}"
+                                       TextColor="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Score}" />
+                                <Image WidthRequest="12" HeightRequest="12" VerticalOptions="Center"
+                                       IsVisible="{Binding CurrentSortField, Converter={StaticResource SortFieldActiveConverter}, ConverterParameter=Score}">
+                                    <Image.Source>
+                                        <FontImageSource Glyph="{Binding SortDirectionGlyph}"
+                                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                         Color="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Score}"
+                                                         Size="12" />
+                                    </Image.Source>
+                                </Image>
+                            </HorizontalStackLayout>
+                        </Border>
+
+                        <!-- Avg Score chip -->
+                        <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6"
+                                Stroke="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=AverageScore}"
+                                Background="{Binding CurrentSortField, Converter={StaticResource SortFieldBackgroundConverter}, ConverterParameter=AverageScore}">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SetSortCommand}" CommandParameter="AverageScore" />
+                            </Border.GestureRecognizers>
+                            <HorizontalStackLayout Spacing="4">
+                                <Image WidthRequest="14" HeightRequest="14" VerticalOptions="Center">
+                                    <Image.Source>
+                                        <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.People24}"
+                                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                         Color="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=AverageScore}"
+                                                         Size="14" />
+                                    </Image.Source>
+                                </Image>
+                                <Label Text="Avg Score" Style="{StaticResource ChipLabelStyle}"
+                                       TextColor="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=AverageScore}" />
+                                <Image WidthRequest="12" HeightRequest="12" VerticalOptions="Center"
+                                       IsVisible="{Binding CurrentSortField, Converter={StaticResource SortFieldActiveConverter}, ConverterParameter=AverageScore}">
+                                    <Image.Source>
+                                        <FontImageSource Glyph="{Binding SortDirectionGlyph}"
+                                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                         Color="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=AverageScore}"
+                                                         Size="12" />
+                                    </Image.Source>
+                                </Image>
+                            </HorizontalStackLayout>
+                        </Border>
+
+                    </HorizontalStackLayout>
+                </ScrollView>
+
+                <!-- Row 4: Grouped CollectionView -->
+                <CollectionView Grid.Row="4"
+                                x:Name="AnimeCollectionView"
+                                ItemsSource="{Binding Sections}"
+                                IsGrouped="True"
+                                SelectionMode="Single"
+                                ItemSizingStrategy="MeasureAllItems"
+                                GroupHeaderTemplate="{StaticResource SectionHeaderTemplate}"
+                                ItemTemplate="{StaticResource StandardItemTemplate}">
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout Spacing="8" VerticalOptions="Center" HorizontalOptions="Center" Padding="20">
+                            <Image WidthRequest="48" HeightRequest="48" HorizontalOptions="Center" Opacity="0.5">
+                                <Image.Source>
+                                    <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Search24}"
+                                                     FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                     Color="{StaticResource Gray400}"
+                                                     Size="48" />
+                                </Image.Source>
+                            </Image>
+                            <Label Text="No anime found"
+                                   Style="{StaticResource Caption1}"
+                                   TextColor="{StaticResource Gray400}"
+                                   HorizontalTextAlignment="Center" />
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
+                </CollectionView>
+
+            </Grid>
+        </pullToRefresh:SfPullToRefresh.PullableContent>
+    </pullToRefresh:SfPullToRefresh>
 </ContentView>

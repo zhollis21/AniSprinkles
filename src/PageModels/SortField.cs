@@ -14,6 +14,6 @@ public enum SortField
     /// <summary>Sort by the user's score.</summary>
     Score,
 
-    /// <summary>Sort by episode progress.</summary>
-    Progress
+    /// <summary>Sort by the community average score.</summary>
+    AverageScore
 }

@@ -68,6 +68,41 @@ public class AniListClient : IAniListClient
         return results;
     }
 
+    public async Task<IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)>> GetMyAnimeListGroupedAsync(CancellationToken cancellationToken = default)
+    {
+        var token = await RequireAccessTokenAsync(cancellationToken).ConfigureAwait(false);
+        var viewerId = await GetViewerIdAsync(token, cancellationToken).ConfigureAwait(false);
+
+        var data = await SendAsync<MediaListCollectionData>(
+            "MediaListCollection",
+            MediaListQuery,
+            new { userId = viewerId },
+            token,
+            cancellationToken).ConfigureAwait(false);
+
+        var groups = new List<(string Name, IReadOnlyList<MediaListEntry> Entries)>();
+        foreach (var list in data.MediaListCollection?.Lists ?? [])
+        {
+            var name = list.Name ?? "Unknown";
+            var entries = new List<MediaListEntry>();
+            foreach (var entry in list.Entries ?? [])
+            {
+                var mapped = MapEntry(entry);
+                if (mapped is not null)
+                {
+                    entries.Add(mapped);
+                }
+            }
+
+            if (entries.Count > 0)
+            {
+                groups.Add((name, entries));
+            }
+        }
+
+        return groups;
+    }
+
     private async Task<int> GetViewerIdAsync(string token, CancellationToken cancellationToken)
     {
         // MediaListCollection requires userId; cache viewer id per token to avoid a repeated Viewer round-trip.
@@ -971,6 +1006,7 @@ query MediaListCollection($userId: Int) {
           averageScore
           popularity
           isAdult
+          nextAiringEpisode { episode airingAt timeUntilAiring }
         }
       }
     }
