@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Logging;
 using AniSprinkles.Utilities;
+using IconFont.Maui.FluentIcons;
 
 namespace AniSprinkles.Pages;
 
@@ -34,6 +35,8 @@ public partial class MyAnimePage : ContentPage
         {
             return;
         }
+
+        UpdateViewModeIcon(_viewModel.CurrentViewMode);
 
         // Content survived the flyout switch — just refresh data in background.
         if (LoadedContentHost.Content is not null)
@@ -221,6 +224,22 @@ public partial class MyAnimePage : ContentPage
         {
             UpdateLoadedContentHost();
         }
+        else if (e.PropertyName == nameof(MyAnimePageModel.ViewModeIconGlyph) && _viewModel is not null)
+        {
+            UpdateViewModeIcon(_viewModel.CurrentViewMode);
+        }
+    }
+
+    private void UpdateViewModeIcon(ListViewMode mode)
+    {
+        var glyph = mode switch
+        {
+            ListViewMode.Large => FluentIconsRegular.Grid24,
+            ListViewMode.Compact => FluentIconsRegular.TextBulletListSquare24,
+            _ => FluentIconsRegular.List24,
+        };
+
+        ViewModeIcon.Glyph = glyph;
     }
 
     private void SetViewModel(MyAnimePageModel viewModel)

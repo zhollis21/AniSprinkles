@@ -149,8 +149,7 @@ public class MediaListSection : ObservableCollection<MediaListEntry>
 
         if (!string.IsNullOrWhiteSpace(_filterText))
         {
-            items = items.Where(e =>
-                e.Media?.DisplayTitle?.Contains(_filterText, StringComparison.OrdinalIgnoreCase) == true);
+            items = items.Where(e => MatchesFilter(e, _filterText));
         }
 
         items = _sortField switch
@@ -161,9 +160,9 @@ public class MediaListSection : ObservableCollection<MediaListEntry>
             SortField.Score => _sortAscending
                 ? items.OrderBy(e => e.Score ?? -1)
                 : items.OrderByDescending(e => e.Score ?? -1),
-            SortField.Progress => _sortAscending
-                ? items.OrderBy(e => e.Progress ?? -1)
-                : items.OrderByDescending(e => e.Progress ?? -1),
+            SortField.AverageScore => _sortAscending
+                ? items.OrderBy(e => e.Media?.AverageScore ?? -1)
+                : items.OrderByDescending(e => e.Media?.AverageScore ?? -1),
             // SortField.LastUpdated
             _ => _sortAscending
                 ? items.OrderBy(e => e.UpdatedAt ?? DateTimeOffset.MinValue)
@@ -171,6 +170,19 @@ public class MediaListSection : ObservableCollection<MediaListEntry>
         };
 
         return items.ToList();
+    }
+
+    private static bool MatchesFilter(MediaListEntry entry, string text)
+    {
+        var title = entry.Media?.Title;
+        if (title is null)
+        {
+            return false;
+        }
+
+        return title.English?.Contains(text, StringComparison.OrdinalIgnoreCase) == true
+            || title.Romaji?.Contains(text, StringComparison.OrdinalIgnoreCase) == true
+            || title.Native?.Contains(text, StringComparison.OrdinalIgnoreCase) == true;
     }
 
     private void ReplaceItems(IEnumerable<MediaListEntry> items)

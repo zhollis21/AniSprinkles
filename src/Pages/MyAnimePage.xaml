@@ -9,6 +9,30 @@
              Title="{Binding Title}"
              Shell.TitleColor="{Binding Title, Converter={StaticResource RainbowAccentConverter}}">
 
+    <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="SearchToolbarItem"
+                     Command="{Binding ToggleSearchCommand}"
+                     Order="Primary">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Search24}"
+                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                 Color="{AppThemeBinding Light={StaticResource DarkOnLightBackground}, Dark={StaticResource LightOnDarkBackground}}"
+                                 Size="20" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem x:Name="ViewModeToolbarItem"
+                     Command="{Binding CycleViewModeCommand}"
+                     Order="Primary">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource x:Name="ViewModeIcon"
+                                 Glyph="{x:Static icons:FluentIconsRegular.List24}"
+                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                 Color="{AppThemeBinding Light={StaticResource DarkOnLightBackground}, Dark={StaticResource LightOnDarkBackground}}"
+                                 Size="20" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
     <Grid Padding="{StaticResource LayoutPadding}">
         <!-- Not authenticated state -->
         <VerticalStackLayout Spacing="16"

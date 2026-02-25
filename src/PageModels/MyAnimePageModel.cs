@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using AniSprinkles.Utilities;
+using IconFont.Maui.FluentIcons;
 
 namespace AniSprinkles.PageModels;
 
@@ -72,6 +73,51 @@ public partial class MyAnimePageModel : ObservableObject
 
     [ObservableProperty]
     private bool _isErrorDetailsVisible;
+
+    // ── Sort / Filter / View Mode ────────────────────────────────────
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(SortDirectionGlyph))]
+    private SortField _currentSortField = SortField.LastUpdated;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(SortDirectionGlyph))]
+    private bool _sortAscending;
+
+    /// <summary>
+    /// Icon glyph indicating current sort direction, shown on the active chip.
+    /// </summary>
+    public string SortDirectionGlyph => SortAscending
+        ? FluentIconsRegular.ArrowUp24
+        : FluentIconsRegular.ArrowDown24;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ViewModeIconGlyph))]
+    private ListViewMode _currentViewMode = ListViewMode.Standard;
+
+    [ObservableProperty]
+    private string _searchText = string.Empty;
+
+    [ObservableProperty]
+    private bool _isSearchVisible;
+
+    /// <summary>
+    /// True when all visible sections have zero filtered items and a search/filter is active.
+    /// </summary>
+    public bool HasNoResults => IsSearchVisible
+        && !string.IsNullOrWhiteSpace(SearchText)
+        && Sections.Count > 0
+        && Sections.All(s => s.FilteredCount == 0);
+
+    /// <summary>
+    /// Icon glyph for the view mode toggle button, showing the CURRENT mode icon.
+    /// </summary>
+    public string ViewModeIconGlyph => CurrentViewMode switch
+    {
+        ListViewMode.Large => FluentIconsRegular.Grid24,
+        ListViewMode.Compact => FluentIconsRegular.TextBulletListSquare24,
+        _ => FluentIconsRegular.List24,
+    };
 
     public MyAnimePageModel(IAniListClient aniListClient, IAuthService authService, ErrorReportService errorReportService, ILogger<MyAnimePageModel> logger)
     {
@@ -159,10 +205,15 @@ public partial class MyAnimePageModel : ObservableObject
             }
 
             SentrySdk.AddBreadcrumb("Fetching AniList list", "http", "state");
-            var list = await _aniListClient.GetMyAnimeListAsync();
+            var groups = await _aniListClient.GetMyAnimeListGroupedAsync();
+            // Capture current sort/filter state for off-thread section building.
+            var sortField = CurrentSortField;
+            var sortAsc = SortAscending;
+            var filterText = SearchText;
             // Grouping can be heavy on large lists; build sections off the UI thread.
-            var sections = await Task.Run(() => BuildSections(list, expandedStates));
+            var sections = await Task.Run(() => BuildSections(groups, expandedStates, sortField, sortAsc, filterText));
             Sections = sections;
+            OnPropertyChanged(nameof(HasNoResults));
             _hasLoaded = true;
             _lastSuccessfulLoadUtc = DateTimeOffset.UtcNow;
         }
@@ -191,6 +242,8 @@ public partial class MyAnimePageModel : ObservableObject
         }
     }
 
+    // ── Property change handlers ─────────────────────────────────────
+
     partial void OnStatusMessageChanged(string value)
         => HasStatusMessage = !string.IsNullOrWhiteSpace(value);
 
@@ -209,6 +262,213 @@ public partial class MyAnimePageModel : ObservableObject
     partial void OnSectionsChanged(ObservableCollection<MediaListSection> value)
         => OnPropertyChanged(nameof(IsInitialLoading));
 
+    partial void OnSearchTextChanged(string value)
+    {
+        foreach (var section in Sections)
+        {
+            section.ApplyFilter(value);
+        }
+
+        OnPropertyChanged(nameof(HasNoResults));
+    }
+
+    partial void OnCurrentSortFieldChanged(SortField value)
+        => ApplySortToAllSections();
+
+    partial void OnSortAscendingChanged(bool value)
+        => ApplySortToAllSections();
+
+    // ── Sort / Filter / View Mode commands ───────────────────────────
+
+    [RelayCommand]
+    private void ToggleSearch()
+    {
+        IsSearchVisible = !IsSearchVisible;
+        if (!IsSearchVisible)
+        {
+            SearchText = string.Empty;
+        }
+    }
+
+    [RelayCommand]
+    private void CycleViewMode()
+    {
+        CurrentViewMode = CurrentViewMode switch
+        {
+            ListViewMode.Standard => ListViewMode.Large,
+            ListViewMode.Large => ListViewMode.Compact,
+            _ => ListViewMode.Standard
+        };
+    }
+
+    [RelayCommand]
+    private void SetSort(string? fieldName)
+    {
+        if (fieldName is null || !Enum.TryParse<SortField>(fieldName, out var field))
+        {
+            return;
+        }
+
+        if (field == CurrentSortField)
+        {
+            SortAscending = !SortAscending;
+        }
+        else
+        {
+            CurrentSortField = field;
+            // Title defaults ascending; everything else defaults descending.
+            SortAscending = field is SortField.Title;
+        }
+    }
+
+    private void ApplySortToAllSections()
+    {
+        foreach (var section in Sections)
+        {
+            section.ApplySort(CurrentSortField, SortAscending);
+        }
+    }
+
+    // ── +1 Episode Increment ─────────────────────────────────────────
+
+    [RelayCommand(AllowConcurrentExecutions = false)]
+    private async Task IncrementProgress(MediaListEntry? entry)
+    {
+        if (entry?.Media is null)
+        {
+            return;
+        }
+
+        var newProgress = (entry.Progress ?? 0) + 1;
+        var totalEpisodes = entry.MaxEpisodes;
+
+        if (totalEpisodes.HasValue && newProgress >= totalEpisodes.Value)
+        {
+            newProgress = totalEpisodes.Value;
+            var markCompleted = await Shell.Current.DisplayAlertAsync(
+                "All episodes watched!",
+                $"You've watched all {totalEpisodes} episodes of {entry.Media.DisplayTitle}. Mark as Completed?",
+                "Yes", "No");
+
+            if (markCompleted)
+            {
+                entry.Progress = newProgress;
+                entry.Status = MediaListStatus.Completed;
+
+                var score = await PromptForScoreAsync();
+                if (score.HasValue)
+                {
+                    entry.Score = score.Value;
+                }
+
+                try
+                {
+                    await _aniListClient.SaveMediaListEntryAsync(entry);
+                    await LoadAsync(forceReload: true);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Failed to save completed entry for media {MediaId}", entry.MediaId);
+                    StatusMessage = "Failed to save. Please try again.";
+                    ErrorDetails = _errorReportService.Record(ex, "Increment progress (complete)");
+                }
+
+                return;
+            }
+        }
+
+        entry.Progress = newProgress;
+
+        try
+        {
+            await _aniListClient.SaveMediaListEntryAsync(entry);
+            // Notify UI of the progress change without a full reload.
+            OnPropertyChanged(nameof(Sections));
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to save progress for media {MediaId}", entry.MediaId);
+            StatusMessage = "Failed to save. Please try again.";
+            ErrorDetails = _errorReportService.Record(ex, "Increment progress");
+        }
+    }
+
+    private async Task<double?> PromptForScoreAsync()
+    {
+        return AppSettings.ScoreFormat switch
+        {
+            ScoreFormat.Point5 => await PromptStarRatingAsync(),
+            ScoreFormat.Point3 => await PromptSmileyRatingAsync(),
+            _ => await PromptNumericRatingAsync(),
+        };
+    }
+
+    private static async Task<double?> PromptStarRatingAsync()
+    {
+        var result = await Shell.Current.DisplayActionSheetAsync(
+            "Rate this anime", "Skip", null,
+            "\u2605\u2605\u2605\u2605\u2605", "\u2605\u2605\u2605\u2605\u2606",
+            "\u2605\u2605\u2605\u2606\u2606", "\u2605\u2605\u2606\u2606\u2606",
+            "\u2605\u2606\u2606\u2606\u2606");
+        return result switch
+        {
+            "\u2605\u2605\u2605\u2605\u2605" => 5,
+            "\u2605\u2605\u2605\u2605\u2606" => 4,
+            "\u2605\u2605\u2605\u2606\u2606" => 3,
+            "\u2605\u2605\u2606\u2606\u2606" => 2,
+            "\u2605\u2606\u2606\u2606\u2606" => 1,
+            _ => null
+        };
+    }
+
+    private static async Task<double?> PromptSmileyRatingAsync()
+    {
+        var result = await Shell.Current.DisplayActionSheetAsync(
+            "Rate this anime", "Skip", null,
+            "\U0001F60A Happy", "\U0001F610 Neutral", "\U0001F61E Sad");
+        return result switch
+        {
+            string s when s.StartsWith("\U0001F60A") => 3,
+            string s when s.StartsWith("\U0001F610") => 2,
+            string s when s.StartsWith("\U0001F61E") => 1,
+            _ => null
+        };
+    }
+
+    private static async Task<double?> PromptNumericRatingAsync()
+    {
+        var (max, maxLength) = AppSettings.ScoreFormat switch
+        {
+            ScoreFormat.Point100 => (100.0, 3),
+            ScoreFormat.Point10Decimal => (10.0, 4),
+            _ => (10.0, 2), // Point10
+        };
+
+        var result = await Shell.Current.DisplayPromptAsync(
+            "Rate this anime",
+            $"Enter a score (0\u2013{max})",
+            "OK", "Skip",
+            placeholder: "0",
+            maxLength: maxLength,
+            keyboard: Keyboard.Numeric);
+
+        if (double.TryParse(result, out var score) && score >= 0 && score <= max)
+        {
+            return score;
+        }
+
+        return null;
+    }
+
+    // ── Pull to refresh ──────────────────────────────────────────────
+
+    [RelayCommand]
+    private async Task Refresh()
+    {
+        await LoadAsync(forceReload: true);
+    }
+
+    // ── Auth commands ────────────────────────────────────────────────
 
     [RelayCommand]
     private async Task SignIn()
@@ -257,6 +517,8 @@ public partial class MyAnimePageModel : ObservableObject
         AppSettings.Clear();
         await LoadAsync(forceReload: true);
     }
+
+    // ── Navigation ───────────────────────────────────────────────────
 
     [RelayCommand]
     private async Task OpenDetails(MediaListEntry? entry)
@@ -308,11 +570,48 @@ public partial class MyAnimePageModel : ObservableObject
         }
     }
 
+    // ── Section building ─────────────────────────────────────────────
+
     private static ObservableCollection<MediaListSection> BuildSections(
-        IReadOnlyList<MediaListEntry> entries,
-        IReadOnlyDictionary<string, bool> expandedStates)
+        IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)> groups,
+        IReadOnlyDictionary<string, bool> expandedStates,
+        SortField sortField,
+        bool sortAscending,
+        string filterText)
     {
-        throw new NotImplementedException();
+        var sections = new ObservableCollection<MediaListSection>();
+
+        foreach (var group in groups)
+        {
+            IEnumerable<MediaListEntry> entries = group.Entries;
+
+            // Filter adult content if the user has it disabled.
+            if (!AppSettings.DisplayAdultContent)
+            {
+                entries = entries.Where(e => e.Media?.IsAdult != true);
+            }
+
+            var list = entries.ToList();
+            if (list.Count == 0)
+            {
+                continue;
+            }
+
+            // First section defaults to expanded; others default to collapsed.
+            var defaultExpanded = sections.Count == 0;
+            var section = CreateSection(group.Name, defaultExpanded, expandedStates);
+            section.AddItems(list);
+            section.ApplySort(sortField, sortAscending);
+
+            if (!string.IsNullOrWhiteSpace(filterText))
+            {
+                section.ApplyFilter(filterText);
+            }
+
+            sections.Add(section);
+        }
+
+        return sections;
     }
 
     private static MediaListSection CreateSection(
