@@ -1,7 +1,7 @@
-# Builds signed Android AAB for AniSprinkles
+# Builds signed Android AAB for AniSprinkles and deploys to Google Play
 # Triggers: Release publication or manual dispatch
-# Outputs: Signed AAB, ProGuard mapping, native debug symbols, checksums
-name: Android Release Build
+# Pipeline: Build signed AAB -> Upload to Play Console (alpha/closed testing)
+name: Android Release Build & Deploy
 
 on:
   release:
@@ -23,6 +23,10 @@ jobs:
     name: Build Signed AAB
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    outputs:
+      version_name: ${{ steps.version.outputs.VERSION_NAME }}
+      version_code: ${{ steps.version.outputs.VERSION_CODE }}
+      artifact_version: ${{ steps.version.outputs.ARTIFACT_VERSION }}
 
     # Prevent concurrent builds to ensure unique version codes per release
     # Builds queue instead of running in parallel
@@ -88,6 +92,12 @@ jobs:
           echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_ENV
           echo "VERSION_CODE=$VERSION_CODE" >> $GITHUB_ENV
           echo "ARTIFACT_VERSION=$ARTIFACT_VERSION" >> $GITHUB_ENV
+
+          # Set step outputs for cross-job access
+          echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_OUTPUT
+          echo "VERSION_CODE=$VERSION_CODE" >> $GITHUB_OUTPUT
+          echo "ARTIFACT_VERSION=$ARTIFACT_VERSION" >> $GITHUB_OUTPUT
+
           echo "::notice::Building version $VERSION_NAME (code: $VERSION_CODE)"
 
       - name: Decode Keystore
@@ -253,3 +263,119 @@ jobs:
         run: |
           rm -f ${{ github.workspace }}/keystore.jks
           echo "Keystore cleaned up"
+
+  deploy:
+    name: Deploy to Play Console (Alpha)
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Download Signed AAB
+        uses: actions/download-artifact@v4
+        with:
+          name: anisprinkles-${{ needs.build.outputs.artifact_version }}-${{ needs.build.outputs.version_code }}
+          path: artifacts/aab
+
+      - name: Download ProGuard Mapping
+        uses: actions/download-artifact@v4
+        with:
+          name: mapping-${{ needs.build.outputs.version_code }}
+          path: artifacts/mapping
+        continue-on-error: true
+
+      - name: Download Native Debug Symbols
+        uses: actions/download-artifact@v4
+        with:
+          name: native-symbols-${{ needs.build.outputs.version_code }}
+          path: artifacts/symbols
+        continue-on-error: true
+
+      - name: Locate Build Artifacts
+        id: artifacts
+        run: |
+          AAB_FILE=$(find artifacts/aab -name "*-Signed.aab" -type f | head -1)
+          if [ -z "$AAB_FILE" ]; then
+            echo "::error::No signed AAB found in downloaded artifacts"
+            exit 1
+          fi
+          echo "AAB_FILE=$AAB_FILE" >> $GITHUB_OUTPUT
+          echo "::notice::AAB: $AAB_FILE"
+
+          MAPPING_FILE=$(find artifacts/mapping -name "mapping.txt" -type f 2>/dev/null | head -1)
+          if [ -n "$MAPPING_FILE" ]; then
+            echo "MAPPING_FILE=$MAPPING_FILE" >> $GITHUB_OUTPUT
+            echo "::notice::Mapping: $MAPPING_FILE"
+          else
+            echo "::warning::No ProGuard mapping found, skipping"
+          fi
+
+          SYMBOLS_FILE=$(find artifacts/symbols -name "native-symbols.zip" -type f 2>/dev/null | head -1)
+          if [ -n "$SYMBOLS_FILE" ]; then
+            echo "SYMBOLS_FILE=$SYMBOLS_FILE" >> $GITHUB_OUTPUT
+            echo "::notice::Symbols: $SYMBOLS_FILE"
+          else
+            echo "::warning::No native debug symbols found, skipping"
+          fi
+
+      - name: Prepare Release Notes
+        env:
+          RELEASE_BODY: ${{ github.event.release.body }}
+        run: |
+          mkdir -p distribution/whatsnew
+
+          if [[ "${{ github.event_name }}" == "release" && -n "$RELEASE_BODY" ]]; then
+            # Use the GitHub Release body as release notes
+            echo "$RELEASE_BODY" > distribution/whatsnew/whatsnew-en-US
+          else
+            # Default message for manual workflow dispatch
+            echo "Version ${{ needs.build.outputs.version_name }}" > distribution/whatsnew/whatsnew-en-US
+          fi
+
+          # Play Console limits release notes to 500 characters
+          NOTES_LENGTH=$(wc -c < distribution/whatsnew/whatsnew-en-US)
+          if [ "$NOTES_LENGTH" -gt 500 ]; then
+            truncate -s 497 distribution/whatsnew/whatsnew-en-US
+            echo "..." >> distribution/whatsnew/whatsnew-en-US
+            echo "::warning::Release notes truncated to 500 characters"
+          fi
+
+          echo "::notice::Release notes (${NOTES_LENGTH} chars):"
+          cat distribution/whatsnew/whatsnew-en-US
+
+      - name: Upload to Google Play (Alpha Track)
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_CLOUD_SERVICE_ACCOUNT_KEY }}
+          packageName: com.RainbowSprinkles.AniSprinkles
+          releaseFiles: ${{ steps.artifacts.outputs.AAB_FILE }}
+          track: alpha
+          status: completed
+          releaseName: ${{ needs.build.outputs.version_name }} (${{ needs.build.outputs.version_code }})
+          whatsNewDirectory: distribution/whatsnew
+          mappingFile: ${{ steps.artifacts.outputs.MAPPING_FILE }}
+          debugSymbols: ${{ steps.artifacts.outputs.SYMBOLS_FILE }}
+
+      - name: Generate Deploy Summary
+        if: success()
+        run: |
+          echo "## ✅ Deployed to Play Console" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Version:** ${{ needs.build.outputs.version_name }} (code: ${{ needs.build.outputs.version_code }})" >> $GITHUB_STEP_SUMMARY
+          echo "**Track:** Alpha (Closed Testing)" >> $GITHUB_STEP_SUMMARY
+          echo "**Status:** Completed" >> $GITHUB_STEP_SUMMARY
+          echo "**Deploy Time:** $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+
+      - name: Generate Deploy Failure Summary
+        if: failure()
+        run: |
+          echo "## ❌ Play Console Deploy Failed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Version:** ${{ needs.build.outputs.version_name }} (code: ${{ needs.build.outputs.version_code }})" >> $GITHUB_STEP_SUMMARY
+          echo "**Track:** Alpha (Closed Testing)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🔍 Common Issues" >> $GITHUB_STEP_SUMMARY
+          echo "- Service account missing Play Console permissions" >> $GITHUB_STEP_SUMMARY
+          echo "- First release must be uploaded manually via Play Console" >> $GITHUB_STEP_SUMMARY
+          echo "- Version code already exists (must always increase)" >> $GITHUB_STEP_SUMMARY
+          echo "- Open draft edit in Play Console causing conflict" >> $GITHUB_STEP_SUMMARY
