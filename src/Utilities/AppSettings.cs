@@ -12,10 +12,12 @@ public static class AppSettings
     private const string ScoreFormatKey = "score_format";
     private const string DisplayAdultContentKey = "display_adult_content";
     private const string HasSyncedKey = "has_synced_prefs";
+    private const string AnimeSectionOrderKey = "anime_section_order";
 
     public static UserTitleLanguage TitleLanguage { get; set; } = UserTitleLanguage.Romaji;
     public static ScoreFormat ScoreFormat { get; set; } = ScoreFormat.Point100;
     public static bool DisplayAdultContent { get; set; }
+    public static List<string> AnimeSectionOrder { get; set; } = [];
 
     /// <summary>True once preferences have been synced from an AniList Viewer response.</summary>
     public static bool HasSynced { get; private set; }
@@ -37,6 +39,11 @@ public static class AppSettings
         }
 
         DisplayAdultContent = Preferences.Default.Get(DisplayAdultContentKey, false);
+
+        var sectionOrderCsv = Preferences.Default.Get(AnimeSectionOrderKey, string.Empty);
+        AnimeSectionOrder = string.IsNullOrEmpty(sectionOrderCsv)
+            ? []
+            : sectionOrderCsv.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList();
     }
 
     public static void Save()
@@ -46,6 +53,7 @@ public static class AppSettings
         Preferences.Default.Set(TitleLanguageKey, TitleLanguage.ToString());
         Preferences.Default.Set(ScoreFormatKey, ScoreFormat.ToString());
         Preferences.Default.Set(DisplayAdultContentKey, DisplayAdultContent);
+        Preferences.Default.Set(AnimeSectionOrderKey, string.Join(",", AnimeSectionOrder));
     }
 
     public static void Clear()
@@ -57,6 +65,8 @@ public static class AppSettings
         Preferences.Default.Remove(TitleLanguageKey);
         Preferences.Default.Remove(ScoreFormatKey);
         Preferences.Default.Remove(DisplayAdultContentKey);
+        AnimeSectionOrder = [];
         Preferences.Default.Remove(HasSyncedKey);
+        Preferences.Default.Remove(AnimeSectionOrderKey);
     }
 }

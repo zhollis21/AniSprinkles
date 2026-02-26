@@ -218,9 +218,15 @@ public partial class MyAnimePage : ContentPage
 
     private void OnViewModelPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(MyAnimePageModel.IsAuthenticated)
+        // Create the loaded content view when authentication succeeds OR when
+        // sections are populated. Gating on Sections.Count > 0 prevents premature
+        // creation during LoadAsync (which sets IsAuthenticated before fetching data),
+        // avoiding the triple-spinner problem (center spinner + SfPullToRefresh + EmptyView).
+        if ((e.PropertyName == nameof(MyAnimePageModel.IsAuthenticated)
+                || e.PropertyName == nameof(MyAnimePageModel.Sections))
             && _hasAppeared
-            && _viewModel?.IsAuthenticated == true)
+            && _viewModel?.IsAuthenticated == true
+            && _viewModel.Sections.Count > 0)
         {
             UpdateLoadedContentHost();
         }

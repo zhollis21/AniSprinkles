@@ -38,9 +38,26 @@
                                 <Label Text="{Binding ProgressDisplay}"
                                        Style="{StaticResource Caption1}"
                                        TextColor="{StaticResource Gray400}" />
-                                <Label Text="{Binding ScoreDisplay}"
-                                       Style="{StaticResource Caption1}"
-                                       TextColor="{StaticResource Gray400}" />
+                                <HorizontalStackLayout Spacing="3" IsVisible="{Binding HasScore}">
+                                    <Image WidthRequest="12" HeightRequest="12" VerticalOptions="Center"
+                                           IsVisible="{Binding IsNumericScoreFormat}">
+                                        <Image.Source>
+                                            <FontImageSource Glyph="{x:Static icons:FluentIconsFilled.Star24}"
+                                                             FontFamily="{x:Static icons:FluentIconsFilled.FontFamily}"
+                                                             Color="#FFD700"
+                                                             Size="12" />
+                                        </Image.Source>
+                                    </Image>
+                                    <Label Text="{Binding ScoreDisplay}"
+                                           Style="{StaticResource Caption1}"
+                                           TextColor="{StaticResource Gray400}">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label" Binding="{Binding IsNumericScoreFormat}" Value="True">
+                                                <Setter Property="TextColor" Value="#FFD700" />
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+                                </HorizontalStackLayout>
                             </HorizontalStackLayout>
                             <!-- Airing info -->
                             <Label Text="{Binding AiringInfoDisplay}"
@@ -103,10 +120,28 @@
                                 Padding="6,3"
                                 HorizontalOptions="End"
                                 VerticalOptions="End"
-                                Margin="0,0,6,6">
-                            <Label Text="{Binding ScoreDisplay}"
-                                   Style="{StaticResource Caption2}"
-                                   TextColor="White" />
+                                Margin="0,0,6,6"
+                                IsVisible="{Binding HasScore}">
+                            <HorizontalStackLayout Spacing="3">
+                                <Image WidthRequest="10" HeightRequest="10" VerticalOptions="Center"
+                                       IsVisible="{Binding IsNumericScoreFormat}">
+                                    <Image.Source>
+                                        <FontImageSource Glyph="{x:Static icons:FluentIconsFilled.Star24}"
+                                                         FontFamily="{x:Static icons:FluentIconsFilled.FontFamily}"
+                                                         Color="#FFD700"
+                                                         Size="10" />
+                                    </Image.Source>
+                                </Image>
+                                <Label Text="{Binding ScoreDisplay}"
+                                       Style="{StaticResource Caption2}"
+                                       TextColor="White">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label" Binding="{Binding IsNumericScoreFormat}" Value="True">
+                                            <Setter Property="TextColor" Value="#FFD700" />
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                            </HorizontalStackLayout>
                         </Border>
 
                         <!-- Info below cover -->
@@ -176,11 +211,28 @@
                            Style="{StaticResource Caption1}"
                            TextColor="{StaticResource Gray400}"
                            VerticalTextAlignment="Center" />
-                    <Label Grid.Column="2"
-                           Text="{Binding ScoreDisplay}"
-                           Style="{StaticResource Caption1}"
-                           TextColor="{StaticResource Gray400}"
-                           VerticalTextAlignment="Center" />
+                    <HorizontalStackLayout Grid.Column="2" Spacing="3" VerticalOptions="Center"
+                                           IsVisible="{Binding HasScore}">
+                        <Image WidthRequest="12" HeightRequest="12" VerticalOptions="Center"
+                               IsVisible="{Binding IsNumericScoreFormat}">
+                            <Image.Source>
+                                <FontImageSource Glyph="{x:Static icons:FluentIconsFilled.Star24}"
+                                                 FontFamily="{x:Static icons:FluentIconsFilled.FontFamily}"
+                                                 Color="#FFD700"
+                                                 Size="12" />
+                            </Image.Source>
+                        </Image>
+                        <Label Text="{Binding ScoreDisplay}"
+                               Style="{StaticResource Caption1}"
+                               TextColor="{StaticResource Gray400}"
+                               VerticalTextAlignment="Center">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label" Binding="{Binding IsNumericScoreFormat}" Value="True">
+                                    <Setter Property="TextColor" Value="#FFD700" />
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                    </HorizontalStackLayout>
                     <!-- +1 button (only on Watching / Rewatching) -->
                     <Border Grid.Column="3"
                             StrokeShape="RoundRectangle 14"
@@ -240,8 +292,13 @@
                                    Style="{StaticResource Caption1Strong}"
                                    TextColor="{Binding Title, Converter={StaticResource RainbowAccentConverter}}" />
                         </Border>
-                        <!-- Chevron -->
+                        <!-- Chevron (down when collapsed, up when expanded) -->
                         <Image Grid.Column="3" WidthRequest="16" HeightRequest="16" VerticalOptions="Center">
+                            <Image.Triggers>
+                                <DataTrigger TargetType="Image" Binding="{Binding IsExpanded}" Value="True">
+                                    <Setter Property="Rotation" Value="180" />
+                                </DataTrigger>
+                            </Image.Triggers>
                             <Image.Source>
                                 <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.ChevronDown24}"
                                                  FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
@@ -439,8 +496,16 @@
                                 ItemSizingStrategy="MeasureAllItems"
                                 GroupHeaderTemplate="{StaticResource SectionHeaderTemplate}"
                                 ItemTemplate="{StaticResource StandardItemTemplate}">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="6" />
+                    </CollectionView.ItemsLayout>
                     <CollectionView.EmptyView>
                         <VerticalStackLayout Spacing="8" VerticalOptions="Center" HorizontalOptions="Center" Padding="20">
+                            <VerticalStackLayout.Triggers>
+                                <DataTrigger TargetType="VerticalStackLayout" Binding="{Binding IsBusy}" Value="True">
+                                    <Setter Property="IsVisible" Value="False" />
+                                </DataTrigger>
+                            </VerticalStackLayout.Triggers>
                             <Image WidthRequest="48" HeightRequest="48" HorizontalOptions="Center" Opacity="0.5">
                                 <Image.Source>
                                     <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Search24}"

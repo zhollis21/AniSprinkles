@@ -1,15 +1,35 @@
 using AniSprinkles.Utilities;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace AniSprinkles.Models;
 
-public class MediaListEntry
+public partial class MediaListEntry : ObservableObject
 {
     public int Id { get; set; }
     public int MediaId { get; set; }
     public Media? Media { get; set; }
-    public MediaListStatus? Status { get; set; }
-    public int? Progress { get; set; }
-    public double? Score { get; set; }
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(StatusDisplay))]
+    [NotifyPropertyChangedFor(nameof(CanIncrementProgress))]
+    [NotifyPropertyChangedFor(nameof(MetadataDisplay))]
+    private MediaListStatus? _status;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ProgressDisplay))]
+    [NotifyPropertyChangedFor(nameof(CanIncrementProgress))]
+    [NotifyPropertyChangedFor(nameof(MetadataDisplay))]
+    [NotifyPropertyChangedFor(nameof(EpisodesBehind))]
+    [NotifyPropertyChangedFor(nameof(AiringInfoDisplay))]
+    [NotifyPropertyChangedFor(nameof(HasAiringInfo))]
+    private int? _progress;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ScoreDisplay))]
+    [NotifyPropertyChangedFor(nameof(HasScore))]
+    [NotifyPropertyChangedFor(nameof(MetadataDisplay))]
+    private double? _score;
+
     public int? Repeat { get; set; }
     public string? Notes { get; set; }
     public bool? Private { get; set; }
@@ -32,7 +52,10 @@ public class MediaListEntry
         }
     }
 
-    public string ScoreDisplay => Score is null ? "-" : AppSettings.ScoreFormat switch
+    /// <summary>True when the user has assigned a non-zero score.</summary>
+    public bool HasScore => Score is not null and not 0;
+
+    public string ScoreDisplay => Score is null or 0 ? string.Empty : AppSettings.ScoreFormat switch
     {
         ScoreFormat.Point100 => Score.Value.ToString("0"),
         ScoreFormat.Point10Decimal => Score.Value.ToString("0.0"),
@@ -41,6 +64,10 @@ public class MediaListEntry
         ScoreFormat.Point3 => Score.Value switch { >= 3 => "\U0001F60A", >= 2 => "\U0001F610", _ => "\U0001F61E" },
         _ => Score.Value.ToString("0.0"),
     };
+
+    /// <summary>True when the score format uses numeric values (not stars or smileys).</summary>
+    public bool IsNumericScoreFormat => AppSettings.ScoreFormat is ScoreFormat.Point100
+        or ScoreFormat.Point10Decimal or ScoreFormat.Point10;
 
     /// <summary>
     /// Maximum episode count for +1 cap logic.
@@ -132,7 +159,7 @@ public class MediaListEntry
         {
             var parts = new List<string> { ProgressDisplay };
 
-            if (Score is not null)
+            if (HasScore)
             {
                 parts.Add(ScoreDisplay);
             }
@@ -148,7 +175,10 @@ public class MediaListEntry
     }
 
     /// <summary>
-    /// True when the +1 increment button should be shown (only for Watching and Rewatching lists).
+    /// True when the +1 increment button should be shown.
+    /// Visible for Watching/Rewatching entries that haven't yet reached the max episode count.
     /// </summary>
-    public bool CanIncrementProgress => Status is MediaListStatus.Current or MediaListStatus.Repeating;
+    public bool CanIncrementProgress =>
+        Status is MediaListStatus.Current or MediaListStatus.Repeating
+        && (MaxEpisodes is null || Progress < MaxEpisodes);
 }

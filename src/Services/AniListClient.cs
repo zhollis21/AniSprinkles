@@ -578,6 +578,7 @@ public class AniListClient : IAniListClient
             DonatorBadge = dto.DonatorBadge,
             ScoreFormat = ParseScoreFormat(dto.MediaListOptions?.ScoreFormat),
             RowOrder = dto.MediaListOptions?.RowOrder,
+            AnimeSectionOrder = dto.MediaListOptions?.AnimeList?.SectionOrder ?? [],
             Options = new UserOptions
             {
                 TitleLanguage = ParseTitleLanguage(dto.Options?.TitleLanguage),
@@ -818,6 +819,12 @@ public class AniListClient : IAniListClient
     {
         public string? ScoreFormat { get; set; }
         public string? RowOrder { get; set; }
+        public MediaListTypeOptionsDto? AnimeList { get; set; }
+    }
+
+    private sealed class MediaListTypeOptionsDto
+    {
+        public List<string>? SectionOrder { get; set; }
     }
 
     private sealed class UserStatisticTypesDto
@@ -1198,6 +1205,7 @@ query ViewerFull {
     mediaListOptions {
       scoreFormat
       rowOrder
+      animeList { sectionOrder }
     }
     statistics {
       anime {

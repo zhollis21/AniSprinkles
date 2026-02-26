@@ -22,7 +22,7 @@ public sealed class SortFieldBackgroundConverter : IValueConverter
             {
                 if (RainbowConverter.Convert(name, targetType, null, culture) is Color c)
                 {
-                    return new SolidColorBrush(c.WithAlpha(0.10f));
+                    return new SolidColorBrush(c.WithAlpha(0.05f));
                 }
             }
         }
