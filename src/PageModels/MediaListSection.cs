@@ -28,6 +28,11 @@ public class MediaListSection : ObservableCollection<MediaListEntry>
     public int TotalCount => _allItems.Count;
 
     /// <summary>
+    /// Checks whether the entry exists in this section's backing store (not just visible items).
+    /// </summary>
+    public bool ContainsEntry(MediaListEntry entry) => _allItems.Contains(entry);
+
+    /// <summary>
     /// Number of items matching the current filter. Equals <see cref="TotalCount"/> when no filter is active.
     /// </summary>
     public int FilteredCount
@@ -183,6 +188,23 @@ public class MediaListSection : ObservableCollection<MediaListEntry>
         return title.English?.Contains(text, StringComparison.OrdinalIgnoreCase) == true
             || title.Romaji?.Contains(text, StringComparison.OrdinalIgnoreCase) == true
             || title.Native?.Contains(text, StringComparison.OrdinalIgnoreCase) == true;
+    }
+
+    /// <summary>
+    /// Forces re-render of all visible items by rebuilding from <c>_allItems</c>.
+    /// Use after mutating an entry's properties in-place (since entries don't
+    /// implement INotifyPropertyChanged). A same-reference Replace via
+    /// <c>this[index] = entry</c> can be optimised away by MAUI, so a full
+    /// Reset is the reliable approach.
+    /// </summary>
+    public void RefreshVisibleItems()
+    {
+        if (IsExpanded)
+        {
+            var items = GetSortedFilteredItems();
+            FilteredCount = items.Count;
+            ReplaceItems(items);
+        }
     }
 
     private void ReplaceItems(IEnumerable<MediaListEntry> items)

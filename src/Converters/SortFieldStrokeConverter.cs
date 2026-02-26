@@ -23,8 +23,8 @@ public sealed class SortFieldStrokeConverter : IValueConverter
             }
         }
 
-        // Not selected: use Gray600
-        if (Application.Current?.Resources.TryGetValue("Gray600", out var gray) == true && gray is Color c)
+        // Not selected: use Gray400 for readable contrast on dark backgrounds
+        if (Application.Current?.Resources.TryGetValue("Gray400", out var gray) == true && gray is Color c)
         {
             return c;
         }

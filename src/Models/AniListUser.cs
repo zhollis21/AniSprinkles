@@ -14,5 +14,6 @@ public class AniListUser
     public UserOptions Options { get; set; } = new();
     public ScoreFormat ScoreFormat { get; set; }
     public string? RowOrder { get; set; }
+    public List<string> AnimeSectionOrder { get; set; } = [];
     public UserAnimeStatistics AnimeStatistics { get; set; } = new();
 }

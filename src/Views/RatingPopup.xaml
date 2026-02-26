@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               xmlns:icons="clr-namespace:IconFont.Maui.FluentIcons;assembly=IconFont.Maui.FluentIcons"
+               xmlns:converters="clr-namespace:AniSprinkles.Converters"
+               x:Class="AniSprinkles.Views.RatingPopup"
+               x:TypeArguments="x:Object"
+               BackgroundColor="Transparent">
+
+    <toolkit:Popup.Resources>
+        <converters:RainbowAccentConverter x:Key="RainbowAccentConverter" />
+        <converters:SortFieldOpacityConverter x:Key="SortFieldOpacityConverter" />
+    </toolkit:Popup.Resources>
+
+    <Border StrokeShape="RoundRectangle 20"
+            StrokeThickness="0"
+            Padding="24,20,24,20"
+            WidthRequest="320"
+            Background="{AppThemeBinding Light={StaticResource LightSecondaryBackground},
+                                         Dark={StaticResource DarkSecondaryBackground}}">
+        <VerticalStackLayout Spacing="16">
+
+            <!-- Anime title -->
+            <Label x:Name="TitleLabel"
+                   Text="Rate this anime"
+                   Style="{StaticResource Title3}"
+                   HorizontalTextAlignment="Center"
+                   MaxLines="2"
+                   LineBreakMode="TailTruncation" />
+
+            <!-- Divider -->
+            <BoxView HeightRequest="1" Color="{StaticResource Gray600}" Opacity="0.3" />
+
+            <!-- Score header (star icon + label, matching details page) -->
+            <HorizontalStackLayout Spacing="6">
+                <Image WidthRequest="16" HeightRequest="16" VerticalOptions="Center">
+                    <Image.Source>
+                        <FontImageSource Glyph="{x:Static icons:FluentIconsFilled.Star24}"
+                                         FontFamily="{x:Static icons:FluentIconsFilled.FontFamily}"
+                                         Color="#FFD700"
+                                         Size="16" />
+                    </Image.Source>
+                </Image>
+                <Label Text="Score" Style="{StaticResource Caption1Strong}"
+                       FontAttributes="Bold"
+                       FontSize="16"
+                       TextColor="#FFD700" />
+            </HorizontalStackLayout>
+
+            <!-- ── Stars (Point5) ── -->
+            <HorizontalStackLayout x:Name="StarsLayout" Spacing="12" HorizontalOptions="Center"
+                                   IsVisible="False">
+                <Image WidthRequest="40" HeightRequest="40">
+                    <Image.GestureRecognizers><TapGestureRecognizer Tapped="OnStarTapped" CommandParameter="1" /></Image.GestureRecognizers>
+                    <Image.Source>
+                        <FontImageSource x:Name="Star1Icon"
+                                         Glyph="{x:Static icons:FluentIconsRegular.Star24}"
+                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                         Color="{StaticResource Gray500}" Size="40" />
+                    </Image.Source>
+                </Image>
+                <Image WidthRequest="40" HeightRequest="40">
+                    <Image.GestureRecognizers><TapGestureRecognizer Tapped="OnStarTapped" CommandParameter="2" /></Image.GestureRecognizers>
+                    <Image.Source>
+                        <FontImageSource x:Name="Star2Icon"
+                                         Glyph="{x:Static icons:FluentIconsRegular.Star24}"
+                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                         Color="{StaticResource Gray500}" Size="40" />
+                    </Image.Source>
+                </Image>
+                <Image WidthRequest="40" HeightRequest="40">
+                    <Image.GestureRecognizers><TapGestureRecognizer Tapped="OnStarTapped" CommandParameter="3" /></Image.GestureRecognizers>
+                    <Image.Source>
+                        <FontImageSource x:Name="Star3Icon"
+                                         Glyph="{x:Static icons:FluentIconsRegular.Star24}"
+                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                         Color="{StaticResource Gray500}" Size="40" />
+                    </Image.Source>
+                </Image>
+                <Image WidthRequest="40" HeightRequest="40">
+                    <Image.GestureRecognizers><TapGestureRecognizer Tapped="OnStarTapped" CommandParameter="4" /></Image.GestureRecognizers>
+                    <Image.Source>
+                        <FontImageSource x:Name="Star4Icon"
+                                         Glyph="{x:Static icons:FluentIconsRegular.Star24}"
+                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                         Color="{StaticResource Gray500}" Size="40" />
+                    </Image.Source>
+                </Image>
+                <Image WidthRequest="40" HeightRequest="40">
+                    <Image.GestureRecognizers><TapGestureRecognizer Tapped="OnStarTapped" CommandParameter="5" /></Image.GestureRecognizers>
+                    <Image.Source>
+                        <FontImageSource x:Name="Star5Icon"
+                                         Glyph="{x:Static icons:FluentIconsRegular.Star24}"
+                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                         Color="{StaticResource Gray500}" Size="40" />
+                    </Image.Source>
+                </Image>
+            </HorizontalStackLayout>
+
+            <!-- ── Smileys (Point3) ── -->
+            <HorizontalStackLayout x:Name="SmileysLayout" Spacing="24" HorizontalOptions="Center"
+                                   IsVisible="False">
+                <Image WidthRequest="44" HeightRequest="44" x:Name="SmileyHappy" Opacity="0.4">
+                    <Image.GestureRecognizers><TapGestureRecognizer Tapped="OnSmileyTapped" CommandParameter="3" /></Image.GestureRecognizers>
+                    <Image.Source>
+                        <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.EmojiLaugh24}"
+                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                         Color="{StaticResource RainbowGreen}" Size="44" />
+                    </Image.Source>
+                </Image>
+                <Image WidthRequest="44" HeightRequest="44" x:Name="SmileyNeutral" Opacity="0.4">
+                    <Image.GestureRecognizers><TapGestureRecognizer Tapped="OnSmileyTapped" CommandParameter="2" /></Image.GestureRecognizers>
+                    <Image.Source>
+                        <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.EmojiMeh24}"
+                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                         Color="{StaticResource RainbowYellow}" Size="44" />
+                    </Image.Source>
+                </Image>
+                <Image WidthRequest="44" HeightRequest="44" x:Name="SmileySad" Opacity="0.4">
+                    <Image.GestureRecognizers><TapGestureRecognizer Tapped="OnSmileyTapped" CommandParameter="1" /></Image.GestureRecognizers>
+                    <Image.Source>
+                        <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.EmojiSad24}"
+                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                         Color="{StaticResource RainbowRed}" Size="44" />
+                    </Image.Source>
+                </Image>
+            </HorizontalStackLayout>
+
+            <!-- ── Numeric slider (Point100, Point10, Point10Decimal) ── -->
+            <VerticalStackLayout x:Name="SliderLayout" Spacing="4" IsVisible="False">
+                <Label x:Name="SliderLabel"
+                       Text="0 / 10"
+                       Style="{StaticResource Title2}" HorizontalTextAlignment="Center"
+                       TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='MyScore'}" />
+                <Slider x:Name="ScoreSlider" Minimum="1" Maximum="10" Value="1"
+                        ValueChanged="OnSliderValueChanged"
+                        MinimumTrackColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='MyScore'}"
+                        ThumbColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='MyScore'}" />
+            </VerticalStackLayout>
+
+            <!-- Action buttons -->
+            <Grid ColumnDefinitions="*,10,*">
+                <Button Grid.Column="0" Text="Skip"
+                        BackgroundColor="Transparent"
+                        TextColor="{StaticResource RainbowRed}"
+                        BorderColor="{StaticResource RainbowRed}"
+                        Opacity="0.85"
+                        BorderWidth="1"
+                        CornerRadius="8"
+                        HeightRequest="24"
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        Padding="0"
+                        Margin="10,20,10,10"
+                        ContentLayout="Left,4"
+                        Clicked="OnSkipClicked">
+                    <Button.ImageSource>
+                        <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Dismiss24}"
+                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                         Color="{StaticResource RainbowRed}" Size="18" />
+                    </Button.ImageSource>
+                </Button>
+                <Button Grid.Column="2" Text="Save" x:Name="SaveButton"
+                        BackgroundColor="Transparent"
+                        TextColor="{StaticResource RainbowGreen}"
+                        BorderColor="{StaticResource RainbowGreen}"
+                        CornerRadius="8"
+                        HeightRequest="24"
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        Padding="0"
+                        Margin="10,20,10,10"
+                        ContentLayout="Left,4"
+                        Clicked="OnSaveClicked">
+                    <Button.ImageSource>
+                        <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Checkmark24}"
+                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                         Color="{StaticResource RainbowGreen}" Size="18" />
+                    </Button.ImageSource>
+                </Button>
+            </Grid>
+
+        </VerticalStackLayout>
+    </Border>
+
+</toolkit:Popup>

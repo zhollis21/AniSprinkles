@@ -1,5 +1,8 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.Extensions;
+using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
@@ -11,6 +14,7 @@ namespace AniSprinkles.PageModels;
 public partial class MyAnimePageModel : ObservableObject
 {
     private static readonly TimeSpan ListRefreshInterval = TimeSpan.FromMinutes(5);
+    private static readonly TimeSpan IncrementDebounceDelay = TimeSpan.FromMilliseconds(1500);
     private const string DetailsRoute = "media-details";
 
     private readonly IAniListClient _aniListClient;
@@ -19,6 +23,12 @@ public partial class MyAnimePageModel : ObservableObject
     private readonly ILogger<MyAnimePageModel> _logger;
     private bool _hasLoaded;
     private DateTimeOffset _lastSuccessfulLoadUtc;
+
+    // +1 debounce state: rapid taps batch into a single API call.
+    private CancellationTokenSource? _incrementDebounceCts;
+    private MediaListEntry? _pendingIncrementEntry;
+    private int? _preIncrementProgress;
+    private bool _isCompletionFlowActive;
 
     [ObservableProperty]
     private bool _isBusy;
@@ -188,7 +198,8 @@ public partial class MyAnimePageModel : ObservableObject
 
             // On first authenticated load (fresh install or after sign-in on another device),
             // sync display preferences from AniList before fetching the list.
-            if (!AppSettings.HasSynced)
+            // Also re-sync when section order is missing (added after initial sync).
+            if (!AppSettings.HasSynced || AppSettings.AnimeSectionOrder.Count == 0)
             {
                 try
                 {
@@ -196,6 +207,7 @@ public partial class MyAnimePageModel : ObservableObject
                     AppSettings.TitleLanguage = viewer.Options.TitleLanguage;
                     AppSettings.ScoreFormat = viewer.ScoreFormat;
                     AppSettings.DisplayAdultContent = viewer.Options.DisplayAdultContent;
+                    AppSettings.AnimeSectionOrder = viewer.AnimeSectionOrder;
                     AppSettings.Save();
                 }
                 catch (Exception viewerEx)
@@ -331,7 +343,7 @@ public partial class MyAnimePageModel : ObservableObject
 
     // ── +1 Episode Increment ─────────────────────────────────────────
 
-    [RelayCommand(AllowConcurrentExecutions = false)]
+    [RelayCommand(AllowConcurrentExecutions = true)]
     private async Task IncrementProgress(MediaListEntry? entry)
     {
         if (entry?.Media is null)
@@ -342,122 +354,165 @@ public partial class MyAnimePageModel : ObservableObject
         var newProgress = (entry.Progress ?? 0) + 1;
         var totalEpisodes = entry.MaxEpisodes;
 
+        // ── Completion flow: no debounce, save immediately ──────────
         if (totalEpisodes.HasValue && newProgress >= totalEpisodes.Value)
         {
-            newProgress = totalEpisodes.Value;
-            var markCompleted = await Shell.Current.DisplayAlertAsync(
-                "All episodes watched!",
-                $"You've watched all {totalEpisodes} episodes of {entry.Media.DisplayTitle}. Mark as Completed?",
-                "Yes", "No");
-
-            if (markCompleted)
+            if (_isCompletionFlowActive)
             {
-                entry.Progress = newProgress;
-                entry.Status = MediaListStatus.Completed;
-
-                var score = await PromptForScoreAsync();
-                if (score.HasValue)
-                {
-                    entry.Score = score.Value;
-                }
-
-                try
-                {
-                    await _aniListClient.SaveMediaListEntryAsync(entry);
-                    await LoadAsync(forceReload: true);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Failed to save completed entry for media {MediaId}", entry.MediaId);
-                    StatusMessage = "Failed to save. Please try again.";
-                    ErrorDetails = _errorReportService.Record(ex, "Increment progress (complete)");
-                }
-
                 return;
             }
+
+            _isCompletionFlowActive = true;
+            try
+            {
+                // Flush any pending debounced save first (may be for this or another entry).
+                await FlushPendingIncrementAsync();
+
+                newProgress = totalEpisodes.Value;
+                var markCompleted = await ShowCompletionPopupAsync(
+                    entry.Media.DisplayTitle, totalEpisodes.Value);
+
+                if (markCompleted)
+                {
+                    entry.Progress = newProgress;
+                    entry.Status = MediaListStatus.Completed;
+
+                    var score = await PromptForScoreAsync(entry.Media.DisplayTitle);
+                    if (score.HasValue)
+                    {
+                        entry.Score = score.Value;
+                    }
+
+                    try
+                    {
+                        await _aniListClient.SaveMediaListEntryAsync(entry);
+                        await LoadAsync(forceReload: true);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Failed to save completed entry for media {MediaId}", entry.MediaId);
+                        StatusMessage = "Failed to save. Please try again.";
+                        ErrorDetails = _errorReportService.Record(ex, "Increment progress (complete)");
+                    }
+                }
+            }
+            finally
+            {
+                _isCompletionFlowActive = false;
+            }
+
+            return;
+        }
+
+        // ── Normal +1 flow: optimistic UI update + debounced save ───
+        // If switching to a different entry, flush the previous pending save.
+        if (_pendingIncrementEntry is not null && _pendingIncrementEntry != entry)
+        {
+            await FlushPendingIncrementAsync();
+        }
+
+        // Track the progress before the first tap in this debounce series
+        // so we can revert all the way back on failure.
+        if (_pendingIncrementEntry != entry)
+        {
+            _preIncrementProgress = entry.Progress;
+            _pendingIncrementEntry = entry;
         }
 
         entry.Progress = newProgress;
 
+        _logger.LogInformation(
+            "+1 debounce: media {MediaId} '{Title}' progress → {New} (original: {Original})",
+            entry.MediaId, entry.Media.DisplayTitle, newProgress, _preIncrementProgress);
+
+        // Cancel any pending debounce timer and start a new one.
+        _incrementDebounceCts?.Cancel();
+        _incrementDebounceCts = new CancellationTokenSource();
+        var token = _incrementDebounceCts.Token;
+
         try
         {
+            await Task.Delay(IncrementDebounceDelay, token);
+        }
+        catch (TaskCanceledException)
+        {
+            // Another tap came in — this save is superseded.
+            return;
+        }
+
+        // Debounce period elapsed with no new taps; save now.
+        await SavePendingIncrementAsync();
+    }
+
+    /// <summary>
+    /// Immediately saves any pending debounced +1 increment (e.g. before navigation
+    /// or when the completion flow triggers).
+    /// </summary>
+    private async Task FlushPendingIncrementAsync()
+    {
+        _incrementDebounceCts?.Cancel();
+        _incrementDebounceCts = null;
+
+        if (_pendingIncrementEntry is not null)
+        {
+            await SavePendingIncrementAsync();
+        }
+    }
+
+    private async Task SavePendingIncrementAsync()
+    {
+        var entry = _pendingIncrementEntry;
+        var originalProgress = _preIncrementProgress;
+
+        _pendingIncrementEntry = null;
+        _preIncrementProgress = null;
+
+        if (entry is null)
+        {
+            return;
+        }
+
+        try
+        {
+            _logger.LogInformation("+1 saving: media {MediaId} progress {Progress}", entry.MediaId, entry.Progress);
             await _aniListClient.SaveMediaListEntryAsync(entry);
-            // Notify UI of the progress change without a full reload.
-            OnPropertyChanged(nameof(Sections));
+            _logger.LogInformation("+1 saved: media {MediaId} progress {Progress}", entry.MediaId, entry.Progress);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to save progress for media {MediaId}", entry.MediaId);
+            // Revert to the progress before the entire debounce series.
+            if (originalProgress.HasValue)
+            {
+                entry.Progress = originalProgress.Value;
+            }
+
+            _logger.LogError(ex, "Failed to save progress for media {MediaId}, reverted to {Progress}", entry.MediaId, originalProgress);
             StatusMessage = "Failed to save. Please try again.";
             ErrorDetails = _errorReportService.Record(ex, "Increment progress");
         }
     }
 
-    private async Task<double?> PromptForScoreAsync()
+    private static readonly PopupOptions TransparentPopupOptions = new()
     {
-        return AppSettings.ScoreFormat switch
-        {
-            ScoreFormat.Point5 => await PromptStarRatingAsync(),
-            ScoreFormat.Point3 => await PromptSmileyRatingAsync(),
-            _ => await PromptNumericRatingAsync(),
-        };
+        Shape = null,
+        Shadow = null,
+        CanBeDismissedByTappingOutsideOfPopup = false,
+    };
+
+    private static async Task<bool> ShowCompletionPopupAsync(string animeTitle, int totalEpisodes)
+    {
+        var popup = new Views.CompletionPopup(animeTitle, totalEpisodes);
+        var result = await Shell.Current.CurrentPage.ShowPopupAsync<bool>(popup, TransparentPopupOptions, CancellationToken.None);
+        return !result.WasDismissedByTappingOutsideOfPopup && result.Result;
     }
 
-    private static async Task<double?> PromptStarRatingAsync()
+    private static async Task<double?> PromptForScoreAsync(string? animeTitle = null)
     {
-        var result = await Shell.Current.DisplayActionSheetAsync(
-            "Rate this anime", "Skip", null,
-            "\u2605\u2605\u2605\u2605\u2605", "\u2605\u2605\u2605\u2605\u2606",
-            "\u2605\u2605\u2605\u2606\u2606", "\u2605\u2605\u2606\u2606\u2606",
-            "\u2605\u2606\u2606\u2606\u2606");
-        return result switch
-        {
-            "\u2605\u2605\u2605\u2605\u2605" => 5,
-            "\u2605\u2605\u2605\u2605\u2606" => 4,
-            "\u2605\u2605\u2605\u2606\u2606" => 3,
-            "\u2605\u2605\u2606\u2606\u2606" => 2,
-            "\u2605\u2606\u2606\u2606\u2606" => 1,
-            _ => null
-        };
-    }
-
-    private static async Task<double?> PromptSmileyRatingAsync()
-    {
-        var result = await Shell.Current.DisplayActionSheetAsync(
-            "Rate this anime", "Skip", null,
-            "\U0001F60A Happy", "\U0001F610 Neutral", "\U0001F61E Sad");
-        return result switch
-        {
-            string s when s.StartsWith("\U0001F60A") => 3,
-            string s when s.StartsWith("\U0001F610") => 2,
-            string s when s.StartsWith("\U0001F61E") => 1,
-            _ => null
-        };
-    }
-
-    private static async Task<double?> PromptNumericRatingAsync()
-    {
-        var (max, maxLength) = AppSettings.ScoreFormat switch
-        {
-            ScoreFormat.Point100 => (100.0, 3),
-            ScoreFormat.Point10Decimal => (10.0, 4),
-            _ => (10.0, 2), // Point10
-        };
-
-        var result = await Shell.Current.DisplayPromptAsync(
-            "Rate this anime",
-            $"Enter a score (0\u2013{max})",
-            "OK", "Skip",
-            placeholder: "0",
-            maxLength: maxLength,
-            keyboard: Keyboard.Numeric);
-
-        if (double.TryParse(result, out var score) && score >= 0 && score <= max)
-        {
-            return score;
-        }
-
-        return null;
+        var popup = new Views.RatingPopup(animeTitle);
+        var result = await Shell.Current.CurrentPage.ShowPopupAsync<object>(popup, TransparentPopupOptions, CancellationToken.None);
+        if (result.WasDismissedByTappingOutsideOfPopup)
+            return null;
+        return result.Result as double?;
     }
 
     // ── Pull to refresh ──────────────────────────────────────────────
@@ -465,6 +520,7 @@ public partial class MyAnimePageModel : ObservableObject
     [RelayCommand]
     private async Task Refresh()
     {
+        await FlushPendingIncrementAsync();
         await LoadAsync(forceReload: true);
     }
 
@@ -528,6 +584,9 @@ public partial class MyAnimePageModel : ObservableObject
             return;
         }
 
+        // Flush any pending +1 debounce so the details page shows fresh data.
+        await FlushPendingIncrementAsync();
+
         var mediaId = entry.MediaId != 0 ? entry.MediaId : entry.Media?.Id ?? 0;
         if (mediaId <= 0)
         {
@@ -581,7 +640,17 @@ public partial class MyAnimePageModel : ObservableObject
     {
         var sections = new ObservableCollection<MediaListSection>();
 
-        foreach (var group in groups)
+        // Sort groups by user's custom section order from AniList settings.
+        var sectionOrder = AppSettings.AnimeSectionOrder;
+        var orderedGroups = sectionOrder.Count > 0
+            ? groups.OrderBy(g =>
+            {
+                var idx = sectionOrder.IndexOf(g.Name);
+                return idx >= 0 ? idx : int.MaxValue;
+            }).ToList()
+            : (IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)>)groups;
+
+        foreach (var group in orderedGroups)
         {
             IEnumerable<MediaListEntry> entries = group.Entries;
 
