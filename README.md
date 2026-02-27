@@ -32,8 +32,7 @@ Planning docs
 
 - `docs/PLAN.md` for decisions, theme tokens, and open questions
 - `docs/TODO.md` for the working task list
-- `docs/DEBUGGING.md` for Android debugging/log capture workflow
-- `docs/BestPractices-MAUI-Android.md` for verified Android + MAUI 10 implementation patterns
+- `AGENTS.md` for coding agent instructions, debugging workflow, and best practices
 
 Telemetry
 
