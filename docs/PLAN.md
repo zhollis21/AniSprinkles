@@ -53,9 +53,7 @@ Decisions so far
 - Future: Neon Clock theme (rainbow LED inspiration)
 - Replaced mock auth and mock AniList client with real implicit auth and live AniList GraphQL client
 - Auth uses MAUI WebAuthenticator with SecureStorage token persistence (Android custom-scheme callback)
-- Debugging workflow documented in docs/DEBUGGING.md
-- MAUI/Android engineering guidance documented in docs/BestPractices-MAUI-Android.md (official Android + MAUI 10 references)
-- Agent startup workflow now requires reading docs/BestPractices-MAUI-Android.md with PLAN/TODO/DEBUGGING/README
+- Debugging workflow, best practices, and agent instructions consolidated in AGENTS.md
 - Troubleshooting workflow: pull device app logs into `logs/anisprinkles.device.log` before analysis
 - Confirmation workflow: include current-process `adb logcat` scan for crashes/exceptions/perf warnings
 - Development workflow: follow repository `.editorconfig` standards for style/formatting/naming
