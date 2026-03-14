@@ -1,6 +1,6 @@
 # CI workflow: Builds the app, runs unit tests, and captures UI screenshots
 # Triggers on push to main branch or pull request creation/update
-# Screenshots are uploaded as artifacts and linked in PR comments
+# Screenshots are uploaded as artifacts and embedded directly in PR comments
 #
 # Auth note: AniSprinkles uses OAuth 2.0 implicit grant via AniList's browser-based
 # login — there is no username/password flow. To capture authenticated screenshots,
@@ -19,7 +19,7 @@ on:
     branches: [main]
 
 permissions:
-  contents: read
+  contents: write
   pull-requests: write
   actions: read
 
@@ -229,9 +229,108 @@ jobs:
           HAS_TOKEN: ${{ secrets.ANILIST_CI_TOKEN != '' }}
         with:
           script: |
+            const fs = require('fs');
+            const path = require('path');
             const marker = '<!-- ci-ui-screenshots -->';
             const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
             const hasToken = process.env.HAS_TOKEN === 'true';
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const prNumber = context.issue.number;
+            const screenshotRef = 'ci-screenshots';
+
+            // --- Upload screenshots as git blobs and commit to ci-screenshots ref ---
+            const screenshots = [
+              { file: 'screenshots/01_my_anime.png', label: 'My Anime' },
+              { file: 'screenshots/02_settings.png', label: 'Settings' },
+            ];
+
+            const imageMarkdowns = [];
+            const blobPaths = [];
+
+            for (const shot of screenshots) {
+              if (!fs.existsSync(shot.file)) {
+                core.warning(`Screenshot not found: ${shot.file}`);
+                continue;
+              }
+              const content = fs.readFileSync(shot.file).toString('base64');
+              const filename = path.basename(shot.file);
+              // Namespace by PR number and run ID so images don't collide
+              const blobPath = `pr-${prNumber}/${context.runId}/${filename}`;
+
+              const { data: blob } = await github.rest.git.createBlob({
+                owner, repo,
+                content,
+                encoding: 'base64',
+              });
+              blobPaths.push({ path: blobPath, sha: blob.sha, label: shot.label });
+            }
+
+            if (blobPaths.length > 0) {
+              // Create tree entries for all uploaded blobs
+              const treeItems = blobPaths.map(b => ({
+                path: b.path,
+                mode: '100644',
+                type: 'blob',
+                sha: b.sha,
+              }));
+
+              // Try to get existing ci-screenshots ref for parent commit
+              let parentSha = null;
+              try {
+                const { data: ref } = await github.rest.git.getRef({
+                  owner, repo, ref: `heads/${screenshotRef}`,
+                });
+                parentSha = ref.object.sha;
+              } catch (e) {
+                core.info('ci-screenshots branch does not exist yet — will create it');
+              }
+
+              // Build tree — if we have a parent, base on its tree to preserve history
+              let treeParams = { owner, repo, tree: treeItems };
+              if (parentSha) {
+                const { data: parentCommit } = await github.rest.git.getCommit({
+                  owner, repo, commit_sha: parentSha,
+                });
+                treeParams.base_tree = parentCommit.tree.sha;
+              }
+              const { data: tree } = await github.rest.git.createTree(treeParams);
+
+              // Create commit
+              const commitParams = {
+                owner, repo,
+                message: `CI screenshots for PR #${prNumber} (run ${context.runId})`,
+                tree: tree.sha,
+              };
+              if (parentSha) {
+                commitParams.parents = [parentSha];
+              }
+              const { data: commit } = await github.rest.git.createCommit(commitParams);
+
+              // Update or create the ref
+              if (parentSha) {
+                await github.rest.git.updateRef({
+                  owner, repo,
+                  ref: `heads/${screenshotRef}`,
+                  sha: commit.sha,
+                });
+              } else {
+                await github.rest.git.createRef({
+                  owner, repo,
+                  ref: `refs/heads/${screenshotRef}`,
+                  sha: commit.sha,
+                });
+              }
+
+              // Build image markdown using raw.githubusercontent.com
+              for (const b of blobPaths) {
+                const rawUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${screenshotRef}/${b.path}`;
+                imageMarkdowns.push({ label: b.label, url: rawUrl });
+              }
+              core.info(`Pushed ${blobPaths.length} screenshots to ${screenshotRef} branch`);
+            }
+
+            // --- Build PR comment body ---
             const authNote = hasToken
               ? '> ✅ **Authenticated screenshots** — `ANILIST_CI_TOKEN` is configured, '
                 + 'so screenshots show the real app UI with live data.'
@@ -240,48 +339,55 @@ jobs:
                 + '> To capture authenticated UI, add an AniList OAuth token as the '
                 + '`ANILIST_CI_TOKEN` repo secret.';
             const pageDesc = hasToken ? '' : ' (sign-in prompt)';
-            const body = [
+
+            const bodyParts = [
               marker,
               '## 📱 UI Screenshots',
-              '',
-              'Screenshots from this CI run are available as build artifacts.',
               '',
               authNote,
               '',
               `**[View Workflow Run →](${runUrl})**`,
               '',
-              '| Screenshot | Page |',
-              '|---|---|',
-              `| \`01_my_anime.png\` | My Anime${pageDesc} |`,
-              `| \`02_settings.png\` | Settings${pageDesc} |`,
-              '',
-              '> Download the **ui-screenshots** artifact from the Artifacts section at the bottom of the workflow run page.',
-            ].join('\n');
+            ];
 
+            if (imageMarkdowns.length > 0) {
+              // Embed images side-by-side in a table
+              bodyParts.push(
+                '| ' + imageMarkdowns.map(i => `${i.label}${pageDesc}`).join(' | ') + ' |',
+                '| ' + imageMarkdowns.map(() => ':---:').join(' | ') + ' |',
+                '| ' + imageMarkdowns.map(i => `![${i.label}](${i.url})`).join(' | ') + ' |',
+              );
+            } else {
+              bodyParts.push(
+                '⚠️ No screenshots were captured for this run.',
+                '',
+                '> Download the **ui-screenshots** artifact from the Artifacts section at the bottom of the workflow run page.',
+              );
+            }
+
+            const body = bodyParts.join('\n');
+
+            // --- Post or update the PR comment ---
             const { data: comments } = await github.rest.issues.listComments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
+              owner, repo, issue_number: prNumber,
             });
 
             const existing = comments.find(c => c.body.includes(marker));
 
             if (existing) {
               await github.rest.issues.updateComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
+                owner, repo,
                 comment_id: existing.id,
                 body,
               });
-              core.info('Updated existing PR comment with screenshot link');
+              core.info('Updated existing PR comment with embedded screenshots');
             } else {
               await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.issue.number,
+                owner, repo,
+                issue_number: prNumber,
                 body,
               });
-              core.info('Posted PR comment with screenshot link');
+              core.info('Posted PR comment with embedded screenshots');
             }
 
       - name: Generate Screenshot Summary
