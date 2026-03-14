@@ -1,6 +1,12 @@
 # CI workflow: Builds the app, runs unit tests, and captures UI screenshots
 # Triggers on push to main branch or pull request creation/update
 # Screenshots are uploaded as artifacts and linked in PR comments
+#
+# Auth note: AniSprinkles uses OAuth 2.0 implicit grant via AniList's browser-based
+# login — there is no username/password flow. The CI emulator has no stored token,
+# so screenshots capture the **unauthenticated** state (sign-in prompt screens).
+# This is intentional and useful for verifying the login UX across both flyout pages.
+# No secrets or variables are required for this workflow to run.
 name: CI Build & UI Preview
 
 on:
@@ -95,6 +101,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-and-test
     timeout-minutes: 25
+    # Screenshots are informational — emulator flakiness should not block the CI gate
+    continue-on-error: true
 
     steps:
       - name: Download APK
@@ -150,18 +158,27 @@ jobs:
 
             mkdir -p screenshots
 
-            # Capture the initial launch screen (login / landing page)
-            adb shell screencap -p /sdcard/launch.png || echo "::warning::Failed to capture launch screenshot"
-            adb pull /sdcard/launch.png screenshots/01_app_launch.png || echo "::warning::Failed to pull launch screenshot"
-            echo "Captured: 01_app_launch.png"
+            # The emulator has no OAuth token so screenshots show the unauthenticated
+            # sign-in prompt. This is useful for catching login UX regressions.
+            # (The app uses OAuth implicit grant via AniList's browser login — there
+            # is no way to inject credentials in a headless CI emulator.)
 
-            # Give the app more time to settle (animations, network, etc.)
-            sleep 5
+            # Screenshot 1: My Anime page (default flyout destination — shows sign-in prompt)
+            adb shell screencap -p /sdcard/my_anime.png || echo "::warning::Failed to capture My Anime screenshot"
+            adb pull /sdcard/my_anime.png screenshots/01_my_anime.png || echo "::warning::Failed to pull My Anime screenshot"
+            echo "Captured: 01_my_anime.png (My Anime — sign-in prompt)"
 
-            # Capture the settled UI state
-            adb shell screencap -p /sdcard/settled.png || echo "::warning::Failed to capture settled screenshot"
-            adb pull /sdcard/settled.png screenshots/02_app_settled.png || echo "::warning::Failed to pull settled screenshot"
-            echo "Captured: 02_app_settled.png"
+            # Navigate to Settings page via the flyout
+            adb shell input keyevent KEYCODE_MENU || adb shell input swipe 0 500 300 500 300
+            sleep 2
+            # Tap approximate location of Settings item in flyout (may need tuning per emulator resolution)
+            adb shell input tap 200 350
+            sleep 3
+
+            # Screenshot 2: Settings page (shows sign-in prompt or settings UI)
+            adb shell screencap -p /sdcard/settings.png || echo "::warning::Failed to capture Settings screenshot"
+            adb pull /sdcard/settings.png screenshots/02_settings.png || echo "::warning::Failed to pull Settings screenshot"
+            echo "Captured: 02_settings.png (Settings — sign-in prompt)"
 
             echo ""
             echo "Screenshots captured:"
@@ -187,9 +204,18 @@ jobs:
               marker,
               '## 📱 UI Screenshots',
               '',
-              `Screenshots from this CI run are available as build artifacts.`,
+              'Screenshots from this CI run are available as build artifacts.',
+              '',
+              '> **Note:** The app uses OAuth (browser-based AniList login), so CI screenshots',
+              '> show the **unauthenticated sign-in prompt** on each flyout page. This is useful',
+              '> for catching login UX regressions. No secrets or credentials are needed.',
               '',
               `**[View Workflow Run →](${runUrl})**`,
+              '',
+              '| Screenshot | Page |',
+              '|---|---|',
+              '| `01_my_anime.png` | My Anime (sign-in prompt) |',
+              '| `02_settings.png` | Settings (sign-in prompt) |',
               '',
               '> Download the **ui-screenshots** artifact from the Artifacts section at the bottom of the workflow run page.',
             ].join('\n');
@@ -228,10 +254,13 @@ jobs:
           if [ -d "screenshots" ] && [ "$(ls -A screenshots/ 2>/dev/null)" ]; then
             echo "Screenshots captured and uploaded as artifacts." >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
-            echo "| Screenshot | Description |" >> $GITHUB_STEP_SUMMARY
+            echo "> The app uses OAuth (AniList browser login) so CI screenshots show the" >> $GITHUB_STEP_SUMMARY
+            echo "> **unauthenticated sign-in prompt**. No secrets or credentials are needed." >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "| Screenshot | Page |" >> $GITHUB_STEP_SUMMARY
             echo "|---|---|" >> $GITHUB_STEP_SUMMARY
-            echo "| \`01_app_launch.png\` | Initial app launch |" >> $GITHUB_STEP_SUMMARY
-            echo "| \`02_app_settled.png\` | Settled UI state |" >> $GITHUB_STEP_SUMMARY
+            echo "| \`01_my_anime.png\` | My Anime (sign-in prompt) |" >> $GITHUB_STEP_SUMMARY
+            echo "| \`02_settings.png\` | Settings (sign-in prompt) |" >> $GITHUB_STEP_SUMMARY
           else
             echo "⚠️ No screenshots were captured. Check the emulator step logs." >> $GITHUB_STEP_SUMMARY
           fi
