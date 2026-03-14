@@ -61,6 +61,7 @@ Decisions so far
 - CI/CD: GitHub Actions workflow builds signed AAB on release publication
 - CI/CD: ApplicationDisplayVersion (versionName) from release tag; ApplicationVersion (versionCode) from UTC timestamp (YYMMDDHHNN)
 - CI/CD: versionCode format enables minute-precision builds, auto-increments monotonically (Android requirement)
+- CI/CD: CI workflow (`ci.yml`) runs on push to main and pull requests — builds Debug APK, runs unit tests, captures UI screenshots on Android emulator, uploads screenshots as artifacts, and posts a PR comment linking to the artifacts
 - Logging upgrade implemented (HTTP logging handler + error details UI)
 - Debug file logging implemented (rotating file logger under app data)
 - Performance hardening: file logger writes asynchronously and filters noisy framework/Sentry categories

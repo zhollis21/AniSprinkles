@@ -1,0 +1,227 @@
+# CI workflow: Builds the app, runs unit tests, and captures UI screenshots
+# Triggers on push to main branch or pull request creation/update
+# Screenshots are uploaded as artifacts and linked in PR comments
+name: CI Build & UI Preview
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: write
+  actions: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Cache NuGet Packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('src/AniSprinkles.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Install MAUI Workload
+        run: dotnet workload install maui-android
+
+      - name: Restore Dependencies
+        run: dotnet restore src/AniSprinkles.csproj
+
+      - name: Build
+        run: |
+          dotnet build src/AniSprinkles.csproj \
+            -c Debug \
+            -f net10.0-android \
+            -p:EmbedAssembliesIntoApk=true \
+            --no-restore
+
+      - name: Run Tests
+        run: |
+          # Auto-detect test projects so future additions are picked up
+          TEST_PROJECTS=$(find . -name "*.csproj" \( -path "*/test*/*" -o -name "*Test*.csproj" -o -name "*Tests*.csproj" \) | grep -v node_modules || true)
+          if [ -n "$TEST_PROJECTS" ]; then
+            echo "Found test projects:"
+            echo "$TEST_PROJECTS"
+            for proj in $TEST_PROJECTS; do
+              dotnet test "$proj" --no-restore --verbosity normal
+            done
+          else
+            echo "::notice::No test projects found. Tests will run automatically when added."
+          fi
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-apk
+          path: src/bin/Debug/net10.0-android/*-Signed.apk
+          retention-days: 7
+          if-no-files-found: error
+
+      - name: Generate Build Summary
+        if: always()
+        run: |
+          if [ "${{ job.status }}" == "success" ]; then
+            echo "## ✅ Build Successful" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "## ❌ Build Failed" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Configuration:** Debug" >> $GITHUB_STEP_SUMMARY
+          echo "**Framework:** net10.0-android" >> $GITHUB_STEP_SUMMARY
+          echo "**Build Time:** $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+
+  ui-screenshots:
+    name: UI Screenshots
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    timeout-minutes: 25
+
+    steps:
+      - name: Download APK
+        uses: actions/download-artifact@v4
+        with:
+          name: debug-apk
+          path: apk
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Run Emulator & Capture Screenshots
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 31
+          arch: x86_64
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
+          disable-animations: true
+          script: |
+            set +e
+
+            # Locate the APK
+            APK_PATH=$(find apk -name "*-Signed.apk" -type f | head -1)
+            if [ -z "$APK_PATH" ]; then
+              echo "::error::No signed APK found in artifacts"
+              exit 1
+            fi
+            echo "Installing APK: $APK_PATH"
+
+            # Install the app on the emulator
+            adb install "$APK_PATH"
+
+            # Launch the app via intent
+            adb shell monkey -p com.RainbowSprinkles.AniSprinkles \
+              -c android.intent.category.LAUNCHER 1
+
+            # Wait for app to start and render initial UI
+            sleep 10
+
+            mkdir -p screenshots
+
+            # Capture the initial launch screen (login / landing page)
+            adb shell screencap -p /sdcard/launch.png
+            adb pull /sdcard/launch.png screenshots/01_app_launch.png
+            echo "Captured: 01_app_launch.png"
+
+            # Give the app more time to settle (animations, network, etc.)
+            sleep 5
+
+            # Capture the settled UI state
+            adb shell screencap -p /sdcard/settled.png
+            adb pull /sdcard/settled.png screenshots/02_app_settled.png
+            echo "Captured: 02_app_settled.png"
+
+            echo ""
+            echo "Screenshots captured:"
+            ls -la screenshots/
+
+      - name: Upload Screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-screenshots
+          path: screenshots/
+          retention-days: 30
+          if-no-files-found: warn
+
+      - name: Comment on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const marker = '<!-- ci-ui-screenshots -->';
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const body = [
+              marker,
+              '## 📱 UI Screenshots',
+              '',
+              `Screenshots from this CI run are available as build artifacts.`,
+              '',
+              `**[View Workflow Run →](${runUrl})**`,
+              '',
+              '> Download the **ui-screenshots** artifact from the Artifacts section at the bottom of the workflow run page.',
+            ].join('\n');
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const existing = comments.find(c => c.body.includes(marker));
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+              core.info('Updated existing PR comment with screenshot link');
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+              core.info('Posted PR comment with screenshot link');
+            }
+
+      - name: Generate Screenshot Summary
+        if: always()
+        run: |
+          echo "## 📱 UI Screenshots" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -d "screenshots" ] && [ "$(ls -A screenshots/ 2>/dev/null)" ]; then
+            echo "Screenshots captured and uploaded as artifacts." >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "| Screenshot | Description |" >> $GITHUB_STEP_SUMMARY
+            echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+            echo "| \`01_app_launch.png\` | Initial app launch |" >> $GITHUB_STEP_SUMMARY
+            echo "| \`02_app_settled.png\` | Settled UI state |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️ No screenshots were captured. Check the emulator step logs." >> $GITHUB_STEP_SUMMARY
+          fi
