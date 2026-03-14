@@ -58,7 +58,7 @@ jobs:
       - name: Run Tests
         run: |
           # Auto-detect test projects so future additions are picked up
-          TEST_PROJECTS=$(find . -name "*.csproj" \( -path "*/test*/*" -o -name "*Test*.csproj" -o -name "*Tests*.csproj" \) | grep -v node_modules || true)
+          TEST_PROJECTS=$(find . -name "*.csproj" \( -path "*/tests/*" -o -path "*/test/*" -o -name "*Test*.csproj" -o -name "*Tests*.csproj" \) | grep -v node_modules || true)
           if [ -n "$TEST_PROJECTS" ]; then
             echo "Found test projects:"
             echo "$TEST_PROJECTS"
@@ -118,7 +118,7 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
           disable-animations: true
           script: |
-            set +e
+            set -e
 
             # Locate the APK
             APK_PATH=$(find apk -name "*-Signed.apk" -type f | head -1)
@@ -135,22 +135,32 @@ jobs:
             adb shell monkey -p com.RainbowSprinkles.AniSprinkles \
               -c android.intent.category.LAUNCHER 1
 
-            # Wait for app to start and render initial UI
-            sleep 10
+            # Poll for app window to appear (up to 30s)
+            echo "Waiting for app to start..."
+            for i in $(seq 1 30); do
+              if adb shell dumpsys window windows 2>/dev/null | grep -q "com.RainbowSprinkles.AniSprinkles"; then
+                echo "App window detected after ${i}s"
+                break
+              fi
+              sleep 1
+            done
+
+            # Allow extra time for initial render to complete
+            sleep 5
 
             mkdir -p screenshots
 
             # Capture the initial launch screen (login / landing page)
-            adb shell screencap -p /sdcard/launch.png
-            adb pull /sdcard/launch.png screenshots/01_app_launch.png
+            adb shell screencap -p /sdcard/launch.png || echo "::warning::Failed to capture launch screenshot"
+            adb pull /sdcard/launch.png screenshots/01_app_launch.png || echo "::warning::Failed to pull launch screenshot"
             echo "Captured: 01_app_launch.png"
 
             # Give the app more time to settle (animations, network, etc.)
             sleep 5
 
             # Capture the settled UI state
-            adb shell screencap -p /sdcard/settled.png
-            adb pull /sdcard/settled.png screenshots/02_app_settled.png
+            adb shell screencap -p /sdcard/settled.png || echo "::warning::Failed to capture settled screenshot"
+            adb pull /sdcard/settled.png screenshots/02_app_settled.png || echo "::warning::Failed to pull settled screenshot"
             echo "Captured: 02_app_settled.png"
 
             echo ""
