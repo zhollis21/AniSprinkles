@@ -163,11 +163,12 @@ public class MainActivity : MauiAppCompatActivity
 
         try
         {
-            SecureStorage.Default.SetAsync("anilist_access_token", ciToken)
-                .GetAwaiter().GetResult();
-            SecureStorage.Default.SetAsync("anilist_access_token_expires_at",
-                DateTimeOffset.UtcNow.AddYears(1).ToString("O"))
-                .GetAwaiter().GetResult();
+            Task.Run(async () =>
+            {
+                await SecureStorage.Default.SetAsync("anilist_access_token", ciToken);
+                await SecureStorage.Default.SetAsync("anilist_access_token_expires_at",
+                    DateTimeOffset.UtcNow.AddYears(1).ToString("O"));
+            }).GetAwaiter().GetResult();
 
             Log.Info(nameof(MainActivity), "CI auth token seeded into SecureStorage");
         }

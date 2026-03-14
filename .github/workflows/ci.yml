@@ -171,11 +171,12 @@ jobs:
             done
 
             # Allow extra time for initial render and data fetch to complete
-            # (authenticated mode needs time for AniList API calls)
+            AUTH_RENDER_WAIT=15   # authenticated mode: AniList API calls need more time
+            UNAUTH_RENDER_WAIT=5  # unauthenticated mode: just rendering the sign-in prompt
             if [ "$AUTH_MODE" = "authenticated" ]; then
-              sleep 15
+              sleep $AUTH_RENDER_WAIT
             else
-              sleep 5
+              sleep $UNAUTH_RENDER_WAIT
             fi
 
             mkdir -p screenshots
