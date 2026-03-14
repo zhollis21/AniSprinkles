@@ -26,6 +26,10 @@ public class MainActivity : MauiAppCompatActivity
     {
         base.OnCreate(savedInstanceState);
 
+#if DEBUG
+        SeedCiAuthToken();
+#endif
+
         // Catch unhandled exceptions from Java/Android side
         Android.Runtime.AndroidEnvironment.UnhandledExceptionRaiser += (sender, args) =>
         {
@@ -141,4 +145,36 @@ public class MainActivity : MauiAppCompatActivity
             Log.Error(nameof(MainActivity), $"Error applying icon style: {ex.Message}");
         }
     }
+
+#if DEBUG
+    /// <summary>
+    /// Reads an AniList token from the launch intent and seeds it into SecureStorage
+    /// so the CI emulator can capture authenticated screenshots. The CI workflow
+    /// passes the token via: <c>am start --es ci_auth_token "TOKEN"</c>.
+    /// Compiled out of Release builds entirely.
+    /// </summary>
+    private void SeedCiAuthToken()
+    {
+        string? ciToken = Intent?.GetStringExtra("ci_auth_token");
+        if (string.IsNullOrEmpty(ciToken))
+        {
+            return;
+        }
+
+        try
+        {
+            SecureStorage.Default.SetAsync("anilist_access_token", ciToken)
+                .GetAwaiter().GetResult();
+            SecureStorage.Default.SetAsync("anilist_access_token_expires_at",
+                DateTimeOffset.UtcNow.AddYears(1).ToString("O"))
+                .GetAwaiter().GetResult();
+
+            Log.Info(nameof(MainActivity), "CI auth token seeded into SecureStorage");
+        }
+        catch (Exception ex)
+        {
+            Log.Error(nameof(MainActivity), $"CI auth token seeding failed: {ex.Message}");
+        }
+    }
+#endif
 }

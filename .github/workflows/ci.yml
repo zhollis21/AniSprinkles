@@ -3,10 +3,13 @@
 # Screenshots are uploaded as artifacts and linked in PR comments
 #
 # Auth note: AniSprinkles uses OAuth 2.0 implicit grant via AniList's browser-based
-# login — there is no username/password flow. The CI emulator has no stored token,
-# so screenshots capture the **unauthenticated** state (sign-in prompt screens).
-# This is intentional and useful for verifying the login UX across both flyout pages.
-# No secrets or variables are required for this workflow to run.
+# login — there is no username/password flow. To capture authenticated screenshots,
+# add an AniList OAuth token as the ANILIST_CI_TOKEN repo secret. The debug-only
+# SeedCiAuthToken() method in MainActivity reads this from the launch intent and
+# seeds SecureStorage before the first page model checks auth.
+#
+# Without the secret, the workflow still works — screenshots show the sign-in prompts,
+# which is useful for catching login UX regressions.
 name: CI Build & UI Preview
 
 on:
@@ -119,6 +122,8 @@ jobs:
 
       - name: Run Emulator & Capture Screenshots
         uses: reactivecircus/android-emulator-runner@v2
+        env:
+          ANILIST_CI_TOKEN: ${{ secrets.ANILIST_CI_TOKEN }}
         with:
           api-level: 31
           arch: x86_64
@@ -139,34 +144,46 @@ jobs:
             # Install the app on the emulator
             adb install "$APK_PATH"
 
-            # Launch the app via intent
-            adb shell monkey -p com.RainbowSprinkles.AniSprinkles \
-              -c android.intent.category.LAUNCHER 1
+            # Launch the app — if ANILIST_CI_TOKEN is set, pass it as an intent extra
+            # so the debug-only SeedCiAuthToken() in MainActivity can store it in
+            # SecureStorage before the first page model checks authentication.
+            PACKAGE="com.RainbowSprinkles.AniSprinkles"
+            if [ -n "$ANILIST_CI_TOKEN" ]; then
+              echo "::notice::ANILIST_CI_TOKEN found — launching with auth token"
+              COMPONENT=$(adb shell cmd package resolve-activity --brief \
+                -c android.intent.category.LAUNCHER "$PACKAGE" 2>/dev/null | tail -1)
+              adb shell am start -n "$COMPONENT" --es ci_auth_token "$ANILIST_CI_TOKEN"
+              AUTH_MODE="authenticated"
+            else
+              echo "::notice::No ANILIST_CI_TOKEN — screenshots will show sign-in prompts"
+              adb shell monkey -p "$PACKAGE" -c android.intent.category.LAUNCHER 1
+              AUTH_MODE="unauthenticated"
+            fi
 
             # Poll for app window to appear (up to 30s)
             echo "Waiting for app to start..."
             for i in $(seq 1 30); do
-              if adb shell dumpsys window windows 2>/dev/null | grep -q "com.RainbowSprinkles.AniSprinkles"; then
+              if adb shell dumpsys window windows 2>/dev/null | grep -q "$PACKAGE"; then
                 echo "App window detected after ${i}s"
                 break
               fi
               sleep 1
             done
 
-            # Allow extra time for initial render to complete
-            sleep 5
+            # Allow extra time for initial render and data fetch to complete
+            # (authenticated mode needs time for AniList API calls)
+            if [ "$AUTH_MODE" = "authenticated" ]; then
+              sleep 15
+            else
+              sleep 5
+            fi
 
             mkdir -p screenshots
 
-            # The emulator has no OAuth token so screenshots show the unauthenticated
-            # sign-in prompt. This is useful for catching login UX regressions.
-            # (The app uses OAuth implicit grant via AniList's browser login — there
-            # is no way to inject credentials in a headless CI emulator.)
-
-            # Screenshot 1: My Anime page (default flyout destination — shows sign-in prompt)
+            # Screenshot 1: My Anime page (default flyout destination)
             adb shell screencap -p /sdcard/my_anime.png || echo "::warning::Failed to capture My Anime screenshot"
             adb pull /sdcard/my_anime.png screenshots/01_my_anime.png || echo "::warning::Failed to pull My Anime screenshot"
-            echo "Captured: 01_my_anime.png (My Anime — sign-in prompt)"
+            echo "Captured: 01_my_anime.png (My Anime — $AUTH_MODE)"
 
             # Navigate to Settings page via the flyout
             adb shell input keyevent KEYCODE_MENU || adb shell input swipe 0 500 300 500 300
@@ -175,12 +192,13 @@ jobs:
             adb shell input tap 200 350
             sleep 3
 
-            # Screenshot 2: Settings page (shows sign-in prompt or settings UI)
+            # Screenshot 2: Settings page
             adb shell screencap -p /sdcard/settings.png || echo "::warning::Failed to capture Settings screenshot"
             adb pull /sdcard/settings.png screenshots/02_settings.png || echo "::warning::Failed to pull Settings screenshot"
-            echo "Captured: 02_settings.png (Settings — sign-in prompt)"
+            echo "Captured: 02_settings.png (Settings — $AUTH_MODE)"
 
             echo ""
+            echo "Auth mode: $AUTH_MODE"
             echo "Screenshots captured:"
             ls -la screenshots/
 
@@ -196,26 +214,35 @@ jobs:
       - name: Comment on PR
         if: github.event_name == 'pull_request'
         uses: actions/github-script@v7
+        env:
+          HAS_TOKEN: ${{ secrets.ANILIST_CI_TOKEN != '' }}
         with:
           script: |
             const marker = '<!-- ci-ui-screenshots -->';
             const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const hasToken = process.env.HAS_TOKEN === 'true';
+            const authNote = hasToken
+              ? '> ✅ **Authenticated screenshots** — `ANILIST_CI_TOKEN` is configured, '
+                + 'so screenshots show the real app UI with live data.'
+              : '> ℹ️ **Unauthenticated screenshots** — No `ANILIST_CI_TOKEN` secret set. '
+                + 'Screenshots show the sign-in prompt.\n'
+                + '> To capture authenticated UI, add an AniList OAuth token as the '
+                + '`ANILIST_CI_TOKEN` repo secret.';
+            const pageDesc = hasToken ? '' : ' (sign-in prompt)';
             const body = [
               marker,
               '## 📱 UI Screenshots',
               '',
               'Screenshots from this CI run are available as build artifacts.',
               '',
-              '> **Note:** The app uses OAuth (browser-based AniList login), so CI screenshots',
-              '> show the **unauthenticated sign-in prompt** on each flyout page. This is useful',
-              '> for catching login UX regressions. No secrets or credentials are needed.',
+              authNote,
               '',
               `**[View Workflow Run →](${runUrl})**`,
               '',
               '| Screenshot | Page |',
               '|---|---|',
-              '| `01_my_anime.png` | My Anime (sign-in prompt) |',
-              '| `02_settings.png` | Settings (sign-in prompt) |',
+              `| \`01_my_anime.png\` | My Anime${pageDesc} |`,
+              `| \`02_settings.png\` | Settings${pageDesc} |`,
               '',
               '> Download the **ui-screenshots** artifact from the Artifacts section at the bottom of the workflow run page.',
             ].join('\n');
@@ -248,19 +275,24 @@ jobs:
 
       - name: Generate Screenshot Summary
         if: always()
+        env:
+          HAS_TOKEN: ${{ secrets.ANILIST_CI_TOKEN != '' }}
         run: |
           echo "## 📱 UI Screenshots" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           if [ -d "screenshots" ] && [ "$(ls -A screenshots/ 2>/dev/null)" ]; then
             echo "Screenshots captured and uploaded as artifacts." >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
-            echo "> The app uses OAuth (AniList browser login) so CI screenshots show the" >> $GITHUB_STEP_SUMMARY
-            echo "> **unauthenticated sign-in prompt**. No secrets or credentials are needed." >> $GITHUB_STEP_SUMMARY
+            if [ "$HAS_TOKEN" = "true" ]; then
+              echo "> ✅ **Authenticated** — \`ANILIST_CI_TOKEN\` is configured. Screenshots show real app UI." >> $GITHUB_STEP_SUMMARY
+            else
+              echo "> ℹ️ **Unauthenticated** — No \`ANILIST_CI_TOKEN\` secret. Screenshots show sign-in prompts." >> $GITHUB_STEP_SUMMARY
+            fi
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "| Screenshot | Page |" >> $GITHUB_STEP_SUMMARY
             echo "|---|---|" >> $GITHUB_STEP_SUMMARY
-            echo "| \`01_my_anime.png\` | My Anime (sign-in prompt) |" >> $GITHUB_STEP_SUMMARY
-            echo "| \`02_settings.png\` | Settings (sign-in prompt) |" >> $GITHUB_STEP_SUMMARY
+            echo "| \`01_my_anime.png\` | My Anime |" >> $GITHUB_STEP_SUMMARY
+            echo "| \`02_settings.png\` | Settings |" >> $GITHUB_STEP_SUMMARY
           else
             echo "⚠️ No screenshots were captured. Check the emulator step logs." >> $GITHUB_STEP_SUMMARY
           fi
