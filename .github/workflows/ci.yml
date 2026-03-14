@@ -112,7 +112,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.ref || github.ref }}
+          ref: ${{ github.head_ref || github.ref }}
 
       - name: Download APK
         uses: actions/download-artifact@v4
@@ -230,8 +230,10 @@ jobs:
 
       - name: Commit Screenshots
         id: commit-screenshots
+        # Cannot push to fork PRs — GITHUB_TOKEN lacks write access to the source repo
+        if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
         run: |
-          if [ ! -d "screenshots" ] || [ -z "$(ls -A screenshots/*.png 2>/dev/null)" ]; then
+          if [ ! -d "screenshots" ] || [ -z "$(find screenshots -name '*.png' -type f 2>/dev/null)" ]; then
             echo "No screenshots to commit"
             echo "has_screenshots=false" >> $GITHUB_OUTPUT
             exit 0
@@ -249,11 +251,12 @@ jobs:
           echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
 
       - name: Comment on PR
-        if: github.event_name == 'pull_request' && steps.commit-screenshots.outputs.has_screenshots == 'true'
+        if: github.event_name == 'pull_request'
         uses: actions/github-script@v7
         env:
           HAS_TOKEN: ${{ secrets.ANILIST_CI_TOKEN != '' }}
           SCREENSHOT_SHA: ${{ steps.commit-screenshots.outputs.sha }}
+          HAS_SCREENSHOTS: ${{ steps.commit-screenshots.outputs.has_screenshots }}
         with:
           script: |
             const fs = require('fs');
@@ -264,6 +267,7 @@ jobs:
             const repo = context.repo.repo;
             const prNumber = context.issue.number;
             const sha = process.env.SCREENSHOT_SHA;
+            const hasScreenshots = process.env.HAS_SCREENSHOTS === 'true';
 
             const screenshots = [
               { file: 'screenshots/01_my_anime.png', label: 'My Anime' },
@@ -272,13 +276,15 @@ jobs:
 
             // Build image URLs using the commit SHA for reliable, cache-proof links
             const imageMarkdowns = [];
-            for (const shot of screenshots) {
-              if (!fs.existsSync(shot.file)) {
-                core.warning(`Screenshot not found: ${shot.file}`);
-                continue;
+            if (hasScreenshots && sha) {
+              for (const shot of screenshots) {
+                if (!fs.existsSync(shot.file)) {
+                  core.warning(`Screenshot not found: ${shot.file}`);
+                  continue;
+                }
+                const rawUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${sha}/${shot.file}`;
+                imageMarkdowns.push({ label: shot.label, url: rawUrl });
               }
-              const rawUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${sha}/${shot.file}`;
-              imageMarkdowns.push({ label: shot.label, url: rawUrl });
             }
 
             // --- Build PR comment body ---
