@@ -172,13 +172,35 @@ jobs:
             sleep 1
           done
 
-          # Allow extra time for initial render and data fetch to complete
-          AUTH_RENDER_WAIT=15   # authenticated mode: AniList API calls need more time
-          UNAUTH_RENDER_WAIT=5  # unauthenticated mode: just rendering the sign-in prompt
-          if [ "$AUTH_MODE" = "authenticated" ]; then
-            sleep $AUTH_RENDER_WAIT
-          else
-            sleep $UNAUTH_RENDER_WAIT
+          # Wait for the page to finish loading by polling the UI hierarchy.
+          # The app shows "Checking authentication" then "Loading anime list" text
+          # while data is being fetched. We poll until those indicators disappear,
+          # with a hard cap to avoid hanging forever.
+          MAX_WAIT=60
+          MIN_WAIT=5
+          POLL_INTERVAL=3
+          echo "Waiting for page to finish loading (up to ${MAX_WAIT}s)..."
+          sleep $MIN_WAIT
+          ELAPSED=$MIN_WAIT
+          while [ $ELAPSED -lt $MAX_WAIT ]; do
+            # Dump UI hierarchy to check for loading indicators
+            adb shell uiautomator dump /sdcard/ui_dump.xml 2>/dev/null || true
+            UI_DUMP=$(adb shell cat /sdcard/ui_dump.xml 2>/dev/null || echo "")
+            if echo "$UI_DUMP" | grep -qi "Checking authentication"; then
+              echo "  Still checking authentication... (${ELAPSED}s)"
+            elif echo "$UI_DUMP" | grep -qi "Loading anime list"; then
+              echo "  Still loading anime list... (${ELAPSED}s)"
+            else
+              echo "  Page appears ready after ${ELAPSED}s"
+              # Brief extra settle time for final render
+              sleep 2
+              break
+            fi
+            sleep $POLL_INTERVAL
+            ELAPSED=$((ELAPSED + POLL_INTERVAL))
+          done
+          if [ $ELAPSED -ge $MAX_WAIT ]; then
+            echo "::warning::Timed out waiting for page to load after ${MAX_WAIT}s — capturing anyway"
           fi
 
           mkdir -p screenshots
