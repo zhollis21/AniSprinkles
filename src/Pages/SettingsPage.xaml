@@ -54,19 +54,6 @@
                    IsVisible="{Binding HasStatusMessage}" />
         </VerticalStackLayout>
 
-        <!-- Error state (replaces loaded content when API fails) -->
-        <ScrollView Padding="{StaticResource LayoutPadding}"
-                    IsVisible="{Binding IsErrorState}"
-                    VerticalOptions="Center">
-            <views:ErrorStateView ErrorTitle="{Binding ErrorTitle}"
-                                  ErrorSubtitle="{Binding ErrorSubtitle}"
-                                  ErrorIconGlyph="{Binding ErrorIconGlyph}"
-                                  ErrorAccentColor="{StaticResource RainbowOrange}"
-                                  RetryCommand="{Binding RetryLoadCommand}"
-                                  ErrorDetails="{Binding ErrorDetails}"
-                                  Margin="0,24" />
-        </ScrollView>
-
         <!-- Loaded content host: heavy authenticated UI is created programmatically after data loads -->
         <ContentView x:Name="LoadedContentHost" />
     </Grid>

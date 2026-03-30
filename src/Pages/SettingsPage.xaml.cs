@@ -103,7 +103,7 @@ public partial class SettingsPage : ContentPage
 
     private void UpdateLoadedContentHost()
     {
-        if (_viewModel?.IsAuthenticated == true && !_viewModel.IsErrorState && !_hasCreatedLoadedContent)
+        if (_viewModel?.IsAuthenticated == true && !_hasCreatedLoadedContent)
         {
             LoadedContentHost.Content = new Views.SettingsLoadedContentView
             {
@@ -111,7 +111,7 @@ public partial class SettingsPage : ContentPage
             };
             _hasCreatedLoadedContent = true;
         }
-        else if ((_viewModel?.IsAuthenticated != true || _viewModel.IsErrorState) && _hasCreatedLoadedContent)
+        else if (_viewModel?.IsAuthenticated != true && _hasCreatedLoadedContent)
         {
             LoadedContentHost.Content = null;
             _hasCreatedLoadedContent = false;
@@ -139,7 +139,7 @@ public partial class SettingsPage : ContentPage
 
     private void OnViewModelPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
-        if (e.PropertyName is nameof(SettingsPageModel.IsAuthenticated) or nameof(SettingsPageModel.IsErrorState) && _hasAppeared)
+        if (e.PropertyName == nameof(SettingsPageModel.IsAuthenticated) && _hasAppeared)
         {
             UpdateLoadedContentHost();
         }

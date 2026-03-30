@@ -15,8 +15,6 @@ namespace AniSprinkles.PageModels;
         private readonly ILogger<MediaDetailsPageModel> _logger;
         private int? _loadedMediaId;
         private int _loadRequestSequence;
-        private int? _pendingRetryMediaId;
-        private MediaListEntry? _pendingRetryListEntry;
 
     [ObservableProperty]
     private bool _isBusy;
@@ -45,20 +43,6 @@ namespace AniSprinkles.PageModels;
 
     [ObservableProperty]
     private bool _isErrorDetailsVisible;
-
-    // ── Error state (full-page error view) ──────────────────────────
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsInitialLoading))]
-    private bool _isErrorState;
-
-    [ObservableProperty]
-    private string _errorTitle = string.Empty;
-
-    [ObservableProperty]
-    private string _errorSubtitle = string.Empty;
-
-    [ObservableProperty]
-    private string _errorIconGlyph = string.Empty;
 
     [ObservableProperty]
     private bool _isDescriptionExpanded;
@@ -172,7 +156,7 @@ namespace AniSprinkles.PageModels;
 
     public bool HasMedia => Media is not null;
 
-    public bool IsInitialLoading => Media is null && !IsErrorState && string.IsNullOrWhiteSpace(StatusMessage);
+    public bool IsInitialLoading => Media is null && string.IsNullOrWhiteSpace(StatusMessage);
 
     public bool HasDescription => !string.IsNullOrWhiteSpace(Media?.Description);
 
@@ -371,7 +355,6 @@ namespace AniSprinkles.PageModels;
             StatusMessage = string.Empty;
             ErrorDetails = string.Empty;
             IsErrorDetailsVisible = false;
-            IsErrorState = false;
             _logger.LogInformation(
                 "NAVTRACE load#{LoadRequestId} reused already-loaded media {MediaId} in {ElapsedMs}ms.",
                 loadRequestId,
@@ -404,7 +387,6 @@ namespace AniSprinkles.PageModels;
             StatusMessage = string.Empty;
             ErrorDetails = string.Empty;
             IsErrorDetailsVisible = false;
-            IsErrorState = false;
 
             var fetchStopwatch = Stopwatch.StartNew();
             var result = await _aniListClient.GetMediaAsync(mediaId);
@@ -445,18 +427,10 @@ namespace AniSprinkles.PageModels;
         }
         catch (Exception ex)
         {
-            var apiEx = ex as AniListApiException;
-            ErrorTitle = apiEx?.UserTitle ?? "Something Went Wrong";
-            ErrorSubtitle = apiEx?.UserSubtitle ?? "An unexpected error occurred. Try again or check back later.";
-            ErrorIconGlyph = apiEx?.IconGlyph ?? IconFont.Maui.FluentIcons.FluentIconsRegular.ErrorCircle24;
-            IsErrorState = true;
-            StatusMessage = string.Empty;
-            _errorReportService.Record(ex, "Load details");
-            ErrorDetails = ex.Message;
+            StatusMessage = "Failed to load details. Tap Details for more.";
+            ErrorDetails = _errorReportService.Record(ex, "Load details");
             IsErrorDetailsVisible = false;
             _loadedMediaId = null;
-            _pendingRetryMediaId = mediaId;
-            _pendingRetryListEntry = listEntry;
             _logger.LogError(
                 ex,
                 "NAVTRACE load#{LoadRequestId} failed in {ElapsedMs}ms for media {MediaId}.",
@@ -616,16 +590,6 @@ namespace AniSprinkles.PageModels;
         }
 
         IsErrorDetailsVisible = !IsErrorDetailsVisible;
-    }
-
-    [RelayCommand]
-    private async Task RetryLoad()
-    {
-        if (_pendingRetryMediaId is > 0)
-        {
-            IsErrorState = false;
-            await LoadAsync(_pendingRetryMediaId.Value, _pendingRetryListEntry);
-        }
     }
 
     [RelayCommand]
