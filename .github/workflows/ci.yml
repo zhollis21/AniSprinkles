@@ -3,14 +3,10 @@
 # Screenshots are committed to the screenshots/ folder on the branch and
 # embedded in PR comments using commit-SHA-based URLs for reliable rendering
 #
-# Auth note: AniSprinkles uses OAuth 2.0 implicit grant via AniList's browser-based
-# login — there is no username/password flow. To capture authenticated screenshots,
-# add an AniList OAuth token as the ANILIST_CI_TOKEN repo secret. The debug-only
-# SeedCiAuthToken() method in MainActivity reads this from the launch intent and
-# seeds SecureStorage before the first page model checks auth.
-#
-# Without the secret, the workflow still works — screenshots show the sign-in prompts,
-# which is useful for catching login UX regressions.
+# Auth note: The CI build uses compile-time stub services (CiAuthService, CiAniListClient)
+# activated by -p:CiBuild=true. These stubs make the app appear fully authenticated
+# with hardcoded data, so screenshots show the real UI without any OAuth token or
+# GitHub secret. No ANILIST_CI_TOKEN secret is needed.
 name: CI Build & UI Preview
 
 on:
@@ -63,6 +59,7 @@ jobs:
             -c Debug \
             -f net10.0-android \
             -p:EmbedAssembliesIntoApk=true \
+            -p:CiBuild=true \
             --no-restore
 
       - name: Run Tests
@@ -146,21 +143,12 @@ jobs:
           # Install the app on the emulator
           adb install "$APK_PATH"
 
-          # Launch the app — if ANILIST_CI_TOKEN is set, pass it as an intent extra
-          # so the debug-only SeedCiAuthToken() in MainActivity can store it in
-          # SecureStorage before the first page model checks authentication.
+          # Launch the app — CI build uses compile-time stub services (CiAuthService,
+          # CiAniListClient) so no token is needed; the app appears fully authenticated
+          # with hardcoded data from the moment it starts.
           PACKAGE="com.RainbowSprinkles.AniSprinkles"
-          if [ -n "$ANILIST_CI_TOKEN" ]; then
-            echo "::notice::ANILIST_CI_TOKEN found — launching with auth token"
-            COMPONENT=$(adb shell cmd package resolve-activity --brief \
-              -c android.intent.category.LAUNCHER "$PACKAGE" 2>/dev/null | tail -1)
-            adb shell am start -n "$COMPONENT" --es ci_auth_token "$ANILIST_CI_TOKEN"
-            AUTH_MODE="authenticated"
-          else
-            echo "::notice::No ANILIST_CI_TOKEN — screenshots will show sign-in prompts"
-            adb shell monkey -p "$PACKAGE" -c android.intent.category.LAUNCHER 1
-            AUTH_MODE="unauthenticated"
-          fi
+          adb shell monkey -p "$PACKAGE" -c android.intent.category.LAUNCHER 1
+          AUTH_MODE="ci-stubs"
 
           # Poll for app window to appear (up to 30s)
           echo "Waiting for app to start..."
@@ -231,8 +219,6 @@ jobs:
 
       - name: Run Emulator & Capture Screenshots
         uses: reactivecircus/android-emulator-runner@v2
-        env:
-          ANILIST_CI_TOKEN: ${{ secrets.ANILIST_CI_TOKEN }}
         with:
           api-level: 31
           arch: x86_64
@@ -276,7 +262,6 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: actions/github-script@v7
         env:
-          HAS_TOKEN: ${{ secrets.ANILIST_CI_TOKEN != '' }}
           SCREENSHOT_SHA: ${{ steps.commit-screenshots.outputs.sha }}
           HAS_SCREENSHOTS: ${{ steps.commit-screenshots.outputs.has_screenshots }}
         with:
@@ -284,7 +269,6 @@ jobs:
             const fs = require('fs');
             const marker = '<!-- ci-ui-screenshots -->';
             const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
-            const hasToken = process.env.HAS_TOKEN === 'true';
             const owner = context.repo.owner;
             const repo = context.repo.repo;
             const prNumber = context.issue.number;
@@ -310,14 +294,8 @@ jobs:
             }
 
             // --- Build PR comment body ---
-            const authNote = hasToken
-              ? '> ✅ **Authenticated screenshots** — `ANILIST_CI_TOKEN` is configured, '
-                + 'so screenshots show the real app UI with live data.'
-              : '> ℹ️ **Unauthenticated screenshots** — No `ANILIST_CI_TOKEN` secret set. '
-                + 'Screenshots show the sign-in prompt.\n'
-                + '> To capture authenticated UI, add an AniList OAuth token as the '
-                + '`ANILIST_CI_TOKEN` repo secret.';
-            const pageDesc = hasToken ? '' : ' (sign-in prompt)';
+            const authNote = '> ✅ **Authenticated UI** — screenshots rendered via compile-time CI stub services with hardcoded data. No OAuth token required.';
+            const pageDesc = '';
 
             const bodyParts = [
               marker,
@@ -371,19 +349,13 @@ jobs:
 
       - name: Generate Screenshot Summary
         if: always()
-        env:
-          HAS_TOKEN: ${{ secrets.ANILIST_CI_TOKEN != '' }}
         run: |
           echo "## 📱 UI Screenshots" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           if [ -d "screenshots" ] && [ "$(ls -A screenshots/ 2>/dev/null)" ]; then
             echo "Screenshots captured and uploaded as artifacts." >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
-            if [ "$HAS_TOKEN" = "true" ]; then
-              echo "> ✅ **Authenticated** — \`ANILIST_CI_TOKEN\` is configured. Screenshots show real app UI." >> $GITHUB_STEP_SUMMARY
-            else
-              echo "> ℹ️ **Unauthenticated** — No \`ANILIST_CI_TOKEN\` secret. Screenshots show sign-in prompts." >> $GITHUB_STEP_SUMMARY
-            fi
+            echo "> ✅ **Authenticated UI** — rendered via compile-time CI stub services with hardcoded data." >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "| Screenshot | Page |" >> $GITHUB_STEP_SUMMARY
             echo "|---|---|" >> $GITHUB_STEP_SUMMARY

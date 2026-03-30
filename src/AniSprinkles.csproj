@@ -50,6 +50,12 @@
 		<PackageReference Include="Syncfusion.Maui.Toolkit" Version="1.0.9" />
 	</ItemGroup>
 
+	<!-- Append CI preprocessor symbol when building for CI screenshots (-p:CiBuild=true) -->
+	<!-- Uses append rather than replace so DEBUG/RELEASE and SDK-injected symbols are preserved -->
+	<PropertyGroup Condition="'$(CiBuild)' == 'true'">
+		<DefineConstants>$(DefineConstants);CI</DefineConstants>
+	</PropertyGroup>
+
 	<!-- Debug Android Configuration -->
 	<PropertyGroup Condition="'$(Configuration)' == 'Debug' AND $([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
 		<AndroidLinkMode>None</AndroidLinkMode>
