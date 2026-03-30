@@ -132,6 +132,33 @@ jobs:
           #!/bin/bash
           set -e
 
+          # Tap a UI element by its visible text using UI Automator.
+          # Dumps the view hierarchy, finds the element's bounds, and taps the center.
+          # Usage: tap_element_by_text "Settings"
+          tap_element_by_text() {
+            local target_text="$1"
+            adb shell uiautomator dump /sdcard/ui_tap.xml 2>/dev/null || true
+            local bounds
+            bounds=$(adb shell cat /sdcard/ui_tap.xml 2>/dev/null \
+              | grep -o "text=\"${target_text}\"[^>]*" \
+              | grep -o 'bounds="\[[0-9]*,[0-9]*\]\[[0-9]*,[0-9]*\]"' \
+              | head -1 \
+              | sed 's/bounds="//;s/"//')
+            if [ -z "$bounds" ]; then
+              echo "::warning::Could not find element with text '${target_text}'"
+              return 1
+            fi
+            local left top right bottom cx cy
+            left=$(echo "$bounds" | sed 's/\[//g;s/\]/ /g' | awk -F'[, ]' '{print $1}')
+            top=$(echo "$bounds" | sed 's/\[//g;s/\]/ /g' | awk -F'[, ]' '{print $2}')
+            right=$(echo "$bounds" | sed 's/\[//g;s/\]/ /g' | awk -F'[, ]' '{print $4}')
+            bottom=$(echo "$bounds" | sed 's/\[//g;s/\]/ /g' | awk -F'[, ]' '{print $5}')
+            cx=$(( (left + right) / 2 ))
+            cy=$(( (top + bottom) / 2 ))
+            echo "Tapping '${target_text}' at (${cx}, ${cy}) — bounds: ${bounds}"
+            adb shell input tap "$cx" "$cy"
+          }
+
           # Locate the APK
           APK_PATH=$(find /tmp/apk -name "*-Signed.apk" -type f | head -1)
           if [ -z "$APK_PATH" ]; then
@@ -199,10 +226,9 @@ jobs:
           echo "Captured: 01_my_anime.png (My Anime — $AUTH_MODE)"
 
           # Navigate to Settings page via the flyout
-          adb shell input keyevent KEYCODE_MENU || adb shell input swipe 0 500 300 500 300
+          adb shell input swipe 0 500 300 500 300
           sleep 2
-          # Tap approximate location of Settings item in flyout (may need tuning per emulator resolution)
-          adb shell input tap 200 350
+          tap_element_by_text "Settings" || adb shell input tap 200 350
           sleep 3
 
           # Screenshot 2: Settings page
