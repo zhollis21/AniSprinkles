@@ -103,7 +103,7 @@ public partial class MyAnimePage : ContentPage
 
     private void UpdateLoadedContentHost()
     {
-        if (_viewModel?.IsAuthenticated == true && !_hasCreatedLoadedContent)
+        if (_viewModel?.IsAuthenticated == true && !_viewModel.IsErrorState && !_hasCreatedLoadedContent)
         {
             var view = new Views.MyAnimeLoadedContentView
             {
@@ -113,7 +113,7 @@ public partial class MyAnimePage : ContentPage
             LoadedContentHost.Content = view;
             _hasCreatedLoadedContent = true;
         }
-        else if (_viewModel?.IsAuthenticated != true && _hasCreatedLoadedContent)
+        else if ((_viewModel?.IsAuthenticated != true || _viewModel.IsErrorState) && _hasCreatedLoadedContent)
         {
             LoadedContentHost.Content = null;
             _hasCreatedLoadedContent = false;
@@ -150,12 +150,20 @@ public partial class MyAnimePage : ContentPage
         // sections are populated. Gating on Sections.Count > 0 prevents premature
         // creation during LoadAsync (which sets IsAuthenticated before fetching data),
         // avoiding the triple-spinner problem (center spinner + SfPullToRefresh + EmptyView).
-        if ((e.PropertyName == nameof(MyAnimePageModel.IsAuthenticated)
-                || e.PropertyName == nameof(MyAnimePageModel.Sections))
+        if ((e.PropertyName is nameof(MyAnimePageModel.IsAuthenticated)
+                or nameof(MyAnimePageModel.Sections)
+                or nameof(MyAnimePageModel.IsErrorState))
             && _hasAppeared
             && _viewModel?.IsAuthenticated == true
             && _viewModel.Sections.Count > 0)
         {
+            UpdateLoadedContentHost();
+        }
+        else if (e.PropertyName == nameof(MyAnimePageModel.IsErrorState)
+            && _hasAppeared
+            && _viewModel?.IsErrorState == true)
+        {
+            // Tear down loaded content so the error view is visible.
             UpdateLoadedContentHost();
         }
         else if (e.PropertyName == nameof(MyAnimePageModel.ViewModeIconGlyph) && _viewModel is not null)

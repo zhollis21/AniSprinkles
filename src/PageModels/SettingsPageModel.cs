@@ -32,6 +32,22 @@ public partial class SettingsPageModel : ObservableObject
     [ObservableProperty]
     private bool _hasStatusMessage;
 
+    // ── Error state ─────────────────────────────────────────────────
+    [ObservableProperty]
+    private bool _isErrorState;
+
+    [ObservableProperty]
+    private string _errorTitle = string.Empty;
+
+    [ObservableProperty]
+    private string _errorSubtitle = string.Empty;
+
+    [ObservableProperty]
+    private string _errorIconGlyph = string.Empty;
+
+    [ObservableProperty]
+    private string _errorDetails = string.Empty;
+
     [ObservableProperty]
     private string _aniListUserId = string.Empty;
 
@@ -158,6 +174,7 @@ public partial class SettingsPageModel : ObservableObject
         {
             await RefreshAuthStateAsync();
             StatusMessage = IsAuthenticated ? "Signed in to AniList." : "Not signed in.";
+            IsErrorState = false;
 
             if (IsAuthenticated)
             {
@@ -173,7 +190,13 @@ public partial class SettingsPageModel : ObservableObject
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to fetch AniList viewer data");
-            StatusMessage = "Failed to load profile.";
+            var apiEx = ex as AniListApiException;
+            ErrorTitle = apiEx?.UserTitle ?? "Something Went Wrong";
+            ErrorSubtitle = apiEx?.UserSubtitle ?? "An unexpected error occurred. Try again or check back later.";
+            ErrorIconGlyph = apiEx?.IconGlyph ?? IconFont.Maui.FluentIcons.FluentIconsRegular.ErrorCircle24;
+            ErrorDetails = ex.Message;
+            IsErrorState = true;
+            StatusMessage = string.Empty;
         }
         finally
         {
@@ -381,6 +404,13 @@ public partial class SettingsPageModel : ObservableObject
 
     partial void OnIsAuthenticatedChanged(bool value)
         => OnPropertyChanged(nameof(ShowLoginPrompt));
+
+    [RelayCommand]
+    private async Task RetryLoad()
+    {
+        IsErrorState = false;
+        await LoadAsync();
+    }
 
     [RelayCommand]
     private async Task SignIn()

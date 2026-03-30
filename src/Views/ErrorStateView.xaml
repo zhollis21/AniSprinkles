@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:icons="clr-namespace:IconFont.Maui.FluentIcons;assembly=IconFont.Maui.FluentIcons"
+             x:Class="AniSprinkles.Views.ErrorStateView"
+             x:Name="Self">
+
+    <Border Style="{StaticResource CardStyle}" Padding="24,32">
+        <VerticalStackLayout Spacing="12" HorizontalOptions="Center">
+            <!-- Error icon -->
+            <Image WidthRequest="56" HeightRequest="56" HorizontalOptions="Center" Opacity="0.85">
+                <Image.Source>
+                    <FontImageSource Glyph="{Binding ErrorIconGlyph, Source={x:Reference Self}}"
+                                     FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                     Color="{Binding ErrorAccentColor, Source={x:Reference Self}}"
+                                     Size="56" />
+                </Image.Source>
+            </Image>
+
+            <!-- Title -->
+            <Label Text="{Binding ErrorTitle, Source={x:Reference Self}}"
+                   Style="{StaticResource Title2}"
+                   HorizontalTextAlignment="Center"
+                   TextColor="{Binding ErrorAccentColor, Source={x:Reference Self}}" />
+
+            <!-- Subtitle -->
+            <Label Text="{Binding ErrorSubtitle, Source={x:Reference Self}}"
+                   Style="{StaticResource Caption1}"
+                   TextColor="{StaticResource Gray400}"
+                   HorizontalTextAlignment="Center"
+                   MaxLines="4"
+                   LineBreakMode="WordWrap" />
+
+            <!-- Retry button -->
+            <Border StrokeShape="RoundRectangle 12" StrokeThickness="1"
+                    Stroke="{Binding ErrorAccentColor, Source={x:Reference Self}}"
+                    BackgroundColor="Transparent"
+                    Padding="20,10"
+                    HorizontalOptions="Center"
+                    Margin="0,8,0,0"
+                    IsVisible="{Binding HasRetryCommand, Source={x:Reference Self}}">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding RetryCommand, Source={x:Reference Self}}" />
+                </Border.GestureRecognizers>
+                <HorizontalStackLayout Spacing="8" HorizontalOptions="Center">
+                    <Image WidthRequest="16" HeightRequest="16" VerticalOptions="Center">
+                        <Image.Source>
+                            <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.ArrowClockwise24}"
+                                             FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                             Color="{Binding ErrorAccentColor, Source={x:Reference Self}}"
+                                             Size="16" />
+                        </Image.Source>
+                    </Image>
+                    <Label Text="Try Again"
+                           Style="{StaticResource Body2Strong}"
+                           TextColor="{Binding ErrorAccentColor, Source={x:Reference Self}}"
+                           VerticalTextAlignment="Center" />
+                </HorizontalStackLayout>
+            </Border>
+
+            <!-- Technical details toggle -->
+            <VerticalStackLayout Spacing="8" IsVisible="{Binding HasErrorDetails, Source={x:Reference Self}}" Margin="0,8,0,0">
+                <Label Text="{Binding DetailsToggleText, Source={x:Reference Self}}"
+                       Style="{StaticResource Caption2}"
+                       TextColor="{StaticResource Gray500}"
+                       HorizontalTextAlignment="Center"
+                       TextDecorations="Underline">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnToggleDetailsTapped" />
+                    </Label.GestureRecognizers>
+                </Label>
+                <Border Style="{StaticResource CardStyle}" Padding="12"
+                        IsVisible="{Binding IsDetailsExpanded, Source={x:Reference Self}}">
+                    <VerticalStackLayout Spacing="8">
+                        <ScrollView HeightRequest="120">
+                            <Label Text="{Binding ErrorDetails, Source={x:Reference Self}}"
+                                   Style="{StaticResource Caption2}"
+                                   LineBreakMode="WordWrap"
+                                   TextColor="{StaticResource Gray500}" />
+                        </ScrollView>
+                        <HorizontalStackLayout Spacing="12" HorizontalOptions="Center">
+                            <Border StrokeShape="RoundRectangle 8" StrokeThickness="1"
+                                    Stroke="{StaticResource Gray600}" BackgroundColor="Transparent"
+                                    Padding="10,6">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnCopyTapped" />
+                                </Border.GestureRecognizers>
+                                <HorizontalStackLayout Spacing="6">
+                                    <Image WidthRequest="14" HeightRequest="14" VerticalOptions="Center">
+                                        <Image.Source>
+                                            <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Copy24}"
+                                                             FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                             Color="{StaticResource Gray400}" Size="14" />
+                                        </Image.Source>
+                                    </Image>
+                                    <Label Text="Copy" Style="{StaticResource Caption1}" TextColor="{StaticResource Gray400}" VerticalTextAlignment="Center" />
+                                </HorizontalStackLayout>
+                            </Border>
+                            <Border StrokeShape="RoundRectangle 8" StrokeThickness="1"
+                                    Stroke="{StaticResource Gray600}" BackgroundColor="Transparent"
+                                    Padding="10,6">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnShareTapped" />
+                                </Border.GestureRecognizers>
+                                <HorizontalStackLayout Spacing="6">
+                                    <Image WidthRequest="14" HeightRequest="14" VerticalOptions="Center">
+                                        <Image.Source>
+                                            <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Share24}"
+                                                             FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                             Color="{StaticResource Gray400}" Size="14" />
+                                        </Image.Source>
+                                    </Image>
+                                    <Label Text="Share" Style="{StaticResource Caption1}" TextColor="{StaticResource Gray400}" VerticalTextAlignment="Center" />
+                                </HorizontalStackLayout>
+                            </Border>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </Border>
+</ContentView>
