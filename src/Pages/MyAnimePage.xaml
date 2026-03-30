@@ -97,10 +97,6 @@
                              VerticalOptions="Start"
                              IsVisible="{Binding HasErrorDetails}">
             <HorizontalStackLayout Spacing="12">
-                <Label Text="{Binding StatusMessage}"
-                       IsVisible="{Binding HasStatusMessage}"
-                       Style="{StaticResource Caption1}"
-                       TextColor="{StaticResource Gray400}" />
                 <Button Text="Details"
                         Command="{Binding ToggleDetailsCommand}"
                         IsVisible="{Binding HasErrorDetails}" />
