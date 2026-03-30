@@ -44,6 +44,19 @@ namespace AniSprinkles.PageModels;
     [ObservableProperty]
     private bool _isErrorDetailsVisible;
 
+    // ── Error state (full-page error view) ──────────────────────────
+    [ObservableProperty]
+    private bool _isErrorState;
+
+    [ObservableProperty]
+    private string _errorTitle = string.Empty;
+
+    [ObservableProperty]
+    private string _errorSubtitle = string.Empty;
+
+    [ObservableProperty]
+    private string _errorIconGlyph = string.Empty;
+
     [ObservableProperty]
     private bool _isDescriptionExpanded;
 
