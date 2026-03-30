@@ -80,6 +80,18 @@ public class MediaListSection : ObservableCollection<MediaListEntry>
         }
     }
 
+    public bool RemoveItem(MediaListEntry entry)
+    {
+        var removed = _allItems.Remove(entry);
+        if (removed)
+        {
+            OnPropertyChanged(new PropertyChangedEventArgs(nameof(TotalCount)));
+            UpdateItems();
+        }
+
+        return removed;
+    }
+
     public void AddItem(MediaListEntry entry)
     {
         _allItems.Add(entry);

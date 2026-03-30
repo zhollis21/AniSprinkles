@@ -345,8 +345,22 @@ public class AniListClient : IAniListClient
 
         if (!response.IsSuccessStatusCode)
         {
-            var trimmed = content?.Length > 500 ? content[..500] + "..." : content;
-            throw new HttpRequestException($"AniList request failed ({(int)response.StatusCode}) for {operationName}. {trimmed}");
+            // AniList returns GraphQL error bodies even on HTTP failures (e.g. 403 outage).
+            // Try to extract the human-readable message so callers can surface it directly.
+            string? apiMessage = null;
+            try
+            {
+                var errorBody = JsonSerializer.Deserialize<GraphQlResponse<object>>(content, JsonOptions);
+                apiMessage = errorBody?.Errors?.FirstOrDefault()?.Message;
+            }
+            catch
+            {
+                // Body wasn't valid GraphQL JSON — fall through to generic message.
+            }
+
+            var fallback = content?.Length > 500 ? content[..500] + "..." : content;
+            throw new HttpRequestException(
+                apiMessage ?? $"AniList request failed ({(int)response.StatusCode}) for {operationName}. {fallback}");
         }
 
         var graphQl = JsonSerializer.Deserialize<GraphQlResponse<T>>(content, JsonOptions);
