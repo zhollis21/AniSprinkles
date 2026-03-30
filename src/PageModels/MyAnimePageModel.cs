@@ -1,6 +1,9 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Net.Http;
 using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Extensions;
 using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -83,6 +86,19 @@ public partial class MyAnimePageModel : ObservableObject
 
     [ObservableProperty]
     private bool _isErrorDetailsVisible;
+
+    // ── Error state (full-page error view) ──────────────────────────
+    [ObservableProperty]
+    private bool _isErrorState;
+
+    [ObservableProperty]
+    private string _errorTitle = string.Empty;
+
+    [ObservableProperty]
+    private string _errorSubtitle = string.Empty;
+
+    [ObservableProperty]
+    private string _errorIconGlyph = string.Empty;
 
     // ── Sort / Filter / View Mode ────────────────────────────────────
 
@@ -195,6 +211,7 @@ public partial class MyAnimePageModel : ObservableObject
             StatusMessage = string.Empty;
             ErrorDetails = string.Empty;
             IsErrorDetailsVisible = false;
+            IsErrorState = false;
 
             // On first authenticated load (fresh install or after sign-in on another device),
             // sync display preferences from AniList before fetching the list.
@@ -231,20 +248,29 @@ public partial class MyAnimePageModel : ObservableObject
         }
         catch (Exception ex)
         {
+            var apiEx = ex as AniListApiException;
+
             if (hadExistingSections && IsAuthenticated)
             {
                 // Prefer stale data over blank UI when refresh fails after a previously successful load.
-                StatusMessage = "Refresh failed. Showing cached list.";
+                StatusMessage = apiEx?.UserTitle ?? "Refresh failed. Showing cached list.";
+                IsErrorState = false;
                 _hasLoaded = true;
             }
             else
             {
-                StatusMessage = "Failed to load list. Tap Details for more.";
+                // Full-page error state — no cached data to fall back on.
+                ErrorTitle = apiEx?.UserTitle ?? "Something Went Wrong";
+                ErrorSubtitle = apiEx?.UserSubtitle ?? "An unexpected error occurred. Try again or check back later.";
+                ErrorIconGlyph = apiEx?.IconGlyph ?? IconFont.Maui.FluentIcons.FluentIconsRegular.ErrorCircle24;
+                IsErrorState = true;
+                StatusMessage = string.Empty;
                 Sections = [];
                 _hasLoaded = false;
             }
 
-            ErrorDetails = _errorReportService.Record(ex, "Load My Anime");
+            _errorReportService.Record(ex, "Load My Anime");
+            ErrorDetails = ex.Message;
             IsErrorDetailsVisible = false;
         }
         finally
@@ -515,12 +541,191 @@ public partial class MyAnimePageModel : ObservableObject
         return result.Result as double?;
     }
 
+    // ── Long-press context menu (move between lists) ───────────────
+
+    private static readonly Dictionary<MediaListStatus, string> StatusDisplayNames = new()
+    {
+        [MediaListStatus.Current] = "Watching",
+        [MediaListStatus.Planning] = "Planning",
+        [MediaListStatus.Completed] = "Completed",
+        [MediaListStatus.Paused] = "Paused",
+        [MediaListStatus.Dropped] = "Dropped",
+        [MediaListStatus.Repeating] = "Rewatching",
+    };
+
+    [RelayCommand]
+    private async Task ShowMoveMenu(MediaListEntry? entry)
+    {
+        if (entry?.Media is null || entry.Status is null)
+        {
+            return;
+        }
+
+        await FlushPendingIncrementAsync();
+
+        try
+        {
+            HapticFeedback.Default.Perform(HapticFeedbackType.LongPress);
+        }
+        catch
+        {
+            // Haptic feedback is best-effort.
+        }
+
+        var popup = new Views.MoveToListPopup(entry.Media.DisplayTitle, entry.Status.Value);
+        var popupOptions = new PopupOptions
+        {
+            Shape = null,
+            Shadow = null,
+            CanBeDismissedByTappingOutsideOfPopup = true,
+        };
+
+        var result = await Shell.Current.CurrentPage.ShowPopupAsync<object>(popup, popupOptions, CancellationToken.None);
+        if (result.WasDismissedByTappingOutsideOfPopup || result.Result is null)
+        {
+            return;
+        }
+
+        if (result.Result is string action && action == "delete")
+        {
+            await HandleDeleteAsync(entry);
+            return;
+        }
+
+        if (result.Result is MediaListStatus targetStatus)
+        {
+            await HandleMoveAsync(entry, targetStatus);
+        }
+    }
+
+    private async Task HandleDeleteAsync(MediaListEntry entry)
+    {
+        var title = entry.Media?.DisplayTitle ?? "this anime";
+        var confirmed = await Shell.Current.CurrentPage.DisplayAlertAsync(
+            "Remove from List",
+            $"Remove {title} from your list?",
+            "Remove",
+            "Cancel");
+
+        if (!confirmed)
+        {
+            return;
+        }
+
+        // Optimistic removal from UI.
+        RemoveEntryFromCurrentSection(entry);
+
+        try
+        {
+            await _aniListClient.DeleteMediaListEntryAsync(entry.Id);
+            await ShowToastAsync($"{title} removed from list");
+            await LoadAsync(forceReload: true);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to delete entry {EntryId} for media {MediaId}", entry.Id, entry.MediaId);
+            StatusMessage = "Failed to remove. Please try again.";
+            ErrorDetails = _errorReportService.Record(ex, "Delete from list");
+            await LoadAsync(forceReload: true);
+        }
+    }
+
+    private async Task HandleMoveAsync(MediaListEntry entry, MediaListStatus targetStatus)
+    {
+        var title = entry.Media?.DisplayTitle ?? "this anime";
+
+        // Snapshot original state for rollback.
+        var originalStatus = entry.Status;
+        var originalProgress = entry.Progress;
+        var originalScore = entry.Score;
+        var originalRepeat = entry.Repeat;
+
+        // Apply side effects based on target status.
+        switch (targetStatus)
+        {
+            case MediaListStatus.Completed:
+                entry.Status = MediaListStatus.Completed;
+                if (entry.MaxEpisodes.HasValue)
+                {
+                    entry.Progress = entry.MaxEpisodes.Value;
+                }
+
+                var score = await PromptForScoreAsync(title);
+                if (score.HasValue)
+                {
+                    entry.Score = score.Value;
+                }
+
+                break;
+
+            case MediaListStatus.Repeating:
+                entry.Status = MediaListStatus.Repeating;
+                entry.Progress = 0;
+                entry.Repeat = (entry.Repeat ?? 0) + 1;
+                break;
+
+            default:
+                entry.Status = targetStatus;
+                break;
+        }
+
+        // Optimistic removal from source section.
+        RemoveEntryFromCurrentSection(entry);
+
+        var targetName = StatusDisplayNames.GetValueOrDefault(targetStatus, targetStatus.ToString());
+
+        try
+        {
+            await _aniListClient.SaveMediaListEntryAsync(entry);
+            await ShowToastAsync($"{title} moved to {targetName}");
+            await LoadAsync(forceReload: true);
+        }
+        catch (Exception ex)
+        {
+            // Revert entry state.
+            entry.Status = originalStatus;
+            entry.Progress = originalProgress;
+            entry.Score = originalScore;
+            entry.Repeat = originalRepeat;
+
+            _logger.LogError(ex, "Failed to move media {MediaId} to {TargetStatus}", entry.MediaId, targetStatus);
+            StatusMessage = "Failed to move. Please try again.";
+            ErrorDetails = _errorReportService.Record(ex, "Move to list");
+            await LoadAsync(forceReload: true);
+        }
+    }
+
+    private void RemoveEntryFromCurrentSection(MediaListEntry entry)
+    {
+        foreach (var section in Sections)
+        {
+            if (section.ContainsEntry(entry))
+            {
+                section.RemoveItem(entry);
+                break;
+            }
+        }
+    }
+
+    private static async Task ShowToastAsync(string message)
+    {
+        var toast = Toast.Make(message, ToastDuration.Short);
+        await toast.Show();
+    }
+
     // ── Pull to refresh ──────────────────────────────────────────────
 
     [RelayCommand]
     private async Task Refresh()
     {
         await FlushPendingIncrementAsync();
+        await LoadAsync(forceReload: true);
+    }
+
+    [RelayCommand]
+    private async Task RetryLoad()
+    {
+        IsErrorState = false;
         await LoadAsync(forceReload: true);
     }
 

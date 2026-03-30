@@ -89,37 +89,19 @@
                    TextColor="{StaticResource Gray400}" />
         </VerticalStackLayout>
 
+        <!-- Error state (full-page, replaces loaded content when API fails with no cached data) -->
+        <ScrollView IsVisible="{Binding IsErrorState}"
+                    VerticalOptions="Center">
+            <views:ErrorStateView ErrorTitle="{Binding ErrorTitle}"
+                                  ErrorSubtitle="{Binding ErrorSubtitle}"
+                                  ErrorIconGlyph="{Binding ErrorIconGlyph}"
+                                  ErrorAccentColor="{StaticResource RainbowOrange}"
+                                  RetryCommand="{Binding RetryLoadCommand}"
+                                  ErrorDetails="{Binding ErrorDetails}"
+                                  Margin="0,24" />
+        </ScrollView>
+
         <!-- Loaded content host: heavy UI created programmatically after data loads -->
         <ContentView x:Name="LoadedContentHost" />
-
-        <!-- Error details overlay (visible when API fails) -->
-        <VerticalStackLayout Spacing="8"
-                             VerticalOptions="Start"
-                             IsVisible="{Binding HasErrorDetails}">
-            <HorizontalStackLayout Spacing="12">
-                <Label Text="{Binding StatusMessage}"
-                       IsVisible="{Binding HasStatusMessage}"
-                       Style="{StaticResource Caption1}"
-                       TextColor="{StaticResource Gray400}" />
-                <Button Text="Details"
-                        Command="{Binding ToggleDetailsCommand}"
-                        IsVisible="{Binding HasErrorDetails}" />
-            </HorizontalStackLayout>
-            <VerticalStackLayout Spacing="8"
-                                 IsVisible="{Binding IsErrorDetailsVisible}">
-                <Border Style="{StaticResource CardStyle}" Padding="12">
-                    <ScrollView HeightRequest="160">
-                        <Label Text="{Binding ErrorDetails}"
-                               Style="{StaticResource Caption1}"
-                               LineBreakMode="WordWrap"
-                               TextColor="{StaticResource Gray400}" />
-                    </ScrollView>
-                </Border>
-                <HorizontalStackLayout Spacing="12">
-                    <Button Text="Copy" Command="{Binding CopyErrorCommand}" />
-                    <Button Text="Share" Command="{Binding ShareErrorCommand}" />
-                </HorizontalStackLayout>
-            </VerticalStackLayout>
-        </VerticalStackLayout>
     </Grid>
 </ContentPage>

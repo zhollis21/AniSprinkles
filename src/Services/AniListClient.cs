@@ -340,36 +340,105 @@ public class AniListClient : IAniListClient
             Encoding.UTF8,
             "application/json");
 
-        using var response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
-        var content = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-
-        if (!response.IsSuccessStatusCode)
+        HttpResponseMessage response;
+        string content;
+        try
         {
-            var trimmed = content?.Length > 500 ? content[..500] + "..." : content;
-            throw new HttpRequestException($"AniList request failed ({(int)response.StatusCode}) for {operationName}. {trimmed}");
+            response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
+            content = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+        }
+        catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException { InnerException: TimeoutException })
+        {
+            throw new AniListApiException(ApiErrorKind.Network, $"Network error during {operationName}.", ex);
         }
 
-        var graphQl = JsonSerializer.Deserialize<GraphQlResponse<T>>(content, JsonOptions);
-        if (graphQl is null)
+        using (response)
         {
-            throw new InvalidOperationException("AniList response could not be parsed.");
+            if (!response.IsSuccessStatusCode)
+            {
+                // AniList returns GraphQL error bodies even on HTTP failures (e.g. 403 outage).
+                // Try to extract the human-readable message so callers can surface it directly.
+                string? apiMessage = null;
+                try
+                {
+                    var errorBody = JsonSerializer.Deserialize<GraphQlResponse<object>>(content, JsonOptions);
+                    apiMessage = errorBody?.Errors?.FirstOrDefault()?.Message;
+                }
+                catch
+                {
+                    // Body wasn't valid GraphQL JSON — fall through to generic message.
+                }
+
+                var kind = ClassifyHttpError(response.StatusCode, apiMessage);
+                var fallback = content?.Length > 500 ? content[..500] + "..." : content;
+                throw new AniListApiException(
+                    kind,
+                    apiMessage ?? $"AniList request failed ({(int)response.StatusCode}) for {operationName}. {fallback}");
+            }
+
+            var graphQl = JsonSerializer.Deserialize<GraphQlResponse<T>>(content, JsonOptions);
+            if (graphQl is null)
+            {
+                throw new AniListApiException(ApiErrorKind.Unknown, "AniList response could not be parsed.");
+            }
+
+            if (graphQl.Errors is { Count: > 0 })
+            {
+                var message = graphQl.Errors[0].Message ?? "AniList request returned an error.";
+                var errorKind = ClassifyGraphQlError(message);
+                throw new AniListApiException(errorKind, message);
+            }
+
+            if (graphQl.Data is null)
+            {
+                throw new AniListApiException(ApiErrorKind.Unknown, "AniList response data missing.");
+            }
+
+            stopwatch.Stop();
+            _logger.LogInformation("GraphQL {Operation} response ok in {Elapsed}ms", operationName, stopwatch.ElapsedMilliseconds);
+
+            return graphQl.Data;
+        }
+    }
+
+    private static ApiErrorKind ClassifyHttpError(System.Net.HttpStatusCode statusCode, string? apiMessage)
+    {
+        // Known AniList outage pattern: 403 with a human-readable "disabled" message.
+        if (apiMessage is not null &&
+            (apiMessage.Contains("temporarily disabled", StringComparison.OrdinalIgnoreCase) ||
+             apiMessage.Contains("stability issues", StringComparison.OrdinalIgnoreCase) ||
+             apiMessage.Contains("under maintenance", StringComparison.OrdinalIgnoreCase)))
+        {
+            return ApiErrorKind.ServiceOutage;
         }
 
-        if (graphQl.Errors is { Count: > 0 })
+        return statusCode switch
         {
-            var message = graphQl.Errors[0].Message ?? "AniList request returned an error.";
-            throw new InvalidOperationException(message);
+            System.Net.HttpStatusCode.Unauthorized => ApiErrorKind.Authentication,
+            System.Net.HttpStatusCode.Forbidden when apiMessage is null => ApiErrorKind.Authentication,
+            System.Net.HttpStatusCode.ServiceUnavailable or
+            System.Net.HttpStatusCode.BadGateway or
+            System.Net.HttpStatusCode.GatewayTimeout => ApiErrorKind.ServiceOutage,
+            _ => ApiErrorKind.Unknown,
+        };
+    }
+
+    private static ApiErrorKind ClassifyGraphQlError(string message)
+    {
+        if (message.Contains("temporarily disabled", StringComparison.OrdinalIgnoreCase) ||
+            message.Contains("stability issues", StringComparison.OrdinalIgnoreCase) ||
+            message.Contains("under maintenance", StringComparison.OrdinalIgnoreCase))
+        {
+            return ApiErrorKind.ServiceOutage;
         }
 
-        if (graphQl.Data is null)
+        if (message.Contains("Invalid token", StringComparison.OrdinalIgnoreCase) ||
+            message.Contains("Unauthorized", StringComparison.OrdinalIgnoreCase))
         {
-            throw new InvalidOperationException("AniList response data missing.");
+            return ApiErrorKind.Authentication;
         }
 
-        stopwatch.Stop();
-        _logger.LogInformation("GraphQL {Operation} response ok in {Elapsed}ms", operationName, stopwatch.ElapsedMilliseconds);
-
-        return graphQl.Data;
+        return ApiErrorKind.Unknown;
     }
 
     private static MediaListEntry? MapEntry(MediaListEntryDto? dto)

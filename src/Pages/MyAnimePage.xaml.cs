@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Logging;
 using AniSprinkles.Utilities;
 using IconFont.Maui.FluentIcons;
 
@@ -9,12 +8,9 @@ public partial class MyAnimePage : ContentPage
     private static readonly TimeSpan DeferredLoadDelay = TimeSpan.FromMilliseconds(120);
 
     private MyAnimePageModel? _viewModel;
-    private ILogger<MyAnimePage>? _logger;
     private bool _hasAppeared;
     private bool _hasCreatedLoadedContent;
     private int _loadVersion;
-    private CollectionView? _loadedCollectionView;
-
     public MyAnimePage()
     {
         InitializeComponent();
@@ -45,12 +41,7 @@ public partial class MyAnimePage : ContentPage
             return;
         }
 
-        // Content needs to be (re)created. Clean up stale references.
-        if (_loadedCollectionView is not null)
-        {
-            _loadedCollectionView.SelectionChanged -= OnSelectionChanged;
-            _loadedCollectionView = null;
-        }
+        // Content needs to be (re)created.
         _hasCreatedLoadedContent = false;
 
         int version;
@@ -112,65 +103,20 @@ public partial class MyAnimePage : ContentPage
 
     private void UpdateLoadedContentHost()
     {
-        if (_viewModel?.IsAuthenticated == true && !_hasCreatedLoadedContent)
+        if (_viewModel?.IsAuthenticated == true && !_viewModel.IsErrorState && !_hasCreatedLoadedContent)
         {
             var view = new Views.MyAnimeLoadedContentView
             {
                 BindingContext = _viewModel
             };
 
-            // Wire up the CollectionView's SelectionChanged event from the loaded content view.
-            var collectionView = view.FindByName<CollectionView>("AnimeCollectionView");
-            if (collectionView is not null)
-            {
-                collectionView.SelectionChanged += OnSelectionChanged;
-                _loadedCollectionView = collectionView;
-            }
-
             LoadedContentHost.Content = view;
             _hasCreatedLoadedContent = true;
         }
-        else if (_viewModel?.IsAuthenticated != true && _hasCreatedLoadedContent)
+        else if ((_viewModel?.IsAuthenticated != true || _viewModel.IsErrorState) && _hasCreatedLoadedContent)
         {
-            if (_loadedCollectionView is not null)
-            {
-                _loadedCollectionView.SelectionChanged -= OnSelectionChanged;
-                _loadedCollectionView = null;
-            }
             LoadedContentHost.Content = null;
             _hasCreatedLoadedContent = false;
-        }
-    }
-
-    private async void OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
-    {
-        if (e.CurrentSelection.FirstOrDefault() is not MediaListEntry entry)
-        {
-            return;
-        }
-
-        EnsureViewModel();
-        if (_viewModel is null)
-        {
-            return;
-        }
-
-        // Clear selection immediately in same frame as navigation to avoid visual artifacts.
-        if (sender is CollectionView collectionView)
-        {
-            collectionView.SelectedItem = null;
-        }
-
-        try
-        {
-            await _viewModel.OpenDetailsCommand.ExecuteAsync(entry);
-        }
-        catch (Exception ex)
-        {
-            EnsureLogger();
-            var mediaId = entry.MediaId != 0 ? entry.MediaId : entry.Media?.Id ?? 0;
-            _logger?.LogError(ex, "Navigation to media details failed for media entry {MediaId}", mediaId);
-            _viewModel.StatusMessage = "Navigation failed. Please try again.";
         }
     }
 
@@ -198,36 +144,26 @@ public partial class MyAnimePage : ContentPage
         }
     }
 
-    private void EnsureLogger()
-    {
-        if (_logger is not null)
-        {
-            return;
-        }
-
-        try
-        {
-            var services = ServiceProviderHelper.GetServiceProvider();
-            _logger = services?.GetService<ILogger<MyAnimePage>>();
-        }
-        catch (InvalidOperationException)
-        {
-            // Logger not available
-        }
-    }
-
     private void OnViewModelPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
         // Create the loaded content view when authentication succeeds OR when
         // sections are populated. Gating on Sections.Count > 0 prevents premature
         // creation during LoadAsync (which sets IsAuthenticated before fetching data),
         // avoiding the triple-spinner problem (center spinner + SfPullToRefresh + EmptyView).
-        if ((e.PropertyName == nameof(MyAnimePageModel.IsAuthenticated)
-                || e.PropertyName == nameof(MyAnimePageModel.Sections))
+        if ((e.PropertyName is nameof(MyAnimePageModel.IsAuthenticated)
+                or nameof(MyAnimePageModel.Sections)
+                or nameof(MyAnimePageModel.IsErrorState))
             && _hasAppeared
             && _viewModel?.IsAuthenticated == true
             && _viewModel.Sections.Count > 0)
         {
+            UpdateLoadedContentHost();
+        }
+        else if (e.PropertyName == nameof(MyAnimePageModel.IsErrorState)
+            && _hasAppeared
+            && _viewModel?.IsErrorState == true)
+        {
+            // Tear down loaded content so the error view is visible.
             UpdateLoadedContentHost();
         }
         else if (e.PropertyName == nameof(MyAnimePageModel.ViewModeIconGlyph) && _viewModel is not null)

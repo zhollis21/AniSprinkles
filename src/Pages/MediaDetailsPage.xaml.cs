@@ -209,7 +209,7 @@ public partial class MediaDetailsPage : ContentPage, IQueryAttributable
 
     private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName is nameof(MediaDetailsPageModel.IsBusy) or nameof(MediaDetailsPageModel.HasMedia))
+        if (e.PropertyName is nameof(MediaDetailsPageModel.IsBusy) or nameof(MediaDetailsPageModel.HasMedia) or nameof(MediaDetailsPageModel.IsErrorState))
         {
             UpdateLoadedContentHost();
         }
@@ -217,7 +217,7 @@ public partial class MediaDetailsPage : ContentPage, IQueryAttributable
 
     private void UpdateLoadedContentHost()
     {
-        if (ViewModel.HasMedia && !ViewModel.IsBusy)
+        if (ViewModel.HasMedia && !ViewModel.IsBusy && !ViewModel.IsErrorState)
         {
             if (!_hasCreatedLoadedContent)
             {
@@ -234,9 +234,11 @@ public partial class MediaDetailsPage : ContentPage, IQueryAttributable
                 catch (Exception ex)
                 {
                     Logger.LogError(ex, "Failed to create MediaDetailsLoadedContentView");
-                    ViewModel.StatusMessage = "Failed to render details. Tap Details for more.";
+                    ViewModel.ErrorTitle = "Something Went Wrong";
+                    ViewModel.ErrorSubtitle = "Failed to render the details view.";
+                    ViewModel.ErrorIconGlyph = IconFont.Maui.FluentIcons.FluentIconsRegular.ErrorCircle24;
                     ViewModel.ErrorDetails = $"{ex.GetType().Name}: {ex.Message}\n\n{ex.StackTrace}";
-                    ViewModel.IsErrorDetailsVisible = false;
+                    ViewModel.IsErrorState = true;
                 }
             }
         }
