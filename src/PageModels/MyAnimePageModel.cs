@@ -87,6 +87,19 @@ public partial class MyAnimePageModel : ObservableObject
     [ObservableProperty]
     private bool _isErrorDetailsVisible;
 
+    // ── Error state (full-page error view) ──────────────────────────
+    [ObservableProperty]
+    private bool _isErrorState;
+
+    [ObservableProperty]
+    private string _errorTitle = string.Empty;
+
+    [ObservableProperty]
+    private string _errorSubtitle = string.Empty;
+
+    [ObservableProperty]
+    private string _errorIconGlyph = string.Empty;
+
     // ── Sort / Filter / View Mode ────────────────────────────────────
 
     [ObservableProperty]
@@ -198,6 +211,7 @@ public partial class MyAnimePageModel : ObservableObject
             StatusMessage = string.Empty;
             ErrorDetails = string.Empty;
             IsErrorDetailsVisible = false;
+            IsErrorState = false;
 
             // On first authenticated load (fresh install or after sign-in on another device),
             // sync display preferences from AniList before fetching the list.
@@ -234,25 +248,29 @@ public partial class MyAnimePageModel : ObservableObject
         }
         catch (Exception ex)
         {
-            // Surface the API message (e.g. "AniList API has been temporarily disabled...")
-            // when it's more informative than a generic fallback.
-            var isApiMessage = ex is HttpRequestException && !ex.Message.StartsWith("AniList request failed", StringComparison.Ordinal);
-            var userMessage = isApiMessage ? ex.Message : null;
+            var apiEx = ex as AniListApiException;
 
             if (hadExistingSections && IsAuthenticated)
             {
                 // Prefer stale data over blank UI when refresh fails after a previously successful load.
-                StatusMessage = userMessage ?? "Refresh failed. Showing cached list.";
+                StatusMessage = apiEx?.UserTitle ?? "Refresh failed. Showing cached list.";
+                IsErrorState = false;
                 _hasLoaded = true;
             }
             else
             {
-                StatusMessage = userMessage ?? "Failed to load list. Pull down to retry.";
+                // Full-page error state — no cached data to fall back on.
+                ErrorTitle = apiEx?.UserTitle ?? "Something Went Wrong";
+                ErrorSubtitle = apiEx?.UserSubtitle ?? "An unexpected error occurred. Try again or check back later.";
+                ErrorIconGlyph = apiEx?.IconGlyph ?? IconFont.Maui.FluentIcons.FluentIconsRegular.ErrorCircle24;
+                IsErrorState = true;
+                StatusMessage = string.Empty;
                 Sections = [];
                 _hasLoaded = false;
             }
 
-            ErrorDetails = _errorReportService.Record(ex, "Load My Anime");
+            _errorReportService.Record(ex, "Load My Anime");
+            ErrorDetails = ex.Message;
             IsErrorDetailsVisible = false;
         }
         finally
@@ -701,6 +719,13 @@ public partial class MyAnimePageModel : ObservableObject
     private async Task Refresh()
     {
         await FlushPendingIncrementAsync();
+        await LoadAsync(forceReload: true);
+    }
+
+    [RelayCommand]
+    private async Task RetryLoad()
+    {
+        IsErrorState = false;
         await LoadAsync(forceReload: true);
     }
 

@@ -50,6 +50,12 @@
 		<PackageReference Include="Syncfusion.Maui.Toolkit" Version="1.0.9" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <MauiXaml Update="Views\ErrorStateView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
 	<!-- Debug Android Configuration -->
 	<PropertyGroup Condition="'$(Configuration)' == 'Debug' AND $([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
 		<AndroidLinkMode>None</AndroidLinkMode>

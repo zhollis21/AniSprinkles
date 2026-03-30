@@ -514,6 +514,9 @@
                                 <DataTrigger TargetType="VerticalStackLayout" Binding="{Binding IsBusy}" Value="True">
                                     <Setter Property="IsVisible" Value="False" />
                                 </DataTrigger>
+                                <DataTrigger TargetType="VerticalStackLayout" Binding="{Binding IsErrorState}" Value="True">
+                                    <Setter Property="IsVisible" Value="False" />
+                                </DataTrigger>
                             </VerticalStackLayout.Triggers>
                             <Image WidthRequest="48" HeightRequest="48" HorizontalOptions="Center" Opacity="0.5">
                                 <Image.Source>
