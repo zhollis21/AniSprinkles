@@ -51,10 +51,13 @@
 	</ItemGroup>
 
 	<!-- Append CI preprocessor symbol when building for CI screenshots (-p:CiBuild=true) -->
-	<!-- Uses append rather than replace so DEBUG/RELEASE and SDK-injected symbols are preserved -->
-	<PropertyGroup Condition="'$(CiBuild)' == 'true'">
+	<!-- Restricted to Debug to prevent accidentally shipping stub services in a Release build -->
+	<PropertyGroup Condition="'$(CiBuild)' == 'true' AND '$(Configuration)' == 'Debug'">
 		<DefineConstants>$(DefineConstants);CI</DefineConstants>
 	</PropertyGroup>
+	<Target Name="_BlockCiBuildInRelease" BeforeTargets="Build" Condition="'$(CiBuild)' == 'true' AND '$(Configuration)' != 'Debug'">
+		<Error Text="CiBuild=true is only supported with Debug configuration. Do not use it for Release builds." />
+	</Target>
 
 	<ItemGroup>
 	  <MauiXaml Update="Views\ErrorStateView.xaml">
