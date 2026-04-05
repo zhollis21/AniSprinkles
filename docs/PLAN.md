@@ -62,7 +62,7 @@ Decisions so far
 - CI/CD: ApplicationDisplayVersion (versionName) from release tag; ApplicationVersion (versionCode) from UTC timestamp (YYMMDDHHNN)
 - CI/CD: versionCode format enables minute-precision builds, auto-increments monotonically (Android requirement)
 - CI/CD: CI workflow (`ci.yml`) runs on push to main and pull requests — builds Debug APK, runs unit tests, captures UI screenshots on Android emulator, uploads screenshots as artifacts, and posts a PR comment linking to the artifacts
-- CI/CD: CI screenshots use compile-time stub services (`CiAuthService`, `CiAniListClient` in `src/Services/Ci/`) activated by `-p:CiBuild=true`. Stubs make the app appear fully authenticated with hardcoded data; no OAuth token or GitHub secret needed. Stubs are compiled out of Debug and Release builds entirely (`#if CI`).
+- CI/CD: CI screenshots use compile-time stub services (`CIAuthService`, `CIAniListClient` in `src/Services/CI/`) activated by `-p:CiBuild=true`. Stubs make the app appear fully authenticated with hardcoded data; no OAuth token or GitHub secret needed. Stubs are compiled out of Debug and Release builds entirely (`#if CI`).
 - CI/CD: `CiBuild=true` appends `CI` to `DefineConstants` via a conditional `<PropertyGroup>` in the csproj, preserving `DEBUG` and SDK-injected symbols. `MauiProgram.cs` uses `#if CI / #else / #endif` to swap service registrations.
 - CI/CD: UI screenshot job uses `continue-on-error: true` so emulator flakiness does not block the build gate
 - Logging upgrade implemented (HTTP logging handler + error details UI)

@@ -19,7 +19,7 @@ dotnet publish src/AniSprinkles.csproj -c Release -f net10.0-android -p:AndroidP
 dotnet build src/AniSprinkles.csproj -c Debug -f net10.0-android -p:EmbedAssembliesIntoApk=true -p:CiBuild=true
 ```
 
-No test suite yet — `tests/AniSprinkles.UITests/` is scaffolded but empty. Tests auto-detected by CI when added.
+No runnable test suite yet — `tests/AniSprinkles.UITests/` is currently a placeholder folder with no test project file. Tests are auto-detected by CI once test `.csproj` files are added.
 
 ## Architecture
 
@@ -28,6 +28,7 @@ No test suite yet — `tests/AniSprinkles.UITests/` is scaffolded but empty. Tes
 **Layer flow:** Pages (XAML) → PageModels (`ObservableObject`) → Services (`IAniListClient`, `IAuthService`) → Models
 
 **DI lifetimes** (`MauiProgram.cs`):
+
 - Singleton: `HttpClient`, `IAuthService`, `IAniListClient`, `ErrorReportService`, `MyAnimePageModel`, `SettingsPageModel`
 - Transient: `LoggingHandler`, all Pages, `MediaDetailsPageModel`
 
@@ -56,14 +57,15 @@ No test suite yet — `tests/AniSprinkles.UITests/` is scaffolded but empty. Tes
 
 Passing `-p:CiBuild=true` appends `CI` to `DefineConstants` (preserving `DEBUG` and SDK-injected symbols). This activates `#if CI` blocks that swap in stub services:
 
-- `CiAuthService` (`src/Services/Ci/`) — always returns `"ci-stub-token"`; app appears authenticated
-- `CiAniListClient` (`src/Services/Ci/`) — returns hardcoded anime list and user profile
+- `CIAuthService` (`src/Services/CI/`) — always returns `"ci-stub-token"`; app appears authenticated
+- `CIAniListClient` (`src/Services/CI/`) — returns hardcoded anime list and user profile
 
 These stubs are **compiled out entirely** in standard Debug and Release builds. No GitHub secret or OAuth token is needed for CI screenshots.
 
 ## Code Style
 
 Follow `.editorconfig`. Key rules:
+
 - 4-space indent, CRLF, Allman braces, file-scoped namespaces, braces always required
 - `var` only when type is apparent; explicit types for built-ins and unclear types
 - Expression-bodied members for properties/accessors/lambdas; not for constructors/methods/local functions
@@ -79,10 +81,10 @@ Always pull both logs before analyzing an issue:
 
 ```powershell
 # App file log
-adb -s emulator-5554 exec-out run-as com.companyname.anisprinkles cat files/logs/anisprinkles.log > logs/anisprinkles.device.log
+adb -s emulator-5554 exec-out run-as com.RainbowSprinkles.AniSprinkles cat files/logs/anisprinkles.log > logs/anisprinkles.device.log
 
 # Logcat for the app process
-$appPid = adb -s emulator-5554 shell pidof com.companyname.anisprinkles
+$appPid = adb -s emulator-5554 shell pidof com.RainbowSprinkles.AniSprinkles
 adb -s emulator-5554 logcat -v time --pid $appPid -d > logs/adb.device.pid.log
 
 # Scan for crashes

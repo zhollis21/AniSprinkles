@@ -80,7 +80,7 @@ jobs:
           # Generate date-based version code with build number (YYMMDDNNN)
           # Format: YY=year, MM=month, DD=day, NNN=last 3 digits of run_number
           # Example: Feb 15, 2026, run #123 -> 260215 + 123 -> 260215123
-          # Range: 20010100 1 to 99123199 9 - safely under Android's 2,147,483,647 limit
+          # Range: 200101001 to 991231999 - safely under Android's 2,147,483,647 limit
           # Monotonically increasing, supports 1000 builds per day, works through 2099
           DATE_PART=$(date -u '+%y%m%d')
           BUILD_NUM=$(printf "%03d" $((${{ github.run_number }} % 1000)))

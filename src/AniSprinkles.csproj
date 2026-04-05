@@ -59,6 +59,15 @@
 		<Error Text="CiBuild=true is only supported with Debug configuration. Do not use it for Release builds." />
 	</Target>
 
+	<!-- Append ERROR_SIM preprocessor symbol to simulate API failures (-p:ErrorSim=true) -->
+	<!-- Restricted to Debug to prevent accidentally shipping stub services in a Release build -->
+	<PropertyGroup Condition="'$(ErrorSim)' == 'true' AND '$(Configuration)' == 'Debug'">
+		<DefineConstants>$(DefineConstants);ERROR_SIM</DefineConstants>
+	</PropertyGroup>
+	<Target Name="_BlockErrorSimInRelease" BeforeTargets="Build" Condition="'$(ErrorSim)' == 'true' AND '$(Configuration)' != 'Debug'">
+		<Error Text="ErrorSim=true is only supported with Debug configuration. Do not use it for Release builds." />
+	</Target>
+
 	<ItemGroup>
 	  <MauiXaml Update="Views\ErrorStateView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
@@ -81,4 +90,5 @@
 		<!-- Generate native debug symbols for crash reporting (e.g., Sentry, Play Console) -->
 		<AndroidGenerateNativeDebugSymbols>true</AndroidGenerateNativeDebugSymbols>
 	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net10.0-android|AnyCPU'" />
 </Project>
