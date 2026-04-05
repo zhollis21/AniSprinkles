@@ -10,8 +10,6 @@
 name: CI Build & UI Preview
 
 on:
-  push:
-    branches: [main]
   pull_request:
     branches: [main]
 
