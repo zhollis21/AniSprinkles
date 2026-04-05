@@ -1,9 +1,9 @@
 # CI workflow: Builds the app, runs unit tests, and captures UI screenshots
-# Triggers on push to main branch or pull request creation/update
+# Triggers on pull request creation/update targeting main
 # Screenshots are committed to the screenshots/ folder on the branch and
 # embedded in PR comments using commit-SHA-based URLs for reliable rendering
 #
-# Auth note: The CI build uses compile-time stub services (CiAuthService, CiAniListClient)
+# Auth note: The CI build uses compile-time stub services (CIAuthService, CIAniListClient)
 # activated by -p:CiBuild=true. These stubs make the app appear fully authenticated
 # with hardcoded data, so screenshots show the real UI without any OAuth token or
 # GitHub secret. No ANILIST_CI_TOKEN secret is needed.
@@ -169,8 +169,8 @@ jobs:
           # and `-d` allows reinstall if a newer debug build is already present.
           adb install -r -d "$APK_PATH"
 
-          # Launch the app — CI build uses compile-time stub services (CiAuthService,
-          # CiAniListClient) so no token is needed; the app appears fully authenticated
+          # Launch the app — CI build uses compile-time stub services (CIAuthService,
+          # CIAniListClient) so no token is needed; the app appears fully authenticated
           # with hardcoded data from the moment it starts.
           PACKAGE="com.RainbowSprinkles.AniSprinkles"
           adb shell monkey -p "$PACKAGE" -c android.intent.category.LAUNCHER 1

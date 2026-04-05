@@ -56,8 +56,8 @@ public static class MauiProgram
             return new HttpClient(handler);
         });
 #if CI
-        builder.Services.AddSingleton<IAuthService, CiAuthService>();
-        builder.Services.AddSingleton<IAniListClient, CiAniListClient>();
+        builder.Services.AddSingleton<IAuthService, CIAuthService>();
+        builder.Services.AddSingleton<IAniListClient, CIAniListClient>();
 #elif ERROR_SIM
         builder.Services.AddSingleton<IAuthService, SimAuthService>();
         builder.Services.AddSingleton<IAniListClient, FailingAniListClient>();

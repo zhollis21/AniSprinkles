@@ -57,8 +57,8 @@ No runnable test suite yet — `tests/AniSprinkles.UITests/` is currently a plac
 
 Passing `-p:CiBuild=true` appends `CI` to `DefineConstants` (preserving `DEBUG` and SDK-injected symbols). This activates `#if CI` blocks that swap in stub services:
 
-- `CiAuthService` (`src/Services/CI/`) — always returns `"ci-stub-token"`; app appears authenticated
-- `CiAniListClient` (`src/Services/CI/`) — returns hardcoded anime list and user profile
+- `CIAuthService` (`src/Services/CI/`) — always returns `"ci-stub-token"`; app appears authenticated
+- `CIAniListClient` (`src/Services/CI/`) — returns hardcoded anime list and user profile
 
 These stubs are **compiled out entirely** in standard Debug and Release builds. No GitHub secret or OAuth token is needed for CI screenshots.
 
