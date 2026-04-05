@@ -6,7 +6,7 @@ namespace AniSprinkles.Services;
 /// authenticated, populated UI without needing a real AniList OAuth token.
 /// Compiled out of Debug and Release builds entirely — only active when -p:CiBuild=true.
 /// </summary>
-internal sealed class CiAniListClient : IAniListClient
+internal sealed class CIAniListClient : IAniListClient
 {
     public Task<AniListUser> GetViewerAsync(CancellationToken cancellationToken = default)
         => Task.FromResult(StubData.Viewer);
