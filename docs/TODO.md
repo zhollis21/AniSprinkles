@@ -55,6 +55,8 @@ UI
 - [x] Add Settings page with sign-in/out and flyout navigation
 
 Process
+- [x] Replace CI OAuth token seeding with compile-time stub services (`CiAuthService`, `CiAniListClient`) activated by `-p:CiBuild=true` — no GitHub secret required
+- [x] Create `CLAUDE.md` with build commands, architecture overview, CI stub docs, and debugging workflow
 - [ ] Decide where to track future decisions (PLAN.md or ADRs)
 - [x] Add reminder for Codex to read docs/PLAN.md and docs/TODO.md (AGENTS.md or README)
 - [x] Add reminder for Codex to read docs/DEBUGGING.md and pull device logs during troubleshooting

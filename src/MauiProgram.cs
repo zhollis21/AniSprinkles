@@ -55,8 +55,13 @@ public static class MauiProgram
             handler.InnerHandler = new HttpClientHandler();
             return new HttpClient(handler);
         });
+#if CI
+        builder.Services.AddSingleton<IAuthService, CiAuthService>();
+        builder.Services.AddSingleton<IAniListClient, CiAniListClient>();
+#else
         builder.Services.AddSingleton<IAuthService, AuthService>();
         builder.Services.AddSingleton<IAniListClient, AniListClient>();
+#endif
         builder.Services.AddSingleton<MyAnimePageModel>();
         builder.Services.AddTransient<MyAnimePage>();
         builder.Services.AddSingleton<SettingsPageModel>();

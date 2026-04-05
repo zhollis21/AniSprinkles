@@ -1,0 +1,392 @@
+# CI workflow: Builds the app, runs unit tests, and captures UI screenshots
+# Triggers on push to main branch or pull request creation/update
+# Screenshots are committed to the screenshots/ folder on the branch and
+# embedded in PR comments using commit-SHA-based URLs for reliable rendering
+#
+# Auth note: The CI build uses compile-time stub services (CiAuthService, CiAniListClient)
+# activated by -p:CiBuild=true. These stubs make the app appear fully authenticated
+# with hardcoded data, so screenshots show the real UI without any OAuth token or
+# GitHub secret. No ANILIST_CI_TOKEN secret is needed.
+name: CI Build & UI Preview
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Cache NuGet Packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('src/AniSprinkles.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Install MAUI Workload
+        run: dotnet workload install maui-android
+
+      - name: Restore Dependencies
+        run: dotnet restore src/AniSprinkles.csproj
+
+      - name: Build
+        run: |
+          dotnet build src/AniSprinkles.csproj \
+            -c Debug \
+            -f net10.0-android \
+            -p:EmbedAssembliesIntoApk=true \
+            -p:CiBuild=true \
+            --no-restore
+
+      - name: Run Tests
+        run: |
+          # Auto-detect test projects so future additions are picked up
+          TEST_PROJECTS=$(find . -name "*.csproj" \( -path "*/tests/*" -o -path "*/test/*" -o -name "*Test*.csproj" -o -name "*Tests*.csproj" \) | grep -v node_modules || true)
+          if [ -n "$TEST_PROJECTS" ]; then
+            echo "Found test projects:"
+            echo "$TEST_PROJECTS"
+            for proj in $TEST_PROJECTS; do
+              dotnet test "$proj" --no-restore --verbosity normal
+            done
+          else
+            echo "::notice::No test projects found. Tests will run automatically when added."
+          fi
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-apk
+          path: src/bin/Debug/net10.0-android/*-Signed.apk
+          retention-days: 7
+          if-no-files-found: error
+
+      - name: Generate Build Summary
+        if: always()
+        run: |
+          if [ "${{ job.status }}" == "success" ]; then
+            echo "## ✅ Build Successful" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "## ❌ Build Failed" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Configuration:** Debug" >> $GITHUB_STEP_SUMMARY
+          echo "**Framework:** net10.0-android" >> $GITHUB_STEP_SUMMARY
+          echo "**Build Time:** $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+
+  ui-screenshots:
+    name: UI Screenshots
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    timeout-minutes: 25
+    # Screenshots are informational — emulator flakiness should not block the CI gate
+    continue-on-error: true
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref }}
+
+      - name: Download APK
+        uses: actions/download-artifact@v4
+        with:
+          name: debug-apk
+          path: /tmp/apk
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      # The emulator-runner action executes each script line as a separate
+      # `sh -c` invocation, which breaks multi-line constructs (if/fi, for/done).
+      # Work around this by writing the full script to a temp file first.
+      - name: Create Screenshot Script
+        run: |
+          cat > /tmp/capture_screenshots.sh << 'SCRIPT'
+          #!/bin/bash
+          set -e
+
+          # Tap a UI element by its visible text using UI Automator.
+          # Dumps the view hierarchy, finds the element's bounds, and taps the center.
+          # Usage: tap_element_by_text "Settings"
+          tap_element_by_text() {
+            local target_text="$1"
+            adb shell uiautomator dump /sdcard/ui_tap.xml 2>/dev/null || true
+            local bounds
+            bounds=$(adb shell cat /sdcard/ui_tap.xml 2>/dev/null \
+              | grep -o "text=\"${target_text}\"[^>]*" \
+              | grep -o 'bounds="\[[0-9]*,[0-9]*\]\[[0-9]*,[0-9]*\]"' \
+              | head -1 \
+              | sed 's/bounds="//;s/"//')
+            if [ -z "$bounds" ]; then
+              echo "::warning::Could not find element with text '${target_text}'"
+              return 1
+            fi
+            local left top right bottom cx cy
+            left=$(echo "$bounds" | sed 's/\[//g;s/\]/ /g' | awk -F'[, ]' '{print $1}')
+            top=$(echo "$bounds" | sed 's/\[//g;s/\]/ /g' | awk -F'[, ]' '{print $2}')
+            right=$(echo "$bounds" | sed 's/\[//g;s/\]/ /g' | awk -F'[, ]' '{print $3}')
+            bottom=$(echo "$bounds" | sed 's/\[//g;s/\]/ /g' | awk -F'[, ]' '{print $4}')
+            cx=$(( (left + right) / 2 ))
+            cy=$(( (top + bottom) / 2 ))
+            echo "Tapping '${target_text}' at (${cx}, ${cy}) — bounds: ${bounds}"
+            adb shell input tap "$cx" "$cy"
+          }
+
+          # Locate the APK
+          APK_PATH=$(find /tmp/apk -name "*-Signed.apk" -type f | head -1)
+          if [ -z "$APK_PATH" ]; then
+            echo "::error::No signed APK found in artifacts"
+            exit 1
+          fi
+          echo "Installing APK: $APK_PATH"
+
+          # Install the app on the emulator
+          adb install "$APK_PATH"
+
+          # Launch the app — CI build uses compile-time stub services (CiAuthService,
+          # CiAniListClient) so no token is needed; the app appears fully authenticated
+          # with hardcoded data from the moment it starts.
+          PACKAGE="com.RainbowSprinkles.AniSprinkles"
+          adb shell monkey -p "$PACKAGE" -c android.intent.category.LAUNCHER 1
+          AUTH_MODE="ci-stubs"
+
+          # Poll for app window to appear (up to 30s)
+          echo "Waiting for app to start..."
+          for i in $(seq 1 30); do
+            if adb shell dumpsys window windows 2>/dev/null | grep -q "$PACKAGE"; then
+              echo "App window detected after ${i}s"
+              break
+            fi
+            sleep 1
+          done
+
+          # Wait for the page to finish loading by polling the UI hierarchy.
+          # The app shows "Checking authentication" then "Loading anime list" text
+          # while data is being fetched. We poll until those indicators disappear,
+          # with a hard cap to avoid hanging forever.
+          MAX_WAIT=60
+          MIN_WAIT=5
+          POLL_INTERVAL=3
+          echo "Waiting for page to finish loading (up to ${MAX_WAIT}s)..."
+          sleep $MIN_WAIT
+          ELAPSED=$MIN_WAIT
+          while [ $ELAPSED -lt $MAX_WAIT ]; do
+            # Dump UI hierarchy to check for loading indicators
+            adb shell uiautomator dump /sdcard/ui_dump.xml 2>/dev/null || true
+            UI_DUMP=$(adb shell cat /sdcard/ui_dump.xml 2>/dev/null || echo "")
+            if echo "$UI_DUMP" | grep -qi "Checking authentication"; then
+              echo "  Still checking authentication... (${ELAPSED}s)"
+            elif echo "$UI_DUMP" | grep -qi "Loading anime list"; then
+              echo "  Still loading anime list... (${ELAPSED}s)"
+            else
+              echo "  Page appears ready after ${ELAPSED}s"
+              # Brief extra settle time for final render
+              sleep 2
+              break
+            fi
+            sleep $POLL_INTERVAL
+            ELAPSED=$((ELAPSED + POLL_INTERVAL))
+          done
+          if [ $ELAPSED -ge $MAX_WAIT ]; then
+            echo "::warning::Timed out waiting for page to load after ${MAX_WAIT}s — capturing anyway"
+          fi
+
+          mkdir -p screenshots
+
+          # Screenshot 1: My Anime page (default flyout destination)
+          adb shell screencap -p /sdcard/my_anime.png || echo "::warning::Failed to capture My Anime screenshot"
+          adb pull /sdcard/my_anime.png screenshots/01_my_anime.png || echo "::warning::Failed to pull My Anime screenshot"
+          echo "Captured: 01_my_anime.png (My Anime — $AUTH_MODE)"
+
+          # Navigate to Settings page via the flyout
+          adb shell input swipe 0 500 300 500 300
+          sleep 2
+          tap_element_by_text "Settings" || adb shell input tap 200 350
+          sleep 3
+
+          # Screenshot 2: Settings page
+          adb shell screencap -p /sdcard/settings.png || echo "::warning::Failed to capture Settings screenshot"
+          adb pull /sdcard/settings.png screenshots/02_settings.png || echo "::warning::Failed to pull Settings screenshot"
+          echo "Captured: 02_settings.png (Settings — $AUTH_MODE)"
+
+          echo ""
+          echo "Auth mode: $AUTH_MODE"
+          echo "Screenshots captured:"
+          ls -la screenshots/
+          SCRIPT
+          chmod +x /tmp/capture_screenshots.sh
+
+      - name: Run Emulator & Capture Screenshots
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 31
+          arch: x86_64
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
+          disable-animations: true
+          script: /tmp/capture_screenshots.sh
+
+      - name: Upload Screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-screenshots
+          path: screenshots/
+          retention-days: 30
+          if-no-files-found: warn
+
+      - name: Commit Screenshots
+        id: commit-screenshots
+        # Cannot push to fork PRs — GITHUB_TOKEN lacks write access to the source repo
+        if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
+        run: |
+          if [ ! -d "screenshots" ] || [ -z "$(find screenshots -name '*.png' -type f 2>/dev/null)" ]; then
+            echo "No screenshots to commit"
+            echo "has_screenshots=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          echo "has_screenshots=true" >> $GITHUB_OUTPUT
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add screenshots/
+          if git diff --cached --quiet; then
+            echo "Screenshots unchanged — nothing to commit"
+          else
+            git commit -m "CI: Update UI screenshots [skip ci]"
+            git push
+          fi
+          echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Comment on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        env:
+          SCREENSHOT_SHA: ${{ steps.commit-screenshots.outputs.sha }}
+          HAS_SCREENSHOTS: ${{ steps.commit-screenshots.outputs.has_screenshots }}
+        with:
+          script: |
+            const fs = require('fs');
+            const marker = '<!-- ci-ui-screenshots -->';
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const prNumber = context.issue.number;
+            const sha = process.env.SCREENSHOT_SHA;
+            const hasScreenshots = process.env.HAS_SCREENSHOTS === 'true';
+
+            const screenshots = [
+              { file: 'screenshots/01_my_anime.png', label: 'My Anime' },
+              { file: 'screenshots/02_settings.png', label: 'Settings' },
+            ];
+
+            // Build image URLs using the commit SHA for reliable, cache-proof links
+            const imageMarkdowns = [];
+            if (hasScreenshots && sha) {
+              for (const shot of screenshots) {
+                if (!fs.existsSync(shot.file)) {
+                  core.warning(`Screenshot not found: ${shot.file}`);
+                  continue;
+                }
+                const rawUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${sha}/${shot.file}`;
+                imageMarkdowns.push({ label: shot.label, url: rawUrl });
+              }
+            }
+
+            // --- Build PR comment body ---
+            const authNote = '> ✅ **Authenticated UI** — screenshots rendered via compile-time CI stub services with hardcoded data. No OAuth token required.';
+            const pageDesc = '';
+
+            const bodyParts = [
+              marker,
+              '## 📱 UI Screenshots',
+              '',
+              authNote,
+              '',
+              `**[View Workflow Run →](${runUrl})**`,
+              '',
+            ];
+
+            if (imageMarkdowns.length > 0) {
+              // Embed images side-by-side in a table
+              bodyParts.push(
+                '| ' + imageMarkdowns.map(i => `${i.label}${pageDesc}`).join(' | ') + ' |',
+                '| ' + imageMarkdowns.map(() => ':---:').join(' | ') + ' |',
+                '| ' + imageMarkdowns.map(i => `![${i.label}](${i.url})`).join(' | ') + ' |',
+              );
+            } else {
+              bodyParts.push(
+                '⚠️ No screenshots were captured for this run.',
+                '',
+                '> Download the **ui-screenshots** artifact from the Artifacts section at the bottom of the workflow run page.',
+              );
+            }
+
+            const body = bodyParts.join('\n');
+
+            // --- Post or update the PR comment ---
+            const { data: comments } = await github.rest.issues.listComments({
+              owner, repo, issue_number: prNumber,
+            });
+
+            const existing = comments.find(c => c.body.includes(marker));
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner, repo,
+                comment_id: existing.id,
+                body,
+              });
+              core.info('Updated existing PR comment with screenshots');
+            } else {
+              await github.rest.issues.createComment({
+                owner, repo,
+                issue_number: prNumber,
+                body,
+              });
+              core.info('Posted PR comment with screenshots');
+            }
+
+      - name: Generate Screenshot Summary
+        if: always()
+        run: |
+          echo "## 📱 UI Screenshots" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -d "screenshots" ] && [ "$(ls -A screenshots/ 2>/dev/null)" ]; then
+            echo "Screenshots captured and uploaded as artifacts." >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "> ✅ **Authenticated UI** — rendered via compile-time CI stub services with hardcoded data." >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "| Screenshot | Page |" >> $GITHUB_STEP_SUMMARY
+            echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+            echo "| \`01_my_anime.png\` | My Anime |" >> $GITHUB_STEP_SUMMARY
+            echo "| \`02_settings.png\` | Settings |" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️ No screenshots were captured. Check the emulator step logs." >> $GITHUB_STEP_SUMMARY
+          fi
