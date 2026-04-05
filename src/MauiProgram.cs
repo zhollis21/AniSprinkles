@@ -58,6 +58,9 @@ public static class MauiProgram
 #if CI
         builder.Services.AddSingleton<IAuthService, CiAuthService>();
         builder.Services.AddSingleton<IAniListClient, CiAniListClient>();
+#elif ERROR_SIM
+        builder.Services.AddSingleton<IAuthService, SimAuthService>();
+        builder.Services.AddSingleton<IAniListClient, FailingAniListClient>();
 #else
         builder.Services.AddSingleton<IAuthService, AuthService>();
         builder.Services.AddSingleton<IAniListClient, AniListClient>();

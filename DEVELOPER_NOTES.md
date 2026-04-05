@@ -6,66 +6,30 @@ The app has classified error handling (`AniListApiException` with `ApiErrorKind`
 different error views for outages, network failures, and auth errors. Here's how to trigger
 each scenario locally.
 
-### Option 1: Quick DI swap (recommended)
+### Option 1: `ErrorSim` build flag (recommended)
 
-The app uses `IAniListClient` via DI (`MauiProgram.cs`). Create a throwing stub and register it
-temporarily:
+The stubs are already wired up. Pass `-p:ErrorSim=true` at build time (Debug only):
 
-```csharp
-// In MauiProgram.cs, replace the real client registration temporarily:
-// builder.Services.AddSingleton<IAniListClient, AniListClient>();
-builder.Services.AddSingleton<IAniListClient, FailingAniListClient>();
+```
+dotnet build -p:ErrorSim=true
 ```
 
-Example stub (drop this anywhere under `src/Services/` during testing):
+Or in Visual Studio: **Project Properties → Build → Conditional compilation symbols → add `ERROR_SIM`**.
+
+This swaps in two pre-built stubs automatically:
+- `SimAuthService` (`src/Services/ErrorSimulation/SimAuthService.cs`) — always reports the app as authenticated, no real sign-in needed
+- `FailingAniListClient` (`src/Services/ErrorSimulation/FailingAniListClient.cs`) — throws a classified `AniListApiException` on every data call
+
+To change which error kind is simulated, open `src/Services/ErrorSimulation/FailingAniListClient.cs` and
+change the `SimulatedError` constant, then rebuild:
 
 ```csharp
-// DO NOT CHECK IN — local testing only
-internal sealed class FailingAniListClient : IAniListClient
-{
-    // Change this to test different error views:
-    //   ApiErrorKind.ServiceOutage  → "AniList is Temporarily Down" (cloud icon)
-    //   ApiErrorKind.Network        → "No Internet Connection" (wifi-off icon)
-    //   ApiErrorKind.Authentication → "Session Expired" (lock icon)
-    //   ApiErrorKind.Unknown        → "Something Went Wrong" (error icon)
-    private static readonly ApiErrorKind SimulatedError = ApiErrorKind.ServiceOutage;
-
-    private static AniListApiException Fail() => SimulatedError switch
-    {
-        ApiErrorKind.ServiceOutage => new(ApiErrorKind.ServiceOutage,
-            "AniList API has been temporarily disabled due to stability issues."),
-        ApiErrorKind.Network => new(ApiErrorKind.Network,
-            "Network error during GetMyAnimeListGrouped.",
-            new HttpRequestException("No route to host")),
-        ApiErrorKind.Authentication => new(ApiErrorKind.Authentication,
-            "Invalid token"),
-        _ => new(ApiErrorKind.Unknown, "Something unexpected happened."),
-    };
-
-    public Task<IReadOnlyList<(string, IReadOnlyList<MediaListEntry>)>>
-        GetMyAnimeListGroupedAsync(CancellationToken ct = default) => throw Fail();
-    public Task<IReadOnlyList<MediaListEntry>>
-        GetMyAnimeListAsync(CancellationToken ct = default) => throw Fail();
-    public Task<(Media?, MediaListEntry?)>
-        GetMediaAsync(int id, CancellationToken ct = default) => throw Fail();
-    public Task<IReadOnlyList<Media>>
-        SearchAnimeAsync(string s, int p = 1, int pp = 20, CancellationToken ct = default)
-            => throw Fail();
-    public Task<MediaListEntry?>
-        SaveMediaListEntryAsync(MediaListEntry e, CancellationToken ct = default) => throw Fail();
-    public Task<bool>
-        DeleteMediaListEntryAsync(int id, CancellationToken ct = default) => throw Fail();
-    public Task<int>
-        GetCurrentUserIdAsync(CancellationToken ct = default) => throw Fail();
-    public Task<AniListUser>
-        GetViewerAsync(CancellationToken ct = default) => throw Fail();
-    public Task<AniListUser>
-        UpdateUserAsync(UpdateUserRequest req, CancellationToken ct = default) => throw Fail();
-}
+//   ApiErrorKind.ServiceOutage  → "AniList is Temporarily Down"  (CloudDismiss24)
+//   ApiErrorKind.Network        → "No Internet Connection"        (WifiOff24)
+//   ApiErrorKind.Authentication → "Session Expired"               (LockClosed24)
+//   ApiErrorKind.Unknown        → "Something Went Wrong"          (ErrorCircle24)
+private const ApiErrorKind SimulatedError = ApiErrorKind.ServiceOutage;
 ```
-
-Change `SimulatedError` to cycle through each error kind and verify all three pages
-(My Anime, Media Details, Settings) show the correct icon, title, subtitle, and retry button.
 
 ### Option 2: Block the endpoint at the network level
 
