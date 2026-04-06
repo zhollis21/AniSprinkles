@@ -179,7 +179,7 @@ jobs:
           # Launch the app via explicit component name — more reliable than intent
           # resolution on API 31+ where exported=true is strictly enforced.
           # CI build uses compile-time stub services so no token is needed.
-          adb shell am start -n "$PACKAGE/com.RainbowSprinkles.AniSprinkles.MainActivity"
+          adb shell am start -n "$PACKAGE/crc6418a5ac36641a60eb.MainActivity"
           AUTH_MODE="ci-stubs"
 
           # Poll for app window to appear (up to 30s)
