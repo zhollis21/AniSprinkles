@@ -1010,15 +1010,15 @@ namespace AniSprinkles.PageModels;
     [RelayCommand]
     private async Task RetryLoad()
     {
-        if (_lastRequestedMediaId > 0)
+        if (_lastRequestedMediaId <= 0 || IsBusy)
         {
-            // Clear error state and busy flag before calling LoadAsync so the IsBusy
-            // gate doesn't swallow the retry. LoadAsync will re-set IsBusy = true once
-            // it passes the gate, giving us the loading spinner without a deadlock.
-            IsErrorState = false;
-            IsBusy = false;
-            await LoadAsync(_lastRequestedMediaId, _lastRequestedListEntry);
+            return;
         }
+
+        // Clear the error state so the UI transitions to the loading spinner.
+        // LoadAsync fully owns the IsBusy lifecycle — we don't touch it here.
+        IsErrorState = false;
+        await LoadAsync(_lastRequestedMediaId, _lastRequestedListEntry);
     }
 
     [RelayCommand]

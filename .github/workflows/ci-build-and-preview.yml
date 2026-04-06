@@ -182,6 +182,10 @@ jobs:
           # Resolve the launcher activity dynamically so this survives any future
           # MAUI namespace or assembly renames (which change the crc64 class name).
           MAIN_ACTIVITY=$(adb shell cmd package resolve-activity --brief -c android.intent.category.LAUNCHER "$PACKAGE" | tail -1)
+          if [ -z "$MAIN_ACTIVITY" ] || echo "$MAIN_ACTIVITY" | grep -qi "error\|no activity"; then
+            echo "::error::Could not resolve launcher activity for $PACKAGE — got: '$MAIN_ACTIVITY'"
+            exit 1
+          fi
           echo "Launching: $MAIN_ACTIVITY"
 
           # -W: wait until onResume before returning (eliminates window-detection race)
