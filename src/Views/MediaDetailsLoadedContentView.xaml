@@ -86,7 +86,7 @@
             <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
                 <!-- Score pill -->
                 <Border Grid.Column="0" Style="{StaticResource CardStyle}" Padding="10,10">
-                    <VerticalStackLayout Spacing="2" HorizontalOptions="Center">
+                    <VerticalStackLayout Spacing="2" HorizontalOptions="Fill">
                         <Image WidthRequest="18" HeightRequest="18" HorizontalOptions="Center">
                             <Image.Source>
                                 <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Star24}"
@@ -102,7 +102,7 @@
                 </Border>
                 <!-- Popularity pill -->
                 <Border Grid.Column="1" Style="{StaticResource CardStyle}" Padding="10,10">
-                    <VerticalStackLayout Spacing="2" HorizontalOptions="Center">
+                    <VerticalStackLayout Spacing="2" HorizontalOptions="Fill">
                         <Image WidthRequest="18" HeightRequest="18" HorizontalOptions="Center">
                             <Image.Source>
                                 <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.People24}"
@@ -118,7 +118,7 @@
                 </Border>
                 <!-- Favourites pill -->
                 <Border Grid.Column="2" Style="{StaticResource CardStyle}" Padding="10,10">
-                    <VerticalStackLayout Spacing="2" HorizontalOptions="Center">
+                    <VerticalStackLayout Spacing="2" HorizontalOptions="Fill">
                         <Image WidthRequest="18" HeightRequest="18" HorizontalOptions="Center">
                             <Image.Source>
                                 <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Heart24}"

@@ -86,21 +86,30 @@ internal sealed class CIAniListClient : IAniListClient
             Id = 1001, MediaId = 21, Status = MediaListStatus.Current, Progress = 800, Score = 8.0,
             Media = new Media
             {
-                Id = 21, Format = "TV", Episodes = null, AverageScore = 87,
-                Status = "RELEASING", Season = "FALL", SeasonYear = 1999,
-                Title = new MediaTitle { Romaji = "ONE PIECE", English = "ONE PIECE" },
+                Id = 21, Format = "TV", Episodes = null, AverageScore = 87, MeanScore = 88,
+                Popularity = 641_752, Favourites = 90_457,
+                Status = "RELEASING", Season = "FALL", SeasonYear = 1999, Source = "MANGA",
+                Title = new MediaTitle { Romaji = "ONE PIECE", English = "ONE PIECE", Native = "ワンピース" },
                 CoverImage = new MediaCoverImage
                 {
                     Medium = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21-ELSYx3yMPcKM.jpg",
                     Large = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx21-ELSYx3yMPcKM.jpg",
                     Color = "#e49335",
                 },
+                BannerImage = "https://s4.anilist.co/file/anilistcdn/media/anime/banner/21-wf37VakJmZqs.jpg",
+                Description = "Gol D. Roger was known as the \"Pirate King,\" the strongest and most infamous being to have sailed the Grand Line. The capture and execution of Roger by the World Government brought a change throughout the world. His last words before his death revealed the existence of the greatest treasure in the world, One Piece. It was this revelation that brought about the Grand Age of Pirates, men who dreamed of finding One Piece—which promises an unlimited amount of riches and fame—and quite possibly the pinnacle of glory and the title of the Pirate King.<br><br>Enter Monkey D. Luffy, a 17-year-old boy who defies your standard definition of a pirate. Rather than the popular persona of a wicked, hardened, toothless pirate ransacking villages for fun, Luffy's reason for being a pirate is one of pure wonder: the thought of an exciting adventure that leads him to intriguing people and ultimately, the promised treasure.",
+                StartDate = new MediaDate { Year = 1999, Month = 10, Day = 20 },
                 Genres = ["Action", "Adventure", "Comedy", "Drama", "Fantasy"],
+                Studios =
+                [
+                    new Studio { Id = 18, Name = "Toei Animation", IsAnimationStudio = true },
+                ],
                 // Airs today in 3 hours — exercises the short countdown airing path
                 NextAiringEpisode = new MediaAiringEpisode
                 {
                     Episode = 1160,
                     AiringAt = (int)DateTimeOffset.UtcNow.AddHours(3).ToUnixTimeSeconds(),
+                    TimeUntilAiring = 3 * 60 * 60,
                 },
             },
         };
@@ -161,6 +170,7 @@ internal sealed class CIAniListClient : IAniListClient
                 {
                     Episode = 149,
                     AiringAt = (int)DateTimeOffset.UtcNow.AddMonths(1).ToUnixTimeSeconds(),
+                    TimeUntilAiring = 30 * 24 * 60 * 60,
                 },
             },
         };
