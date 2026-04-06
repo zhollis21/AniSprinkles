@@ -187,7 +187,7 @@ namespace AniSprinkles.PageModels;
 
     public bool HasMedia => Media is not null;
 
-    public bool IsInitialLoading => Media is null && string.IsNullOrWhiteSpace(StatusMessage);
+    public bool IsInitialLoading => Media is null && string.IsNullOrWhiteSpace(StatusMessage) && !IsErrorState;
 
     public bool HasDescription => !string.IsNullOrWhiteSpace(Media?.Description);
 
@@ -502,6 +502,9 @@ namespace AniSprinkles.PageModels;
 
     partial void OnErrorDetailsChanged(string value)
         => HasErrorDetails = !string.IsNullOrWhiteSpace(value);
+
+    partial void OnIsErrorStateChanged(bool value)
+        => OnPropertyChanged(nameof(IsInitialLoading));
 
     partial void OnMediaChanged(Media? value)
     {
