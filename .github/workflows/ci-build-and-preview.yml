@@ -99,7 +99,7 @@ jobs:
     name: UI Screenshots
     runs-on: ubuntu-latest
     needs: build-and-test
-    timeout-minutes: 25
+    timeout-minutes: 30
     # Screenshots are informational — emulator flakiness should not block the CI gate
     continue-on-error: true
 
@@ -173,7 +173,7 @@ jobs:
           # CIAniListClient) so no token is needed; the app appears fully authenticated
           # with hardcoded data from the moment it starts.
           PACKAGE="com.RainbowSprinkles.AniSprinkles"
-          adb shell monkey -p "$PACKAGE" -c android.intent.category.LAUNCHER 1
+          adb shell am start -a android.intent.action.MAIN -c android.intent.category.LAUNCHER -p "$PACKAGE"
           AUTH_MODE="ci-stubs"
 
           # Poll for app window to appear (up to 30s)
@@ -233,7 +233,19 @@ jobs:
 
           # Tap One Piece to open its details page
           tap_element_by_text "ONE PIECE" || echo "::warning::Could not find ONE PIECE in list"
-          sleep 5
+
+          # Poll for the details page to load (up to 15s)
+          DETAILS_WAIT=0
+          while [ $DETAILS_WAIT -lt 15 ]; do
+            adb shell uiautomator dump /sdcard/ui_details.xml 2>/dev/null || true
+            if adb shell cat /sdcard/ui_details.xml 2>/dev/null | grep -qi "Episode"; then
+              echo "  Details page ready after ${DETAILS_WAIT}s"
+              sleep 1
+              break
+            fi
+            sleep 1
+            DETAILS_WAIT=$((DETAILS_WAIT + 1))
+          done
 
           # Screenshot 2: One Piece details page
           adb shell screencap -p /sdcard/one_piece_details.png || echo "::warning::Failed to capture details screenshot"
@@ -266,6 +278,7 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 34
+          target: google_apis
           arch: x86_64
           profile: pixel_8
           force-avd-creation: false
