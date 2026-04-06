@@ -192,18 +192,23 @@ public partial class MyAnimePage : ContentPage
 
     private void UpdateToolbarItems()
     {
+        if (_searchToolbarItem is null || _viewModeToolbarItem is null)
+        {
+            return;
+        }
+
         bool authenticated = _viewModel?.IsAuthenticated == true;
-        bool hasSearch = ToolbarItems.Contains(_searchToolbarItem!);
+        bool hasSearch = ToolbarItems.Contains(_searchToolbarItem);
 
         if (authenticated && !hasSearch)
         {
-            ToolbarItems.Add(_searchToolbarItem!);
-            ToolbarItems.Add(_viewModeToolbarItem!);
+            ToolbarItems.Add(_searchToolbarItem);
+            ToolbarItems.Add(_viewModeToolbarItem);
         }
         else if (!authenticated && hasSearch)
         {
-            ToolbarItems.Remove(_searchToolbarItem!);
-            ToolbarItems.Remove(_viewModeToolbarItem!);
+            ToolbarItems.Remove(_searchToolbarItem);
+            ToolbarItems.Remove(_viewModeToolbarItem);
         }
     }
 

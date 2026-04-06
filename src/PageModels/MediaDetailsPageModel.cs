@@ -997,6 +997,10 @@ namespace AniSprinkles.PageModels;
     {
         if (_lastRequestedMediaId > 0)
         {
+            // Clear error state immediately so the UI shows the loading spinner
+            // rather than staying on the error view while GetAccessTokenAsync awaits.
+            IsErrorState = false;
+            IsBusy = true;
             await LoadAsync(_lastRequestedMediaId, _lastRequestedListEntry);
         }
     }
