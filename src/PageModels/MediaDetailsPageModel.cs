@@ -997,10 +997,11 @@ namespace AniSprinkles.PageModels;
     {
         if (_lastRequestedMediaId > 0)
         {
-            // Clear error state immediately so the UI shows the loading spinner
-            // rather than staying on the error view while GetAccessTokenAsync awaits.
+            // Clear error state and busy flag before calling LoadAsync so the IsBusy
+            // gate doesn't swallow the retry. LoadAsync will re-set IsBusy = true once
+            // it passes the gate, giving us the loading spinner without a deadlock.
             IsErrorState = false;
-            IsBusy = true;
+            IsBusy = false;
             await LoadAsync(_lastRequestedMediaId, _lastRequestedListEntry);
         }
     }
