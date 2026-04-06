@@ -267,15 +267,39 @@ jobs:
           adb pull /sdcard/one_piece_details.png screenshots/02_one_piece_details.png || echo "::warning::Failed to pull details screenshot"
           echo "Captured: 02_one_piece_details.png (One Piece Details — $AUTH_MODE)"
 
-          # Navigate back to My Anime
+          # Navigate back to My Anime, then open the Shell flyout and tap Settings.
+          # Swipe coordinates are computed from actual screen dimensions so this
+          # works regardless of device profile or resolution.
           adb shell input keyevent KEYCODE_BACK
-          sleep 2
+          sleep 1
 
-          # Navigate to Settings page via the flyout
-          adb shell input swipe 0 500 300 500 300
-          sleep 2
-          tap_element_by_text "Settings" || adb shell input tap 200 350
-          sleep 3
+          SCREEN_SIZE=$(adb shell wm size | grep -oP '\d+x\d+' | head -1)
+          SCREEN_W=$(echo "$SCREEN_SIZE" | cut -dx -f1)
+          SCREEN_H=$(echo "$SCREEN_SIZE" | cut -dx -f2)
+          SWIPE_END_X=$((SCREEN_W / 2))
+          SWIPE_MID_Y=$((SCREEN_H / 2))
+          echo "Screen: ${SCREEN_W}x${SCREEN_H} — swiping to (${SWIPE_END_X}, ${SWIPE_MID_Y})"
+
+          # Swipe from the left edge to open the Shell flyout
+          adb shell input swipe 0 "$SWIPE_MID_Y" "$SWIPE_END_X" "$SWIPE_MID_Y" 400
+          sleep 1
+
+          # Poll until Settings is visible in the flyout, then tap it
+          SETTINGS_WAIT=0
+          while [ $SETTINGS_WAIT -lt 10 ]; do
+            adb shell uiautomator dump /sdcard/ui_flyout.xml 2>/dev/null || true
+            if adb shell cat /sdcard/ui_flyout.xml 2>/dev/null | grep -qi '"Settings"'; then
+              echo "  Flyout open after ${SETTINGS_WAIT}s — tapping Settings"
+              tap_element_by_text "Settings"
+              sleep 2
+              break
+            fi
+            sleep 1
+            SETTINGS_WAIT=$((SETTINGS_WAIT + 1))
+          done
+          if [ $SETTINGS_WAIT -ge 10 ]; then
+            echo "::warning::Flyout did not open — Settings screenshot may be incorrect"
+          fi
 
           # Screenshot 3: Settings page
           adb shell screencap -p /sdcard/settings.png || echo "::warning::Failed to capture Settings screenshot"

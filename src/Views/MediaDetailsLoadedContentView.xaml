@@ -186,7 +186,7 @@
                                TextColor="{StaticResource Gray400}" VerticalTextAlignment="Center" />
                         <Label Text="{Binding NextAiringCountdownCompact}"
                                Style="{StaticResource Caption1Strong}"
-                               TextColor="{StaticResource White}"
+                               TextColor="{StaticResource RainbowOrange}"
                                VerticalTextAlignment="Center" />
                     </HorizontalStackLayout>
 
@@ -196,14 +196,13 @@
                            Style="{StaticResource Caption2}"
                            TextColor="{StaticResource Gray400}" />
 
-                    <!-- "Airing Today!" badge when < 24h -->
+                    <!-- "Soon!" badge when < 24h -->
                     <Border Grid.Column="2" Grid.RowSpan="2"
                             StrokeShape="RoundRectangle 10" StrokeThickness="0"
                             BackgroundColor="{StaticResource RainbowCyan}"
                             Padding="8,4"
-                            VerticalOptions="Center"
-                            IsVisible="{Binding IsAiringToday}">
-                        <Label Text="SOON" Style="{StaticResource Caption2}"
+                            VerticalOptions="Center">
+                        <Label Text="Soon!" Style="{StaticResource Caption2}"
                                FontAttributes="Bold" FontSize="14" />
                     </Border>
                 </Grid>
