@@ -176,10 +176,10 @@ jobs:
             exit 1
           fi
 
-          # Launch the app — CI build uses compile-time stub services (CIAuthService,
-          # CIAniListClient) so no token is needed; the app appears fully authenticated
-          # with hardcoded data from the moment it starts.
-          adb shell am start -a android.intent.action.MAIN -c android.intent.category.LAUNCHER -p "$PACKAGE"
+          # Launch the app via explicit component name — more reliable than intent
+          # resolution on API 31+ where exported=true is strictly enforced.
+          # CI build uses compile-time stub services so no token is needed.
+          adb shell am start -n "$PACKAGE/com.RainbowSprinkles.AniSprinkles.MainActivity"
           AUTH_MODE="ci-stubs"
 
           # Poll for app window to appear (up to 30s)
