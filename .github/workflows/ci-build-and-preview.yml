@@ -157,14 +157,6 @@ jobs:
             adb shell input tap "$cx" "$cy"
           }
 
-          # Wait for adb and the device to be fully online before doing anything.
-          # The emulator-runner boots the emulator, but adb may not be ready yet
-          # when the script starts — without this, install silently races and fails.
-          echo "Waiting for device to be online..."
-          adb wait-for-device
-          adb shell wait-for-device
-          echo "Device online."
-
           # Locate the APK
           APK_PATH=$(find /tmp/apk -name "*-Signed.apk" -type f | head -1)
           if [ -z "$APK_PATH" ]; then
