@@ -55,6 +55,22 @@ internal sealed class CIAniListClient : IAniListClient
     // Progress and list scores are illustrative.
     // ---------------------------------------------------------------------------
 
+    /// <summary>
+    /// Creates a <see cref="MediaAiringEpisode"/> where <see cref="MediaAiringEpisode.TimeUntilAiring"/>
+    /// is always derived from the same <paramref name="airingTime"/> as <see cref="MediaAiringEpisode.AiringAt"/>,
+    /// so the two fields are always consistent with each other.
+    /// </summary>
+    private static MediaAiringEpisode MakeAiringEpisode(int episode, DateTimeOffset airingTime)
+    {
+        var now = DateTimeOffset.UtcNow;
+        return new MediaAiringEpisode
+        {
+            Episode = episode,
+            AiringAt = (int)airingTime.ToUnixTimeSeconds(),
+            TimeUntilAiring = (int)Math.Max((airingTime - now).TotalSeconds, 0),
+        };
+    }
+
     private static class StubData
     {
         public static readonly AniListUser Viewer = new()
@@ -105,12 +121,7 @@ internal sealed class CIAniListClient : IAniListClient
                     new Studio { Id = 18, Name = "Toei Animation", IsAnimationStudio = true },
                 ],
                 // Airs today in 3 hours — exercises the short countdown airing path
-                NextAiringEpisode = new MediaAiringEpisode
-                {
-                    Episode = 1160,
-                    AiringAt = (int)DateTimeOffset.UtcNow.AddHours(3).ToUnixTimeSeconds(),
-                    TimeUntilAiring = 3 * 60 * 60,
-                },
+                NextAiringEpisode = MakeAiringEpisode(1160, DateTimeOffset.UtcNow.AddHours(3)),
             },
         };
 
@@ -166,12 +177,7 @@ internal sealed class CIAniListClient : IAniListClient
                 },
                 Genres = ["Action", "Adventure", "Fantasy"],
                 // Airs in ~1 month — exercises the long countdown airing path
-                NextAiringEpisode = new MediaAiringEpisode
-                {
-                    Episode = 149,
-                    AiringAt = (int)DateTimeOffset.UtcNow.AddMonths(1).ToUnixTimeSeconds(),
-                    TimeUntilAiring = 30 * 24 * 60 * 60,
-                },
+                NextAiringEpisode = MakeAiringEpisode(149, DateTimeOffset.UtcNow.AddDays(30)),
             },
         };
 

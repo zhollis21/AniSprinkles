@@ -301,6 +301,26 @@ jobs:
             echo "::warning::Flyout did not open — Settings screenshot may be incorrect"
           fi
 
+          # Poll for Settings page to finish loading (up to 15s)
+          # "Display Preferences" is a static label always visible once loaded.
+          SETTINGS_LOAD_WAIT=0
+          while [ $SETTINGS_LOAD_WAIT -lt 15 ]; do
+            adb shell uiautomator dump /sdcard/ui_settings_loaded.xml 2>/dev/null || true
+            SETTINGS_DUMP=$(adb shell cat /sdcard/ui_settings_loaded.xml 2>/dev/null || echo "")
+            if echo "$SETTINGS_DUMP" | grep -q "Loading settings"; then
+              echo "  Still loading settings... (${SETTINGS_LOAD_WAIT}s)"
+            elif echo "$SETTINGS_DUMP" | grep -q "Display Preferences"; then
+              echo "  Settings loaded after ${SETTINGS_LOAD_WAIT}s"
+              sleep 1
+              break
+            fi
+            sleep 1
+            SETTINGS_LOAD_WAIT=$((SETTINGS_LOAD_WAIT + 1))
+          done
+          if [ $SETTINGS_LOAD_WAIT -ge 15 ]; then
+            echo "::warning::Settings page did not finish loading — capturing anyway"
+          fi
+
           # Screenshot 3: Settings page
           adb shell screencap -p /sdcard/settings.png || echo "::warning::Failed to capture Settings screenshot"
           adb pull /sdcard/settings.png screenshots/03_settings.png || echo "::warning::Failed to pull Settings screenshot"
