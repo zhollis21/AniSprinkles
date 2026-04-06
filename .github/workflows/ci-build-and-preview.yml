@@ -231,16 +231,29 @@ jobs:
           adb pull /sdcard/my_anime.png screenshots/01_my_anime.png || echo "::warning::Failed to pull My Anime screenshot"
           echo "Captured: 01_my_anime.png (My Anime — $AUTH_MODE)"
 
+          # Tap One Piece to open its details page
+          tap_element_by_text "ONE PIECE" || echo "::warning::Could not find ONE PIECE in list"
+          sleep 5
+
+          # Screenshot 2: One Piece details page
+          adb shell screencap -p /sdcard/one_piece_details.png || echo "::warning::Failed to capture details screenshot"
+          adb pull /sdcard/one_piece_details.png screenshots/02_one_piece_details.png || echo "::warning::Failed to pull details screenshot"
+          echo "Captured: 02_one_piece_details.png (One Piece Details — $AUTH_MODE)"
+
+          # Navigate back to My Anime
+          adb shell input keyevent KEYCODE_BACK
+          sleep 2
+
           # Navigate to Settings page via the flyout
           adb shell input swipe 0 500 300 500 300
           sleep 2
           tap_element_by_text "Settings" || adb shell input tap 200 350
           sleep 3
 
-          # Screenshot 2: Settings page
+          # Screenshot 3: Settings page
           adb shell screencap -p /sdcard/settings.png || echo "::warning::Failed to capture Settings screenshot"
-          adb pull /sdcard/settings.png screenshots/02_settings.png || echo "::warning::Failed to pull Settings screenshot"
-          echo "Captured: 02_settings.png (Settings — $AUTH_MODE)"
+          adb pull /sdcard/settings.png screenshots/03_settings.png || echo "::warning::Failed to pull Settings screenshot"
+          echo "Captured: 03_settings.png (Settings — $AUTH_MODE)"
 
           echo ""
           echo "Auth mode: $AUTH_MODE"
@@ -309,7 +322,8 @@ jobs:
 
             const screenshots = [
               { file: 'screenshots/01_my_anime.png', label: 'My Anime' },
-              { file: 'screenshots/02_settings.png', label: 'Settings' },
+              { file: 'screenshots/02_one_piece_details.png', label: 'One Piece Details' },
+              { file: 'screenshots/03_settings.png', label: 'Settings' },
             ];
 
             // Build image URLs using the commit SHA for reliable, cache-proof links
@@ -392,7 +406,8 @@ jobs:
             echo "| Screenshot | Page |" >> $GITHUB_STEP_SUMMARY
             echo "|---|---|" >> $GITHUB_STEP_SUMMARY
             echo "| \`01_my_anime.png\` | My Anime |" >> $GITHUB_STEP_SUMMARY
-            echo "| \`02_settings.png\` | Settings |" >> $GITHUB_STEP_SUMMARY
+            echo "| \`02_one_piece_details.png\` | One Piece Details |" >> $GITHUB_STEP_SUMMARY
+            echo "| \`03_settings.png\` | Settings |" >> $GITHUB_STEP_SUMMARY
           else
             echo "⚠️ No screenshots were captured. Check the emulator step logs." >> $GITHUB_STEP_SUMMARY
           fi
