@@ -66,7 +66,7 @@ public partial class MediaListEntry : ObservableObject
     };
 
     /// <summary>True when the score format uses numeric values (not stars or smileys).</summary>
-    public static bool IsNumericScoreFormat => AppSettings.ScoreFormat is ScoreFormat.Point100
+    public bool IsNumericScoreFormat => AppSettings.ScoreFormat is ScoreFormat.Point100
         or ScoreFormat.Point10Decimal or ScoreFormat.Point10;
 
     /// <summary>
