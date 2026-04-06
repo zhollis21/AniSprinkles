@@ -294,11 +294,11 @@ namespace AniSprinkles.PageModels;
     public double ProgressSliderMax => EffectiveMaxEpisodes is > 0 ? EffectiveMaxEpisodes.Value : 100;
 
     // --- Score format properties ---
-    public static bool ScoreFormatIsStars => AppSettings.ScoreFormat == ScoreFormat.Point5;
-    public static bool ScoreFormatIsSmileys => AppSettings.ScoreFormat == ScoreFormat.Point3;
-    public static bool ScoreFormatIsNumeric => AppSettings.ScoreFormat is ScoreFormat.Point100 or ScoreFormat.Point10 or ScoreFormat.Point10Decimal;
+    public bool ScoreFormatIsStars => AppSettings.ScoreFormat == ScoreFormat.Point5;
+    public bool ScoreFormatIsSmileys => AppSettings.ScoreFormat == ScoreFormat.Point3;
+    public bool ScoreFormatIsNumeric => AppSettings.ScoreFormat is ScoreFormat.Point100 or ScoreFormat.Point10 or ScoreFormat.Point10Decimal;
 
-    public static double NumericScoreMax => AppSettings.ScoreFormat switch
+    public double NumericScoreMax => AppSettings.ScoreFormat switch
     {
         ScoreFormat.Point100 => 100,
         _ => 10,

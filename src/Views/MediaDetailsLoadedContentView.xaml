@@ -30,12 +30,12 @@
                              BackgroundColor="{Binding PageTitle, Converter={StaticResource RainbowAccentConverter}}"
                              Opacity="0.25"
                              IsVisible="{Binding HasBannerImage, Converter={StaticResource InvertedBoolConverter}}" />
-                    <!-- Gradient overlay for readability -->
+                    <!-- Gradient scrim for text readability over cover image -->
                     <BoxView Grid.Row="0">
                         <BoxView.Background>
-                            <LinearGradientBrush StartPoint="0,0.4" EndPoint="0,1">
+                            <LinearGradientBrush StartPoint="0,0.3" EndPoint="0,1">
                                 <GradientStop Color="Transparent" Offset="0" />
-                                <GradientStop Color="#CC000000" Offset="1" />
+                                <GradientStop Color="#E0000000" Offset="1" />
                             </LinearGradientBrush>
                         </BoxView.Background>
                     </BoxView>
@@ -65,25 +65,15 @@
                                    Style="{StaticResource Title1}"
                                    TextColor="{Binding PageTitle, Converter={StaticResource RainbowAccentConverter}}"
                                    MaxLines="3"
-                                   LineBreakMode="TailTruncation">
-                                <Label.Shadow>
-                                    <Shadow Brush="Black" Offset="0,0" Radius="8" Opacity="0.9" />
-                                </Label.Shadow>
-                            </Label>
+                                   LineBreakMode="TailTruncation" />
                             <HorizontalStackLayout Spacing="8">
                                 <Label Text="{Binding FormatDisplay}"
                                        Style="{StaticResource Caption1Strong}"
-                                       TextColor="{StaticResource Gray400}">
-                                    <Label.Shadow><Shadow Brush="Black" Offset="0,0" Radius="6" Opacity="0.8" /></Label.Shadow>
-                                </Label>
-                                <Label Text="|" Style="{StaticResource Caption1}" TextColor="{StaticResource Gray400}">
-                                    <Label.Shadow><Shadow Brush="Black" Offset="0,0" Radius="6" Opacity="0.8" /></Label.Shadow>
-                                </Label>
+                                       TextColor="{StaticResource Gray400}" />
+                                <Label Text="|" Style="{StaticResource Caption1}" TextColor="{StaticResource Gray400}" />
                                 <Label Text="{Binding StatusFormatted}"
                                        Style="{StaticResource Caption1Strong}"
-                                       TextColor="{StaticResource Gray400}">
-                                    <Label.Shadow><Shadow Brush="Black" Offset="0,0" Radius="6" Opacity="0.8" /></Label.Shadow>
-                                </Label>
+                                       TextColor="{StaticResource Gray400}" />
                             </HorizontalStackLayout>
                         </VerticalStackLayout>
                     </Grid>
