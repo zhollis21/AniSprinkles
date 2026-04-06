@@ -15,6 +15,8 @@ namespace AniSprinkles.PageModels;
         private readonly ILogger<MediaDetailsPageModel> _logger;
         private int? _loadedMediaId;
         private int _loadRequestSequence;
+        private int _lastRequestedMediaId;
+        private MediaListEntry? _lastRequestedListEntry;
 
     [ObservableProperty]
     private bool _isBusy;
@@ -407,9 +409,13 @@ namespace AniSprinkles.PageModels;
         IsAuthenticated = !string.IsNullOrWhiteSpace(token);
         OnPropertyChanged(nameof(CanAddToList));
 
+        _lastRequestedMediaId = mediaId;
+        _lastRequestedListEntry = listEntry;
+
         IsBusy = true;
         try
         {
+            IsErrorState = false;
             _logger.LogInformation("NAVTRACE load#{LoadRequestId} starting details fetch for media {MediaId}.", loadRequestId, mediaId);
             SentrySdk.AddBreadcrumb($"Load media details {mediaId}", "navigation", "state");
 
@@ -460,9 +466,14 @@ namespace AniSprinkles.PageModels;
         }
         catch (Exception ex)
         {
-            StatusMessage = "Failed to load details. Tap Details for more.";
+            var apiEx = ex as AniListApiException;
+            ErrorTitle = apiEx?.UserTitle ?? "Something Went Wrong";
+            ErrorSubtitle = apiEx?.UserSubtitle ?? "An unexpected error occurred. Try again or check back later.";
+            ErrorIconGlyph = apiEx?.IconGlyph ?? FluentIconsRegular.ErrorCircle24;
             ErrorDetails = _errorReportService.Record(ex, "Load details");
             IsErrorDetailsVisible = false;
+            IsErrorState = true;
+            StatusMessage = string.Empty;
             _loadedMediaId = null;
             _logger.LogError(
                 ex,
@@ -978,6 +989,15 @@ namespace AniSprinkles.PageModels;
         finally
         {
             IsSavingListEntry = false;
+        }
+    }
+
+    [RelayCommand]
+    private async Task RetryLoad()
+    {
+        if (_lastRequestedMediaId > 0)
+        {
+            await LoadAsync(_lastRequestedMediaId, _lastRequestedListEntry);
         }
     }
 
