@@ -30,15 +30,15 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: "10.0.x"
 
       - name: Cache NuGet Packages
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('src/AniSprinkles.csproj') }}
@@ -75,11 +75,11 @@ jobs:
           fi
 
       - name: Upload APK
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: debug-apk
           path: src/bin/Debug/net10.0-android/*-Signed.apk
-          retention-days: 7
+          retention-days: 5
           if-no-files-found: error
 
       - name: Generate Build Summary
@@ -105,12 +105,12 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.head_ref || github.ref }}
 
       - name: Download APK
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: debug-apk
           path: /tmp/apk
@@ -274,11 +274,11 @@ jobs:
 
       - name: Upload Screenshots
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ui-screenshots
           path: screenshots/
-          retention-days: 30
+          retention-days: 5
           if-no-files-found: warn
 
       - name: Commit Screenshots
@@ -305,7 +305,7 @@ jobs:
 
       - name: Comment on PR
         if: github.event_name == 'pull_request'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           SCREENSHOT_SHA: ${{ steps.commit-screenshots.outputs.sha }}
           HAS_SCREENSHOTS: ${{ steps.commit-screenshots.outputs.has_screenshots }}
