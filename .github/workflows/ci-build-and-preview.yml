@@ -176,13 +176,22 @@ jobs:
             exit 1
           fi
 
-          # Launch the app via explicit component name — more reliable than intent
-          # resolution on API 31+ where exported=true is strictly enforced.
-          # CI build uses compile-time stub services so no token is needed.
-          adb shell am start -n "$PACKAGE/crc6418a5ac36641a60eb.MainActivity"
+          # Dismiss the lock screen before launching so it doesn't appear in screenshots.
+          adb shell wm dismiss-keyguard
+
+          # Resolve the launcher activity dynamically so this survives any future
+          # MAUI namespace or assembly renames (which change the crc64 class name).
+          MAIN_ACTIVITY=$(adb shell cmd package resolve-activity --brief -c android.intent.category.LAUNCHER "$PACKAGE" | tail -1)
+          echo "Launching: $MAIN_ACTIVITY"
+
+          # -W: wait until onResume before returning (eliminates window-detection race)
+          # -S: force-stop any stale process first
+          adb shell am start -W -S -n "$MAIN_ACTIVITY"
           AUTH_MODE="ci-stubs"
 
-          # Poll for app window to appear (up to 30s)
+          # Poll for app window to appear (up to 30s).
+          # -W in am start blocks until onResume, so the window should already be
+          # visible, but we poll as a safety net for slow emulator rendering.
           echo "Waiting for app to start..."
           WINDOW_FOUND=0
           for i in $(seq 1 30); do
@@ -284,7 +293,7 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 34
-          target: google_apis
+          target: default
           arch: x86_64
           profile: pixel_7_pro
           force-avd-creation: false
