@@ -147,10 +147,7 @@ public partial class SettingsPage : ContentPage
 
     private void SetViewModel(SettingsPageModel viewModel)
     {
-        if (_viewModel is not null)
-        {
-            _viewModel.PropertyChanged -= OnViewModelPropertyChanged;
-        }
+        _viewModel?.PropertyChanged -= OnViewModelPropertyChanged;
 
         _viewModel = viewModel;
         _viewModel.PropertyChanged += OnViewModelPropertyChanged;

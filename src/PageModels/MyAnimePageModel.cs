@@ -197,8 +197,6 @@ public partial class MyAnimePageModel : ObservableObject
 
             if (!IsAuthenticated)
             {
-                Title = "Sign in required";
-                StatusMessage = "Sign in to see your AniList.";
                 ErrorDetails = string.Empty;
                 IsErrorDetailsVisible = false;
                 Sections = [];
@@ -537,7 +535,10 @@ public partial class MyAnimePageModel : ObservableObject
         var popup = new Views.RatingPopup(animeTitle);
         var result = await Shell.Current.CurrentPage.ShowPopupAsync<object>(popup, TransparentPopupOptions, CancellationToken.None);
         if (result.WasDismissedByTappingOutsideOfPopup)
+        {
             return null;
+        }
+
         return result.Result as double?;
     }
 
@@ -853,7 +854,7 @@ public partial class MyAnimePageModel : ObservableObject
                 var idx = sectionOrder.IndexOf(g.Name);
                 return idx >= 0 ? idx : int.MaxValue;
             }).ToList()
-            : (IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)>)groups;
+            : groups;
 
         foreach (var group in orderedGroups)
         {

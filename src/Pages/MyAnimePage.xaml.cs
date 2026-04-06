@@ -11,9 +11,15 @@ public partial class MyAnimePage : ContentPage
     private bool _hasAppeared;
     private bool _hasCreatedLoadedContent;
     private int _loadVersion;
+    private readonly ToolbarItem? _searchToolbarItem;
+    private readonly ToolbarItem? _viewModeToolbarItem;
+
     public MyAnimePage()
     {
         InitializeComponent();
+        // Stash toolbar items so we can add/remove them based on auth state.
+        _searchToolbarItem = SearchToolbarItem;
+        _viewModeToolbarItem = ViewModeToolbarItem;
     }
 
     public MyAnimePage(MyAnimePageModel viewModel)
@@ -33,11 +39,14 @@ public partial class MyAnimePage : ContentPage
         }
 
         UpdateViewModeIcon(_viewModel.CurrentViewMode);
+        UpdateToolbarItems();
 
         // Content survived the flyout switch — just refresh data in background.
         if (LoadedContentHost.Content is not null)
         {
             await _viewModel.LoadAsync();
+            // Tear down loaded content if the user signed out while away.
+            UpdateLoadedContentHost();
             return;
         }
 
@@ -158,6 +167,7 @@ public partial class MyAnimePage : ContentPage
             && _viewModel.Sections.Count > 0)
         {
             UpdateLoadedContentHost();
+            UpdateToolbarItems();
         }
         else if (e.PropertyName == nameof(MyAnimePageModel.IsErrorState)
             && _hasAppeared
@@ -166,9 +176,34 @@ public partial class MyAnimePage : ContentPage
             // Tear down loaded content so the error view is visible.
             UpdateLoadedContentHost();
         }
+        else if (e.PropertyName == nameof(MyAnimePageModel.IsAuthenticated)
+            && _hasAppeared
+            && _viewModel?.IsAuthenticated != true)
+        {
+            // Tear down loaded content when the user signs out.
+            UpdateLoadedContentHost();
+            UpdateToolbarItems();
+        }
         else if (e.PropertyName == nameof(MyAnimePageModel.ViewModeIconGlyph) && _viewModel is not null)
         {
             UpdateViewModeIcon(_viewModel.CurrentViewMode);
+        }
+    }
+
+    private void UpdateToolbarItems()
+    {
+        bool authenticated = _viewModel?.IsAuthenticated == true;
+        bool hasSearch = ToolbarItems.Contains(_searchToolbarItem!);
+
+        if (authenticated && !hasSearch)
+        {
+            ToolbarItems.Add(_searchToolbarItem!);
+            ToolbarItems.Add(_viewModeToolbarItem!);
+        }
+        else if (!authenticated && hasSearch)
+        {
+            ToolbarItems.Remove(_searchToolbarItem!);
+            ToolbarItems.Remove(_viewModeToolbarItem!);
         }
     }
 
@@ -186,10 +221,7 @@ public partial class MyAnimePage : ContentPage
 
     private void SetViewModel(MyAnimePageModel viewModel)
     {
-        if (_viewModel is not null)
-        {
-            _viewModel.PropertyChanged -= OnViewModelPropertyChanged;
-        }
+        _viewModel?.PropertyChanged -= OnViewModelPropertyChanged;
 
         _viewModel = viewModel;
         _viewModel.PropertyChanged += OnViewModelPropertyChanged;
