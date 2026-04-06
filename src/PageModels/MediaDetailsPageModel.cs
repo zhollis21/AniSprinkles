@@ -890,7 +890,10 @@ namespace AniSprinkles.PageModels;
     partial void OnSliderScoreChanged(double value)
     {
         if (ListEntry is null)
+        {
             return;
+        }
+
         var rounded = AppSettings.ScoreFormat == ScoreFormat.Point10Decimal
             ? Math.Round(value * 2, MidpointRounding.AwayFromZero) / 2.0  // snap to 0.5 increments
             : Math.Round(value);
@@ -902,7 +905,10 @@ namespace AniSprinkles.PageModels;
         }
 
         if (Math.Abs((ListEntry.Score ?? 0) - rounded) < 0.01)
+        {
             return;
+        }
+
         ListEntry.Score = rounded;
         NotifyListEntryDisplayChanged();
         _ = DebouncedSaveAsync();
@@ -914,7 +920,10 @@ namespace AniSprinkles.PageModels;
             "DATATRACE OnSliderProgressChanged: value={Value}, ListEntry.Progress={CurrentProgress}",
             value, ListEntry?.Progress);
         if (ListEntry is null)
+        {
             return;
+        }
+
         var rounded = (int)Math.Round(value);
         // Snap the slider thumb to the nearest whole number
         if (Math.Abs(value - rounded) > 0.01)
@@ -924,7 +933,10 @@ namespace AniSprinkles.PageModels;
         }
 
         if ((ListEntry.Progress ?? 0) == rounded)
+        {
             return;
+        }
+
         ListEntry.Progress = rounded;
         NotifyListEntryDisplayChanged();
         _ = DebouncedSaveAsync();

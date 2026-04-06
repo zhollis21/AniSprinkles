@@ -201,7 +201,8 @@
                             StrokeShape="RoundRectangle 10" StrokeThickness="0"
                             BackgroundColor="{StaticResource RainbowCyan}"
                             Padding="8,4"
-                            VerticalOptions="Center">
+                            VerticalOptions="Center"
+                            IsVisible="{Binding IsAiringToday}">
                         <Label Text="Soon!" Style="{StaticResource Caption2}"
                                FontAttributes="Bold" FontSize="14" />
                     </Border>
