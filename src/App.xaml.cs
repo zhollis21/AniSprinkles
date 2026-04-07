@@ -1,20 +1,13 @@
 ﻿using AniSprinkles.Utilities;
-using Microsoft.Extensions.Logging;
 
 namespace AniSprinkles;
 
 public partial class App : Application
 {
-    private readonly IAniListClient _aniListClient;
-    private readonly ILogger<App> _logger;
-
-    public App(IAniListClient aniListClient, ILogger<App> logger)
+    public App()
     {
         InitializeComponent();
         AppSettings.Load();
-
-        _aniListClient = aniListClient;
-        _logger = logger;
 
         AppDomain.CurrentDomain.UnhandledException += (_, e) =>
         {
@@ -33,37 +26,7 @@ public partial class App : Application
 
     protected override Window CreateWindow(IActivationState? activationState)
     {
-        _ = SyncSettingsFromAniListAsync();
         return new Window(new AppShell());
-    }
-
-    /// <summary>
-    /// Syncs local AppSettings from AniList on every app launch so that
-    /// cross-device setting changes are picked up immediately.
-    /// LastSyncAttemptUtc is stamped before the network call so that MyAnimePageModel.LoadAsync,
-    /// which can run concurrently, sees the in-progress sync and skips its own viewer fetch.
-    /// </summary>
-    private async Task SyncSettingsFromAniListAsync()
-    {
-        // Stamp before the await so concurrent LoadAsync calls see it immediately
-        // and skip their own viewer fetch rather than racing with this one.
-        AppSettings.MarkSyncStarted();
-        try
-        {
-            var viewer = await _aniListClient.GetViewerAsync().ConfigureAwait(false);
-            AppSettings.SyncFromViewer(viewer);
-            _logger.LogInformation("Synced settings from AniList on startup");
-        }
-        catch (AniListApiException ex) when (ex.Kind == ApiErrorKind.Authentication)
-        {
-            // Not signed in — reset the timestamp so the next load syncs normally.
-            AppSettings.ClearSyncTimestamp();
-        }
-        catch (Exception ex)
-        {
-            AppSettings.ClearSyncTimestamp();
-            _logger.LogWarning(ex, "Failed to sync settings from AniList on startup");
-        }
     }
 
     private static void ShowCrashAlert(Exception ex)

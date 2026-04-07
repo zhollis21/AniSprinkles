@@ -127,6 +127,7 @@ After writing code, review it, fix any problems found, and repeat until the work
 
 Review checklist:
 - Async paths — races, fire-and-forget correctness, redundant awaits
+- Concurrent paths — when background tasks exist, trace each concurrent execution path and verify the data each path reads is in the right state when it needs it; ask "if path A skips work because path B started, is the data path B produces guaranteed to be ready before path A uses it?"
 - Execution trace — walk the happy path AND every failure path end-to-end
 - API contracts — verify what exceptions methods actually throw before catching them
 - Comments and docs — confirm they match the final code, not an earlier draft

@@ -22,14 +22,6 @@ public static class AppSettings
     /// <summary>True once preferences have been synced from an AniList Viewer response.</summary>
     public static bool HasSynced { get; private set; }
 
-    /// <summary>
-    /// UTC timestamp of the most recent sync attempt, stamped at the start of the attempt
-    /// before the network call completes. Used to de-duplicate concurrent viewer requests
-    /// within a single session (e.g. the startup sync in App racing with the first LoadAsync).
-    /// Reset to default on failure so the next load retries. Not persisted.
-    /// </summary>
-    public static DateTimeOffset LastSyncAttemptUtc { get; private set; }
-
     public static void Load()
     {
         HasSynced = Preferences.Default.Get(HasSyncedKey, false);
@@ -65,26 +57,8 @@ public static class AppSettings
     }
 
     /// <summary>
-    /// Stamps <see cref="LastSyncAttemptUtc"/> at the start of a sync attempt, before the
-    /// network call completes, so concurrent <c>LoadAsync</c> callers see it immediately
-    /// and skip their own viewer fetch. Call <see cref="ClearSyncTimestamp"/> if the attempt
-    /// fails so the next load retries normally.
-    /// </summary>
-    public static void MarkSyncStarted()
-    {
-        LastSyncAttemptUtc = DateTimeOffset.UtcNow;
-    }
-
-    /// <summary>Resets <see cref="LastSyncAttemptUtc"/> after a failed attempt so the next load syncs normally.</summary>
-    public static void ClearSyncTimestamp()
-    {
-        LastSyncAttemptUtc = default;
-    }
-
-    /// <summary>
     /// Syncs local app settings from an AniList Viewer response.
-    /// Called on app startup, on every My Anime load/refresh, and when the Settings page loads.
-    /// Updates <see cref="LastSyncAttemptUtc"/> so callers can avoid redundant viewer fetches.
+    /// Called on every My Anime load/refresh and when the Settings page loads.
     /// </summary>
     public static void SyncFromViewer(AniListUser user)
     {
@@ -92,7 +66,6 @@ public static class AppSettings
         ScoreFormat = user.ScoreFormat;
         DisplayAdultContent = user.Options.DisplayAdultContent;
         AnimeSectionOrder = user.AnimeSectionOrder;
-        LastSyncAttemptUtc = DateTimeOffset.UtcNow;
         Save();
     }
 
@@ -102,7 +75,6 @@ public static class AppSettings
         ScoreFormat = ScoreFormat.Point100;
         DisplayAdultContent = false;
         HasSynced = false;
-        LastSyncAttemptUtc = default;
         Preferences.Default.Remove(TitleLanguageKey);
         Preferences.Default.Remove(ScoreFormatKey);
         Preferences.Default.Remove(DisplayAdultContentKey);
