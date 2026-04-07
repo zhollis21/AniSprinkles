@@ -137,7 +137,7 @@ public partial class RatingPopup : Popup<object>
 
     // ── Helpers ──────────────────────────────────────────────────────
 
-    private Color GetRainbowAccentColor()
+    private static Color GetRainbowAccentColor()
     {
         if (Application.Current?.Resources.TryGetValue("RainbowCyan", out var cyan) == true && cyan is Color c)
         {

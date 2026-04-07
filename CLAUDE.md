@@ -62,6 +62,10 @@ Passing `-p:CiBuild=true` appends `CI` to `DefineConstants` (preserving `DEBUG` 
 
 These stubs are **compiled out entirely** in standard Debug and Release builds. No GitHub secret or OAuth token is needed for CI screenshots.
 
+## Build Quality
+
+The project must build with **zero warnings**. Do not introduce new warnings; fix any that appear before committing. CA1822 ("member can be static") is suppressed project-wide in `.editorconfig` — MAUI `{Binding}` requires instance members even when they only read static state, so the analyzer produces false positives.
+
 ## Code Style
 
 Follow `.editorconfig`. Key rules:

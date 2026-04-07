@@ -38,6 +38,7 @@ public static class ServiceProviderHelper
             throw new InvalidOperationException(
                 "Service provider not available. Ensure your MauiApp is properly configured with dependency injection services.");
         }
+
         return provider;
     }
 }

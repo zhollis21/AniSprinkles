@@ -261,7 +261,11 @@ public partial class SettingsPageModel : ObservableObject
         {
             var enabled = lookup.TryGetValue(type, out var val) && val;
             var item = new NotificationToggleItem(type, displayName, category, enabled);
-            item.PropertyChanged += (_, _) => { OnPropertyChanged(nameof(HasUnsavedChanges)); TriggerAutoSave(); };
+            item.PropertyChanged += (_, _) =>
+            {
+                OnPropertyChanged(nameof(HasUnsavedChanges));
+                TriggerAutoSave();
+            };
             NotificationItems.Add(item);
         }
     }
@@ -302,6 +306,7 @@ public partial class SettingsPageModel : ObservableObject
                 return true;
             }
         }
+
         return false;
     }
 
@@ -318,7 +323,11 @@ public partial class SettingsPageModel : ObservableObject
 
     private void TriggerAutoSave()
     {
-        if (_loadedUser is null || !HasUnsavedChanges) return;
+        if (_loadedUser is null || !HasUnsavedChanges)
+        {
+            return;
+        }
+
         _ = DebouncedSaveAsync();
     }
 
@@ -341,7 +350,10 @@ public partial class SettingsPageModel : ObservableObject
 
     private async Task SaveSettingsAsync()
     {
-        if (IsSaving) return;
+        if (IsSaving)
+        {
+            return;
+        }
 
         IsSaving = true;
         try
@@ -457,7 +469,11 @@ public partial class SettingsPageModel : ObservableObject
     [RelayCommand]
     private async Task Save()
     {
-        if (!HasUnsavedChanges || IsSaving) return;
+        if (!HasUnsavedChanges || IsSaving)
+        {
+            return;
+        }
+
         await SaveSettingsAsync();
     }
 

@@ -4,9 +4,9 @@ namespace AniSprinkles.Views;
 
 public partial class MyAnimeLoadedContentView : ContentView
 {
-    private DataTemplate? _standardTemplate;
-    private DataTemplate? _largeTemplate;
-    private DataTemplate? _compactTemplate;
+    private readonly DataTemplate? _standardTemplate;
+    private readonly DataTemplate? _largeTemplate;
+    private readonly DataTemplate? _compactTemplate;
     private bool _longPressFired;
 
     public MyAnimeLoadedContentView()
