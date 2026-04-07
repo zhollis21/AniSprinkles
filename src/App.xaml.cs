@@ -1,13 +1,22 @@
 ﻿using AniSprinkles.Utilities;
+using Microsoft.Extensions.Logging;
 
 namespace AniSprinkles;
 
 public partial class App : Application
 {
-    public App()
+    private readonly IAuthService _authService;
+    private readonly IAniListClient _aniListClient;
+    private readonly ILogger<App> _logger;
+
+    public App(IAuthService authService, IAniListClient aniListClient, ILogger<App> logger)
     {
         InitializeComponent();
         AppSettings.Load();
+
+        _authService = authService;
+        _aniListClient = aniListClient;
+        _logger = logger;
 
         AppDomain.CurrentDomain.UnhandledException += (_, e) =>
         {
@@ -26,7 +35,32 @@ public partial class App : Application
 
     protected override Window CreateWindow(IActivationState? activationState)
     {
+        _ = SyncSettingsFromAniListAsync();
         return new Window(new AppShell());
+    }
+
+    /// <summary>
+    /// Syncs local AppSettings from AniList on every app launch so that
+    /// cross-device setting changes are picked up immediately.
+    /// </summary>
+    private async Task SyncSettingsFromAniListAsync()
+    {
+        try
+        {
+            var token = await _authService.GetAccessTokenAsync().ConfigureAwait(false);
+            if (string.IsNullOrEmpty(token))
+            {
+                return;
+            }
+
+            var viewer = await _aniListClient.GetViewerAsync().ConfigureAwait(false);
+            AppSettings.SyncFromViewer(viewer);
+            _logger.LogInformation("Synced settings from AniList on startup");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Failed to sync settings from AniList on startup");
+        }
     }
 
     private static void ShowCrashAlert(Exception ex)

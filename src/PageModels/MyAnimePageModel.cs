@@ -213,24 +213,16 @@ public partial class MyAnimePageModel : ObservableObject
             IsErrorDetailsVisible = false;
             IsErrorState = false;
 
-            // On first authenticated load (fresh install or after sign-in on another device),
-            // sync display preferences from AniList before fetching the list.
-            // Also re-sync when section order is missing (added after initial sync).
-            if (!AppSettings.HasSynced || AppSettings.AnimeSectionOrder.Count == 0)
+            // Sync display preferences from AniList before fetching the list.
+            // This ensures cross-device setting changes are picked up on every load.
+            try
             {
-                try
-                {
-                    var viewer = await _aniListClient.GetViewerAsync();
-                    AppSettings.TitleLanguage = viewer.Options.TitleLanguage;
-                    AppSettings.ScoreFormat = viewer.ScoreFormat;
-                    AppSettings.DisplayAdultContent = viewer.Options.DisplayAdultContent;
-                    AppSettings.AnimeSectionOrder = viewer.AnimeSectionOrder;
-                    AppSettings.Save();
-                }
-                catch (Exception viewerEx)
-                {
-                    _logger.LogWarning(viewerEx, "Failed to sync viewer preferences on first load");
-                }
+                var viewer = await _aniListClient.GetViewerAsync();
+                AppSettings.SyncFromViewer(viewer);
+            }
+            catch (Exception viewerEx)
+            {
+                _logger.LogWarning(viewerEx, "Failed to sync viewer preferences");
             }
 
             SentrySdk.AddBreadcrumb("Fetching AniList list", "http", "state");

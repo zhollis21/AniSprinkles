@@ -56,6 +56,19 @@ public static class AppSettings
         Preferences.Default.Set(AnimeSectionOrderKey, string.Join(",", AnimeSectionOrder));
     }
 
+    /// <summary>
+    /// Syncs local app settings from an AniList Viewer response.
+    /// Called on app startup and when the Settings page loads.
+    /// </summary>
+    public static void SyncFromViewer(AniListUser user)
+    {
+        TitleLanguage = user.Options.TitleLanguage;
+        ScoreFormat = user.ScoreFormat;
+        DisplayAdultContent = user.Options.DisplayAdultContent;
+        AnimeSectionOrder = user.AnimeSectionOrder;
+        Save();
+    }
+
     public static void Clear()
     {
         TitleLanguage = UserTitleLanguage.Romaji;
