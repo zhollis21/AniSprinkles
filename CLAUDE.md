@@ -140,6 +140,14 @@ After the loop, present a short summary containing:
 
 The summary is NOT a list of bugs found and fixed, and NOT a request for approval on obvious decisions.
 
+### PR feedback review
+
+When asked to pull PR feedback, use `pwsh tools/Get-OpenPrComments.ps1`. For each comment:
+1. Determine if it's a valid concern that needs fixing
+2. If valid — explain the issue, present possible solutions with pros/cons
+3. If unsure — ask the user before acting
+4. Do not assume all comments are valid or silently fix them
+
 ### Presenting options
 
 Always use the `AskUserQuestion` popup tool when presenting 2+ choices. Never list options in plain text.
