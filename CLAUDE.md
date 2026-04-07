@@ -102,3 +102,15 @@ Select-String -Path logs/anisprinkles.device.log -Pattern "NAVTRACE" -CaseSensit
 ```
 
 Validate performance on release-like builds, not only debugger-attached sessions. Classify jank as CPU/UI-thread bound vs network-bound before changing architecture.
+
+## Local Tools
+
+The `tools/` directory (git-ignored) contains local development scripts:
+
+```powershell
+# Pull all open PR comments into a structured Markdown report
+pwsh tools/Get-OpenPrComments.ps1
+# Output: tools/pr-comments.md
+```
+
+Requires `gh` CLI authenticated (or `GH_TOKEN` env var). The report includes PR overviews, review summaries, inline code comments with thread resolution status, and general comments.
