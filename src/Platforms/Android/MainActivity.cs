@@ -36,8 +36,13 @@ public class MainActivity : MauiAppCompatActivity
         try
         {
             var window = Window;
+            if (window is null)
+            {
+                return;
+            }
 
-            // Enable edge-to-edge drawing: allows content to extend behind system bars
+            // Enable edge-to-edge drawing: allows content to extend behind system bars.
+            // WindowCompat handles all API levels including R+ internally.
             WindowCompat.SetDecorFitsSystemWindows(window, false);
 
             // Make system bars transparent so app colors show through
@@ -47,12 +52,6 @@ public class MainActivity : MauiAppCompatActivity
                 window.SetStatusBarColor(AndroidColors.Transparent);
                 window.SetNavigationBarColor(AndroidColors.Transparent);
 #pragma warning restore CA1422
-            }
-
-            // Allow system window fitting on Android 11+
-            if (Build.VERSION.SdkInt >= BuildVersionCodes.R)
-            {
-                window.SetDecorFitsSystemWindows(false);
             }
 
             // Set initial window background color after app is initialized
@@ -131,8 +130,13 @@ public class MainActivity : MauiAppCompatActivity
     {
         try
         {
+            if (Window?.DecorView is not { } decorView)
+            {
+                return;
+            }
+
             var isDark = Microsoft.Maui.Controls.Application.Current!.RequestedTheme == AppTheme.Dark;
-            var controller = new WindowInsetsControllerCompat(Window, Window.DecorView);
+            var controller = new WindowInsetsControllerCompat(Window, decorView);
             controller.AppearanceLightStatusBars = !isDark;       // dark icons on light background
             controller.AppearanceLightNavigationBars = !isDark;   // if supported
         }

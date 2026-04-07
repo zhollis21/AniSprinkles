@@ -31,14 +31,21 @@ public class MediaRanking
         get
         {
             if (AllTime == true)
+            {
                 return "All Time";
+            }
+
             if (Season is not null && Year is not null)
             {
                 var ti = CultureInfo.InvariantCulture.TextInfo;
                 return $"{ti.ToTitleCase(Season.ToLowerInvariant())} {Year}";
             }
+
             if (Year is not null)
+            {
                 return Year.Value.ToString(CultureInfo.InvariantCulture);
+            }
+
             return "Other";
         }
     }

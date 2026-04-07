@@ -50,18 +50,36 @@ internal sealed class CIAniListClient : IAniListClient
         => Task.FromResult(StubData.Viewer);
 
     // ---------------------------------------------------------------------------
-    // Stub data — built once, shared across all method calls
+    // Stub data — built once, shared across all method calls.
+    // Media IDs, cover URLs, scores, and metadata are real AniList data.
+    // Progress and list scores are illustrative.
     // ---------------------------------------------------------------------------
+
+    /// <summary>
+    /// Creates a <see cref="MediaAiringEpisode"/> where <see cref="MediaAiringEpisode.TimeUntilAiring"/>
+    /// is always derived from the same <paramref name="airingTime"/> as <see cref="MediaAiringEpisode.AiringAt"/>,
+    /// so the two fields are always consistent with each other.
+    /// </summary>
+    private static MediaAiringEpisode MakeAiringEpisode(int episode, DateTimeOffset airingTime)
+    {
+        var now = DateTimeOffset.UtcNow;
+        return new MediaAiringEpisode
+        {
+            Episode = episode,
+            AiringAt = (int)airingTime.ToUnixTimeSeconds(),
+            TimeUntilAiring = (int)Math.Max((airingTime - now).TotalSeconds, 0),
+        };
+    }
 
     private static class StubData
     {
         public static readonly AniListUser Viewer = new()
         {
             Id = 999999,
-            Name = "CiUser",
+            Name = "CIUser",
             AvatarLarge = "https://s4.anilist.co/file/anilistcdn/user/avatar/large/default.png",
             ScoreFormat = ScoreFormat.Point10Decimal,
-            AnimeSectionOrder = ["Current", "Planning", "Completed", "Dropped", "Paused", "Repeating"],
+            AnimeSectionOrder = ["Watching", "Planning", "Completed", "Dropped", "Paused", "Repeating"],
             Options = new UserOptions
             {
                 TitleLanguage = UserTitleLanguage.Romaji,
@@ -70,133 +88,216 @@ internal sealed class CIAniListClient : IAniListClient
             },
             AnimeStatistics = new UserAnimeStatistics
             {
-                Count = 127,
-                EpisodesWatched = 1840,
-                MinutesWatched = 46000,
-                MeanScore = 7.4,
+                Count = 10,
+                EpisodesWatched = 1038,
+                MinutesWatched = 24912,
+                MeanScore = 8.75,
             },
         };
 
-        // Watching entries
-        private static readonly MediaListEntry Frieren = new()
+        // ── Currently Watching ───────────────────────────────────────────────────
+
+        private static readonly MediaListEntry OnePiece = new()
         {
-            Id = 1001, MediaId = 154587, Status = MediaListStatus.Current, Progress = 20,
+            Id = 1001, MediaId = 21, Status = MediaListStatus.Current, Progress = 800, Score = 8.0,
             Media = new Media
             {
-                Id = 154587, Format = "TV", Episodes = 28, AverageScore = 91,
-                Status = "RELEASING", Season = "FALL", SeasonYear = 2023,
-                Title = new MediaTitle { Romaji = "Sousou no Frieren", English = "Frieren: Beyond Journey's End" },
+                Id = 21, Format = "TV", Episodes = null, AverageScore = 87, MeanScore = 88,
+                Popularity = 641_752, Favourites = 90_457,
+                Status = "RELEASING", Season = "FALL", SeasonYear = 1999, Source = "MANGA",
+                Title = new MediaTitle { Romaji = "ONE PIECE", English = "ONE PIECE", Native = "ワンピース" },
                 CoverImage = new MediaCoverImage
                 {
-                    Medium = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx154587-nhs0nksPLlk7.jpg",
-                    Large = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx154587-nhs0nksPLlk7.jpg",
-                    Color = "#e47850",
+                    Medium = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21-ELSYx3yMPcKM.jpg",
+                    Large = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx21-ELSYx3yMPcKM.jpg",
+                    Color = "#e49335",
                 },
-                Genres = ["Adventure", "Drama", "Fantasy"],
-                // Episode 21 airs in ~3 days — exercises the "Ep N in Xd" airing info path
-                NextAiringEpisode = new MediaAiringEpisode
-                {
-                    Episode = 21,
-                    AiringAt = (int)DateTimeOffset.UtcNow.AddDays(3).ToUnixTimeSeconds(),
-                },
+                BannerImage = "https://s4.anilist.co/file/anilistcdn/media/anime/banner/21-wf37VakJmZqs.jpg",
+                Description = "Gol D. Roger was known as the \"Pirate King,\" the strongest and most infamous being to have sailed the Grand Line. The capture and execution of Roger by the World Government brought a change throughout the world. His last words before his death revealed the existence of the greatest treasure in the world, One Piece. It was this revelation that brought about the Grand Age of Pirates, men who dreamed of finding One Piece—which promises an unlimited amount of riches and fame—and quite possibly the pinnacle of glory and the title of the Pirate King.<br><br>Enter Monkey D. Luffy, a 17-year-old boy who defies your standard definition of a pirate. Rather than the popular persona of a wicked, hardened, toothless pirate ransacking villages for fun, Luffy's reason for being a pirate is one of pure wonder: the thought of an exciting adventure that leads him to intriguing people and ultimately, the promised treasure.",
+                StartDate = new MediaDate { Year = 1999, Month = 10, Day = 20 },
+                Genres = ["Action", "Adventure", "Comedy", "Drama", "Fantasy"],
+                Studios =
+                [
+                    new Studio { Id = 18, Name = "Toei Animation", IsAnimationStudio = true },
+                ],
+                // Airs today in 3 hours — exercises the short countdown airing path
+                NextAiringEpisode = MakeAiringEpisode(1160, DateTimeOffset.UtcNow.AddHours(3)),
             },
         };
 
-        private static readonly MediaListEntry DungeonMeshi = new()
+        private static readonly MediaListEntry AttackOnTitan = new()
         {
-            Id = 1002, MediaId = 163132, Status = MediaListStatus.Current, Progress = 19,
+            Id = 1002, MediaId = 16498, Status = MediaListStatus.Current, Progress = 20,
             Media = new Media
             {
-                Id = 163132, Format = "TV", Episodes = 24, AverageScore = 87,
-                Status = "RELEASING", Season = "WINTER", SeasonYear = 2024,
-                Title = new MediaTitle { Romaji = "Dungeon Meshi", English = "Delicious in Dungeon" },
+                Id = 16498, Format = "TV", Episodes = 25, AverageScore = 85,
+                Status = "FINISHED", Season = "SPRING", SeasonYear = 2013,
+                Title = new MediaTitle { Romaji = "Shingeki no Kyojin", English = "Attack on Titan" },
                 CoverImage = new MediaCoverImage
                 {
-                    Medium = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx163132-D0HuqZ1jRmXJ.jpg",
-                    Large = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx163132-D0HuqZ1jRmXJ.jpg",
-                    Color = "#e4a150",
+                    Medium = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx16498-buvcRTBx4NSm.jpg",
+                    Large = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx16498-buvcRTBx4NSm.jpg",
+                    Color = "#f1a143",
                 },
-                Genres = ["Adventure", "Comedy", "Fantasy"],
+                Genres = ["Action", "Drama", "Fantasy", "Mystery"],
             },
         };
 
-        private static readonly MediaListEntry Hyouka = new()
+        private static readonly MediaListEntry JujutsuKaisen = new()
         {
-            Id = 1003, MediaId = 13701, Status = MediaListStatus.Current, Progress = 12,
+            Id = 1003, MediaId = 113415, Status = MediaListStatus.Current, Progress = 15,
             Media = new Media
             {
-                Id = 13701, Format = "TV", Episodes = 22, AverageScore = 83,
-                Status = "FINISHED", Season = "SPRING", SeasonYear = 2012,
-                Title = new MediaTitle { Romaji = "Hyouka", English = "Hyouka" },
+                Id = 113415, Format = "TV", Episodes = 24, AverageScore = 85,
+                Status = "FINISHED", Season = "FALL", SeasonYear = 2020,
+                Title = new MediaTitle { Romaji = "Jujutsu Kaisen", English = "JUJUTSU KAISEN" },
                 CoverImage = new MediaCoverImage
                 {
-                    Medium = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx13701-SBFQheGqFrm1.jpg",
-                    Large = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx13701-SBFQheGqFrm1.jpg",
-                    Color = "#8db4d4",
+                    Medium = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx113415-LHBAeoZDIsnF.jpg",
+                    Large = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx113415-LHBAeoZDIsnF.jpg",
+                    Color = "#e45d5d",
                 },
-                Genres = ["Mystery", "Romance", "Slice of Life"],
+                Genres = ["Action", "Drama", "Supernatural"],
             },
         };
 
-        private static readonly MediaListEntry VinlandSaga = new()
+        private static readonly MediaListEntry HunterXHunter = new()
         {
-            Id = 1004, MediaId = 101348, Status = MediaListStatus.Current, Progress = 18,
+            Id = 1004, MediaId = 11061, Status = MediaListStatus.Current, Progress = 75,
             Media = new Media
             {
-                Id = 101348, Format = "TV", Episodes = 24, AverageScore = 85,
-                Status = "FINISHED", Season = "SUMMER", SeasonYear = 2019,
-                Title = new MediaTitle { Romaji = "Vinland Saga", English = "Vinland Saga" },
+                Id = 11061, Format = "TV", Episodes = 148, AverageScore = 89,
+                Status = "FINISHED", Season = "FALL", SeasonYear = 2011,
+                Title = new MediaTitle { Romaji = "HUNTER×HUNTER (2011)", English = "Hunter x Hunter (2011)" },
                 CoverImage = new MediaCoverImage
                 {
-                    Medium = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101348-6cIVSzdnSmZX.jpg",
-                    Large = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx101348-6cIVSzdnSmZX.jpg",
-                    Color = "#3d6887",
+                    Medium = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx11061-y5gsT1hoHuHw.png",
+                    Large = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx11061-y5gsT1hoHuHw.png",
+                    Color = "#f1d65d",
                 },
-                Genres = ["Action", "Adventure", "Drama"],
+                Genres = ["Action", "Adventure", "Fantasy"],
+                // Airs in ~1 month — exercises the long countdown airing path
+                NextAiringEpisode = MakeAiringEpisode(149, DateTimeOffset.UtcNow.AddDays(30)),
             },
         };
 
-        // Completed entries
+        // ── Completed ────────────────────────────────────────────────────────────
+
         private static readonly MediaListEntry FmaB = new()
         {
             Id = 1005, MediaId = 5114, Status = MediaListStatus.Completed, Progress = 64, Score = 9.5,
             Media = new Media
             {
-                Id = 5114, Format = "TV", Episodes = 64, AverageScore = 92,
+                Id = 5114, Format = "TV", Episodes = 64, AverageScore = 90,
                 Status = "FINISHED", Season = "SPRING", SeasonYear = 2009,
-                Title = new MediaTitle { Romaji = "Fullmetal Alchemist: Brotherhood", English = "Fullmetal Alchemist: Brotherhood" },
+                Title = new MediaTitle { Romaji = "Hagane no Renkinjutsushi: FULLMETAL ALCHEMIST", English = "Fullmetal Alchemist: Brotherhood" },
                 CoverImage = new MediaCoverImage
                 {
-                    Medium = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx5114-6fvPGBkxEjMj.jpg",
-                    Large = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx5114-6fvPGBkxEjMj.jpg",
-                    Color = "#e45150",
+                    Medium = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx5114-nSWCgQlmOMtj.jpg",
+                    Large = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx5114-nSWCgQlmOMtj.jpg",
+                    Color = "#e4c993",
                 },
                 Genres = ["Action", "Adventure", "Drama", "Fantasy"],
             },
         };
 
-        private static readonly MediaListEntry SteinsGate = new()
+        private static readonly MediaListEntry DeathNote = new()
         {
-            Id = 1006, MediaId = 9253, Status = MediaListStatus.Completed, Progress = 24, Score = 9.0,
+            Id = 1006, MediaId = 1535, Status = MediaListStatus.Completed, Progress = 37, Score = 9.0,
             Media = new Media
             {
-                Id = 9253, Format = "TV", Episodes = 24, AverageScore = 91,
-                Status = "FINISHED", Season = "SPRING", SeasonYear = 2011,
-                Title = new MediaTitle { Romaji = "Steins;Gate", English = "Steins;Gate" },
+                Id = 1535, Format = "TV", Episodes = 37, AverageScore = 84,
+                Status = "FINISHED", Season = "FALL", SeasonYear = 2006,
+                Title = new MediaTitle { Romaji = "DEATH NOTE", English = "Death Note" },
                 CoverImage = new MediaCoverImage
                 {
-                    Medium = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx9253-uHhrBs0uyxhF.jpg",
-                    Large = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx9253-uHhrBs0uyxhF.jpg",
-                    Color = "#3464a4",
+                    Medium = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1535-kUgkcrfOrkUM.jpg",
+                    Large = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx1535-kUgkcrfOrkUM.jpg",
+                    Color = "#3d3d3d",
                 },
-                Genres = ["Drama", "Sci-Fi", "Thriller"],
+                Genres = ["Mystery", "Psychological", "Supernatural", "Thriller"],
+            },
+        };
+
+        private static readonly MediaListEntry ASilentVoice = new()
+        {
+            Id = 1007, MediaId = 20954, Status = MediaListStatus.Completed, Progress = 1, Score = 8.5,
+            Media = new Media
+            {
+                Id = 20954, Format = "MOVIE", Episodes = 1, AverageScore = 88,
+                Status = "FINISHED", Season = "SUMMER", SeasonYear = 2016,
+                Title = new MediaTitle { Romaji = "Koe no Katachi", English = "A Silent Voice" },
+                CoverImage = new MediaCoverImage
+                {
+                    Medium = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20954-sYRfE5jQRtSB.jpg",
+                    Large = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx20954-sYRfE5jQRtSB.jpg",
+                    Color = "#5dbbe4",
+                },
+                Genres = ["Drama", "Romance", "Slice of Life"],
+            },
+        };
+
+        private static readonly MediaListEntry DemonSlayer = new()
+        {
+            Id = 1008, MediaId = 101922, Status = MediaListStatus.Completed, Progress = 26, Score = 8.0,
+            Media = new Media
+            {
+                Id = 101922, Format = "TV", Episodes = 26, AverageScore = 83,
+                Status = "FINISHED", Season = "SPRING", SeasonYear = 2019,
+                Title = new MediaTitle { Romaji = "Kimetsu no Yaiba", English = "Demon Slayer: Kimetsu no Yaiba" },
+                CoverImage = new MediaCoverImage
+                {
+                    Medium = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101922-WBsBl0ClmgYL.jpg",
+                    Large = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx101922-WBsBl0ClmgYL.jpg",
+                    Color = "#f1c9ae",
+                },
+                Genres = ["Action", "Adventure", "Drama", "Fantasy", "Supernatural"],
+            },
+        };
+
+        // ── Planning ─────────────────────────────────────────────────────────────
+
+        private static readonly MediaListEntry YourName = new()
+        {
+            Id = 1009, MediaId = 21519, Status = MediaListStatus.Planning, Progress = 0,
+            Media = new Media
+            {
+                Id = 21519, Format = "MOVIE", Episodes = 1, AverageScore = 86,
+                Status = "FINISHED", Season = "SUMMER", SeasonYear = 2016,
+                Title = new MediaTitle { Romaji = "Kimi no Na wa.", English = "Your Name." },
+                CoverImage = new MediaCoverImage
+                {
+                    Medium = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21519-SUo3ZQuCbYhJ.png",
+                    Large = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx21519-SUo3ZQuCbYhJ.png",
+                    Color = "#0da1e4",
+                },
+                Genres = ["Drama", "Romance", "Supernatural"],
+            },
+        };
+
+        private static readonly MediaListEntry PromisedNeverland = new()
+        {
+            Id = 1010, MediaId = 101759, Status = MediaListStatus.Planning, Progress = 0,
+            Media = new Media
+            {
+                Id = 101759, Format = "TV", Episodes = 12, AverageScore = 84,
+                Status = "FINISHED", Season = "WINTER", SeasonYear = 2019,
+                Title = new MediaTitle { Romaji = "Yakusoku no Neverland", English = "The Promised Neverland" },
+                CoverImage = new MediaCoverImage
+                {
+                    Medium = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101759-8UR7r9MNVpz2.jpg",
+                    Large = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx101759-8UR7r9MNVpz2.jpg",
+                    Color = "#e4ae50",
+                },
+                Genres = ["Drama", "Fantasy", "Horror", "Mystery", "Psychological", "Thriller"],
             },
         };
 
         public static readonly IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)> GroupedList =
         [
-            ("Current", (IReadOnlyList<MediaListEntry>)[Frieren, DungeonMeshi, Hyouka, VinlandSaga]),
-            ("Completed", (IReadOnlyList<MediaListEntry>)[FmaB, SteinsGate]),
+            ("Watching",  [OnePiece, AttackOnTitan, JujutsuKaisen, HunterXHunter]),
+            ("Planning",  [YourName, PromisedNeverland]),
+            ("Completed", [FmaB, DeathNote, ASilentVoice, DemonSlayer]),
         ];
     }
 }

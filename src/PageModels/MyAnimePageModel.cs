@@ -160,35 +160,37 @@ public partial class MyAnimePageModel : ObservableObject
             return;
         }
 
-        var token = await _authService.GetAccessTokenAsync();
-        var isAuthenticated = !string.IsNullOrWhiteSpace(token);
-        // OnAppearing can fire often; keep list navigation snappy by skipping refreshes inside a short stale window.
-        var isFresh = _lastSuccessfulLoadUtc != default &&
-            DateTimeOffset.UtcNow - _lastSuccessfulLoadUtc < ListRefreshInterval;
-
-        if (_hasLoaded && !forceReload && isAuthenticated == IsAuthenticated)
-        {
-            if (!isAuthenticated || isFresh)
-            {
-                return;
-            }
-        }
-
-        if (forceReload)
-        {
-            _lastSuccessfulLoadUtc = default;
-        }
-
-        var hadExistingSections = Sections.Count > 0;
-        // Keep user context (expanded/collapsed groups) when data refreshes.
-        var expandedStates = Sections.ToDictionary(
-            section => section.Title,
-            section => section.IsExpanded,
-            StringComparer.Ordinal);
-
+        // Set IsBusy immediately — before any awaits — so concurrent callers
+        // are rejected by the guard above. All cleanup happens in finally.
         IsBusy = true;
+        var hadExistingSections = Sections.Count > 0;
         try
         {
+            var token = await _authService.GetAccessTokenAsync();
+            var isAuthenticated = !string.IsNullOrWhiteSpace(token);
+            // OnAppearing can fire often; keep list navigation snappy by skipping refreshes inside a short stale window.
+            var isFresh = _lastSuccessfulLoadUtc != default &&
+                DateTimeOffset.UtcNow - _lastSuccessfulLoadUtc < ListRefreshInterval;
+
+            if (_hasLoaded && !forceReload && isAuthenticated == IsAuthenticated)
+            {
+                if (!isAuthenticated || isFresh)
+                {
+                    return;
+                }
+            }
+
+            if (forceReload)
+            {
+                _lastSuccessfulLoadUtc = default;
+            }
+
+            // Keep user context (expanded/collapsed groups) when data refreshes.
+            var expandedStates = Sections.ToDictionary(
+                section => section.Title,
+                section => section.IsExpanded,
+                StringComparer.Ordinal);
+
             _logger.LogInformation("Loading My Anime list.");
             SentrySdk.AddBreadcrumb("Load My Anime list", "navigation", "state");
 
@@ -197,8 +199,6 @@ public partial class MyAnimePageModel : ObservableObject
 
             if (!IsAuthenticated)
             {
-                Title = "Sign in required";
-                StatusMessage = "Sign in to see your AniList.";
                 ErrorDetails = string.Empty;
                 IsErrorDetailsVisible = false;
                 Sections = [];
@@ -537,7 +537,10 @@ public partial class MyAnimePageModel : ObservableObject
         var popup = new Views.RatingPopup(animeTitle);
         var result = await Shell.Current.CurrentPage.ShowPopupAsync<object>(popup, TransparentPopupOptions, CancellationToken.None);
         if (result.WasDismissedByTappingOutsideOfPopup)
+        {
             return null;
+        }
+
         return result.Result as double?;
     }
 
@@ -853,7 +856,7 @@ public partial class MyAnimePageModel : ObservableObject
                 var idx = sectionOrder.IndexOf(g.Name);
                 return idx >= 0 ? idx : int.MaxValue;
             }).ToList()
-            : (IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)>)groups;
+            : groups;
 
         foreach (var group in orderedGroups)
         {

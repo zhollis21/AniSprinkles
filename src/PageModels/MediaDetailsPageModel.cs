@@ -15,6 +15,8 @@ namespace AniSprinkles.PageModels;
         private readonly ILogger<MediaDetailsPageModel> _logger;
         private int? _loadedMediaId;
         private int _loadRequestSequence;
+        private int _lastRequestedMediaId;
+        private MediaListEntry? _lastRequestedListEntry;
 
     [ObservableProperty]
     private bool _isBusy;
@@ -125,9 +127,21 @@ namespace AniSprinkles.PageModels;
             var seconds = Math.Max(Media?.NextAiringEpisode?.TimeUntilAiring ?? 0, 0);
             var span = TimeSpan.FromSeconds(seconds);
             var parts = new List<string>();
-            if ((int)span.TotalDays > 0) parts.Add($"{(int)span.TotalDays}d");
-            if (span.Hours > 0) parts.Add($"{span.Hours}h");
-            if (span.Minutes > 0) parts.Add($"{span.Minutes}m");
+            if ((int)span.TotalDays > 0)
+            {
+                parts.Add($"{(int)span.TotalDays}d");
+            }
+
+            if (span.Hours > 0)
+            {
+                parts.Add($"{span.Hours}h");
+            }
+
+            if (span.Minutes > 0)
+            {
+                parts.Add($"{span.Minutes}m");
+            }
+
             return parts.Count > 0 ? string.Join(" ", parts) : "now";
         }
     }
@@ -145,7 +159,11 @@ namespace AniSprinkles.PageModels;
     {
         get
         {
-            if (Media?.NextAiringEpisode?.AiringAt is not { } airingAt) return "";
+            if (Media?.NextAiringEpisode?.AiringAt is not { } airingAt)
+            {
+                return "";
+            }
+
             var dt = DateTimeOffset.FromUnixTimeSeconds(airingAt).LocalDateTime;
             return dt.ToString("ddd, MMM d 'at' h:mm tt", CultureInfo.InvariantCulture);
         }
@@ -169,7 +187,7 @@ namespace AniSprinkles.PageModels;
 
     public bool HasMedia => Media is not null;
 
-    public bool IsInitialLoading => Media is null && string.IsNullOrWhiteSpace(StatusMessage);
+    public bool IsInitialLoading => Media is null && string.IsNullOrWhiteSpace(StatusMessage) && !IsErrorState;
 
     public bool HasDescription => !string.IsNullOrWhiteSpace(Media?.Description);
 
@@ -262,7 +280,11 @@ namespace AniSprinkles.PageModels;
         get
         {
             var max = EffectiveMaxEpisodes;
-            if (max is not > 0) return 0;
+            if (max is not > 0)
+            {
+                return 0;
+            }
+
             return Math.Clamp((ListEntry?.Progress ?? 0) / (double)max, 0, 1);
         }
     }
@@ -376,6 +398,12 @@ namespace AniSprinkles.PageModels;
             return;
         }
 
+        // Set IsBusy immediately — before any awaits — so concurrent callers
+        // are rejected by the guard above. All cleanup happens in finally.
+        IsBusy = true;
+        _lastRequestedMediaId = mediaId;
+        _lastRequestedListEntry = listEntry;
+
         // Query updates can happen on the same page instance. Clear previous media for a different id
         // so we display an intentional loading state instead of stale details during transition.
         if (_loadedMediaId != mediaId)
@@ -383,13 +411,13 @@ namespace AniSprinkles.PageModels;
             Media = null;
         }
 
-        var token = await _authService.GetAccessTokenAsync();
-        IsAuthenticated = !string.IsNullOrWhiteSpace(token);
-        OnPropertyChanged(nameof(CanAddToList));
-
-        IsBusy = true;
         try
         {
+            var token = await _authService.GetAccessTokenAsync();
+            IsAuthenticated = !string.IsNullOrWhiteSpace(token);
+            OnPropertyChanged(nameof(CanAddToList));
+
+            IsErrorState = false;
             _logger.LogInformation("NAVTRACE load#{LoadRequestId} starting details fetch for media {MediaId}.", loadRequestId, mediaId);
             SentrySdk.AddBreadcrumb($"Load media details {mediaId}", "navigation", "state");
 
@@ -423,8 +451,8 @@ namespace AniSprinkles.PageModels;
 
             // Prefer the API-returned list entry over the navigation-passed one (it's always fresh).
             var entry = result.ListEntry ?? listEntry;
-            if (entry is not null)
-                entry.Media = result.Media;
+            entry?.Media = result.Media;
+
             _logger.LogInformation(
                 "DATATRACE load#{LoadRequestId} final entry (before set): Progress={Progress}, Score={Score}, EntryId={EntryId}, Source={Source}",
                 loadRequestId, entry?.Progress, entry?.Score, entry?.Id,
@@ -440,9 +468,14 @@ namespace AniSprinkles.PageModels;
         }
         catch (Exception ex)
         {
-            StatusMessage = "Failed to load details. Tap Details for more.";
+            var apiEx = ex as AniListApiException;
+            ErrorTitle = apiEx?.UserTitle ?? "Something Went Wrong";
+            ErrorSubtitle = apiEx?.UserSubtitle ?? "An unexpected error occurred. Try again or check back later.";
+            ErrorIconGlyph = apiEx?.IconGlyph ?? FluentIconsRegular.ErrorCircle24;
             ErrorDetails = _errorReportService.Record(ex, "Load details");
             IsErrorDetailsVisible = false;
+            IsErrorState = true;
+            StatusMessage = string.Empty;
             _loadedMediaId = null;
             _logger.LogError(
                 ex,
@@ -471,6 +504,9 @@ namespace AniSprinkles.PageModels;
 
     partial void OnErrorDetailsChanged(string value)
         => HasErrorDetails = !string.IsNullOrWhiteSpace(value);
+
+    partial void OnIsErrorStateChanged(bool value)
+        => OnPropertyChanged(nameof(IsInitialLoading));
 
     partial void OnMediaChanged(Media? value)
     {
@@ -762,7 +798,10 @@ namespace AniSprinkles.PageModels;
     [RelayCommand]
     private async Task EditProgress()
     {
-        if (ListEntry is null || Shell.Current is null) return;
+        if (ListEntry is null || Shell.Current is null)
+        {
+            return;
+        }
 
         var max = EffectiveMaxEpisodes;
         var prompt = max is > 0 ? $"Enter episode (0–{max})" : "Enter episode";
@@ -772,10 +811,16 @@ namespace AniSprinkles.PageModels;
             "Progress", prompt, "OK", "Cancel",
             initialValue: current, maxLength: 5, keyboard: Keyboard.Numeric);
 
-        if (string.IsNullOrWhiteSpace(input) || !int.TryParse(input, out var value)) return;
+        if (string.IsNullOrWhiteSpace(input) || !int.TryParse(input, out var value))
+        {
+            return;
+        }
 
         var clamped = Math.Max(0, max is > 0 ? Math.Min(value, max.Value) : value);
-        if ((ListEntry.Progress ?? 0) == clamped) return;
+        if ((ListEntry.Progress ?? 0) == clamped)
+        {
+            return;
+        }
 
         ListEntry.Progress = clamped;
         SliderProgress = clamped;
@@ -786,7 +831,11 @@ namespace AniSprinkles.PageModels;
     [RelayCommand]
     private void IncrementProgress()
     {
-        if (ListEntry is null) return;
+        if (ListEntry is null)
+        {
+            return;
+        }
+
         var max = EffectiveMaxEpisodes ?? int.MaxValue;
         if ((ListEntry.Progress ?? 0) < max)
         {
@@ -800,7 +849,11 @@ namespace AniSprinkles.PageModels;
     [RelayCommand]
     private void DecrementProgress()
     {
-        if (ListEntry is null) return;
+        if (ListEntry is null)
+        {
+            return;
+        }
+
         if ((ListEntry.Progress ?? 0) > 0)
         {
             ListEntry.Progress = (ListEntry.Progress ?? 0) - 1;
@@ -813,7 +866,10 @@ namespace AniSprinkles.PageModels;
     [RelayCommand]
     private void SetStarRating(string value)
     {
-        if (ListEntry is null || !int.TryParse(value, out var stars)) return;
+        if (ListEntry is null || !int.TryParse(value, out var stars))
+        {
+            return;
+        }
         // Tapping the same star clears the rating
         ListEntry.Score = StarRating == stars ? 0 : stars;
         NotifyListEntryDisplayChanged();
@@ -823,7 +879,11 @@ namespace AniSprinkles.PageModels;
     [RelayCommand]
     private void SetSmileyRating(string value)
     {
-        if (ListEntry is null || !int.TryParse(value, out var rating)) return;
+        if (ListEntry is null || !int.TryParse(value, out var rating))
+        {
+            return;
+        }
+
         ListEntry.Score = SmileyRating == rating ? 0 : rating;
         NotifyListEntryDisplayChanged();
         _ = DebouncedSaveAsync();
@@ -831,7 +891,11 @@ namespace AniSprinkles.PageModels;
 
     partial void OnSliderScoreChanged(double value)
     {
-        if (ListEntry is null) return;
+        if (ListEntry is null)
+        {
+            return;
+        }
+
         var rounded = AppSettings.ScoreFormat == ScoreFormat.Point10Decimal
             ? Math.Round(value * 2, MidpointRounding.AwayFromZero) / 2.0  // snap to 0.5 increments
             : Math.Round(value);
@@ -841,7 +905,12 @@ namespace AniSprinkles.PageModels;
             SliderScore = rounded;
             return; // will re-enter with snapped value
         }
-        if (Math.Abs((ListEntry.Score ?? 0) - rounded) < 0.01) return;
+
+        if (Math.Abs((ListEntry.Score ?? 0) - rounded) < 0.01)
+        {
+            return;
+        }
+
         ListEntry.Score = rounded;
         NotifyListEntryDisplayChanged();
         _ = DebouncedSaveAsync();
@@ -852,7 +921,11 @@ namespace AniSprinkles.PageModels;
         _logger.LogInformation(
             "DATATRACE OnSliderProgressChanged: value={Value}, ListEntry.Progress={CurrentProgress}",
             value, ListEntry?.Progress);
-        if (ListEntry is null) return;
+        if (ListEntry is null)
+        {
+            return;
+        }
+
         var rounded = (int)Math.Round(value);
         // Snap the slider thumb to the nearest whole number
         if (Math.Abs(value - rounded) > 0.01)
@@ -860,7 +933,12 @@ namespace AniSprinkles.PageModels;
             SliderProgress = rounded;
             return; // will re-enter with snapped value
         }
-        if ((ListEntry.Progress ?? 0) == rounded) return;
+
+        if ((ListEntry.Progress ?? 0) == rounded)
+        {
+            return;
+        }
+
         ListEntry.Progress = rounded;
         NotifyListEntryDisplayChanged();
         _ = DebouncedSaveAsync();
@@ -905,7 +983,11 @@ namespace AniSprinkles.PageModels;
 
     private async Task SaveCurrentEntryAsync()
     {
-        if (Media is null || ListEntry is null) return;
+        if (Media is null || ListEntry is null)
+        {
+            return;
+        }
+
         IsSavingListEntry = true;
         try
         {
@@ -925,6 +1007,20 @@ namespace AniSprinkles.PageModels;
         {
             IsSavingListEntry = false;
         }
+    }
+
+    [RelayCommand]
+    private async Task RetryLoad()
+    {
+        if (_lastRequestedMediaId <= 0 || IsBusy)
+        {
+            return;
+        }
+
+        // Clear the error state so the UI transitions to the loading spinner.
+        // LoadAsync fully owns the IsBusy lifecycle — we don't touch it here.
+        IsErrorState = false;
+        await LoadAsync(_lastRequestedMediaId, _lastRequestedListEntry);
     }
 
     [RelayCommand]
@@ -1003,7 +1099,7 @@ namespace AniSprinkles.PageModels;
         {
             if (Shell.Current is not null)
             {
-                await Shell.Current.DisplayAlert("Error", message, "OK");
+                await Shell.Current.DisplayAlertAsync("Error", message, "OK");
             }
         }
         catch

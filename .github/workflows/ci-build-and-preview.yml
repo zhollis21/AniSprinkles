@@ -30,15 +30,15 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: "10.0.x"
 
       - name: Cache NuGet Packages
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('src/AniSprinkles.csproj') }}
@@ -75,11 +75,11 @@ jobs:
           fi
 
       - name: Upload APK
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: debug-apk
           path: src/bin/Debug/net10.0-android/*-Signed.apk
-          retention-days: 7
+          retention-days: 5
           if-no-files-found: error
 
       - name: Generate Build Summary
@@ -99,18 +99,18 @@ jobs:
     name: UI Screenshots
     runs-on: ubuntu-latest
     needs: build-and-test
-    timeout-minutes: 25
+    timeout-minutes: 30
     # Screenshots are informational — emulator flakiness should not block the CI gate
     continue-on-error: true
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.head_ref || github.ref }}
 
       - name: Download APK
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: debug-apk
           path: /tmp/apk
@@ -169,14 +169,33 @@ jobs:
           # and `-d` allows reinstall if a newer debug build is already present.
           adb install -r -d "$APK_PATH"
 
-          # Launch the app — CI build uses compile-time stub services (CIAuthService,
-          # CIAniListClient) so no token is needed; the app appears fully authenticated
-          # with hardcoded data from the moment it starts.
+          # Verify the package actually installed before trying to launch it.
           PACKAGE="com.RainbowSprinkles.AniSprinkles"
-          adb shell monkey -p "$PACKAGE" -c android.intent.category.LAUNCHER 1
+          if ! adb shell pm list packages | grep -q "$PACKAGE"; then
+            echo "::error::Package $PACKAGE not found after install — aborting"
+            exit 1
+          fi
+
+          # Dismiss the lock screen before launching so it doesn't appear in screenshots.
+          adb shell wm dismiss-keyguard
+
+          # Resolve the launcher activity dynamically so this survives any future
+          # MAUI namespace or assembly renames (which change the crc64 class name).
+          MAIN_ACTIVITY=$(adb shell cmd package resolve-activity --brief -c android.intent.category.LAUNCHER "$PACKAGE" | tail -1)
+          if [ -z "$MAIN_ACTIVITY" ] || echo "$MAIN_ACTIVITY" | grep -qi "error\|no activity"; then
+            echo "::error::Could not resolve launcher activity for $PACKAGE — got: '$MAIN_ACTIVITY'"
+            exit 1
+          fi
+          echo "Launching: $MAIN_ACTIVITY"
+
+          # -W: wait until onResume before returning (eliminates window-detection race)
+          # -S: force-stop any stale process first
+          adb shell am start -W -S -n "$MAIN_ACTIVITY"
           AUTH_MODE="ci-stubs"
 
-          # Poll for app window to appear (up to 30s)
+          # Poll for app window to appear (up to 30s).
+          # -W in am start blocks until onResume, so the window should already be
+          # visible, but we poll as a safety net for slow emulator rendering.
           echo "Waiting for app to start..."
           WINDOW_FOUND=0
           for i in $(seq 1 30); do
@@ -231,16 +250,85 @@ jobs:
           adb pull /sdcard/my_anime.png screenshots/01_my_anime.png || echo "::warning::Failed to pull My Anime screenshot"
           echo "Captured: 01_my_anime.png (My Anime — $AUTH_MODE)"
 
-          # Navigate to Settings page via the flyout
-          adb shell input swipe 0 500 300 500 300
-          sleep 2
-          tap_element_by_text "Settings" || adb shell input tap 200 350
-          sleep 3
+          # Tap One Piece to open its details page
+          tap_element_by_text "ONE PIECE" || echo "::warning::Could not find ONE PIECE in list"
 
-          # Screenshot 2: Settings page
+          # Poll for the details page to load (up to 15s)
+          DETAILS_WAIT=0
+          while [ $DETAILS_WAIT -lt 15 ]; do
+            adb shell uiautomator dump /sdcard/ui_details.xml 2>/dev/null || true
+            if adb shell cat /sdcard/ui_details.xml 2>/dev/null | grep -qi "Episode"; then
+              echo "  Details page ready after ${DETAILS_WAIT}s"
+              sleep 1
+              break
+            fi
+            sleep 1
+            DETAILS_WAIT=$((DETAILS_WAIT + 1))
+          done
+
+          # Screenshot 2: One Piece details page
+          adb shell screencap -p /sdcard/one_piece_details.png || echo "::warning::Failed to capture details screenshot"
+          adb pull /sdcard/one_piece_details.png screenshots/02_one_piece_details.png || echo "::warning::Failed to pull details screenshot"
+          echo "Captured: 02_one_piece_details.png (One Piece Details — $AUTH_MODE)"
+
+          # Navigate back to My Anime, then open the Shell flyout and tap Settings.
+          # Swipe coordinates are computed from actual screen dimensions so this
+          # works regardless of device profile or resolution.
+          adb shell input keyevent KEYCODE_BACK
+          sleep 1
+
+          SCREEN_SIZE=$(adb shell wm size | grep -oP '\d+x\d+' | head -1)
+          SCREEN_W=$(echo "$SCREEN_SIZE" | cut -dx -f1)
+          SCREEN_H=$(echo "$SCREEN_SIZE" | cut -dx -f2)
+          SWIPE_END_X=$((SCREEN_W / 2))
+          SWIPE_MID_Y=$((SCREEN_H / 2))
+          echo "Screen: ${SCREEN_W}x${SCREEN_H} — swiping to (${SWIPE_END_X}, ${SWIPE_MID_Y})"
+
+          # Swipe from the left edge to open the Shell flyout
+          adb shell input swipe 0 "$SWIPE_MID_Y" "$SWIPE_END_X" "$SWIPE_MID_Y" 400
+          sleep 1
+
+          # Poll until Settings is visible in the flyout, then tap it
+          SETTINGS_WAIT=0
+          while [ $SETTINGS_WAIT -lt 10 ]; do
+            adb shell uiautomator dump /sdcard/ui_flyout.xml 2>/dev/null || true
+            if adb shell cat /sdcard/ui_flyout.xml 2>/dev/null | grep -qi '"Settings"'; then
+              echo "  Flyout open after ${SETTINGS_WAIT}s — tapping Settings"
+              tap_element_by_text "Settings"
+              sleep 2
+              break
+            fi
+            sleep 1
+            SETTINGS_WAIT=$((SETTINGS_WAIT + 1))
+          done
+          if [ $SETTINGS_WAIT -ge 10 ]; then
+            echo "::warning::Flyout did not open — Settings screenshot may be incorrect"
+          fi
+
+          # Poll for Settings page to finish loading (up to 15s)
+          # "Display Preferences" is a static label always visible once loaded.
+          SETTINGS_LOAD_WAIT=0
+          while [ $SETTINGS_LOAD_WAIT -lt 15 ]; do
+            adb shell uiautomator dump /sdcard/ui_settings_loaded.xml 2>/dev/null || true
+            SETTINGS_DUMP=$(adb shell cat /sdcard/ui_settings_loaded.xml 2>/dev/null || echo "")
+            if echo "$SETTINGS_DUMP" | grep -q "Loading settings"; then
+              echo "  Still loading settings... (${SETTINGS_LOAD_WAIT}s)"
+            elif echo "$SETTINGS_DUMP" | grep -q "Display Preferences"; then
+              echo "  Settings loaded after ${SETTINGS_LOAD_WAIT}s"
+              sleep 1
+              break
+            fi
+            sleep 1
+            SETTINGS_LOAD_WAIT=$((SETTINGS_LOAD_WAIT + 1))
+          done
+          if [ $SETTINGS_LOAD_WAIT -ge 15 ]; then
+            echo "::warning::Settings page did not finish loading — capturing anyway"
+          fi
+
+          # Screenshot 3: Settings page
           adb shell screencap -p /sdcard/settings.png || echo "::warning::Failed to capture Settings screenshot"
-          adb pull /sdcard/settings.png screenshots/02_settings.png || echo "::warning::Failed to pull Settings screenshot"
-          echo "Captured: 02_settings.png (Settings — $AUTH_MODE)"
+          adb pull /sdcard/settings.png screenshots/03_settings.png || echo "::warning::Failed to pull Settings screenshot"
+          echo "Captured: 03_settings.png (Settings — $AUTH_MODE)"
 
           echo ""
           echo "Auth mode: $AUTH_MODE"
@@ -252,8 +340,10 @@ jobs:
       - name: Run Emulator & Capture Screenshots
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 31
+          api-level: 34
+          target: default
           arch: x86_64
+          profile: pixel_7_pro
           force-avd-creation: false
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
           disable-animations: true
@@ -261,11 +351,11 @@ jobs:
 
       - name: Upload Screenshots
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ui-screenshots
           path: screenshots/
-          retention-days: 30
+          retention-days: 5
           if-no-files-found: warn
 
       - name: Commit Screenshots
@@ -292,7 +382,7 @@ jobs:
 
       - name: Comment on PR
         if: github.event_name == 'pull_request'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           SCREENSHOT_SHA: ${{ steps.commit-screenshots.outputs.sha }}
           HAS_SCREENSHOTS: ${{ steps.commit-screenshots.outputs.has_screenshots }}
@@ -309,7 +399,8 @@ jobs:
 
             const screenshots = [
               { file: 'screenshots/01_my_anime.png', label: 'My Anime' },
-              { file: 'screenshots/02_settings.png', label: 'Settings' },
+              { file: 'screenshots/02_one_piece_details.png', label: 'One Piece Details' },
+              { file: 'screenshots/03_settings.png', label: 'Settings' },
             ];
 
             // Build image URLs using the commit SHA for reliable, cache-proof links
@@ -392,7 +483,8 @@ jobs:
             echo "| Screenshot | Page |" >> $GITHUB_STEP_SUMMARY
             echo "|---|---|" >> $GITHUB_STEP_SUMMARY
             echo "| \`01_my_anime.png\` | My Anime |" >> $GITHUB_STEP_SUMMARY
-            echo "| \`02_settings.png\` | Settings |" >> $GITHUB_STEP_SUMMARY
+            echo "| \`02_one_piece_details.png\` | One Piece Details |" >> $GITHUB_STEP_SUMMARY
+            echo "| \`03_settings.png\` | Settings |" >> $GITHUB_STEP_SUMMARY
           else
             echo "⚠️ No screenshots were captured. Check the emulator step logs." >> $GITHUB_STEP_SUMMARY
           fi
