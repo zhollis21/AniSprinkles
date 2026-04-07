@@ -213,16 +213,22 @@ public partial class MyAnimePageModel : ObservableObject
             IsErrorDetailsVisible = false;
             IsErrorState = false;
 
-            // Sync display preferences from AniList before fetching the list.
-            // This ensures cross-device setting changes are picked up on every load.
-            try
+            // Sync display preferences from AniList before fetching the list so that
+            // cross-device setting changes are picked up on every load/refresh.
+            // Skip if a sync already ran very recently (e.g. the startup sync in App)
+            // to avoid a redundant back-to-back viewer request on first launch.
+            var syncAge = DateTimeOffset.UtcNow - AppSettings.LastSyncedUtc;
+            if (syncAge > TimeSpan.FromSeconds(30))
             {
-                var viewer = await _aniListClient.GetViewerAsync();
-                AppSettings.SyncFromViewer(viewer);
-            }
-            catch (Exception viewerEx)
-            {
-                _logger.LogWarning(viewerEx, "Failed to sync viewer preferences");
+                try
+                {
+                    var viewer = await _aniListClient.GetViewerAsync();
+                    AppSettings.SyncFromViewer(viewer);
+                }
+                catch (Exception viewerEx)
+                {
+                    _logger.LogWarning(viewerEx, "Failed to sync viewer preferences");
+                }
             }
 
             SentrySdk.AddBreadcrumb("Fetching AniList list", "http", "state");

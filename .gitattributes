@@ -1,2 +1,14 @@
-# Enforce consistent line endings per .editorconfig (CRLF)
-* text=auto eol=crlf
+# Enforce CRLF for file types that .editorconfig targets.
+# Other text files (e.g. shell scripts) are left at the platform default.
+* text=auto
+*.cs text eol=crlf
+*.xaml text eol=crlf
+*.xml text eol=crlf
+*.csproj text eol=crlf
+*.props text eol=crlf
+*.targets text eol=crlf
+*.slnx text eol=crlf
+*.json text eol=crlf
+*.md text eol=crlf
+*.editorconfig text eol=crlf
+*.gitattributes text eol=crlf

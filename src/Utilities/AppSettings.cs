@@ -22,6 +22,13 @@ public static class AppSettings
     /// <summary>True once preferences have been synced from an AniList Viewer response.</summary>
     public static bool HasSynced { get; private set; }
 
+    /// <summary>
+    /// UTC timestamp of the last successful <see cref="SyncFromViewer"/> call.
+    /// Not persisted — used only to de-duplicate viewer requests within a single session
+    /// (e.g. the startup sync in App and the per-load sync in MyAnimePageModel).
+    /// </summary>
+    public static DateTimeOffset LastSyncedUtc { get; private set; }
+
     public static void Load()
     {
         HasSynced = Preferences.Default.Get(HasSyncedKey, false);
@@ -58,7 +65,8 @@ public static class AppSettings
 
     /// <summary>
     /// Syncs local app settings from an AniList Viewer response.
-    /// Called on app startup and when the Settings page loads.
+    /// Called on app startup, on every My Anime load/refresh, and when the Settings page loads.
+    /// Updates <see cref="LastSyncedUtc"/> so callers can avoid redundant viewer fetches.
     /// </summary>
     public static void SyncFromViewer(AniListUser user)
     {
@@ -66,6 +74,7 @@ public static class AppSettings
         ScoreFormat = user.ScoreFormat;
         DisplayAdultContent = user.Options.DisplayAdultContent;
         AnimeSectionOrder = user.AnimeSectionOrder;
+        LastSyncedUtc = DateTimeOffset.UtcNow;
         Save();
     }
 
@@ -75,6 +84,7 @@ public static class AppSettings
         ScoreFormat = ScoreFormat.Point100;
         DisplayAdultContent = false;
         HasSynced = false;
+        LastSyncedUtc = default;
         Preferences.Default.Remove(TitleLanguageKey);
         Preferences.Default.Remove(ScoreFormatKey);
         Preferences.Default.Remove(DisplayAdultContentKey);
