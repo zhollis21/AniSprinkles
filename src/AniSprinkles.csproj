@@ -10,6 +10,12 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<MauiEnableXamlCBindingWithSourceCompilation>true</MauiEnableXamlCBindingWithSourceCompilation>
+		<!-- XC0023: All x:DataType="{x:Null}" usages are intentional. Two patterns require this:
+		     (1) DataTemplate items that bind Command to a parent view model via x:Reference while
+		         CommandParameter binds to the data item (mixed binding-context in compiled-binding XAML).
+		     (2) ContentView/Popup roots where the binding context is set at runtime and cannot be
+		         declared statically (e.g. AuthActionsView, RatingPopup). -->
+		<NoWarn>$(NoWarn);XC0023</NoWarn>
 
 		<!-- Display name -->
 		<ApplicationTitle>AniSprinkles</ApplicationTitle>
@@ -85,7 +91,7 @@
 	<PropertyGroup Condition="'$(Configuration)' == 'Release' AND $([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
 		<PublishTrimmed>true</PublishTrimmed>
 		<EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
-		<AotAssemblies>True</AotAssemblies>
+		<RunAOTCompilation>True</RunAOTCompilation>
 		<AndroidLinkTool>r8</AndroidLinkTool>
 		<!-- Generate native debug symbols for crash reporting (e.g., Sentry, Play Console) -->
 		<AndroidGenerateNativeDebugSymbols>true</AndroidGenerateNativeDebugSymbols>

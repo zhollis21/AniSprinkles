@@ -305,7 +305,7 @@ public class AniListClient : IAniListClient
         var token = await _authService.GetAccessTokenAsync(cancellationToken).ConfigureAwait(false);
         if (string.IsNullOrWhiteSpace(token))
         {
-            throw new InvalidOperationException("Not authenticated.");
+            throw new AniListApiException(ApiErrorKind.Authentication, "Not authenticated.");
         }
 
         return token;

@@ -114,3 +114,44 @@ pwsh tools/Get-OpenPrComments.ps1
 ```
 
 Requires `gh` CLI authenticated (or `GH_TOKEN` env var). The report includes PR overviews, review summaries, inline code comments with thread resolution status, and general comments.
+
+## Working with Claude
+
+### Commits and pushes
+
+Do not commit or push unless explicitly asked (e.g. "commit this", "push it"). The exception is when asked to create a PR — that implies doing everything needed: branch, commits, push, and PR creation.
+
+### Self-review
+
+After writing code, review it, fix any problems found, and repeat until the work is solid. Only then present it. The review loop is internal — do not surface bugs as a list of things found. Fix them.
+
+Review checklist:
+- Async paths — races, fire-and-forget correctness, redundant awaits
+- Concurrent paths — when background tasks exist, trace each concurrent execution path and verify the data each path reads is in the right state when it needs it; ask "if path A skips work because path B started, is the data path B produces guaranteed to be ready before path A uses it?"
+- Execution trace — walk the happy path AND every failure path end-to-end
+- API contracts — verify what exceptions methods actually throw before catching them
+- Comments and docs — confirm they match the final code, not an earlier draft
+- All callers/call sites — check existing code that interacts with what changed
+
+After the loop, present a short summary containing:
+- What was done and why (brief)
+- Architectural tradeoffs or non-obvious decisions
+- Residual concerns where the right approach is genuinely unclear and needs input
+
+The summary is NOT a list of bugs found and fixed, and NOT a request for approval on obvious decisions.
+
+### PR feedback review
+
+When asked to pull PR feedback, use `pwsh tools/Get-OpenPrComments.ps1`. For each comment:
+1. Determine if it's a valid concern that needs fixing
+2. If valid — explain the issue, present possible solutions with pros/cons
+3. If unsure — ask the user before acting
+4. Do not assume all comments are valid or silently fix them
+
+### Presenting options
+
+Always use the `AskUserQuestion` popup tool when presenting 2+ choices. Never list options in plain text.
+
+### Output style
+
+- No `🤖 Generated with Claude Code` or similar attribution in PR descriptions, issue bodies, or commit messages
