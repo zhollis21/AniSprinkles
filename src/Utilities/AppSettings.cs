@@ -64,6 +64,23 @@ public static class AppSettings
     }
 
     /// <summary>
+    /// Stamps <see cref="LastSyncedUtc"/> immediately when a sync begins, before the
+    /// network call completes. This prevents a concurrent <c>LoadAsync</c> from seeing
+    /// a stale timestamp and firing a duplicate viewer request.
+    /// Call <see cref="ClearSyncTimestamp"/> if the sync fails and must be retried.
+    /// </summary>
+    public static void MarkSyncStarted()
+    {
+        LastSyncedUtc = DateTimeOffset.UtcNow;
+    }
+
+    /// <summary>Resets <see cref="LastSyncedUtc"/> so the next load will sync normally.</summary>
+    public static void ClearSyncTimestamp()
+    {
+        LastSyncedUtc = default;
+    }
+
+    /// <summary>
     /// Syncs local app settings from an AniList Viewer response.
     /// Called on app startup, on every My Anime load/refresh, and when the Settings page loads.
     /// Updates <see cref="LastSyncedUtc"/> so callers can avoid redundant viewer fetches.
