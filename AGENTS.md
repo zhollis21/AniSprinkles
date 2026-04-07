@@ -71,6 +71,9 @@ dotnet build src/AniSprinkles.csproj -c Debug -f net10.0-android
 
 # Release AAB (CI uses this with signing args — see .github/workflows/android-release.yml)
 dotnet publish src/AniSprinkles.csproj -c Release -f net10.0-android -p:AndroidPackageFormat=aab -o output
+
+# CI build (activates compile-time stub services — see CI Stubs below)
+dotnet build src/AniSprinkles.csproj -c Debug -f net10.0-android -p:EmbedAssembliesIntoApk=true -p:CiBuild=true
 ```
 
 - **CI**: GitHub Actions `android-release.yml` triggers on Release publication (or manual `workflow_dispatch`). `promote-release.yml` promotes between Play Console tracks (internal → alpha → beta → production).
@@ -78,6 +81,19 @@ dotnet publish src/AniSprinkles.csproj -c Release -f net10.0-android -p:AndroidP
 - **Debug config**: `AndroidLinkMode=None`, `EmbedAssembliesIntoApk=False`, `UseInterpreter=true`.
 - **Release config**: `PublishTrimmed=true`, AOT (`AotAssemblies=True`), R8 linker, native debug symbols for crash reporting.
 - **No test suite yet** — `tests/AniSprinkles.UITests/` is scaffolded but empty.
+
+## CI Stubs (`-p:CiBuild=true`)
+
+Passing `-p:CiBuild=true` appends `CI` to `DefineConstants` (preserving `DEBUG` and SDK-injected symbols). This activates `#if CI` blocks that swap in stub services:
+
+- `CIAuthService` (`src/Services/CI/`) — always returns `"ci-stub-token"`; app appears authenticated
+- `CIAniListClient` (`src/Services/CI/`) — returns hardcoded anime list and user profile
+
+These stubs are **compiled out entirely** in standard Debug and Release builds. No GitHub secret or OAuth token is needed for CI screenshots.
+
+## Build Quality
+
+The project must build with **zero warnings**. Do not introduce new warnings; fix any that appear before committing. CA1822 ("member can be static") is suppressed project-wide in `.editorconfig` — MAUI `{Binding}` requires instance members even when they only read static state, so the analyzer produces false positives.
 
 ## Project Conventions
 
@@ -95,10 +111,10 @@ Always pull **both** logs before analyzing any issue.
 
 ```powershell
 # Pull device app log
-adb -s emulator-5554 exec-out run-as com.companyname.anisprinkles cat files/logs/anisprinkles.log > logs/anisprinkles.device.log
+adb -s emulator-5554 exec-out run-as com.RainbowSprinkles.AniSprinkles cat files/logs/anisprinkles.log > logs/anisprinkles.device.log
 
 # Pull current-process logcat
-$appPid = adb -s emulator-5554 shell pidof com.companyname.anisprinkles
+$appPid = adb -s emulator-5554 shell pidof com.RainbowSprinkles.AniSprinkles
 adb -s emulator-5554 logcat -v time --pid $appPid -d > logs/adb.device.pid.log
 
 # Scan for crashes
@@ -115,10 +131,10 @@ Additional debug commands:
 
 ```powershell
 # List all app log files
-adb -s emulator-5554 shell run-as com.companyname.anisprinkles ls -la files/logs
+adb -s emulator-5554 shell run-as com.RainbowSprinkles.AniSprinkles ls -la files/logs
 
 # Read latest log directly on device
-adb -s emulator-5554 shell run-as com.companyname.anisprinkles cat files/logs/anisprinkles.log
+adb -s emulator-5554 shell run-as com.RainbowSprinkles.AniSprinkles cat files/logs/anisprinkles.log
 
 # Filter logcat by tag
 adb logcat AniSprinkles:D *:S
@@ -128,6 +144,18 @@ adb logcat AniSprinkles:D *:S
 - Keep a terminal running `adb logcat` as backup in case the debugger detaches.
 - For jank: classify as CPU/UI-thread bound vs network-bound before changing architecture. Correlate `Skipped`/`Davey!` with app operations.
 - Validate performance on release-like builds, not only debugger-attached sessions.
+
+## Local Tools
+
+The `tools/` directory (git-ignored) contains local development scripts:
+
+```powershell
+# Pull all open PR comments into a structured Markdown report
+pwsh tools/Get-OpenPrComments.ps1
+# Output: tools/pr-comments.md
+```
+
+Requires `gh` CLI authenticated (or `GH_TOKEN` env var). The report includes PR overviews, review summaries, inline code comments with thread resolution status, and general comments.
 
 ## Security
 
