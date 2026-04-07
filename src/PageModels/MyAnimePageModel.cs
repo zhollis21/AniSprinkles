@@ -215,10 +215,11 @@ public partial class MyAnimePageModel : ObservableObject
 
             // Sync display preferences from AniList before fetching the list so that
             // cross-device setting changes are picked up on every load/refresh.
-            // Skip if a sync already ran very recently (e.g. the startup sync in App)
-            // to avoid a redundant back-to-back viewer request on first launch.
+            // On a non-forced load, skip if a sync ran very recently (e.g. the startup
+            // sync in App) to avoid a redundant back-to-back viewer request on first launch.
+            // Always sync on forceReload so a manual pull-to-refresh is never silently skipped.
             var syncAge = DateTimeOffset.UtcNow - AppSettings.LastSyncedUtc;
-            if (syncAge > TimeSpan.FromSeconds(30))
+            if (forceReload || syncAge > TimeSpan.FromSeconds(30))
             {
                 try
                 {
