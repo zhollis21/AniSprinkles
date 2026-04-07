@@ -80,6 +80,9 @@ Thumbs.db
 .env.local
 *.pfx
 
+# Local tools / scripts (not shipped)
+/tools/
+
 # Runtime/Temp files
 *.aps
 *.db

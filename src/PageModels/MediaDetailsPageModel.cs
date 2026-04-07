@@ -398,6 +398,12 @@ namespace AniSprinkles.PageModels;
             return;
         }
 
+        // Set IsBusy immediately — before any awaits — so concurrent callers
+        // are rejected by the guard above. All cleanup happens in finally.
+        IsBusy = true;
+        _lastRequestedMediaId = mediaId;
+        _lastRequestedListEntry = listEntry;
+
         // Query updates can happen on the same page instance. Clear previous media for a different id
         // so we display an intentional loading state instead of stale details during transition.
         if (_loadedMediaId != mediaId)
@@ -405,16 +411,12 @@ namespace AniSprinkles.PageModels;
             Media = null;
         }
 
-        var token = await _authService.GetAccessTokenAsync();
-        IsAuthenticated = !string.IsNullOrWhiteSpace(token);
-        OnPropertyChanged(nameof(CanAddToList));
-
-        _lastRequestedMediaId = mediaId;
-        _lastRequestedListEntry = listEntry;
-
-        IsBusy = true;
         try
         {
+            var token = await _authService.GetAccessTokenAsync();
+            IsAuthenticated = !string.IsNullOrWhiteSpace(token);
+            OnPropertyChanged(nameof(CanAddToList));
+
             IsErrorState = false;
             _logger.LogInformation("NAVTRACE load#{LoadRequestId} starting details fetch for media {MediaId}.", loadRequestId, mediaId);
             SentrySdk.AddBreadcrumb($"Load media details {mediaId}", "navigation", "state");
