@@ -40,7 +40,7 @@ public partial class App : Application
     /// <summary>
     /// Syncs local AppSettings from AniList on every app launch so that
     /// cross-device setting changes are picked up immediately.
-    /// LastSyncedUtc is stamped before the network call so that MyAnimePageModel.LoadAsync,
+    /// LastSyncAttemptUtc is stamped before the network call so that MyAnimePageModel.LoadAsync,
     /// which can run concurrently, sees the in-progress sync and skips its own viewer fetch.
     /// </summary>
     private async Task SyncSettingsFromAniListAsync()

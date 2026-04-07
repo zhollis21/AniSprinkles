@@ -218,7 +218,7 @@ public partial class MyAnimePageModel : ObservableObject
             // On a non-forced load, skip if a sync ran very recently (e.g. the startup
             // sync in App) to avoid a redundant back-to-back viewer request on first launch.
             // Always sync on forceReload so a manual pull-to-refresh is never silently skipped.
-            var syncAge = DateTimeOffset.UtcNow - AppSettings.LastSyncedUtc;
+            var syncAge = DateTimeOffset.UtcNow - AppSettings.LastSyncAttemptUtc;
             if (forceReload || syncAge > TimeSpan.FromSeconds(30))
             {
                 try
