@@ -11,7 +11,6 @@ public static class AppSettings
     private const string TitleLanguageKey = "title_language";
     private const string ScoreFormatKey = "score_format";
     private const string DisplayAdultContentKey = "display_adult_content";
-    private const string HasSyncedKey = "has_synced_prefs";
     private const string AnimeSectionOrderKey = "anime_section_order";
 
     public static UserTitleLanguage TitleLanguage { get; set; } = UserTitleLanguage.Romaji;
@@ -19,13 +18,8 @@ public static class AppSettings
     public static bool DisplayAdultContent { get; set; }
     public static List<string> AnimeSectionOrder { get; set; } = [];
 
-    /// <summary>True once preferences have been synced from an AniList Viewer response.</summary>
-    public static bool HasSynced { get; private set; }
-
     public static void Load()
     {
-        HasSynced = Preferences.Default.Get(HasSyncedKey, false);
-
         var titleLang = Preferences.Default.Get(TitleLanguageKey, nameof(UserTitleLanguage.Romaji));
         if (Enum.TryParse<UserTitleLanguage>(titleLang, out var parsedLang))
         {
@@ -48,8 +42,6 @@ public static class AppSettings
 
     public static void Save()
     {
-        HasSynced = true;
-        Preferences.Default.Set(HasSyncedKey, true);
         Preferences.Default.Set(TitleLanguageKey, TitleLanguage.ToString());
         Preferences.Default.Set(ScoreFormatKey, ScoreFormat.ToString());
         Preferences.Default.Set(DisplayAdultContentKey, DisplayAdultContent);
@@ -74,12 +66,10 @@ public static class AppSettings
         TitleLanguage = UserTitleLanguage.Romaji;
         ScoreFormat = ScoreFormat.Point100;
         DisplayAdultContent = false;
-        HasSynced = false;
         Preferences.Default.Remove(TitleLanguageKey);
         Preferences.Default.Remove(ScoreFormatKey);
         Preferences.Default.Remove(DisplayAdultContentKey);
         AnimeSectionOrder = [];
-        Preferences.Default.Remove(HasSyncedKey);
         Preferences.Default.Remove(AnimeSectionOrderKey);
     }
 }
