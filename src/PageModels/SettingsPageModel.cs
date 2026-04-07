@@ -227,10 +227,7 @@ public partial class SettingsPageModel : ObservableObject
         _loadedActivityMergeTime = ActivityMergeTime;
 
         // Sync local app settings from user profile
-        AppSettings.TitleLanguage = SelectedTitleLanguage;
-        AppSettings.ScoreFormat = SelectedScoreFormat;
-        AppSettings.DisplayAdultContent = DisplayAdultContent;
-        AppSettings.Save();
+        AppSettings.SyncFromViewer(user);
 
         OnPropertyChanged(nameof(HasUnsavedChanges));
     }

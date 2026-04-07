@@ -6,6 +6,7 @@
                xmlns:converters="clr-namespace:AniSprinkles.Converters"
                x:Class="AniSprinkles.Views.RatingPopup"
                x:TypeArguments="x:Object"
+               x:DataType="{x:Null}"
                BackgroundColor="Transparent">
 
     <toolkit:Popup.Resources>
