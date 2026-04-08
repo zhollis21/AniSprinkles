@@ -776,14 +776,33 @@
                                                               CommandParameter="{Binding Node.Id}" />
                                     </Border.GestureRecognizers>
                                     <VerticalStackLayout>
-                                        <Image Source="{Binding Node.CoverImage.Large}"
-                                               Aspect="AspectFill"
-                                               HeightRequest="170"
-                                               WidthRequest="130">
-                                            <Image.Clip>
-                                                <RoundRectangleGeometry Rect="0,0,130,170" CornerRadius="16,16,0,0" />
-                                            </Image.Clip>
-                                        </Image>
+                                        <Grid>
+                                            <Image Source="{Binding Node.CoverImage.Large}"
+                                                   Aspect="AspectFill"
+                                                   HeightRequest="170"
+                                                   WidthRequest="130">
+                                                <Image.Clip>
+                                                    <RoundRectangleGeometry Rect="0,0,130,170" CornerRadius="16,16,0,0" />
+                                                </Image.Clip>
+                                            </Image>
+                                            <Border StrokeShape="RoundRectangle 8"
+                                                    StrokeThickness="0"
+                                                    BackgroundColor="#99000000"
+                                                    Padding="5,3"
+                                                    HorizontalOptions="Start"
+                                                    VerticalOptions="End"
+                                                    Margin="6,0,0,6"
+                                                    IsVisible="{Binding Node.Format, Converter={StaticResource StringNotNullOrEmptyConverter}}">
+                                                <Image WidthRequest="18" HeightRequest="18">
+                                                    <Image.Source>
+                                                        <FontImageSource Glyph="{Binding Node.Format, Converter={StaticResource MediaFormatIconConverter}}"
+                                                                         FontFamily="{x:Static icons:FluentIconsFilled.FontFamily}"
+                                                                         Color="{AppThemeBinding Light=#333333, Dark=White}"
+                                                                         Size="18" />
+                                                    </Image.Source>
+                                                </Image>
+                                            </Border>
+                                        </Grid>
                                         <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
                                             <Label Text="{Binding RelationType}"
                                                    Style="{StaticResource Caption2}"

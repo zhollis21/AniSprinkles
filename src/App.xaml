@@ -15,6 +15,7 @@
             <converters:SortFieldBackgroundConverter x:Key="SortFieldBackgroundConverter" />
             <converters:SortFieldSelectedTextConverter x:Key="SortFieldSelectedTextConverter" />
             <converters:SortFieldActiveConverter x:Key="SortFieldActiveConverter" />
+            <converters:MediaFormatIconConverter x:Key="MediaFormatIconConverter" />
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />

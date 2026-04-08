@@ -140,6 +140,79 @@ internal sealed class CIAniListClient : IAniListClient
                     Color = "#f1a143",
                 },
                 Genres = ["Action", "Drama", "Fantasy", "Mystery"],
+                Relations =
+                [
+                    new MediaRelationEdge
+                    {
+                        RelationType = "SEQUEL",
+                        Node = new RelatedMedia
+                        {
+                            Id = 20958, Format = "TV", Type = "ANIME",
+                            Title = new MediaTitle { Romaji = "Shingeki no Kyojin Season 2", English = "Attack on Titan Season 2" },
+                            CoverImage = new MediaCoverImage
+                            {
+                                Medium = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20958-a5eG9qsMswfe.jpg",
+                                Large = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx20958-a5eG9qsMswfe.jpg",
+                            },
+                        },
+                    },
+                    new MediaRelationEdge
+                    {
+                        RelationType = "SIDE_STORY",
+                        Node = new RelatedMedia
+                        {
+                            Id = 18397, Format = "OVA", Type = "ANIME",
+                            Title = new MediaTitle { Romaji = "Shingeki no Kyojin OVA", English = "Attack on Titan OVA" },
+                            CoverImage = new MediaCoverImage
+                            {
+                                Medium = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx18397-2uHo4QPLCXWM.jpg",
+                                Large = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx18397-2uHo4QPLCXWM.jpg",
+                            },
+                        },
+                    },
+                    new MediaRelationEdge
+                    {
+                        RelationType = "SOURCE",
+                        Node = new RelatedMedia
+                        {
+                            Id = 53390, Format = "MANGA", Type = "MANGA",
+                            Title = new MediaTitle { Romaji = "Shingeki no Kyojin", English = "Attack on Titan" },
+                            CoverImage = new MediaCoverImage
+                            {
+                                Medium = "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx53390-1RsuABC34P9D.jpg",
+                                Large = "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx53390-1RsuABC34P9D.jpg",
+                            },
+                        },
+                    },
+                    new MediaRelationEdge
+                    {
+                        RelationType = "ALTERNATIVE",
+                        Node = new RelatedMedia
+                        {
+                            Id = 99147, Format = "MOVIE", Type = "ANIME",
+                            Title = new MediaTitle { Romaji = "Shingeki no Kyojin Movie 1", English = "Attack on Titan: Crimson Bow and Arrow" },
+                            CoverImage = new MediaCoverImage
+                            {
+                                Medium = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx99147-bMZz0xPGWMMi.jpg",
+                                Large = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx99147-bMZz0xPGWMMi.jpg",
+                            },
+                        },
+                    },
+                    new MediaRelationEdge
+                    {
+                        RelationType = "SPIN_OFF",
+                        Node = new RelatedMedia
+                        {
+                            Id = 87459, Format = "NOVEL", Type = "MANGA",
+                            Title = new MediaTitle { Romaji = "Shingeki no Kyojin: Kuinaki Sentaku", English = "Attack on Titan: No Regrets" },
+                            CoverImage = new MediaCoverImage
+                            {
+                                Medium = "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/87459-GlbVHMPqVkHG.jpg",
+                                Large = "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/87459-GlbVHMPqVkHG.jpg",
+                            },
+                        },
+                    },
+                ],
             },
         };
 
