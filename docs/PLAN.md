@@ -152,6 +152,21 @@ Future theme plan (Neon Clock)
 - One dominant accent per screen, plus 1 to 2 secondary accents
 - Avoid full rainbow gradients except for celebration moments
 
+Airing notifications (Issue #8)
+
+- Implemented background airing check via AndroidX WorkManager (15-min polling interval, network-required constraint)
+- AiringCheckWorker is fully self-contained (own HttpClient, own DTOs, no MAUI DI dependency) so it works after device reboot
+- AiringSchedule query is public (no auth token needed in Worker)
+- Worker reads cached RELEASING media IDs from Preferences (written by MyAnimePageModel on list load)
+- Notification channel created in MainApplication.OnCreate() (idempotent)
+- POST_NOTIFICATIONS runtime permission requested on API 33+ via custom BasePlatformPermission
+- Settings toggle syncs to AniList AND controls local WorkManager scheduling
+- Sign-out cancels WorkManager job, clears all notification Preferences, and dismisses posted notifications
+- Existing users with toggle already ON get a silent permission check (not prompt) on profile load
+- Notified-set pruned after 7 days to prevent unbounded growth
+- CI stub (CIAiringNotificationService) for CI builds
+- Known limitation: OEM battery killers (Samsung/Xiaomi/Huawei) may delay or suppress WorkManager jobs
+
 Open questions
 
 - App name and store listing constraints with AniList naming rules

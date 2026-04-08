@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
+using AniSprinkles.Platforms.Android;
 using AniSprinkles.Utilities;
 
 namespace AniSprinkles.PageModels;
@@ -10,6 +11,7 @@ public partial class SettingsPageModel : ObservableObject
 {
     private readonly IAuthService _authService;
     private readonly IAniListClient _aniListClient;
+    private readonly IAiringNotificationService _airingNotificationService;
     private readonly ILogger<SettingsPageModel> _logger;
 
     // Snapshot of the loaded state for dirty-tracking
@@ -136,10 +138,11 @@ public partial class SettingsPageModel : ObservableObject
             ActivityMergeTime != _loadedActivityMergeTime ||
             HasNotificationChanges());
 
-    public SettingsPageModel(IAuthService authService, IAniListClient aniListClient, ILogger<SettingsPageModel> logger)
+    public SettingsPageModel(IAuthService authService, IAniListClient aniListClient, IAiringNotificationService airingNotificationService, ILogger<SettingsPageModel> logger)
     {
         _authService = authService;
         _aniListClient = aniListClient;
+        _airingNotificationService = airingNotificationService;
         _logger = logger;
     }
 
@@ -185,6 +188,10 @@ public partial class SettingsPageModel : ObservableObject
 
     private void PopulateFromUser(AniListUser user)
     {
+        // Suppress the notification toggle handler while populating from server state.
+        // The explicit SchedulePeriodicCheck() call at the end handles re-enabling.
+        _suppressNotificationToggle = true;
+
         AniListUserId = user.Id.ToString();
         UserName = user.Name;
         UserAbout = user.About ?? string.Empty;
@@ -228,6 +235,16 @@ public partial class SettingsPageModel : ObservableObject
 
         // Sync local app settings from user profile
         AppSettings.SyncFromViewer(user);
+
+        _suppressNotificationToggle = false;
+
+        // Re-enable WorkManager if the user has airing notifications enabled.
+        // Check permission first — existing users may have the toggle ON from AniList
+        // but haven't granted POST_NOTIFICATIONS on this device yet.
+        if (AiringNotifications)
+        {
+            _ = EnsureNotificationPermissionAndScheduleAsync();
+        }
 
         OnPropertyChanged(nameof(HasUnsavedChanges));
     }
@@ -314,7 +331,11 @@ public partial class SettingsPageModel : ObservableObject
     partial void OnSelectedStaffNameLanguageChanged(UserStaffNameLanguage value) => TriggerAutoSave();
     partial void OnSelectedScoreFormatChanged(ScoreFormat value) => TriggerAutoSave();
     partial void OnDisplayAdultContentChanged(bool value) => TriggerAutoSave();
-    partial void OnAiringNotificationsChanged(bool value) => TriggerAutoSave();
+    partial void OnAiringNotificationsChanged(bool value)
+    {
+        TriggerAutoSave();
+        _ = HandleAiringNotificationToggleAsync(value);
+    }
     partial void OnRestrictMessagesToFollowingChanged(bool value) => TriggerAutoSave();
     partial void OnActivityMergeTimeChanged(int value) => TriggerAutoSave();
 
@@ -385,6 +406,56 @@ public partial class SettingsPageModel : ObservableObject
         }
     }
 
+    private bool _suppressNotificationToggle;
+
+    /// <summary>
+    /// Called from <see cref="PopulateFromUser"/> when the loaded profile has airing notifications
+    /// enabled. Checks permission silently (no prompt on first load — only prompts if user
+    /// previously granted) and schedules the WorkManager job if allowed.
+    /// </summary>
+    private async Task EnsureNotificationPermissionAndScheduleAsync()
+    {
+        var status = await Permissions.CheckStatusAsync<NotificationPermission>();
+        if (status == PermissionStatus.Granted)
+        {
+            _airingNotificationService.SchedulePeriodicCheck();
+        }
+        else
+        {
+            _logger.LogInformation(
+                "Airing notifications enabled on AniList but POST_NOTIFICATIONS not granted on device — skipping WorkManager schedule");
+        }
+    }
+
+    private async Task HandleAiringNotificationToggleAsync(bool enabled)
+    {
+        if (_suppressNotificationToggle || _loadedUser is null)
+        {
+            return;
+        }
+
+        if (enabled)
+        {
+            bool granted = await _airingNotificationService.RequestPermissionAsync();
+            if (!granted)
+            {
+                // Revert the toggle without re-triggering the handler.
+                // Must stay on the UI thread — AiringNotifications is a bound property.
+                _suppressNotificationToggle = true;
+                AiringNotifications = false;
+                _suppressNotificationToggle = false;
+                StatusMessage = "Notification permission is required for airing alerts.";
+                return;
+            }
+
+            _airingNotificationService.SchedulePeriodicCheck();
+        }
+        else
+        {
+            _airingNotificationService.CancelPeriodicCheck();
+        }
+    }
+
     partial void OnIsLoadingChanged(bool value)
         => OnPropertyChanged(nameof(ShowLoginPrompt));
 
@@ -429,6 +500,8 @@ public partial class SettingsPageModel : ObservableObject
     {
         _logger.LogInformation("Sign-out requested from Settings.");
         SentrySdk.AddBreadcrumb("Sign-out requested (Settings)", "auth", "user");
+        _airingNotificationService.CancelPeriodicCheck();
+        _airingNotificationService.ClearNotificationState();
         await _authService.SignOutAsync();
         AppSettings.Clear();
         await RefreshAuthStateAsync();

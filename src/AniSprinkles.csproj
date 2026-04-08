@@ -54,6 +54,9 @@
 		<PackageReference Include="CommunityToolkit.Maui" Version="14.0.0" />
 		<PackageReference Include="Sentry.Maui" Version="6.1.0" />
 		<PackageReference Include="Syncfusion.Maui.Toolkit" Version="1.0.9" />
+		<PackageReference Include="Xamarin.AndroidX.Work.Runtime" Version="2.11.1.1" />
+		<!-- Pinned to resolve transitive conflict between Work.Runtime → Core 1.17 and AppCompat 1.7.1.1 -->
+		<PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.7.1.3" />
 	</ItemGroup>
 
 	<!-- Append CI preprocessor symbol when building for CI screenshots (-p:CiBuild=true) -->

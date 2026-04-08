@@ -238,6 +238,9 @@ public partial class MyAnimePageModel : ObservableObject
             OnPropertyChanged(nameof(HasNoResults));
             _hasLoaded = true;
             _lastSuccessfulLoadUtc = DateTimeOffset.UtcNow;
+
+            // Cache RELEASING media IDs for the background airing notification worker.
+            CacheReleasingMediaIds(groups);
         }
         catch (Exception ex)
         {
@@ -828,6 +831,28 @@ public partial class MyAnimePageModel : ObservableObject
         {
             IsNavigatingToDetails = false;
         }
+    }
+
+    // ── Airing notification cache ─────────────────────────────────────
+
+    /// <summary>
+    /// Saves the media IDs of currently-airing ("RELEASING") anime from the user's
+    /// Watching and Planning lists to Preferences so the background <c>AiringCheckWorker</c>
+    /// can poll AniList's AiringSchedule API without fetching the full list.
+    /// Planning is included so users are notified when a show they intend to watch airs.
+    /// </summary>
+    private static void CacheReleasingMediaIds(
+        IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)> groups)
+    {
+        var releasingIds = groups
+            .Where(g => g.Name is "Watching" or "Rewatching" or "Planning")
+            .SelectMany(g => g.Entries)
+            .Where(e => e.Media?.Status is "RELEASING")
+            .Select(e => e.MediaId)
+            .Distinct()
+            .ToList();
+
+        Preferences.Default.Set("airing_media_ids", string.Join(",", releasingIds));
     }
 
     // ── Section building ─────────────────────────────────────────────
