@@ -2,7 +2,6 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
-using AniSprinkles.Platforms.Android;
 using AniSprinkles.Utilities;
 
 namespace AniSprinkles.PageModels;
@@ -410,20 +409,28 @@ public partial class SettingsPageModel : ObservableObject
 
     /// <summary>
     /// Called from <see cref="PopulateFromUser"/> when the loaded profile has airing notifications
-    /// enabled. Checks permission silently (no prompt on first load — only prompts if user
-    /// previously granted) and schedules the WorkManager job if allowed.
+    /// enabled. Requests permission if not yet decided (shows the Android dialog once), or returns
+    /// immediately if already granted or denied. On denial, reverts the toggle and shows a message.
+    /// MAUI's Permissions.RequestAsync is idempotent — safe to call on every profile load.
     /// </summary>
     private async Task EnsureNotificationPermissionAndScheduleAsync()
     {
-        var status = await Permissions.CheckStatusAsync<NotificationPermission>();
-        if (status == PermissionStatus.Granted)
+        bool granted = await _airingNotificationService.RequestPermissionAsync();
+        if (granted)
         {
             _airingNotificationService.SchedulePeriodicCheck();
         }
         else
         {
-            _logger.LogInformation(
-                "Airing notifications enabled on AniList but POST_NOTIFICATIONS not granted on device — skipping WorkManager schedule");
+            // RequestPermissionAsync uses ConfigureAwait(false) internally, so we may be on a
+            // pool thread here. Bound property writes must happen on the UI thread.
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                _suppressNotificationToggle = true;
+                AiringNotifications = false;
+                _suppressNotificationToggle = false;
+                StatusMessage = "Notification permission is required for airing alerts.";
+            });
         }
     }
 

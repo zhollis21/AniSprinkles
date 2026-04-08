@@ -59,6 +59,7 @@ public class AiringNotificationService(ILogger<AiringNotificationService> logger
         Preferences.Default.Remove("airing_media_ids");
         Preferences.Default.Remove("airing_last_check");
         Preferences.Default.Remove("airing_notified");
+        Preferences.Default.Remove("airing_permission_prompted");
         NotificationHelper.CancelAll(Platform.AppContext);
         logger.LogInformation("Airing notification state cleared");
     }

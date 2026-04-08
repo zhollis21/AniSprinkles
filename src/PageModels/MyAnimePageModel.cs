@@ -22,6 +22,7 @@ public partial class MyAnimePageModel : ObservableObject
 
     private readonly IAniListClient _aniListClient;
     private readonly IAuthService _authService;
+    private readonly IAiringNotificationService _airingNotificationService;
     private readonly ErrorReportService _errorReportService;
     private readonly ILogger<MyAnimePageModel> _logger;
     private bool _hasLoaded;
@@ -145,10 +146,11 @@ public partial class MyAnimePageModel : ObservableObject
         _ => FluentIconsRegular.List24,
     };
 
-    public MyAnimePageModel(IAniListClient aniListClient, IAuthService authService, ErrorReportService errorReportService, ILogger<MyAnimePageModel> logger)
+    public MyAnimePageModel(IAniListClient aniListClient, IAuthService authService, IAiringNotificationService airingNotificationService, ErrorReportService errorReportService, ILogger<MyAnimePageModel> logger)
     {
         _aniListClient = aniListClient;
         _authService = authService;
+        _airingNotificationService = airingNotificationService;
         _errorReportService = errorReportService;
         _logger = logger;
     }
@@ -241,6 +243,10 @@ public partial class MyAnimePageModel : ObservableObject
 
             // Cache RELEASING media IDs for the background airing notification worker.
             CacheReleasingMediaIds(groups);
+
+            // On first authenticated load, prompt for notification permission if not yet decided.
+            // Status Unknown → shows dialog once. Granted/Denied → returns immediately on future loads.
+            _ = RequestNotificationPermissionIfNeededAsync();
         }
         catch (Exception ex)
         {
@@ -830,6 +836,74 @@ public partial class MyAnimePageModel : ObservableObject
         finally
         {
             IsNavigatingToDetails = false;
+        }
+    }
+
+    // ── Notification permission prompt ──────────────────────────────────
+
+    // Tracks whether we've already shown the My Anime permission prompt so we don't re-prompt
+    // on every list load after a denial. Cleared on sign-out so a fresh session gets the prompt.
+    private const string PermissionPromptedPrefKey = "airing_permission_prompted";
+
+    /// <summary>
+    /// Called after the first successful authenticated list load. Shows the Android permission
+    /// dialog at most once from this page — the Preferences flag prevents re-prompting after a
+    /// denial. On grant, schedules WorkManager and syncs AiringNotifications=true to AniList.
+    /// On denial, the user can still enable via the Settings toggle.
+    /// </summary>
+    private async Task RequestNotificationPermissionIfNeededAsync()
+    {
+        try
+        {
+            // Only prompt once from My Anime. Settings can re-prompt via the explicit toggle.
+            if (Preferences.Default.Get(PermissionPromptedPrefKey, false))
+            {
+                return;
+            }
+
+            // Mark as prompted before awaiting so concurrent/rapid loads don't double-prompt.
+            Preferences.Default.Set(PermissionPromptedPrefKey, true);
+
+            bool granted = await _airingNotificationService.RequestPermissionAsync();
+
+            // Sync the result to AniList so the Settings toggle stays in sync with device reality.
+            // Fetch current viewer settings first so we don't overwrite any other preferences.
+            try
+            {
+                var viewer = await _aniListClient.GetViewerAsync();
+                var request = new UpdateUserRequest
+                {
+                    TitleLanguage = viewer.Options.TitleLanguage,
+                    DisplayAdultContent = viewer.Options.DisplayAdultContent,
+                    AiringNotifications = granted,
+                    ScoreFormat = viewer.ScoreFormat,
+                    StaffNameLanguage = viewer.Options.StaffNameLanguage,
+                    RestrictMessagesToFollowing = viewer.Options.RestrictMessagesToFollowing,
+                    ActivityMergeTime = viewer.Options.ActivityMergeTime,
+                    NotificationOptions = viewer.Options.NotificationOptions
+                        .Select(n => new NotificationOptionInput { Type = n.Type, Enabled = n.Enabled })
+                        .ToList()
+                };
+
+                await _aniListClient.UpdateUserAsync(request);
+                _logger.LogInformation("AiringNotifications={Granted} synced to AniList after permission prompt", granted);
+            }
+            catch (Exception ex)
+            {
+                // Non-fatal: WorkManager state is still correct. AniList sync can be corrected via Settings.
+                _logger.LogWarning(ex, "Failed to sync AiringNotifications={Granted} to AniList after permission prompt", granted);
+            }
+
+            if (!granted)
+            {
+                return;
+            }
+
+            _airingNotificationService.SchedulePeriodicCheck();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Failed to request notification permission on list load");
         }
     }
 
