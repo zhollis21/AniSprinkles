@@ -336,7 +336,7 @@ jobs:
           NOTES_LENGTH=$(wc -c < distribution/whatsnew/whatsnew-en-US)
           if [ "$NOTES_LENGTH" -gt 500 ]; then
             truncate -s 497 distribution/whatsnew/whatsnew-en-US
-            echo "..." >> distribution/whatsnew/whatsnew-en-US
+            printf "..." >> distribution/whatsnew/whatsnew-en-US
             echo "::warning::Release notes truncated to 500 characters"
           fi
 
