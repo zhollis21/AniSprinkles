@@ -332,14 +332,16 @@ jobs:
             echo "Version ${{ needs.build.outputs.version_name }}" > distribution/whatsnew/whatsnew-en-US
           fi
 
-          # Play Console limits release notes to 500 characters
-          NOTES_LENGTH=$(wc -c < distribution/whatsnew/whatsnew-en-US)
-          if [ "$NOTES_LENGTH" -gt 500 ]; then
-            truncate -s 497 distribution/whatsnew/whatsnew-en-US
-            printf "..." >> distribution/whatsnew/whatsnew-en-US
-            echo "::warning::Release notes truncated to 500 characters"
-          fi
-
+          # Play Console limits release notes to 500 characters (counted by Unicode code points, not bytes)
+          python3 -c "
+import sys
+path = 'distribution/whatsnew/whatsnew-en-US'
+text = open(path, encoding='utf-8').read()
+if len(text) > 500:
+    open(path, 'w', encoding='utf-8').write(text[:497] + '...')
+    print('::warning::Release notes truncated to 500 characters')
+"
+          NOTES_LENGTH=$(python3 -c "print(len(open('distribution/whatsnew/whatsnew-en-US', encoding='utf-8').read()))")
           echo "::notice::Release notes (${NOTES_LENGTH} chars):"
           cat distribution/whatsnew/whatsnew-en-US
 
