@@ -26,7 +26,7 @@
 - **DI registration** (`MauiProgram.cs`):
   | Registration | Lifetime |
   |---|---|
-  | `ErrorReportService`, `HttpClient`, `IAuthService`, `IAniListClient` | Singleton |
+  | `ErrorReportService`, `HttpClient`, `IAuthService`, `IAniListClient`, `IAiringNotificationService` | Singleton |
   | `MyAnimePageModel`, `SettingsPageModel` | **Singleton** (survive page recreation across flyout switches) |
   | `LoggingHandler` | Transient |
   | `MyAnimePage`, `SettingsPage`, `MediaDetailsPageModel`, `MediaDetailsPage` | Transient |
@@ -41,6 +41,7 @@
   | `ErrorReportService` | Sentry capture + `ILogger` error recording + Bearer token redaction |
   | `FileLoggerProvider` | Rotating async file logger via `Channel<string>` (Debug builds only) |
   | `LoggingHandler` | HTTP `DelegatingHandler` — logs request/response + Sentry breadcrumbs |
+  | `AiringNotificationService` | Android WorkManager-based periodic airing check + notification posting |
 - **Global usings** (`GlobalUsings.cs`): `Models`, `PageModels`, `Pages`, `Services`, `IconFont.Maui.FluentIcons`. The `Converters` and `Utilities` namespaces require explicit `using` statements.
 - **Key NuGet packages**: `Microsoft.Maui.Controls` 10.0.41, `CommunityToolkit.Mvvm` 8.4.0, `CommunityToolkit.Maui` 14.0.0, `Sentry.Maui` 6.1.0, `Syncfusion.Maui.Toolkit` 1.0.9, `IconFont.Maui.FluentIcons` 1.1.0.
 
@@ -60,8 +61,50 @@
   | `SaveMediaListEntry` | Mutation | Required | Create or update a list entry |
   | `DeleteMediaListEntry` | Mutation | Required | Delete a list entry by ID |
   | `UpdateUser` | Mutation | Required | Update user settings (title language, score format, etc.) |
+  | `AiringSchedule` | Query | **Public** | Windowed airing schedule for tracked media IDs (used by both `AniListClient` and `AiringCheckWorker`) |
 - **Rate limiting**: Planned but **not yet implemented**. Tentative strategy: respect `X-RateLimit-Remaining`/`Retry-After` headers, 30 req/min conservative start, exponential backoff on 429. Currently `SendAsync` throws `HttpRequestException` on any non-success status.
 - **HttpClient**: singleton with `LoggingHandler` (DelegatingHandler wrapping `HttpClientHandler`). Bearer token attached per-request in `AniListClient.SendAsync`. No timeout, retry, or rate-limit middleware configured yet.
+
+## Airing Notifications
+
+Background notification system that polls AniList's public AiringSchedule API and posts local Android notifications when tracked episodes air.
+
+**Architecture:**
+```
+SettingsPageModel (toggle on/off)
+  → IAiringNotificationService.SchedulePeriodicCheck / CancelPeriodicCheck
+    → Android WorkManager PeriodicWorkRequest (every 15 min, network required)
+      → AiringCheckWorker.DoWork()  [self-contained, no MAUI DI dependency]
+        → Read cached RELEASING media IDs from Preferences
+        → Query public AiringSchedule API (no auth token)
+        → Filter against notified-set → post local notifications with cover art
+```
+
+**Key files:**
+| File | Role |
+|---|---|
+| `src/Services/IAiringNotificationService.cs` | Interface: permission, schedule, cancel, clear |
+| `src/Services/AiringNotificationService.cs` | Android impl: WorkManager + MAUI Permissions |
+| `src/Platforms/Android/AiringCheckWorker.cs` | Self-contained Worker: own HTTP client + DTOs, no DI |
+| `src/Platforms/Android/NotificationHelper.cs` | Channel creation, notification posting, cover image download |
+| `src/Platforms/Android/NotificationPermission.cs` | Custom `BasePlatformPermission` for POST_NOTIFICATIONS (API 33+) |
+| `src/Services/CI/CIAiringNotificationService.cs` | CI stub (all no-ops) |
+
+**Preferences keys (owned by notification system):**
+| Key | Type | Purpose |
+|---|---|---|
+| `airing_media_ids` | `string` | Comma-separated RELEASING media IDs (written by `MyAnimePageModel`) |
+| `airing_last_check` | `long` | Unix timestamp of last Worker run |
+| `airing_notified` | `string` | JSON dict of `"mediaId:episode": timestamp` pairs |
+
+**Design decisions:**
+- Worker is **fully self-contained** (own HttpClient, own DTOs) so it works after device reboot without app launch
+- `[DynamicDependency]` on Worker constructor (not class) for Release trimming/AOT safety
+- `_suppressNotificationToggle` flag in `SettingsPageModel` prevents side effects when populating toggle from server state
+- `MyAnimePageModel` caches RELEASING media IDs (Watching + Rewatching + Planning) to Preferences after list load
+- Notified-set entries pruned after 7 days; pruning runs unconditionally (not gated on new entries)
+- Sign-out clears all notification state AND dismisses posted notifications from the shade
+- Permission denial on toggle-on reverts the toggle (stays on UI thread — no `ConfigureAwait(false)`)
 
 ## Build and Test
 
@@ -88,6 +131,7 @@ Passing `-p:CiBuild=true` appends `CI` to `DefineConstants` (preserving `DEBUG` 
 
 - `CIAuthService` (`src/Services/CI/`) — always returns `"ci-stub-token"`; app appears authenticated
 - `CIAniListClient` (`src/Services/CI/`) — returns hardcoded anime list and user profile
+- `CIAiringNotificationService` (`src/Services/CI/`) — all methods are no-ops; `RequestPermissionAsync` returns `true`
 
 These stubs are **compiled out entirely** in standard Debug and Release builds. No GitHub secret or OAuth token is needed for CI screenshots.
 
@@ -171,7 +215,11 @@ Review checklist:
 
 - Async paths — races, fire-and-forget correctness, redundant awaits
 - Concurrent paths — when background tasks exist, trace each concurrent execution path and verify the data each path reads is in the right state when it needs it; ask "if path A skips work because path B started, is the data path B produces guaranteed to be ready before path A uses it?"
+- UI-thread safety — any `[ObservableProperty]` or bound property MUST be set from the UI thread. After any `await` (especially with `ConfigureAwait(false)`), the continuation may be on a pool thread. If the async method sets bound properties on a failure/revert path, do NOT use `ConfigureAwait(false)`.
 - Execution trace — walk the happy path AND every failure path end-to-end
+- State lifecycle — when state is written (caches, Preferences, files), verify it is cleaned up on sign-out, user switch, and toggle-off. Check for orphaned visible state (e.g. posted notifications still in the shade after sign-out).
+- Resource cleanup on all paths — if a resource (cache, Preferences key, notification) is written on the happy path, check whether the cleanup path (sign-out, disable, error) also handles it. Don't gate cleanup behind `if (changed)` when pruning/expiry should happen unconditionally.
+- Populate-from-server guards — when loading server state into bound properties (e.g. user profile → toggle), the property-change handlers will fire. Use suppress flags to prevent side effects (permission dialogs, scheduling) during population. Handle the side effects explicitly after population completes.
 - API contracts — verify what exceptions methods actually throw before catching them
 - Comments and docs — confirm they match the final code, not an earlier draft
 - All callers/call sites — check existing code that interacts with what changed

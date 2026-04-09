@@ -10,6 +10,7 @@ public partial class SettingsPageModel : ObservableObject
 {
     private readonly IAuthService _authService;
     private readonly IAniListClient _aniListClient;
+    private readonly IAiringNotificationService _airingNotificationService;
     private readonly ILogger<SettingsPageModel> _logger;
 
     // Snapshot of the loaded state for dirty-tracking
@@ -136,10 +137,11 @@ public partial class SettingsPageModel : ObservableObject
             ActivityMergeTime != _loadedActivityMergeTime ||
             HasNotificationChanges());
 
-    public SettingsPageModel(IAuthService authService, IAniListClient aniListClient, ILogger<SettingsPageModel> logger)
+    public SettingsPageModel(IAuthService authService, IAniListClient aniListClient, IAiringNotificationService airingNotificationService, ILogger<SettingsPageModel> logger)
     {
         _authService = authService;
         _aniListClient = aniListClient;
+        _airingNotificationService = airingNotificationService;
         _logger = logger;
     }
 
@@ -185,6 +187,10 @@ public partial class SettingsPageModel : ObservableObject
 
     private void PopulateFromUser(AniListUser user)
     {
+        // Suppress the notification toggle handler while populating from server state.
+        // The explicit SchedulePeriodicCheck() call at the end handles re-enabling.
+        _suppressNotificationToggle = true;
+
         AniListUserId = user.Id.ToString();
         UserName = user.Name;
         UserAbout = user.About ?? string.Empty;
@@ -228,6 +234,16 @@ public partial class SettingsPageModel : ObservableObject
 
         // Sync local app settings from user profile
         AppSettings.SyncFromViewer(user);
+
+        _suppressNotificationToggle = false;
+
+        // Re-enable WorkManager if the user has airing notifications enabled.
+        // Check permission first — existing users may have the toggle ON from AniList
+        // but haven't granted POST_NOTIFICATIONS on this device yet.
+        if (AiringNotifications)
+        {
+            _ = EnsureNotificationPermissionAndScheduleAsync();
+        }
 
         OnPropertyChanged(nameof(HasUnsavedChanges));
     }
@@ -314,7 +330,18 @@ public partial class SettingsPageModel : ObservableObject
     partial void OnSelectedStaffNameLanguageChanged(UserStaffNameLanguage value) => TriggerAutoSave();
     partial void OnSelectedScoreFormatChanged(ScoreFormat value) => TriggerAutoSave();
     partial void OnDisplayAdultContentChanged(bool value) => TriggerAutoSave();
-    partial void OnAiringNotificationsChanged(bool value) => TriggerAutoSave();
+    partial void OnAiringNotificationsChanged(bool value)
+    {
+        // Do not queue an auto-save here — the permission dialog may take >1500ms to answer,
+        // causing the debounce to fire with the wrong value before the result is known.
+        // HandleAiringNotificationToggleAsync cancels any pending save on entry and queues
+        // a fresh one after the permission flow resolves with the final value.
+        // The suppress flag guards the revert path so the internal toggle reset doesn't queue a save.
+        if (!_suppressNotificationToggle)
+        {
+            _ = HandleAiringNotificationToggleAsync(value);
+        }
+    }
     partial void OnRestrictMessagesToFollowingChanged(bool value) => TriggerAutoSave();
     partial void OnActivityMergeTimeChanged(int value) => TriggerAutoSave();
 
@@ -385,6 +412,127 @@ public partial class SettingsPageModel : ObservableObject
         }
     }
 
+    private bool _suppressNotificationToggle;
+
+    // Prevents concurrent executions of HandleAiringNotificationToggleAsync from rapid toggle taps.
+    // Only one permission flow or schedule/cancel operation should be in flight at a time.
+    private bool _isHandlingNotificationToggle;
+
+    /// <summary>
+    /// Called from <see cref="PopulateFromUser"/> when the loaded profile has airing notifications
+    /// enabled. Requests permission if not yet decided (shows the Android dialog once), or returns
+    /// immediately if already granted or denied. On denial, reverts the toggle and shows a message.
+    /// MAUI's Permissions.RequestAsync is idempotent — safe to call on every profile load.
+    /// </summary>
+    private async Task EnsureNotificationPermissionAndScheduleAsync()
+    {
+        bool granted = await _airingNotificationService.RequestPermissionAsync();
+        if (granted)
+        {
+            // Guard against a race where the user toggled OFF while the permission await was
+            // in flight (e.g. a concurrent Settings refresh completing via PopulateFromUser).
+            if (AiringNotifications)
+            {
+                _airingNotificationService.SchedulePeriodicCheck();
+            }
+        }
+        else
+        {
+            // Cancel any existing WorkManager job — permission was revoked in system settings
+            // while the toggle was still ON. Without this, the job keeps running uselessly.
+            _airingNotificationService.CancelPeriodicCheck();
+
+            // RequestPermissionAsync uses ConfigureAwait(false) internally, so we may be on a
+            // pool thread here. Bound property writes must happen on the UI thread.
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                _suppressNotificationToggle = true;
+                AiringNotifications = false;
+                _suppressNotificationToggle = false;
+                StatusMessage = "Notification permission is required for airing alerts.";
+            });
+        }
+    }
+
+    private async Task HandleAiringNotificationToggleAsync(bool enabled)
+    {
+        if (_suppressNotificationToggle || _loadedUser is null)
+        {
+            return;
+        }
+
+        // Rapid toggle taps fire multiple concurrent calls via fire-and-forget.
+        // Only one permission flow or schedule/cancel should run at a time — drop the rest.
+        if (_isHandlingNotificationToggle)
+        {
+            return;
+        }
+
+        _isHandlingNotificationToggle = true;
+
+        // Cancel any pending debounced save — the permission dialog may take >1500ms to answer,
+        // which would fire the save with the pre-dialog toggle value. We'll queue a fresh save
+        // after the flow resolves so the persisted value always matches the final outcome.
+        _saveDebounceCts?.Cancel();
+
+        try
+        {
+            if (enabled)
+            {
+                bool granted = await _airingNotificationService.RequestPermissionAsync();
+                if (!granted)
+                {
+                    // Revert the toggle without re-triggering the handler.
+                    // Must stay on the UI thread — AiringNotifications is a bound property.
+                    _suppressNotificationToggle = true;
+                    AiringNotifications = false;
+                    _suppressNotificationToggle = false;
+
+                    // Android won't re-show the system dialog once the user has responded.
+                    // Offer to deep-link them directly to the app's notification settings.
+                    bool openSettings = await Shell.Current.CurrentPage.DisplayAlertAsync(
+                        "Notification Permission Required",
+                        "AniSprinkles needs notification permission to alert you when episodes air. Enable it in your device settings, then turn the toggle back on.",
+                        "Open Settings",
+                        "Cancel");
+
+                    if (openSettings)
+                    {
+                        AppInfo.Current.ShowSettingsUI();
+                    }
+
+                    // Save the reverted (false) value to AniList.
+                    TriggerAutoSave();
+                    return;
+                }
+
+                _airingNotificationService.SchedulePeriodicCheck();
+
+                // If the toggle was flipped back OFF while the permission dialog was open,
+                // cancel the job we just scheduled so the final state is consistent.
+                if (!AiringNotifications)
+                {
+                    _airingNotificationService.CancelPeriodicCheck();
+                }
+            }
+            else
+            {
+                _airingNotificationService.CancelPeriodicCheck();
+
+                // Reset the checkpoint so re-enabling starts fresh — only new episodes
+                // going forward, no backlog spam for everything that aired while disabled.
+                Preferences.Default.Remove("airing_last_check");
+            }
+
+            // Save the final value — granted+scheduled, or cancelled.
+            TriggerAutoSave();
+        }
+        finally
+        {
+            _isHandlingNotificationToggle = false;
+        }
+    }
+
     partial void OnIsLoadingChanged(bool value)
         => OnPropertyChanged(nameof(ShowLoginPrompt));
 
@@ -429,6 +577,8 @@ public partial class SettingsPageModel : ObservableObject
     {
         _logger.LogInformation("Sign-out requested from Settings.");
         SentrySdk.AddBreadcrumb("Sign-out requested (Settings)", "auth", "user");
+        _airingNotificationService.CancelPeriodicCheck();
+        _airingNotificationService.ClearNotificationState();
         await _authService.SignOutAsync();
         AppSettings.Clear();
         await RefreshAuthStateAsync();
