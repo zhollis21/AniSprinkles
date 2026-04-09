@@ -848,10 +848,10 @@ public partial class MyAnimePageModel : ObservableObject
     private const string PermissionPromptedPrefKey = "airing_permission_prompted";
 
     /// <summary>
-    /// Called after the first successful authenticated list load. Shows the Android permission
-    /// dialog at most once from this page — the Preferences flag prevents re-prompting after a
-    /// denial. On grant, schedules WorkManager and syncs AiringNotifications=true to AniList.
-    /// On denial, the user can still enable via the Settings toggle.
+    /// Called after the first successful authenticated list load. On API 33+ (where
+    /// POST_NOTIFICATIONS requires a runtime dialog), shows the permission prompt once and
+    /// syncs the result to AniList. On API &lt;33 (no runtime permission needed), respects the
+    /// existing AniList value — schedules WorkManager if already enabled, does nothing otherwise.
     /// </summary>
     private async Task RequestNotificationPermissionIfNeededAsync()
     {
@@ -865,6 +865,27 @@ public partial class MyAnimePageModel : ObservableObject
 
             // Mark as prompted before awaiting so concurrent/rapid loads don't double-prompt.
             Preferences.Default.Set(PermissionPromptedPrefKey, true);
+
+            // On API <33, POST_NOTIFICATIONS is not a runtime permission — RequestPermissionAsync
+            // returns true automatically. Don't sync to AniList in this case (the user didn't
+            // explicitly opt in via a dialog). Instead, respect the existing AniList value.
+            if (!OperatingSystem.IsAndroidVersionAtLeast(33))
+            {
+                try
+                {
+                    var viewer = await _aniListClient.GetViewerAsync();
+                    if (viewer.Options.AiringNotifications)
+                    {
+                        _airingNotificationService.SchedulePeriodicCheck();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "Failed to check AniList airing notifications setting on API <33");
+                }
+
+                return;
+            }
 
             bool granted = await _airingNotificationService.RequestPermissionAsync();
 

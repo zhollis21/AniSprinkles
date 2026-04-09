@@ -518,6 +518,10 @@ public partial class SettingsPageModel : ObservableObject
             else
             {
                 _airingNotificationService.CancelPeriodicCheck();
+
+                // Reset the checkpoint so re-enabling starts fresh — only new episodes
+                // going forward, no backlog spam for everything that aired while disabled.
+                Preferences.Default.Remove("airing_last_check");
             }
 
             // Save the final value — granted+scheduled, or cancelled.
