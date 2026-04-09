@@ -128,7 +128,11 @@ After writing code, review it, fix any problems found, and repeat until the work
 Review checklist:
 - Async paths — races, fire-and-forget correctness, redundant awaits
 - Concurrent paths — when background tasks exist, trace each concurrent execution path and verify the data each path reads is in the right state when it needs it; ask "if path A skips work because path B started, is the data path B produces guaranteed to be ready before path A uses it?"
+- UI-thread safety — any `[ObservableProperty]` or bound property MUST be set from the UI thread. After any `await` (especially with `ConfigureAwait(false)`), the continuation may be on a pool thread. If the async method sets bound properties on a failure/revert path, do NOT use `ConfigureAwait(false)`.
 - Execution trace — walk the happy path AND every failure path end-to-end
+- State lifecycle — when state is written (caches, Preferences, files), verify it is cleaned up on sign-out, user switch, and toggle-off. Check for orphaned visible state (e.g. posted notifications still in the shade after sign-out).
+- Resource cleanup on all paths — if a resource (cache, Preferences key, notification) is written on the happy path, check whether the cleanup path (sign-out, disable, error) also handles it. Don't gate cleanup behind `if (changed)` when pruning/expiry should happen unconditionally.
+- Populate-from-server guards — when loading server state into bound properties (e.g. user profile → toggle), the property-change handlers will fire. Use suppress flags to prevent side effects (permission dialogs, scheduling) during population. Handle the side effects explicitly after population completes.
 - API contracts — verify what exceptions methods actually throw before catching them
 - Comments and docs — confirm they match the final code, not an earlier draft
 - All callers/call sites — check existing code that interacts with what changed

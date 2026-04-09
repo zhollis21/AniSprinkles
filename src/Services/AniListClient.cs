@@ -300,6 +300,51 @@ public class AniListClient : IAniListClient
         return MapUser(user);
     }
 
+    public async Task<IReadOnlyList<AiringScheduleEntry>> GetAiringScheduleAsync(
+        IReadOnlyList<int> mediaIds, int airingAfter, int airingBefore, CancellationToken cancellationToken = default)
+    {
+        if (mediaIds.Count == 0)
+        {
+            return [];
+        }
+
+        var results = new List<AiringScheduleEntry>();
+        int page = 1;
+        bool hasNextPage;
+
+        do
+        {
+            var data = await SendAsync<AiringScheduleData>(
+                "AiringSchedule",
+                AiringScheduleQuery,
+                new { mediaIds, airingAfter, airingBefore, page },
+                token: null, // AiringSchedule is a public query — no auth needed
+                cancellationToken).ConfigureAwait(false);
+
+            if (data.Page?.AiringSchedules is { } schedules)
+            {
+                foreach (AiringScheduleDto dto in schedules)
+                {
+                    results.Add(new AiringScheduleEntry
+                    {
+                        Id = dto.Id,
+                        AiringAt = dto.AiringAt,
+                        Episode = dto.Episode,
+                        MediaId = dto.MediaId,
+                        MediaTitle = dto.Media?.Title?.UserPreferred ?? string.Empty,
+                        CoverImageUrl = dto.Media?.CoverImage?.Medium,
+                    });
+                }
+            }
+
+            hasNextPage = data.Page?.PageInfo?.HasNextPage == true;
+            page++;
+        }
+        while (hasNextPage);
+
+        return results;
+    }
+
     private async Task<string> RequireAccessTokenAsync(CancellationToken cancellationToken)
     {
         var token = await _authService.GetAccessTokenAsync(cancellationToken).ConfigureAwait(false);
@@ -802,6 +847,39 @@ public class AniListClient : IAniListClient
     private sealed class Page
     {
         public List<MediaDto>? Media { get; set; }
+        public PageInfo? PageInfo { get; set; }
+        public List<AiringScheduleDto>? AiringSchedules { get; set; }
+    }
+
+    private sealed class PageInfo
+    {
+        public bool? HasNextPage { get; set; }
+    }
+
+    private sealed class AiringScheduleDto
+    {
+        public int Id { get; set; }
+        public int AiringAt { get; set; }
+        public int Episode { get; set; }
+        public int MediaId { get; set; }
+        public AiringScheduleMediaDto? Media { get; set; }
+    }
+
+    private sealed class AiringScheduleMediaDto
+    {
+        public int Id { get; set; }
+        public AiringScheduleTitleDto? Title { get; set; }
+        public MediaCoverImage? CoverImage { get; set; }
+    }
+
+    private sealed class AiringScheduleTitleDto
+    {
+        public string? UserPreferred { get; set; }
+    }
+
+    private sealed class AiringScheduleData
+    {
+        public Page? Page { get; set; }
     }
 
     private sealed class MediaData
@@ -1282,6 +1360,24 @@ query ViewerFull {
         meanScore
         minutesWatched
         episodesWatched
+      }
+    }
+  }
+}";
+
+    private const string AiringScheduleQuery = @"
+query AiringSchedule($mediaIds: [Int], $airingAfter: Int, $airingBefore: Int, $page: Int) {
+  Page(page: $page, perPage: 50) {
+    pageInfo { hasNextPage }
+    airingSchedules(mediaId_in: $mediaIds, airingAt_greater: $airingAfter, airingAt_lesser: $airingBefore, sort: TIME) {
+      id
+      airingAt
+      episode
+      mediaId
+      media {
+        id
+        title { userPreferred }
+        coverImage { medium }
       }
     }
   }

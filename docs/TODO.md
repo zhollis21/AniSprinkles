@@ -46,6 +46,21 @@ MVP scope
 - [x] Align both flyout pages on consistent three-branch `OnAppearing` pattern (content-alive / fast-path cached / slow first-load)
 - [ ] Define list edit fields and validation rules
 
+Airing Notifications (Issue #8)
+- [x] Add IAiringNotificationService interface and Android implementation (WorkManager)
+- [x] Add AiringCheckWorker (self-contained, no DI dependency)
+- [x] Add NotificationHelper (channel, posting, cover image download)
+- [x] Add NotificationPermission (POST_NOTIFICATIONS on API 33+)
+- [x] Add AiringSchedule GraphQL query to IAniListClient/AniListClient
+- [x] Wire toggle in SettingsPageModel (permission request, schedule/cancel, suppress flag)
+- [x] Cache RELEASING media IDs in MyAnimePageModel
+- [x] Register IAiringNotificationService in MauiProgram.cs (all DI branches)
+- [x] Create notification channel in MainApplication.OnCreate()
+- [x] Add POST_NOTIFICATIONS permission to AndroidManifest.xml
+- [x] Add CI stub (CIAiringNotificationService)
+- [x] Handle sign-out cleanup (cancel job, clear state, dismiss notifications)
+- [x] Handle existing users (silent permission check on profile load)
+
 UI
 - [ ] Apply Midnight Minimal tokens to base styles
 - [ ] Define dominant accent per screen for MVP

@@ -49,6 +49,34 @@ internal sealed class CIAniListClient : IAniListClient
     public Task<AniListUser> UpdateUserAsync(UpdateUserRequest request, CancellationToken cancellationToken = default)
         => Task.FromResult(StubData.Viewer);
 
+    public Task<IReadOnlyList<AiringScheduleEntry>> GetAiringScheduleAsync(
+        IReadOnlyList<int> mediaIds, int airingAfter, int airingBefore, CancellationToken cancellationToken = default)
+    {
+        var now = DateTimeOffset.UtcNow;
+        IReadOnlyList<AiringScheduleEntry> entries =
+        [
+            new AiringScheduleEntry
+            {
+                Id = 1,
+                AiringAt = (int)(now - TimeSpan.FromMinutes(10)).ToUnixTimeSeconds(),
+                Episode = 1120,
+                MediaId = 21,
+                MediaTitle = "One Piece",
+                CoverImageUrl = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21-YCDoj1EkAxFn.jpg",
+            },
+            new AiringScheduleEntry
+            {
+                Id = 2,
+                AiringAt = (int)(now - TimeSpan.FromMinutes(5)).ToUnixTimeSeconds(),
+                Episode = 4,
+                MediaId = 145064,
+                MediaTitle = "Jujutsu Kaisen",
+                CoverImageUrl = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx145064-5OEswA46AS4c.jpg",
+            },
+        ];
+        return Task.FromResult(entries);
+    }
+
     // ---------------------------------------------------------------------------
     // Stub data — built once, shared across all method calls.
     // Media IDs, cover URLs, scores, and metadata are real AniList data.

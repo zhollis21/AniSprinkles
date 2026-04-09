@@ -58,12 +58,15 @@ public static class MauiProgram
 #if CI
         builder.Services.AddSingleton<IAuthService, CIAuthService>();
         builder.Services.AddSingleton<IAniListClient, CIAniListClient>();
+        builder.Services.AddSingleton<IAiringNotificationService, CIAiringNotificationService>();
 #elif ERROR_SIM
         builder.Services.AddSingleton<IAuthService, SimAuthService>();
         builder.Services.AddSingleton<IAniListClient, FailingAniListClient>();
+        builder.Services.AddSingleton<IAiringNotificationService, AiringNotificationService>();
 #else
         builder.Services.AddSingleton<IAuthService, AuthService>();
         builder.Services.AddSingleton<IAniListClient, AniListClient>();
+        builder.Services.AddSingleton<IAiringNotificationService, AiringNotificationService>();
 #endif
         builder.Services.AddSingleton<MyAnimePageModel>();
         builder.Services.AddTransient<MyAnimePage>();

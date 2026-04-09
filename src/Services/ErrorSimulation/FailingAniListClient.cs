@@ -55,5 +55,9 @@ internal sealed class FailingAniListClient : IAniListClient
 
     public Task<AniListUser>
         UpdateUserAsync(UpdateUserRequest request, CancellationToken ct = default) => throw Fail();
+
+    public Task<IReadOnlyList<AiringScheduleEntry>>
+        GetAiringScheduleAsync(IReadOnlyList<int> mediaIds, int airingAfter, int airingBefore, CancellationToken ct = default)
+            => throw Fail();
 }
 #endif
