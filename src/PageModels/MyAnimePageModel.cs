@@ -779,6 +779,8 @@ public partial class MyAnimePageModel : ObservableObject
     {
         _logger.LogInformation("Sign-out requested.");
         SentrySdk.AddBreadcrumb("Sign-out requested", "auth", "user");
+        _airingNotificationService.CancelPeriodicCheck();
+        _airingNotificationService.ClearNotificationState();
         await _authService.SignOutAsync();
         AppSettings.Clear();
         await LoadAsync(forceReload: true);

@@ -407,6 +407,10 @@ public partial class SettingsPageModel : ObservableObject
 
     private bool _suppressNotificationToggle;
 
+    // Prevents concurrent executions of HandleAiringNotificationToggleAsync from rapid toggle taps.
+    // Only one permission flow or schedule/cancel operation should be in flight at a time.
+    private bool _isHandlingNotificationToggle;
+
     /// <summary>
     /// Called from <see cref="PopulateFromUser"/> when the loaded profile has airing notifications
     /// enabled. Requests permission if not yet decided (shows the Android dialog once), or returns
@@ -441,25 +445,60 @@ public partial class SettingsPageModel : ObservableObject
             return;
         }
 
-        if (enabled)
+        // Rapid toggle taps fire multiple concurrent calls via fire-and-forget.
+        // Only one permission flow or schedule/cancel should run at a time — drop the rest.
+        if (_isHandlingNotificationToggle)
         {
-            bool granted = await _airingNotificationService.RequestPermissionAsync();
-            if (!granted)
-            {
-                // Revert the toggle without re-triggering the handler.
-                // Must stay on the UI thread — AiringNotifications is a bound property.
-                _suppressNotificationToggle = true;
-                AiringNotifications = false;
-                _suppressNotificationToggle = false;
-                StatusMessage = "Notification permission is required for airing alerts.";
-                return;
-            }
-
-            _airingNotificationService.SchedulePeriodicCheck();
+            return;
         }
-        else
+
+        _isHandlingNotificationToggle = true;
+        try
         {
-            _airingNotificationService.CancelPeriodicCheck();
+            if (enabled)
+            {
+                bool granted = await _airingNotificationService.RequestPermissionAsync();
+                if (!granted)
+                {
+                    // Revert the toggle without re-triggering the handler.
+                    // Must stay on the UI thread — AiringNotifications is a bound property.
+                    _suppressNotificationToggle = true;
+                    AiringNotifications = false;
+                    _suppressNotificationToggle = false;
+
+                    // Android won't re-show the system dialog once the user has responded.
+                    // Offer to deep-link them directly to the app's notification settings.
+                    bool openSettings = await Shell.Current.CurrentPage.DisplayAlertAsync(
+                        "Notification Permission Required",
+                        "AniSprinkles needs notification permission to alert you when episodes air. Enable it in your device settings, then turn the toggle back on.",
+                        "Open Settings",
+                        "Cancel");
+
+                    if (openSettings)
+                    {
+                        AppInfo.Current.ShowSettingsUI();
+                    }
+
+                    return;
+                }
+
+                _airingNotificationService.SchedulePeriodicCheck();
+
+                // If the toggle was flipped back OFF while the permission dialog was open,
+                // cancel the job we just scheduled so the final state is consistent.
+                if (!AiringNotifications)
+                {
+                    _airingNotificationService.CancelPeriodicCheck();
+                }
+            }
+            else
+            {
+                _airingNotificationService.CancelPeriodicCheck();
+            }
+        }
+        finally
+        {
+            _isHandlingNotificationToggle = false;
         }
     }
 
