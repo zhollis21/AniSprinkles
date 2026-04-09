@@ -21,6 +21,10 @@ public class AiringCheckWorker : Worker
     private const int StaleEntryDays = 7;
 
     private static readonly Uri GraphQlEndpoint = new("https://graphql.anilist.co");
+
+    // Shared across all worker runs in this process. HttpClient is thread-safe and designed
+    // to be reused. Timeout guards against hung requests stalling the worker thread indefinitely.
+    private static readonly HttpClient HttpClient = new() { Timeout = TimeSpan.FromSeconds(30) };
     private static readonly JsonSerializerOptions JsonReadOptions = new()
     {
         PropertyNameCaseInsensitive = true,
@@ -63,6 +67,8 @@ public class AiringCheckWorker : Worker
             long nowUnix = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             long lastCheck = Preferences.Default.Get(LastCheckPrefKey, nowUnix - 1800); // default: 30 min ago
 
+            // FetchAiringSchedule throws on any HTTP failure — if it throws, the catch below
+            // skips the LastCheckPrefKey update so the time window is retried on the next run.
             var entries = FetchAiringSchedule(mediaIds, (int)lastCheck, (int)nowUnix);
             var notifiedSet = ReadNotifiedSet();
             bool changed = false;
@@ -88,6 +94,8 @@ public class AiringCheckWorker : Worker
                 changed = true;
             }
 
+            // Only advance the checkpoint after a fully successful fetch — partial/failed
+            // fetches throw before reaching here so the time window is not silently skipped.
             Preferences.Default.Set(LastCheckPrefKey, nowUnix);
             PruneAndSaveNotifiedSet(notifiedSet, nowUnix, changed);
 
@@ -112,8 +120,6 @@ public class AiringCheckWorker : Worker
         int page = 1;
         bool hasNextPage;
 
-        using var client = new HttpClient();
-
         do
         {
             var payload = new
@@ -128,11 +134,11 @@ public class AiringCheckWorker : Worker
                 System.Text.Encoding.UTF8,
                 "application/json");
 
-            using var response = client.PostAsync(GraphQlEndpoint, content).GetAwaiter().GetResult();
-            if (!response.IsSuccessStatusCode)
-            {
-                break;
-            }
+            using var response = HttpClient.PostAsync(GraphQlEndpoint, content).GetAwaiter().GetResult();
+
+            // Throw on non-success so DoWork's catch skips the LastCheckPrefKey update,
+            // keeping the failed time window available for retry on the next run.
+            response.EnsureSuccessStatusCode();
 
             string json = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
             var graphQl = JsonSerializer.Deserialize<GraphQlResponse>(json, JsonReadOptions);

@@ -69,6 +69,10 @@ public static class NotificationHelper
         NotificationManagerCompat.From(context)?.CancelAll();
     }
 
+    // Shared client for cover image downloads. Reused across notification posts in the same
+    // worker run. Timeout prevents a hung image download from stalling the worker thread.
+    private static readonly HttpClient ImageHttpClient = new() { Timeout = TimeSpan.FromSeconds(10) };
+
     /// <summary>
     /// Downloads a cover image as a <see cref="Bitmap"/> for use as a notification large icon.
     /// Returns null on failure — the notification should be posted without the image.
@@ -77,8 +81,7 @@ public static class NotificationHelper
     {
         try
         {
-            using var client = new HttpClient();
-            using var stream = client.GetStreamAsync(url).GetAwaiter().GetResult();
+            using var stream = ImageHttpClient.GetStreamAsync(url).GetAwaiter().GetResult();
             return BitmapFactory.DecodeStream(stream);
         }
         catch

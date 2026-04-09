@@ -332,8 +332,15 @@ public partial class SettingsPageModel : ObservableObject
     partial void OnDisplayAdultContentChanged(bool value) => TriggerAutoSave();
     partial void OnAiringNotificationsChanged(bool value)
     {
-        TriggerAutoSave();
-        _ = HandleAiringNotificationToggleAsync(value);
+        // Do not queue an auto-save here — the permission dialog may take >1500ms to answer,
+        // causing the debounce to fire with the wrong value before the result is known.
+        // HandleAiringNotificationToggleAsync cancels any pending save on entry and queues
+        // a fresh one after the permission flow resolves with the final value.
+        // The suppress flag guards the revert path so the internal toggle reset doesn't queue a save.
+        if (!_suppressNotificationToggle)
+        {
+            _ = HandleAiringNotificationToggleAsync(value);
+        }
     }
     partial void OnRestrictMessagesToFollowingChanged(bool value) => TriggerAutoSave();
     partial void OnActivityMergeTimeChanged(int value) => TriggerAutoSave();
@@ -422,7 +429,12 @@ public partial class SettingsPageModel : ObservableObject
         bool granted = await _airingNotificationService.RequestPermissionAsync();
         if (granted)
         {
-            _airingNotificationService.SchedulePeriodicCheck();
+            // Guard against a race where the user toggled OFF while the permission await was
+            // in flight (e.g. a concurrent Settings refresh completing via PopulateFromUser).
+            if (AiringNotifications)
+            {
+                _airingNotificationService.SchedulePeriodicCheck();
+            }
         }
         else
         {
@@ -453,6 +465,12 @@ public partial class SettingsPageModel : ObservableObject
         }
 
         _isHandlingNotificationToggle = true;
+
+        // Cancel any pending debounced save — the permission dialog may take >1500ms to answer,
+        // which would fire the save with the pre-dialog toggle value. We'll queue a fresh save
+        // after the flow resolves so the persisted value always matches the final outcome.
+        _saveDebounceCts?.Cancel();
+
         try
         {
             if (enabled)
@@ -479,6 +497,8 @@ public partial class SettingsPageModel : ObservableObject
                         AppInfo.Current.ShowSettingsUI();
                     }
 
+                    // Save the reverted (false) value to AniList.
+                    TriggerAutoSave();
                     return;
                 }
 
@@ -495,6 +515,9 @@ public partial class SettingsPageModel : ObservableObject
             {
                 _airingNotificationService.CancelPeriodicCheck();
             }
+
+            // Save the final value — granted+scheduled, or cancelled.
+            TriggerAutoSave();
         }
         finally
         {
