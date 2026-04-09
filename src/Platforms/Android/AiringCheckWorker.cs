@@ -101,9 +101,11 @@ public class AiringCheckWorker : Worker
 
             return Result.InvokeSuccess()!;
         }
-        catch
+        catch (Exception ex)
         {
             // Don't retry on transient errors; the next periodic run will try again.
+            // Log to logcat so failures are diagnosable — the Worker has no DI/ILogger.
+            global::Android.Util.Log.Error("AiringCheckWorker", $"DoWork failed: {ex.Message}");
             return Result.InvokeSuccess()!;
         }
     }
@@ -143,7 +145,15 @@ public class AiringCheckWorker : Worker
             string json = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
             var graphQl = JsonSerializer.Deserialize<GraphQlResponse>(json, JsonReadOptions);
 
-            if (graphQl?.Data?.Page?.AiringSchedules is { } schedules)
+            // AniList can return HTTP 200 with data=null and a populated errors array.
+            // Treat this as a failed query so the time window is not silently skipped.
+            if (graphQl?.Errors is { Count: > 0 } || graphQl?.Data?.Page is null)
+            {
+                throw new InvalidOperationException(
+                    graphQl?.Errors?.FirstOrDefault()?.Message ?? "AniList returned null data for AiringSchedule query");
+            }
+
+            if (graphQl.Data.Page.AiringSchedules is { } schedules)
             {
                 foreach (var dto in schedules)
                 {
@@ -229,6 +239,12 @@ public class AiringCheckWorker : Worker
     private sealed class GraphQlResponse
     {
         public ResponseData? Data { get; set; }
+        public List<GraphQlError>? Errors { get; set; }
+    }
+
+    private sealed class GraphQlError
+    {
+        public string? Message { get; set; }
     }
 
     private sealed class ResponseData

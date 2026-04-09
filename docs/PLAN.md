@@ -162,7 +162,7 @@ Airing notifications (Issue #8)
 - POST_NOTIFICATIONS runtime permission requested on API 33+ via custom BasePlatformPermission
 - Settings toggle syncs to AniList AND controls local WorkManager scheduling
 - Sign-out cancels WorkManager job, clears all notification Preferences, and dismisses posted notifications
-- Existing users with toggle already ON get a silent permission check (not prompt) on profile load
+- Existing users with toggle already ON get a permission request on profile load (shows the system dialog once if status is Unknown; returns immediately on Granted/Denied)
 - Notified-set pruned after 7 days to prevent unbounded growth
 - CI stub (CIAiringNotificationService) for CI builds
 - Known limitation: OEM battery killers (Samsung/Xiaomi/Huawei) may delay or suppress WorkManager jobs

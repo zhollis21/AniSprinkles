@@ -438,6 +438,10 @@ public partial class SettingsPageModel : ObservableObject
         }
         else
         {
+            // Cancel any existing WorkManager job — permission was revoked in system settings
+            // while the toggle was still ON. Without this, the job keeps running uselessly.
+            _airingNotificationService.CancelPeriodicCheck();
+
             // RequestPermissionAsync uses ConfigureAwait(false) internally, so we may be on a
             // pool thread here. Bound property writes must happen on the UI thread.
             MainThread.BeginInvokeOnMainThread(() =>
