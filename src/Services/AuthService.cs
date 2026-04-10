@@ -1,3 +1,4 @@
+using Android.Webkit;
 using Microsoft.Extensions.Logging;
 
 namespace AniSprinkles.Services;
@@ -5,6 +6,7 @@ namespace AniSprinkles.Services;
 public class AuthService : IAuthService
 {
     private const string ClientId = "35674";
+    private const string RedirectScheme = "anisprinkles";
     private const string RedirectUri = "anisprinkles://auth";
     private const string TokenKey = "anilist_access_token";
     private const string TokenExpiryKey = "anilist_access_token_expires_at";
@@ -37,56 +39,60 @@ public class AuthService : IAuthService
 
     public async Task<bool> SignInAsync(CancellationToken cancellationToken = default)
     {
-        try
+        var tcs = new TaskCompletionSource<IDictionary<string, string>?>();
+
+        // Cancel the TCS (and therefore the sign-in wait) if the caller cancels.
+        using var _ = cancellationToken.Register(() => tcs.TrySetResult(null));
+
+        await MainThread.InvokeOnMainThreadAsync(async () =>
         {
-            var result = await WebAuthenticator.Default.AuthenticateAsync(
-                BuildAuthorizeUri(),
-                new Uri(RedirectUri));
+            var page = new OAuthWebViewPage(BuildAuthorizeUri(), RedirectScheme, tcs);
+            await Shell.Current.Navigation.PushModalAsync(page, animated: true);
+        });
 
-            var accessToken = result?.AccessToken;
-            if (string.IsNullOrWhiteSpace(accessToken) &&
-                result?.Properties.TryGetValue("access_token", out var tokenValue) == true)
-            {
-                accessToken = tokenValue;
-            }
+        var properties = await tcs.Task;
 
-            if (string.IsNullOrWhiteSpace(accessToken))
-            {
-                return false;
-            }
-
-            AccessToken = accessToken;
-            ExpiresAt = ParseExpiresAt(result);
-
-            _logger.LogInformation("AniList sign-in successful. Expires at {ExpiresAt}.", ExpiresAt);
-
-            await SecureStorage.Default.SetAsync(TokenKey, AccessToken);
-            if (ExpiresAt is not null)
-            {
-                await SecureStorage.Default.SetAsync(TokenExpiryKey, ExpiresAt.Value.ToString("O"));
-            }
-            else
-            {
-                SecureStorage.Default.Remove(TokenExpiryKey);
-            }
-
-            return true;
-        }
-        catch (TaskCanceledException)
+        if (properties is null ||
+            !properties.TryGetValue("access_token", out var accessToken) ||
+            string.IsNullOrWhiteSpace(accessToken))
         {
-            _logger.LogInformation("AniList sign-in canceled.");
             return false;
         }
+
+        AccessToken = accessToken;
+        ExpiresAt = ParseExpiresAt(properties);
+
+        _logger.LogInformation("AniList sign-in successful. Expires at {ExpiresAt}.", ExpiresAt);
+
+        await SecureStorage.Default.SetAsync(TokenKey, AccessToken);
+        if (ExpiresAt is not null)
+        {
+            await SecureStorage.Default.SetAsync(TokenExpiryKey, ExpiresAt.Value.ToString("O"));
+        }
+        else
+        {
+            SecureStorage.Default.Remove(TokenExpiryKey);
+        }
+
+        return true;
     }
 
-    public Task SignOutAsync()
+    public async Task SignOutAsync()
     {
         _logger.LogInformation("AniList sign-out.");
         AccessToken = null;
         ExpiresAt = null;
         SecureStorage.Default.Remove(TokenKey);
         SecureStorage.Default.Remove(TokenExpiryKey);
-        return Task.CompletedTask;
+
+        // Clear the in-app WebView cookie store so the next sign-in always prompts for credentials.
+        // CookieManager manages the Android WebView cookie store (separate from Chrome's store),
+        // so clearing it here does not affect the user's Chrome browsing session.
+        await MainThread.InvokeOnMainThreadAsync(() =>
+        {
+            CookieManager.Instance?.RemoveAllCookies(null);
+            CookieManager.Instance?.Flush();
+        });
     }
 
     private static Uri BuildAuthorizeUri()
@@ -95,9 +101,9 @@ public class AuthService : IAuthService
         return new Uri($"https://anilist.co/api/v2/oauth/authorize?{query}");
     }
 
-    private static DateTimeOffset? ParseExpiresAt(WebAuthenticatorResult? result)
+    private static DateTimeOffset? ParseExpiresAt(IDictionary<string, string> properties)
     {
-        if (result?.Properties.TryGetValue("expires_in", out var raw) != true)
+        if (!properties.TryGetValue("expires_in", out var raw))
         {
             return null;
         }

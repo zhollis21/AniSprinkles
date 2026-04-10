@@ -863,9 +863,6 @@ public partial class MyAnimePageModel : ObservableObject
                 return;
             }
 
-            // Mark as prompted before awaiting so concurrent/rapid loads don't double-prompt.
-            Preferences.Default.Set(PermissionPromptedPrefKey, true);
-
             // On API <33, POST_NOTIFICATIONS is not a runtime permission — RequestPermissionAsync
             // returns true automatically. Don't sync to AniList in this case (the user didn't
             // explicitly opt in via a dialog). Instead, respect the existing AniList value.
@@ -881,11 +878,19 @@ public partial class MyAnimePageModel : ObservableObject
                 }
                 catch (Exception ex)
                 {
+                    // Don't set the prompted flag on failure — allow retry on next load.
                     _logger.LogWarning(ex, "Failed to check AniList airing notifications setting on API <33");
+                    return;
                 }
 
+                Preferences.Default.Set(PermissionPromptedPrefKey, true);
                 return;
             }
+
+            // Mark as prompted before awaiting the system dialog so concurrent/rapid loads
+            // don't double-prompt. The permission dialog itself is a one-shot system UI —
+            // even if the AniList sync afterward fails, the prompt already happened.
+            Preferences.Default.Set(PermissionPromptedPrefKey, true);
 
             bool granted = await _airingNotificationService.RequestPermissionAsync();
 
