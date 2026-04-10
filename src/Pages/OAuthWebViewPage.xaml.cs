@@ -3,19 +3,21 @@ namespace AniSprinkles.Pages;
 public partial class OAuthWebViewPage : ContentPage
 {
     private readonly TaskCompletionSource<IDictionary<string, string>?> _tcs;
-    private readonly string _callbackScheme;
+    private readonly string _callbackUri;
+    private bool _dismissed;
 
-    public OAuthWebViewPage(Uri authorizeUri, string callbackScheme, TaskCompletionSource<IDictionary<string, string>?> tcs)
+    public OAuthWebViewPage(Uri authorizeUri, string callbackUri, TaskCompletionSource<IDictionary<string, string>?> tcs)
     {
         InitializeComponent();
         _tcs = tcs;
-        _callbackScheme = callbackScheme;
+        _callbackUri = callbackUri;
         AuthWebView.Source = authorizeUri.ToString();
     }
 
     private void OnNavigating(object? sender, WebNavigatingEventArgs e)
     {
-        if (!e.Url.StartsWith(_callbackScheme + "://", StringComparison.OrdinalIgnoreCase))
+        // Match the full redirect URI (not just the scheme) to avoid accepting unintended navigations.
+        if (!e.Url.StartsWith(_callbackUri, StringComparison.OrdinalIgnoreCase))
         {
             return;
         }
@@ -24,19 +26,16 @@ public partial class OAuthWebViewPage : ContentPage
         // AniList uses the implicit flow: anisprinkles://auth#access_token=...&expires_in=...
         e.Cancel = true;
 
-        var fragmentIndex = e.Url.IndexOf('#');
-        var fragment = fragmentIndex >= 0 ? e.Url[(fragmentIndex + 1)..] : string.Empty;
+        if (TryParseFragmentProperties(e.Url, out var properties))
+        {
+            _tcs.TrySetResult(properties);
+        }
+        else
+        {
+            _tcs.TrySetResult(null);
+        }
 
-        var properties = fragment
-            .Split('&', StringSplitOptions.RemoveEmptyEntries)
-            .Select(p => p.Split('=', 2))
-            .Where(p => p.Length == 2)
-            .ToDictionary(p => Uri.UnescapeDataString(p[0]), p => Uri.UnescapeDataString(p[1]));
-
-        _tcs.TrySetResult(properties);
-
-        MainThread.BeginInvokeOnMainThread(async () =>
-            await Navigation.PopModalAsync(animated: true));
+        DismissModal();
     }
 
     private void OnNavigated(object? sender, WebNavigatedEventArgs e)
@@ -48,8 +47,7 @@ public partial class OAuthWebViewPage : ContentPage
     protected override bool OnBackButtonPressed()
     {
         _tcs.TrySetResult(null);
-        MainThread.BeginInvokeOnMainThread(async () =>
-            await Navigation.PopModalAsync(animated: true));
+        DismissModal();
         return true;
     }
 
@@ -58,5 +56,65 @@ public partial class OAuthWebViewPage : ContentPage
         base.OnDisappearing();
         // Safety net: ensure the TCS resolves if the page is dismissed by any other means.
         _tcs.TrySetResult(null);
+    }
+
+    private void DismissModal()
+    {
+        // Guard against double-pop: both OnNavigating and OnBackButtonPressed can call this,
+        // and a back press while a redirect navigation is in-flight could trigger both.
+        if (_dismissed)
+        {
+            return;
+        }
+
+        _dismissed = true;
+        MainThread.BeginInvokeOnMainThread(async () =>
+        {
+            try
+            {
+                await Navigation.PopModalAsync(animated: true);
+            }
+            catch (Exception)
+            {
+                // Modal may already be dismissed (e.g. system back gesture during redirect).
+            }
+        });
+    }
+
+    private static bool TryParseFragmentProperties(string url, out IDictionary<string, string>? properties)
+    {
+        properties = null;
+
+        var fragmentIndex = url.IndexOf('#');
+        var fragment = fragmentIndex >= 0 ? url[(fragmentIndex + 1)..] : string.Empty;
+        var result = new Dictionary<string, string>(StringComparer.Ordinal);
+
+        foreach (var pair in fragment.Split('&', StringSplitOptions.RemoveEmptyEntries))
+        {
+            var separatorIndex = pair.IndexOf('=');
+            if (separatorIndex < 0)
+            {
+                continue;
+            }
+
+            try
+            {
+                var key = Uri.UnescapeDataString(pair[..separatorIndex]);
+                var value = Uri.UnescapeDataString(pair[(separatorIndex + 1)..]);
+
+                if (!result.TryAdd(key, value))
+                {
+                    // Duplicate keys in an OAuth redirect are invalid — treat as failure.
+                    return false;
+                }
+            }
+            catch (UriFormatException)
+            {
+                return false;
+            }
+        }
+
+        properties = result;
+        return true;
     }
 }
