@@ -191,8 +191,17 @@ namespace AniSprinkles.PageModels;
 
     public bool HasDescription => !string.IsNullOrWhiteSpace(Media?.Description);
 
+    // Max visible lines when the description is collapsed. Used both by DescriptionMaxLines
+    // and by the IsDescriptionTruncated heuristic (break-count threshold).
+    private const int DescriptionCollapsedMaxLines = 8;
+
+    // Empirically calibrated: raw HTML descriptions longer than this reliably produce
+    // more than DescriptionCollapsedMaxLines visible lines on typical phone widths
+    // (~55 chars/line at 14sp with ~20% HTML tag overhead).
+    private const int DescriptionTruncationLengthThreshold = 600;
+
     /// <summary>
-    /// True when the description text likely exceeds the 8-line display limit.
+    /// True when the description text likely exceeds the collapsed line limit.
     /// Uses a heuristic so the "Read more" toggle only appears when truncation
     /// actually occurs — not for every short description that exists.
     /// </summary>
@@ -206,21 +215,19 @@ namespace AniSprinkles.PageModels;
                 return false;
             }
 
-            // Raw HTML length > ~600 chars reliably implies 8+ visible lines on typical
-            // phone widths (~55 chars/line at 14sp, ~20% HTML tag overhead).
-            if (description.Length > 600)
+            if (description.Length > DescriptionTruncationLengthThreshold)
             {
                 return true;
             }
 
-            // Shorter but paragraph-dense descriptions can still overflow 8 lines.
+            // Shorter but paragraph-dense descriptions can still overflow the line limit.
             // Count explicit HTML line-break markers (<br...> and </p>).
             int breakCount = CountSubstring(description, "<br") + CountSubstring(description, "</p>");
-            return breakCount >= 8;
+            return breakCount >= DescriptionCollapsedMaxLines;
         }
     }
 
-    public int DescriptionMaxLines => IsDescriptionExpanded ? int.MaxValue : 8;
+    public int DescriptionMaxLines => IsDescriptionExpanded ? int.MaxValue : DescriptionCollapsedMaxLines;
 
     public string ScorePercentDisplay => Media?.AverageScore is > 0 ? $"{Media.AverageScore}%" : "--";
 
