@@ -2,9 +2,9 @@
 
 ## Session Startup
 
-- Read `docs/TODO.md` and `docs/PLAN.md` before making changes. Those docs track the working task list and architectural decisions.
-- Keep `docs/PLAN.md`, `docs/TODO.md`, `README.md`, and this file up to date when decisions are made.
-- Keep changes aligned with the planning docs; ask before deviating.
+- Read `README.md` and any task-relevant docs before making changes.
+- GitHub Issues track backlog work and future plans; do not expect `docs/TODO.md` or `docs/PLAN.md` to exist.
+- Keep `README.md` and this file up to date when repository-wide decisions are made.
 
 ## Code Style
 

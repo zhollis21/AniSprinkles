@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Before Making Changes
 
-Read `docs/TODO.md` and `docs/PLAN.md` before making changes — they track the working task list and architectural decisions. Keep them (and `AGENTS.md`, `README.md`) up to date when decisions are made. Ask before deviating from the plan.
+Read `README.md` and any task-relevant docs before making changes. GitHub Issues track backlog work and future plans, so do not expect `docs/TODO.md` or `docs/PLAN.md` to exist. Keep `AGENTS.md` and `README.md` up to date when repository-wide decisions are made.
 
 ## Build Commands
 
