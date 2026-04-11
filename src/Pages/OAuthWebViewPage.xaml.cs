@@ -16,8 +16,11 @@ public partial class OAuthWebViewPage : ContentPage
 
     private void OnNavigating(object? sender, WebNavigatingEventArgs e)
     {
-        // Match the full redirect URI (not just the scheme) to avoid accepting unintended navigations.
-        if (!e.Url.StartsWith(_callbackUri, StringComparison.OrdinalIgnoreCase))
+        // Match the exact redirect URI or redirect URI + fragment/query to avoid accepting
+        // URLs like anisprinkles://auth.evil/ that share a prefix with our callback.
+        if (!e.Url.Equals(_callbackUri, StringComparison.OrdinalIgnoreCase) &&
+            !e.Url.StartsWith(_callbackUri + "#", StringComparison.OrdinalIgnoreCase) &&
+            !e.Url.StartsWith(_callbackUri + "?", StringComparison.OrdinalIgnoreCase))
         {
             return;
         }
