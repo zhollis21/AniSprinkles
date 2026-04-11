@@ -192,13 +192,16 @@ namespace AniSprinkles.PageModels;
     public bool HasDescription => !string.IsNullOrWhiteSpace(Media?.Description);
 
     // Max visible lines when the description is collapsed. Used both by DescriptionMaxLines
-    // and by the IsDescriptionTruncated heuristic (break-count threshold).
+    // and by the IsDescriptionTruncated heuristic.
     private const int DescriptionCollapsedMaxLines = 8;
 
-    // Empirically calibrated: raw HTML descriptions longer than this reliably produce
-    // more than DescriptionCollapsedMaxLines visible lines on typical phone widths
-    // (~55 chars/line at 14sp with ~20% HTML tag overhead).
-    private const int DescriptionTruncationLengthThreshold = 600;
+    // Approximate visible characters per line at 14sp on a typical phone (~360dp wide content area).
+    // Used to estimate whether stripped visible text will exceed DescriptionCollapsedMaxLines.
+    private const int DescriptionCharsPerLine = 45;
+
+    // Paragraph/line-break count that suggests the description will overflow the line limit even
+    // if its visible character count is low (e.g. several short paragraphs each wrapping 2–3 lines).
+    private const int DescriptionBreakCountThreshold = 3;
 
     /// <summary>
     /// True when the description text likely exceeds the collapsed line limit.
@@ -215,15 +218,19 @@ namespace AniSprinkles.PageModels;
                 return false;
             }
 
-            if (description.Length > DescriptionTruncationLengthThreshold)
+            // Estimate visible character count by skipping HTML tags.
+            // Comparing visible chars to line capacity is more accurate than raw HTML length,
+            // which inflates due to tag markup and gives false negatives for tag-sparse descriptions.
+            int visibleChars = CountVisibleChars(description);
+            if (visibleChars > DescriptionCollapsedMaxLines * DescriptionCharsPerLine)
             {
                 return true;
             }
 
-            // Shorter but paragraph-dense descriptions can still overflow the line limit.
-            // Count explicit HTML line-break markers (<br...> and </p>).
+            // A description with several short paragraphs can overflow the line limit even when its
+            // total visible character count is low, due to paragraph spacing eating visual lines.
             int breakCount = CountSubstring(description, "<br") + CountSubstring(description, "</p>");
-            return breakCount >= DescriptionCollapsedMaxLines;
+            return breakCount >= DescriptionBreakCountThreshold;
         }
     }
 
@@ -726,6 +733,29 @@ namespace AniSprinkles.PageModels;
     {
         IsDescriptionExpanded = !IsDescriptionExpanded;
         OnPropertyChanged(nameof(DescriptionMaxLines));
+    }
+
+    private static int CountVisibleChars(string html)
+    {
+        int count = 0;
+        bool inTag = false;
+        foreach (char c in html)
+        {
+            if (c == '<')
+            {
+                inTag = true;
+            }
+            else if (c == '>')
+            {
+                inTag = false;
+            }
+            else if (!inTag)
+            {
+                count++;
+            }
+        }
+
+        return count;
     }
 
     private static int CountSubstring(string source, string value)
