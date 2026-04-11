@@ -541,6 +541,7 @@
                            MaxLines="{Binding DescriptionMaxLines}"
                            LineBreakMode="TailTruncation" />
                     <Label Style="{StaticResource Caption1Strong}"
+                           IsVisible="{Binding IsDescriptionTruncated}"
                            TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='ReadMore'}">
                         <Label.Text>
                             <Binding Path="IsDescriptionExpanded" StringFormat="{}{0}">
