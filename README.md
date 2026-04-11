@@ -29,14 +29,14 @@ dotnet publish src/AniSprinkles.csproj -c Release -f net10.0-android -p:AndroidP
 dotnet build src/AniSprinkles.csproj -c Debug -f net10.0-android -p:EmbedAssembliesIntoApk=true -p:CiBuild=true
 ```
 
-Requires .NET 10 and the `net10.0-android` workload.
+Requires .NET 10 and the `maui-android` workload.
 
 ## Release & CI
 
 - GitHub Actions `android-release.yml` builds a signed AAB on Release publication (or manual `workflow_dispatch`)
 - `ApplicationDisplayVersion` extracted from the release tag (`v1.2.3` → `1.2.3`)
 - `ApplicationVersion` (versionCode) generated from `YYMMDDNNN` (date + run number)
-- Signed AAB and ProGuard mapping uploaded as artifacts (90-day retention)
+- Signed AAB and ProGuard mapping uploaded as artifacts (5-day retention)
 - `promote-release.yml` promotes between Play Console tracks (internal → alpha → beta → production)
 - CI uses compile-time stub services (`-p:CiBuild=true`) to render authenticated UI screenshots without an OAuth token
 
