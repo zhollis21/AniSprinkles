@@ -105,7 +105,7 @@ public class AiringCheckWorker : Worker
         {
             // Don't retry on transient errors; the next periodic run will try again.
             // Log to logcat so failures are diagnosable — the Worker has no DI/ILogger.
-            global::Android.Util.Log.Error("AiringCheckWorker", $"DoWork failed: {ex.Message}");
+            global::Android.Util.Log.Error("AiringCheckWorker", $"DoWork failed: {ex}");
             return Result.InvokeSuccess()!;
         }
     }
