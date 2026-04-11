@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AniSprinkles.Pages.OAuthWebViewPage"
+             Title="Sign In to AniList">
+
+    <Grid>
+        <WebView x:Name="AuthWebView"
+                 Navigating="OnNavigating"
+                 Navigated="OnNavigated" />
+
+        <ActivityIndicator x:Name="LoadingIndicator"
+                           IsRunning="True"
+                           IsVisible="True"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+    </Grid>
+
+</ContentPage>
