@@ -111,7 +111,7 @@ public partial class OAuthWebViewPage : ContentPage
                     return false;
                 }
             }
-            catch (UriFormatException)
+            catch (ArgumentException)
             {
                 return false;
             }
