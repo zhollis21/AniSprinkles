@@ -42,7 +42,7 @@ public class AiringCheckWorker : Worker
             pageInfo { hasNextPage }
             airingSchedules(mediaId_in: $mediaIds, airingAt_greater: $airingAfter, airingAt_lesser: $airingBefore, sort: TIME) {
               id airingAt episode mediaId
-              media { id title { userPreferred } coverImage { medium } }
+              media { id title { romaji english native } coverImage { medium } }
             }
           }
         }
@@ -161,7 +161,7 @@ public class AiringCheckWorker : Worker
                     {
                         MediaId = dto.MediaId,
                         Episode = dto.Episode,
-                        MediaTitle = dto.Media?.Title?.UserPreferred ?? string.Empty,
+                        MediaTitle = SelectTitle(dto.Media?.Title),
                         CoverImageUrl = dto.Media?.CoverImage?.Medium,
                     });
                 }
@@ -173,6 +173,33 @@ public class AiringCheckWorker : Worker
         while (hasNextPage);
 
         return results;
+    }
+
+    // ── Title selection ──────────────────────────────────────────────
+
+    private const string TitleLanguagePrefKey = "title_language";
+
+    /// <summary>
+    /// Picks the title string from a <see cref="AiringTitleDto"/> according to the
+    /// title-language preference stored in <see cref="Preferences"/>. Uses the same
+    /// fallback chain as <c>Media.DisplayTitle</c> so notifications match the app UI.
+    /// </summary>
+    private static string SelectTitle(AiringTitleDto? title)
+    {
+        if (title is null)
+        {
+            return string.Empty;
+        }
+
+        string langPref = Preferences.Default.Get(TitleLanguagePrefKey, nameof(UserTitleLanguage.Romaji));
+        _ = Enum.TryParse<UserTitleLanguage>(langPref, out var lang);
+
+        return lang switch
+        {
+            UserTitleLanguage.English => title.English ?? title.Romaji ?? title.Native ?? string.Empty,
+            UserTitleLanguage.Native => title.Native ?? title.Romaji ?? title.English ?? string.Empty,
+            _ => title.Romaji ?? title.English ?? title.Native ?? string.Empty,
+        };
     }
 
     // ── Preferences helpers ─────────────────────────────────────────
@@ -278,7 +305,9 @@ public class AiringCheckWorker : Worker
 
     private sealed class AiringTitleDto
     {
-        public string? UserPreferred { get; set; }
+        public string? Romaji { get; set; }
+        public string? English { get; set; }
+        public string? Native { get; set; }
     }
 
     private sealed class AiringCoverDto
