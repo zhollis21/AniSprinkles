@@ -188,7 +188,7 @@ public class AiringCheckWorker : Worker
     {
         if (title is null)
         {
-            return string.Empty;
+            return "Unknown Title";
         }
 
         string langPref = Preferences.Default.Get(TitleLanguagePrefKey, nameof(UserTitleLanguage.Romaji));
@@ -196,9 +196,9 @@ public class AiringCheckWorker : Worker
 
         return lang switch
         {
-            UserTitleLanguage.English => title.English ?? title.Romaji ?? title.Native ?? string.Empty,
-            UserTitleLanguage.Native => title.Native ?? title.Romaji ?? title.English ?? string.Empty,
-            _ => title.Romaji ?? title.English ?? title.Native ?? string.Empty,
+            UserTitleLanguage.English => title.English ?? title.Romaji ?? title.Native ?? "Unknown Title",
+            UserTitleLanguage.Native => title.Native ?? title.Romaji ?? title.English ?? "Unknown Title",
+            _ => title.Romaji ?? title.English ?? title.Native ?? "Unknown Title",
         };
     }
 
