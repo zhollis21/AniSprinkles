@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using System.Globalization;
+using System.Net;
 
 namespace AniSprinkles.PageModels;
 
@@ -218,10 +219,14 @@ namespace AniSprinkles.PageModels;
                 return false;
             }
 
+            // Decode HTML entities first so &amp; (5 chars) counts as & (1 char), etc.
+            // This keeps the visible-char estimate aligned with what TextType="Html" actually renders.
+            string decoded = WebUtility.HtmlDecode(description);
+
             // Estimate visible character count by skipping HTML tags.
             // Comparing visible chars to line capacity is more accurate than raw HTML length,
             // which inflates due to tag markup and gives false negatives for tag-sparse descriptions.
-            int visibleChars = CountVisibleChars(description);
+            int visibleChars = CountVisibleChars(decoded);
             if (visibleChars > DescriptionCollapsedMaxLines * DescriptionCharsPerLine)
             {
                 return true;
@@ -229,7 +234,7 @@ namespace AniSprinkles.PageModels;
 
             // A description with several short paragraphs can overflow the line limit even when its
             // total visible character count is low, due to paragraph spacing eating visual lines.
-            int breakCount = CountSubstring(description, "<br") + CountSubstring(description, "</p>");
+            int breakCount = CountSubstring(decoded, "<br") + CountSubstring(decoded, "</p>");
             return breakCount >= DescriptionBreakCountThreshold;
         }
     }
