@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using System.Globalization;
+using System.Net;
 
 namespace AniSprinkles.PageModels;
 
@@ -191,7 +192,54 @@ namespace AniSprinkles.PageModels;
 
     public bool HasDescription => !string.IsNullOrWhiteSpace(Media?.Description);
 
-    public int DescriptionMaxLines => IsDescriptionExpanded ? int.MaxValue : 8;
+    // Max visible lines when the description is collapsed. Used both by DescriptionMaxLines
+    // and by the IsDescriptionTruncated heuristic.
+    private const int DescriptionCollapsedMaxLines = 8;
+
+    // Approximate visible characters per line at 14sp on a typical phone (~360dp wide content area).
+    // Used to estimate whether stripped visible text will exceed DescriptionCollapsedMaxLines.
+    private const int DescriptionCharsPerLine = 45;
+
+    // Paragraph/line-break count that suggests the description will overflow the line limit even
+    // if its visible character count is low (e.g. several short paragraphs each wrapping 2–3 lines).
+    private const int DescriptionBreakCountThreshold = 3;
+
+    /// <summary>
+    /// True when the description text likely exceeds the collapsed line limit.
+    /// Uses a heuristic so the "Read more" toggle only appears when truncation
+    /// actually occurs — not for every short description that exists.
+    /// </summary>
+    public bool IsDescriptionTruncated
+    {
+        get
+        {
+            string? description = Media?.Description;
+            if (string.IsNullOrWhiteSpace(description))
+            {
+                return false;
+            }
+
+            // Decode HTML entities first so &amp; (5 chars) counts as & (1 char), etc.
+            // This keeps the visible-char estimate aligned with what TextType="Html" actually renders.
+            string decoded = WebUtility.HtmlDecode(description);
+
+            // Estimate visible character count by skipping HTML tags.
+            // Comparing visible chars to line capacity is more accurate than raw HTML length,
+            // which inflates due to tag markup and gives false negatives for tag-sparse descriptions.
+            int visibleChars = CountVisibleChars(decoded);
+            if (visibleChars > DescriptionCollapsedMaxLines * DescriptionCharsPerLine)
+            {
+                return true;
+            }
+
+            // A description with several short paragraphs can overflow the line limit even when its
+            // total visible character count is low, due to paragraph spacing eating visual lines.
+            int breakCount = CountSubstring(decoded, "<br") + CountSubstring(decoded, "</p>");
+            return breakCount >= DescriptionBreakCountThreshold;
+        }
+    }
+
+    public int DescriptionMaxLines => IsDescriptionExpanded ? int.MaxValue : DescriptionCollapsedMaxLines;
 
     public string ScorePercentDisplay => Media?.AverageScore is > 0 ? $"{Media.AverageScore}%" : "--";
 
@@ -533,6 +581,7 @@ namespace AniSprinkles.PageModels;
         OnPropertyChanged(nameof(IsAiringToday));
         OnPropertyChanged(nameof(NextAiringDateDisplay));
         OnPropertyChanged(nameof(HasDescription));
+        OnPropertyChanged(nameof(IsDescriptionTruncated));
         OnPropertyChanged(nameof(ScorePercentDisplay));
         OnPropertyChanged(nameof(PopularityDisplay));
         OnPropertyChanged(nameof(FavouritesDisplay));
@@ -689,6 +738,42 @@ namespace AniSprinkles.PageModels;
     {
         IsDescriptionExpanded = !IsDescriptionExpanded;
         OnPropertyChanged(nameof(DescriptionMaxLines));
+    }
+
+    private static int CountVisibleChars(string html)
+    {
+        int count = 0;
+        bool inTag = false;
+        foreach (char c in html)
+        {
+            if (c == '<')
+            {
+                inTag = true;
+            }
+            else if (c == '>')
+            {
+                inTag = false;
+            }
+            else if (!inTag)
+            {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    private static int CountSubstring(string source, string value)
+    {
+        int count = 0;
+        int index = 0;
+        while ((index = source.IndexOf(value, index, StringComparison.OrdinalIgnoreCase)) >= 0)
+        {
+            count++;
+            index += value.Length;
+        }
+
+        return count;
     }
 
     [RelayCommand]
