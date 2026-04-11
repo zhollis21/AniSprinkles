@@ -191,6 +191,35 @@ namespace AniSprinkles.PageModels;
 
     public bool HasDescription => !string.IsNullOrWhiteSpace(Media?.Description);
 
+    /// <summary>
+    /// True when the description text likely exceeds the 8-line display limit.
+    /// Uses a heuristic so the "Read more" toggle only appears when truncation
+    /// actually occurs — not for every short description that exists.
+    /// </summary>
+    public bool IsDescriptionTruncated
+    {
+        get
+        {
+            string? description = Media?.Description;
+            if (string.IsNullOrWhiteSpace(description))
+            {
+                return false;
+            }
+
+            // Raw HTML length > ~600 chars reliably implies 8+ visible lines on typical
+            // phone widths (~55 chars/line at 14sp, ~20% HTML tag overhead).
+            if (description.Length > 600)
+            {
+                return true;
+            }
+
+            // Shorter but paragraph-dense descriptions can still overflow 8 lines.
+            // Count explicit HTML line-break markers (<br...> and </p>).
+            int breakCount = CountSubstring(description, "<br") + CountSubstring(description, "</p>");
+            return breakCount >= 8;
+        }
+    }
+
     public int DescriptionMaxLines => IsDescriptionExpanded ? int.MaxValue : 8;
 
     public string ScorePercentDisplay => Media?.AverageScore is > 0 ? $"{Media.AverageScore}%" : "--";
@@ -533,6 +562,7 @@ namespace AniSprinkles.PageModels;
         OnPropertyChanged(nameof(IsAiringToday));
         OnPropertyChanged(nameof(NextAiringDateDisplay));
         OnPropertyChanged(nameof(HasDescription));
+        OnPropertyChanged(nameof(IsDescriptionTruncated));
         OnPropertyChanged(nameof(ScorePercentDisplay));
         OnPropertyChanged(nameof(PopularityDisplay));
         OnPropertyChanged(nameof(FavouritesDisplay));
@@ -689,6 +719,19 @@ namespace AniSprinkles.PageModels;
     {
         IsDescriptionExpanded = !IsDescriptionExpanded;
         OnPropertyChanged(nameof(DescriptionMaxLines));
+    }
+
+    private static int CountSubstring(string source, string value)
+    {
+        int count = 0;
+        int index = 0;
+        while ((index = source.IndexOf(value, index, StringComparison.OrdinalIgnoreCase)) >= 0)
+        {
+            count++;
+            index += value.Length;
+        }
+
+        return count;
     }
 
     [RelayCommand]

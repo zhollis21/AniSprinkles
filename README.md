@@ -1,45 +1,55 @@
 # AniSprinkles
 
-AniSprinkles is a .NET MAUI Android app that integrates with AniList to manage anime lists, inspired by the iOS app MyAniList.
+AniSprinkles is a .NET MAUI Android app for managing your AniList anime library.
 
-Scope
+## Current Features
 
-- Anime only
-- No backend for MVP (client-only auth if possible)
-- Fully online for MVP
+- **My Anime list** — grouped by status (Watching, Rewatching, Planning, Completed, Paused, Dropped) with collapsible sections and pull-to-refresh
+- **Media details** — full AniList metadata: description with Read more/Show less, scores, airing schedule, genres, tags, rankings, studios, staff, related media, external links, and trailer
+- **AniList OAuth** — sign in via AniList's OAuth implicit grant flow; token stored in Android SecureStorage
+- **Settings** — title language, score format, adult content toggle, sign out; settings synced from and saved to AniList account
+- **Airing notifications** — background WorkManager job polls AniList's public AiringSchedule API every 15 minutes and posts local notifications when tracked episodes air
 
-MVP features
+## Planned / In Progress
 
-- See my list titles
 - Search for new titles
-- View title details
-- Add titles to my list
-- Edit list entries (status, episode progress, rating, etc.)
+- Add/edit list entries (status, episode progress, score)
+- Rate limiting and retry logic for AniList API
 
-Build & Release
+## Build
 
-- GitHub Actions workflow builds signed AAB on release publication
-- ApplicationDisplayVersion (versionName) extracted from release tag (e.g., v1.2.3 → 1.2.3)
-- ApplicationVersion (versionCode) auto-generated from UTC timestamp (YYMMDDHHNN format)
+```powershell
+# Debug APK
+dotnet build src/AniSprinkles.csproj -c Debug -f net10.0-android
+
+# Release AAB
+dotnet publish src/AniSprinkles.csproj -c Release -f net10.0-android -p:AndroidPackageFormat=aab -o output
+
+# CI build (compile-time stub services — no OAuth token required)
+dotnet build src/AniSprinkles.csproj -c Debug -f net10.0-android -p:EmbedAssembliesIntoApk=true -p:CiBuild=true
+```
+
+Requires .NET 10 and the `net10.0-android` workload.
+
+## Release & CI
+
+- GitHub Actions `android-release.yml` builds a signed AAB on Release publication (or manual `workflow_dispatch`)
+- `ApplicationDisplayVersion` extracted from the release tag (`v1.2.3` → `1.2.3`)
+- `ApplicationVersion` (versionCode) generated from `YYMMDDNNN` (date + run number)
 - Signed AAB and ProGuard mapping uploaded as artifacts (90-day retention)
+- `promote-release.yml` promotes between Play Console tracks (internal → alpha → beta → production)
+- CI uses compile-time stub services (`-p:CiBuild=true`) to render authenticated UI screenshots without an OAuth token
 
-Current details view
+## Architecture
 
-- Pulls and displays expanded AniList metadata for titles (release/airing info, scores, tags, rankings, links, trailer, and streaming entries when available)
-- My Anime list loading uses AniList `Viewer` + `MediaListCollection` (AniList requires user context); viewer ID is cached in-memory between loads
+- **.NET MAUI Android-only** (`net10.0-android`, min SDK 31), single project in `src/`
+- **MVVM** via CommunityToolkit.Mvvm 8.4
+- **Navigation** — Shell flyout (`my-anime`, `settings`) + programmatic route for `media-details`
+- **Auth** — AniList OAuth implicit grant; redirect URI `anisprinkles://auth`; token in `SecureStorage`
+- **Telemetry** — Sentry crash reporting only (`SendDefaultPii = false`, no performance tracing)
 
-Planning docs
+## Planning Docs
 
-- `docs/PLAN.md` for decisions, theme tokens, and open questions
-- `docs/TODO.md` for the working task list
-- `AGENTS.md` for coding agent instructions, debugging workflow, and best practices
-
-Telemetry
-
-- Sentry crash reporting only (no PII, no performance tracing yet)
-
-Debug logging
-
-- Debug builds write rotating app logs to `files/logs/anisprinkles.log` inside app storage on Android
-- File logging is asynchronous and filtered to reduce UI-thread jank from noisy framework/Sentry categories
-- Global Debug logging filters reduce noisy framework/Sentry output during troubleshooting sessions
+- `docs/PLAN.md` — architectural decisions and open questions
+- `docs/TODO.md` — working task list
+- `AGENTS.md` — agent/AI coding instructions, debugging workflow, architecture reference
