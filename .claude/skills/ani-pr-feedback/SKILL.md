@@ -1,7 +1,9 @@
 ---
+name: ani-pr-feedback
 description: "Pull and evaluate open PR review comments for this repository. Use when asked to address PR feedback, review open comments, or work through reviewer notes."
-agent: agent
 ---
+
+# PR Feedback
 
 ## Step 1: Pull PR Comments
 

@@ -50,8 +50,9 @@ Requires .NET 10 and the `maui-android` workload.
 
 ## Docs
 
-- `AGENTS.md` — agent/AI coding instructions, debugging workflow, architecture reference
-- `docs/BestPractices-MAUI-Android.md` — source-backed MAUI/Android engineering guidance
+- `AGENTS.md` — agent/AI coding instructions, architecture reference, build commands
+- `.github/instructions/` — scoped coding guidelines (auto-loaded by Copilot and compatible agents)
+- `.claude/skills/` — workflow slash commands for all AI tools: `/ani-debug`, `/ani-review`, `/ani-pr-feedback`
 - `DEVELOPER_NOTES.md` — focused troubleshooting and local test notes
 
 Backlog planning and future work are tracked in GitHub Issues rather than repo-local planning docs.

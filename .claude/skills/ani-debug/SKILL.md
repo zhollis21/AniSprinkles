@@ -1,7 +1,10 @@
 ---
+name: ani-debug
 description: "Pull and analyze AniSprinkles device logs. Use when debugging crashes, jank, ANRs, navigation timing issues, or any unexpected app behavior on device or emulator."
-agent: agent
+argument-hint: "Describe the issue you're investigating"
 ---
+
+# Debug
 
 Pull both logs before analyzing any issue.
 

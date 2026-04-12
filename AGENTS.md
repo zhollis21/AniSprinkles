@@ -70,7 +70,7 @@ See `.github/instructions/maui-architecture.instructions.md` for page patterns a
 
 ## Debugging Workflow
 
-See `.github/prompts/debug.prompt.md` (`/debug`) for the full adb log workflow, crash/jank/NAVTRACE scan commands, and analysis guidelines.
+See `.claude/skills/ani-debug/SKILL.md` (`/ani-debug`) for the full adb log workflow, crash/jank/NAVTRACE scan commands, and analysis guidelines.
 
 ## Local Tools
 
@@ -82,7 +82,9 @@ pwsh tools/Get-OpenPrComments.ps1
 # Output: tools/pr-comments.md
 ```
 
-Requires `gh` CLI authenticated (or `GH_TOKEN` env var). See `.github/prompts/pr-feedback.prompt.md` (`/pr-feedback`) for the full evaluation workflow.
+Requires `gh` CLI authenticated (or `GH_TOKEN` env var). See `.claude/skills/ani-pr-feedback/SKILL.md` (`/ani-pr-feedback`) for the full evaluation workflow.
+
+Project slash commands (`/ani-debug`, `/ani-review`, `/ani-pr-feedback`) live in `.claude/skills/`.
 
 ## Working with AI Agents
 
@@ -92,11 +94,11 @@ Do not commit or push unless explicitly asked (e.g. "commit this", "push it"). T
 
 ### Self-review
 
-After writing code, run through the review checklist in `.github/prompts/review.prompt.md` (`/review`). Fix all issues found before presenting. The review loop is internal — do not surface bugs as a list of things found.
+After writing code, run through the review checklist in `.claude/skills/ani-review/SKILL.md` (`/ani-review`). Fix all issues found before presenting. The review loop is internal — do not surface bugs as a list of things found.
 
 ### PR feedback review
 
-When asked to pull PR feedback, use `.github/prompts/pr-feedback.prompt.md` (`/pr-feedback`).
+When asked to pull PR feedback, use `.claude/skills/ani-pr-feedback/SKILL.md` (`/ani-pr-feedback`).
 
 ### Presenting options
 
