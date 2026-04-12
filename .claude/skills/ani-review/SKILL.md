@@ -1,9 +1,12 @@
 ---
 name: ani-review
-description: "Self-review checklist for code written in this session. Use before presenting any implementation to verify async safety, UI-thread correctness, state lifecycle, and API contracts."
+description: "Run automatically after any code changes in this session. Iterate: fix issues found, then re-run this review, until the review passes clean. Present the summary only when the review is clean. After 5 passes without a clean result, stop and ask the user. Ask the user immediately at any genuine decision point or unexpected discovery before proceeding."
+allowed-tools: Read Glob Grep
 ---
 
 # Review
+
+If issues are found: fix them, then re-run this review from the top. Do not present the summary until the review passes with no issues. Maximum 5 passes — if not clean after 5, stop and ask the user. If at any point you reach a decision where the correct fix is unclear or has significant consequences, stop and ask the user before continuing.
 
 Review all code written in this session against the checklist below. Fix every issue found before presenting. Do not surface the list of bugs found — present only the clean summary.
 

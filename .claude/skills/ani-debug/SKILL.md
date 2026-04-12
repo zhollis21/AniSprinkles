@@ -1,10 +1,18 @@
 ---
 name: ani-debug
-description: "Pull and analyze AniSprinkles device logs. Use when debugging crashes, jank, ANRs, navigation timing issues, or any unexpected app behavior on device or emulator."
-argument-hint: "Describe the issue you're investigating"
+description: "Analyze AniSprinkles device logs for on-device issues: crashes, jank, ANRs, and navigation timing problems. Use only for issues observed on device or emulator — not for code logic investigation or GitHub issues."
+argument-hint: "Describe the device-observed issue (crash, jank, ANR, or unexpected on-device behavior)"
+context: fork
+agent: Explore
+allowed-tools: Bash(adb *)
 ---
 
 # Debug
+
+## Device State
+
+Connected devices: !`adb devices -l`
+App PID: !`adb -s emulator-5554 shell pidof com.RainbowSprinkles.AniSprinkles 2>/dev/null || echo "not running"`
 
 Pull both logs before analyzing any issue.
 
