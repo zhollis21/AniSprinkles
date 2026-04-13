@@ -7,12 +7,12 @@ description: "AniSprinkles project architecture reference: DI lifetimes, page/Pa
 
 ## DI Lifetimes (`MauiProgram.cs`)
 
-| Registration | Lifetime |
-| --- | --- |
-| `ErrorReportService`, `HttpClient`, `IAuthService`, `IAniListClient`, `IAiringNotificationService` | Singleton |
-| `MyAnimePageModel`, `SettingsPageModel` | **Singleton** (survive page recreation across flyout switches) |
-| `LoggingHandler` | Transient |
-| `MyAnimePage`, `SettingsPage`, `MediaDetailsPageModel`, `MediaDetailsPage` | Transient |
+| Registration                                                                                       | Lifetime                                                       |
+| -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| `ErrorReportService`, `HttpClient`, `IAuthService`, `IAniListClient`, `IAiringNotificationService` | Singleton                                                      |
+| `MyAnimePageModel`, `SettingsPageModel`                                                            | **Singleton** (survive page recreation across flyout switches) |
+| `LoggingHandler`                                                                                   | Transient                                                      |
+| `MyAnimePage`, `SettingsPage`, `MediaDetailsPageModel`, `MediaDetailsPage`                         | Transient                                                      |
 
 ## Page ↔ PageModel Binding
 

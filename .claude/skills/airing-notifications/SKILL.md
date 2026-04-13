@@ -21,22 +21,22 @@ SettingsPageModel (toggle on/off)
 
 ## Key Files
 
-| File | Role |
-| --- | --- |
-| `src/Services/IAiringNotificationService.cs` | Interface: permission, schedule, cancel, clear |
-| `src/Services/AiringNotificationService.cs` | Android impl: WorkManager + MAUI Permissions |
-| `src/Platforms/Android/AiringCheckWorker.cs` | Self-contained Worker: own HTTP client + DTOs, no DI |
-| `src/Platforms/Android/NotificationHelper.cs` | Channel creation, notification posting, cover image download |
+| File                                              | Role                                                             |
+| ------------------------------------------------- | ---------------------------------------------------------------- |
+| `src/Services/IAiringNotificationService.cs`      | Interface: permission, schedule, cancel, clear                   |
+| `src/Services/AiringNotificationService.cs`       | Android impl: WorkManager + MAUI Permissions                     |
+| `src/Platforms/Android/AiringCheckWorker.cs`      | Self-contained Worker: own HTTP client + DTOs, no DI             |
+| `src/Platforms/Android/NotificationHelper.cs`     | Channel creation, notification posting, cover image download     |
 | `src/Platforms/Android/NotificationPermission.cs` | Custom `BasePlatformPermission` for POST_NOTIFICATIONS (API 33+) |
-| `src/Services/CI/CIAiringNotificationService.cs` | CI stub (all no-ops) |
+| `src/Services/CI/CIAiringNotificationService.cs`  | CI stub (all no-ops)                                             |
 
 ## Preferences Keys
 
-| Key | Type | Purpose |
-| --- | --- | --- |
-| `airing_media_ids` | `string` | Comma-separated RELEASING media IDs (written by `MyAnimePageModel`) |
-| `airing_last_check` | `long` | Unix timestamp of last Worker run |
-| `airing_notified` | `string` | JSON dict of `"mediaId:episode": timestamp` pairs |
+| Key                 | Type     | Purpose                                                             |
+| ------------------- | -------- | ------------------------------------------------------------------- |
+| `airing_media_ids`  | `string` | Comma-separated RELEASING media IDs (written by `MyAnimePageModel`) |
+| `airing_last_check` | `long`   | Unix timestamp of last Worker run                                   |
+| `airing_notified`   | `string` | JSON dict of `"mediaId:episode": timestamp` pairs                   |
 
 ## Design Decisions
 
