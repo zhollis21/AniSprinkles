@@ -135,7 +135,16 @@ jobs:
           #        _tap_by_attribute "content-desc" "Open navigation drawer"
           _tap_by_attribute() {
             local attr="$1" value="$2"
-            adb shell uiautomator dump /sdcard/ui_tap.xml 2>/dev/null || true
+            # Remove any previous dump so a failed dump cannot leave us parsing stale UI.
+            adb shell rm -f /sdcard/ui_tap.xml >/dev/null 2>&1 || true
+            if ! adb shell uiautomator dump /sdcard/ui_tap.xml >/dev/null 2>&1; then
+              echo "::warning::Failed to dump current UI hierarchy"
+              return 1
+            fi
+            if ! adb shell test -s /sdcard/ui_tap.xml >/dev/null 2>&1; then
+              echo "::warning::UI hierarchy dump was not written"
+              return 1
+            fi
             local bounds
             # `|| true` suppresses pipefail when grep finds no match (exits 1),
             # leaving $bounds empty — handled by the guard below.
