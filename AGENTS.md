@@ -46,7 +46,7 @@ dotnet build src/AniSprinkles.csproj -c Debug -f net10.0-android -p:EmbedAssembl
 
 ## CI Stubs (`-p:CiBuild=true`)
 
-Passing `-p:CiBuild=true` appends `CI` to `DefineConstants`. This activates `#if CI` blocks that swap in stub services:
+Passing `-p:CiBuild=true` in a **Debug** build appends `CI` to `DefineConstants`. This activates `#if CI` blocks that swap in stub services. Do **not** use `-p:CiBuild=true` with `-c Release`; the project file only supports this for Debug builds, and Release builds error out.
 
 - `CIAuthService` (`src/Services/CI/`) — always returns `"ci-stub-token"`; app appears authenticated
 - `CIAniListClient` (`src/Services/CI/`) — returns hardcoded anime list and user profile
