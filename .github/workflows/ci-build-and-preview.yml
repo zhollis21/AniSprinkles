@@ -286,13 +286,12 @@ jobs:
 
           # Poll for My Anime page to confirm the back navigation completed (up to 10s)
           # before attempting to open the flyout.
-          # "My Score" is a hardcoded sort-chip label in MyAnimeLoadedContentView — it
-          # only exists on the My Anime page and is never present on the Details page,
-          # making it a reliable positive signal that back navigation has finished.
+          # "My Anime" is the Shell page title for this route — always present in the
+          # toolbar once the page is active, and never shown on the Details page.
           BACK_WAIT=0
           while [ $BACK_WAIT -lt 10 ]; do
             adb shell uiautomator dump /sdcard/ui_back.xml 2>/dev/null || true
-            if adb shell cat /sdcard/ui_back.xml 2>/dev/null | grep -q "My Score"; then
+            if adb shell cat /sdcard/ui_back.xml 2>/dev/null | grep -q "My Anime"; then
               echo "  Back on My Anime after ${BACK_WAIT}s"
               sleep 1
               break
