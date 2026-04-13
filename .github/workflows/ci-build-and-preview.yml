@@ -157,6 +157,33 @@ jobs:
             adb shell input tap "$cx" "$cy"
           }
 
+          # Tap a UI element by its content-desc attribute using UI Automator.
+          # Used for icon buttons that have no visible text (e.g. the hamburger drawer toggle).
+          # Usage: tap_element_by_content_desc "Open navigation drawer"
+          tap_element_by_content_desc() {
+            local target_desc="$1"
+            adb shell uiautomator dump /sdcard/ui_tap.xml 2>/dev/null || true
+            local bounds
+            bounds=$(adb shell cat /sdcard/ui_tap.xml 2>/dev/null \
+              | grep -o "content-desc=\"${target_desc}\"[^>]*" \
+              | grep -o 'bounds="\[[0-9]*,[0-9]*\]\[[0-9]*,[0-9]*\]"' \
+              | head -1 \
+              | sed 's/bounds="//;s/"//')
+            if [ -z "$bounds" ]; then
+              echo "::warning::Could not find element with content-desc '${target_desc}'"
+              return 1
+            fi
+            local left top right bottom cx cy
+            left=$(echo "$bounds" | sed 's/\[//g;s/\]/ /g' | awk -F'[, ]' '{print $1}')
+            top=$(echo "$bounds" | sed 's/\[//g;s/\]/ /g' | awk -F'[, ]' '{print $2}')
+            right=$(echo "$bounds" | sed 's/\[//g;s/\]/ /g' | awk -F'[, ]' '{print $3}')
+            bottom=$(echo "$bounds" | sed 's/\[//g;s/\]/ /g' | awk -F'[, ]' '{print $4}')
+            cx=$(( (left + right) / 2 ))
+            cy=$(( (top + bottom) / 2 ))
+            echo "Tapping content-desc='${target_desc}' at (${cx}, ${cy}) — bounds: ${bounds}"
+            adb shell input tap "$cx" "$cy"
+          }
+
           # Locate the APK
           APK_PATH=$(find /tmp/apk -name "*-Signed.apk" -type f | head -1)
           if [ -z "$APK_PATH" ]; then
@@ -272,36 +299,43 @@ jobs:
           echo "Captured: 02_one_piece_details.png (One Piece Details — $AUTH_MODE)"
 
           # Navigate back to My Anime, then open the Shell flyout and tap Settings.
-          # Swipe coordinates are computed from actual screen dimensions so this
-          # works regardless of device profile or resolution.
           adb shell input keyevent KEYCODE_BACK
-          sleep 1
 
-          SCREEN_SIZE=$(adb shell wm size | grep -oP '\d+x\d+' | head -1)
-          SCREEN_W=$(echo "$SCREEN_SIZE" | cut -dx -f1)
-          SCREEN_H=$(echo "$SCREEN_SIZE" | cut -dx -f2)
-          SWIPE_END_X=$((SCREEN_W / 2))
-          SWIPE_MID_Y=$((SCREEN_H / 2))
-          echo "Screen: ${SCREEN_W}x${SCREEN_H} — swiping to (${SWIPE_END_X}, ${SWIPE_MID_Y})"
-
-          # Swipe from the left edge to open the Shell flyout
-          adb shell input swipe 0 "$SWIPE_MID_Y" "$SWIPE_END_X" "$SWIPE_MID_Y" 400
-          sleep 1
-
-          # Poll until Settings is visible in the flyout, then tap it
-          SETTINGS_WAIT=0
-          while [ $SETTINGS_WAIT -lt 10 ]; do
-            adb shell uiautomator dump /sdcard/ui_flyout.xml 2>/dev/null || true
-            if adb shell cat /sdcard/ui_flyout.xml 2>/dev/null | grep -qi '"Settings"'; then
-              echo "  Flyout open after ${SETTINGS_WAIT}s — tapping Settings"
-              tap_element_by_text "Settings"
-              sleep 2
+          # Poll for My Anime page to confirm the back navigation completed (up to 10s)
+          # before attempting to open the flyout.
+          BACK_WAIT=0
+          while [ $BACK_WAIT -lt 10 ]; do
+            adb shell uiautomator dump /sdcard/ui_back.xml 2>/dev/null || true
+            if adb shell cat /sdcard/ui_back.xml 2>/dev/null | grep -qi "ONE PIECE"; then
+              echo "  Back on My Anime after ${BACK_WAIT}s"
+              sleep 1
               break
             fi
             sleep 1
-            SETTINGS_WAIT=$((SETTINGS_WAIT + 1))
+            BACK_WAIT=$((BACK_WAIT + 1))
           done
-          if [ $SETTINGS_WAIT -ge 10 ]; then
+
+          # Open the Shell flyout via the hamburger icon ("Open navigation drawer").
+          # Android 10+ gesture navigation intercepts left-edge swipes before they
+          # reach the app, so tapping the DrawerToggle button is reliable regardless
+          # of the system navigation mode.
+          FLYOUT_OPENED=0
+          for FLYOUT_ATTEMPT in 1 2 3; do
+            echo "Flyout open attempt ${FLYOUT_ATTEMPT}..."
+            tap_element_by_content_desc "Open navigation drawer" || true
+            sleep 1
+            adb shell uiautomator dump /sdcard/ui_flyout_check.xml 2>/dev/null || true
+            if adb shell cat /sdcard/ui_flyout_check.xml 2>/dev/null | grep -qi '"Settings"'; then
+              echo "  Flyout confirmed open on attempt ${FLYOUT_ATTEMPT}"
+              FLYOUT_OPENED=1
+              break
+            fi
+          done
+
+          if [ $FLYOUT_OPENED -eq 1 ]; then
+            tap_element_by_text "Settings"
+            sleep 2
+          else
             echo "::warning::Flyout did not open — Settings screenshot may be incorrect"
           fi
 
