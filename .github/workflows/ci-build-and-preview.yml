@@ -139,6 +139,8 @@ jobs:
             local bounds
             # `|| true` suppresses pipefail when grep finds no match (exits 1),
             # leaving $bounds empty — handled by the guard below.
+            # Note: grep -o is regex; all current callers pass plain string literals
+            # with no metacharacters, so this is safe as-is.
             bounds=$(adb shell cat /sdcard/ui_tap.xml 2>/dev/null \
               | grep -o "${attr}=\"${value}\"[^>]*" \
               | grep -o 'bounds="\[[0-9]*,[0-9]*\]\[[0-9]*,[0-9]*\]"' \
@@ -168,7 +170,7 @@ jobs:
           tap_element_by_content_desc() { _tap_by_attribute "content-desc" "$1"; }
 
           # Locate the APK
-          APK_PATH=$(find /tmp/apk -name "*-Signed.apk" -type f | head -1)
+          APK_PATH=$(find /tmp/apk -name "*-Signed.apk" -type f | head -1 || true)
           if [ -z "$APK_PATH" ]; then
             echo "::error::No signed APK found in artifacts"
             exit 1
@@ -191,7 +193,7 @@ jobs:
 
           # Resolve the launcher activity dynamically so this survives any future
           # MAUI namespace or assembly renames (which change the crc64 class name).
-          MAIN_ACTIVITY=$(adb shell cmd package resolve-activity --brief -c android.intent.category.LAUNCHER "$PACKAGE" | tail -1)
+          MAIN_ACTIVITY=$(adb shell cmd package resolve-activity --brief -c android.intent.category.LAUNCHER "$PACKAGE" | tail -1 || true)
           if [ -z "$MAIN_ACTIVITY" ] || echo "$MAIN_ACTIVITY" | grep -qi "error\|no activity"; then
             echo "::error::Could not resolve launcher activity for $PACKAGE — got: '$MAIN_ACTIVITY'"
             exit 1
