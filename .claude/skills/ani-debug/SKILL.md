@@ -12,7 +12,7 @@ allowed-tools: Bash(adb *)
 ## Device State
 
 Connected devices: !`adb devices -l`
-App PID: !`adb -s emulator-5554 shell pidof com.RainbowSprinkles.AniSprinkles 2>/dev/null || echo "not running"`
+App PID: !`adb shell pidof com.RainbowSprinkles.AniSprinkles 2>/dev/null || echo "not running"`
 
 Pull both logs before analyzing any issue.
 
@@ -20,11 +20,11 @@ Pull both logs before analyzing any issue.
 
 ```powershell
 # Pull device app log
-adb -s emulator-5554 exec-out run-as com.RainbowSprinkles.AniSprinkles cat files/logs/anisprinkles.log > logs/anisprinkles.device.log
+adb exec-out run-as com.RainbowSprinkles.AniSprinkles cat files/logs/anisprinkles.log > logs/anisprinkles.device.log
 
 # Pull current-process logcat
-$appPid = adb -s emulator-5554 shell pidof com.RainbowSprinkles.AniSprinkles
-adb -s emulator-5554 logcat -v time --pid $appPid -d > logs/adb.device.pid.log
+$appPid = adb shell pidof com.RainbowSprinkles.AniSprinkles
+adb logcat -v time --pid $appPid -d > logs/adb.device.pid.log
 ```
 
 ## Step 2: Scan for Crashes
@@ -49,10 +49,10 @@ Select-String -Path logs/anisprinkles.device.log -Pattern "NAVTRACE" -CaseSensit
 
 ```powershell
 # List all app log files
-adb -s emulator-5554 shell run-as com.RainbowSprinkles.AniSprinkles ls -la files/logs
+adb shell run-as com.RainbowSprinkles.AniSprinkles ls -la files/logs
 
 # Read latest log directly on device
-adb -s emulator-5554 shell run-as com.RainbowSprinkles.AniSprinkles cat files/logs/anisprinkles.log
+adb shell run-as com.RainbowSprinkles.AniSprinkles cat files/logs/anisprinkles.log
 
 # Filter logcat by tag
 adb logcat AniSprinkles:D *:S
