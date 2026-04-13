@@ -65,7 +65,8 @@
                                    Style="{StaticResource Title1}"
                                    FontSize="24"
                                    TextColor="{Binding PageTitle, Converter={StaticResource RainbowAccentConverter}}"
-                                   LineBreakMode="WordWrap" />
+                                   LineBreakMode="WordWrap"
+                                   Shadow="0 0 6 #000000 0.9" />
                             <HorizontalStackLayout Spacing="8">
                                 <Label Text="{Binding FormatDisplay}"
                                        Style="{StaticResource Caption1Strong}"
