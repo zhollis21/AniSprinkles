@@ -9,11 +9,11 @@
 ## Architecture
 
 - **.NET MAUI Android-only** app (`net10.0-android`, min SDK 31), single project in `src/`. App ID: `com.RainbowSprinkles.AniSprinkles`.
-- **MVVM** via CommunityToolkit.Mvvm 8.4: PageModels extend `ObservableObject`, use `[ObservableProperty]`, `[RelayCommand]`, `[NotifyPropertyChangedFor]`. Shell flyout navigation (`my-anime`, `settings`) with a programmatic `media-details` route. Navigate via `Shell.Current.GoToAsync` with lightweight query params — never full objects.
-- **DI**: Services and flyout PageModels (`MyAnimePageModel`, `SettingsPageModel`) are singleton. All Pages and `MediaDetailsPageModel` are transient. See `.github/instructions/maui-architecture.instructions.md` for the full DI table and page patterns.
-- **Services**: `AuthService` (OAuth + SecureStorage), `AniListClient` (GraphQL + viewer ID cache), `ErrorReportService` (Sentry + `ILogger` + token redaction), `FileLoggerProvider` (rotating async file log, Debug only), `LoggingHandler` (HTTP DelegatingHandler), `AiringNotificationService` (WorkManager periodic check). See `.github/instructions/airing-notifications.instructions.md` for the notification subsystem.
+- **MVVM** via CommunityToolkit.Mvvm: PageModels extend `ObservableObject`, use `[ObservableProperty]`, `[RelayCommand]`, `[NotifyPropertyChangedFor]`. Shell flyout navigation (`my-anime`, `settings`) with a programmatic `media-details` route. Navigate via `Shell.Current.GoToAsync` with lightweight query params — never full objects.
+- **DI**: Services and flyout PageModels (`MyAnimePageModel`, `SettingsPageModel`) are singleton. All Pages and `MediaDetailsPageModel` are transient. See `/project-architecture` for the full DI table and page patterns.
+- **Services**: `AuthService` (OAuth + SecureStorage), `AniListClient` (GraphQL + viewer ID cache), `ErrorReportService` (Sentry + `ILogger` + token redaction), `FileLoggerProvider` (rotating async file log, Debug only), `LoggingHandler` (HTTP DelegatingHandler), `AiringNotificationService` (WorkManager periodic check). See `/airing-notifications` for the notification subsystem.
 - **Global usings** (`GlobalUsings.cs`): `Models`, `PageModels`, `Pages`, `Services`, `IconFont.Maui.FluentIcons`. `Converters` and `Utilities` require explicit `using`.
-- **Key NuGet packages**: `Microsoft.Maui.Controls` 10.0.41, `CommunityToolkit.Mvvm` 8.4.0, `CommunityToolkit.Maui` 14.0.0, `Sentry.Maui` 6.1.0, `Syncfusion.Maui.Toolkit` 1.0.9, `IconFont.Maui.FluentIcons` 1.1.0.
+- **Key NuGet packages**: `Microsoft.Maui.Controls`, `CommunityToolkit.Mvvm`, `CommunityToolkit.Maui`, `Sentry.Maui`, `Syncfusion.Maui.Toolkit`, `IconFont.Maui.FluentIcons`.
 
 ## Integration Points (AniList API)
 
@@ -25,7 +25,7 @@
 
 ## Airing Notifications
 
-See `.github/instructions/airing-notifications.instructions.md` for the full subsystem architecture, key files, Preferences keys, and design decisions.
+See `/airing-notifications` for the full subsystem architecture, key files, Preferences keys, and design decisions.
 
 ## Build and Test
 
@@ -65,8 +65,7 @@ The project must build with **zero warnings**. Do not introduce new warnings; fi
 - **Telemetry**: Sentry crash reporting only (`SendDefaultPii = false`, `TracesSampleRate = 0.0`). Use `ErrorReportService.Record()` for handled exceptions.
 - **User prefs**: `AppSettings` (static, `Utilities/`) persists title language, score format, adult content toggle, and section order via `Preferences`.
 
-See `.github/instructions/cs-patterns.instructions.md` for full code style and async rules.
-See `.github/instructions/maui-architecture.instructions.md` for page patterns and performance defaults.
+See `/project-architecture` for page patterns and performance defaults.
 
 ## Debugging Workflow
 
@@ -84,7 +83,7 @@ pwsh tools/Get-OpenPrComments.ps1
 
 Requires `gh` CLI authenticated (or `GH_TOKEN` env var). See `.claude/skills/ani-pr-feedback/SKILL.md` (`/ani-pr-feedback`) for the full evaluation workflow.
 
-Project slash commands (`/ani-debug`, `/ani-review`, `/ani-pr-feedback`) live in `.claude/skills/`.
+Project slash commands (`/ani-debug`, `/ani-review`, `/ani-pr-feedback`, `/project-architecture`, `/airing-notifications`) live in `.claude/skills/`.
 
 ## Working with AI Agents
 
