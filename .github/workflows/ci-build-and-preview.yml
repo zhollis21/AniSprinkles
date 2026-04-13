@@ -137,11 +137,13 @@ jobs:
             local attr="$1" value="$2"
             adb shell uiautomator dump /sdcard/ui_tap.xml 2>/dev/null || true
             local bounds
+            # `|| true` suppresses pipefail when grep finds no match (exits 1),
+            # leaving $bounds empty — handled by the guard below.
             bounds=$(adb shell cat /sdcard/ui_tap.xml 2>/dev/null \
               | grep -o "${attr}=\"${value}\"[^>]*" \
               | grep -o 'bounds="\[[0-9]*,[0-9]*\]\[[0-9]*,[0-9]*\]"' \
               | head -1 \
-              | sed 's/bounds="//;s/"//')
+              | sed 's/bounds="//;s/"//') || true
             if [ -z "$bounds" ]; then
               echo "::warning::Could not find element with ${attr}='${value}'"
               return 1
@@ -284,10 +286,13 @@ jobs:
 
           # Poll for My Anime page to confirm the back navigation completed (up to 10s)
           # before attempting to open the flyout.
+          # "My Score" is a hardcoded sort-chip label in MyAnimeLoadedContentView — it
+          # only exists on the My Anime page and is never present on the Details page,
+          # making it a reliable positive signal that back navigation has finished.
           BACK_WAIT=0
           while [ $BACK_WAIT -lt 10 ]; do
             adb shell uiautomator dump /sdcard/ui_back.xml 2>/dev/null || true
-            if adb shell cat /sdcard/ui_back.xml 2>/dev/null | grep -qi "ONE PIECE"; then
+            if adb shell cat /sdcard/ui_back.xml 2>/dev/null | grep -q "My Score"; then
               echo "  Back on My Anime after ${BACK_WAIT}s"
               sleep 1
               break
