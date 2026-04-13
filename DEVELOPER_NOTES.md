@@ -92,8 +92,10 @@ Provides on-demand MAUI skills (Shell navigation, CollectionView, data binding, 
 Add to VS Code `settings.json` (`Ctrl+Shift+P` → **Open User Settings JSON**):
 
 ```json
-"chat.plugins.enabled": true,
-"chat.plugins.marketplaces": ["dotnet/skills"]
+{
+  "chat.plugins.enabled": true,
+  "chat.plugins.marketplaces": ["dotnet/skills"]
+}
 ```
 
 Then type `/plugins` in Copilot Chat and install `dotnet-maui`. Invoke skills with e.g. `/maui-shell-navigation`.

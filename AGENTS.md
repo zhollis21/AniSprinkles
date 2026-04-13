@@ -8,7 +8,7 @@
 
 ## Architecture
 
-- **.NET MAUI Android-only** app (`net10.0-android`, min SDK 31), single project in `src/`. App ID: `com.RainbowSprinkles.AniSprinkles`.
+- **.NET MAUI Android-only** app (`net10.0-android`; `SupportedOSPlatformVersion` 31.0), single project in `src/`. App ID: `com.RainbowSprinkles.AniSprinkles`.
 - **MVVM** via CommunityToolkit.Mvvm: PageModels extend `ObservableObject`, use `[ObservableProperty]`, `[RelayCommand]`, `[NotifyPropertyChangedFor]`. Shell flyout navigation (`my-anime`, `settings`) with a programmatic `media-details` route. Navigate via `Shell.Current.GoToAsync` with lightweight query params — never full objects.
 - **DI**: Services and flyout PageModels (`MyAnimePageModel`, `SettingsPageModel`) are singleton. All Pages and `MediaDetailsPageModel` are transient. See `/project-architecture` for the full DI table and page patterns.
 - **Services**: `AuthService` (OAuth + SecureStorage), `AniListClient` (GraphQL + viewer ID cache), `ErrorReportService` (Sentry + `ILogger` + token redaction), `FileLoggerProvider` (rotating async file log, Debug only), `LoggingHandler` (HTTP DelegatingHandler), `AiringNotificationService` (WorkManager periodic check). See `/airing-notifications` for the notification subsystem.
