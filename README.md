@@ -48,8 +48,10 @@ Requires .NET 10 and the `maui-android` workload.
 - **Auth** — AniList OAuth implicit grant; redirect URI `anisprinkles://auth`; token in `SecureStorage`
 - **Telemetry** — Sentry crash reporting only (`SendDefaultPii = false`, no performance tracing)
 
-## Planning Docs
+## Docs
 
-- `docs/PLAN.md` — architectural decisions and open questions
-- `docs/TODO.md` — working task list
-- `AGENTS.md` — agent/AI coding instructions, debugging workflow, architecture reference
+- `AGENTS.md` — agent/AI coding instructions, architecture reference, build commands
+- `.claude/skills/` — workflow slash commands for all AI tools: `/ani-debug`, `/ani-review`, `/ani-pr-feedback`
+- `DEVELOPER_NOTES.md` — focused troubleshooting and local test notes
+
+Backlog planning and future work are tracked in GitHub Issues rather than repo-local planning docs.

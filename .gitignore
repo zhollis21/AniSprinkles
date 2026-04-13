@@ -56,7 +56,7 @@ publish/
 *.nupkg
 
 # Claude
-.claude/
+.claude/**/*.local*
 
 # Mac / iOS development
 .DS_Store
