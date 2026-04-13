@@ -369,7 +369,7 @@ jobs:
           arch: x86_64
           profile: pixel_7_pro
           force-avd-creation: false
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -locale en_US
           disable-animations: true
           script: /tmp/capture_screenshots.sh
 
