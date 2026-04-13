@@ -406,6 +406,15 @@ jobs:
             exit 0
           fi
           echo "has_screenshots=true" >> $GITHUB_OUTPUT
+
+          # If the PR branch has already been deleted (merged before CI finished),
+          # pushing would fail with a non-fatal error. Skip the commit gracefully.
+          if ! git ls-remote --exit-code --heads origin "$GITHUB_HEAD_REF" > /dev/null 2>&1; then
+            echo "::warning::Branch '$GITHUB_HEAD_REF' no longer exists — PR was likely merged before CI finished. Skipping screenshot commit."
+            echo "has_screenshots=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add screenshots/
