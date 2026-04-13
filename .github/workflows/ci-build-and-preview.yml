@@ -301,8 +301,10 @@ jobs:
           # toolbar once the page is active, and never shown on the Details page.
           BACK_WAIT=0
           while [ $BACK_WAIT -lt 10 ]; do
-            adb shell uiautomator dump /sdcard/ui_back.xml 2>/dev/null || true
-            if adb shell cat /sdcard/ui_back.xml 2>/dev/null | grep -q "My Anime"; then
+            adb shell rm -f /sdcard/ui_back.xml >/dev/null 2>&1 || true
+            if adb shell uiautomator dump /sdcard/ui_back.xml >/dev/null 2>&1 && \
+               adb shell test -s /sdcard/ui_back.xml >/dev/null 2>&1 && \
+               adb shell cat /sdcard/ui_back.xml 2>/dev/null | grep -q "My Anime"; then
               echo "  Back on My Anime after ${BACK_WAIT}s"
               sleep 1
               break
@@ -323,8 +325,10 @@ jobs:
             echo "Flyout open attempt ${FLYOUT_ATTEMPT}..."
             tap_element_by_content_desc "Open navigation drawer" || true
             sleep 1
-            adb shell uiautomator dump /sdcard/ui_flyout_check.xml 2>/dev/null || true
-            if adb shell cat /sdcard/ui_flyout_check.xml 2>/dev/null | grep -qi '"Settings"'; then
+            adb shell rm -f /sdcard/ui_flyout_check.xml >/dev/null 2>&1 || true
+            if adb shell uiautomator dump /sdcard/ui_flyout_check.xml >/dev/null 2>&1 && \
+               adb shell test -s /sdcard/ui_flyout_check.xml >/dev/null 2>&1 && \
+               adb shell cat /sdcard/ui_flyout_check.xml 2>/dev/null | grep -qi '"Settings"'; then
               echo "  Flyout confirmed open on attempt ${FLYOUT_ATTEMPT}"
               FLYOUT_OPENED=1
               break
