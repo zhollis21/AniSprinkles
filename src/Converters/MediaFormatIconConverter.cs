@@ -14,7 +14,8 @@ public class MediaFormatIconConverter : IValueConverter
         {
             "TV" or "TV_SHORT" => FluentIconsRegular.Tv24,
             "MOVIE" => FluentIconsRegular.MoviesAndTv24,
-            "OVA" or "ONA" => FluentIconsRegular.FilmstripPlay24,
+            "OVA" => FluentIconsRegular.VideoShort24,
+            "ONA" => FluentIconsRegular.GlobeVideo24,
             "SPECIAL" => FluentIconsRegular.Sparkle24,
             "MUSIC" => FluentIconsRegular.MusicNote224,
             "MANGA" => FluentIconsRegular.BookOpen24,

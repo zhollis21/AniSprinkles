@@ -1024,14 +1024,33 @@
                                                               CommandParameter="{Binding MediaRecommendation.Id}" />
                                     </Border.GestureRecognizers>
                                     <VerticalStackLayout>
-                                        <Image Source="{Binding MediaRecommendation.CoverImage.Large}"
-                                               Aspect="AspectFill"
-                                               HeightRequest="170"
-                                               WidthRequest="130">
-                                            <Image.Clip>
-                                                <RoundRectangleGeometry Rect="0,0,130,170" CornerRadius="16,16,0,0" />
-                                            </Image.Clip>
-                                        </Image>
+                                        <Grid>
+                                            <Image Source="{Binding MediaRecommendation.CoverImage.Large}"
+                                                   Aspect="AspectFill"
+                                                   HeightRequest="170"
+                                                   WidthRequest="130">
+                                                <Image.Clip>
+                                                    <RoundRectangleGeometry Rect="0,0,130,170" CornerRadius="16,16,0,0" />
+                                                </Image.Clip>
+                                            </Image>
+                                            <Border StrokeShape="RoundRectangle 8"
+                                                    StrokeThickness="0"
+                                                    BackgroundColor="#99000000"
+                                                    Padding="5,3"
+                                                    HorizontalOptions="Start"
+                                                    VerticalOptions="End"
+                                                    Margin="6,0,0,6"
+                                                    IsVisible="{Binding MediaRecommendation.Format, Converter={StaticResource StringNotNullOrEmptyConverter}}">
+                                                <Image WidthRequest="18" HeightRequest="18">
+                                                    <Image.Source>
+                                                        <FontImageSource Glyph="{Binding MediaRecommendation.Format, Converter={StaticResource MediaFormatIconConverter}}"
+                                                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                                         Color="{AppThemeBinding Light=#333333, Dark=White}"
+                                                                         Size="18" />
+                                                    </Image.Source>
+                                                </Image>
+                                            </Border>
+                                        </Grid>
                                         <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
                                             <Label Text="{Binding MediaRecommendation.DisplayTitle}"
                                                    Style="{StaticResource Caption1}"

@@ -31,6 +31,26 @@
                             </Image.Clip>
                         </Image>
 
+                        <!-- Format icon badge overlay -->
+                        <Border Grid.Column="0"
+                                StrokeShape="RoundRectangle 8"
+                                StrokeThickness="0"
+                                BackgroundColor="#99000000"
+                                Padding="5,3"
+                                HorizontalOptions="Start"
+                                VerticalOptions="End"
+                                Margin="6,0,0,6"
+                                IsVisible="{Binding Media.Format, Converter={StaticResource StringNotNullOrEmptyConverter}}">
+                            <Image WidthRequest="18" HeightRequest="18">
+                                <Image.Source>
+                                    <FontImageSource Glyph="{Binding Media.Format, Converter={StaticResource MediaFormatIconConverter}}"
+                                                     FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                     Color="{AppThemeBinding Light=#333333, Dark=White}"
+                                                     Size="18" />
+                                </Image.Source>
+                            </Image>
+                        </Border>
+
                         <!-- Info stack -->
                         <VerticalStackLayout Grid.Column="1" Spacing="3" VerticalOptions="Center" Padding="10,6">
                             <Label Text="{Binding Media.DisplayTitle}"
@@ -117,6 +137,26 @@
                                 <RoundRectangleGeometry Rect="0,0,999,180" CornerRadius="16,16,0,0" />
                             </Image.Clip>
                         </Image>
+
+                        <!-- Format icon badge overlay -->
+                        <Border Grid.Row="0"
+                                StrokeShape="RoundRectangle 8"
+                                StrokeThickness="0"
+                                BackgroundColor="#99000000"
+                                Padding="5,3"
+                                HorizontalOptions="Start"
+                                VerticalOptions="End"
+                                Margin="6,0,0,6"
+                                IsVisible="{Binding Media.Format, Converter={StaticResource StringNotNullOrEmptyConverter}}">
+                            <Image WidthRequest="18" HeightRequest="18">
+                                <Image.Source>
+                                    <FontImageSource Glyph="{Binding Media.Format, Converter={StaticResource MediaFormatIconConverter}}"
+                                                     FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                     Color="{AppThemeBinding Light=#333333, Dark=White}"
+                                                     Size="18" />
+                                </Image.Source>
+                            </Image>
+                        </Border>
 
                         <!-- Score badge overlay -->
                         <Border Grid.Row="0"
