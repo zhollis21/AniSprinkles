@@ -80,8 +80,8 @@ public partial class MyAnimePage : ContentPage
                 return;
             }
 
-            UpdateLoadedContentHost();
             _viewModel.CurrentState = PageState.Content;
+            UpdateLoadedContentHost();
             // Background refresh with existing data visible.
             await _viewModel.LoadAsync();
             return;
