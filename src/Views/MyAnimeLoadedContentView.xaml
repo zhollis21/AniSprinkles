@@ -4,6 +4,7 @@
              xmlns:pageModels="clr-namespace:AniSprinkles.PageModels"
              xmlns:models="clr-namespace:AniSprinkles.Models"
              xmlns:icons="clr-namespace:IconFont.Maui.FluentIcons;assembly=IconFont.Maui.FluentIcons"
+             xmlns:views="clr-namespace:AniSprinkles.Views"
              xmlns:pullToRefresh="clr-namespace:Syncfusion.Maui.Toolkit.PullToRefresh;assembly=Syncfusion.Maui.Toolkit"
              x:Class="AniSprinkles.Views.MyAnimeLoadedContentView"
              x:DataType="pageModels:MyAnimePageModel"
@@ -30,6 +31,8 @@
                                 <RoundRectangleGeometry Rect="0,0,70,120" CornerRadius="14,0,0,14" />
                             </Image.Clip>
                         </Image>
+
+                        <views:FormatIconBadge Grid.Column="0" Format="{Binding Media.Format}" />
 
                         <!-- Info stack -->
                         <VerticalStackLayout Grid.Column="1" Spacing="3" VerticalOptions="Center" Padding="10,6">
@@ -117,6 +120,8 @@
                                 <RoundRectangleGeometry Rect="0,0,999,180" CornerRadius="16,16,0,0" />
                             </Image.Clip>
                         </Image>
+
+                        <views:FormatIconBadge Grid.Row="0" Format="{Binding Media.Format}" />
 
                         <!-- Score badge overlay -->
                         <Border Grid.Row="0"

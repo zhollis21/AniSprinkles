@@ -4,6 +4,7 @@
              xmlns:pageModels="clr-namespace:AniSprinkles.PageModels"
              xmlns:models="clr-namespace:AniSprinkles.Models"
              xmlns:icons="clr-namespace:IconFont.Maui.FluentIcons;assembly=IconFont.Maui.FluentIcons"
+             xmlns:views="clr-namespace:AniSprinkles.Views"
              x:Class="AniSprinkles.Views.MediaDetailsLoadedContentView"
              x:DataType="pageModels:MediaDetailsPageModel"
              x:Name="RootView">
@@ -785,14 +786,17 @@
                                                               CommandParameter="{Binding Node.Id}" />
                                     </Border.GestureRecognizers>
                                     <VerticalStackLayout>
-                                        <Image Source="{Binding Node.CoverImage.Large}"
-                                               Aspect="AspectFill"
-                                               HeightRequest="170"
-                                               WidthRequest="130">
-                                            <Image.Clip>
-                                                <RoundRectangleGeometry Rect="0,0,130,170" CornerRadius="16,16,0,0" />
-                                            </Image.Clip>
-                                        </Image>
+                                        <Grid>
+                                            <Image Source="{Binding Node.CoverImage.Large}"
+                                                   Aspect="AspectFill"
+                                                   HeightRequest="170"
+                                                   WidthRequest="130">
+                                                <Image.Clip>
+                                                    <RoundRectangleGeometry Rect="0,0,130,170" CornerRadius="16,16,0,0" />
+                                                </Image.Clip>
+                                            </Image>
+                                            <views:FormatIconBadge Format="{Binding Node.Format}" />
+                                        </Grid>
                                         <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
                                             <Label Text="{Binding RelationType}"
                                                    Style="{StaticResource Caption2}"
@@ -1005,14 +1009,17 @@
                                                               CommandParameter="{Binding MediaRecommendation.Id}" />
                                     </Border.GestureRecognizers>
                                     <VerticalStackLayout>
-                                        <Image Source="{Binding MediaRecommendation.CoverImage.Large}"
-                                               Aspect="AspectFill"
-                                               HeightRequest="170"
-                                               WidthRequest="130">
-                                            <Image.Clip>
-                                                <RoundRectangleGeometry Rect="0,0,130,170" CornerRadius="16,16,0,0" />
-                                            </Image.Clip>
-                                        </Image>
+                                        <Grid>
+                                            <Image Source="{Binding MediaRecommendation.CoverImage.Large}"
+                                                   Aspect="AspectFill"
+                                                   HeightRequest="170"
+                                                   WidthRequest="130">
+                                                <Image.Clip>
+                                                    <RoundRectangleGeometry Rect="0,0,130,170" CornerRadius="16,16,0,0" />
+                                                </Image.Clip>
+                                            </Image>
+                                            <views:FormatIconBadge Format="{Binding MediaRecommendation.Format}" />
+                                        </Grid>
                                         <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
                                             <Label Text="{Binding MediaRecommendation.DisplayTitle}"
                                                    Style="{StaticResource Caption1}"
