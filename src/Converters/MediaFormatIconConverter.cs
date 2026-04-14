@@ -12,13 +12,14 @@ public class MediaFormatIconConverter : IValueConverter
     {
         return (value as string) switch
         {
-            "TV" or "TV_SHORT" => FluentIconsFilled.VideoClip24,
-            "MOVIE" => FluentIconsFilled.Filmstrip24,
-            "OVA" or "ONA" or "SPECIAL" => FluentIconsFilled.PlayCircle24,
-            "MUSIC" => FluentIconsFilled.MusicNote224,
-            "MANGA" => FluentIconsFilled.BookOpen24,
-            "NOVEL" => FluentIconsFilled.Book24,
-            "ONE_SHOT" => FluentIconsFilled.DocumentOnePage24,
+            "TV" or "TV_SHORT" => FluentIconsRegular.Tv24,
+            "MOVIE" => FluentIconsRegular.MoviesAndTv24,
+            "OVA" or "ONA" => FluentIconsRegular.FilmstripPlay24,
+            "SPECIAL" => FluentIconsRegular.Sparkle24,
+            "MUSIC" => FluentIconsRegular.MusicNote224,
+            "MANGA" => FluentIconsRegular.BookOpen24,
+            "NOVEL" => FluentIconsRegular.Book24,
+            "ONE_SHOT" => FluentIconsRegular.DocumentOnePage24,
             _ => null,
         };
     }

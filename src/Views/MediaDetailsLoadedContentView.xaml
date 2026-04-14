@@ -805,7 +805,7 @@
                                                 <Image WidthRequest="18" HeightRequest="18">
                                                     <Image.Source>
                                                         <FontImageSource Glyph="{Binding Node.Format, Converter={StaticResource MediaFormatIconConverter}}"
-                                                                         FontFamily="{x:Static icons:FluentIconsFilled.FontFamily}"
+                                                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                                          Color="{AppThemeBinding Light=#333333, Dark=White}"
                                                                          Size="18" />
                                                     </Image.Source>
