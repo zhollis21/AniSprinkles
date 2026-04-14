@@ -11,4 +11,5 @@ public interface IAniListClient
     Task<int> GetCurrentUserIdAsync(CancellationToken cancellationToken = default);
     Task<AniListUser> GetViewerAsync(CancellationToken cancellationToken = default);
     Task<AniListUser> UpdateUserAsync(UpdateUserRequest request, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<AiringScheduleEntry>> GetAiringScheduleAsync(IReadOnlyList<int> mediaIds, int airingAfter, int airingBefore, CancellationToken cancellationToken = default);
 }

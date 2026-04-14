@@ -17,6 +17,7 @@ dotnet build -p:ErrorSim=true
 Or in Visual Studio: **Project Properties → Build → Conditional compilation symbols → add `ERROR_SIM`**.
 
 This swaps in two pre-built stubs automatically:
+
 - `SimAuthService` (`src/Services/ErrorSimulation/SimAuthService.cs`) — always reports the app as authenticated, no real sign-in needed
 - `FailingAniListClient` (`src/Services/ErrorSimulation/FailingAniListClient.cs`) — throws a classified `AniListApiException` on every data call
 
@@ -60,11 +61,11 @@ throw new AniListApiException(ApiErrorKind.ServiceOutage,
 
 When simulating errors, check each page:
 
-| Page | Expected behavior |
-|------|------------------|
-| **My Anime** | Full-page `ErrorStateView` with retry button. Stale cached data shows instead if a previous load succeeded. |
-| **Media Details** | Full-page `ErrorStateView` with retry button. Spinner should NOT be visible alongside the error. |
-| **Settings** | Full-page `ErrorStateView` with retry button. Login prompt should NOT overlap with error view. |
+| Page              | Expected behavior                                                                                           |
+| ----------------- | ----------------------------------------------------------------------------------------------------------- |
+| **My Anime**      | Full-page `ErrorStateView` with retry button. Stale cached data shows instead if a previous load succeeded. |
+| **Media Details** | Full-page `ErrorStateView` with retry button. Spinner should NOT be visible alongside the error.            |
+| **Settings**      | Full-page `ErrorStateView` with retry button. Login prompt should NOT overlap with error view.              |
 
 For each page, also verify:
 
@@ -73,9 +74,40 @@ For each page, also verify:
 - **Copy** and **Share** buttons in the details section work
 - The correct icon appears per error kind:
 
-| `ApiErrorKind` | Icon | Title |
-|----------------|------|-------|
-| `ServiceOutage` | `CloudDismiss24` | "AniList is Temporarily Down" |
-| `Network` | `WifiOff24` | "No Internet Connection" |
-| `Authentication` | `LockClosed24` | "Session Expired" |
-| `Unknown` | `ErrorCircle24` | "Something Went Wrong" |
+| `ApiErrorKind`   | Icon             | Title                         |
+| ---------------- | ---------------- | ----------------------------- |
+| `ServiceOutage`  | `CloudDismiss24` | "AniList is Temporarily Down" |
+| `Network`        | `WifiOff24`      | "No Internet Connection"      |
+| `Authentication` | `LockClosed24`   | "Session Expired"             |
+| `Unknown`        | `ErrorCircle24`  | "Something Went Wrong"        |
+
+## AI Tooling Setup
+
+These are personal/machine-level installs — not repo requirements. Each contributor sets these up independently.
+
+### dotnet-maui Plugin (VS Code)
+
+Provides on-demand MAUI skills (Shell navigation, CollectionView, data binding, DI, theming, lifecycle, safe area, environment diagnostics) maintained by the Microsoft dotnet team.
+
+Add to VS Code `settings.json` (`Ctrl+Shift+P` → **Open User Settings JSON**):
+
+```json
+{
+  "chat.plugins.enabled": true,
+  "chat.plugins.marketplaces": ["dotnet/skills"]
+}
+```
+
+Then type `/plugins` in Copilot Chat and install `dotnet-maui`. Invoke skills with e.g. `/maui-shell-navigation`.
+
+> VS Code plugin support is preview — may require enabling in settings first.
+
+### Recommended MCPs
+
+| MCP                     | Purpose                                                                                          |
+| ----------------------- | ------------------------------------------------------------------------------------------------ |
+| **Context7**            | Live .NET / MAUI / Android docs lookup without leaving the editor                                |
+| **Sequential Thinking** | Complex multi-step reasoning tasks                                                               |
+| **GitHub MCP**          | Issue and PR context (available via VS Code extension; standalone install helps other harnesses) |
+
+MCP configuration varies by harness (VS Code, Claude Code, Cursor, etc.) — consult your client's MCP setup docs.
