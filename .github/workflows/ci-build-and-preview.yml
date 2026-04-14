@@ -107,7 +107,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v6
         with:
-          ref: ${{ github.head_ref || github.ref }}
+          ref: ${{ github.head_ref }}
 
       - name: Download APK
         uses: actions/download-artifact@v8
@@ -398,7 +398,7 @@ jobs:
       - name: Commit Screenshots
         id: commit-screenshots
         # Cannot push to fork PRs — GITHUB_TOKEN lacks write access to the source repo
-        if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
+        if: github.event.pull_request.head.repo.full_name == github.repository
         run: |
           if [ ! -d "screenshots" ] || [ -z "$(find screenshots -name '*.png' -type f 2>/dev/null)" ]; then
             echo "No screenshots to commit"
@@ -429,7 +429,6 @@ jobs:
           echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
 
       - name: Comment on PR
-        if: github.event_name == 'pull_request'
         uses: actions/github-script@v8
         env:
           SCREENSHOT_SHA: ${{ steps.commit-screenshots.outputs.sha }}

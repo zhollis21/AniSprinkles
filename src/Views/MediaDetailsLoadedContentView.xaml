@@ -65,8 +65,14 @@
                                    Style="{StaticResource Title1}"
                                    FontSize="24"
                                    TextColor="{Binding PageTitle, Converter={StaticResource RainbowAccentConverter}}"
-                                   LineBreakMode="WordWrap"
-                                   Shadow="0 0 6 #000000 0.9" />
+                                   LineBreakMode="WordWrap">
+                                <Label.Shadow>
+                                    <Shadow Offset="0,0"
+                                            Radius="6"
+                                            Brush="#000000"
+                                            Opacity="0.9" />
+                                </Label.Shadow>
+                            </Label>
                             <HorizontalStackLayout Spacing="8">
                                 <Label Text="{Binding FormatDisplay}"
                                        Style="{StaticResource Caption1Strong}"
