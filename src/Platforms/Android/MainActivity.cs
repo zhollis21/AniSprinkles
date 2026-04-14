@@ -11,8 +11,9 @@ namespace AniSprinkles;
 
 [Activity(
     Theme = "@style/Maui.SplashTheme",
-    MainLauncher = true, 
-    LaunchMode = LaunchMode.SingleTop, 
+    MainLauncher = true,
+    LaunchMode = LaunchMode.SingleTop,
+    ScreenOrientation = ScreenOrientation.SensorPortrait,
     ConfigurationChanges = 
         ConfigChanges.ScreenSize | 
         ConfigChanges.Orientation | 

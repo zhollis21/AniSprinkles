@@ -63,9 +63,17 @@
                         <VerticalStackLayout Grid.Column="1" Spacing="6" VerticalOptions="End">
                             <Label Text="{Binding Media.DisplayTitle}"
                                    Style="{StaticResource Title1}"
+                                   FontSize="24"
                                    TextColor="{Binding PageTitle, Converter={StaticResource RainbowAccentConverter}}"
-                                   MaxLines="3"
-                                   LineBreakMode="TailTruncation" />
+                                   LineBreakMode="WordWrap"
+                                   Margin="0,0,0,10">
+                                <Label.Shadow>
+                                    <Shadow Offset="0,0"
+                                            Radius="6"
+                                            Brush="#000000"
+                                            Opacity="0.9" />
+                                </Label.Shadow>
+                            </Label>
                             <HorizontalStackLayout Spacing="8">
                                 <Label Text="{Binding FormatDisplay}"
                                        Style="{StaticResource Caption1Strong}"
