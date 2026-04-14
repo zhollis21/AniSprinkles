@@ -1,3 +1,4 @@
+using AniSprinkles.PageModels;
 using AniSprinkles.Utilities;
 using IconFont.Maui.FluentIcons;
 
@@ -58,24 +59,29 @@ public partial class MyAnimePage : ContentPage
         // Fast path: the singleton ViewModel already has cached sections from a
         // previous visit. We still defer view creation so the Shell transition
         // animation completes first (InitializeComponent of the heavy content
-        // view blocks the UI thread), but we skip the API call.
-        // IsRebuilding keeps the spinner visible during the delay so the user
-        // sees a spinner instead of a blank page.
+        // view blocks the UI thread), but we skip the API call. Flip CurrentState
+        // to InitialLoading during the delay so the spinner is visible instead of
+        // a blank page.
         if (_viewModel.HasLoadedData)
         {
-            _viewModel.IsRebuilding = true;
+            var savedState = _viewModel.CurrentState;
+            _viewModel.CurrentState = PageState.InitialLoading;
             version = ++_loadVersion;
             await Task.Yield();
             await Task.Delay(DeferredLoadDelay);
 
             if (!_hasAppeared || version != _loadVersion)
             {
-                _viewModel.IsRebuilding = false;
+                // Abort: only restore state if we're still the one showing the spinner.
+                if (_viewModel.CurrentState == PageState.InitialLoading)
+                {
+                    _viewModel.CurrentState = savedState;
+                }
                 return;
             }
 
             UpdateLoadedContentHost();
-            _viewModel.IsRebuilding = false;
+            _viewModel.CurrentState = PageState.Content;
             // Background refresh with existing data visible.
             await _viewModel.LoadAsync();
             return;
@@ -112,7 +118,9 @@ public partial class MyAnimePage : ContentPage
 
     private void UpdateLoadedContentHost()
     {
-        if (_viewModel?.IsAuthenticated == true && !_viewModel.IsErrorState && !_hasCreatedLoadedContent)
+        var isError = _viewModel?.CurrentState == PageState.Error;
+
+        if (_viewModel?.IsAuthenticated == true && !isError && !_hasCreatedLoadedContent)
         {
             var view = new Views.MyAnimeLoadedContentView
             {
@@ -122,7 +130,7 @@ public partial class MyAnimePage : ContentPage
             LoadedContentHost.Content = view;
             _hasCreatedLoadedContent = true;
         }
-        else if ((_viewModel?.IsAuthenticated != true || _viewModel.IsErrorState) && _hasCreatedLoadedContent)
+        else if ((_viewModel?.IsAuthenticated != true || isError) && _hasCreatedLoadedContent)
         {
             LoadedContentHost.Content = null;
             _hasCreatedLoadedContent = false;
@@ -155,23 +163,25 @@ public partial class MyAnimePage : ContentPage
 
     private void OnViewModelPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
-        // Create the loaded content view when authentication succeeds OR when
-        // sections are populated. Gating on Sections.Count > 0 prevents premature
-        // creation during LoadAsync (which sets IsAuthenticated before fetching data),
-        // avoiding the triple-spinner problem (center spinner + SfPullToRefresh + EmptyView).
+        // Create the loaded content view only when CurrentState == Content. Gating
+        // on Content (not just "not Error") keeps the heavy XAML InitializeComponent
+        // off the UI thread while CurrentState == InitialLoading — OnAppearing flips
+        // to InitialLoading during the defer delay, and we don't want the view
+        // materialized until the Shell transition animation has finished.
         if ((e.PropertyName is nameof(MyAnimePageModel.IsAuthenticated)
                 or nameof(MyAnimePageModel.Sections)
-                or nameof(MyAnimePageModel.IsErrorState))
+                or nameof(MyAnimePageModel.CurrentState))
             && _hasAppeared
             && _viewModel?.IsAuthenticated == true
+            && _viewModel.CurrentState == PageState.Content
             && _viewModel.Sections.Count > 0)
         {
             UpdateLoadedContentHost();
             UpdateToolbarItems();
         }
-        else if (e.PropertyName == nameof(MyAnimePageModel.IsErrorState)
+        else if (e.PropertyName == nameof(MyAnimePageModel.CurrentState)
             && _hasAppeared
-            && _viewModel?.IsErrorState == true)
+            && _viewModel?.CurrentState == PageState.Error)
         {
             // Tear down loaded content so the error view is visible.
             UpdateLoadedContentHost();

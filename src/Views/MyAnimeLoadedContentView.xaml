@@ -519,7 +519,9 @@
                                 <DataTrigger TargetType="VerticalStackLayout" Binding="{Binding IsBusy}" Value="True">
                                     <Setter Property="IsVisible" Value="False" />
                                 </DataTrigger>
-                                <DataTrigger TargetType="VerticalStackLayout" Binding="{Binding IsErrorState}" Value="True">
+                                <DataTrigger TargetType="VerticalStackLayout"
+                                             Binding="{Binding CurrentState}"
+                                             Value="{x:Static pageModels:PageState.Error}">
                                     <Setter Property="IsVisible" Value="False" />
                                 </DataTrigger>
                             </VerticalStackLayout.Triggers>
