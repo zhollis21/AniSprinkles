@@ -1,3 +1,5 @@
+using AniSprinkles.PageModels;
+
 namespace AniSprinkles.Pages;
 
 public partial class SettingsPage : ContentPage
@@ -46,35 +48,36 @@ public partial class SettingsPage : ContentPage
         // from a previous visit. We still defer view creation so the Shell
         // transition animation completes first (InitializeComponent of the
         // heavy content view blocks the UI thread), but we skip the API call.
-        // IsLoading=true keeps the spinner visible during the delay so the user
-        // sees a spinner instead of a blank page.
+        // Flip CurrentState to InitialLoading during the delay so the spinner
+        // is visible instead of a blank page.
         if (_viewModel.HasLoadedData)
         {
-            _viewModel.IsLoading = true;
+            var savedState = _viewModel.CurrentState;
+            _viewModel.CurrentState = PageState.InitialLoading;
             version = ++_loadVersion;
             await Task.Yield();
             await Task.Delay(DeferredLoadDelay);
 
             if (!_hasAppeared || version != _loadVersion)
             {
-                _viewModel.IsLoading = false;
+                // Abort: only restore state if we're still the one showing the spinner.
+                if (_viewModel.CurrentState == PageState.InitialLoading)
+                {
+                    _viewModel.CurrentState = savedState;
+                }
                 return;
             }
 
+            _viewModel.CurrentState = PageState.Content;
             UpdateLoadedContentHost();
-            _viewModel.IsLoading = false;
             // Background refresh with existing data visible.
             await _viewModel.LoadAsync();
             return;
         }
 
-        // Slow path (first load): ensure the spinner is visible for the very
-        // first frame. The ViewModel defaults IsLoading=true, but if this is a
-        // return visit on the same singleton it may have been set to false.
-        _viewModel.IsLoading = true;
-
-        // Yield so the Shell transition animation can complete before we run
-        // the data fetch (which will create the heavy XAML content view).
+        // Slow path (first load): yield so the Shell transition animation can
+        // complete before we run the data fetch and create the heavy XAML
+        // content view. The XAML-bound loading overlay will be visible.
         version = ++_loadVersion;
         await Task.Yield();
         await Task.Delay(DeferredLoadDelay);
@@ -139,8 +142,22 @@ public partial class SettingsPage : ContentPage
 
     private void OnViewModelPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(SettingsPageModel.IsAuthenticated) && _hasAppeared)
+        // Create the loaded content view only when CurrentState == Content. Gating
+        // on Content (not just IsAuthenticated) keeps the heavy XAML InitializeComponent
+        // off the UI thread while CurrentState == InitialLoading — OnAppearing flips
+        // to InitialLoading during the defer delay.
+        if ((e.PropertyName is nameof(SettingsPageModel.IsAuthenticated)
+                or nameof(SettingsPageModel.CurrentState))
+            && _hasAppeared
+            && _viewModel?.CurrentState == PageState.Content)
         {
+            UpdateLoadedContentHost();
+        }
+        else if (e.PropertyName == nameof(SettingsPageModel.IsAuthenticated)
+            && _hasAppeared
+            && _viewModel?.IsAuthenticated != true)
+        {
+            // Tear down loaded content when the user signs out.
             UpdateLoadedContentHost();
         }
     }

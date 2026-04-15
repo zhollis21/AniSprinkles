@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.ComponentModel;
 using Microsoft.Extensions.Logging;
+using AniSprinkles.PageModels;
 using AniSprinkles.Utilities;
 
 namespace AniSprinkles.Pages;
@@ -209,7 +210,9 @@ public partial class MediaDetailsPage : ContentPage, IQueryAttributable
 
     private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName is nameof(MediaDetailsPageModel.IsBusy) or nameof(MediaDetailsPageModel.HasMedia) or nameof(MediaDetailsPageModel.IsErrorState))
+        if (e.PropertyName is nameof(MediaDetailsPageModel.IsBusy)
+            or nameof(MediaDetailsPageModel.HasMedia)
+            or nameof(MediaDetailsPageModel.CurrentState))
         {
             UpdateLoadedContentHost();
         }
@@ -217,7 +220,7 @@ public partial class MediaDetailsPage : ContentPage, IQueryAttributable
 
     private void UpdateLoadedContentHost()
     {
-        if (ViewModel.HasMedia && !ViewModel.IsBusy && !ViewModel.IsErrorState)
+        if (ViewModel.HasMedia && !ViewModel.IsBusy && ViewModel.CurrentState == PageState.Content)
         {
             if (!_hasCreatedLoadedContent)
             {
@@ -238,7 +241,7 @@ public partial class MediaDetailsPage : ContentPage, IQueryAttributable
                     ViewModel.ErrorSubtitle = "Failed to render the details view.";
                     ViewModel.ErrorIconGlyph = IconFont.Maui.FluentIcons.FluentIconsRegular.ErrorCircle24;
                     ViewModel.ErrorDetails = $"{ex.GetType().Name}: {ex.Message}\n\n{ex.StackTrace}";
-                    ViewModel.IsErrorState = true;
+                    ViewModel.CurrentState = PageState.Error;
                 }
             }
         }

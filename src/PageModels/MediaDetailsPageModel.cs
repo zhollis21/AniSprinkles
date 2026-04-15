@@ -19,6 +19,19 @@ namespace AniSprinkles.PageModels;
         private int _lastRequestedMediaId;
         private MediaListEntry? _lastRequestedListEntry;
 
+    // ── Main page state (mutually exclusive) ────────────────────────
+    // Transitions:
+    //   InitialLoading → Content (fetch succeeded) | Error (fetch failed / media unavailable)
+    //   Content        → Content (refresh/same id) | InitialLoading (new id) | Error (refresh failed)
+    //   Error          → InitialLoading (retry)
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CurrentStateKey))]
+    private PageState _currentState = PageState.InitialLoading;
+
+    // StateContainer.CurrentState is typed as string; null/empty restores default
+    // children (the loaded content host). Non-Content states match a StateView key.
+    public string? CurrentStateKey => CurrentState == PageState.Content ? null : CurrentState.ToString();
+
     [ObservableProperty]
     private bool _isBusy;
 
@@ -48,9 +61,8 @@ namespace AniSprinkles.PageModels;
     private bool _isErrorDetailsVisible;
 
     // ── Error state (full-page error view) ──────────────────────────
-    [ObservableProperty]
-    private bool _isErrorState;
-
+    // Visibility is driven by CurrentState == PageState.Error; the following
+    // properties populate the error view template.
     [ObservableProperty]
     private string _errorTitle = string.Empty;
 
@@ -187,8 +199,6 @@ namespace AniSprinkles.PageModels;
     public bool HasTrailer => !string.IsNullOrWhiteSpace(TrailerUrl);
 
     public bool HasMedia => Media is not null;
-
-    public bool IsInitialLoading => Media is null && string.IsNullOrWhiteSpace(StatusMessage) && !IsErrorState;
 
     public bool HasDescription => !string.IsNullOrWhiteSpace(Media?.Description);
 
@@ -419,7 +429,10 @@ namespace AniSprinkles.PageModels;
         {
             Media = null;
             _loadedMediaId = null;
-            StatusMessage = "Details unavailable.";
+            ErrorTitle = "Details Unavailable";
+            ErrorSubtitle = "The requested title could not be loaded.";
+            ErrorIconGlyph = FluentIconsRegular.ErrorCircle24;
+            CurrentState = PageState.Error;
             _logger.LogInformation("NAVTRACE load#{LoadRequestId} aborted due to invalid media id {MediaId}.", loadRequestId, mediaId);
             return;
         }
@@ -438,6 +451,7 @@ namespace AniSprinkles.PageModels;
             StatusMessage = string.Empty;
             ErrorDetails = string.Empty;
             IsErrorDetailsVisible = false;
+            CurrentState = PageState.Content;
             _logger.LogInformation(
                 "NAVTRACE load#{LoadRequestId} reused already-loaded media {MediaId} in {ElapsedMs}ms.",
                 loadRequestId,
@@ -465,7 +479,7 @@ namespace AniSprinkles.PageModels;
             IsAuthenticated = !string.IsNullOrWhiteSpace(token);
             OnPropertyChanged(nameof(CanAddToList));
 
-            IsErrorState = false;
+            CurrentState = PageState.InitialLoading;
             _logger.LogInformation("NAVTRACE load#{LoadRequestId} starting details fetch for media {MediaId}.", loadRequestId, mediaId);
             SentrySdk.AddBreadcrumb($"Load media details {mediaId}", "navigation", "state");
 
@@ -492,7 +506,13 @@ namespace AniSprinkles.PageModels;
 
             if (result.Media is null)
             {
-                StatusMessage = "Details unavailable.";
+                ErrorTitle = "Details Unavailable";
+                ErrorSubtitle = "The requested title could not be loaded.";
+                ErrorIconGlyph = FluentIconsRegular.ErrorCircle24;
+                ErrorDetails = string.Empty;
+                IsErrorDetailsVisible = false;
+                CurrentState = PageState.Error;
+                _loadedMediaId = null;
                 _logger.LogWarning("NAVTRACE load#{LoadRequestId} returned null media for media id {MediaId}.", loadRequestId, mediaId);
                 return;
             }
@@ -508,6 +528,7 @@ namespace AniSprinkles.PageModels;
             ListEntry = entry;
             Media = result.Media;
             _loadedMediaId = mediaId;
+            CurrentState = PageState.Content;
             _logger.LogInformation(
                 "NAVTRACE load#{LoadRequestId} media bound in {ElapsedMs}ms for media {MediaId}.",
                 loadRequestId,
@@ -522,7 +543,7 @@ namespace AniSprinkles.PageModels;
             ErrorIconGlyph = apiEx?.IconGlyph ?? FluentIconsRegular.ErrorCircle24;
             ErrorDetails = _errorReportService.Record(ex, "Load details");
             IsErrorDetailsVisible = false;
-            IsErrorState = true;
+            CurrentState = PageState.Error;
             StatusMessage = string.Empty;
             _loadedMediaId = null;
             _logger.LogError(
@@ -545,16 +566,10 @@ namespace AniSprinkles.PageModels;
     }
 
     partial void OnStatusMessageChanged(string value)
-    {
-        HasStatusMessage = !string.IsNullOrWhiteSpace(value);
-        OnPropertyChanged(nameof(IsInitialLoading));
-    }
+        => HasStatusMessage = !string.IsNullOrWhiteSpace(value);
 
     partial void OnErrorDetailsChanged(string value)
         => HasErrorDetails = !string.IsNullOrWhiteSpace(value);
-
-    partial void OnIsErrorStateChanged(bool value)
-        => OnPropertyChanged(nameof(IsInitialLoading));
 
     partial void OnMediaChanged(Media? value)
     {
@@ -565,7 +580,6 @@ namespace AniSprinkles.PageModels;
         OnPropertyChanged(nameof(BannerImageUrl));
         OnPropertyChanged(nameof(HasBannerImage));
         OnPropertyChanged(nameof(HasMedia));
-        OnPropertyChanged(nameof(IsInitialLoading));
         OnPropertyChanged(nameof(HasMalId));
         OnPropertyChanged(nameof(SeasonDisplay));
         OnPropertyChanged(nameof(DurationDisplay));
@@ -1102,9 +1116,9 @@ namespace AniSprinkles.PageModels;
             return;
         }
 
-        // Clear the error state so the UI transitions to the loading spinner.
+        // Flip to InitialLoading so the UI transitions to the loading spinner.
         // LoadAsync fully owns the IsBusy lifecycle — we don't touch it here.
-        IsErrorState = false;
+        CurrentState = PageState.InitialLoading;
         await LoadAsync(_lastRequestedMediaId, _lastRequestedListEntry);
     }
 
