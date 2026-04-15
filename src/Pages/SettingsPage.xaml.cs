@@ -77,7 +77,8 @@ public partial class SettingsPage : ContentPage
 
         // Slow path (first load): yield so the Shell transition animation can
         // complete before we run the data fetch and create the heavy XAML
-        // content view. The XAML-bound loading overlay will be visible.
+        // content view. During this deferred delay, the current StateContainer
+        // view remains visible until LoadAsync updates the page state.
         version = ++_loadVersion;
         await Task.Yield();
         await Task.Delay(DeferredLoadDelay);
@@ -158,6 +159,15 @@ public partial class SettingsPage : ContentPage
             && _viewModel?.IsAuthenticated != true)
         {
             // Tear down loaded content when the user signs out.
+            UpdateLoadedContentHost();
+        }
+        else if (e.PropertyName == nameof(SettingsPageModel.CurrentState)
+            && _hasAppeared
+            && _viewModel?.CurrentState != PageState.Content
+            && _hasCreatedLoadedContent)
+        {
+            // Tear down loaded content when CurrentState leaves Content
+            // (e.g., auth succeeded but API call failed with no cached data).
             UpdateLoadedContentHost();
         }
     }

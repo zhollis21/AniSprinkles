@@ -241,6 +241,7 @@ public partial class MediaDetailsPage : ContentPage, IQueryAttributable
                     ViewModel.ErrorSubtitle = "Failed to render the details view.";
                     ViewModel.ErrorIconGlyph = IconFont.Maui.FluentIcons.FluentIconsRegular.ErrorCircle24;
                     ViewModel.ErrorDetails = $"{ex.GetType().Name}: {ex.Message}\n\n{ex.StackTrace}";
+                    ViewModel.CanRetry = true;
                     ViewModel.CurrentState = PageState.Error;
                 }
             }

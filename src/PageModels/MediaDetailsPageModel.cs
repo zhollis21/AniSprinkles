@@ -538,6 +538,7 @@ namespace AniSprinkles.PageModels;
             ListEntry = entry;
             Media = result.Media;
             _loadedMediaId = mediaId;
+            CanRetry = true;
             CurrentState = PageState.Content;
             _logger.LogInformation(
                 "NAVTRACE load#{LoadRequestId} media bound in {ElapsedMs}ms for media {MediaId}.",
