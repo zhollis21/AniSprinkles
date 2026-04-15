@@ -105,7 +105,8 @@ internal sealed class CIAniListClient : IAniListClient
         {
             Id = 999999,
             Name = "CIUser",
-            AvatarLarge = "https://s4.anilist.co/file/anilistcdn/user/avatar/large/default.png",
+            AvatarLarge = "https://s4.anilist.co/file/anilistcdn/user/avatar/large/b7720462-zNg9PalTCPjL.jpg",
+            BannerImage = "https://s4.anilist.co/file/anilistcdn/user/banner/b7720462-imnzaFvIFTem.jpg",
             ScoreFormat = ScoreFormat.Point10Decimal,
             AnimeSectionOrder = ["Watching", "Planning", "Completed", "Dropped", "Paused", "Repeating"],
             Options = new UserOptions

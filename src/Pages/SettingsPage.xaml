@@ -4,57 +4,64 @@
              xmlns:pageModels="clr-namespace:AniSprinkles.PageModels"
              xmlns:views="clr-namespace:AniSprinkles.Views"
              xmlns:icons="clr-namespace:IconFont.Maui.FluentIcons;assembly=IconFont.Maui.FluentIcons"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="AniSprinkles.Pages.SettingsPage"
              x:DataType="pageModels:SettingsPageModel"
              Title="Settings"
              Shell.TitleColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Settings'}">
 
-    <Grid>
-        <!-- Loading indicator -->
-        <VerticalStackLayout Spacing="8"
-                             HorizontalOptions="Center"
-                             VerticalOptions="Center"
-                             IsVisible="{Binding IsLoading}">
-            <ActivityIndicator IsRunning="{Binding IsLoading}"
-                               IsVisible="{Binding IsLoading}" />
-            <Label Text="Loading settings..."
-                   Style="{StaticResource Caption1}"
-                   TextColor="{StaticResource Gray400}" />
-        </VerticalStackLayout>
+    <!--
+        CurrentStateKey returns null for Content (default child) and the enum
+        name for InitialLoading / Unauthenticated. See SettingsPageModel.CurrentState.
+    -->
+    <Grid toolkit:StateContainer.CurrentState="{Binding CurrentStateKey}">
+        <toolkit:StateContainer.StateViews>
+            <!-- InitialLoading: centered spinner -->
+            <VerticalStackLayout toolkit:StateView.StateKey="InitialLoading"
+                                 Spacing="8"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center">
+                <ActivityIndicator IsRunning="True" IsVisible="True" />
+                <Label Text="Loading settings..."
+                       Style="{StaticResource Caption1}"
+                       TextColor="{StaticResource Gray400}" />
+            </VerticalStackLayout>
 
-        <!-- Not authenticated state -->
-        <VerticalStackLayout Padding="{StaticResource LayoutPadding}" Spacing="16"
-                             VerticalOptions="Center"
-                             IsVisible="{Binding ShowLoginPrompt}">
-            <Border Style="{StaticResource CardStyle}" Padding="20">
-                <VerticalStackLayout Spacing="12" HorizontalOptions="Center">
-                    <Image HorizontalOptions="Center" WidthRequest="48" HeightRequest="48">
-                        <Image.Source>
-                            <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Person24}"
-                                             FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                             Color="{StaticResource Gray400}"
-                                             Size="48" />
-                        </Image.Source>
-                    </Image>
-                    <Label Text="Sign in to AniList"
-                           Style="{StaticResource Title3}"
-                           HorizontalTextAlignment="Center" />
-                    <Label Text="Connect your account to view your profile, stats, and manage your preferences."
-                           Style="{StaticResource Caption1}"
-                           TextColor="{StaticResource Gray400}"
-                           HorizontalTextAlignment="Center" />
-                    <views:AuthActionsView HorizontalOptions="Center" Margin="0,4,0,0" />
-                </VerticalStackLayout>
-            </Border>
+            <!-- Unauthenticated: sign-in prompt -->
+            <VerticalStackLayout toolkit:StateView.StateKey="Unauthenticated"
+                                 Padding="{StaticResource LayoutPadding}"
+                                 Spacing="16"
+                                 VerticalOptions="Center">
+                <Border Style="{StaticResource CardStyle}" Padding="20">
+                    <VerticalStackLayout Spacing="12" HorizontalOptions="Center">
+                        <Image HorizontalOptions="Center" WidthRequest="48" HeightRequest="48">
+                            <Image.Source>
+                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Person24}"
+                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                 Color="{StaticResource Gray400}"
+                                                 Size="48" />
+                            </Image.Source>
+                        </Image>
+                        <Label Text="Sign in to AniList"
+                               Style="{StaticResource Title3}"
+                               HorizontalTextAlignment="Center" />
+                        <Label Text="Connect your account to view your profile, stats, and manage your preferences."
+                               Style="{StaticResource Caption1}"
+                               TextColor="{StaticResource Gray400}"
+                               HorizontalTextAlignment="Center" />
+                        <views:AuthActionsView HorizontalOptions="Center" Margin="0,4,0,0" />
+                    </VerticalStackLayout>
+                </Border>
 
-            <Label Text="{Binding StatusMessage}"
-                   Style="{StaticResource Caption1}"
-                   TextColor="{StaticResource Gray400}"
-                   HorizontalTextAlignment="Center"
-                   IsVisible="{Binding HasStatusMessage}" />
-        </VerticalStackLayout>
+                <Label Text="{Binding StatusMessage}"
+                       Style="{StaticResource Caption1}"
+                       TextColor="{StaticResource Gray400}"
+                       HorizontalTextAlignment="Center"
+                       IsVisible="{Binding HasStatusMessage}" />
+            </VerticalStackLayout>
+        </toolkit:StateContainer.StateViews>
 
-        <!-- Loaded content host: heavy authenticated UI is created programmatically after data loads -->
+        <!-- Default content (CurrentState = Content): loaded authenticated UI is created programmatically after data loads -->
         <ContentView x:Name="LoadedContentHost" />
     </Grid>
 </ContentPage>
