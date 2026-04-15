@@ -34,25 +34,23 @@ public partial class MyAnimePageModel : ObservableObject
     private int? _preIncrementProgress;
     private bool _isCompletionFlowActive;
 
+    // ── Main page state (mutually exclusive) ────────────────────────
+    // Transitions:
+    //   AuthenticationPending → Unauthenticated | InitialLoading
+    //   Unauthenticated       → InitialLoading (on sign-in)
+    //   InitialLoading        → Content | Error
+    //   Content               → Content (refresh keeps state)  | Unauthenticated (sign-out) | Error (first-load retry)
+    //   Error                 → InitialLoading (retry)
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CurrentStateKey))]
+    private PageState _currentState = PageState.AuthenticationPending;
+
+    // StateContainer.CurrentState is typed as string; null/empty restores default
+    // children (the loaded content host). Non-Content states match a StateView key.
+    public string? CurrentStateKey => CurrentState == PageState.Content ? null : CurrentState.ToString();
+
     [ObservableProperty]
     private bool _isBusy;
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(ShowLoginPrompt))]
-    private bool _isAuthenticationPending = true;
-
-    public bool ShowLoginPrompt => !IsAuthenticated && !IsAuthenticationPending;
-
-    // Set by the page code-behind during the fast-path deferred rebuild to
-    // keep a spinner visible while a new content-view instance is being created.
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsInitialLoading))]
-    private bool _isRebuilding;
-
-    // Keep list loading UX aligned with details page: a single centered first-load indicator.
-    // Also true while IsRebuilding so the fast-path return trip shows a spinner
-    // instead of a blank page during the Shell-transition deferred delay.
-    public bool IsInitialLoading => (IsBusy && IsAuthenticated && Sections.Count == 0) || IsRebuilding;
 
     /// <summary>
     /// True when the singleton ViewModel already has data that can be shown
@@ -89,9 +87,8 @@ public partial class MyAnimePageModel : ObservableObject
     private bool _isErrorDetailsVisible;
 
     // ── Error state (full-page error view) ──────────────────────────
-    [ObservableProperty]
-    private bool _isErrorState;
-
+    // Visibility is driven by CurrentState == PageState.Error; the following
+    // properties populate the error view template.
     [ObservableProperty]
     private string _errorTitle = string.Empty;
 
@@ -197,7 +194,6 @@ public partial class MyAnimePageModel : ObservableObject
             SentrySdk.AddBreadcrumb("Load My Anime list", "navigation", "state");
 
             IsAuthenticated = isAuthenticated;
-            IsAuthenticationPending = false;
 
             if (!IsAuthenticated)
             {
@@ -206,14 +202,22 @@ public partial class MyAnimePageModel : ObservableObject
                 Sections = [];
                 _hasLoaded = true;
                 _lastSuccessfulLoadUtc = default;
+                CurrentState = PageState.Unauthenticated;
                 return;
+            }
+
+            // Only show the full-page loading spinner when we have no content to
+            // preserve. Pull-to-refresh while content is visible keeps CurrentState
+            // at Content and surfaces progress via IsBusy on SfPullToRefresh.
+            if (!hadExistingSections)
+            {
+                CurrentState = PageState.InitialLoading;
             }
 
             Title = "My Anime";
             StatusMessage = string.Empty;
             ErrorDetails = string.Empty;
             IsErrorDetailsVisible = false;
-            IsErrorState = false;
 
             // Sync display preferences from AniList before building the list so that
             // cross-device setting changes (title language, adult content, section order)
@@ -240,6 +244,7 @@ public partial class MyAnimePageModel : ObservableObject
             OnPropertyChanged(nameof(HasNoResults));
             _hasLoaded = true;
             _lastSuccessfulLoadUtc = DateTimeOffset.UtcNow;
+            CurrentState = PageState.Content;
 
             // Cache RELEASING media IDs for the background airing notification worker.
             CacheReleasingMediaIds(groups);
@@ -256,7 +261,7 @@ public partial class MyAnimePageModel : ObservableObject
             {
                 // Prefer stale data over blank UI when refresh fails after a previously successful load.
                 StatusMessage = apiEx?.UserTitle ?? "Refresh failed. Showing cached list.";
-                IsErrorState = false;
+                CurrentState = PageState.Content;
                 _hasLoaded = true;
             }
             else
@@ -265,7 +270,7 @@ public partial class MyAnimePageModel : ObservableObject
                 ErrorTitle = apiEx?.UserTitle ?? "Something Went Wrong";
                 ErrorSubtitle = apiEx?.UserSubtitle ?? "An unexpected error occurred. Try again or check back later.";
                 ErrorIconGlyph = apiEx?.IconGlyph ?? IconFont.Maui.FluentIcons.FluentIconsRegular.ErrorCircle24;
-                IsErrorState = true;
+                CurrentState = PageState.Error;
                 StatusMessage = string.Empty;
                 Sections = [];
                 _hasLoaded = false;
@@ -278,29 +283,19 @@ public partial class MyAnimePageModel : ObservableObject
         finally
         {
             IsBusy = false;
-            IsAuthenticationPending = false;
         }
     }
 
     // ── Property change handlers ─────────────────────────────────────
+
+    partial void OnCurrentStateChanged(PageState oldValue, PageState newValue)
+        => _logger.LogInformation("PageState: {OldState} → {NewState} (key={StateKey})", oldValue, newValue, CurrentStateKey ?? "(null)");
 
     partial void OnStatusMessageChanged(string value)
         => HasStatusMessage = !string.IsNullOrWhiteSpace(value);
 
     partial void OnErrorDetailsChanged(string value)
         => HasErrorDetails = !string.IsNullOrWhiteSpace(value);
-
-    partial void OnIsBusyChanged(bool value)
-        => OnPropertyChanged(nameof(IsInitialLoading));
-
-    partial void OnIsAuthenticatedChanged(bool value)
-    {
-        OnPropertyChanged(nameof(IsInitialLoading));
-        OnPropertyChanged(nameof(ShowLoginPrompt));
-    }
-
-    partial void OnSectionsChanged(ObservableCollection<MediaListSection> value)
-        => OnPropertyChanged(nameof(IsInitialLoading));
 
     partial void OnSearchTextChanged(string value)
     {
@@ -730,7 +725,7 @@ public partial class MyAnimePageModel : ObservableObject
     [RelayCommand]
     private async Task RetryLoad()
     {
-        IsErrorState = false;
+        CurrentState = PageState.InitialLoading;
         await LoadAsync(forceReload: true);
     }
 
