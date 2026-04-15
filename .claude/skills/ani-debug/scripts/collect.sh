@@ -8,11 +8,6 @@ set -u
 PKG="com.RainbowSprinkles.AniSprinkles"
 OUTDIR="/tmp/anidebug"
 mkdir -p "$OUTDIR"
-
-if ! command -v adb >/dev/null 2>&1; then
-  echo "adb not found on PATH. Install Android platform-tools (or add it to PATH) and retry."
-  exit 0
-fi
 APPLOG="$OUTDIR/anisprinkles.log"
 APPLOG_PREV="$OUTDIR/anisprinkles.log.1"
 LOGCAT="$OUTDIR/logcat.txt"
@@ -20,11 +15,23 @@ LOGCAT="$OUTDIR/logcat.txt"
 # logcat drops them. Keep a separate slice scoped to package-name mentions.
 ANRLOG="$OUTDIR/logcat.anr.txt"
 
+# Clear any files from a prior run when we bail early, so drill-in tools
+# (Grep/Read) can't accidentally analyze stale logs.
+clear_stale_and_exit() {
+  rm -f "$APPLOG" "$APPLOG_PREV" "$LOGCAT" "$ANRLOG"
+  exit "${1:-1}"
+}
+
+if ! command -v adb >/dev/null 2>&1; then
+  echo "adb not found on PATH. Install Android platform-tools (or add it to PATH) and retry."
+  clear_stale_and_exit 1
+fi
+
 echo "## Device"
 DEVICES=$(adb devices 2>/dev/null | awk 'NR>1 && $2=="device" {print $1}')
 if [ -z "$DEVICES" ]; then
   echo "No adb devices in 'device' state. Start an emulator or connect a device and retry."
-  exit 0
+  clear_stale_and_exit 1
 fi
 for d in $DEVICES; do echo "- $d"; done
 # With >1 device, unqualified adb commands fail. Respect a caller-supplied
@@ -33,7 +40,7 @@ DEVICE_COUNT=$(printf '%s\n' "$DEVICES" | wc -l | tr -d ' ')
 if [ -n "${ANDROID_SERIAL:-}" ]; then
   if ! printf '%s\n' "$DEVICES" | grep -Fxq "$ANDROID_SERIAL"; then
     echo "ANDROID_SERIAL '$ANDROID_SERIAL' is not in the detected device list."
-    exit 1
+    clear_stale_and_exit 1
   fi
   if [ "$DEVICE_COUNT" -gt 1 ]; then
     echo "(multiple devices; using caller-supplied ANDROID_SERIAL=$ANDROID_SERIAL)"
