@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:pageModels="clr-namespace:AniSprinkles.PageModels"
              xmlns:views="clr-namespace:AniSprinkles.Views"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:icons="clr-namespace:IconFont.Maui.FluentIcons;assembly=IconFont.Maui.FluentIcons"
              x:Class="AniSprinkles.Pages.MyAnimePage"
              x:DataType="pageModels:MyAnimePageModel"
@@ -33,69 +34,78 @@
         </ToolbarItem>
     </ContentPage.ToolbarItems>
 
-    <Grid Padding="{StaticResource LayoutPadding}">
-        <!-- Not authenticated state -->
-        <VerticalStackLayout Spacing="16"
-                             VerticalOptions="Center"
-                             IsVisible="{Binding ShowLoginPrompt}">
-            <Border Style="{StaticResource CardStyle}" Padding="20">
-                <VerticalStackLayout Spacing="12" HorizontalOptions="Center">
-                    <Image HorizontalOptions="Center" WidthRequest="48" HeightRequest="48">
-                        <Image.Source>
-                            <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.AppsList24}"
-                                             FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                             Color="{StaticResource Gray400}"
-                                             Size="48" />
-                        </Image.Source>
-                    </Image>
-                    <Label Text="Sign in to AniList"
-                           Style="{StaticResource Title3}"
-                           HorizontalTextAlignment="Center" />
-                    <Label Text="Connect your account to view and update your anime lists."
-                           Style="{StaticResource Caption1}"
-                           TextColor="{StaticResource Gray400}"
-                           HorizontalTextAlignment="Center" />
-                    <views:AuthActionsView HorizontalOptions="Center" Margin="0,4,0,0" />
-                </VerticalStackLayout>
-            </Border>
-        </VerticalStackLayout>
+    <!--
+        The StateContainer swaps templates based on CurrentStateKey. Non-Content
+        states return their enum name (matching a StateView); Content returns null,
+        which tells the StateContainer to restore the default children.
+        Overlays that cut across states (e.g. IsNavigatingToDetails spinner, status banner)
+        live inside the LoadedContentHost's content view, not here.
+    -->
+    <Grid Padding="{StaticResource LayoutPadding}"
+          toolkit:StateContainer.CurrentState="{Binding CurrentStateKey}">
+        <toolkit:StateContainer.StateViews>
+            <!-- Unauthenticated: sign-in prompt -->
+            <VerticalStackLayout toolkit:StateView.StateKey="Unauthenticated"
+                                 Spacing="16"
+                                 VerticalOptions="Center">
+                <Border Style="{StaticResource CardStyle}" Padding="20">
+                    <VerticalStackLayout Spacing="12" HorizontalOptions="Center">
+                        <Image HorizontalOptions="Center" WidthRequest="48" HeightRequest="48">
+                            <Image.Source>
+                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.AppsList24}"
+                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                 Color="{StaticResource Gray400}"
+                                                 Size="48" />
+                            </Image.Source>
+                        </Image>
+                        <Label Text="Sign in to AniList"
+                               Style="{StaticResource Title3}"
+                               HorizontalTextAlignment="Center" />
+                        <Label Text="Connect your account to view and update your anime lists."
+                               Style="{StaticResource Caption1}"
+                               TextColor="{StaticResource Gray400}"
+                               HorizontalTextAlignment="Center" />
+                        <views:AuthActionsView HorizontalOptions="Center" Margin="0,4,0,0" />
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
 
-        <!-- Auth pending overlay -->
-        <VerticalStackLayout Spacing="8"
-                             HorizontalOptions="Center"
-                             VerticalOptions="Center"
-                             IsVisible="{Binding IsAuthenticationPending}">
-            <ActivityIndicator IsRunning="True" IsVisible="True" />
-            <Label Text="Checking authentication..."
-                   Style="{StaticResource Caption1}"
-                   TextColor="{StaticResource Gray400}" />
-        </VerticalStackLayout>
+            <!-- AuthenticationPending: auth check in flight -->
+            <VerticalStackLayout toolkit:StateView.StateKey="AuthenticationPending"
+                                 Spacing="8"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center">
+                <ActivityIndicator IsRunning="True" IsVisible="True" />
+                <Label Text="Checking authentication..."
+                       Style="{StaticResource Caption1}"
+                       TextColor="{StaticResource Gray400}" />
+            </VerticalStackLayout>
 
-        <!-- Loading overlay -->
-        <VerticalStackLayout Spacing="8"
-                             HorizontalOptions="Center"
-                             VerticalOptions="Center"
-                             IsVisible="{Binding IsInitialLoading}">
-            <ActivityIndicator IsRunning="{Binding IsInitialLoading}"
-                               IsVisible="{Binding IsInitialLoading}" />
-            <Label Text="Loading anime list..."
-                   Style="{StaticResource Caption1}"
-                   TextColor="{StaticResource Gray400}" />
-        </VerticalStackLayout>
+            <!-- InitialLoading: first data fetch spinner -->
+            <VerticalStackLayout toolkit:StateView.StateKey="InitialLoading"
+                                 Spacing="8"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center">
+                <ActivityIndicator IsRunning="True" IsVisible="True" />
+                <Label Text="Loading anime list..."
+                       Style="{StaticResource Caption1}"
+                       TextColor="{StaticResource Gray400}" />
+            </VerticalStackLayout>
 
-        <!-- Error state (full-page, replaces loaded content when API fails with no cached data) -->
-        <ScrollView IsVisible="{Binding IsErrorState}"
-                    VerticalOptions="Center">
-            <views:ErrorStateView ErrorTitle="{Binding ErrorTitle}"
-                                  ErrorSubtitle="{Binding ErrorSubtitle}"
-                                  ErrorIconGlyph="{Binding ErrorIconGlyph}"
-                                  ErrorAccentColor="{StaticResource RainbowOrange}"
-                                  RetryCommand="{Binding RetryLoadCommand}"
-                                  ErrorDetails="{Binding ErrorDetails}"
-                                  Margin="0,24" />
-        </ScrollView>
+            <!-- Error: full-page error view (no cached data fallback) -->
+            <ScrollView toolkit:StateView.StateKey="Error"
+                        VerticalOptions="Center">
+                <views:ErrorStateView ErrorTitle="{Binding ErrorTitle}"
+                                      ErrorSubtitle="{Binding ErrorSubtitle}"
+                                      ErrorIconGlyph="{Binding ErrorIconGlyph}"
+                                      ErrorAccentColor="{StaticResource RainbowOrange}"
+                                      RetryCommand="{Binding RetryLoadCommand}"
+                                      ErrorDetails="{Binding ErrorDetails}"
+                                      Margin="0,24" />
+            </ScrollView>
+        </toolkit:StateContainer.StateViews>
 
-        <!-- Loaded content host: heavy UI created programmatically after data loads -->
+        <!-- Default content (CurrentState = Content): loaded content host -->
         <ContentView x:Name="LoadedContentHost" />
     </Grid>
 </ContentPage>
