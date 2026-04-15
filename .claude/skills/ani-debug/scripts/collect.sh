@@ -6,8 +6,13 @@
 set -u
 
 PKG="com.RainbowSprinkles.AniSprinkles"
-OUTDIR="${TMPDIR:-/tmp}/anidebug"
+OUTDIR="/tmp/anidebug"
 mkdir -p "$OUTDIR"
+
+if ! command -v adb >/dev/null 2>&1; then
+  echo "adb not found on PATH. Install Android platform-tools (or add it to PATH) and retry."
+  exit 0
+fi
 APPLOG="$OUTDIR/anisprinkles.log"
 APPLOG_PREV="$OUTDIR/anisprinkles.log.1"
 LOGCAT="$OUTDIR/logcat.txt"
@@ -22,11 +27,22 @@ if [ -z "$DEVICES" ]; then
   exit 0
 fi
 for d in $DEVICES; do echo "- $d"; done
-# With >1 device, unqualified adb commands fail. Pin to the first via ANDROID_SERIAL.
+# With >1 device, unqualified adb commands fail. Respect a caller-supplied
+# ANDROID_SERIAL when present; otherwise pin to the first detected device.
 DEVICE_COUNT=$(printf '%s\n' "$DEVICES" | wc -l | tr -d ' ')
-export ANDROID_SERIAL="$(printf '%s\n' "$DEVICES" | head -n1)"
-if [ "$DEVICE_COUNT" -gt 1 ]; then
-  echo "(multiple devices; pinned to $ANDROID_SERIAL — override with ANDROID_SERIAL=...)"
+if [ -n "${ANDROID_SERIAL:-}" ]; then
+  if ! printf '%s\n' "$DEVICES" | grep -Fxq "$ANDROID_SERIAL"; then
+    echo "ANDROID_SERIAL '$ANDROID_SERIAL' is not in the detected device list."
+    exit 1
+  fi
+  if [ "$DEVICE_COUNT" -gt 1 ]; then
+    echo "(multiple devices; using caller-supplied ANDROID_SERIAL=$ANDROID_SERIAL)"
+  fi
+else
+  export ANDROID_SERIAL="$(printf '%s\n' "$DEVICES" | head -n1)"
+  if [ "$DEVICE_COUNT" -gt 1 ]; then
+    echo "(multiple devices; pinned to $ANDROID_SERIAL — override with ANDROID_SERIAL=...)"
+  fi
 fi
 
 PID=$(adb shell pidof "$PKG" 2>/dev/null | tr -d '\r' | awk '{print $1}')
@@ -52,11 +68,13 @@ fi
 # Logcat — filtered to app PID when possible. -d dumps and exits.
 if [ -n "$PID" ]; then
   adb logcat -d -v time --pid "$PID" > "$LOGCAT" 2>/dev/null
+  LOGCAT_MODE="PID-filtered"
 else
   adb logcat -d -v time > "$LOGCAT" 2>/dev/null
+  LOGCAT_MODE="unfiltered (app not running)"
 fi
 LC_LINES=$(wc -l < "$LOGCAT" | tr -d ' ')
-echo "Logcat: $LOGCAT ($LC_LINES lines)"
+echo "Logcat: $LOGCAT ($LC_LINES lines, $LOGCAT_MODE)"
 
 # Capture ANR-related cross-PID lines (system_server logs these).
 adb logcat -d -v time 2>/dev/null \
@@ -119,6 +137,6 @@ section_or_none "Recent NAVTRACE entries" "$APPLOG" "NAVTRACE" 10
 echo
 echo "## Raw files"
 echo "- App log:      $APPLOG"
-echo "- Logcat (PID): $LOGCAT"
+echo "- Logcat:       $LOGCAT ($LOGCAT_MODE)"
 echo "- ANR slice:    $ANRLOG"
 echo "- Prev app log: $APPLOG_PREV (if rotated)"

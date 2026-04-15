@@ -2,7 +2,7 @@
 name: ani-debug
 description: "Collect and interpret AniSprinkles on-device diagnostics in one shot (crash/ANR/jank scans, Glide destroyed-activity detection, PageState transitions, NAVTRACE). Use when investigating any issue observed on device or emulator — not for code-logic questions or GitHub issue triage."
 argument-hint: "[describe the observed issue]"
-allowed-tools: Bash(adb *) Bash(bash *) Bash(grep *) Read Grep
+allowed-tools: Bash(adb *) Bash(bash *collect.sh) Bash(grep *) Bash(unzip *) Read Grep
 ---
 
 # Ani-debug
@@ -13,9 +13,7 @@ Investigating: $ARGUMENTS
 
 The block below runs at skill invocation. Raw logs are written to `/tmp/anidebug/` so you can drill in with `Grep`/`Read` without re-running the collector.
 
-```!
-bash ${CLAUDE_SKILL_DIR}/scripts/collect.sh
-```
+!`bash ${CLAUDE_SKILL_DIR}/scripts/collect.sh`
 
 ## How to interpret
 
