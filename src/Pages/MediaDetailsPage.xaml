@@ -35,6 +35,7 @@
                                       ErrorIconGlyph="{Binding ErrorIconGlyph}"
                                       ErrorAccentColor="{StaticResource RainbowOrange}"
                                       RetryCommand="{Binding RetryLoadCommand}"
+                                      ShowRetryButton="{Binding CanRetry}"
                                       ErrorDetails="{Binding ErrorDetails}" />
             </ScrollView>
         </toolkit:StateContainer.StateViews>

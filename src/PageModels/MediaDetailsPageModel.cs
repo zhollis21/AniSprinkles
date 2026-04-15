@@ -73,6 +73,9 @@ namespace AniSprinkles.PageModels;
     private string _errorIconGlyph = string.Empty;
 
     [ObservableProperty]
+    private bool _canRetry = true;
+
+    [ObservableProperty]
     private bool _isDescriptionExpanded;
 
     [ObservableProperty]
@@ -437,6 +440,7 @@ namespace AniSprinkles.PageModels;
             ErrorTitle = "Details Unavailable";
             ErrorSubtitle = "The requested title could not be loaded.";
             ErrorIconGlyph = FluentIconsRegular.ErrorCircle24;
+            CanRetry = false;
             CurrentState = PageState.Error;
             _logger.LogInformation("NAVTRACE load#{LoadRequestId} aborted due to invalid media id {MediaId}.", loadRequestId, mediaId);
             return;
@@ -516,6 +520,7 @@ namespace AniSprinkles.PageModels;
                 ErrorIconGlyph = FluentIconsRegular.ErrorCircle24;
                 ErrorDetails = string.Empty;
                 IsErrorDetailsVisible = false;
+                CanRetry = true;
                 CurrentState = PageState.Error;
                 _loadedMediaId = null;
                 _logger.LogWarning("NAVTRACE load#{LoadRequestId} returned null media for media id {MediaId}.", loadRequestId, mediaId);
@@ -548,6 +553,7 @@ namespace AniSprinkles.PageModels;
             ErrorIconGlyph = apiEx?.IconGlyph ?? FluentIconsRegular.ErrorCircle24;
             ErrorDetails = _errorReportService.Record(ex, "Load details");
             IsErrorDetailsVisible = false;
+            CanRetry = true;
             CurrentState = PageState.Error;
             StatusMessage = string.Empty;
             _loadedMediaId = null;
