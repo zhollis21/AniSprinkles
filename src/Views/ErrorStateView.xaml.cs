@@ -20,6 +20,9 @@ public partial class ErrorStateView : ContentView
     public static readonly BindableProperty RetryCommandProperty =
         BindableProperty.Create(nameof(RetryCommand), typeof(ICommand), typeof(ErrorStateView));
 
+    public static readonly BindableProperty ShowRetryButtonProperty =
+        BindableProperty.Create(nameof(ShowRetryButton), typeof(bool), typeof(ErrorStateView), true);
+
     public static readonly BindableProperty ErrorDetailsProperty =
         BindableProperty.Create(nameof(ErrorDetails), typeof(string), typeof(ErrorStateView), string.Empty,
             propertyChanged: (b, _, _) => ((ErrorStateView)b).OnPropertyChanged(nameof(HasErrorDetails)));
@@ -70,7 +73,13 @@ public partial class ErrorStateView : ContentView
         set => SetValue(IsDetailsExpandedProperty, value);
     }
 
-    public bool HasRetryCommand => RetryCommand is not null;
+    public bool ShowRetryButton
+    {
+        get => (bool)GetValue(ShowRetryButtonProperty);
+        set => SetValue(ShowRetryButtonProperty, value);
+    }
+
+    public bool HasRetryCommand => RetryCommand is not null && ShowRetryButton;
 
     public bool HasErrorDetails => !string.IsNullOrWhiteSpace(ErrorDetails);
 
@@ -84,7 +93,7 @@ public partial class ErrorStateView : ContentView
     protected override void OnPropertyChanged(string? propertyName = null)
     {
         base.OnPropertyChanged(propertyName);
-        if (propertyName == nameof(RetryCommand))
+        if (propertyName is nameof(RetryCommand) or nameof(ShowRetryButton))
         {
             OnPropertyChanged(nameof(HasRetryCommand));
         }

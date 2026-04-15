@@ -23,6 +23,19 @@ public partial class SettingsPageModel : ObservableObject
     private bool _loadedRestrictMessages;
     private int _loadedActivityMergeTime;
 
+    // ── Main page state (mutually exclusive) ────────────────────────
+    // Transitions:
+    //   InitialLoading → Content (authenticated load) | Unauthenticated (no user)
+    //   Unauthenticated → InitialLoading (on sign-in)
+    //   Content        → Content (refresh) | Unauthenticated (sign-out)
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CurrentStateKey))]
+    private PageState _currentState = PageState.InitialLoading;
+
+    // StateContainer.CurrentState is typed as string; null/empty restores default
+    // children (the loaded content host). Non-Content states match a StateView key.
+    public string? CurrentStateKey => CurrentState == PageState.Content ? null : CurrentState.ToString();
+
     // --- Auth state ---
     [ObservableProperty]
     private bool _isAuthenticated;
@@ -35,13 +48,6 @@ public partial class SettingsPageModel : ObservableObject
 
     [ObservableProperty]
     private string _aniListUserId = string.Empty;
-
-    [ObservableProperty]
-    private bool _isLoading = true;
-
-    // Gate the login prompt behind IsLoading so we never flash login UI
-    // while auth state is still being determined.
-    public bool ShowLoginPrompt => !IsAuthenticated && !IsLoading;
 
     /// <summary>
     /// True when the singleton ViewModel already has authenticated profile data
@@ -149,11 +155,11 @@ public partial class SettingsPageModel : ObservableObject
     {
         // Only show the spinner for the initial load (no cached data).
         // On refresh-with-cached-data the content view is already visible;
-        // flipping IsLoading would overlay the spinner on top of it.
+        // flipping CurrentState would overlay the spinner on top of it.
         var isRefresh = _loadedUser is not null;
         if (!isRefresh)
         {
-            IsLoading = true;
+            CurrentState = PageState.InitialLoading;
         }
 
         try
@@ -166,20 +172,21 @@ public partial class SettingsPageModel : ObservableObject
                 var user = await _aniListClient.GetViewerAsync();
                 _loadedUser = user;
                 PopulateFromUser(user);
+                CurrentState = PageState.Content;
             }
             else
             {
                 ClearUserData();
+                CurrentState = PageState.Unauthenticated;
             }
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to fetch AniList viewer data");
             StatusMessage = "Failed to load profile.";
-        }
-        finally
-        {
-            IsLoading = false;
+            // Preserve cached Content when available; otherwise fall back to
+            // Unauthenticated so the user can retry sign-in from the login card.
+            CurrentState = _loadedUser is not null ? PageState.Content : PageState.Unauthenticated;
         }
 
         SentrySdk.AddBreadcrumb("Settings loaded", "navigation", "state");
@@ -533,12 +540,6 @@ public partial class SettingsPageModel : ObservableObject
         }
     }
 
-    partial void OnIsLoadingChanged(bool value)
-        => OnPropertyChanged(nameof(ShowLoginPrompt));
-
-    partial void OnIsAuthenticatedChanged(bool value)
-        => OnPropertyChanged(nameof(ShowLoginPrompt));
-
     [RelayCommand]
     private async Task SignIn()
     {
@@ -583,6 +584,7 @@ public partial class SettingsPageModel : ObservableObject
         AppSettings.Clear();
         await RefreshAuthStateAsync();
         ClearUserData();
+        CurrentState = PageState.Unauthenticated;
         StatusMessage = "Signed out.";
     }
 

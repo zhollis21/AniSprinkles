@@ -60,6 +60,12 @@ Review all code written in this session against the checklist below. Fix every i
 
 - Checked existing code that interacts with what changed
 
+**Documentation**
+
+- Check all repo docs for sections that need updating based on the changes: `README.md`, `AGENTS.md`, `CLAUDE.md`, and any relevant skill files under `.claude/skills/` (e.g. `project-architecture`, `airing-notifications`, `ani-debug`)
+- Look for stale references to architecture, services, conventions, build steps, or patterns touched in this session
+- If updates are needed, make them before presenting the summary
+
 ## Summary Format
 
 Present:
