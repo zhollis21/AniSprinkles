@@ -427,8 +427,13 @@ namespace AniSprinkles.PageModels;
 
         if (mediaId <= 0)
         {
+            _lastRequestedMediaId = mediaId;
+            _lastRequestedListEntry = listEntry;
             Media = null;
             _loadedMediaId = null;
+            StatusMessage = string.Empty;
+            ErrorDetails = string.Empty;
+            IsErrorDetailsVisible = false;
             ErrorTitle = "Details Unavailable";
             ErrorSubtitle = "The requested title could not be loaded.";
             ErrorIconGlyph = FluentIconsRegular.ErrorCircle24;
