@@ -107,7 +107,10 @@ public partial class SettingsPage : ContentPage
 
     private void UpdateLoadedContentHost()
     {
-        if (_viewModel?.IsAuthenticated == true && !_hasCreatedLoadedContent)
+        var shouldShow = _viewModel?.IsAuthenticated == true
+            && _viewModel?.CurrentState == PageState.Content;
+
+        if (shouldShow && !_hasCreatedLoadedContent)
         {
             LoadedContentHost.Content = new Views.SettingsLoadedContentView
             {
@@ -115,7 +118,7 @@ public partial class SettingsPage : ContentPage
             };
             _hasCreatedLoadedContent = true;
         }
-        else if (_viewModel?.IsAuthenticated != true && _hasCreatedLoadedContent)
+        else if (!shouldShow && _hasCreatedLoadedContent)
         {
             LoadedContentHost.Content = null;
             _hasCreatedLoadedContent = false;
@@ -143,31 +146,15 @@ public partial class SettingsPage : ContentPage
 
     private void OnViewModelPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
-        // Create the loaded content view only when CurrentState == Content. Gating
-        // on Content (not just IsAuthenticated) keeps the heavy XAML InitializeComponent
-        // off the UI thread while CurrentState == InitialLoading — OnAppearing flips
-        // to InitialLoading during the defer delay.
+        // UpdateLoadedContentHost gates on both IsAuthenticated and CurrentState == Content,
+        // so react to either changing. Keeps the heavy SettingsLoadedContentView off the UI
+        // thread during InitialLoading / Unauthenticated and tears it down on sign-out or
+        // when CurrentState leaves Content (e.g., auth succeeded but viewer fetch failed
+        // without cached data).
         if ((e.PropertyName is nameof(SettingsPageModel.IsAuthenticated)
                 or nameof(SettingsPageModel.CurrentState))
-            && _hasAppeared
-            && _viewModel?.CurrentState == PageState.Content)
+            && _hasAppeared)
         {
-            UpdateLoadedContentHost();
-        }
-        else if (e.PropertyName == nameof(SettingsPageModel.IsAuthenticated)
-            && _hasAppeared
-            && _viewModel?.IsAuthenticated != true)
-        {
-            // Tear down loaded content when the user signs out.
-            UpdateLoadedContentHost();
-        }
-        else if (e.PropertyName == nameof(SettingsPageModel.CurrentState)
-            && _hasAppeared
-            && _viewModel?.CurrentState != PageState.Content
-            && _hasCreatedLoadedContent)
-        {
-            // Tear down loaded content when CurrentState leaves Content
-            // (e.g., auth succeeded but API call failed with no cached data).
             UpdateLoadedContentHost();
         }
     }
