@@ -1,66 +1,62 @@
 ---
 name: ani-debug
-description: "Analyze AniSprinkles device logs for on-device issues: crashes, jank, ANRs, and navigation timing problems. Use only for issues observed on device or emulator — not for code logic investigation or GitHub issues."
-argument-hint: "Describe the device-observed issue (crash, jank, ANR, or unexpected on-device behavior)"
-context: fork
-agent: Explore
-allowed-tools: Bash(adb *)
+description: "Collect and interpret AniSprinkles on-device diagnostics in one shot (crash/ANR/jank scans, Glide destroyed-activity detection, PageState transitions, NAVTRACE). Use when investigating any issue observed on device or emulator — not for code-logic questions or GitHub issue triage."
+argument-hint: "[describe the observed issue]"
+allowed-tools: Bash(adb *) Bash(bash *) Bash(grep *) Read Grep
 ---
 
-# Debug
+# Ani-debug
 
-## Device State
+Investigating: $ARGUMENTS
 
-Connected devices: !`adb devices -l`
-App PID: !`adb shell pidof com.RainbowSprinkles.AniSprinkles 2>/dev/null || echo "not running"`
+## Device report
 
-Pull both logs before analyzing any issue.
+The block below runs at skill invocation. Raw logs are written to `/tmp/anidebug/` so you can drill in with `Grep`/`Read` without re-running the collector.
 
-## Step 1: Pull Logs
-
-```powershell
-# Pull device app log
-adb exec-out run-as com.RainbowSprinkles.AniSprinkles cat files/logs/anisprinkles.log > logs/anisprinkles.device.log
-
-# Pull current-process logcat
-$appPid = adb shell pidof com.RainbowSprinkles.AniSprinkles
-adb logcat -v time --pid $appPid -d > logs/adb.device.pid.log
+```!
+bash ${CLAUDE_SKILL_DIR}/scripts/collect.sh
 ```
 
-## Step 2: Scan for Crashes
+## How to interpret
 
-```powershell
-Select-String -Path logs/adb.device.pid.log -Pattern "FATAL EXCEPTION|AndroidRuntime|Unhandled exception|ObjectDisposedException|JavaProxyThrowable" -CaseSensitive:$false
-```
+Read the **Signals** counters first, then correlate hits with the PageState / NAVTRACE timeline.
 
-## Step 3: Scan for Jank
+### ANR / input dispatch timeouts (cross-PID logcat)
+The main thread was blocked >5s. `ANR in <pkg>` is logged by system_server (not the app PID), so this counter uses the separate cross-PID slice. Find the hit timestamp, then look ~5–10s earlier in the app log for the operation that started the block. For the main-thread stack, use the bugreport command in **Drill-in** — skipped by default because it pulls ~80MB.
 
-```powershell
-Select-String -Path logs/adb.device.pid.log -Pattern "Skipped [0-9]+ frames|Davey|GC freed" -CaseSensitive:$false
-```
+### Glide "destroyed activity" (app log)
+Stack will show `GroupableItemsViewAdapter_2.onBindViewHolder` → `Glide.with(...)` → `assertNotDestroyed`. This means a MAUI RecyclerView tried to bind an image cell with a stale `FragmentActivity` reference. Common triggers:
+- **StateContainer reparenting**: when a `toolkit:StateContainer.CurrentState` flips in/out of `Content`, the default child is detached/reattached, forcing a full adapter rebind cycle on the CollectionView inside. If the activity was recreated while backgrounded, every bind throws.
+- **Backgrounding + auth recheck**: the sequence `Content → Unauthenticated → InitialLoading → Content` after returning from background is a known repro — two full detach/reattach cycles in a row.
 
-## Step 4: Scan for Navigation Timing
+A single cascade (dozens of hits in ~1s) is usually enough to starve the main thread past the 5s input-dispatch threshold → ANR.
 
-```powershell
-Select-String -Path logs/anisprinkles.device.log -Pattern "NAVTRACE" -CaseSensitive:$false
-```
+### ObjectDisposedException (app log/logcat)
+A disposed ViewModel or HttpClient used from an async continuation. Search for the nearest `OnDisappearing` / `Dispose` earlier in the timeline. Common cause: `CancellationToken` not propagated into a fire-and-forget task.
 
-## Additional Commands
+### Skipped frames / Davey (logcat)
+`Choreographer: Skipped N frames` is UI-thread-bound jank. N > 60 is significant; N > 200 almost always overlaps with an ANR or heavy layout/bind pass. Correlate with NAVTRACE durations to classify CPU vs network.
 
-```powershell
-# List all app log files
-adb shell run-as com.RainbowSprinkles.AniSprinkles ls -la files/logs
+### PageState transitions
+Look for rapid back-and-forth flips (sub-second Content↔InitialLoading, or Content→Unauthenticated→Content). These indicate an auth race or feedback loop. Each non-Content↔Content flip is expensive under the StateContainer model — it detaches the heavy content host.
 
-# Read latest log directly on device
-adb shell run-as com.RainbowSprinkles.AniSprinkles cat files/logs/anisprinkles.log
+### NAVTRACE
+Navigation phase timings. `details load finished in Nms` > ~1500ms indicates the details-page fetch is blocking visible rendering. `ApplyQueryAttributes → OnAppearing` gap > 300ms suggests Shell transition contention.
 
-# Filter logcat by tag
-adb logcat AniSprinkles:D *:S
-```
+## Drill-in
 
-## Analysis Guidelines
+When the summary flags something, go deeper without re-running the collector:
 
-- Correlate `Skipped`/`Davey!` hits with app operations (navigation, list bind, details load).
-- Classify jank as CPU/UI-thread bound vs network-bound before proposing architecture changes.
-- Validate findings on release-like builds, not only debugger-attached sessions.
-- Visual Studio `View → Output (Debug)` and `View → Other Windows → Android Device Logcat` can supplement adb logs.
+- Grep tool on `/tmp/anidebug/anisprinkles.log` or `/tmp/anidebug/logcat.txt` with a narrower pattern.
+- Read the raw files directly for a timestamp window.
+- ANR main-thread stack (slow — only when stack is required):
+  ```
+  adb bugreport /tmp/br.zip && unzip -o /tmp/br.zip -d /tmp/br && grep -l "com.RainbowSprinkles.AniSprinkles" /tmp/br/FS/data/anr/*
+  ```
+- Live tail: `adb logcat --pid $(adb shell pidof com.RainbowSprinkles.AniSprinkles)`.
+
+## Analysis guidelines
+
+- Validate findings against release-like builds, not just debugger-attached sessions.
+- Before proposing architecture changes, classify jank as UI-thread-bound (Skipped frames / Davey) vs network-bound (NAVTRACE durations).
+- If the issue is reproducible: clear logs first with `adb logcat -c`, repro, then invoke this skill — the counters map cleanly to the repro window.
