@@ -154,8 +154,13 @@ public partial class MyAnimePageModel : ObservableObject
 
     public async Task LoadAsync(bool forceReload = false)
     {
+        _logger.LogInformation(
+            "MyAnime LoadAsync enter (forceReload={ForceReload}, isBusy={IsBusy}, hasLoaded={HasLoaded}, currentState={CurrentState}, hadSections={HadSections})",
+            forceReload, IsBusy, _hasLoaded, CurrentState, Sections.Count);
+
         if (IsBusy)
         {
+            _logger.LogInformation("MyAnime LoadAsync skipped: already busy.");
             return;
         }
 

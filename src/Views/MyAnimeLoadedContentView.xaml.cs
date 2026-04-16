@@ -1,4 +1,8 @@
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using AniSprinkles.Utilities;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace AniSprinkles.Views;
 
@@ -7,6 +11,8 @@ public partial class MyAnimeLoadedContentView : ContentView
     private readonly DataTemplate? _standardTemplate;
     private readonly DataTemplate? _largeTemplate;
     private readonly DataTemplate? _compactTemplate;
+    private readonly ILogger<MyAnimeLoadedContentView>? _logger;
+    private readonly int _viewId;
     private bool _longPressFired;
 
     public MyAnimeLoadedContentView()
@@ -16,7 +22,28 @@ public partial class MyAnimeLoadedContentView : ContentView
         _largeTemplate = (DataTemplate)Resources["LargeItemTemplate"];
         _compactTemplate = (DataTemplate)Resources["CompactItemTemplate"];
 
+        _viewId = RuntimeHelpers.GetHashCode(this);
+        try
+        {
+            _logger = ServiceProviderHelper.GetServiceProvider()
+                .GetService<ILoggerFactory>()?.CreateLogger<MyAnimeLoadedContentView>();
+        }
+        catch (InvalidOperationException)
+        {
+            // DI not ready; logging is optional instrumentation.
+        }
+
+        _logger?.LogInformation("LOADEDVIEW MyAnime[#{ViewId:X}] constructed", _viewId);
+
         AnimeCollectionView.HandlerChanged += OnCollectionViewHandlerChanged;
+    }
+
+    protected override void OnHandlerChanged()
+    {
+        base.OnHandlerChanged();
+        _logger?.LogInformation(
+            "LOADEDVIEW MyAnime[#{ViewId:X}] OnHandlerChanged (handler={HasHandler})",
+            _viewId, Handler is not null);
     }
 
     private void OnItemTapped(object? sender, TappedEventArgs e)
@@ -70,8 +97,21 @@ public partial class MyAnimeLoadedContentView : ContentView
         var recyclerView = platformView as AndroidX.RecyclerView.Widget.RecyclerView;
         if (recyclerView is null)
         {
+            _logger?.LogInformation(
+                "LOADEDVIEW MyAnime[#{ViewId:X}] RecyclerView handler change (platformView=null).",
+                _viewId);
             return;
         }
+
+        // Capture the RecyclerView's Context identity. This is the Android FragmentActivity
+        // that Glide captures when binding images in each cell. If the hash ever differs from
+        // the current MainActivity hash (see LIFECYCLE logs), we've captured a destroyed activity.
+        var ctx = recyclerView.Context;
+        _logger?.LogInformation(
+            "LOADEDVIEW MyAnime[#{ViewId:X}] RecyclerView handler attached (contextType={ContextType}, contextHash=#{ContextHash:X})",
+            _viewId,
+            ctx?.GetType().Name ?? "null",
+            ctx is null ? 0 : ctx.GetHashCode());
 
         var gestureDetector = new Android.Views.GestureDetector(
             recyclerView.Context,

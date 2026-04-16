@@ -157,6 +157,10 @@ public partial class SettingsPageModel : ObservableObject
         // On refresh-with-cached-data the content view is already visible;
         // flipping CurrentState would overlay the spinner on top of it.
         var isRefresh = _loadedUser is not null;
+        _logger.LogInformation(
+            "Settings LoadAsync enter (isRefresh={IsRefresh}, currentState={CurrentState}, isAuthenticated={IsAuthenticated})",
+            isRefresh, CurrentState, IsAuthenticated);
+
         if (!isRefresh)
         {
             CurrentState = PageState.InitialLoading;
