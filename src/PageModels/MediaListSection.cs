@@ -28,6 +28,12 @@ public class MediaListSection : ObservableCollection<MediaListEntry>
     public int TotalCount => _allItems.Count;
 
     /// <summary>
+    /// Read-only view of every entry in this section's backing store, regardless of filter or expand state.
+    /// Used by the pull-to-refresh merger to diff a section against a fresh AniList response.
+    /// </summary>
+    public IReadOnlyList<MediaListEntry> AllItems => _allItems;
+
+    /// <summary>
     /// Checks whether the entry exists in this section's backing store (not just visible items).
     /// </summary>
     public bool ContainsEntry(MediaListEntry entry) => _allItems.Contains(entry);

@@ -38,11 +38,14 @@ dotnet publish src/AniSprinkles.csproj -c Release -f net10.0-android -p:AndroidP
 
 # CI build (activates compile-time stub services — see CI Stubs below)
 dotnet build src/AniSprinkles.csproj -c Debug -f net10.0-android -p:EmbedAssembliesIntoApk=true -p:CiBuild=true
+
+# Unit tests (pure algorithm tests — no device/emulator required)
+dotnet test tests/AniSprinkles.UnitTests/AniSprinkles.UnitTests.csproj -c Debug
 ```
 
 - **CI**: GitHub Actions `android-release.yml` triggers on Release publication (or manual `workflow_dispatch`). `promote-release.yml` promotes between Play Console tracks (internal → alpha → beta → production).
 - **Version scheme**: `ApplicationDisplayVersion` from release tag semver (`vX.Y.Z` → `X.Y.Z`); `ApplicationVersion` (versionCode) from `YYMMDDNNN` (date + run_number mod 1000).
-- **No test suite yet** — `tests/AniSprinkles.UITests/` is scaffolded but empty.
+- **Unit tests** — `tests/AniSprinkles.UnitTests/` (xUnit, `net10.0`). Pure-algorithm tests only; the project link-compiles specific source files from `src/` rather than project-referencing the MAUI app (the main `net10.0-android` TFM is not a valid reference target for plain `net10.0`). If you add tests that need MAUI types, either link-compile a non-MAUI partial, or pass concrete dependencies in as parameters the way `MediaListSectionsMerger` does. `tests/AniSprinkles.UITests/` is still a scaffold for future device tests.
 
 ## CI Stubs (`-p:CiBuild=true`)
 

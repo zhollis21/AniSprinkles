@@ -150,6 +150,7 @@ public partial class MyAnimePage : ContentPage
             _logger?.LogInformation(
                 "LOADEDHOST MyAnime detach (isAuth={IsAuth}, isError={IsError}, currentState={CurrentState})",
                 isAuth, isError, _viewModel?.CurrentState);
+            HandlerHelper.DisconnectAll(LoadedContentHost.Content);
             LoadedContentHost.Content = null;
             _hasCreatedLoadedContent = false;
         }

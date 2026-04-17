@@ -189,12 +189,6 @@ public partial class MyAnimePageModel : ObservableObject
                 _lastSuccessfulLoadUtc = default;
             }
 
-            // Keep user context (expanded/collapsed groups) when data refreshes.
-            var expandedStates = Sections.ToDictionary(
-                section => section.Title,
-                section => section.IsExpanded,
-                StringComparer.Ordinal);
-
             _logger.LogInformation("Loading My Anime list.");
             SentrySdk.AddBreadcrumb("Load My Anime list", "navigation", "state");
 
@@ -239,13 +233,46 @@ public partial class MyAnimePageModel : ObservableObject
 
             SentrySdk.AddBreadcrumb("Fetching AniList list", "http", "state");
             var groups = await _aniListClient.GetMyAnimeListGroupedAsync();
-            // Capture current sort/filter state for off-thread section building.
+            // Capture current sort/filter state for section building.
             var sortField = CurrentSortField;
             var sortAsc = SortAscending;
             var filterText = SearchText;
-            // Grouping can be heavy on large lists; build sections off the UI thread.
-            var sections = await Task.Run(() => BuildSections(groups, expandedStates, sortField, sortAsc, filterText));
-            Sections = sections;
+
+            if (Sections.Count == 0)
+            {
+                // Cold path — no existing sections to diff against. Build off-thread because grouping
+                // can be heavy on large lists, then publish in one assignment.
+                var expandedStates = new Dictionary<string, bool>(StringComparer.Ordinal);
+                var sections = await Task.Run(() => BuildSections(groups, expandedStates, sortField, sortAsc, filterText));
+                Sections = sections;
+            }
+            else
+            {
+                // Warm path — mutate Sections in place. Work is proportional to what changed, not
+                // to the total item count, which keeps steady-state pull-to-refresh off the GC path
+                // that was driving the FocusEvent ANR storm.
+                var mergeStart = Stopwatch.GetTimestamp();
+                var result = MediaListSectionsMerger.Merge(
+                    Sections,
+                    groups,
+                    AppSettings.AnimeSectionOrder,
+                    AppSettings.DisplayAdultContent,
+                    sortField,
+                    sortAsc,
+                    filterText);
+                var mergeMs = Stopwatch.GetElapsedTime(mergeStart).TotalMilliseconds;
+                _logger.LogDebug(
+                    "MyAnime merge in {ElapsedMs:F1}ms: {SectionsAdded} sec+, {SectionsRemoved} sec-, {EntriesAdded} ent+, {EntriesRemoved} ent-, {EntriesMoved} moved, {EntriesUpdated} updated, {SectionsNeedingReset} reset",
+                    mergeMs,
+                    result.SectionsAdded,
+                    result.SectionsRemoved,
+                    result.EntriesAdded,
+                    result.EntriesRemoved,
+                    result.EntriesMoved,
+                    result.EntriesUpdated,
+                    result.SectionsNeedingReset);
+            }
+
             OnPropertyChanged(nameof(HasNoResults));
             _hasLoaded = true;
             _lastSuccessfulLoadUtc = DateTimeOffset.UtcNow;
@@ -968,36 +995,17 @@ public partial class MyAnimePageModel : ObservableObject
     {
         var sections = new ObservableCollection<MediaListSection>();
 
-        // Sort groups by user's custom section order from AniList settings.
-        var sectionOrder = AppSettings.AnimeSectionOrder;
-        var orderedGroups = sectionOrder.Count > 0
-            ? groups.OrderBy(g =>
-            {
-                var idx = sectionOrder.IndexOf(g.Name);
-                return idx >= 0 ? idx : int.MaxValue;
-            }).ToList()
-            : groups;
+        var orderedGroups = MediaListSectionsMerger.OrderAndFilterGroups(
+            groups,
+            AppSettings.AnimeSectionOrder,
+            AppSettings.DisplayAdultContent);
 
         foreach (var group in orderedGroups)
         {
-            IEnumerable<MediaListEntry> entries = group.Entries;
-
-            // Filter adult content if the user has it disabled.
-            if (!AppSettings.DisplayAdultContent)
-            {
-                entries = entries.Where(e => e.Media?.IsAdult != true);
-            }
-
-            var list = entries.ToList();
-            if (list.Count == 0)
-            {
-                continue;
-            }
-
             // First section defaults to expanded; others default to collapsed.
             var defaultExpanded = sections.Count == 0;
             var section = CreateSection(group.Name, defaultExpanded, expandedStates);
-            section.AddItems(list);
+            section.AddItems(group.Entries);
             section.ApplySort(sortField, sortAscending);
 
             if (!string.IsNullOrWhiteSpace(filterText))

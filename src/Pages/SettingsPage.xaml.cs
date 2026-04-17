@@ -138,6 +138,7 @@ public partial class SettingsPage : ContentPage
             _logger?.LogInformation(
                 "LOADEDHOST Settings detach (isAuth={IsAuth}, currentState={CurrentState})",
                 _viewModel?.IsAuthenticated, _viewModel?.CurrentState);
+            HandlerHelper.DisconnectAll(LoadedContentHost.Content);
             LoadedContentHost.Content = null;
             _hasCreatedLoadedContent = false;
         }
