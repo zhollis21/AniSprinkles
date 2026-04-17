@@ -625,6 +625,21 @@ public class MediaListSectionsMergerTests
         Assert.True(changed);
     }
 
+    [Fact]
+    public void MediaDisplayChanged_FormatDifferent_ReturnsTrue()
+    {
+        // Arrange — list cell binds Media.Format via FormatIconBadge, so a
+        // change must trigger a section Reset to refresh the badge.
+        var a = new Media { Format = "TV_SHORT" };
+        var b = new Media { Format = "TV" };
+
+        // Act
+        var changed = MediaListSectionsMerger.MediaDisplayChanged(a, b);
+
+        // Assert
+        Assert.True(changed);
+    }
+
     // ── Reference preservation regression guard ──────────────────────────
 
     [Fact]

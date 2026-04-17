@@ -313,6 +313,11 @@ public static class MediaListSectionsMerger
             return true;
         }
 
+        if (!string.Equals(old.Format, @new.Format, StringComparison.Ordinal))
+        {
+            return true;
+        }
+
         var oldAiring = old.NextAiringEpisode;
         var newAiring = @new.NextAiringEpisode;
         if (oldAiring?.Episode != newAiring?.Episode
