@@ -182,13 +182,20 @@ public static class MediaListSectionsMerger
                         mediaChangedInSection = true;
                     }
 
-                    // Sort keys (UpdatedAt, Score, Media.AverageScore) are about to be overwritten
-                    // by UpdateInPlace. If any of them changed, the section needs a re-sort even
-                    // when no structural or MediaDisplayChanged trigger fired. Title-based sort is
+                    // The currently-active sort key is about to be overwritten by UpdateInPlace.
+                    // If it changed, the section needs a re-sort even when no structural or
+                    // MediaDisplayChanged trigger fired. Scoping to the active field avoids needless
+                    // Reset events (e.g. Title-sort + progress bump shouldn't re-sort). Title is
                     // already covered by MediaDisplayChanged via Media.DisplayTitle.
-                    if (match.Entry.UpdatedAt != newEntry.UpdatedAt
-                        || match.Entry.Score != newEntry.Score
-                        || match.Entry.Media?.AverageScore != newEntry.Media?.AverageScore)
+                    var sortKeyChanged = sortField switch
+                    {
+                        SortField.LastUpdated => match.Entry.UpdatedAt != newEntry.UpdatedAt,
+                        SortField.Score => match.Entry.Score != newEntry.Score,
+                        SortField.AverageScore =>
+                            match.Entry.Media?.AverageScore != newEntry.Media?.AverageScore,
+                        _ => false,
+                    };
+                    if (sortKeyChanged)
                     {
                         sectionsTouched.Add(existingSection);
                     }

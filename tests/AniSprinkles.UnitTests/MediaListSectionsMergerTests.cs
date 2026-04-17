@@ -281,6 +281,75 @@ public class MediaListSectionsMergerTests
     }
 
     [Fact]
+    public void Merge_AverageScoreChange_WithAverageScoreSort_ReOrdersSection()
+    {
+        // Arrange — sorted descending by Media.AverageScore, entry 1 (90) above entry 2 (70).
+        var e1 = TestDataBuilder.Entry(1);
+        e1.Media!.AverageScore = 90;
+        var e2 = TestDataBuilder.Entry(2);
+        e2.Media!.AverageScore = 70;
+
+        var sections = TestDataBuilder.BuildInitial(
+            TestDataBuilder.Groups(TestDataBuilder.Group("Watching", e1, e2)),
+            sortField: SortField.AverageScore,
+            sortAscending: false);
+        Assert.Equal(1, sections[0][0].MediaId); // pre-condition
+
+        // Entry 2's average is raised above entry 1's.
+        var e1Same = TestDataBuilder.Entry(1);
+        e1Same.Media!.AverageScore = 90;
+        var e2Bumped = TestDataBuilder.Entry(2);
+        e2Bumped.Media!.AverageScore = 95;
+
+        // Act
+        MediaListSectionsMerger.Merge(
+            sections,
+            TestDataBuilder.Groups(TestDataBuilder.Group("Watching", e1Same, e2Bumped)),
+            [], true, SortField.AverageScore, false, "");
+
+        // Assert
+        Assert.Equal(2, sections[0][0].MediaId);
+    }
+
+    [Fact]
+    public void Merge_UpdatedAtChange_WithTitleSort_DoesNotTriggerSectionReset()
+    {
+        // When the active sort is Title, an UpdatedAt bump must NOT force a section re-sort/Reset.
+        // This is the scoping guard that prevents the common "progress bump under Title sort" case
+        // from regressing the pull-to-refresh perf win.
+
+        // Arrange
+        var e1 = TestDataBuilder.Entry(1, title: "Alpha", updatedAt: DateTimeOffset.FromUnixTimeSeconds(100));
+        var e2 = TestDataBuilder.Entry(2, title: "Beta", updatedAt: DateTimeOffset.FromUnixTimeSeconds(100));
+        var sections = TestDataBuilder.BuildInitial(
+            TestDataBuilder.Groups(TestDataBuilder.Group("Watching", e1, e2)),
+            sortField: SortField.Title,
+            sortAscending: true);
+
+        var sectionResets = 0;
+        sections[0].CollectionChanged += (_, ev) =>
+        {
+            if (ev.Action == NotifyCollectionChangedAction.Reset)
+            {
+                sectionResets++;
+            }
+        };
+
+        // Only UpdatedAt changes (titles unchanged).
+        var e1Bumped = TestDataBuilder.Entry(1, title: "Alpha", updatedAt: DateTimeOffset.FromUnixTimeSeconds(999));
+        var e2Same = TestDataBuilder.Entry(2, title: "Beta", updatedAt: DateTimeOffset.FromUnixTimeSeconds(100));
+
+        // Act
+        MediaListSectionsMerger.Merge(
+            sections,
+            TestDataBuilder.Groups(TestDataBuilder.Group("Watching", e1Bumped, e2Same)),
+            [], true, SortField.Title, true, "");
+
+        // Assert
+        Assert.Equal(0, sectionResets);
+    }
+
+    [Fact]
     public void Merge_CoverImageUrlChanged_TriggersSectionReset_ReferencePreserved()
     {
         // Arrange
@@ -638,6 +707,106 @@ public class MediaListSectionsMergerTests
 
         // Assert
         Assert.True(changed);
+    }
+
+    [Fact]
+    public void MediaDisplayChanged_SameFormat_ReturnsFalse()
+    {
+        // Arrange
+        var a = new Media { Format = "TV" };
+        var b = new Media { Format = "TV" };
+
+        // Act
+        var changed = MediaListSectionsMerger.MediaDisplayChanged(a, b);
+
+        // Assert
+        Assert.False(changed);
+    }
+
+    [Fact]
+    public void MediaDisplayChanged_DisplayTitleDifferent_ReturnsTrue()
+    {
+        // Arrange — MediaDisplayChanged compares DisplayTitle directly, but DisplayTitle is derived
+        // from AppSettings.TitleLanguage. Romaji is the test default (set by ResetAppSettings), so
+        // varying Title.Romaji varies DisplayTitle.
+        var a = new Media { Title = new MediaTitle { Romaji = "Attack on Titan" } };
+        var b = new Media { Title = new MediaTitle { Romaji = "Shingeki no Kyojin" } };
+
+        // Act
+        var changed = MediaListSectionsMerger.MediaDisplayChanged(a, b);
+
+        // Assert
+        Assert.True(changed);
+    }
+
+    [Fact]
+    public void MediaDisplayChanged_SameDisplayTitle_ReturnsFalse()
+    {
+        // Arrange
+        var a = new Media { Title = new MediaTitle { Romaji = "Same" } };
+        var b = new Media { Title = new MediaTitle { Romaji = "Same" } };
+
+        // Act
+        var changed = MediaListSectionsMerger.MediaDisplayChanged(a, b);
+
+        // Assert
+        Assert.False(changed);
+    }
+
+    [Fact]
+    public void MediaDisplayChanged_CoverLargeDifferent_ReturnsTrue()
+    {
+        // Arrange — MediaDetails opens a larger cover; MyAnime grid layout binds .Large too.
+        var a = new Media { CoverImage = new MediaCoverImage { Large = "https://img/old" } };
+        var b = new Media { CoverImage = new MediaCoverImage { Large = "https://img/new" } };
+
+        // Act
+        var changed = MediaListSectionsMerger.MediaDisplayChanged(a, b);
+
+        // Assert
+        Assert.True(changed);
+    }
+
+    [Fact]
+    public void MediaDisplayChanged_NextAiringEpisodeChanged_ReturnsTrue()
+    {
+        // Arrange
+        var a = new Media { NextAiringEpisode = new MediaAiringEpisode { Episode = 5, AiringAt = 1000 } };
+        var b = new Media { NextAiringEpisode = new MediaAiringEpisode { Episode = 6, AiringAt = 2000 } };
+
+        // Act
+        var changed = MediaListSectionsMerger.MediaDisplayChanged(a, b);
+
+        // Assert
+        Assert.True(changed);
+    }
+
+    [Fact]
+    public void MediaDisplayChanged_SameNextAiringEpisode_ReturnsFalse()
+    {
+        // Arrange
+        var a = new Media { NextAiringEpisode = new MediaAiringEpisode { Episode = 5, AiringAt = 1000 } };
+        var b = new Media { NextAiringEpisode = new MediaAiringEpisode { Episode = 5, AiringAt = 1000 } };
+
+        // Act
+        var changed = MediaListSectionsMerger.MediaDisplayChanged(a, b);
+
+        // Assert
+        Assert.False(changed);
+    }
+
+    [Fact]
+    public void MediaDisplayChanged_SameEpisodes_ReturnsFalse()
+    {
+        // Arrange — negative complement to MediaDisplayChanged_EpisodesDifferent_ReturnsTrue.
+        var a = new Media { Episodes = 12 };
+        var b = new Media { Episodes = 12 };
+
+        // Act
+        var changed = MediaListSectionsMerger.MediaDisplayChanged(a, b);
+
+        // Assert
+        Assert.False(changed);
     }
 
     // ── Reference preservation regression guard ──────────────────────────
