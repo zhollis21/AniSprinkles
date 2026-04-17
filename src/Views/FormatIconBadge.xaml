@@ -19,6 +19,7 @@
                WidthRequest="{Binding Size, Source={x:Reference Self}}"
                HeightRequest="{Binding Size, Source={x:Reference Self}}"
                HorizontalTextAlignment="Center"
-               VerticalTextAlignment="Center" />
+               VerticalTextAlignment="Center"
+               AutomationProperties.IsInAccessibleTree="False" />
     </Border>
 </ContentView>

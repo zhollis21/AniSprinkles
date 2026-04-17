@@ -52,6 +52,7 @@
                                            WidthRequest="12" HeightRequest="12"
                                            HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
                                            VerticalOptions="Center"
+                                           AutomationProperties.IsInAccessibleTree="False"
                                            IsVisible="{Binding IsNumericScoreFormat}" />
                                     <Label Text="{Binding ScoreDisplay}"
                                            Style="{StaticResource Caption1}"
@@ -92,7 +93,8 @@
                                    TextColor="{Binding Media.DisplayTitle, Converter={StaticResource RainbowAccentConverter}}"
                                    FontSize="18"
                                    HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
-                                   HorizontalOptions="Center" VerticalOptions="Center" />
+                                   HorizontalOptions="Center" VerticalOptions="Center"
+                                   AutomationProperties.IsInAccessibleTree="False" />
                         </Border>
                     </Grid>
                 </Border>
@@ -137,6 +139,7 @@
                                        WidthRequest="10" HeightRequest="10"
                                        HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
                                        VerticalOptions="Center"
+                                       AutomationProperties.IsInAccessibleTree="False"
                                        IsVisible="{Binding IsNumericScoreFormat}" />
                                 <Label Text="{Binding ScoreDisplay}"
                                        Style="{StaticResource Caption2}"
@@ -182,7 +185,8 @@
                                            TextColor="{Binding Media.DisplayTitle, Converter={StaticResource RainbowAccentConverter}}"
                                            FontSize="14"
                                            HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
-                                           HorizontalOptions="Center" VerticalOptions="Center" />
+                                           HorizontalOptions="Center" VerticalOptions="Center"
+                                           AutomationProperties.IsInAccessibleTree="False" />
                                 </Border>
                             </Grid>
                             <!-- Airing info -->
@@ -226,6 +230,7 @@
                                WidthRequest="12" HeightRequest="12"
                                HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
                                VerticalOptions="Center"
+                               AutomationProperties.IsInAccessibleTree="False"
                                IsVisible="{Binding IsNumericScoreFormat}" />
                         <Label Text="{Binding ScoreDisplay}"
                                Style="{StaticResource Caption1}"
@@ -258,7 +263,8 @@
                                TextColor="{Binding Media.DisplayTitle, Converter={StaticResource RainbowAccentConverter}}"
                                FontSize="14"
                                HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
-                               HorizontalOptions="Center" VerticalOptions="Center" />
+                               HorizontalOptions="Center" VerticalOptions="Center"
+                               AutomationProperties.IsInAccessibleTree="False" />
                     </Border>
                 </Grid>
             </DataTemplate>
@@ -281,7 +287,8 @@
                                FontSize="20"
                                WidthRequest="20" HeightRequest="20"
                                HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
-                               VerticalOptions="Center" />
+                               VerticalOptions="Center"
+                               AutomationProperties.IsInAccessibleTree="False" />
                         <!-- Section title -->
                         <Label Grid.Column="1"
                                Text="{Binding Title}"
@@ -302,7 +309,8 @@
                                FontSize="16"
                                WidthRequest="16" HeightRequest="16"
                                HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
-                               VerticalOptions="Center">
+                               VerticalOptions="Center"
+                               AutomationProperties.IsInAccessibleTree="False">
                             <Label.Triggers>
                                 <DataTrigger TargetType="Label" Binding="{Binding IsExpanded}" Value="True">
                                     <Setter Property="Rotation" Value="180" />
@@ -349,7 +357,8 @@
                                FontSize="18"
                                WidthRequest="18" HeightRequest="18"
                                HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
-                               VerticalOptions="Center" Margin="8,0,0,0" />
+                               VerticalOptions="Center" Margin="8,0,0,0"
+                               AutomationProperties.IsInAccessibleTree="False" />
                         <Entry Grid.Column="1"
                                Placeholder="Search anime..."
                                Text="{Binding SearchText}"
@@ -380,7 +389,8 @@
                                        FontSize="14"
                                        WidthRequest="14" HeightRequest="14"
                                        HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
-                                       VerticalOptions="Center" />
+                                       VerticalOptions="Center"
+                                       AutomationProperties.IsInAccessibleTree="False" />
                                 <Label Text="Updated" Style="{StaticResource ChipLabelStyle}"
                                        TextColor="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=LastUpdated}" />
                                 <Label Text="{Binding SortDirectionGlyph}"
@@ -390,6 +400,7 @@
                                        WidthRequest="12" HeightRequest="12"
                                        HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
                                        VerticalOptions="Center"
+                                       AutomationProperties.IsInAccessibleTree="False"
                                        IsVisible="{Binding CurrentSortField, Converter={StaticResource SortFieldActiveConverter}, ConverterParameter=LastUpdated}" />
                             </HorizontalStackLayout>
                         </Border>
@@ -408,7 +419,8 @@
                                        FontSize="14"
                                        WidthRequest="14" HeightRequest="14"
                                        HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
-                                       VerticalOptions="Center" />
+                                       VerticalOptions="Center"
+                                       AutomationProperties.IsInAccessibleTree="False" />
                                 <Label Text="Title" Style="{StaticResource ChipLabelStyle}"
                                        TextColor="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Title}" />
                                 <Label Text="{Binding SortDirectionGlyph}"
@@ -418,6 +430,7 @@
                                        WidthRequest="12" HeightRequest="12"
                                        HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
                                        VerticalOptions="Center"
+                                       AutomationProperties.IsInAccessibleTree="False"
                                        IsVisible="{Binding CurrentSortField, Converter={StaticResource SortFieldActiveConverter}, ConverterParameter=Title}" />
                             </HorizontalStackLayout>
                         </Border>
@@ -436,7 +449,8 @@
                                        FontSize="14"
                                        WidthRequest="14" HeightRequest="14"
                                        HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
-                                       VerticalOptions="Center" />
+                                       VerticalOptions="Center"
+                                       AutomationProperties.IsInAccessibleTree="False" />
                                 <Label Text="My Score" Style="{StaticResource ChipLabelStyle}"
                                        TextColor="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Score}" />
                                 <Label Text="{Binding SortDirectionGlyph}"
@@ -446,6 +460,7 @@
                                        WidthRequest="12" HeightRequest="12"
                                        HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
                                        VerticalOptions="Center"
+                                       AutomationProperties.IsInAccessibleTree="False"
                                        IsVisible="{Binding CurrentSortField, Converter={StaticResource SortFieldActiveConverter}, ConverterParameter=Score}" />
                             </HorizontalStackLayout>
                         </Border>
@@ -464,7 +479,8 @@
                                        FontSize="14"
                                        WidthRequest="14" HeightRequest="14"
                                        HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
-                                       VerticalOptions="Center" />
+                                       VerticalOptions="Center"
+                                       AutomationProperties.IsInAccessibleTree="False" />
                                 <Label Text="Avg Score" Style="{StaticResource ChipLabelStyle}"
                                        TextColor="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=AverageScore}" />
                                 <Label Text="{Binding SortDirectionGlyph}"
@@ -474,6 +490,7 @@
                                        WidthRequest="12" HeightRequest="12"
                                        HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
                                        VerticalOptions="Center"
+                                       AutomationProperties.IsInAccessibleTree="False"
                                        IsVisible="{Binding CurrentSortField, Converter={StaticResource SortFieldActiveConverter}, ConverterParameter=AverageScore}" />
                             </HorizontalStackLayout>
                         </Border>
@@ -511,7 +528,8 @@
                                    FontSize="48"
                                    WidthRequest="48" HeightRequest="48"
                                    HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
-                                   HorizontalOptions="Center" Opacity="0.5" />
+                                   HorizontalOptions="Center" Opacity="0.5"
+                                   AutomationProperties.IsInAccessibleTree="False" />
                             <Label Text="No anime found"
                                    Style="{StaticResource Caption1}"
                                    TextColor="{StaticResource Gray400}"
