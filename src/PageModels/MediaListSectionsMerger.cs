@@ -182,6 +182,17 @@ public static class MediaListSectionsMerger
                         mediaChangedInSection = true;
                     }
 
+                    // When a filter is active, MediaListSection.MatchesFilter searches all three title
+                    // fields (English/Romaji/Native) regardless of which one DisplayTitle resolves to.
+                    // MediaDisplayChanged only compares DisplayTitle, so a non-displayed-language title
+                    // change wouldn't re-evaluate filter membership. Mark the section touched so
+                    // ApplyFilter re-runs in Pass 3.
+                    if (!string.IsNullOrWhiteSpace(filterText)
+                        && FilterRelevantTitleChanged(match.Entry.Media?.Title, newEntry.Media?.Title))
+                    {
+                        sectionsTouched.Add(existingSection);
+                    }
+
                     // The currently-active sort key is about to be overwritten by UpdateInPlace.
                     // If it changed, the section needs a re-sort even when no structural or
                     // MediaDisplayChanged trigger fired. Scoping to the active field avoids needless
@@ -334,6 +345,18 @@ public static class MediaListSectionsMerger
         }
 
         return false;
+    }
+
+    private static bool FilterRelevantTitleChanged(MediaTitle? old, MediaTitle? @new)
+    {
+        if (ReferenceEquals(old, @new))
+        {
+            return false;
+        }
+
+        return !string.Equals(old?.English, @new?.English, StringComparison.Ordinal)
+            || !string.Equals(old?.Romaji, @new?.Romaji, StringComparison.Ordinal)
+            || !string.Equals(old?.Native, @new?.Native, StringComparison.Ordinal);
     }
 
     private static MediaListSection? FindSectionByTitle(

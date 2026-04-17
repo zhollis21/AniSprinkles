@@ -107,12 +107,13 @@ jobs:
                 PARSED=0
               fi
 
+              # Pass/fail is keyed off the test runner's exit code, not our ability to parse
+              # its output — a runner output format change should never fail CI on its own.
+              if [ "$PROJ_EXIT" -eq 0 ]; then ICON="✅"; else ICON="❌"; OVERALL_EXIT=1; fi
               if [ "$PARSED" -eq 1 ]; then
-                if [ "$PROJ_EXIT" -eq 0 ]; then ICON="✅"; else ICON="❌"; OVERALL_EXIT=1; fi
                 echo "| \`$PROJ_NAME\` | $ICON | $P | $F | $S | $D |" >> "$GITHUB_STEP_SUMMARY"
               else
-                echo "| \`$PROJ_NAME\` | ❌ build error | — | — | — | — |" >> "$GITHUB_STEP_SUMMARY"
-                OVERALL_EXIT=1
+                echo "| \`$PROJ_NAME\` | $ICON | ? | ? | ? | ? |" >> "$GITHUB_STEP_SUMMARY"
               fi
             done
 

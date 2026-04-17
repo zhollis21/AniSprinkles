@@ -595,6 +595,54 @@ public class MediaListSectionsMergerTests
         Assert.Equal(2, sections[0].Count);  // visible: Banana + Banshee
     }
 
+    [Fact]
+    public void Merge_WithActiveFilter_RefreshesMembershipWhenNonDisplayedTitleChanges()
+    {
+        // MatchesFilter searches English/Romaji/Native, but DisplayTitle only resolves to one of
+        // them (Romaji by default). A change to English under a Romaji display would previously
+        // leave filter membership stale because MediaDisplayChanged only compares DisplayTitle.
+        // Arrange
+        var entry = new MediaListEntry
+        {
+            Id = 10,
+            MediaId = 1,
+            Status = MediaListStatus.Current,
+            Media = new Media
+            {
+                Id = 1,
+                Title = new MediaTitle { English = "Apple", Romaji = "Ringo" },
+                CoverImage = new MediaCoverImage { Medium = "https://img/1" },
+            },
+        };
+        var sections = TestDataBuilder.BuildInitial(
+            TestDataBuilder.Groups(TestDataBuilder.Group("Watching", entry)),
+            filterText: "app");
+
+        Assert.Single(sections[0]);  // pre-condition: English title matches "app"
+
+        // Act — refresh with the same MediaId but a new English title; Romaji (DisplayTitle) is unchanged.
+        var refreshed = new MediaListEntry
+        {
+            Id = 10,
+            MediaId = 1,
+            Status = MediaListStatus.Current,
+            Media = new Media
+            {
+                Id = 1,
+                Title = new MediaTitle { English = "Grape", Romaji = "Ringo" },
+                CoverImage = new MediaCoverImage { Medium = "https://img/1" },
+            },
+        };
+        MediaListSectionsMerger.Merge(
+            sections,
+            TestDataBuilder.Groups(TestDataBuilder.Group("Watching", refreshed)),
+            [], true, SortField.LastUpdated, false, "app");
+
+        // Assert — entry is still in the backing store but filter no longer matches.
+        Assert.Equal(1, sections[0].TotalCount);
+        Assert.Empty(sections[0]);
+    }
+
     // ── Adult content / reorder helpers ──────────────────────────────────
 
     [Fact]

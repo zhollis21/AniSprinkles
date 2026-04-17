@@ -31,7 +31,7 @@ public class MediaListSection : ObservableCollection<MediaListEntry>
     /// Read-only view of every entry in this section's backing store, regardless of filter or expand state.
     /// Used by the pull-to-refresh merger to diff a section against a fresh AniList response.
     /// </summary>
-    public IReadOnlyList<MediaListEntry> AllItems => _allItems;
+    internal IReadOnlyList<MediaListEntry> AllItems => _allItems;
 
     /// <summary>
     /// Checks whether the entry exists in this section's backing store (not just visible items).

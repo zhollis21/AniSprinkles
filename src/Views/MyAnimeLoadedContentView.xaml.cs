@@ -14,6 +14,11 @@ public partial class MyAnimeLoadedContentView : ContentView
     private readonly ILogger<MyAnimeLoadedContentView>? _logger;
     private readonly int _viewId;
     private bool _longPressFired;
+    private MyAnimePageModel? _subscribedViewModel;
+#if ANDROID
+    private AndroidX.RecyclerView.Widget.RecyclerView? _attachedRecyclerView;
+    private RecyclerTouchListener? _attachedTouchListener;
+#endif
 
     public MyAnimeLoadedContentView()
     {
@@ -44,6 +49,26 @@ public partial class MyAnimeLoadedContentView : ContentView
         _logger?.LogInformation(
             "LOADEDVIEW MyAnime[#{ViewId:X}] OnHandlerChanged (handler={HasHandler})",
             _viewId, Handler is not null);
+
+        // When the view is detached, release the PropertyChanged subscription so the singleton
+        // MyAnimePageModel stops pinning this (now-orphan) view. Also detach the Android touch
+        // listener so its GestureDetector references don't outlive the view.
+        if (Handler is null)
+        {
+            UnsubscribeFromViewModel();
+#if ANDROID
+            DetachAndroidLongPress();
+#endif
+        }
+    }
+
+    private void UnsubscribeFromViewModel()
+    {
+        if (_subscribedViewModel is not null)
+        {
+            _subscribedViewModel.PropertyChanged -= OnViewModelPropertyChanged;
+            _subscribedViewModel = null;
+        }
     }
 
     private void OnItemTapped(object? sender, TappedEventArgs e)
@@ -66,9 +91,16 @@ public partial class MyAnimeLoadedContentView : ContentView
     protected override void OnBindingContextChanged()
     {
         base.OnBindingContextChanged();
+
+        // Drop the previous VM's subscription before wiring a new one. Without this, swapping
+        // BindingContext leaves a dangling event handler that keeps the old view alive for the
+        // lifetime of the singleton VM.
+        UnsubscribeFromViewModel();
+
         if (BindingContext is MyAnimePageModel vm)
         {
             vm.PropertyChanged += OnViewModelPropertyChanged;
+            _subscribedViewModel = vm;
             ApplyViewMode(vm.CurrentViewMode);
         }
     }
@@ -100,8 +132,14 @@ public partial class MyAnimeLoadedContentView : ContentView
             _logger?.LogInformation(
                 "LOADEDVIEW MyAnime[#{ViewId:X}] RecyclerView handler change (platformView=null).",
                 _viewId);
+            DetachAndroidLongPress();
             return;
         }
+
+        // Drop any previously-attached listener before adding a new one. Without this,
+        // handler reattachments would stack listeners on the same RecyclerView, causing
+        // long-press to fire multiple times and keeping old view references alive.
+        DetachAndroidLongPress();
 
         // Capture the RecyclerView's Context identity. This is the Android FragmentActivity
         // that Glide captures when binding images in each cell. If the hash ever differs from
@@ -117,7 +155,22 @@ public partial class MyAnimeLoadedContentView : ContentView
             recyclerView.Context,
             new LongPressGestureListener(recyclerView, this));
 
-        recyclerView.AddOnItemTouchListener(new RecyclerTouchListener(gestureDetector));
+        var listener = new RecyclerTouchListener(gestureDetector);
+        recyclerView.AddOnItemTouchListener(listener);
+        _attachedRecyclerView = recyclerView;
+        _attachedTouchListener = listener;
+    }
+
+    private void DetachAndroidLongPress()
+    {
+        if (_attachedRecyclerView is not null && _attachedTouchListener is not null)
+        {
+            _attachedRecyclerView.RemoveOnItemTouchListener(_attachedTouchListener);
+        }
+
+        _attachedTouchListener?.Dispose();
+        _attachedTouchListener = null;
+        _attachedRecyclerView = null;
     }
 
     private MediaListEntry? GetEntryAtAdapterPosition(int adapterPosition)
