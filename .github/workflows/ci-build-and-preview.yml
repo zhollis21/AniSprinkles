@@ -67,11 +67,46 @@ jobs:
           if [ -n "$TEST_PROJECTS" ]; then
             echo "Found test projects:"
             echo "$TEST_PROJECTS"
+
+            {
+              echo "## 🧪 Unit Tests"
+              echo ""
+              echo "| Project | Result | Passed | Failed | Skipped | Duration |"
+              echo "| --- | :---: | ---: | ---: | ---: | ---: |"
+            } >> "$GITHUB_STEP_SUMMARY"
+
+            OVERALL_EXIT=0
             for proj in $TEST_PROJECTS; do
-              dotnet test "$proj" --no-restore --verbosity normal
+              PROJ_NAME=$(basename "$proj" .csproj)
+              set +e
+              OUTPUT=$(dotnet test "$proj" --no-restore --verbosity normal 2>&1)
+              PROJ_EXIT=$?
+              set -e
+              echo "$OUTPUT"
+
+              SUMMARY_LINE=$(echo "$OUTPUT" | grep -E "^(Passed|Failed)!  - " | tail -1)
+              if [ -n "$SUMMARY_LINE" ]; then
+                P=$(echo "$SUMMARY_LINE" | grep -oP 'Passed:\s*\K\d+' | head -1); P="${P:-?}"
+                F=$(echo "$SUMMARY_LINE" | grep -oP 'Failed:\s*\K\d+' | head -1); F="${F:-?}"
+                S=$(echo "$SUMMARY_LINE" | grep -oP 'Skipped:\s*\K\d+' | head -1); S="${S:-?}"
+                D=$(echo "$SUMMARY_LINE" | grep -oP 'Duration:\s*\K[\d.]+ ms' | head -1); D="${D:-?}"
+                if [ "$PROJ_EXIT" -eq 0 ]; then ICON="✅"; else ICON="❌"; OVERALL_EXIT=1; fi
+                echo "| \`$PROJ_NAME\` | $ICON | $P | $F | $S | $D |" >> "$GITHUB_STEP_SUMMARY"
+              else
+                echo "| \`$PROJ_NAME\` | ❌ build error | — | — | — | — |" >> "$GITHUB_STEP_SUMMARY"
+                OVERALL_EXIT=1
+              fi
             done
+
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            exit $OVERALL_EXIT
           else
             echo "::notice::No test projects found. Tests will run automatically when added."
+            {
+              echo "## 🧪 Unit Tests"
+              echo ""
+              echo "> ℹ️ No test projects found."
+            } >> "$GITHUB_STEP_SUMMARY"
           fi
 
       - name: Upload APK
