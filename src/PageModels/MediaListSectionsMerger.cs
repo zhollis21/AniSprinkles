@@ -182,6 +182,17 @@ public static class MediaListSectionsMerger
                         mediaChangedInSection = true;
                     }
 
+                    // Sort keys (UpdatedAt, Score, Media.AverageScore) are about to be overwritten
+                    // by UpdateInPlace. If any of them changed, the section needs a re-sort even
+                    // when no structural or MediaDisplayChanged trigger fired. Title-based sort is
+                    // already covered by MediaDisplayChanged via Media.DisplayTitle.
+                    if (match.Entry.UpdatedAt != newEntry.UpdatedAt
+                        || match.Entry.Score != newEntry.Score
+                        || match.Entry.Media?.AverageScore != newEntry.Media?.AverageScore)
+                    {
+                        sectionsTouched.Add(existingSection);
+                    }
+
                     UpdateInPlace(match.Entry, newEntry);
                     entriesUpdated++;
                     entriesById[newEntry.MediaId] = (match.Entry, existingSection);
@@ -223,10 +234,10 @@ public static class MediaListSectionsMerger
             }
         }
 
-        // Pass 3: re-sort sections that had structural changes OR media-display changes.
-        // Sections where only Status/Progress/Score changed are skipped entirely — the
-        // [ObservableProperty] notifications on MediaListEntry already refreshed bound labels
-        // without forcing a CollectionView reset.
+        // Pass 3: re-sort sections that had structural changes, media-display changes, or a
+        // sort-key change on any entry. Sections where only Status or Progress changed are
+        // skipped — those aren't sort keys and the [ObservableProperty] notifications on
+        // MediaListEntry already refreshed bound labels without forcing a CollectionView reset.
         foreach (var section in sectionsTouched)
         {
             section.ApplySort(sortField, sortAscending);

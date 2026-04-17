@@ -228,6 +228,59 @@ public class MediaListSectionsMergerTests
     }
 
     [Fact]
+    public void Merge_UpdatedAtChange_WithLastUpdatedSort_ReOrdersSection()
+    {
+        // Arrange — entry 1 updated later than entry 2; descending LastUpdated sort puts 1 first.
+        var e1 = TestDataBuilder.Entry(1, updatedAt: DateTimeOffset.FromUnixTimeSeconds(200));
+        var e2 = TestDataBuilder.Entry(2, updatedAt: DateTimeOffset.FromUnixTimeSeconds(100));
+        var sections = TestDataBuilder.BuildInitial(
+            TestDataBuilder.Groups(TestDataBuilder.Group("Watching", e1, e2)),
+            sortField: SortField.LastUpdated,
+            sortAscending: false);
+        Assert.Equal(1, sections[0][0].MediaId); // pre-condition
+
+        // Now entry 2 gets bumped to a newer UpdatedAt than entry 1.
+        var e1Same = TestDataBuilder.Entry(1, updatedAt: DateTimeOffset.FromUnixTimeSeconds(200));
+        var e2Bumped = TestDataBuilder.Entry(2, updatedAt: DateTimeOffset.FromUnixTimeSeconds(300));
+
+        // Act
+        MediaListSectionsMerger.Merge(
+            sections,
+            TestDataBuilder.Groups(TestDataBuilder.Group("Watching", e1Same, e2Bumped)),
+            [], true, SortField.LastUpdated, false, "");
+
+        // Assert — entry 2 now sorts to the top of the visible, sorted collection.
+        Assert.Equal(2, sections[0][0].MediaId);
+        Assert.Equal(1, sections[0][1].MediaId);
+    }
+
+    [Fact]
+    public void Merge_ScoreChange_WithScoreSort_ReOrdersSection()
+    {
+        // Arrange — sorted descending by Score, entry 1 (9.0) above entry 2 (5.0).
+        var e1 = TestDataBuilder.Entry(1, score: 9.0);
+        var e2 = TestDataBuilder.Entry(2, score: 5.0);
+        var sections = TestDataBuilder.BuildInitial(
+            TestDataBuilder.Groups(TestDataBuilder.Group("Watching", e1, e2)),
+            sortField: SortField.Score,
+            sortAscending: false);
+        Assert.Equal(1, sections[0][0].MediaId); // pre-condition
+
+        // Entry 2's score is raised above entry 1's.
+        var e1Same = TestDataBuilder.Entry(1, score: 9.0);
+        var e2Bumped = TestDataBuilder.Entry(2, score: 10.0);
+
+        // Act
+        MediaListSectionsMerger.Merge(
+            sections,
+            TestDataBuilder.Groups(TestDataBuilder.Group("Watching", e1Same, e2Bumped)),
+            [], true, SortField.Score, false, "");
+
+        // Assert
+        Assert.Equal(2, sections[0][0].MediaId);
+    }
+
+    [Fact]
     public void Merge_CoverImageUrlChanged_TriggersSectionReset_ReferencePreserved()
     {
         // Arrange
