@@ -41,7 +41,7 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('src/AniSprinkles.csproj') }}
+          key: ${{ runner.os }}-nuget-${{ hashFiles('AniSprinkles.slnx', 'src/AniSprinkles.csproj', 'tests/**/*.csproj') }}
           restore-keys: |
             ${{ runner.os }}-nuget-
 
