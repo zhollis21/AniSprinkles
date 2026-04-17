@@ -12,14 +12,13 @@
             StrokeThickness="0"
             BackgroundColor="#99000000"
             Padding="5,3">
-        <Image WidthRequest="{Binding Size, Source={x:Reference Self}}"
-               HeightRequest="{Binding Size, Source={x:Reference Self}}">
-            <Image.Source>
-                <FontImageSource Glyph="{Binding Format, Source={x:Reference Self}, Converter={StaticResource MediaFormatIconConverter}}"
-                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                 Color="{AppThemeBinding Light=#333333, Dark=White}"
-                                 Size="{Binding Size, Source={x:Reference Self}}" />
-            </Image.Source>
-        </Image>
+        <Label Text="{Binding Format, Source={x:Reference Self}, Converter={StaticResource MediaFormatIconConverter}}"
+               FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+               TextColor="{AppThemeBinding Light=#333333, Dark=White}"
+               FontSize="{Binding Size, Source={x:Reference Self}}"
+               WidthRequest="{Binding Size, Source={x:Reference Self}}"
+               HeightRequest="{Binding Size, Source={x:Reference Self}}"
+               HorizontalTextAlignment="Center"
+               VerticalTextAlignment="Center" />
     </Border>
 </ContentView>

@@ -106,6 +106,7 @@ When presenting 2+ approaches to the user, list them clearly with tradeoffs for 
 ### Output style
 
 - No AI attribution footers (e.g. "Generated with Claude Code", "Made with Copilot") in PR descriptions, issue bodies, or commit messages
+- Be terse. Skip pleasantries and preamble.
 
 ## Security
 
