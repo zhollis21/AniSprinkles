@@ -13,6 +13,7 @@ namespace AniSprinkles.PageModels;
         private readonly IAniListClient _aniListClient;
         private readonly IAuthService _authService;
         private readonly ErrorReportService _errorReportService;
+        private readonly INavigationService _navigationService;
         private readonly ILogger<MediaDetailsPageModel> _logger;
         private int? _loadedMediaId;
         private int _loadRequestSequence;
@@ -90,11 +91,12 @@ namespace AniSprinkles.PageModels;
     [ObservableProperty]
     private double _sliderProgress;
 
-    public MediaDetailsPageModel(IAniListClient aniListClient, IAuthService authService, ErrorReportService errorReportService, ILogger<MediaDetailsPageModel> logger)
+    public MediaDetailsPageModel(IAniListClient aniListClient, IAuthService authService, ErrorReportService errorReportService, INavigationService navigationService, ILogger<MediaDetailsPageModel> logger)
     {
         _aniListClient = aniListClient;
         _authService = authService;
         _errorReportService = errorReportService;
+        _navigationService = navigationService;
         _logger = logger;
     }
 
@@ -757,7 +759,7 @@ namespace AniSprinkles.PageModels;
             return;
         }
 
-        await Shell.Current.GoToAsync("media-details", animate: false, new Dictionary<string, object>
+        await _navigationService.GoToAsync("media-details", animate: false, new Dictionary<string, object>
         {
             ["mediaId"] = mediaId,
         });

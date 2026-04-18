@@ -18,6 +18,9 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <PackageReference Include="Microsoft.Maui.Essentials" Version="10.0.51" />
+    <PackageReference Include="Microsoft.Maui.Core" Version="10.0.51" />
+    <PackageReference Include="NSubstitute" Version="5.3.0" />
   </ItemGroup>
 
   <!--
@@ -30,6 +33,7 @@
     <Compile Include="..\..\src\Models\*.cs" LinkBase="_linked\Models" />
     <Compile Include="..\..\src\Serialization\StringOrNumberJsonConverter.cs" LinkBase="_linked\Serialization" />
     <Compile Include="..\..\src\Utilities\AppSettings.cs" LinkBase="_linked\Utilities" />
+    <Compile Include="..\..\src\Services\Abstractions\*.cs" LinkBase="_linked\Services\Abstractions" />
     <Compile Include="..\..\src\PageModels\SortField.cs" LinkBase="_linked\PageModels" />
     <Compile Include="..\..\src\PageModels\MediaListSection.cs" LinkBase="_linked\PageModels" />
     <Compile Include="..\..\src\PageModels\MediaListSectionsMerger.cs" LinkBase="_linked\PageModels" />

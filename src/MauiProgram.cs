@@ -1,4 +1,6 @@
+using AniSprinkles.Services.Maui;
 using CommunityToolkit.Maui;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Syncfusion.Maui.Toolkit.Hosting;
 #if ANDROID
@@ -77,6 +79,11 @@ public static class MauiProgram
         builder.Logging.AddFilter<AndroidLogcatLoggerProvider>("Sentry", LogLevel.Warning);
 #endif
 
+        // MAUI auto-registers IDispatcher and IPreferences in the DI container via UseMauiApp.
+        // TimeProvider is not auto-registered; adding TryAddSingleton keeps DI-first code paths
+        // testable via FakeTimeProvider without forcing tests to discover a default.
+        builder.Services.TryAddSingleton(TimeProvider.System);
+        builder.Services.AddSingleton<INavigationService, MauiShellNavigationService>();
         builder.Services.AddSingleton<ErrorReportService>();
         builder.Services.AddTransient<LoggingHandler>();
         builder.Services.AddSingleton(sp =>
