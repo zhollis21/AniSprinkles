@@ -1,6 +1,9 @@
 using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using Syncfusion.Maui.Toolkit.Hosting;
+#if ANDROID
+using AniSprinkles.Platforms.Android;
+#endif
 
 namespace AniSprinkles;
 
@@ -48,6 +51,16 @@ public static class MauiProgram
         builder.Logging.AddFilter<FileLoggerProvider>("System", LogLevel.Warning);
         builder.Logging.AddFilter<FileLoggerProvider>("Sentry", LogLevel.Warning);
         builder.Logging.AddDebug();
+#endif
+
+#if ANDROID
+        // AddDebug() does NOT bridge to logcat on .NET MAUI Android (verified empirically).
+        // Without this provider, adb logcat shows nothing from the Microsoft.Extensions.Logging
+        // pipeline. Registered for all build configs so device diagnostics work in Release too.
+        builder.Logging.AddProvider(new AndroidLogcatLoggerProvider());
+        builder.Logging.AddFilter<AndroidLogcatLoggerProvider>("Microsoft", LogLevel.Warning);
+        builder.Logging.AddFilter<AndroidLogcatLoggerProvider>("System", LogLevel.Warning);
+        builder.Logging.AddFilter<AndroidLogcatLoggerProvider>("Sentry", LogLevel.Warning);
 #endif
 
         builder.Services.AddSingleton<ErrorReportService>();
