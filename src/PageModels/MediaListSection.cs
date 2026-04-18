@@ -14,6 +14,12 @@ public class MediaListSection : ObservableCollection<MediaListEntry>
     private bool _sortAscending;
     private string _filterText = string.Empty;
     private int _filteredCount;
+    // Bulk-update scope: lets the merger batch many per-section mutations into a single
+    // UpdateItems() (and therefore a single NotifyCollectionChanged Reset) on scope exit.
+    // Depth counter supports nested scopes; dirty flag skips the final UpdateItems when
+    // nothing actually mutated between Begin and End.
+    private int _bulkUpdateDepth;
+    private bool _bulkUpdateDirty;
 
     public MediaListSection(string title, bool isExpanded)
     {
@@ -82,7 +88,14 @@ public class MediaListSection : ObservableCollection<MediaListEntry>
 
             _isExpanded = value;
             OnPropertyChanged(new PropertyChangedEventArgs(nameof(IsExpanded)));
-            UpdateItems();
+            if (_bulkUpdateDepth > 0)
+            {
+                _bulkUpdateDirty = true;
+            }
+            else
+            {
+                UpdateItems();
+            }
         }
     }
 
@@ -92,7 +105,14 @@ public class MediaListSection : ObservableCollection<MediaListEntry>
         if (removed)
         {
             OnPropertyChanged(new PropertyChangedEventArgs(nameof(TotalCount)));
-            UpdateItems();
+            if (_bulkUpdateDepth > 0)
+            {
+                _bulkUpdateDirty = true;
+            }
+            else
+            {
+                UpdateItems();
+            }
         }
 
         return removed;
@@ -102,6 +122,12 @@ public class MediaListSection : ObservableCollection<MediaListEntry>
     {
         _allItems.Add(entry);
         OnPropertyChanged(new PropertyChangedEventArgs(nameof(TotalCount)));
+
+        if (_bulkUpdateDepth > 0)
+        {
+            _bulkUpdateDirty = true;
+            return;
+        }
 
         if (IsExpanded)
         {
@@ -120,9 +146,55 @@ public class MediaListSection : ObservableCollection<MediaListEntry>
         _allItems.AddRange(list);
         OnPropertyChanged(new PropertyChangedEventArgs(nameof(TotalCount)));
 
+        if (_bulkUpdateDepth > 0)
+        {
+            _bulkUpdateDirty = true;
+            return;
+        }
+
         if (IsExpanded)
         {
             ReplaceItems(_allItems);
+        }
+    }
+
+    /// <summary>
+    /// Begin a bulk-update scope. While the returned scope is alive, calls to
+    /// <see cref="AddItem"/>, <see cref="AddItems"/>, <see cref="RemoveItem"/>,
+    /// <see cref="ApplySort"/>, and <see cref="ApplyFilter"/> mark the section dirty
+    /// but skip the per-call <c>UpdateItems()</c>. On <see cref="IDisposable.Dispose"/>
+    /// of the outermost scope, a single <c>UpdateItems()</c> runs — producing one
+    /// Reset instead of one per mutation. Nested scopes are supported via a depth
+    /// counter; only the outermost Dispose triggers the rebuild.
+    /// </summary>
+    internal IDisposable BeginBulkUpdate()
+    {
+        _bulkUpdateDepth++;
+        return new BulkUpdateScope(this);
+    }
+
+    private void EndBulkUpdate()
+    {
+        if (--_bulkUpdateDepth == 0 && _bulkUpdateDirty)
+        {
+            _bulkUpdateDirty = false;
+            UpdateItems();
+        }
+    }
+
+    private sealed class BulkUpdateScope(MediaListSection owner) : IDisposable
+    {
+        private bool _disposed;
+
+        public void Dispose()
+        {
+            if (_disposed)
+            {
+                return;
+            }
+
+            _disposed = true;
+            owner.EndBulkUpdate();
         }
     }
 
@@ -153,7 +225,14 @@ public class MediaListSection : ObservableCollection<MediaListEntry>
     {
         _sortField = field;
         _sortAscending = ascending;
-        UpdateItems();
+        if (_bulkUpdateDepth > 0)
+        {
+            _bulkUpdateDirty = true;
+        }
+        else
+        {
+            UpdateItems();
+        }
     }
 
     /// <summary>
@@ -162,7 +241,15 @@ public class MediaListSection : ObservableCollection<MediaListEntry>
     public void ApplyFilter(string text)
     {
         _filterText = text ?? string.Empty;
-        UpdateItems();
+        if (_bulkUpdateDepth > 0)
+        {
+            _bulkUpdateDirty = true;
+        }
+        else
+        {
+            UpdateItems();
+        }
+
         OnPropertyChanged(new PropertyChangedEventArgs(nameof(TotalCount)));
     }
 
