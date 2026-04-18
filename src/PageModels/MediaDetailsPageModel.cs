@@ -422,6 +422,10 @@ namespace AniSprinkles.PageModels;
         var loadRequestId = Interlocked.Increment(ref _loadRequestSequence);
         var loadStopwatch = Stopwatch.StartNew();
 
+        _logger.LogInformation(
+            "MediaDetails LoadAsync enter load#{LoadRequestId} (mediaId={MediaId}, isBusy={IsBusy}, currentState={CurrentState}, loadedMediaId={LoadedMediaId}, hasListEntry={HasListEntry})",
+            loadRequestId, mediaId, IsBusy, CurrentState, _loadedMediaId, listEntry is not null);
+
         if (IsBusy)
         {
             _logger.LogInformation("NAVTRACE load#{LoadRequestId} skipped because details view model is already busy.", loadRequestId);

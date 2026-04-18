@@ -41,6 +41,18 @@ Look for rapid back-and-forth flips (sub-second Content↔InitialLoading, or Con
 ### NAVTRACE
 Navigation phase timings. `details load finished in Nms` > ~1500ms indicates the details-page fetch is blocking visible rendering. `ApplyQueryAttributes → OnAppearing` gap > 300ms suggests Shell transition contention.
 
+### LIFECYCLE (app log, Android-only)
+`LIFECYCLE MainActivity[#<hash>] On<Phase>` marks Android Activity lifecycle transitions. The `#hash` is `GetHashCode()` of the Activity instance — if the hash changes across a background cycle, the process survived but the Activity was destroyed and recreated (the classic trigger for stale `FragmentActivity` captures inside MAUI views). An `OnDestroy (isFinishing=False)` followed by a fresh `OnCreate` with a different hash confirms this.
+
+### LOADEDHOST (app log)
+`LOADEDHOST <Page> attach|detach (...)` brackets every write to `LoadedContentHost.Content` on `MyAnimePage` / `MediaDetailsPage` / `SettingsPage`. Correlate with Glide "destroyed activity" timestamps: the attach immediately preceding the cascade is the one that instantiated the Loaded*ContentView against a stale Activity. Repeated attach→detach→attach within ~1s indicates a state-flip feedback loop (usually auth-related).
+
+### LOADEDVIEW (app log)
+`LOADEDVIEW <Page>[#<hash>] constructed | OnHandlerChanged | RecyclerView handler attached (contextHash=#...)`. The `#hash` is per-view-instance; a new hash on each `LOADEDHOST attach` means the view is being fully re-materialized (cheap to log, expensive at runtime — triggers InitializeComponent, CollectionView rebind, font-icon Glide loads). The `RecyclerView contextHash` is the FragmentActivity Glide will capture — compare against the current `LIFECYCLE MainActivity` hash: mismatch confirms stale capture.
+
+### AUTH token-check (app log)
+`AUTH token-check: absent | expired, signing out | valid` fires at every `AuthService.GetAccessTokenAsync` call. The "expired, signing out" path wipes SecureStorage and flips `IsAuthenticated` to false — a routine token-refresh check becoming a full sign-out. On resume after background, this is the common trigger for `PageState: Content → Unauthenticated → InitialLoading → Content`.
+
 ## Drill-in
 
 When the summary flags something, go deeper without re-running the collector:

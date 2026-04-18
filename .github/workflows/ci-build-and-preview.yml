@@ -41,7 +41,7 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('src/AniSprinkles.csproj') }}
+          key: ${{ runner.os }}-nuget-${{ hashFiles('AniSprinkles.slnx', 'src/AniSprinkles.csproj', 'tests/**/*.csproj') }}
           restore-keys: |
             ${{ runner.os }}-nuget-
 
@@ -49,7 +49,7 @@ jobs:
         run: dotnet workload install maui-android
 
       - name: Restore Dependencies
-        run: dotnet restore src/AniSprinkles.csproj
+        run: dotnet restore AniSprinkles.slnx
 
       - name: Build
         run: |
@@ -67,11 +67,65 @@ jobs:
           if [ -n "$TEST_PROJECTS" ]; then
             echo "Found test projects:"
             echo "$TEST_PROJECTS"
+
+            {
+              echo "## 🧪 Unit Tests"
+              echo ""
+              echo "| Project | Result | Passed | Failed | Skipped | Duration |"
+              echo "| --- | :---: | ---: | ---: | ---: | ---: |"
+            } >> "$GITHUB_STEP_SUMMARY"
+
+            OVERALL_EXIT=0
             for proj in $TEST_PROJECTS; do
-              dotnet test "$proj" --no-restore --verbosity normal
+              PROJ_NAME=$(basename "$proj" .csproj)
+              set +e
+              OUTPUT=$(dotnet test "$proj" --no-restore --verbosity normal 2>&1)
+              PROJ_EXIT=$?
+              set -e
+              echo "$OUTPUT"
+
+              # Support both output formats:
+              #   New runner:  "Passed!  - Failed: 0, Passed: 25, ..., Duration: 200 ms"
+              #   VSTest/CI:   "Test Run Successful.\nTotal tests: 25\n     Passed: 25\n Total time: 0.71 Seconds"
+              NEW_LINE=$(echo "$OUTPUT" | grep -E "^(Passed|Failed)!  - " | tail -1)
+              VSTEST_LINE=$(echo "$OUTPUT" | grep -E "^Test Run (Successful|Failed)\." | tail -1)
+
+              if [ -n "$NEW_LINE" ]; then
+                P=$(echo "$NEW_LINE" | grep -oP 'Passed:\s*\K\d+' | head -1);  P="${P:-?}"
+                F=$(echo "$NEW_LINE" | grep -oP 'Failed:\s*\K\d+' | head -1);  F="${F:-?}"
+                S=$(echo "$NEW_LINE" | grep -oP 'Skipped:\s*\K\d+' | head -1); S="${S:-?}"
+                D=$(echo "$NEW_LINE" | grep -oP 'Duration:\s*\K[\d.]+ ms' | head -1); D="${D:-?}"
+                PARSED=1
+              elif [ -n "$VSTEST_LINE" ]; then
+                P=$(echo "$OUTPUT" | grep -oP '^\s+Passed:\s*\K\d+'  | head -1); P="${P:-0}"
+                F=$(echo "$OUTPUT" | grep -oP '^\s+Failed:\s*\K\d+'  | head -1); F="${F:-0}"
+                S=$(echo "$OUTPUT" | grep -oP '^\s+Skipped:\s*\K\d+' | head -1); S="${S:-0}"
+                D_RAW=$(echo "$OUTPUT" | grep -oP 'Total time:\s*\K[\d.]+' | head -1)
+                D="${D_RAW:+${D_RAW}s}"; D="${D:-?}"
+                PARSED=1
+              else
+                PARSED=0
+              fi
+
+              # Pass/fail is keyed off the test runner's exit code, not our ability to parse
+              # its output — a runner output format change should never fail CI on its own.
+              if [ "$PROJ_EXIT" -eq 0 ]; then ICON="✅"; else ICON="❌"; OVERALL_EXIT=1; fi
+              if [ "$PARSED" -eq 1 ]; then
+                echo "| \`$PROJ_NAME\` | $ICON | $P | $F | $S | $D |" >> "$GITHUB_STEP_SUMMARY"
+              else
+                echo "| \`$PROJ_NAME\` | $ICON | ? | ? | ? | ? |" >> "$GITHUB_STEP_SUMMARY"
+              fi
             done
+
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            exit $OVERALL_EXIT
           else
             echo "::notice::No test projects found. Tests will run automatically when added."
+            {
+              echo "## 🧪 Unit Tests"
+              echo ""
+              echo "> ℹ️ No test projects found."
+            } >> "$GITHUB_STEP_SUMMARY"
           fi
 
       - name: Upload APK

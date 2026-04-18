@@ -26,13 +26,20 @@ public class AuthService : IAuthService
             await LoadAsync(cancellationToken);
         }
 
+        if (AccessToken is null)
+        {
+            _logger.LogInformation("AUTH token-check: absent (no token in SecureStorage).");
+            return null;
+        }
+
         if (IsExpired())
         {
-            _logger.LogInformation("AniList access token expired.");
+            _logger.LogInformation("AUTH token-check: expired (expiresAt={ExpiresAt}), signing out.", ExpiresAt);
             await SignOutAsync();
             return null;
         }
 
+        _logger.LogInformation("AUTH token-check: valid (expiresAt={ExpiresAt}).", ExpiresAt);
         return AccessToken;
     }
 
