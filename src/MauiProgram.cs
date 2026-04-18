@@ -37,21 +37,35 @@ public static class MauiProgram
                 fonts.AddFont("SegoeUI-Semibold.ttf", "SegoeSemibold");
             });
 
-#if DEBUG
         var logDirectory = Path.Combine(FileSystem.Current.AppDataDirectory, "logs");
+#if DEBUG
+        // Debug builds keep full verbosity for the solo-dev install. Re-evaluate the
+        // app-namespace level before first public release.
+        var fileLogMinimumLevel = LogLevel.Debug;
+        const long fileLogMaxBytes = 1024 * 1024; // 1 MB
+        const int fileLogRetainedFiles = 3;
         builder.Logging.AddFilter("Microsoft", LogLevel.Warning);
         builder.Logging.AddFilter("System", LogLevel.Warning);
         builder.Logging.AddFilter("Sentry", LogLevel.Warning);
-        // Debug-level app logs are intentionally kept on for pre-production development
-        // (solo-dev install). Re-evaluate before first public release. Framework namespaces
-        // (Microsoft/System/Sentry) stay capped at Warning to avoid firehose output.
-        builder.Logging.AddProvider(new FileLoggerProvider(logDirectory, minimumLevel: LogLevel.Debug));
-        builder.Logging.AddFilter<FileLoggerProvider>(string.Empty, LogLevel.Debug);
+        builder.Logging.AddDebug();
+#else
+        // Release builds keep a small on-device ring buffer for user-shared diagnostics.
+        // Sentry already captures Warning+ to the cloud; this is the offline fallback and
+        // hard-capped so it can't grow silently on long-running installs.
+        var fileLogMinimumLevel = LogLevel.Warning;
+        const long fileLogMaxBytes = 256 * 1024; // 256 KB
+        const int fileLogRetainedFiles = 3;
+#endif
+
+        builder.Logging.AddProvider(new FileLoggerProvider(
+            logDirectory,
+            minimumLevel: fileLogMinimumLevel,
+            maxFileSizeBytes: fileLogMaxBytes,
+            retainedFiles: fileLogRetainedFiles));
+        builder.Logging.AddFilter<FileLoggerProvider>(string.Empty, fileLogMinimumLevel);
         builder.Logging.AddFilter<FileLoggerProvider>("Microsoft", LogLevel.Warning);
         builder.Logging.AddFilter<FileLoggerProvider>("System", LogLevel.Warning);
         builder.Logging.AddFilter<FileLoggerProvider>("Sentry", LogLevel.Warning);
-        builder.Logging.AddDebug();
-#endif
 
 #if ANDROID
         // AddDebug() does NOT bridge to logcat on .NET MAUI Android (verified empirically).
