@@ -1,4 +1,6 @@
 using AniSprinkles.PageModels;
+using AniSprinkles.Utilities;
+using Microsoft.Extensions.Logging;
 
 namespace AniSprinkles.Pages;
 
@@ -10,10 +12,20 @@ public partial class SettingsPage : ContentPage
     private bool _hasAppeared;
     private bool _hasCreatedLoadedContent;
     private int _loadVersion;
+    private readonly ILogger<SettingsPage>? _logger;
 
     public SettingsPage()
     {
         InitializeComponent();
+
+        try
+        {
+            _logger = ServiceProviderHelper.GetServiceProvider()
+                .GetService<ILoggerFactory>()?.CreateLogger<SettingsPage>();
+        }
+        catch (InvalidOperationException)
+        {
+        }
     }
 
     public SettingsPage(SettingsPageModel viewModel)
@@ -112,6 +124,9 @@ public partial class SettingsPage : ContentPage
 
         if (shouldShow && !_hasCreatedLoadedContent)
         {
+            _logger?.LogInformation(
+                "LOADEDHOST Settings attach (isAuth={IsAuth}, currentState={CurrentState})",
+                _viewModel?.IsAuthenticated, _viewModel?.CurrentState);
             LoadedContentHost.Content = new Views.SettingsLoadedContentView
             {
                 BindingContext = _viewModel
@@ -120,6 +135,10 @@ public partial class SettingsPage : ContentPage
         }
         else if (!shouldShow && _hasCreatedLoadedContent)
         {
+            _logger?.LogInformation(
+                "LOADEDHOST Settings detach (isAuth={IsAuth}, currentState={CurrentState})",
+                _viewModel?.IsAuthenticated, _viewModel?.CurrentState);
+            HandlerHelper.DisconnectAll(LoadedContentHost.Content);
             LoadedContentHost.Content = null;
             _hasCreatedLoadedContent = false;
         }

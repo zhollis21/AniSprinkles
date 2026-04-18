@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>AniSprinkles.UnitTests</RootNamespace>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+  </ItemGroup>
+
+  <!--
+    AniSprinkles.csproj targets net10.0-android, which is not a compatible ProjectReference
+    target for a plain net10.0 test project. Instead we link-compile the specific pure-algorithm
+    source files the merger exercises. The MAUI-dependent half of AppSettings lives in
+    AppSettings.Storage.cs, which is deliberately NOT linked here.
+  -->
+  <ItemGroup>
+    <Compile Include="..\..\src\Models\*.cs" LinkBase="_linked\Models" />
+    <Compile Include="..\..\src\Serialization\StringOrNumberJsonConverter.cs" LinkBase="_linked\Serialization" />
+    <Compile Include="..\..\src\Utilities\AppSettings.cs" LinkBase="_linked\Utilities" />
+    <Compile Include="..\..\src\PageModels\SortField.cs" LinkBase="_linked\PageModels" />
+    <Compile Include="..\..\src\PageModels\MediaListSection.cs" LinkBase="_linked\PageModels" />
+    <Compile Include="..\..\src\PageModels\MediaListSectionsMerger.cs" LinkBase="_linked\PageModels" />
+  </ItemGroup>
+
+</Project>

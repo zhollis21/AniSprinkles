@@ -39,8 +39,11 @@ public static class MauiProgram
         builder.Logging.AddFilter("Microsoft", LogLevel.Warning);
         builder.Logging.AddFilter("System", LogLevel.Warning);
         builder.Logging.AddFilter("Sentry", LogLevel.Warning);
-        builder.Logging.AddProvider(new FileLoggerProvider(logDirectory, minimumLevel: LogLevel.Information));
-        builder.Logging.AddFilter<FileLoggerProvider>(string.Empty, LogLevel.Information);
+        // Debug-level app logs are intentionally kept on for pre-production development
+        // (solo-dev install). Re-evaluate before first public release. Framework namespaces
+        // (Microsoft/System/Sentry) stay capped at Warning to avoid firehose output.
+        builder.Logging.AddProvider(new FileLoggerProvider(logDirectory, minimumLevel: LogLevel.Debug));
+        builder.Logging.AddFilter<FileLoggerProvider>(string.Empty, LogLevel.Debug);
         builder.Logging.AddFilter<FileLoggerProvider>("Microsoft", LogLevel.Warning);
         builder.Logging.AddFilter<FileLoggerProvider>("System", LogLevel.Warning);
         builder.Logging.AddFilter<FileLoggerProvider>("Sentry", LogLevel.Warning);

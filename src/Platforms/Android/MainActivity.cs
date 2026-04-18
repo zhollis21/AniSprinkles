@@ -23,9 +23,15 @@ namespace AniSprinkles;
         ConfigChanges.Density)]
 public class MainActivity : MauiAppCompatActivity
 {
+    private const string LifecycleTag = "AniSprinklesLifecycle";
+
+    private string ActivityIdentity
+        => $"MainActivity[#{GetHashCode():X}]";
+
     protected override void OnCreate(Bundle? savedInstanceState)
     {
         base.OnCreate(savedInstanceState);
+        Log.Info(LifecycleTag, $"LIFECYCLE {ActivityIdentity} OnCreate (savedInstanceState={(savedInstanceState is null ? "null" : "present")})");
 
         // Catch unhandled exceptions from Java/Android side
         Android.Runtime.AndroidEnvironment.UnhandledExceptionRaiser += (sender, args) =>
@@ -92,6 +98,36 @@ public class MainActivity : MauiAppCompatActivity
         {
             Log.Error(nameof(MainActivity), $"Error in OnCreate: {ex.Message}");
         }
+    }
+
+    protected override void OnStart()
+    {
+        base.OnStart();
+        Log.Info(LifecycleTag, $"LIFECYCLE {ActivityIdentity} OnStart");
+    }
+
+    protected override void OnResume()
+    {
+        base.OnResume();
+        Log.Info(LifecycleTag, $"LIFECYCLE {ActivityIdentity} OnResume");
+    }
+
+    protected override void OnPause()
+    {
+        Log.Info(LifecycleTag, $"LIFECYCLE {ActivityIdentity} OnPause");
+        base.OnPause();
+    }
+
+    protected override void OnStop()
+    {
+        Log.Info(LifecycleTag, $"LIFECYCLE {ActivityIdentity} OnStop");
+        base.OnStop();
+    }
+
+    protected override void OnDestroy()
+    {
+        Log.Info(LifecycleTag, $"LIFECYCLE {ActivityIdentity} OnDestroy (isFinishing={IsFinishing})");
+        base.OnDestroy();
     }
 
     private int GetWindowBackgroundColor()

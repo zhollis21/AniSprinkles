@@ -45,15 +45,15 @@
                                        Style="{StaticResource Caption1}"
                                        TextColor="{StaticResource Gray400}" />
                                 <HorizontalStackLayout Spacing="3" IsVisible="{Binding HasScore}">
-                                    <Image WidthRequest="12" HeightRequest="12" VerticalOptions="Center"
-                                           IsVisible="{Binding IsNumericScoreFormat}">
-                                        <Image.Source>
-                                            <FontImageSource Glyph="{x:Static icons:FluentIconsFilled.Star24}"
-                                                             FontFamily="{x:Static icons:FluentIconsFilled.FontFamily}"
-                                                             Color="#FFD700"
-                                                             Size="12" />
-                                        </Image.Source>
-                                    </Image>
+                                    <Label Text="{x:Static icons:FluentIconsFilled.Star24}"
+                                           FontFamily="{x:Static icons:FluentIconsFilled.FontFamily}"
+                                           TextColor="#FFD700"
+                                           FontSize="12"
+                                           WidthRequest="12" HeightRequest="12"
+                                           HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                                           VerticalOptions="Center"
+                                           AutomationProperties.IsInAccessibleTree="False"
+                                           IsVisible="{Binding IsNumericScoreFormat}" />
                                     <Label Text="{Binding ScoreDisplay}"
                                            Style="{StaticResource Caption1}"
                                            TextColor="{StaticResource Gray400}">
@@ -88,15 +88,13 @@
                                     Command="{Binding BindingContext.IncrementProgressCommand, Source={RelativeSource AncestorType={x:Type CollectionView}}}"
                                     CommandParameter="{Binding .}" />
                             </Border.GestureRecognizers>
-                            <Image WidthRequest="18" HeightRequest="18"
-                                   HorizontalOptions="Center" VerticalOptions="Center">
-                                <Image.Source>
-                                    <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Add24}"
-                                                     FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                     Color="{Binding Media.DisplayTitle, Converter={StaticResource RainbowAccentConverter}}"
-                                                     Size="18" />
-                                </Image.Source>
-                            </Image>
+                            <Label Text="{x:Static icons:FluentIconsRegular.Add24}"
+                                   FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                   TextColor="{Binding Media.DisplayTitle, Converter={StaticResource RainbowAccentConverter}}"
+                                   FontSize="18"
+                                   HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                                   HorizontalOptions="Center" VerticalOptions="Center"
+                                   AutomationProperties.IsInAccessibleTree="False" />
                         </Border>
                     </Grid>
                 </Border>
@@ -134,15 +132,15 @@
                                 Margin="0,0,6,6"
                                 IsVisible="{Binding HasScore}">
                             <HorizontalStackLayout Spacing="3">
-                                <Image WidthRequest="10" HeightRequest="10" VerticalOptions="Center"
-                                       IsVisible="{Binding IsNumericScoreFormat}">
-                                    <Image.Source>
-                                        <FontImageSource Glyph="{x:Static icons:FluentIconsFilled.Star24}"
-                                                         FontFamily="{x:Static icons:FluentIconsFilled.FontFamily}"
-                                                         Color="#FFD700"
-                                                         Size="10" />
-                                    </Image.Source>
-                                </Image>
+                                <Label Text="{x:Static icons:FluentIconsFilled.Star24}"
+                                       FontFamily="{x:Static icons:FluentIconsFilled.FontFamily}"
+                                       TextColor="#FFD700"
+                                       FontSize="10"
+                                       WidthRequest="10" HeightRequest="10"
+                                       HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                                       VerticalOptions="Center"
+                                       AutomationProperties.IsInAccessibleTree="False"
+                                       IsVisible="{Binding IsNumericScoreFormat}" />
                                 <Label Text="{Binding ScoreDisplay}"
                                        Style="{StaticResource Caption2}"
                                        TextColor="White">
@@ -182,15 +180,13 @@
                                             Command="{Binding BindingContext.IncrementProgressCommand, Source={RelativeSource AncestorType={x:Type CollectionView}}}"
                                             CommandParameter="{Binding .}" />
                                     </Border.GestureRecognizers>
-                                    <Image WidthRequest="14" HeightRequest="14"
-                                           HorizontalOptions="Center" VerticalOptions="Center">
-                                        <Image.Source>
-                                            <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Add24}"
-                                                             FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                             Color="{Binding Media.DisplayTitle, Converter={StaticResource RainbowAccentConverter}}"
-                                                             Size="14" />
-                                        </Image.Source>
-                                    </Image>
+                                    <Label Text="{x:Static icons:FluentIconsRegular.Add24}"
+                                           FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                           TextColor="{Binding Media.DisplayTitle, Converter={StaticResource RainbowAccentConverter}}"
+                                           FontSize="14"
+                                           HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                                           HorizontalOptions="Center" VerticalOptions="Center"
+                                           AutomationProperties.IsInAccessibleTree="False" />
                                 </Border>
                             </Grid>
                             <!-- Airing info -->
@@ -227,15 +223,15 @@
                            VerticalTextAlignment="Center" />
                     <HorizontalStackLayout Grid.Column="2" Spacing="3" VerticalOptions="Center"
                                            IsVisible="{Binding HasScore}">
-                        <Image WidthRequest="12" HeightRequest="12" VerticalOptions="Center"
-                               IsVisible="{Binding IsNumericScoreFormat}">
-                            <Image.Source>
-                                <FontImageSource Glyph="{x:Static icons:FluentIconsFilled.Star24}"
-                                                 FontFamily="{x:Static icons:FluentIconsFilled.FontFamily}"
-                                                 Color="#FFD700"
-                                                 Size="12" />
-                            </Image.Source>
-                        </Image>
+                        <Label Text="{x:Static icons:FluentIconsFilled.Star24}"
+                               FontFamily="{x:Static icons:FluentIconsFilled.FontFamily}"
+                               TextColor="#FFD700"
+                               FontSize="12"
+                               WidthRequest="12" HeightRequest="12"
+                               HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                               VerticalOptions="Center"
+                               AutomationProperties.IsInAccessibleTree="False"
+                               IsVisible="{Binding IsNumericScoreFormat}" />
                         <Label Text="{Binding ScoreDisplay}"
                                Style="{StaticResource Caption1}"
                                TextColor="{StaticResource Gray400}"
@@ -262,15 +258,13 @@
                                 Command="{Binding BindingContext.IncrementProgressCommand, Source={RelativeSource AncestorType={x:Type CollectionView}}}"
                                 CommandParameter="{Binding .}" />
                         </Border.GestureRecognizers>
-                        <Image WidthRequest="14" HeightRequest="14"
-                               HorizontalOptions="Center" VerticalOptions="Center">
-                            <Image.Source>
-                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Add24}"
-                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                 Color="{Binding Media.DisplayTitle, Converter={StaticResource RainbowAccentConverter}}"
-                                                 Size="14" />
-                            </Image.Source>
-                        </Image>
+                        <Label Text="{x:Static icons:FluentIconsRegular.Add24}"
+                               FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                               TextColor="{Binding Media.DisplayTitle, Converter={StaticResource RainbowAccentConverter}}"
+                               FontSize="14"
+                               HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                               HorizontalOptions="Center" VerticalOptions="Center"
+                               AutomationProperties.IsInAccessibleTree="False" />
                     </Border>
                 </Grid>
             </DataTemplate>
@@ -286,14 +280,15 @@
                     </Border.GestureRecognizers>
                     <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="10">
                         <!-- Section icon -->
-                        <Image Grid.Column="0" WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
-                            <Image.Source>
-                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.List24}"
-                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                 Color="{Binding Title, Converter={StaticResource RainbowAccentConverter}}"
-                                                 Size="20" />
-                            </Image.Source>
-                        </Image>
+                        <Label Grid.Column="0"
+                               Text="{x:Static icons:FluentIconsRegular.List24}"
+                               FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                               TextColor="{Binding Title, Converter={StaticResource RainbowAccentConverter}}"
+                               FontSize="20"
+                               WidthRequest="20" HeightRequest="20"
+                               HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                               VerticalOptions="Center"
+                               AutomationProperties.IsInAccessibleTree="False" />
                         <!-- Section title -->
                         <Label Grid.Column="1"
                                Text="{Binding Title}"
@@ -307,19 +302,21 @@
                                    TextColor="{Binding Title, Converter={StaticResource RainbowAccentConverter}}" />
                         </Border>
                         <!-- Chevron (down when collapsed, up when expanded) -->
-                        <Image Grid.Column="3" WidthRequest="16" HeightRequest="16" VerticalOptions="Center">
-                            <Image.Triggers>
-                                <DataTrigger TargetType="Image" Binding="{Binding IsExpanded}" Value="True">
+                        <Label Grid.Column="3"
+                               Text="{x:Static icons:FluentIconsRegular.ChevronDown24}"
+                               FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                               TextColor="{Binding Title, Converter={StaticResource RainbowAccentConverter}}"
+                               FontSize="16"
+                               WidthRequest="16" HeightRequest="16"
+                               HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                               VerticalOptions="Center"
+                               AutomationProperties.IsInAccessibleTree="False">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label" Binding="{Binding IsExpanded}" Value="True">
                                     <Setter Property="Rotation" Value="180" />
                                 </DataTrigger>
-                            </Image.Triggers>
-                            <Image.Source>
-                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.ChevronDown24}"
-                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                 Color="{Binding Title, Converter={StaticResource RainbowAccentConverter}}"
-                                                 Size="16" />
-                            </Image.Source>
-                        </Image>
+                            </Label.Triggers>
+                        </Label>
                     </Grid>
                 </Border>
             </DataTemplate>
@@ -353,15 +350,15 @@
                         Padding="4,0"
                         IsVisible="{Binding IsSearchVisible}">
                     <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
-                        <Image Grid.Column="0" WidthRequest="18" HeightRequest="18"
-                               VerticalOptions="Center" Margin="8,0,0,0">
-                            <Image.Source>
-                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Search24}"
-                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                 Color="{StaticResource Gray400}"
-                                                 Size="18" />
-                            </Image.Source>
-                        </Image>
+                        <Label Grid.Column="0"
+                               Text="{x:Static icons:FluentIconsRegular.Search24}"
+                               FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                               TextColor="{StaticResource Gray400}"
+                               FontSize="18"
+                               WidthRequest="18" HeightRequest="18"
+                               HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                               VerticalOptions="Center" Margin="8,0,0,0"
+                               AutomationProperties.IsInAccessibleTree="False" />
                         <Entry Grid.Column="1"
                                Placeholder="Search anime..."
                                Text="{Binding SearchText}"
@@ -386,25 +383,25 @@
                                 <TapGestureRecognizer Command="{Binding SetSortCommand}" CommandParameter="LastUpdated" />
                             </Border.GestureRecognizers>
                             <HorizontalStackLayout Spacing="4">
-                                <Image WidthRequest="14" HeightRequest="14" VerticalOptions="Center">
-                                    <Image.Source>
-                                        <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Clock24}"
-                                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                         Color="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=LastUpdated}"
-                                                         Size="14" />
-                                    </Image.Source>
-                                </Image>
+                                <Label Text="{x:Static icons:FluentIconsRegular.Clock24}"
+                                       FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                       TextColor="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=LastUpdated}"
+                                       FontSize="14"
+                                       WidthRequest="14" HeightRequest="14"
+                                       HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                                       VerticalOptions="Center"
+                                       AutomationProperties.IsInAccessibleTree="False" />
                                 <Label Text="Updated" Style="{StaticResource ChipLabelStyle}"
                                        TextColor="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=LastUpdated}" />
-                                <Image WidthRequest="12" HeightRequest="12" VerticalOptions="Center"
-                                       IsVisible="{Binding CurrentSortField, Converter={StaticResource SortFieldActiveConverter}, ConverterParameter=LastUpdated}">
-                                    <Image.Source>
-                                        <FontImageSource Glyph="{Binding SortDirectionGlyph}"
-                                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                         Color="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=LastUpdated}"
-                                                         Size="12" />
-                                    </Image.Source>
-                                </Image>
+                                <Label Text="{Binding SortDirectionGlyph}"
+                                       FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                       TextColor="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=LastUpdated}"
+                                       FontSize="12"
+                                       WidthRequest="12" HeightRequest="12"
+                                       HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                                       VerticalOptions="Center"
+                                       AutomationProperties.IsInAccessibleTree="False"
+                                       IsVisible="{Binding CurrentSortField, Converter={StaticResource SortFieldActiveConverter}, ConverterParameter=LastUpdated}" />
                             </HorizontalStackLayout>
                         </Border>
 
@@ -416,25 +413,25 @@
                                 <TapGestureRecognizer Command="{Binding SetSortCommand}" CommandParameter="Title" />
                             </Border.GestureRecognizers>
                             <HorizontalStackLayout Spacing="4">
-                                <Image WidthRequest="14" HeightRequest="14" VerticalOptions="Center">
-                                    <Image.Source>
-                                        <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Book24}"
-                                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                         Color="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Title}"
-                                                         Size="14" />
-                                    </Image.Source>
-                                </Image>
+                                <Label Text="{x:Static icons:FluentIconsRegular.Book24}"
+                                       FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                       TextColor="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Title}"
+                                       FontSize="14"
+                                       WidthRequest="14" HeightRequest="14"
+                                       HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                                       VerticalOptions="Center"
+                                       AutomationProperties.IsInAccessibleTree="False" />
                                 <Label Text="Title" Style="{StaticResource ChipLabelStyle}"
                                        TextColor="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Title}" />
-                                <Image WidthRequest="12" HeightRequest="12" VerticalOptions="Center"
-                                       IsVisible="{Binding CurrentSortField, Converter={StaticResource SortFieldActiveConverter}, ConverterParameter=Title}">
-                                    <Image.Source>
-                                        <FontImageSource Glyph="{Binding SortDirectionGlyph}"
-                                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                         Color="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Title}"
-                                                         Size="12" />
-                                    </Image.Source>
-                                </Image>
+                                <Label Text="{Binding SortDirectionGlyph}"
+                                       FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                       TextColor="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Title}"
+                                       FontSize="12"
+                                       WidthRequest="12" HeightRequest="12"
+                                       HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                                       VerticalOptions="Center"
+                                       AutomationProperties.IsInAccessibleTree="False"
+                                       IsVisible="{Binding CurrentSortField, Converter={StaticResource SortFieldActiveConverter}, ConverterParameter=Title}" />
                             </HorizontalStackLayout>
                         </Border>
 
@@ -446,25 +443,25 @@
                                 <TapGestureRecognizer Command="{Binding SetSortCommand}" CommandParameter="Score" />
                             </Border.GestureRecognizers>
                             <HorizontalStackLayout Spacing="4">
-                                <Image WidthRequest="14" HeightRequest="14" VerticalOptions="Center">
-                                    <Image.Source>
-                                        <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Star24}"
-                                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                         Color="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Score}"
-                                                         Size="14" />
-                                    </Image.Source>
-                                </Image>
+                                <Label Text="{x:Static icons:FluentIconsRegular.Star24}"
+                                       FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                       TextColor="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Score}"
+                                       FontSize="14"
+                                       WidthRequest="14" HeightRequest="14"
+                                       HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                                       VerticalOptions="Center"
+                                       AutomationProperties.IsInAccessibleTree="False" />
                                 <Label Text="My Score" Style="{StaticResource ChipLabelStyle}"
                                        TextColor="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Score}" />
-                                <Image WidthRequest="12" HeightRequest="12" VerticalOptions="Center"
-                                       IsVisible="{Binding CurrentSortField, Converter={StaticResource SortFieldActiveConverter}, ConverterParameter=Score}">
-                                    <Image.Source>
-                                        <FontImageSource Glyph="{Binding SortDirectionGlyph}"
-                                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                         Color="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Score}"
-                                                         Size="12" />
-                                    </Image.Source>
-                                </Image>
+                                <Label Text="{Binding SortDirectionGlyph}"
+                                       FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                       TextColor="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Score}"
+                                       FontSize="12"
+                                       WidthRequest="12" HeightRequest="12"
+                                       HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                                       VerticalOptions="Center"
+                                       AutomationProperties.IsInAccessibleTree="False"
+                                       IsVisible="{Binding CurrentSortField, Converter={StaticResource SortFieldActiveConverter}, ConverterParameter=Score}" />
                             </HorizontalStackLayout>
                         </Border>
 
@@ -476,25 +473,25 @@
                                 <TapGestureRecognizer Command="{Binding SetSortCommand}" CommandParameter="AverageScore" />
                             </Border.GestureRecognizers>
                             <HorizontalStackLayout Spacing="4">
-                                <Image WidthRequest="14" HeightRequest="14" VerticalOptions="Center">
-                                    <Image.Source>
-                                        <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.People24}"
-                                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                         Color="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=AverageScore}"
-                                                         Size="14" />
-                                    </Image.Source>
-                                </Image>
+                                <Label Text="{x:Static icons:FluentIconsRegular.People24}"
+                                       FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                       TextColor="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=AverageScore}"
+                                       FontSize="14"
+                                       WidthRequest="14" HeightRequest="14"
+                                       HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                                       VerticalOptions="Center"
+                                       AutomationProperties.IsInAccessibleTree="False" />
                                 <Label Text="Avg Score" Style="{StaticResource ChipLabelStyle}"
                                        TextColor="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=AverageScore}" />
-                                <Image WidthRequest="12" HeightRequest="12" VerticalOptions="Center"
-                                       IsVisible="{Binding CurrentSortField, Converter={StaticResource SortFieldActiveConverter}, ConverterParameter=AverageScore}">
-                                    <Image.Source>
-                                        <FontImageSource Glyph="{Binding SortDirectionGlyph}"
-                                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                         Color="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=AverageScore}"
-                                                         Size="12" />
-                                    </Image.Source>
-                                </Image>
+                                <Label Text="{Binding SortDirectionGlyph}"
+                                       FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                       TextColor="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=AverageScore}"
+                                       FontSize="12"
+                                       WidthRequest="12" HeightRequest="12"
+                                       HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                                       VerticalOptions="Center"
+                                       AutomationProperties.IsInAccessibleTree="False"
+                                       IsVisible="{Binding CurrentSortField, Converter={StaticResource SortFieldActiveConverter}, ConverterParameter=AverageScore}" />
                             </HorizontalStackLayout>
                         </Border>
 
@@ -525,14 +522,14 @@
                                     <Setter Property="IsVisible" Value="False" />
                                 </DataTrigger>
                             </VerticalStackLayout.Triggers>
-                            <Image WidthRequest="48" HeightRequest="48" HorizontalOptions="Center" Opacity="0.5">
-                                <Image.Source>
-                                    <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Search24}"
-                                                     FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                     Color="{StaticResource Gray400}"
-                                                     Size="48" />
-                                </Image.Source>
-                            </Image>
+                            <Label Text="{x:Static icons:FluentIconsRegular.Search24}"
+                                   FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                   TextColor="{StaticResource Gray400}"
+                                   FontSize="48"
+                                   WidthRequest="48" HeightRequest="48"
+                                   HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                                   HorizontalOptions="Center" Opacity="0.5"
+                                   AutomationProperties.IsInAccessibleTree="False" />
                             <Label Text="No anime found"
                                    Style="{StaticResource Caption1}"
                                    TextColor="{StaticResource Gray400}"

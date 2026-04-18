@@ -1,6 +1,7 @@
 using AniSprinkles.PageModels;
 using AniSprinkles.Utilities;
 using IconFont.Maui.FluentIcons;
+using Microsoft.Extensions.Logging;
 
 namespace AniSprinkles.Pages;
 
@@ -14,6 +15,7 @@ public partial class MyAnimePage : ContentPage
     private int _loadVersion;
     private readonly ToolbarItem? _searchToolbarItem;
     private readonly ToolbarItem? _viewModeToolbarItem;
+    private readonly ILogger<MyAnimePage>? _logger;
 
     public MyAnimePage()
     {
@@ -21,6 +23,15 @@ public partial class MyAnimePage : ContentPage
         // Stash toolbar items so we can add/remove them based on auth state.
         _searchToolbarItem = SearchToolbarItem;
         _viewModeToolbarItem = ViewModeToolbarItem;
+
+        try
+        {
+            _logger = ServiceProviderHelper.GetServiceProvider()
+                .GetService<ILoggerFactory>()?.CreateLogger<MyAnimePage>();
+        }
+        catch (InvalidOperationException)
+        {
+        }
     }
 
     public MyAnimePage(MyAnimePageModel viewModel)
@@ -119,19 +130,27 @@ public partial class MyAnimePage : ContentPage
     private void UpdateLoadedContentHost()
     {
         var isError = _viewModel?.CurrentState == PageState.Error;
+        var isAuth = _viewModel?.IsAuthenticated == true;
 
-        if (_viewModel?.IsAuthenticated == true && !isError && !_hasCreatedLoadedContent)
+        if (isAuth && !isError && !_hasCreatedLoadedContent)
         {
             var view = new Views.MyAnimeLoadedContentView
             {
                 BindingContext = _viewModel
             };
 
+            _logger?.LogInformation(
+                "LOADEDHOST MyAnime attach (isAuth={IsAuth}, isError={IsError}, currentState={CurrentState})",
+                isAuth, isError, _viewModel?.CurrentState);
             LoadedContentHost.Content = view;
             _hasCreatedLoadedContent = true;
         }
-        else if ((_viewModel?.IsAuthenticated != true || isError) && _hasCreatedLoadedContent)
+        else if ((!isAuth || isError) && _hasCreatedLoadedContent)
         {
+            _logger?.LogInformation(
+                "LOADEDHOST MyAnime detach (isAuth={IsAuth}, isError={IsError}, currentState={CurrentState})",
+                isAuth, isError, _viewModel?.CurrentState);
+            HandlerHelper.DisconnectAll(LoadedContentHost.Content);
             LoadedContentHost.Content = null;
             _hasCreatedLoadedContent = false;
         }

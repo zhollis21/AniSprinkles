@@ -86,6 +86,7 @@ public partial class MediaDetailsPage : ContentPage, IQueryAttributable
         // view intact to avoid a costly XAML re-inflation that causes a multi-second hang.
         if (mediaId != _pendingMediaId || !_hasCreatedLoadedContent)
         {
+            HandlerHelper.DisconnectAll(LoadedContentHost.Content);
             LoadedContentHost.Content = null;
             _hasCreatedLoadedContent = false;
         }
@@ -226,6 +227,9 @@ public partial class MediaDetailsPage : ContentPage, IQueryAttributable
             {
                 try
                 {
+                    Logger.LogInformation(
+                        "LOADEDHOST MediaDetails attach (hasMedia={HasMedia}, isBusy={IsBusy}, currentState={CurrentState})",
+                        ViewModel.HasMedia, ViewModel.IsBusy, ViewModel.CurrentState);
                     // Keep first navigation frame lightweight: create the heavy details subtree only after
                     // data has loaded, so the user sees the loading page instantly.
                     LoadedContentHost.Content = new Views.MediaDetailsLoadedContentView
@@ -248,6 +252,10 @@ public partial class MediaDetailsPage : ContentPage, IQueryAttributable
         }
         else if (_hasCreatedLoadedContent)
         {
+            Logger.LogInformation(
+                "LOADEDHOST MediaDetails detach (hasMedia={HasMedia}, isBusy={IsBusy}, currentState={CurrentState})",
+                ViewModel.HasMedia, ViewModel.IsBusy, ViewModel.CurrentState);
+            HandlerHelper.DisconnectAll(LoadedContentHost.Content);
             LoadedContentHost.Content = null;
             _hasCreatedLoadedContent = false;
         }
