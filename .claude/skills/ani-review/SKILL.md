@@ -52,13 +52,64 @@ Review all code written in this session against the checklist below. Fix every i
 
 - Verified what exceptions methods actually throw before catching them
 
+**Public API surface**
+
+- Changes to public/internal types considered for callers inside and outside the session's scope
+- Breaking changes to shared types flagged explicitly
+
+**Error handling**
+
+- Failures visible to the user (via `ErrorReportService` / Sentry / UI state) rather than silently swallowed
+- `catch { }` and `catch (Exception) { logger.LogDebug(...) }` patterns scrutinized — is swallowing actually correct here?
+
+**Logging**
+
+- New error paths have log statements at the right level
+- No logging inside tight loops or hot paths that could flood logcat/file log
+- Log messages use structured parameters, not string interpolation
+
+**Tests**
+
+- New behavior has new tests; changed behavior has updated tests
+- Bug fixes include a regression test that fails without the fix
+- Tests cover failure paths, not just the happy path
+
+**Build & test health**
+
+- `dotnet build` passes with zero warnings
+- `dotnet test` green locally before presenting
+- No `#pragma warning disable` or `!` null-suppressions added without a comment explaining why
+
+**Dead code**
+
+- After refactors: removed usings, unreferenced private members, unused parameters, orphaned files
+- No commented-out code left behind
+
+**Scope discipline**
+
+- Change stays within what the task required — no opportunistic renames, reorders, or unrelated fixups bundled in. If unrelated issues are spotted during the work, note them and consider filing an issue rather than fixing them in the same change
+- No half-finished work (stubbed methods, `throw new NotImplementedException()`, empty branches) unless tracked by an issue referenced in a comment
+
+**Conventions**
+
+- New code matches surrounding style (naming, file organization, access modifiers, async patterns)
+- New abstractions follow existing patterns rather than introducing parallel ones
+
 **Comments and docs**
 
 - Match the final code, not an earlier draft
 
+**TODOs**
+
+- No new `TODO` / `FIXME` / `HACK` left behind unless tracked in an issue (reference the issue number)
+
 **All callers/call sites**
 
 - Checked existing code that interacts with what changed
+
+**Commit-readiness**
+
+- If multiple commits are planned, each builds and tests green on its own
 
 **Documentation**
 

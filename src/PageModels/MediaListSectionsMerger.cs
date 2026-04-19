@@ -104,169 +104,229 @@ public static class MediaListSectionsMerger
         int sectionsNeedingReset = 0;
         var sectionsTouched = new HashSet<MediaListSection>();
 
-        // Pass 1: process each new group — insert missing sections, diff entries against matching
-        // existing sections. Cross-section moves are performed via RemoveItem + AddItem so entry
-        // reference identity is preserved (guards against losing e.g. _pendingIncrementEntry).
-        for (var i = 0; i < ordered.Count; i++)
+        // Open a bulk-update scope per section on first mutation. Per-item AddItem/RemoveItem calls
+        // and the Pass-3 ApplySort/ApplyFilter only mark the section dirty; the final UpdateItems()
+        // (and therefore the single CollectionView Reset) runs when we Dispose the scopes in
+        // `finally`. Sections not touched by this merge pay zero cost. Try/finally guarantees scope
+        // cleanup even if the merge throws mid-way.
+        var bulkScopes = new Dictionary<MediaListSection, IDisposable>();
+        IDisposable ScopeFor(MediaListSection section)
         {
-            var newGroup = ordered[i];
-            var existingSection = FindSectionByTitle(existing, newGroup.Name);
-
-            if (existingSection is null)
+            if (!bulkScopes.TryGetValue(section, out var scope))
             {
-                // Brand new section. Seed with new entries, reusing existing MediaListEntry references
-                // where the MediaId already exists in another section (status-change move).
-                var defaultExpanded = existing.Count == 0 && i == 0;
-                var section = new MediaListSection(newGroup.Name, defaultExpanded);
-                var seedEntries = new List<MediaListEntry>(newGroup.Entries.Count);
+                scope = section.BeginBulkUpdate();
+                bulkScopes[section] = scope;
+            }
 
-                foreach (var e in newGroup.Entries)
+            return scope;
+        }
+
+        int entriesRemoved;
+        try
+        {
+            // Pass 1: process each new group — insert missing sections, diff entries against matching
+            // existing sections. Cross-section moves are performed via RemoveItem + AddItem so entry
+            // reference identity is preserved (guards against losing e.g. _pendingIncrementEntry).
+            for (var i = 0; i < ordered.Count; i++)
+            {
+                var newGroup = ordered[i];
+                var existingSection = FindSectionByTitle(existing, newGroup.Name);
+
+                if (existingSection is null)
                 {
-                    if (entriesById.TryGetValue(e.MediaId, out var match))
+                    // Brand new section. Seed with new entries, reusing existing MediaListEntry references
+                    // where the MediaId already exists in another section (status-change move).
+                    var defaultExpanded = existing.Count == 0 && i == 0;
+                    var section = new MediaListSection(newGroup.Name, defaultExpanded);
+                    var seedEntries = new List<MediaListEntry>(newGroup.Entries.Count);
+
+                    foreach (var e in newGroup.Entries)
                     {
-                        match.Owner.RemoveItem(match.Entry);
-                        sectionsTouched.Add(match.Owner);
-                        UpdateInPlace(match.Entry, e);
-                        seedEntries.Add(match.Entry);
-                        entriesMoved++;
-                        entriesUpdated++;
-                        entriesById[e.MediaId] = (match.Entry, section);
+                        if (entriesById.TryGetValue(e.MediaId, out var match))
+                        {
+                            ScopeFor(match.Owner);
+                            match.Owner.RemoveItem(match.Entry);
+                            sectionsTouched.Add(match.Owner);
+                            UpdateInPlace(match.Entry, e);
+                            seedEntries.Add(match.Entry);
+                            entriesMoved++;
+                            entriesUpdated++;
+                            entriesById[e.MediaId] = (match.Entry, section);
+                        }
+                        else
+                        {
+                            seedEntries.Add(e);
+                            entriesAdded++;
+                            entriesById[e.MediaId] = (e, section);
+                        }
                     }
-                    else
+
+                    // Seed inside a short-lived scope disposed BEFORE we publish the section to the
+                    // outer ObservableCollection. Otherwise observers would briefly see a section
+                    // whose visible items haven't been materialized yet (Count=0, IsFiltered=true,
+                    // DisplayCount="0/N") until the outer finally disposed its scope.
+                    using (section.BeginBulkUpdate())
                     {
-                        seedEntries.Add(e);
-                        entriesAdded++;
-                        entriesById[e.MediaId] = (e, section);
+                        section.AddItems(seedEntries);
+                        section.ApplySort(sortField, sortAscending);
+                        if (!string.IsNullOrWhiteSpace(filterText))
+                        {
+                            section.ApplyFilter(filterText);
+                        }
+                    }
+
+                    // Append at the end; final ReorderToMatch step puts every section in the correct slot.
+                    existing.Add(section);
+                    sectionsAdded++;
+                    continue;
+                }
+
+                // Existing section. Drop entries whose MediaId is not in the new group (either gone
+                // entirely or moved to a different section — Pass 2 will handle the move).
+                var newIds = new HashSet<int>(newGroup.Entries.Select(e => e.MediaId));
+                var toRemove = existingSection.AllItems.Where(e => !newIds.Contains(e.MediaId)).ToList();
+                if (toRemove.Count > 0)
+                {
+                    ScopeFor(existingSection);
+                    foreach (var entry in toRemove)
+                    {
+                        existingSection.RemoveItem(entry);
+                        sectionsTouched.Add(existingSection);
                     }
                 }
 
-                section.AddItems(seedEntries);
+                var mediaChangedInSection = false;
+                foreach (var newEntry in newGroup.Entries)
+                {
+                    if (entriesById.TryGetValue(newEntry.MediaId, out var match))
+                    {
+                        if (!ReferenceEquals(match.Owner, existingSection))
+                        {
+                            ScopeFor(match.Owner);
+                            ScopeFor(existingSection);
+                            match.Owner.RemoveItem(match.Entry);
+                            existingSection.AddItem(match.Entry);
+                            sectionsTouched.Add(match.Owner);
+                            sectionsTouched.Add(existingSection);
+                            entriesMoved++;
+                        }
+
+                        if (MediaDisplayChanged(match.Entry.Media, newEntry.Media))
+                        {
+                            mediaChangedInSection = true;
+                        }
+
+                        // When a filter is active, MediaListSection.MatchesFilter searches all three title
+                        // fields (English/Romaji/Native) regardless of which one DisplayTitle resolves to.
+                        // MediaDisplayChanged only compares DisplayTitle, so a non-displayed-language title
+                        // change wouldn't re-evaluate filter membership. Mark the section touched so
+                        // ApplyFilter re-runs in Pass 3.
+                        if (!string.IsNullOrWhiteSpace(filterText)
+                            && FilterRelevantTitleChanged(match.Entry.Media?.Title, newEntry.Media?.Title))
+                        {
+                            sectionsTouched.Add(existingSection);
+                        }
+
+                        // The currently-active sort key is about to be overwritten by UpdateInPlace.
+                        // If it changed, the section needs a re-sort even when no structural or
+                        // MediaDisplayChanged trigger fired. Scoping to the active field avoids needless
+                        // Reset events (e.g. Title-sort + progress bump shouldn't re-sort). Title is
+                        // already covered by MediaDisplayChanged via Media.DisplayTitle.
+                        var sortKeyChanged = sortField switch
+                        {
+                            SortField.LastUpdated => match.Entry.UpdatedAt != newEntry.UpdatedAt,
+                            SortField.Score => match.Entry.Score != newEntry.Score,
+                            SortField.AverageScore =>
+                                match.Entry.Media?.AverageScore != newEntry.Media?.AverageScore,
+                            _ => false,
+                        };
+                        if (sortKeyChanged)
+                        {
+                            sectionsTouched.Add(existingSection);
+                        }
+
+                        UpdateInPlace(match.Entry, newEntry);
+                        entriesUpdated++;
+                        entriesById[newEntry.MediaId] = (match.Entry, existingSection);
+                    }
+                    else
+                    {
+                        ScopeFor(existingSection);
+                        existingSection.AddItem(newEntry);
+                        sectionsTouched.Add(existingSection);
+                        entriesById[newEntry.MediaId] = (newEntry, existingSection);
+                        entriesAdded++;
+                    }
+                }
+
+                if (mediaChangedInSection)
+                {
+                    sectionsTouched.Add(existingSection);
+                    sectionsNeedingReset++;
+                }
+            }
+
+            // Pass 2: remove sections that are no longer in the new set, or that ended up empty.
+            // Discard any open bulk scope on the removed section first — running its deferred
+            // UpdateItems would sort/filter a section that's already leaving the outer collection.
+            // Dispose is still called to honor the IDisposable lifecycle; after Discard it's a
+            // guarded no-op inside EndBulkUpdate (depth == 0), but keeping the call documents
+            // intent and guards against future resources on BulkUpdateScope.
+            foreach (var section in existing.ToList())
+            {
+                if (!newTitleSet.Contains(section.Title) || section.TotalCount == 0)
+                {
+                    if (bulkScopes.TryGetValue(section, out var scope))
+                    {
+                        bulkScopes.Remove(section);
+                        section.DiscardBulkUpdate();
+                        scope.Dispose();
+                    }
+
+                    existing.Remove(section);
+                    sectionsTouched.Remove(section);
+                    sectionsRemoved++;
+                }
+            }
+
+            // Count missing MediaIds as removals (post-merge view).
+            entriesRemoved = 0;
+            foreach (var id in existingMediaIds)
+            {
+                if (!newMediaIds.Contains(id))
+                {
+                    entriesRemoved++;
+                }
+            }
+
+            // Pass 3: re-sort sections that had structural changes, media-display changes, or a
+            // sort-key change on any entry. Sections where only Status or Progress changed are
+            // skipped — those aren't sort keys and the [ObservableProperty] notifications on
+            // MediaListEntry already refreshed bound labels without forcing a CollectionView reset.
+            foreach (var section in sectionsTouched)
+            {
+                ScopeFor(section);
                 section.ApplySort(sortField, sortAscending);
                 if (!string.IsNullOrWhiteSpace(filterText))
                 {
                     section.ApplyFilter(filterText);
                 }
-
-                // Append at the end; final ReorderToMatch step puts every section in the correct slot.
-                existing.Add(section);
-                sectionsAdded++;
-                continue;
             }
 
-            // Existing section. Drop entries whose MediaId is not in the new group (either gone
-            // entirely or moved to a different section — Pass 2 will handle the move).
-            var newIds = new HashSet<int>(newGroup.Entries.Select(e => e.MediaId));
-            var toRemove = existingSection.AllItems.Where(e => !newIds.Contains(e.MediaId)).ToList();
-            foreach (var entry in toRemove)
-            {
-                existingSection.RemoveItem(entry);
-                sectionsTouched.Add(existingSection);
-            }
-
-            var mediaChangedInSection = false;
-            foreach (var newEntry in newGroup.Entries)
-            {
-                if (entriesById.TryGetValue(newEntry.MediaId, out var match))
-                {
-                    if (!ReferenceEquals(match.Owner, existingSection))
-                    {
-                        match.Owner.RemoveItem(match.Entry);
-                        existingSection.AddItem(match.Entry);
-                        sectionsTouched.Add(match.Owner);
-                        sectionsTouched.Add(existingSection);
-                        entriesMoved++;
-                    }
-
-                    if (MediaDisplayChanged(match.Entry.Media, newEntry.Media))
-                    {
-                        mediaChangedInSection = true;
-                    }
-
-                    // When a filter is active, MediaListSection.MatchesFilter searches all three title
-                    // fields (English/Romaji/Native) regardless of which one DisplayTitle resolves to.
-                    // MediaDisplayChanged only compares DisplayTitle, so a non-displayed-language title
-                    // change wouldn't re-evaluate filter membership. Mark the section touched so
-                    // ApplyFilter re-runs in Pass 3.
-                    if (!string.IsNullOrWhiteSpace(filterText)
-                        && FilterRelevantTitleChanged(match.Entry.Media?.Title, newEntry.Media?.Title))
-                    {
-                        sectionsTouched.Add(existingSection);
-                    }
-
-                    // The currently-active sort key is about to be overwritten by UpdateInPlace.
-                    // If it changed, the section needs a re-sort even when no structural or
-                    // MediaDisplayChanged trigger fired. Scoping to the active field avoids needless
-                    // Reset events (e.g. Title-sort + progress bump shouldn't re-sort). Title is
-                    // already covered by MediaDisplayChanged via Media.DisplayTitle.
-                    var sortKeyChanged = sortField switch
-                    {
-                        SortField.LastUpdated => match.Entry.UpdatedAt != newEntry.UpdatedAt,
-                        SortField.Score => match.Entry.Score != newEntry.Score,
-                        SortField.AverageScore =>
-                            match.Entry.Media?.AverageScore != newEntry.Media?.AverageScore,
-                        _ => false,
-                    };
-                    if (sortKeyChanged)
-                    {
-                        sectionsTouched.Add(existingSection);
-                    }
-
-                    UpdateInPlace(match.Entry, newEntry);
-                    entriesUpdated++;
-                    entriesById[newEntry.MediaId] = (match.Entry, existingSection);
-                }
-                else
-                {
-                    existingSection.AddItem(newEntry);
-                    sectionsTouched.Add(existingSection);
-                    entriesById[newEntry.MediaId] = (newEntry, existingSection);
-                    entriesAdded++;
-                }
-            }
-
-            if (mediaChangedInSection)
-            {
-                sectionsTouched.Add(existingSection);
-                sectionsNeedingReset++;
-            }
+            // Pass 4: reorder the outer collection so sections match the user's preferred order.
+            ReorderToMatch(existing, newTitles);
         }
-
-        // Pass 2: remove sections that are no longer in the new set, or that ended up empty.
-        foreach (var section in existing.ToList())
+        finally
         {
-            if (!newTitleSet.Contains(section.Title) || section.TotalCount == 0)
+            // Disposing each scope triggers a single UpdateItems() on sections that were marked
+            // dirty — collapsing many per-item mutations into one CollectionView Reset. finally
+            // guarantees scopes close even if the merge throws, so sections don't get stuck in
+            // a suppressed-notification state.
+            foreach (var scope in bulkScopes.Values)
             {
-                existing.Remove(section);
-                sectionsTouched.Remove(section);
-                sectionsRemoved++;
+                scope.Dispose();
             }
         }
-
-        // Count missing MediaIds as removals (post-merge view).
-        var entriesRemoved = 0;
-        foreach (var id in existingMediaIds)
-        {
-            if (!newMediaIds.Contains(id))
-            {
-                entriesRemoved++;
-            }
-        }
-
-        // Pass 3: re-sort sections that had structural changes, media-display changes, or a
-        // sort-key change on any entry. Sections where only Status or Progress changed are
-        // skipped — those aren't sort keys and the [ObservableProperty] notifications on
-        // MediaListEntry already refreshed bound labels without forcing a CollectionView reset.
-        foreach (var section in sectionsTouched)
-        {
-            section.ApplySort(sortField, sortAscending);
-            if (!string.IsNullOrWhiteSpace(filterText))
-            {
-                section.ApplyFilter(filterText);
-            }
-        }
-
-        // Pass 4: reorder the outer collection so sections match the user's preferred order.
-        ReorderToMatch(existing, newTitles);
 
         return new MergeResult(
             sectionsAdded,

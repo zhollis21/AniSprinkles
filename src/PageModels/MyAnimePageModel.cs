@@ -9,6 +9,7 @@ using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Storage;
 using AniSprinkles.Utilities;
 using IconFont.Maui.FluentIcons;
 
@@ -24,6 +25,8 @@ public partial class MyAnimePageModel : ObservableObject
     private readonly IAuthService _authService;
     private readonly IAiringNotificationService _airingNotificationService;
     private readonly ErrorReportService _errorReportService;
+    private readonly IPreferences _preferences;
+    private readonly INavigationService _navigationService;
     private readonly ILogger<MyAnimePageModel> _logger;
     private bool _hasLoaded;
     private DateTimeOffset _lastSuccessfulLoadUtc;
@@ -143,12 +146,14 @@ public partial class MyAnimePageModel : ObservableObject
         _ => FluentIconsRegular.List24,
     };
 
-    public MyAnimePageModel(IAniListClient aniListClient, IAuthService authService, IAiringNotificationService airingNotificationService, ErrorReportService errorReportService, ILogger<MyAnimePageModel> logger)
+    public MyAnimePageModel(IAniListClient aniListClient, IAuthService authService, IAiringNotificationService airingNotificationService, ErrorReportService errorReportService, IPreferences preferences, INavigationService navigationService, ILogger<MyAnimePageModel> logger)
     {
         _aniListClient = aniListClient;
         _authService = authService;
         _airingNotificationService = airingNotificationService;
         _errorReportService = errorReportService;
+        _preferences = preferences;
+        _navigationService = navigationService;
         _logger = logger;
     }
 
@@ -850,7 +855,7 @@ public partial class MyAnimePageModel : ObservableObject
             // Keep route payload minimal so navigation is not blocked by passing a full list-entry graph.
             // Use non-animated transition: the details page shows its own loading shell immediately,
             // and disabling the slide transition allows destination page to render without animation overhead.
-            await Shell.Current.GoToAsync(DetailsRoute, animate: false, new Dictionary<string, object>
+            await _navigationService.GoToAsync(DetailsRoute, animate: false, new Dictionary<string, object>
             {
                 ["mediaId"] = mediaId,
                 ["navTraceId"] = navTraceId,
@@ -885,7 +890,7 @@ public partial class MyAnimePageModel : ObservableObject
         try
         {
             // Only prompt once from My Anime. Settings can re-prompt via the explicit toggle.
-            if (Preferences.Default.Get(PermissionPromptedPrefKey, false))
+            if (_preferences.Get(PermissionPromptedPrefKey, false))
             {
                 return;
             }
@@ -910,14 +915,14 @@ public partial class MyAnimePageModel : ObservableObject
                     return;
                 }
 
-                Preferences.Default.Set(PermissionPromptedPrefKey, true);
+                _preferences.Set(PermissionPromptedPrefKey, true);
                 return;
             }
 
             // Mark as prompted before awaiting the system dialog so concurrent/rapid loads
             // don't double-prompt. The permission dialog itself is a one-shot system UI —
             // even if the AniList sync afterward fails, the prompt already happened.
-            Preferences.Default.Set(PermissionPromptedPrefKey, true);
+            _preferences.Set(PermissionPromptedPrefKey, true);
 
             bool granted = await _airingNotificationService.RequestPermissionAsync();
 
@@ -970,7 +975,7 @@ public partial class MyAnimePageModel : ObservableObject
     /// can poll AniList's AiringSchedule API without fetching the full list.
     /// Planning is included so users are notified when a show they intend to watch airs.
     /// </summary>
-    private static void CacheReleasingMediaIds(
+    private void CacheReleasingMediaIds(
         IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)> groups)
     {
         var releasingIds = groups
@@ -981,7 +986,7 @@ public partial class MyAnimePageModel : ObservableObject
             .Distinct()
             .ToList();
 
-        Preferences.Default.Set("airing_media_ids", string.Join(",", releasingIds));
+        _preferences.Set("airing_media_ids", string.Join(",", releasingIds));
     }
 
     // ── Section building ─────────────────────────────────────────────

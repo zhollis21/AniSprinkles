@@ -104,7 +104,10 @@ public class AiringCheckWorker : Worker
         catch (Exception ex)
         {
             // Don't retry on transient errors; the next periodic run will try again.
-            // Log to logcat so failures are diagnosable — the Worker has no DI/ILogger.
+            // Uses Android.Util.Log directly instead of ILogger because WorkManager can
+            // instantiate this worker post-reboot before the MAUI DI container is built.
+            // The AndroidLogcatLoggerProvider bridges the rest of the app's ILogger output
+            // to the same logcat stream, so a single tag filter still captures everything.
             global::Android.Util.Log.Error("AiringCheckWorker", $"DoWork failed: {ex}");
             return Result.InvokeSuccess()!;
         }

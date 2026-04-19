@@ -2,6 +2,8 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Dispatching;
+using Microsoft.Maui.Storage;
 using AniSprinkles.Utilities;
 
 namespace AniSprinkles.PageModels;
@@ -11,6 +13,8 @@ public partial class SettingsPageModel : ObservableObject
     private readonly IAuthService _authService;
     private readonly IAniListClient _aniListClient;
     private readonly IAiringNotificationService _airingNotificationService;
+    private readonly IPreferences _preferences;
+    private readonly IDispatcher _dispatcher;
     private readonly ILogger<SettingsPageModel> _logger;
 
     // Snapshot of the loaded state for dirty-tracking
@@ -143,11 +147,13 @@ public partial class SettingsPageModel : ObservableObject
             ActivityMergeTime != _loadedActivityMergeTime ||
             HasNotificationChanges());
 
-    public SettingsPageModel(IAuthService authService, IAniListClient aniListClient, IAiringNotificationService airingNotificationService, ILogger<SettingsPageModel> logger)
+    public SettingsPageModel(IAuthService authService, IAniListClient aniListClient, IAiringNotificationService airingNotificationService, IPreferences preferences, IDispatcher dispatcher, ILogger<SettingsPageModel> logger)
     {
         _authService = authService;
         _aniListClient = aniListClient;
         _airingNotificationService = airingNotificationService;
+        _preferences = preferences;
+        _dispatcher = dispatcher;
         _logger = logger;
     }
 
@@ -455,7 +461,7 @@ public partial class SettingsPageModel : ObservableObject
 
             // RequestPermissionAsync uses ConfigureAwait(false) internally, so we may be on a
             // pool thread here. Bound property writes must happen on the UI thread.
-            MainThread.BeginInvokeOnMainThread(() =>
+            _dispatcher.Dispatch(() =>
             {
                 _suppressNotificationToggle = true;
                 AiringNotifications = false;
@@ -532,7 +538,7 @@ public partial class SettingsPageModel : ObservableObject
 
                 // Reset the checkpoint so re-enabling starts fresh — only new episodes
                 // going forward, no backlog spam for everything that aired while disabled.
-                Preferences.Default.Remove("airing_last_check");
+                _preferences.Remove("airing_last_check");
             }
 
             // Save the final value — granted+scheduled, or cancelled.
