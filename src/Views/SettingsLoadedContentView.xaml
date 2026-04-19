@@ -148,8 +148,11 @@
             <!-- 3. DISPLAY PREFERENCES -->
             <Border Style="{StaticResource SectionHeaderStyle}"
                     Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}">
-                <HorizontalStackLayout Spacing="8">
-                    <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ToggleDisplayPreferencesCommand}" />
+                </Border.GestureRecognizers>
+                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+                    <Image Grid.Column="0" WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
                         <Image.Source>
                             <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Translate24}"
                                              FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
@@ -157,11 +160,28 @@
                                              Size="20" />
                         </Image.Source>
                     </Image>
-                    <Label Text="Display Preferences" Style="{StaticResource Title3}"
-                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Display'}" />
-                </HorizontalStackLayout>
+                    <Label Grid.Column="1" Text="Display Preferences" Style="{StaticResource Title3}"
+                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Display'}"
+                           VerticalTextAlignment="Center" />
+                    <Label Grid.Column="2"
+                           Text="{x:Static icons:FluentIconsRegular.ChevronDown24}"
+                           FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Display'}"
+                           FontSize="16" WidthRequest="16" HeightRequest="16"
+                           HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                           VerticalOptions="Center"
+                           AutomationProperties.IsInAccessibleTree="False">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" Binding="{Binding IsDisplayPreferencesExpanded}" Value="True">
+                                <Setter Property="Rotation" Value="180" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                </Grid>
             </Border>
-            <Border Style="{StaticResource CardStyle}" Padding="16">
+            <Border Style="{StaticResource CardStyle}" Padding="16"
+                    Margin="0,-16,0,0"
+                    IsVisible="{Binding IsDisplayPreferencesExpanded}">
                 <VerticalStackLayout Spacing="16">
                     <VerticalStackLayout Spacing="8">
                         <Label Text="Title Language" Style="{StaticResource Body1Strong}" />
@@ -250,8 +270,11 @@
             <!-- 4. CONTENT & PRIVACY -->
             <Border Style="{StaticResource SectionHeaderStyle}"
                     Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}">
-                <HorizontalStackLayout Spacing="8">
-                    <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ToggleContentPrivacyCommand}" />
+                </Border.GestureRecognizers>
+                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+                    <Image Grid.Column="0" WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
                         <Image.Source>
                             <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.ShieldLock24}"
                                              FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
@@ -259,11 +282,28 @@
                                              Size="20" />
                         </Image.Source>
                     </Image>
-                    <Label Text="Content &amp; Privacy" Style="{StaticResource Title3}"
-                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Privacy'}" />
-                </HorizontalStackLayout>
+                    <Label Grid.Column="1" Text="Content &amp; Privacy" Style="{StaticResource Title3}"
+                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Privacy'}"
+                           VerticalTextAlignment="Center" />
+                    <Label Grid.Column="2"
+                           Text="{x:Static icons:FluentIconsRegular.ChevronDown24}"
+                           FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Privacy'}"
+                           FontSize="16" WidthRequest="16" HeightRequest="16"
+                           HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                           VerticalOptions="Center"
+                           AutomationProperties.IsInAccessibleTree="False">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" Binding="{Binding IsContentPrivacyExpanded}" Value="True">
+                                <Setter Property="Rotation" Value="180" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                </Grid>
             </Border>
-            <Border Style="{StaticResource CardStyle}" Padding="16">
+            <Border Style="{StaticResource CardStyle}" Padding="16"
+                    Margin="0,-16,0,0"
+                    IsVisible="{Binding IsContentPrivacyExpanded}">
                 <VerticalStackLayout Spacing="4">
                     <Grid ColumnDefinitions="*,Auto" Padding="0,8">
                         <VerticalStackLayout VerticalOptions="Center">
@@ -294,8 +334,11 @@
             <!-- 5. NOTIFICATION PREFERENCES -->
             <Border Style="{StaticResource SectionHeaderStyle}"
                     Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}">
-                <HorizontalStackLayout Spacing="8">
-                    <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ToggleNotificationsCommand}" />
+                </Border.GestureRecognizers>
+                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+                    <Image Grid.Column="0" WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
                         <Image.Source>
                             <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Alert24}"
                                              FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
@@ -303,11 +346,28 @@
                                              Size="20" />
                         </Image.Source>
                     </Image>
-                    <Label Text="Notifications" Style="{StaticResource Title3}"
-                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Notifications'}" />
-                </HorizontalStackLayout>
+                    <Label Grid.Column="1" Text="Notifications" Style="{StaticResource Title3}"
+                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Notifications'}"
+                           VerticalTextAlignment="Center" />
+                    <Label Grid.Column="2"
+                           Text="{x:Static icons:FluentIconsRegular.ChevronDown24}"
+                           FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Notifications'}"
+                           FontSize="16" WidthRequest="16" HeightRequest="16"
+                           HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                           VerticalOptions="Center"
+                           AutomationProperties.IsInAccessibleTree="False">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" Binding="{Binding IsNotificationsExpanded}" Value="True">
+                                <Setter Property="Rotation" Value="180" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                </Grid>
             </Border>
-            <Border Style="{StaticResource CardStyle}" Padding="12,4">
+            <Border Style="{StaticResource CardStyle}" Padding="12,4"
+                    Margin="0,-16,0,0"
+                    IsVisible="{Binding IsNotificationsExpanded}">
                 <VerticalStackLayout BindableLayout.ItemsSource="{Binding NotificationItems}" Spacing="0">
                     <BindableLayout.ItemTemplate>
                         <DataTemplate x:DataType="pageModels:NotificationToggleItem">
@@ -326,8 +386,11 @@
             <!-- 6. ACCOUNT -->
             <Border Style="{StaticResource SectionHeaderStyle}"
                     Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}">
-                <HorizontalStackLayout Spacing="8">
-                    <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ToggleAccountCommand}" />
+                </Border.GestureRecognizers>
+                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+                    <Image Grid.Column="0" WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
                         <Image.Source>
                             <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Person24}"
                                              FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
@@ -335,11 +398,28 @@
                                              Size="20" />
                         </Image.Source>
                     </Image>
-                    <Label Text="Account" Style="{StaticResource Title3}"
-                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Account'}" />
-                </HorizontalStackLayout>
+                    <Label Grid.Column="1" Text="Account" Style="{StaticResource Title3}"
+                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Account'}"
+                           VerticalTextAlignment="Center" />
+                    <Label Grid.Column="2"
+                           Text="{x:Static icons:FluentIconsRegular.ChevronDown24}"
+                           FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Account'}"
+                           FontSize="16" WidthRequest="16" HeightRequest="16"
+                           HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                           VerticalOptions="Center"
+                           AutomationProperties.IsInAccessibleTree="False">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" Binding="{Binding IsAccountExpanded}" Value="True">
+                                <Setter Property="Rotation" Value="180" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                </Grid>
             </Border>
-            <Border Style="{StaticResource CardStyle}" Padding="16">
+            <Border Style="{StaticResource CardStyle}" Padding="16"
+                    Margin="0,-16,0,0"
+                    IsVisible="{Binding IsAccountExpanded}">
                 <VerticalStackLayout Spacing="12">
                     <views:AuthActionsView />
                     <Grid ColumnDefinitions="*,Auto"

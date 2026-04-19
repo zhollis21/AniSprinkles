@@ -22,14 +22,31 @@ public sealed class RainbowAccentConverter : IValueConverter
 
     /// <summary>
     /// Maps certain keys to other keys before hashing, ensuring related concepts
-    /// get the same color. For example, "Current" status maps to "Watching" section.
+    /// get the same color. For example, "Current" status maps to "Watching" section,
+    /// and "Repeating" (the AniList section-order key) maps to "Rewatching" (the display name).
     /// </summary>
     private static readonly Dictionary<string, string> _keyMappings = new(StringComparer.OrdinalIgnoreCase)
     {
         ["Current"] = "Watching",
+        ["Repeating"] = "Rewatching",
         ["LastUpdated"] = "Updated",
         // Add more mappings as needed:
         // ["AliasKey"] = "CanonicalKey",
+    };
+
+    /// <summary>
+    /// Hardcoded colors for the six standard anime list status sections.
+    /// Checked after <see cref="_keyMappings"/> are applied, before the hash fallback,
+    /// so each status section always renders with a distinct, consistent color.
+    /// </summary>
+    private static readonly Dictionary<string, string> _statusColors = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ["Watching"]   = "RainbowBlue",
+        ["Rewatching"] = "RainbowCyan",
+        ["Planning"]   = "RainbowPurple",
+        ["Completed"]  = "RainbowGreen",
+        ["Paused"]     = "RainbowYellow",
+        ["Dropped"]    = "RainbowRed",
     };
 
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
@@ -51,17 +68,20 @@ public sealed class RainbowAccentConverter : IValueConverter
             return Colors.Transparent;
         }
 
-        // Apply key mapping if one exists (e.g., "Current" → "Watching")
+        // Apply key mapping if one exists (e.g., "Current" → "Watching", "Repeating" → "Rewatching")
         if (_keyMappings.TryGetValue(key, out var mappedKey))
         {
             key = mappedKey;
         }
 
-        // Deterministic hash (stable across runs)
-        var hash = StableHash(key);
-
-        var idx = Math.Abs(hash) % _rainbowKeys.Length;
-        var colorKey = _rainbowKeys[idx];
+        // Use hardcoded color for known status sections; fall back to hash for everything else.
+        if (!_statusColors.TryGetValue(key, out var colorKey))
+        {
+            // Deterministic hash (stable across runs)
+            var hash = StableHash(key);
+            var idx = Math.Abs(hash) % _rainbowKeys.Length;
+            colorKey = _rainbowKeys[idx];
+        }
 
         if (Application.Current?.Resources.TryGetValue(colorKey, out var res) == true && res is Color c)
         {
