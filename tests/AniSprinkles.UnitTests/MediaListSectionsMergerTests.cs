@@ -428,6 +428,64 @@ public class MediaListSectionsMergerTests
     }
 
     [Fact]
+    public void Merge_NewSection_IsFullyMaterializedWhenPublishedToOuterCollection()
+    {
+        // Regression: previously the merger added a brand-new section to the outer
+        // ObservableCollection while its bulk-update scope was still open, so the
+        // first CollectionChanged observer saw a section whose visible items hadn't
+        // been materialized yet (FilteredCount=0, DisplayCount="0/N") until the
+        // outer finally block disposed all scopes.
+
+        // Arrange
+        var sectionOrder = new[] { "Watching" };
+        var initial = TestDataBuilder.BuildInitial(TestDataBuilder.Groups(), sectionOrder);
+
+        var updated = TestDataBuilder.Groups(
+            TestDataBuilder.Group("Watching", TestDataBuilder.Entry(1), TestDataBuilder.Entry(2)));
+
+        var observedTotalCount = -1;
+        var observedFilteredCount = -1;
+        var observedDisplayCount = string.Empty;
+        var observedVisibleCount = -1;
+        initial.CollectionChanged += (_, e) =>
+        {
+            if (e.Action != NotifyCollectionChangedAction.Add || e.NewItems is null)
+            {
+                return;
+            }
+
+            foreach (MediaListSection section in e.NewItems)
+            {
+                if (section.Title != "Watching")
+                {
+                    continue;
+                }
+
+                observedTotalCount = section.TotalCount;
+                observedFilteredCount = section.FilteredCount;
+                observedDisplayCount = section.DisplayCount;
+                observedVisibleCount = section.Count;
+            }
+        };
+
+        // Act
+        MediaListSectionsMerger.Merge(
+            initial,
+            updated,
+            sectionOrder,
+            displayAdultContent: true,
+            SortField.LastUpdated,
+            sortAscending: false,
+            filterText: "");
+
+        // Assert — section is default-expanded (first section in an empty list) and fully materialized
+        Assert.Equal(2, observedTotalCount);
+        Assert.Equal(2, observedFilteredCount);
+        Assert.Equal("2", observedDisplayCount);
+        Assert.Equal(2, observedVisibleCount);
+    }
+
+    [Fact]
     public void Merge_SectionBecomesEmpty_IsRemoved()
     {
         // Arrange
@@ -882,5 +940,217 @@ public class MediaListSectionsMergerTests
         Assert.Contains(e1, all);
         Assert.Contains(e2, all);
         Assert.Contains(e3, all);
+    }
+
+    // ── Bulk-update batching (one Reset per touched section) ────────────
+
+    [Fact]
+    public void Merge_BulkRemoveManyFromOneSection_FiresSingleReset()
+    {
+        // Five entries removed from one section should collapse into one Reset, not five.
+        // Arrange
+        var initial = Enumerable.Range(1, 6).Select(i => TestDataBuilder.Entry(i)).ToArray();
+        var sections = TestDataBuilder.BuildInitial(TestDataBuilder.Groups(
+            TestDataBuilder.Group("Watching", initial)));
+        var watching = sections[0];
+
+        var resets = 0;
+        watching.CollectionChanged += (_, e) =>
+        {
+            if (e.Action == NotifyCollectionChangedAction.Reset)
+            {
+                resets++;
+            }
+        };
+
+        // Keep only id 1; ids 2..6 removed.
+        var fresh = TestDataBuilder.Groups(
+            TestDataBuilder.Group("Watching", TestDataBuilder.Entry(1)));
+
+        // Act
+        MediaListSectionsMerger.Merge(sections, fresh, [], true, SortField.LastUpdated, false, "");
+
+        // Assert
+        Assert.Equal(1, watching.TotalCount);
+        Assert.Equal(1, resets);
+    }
+
+    [Fact]
+    public void Merge_CrossSectionMoves_FireOneResetPerAffectedSection()
+    {
+        // Move three entries from Watching → Completed. Each side should see exactly one Reset,
+        // not three (pre-batching behavior fired a Reset per RemoveItem and per AddItem).
+        // Arrange
+        var sections = TestDataBuilder.BuildInitial(TestDataBuilder.Groups(
+            TestDataBuilder.Group("Watching",
+                TestDataBuilder.Entry(1), TestDataBuilder.Entry(2), TestDataBuilder.Entry(3)),
+            TestDataBuilder.Group("Completed", TestDataBuilder.Entry(4))));
+        var watching = sections[0];
+        var completed = sections[1];
+
+        var watchingResets = 0;
+        var completedResets = 0;
+        watching.CollectionChanged += (_, e) =>
+        {
+            if (e.Action == NotifyCollectionChangedAction.Reset)
+            {
+                watchingResets++;
+            }
+        };
+        completed.CollectionChanged += (_, e) =>
+        {
+            if (e.Action == NotifyCollectionChangedAction.Reset)
+            {
+                completedResets++;
+            }
+        };
+
+        var fresh = TestDataBuilder.Groups(
+            TestDataBuilder.Group("Watching", []),
+            TestDataBuilder.Group("Completed",
+                TestDataBuilder.Entry(1),
+                TestDataBuilder.Entry(2),
+                TestDataBuilder.Entry(3),
+                TestDataBuilder.Entry(4)));
+
+        // Act
+        MediaListSectionsMerger.Merge(sections, fresh, [], true, SortField.LastUpdated, false, "");
+
+        // Assert: Watching was emptied and then removed in Pass 2. Its pending bulk-update is
+        // discarded before removal so it fires zero Resets — running a deferred sort/filter on
+        // a section that's leaving the outer collection would be pure waste. Completed gained
+        // three and keeps its reset coalesced to one.
+        Assert.DoesNotContain(sections, s => s.Title == "Watching");
+        Assert.Single(sections);
+        Assert.Equal(4, completed.TotalCount);
+        Assert.Equal(0, watchingResets);
+        Assert.Equal(1, completedResets);
+    }
+
+    [Fact]
+    public void Merge_UnchangedSectionsDuringPartialChange_FireZeroResets()
+    {
+        // Mutating section A must not fire any Reset on untouched section B. Regression guard
+        // against scope-leak bugs where BeginBulkUpdate is called on sections that don't mutate.
+        // Arrange
+        var sections = TestDataBuilder.BuildInitial(TestDataBuilder.Groups(
+            TestDataBuilder.Group("Watching", TestDataBuilder.Entry(1)),
+            TestDataBuilder.Group("Completed", TestDataBuilder.Entry(2), TestDataBuilder.Entry(3))));
+        var completed = sections[1];
+
+        var completedResets = 0;
+        completed.CollectionChanged += (_, e) =>
+        {
+            if (e.Action == NotifyCollectionChangedAction.Reset)
+            {
+                completedResets++;
+            }
+        };
+
+        var fresh = TestDataBuilder.Groups(
+            TestDataBuilder.Group("Watching", TestDataBuilder.Entry(1), TestDataBuilder.Entry(10)),
+            TestDataBuilder.Group("Completed", TestDataBuilder.Entry(2), TestDataBuilder.Entry(3)));
+
+        // Act
+        MediaListSectionsMerger.Merge(sections, fresh, [], true, SortField.LastUpdated, false, "");
+
+        // Assert
+        Assert.Equal(0, completedResets);
+    }
+
+    [Fact]
+    public void BulkUpdateScope_NestedScopes_OnlyOutermostDisposeTriggersReset()
+    {
+        // Arrange
+        var section = new MediaListSection("Watching", isExpanded: true);
+        section.AddItem(TestDataBuilder.Entry(1));
+        var resets = 0;
+        section.CollectionChanged += (_, e) =>
+        {
+            if (e.Action == NotifyCollectionChangedAction.Reset)
+            {
+                resets++;
+            }
+        };
+
+        // Act
+        using (var outer = section.BeginBulkUpdate())
+        {
+            using (var inner = section.BeginBulkUpdate())
+            {
+                section.AddItem(TestDataBuilder.Entry(2));
+                section.AddItem(TestDataBuilder.Entry(3));
+            }
+
+            // Inner Dispose must not fire — outer scope still open.
+            Assert.Equal(0, resets);
+            section.AddItem(TestDataBuilder.Entry(4));
+        }
+
+        // Assert: exactly one Reset fired when outer disposed.
+        Assert.Equal(1, resets);
+        Assert.Equal(4, section.TotalCount);
+    }
+
+    [Fact]
+    public void BulkUpdateScope_NoMutationsBetweenBeginAndEnd_FiresNoReset()
+    {
+        // Dirty-flag guard: opening and closing a scope with no mutations must not fire UpdateItems.
+        // Arrange
+        var section = new MediaListSection("Watching", isExpanded: true);
+        section.AddItem(TestDataBuilder.Entry(1));
+        var resets = 0;
+        section.CollectionChanged += (_, e) =>
+        {
+            if (e.Action == NotifyCollectionChangedAction.Reset)
+            {
+                resets++;
+            }
+        };
+
+        // Act
+        using (section.BeginBulkUpdate())
+        {
+            // intentionally empty
+        }
+
+        // Assert
+        Assert.Equal(0, resets);
+    }
+
+    [Fact]
+    public void DiscardBulkUpdate_SuppressesDeferredUpdateItemsOnDispose()
+    {
+        // DiscardBulkUpdate is the merger's Pass-2 escape hatch: when a section is leaving the
+        // outer collection we don't want its final sort/filter to fire. After Discard, disposing
+        // the outstanding scope must NOT trigger UpdateItems, and must not leave the section in
+        // a state that breaks subsequent bulk scopes.
+        // Arrange
+        var section = new MediaListSection("Watching", isExpanded: true);
+        section.AddItem(TestDataBuilder.Entry(1));
+        var resets = 0;
+        section.CollectionChanged += (_, e) =>
+        {
+            if (e.Action == NotifyCollectionChangedAction.Reset)
+            {
+                resets++;
+            }
+        };
+
+        // Act: open a scope, mutate (so dirty flag would fire on normal dispose), then discard.
+        var scope = section.BeginBulkUpdate();
+        section.AddItem(TestDataBuilder.Entry(2));
+        section.DiscardBulkUpdate();
+        scope.Dispose();
+
+        // Assert: no deferred UpdateItems ran, and a fresh scope still behaves correctly.
+        Assert.Equal(0, resets);
+
+        using (section.BeginBulkUpdate())
+        {
+            section.AddItem(TestDataBuilder.Entry(3));
+        }
+
+        Assert.Equal(1, resets);
     }
 }

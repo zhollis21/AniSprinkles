@@ -23,6 +23,11 @@ namespace AniSprinkles;
         ConfigChanges.Density)]
 public class MainActivity : MauiAppCompatActivity
 {
+    // MainActivity uses Android.Util.Log directly rather than ILogger<T>.
+    // Lifecycle callbacks fire before the MAUI DI container finishes building,
+    // so ILogger resolution here would intermittently return null. The
+    // AndroidLogcatLoggerProvider bridges the rest of the app's ILogger output
+    // into the same logcat stream, so filtering by tag still works.
     private const string LifecycleTag = "AniSprinklesLifecycle";
 
     private string ActivityIdentity

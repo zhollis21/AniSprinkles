@@ -9,9 +9,9 @@
 ## Architecture
 
 - **.NET MAUI Android-only** app (`net10.0-android`; `SupportedOSPlatformVersion` 31.0), single project in `src/`. App ID: `com.RainbowSprinkles.AniSprinkles`.
-- **MVVM** via CommunityToolkit.Mvvm: PageModels extend `ObservableObject`, use `[ObservableProperty]`, `[RelayCommand]`, `[NotifyPropertyChangedFor]`. Shell flyout navigation (`my-anime`, `settings`) with a programmatic `media-details` route. Navigate via `Shell.Current.GoToAsync` with lightweight query params — never full objects.
+- **MVVM** via CommunityToolkit.Mvvm: PageModels extend `ObservableObject`, use `[ObservableProperty]`, `[RelayCommand]`, `[NotifyPropertyChangedFor]`. Shell flyout navigation (`my-anime`, `settings`) with a programmatic `media-details` route. PageModels navigate through the injected `INavigationService` (routes + lightweight query params — never full objects); persist state via the injected `IPreferences`; marshal pool-thread continuations back to the UI via the injected `IDispatcher`. View-facing UX calls (`Shell.Current.DisplayAlertAsync`, `ShowPopupAsync`, `Browser.Default`) are allowed to keep using MAUI statics because they only run inside view-attached paths.
 - **DI**: Services and flyout PageModels (`MyAnimePageModel`, `SettingsPageModel`) are singleton. All Pages and `MediaDetailsPageModel` are transient. See `/project-architecture` for the full DI table and page patterns.
-- **Services**: `AuthService` (OAuth + SecureStorage), `AniListClient` (GraphQL + viewer ID cache), `ErrorReportService` (Sentry + `ILogger` + token redaction), `FileLoggerProvider` (rotating async file log, Debug only), `LoggingHandler` (HTTP DelegatingHandler), `AiringNotificationService` (WorkManager periodic check). See `/airing-notifications` for the notification subsystem.
+- **Services**: `AuthService` (OAuth + SecureStorage), `AniListClient` (GraphQL + viewer ID cache), `ErrorReportService` (Sentry + `ILogger` + token redaction), `FileLoggerProvider` (rotating async file log, Debug = 1 MB × 3 / Release = 256 KB × 3), `AndroidLogcatLoggerProvider` (bridges `ILogger` → `adb logcat` on Android), `LoggingHandler` (HTTP DelegatingHandler), `AiringNotificationService` (WorkManager periodic check). See `/airing-notifications` for the notification subsystem.
 - **Global usings** (`GlobalUsings.cs`): `Models`, `PageModels`, `Pages`, `Services`, `IconFont.Maui.FluentIcons`. `Converters` and `Utilities` require explicit `using`.
 - **Key NuGet packages**: `Microsoft.Maui.Controls`, `CommunityToolkit.Mvvm`, `CommunityToolkit.Maui`, `Sentry.Maui`, `Syncfusion.Maui.Toolkit`, `IconFont.Maui.FluentIcons`.
 
@@ -45,7 +45,7 @@ dotnet test tests/AniSprinkles.UnitTests/AniSprinkles.UnitTests.csproj -c Debug
 
 - **CI**: GitHub Actions `android-release.yml` triggers on Release publication (or manual `workflow_dispatch`). `promote-release.yml` promotes between Play Console tracks (internal → alpha → beta → production).
 - **Version scheme**: `ApplicationDisplayVersion` from release tag semver (`vX.Y.Z` → `X.Y.Z`); `ApplicationVersion` (versionCode) from `YYMMDDNNN` (date + run_number mod 1000).
-- **Unit tests** — `tests/AniSprinkles.UnitTests/` (xUnit, `net10.0`). Pure-algorithm tests only; the project link-compiles specific source files from `src/` rather than project-referencing the MAUI app (the main `net10.0-android` TFM is not a valid reference target for plain `net10.0`). If you add tests that need MAUI types, either link-compile a non-MAUI partial, or pass concrete dependencies in as parameters the way `MediaListSectionsMerger` does. `tests/AniSprinkles.UITests/` is still a scaffold for future device tests.
+- **Unit tests** — `tests/AniSprinkles.UnitTests/` (xUnit, `net10.0`, NSubstitute). Pure-algorithm tests only; the project link-compiles specific source files from `src/` rather than project-referencing the MAUI app (the main `net10.0-android` TFM is not a valid reference target for plain `net10.0`). `Microsoft.Maui.Essentials` and `Microsoft.Maui.Core` resolve on `net10.0` and supply `IPreferences` / `IDispatcher` for test doubles; `Microsoft.Maui.Controls` and `CommunityToolkit.Maui` do not, so PageModel tests require link-compiling a non-UX partial (deferred until PageModels are split or an `AniSprinkles.Core` class library is extracted). `tests/AniSprinkles.UITests/` is still a scaffold for future device tests.
 
 ## CI Stubs (`-p:CiBuild=true`)
 
@@ -64,7 +64,10 @@ The project must build with **zero warnings**. Do not introduce new warnings; fi
 ## Project Conventions
 
 - **MAUI-first guidance**: do not mix WPF/Xamarin.Forms/Blazor/React patterns unless explicitly requested. Verify MAUI APIs against official Microsoft docs and current project code before recommending.
-- **Logging**: `ILogger` with structured messages. Debug file logs guarded with `#if DEBUG`. Bearer tokens always redacted.
+- **Logging**: `ILogger<T>` injected via DI is the canonical path for all app code. Use structured messages. Bearer tokens are always redacted.
+  - Provider wiring lives in `MauiProgram.cs`. `FileLoggerProvider` runs in both Debug (1 MB × 3 at `LogLevel.Debug`) and Release (256 KB × 3 at `LogLevel.Warning`). `AndroidLogcatLoggerProvider` bridges ILogger output into `adb logcat` on Android in all build configs (`AddDebug()` does not reach logcat on .NET MAUI Android). `AddDebug()` stays Debug-only.
+  - Exception: `Platforms/Android/MainActivity.cs` and `Platforms/Android/AiringCheckWorker.cs` call `Android.Util.Log` directly because they run before the MAUI DI container is guaranteed to be built (activity lifecycle callbacks; post-reboot WorkManager). Inline comments document this at the call sites. Do not introduce new direct-`Android.Util.Log` callers elsewhere — use ILogger.
+  - On-device log file: `{AppDataDirectory}/logs/anisprinkles.log` (+ `.1`, `.2` archives). Pull via `adb shell run-as com.RainbowSprinkles.AniSprinkles cat files/logs/anisprinkles.log` or use `/ani-debug`.
 - **Telemetry**: Sentry crash reporting only (`SendDefaultPii = false`, `TracesSampleRate = 0.0`). Use `ErrorReportService.Record()` for handled exceptions.
 - **User prefs**: `AppSettings` (static, `Utilities/`) persists title language, score format, adult content toggle, and section order via `Preferences`.
 
