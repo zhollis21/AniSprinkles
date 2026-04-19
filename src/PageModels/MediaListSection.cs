@@ -256,7 +256,7 @@ public class MediaListSection : ObservableCollection<MediaListEntry>
     }
 
     /// <summary>
-    /// Apply a text filter across display title. Empty string clears the filter.
+    /// Apply a text filter across the English, Romaji, and Native titles. Empty string clears the filter.
     /// </summary>
     public void ApplyFilter(string text)
     {
