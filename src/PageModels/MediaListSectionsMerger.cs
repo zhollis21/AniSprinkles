@@ -161,12 +161,18 @@ public static class MediaListSectionsMerger
                         }
                     }
 
-                    ScopeFor(section);
-                    section.AddItems(seedEntries);
-                    section.ApplySort(sortField, sortAscending);
-                    if (!string.IsNullOrWhiteSpace(filterText))
+                    // Seed inside a short-lived scope disposed BEFORE we publish the section to the
+                    // outer ObservableCollection. Otherwise observers would briefly see a section
+                    // whose visible items haven't been materialized yet (Count=0, IsFiltered=true,
+                    // DisplayCount="0/N") until the outer finally disposed its scope.
+                    using (section.BeginBulkUpdate())
                     {
-                        section.ApplyFilter(filterText);
+                        section.AddItems(seedEntries);
+                        section.ApplySort(sortField, sortAscending);
+                        if (!string.IsNullOrWhiteSpace(filterText))
+                        {
+                            section.ApplyFilter(filterText);
+                        }
                     }
 
                     // Append at the end; final ReorderToMatch step puts every section in the correct slot.
