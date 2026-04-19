@@ -21,6 +21,11 @@ public partial class MyAnimePageModel : ObservableObject
     private static readonly TimeSpan IncrementDebounceDelay = TimeSpan.FromMilliseconds(1500);
     private const string DetailsRoute = "media-details";
 
+    // ── Persisted UI preferences (device-scoped, not cleared on sign-out) ──
+    private const string ViewModePreferenceKey = "anime_view_mode";
+    private const string SortFieldPreferenceKey = "anime_sort_field";
+    private const string SortAscendingPreferenceKey = "anime_sort_ascending";
+
     private readonly IAniListClient _aniListClient;
     private readonly IAuthService _authService;
     private readonly IAiringNotificationService _airingNotificationService;
@@ -155,6 +160,22 @@ public partial class MyAnimePageModel : ObservableObject
         _preferences = preferences;
         _navigationService = navigationService;
         _logger = logger;
+
+        // Restore persisted UI preferences directly into backing fields to avoid
+        // triggering partial property-changed handlers before the object is fully constructed.
+        var savedMode = preferences.Get(ViewModePreferenceKey, nameof(ListViewMode.Standard));
+        if (Enum.TryParse<ListViewMode>(savedMode, out var restoredMode))
+        {
+            _currentViewMode = restoredMode;
+        }
+
+        var savedSort = preferences.Get(SortFieldPreferenceKey, nameof(SortField.LastUpdated));
+        if (Enum.TryParse<SortField>(savedSort, out var restoredSort))
+        {
+            _currentSortField = restoredSort;
+        }
+
+        _sortAscending = preferences.Get(SortAscendingPreferenceKey, false);
     }
 
     public async Task LoadAsync(bool forceReload = false)
@@ -344,11 +365,20 @@ public partial class MyAnimePageModel : ObservableObject
         OnPropertyChanged(nameof(HasNoResults));
     }
 
+    partial void OnCurrentViewModeChanged(ListViewMode value)
+        => _preferences.Set(ViewModePreferenceKey, value.ToString());
+
     partial void OnCurrentSortFieldChanged(SortField value)
-        => ApplySortToAllSections();
+    {
+        _preferences.Set(SortFieldPreferenceKey, value.ToString());
+        ApplySortToAllSections();
+    }
 
     partial void OnSortAscendingChanged(bool value)
-        => ApplySortToAllSections();
+    {
+        _preferences.Set(SortAscendingPreferenceKey, value);
+        ApplySortToAllSections();
+    }
 
     // ── Sort / Filter / View Mode commands ───────────────────────────
 
@@ -1007,8 +1037,8 @@ public partial class MyAnimePageModel : ObservableObject
 
         foreach (var group in orderedGroups)
         {
-            // First section defaults to expanded; others default to collapsed.
-            var defaultExpanded = sections.Count == 0;
+            // First section and Rewatching default to expanded; all others default to collapsed.
+            var defaultExpanded = sections.Count == 0 || group.Name == "Rewatching";
             var section = CreateSection(group.Name, defaultExpanded, expandedStates);
             section.AddItems(group.Entries);
             section.ApplySort(sortField, sortAscending);

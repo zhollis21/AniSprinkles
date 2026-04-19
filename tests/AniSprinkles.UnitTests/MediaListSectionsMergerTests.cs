@@ -1153,4 +1153,31 @@ public class MediaListSectionsMergerTests
 
         Assert.Equal(1, resets);
     }
+
+    // ── Default section expanded states ─────────────────────────────────────────────
+
+    [Fact]
+    public void BuildInitial_FirstSection_IsExpandedByDefault()
+    {
+        var sections = TestDataBuilder.BuildInitial(TestDataBuilder.Groups(
+            TestDataBuilder.Group("Watching", TestDataBuilder.Entry(1))));
+
+        Assert.Single(sections);
+        Assert.True(sections[0].IsExpanded);
+    }
+
+    [Fact]
+    public void BuildInitial_RewatchingSection_IsExpandedByDefault_WhenNotFirst()
+    {
+        // Rewatching should default to expanded even when it is not the first section.
+        var sections = TestDataBuilder.BuildInitial(TestDataBuilder.Groups(
+            TestDataBuilder.Group("Watching",   TestDataBuilder.Entry(1)),
+            TestDataBuilder.Group("Rewatching", TestDataBuilder.Entry(2)),
+            TestDataBuilder.Group("Completed",  TestDataBuilder.Entry(3))));
+
+        Assert.Equal(3, sections.Count);
+        Assert.True(sections[0].IsExpanded,  "Watching should be expanded (first section)");
+        Assert.True(sections[1].IsExpanded,  "Rewatching should be expanded by default");
+        Assert.False(sections[2].IsExpanded, "Completed should be collapsed by default");
+    }
 }

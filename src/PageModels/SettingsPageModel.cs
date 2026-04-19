@@ -133,6 +133,31 @@ public partial class SettingsPageModel : ObservableObject
     // --- Notification preferences ---
     public ObservableCollection<NotificationToggleItem> NotificationItems { get; } = [];
 
+    // --- Section expanded states ---
+    [ObservableProperty]
+    private bool _isDisplayPreferencesExpanded = true;
+
+    [ObservableProperty]
+    private bool _isContentPrivacyExpanded = true;
+
+    [ObservableProperty]
+    private bool _isNotificationsExpanded = false;
+
+    [ObservableProperty]
+    private bool _isAccountExpanded = true;
+
+    [RelayCommand]
+    private void ToggleDisplayPreferences() => IsDisplayPreferencesExpanded = !IsDisplayPreferencesExpanded;
+
+    [RelayCommand]
+    private void ToggleContentPrivacy() => IsContentPrivacyExpanded = !IsContentPrivacyExpanded;
+
+    [RelayCommand]
+    private void ToggleNotifications() => IsNotificationsExpanded = !IsNotificationsExpanded;
+
+    [RelayCommand]
+    private void ToggleAccount() => IsAccountExpanded = !IsAccountExpanded;
+
     // --- App info ---
     public string AppVersion { get; } = $"v{AppInfo.Current.VersionString}";
 

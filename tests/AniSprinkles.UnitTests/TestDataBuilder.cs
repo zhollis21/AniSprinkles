@@ -69,7 +69,7 @@ internal static class TestDataBuilder
 
         foreach (var group in ordered)
         {
-            var defaultExpanded = sections.Count == 0;
+            var defaultExpanded = sections.Count == 0 || group.Name == "Rewatching";
             var section = new MediaListSection(group.Name, defaultExpanded);
             section.AddItems(group.Entries);
             section.ApplySort(sortField, sortAscending);
