@@ -1016,13 +1016,14 @@ public class MediaListSectionsMergerTests
         // Act
         MediaListSectionsMerger.Merge(sections, fresh, [], true, SortField.LastUpdated, false, "");
 
-        // Assert: Watching was emptied (Pass 2 removes it from the outer collection, so it will
-        // receive its batched Reset before removal). Completed gained three and keeps its reset
-        // coalesced to one.
+        // Assert: Watching was emptied and then removed in Pass 2. Its pending bulk-update is
+        // discarded before removal so it fires zero Resets — running a deferred sort/filter on
+        // a section that's leaving the outer collection would be pure waste. Completed gained
+        // three and keeps its reset coalesced to one.
         Assert.DoesNotContain(sections, s => s.Title == "Watching");
         Assert.Single(sections);
         Assert.Equal(4, completed.TotalCount);
-        Assert.Equal(1, watchingResets);
+        Assert.Equal(0, watchingResets);
         Assert.Equal(1, completedResets);
     }
 

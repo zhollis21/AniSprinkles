@@ -175,11 +175,31 @@ public class MediaListSection : ObservableCollection<MediaListEntry>
 
     private void EndBulkUpdate()
     {
+        // Guard against Dispose running on a scope whose section was discarded via
+        // DiscardBulkUpdate — without this, the depth counter would go negative and
+        // the next BeginBulkUpdate would skip its deferred UpdateItems.
+        if (_bulkUpdateDepth == 0)
+        {
+            return;
+        }
+
         if (--_bulkUpdateDepth == 0 && _bulkUpdateDirty)
         {
             _bulkUpdateDirty = false;
             UpdateItems();
         }
+    }
+
+    /// <summary>
+    /// Abandon any in-flight bulk-update scopes without running the deferred <see cref="UpdateItems"/>.
+    /// Use when the section is about to be removed or otherwise discarded — e.g. the merger's Pass 2
+    /// drops empty/stale sections, and running the final sort/filter pass on a section that's
+    /// leaving the outer collection is pure waste.
+    /// </summary>
+    internal void DiscardBulkUpdate()
+    {
+        _bulkUpdateDepth = 0;
+        _bulkUpdateDirty = false;
     }
 
     private sealed class BulkUpdateScope(MediaListSection owner) : IDisposable

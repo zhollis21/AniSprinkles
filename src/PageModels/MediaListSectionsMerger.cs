@@ -267,10 +267,17 @@ public static class MediaListSectionsMerger
             }
 
             // Pass 2: remove sections that are no longer in the new set, or that ended up empty.
+            // Discard any open bulk scope on the removed section first — running its deferred
+            // UpdateItems would sort/filter a section that's already leaving the outer collection.
             foreach (var section in existing.ToList())
             {
                 if (!newTitleSet.Contains(section.Title) || section.TotalCount == 0)
                 {
+                    if (bulkScopes.Remove(section))
+                    {
+                        section.DiscardBulkUpdate();
+                    }
+
                     existing.Remove(section);
                     sectionsTouched.Remove(section);
                     sectionsRemoved++;
