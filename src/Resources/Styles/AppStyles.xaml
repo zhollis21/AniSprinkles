@@ -270,6 +270,12 @@
         <Setter Property="Padding" Value="{OnIdiom 12, Desktop=16}"/>
     </Style>
 
+    <!-- Collapsible section content card: offsets the outer VerticalStackLayout spacing so the
+         content sits flush beneath its section header (gap is controlled by SectionHeaderStyle margin alone). -->
+    <Style TargetType="Border" x:Key="SectionContentStyle" BasedOn="{StaticResource CardStyle}">
+        <Setter Property="Margin" Value="0,-16,0,0"/>
+    </Style>
+
     <!-- ============================= -->
     <!-- MyAnime "Section Header" + "Row" styles -->
     <!-- ============================= -->
