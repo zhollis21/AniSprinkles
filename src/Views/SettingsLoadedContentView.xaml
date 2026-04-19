@@ -147,7 +147,9 @@
 
             <!-- 3. DISPLAY PREFERENCES -->
             <Border Style="{StaticResource SectionHeaderStyle}"
-                    Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}">
+                    Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}"
+                    AutomationProperties.Name="Display Preferences"
+                    AutomationProperties.HelpText="Toggle Display Preferences section">
                 <Border.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ToggleDisplayPreferencesCommand}" />
                 </Border.GestureRecognizers>
@@ -179,8 +181,7 @@
                     </Label>
                 </Grid>
             </Border>
-            <Border Style="{StaticResource CardStyle}" Padding="16"
-                    Margin="0,-16,0,0"
+            <Border Style="{StaticResource SectionContentStyle}" Padding="16"
                     IsVisible="{Binding IsDisplayPreferencesExpanded}">
                 <VerticalStackLayout Spacing="16">
                     <VerticalStackLayout Spacing="8">
@@ -269,7 +270,9 @@
 
             <!-- 4. CONTENT & PRIVACY -->
             <Border Style="{StaticResource SectionHeaderStyle}"
-                    Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}">
+                    Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}"
+                    AutomationProperties.Name="Content &amp; Privacy"
+                    AutomationProperties.HelpText="Toggle Content &amp; Privacy section">
                 <Border.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ToggleContentPrivacyCommand}" />
                 </Border.GestureRecognizers>
@@ -301,8 +304,7 @@
                     </Label>
                 </Grid>
             </Border>
-            <Border Style="{StaticResource CardStyle}" Padding="16"
-                    Margin="0,-16,0,0"
+            <Border Style="{StaticResource SectionContentStyle}" Padding="16"
                     IsVisible="{Binding IsContentPrivacyExpanded}">
                 <VerticalStackLayout Spacing="4">
                     <Grid ColumnDefinitions="*,Auto" Padding="0,8">
@@ -333,7 +335,9 @@
 
             <!-- 5. NOTIFICATION PREFERENCES -->
             <Border Style="{StaticResource SectionHeaderStyle}"
-                    Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}">
+                    Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}"
+                    AutomationProperties.Name="Notifications"
+                    AutomationProperties.HelpText="Toggle Notifications section">
                 <Border.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ToggleNotificationsCommand}" />
                 </Border.GestureRecognizers>
@@ -365,8 +369,7 @@
                     </Label>
                 </Grid>
             </Border>
-            <Border Style="{StaticResource CardStyle}" Padding="12,4"
-                    Margin="0,-16,0,0"
+            <Border Style="{StaticResource SectionContentStyle}" Padding="12,4"
                     IsVisible="{Binding IsNotificationsExpanded}">
                 <VerticalStackLayout BindableLayout.ItemsSource="{Binding NotificationItems}" Spacing="0">
                     <BindableLayout.ItemTemplate>
@@ -385,7 +388,9 @@
 
             <!-- 6. ACCOUNT -->
             <Border Style="{StaticResource SectionHeaderStyle}"
-                    Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}">
+                    Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}"
+                    AutomationProperties.Name="Account"
+                    AutomationProperties.HelpText="Toggle Account section">
                 <Border.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ToggleAccountCommand}" />
                 </Border.GestureRecognizers>
@@ -417,8 +422,7 @@
                     </Label>
                 </Grid>
             </Border>
-            <Border Style="{StaticResource CardStyle}" Padding="16"
-                    Margin="0,-16,0,0"
+            <Border Style="{StaticResource SectionContentStyle}" Padding="16"
                     IsVisible="{Binding IsAccountExpanded}">
                 <VerticalStackLayout Spacing="12">
                     <views:AuthActionsView />
