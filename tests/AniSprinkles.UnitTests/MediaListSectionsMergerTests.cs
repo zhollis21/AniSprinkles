@@ -428,6 +428,64 @@ public class MediaListSectionsMergerTests
     }
 
     [Fact]
+    public void Merge_NewSection_IsFullyMaterializedWhenPublishedToOuterCollection()
+    {
+        // Regression: previously the merger added a brand-new section to the outer
+        // ObservableCollection while its bulk-update scope was still open, so the
+        // first CollectionChanged observer saw a section whose visible items hadn't
+        // been materialized yet (FilteredCount=0, DisplayCount="0/N") until the
+        // outer finally block disposed all scopes.
+
+        // Arrange
+        var sectionOrder = new[] { "Watching" };
+        var initial = TestDataBuilder.BuildInitial(TestDataBuilder.Groups(), sectionOrder);
+
+        var updated = TestDataBuilder.Groups(
+            TestDataBuilder.Group("Watching", TestDataBuilder.Entry(1), TestDataBuilder.Entry(2)));
+
+        var observedTotalCount = -1;
+        var observedFilteredCount = -1;
+        var observedDisplayCount = string.Empty;
+        var observedVisibleCount = -1;
+        initial.CollectionChanged += (_, e) =>
+        {
+            if (e.Action != NotifyCollectionChangedAction.Add || e.NewItems is null)
+            {
+                return;
+            }
+
+            foreach (MediaListSection section in e.NewItems)
+            {
+                if (section.Title != "Watching")
+                {
+                    continue;
+                }
+
+                observedTotalCount = section.TotalCount;
+                observedFilteredCount = section.FilteredCount;
+                observedDisplayCount = section.DisplayCount;
+                observedVisibleCount = section.Count;
+            }
+        };
+
+        // Act
+        MediaListSectionsMerger.Merge(
+            initial,
+            updated,
+            sectionOrder,
+            displayAdultContent: true,
+            SortField.LastUpdated,
+            sortAscending: false,
+            filterText: "");
+
+        // Assert — section is default-expanded (first section in an empty list) and fully materialized
+        Assert.Equal(2, observedTotalCount);
+        Assert.Equal(2, observedFilteredCount);
+        Assert.Equal("2", observedDisplayCount);
+        Assert.Equal(2, observedVisibleCount);
+    }
+
+    [Fact]
     public void Merge_SectionBecomesEmpty_IsRemoved()
     {
         // Arrange
