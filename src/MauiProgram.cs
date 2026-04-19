@@ -73,8 +73,14 @@ public static class MauiProgram
         // AddDebug() does NOT bridge to logcat on .NET MAUI Android (verified empirically).
         // Without this provider, adb logcat shows nothing from the Microsoft.Extensions.Logging
         // pipeline. Registered for all build configs so device diagnostics work in Release too.
-        builder.Logging.AddProvider(new AndroidLogcatLoggerProvider());
-        builder.Logging.AddFilter<AndroidLogcatLoggerProvider>(string.Empty, fileLogMinimumLevel);
+        //
+        // Logcat is on-device developer diagnostics — kept at Debug independent of the file
+        // logger's per-config minimum. Release file logging stays capped at Warning (Sentry +
+        // 256 KB ring buffer), but `adb logcat` should still surface full ILogger output when
+        // a dev is attached to a Release build on a test device.
+        const LogLevel logcatMinimumLevel = LogLevel.Debug;
+        builder.Logging.AddProvider(new AndroidLogcatLoggerProvider(logcatMinimumLevel));
+        builder.Logging.AddFilter<AndroidLogcatLoggerProvider>(string.Empty, logcatMinimumLevel);
         builder.Logging.AddFilter<AndroidLogcatLoggerProvider>("Microsoft", LogLevel.Warning);
         builder.Logging.AddFilter<AndroidLogcatLoggerProvider>("System", LogLevel.Warning);
         builder.Logging.AddFilter<AndroidLogcatLoggerProvider>("Sentry", LogLevel.Warning);

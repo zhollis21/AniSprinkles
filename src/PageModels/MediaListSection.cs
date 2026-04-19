@@ -269,8 +269,6 @@ public class MediaListSection : ObservableCollection<MediaListEntry>
         {
             UpdateItems();
         }
-
-        OnPropertyChanged(new PropertyChangedEventArgs(nameof(TotalCount)));
     }
 
     private List<MediaListEntry> GetSortedFilteredItems()

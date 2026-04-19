@@ -62,6 +62,8 @@ public sealed class AndroidLogcatLoggerProvider : ILoggerProvider
             switch (logLevel)
             {
                 case LogLevel.Trace:
+                    AndroidLog.Verbose(_tag, message);
+                    break;
                 case LogLevel.Debug:
                     AndroidLog.Debug(_tag, message);
                     break;

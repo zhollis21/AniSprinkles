@@ -1117,4 +1117,40 @@ public class MediaListSectionsMergerTests
         // Assert
         Assert.Equal(0, resets);
     }
+
+    [Fact]
+    public void DiscardBulkUpdate_SuppressesDeferredUpdateItemsOnDispose()
+    {
+        // DiscardBulkUpdate is the merger's Pass-2 escape hatch: when a section is leaving the
+        // outer collection we don't want its final sort/filter to fire. After Discard, disposing
+        // the outstanding scope must NOT trigger UpdateItems, and must not leave the section in
+        // a state that breaks subsequent bulk scopes.
+        // Arrange
+        var section = new MediaListSection("Watching", isExpanded: true);
+        section.AddItem(TestDataBuilder.Entry(1));
+        var resets = 0;
+        section.CollectionChanged += (_, e) =>
+        {
+            if (e.Action == NotifyCollectionChangedAction.Reset)
+            {
+                resets++;
+            }
+        };
+
+        // Act: open a scope, mutate (so dirty flag would fire on normal dispose), then discard.
+        var scope = section.BeginBulkUpdate();
+        section.AddItem(TestDataBuilder.Entry(2));
+        section.DiscardBulkUpdate();
+        scope.Dispose();
+
+        // Assert: no deferred UpdateItems ran, and a fresh scope still behaves correctly.
+        Assert.Equal(0, resets);
+
+        using (section.BeginBulkUpdate())
+        {
+            section.AddItem(TestDataBuilder.Entry(3));
+        }
+
+        Assert.Equal(1, resets);
+    }
 }
