@@ -74,14 +74,18 @@ public static class MauiProgram
         // Without this provider, adb logcat shows nothing from the Microsoft.Extensions.Logging
         // pipeline. Registered for all build configs so device diagnostics work in Release too.
         builder.Logging.AddProvider(new AndroidLogcatLoggerProvider());
+        builder.Logging.AddFilter<AndroidLogcatLoggerProvider>(string.Empty, fileLogMinimumLevel);
         builder.Logging.AddFilter<AndroidLogcatLoggerProvider>("Microsoft", LogLevel.Warning);
         builder.Logging.AddFilter<AndroidLogcatLoggerProvider>("System", LogLevel.Warning);
         builder.Logging.AddFilter<AndroidLogcatLoggerProvider>("Sentry", LogLevel.Warning);
 #endif
 
-        // MAUI auto-registers IDispatcher and IPreferences in the DI container via UseMauiApp.
-        // TimeProvider is not auto-registered; adding TryAddSingleton keeps DI-first code paths
-        // testable via FakeTimeProvider without forcing tests to discover a default.
+        // MAUI auto-registers IDispatcher via UseMauiApp, but IPreferences is only exposed as
+        // the static Preferences.Default — DI has no default, so resolving any PageModel that
+        // takes IPreferences throws InvalidOperationException at startup. Register it explicitly.
+        // TimeProvider is also not auto-registered; adding TryAddSingleton keeps DI-first code
+        // paths testable via FakeTimeProvider without forcing tests to discover a default.
+        builder.Services.TryAddSingleton<IPreferences>(_ => Preferences.Default);
         builder.Services.TryAddSingleton(TimeProvider.System);
         builder.Services.AddSingleton<INavigationService, MauiShellNavigationService>();
         builder.Services.AddSingleton<ErrorReportService>();
