@@ -11,5 +11,7 @@
   <Project Path="src/AniSprinkles.csproj">
     <Deploy Solution="Debug|*" />
   </Project>
+  <Project Path="src/AniSprinkles.AppHost/AniSprinkles.AppHost.csproj" />
+  <Project Path="src/AniSprinkles.MauiServiceDefaults/AniSprinkles.MauiServiceDefaults.csproj" />
   <Project Path="tests/AniSprinkles.UnitTests/AniSprinkles.UnitTests.csproj" />
 </Solution>

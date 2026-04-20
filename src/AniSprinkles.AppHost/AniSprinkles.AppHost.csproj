@@ -1,0 +1,24 @@
+<Project Sdk="Aspire.AppHost.Sdk/13.2.2">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UserSecretsId>206c55b1-da13-4240-b8a3-452357db13ea</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Aspire.Hosting.Maui is in preview in Aspire 13.x (no stable release yet).
+         Pinned to the latest preview that lines up with Aspire.AppHost.Sdk 13.2.2.
+         Revisit when the .NET MAUI integration reaches GA. -->
+    <PackageReference Include="Aspire.Hosting.Maui" Version="13.2.2-preview.1.26207.2" />
+  </ItemGroup>
+
+  <!-- The MAUI project is referenced by path inside AppHost.cs (AddMauiProject).
+       Do NOT add a <ProjectReference> to src/AniSprinkles.csproj: its
+       net10.0-android TFM is incompatible with this project's net10.0 TFM and
+       would break the AppHost build. -->
+
+</Project>
+

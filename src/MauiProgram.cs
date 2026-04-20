@@ -3,6 +3,12 @@ using CommunityToolkit.Maui;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Syncfusion.Maui.Toolkit.Hosting;
+#if DEBUG
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
+using OpenTelemetry;
+using OpenTelemetry.Metrics;
+#endif
 #if ANDROID
 using AniSprinkles.Platforms.Android;
 #endif
@@ -14,6 +20,47 @@ public static class MauiProgram
     public static MauiApp CreateMauiApp()
     {
         var builder = MauiApp.CreateBuilder();
+#if DEBUG
+        // Diagnostic: surface Aspire-injected env vars in logcat so we can
+        // verify the Android @(AndroidEnvironment) targets file actually
+        // reached the APK and the Mono runtime set the vars. Console.WriteLine
+        // from an Android app process is NOT captured by the Aspire dashboard
+        // (the AppHost launches via adb and doesn't pipe stdout), so we log
+        // to logcat directly and read with `adb logcat -s AniSprinkles:*`.
+        var aspireOtlpEndpoint = Environment.GetEnvironmentVariable("OTEL_EXPORTER_OTLP_ENDPOINT");
+        var aspireOtlpProtocol = Environment.GetEnvironmentVariable("OTEL_EXPORTER_OTLP_PROTOCOL");
+        var aspireServiceName = Environment.GetEnvironmentVariable("OTEL_SERVICE_NAME");
+#if ANDROID
+        Android.Util.Log.Info("AniSprinkles", $"[Aspire] OTEL_EXPORTER_OTLP_ENDPOINT={aspireOtlpEndpoint ?? "<null>"}");
+        Android.Util.Log.Info("AniSprinkles", $"[Aspire] OTEL_EXPORTER_OTLP_PROTOCOL={aspireOtlpProtocol ?? "<null>"}");
+        Android.Util.Log.Info("AniSprinkles", $"[Aspire] OTEL_SERVICE_NAME={aspireServiceName ?? "<null>"}");
+#endif
+
+        // MauiAppBuilder.Configuration does NOT auto-include OS environment
+        // variables (unlike Host.CreateApplicationBuilder). Aspire injects
+        // OTEL_EXPORTER_OTLP_ENDPOINT into the emulator process via an
+        // Android @(AndroidEnvironment) targets file, but without this call
+        // AddServiceDefaults → AddOpenTelemetryExporters reads it as null and
+        // UseOtlpExporter() never runs → dashboard shows no traces/logs.
+        // Must run before AddServiceDefaults.
+        builder.Configuration.AddEnvironmentVariables();
+
+        // Aspire service defaults: OpenTelemetry (traces/metrics/logs), service
+        // discovery, and standard HTTP resilience. Debug-only — Release builds
+        // ship Sentry-only telemetry and never reference the service-defaults
+        // project (see conditional ProjectReference in AniSprinkles.csproj).
+        // The OTLP exporter inside AddServiceDefaults is a no-op unless
+        // OTEL_EXPORTER_OTLP_ENDPOINT is injected by the Aspire AppHost, so
+        // direct F5 (no AppHost) remains safe.
+        builder.AddServiceDefaults();
+
+        // App-specific meters. Keep this in MauiProgram (not ServiceDefaults)
+        // so the service-defaults template stays reusable. AniListRateLimitHandler
+        // publishes anilist.requests, anilist.ratelimit.remaining, and
+        // anilist.ratelimit.throttled on this meter.
+        builder.Services.AddOpenTelemetry()
+            .WithMetrics(metrics => metrics.AddMeter("AniSprinkles.AniList"));
+#endif
         builder
             .UseMauiApp<App>()
             .UseSentry(options =>
@@ -46,9 +93,12 @@ public static class MauiProgram
         var fileLogMinimumLevel = LogLevel.Debug;
         const long fileLogMaxBytes = 1024 * 1024; // 1 MB
         const int fileLogRetainedFiles = 3;
-        builder.Logging.AddFilter("Microsoft", LogLevel.Warning);
-        builder.Logging.AddFilter("System", LogLevel.Warning);
-        builder.Logging.AddFilter("Sentry", LogLevel.Warning);
+        // Per-provider filters only — global filters would cascade to the
+        // OpenTelemetry logger provider and strip Information-level logs
+        // (e.g. HttpClient request logs) from the Aspire dashboard.
+        builder.Logging.AddFilter<Microsoft.Extensions.Logging.Debug.DebugLoggerProvider>("Microsoft", LogLevel.Warning);
+        builder.Logging.AddFilter<Microsoft.Extensions.Logging.Debug.DebugLoggerProvider>("System", LogLevel.Warning);
+        builder.Logging.AddFilter<Microsoft.Extensions.Logging.Debug.DebugLoggerProvider>("Sentry", LogLevel.Warning);
         builder.Logging.AddDebug();
 #else
         // Release builds keep a small on-device ring buffer for user-shared diagnostics.
@@ -96,12 +146,23 @@ public static class MauiProgram
         builder.Services.AddSingleton<INavigationService, MauiShellNavigationService>();
         builder.Services.AddSingleton<ErrorReportService>();
         builder.Services.AddTransient<LoggingHandler>();
+        builder.Services.AddTransient<AniListRateLimitHandler>();
+        // Named client "anilist". ConfigureHttpClientDefaults from AddServiceDefaults
+        // (Debug only) layers the standard resilience handler + service discovery
+        // on top. In Release only the handlers registered here run — rate-limit
+        // observation + Sentry-breadcrumb logging — keeping the Release surface
+        // aligned with today's behaviour minus the stopwatch-only path.
+        //
+        // Handler order (outermost → innermost → network):
+        //   [StandardResilienceHandler (Debug via defaults)]
+        //     → AniListRateLimitHandler
+        //       → LoggingHandler
+        //         → primary HttpClientHandler
+        builder.Services.AddHttpClient("anilist")
+            .AddHttpMessageHandler<AniListRateLimitHandler>()
+            .AddHttpMessageHandler<LoggingHandler>();
         builder.Services.AddSingleton(sp =>
-        {
-            var handler = sp.GetRequiredService<LoggingHandler>();
-            handler.InnerHandler = new HttpClientHandler();
-            return new HttpClient(handler);
-        });
+            sp.GetRequiredService<IHttpClientFactory>().CreateClient("anilist"));
 #if CI
         builder.Services.AddSingleton<IAuthService, CIAuthService>();
         builder.Services.AddSingleton<IAniListClient, CIAniListClient>();

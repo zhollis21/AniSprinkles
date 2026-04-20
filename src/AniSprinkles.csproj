@@ -30,6 +30,16 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">31.0</SupportedOSPlatformVersion>
 	</PropertyGroup>
 
+	<!-- The MAUI SDK's default *.cs / *.xaml glob sweeps every subdirectory of
+	     the project folder, which would include sibling Aspire projects
+	     (src/AniSprinkles.AppHost, src/AniSprinkles.MauiServiceDefaults) and
+	     their obj/ outputs — producing duplicate-attribute errors at build.
+	     Explicitly exclude those sibling project trees from this project's
+	     item globs. -->
+	<PropertyGroup>
+		<DefaultItemExcludes>$(DefaultItemExcludes);AniSprinkles.AppHost\**;AniSprinkles.MauiServiceDefaults\**</DefaultItemExcludes>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\appicon.png" />
@@ -60,6 +70,13 @@
 		     generation (Kotlin metadata 2.2.0). Without it NuGet resolves Activity 1.12.4.1 /
 		     Lifecycle 2.10.0.2 (Kotlin metadata 2.3.0) which R8 in MAUI 10.0.51 cannot process.
 		     Revisit when MAUI upgrades its bundled R8/D8 toolchain. -->
+	</ItemGroup>
+
+	<!-- Aspire service defaults (OpenTelemetry + resilience + service discovery) are
+	     referenced in Debug only. Release builds must not ship Aspire / OTel /
+	     resilience packages — Sentry remains the sole production telemetry path. -->
+	<ItemGroup Condition="'$(Configuration)' == 'Debug'">
+		<ProjectReference Include="AniSprinkles.MauiServiceDefaults\AniSprinkles.MauiServiceDefaults.csproj" />
 	</ItemGroup>
 
 	<!-- Append CI preprocessor symbol when building for CI screenshots (-p:CiBuild=true) -->

@@ -63,18 +63,38 @@ dotnet build src/AniSprinkles.csproj -c Debug -f net10.0-android -p:EmbedAssembl
 
 ---
 
+## Local dev observability (optional)
+
+Debug-only. Launches the app through a [.NET Aspire](https://aspire.dev) AppHost so HTTP traces, metrics, and logs stream to the Aspire dashboard over a Dev Tunnel. Release builds never include any Aspire / OpenTelemetry dependencies.
+
+```powershell
+# One-time setup
+dotnet new install Aspire.ProjectTemplates
+winget install Microsoft.Devtunnel
+devtunnel user login
+dotnet tool install --global Aspire.Cli --prerelease
+
+# Launch the AppHost; the dashboard opens in your browser.
+# Start the Android target from the dashboard (requires a running emulator).
+aspire run
+```
+
+Direct F5 on `src/AniSprinkles.csproj` still works — `AddServiceDefaults()` is a no-op when `OTEL_EXPORTER_OTLP_ENDPOINT` is not injected, so the AppHost is entirely optional.
+
+---
+
 ## Architecture
 
-| Concern    | Choice                                                                                     |
-| ---------- | ------------------------------------------------------------------------------------------ |
-| Platform   | .NET MAUI Android-only (`net10.0-android`, min SDK 31)                                     |
-| Pattern    | MVVM — CommunityToolkit.Mvvm (`[ObservableProperty]`, `[RelayCommand]`)                    |
-| Navigation | Shell flyout + programmatic `media-details` route                                          |
-| Auth       | AniList OAuth implicit grant; redirect URI `anisprinkles://auth`; token in `SecureStorage` |
-| HTTP       | Singleton `HttpClient` with `LoggingHandler` (Bearer token redaction)                      |
-| Background | WorkManager periodic job for airing notifications                                          |
-| Telemetry  | Sentry crash reporting (`SendDefaultPii = false`, no performance tracing)                  |
-| Logging    | `ILogger` + rotating async file log (Debug only); minimum level `Information`              |
+| Concern    | Choice                                                                                                                                                                         |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Platform   | .NET MAUI Android-only (`net10.0-android`, min SDK 31)                                                                                                                         |
+| Pattern    | MVVM — CommunityToolkit.Mvvm (`[ObservableProperty]`, `[RelayCommand]`)                                                                                                        |
+| Navigation | Shell flyout + programmatic `media-details` route                                                                                                                              |
+| Auth       | AniList OAuth implicit grant; redirect URI `anisprinkles://auth`; token in `SecureStorage`                                                                                     |
+| HTTP       | Named `HttpClient` "anilist" via `IHttpClientFactory`; handler chain: standard resilience (Debug only) → `AniListRateLimitHandler` → `LoggingHandler` (Bearer token redaction) |
+| Background | WorkManager periodic job for airing notifications                                                                                                                              |
+| Telemetry  | Sentry crash reporting (`SendDefaultPii = false`, no performance tracing)                                                                                                      |
+| Logging    | `ILogger` + rotating async file log (Debug only); minimum level `Information`                                                                                                  |
 
 ---
 

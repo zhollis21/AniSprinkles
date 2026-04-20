@@ -8,10 +8,10 @@
 
 ## Architecture
 
-- **.NET MAUI Android-only** app (`net10.0-android`; `SupportedOSPlatformVersion` 31.0), single project in `src/`. App ID: `com.RainbowSprinkles.AniSprinkles`.
+- **.NET MAUI Android-only** app (`net10.0-android`; `SupportedOSPlatformVersion` 31.0) at `src/AniSprinkles.csproj`. App ID: `com.RainbowSprinkles.AniSprinkles`. Two sibling dev-infra projects live under `src/` for local Aspire observability and are Debug-only: `src/AniSprinkles.AppHost/` (Aspire 13 AppHost, preview `Aspire.Hosting.Maui`) and `src/AniSprinkles.MauiServiceDefaults/` (OpenTelemetry + resilience + service discovery). Release builds never reference MauiServiceDefaults — the `<ProjectReference>` is gated on `$(Configuration) == 'Debug'`.
 - **MVVM** via CommunityToolkit.Mvvm: PageModels extend `ObservableObject`, use `[ObservableProperty]`, `[RelayCommand]`, `[NotifyPropertyChangedFor]`. Shell flyout navigation (`my-anime`, `settings`) with a programmatic `media-details` route. PageModels navigate through the injected `INavigationService` (routes + lightweight query params — never full objects); persist state via the injected `IPreferences`; marshal pool-thread continuations back to the UI via the injected `IDispatcher`. View-facing UX calls (`Shell.Current.DisplayAlertAsync`, `ShowPopupAsync`, `Browser.Default`) are allowed to keep using MAUI statics because they only run inside view-attached paths.
 - **DI**: Services and flyout PageModels (`MyAnimePageModel`, `SettingsPageModel`) are singleton. All Pages and `MediaDetailsPageModel` are transient. See `/project-architecture` for the full DI table and page patterns.
-- **Services**: `AuthService` (OAuth + SecureStorage), `AniListClient` (GraphQL + viewer ID cache), `ErrorReportService` (Sentry + `ILogger` + token redaction), `FileLoggerProvider` (rotating async file log, Debug = 1 MB × 3 / Release = 256 KB × 3), `AndroidLogcatLoggerProvider` (bridges `ILogger` → `adb logcat` on Android), `LoggingHandler` (HTTP DelegatingHandler), `AiringNotificationService` (WorkManager periodic check). See `/airing-notifications` for the notification subsystem.
+- **Services**: `AuthService` (OAuth + SecureStorage), `AniListClient` (GraphQL + viewer ID cache), `ErrorReportService` (Sentry + `ILogger` + token redaction), `FileLoggerProvider` (rotating async file log, Debug = 1 MB × 3 / Release = 256 KB × 3), `AndroidLogcatLoggerProvider` (bridges `ILogger` → `adb logcat` on Android), `LoggingHandler` (HTTP DelegatingHandler — Sentry breadcrumbs + structured logs), `AniListRateLimitHandler` (HTTP DelegatingHandler — logs `X-RateLimit-Remaining` / `Retry-After`), `AiringNotificationService` (WorkManager periodic check). See `/airing-notifications` for the notification subsystem.
 - **Global usings** (`GlobalUsings.cs`): `Models`, `PageModels`, `Pages`, `Services`, `IconFont.Maui.FluentIcons`. `Converters` and `Utilities` require explicit `using`.
 - **Key NuGet packages**: `Microsoft.Maui.Controls`, `CommunityToolkit.Mvvm`, `CommunityToolkit.Maui`, `Sentry.Maui`, `Syncfusion.Maui.Toolkit`, `IconFont.Maui.FluentIcons`.
 
@@ -20,8 +20,8 @@
 - **Endpoint**: `https://graphql.anilist.co`. Auth: OAuth implicit grant, redirect URI `anisprinkles://auth`, token in `SecureStorage` keys `anilist_access_token` and `anilist_access_token_expires_at`.
 - **Viewer ID caching**: lightweight `Viewer { id }` query cached by token string; invalidates on re-auth.
 - **Operations**: `Viewer`, `ViewerFull`, `MediaListCollection`, `Search`, `Media`, `SaveMediaListEntry`, `DeleteMediaListEntry`, `UpdateUser`, `AiringSchedule` (public, no auth required).
-- **Rate limiting**: not yet implemented. Planned: `X-RateLimit-Remaining`/`Retry-After`, 30 req/min, exponential backoff on 429.
-- **HttpClient**: singleton with `LoggingHandler`. Bearer token attached per-request in `AniListClient.SendAsync`. No timeout, retry, or rate-limit middleware yet.
+- **Rate limiting**: observation-only. `AniListRateLimitHandler` parses `X-RateLimit-Remaining` on every response and `Retry-After` on 429s, emitting structured warnings via `ILogger`. Does not retry — 429 on a rate-limited session is typically sustained, and in-process retry tends to extend the blocked window. Automatic back-off-with-retry remains a follow-up once dashboard data shows real patterns.
+- **HttpClient**: named client `"anilist"` resolved via `IHttpClientFactory` and re-wrapped as a singleton for `AniListClient`. Handler chain (outermost → innermost → network): standard resilience (Debug only, layered by Aspire service defaults via `ConfigureHttpClientDefaults`) → `AniListRateLimitHandler` → `LoggingHandler` → primary `HttpClientHandler`. Bearer token is attached per-request in `AniListClient.SendAsync`.
 
 ## Airing Notifications
 
@@ -42,6 +42,41 @@ dotnet build src/AniSprinkles.csproj -c Debug -f net10.0-android -p:EmbedAssembl
 # Unit tests (pure algorithm tests — no device/emulator required)
 dotnet test tests/AniSprinkles.UnitTests/AniSprinkles.UnitTests.csproj -c Debug
 ```
+
+## Local Dev Observability (Aspire)
+
+Debug-only. Release builds ship Sentry-only telemetry and never reference the service-defaults project.
+
+- **Projects**: `src/AniSprinkles.AppHost/` (Aspire 13 `aspire-apphost` template, pins `Aspire.AppHost.Sdk/13.2.2` and preview `Aspire.Hosting.Maui 13.2.2-preview.1.26207.2`). `src/AniSprinkles.MauiServiceDefaults/` (`maui-aspire-servicedefaults` template) provides `AddServiceDefaults(this MauiAppBuilder)` which wires OpenTelemetry logs/metrics/traces, standard HTTP resilience, service discovery, and the OTLP exporter. `MauiProgram.cs` calls `builder.AddServiceDefaults()` inside `#if DEBUG` only.
+- **Glob guard**: `AniSprinkles.csproj` sets `<DefaultItemExcludes>` to exclude the sibling Aspire project trees. Without this, the MAUI SDK's default `*.cs` / `*.xaml` glob would sweep their `obj/` output and fail with duplicate-attribute errors.
+- **Running the dashboard**:
+
+  ```powershell
+  # One-time setup
+  dotnet new install Aspire.ProjectTemplates
+  winget install Microsoft.Devtunnel
+  devtunnel user login
+  dotnet tool install --global Aspire.Cli --prerelease
+
+  # Start the AppHost; the Aspire dashboard opens in your browser.
+  # Use the Aspire CLI (aspire run) — plain `dotnet run --project src/AniSprinkles.AppHost`
+  # also works but has been flakier in practice with the MAUI preview integration.
+  # Launch the Android target from the dashboard (requires a running emulator).
+  aspire run
+  ```
+
+  `AddServiceDefaults()` is a no-op when `OTEL_EXPORTER_OTLP_ENDPOINT` is not set, so direct F5 on `src/AniSprinkles.csproj` (without AppHost) still works and simply skips OTel export.
+
+- **Resource graph**: AppHost registers AniList (`https://graphql.anilist.co`) and Sentry (`https://sentry.io`) as `AddExternalService` nodes. Only AniList gets `WithReference` on the emulator resource; Sentry is node-only because the app uses its own DSN and doesn't need service-discovery env vars. A `WithUrl` shortcut to the GitHub repo is attached to the Android resource.
+
+- **App metrics**: `AniListRateLimitHandler` publishes metrics on the `AniSprinkles.AniList` meter: `anilist.requests` (Counter, tagged by `anilist.status_code`), `anilist.ratelimit.remaining` (Histogram), `anilist.ratelimit.throttled` (Counter on 429s). Meter is registered in `MauiProgram.cs` after `AddServiceDefaults()` so the service-defaults template stays app-agnostic.
+
+- **Known preview bugs / workarounds**:
+  - [aspire#15248](https://github.com/dotnet/aspire/issues/15248) — `AddAndroidEmulator()` generates a `dotnet run` command with a duplicate `run` arg, causing `Microsoft.Android.Run` to crash with "Unexpected argument(s): run". Worked around in AppHost.cs with `.WithArgs(ctx => ctx.Args.Remove("run"))`. Revisit when the upstream fix lands.
+  - [aspire#15431](https://github.com/dotnet/aspire/issues/15431) — Dashboard rebuild button says "Rebuilder resource for 'anisprinkles-android-emulator' not found". No workaround; stop the resource and start it again from the dashboard.
+  - After the Android resource starts, the app doesn't always auto-foreground on the emulator. Tap the icon or run `adb shell monkey -p com.RainbowSprinkles.AniSprinkles -c android.intent.category.LAUNCHER 1`.
+
+- **Preview pin**: `Aspire.Hosting.Maui` has no stable 13.x release at the time of integration. Revisit the pin when the integration reaches GA.
 
 - **CI**: GitHub Actions `android-release.yml` triggers on Release publication (or manual `workflow_dispatch`). `promote-release.yml` promotes between Play Console tracks (internal → alpha → beta → production).
 - **Version scheme**: `ApplicationDisplayVersion` from release tag semver (`vX.Y.Z` → `X.Y.Z`); `ApplicationVersion` (versionCode) from `YYMMDDNNN` (date + run_number mod 1000).
