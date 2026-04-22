@@ -81,12 +81,6 @@ public partial class SettingsPageModel : ObservableObject
     [ObservableProperty]
     private string _errorDetails = string.Empty;
 
-    [ObservableProperty]
-    private bool _hasErrorDetails;
-
-    [ObservableProperty]
-    private bool _isErrorDetailsVisible;
-
     private CancellationTokenSource? _saveDebounceCts;
 
     // --- Profile hero ---
@@ -215,15 +209,24 @@ public partial class SettingsPageModel : ObservableObject
         // flipping CurrentState would overlay the spinner on top of it.
         var isRefresh = _loadedUser is not null;
         _logger.LogInformation(
-            "Settings LoadAsync enter (isRefresh={IsRefresh}, currentState={CurrentState}, isAuthenticated={IsAuthenticated})",
-            isRefresh, CurrentState, IsAuthenticated);
+            "Settings LoadAsync enter (isRefresh={IsRefresh}, isBusy={IsBusy}, currentState={CurrentState}, isAuthenticated={IsAuthenticated})",
+            isRefresh, IsBusy, CurrentState, IsAuthenticated);
+
+        if (IsBusy)
+        {
+            _logger.LogInformation("Settings LoadAsync skipped — already in flight.");
+            return;
+        }
+
+        // Set IsBusy immediately — before any awaits — so concurrent callers
+        // (OnAppearing + pull-to-refresh, or rapid Retry taps) short-circuit above.
+        IsBusy = true;
 
         if (!isRefresh)
         {
             CurrentState = PageState.InitialLoading;
         }
 
-        IsBusy = true;
         try
         {
             await RefreshAuthStateAsync();
@@ -235,7 +238,6 @@ public partial class SettingsPageModel : ObservableObject
                 _loadedUser = user;
                 PopulateFromUser(user);
                 ErrorDetails = string.Empty;
-                IsErrorDetailsVisible = false;
                 CurrentState = PageState.Content;
             }
             else
@@ -274,7 +276,6 @@ public partial class SettingsPageModel : ObservableObject
             }
 
             ErrorDetails = _errorReportService.Record(ex, "Load Settings");
-            IsErrorDetailsVisible = false;
         }
         finally
         {
@@ -424,9 +425,6 @@ public partial class SettingsPageModel : ObservableObject
 
     partial void OnStatusMessageChanged(string value)
         => HasStatusMessage = !string.IsNullOrWhiteSpace(value);
-
-    partial void OnErrorDetailsChanged(string value)
-        => HasErrorDetails = !string.IsNullOrWhiteSpace(value);
 
     partial void OnSelectedTitleLanguageChanged(UserTitleLanguage value) => TriggerAutoSave();
     partial void OnSelectedStaffNameLanguageChanged(UserStaffNameLanguage value) => TriggerAutoSave();

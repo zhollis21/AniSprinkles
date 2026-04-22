@@ -84,12 +84,6 @@ public partial class MyAnimePageModel : ObservableObject
     [ObservableProperty]
     private string _errorDetails = string.Empty;
 
-    [ObservableProperty]
-    private bool _hasErrorDetails;
-
-    [ObservableProperty]
-    private bool _isErrorDetailsVisible;
-
     // ── Error state (full-page error view) ──────────────────────────
     // Visibility is driven by CurrentState == PageState.Error; the following
     // properties populate the error view template.
@@ -219,7 +213,6 @@ public partial class MyAnimePageModel : ObservableObject
             if (!IsAuthenticated)
             {
                 ErrorDetails = string.Empty;
-                IsErrorDetailsVisible = false;
                 Sections = [];
                 _hasLoaded = true;
                 _lastSuccessfulLoadUtc = default;
@@ -238,7 +231,6 @@ public partial class MyAnimePageModel : ObservableObject
             Title = "My Anime";
             StatusMessage = string.Empty;
             ErrorDetails = string.Empty;
-            IsErrorDetailsVisible = false;
 
             // Sync display preferences from AniList before building the list so that
             // cross-device setting changes (title language, adult content, section order)
@@ -332,7 +324,6 @@ public partial class MyAnimePageModel : ObservableObject
 
             _errorReportService.Record(ex, "Load My Anime");
             ErrorDetails = ex.Message;
-            IsErrorDetailsVisible = false;
         }
         finally
         {
@@ -347,9 +338,6 @@ public partial class MyAnimePageModel : ObservableObject
 
     partial void OnStatusMessageChanged(string value)
         => HasStatusMessage = !string.IsNullOrWhiteSpace(value);
-
-    partial void OnErrorDetailsChanged(string value)
-        => HasErrorDetails = !string.IsNullOrWhiteSpace(value);
 
     partial void OnSearchTextChanged(string value)
     {
@@ -821,7 +809,6 @@ public partial class MyAnimePageModel : ObservableObject
         {
             StatusMessage = "Sign in failed. Tap Details for more.";
             ErrorDetails = _errorReportService.Record(ex, "Sign in");
-            IsErrorDetailsVisible = false;
             return;
         }
         finally
@@ -1061,45 +1048,5 @@ public partial class MyAnimePageModel : ObservableObject
         }
 
         return new MediaListSection(title, defaultExpanded);
-    }
-
-    // ── Details / Error commands ─────────────────────────────────────
-
-    [RelayCommand]
-    private void ToggleDetails()
-    {
-        if (!HasErrorDetails)
-        {
-            return;
-        }
-
-        IsErrorDetailsVisible = !IsErrorDetailsVisible;
-    }
-
-    [RelayCommand]
-    private async Task CopyError()
-    {
-        if (!HasErrorDetails)
-        {
-            return;
-        }
-
-        await Clipboard.Default.SetTextAsync(ErrorDetails);
-        StatusMessage = "Error details copied.";
-    }
-
-    [RelayCommand]
-    private async Task ShareError()
-    {
-        if (!HasErrorDetails)
-        {
-            return;
-        }
-
-        await Share.Default.RequestAsync(new ShareTextRequest
-        {
-            Text = ErrorDetails,
-            Title = "AniSprinkles Error Details"
-        });
     }
 }
