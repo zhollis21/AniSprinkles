@@ -24,7 +24,12 @@ public partial class ErrorStateView : ContentView
 
     public static readonly BindableProperty ErrorDetailsProperty =
         BindableProperty.Create(nameof(ErrorDetails), typeof(string), typeof(ErrorStateView), string.Empty,
-            propertyChanged: (b, _, _) => ((ErrorStateView)b).OnPropertyChanged(nameof(HasErrorDetails)));
+            propertyChanged: (b, _, _) =>
+            {
+                var view = (ErrorStateView)b;
+                view.IsDetailsExpanded = false;
+                view.OnPropertyChanged(nameof(HasErrorDetails));
+            });
 
     public static readonly BindableProperty IsDetailsExpandedProperty =
         BindableProperty.Create(nameof(IsDetailsExpanded), typeof(bool), typeof(ErrorStateView), false,
