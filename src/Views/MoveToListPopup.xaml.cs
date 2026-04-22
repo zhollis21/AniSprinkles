@@ -1,6 +1,5 @@
 using AniSprinkles.Converters;
 using CommunityToolkit.Maui.Views;
-using IconFont.Maui.FluentIcons;
 using Microsoft.Maui.Controls.Shapes;
 
 namespace AniSprinkles.Views;

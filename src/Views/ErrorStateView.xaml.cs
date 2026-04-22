@@ -1,5 +1,4 @@
 using System.Windows.Input;
-using IconFont.Maui.FluentIcons;
 
 namespace AniSprinkles.Views;
 

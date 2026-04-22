@@ -59,6 +59,18 @@
                        HorizontalTextAlignment="Center"
                        IsVisible="{Binding HasStatusMessage}" />
             </VerticalStackLayout>
+
+            <!-- Error: full-page error view (no cached data fallback) -->
+            <ScrollView toolkit:StateView.StateKey="Error"
+                        VerticalOptions="Center">
+                <views:ErrorStateView ErrorTitle="{Binding ErrorTitle}"
+                                      ErrorSubtitle="{Binding ErrorSubtitle}"
+                                      ErrorIconGlyph="{Binding ErrorIconGlyph}"
+                                      ErrorAccentColor="{StaticResource RainbowOrange}"
+                                      RetryCommand="{Binding RetryLoadCommand}"
+                                      ErrorDetails="{Binding ErrorDetails}"
+                                      Margin="0,24" />
+            </ScrollView>
         </toolkit:StateContainer.StateViews>
 
         <!-- Default content (CurrentState = Content): loaded authenticated UI is created programmatically after data loads -->

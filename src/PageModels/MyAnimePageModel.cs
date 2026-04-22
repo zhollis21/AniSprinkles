@@ -1,17 +1,13 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Net.Http;
 using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Extensions;
-using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
-using Microsoft.Maui.Storage;
 using AniSprinkles.Utilities;
-using IconFont.Maui.FluentIcons;
 
 namespace AniSprinkles.PageModels;
 
@@ -327,7 +323,7 @@ public partial class MyAnimePageModel : ObservableObject
                 // Full-page error state — no cached data to fall back on.
                 ErrorTitle = apiEx?.UserTitle ?? "Something Went Wrong";
                 ErrorSubtitle = apiEx?.UserSubtitle ?? "An unexpected error occurred. Try again or check back later.";
-                ErrorIconGlyph = apiEx?.IconGlyph ?? IconFont.Maui.FluentIcons.FluentIconsRegular.ErrorCircle24;
+                ErrorIconGlyph = apiEx?.IconGlyph ?? FluentIconsRegular.ErrorCircle24;
                 CurrentState = PageState.Error;
                 StatusMessage = string.Empty;
                 Sections = [];

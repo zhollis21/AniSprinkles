@@ -54,9 +54,9 @@ public class AniListApiException : Exception
     /// </summary>
     public string IconGlyph => Kind switch
     {
-        ApiErrorKind.ServiceOutage => IconFont.Maui.FluentIcons.FluentIconsRegular.CloudDismiss24,
-        ApiErrorKind.Network => IconFont.Maui.FluentIcons.FluentIconsRegular.WifiOff24,
-        ApiErrorKind.Authentication => IconFont.Maui.FluentIcons.FluentIconsRegular.LockClosed24,
-        _ => IconFont.Maui.FluentIcons.FluentIconsRegular.ErrorCircle24,
+        ApiErrorKind.ServiceOutage => FluentIconsRegular.CloudDismiss24,
+        ApiErrorKind.Network => FluentIconsRegular.WifiOff24,
+        ApiErrorKind.Authentication => FluentIconsRegular.LockClosed24,
+        _ => FluentIconsRegular.ErrorCircle24,
     };
 }
