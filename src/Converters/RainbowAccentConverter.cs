@@ -74,9 +74,10 @@ public sealed class RainbowAccentConverter : IValueConverter
         // Use hardcoded color for known status sections; fall back to hash for everything else.
         if (!_statusColors.TryGetValue(key, out var colorKey))
         {
-            // Deterministic hash (stable across runs). Use Math.Abs to ensure a non-negative index.
+            // Deterministic hash (stable across runs).
+            // Special-case int.MinValue: Math.Abs(int.MinValue) overflows and throws.
             var hash = StableHash(key);
-            var idx = Math.Abs(hash) % _rainbowKeys.Length;
+            var idx = (hash == int.MinValue ? 0 : Math.Abs(hash)) % _rainbowKeys.Length;
             colorKey = _rainbowKeys[idx];
         }
 
