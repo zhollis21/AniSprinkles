@@ -1,5 +1,4 @@
 using System.Globalization;
-using IconFont.Maui.FluentIcons;
 
 namespace AniSprinkles.Converters;
 

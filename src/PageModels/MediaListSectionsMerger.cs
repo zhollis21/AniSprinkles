@@ -1,5 +1,4 @@
 using System.Collections.ObjectModel;
-using AniSprinkles.Models;
 
 namespace AniSprinkles.PageModels;
 

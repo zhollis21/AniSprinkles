@@ -1,7 +1,4 @@
-﻿using System;
-using System.Globalization;
-using Microsoft.Maui.Controls;
-using Microsoft.Maui.Graphics;
+﻿using System.Globalization;
 
 namespace AniSprinkles.Converters;
 
@@ -77,10 +74,10 @@ public sealed class RainbowAccentConverter : IValueConverter
         // Use hardcoded color for known status sections; fall back to hash for everything else.
         if (!_statusColors.TryGetValue(key, out var colorKey))
         {
-            // Deterministic hash (stable across runs). Cast to uint before modulo so that
-            // int.MinValue (the one value Math.Abs overflows on) still yields a valid index.
+            // Deterministic hash (stable across runs).
+            // Special-case int.MinValue: Math.Abs(int.MinValue) overflows and throws.
             var hash = StableHash(key);
-            var idx = (uint)hash % _rainbowKeys.Length;
+            var idx = (hash == int.MinValue ? 0 : Math.Abs(hash)) % _rainbowKeys.Length;
             colorKey = _rainbowKeys[idx];
         }
 

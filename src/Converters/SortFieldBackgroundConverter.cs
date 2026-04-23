@@ -1,5 +1,4 @@
 using System.Globalization;
-using Microsoft.Maui.Graphics;
 
 namespace AniSprinkles.Converters;
 
