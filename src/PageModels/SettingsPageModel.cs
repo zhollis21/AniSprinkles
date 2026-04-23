@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
@@ -43,12 +44,6 @@ public partial class SettingsPageModel : ObservableObject
     // --- Auth state ---
     [ObservableProperty]
     private bool _isAuthenticated;
-
-    [ObservableProperty]
-    private string _statusMessage = string.Empty;
-
-    [ObservableProperty]
-    private bool _hasStatusMessage;
 
     [ObservableProperty]
     private string _aniListUserId = string.Empty;
@@ -242,8 +237,6 @@ public partial class SettingsPageModel : ObservableObject
                 throw;
             }
 
-            StatusMessage = IsAuthenticated ? "Signed in to AniList." : "Not signed in.";
-
             if (IsAuthenticated)
             {
                 var user = await _aniListClient.GetViewerAsync();
@@ -265,9 +258,8 @@ public partial class SettingsPageModel : ObservableObject
             if (_loadedUser is not null)
             {
                 // Prefer stale data over blank UI when refresh fails after a previously successful load.
-                // Surface the classified reason via StatusMessage; the persistent inline banner redesign
-                // is tracked in issue #26.
-                StatusMessage = apiEx?.UserTitle ?? "Refresh failed. Showing cached profile.";
+                // Pull-to-refresh is the retry path, so no action on the snackbar.
+                await ShowSnackbarAsync(apiEx?.UserTitle ?? "Refresh failed. Showing cached profile.");
                 CurrentState = PageState.Content;
             }
             else if (IsAuthenticated)
@@ -277,13 +269,12 @@ public partial class SettingsPageModel : ObservableObject
                 ErrorSubtitle = apiEx?.UserSubtitle ?? "An unexpected error occurred. Try again or check back later.";
                 ErrorIconGlyph = apiEx?.IconGlyph ?? FluentIconsRegular.ErrorCircle24;
                 CurrentState = PageState.Error;
-                StatusMessage = string.Empty;
             }
             else
             {
                 // Auth check itself failed; fall back to Unauthenticated so the user
                 // can retry sign-in from the login card.
-                StatusMessage = apiEx?.UserTitle ?? "Failed to load profile.";
+                await ShowSnackbarAsync(apiEx?.UserTitle ?? "Failed to load profile.");
                 CurrentState = PageState.Unauthenticated;
             }
 
@@ -435,9 +426,6 @@ public partial class SettingsPageModel : ObservableObject
         return false;
     }
 
-    partial void OnStatusMessageChanged(string value)
-        => HasStatusMessage = !string.IsNullOrWhiteSpace(value);
-
     partial void OnSelectedTitleLanguageChanged(UserTitleLanguage value) => TriggerAutoSave();
     partial void OnSelectedStaffNameLanguageChanged(UserStaffNameLanguage value) => TriggerAutoSave();
     partial void OnSelectedScoreFormatChanged(ScoreFormat value) => TriggerAutoSave();
@@ -512,6 +500,7 @@ public partial class SettingsPageModel : ObservableObject
             _loadedUser = updatedUser;
             PopulateFromUser(updatedUser);
             SentrySdk.AddBreadcrumb("Settings auto-saved", "settings", "user");
+            _dispatcher.Dispatch(() => _ = ShowToastAsync("Settings saved"));
         }
         catch (Exception ex)
         {
@@ -538,12 +527,46 @@ public partial class SettingsPageModel : ObservableObject
                 message,
                 action: () => _ = SaveSettingsAsync(),
                 actionButtonText: "Retry",
-                duration: TimeSpan.FromSeconds(5));
+                duration: TimeSpan.FromSeconds(20));
             await snackbar.Show();
         }
         catch (Exception ex)
         {
             _logger.LogWarning(ex, "Failed to show save-failure snackbar");
+        }
+    }
+
+    private async Task ShowToastAsync(string message)
+    {
+        try
+        {
+            var toast = Toast.Make(message, ToastDuration.Short);
+            await toast.Show();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Toast display failed");
+        }
+    }
+
+    private async Task ShowSnackbarAsync(
+        string message,
+        Action? action = null,
+        string actionText = "Retry",
+        TimeSpan? duration = null)
+    {
+        try
+        {
+            var snackbar = Snackbar.Make(
+                message,
+                action: action,
+                actionButtonText: action is null ? string.Empty : actionText,
+                duration: duration ?? TimeSpan.FromSeconds(5));
+            await snackbar.Show();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Snackbar display failed");
         }
     }
 
@@ -579,13 +602,25 @@ public partial class SettingsPageModel : ObservableObject
 
             // RequestPermissionAsync uses ConfigureAwait(false) internally, so we may be on a
             // pool thread here. Bound property writes must happen on the UI thread.
+            // Revert the toggle silently on the bound thread, then explicitly queue persistence —
+            // _suppressNotificationToggle bypasses OnAiringNotificationsChanged and its normal
+            // autosave path, so without TriggerAutoSave() the reverted false value never reaches
+            // AniList and the next profile load would re-enable the toggle again.
             _dispatcher.Dispatch(() =>
             {
                 _suppressNotificationToggle = true;
                 AiringNotifications = false;
                 _suppressNotificationToggle = false;
-                StatusMessage = "Notification permission is required for airing alerts.";
+                TriggerAutoSave();
             });
+
+            // Dispatch the snackbar to the UI thread so Snackbar.Show() runs on the main thread
+            // as required by the MAUI alert layer.
+            _dispatcher.Dispatch(() => _ = ShowSnackbarAsync(
+                "Notification permission is required for airing alerts.",
+                action: () => AppInfo.Current.ShowSettingsUI(),
+                actionText: "Open Settings",
+                duration: TimeSpan.FromSeconds(10)));
         }
     }
 
@@ -680,12 +715,12 @@ public partial class SettingsPageModel : ObservableObject
 
             if (signedIn)
             {
-                StatusMessage = "Signed in to AniList.";
+                await ShowToastAsync("Signed in to AniList.");
                 await LoadAsync();
             }
             else
             {
-                StatusMessage = "Sign in canceled.";
+                await ShowToastAsync("Sign in canceled.");
             }
 
             SentrySdk.AddBreadcrumb(
@@ -697,13 +732,27 @@ public partial class SettingsPageModel : ObservableObject
         {
             _logger.LogError(ex, "Sign-in failed.");
             SentrySdk.AddBreadcrumb("Sign-in failed (Settings)", "auth", "user");
-            StatusMessage = "Sign in failed. Try again.";
+            await ShowSnackbarAsync(
+                "Sign in failed. Try again.",
+                action: () => _ = SignIn(),
+                actionText: "Retry");
         }
     }
 
     [RelayCommand]
     private async Task SignOut()
     {
+        var confirmed = await Shell.Current.CurrentPage.DisplayAlertAsync(
+            "Sign Out",
+            "Sign out of AniList? Your list data will be cleared from the app until you sign back in.",
+            "Sign Out",
+            "Cancel");
+
+        if (!confirmed)
+        {
+            return;
+        }
+
         _logger.LogInformation("Sign-out requested from Settings.");
         SentrySdk.AddBreadcrumb("Sign-out requested (Settings)", "auth", "user");
         _airingNotificationService.CancelPeriodicCheck();
@@ -713,7 +762,7 @@ public partial class SettingsPageModel : ObservableObject
         await RefreshAuthStateAsync();
         ClearUserData();
         CurrentState = PageState.Unauthenticated;
-        StatusMessage = "Signed out.";
+        await ShowToastAsync("Signed out.");
     }
 
     [RelayCommand]

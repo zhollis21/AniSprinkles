@@ -42,8 +42,8 @@ SettingsPageModel (toggle on/off)
 
 - Worker is **fully self-contained** (own HttpClient, own DTOs) so it works after device reboot without app launch.
 - `[DynamicDependency]` on Worker constructor (not class) for Release trimming/AOT safety.
-- `_suppressNotificationToggle` flag in `SettingsPageModel` prevents side effects when populating toggle from server state.
+- `_suppressNotificationToggle` flag in `SettingsPageModel` prevents side effects when populating toggle from server state. Code that reverts the toggle under this flag **must** call `TriggerAutoSave()` explicitly afterward — the flag bypasses `OnAiringNotificationsChanged` and its normal autosave path, so without it the reverted value is never persisted to AniList.
 - `MyAnimePageModel` caches RELEASING media IDs (Watching + Rewatching + Planning) to Preferences after list load.
 - Notified-set entries pruned after 7 days; pruning runs unconditionally (not gated on new entries).
 - Sign-out clears all notification state AND dismisses posted notifications from the shade.
-- Permission denial on toggle-on reverts the toggle (stays on UI thread — no `ConfigureAwait(false)`).
+- Two distinct denial paths exist: (1) `HandleAiringNotificationToggleAsync` (user taps toggle) — stays on UI thread, no `ConfigureAwait(false)`. (2) `EnsureNotificationPermissionAndScheduleAsync` (called from `PopulateFromUser`) — `RequestPermissionAsync` uses `ConfigureAwait(false)` so continuation may be on a pool thread; the toggle revert and `TriggerAutoSave()` are dispatched to the UI thread via `_dispatcher.Dispatch`.
