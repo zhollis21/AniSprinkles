@@ -76,12 +76,6 @@ public partial class MyAnimePageModel : ObservableObject
     private ObservableCollection<MediaListSection> _sections = [];
 
     [ObservableProperty]
-    private string _statusMessage = string.Empty;
-
-    [ObservableProperty]
-    private bool _hasStatusMessage;
-
-    [ObservableProperty]
     private string _errorDetails = string.Empty;
 
     // ── Error state (full-page error view) ──────────────────────────
@@ -229,7 +223,6 @@ public partial class MyAnimePageModel : ObservableObject
             }
 
             Title = "My Anime";
-            StatusMessage = string.Empty;
             ErrorDetails = string.Empty;
 
             // Sync display preferences from AniList before building the list so that
@@ -306,7 +299,8 @@ public partial class MyAnimePageModel : ObservableObject
             if (hadExistingSections && IsAuthenticated)
             {
                 // Prefer stale data over blank UI when refresh fails after a previously successful load.
-                StatusMessage = apiEx?.UserTitle ?? "Refresh failed. Showing cached list.";
+                // Pull-to-refresh is the retry path, so no action on the snackbar.
+                await ShowSnackbarAsync(apiEx?.UserTitle ?? "Refresh failed. Showing cached list.");
                 CurrentState = PageState.Content;
                 _hasLoaded = true;
             }
@@ -317,7 +311,6 @@ public partial class MyAnimePageModel : ObservableObject
                 ErrorSubtitle = apiEx?.UserSubtitle ?? "An unexpected error occurred. Try again or check back later.";
                 ErrorIconGlyph = apiEx?.IconGlyph ?? FluentIconsRegular.ErrorCircle24;
                 CurrentState = PageState.Error;
-                StatusMessage = string.Empty;
                 Sections = [];
                 _hasLoaded = false;
             }
@@ -335,9 +328,6 @@ public partial class MyAnimePageModel : ObservableObject
 
     partial void OnCurrentStateChanged(PageState oldValue, PageState newValue)
         => _logger.LogInformation("PageState: {OldState} → {NewState} (key={StateKey})", oldValue, newValue, CurrentStateKey ?? "(null)");
-
-    partial void OnStatusMessageChanged(string value)
-        => HasStatusMessage = !string.IsNullOrWhiteSpace(value);
 
     partial void OnSearchTextChanged(string value)
     {
@@ -465,7 +455,12 @@ public partial class MyAnimePageModel : ObservableObject
                     catch (Exception ex)
                     {
                         _logger.LogError(ex, "Failed to save completed entry for media {MediaId}", entry.MediaId);
-                        StatusMessage = "Failed to save. Please try again.";
+                        // Capture the mutated entry so Retry re-saves the same state.
+                        var retryEntry = entry;
+                        await ShowSnackbarAsync(
+                            "Failed to save. Please try again.",
+                            action: () => _ = RetrySaveCompletedEntryAsync(retryEntry),
+                            actionText: "Retry");
                         ErrorDetails = _errorReportService.Record(ex, "Increment progress (complete)");
                     }
                 }
@@ -561,7 +556,8 @@ public partial class MyAnimePageModel : ObservableObject
             }
 
             _logger.LogError(ex, "Failed to save progress for media {MediaId}, reverted to {Progress}", entry.MediaId, originalProgress);
-            StatusMessage = "Failed to save. Please try again.";
+            // Progress was reverted, so there is no simple Retry path — the user can just tap +1 again.
+            await ShowSnackbarAsync("Failed to save. Please try again.");
             ErrorDetails = _errorReportService.Record(ex, "Increment progress");
         }
     }
@@ -675,7 +671,13 @@ public partial class MyAnimePageModel : ObservableObject
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to delete entry {EntryId} for media {MediaId}", entry.Id, entry.MediaId);
-            StatusMessage = "Failed to remove. Please try again.";
+            // Capture the id so Retry re-runs the same delete.
+            var retryId = entry.Id;
+            var retryTitle = title;
+            await ShowSnackbarAsync(
+                "Failed to remove. Please try again.",
+                action: () => _ = RetryDeleteEntryAsync(retryId, retryTitle),
+                actionText: "Retry");
             ErrorDetails = _errorReportService.Record(ex, "Delete from list");
             await LoadAsync(forceReload: true);
         }
@@ -740,7 +742,9 @@ public partial class MyAnimePageModel : ObservableObject
             entry.Repeat = originalRepeat;
 
             _logger.LogError(ex, "Failed to move media {MediaId} to {TargetStatus}", entry.MediaId, targetStatus);
-            StatusMessage = "Failed to move. Please try again.";
+            // Move side effects were reverted, so there is no simple Retry path —
+            // the user can long-press the entry again to retry.
+            await ShowSnackbarAsync("Failed to move. Please try again.");
             ErrorDetails = _errorReportService.Record(ex, "Move to list");
             await LoadAsync(forceReload: true);
         }
@@ -762,6 +766,65 @@ public partial class MyAnimePageModel : ObservableObject
     {
         var toast = Toast.Make(message, ToastDuration.Short);
         await toast.Show();
+    }
+
+    private static async Task ShowSnackbarAsync(
+        string message,
+        Action? action = null,
+        string actionText = "Retry",
+        TimeSpan? duration = null)
+    {
+        try
+        {
+            var snackbar = Snackbar.Make(
+                message,
+                action: action,
+                actionButtonText: action is null ? string.Empty : actionText,
+                duration: duration ?? TimeSpan.FromSeconds(5));
+            await snackbar.Show();
+        }
+        catch
+        {
+            // Snackbar.Show can throw in rare lifecycle edge cases (e.g. backgrounded page);
+            // swallow so the caller's error path still completes.
+        }
+    }
+
+    private async Task RetrySaveCompletedEntryAsync(MediaListEntry entry)
+    {
+        try
+        {
+            await _aniListClient.SaveMediaListEntryAsync(entry);
+            await LoadAsync(forceReload: true);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Retry failed for completed entry media {MediaId}", entry.MediaId);
+            await ShowSnackbarAsync(
+                "Failed to save. Please try again.",
+                action: () => _ = RetrySaveCompletedEntryAsync(entry),
+                actionText: "Retry");
+            ErrorDetails = _errorReportService.Record(ex, "Retry save completed entry");
+        }
+    }
+
+    private async Task RetryDeleteEntryAsync(int entryId, string title)
+    {
+        try
+        {
+            await _aniListClient.DeleteMediaListEntryAsync(entryId);
+            await ShowToastAsync($"{title} removed from list");
+            await LoadAsync(forceReload: true);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Retry failed for delete entry {EntryId}", entryId);
+            await ShowSnackbarAsync(
+                "Failed to remove. Please try again.",
+                action: () => _ = RetryDeleteEntryAsync(entryId, title),
+                actionText: "Retry");
+            ErrorDetails = _errorReportService.Record(ex, "Retry delete entry");
+        }
     }
 
     // ── Pull to refresh ──────────────────────────────────────────────
@@ -798,7 +861,7 @@ public partial class MyAnimePageModel : ObservableObject
             var signedIn = await _authService.SignInAsync();
             if (!signedIn)
             {
-                StatusMessage = "Sign in canceled.";
+                await ShowToastAsync("Sign in canceled.");
                 SentrySdk.AddBreadcrumb("Sign-in canceled", "auth", "user");
                 return;
             }
@@ -807,7 +870,7 @@ public partial class MyAnimePageModel : ObservableObject
         }
         catch (Exception ex)
         {
-            StatusMessage = "Sign in failed. Tap Details for more.";
+            await ShowSnackbarAsync("Sign in failed. Tap Details for more.");
             ErrorDetails = _errorReportService.Record(ex, "Sign in");
             return;
         }
@@ -847,7 +910,7 @@ public partial class MyAnimePageModel : ObservableObject
         var mediaId = entry.MediaId != 0 ? entry.MediaId : entry.Media?.Id ?? 0;
         if (mediaId <= 0)
         {
-            StatusMessage = "Unable to open details.";
+            await ShowToastAsync("Unable to open details.");
             return;
         }
 

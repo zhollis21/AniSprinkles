@@ -21,13 +21,6 @@
                 <ScrollView Grid.Row="1">
                     <VerticalStackLayout Padding="{StaticResource LayoutPadding}" Spacing="16">
 
-                        <!-- Status message -->
-                        <Label Text="{Binding StatusMessage}"
-                   Style="{StaticResource Caption1}"
-                   TextColor="{StaticResource Gray400}"
-                   HorizontalTextAlignment="Center"
-                   IsVisible="{Binding HasStatusMessage}" />
-
                         <!-- 1. PROFILE HERO -->
                         <Border Style="{StaticResource CardStyle}" Padding="0">
                             <Grid RowDefinitions="140,*">

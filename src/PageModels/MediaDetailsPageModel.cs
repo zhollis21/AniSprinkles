@@ -1,4 +1,6 @@
 using AniSprinkles.Utilities;
+using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
@@ -45,12 +47,6 @@ namespace AniSprinkles.PageModels;
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanAddToList))]
     private bool _hasListEntry;
-
-    [ObservableProperty]
-    private string _statusMessage = string.Empty;
-
-    [ObservableProperty]
-    private bool _hasStatusMessage;
 
     [ObservableProperty]
     private string _errorDetails = string.Empty;
@@ -434,7 +430,6 @@ namespace AniSprinkles.PageModels;
             _lastRequestedListEntry = listEntry;
             Media = null;
             _loadedMediaId = null;
-            StatusMessage = string.Empty;
             ErrorDetails = string.Empty;
             ErrorTitle = "Details Unavailable";
             ErrorSubtitle = "The requested title could not be loaded.";
@@ -456,7 +451,6 @@ namespace AniSprinkles.PageModels;
                 ListEntry = listEntry;
             }
 
-            StatusMessage = string.Empty;
             ErrorDetails = string.Empty;
             CurrentState = PageState.Content;
             _logger.LogInformation(
@@ -494,7 +488,6 @@ namespace AniSprinkles.PageModels;
                 "DATATRACE load#{LoadRequestId} nav-param listEntry: Progress={Progress}, Score={Score}, EntryId={EntryId}",
                 loadRequestId, listEntry?.Progress, listEntry?.Score, listEntry?.Id);
             ListEntry = listEntry;
-            StatusMessage = string.Empty;
             ErrorDetails = string.Empty;
 
             var fetchStopwatch = Stopwatch.StartNew();
@@ -551,7 +544,6 @@ namespace AniSprinkles.PageModels;
             ErrorDetails = _errorReportService.Record(ex, "Load details");
             CanRetry = true;
             CurrentState = PageState.Error;
-            StatusMessage = string.Empty;
             _loadedMediaId = null;
             _logger.LogError(
                 ex,
@@ -571,9 +563,6 @@ namespace AniSprinkles.PageModels;
                 mediaId);
         }
     }
-
-    partial void OnStatusMessageChanged(string value)
-        => HasStatusMessage = !string.IsNullOrWhiteSpace(value);
 
     partial void OnMediaChanged(Media? value)
     {
@@ -782,7 +771,10 @@ namespace AniSprinkles.PageModels;
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to set status for media {MediaId}.", Media.Id);
-            await ShowErrorAlertAsync("Failed to update status. Please try again.");
+            await ShowSnackbarAsync(
+                "Failed to update status. Please try again.",
+                action: () => _ = QuickSetStatus(value),
+                actionText: "Retry");
         }
         finally
         {
@@ -814,7 +806,10 @@ namespace AniSprinkles.PageModels;
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to remove media {MediaId} from list.", Media.Id);
-            await ShowErrorAlertAsync("Failed to remove from list. Please try again.");
+            await ShowSnackbarAsync(
+                "Failed to remove from list. Please try again.",
+                action: () => _ = RemoveFromList(),
+                actionText: "Retry");
         }
         finally
         {
@@ -850,7 +845,10 @@ namespace AniSprinkles.PageModels;
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to add media {MediaId} to list.", Media.Id);
-            await ShowErrorAlertAsync("Failed to add to list. Please try again.");
+            await ShowSnackbarAsync(
+                "Failed to add to list. Please try again.",
+                action: () => _ = AddToList(),
+                actionText: "Retry");
         }
         finally
         {
@@ -1066,7 +1064,10 @@ namespace AniSprinkles.PageModels;
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to save list entry for media {MediaId}.", Media.Id);
-            await ShowErrorAlertAsync("Failed to save changes. Please try again.");
+            await ShowSnackbarAsync(
+                "Failed to save changes. Please try again.",
+                action: () => _ = SaveCurrentEntryAsync(),
+                actionText: "Retry");
         }
         finally
         {
@@ -1158,18 +1159,24 @@ namespace AniSprinkles.PageModels;
         return $"Episode {next.Episode} in {countdown}";
     }
 
-    private static async Task ShowErrorAlertAsync(string message)
+    private static async Task ShowSnackbarAsync(
+        string message,
+        Action? action = null,
+        string actionText = "Retry",
+        TimeSpan? duration = null)
     {
         try
         {
-            if (Shell.Current is not null)
-            {
-                await Shell.Current.DisplayAlertAsync("Error", message, "OK");
-            }
+            var snackbar = Snackbar.Make(
+                message,
+                action: action,
+                actionButtonText: action is null ? string.Empty : actionText,
+                duration: duration ?? TimeSpan.FromSeconds(5));
+            await snackbar.Show();
         }
         catch
         {
-            // Swallow — alert display should never crash the app.
+            // Swallow — snackbar display should never crash the app.
         }
     }
 

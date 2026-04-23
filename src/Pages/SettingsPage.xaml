@@ -52,12 +52,6 @@
                         <views:AuthActionsView HorizontalOptions="Center" Margin="0,4,0,0" />
                     </VerticalStackLayout>
                 </Border>
-
-                <Label Text="{Binding StatusMessage}"
-                       Style="{StaticResource Caption1}"
-                       TextColor="{StaticResource Gray400}"
-                       HorizontalTextAlignment="Center"
-                       IsVisible="{Binding HasStatusMessage}" />
             </VerticalStackLayout>
 
             <!-- Error: full-page error view (no cached data fallback) -->

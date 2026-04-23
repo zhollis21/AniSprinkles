@@ -327,7 +327,7 @@
     <pullToRefresh:SfPullToRefresh IsRefreshing="{Binding IsBusy}"
                                    RefreshCommand="{Binding RefreshCommand}">
         <pullToRefresh:SfPullToRefresh.PullableContent>
-            <Grid RowDefinitions="Auto,Auto,Auto,Auto,*" RowSpacing="8">
+            <Grid RowDefinitions="Auto,Auto,Auto,*" RowSpacing="8">
 
                 <!-- Row 0: Navigating to details spinner -->
                 <ActivityIndicator Grid.Row="0"
@@ -335,17 +335,8 @@
                                    IsVisible="{Binding IsNavigatingToDetails}"
                                    VerticalOptions="Center" HorizontalOptions="Center" Opacity="0.8" />
 
-                <!-- Row 1: Status message -->
-                <Label Grid.Row="1"
-                       Text="{Binding StatusMessage}"
-                       Style="{StaticResource Caption1}"
-                       TextColor="{StaticResource Gray400}"
-                       HorizontalTextAlignment="Center"
-                       IsVisible="{Binding HasStatusMessage}"
-                       Margin="0,4" />
-
-                <!-- Row 2: Expandable search bar -->
-                <Border Grid.Row="2"
+                <!-- Row 1: Expandable search bar -->
+                <Border Grid.Row="1"
                         Style="{StaticResource CardStyle}"
                         Padding="4,0"
                         IsVisible="{Binding IsSearchVisible}">
@@ -369,8 +360,8 @@
                     </Grid>
                 </Border>
 
-                <!-- Row 3: Sort chips (horizontal scroll) -->
-                <ScrollView Grid.Row="3" Orientation="Horizontal"
+                <!-- Row 2: Sort chips (horizontal scroll) -->
+                <ScrollView Grid.Row="2" Orientation="Horizontal"
                             HorizontalScrollBarVisibility="Never"
                             Padding="0,2">
                     <HorizontalStackLayout Spacing="8">
@@ -499,7 +490,7 @@
                 </ScrollView>
 
                 <!-- Row 4: Grouped CollectionView -->
-                <CollectionView Grid.Row="4"
+                <CollectionView Grid.Row="3"
                                 x:Name="AnimeCollectionView"
                                 ItemsSource="{Binding Sections}"
                                 IsGrouped="True"
