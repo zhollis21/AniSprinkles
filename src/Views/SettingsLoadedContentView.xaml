@@ -10,23 +10,9 @@
     <pullToRefresh:SfPullToRefresh IsRefreshing="{Binding IsBusy}"
                                    RefreshCommand="{Binding RefreshCommand}">
         <pullToRefresh:SfPullToRefresh.PullableContent>
-            <Grid RowDefinitions="Auto,*">
-                <!-- Auto-saving indicator -->
-                <HorizontalStackLayout Grid.Row="0" Spacing="8" HorizontalOptions="Center" Padding="0,6"
-                               IsVisible="{Binding IsSaving}">
-                    <ActivityIndicator IsRunning="{Binding IsSaving}" WidthRequest="16" HeightRequest="16" VerticalOptions="Center" />
-                    <Label Text="Saving..." Style="{StaticResource Caption1}" TextColor="{StaticResource Gray400}" VerticalTextAlignment="Center" />
-                </HorizontalStackLayout>
-
-                <ScrollView Grid.Row="1">
+            <Grid>
+                <ScrollView>
                     <VerticalStackLayout Padding="{StaticResource LayoutPadding}" Spacing="16">
-
-                        <!-- Status message -->
-                        <Label Text="{Binding StatusMessage}"
-                   Style="{StaticResource Caption1}"
-                   TextColor="{StaticResource Gray400}"
-                   HorizontalTextAlignment="Center"
-                   IsVisible="{Binding HasStatusMessage}" />
 
                         <!-- 1. PROFILE HERO -->
                         <Border Style="{StaticResource CardStyle}" Padding="0">
