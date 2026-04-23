@@ -602,19 +602,20 @@ public partial class SettingsPageModel : ObservableObject
 
             // RequestPermissionAsync uses ConfigureAwait(false) internally, so we may be on a
             // pool thread here. Bound property writes must happen on the UI thread.
-            // Revert the toggle silently on the bound thread, then surface a snackbar with an
-            // Open Settings action so the user can grant permission (the system dialog will not
-            // re-appear once denied).
+            // Revert the toggle silently on the bound thread, then explicitly queue persistence —
+            // _suppressNotificationToggle bypasses OnAiringNotificationsChanged and its normal
+            // autosave path, so without TriggerAutoSave() the reverted false value never reaches
+            // AniList and the next profile load would re-enable the toggle again.
             _dispatcher.Dispatch(() =>
             {
                 _suppressNotificationToggle = true;
                 AiringNotifications = false;
                 _suppressNotificationToggle = false;
+                TriggerAutoSave();
             });
 
-            // RequestPermissionAsync uses ConfigureAwait(false) internally, so we may be on a
-            // pool thread here. Dispatch the snackbar to the UI thread so Snackbar.Show() runs
-            // on the main thread as required by the MAUI alert layer.
+            // Dispatch the snackbar to the UI thread so Snackbar.Show() runs on the main thread
+            // as required by the MAUI alert layer.
             _dispatcher.Dispatch(() => _ = ShowSnackbarAsync(
                 "Notification permission is required for airing alerts.",
                 action: () => AppInfo.Current.ShowSettingsUI(),
