@@ -783,6 +783,9 @@ namespace AniSprinkles.PageModels;
             return;
         }
 
+        // Capture before the await — DisplayAlertAsync yields and ListEntry could be
+        // set to null by a concurrent refresh before we reach RemoveFromListConfirmedAsync.
+        var listEntryId = ListEntry.Id;
         var title = Media.DisplayTitle ?? "this anime";
         var confirmed = await Shell.Current.CurrentPage.DisplayAlertAsync(
             "Remove from List",
@@ -795,7 +798,7 @@ namespace AniSprinkles.PageModels;
             return;
         }
 
-        await RemoveFromListConfirmedAsync(ListEntry.Id, title);
+        await RemoveFromListConfirmedAsync(listEntryId, title);
     }
 
     // Separated from RemoveFromList so the snackbar Retry action can re-attempt the delete
