@@ -483,7 +483,7 @@
                     </HorizontalStackLayout>
                 </ScrollView>
 
-                <!-- Row 4: Grouped CollectionView -->
+                <!-- Row 2: Grouped CollectionView -->
                 <CollectionView Grid.Row="2"
                                 x:Name="AnimeCollectionView"
                                 ItemsSource="{Binding Sections}"

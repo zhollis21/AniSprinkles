@@ -764,8 +764,15 @@ public partial class MyAnimePageModel : ObservableObject
 
     private static async Task ShowToastAsync(string message)
     {
-        var toast = Toast.Make(message, ToastDuration.Short);
-        await toast.Show();
+        try
+        {
+            var toast = Toast.Make(message, ToastDuration.Short);
+            await toast.Show();
+        }
+        catch
+        {
+            // Swallow lifecycle-edge failures so the caller path still completes.
+        }
     }
 
     private static async Task ShowSnackbarAsync(

@@ -612,11 +612,14 @@ public partial class SettingsPageModel : ObservableObject
                 _suppressNotificationToggle = false;
             });
 
-            await ShowSnackbarAsync(
+            // RequestPermissionAsync uses ConfigureAwait(false) internally, so we may be on a
+            // pool thread here. Dispatch the snackbar to the UI thread so Snackbar.Show() runs
+            // on the main thread as required by the MAUI alert layer.
+            _dispatcher.Dispatch(() => _ = ShowSnackbarAsync(
                 "Notification permission is required for airing alerts.",
                 action: () => AppInfo.Current.ShowSettingsUI(),
                 actionText: "Open Settings",
-                duration: TimeSpan.FromSeconds(10));
+                duration: TimeSpan.FromSeconds(10)));
         }
     }
 

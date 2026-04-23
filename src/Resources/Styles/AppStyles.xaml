@@ -270,77 +270,130 @@
         <Setter Property="Padding" Value="{OnIdiom 12, Desktop=16}"/>
     </Style>
 
-    <!-- Collapsible section content card: offsets the outer VerticalStackLayout spacing so the
-         content sits flush beneath its section header (gap is controlled by SectionHeaderStyle margin alone). -->
-    <Style TargetType="Border" x:Key="SectionContentStyle" BasedOn="{StaticResource CardStyle}">
-        <Setter Property="Margin" Value="0,-16,0,0"/>
-    </Style>
-
     <!-- ============================= -->
     <!-- MyAnime "Section Header" + "Row" styles -->
     <!-- ============================= -->
 
     <!-- Section headers should read as controls (expand/collapse), not as list items -->
-    <Style TargetType="Border" x:Key="SectionHeaderStyle">
+    <Style TargetType="Border" x:Key="Sect    <!-- Collapsible section content card: offsets the outer VerticalStackLayout spacing so the
+         content sits flush beneath its section header (gap is controlled by SectionHeaderStyle margin alone). -->
+    <Style TargetType="Border" x:Key="SectionContentStyle" BasedOn="{StaticResource CardStyle}">
+        <Setter Property="Margin" Value="0,-16,0,0"/>
+    </Style>
+
+ionHeaderStyle">
         <Setter Property="StrokeThickness" Value="0"/>
         <Setter Property="StrokeShape" Value="RoundRectangle 20"/>
         <Setter Property="Padding" Value="14,12"/>
         <Setter Property="Margin" Value="0,12,0,6"/>
-        <Setter Property="BackgroundColor" Value="Transparent"/>
+        <Setter Property="BacSect    <!-- Collapsible section content card: offsets the outer VerticalStackLayout spacing so the
+         content sits flush beneath its section header (gap is controlled by SectionHeaderStyle margin alone). -->
+    <Style TargetType="Border" x:Key="SectionContentStyle" BasedOn="{StaticResource CardStyle}">
+        <Setter Property="Margin" Value="0,-16,0,0"/>
+    </Style>
+
+ionHeaderStyle">
+ransparent"/>
         <!-- Background is typically provided by a converter (tinted accent). If not, fall back to a neutral surface. -->
-        <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource LightSecondaryBackground},Dark={StaticResource DarkSecondaryBackground}}"/>
+        <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource LightSecondaryBackground},Dark={StaticResouBacSect    <!-- Collapsible section content card: offsets the outer VerticalStackLayout spacing so the
+         content sits flush beneath its section header (gap is controlled by SectionHeaderStyle margin alone). -->
+    <Style TargetType="Border" x:Key="SectionContentStyle" BasedOn="{StaticResource CardStyle}">
+        <Setter Property="Margin" Value="0,-16,0,0"/>
+    </Style>
+
+ionHeaderStyle">
+nd}}"/>
     </Style>
 
     <!-- Count badge inside section header -->
     <Style TargetType="Border" x:Key="CountBadgeStyle">
         <Setter Property="StrokeThickness" Value="0"/>
         <Setter Property="StrokeShape" Value="RoundRectangle 999"/>
-        <Setter Property="Padding" Value="10,4"/>
-        <Setter Property="Background" Value="{AppThemeBinding Light=#14FFFFFF, Dark=#22FFFFFF}"/>
+        <SettStaticResouBacSect    <!-- Collapsible section content card: offsets the outer VerticalStackLayout spacing so the
+         content sits flush beneath its section header (gap is controlled by SectionHeaderStyle margin alone). -->
+    <Style TargetType="Border" x:Key="SectionContentStyle" BasedOn="{StaticResource CardStyle}">
+        <Setter Property="Margin" Value="0,-16,0,0"/>
+    </Style>
+
+ionHeaderStyle">
+nd       <Setter Property="Background" Value="{AppThemeBinding Light=#14FFFFFF, Dark=#22FFFFFF}"/>
     </Style>
 
     <!-- List rows: flatter and more "content" than headers -->
     <Style TargetType="Border" x:Key="ListRowStyle">
-        <Setter Property="StrokeThickness" Value="1"/>
-        <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}"/>
+        <Setter Property="Stroke        <SettStaticResouBacSect    <!-- Collapsible section content card: offsets the outer VerticalStackLayout spacing so the
+         content sits flush beneath its section header (gap is controlled by SectionHeaderStyle margin alone). -->
+    <Style TargetType="Border" x:Key="SectionContentStyle" BasedOn="{StaticResource CardStyle}">
+        <Setter Property="Marginetter Pro0,-16,0,0y="Stroke</Style>
+
+ionHeaderStyle">
+nd   " Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}"/>
         <Setter Property="StrokeShape" Value="RoundRectangle 14"/>
         <Setter Property="Padding" Value="0"/>
-        <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource LightSecondaryBackground},Dark={StaticResource DarkSecondaryBackground}}"/>
+        <Setter Property="Background" Value="{AppThemeBStroke        <SettStaticResouBacSect    <!-- Collapsible section content card: offsets the outer VerticalStackLayout spacing so the
+         content sits flush beneath its section header (gap is controlled by SectionHeaderStyle margin alone). -->
+    <Style TargetType="Border" x:Key="SectionContentStyle" BasedOn="{StaticResource CardStyle}">
+ightSecondaryBackground}="Marginetter Pro0,-16,0,0y,Dark={S</Style>
+
+ionHeaderStyle">
+nd   taticResource DarkSecondaryBackground}}"/>
     </Style>
 
 
     <sf:LabelStyle x:Key="lightThemeLabelStyle" TextColor="{StaticResource DarkOnLightBackground}" FontSize="{OnIdiom 18, Desktop=24}"/>
-    <sf:LabelStyle x:Key="darkThemeLabelStyle" TextColor="{StaticResource LightOnDarkBackground}" FontSize="{OnIdiom 18, Desktop=24}"/>
-    <Style TargetType="sf:SfTextInputLayout">
+    <sf:LabelStyle x:Key="darkThemeLabelStyle" TextColor="{StaticRAppThemeBStroke        <SettStaticResouBacSect    <!-- Collapsible section content card: offsets the outer VerticalStackLayout spacing so the
+         content sits flush beneath its section header (gap is controlled by SectionHeaderStyle margin alone). -->
+    <Style TargetType="Border" x:Key="SectionContentStyle" BasedOn="kground}" FontSiCardStyle}">
+e="{OnIdiom 18, Desktop=="Marginetter Pro0,-16,0,0y24}"/>
+S</Style>
+
+ionHeaderStyle">
+nd   taticResourcegetType="sf:SfTextInputLayout">
         <Setter Property="ContainerType" Value="Outlined"/>
         <Setter Property="ContainerBackground" Value="Transparent"/>
-        <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource DarkOnLightBackground}, Dark={StaticResource LightOnDarkBackground}}"/>
-        <Setter Property="HintLabelStyle" Value="{AppThemeBinding Light={StaticResource lightThemeLabelStyle}, Dark={StaticResource darkThemeLabelStyle}}"/>
+        <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource DarkOnLightStaticRAppThemeBStroke        <SettBackground}BacSect    <!-- Collapsible section content card: offsets the outer VerticalStackLayout spacing so the
+         content sits flush beneath its section header (gap is controlled by SectionHeaderStyle margin alone). -->
+    <Style TargetType="Border" x:Key="SectionContentStyle" BasedOn="kground}" FontSiCardStyle}">
+eckground}}"/>
+        <="Marginetter Pro0,-16,0,0ySetter PS</ty="H>
+
+ionHeaderStyle">
+nd   taticResourcegetTypele" Value="{AppThemeBinding Light={StaticResource lightThemeLabelStyle}, Dark={StaticResource darkThemeLabelStyle}}"/>
     </Style>
 
 
     <Style TargetType="BoxView" x:Key="ShimmerCustomViewStyle">
-        <Setter Property="BackgroundColor" Value="Gray" />
-        <Setter Property="HorizontalOptions" Value="Fill" />
-        <Setter Property="VerticalOptions" Value="Center" />
+        <Setter Property="BackgroundColor" VaDarkOnLightStaticRAppThemeBStroke        <SettBackground}BacSect    <!-- Collapsible section content card: offsets the outer VerticalStackLayout spacing so the
+         content sits flush beneath its section header (gap is controlled by SectionHeaderStyle margin alone). -->
+    <Style TargetType="Border" x:Key="SectionContentStyle" BasedOn="kground}" FontSiCardStyle}">
+eckgroundFill" /        <="Marginetter Pro0,-16,0,0ySetter PS</ty="H>
+
+ionHeaderStyle">
+nd   taticResourcegetTypeleons" Value="Center" />
     </Style>
 
     <Style TargetType="pullToRefresh:SfPullToRefresh">
         <Setter Property="TransitionMode" Value="SlideOnTop"/>
         <Setter Property="PullingThreshold" Value="100"/>
-        <Setter Property="ProgressColor" Value="{StaticResource Primary}"/>
-    </Style>
+        <Setter Property="ProgressCVaDarkOnLightStaticRAppThemeBStroke        <SettBackground}BacSect    <!-- Collapsible section content card: offsets the outer VerticalStackLayout spacing so the
+         content sits flush beneath its section header (gap is controlled by SectionHeaderStyle margin alone). -->
+    <Style TargetType="Border" x:Key="SectionContentStyle" BasedOn="kground}" FontSiCardStyle}">
+eckgroundFill" /        <="Marginetter Pro0,-16,0,0ySetter PS</ty="H>
 
-    <!-- ========================= -->
-    <!-- Rainbow vibe helper styles -->
+ionHeaderStyle">
+nd   taticResourcegetTypeleonser styles -->
     <!-- ========================= -->
 
     <!-- A reusable chip/pill style (great for Genres, Tags, etc.) -->
     <Style x:Key="ChipBorderStyle" TargetType="Border">
         <Setter Property="Padding" Value="12,8" />
-        <Setter Property="StrokeThickness" Value="1" />
-        <Setter Property="StrokeShape" Value="RoundRectangle 6,6,6,6" />
-        <Setter Property="BackgroundColor" Value="Transparent" />
+        <SetProgressCVaDarkOnLightStaticRAppThemeBStroke        <SettBackground}BacSect    <!-- Collapsible section content card: offsets the outer VerticalStackLayout spacing so the
+         content sits flush beneath its section header (gap is controlled by SectionHeaderStyle margin alone). -->
+    <Style TargetType="Border" x:Key="SectionContentStyle" BasedOn="kground}" FontSiCardStyle}">
+eckgroundFill" /        <="Marginetter Pro0,-16,0,0ySetter PS</ty="H>
+
+ionHeaderStyle">
+nd   taticResourcegetTypeleonseroperty="BackgroundColor" Value="Transparent" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Stroke" Value="{StaticResource Gray600}" />
     </Style>
