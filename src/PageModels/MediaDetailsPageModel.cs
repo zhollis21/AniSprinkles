@@ -795,9 +795,17 @@ namespace AniSprinkles.PageModels;
             return;
         }
 
+        await RemoveFromListConfirmedAsync(ListEntry.Id, title);
+    }
+
+    // Separated from RemoveFromList so the snackbar Retry action can re-attempt the delete
+    // directly without re-showing the confirmation dialog. listEntryId and title are captured
+    // as value/immutable types at failure time so a concurrent refresh cannot affect the retry.
+    private async Task RemoveFromListConfirmedAsync(int listEntryId, string title)
+    {
         try
         {
-            var deleted = await _aniListClient.DeleteMediaListEntryAsync(ListEntry.Id);
+            var deleted = await _aniListClient.DeleteMediaListEntryAsync(listEntryId);
             if (deleted)
             {
                 ListEntry = null;
@@ -810,10 +818,10 @@ namespace AniSprinkles.PageModels;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to remove media {MediaId} from list.", Media.Id);
+            _logger.LogError(ex, "Failed to remove media {MediaId} from list.", Media?.Id);
             await ShowSnackbarAsync(
                 "Failed to remove from list. Please try again.",
-                action: () => _ = RemoveFromList(),
+                action: () => _ = RemoveFromListConfirmedAsync(listEntryId, title),
                 actionText: "Retry");
         }
     }
