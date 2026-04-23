@@ -10,10 +10,11 @@ public class XamlFileValidationTests
 {
     public static IEnumerable<object[]> AllXamlFiles()
     {
-        var srcRoot = Path.Combine(FindRepoRoot(), "src");
+        var repoRoot = FindRepoRoot();
+        var srcRoot = Path.Combine(repoRoot, "src");
         foreach (var file in Directory.EnumerateFiles(srcRoot, "*.xaml", SearchOption.AllDirectories))
         {
-            var rel = Path.GetRelativePath(FindRepoRoot(), file).Replace('\\', '/');
+            var rel = Path.GetRelativePath(repoRoot, file).Replace('\\', '/');
             if (rel.Contains("/bin/") || rel.Contains("/obj/"))
             {
                 continue;
