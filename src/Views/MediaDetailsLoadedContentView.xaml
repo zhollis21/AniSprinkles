@@ -234,7 +234,7 @@
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ToggleStatusExpandedCommand}" />
                             </Border.GestureRecognizers>
-                            <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="10">
+                            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
                                 <Image Grid.Column="0" WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
                                     <Image.Source>
                                         <FontImageSource Glyph="{Binding StatusIconGlyph}"
@@ -247,10 +247,8 @@
                                        Style="{StaticResource Body1Strong}"
                                        TextColor="{Binding ListStatusDisplay, Converter={StaticResource RainbowAccentConverter}}"
                                        VerticalTextAlignment="Center" />
-                                <ActivityIndicator Grid.Column="2" IsRunning="{Binding IsSavingListEntry}" IsVisible="{Binding IsSavingListEntry}"
-                                                   WidthRequest="18" HeightRequest="18" VerticalOptions="Center" />
                                 <!-- Chevron down when collapsed -->
-                                <Image Grid.Column="3" WidthRequest="16" HeightRequest="16" VerticalOptions="Center"
+                                <Image Grid.Column="2" WidthRequest="16" HeightRequest="16" VerticalOptions="Center"
                                        IsVisible="{Binding IsStatusExpanded, Converter={StaticResource InvertedBoolConverter}}">
                                     <Image.Source>
                                         <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.ChevronDown24}"
@@ -259,7 +257,7 @@
                                     </Image.Source>
                                 </Image>
                                 <!-- Chevron up when expanded -->
-                                <Image Grid.Column="3" WidthRequest="16" HeightRequest="16" VerticalOptions="Center"
+                                <Image Grid.Column="2" WidthRequest="16" HeightRequest="16" VerticalOptions="Center"
                                        IsVisible="{Binding IsStatusExpanded}">
                                     <Image.Source>
                                         <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.ChevronUp24}"

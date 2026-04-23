@@ -766,6 +766,7 @@ namespace AniSprinkles.PageModels;
                 ListEntry = saved;
                 IsStatusExpanded = false;
                 OnPropertyChanged(nameof(CanAddToList));
+                await ShowToastAsync("Status updated");
             }
         }
         catch (Exception ex)
@@ -790,6 +791,18 @@ namespace AniSprinkles.PageModels;
             return;
         }
 
+        var title = Media.DisplayTitle ?? "this anime";
+        var confirmed = await Shell.Current.CurrentPage.DisplayAlertAsync(
+            "Remove from List",
+            $"Remove {title} from your list?",
+            "Remove",
+            "Cancel");
+
+        if (!confirmed)
+        {
+            return;
+        }
+
         IsSavingListEntry = true;
         try
         {
@@ -801,6 +814,7 @@ namespace AniSprinkles.PageModels;
                 OnPropertyChanged(nameof(CanAddToList));
                 OnPropertyChanged(nameof(HasListEntry));
                 NotifyListEntryDisplayChanged();
+                await ShowToastAsync($"{title} removed from list");
             }
         }
         catch (Exception ex)
@@ -840,6 +854,7 @@ namespace AniSprinkles.PageModels;
                 saved.Media = Media;
                 ListEntry = saved;
                 OnPropertyChanged(nameof(CanAddToList));
+                await ShowToastAsync("Added to list");
             }
         }
         catch (Exception ex)
@@ -1059,6 +1074,7 @@ namespace AniSprinkles.PageModels;
             {
                 saved.Media = Media;
                 ListEntry = saved;
+                await ShowToastAsync("Changes saved");
             }
         }
         catch (Exception ex)
@@ -1177,6 +1193,18 @@ namespace AniSprinkles.PageModels;
         catch
         {
             // Swallow — snackbar display should never crash the app.
+        }
+    }
+
+    private static async Task ShowToastAsync(string message)
+    {
+        try
+        {
+            await Toast.Make(message, ToastDuration.Short).Show();
+        }
+        catch
+        {
+            // Swallow — toast display should never crash the app.
         }
     }
 

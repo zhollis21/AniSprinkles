@@ -738,6 +738,17 @@ public partial class SettingsPageModel : ObservableObject
     [RelayCommand]
     private async Task SignOut()
     {
+        var confirmed = await Shell.Current.CurrentPage.DisplayAlertAsync(
+            "Sign Out",
+            "Sign out of AniList? Your list data will be cleared from the app until you sign back in.",
+            "Sign Out",
+            "Cancel");
+
+        if (!confirmed)
+        {
+            return;
+        }
+
         _logger.LogInformation("Sign-out requested from Settings.");
         SentrySdk.AddBreadcrumb("Sign-out requested (Settings)", "auth", "user");
         _airingNotificationService.CancelPeriodicCheck();
