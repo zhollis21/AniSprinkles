@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using System.ComponentModel;
 using Microsoft.Extensions.Logging;
-using AniSprinkles.PageModels;
 using AniSprinkles.Utilities;
 
 namespace AniSprinkles.Pages;
@@ -243,7 +242,7 @@ public partial class MediaDetailsPage : ContentPage, IQueryAttributable
                     Logger.LogError(ex, "Failed to create MediaDetailsLoadedContentView");
                     ViewModel.ErrorTitle = "Something Went Wrong";
                     ViewModel.ErrorSubtitle = "Failed to render the details view.";
-                    ViewModel.ErrorIconGlyph = IconFont.Maui.FluentIcons.FluentIconsRegular.ErrorCircle24;
+                    ViewModel.ErrorIconGlyph = FluentIconsRegular.ErrorCircle24;
                     ViewModel.ErrorDetails = $"{ex.GetType().Name}: {ex.Message}\n\n{ex.StackTrace}";
                     ViewModel.CanRetry = true;
                     ViewModel.CurrentState = PageState.Error;

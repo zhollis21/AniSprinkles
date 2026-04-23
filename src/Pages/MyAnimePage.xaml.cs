@@ -1,6 +1,4 @@
-using AniSprinkles.PageModels;
 using AniSprinkles.Utilities;
-using IconFont.Maui.FluentIcons;
 using Microsoft.Extensions.Logging;
 
 namespace AniSprinkles.Pages;

@@ -107,7 +107,7 @@ When asked to pull PR feedback, use `.claude/skills/ani-pr-feedback/SKILL.md` (`
 
 ### Presenting options
 
-When presenting 2+ approaches to the user, list them clearly with tradeoffs for each. Do not just pick one and proceed without asking.
+When presenting 2+ approaches to the user, list them clearly with tradeoffs for each. Do not just pick one and proceed without asking. If your client supports a popup/question UI (e.g. `AskUserQuestion`, `vscode_askQuestions`), use it instead of listing options in plain text.
 
 ### Output style
 

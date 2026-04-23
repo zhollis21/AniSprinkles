@@ -1,9 +1,8 @@
 using System.Collections.ObjectModel;
+using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
-using Microsoft.Maui.Dispatching;
-using Microsoft.Maui.Storage;
 using AniSprinkles.Utilities;
 
 namespace AniSprinkles.PageModels;
@@ -13,6 +12,7 @@ public partial class SettingsPageModel : ObservableObject
     private readonly IAuthService _authService;
     private readonly IAniListClient _aniListClient;
     private readonly IAiringNotificationService _airingNotificationService;
+    private readonly ErrorReportService _errorReportService;
     private readonly IPreferences _preferences;
     private readonly IDispatcher _dispatcher;
     private readonly ILogger<SettingsPageModel> _logger;
@@ -61,6 +61,25 @@ public partial class SettingsPageModel : ObservableObject
 
     [ObservableProperty]
     private bool _isSaving;
+
+    // Drives SfPullToRefresh.IsRefreshing; also tracked for guards while LoadAsync is in flight.
+    [ObservableProperty]
+    private bool _isBusy;
+
+    // ── Error state (full-page error view) ──────────────────────────
+    // Visibility is driven by CurrentState == PageState.Error; the following
+    // properties populate the error view template.
+    [ObservableProperty]
+    private string _errorTitle = string.Empty;
+
+    [ObservableProperty]
+    private string _errorSubtitle = string.Empty;
+
+    [ObservableProperty]
+    private string _errorIconGlyph = string.Empty;
+
+    [ObservableProperty]
+    private string _errorDetails = string.Empty;
 
     private CancellationTokenSource? _saveDebounceCts;
 
@@ -172,11 +191,12 @@ public partial class SettingsPageModel : ObservableObject
             ActivityMergeTime != _loadedActivityMergeTime ||
             HasNotificationChanges());
 
-    public SettingsPageModel(IAuthService authService, IAniListClient aniListClient, IAiringNotificationService airingNotificationService, IPreferences preferences, IDispatcher dispatcher, ILogger<SettingsPageModel> logger)
+    public SettingsPageModel(IAuthService authService, IAniListClient aniListClient, IAiringNotificationService airingNotificationService, ErrorReportService errorReportService, IPreferences preferences, IDispatcher dispatcher, ILogger<SettingsPageModel> logger)
     {
         _authService = authService;
         _aniListClient = aniListClient;
         _airingNotificationService = airingNotificationService;
+        _errorReportService = errorReportService;
         _preferences = preferences;
         _dispatcher = dispatcher;
         _logger = logger;
@@ -189,8 +209,18 @@ public partial class SettingsPageModel : ObservableObject
         // flipping CurrentState would overlay the spinner on top of it.
         var isRefresh = _loadedUser is not null;
         _logger.LogInformation(
-            "Settings LoadAsync enter (isRefresh={IsRefresh}, currentState={CurrentState}, isAuthenticated={IsAuthenticated})",
-            isRefresh, CurrentState, IsAuthenticated);
+            "Settings LoadAsync enter (isRefresh={IsRefresh}, isBusy={IsBusy}, currentState={CurrentState}, isAuthenticated={IsAuthenticated})",
+            isRefresh, IsBusy, CurrentState, IsAuthenticated);
+
+        if (IsBusy)
+        {
+            _logger.LogInformation("Settings LoadAsync skipped — already in flight.");
+            return;
+        }
+
+        // Set IsBusy immediately — before any awaits — so concurrent callers
+        // (OnAppearing + pull-to-refresh, or rapid Retry taps) short-circuit above.
+        IsBusy = true;
 
         if (!isRefresh)
         {
@@ -199,7 +229,19 @@ public partial class SettingsPageModel : ObservableObject
 
         try
         {
-            await RefreshAuthStateAsync();
+            // Inner try: if the auth check itself throws (e.g. SecureStorage failure),
+            // ensure IsAuthenticated is false so the outer catch routes to Unauthenticated
+            // rather than the full-page Error state.
+            try
+            {
+                await RefreshAuthStateAsync();
+            }
+            catch
+            {
+                IsAuthenticated = false;
+                throw;
+            }
+
             StatusMessage = IsAuthenticated ? "Signed in to AniList." : "Not signed in.";
 
             if (IsAuthenticated)
@@ -207,6 +249,7 @@ public partial class SettingsPageModel : ObservableObject
                 var user = await _aniListClient.GetViewerAsync();
                 _loadedUser = user;
                 PopulateFromUser(user);
+                ErrorDetails = string.Empty;
                 CurrentState = PageState.Content;
             }
             else
@@ -217,11 +260,38 @@ public partial class SettingsPageModel : ObservableObject
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to fetch AniList viewer data");
-            StatusMessage = "Failed to load profile.";
-            // Preserve cached Content when available; otherwise fall back to
-            // Unauthenticated so the user can retry sign-in from the login card.
-            CurrentState = _loadedUser is not null ? PageState.Content : PageState.Unauthenticated;
+            var apiEx = ex as AniListApiException;
+
+            if (_loadedUser is not null)
+            {
+                // Prefer stale data over blank UI when refresh fails after a previously successful load.
+                // Surface the classified reason via StatusMessage; the persistent inline banner redesign
+                // is tracked in issue #26.
+                StatusMessage = apiEx?.UserTitle ?? "Refresh failed. Showing cached profile.";
+                CurrentState = PageState.Content;
+            }
+            else if (IsAuthenticated)
+            {
+                // Full-page error state — no cached data to fall back on.
+                ErrorTitle = apiEx?.UserTitle ?? "Something Went Wrong";
+                ErrorSubtitle = apiEx?.UserSubtitle ?? "An unexpected error occurred. Try again or check back later.";
+                ErrorIconGlyph = apiEx?.IconGlyph ?? FluentIconsRegular.ErrorCircle24;
+                CurrentState = PageState.Error;
+                StatusMessage = string.Empty;
+            }
+            else
+            {
+                // Auth check itself failed; fall back to Unauthenticated so the user
+                // can retry sign-in from the login card.
+                StatusMessage = apiEx?.UserTitle ?? "Failed to load profile.";
+                CurrentState = PageState.Unauthenticated;
+            }
+
+            ErrorDetails = _errorReportService.Record(ex, "Load Settings");
+        }
+        finally
+        {
+            IsBusy = false;
         }
 
         SentrySdk.AddBreadcrumb("Settings loaded", "navigation", "state");
@@ -445,12 +515,35 @@ public partial class SettingsPageModel : ObservableObject
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to auto-save settings");
-            StatusMessage = "Failed to save settings.";
+            var apiEx = ex as AniListApiException;
+            _errorReportService.Record(ex, "Auto-save settings");
+
+            // Transient auto-save failures surface via a Snackbar with a Retry action.
+            // The persistent inline-banner redesign (notification-permission warning,
+            // refresh-failed-showing-cache, etc.) is tracked in issue #26.
+            var message = apiEx?.UserTitle ?? "Couldn't save settings.";
+            _dispatcher.Dispatch(() => _ = ShowSaveFailureSnackbarAsync(message));
         }
         finally
         {
             IsSaving = false;
+        }
+    }
+
+    private async Task ShowSaveFailureSnackbarAsync(string message)
+    {
+        try
+        {
+            var snackbar = Snackbar.Make(
+                message,
+                action: () => _ = SaveSettingsAsync(),
+                actionButtonText: "Retry",
+                duration: TimeSpan.FromSeconds(5));
+            await snackbar.Show();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Failed to show save-failure snackbar");
         }
     }
 
@@ -697,6 +790,24 @@ public partial class SettingsPageModel : ObservableObject
     {
         var token = await _authService.GetAccessTokenAsync();
         IsAuthenticated = !string.IsNullOrWhiteSpace(token);
+    }
+
+    // ── Pull to refresh ──────────────────────────────────────────────
+
+    [RelayCommand]
+    private Task Refresh() => LoadAsync();
+
+    // ── Retry after full-page error ─────────────────────────────────
+
+    [RelayCommand]
+    private async Task RetryLoad()
+    {
+        ErrorTitle = string.Empty;
+        ErrorSubtitle = string.Empty;
+        ErrorIconGlyph = string.Empty;
+        ErrorDetails = string.Empty;
+        CurrentState = PageState.InitialLoading;
+        await LoadAsync();
     }
 }
 

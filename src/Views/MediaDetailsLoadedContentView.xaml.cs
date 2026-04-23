@@ -1,6 +1,5 @@
 using System.Runtime.CompilerServices;
 using AniSprinkles.Utilities;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace AniSprinkles.Views;

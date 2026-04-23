@@ -1,5 +1,3 @@
-using AniSprinkles.Models;
-
 namespace AniSprinkles.Utilities;
 
 /// <summary>

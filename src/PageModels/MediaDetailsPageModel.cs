@@ -55,12 +55,6 @@ namespace AniSprinkles.PageModels;
     [ObservableProperty]
     private string _errorDetails = string.Empty;
 
-    [ObservableProperty]
-    private bool _hasErrorDetails;
-
-    [ObservableProperty]
-    private bool _isErrorDetailsVisible;
-
     // ── Error state (full-page error view) ──────────────────────────
     // Visibility is driven by CurrentState == PageState.Error; the following
     // properties populate the error view template.
@@ -442,7 +436,6 @@ namespace AniSprinkles.PageModels;
             _loadedMediaId = null;
             StatusMessage = string.Empty;
             ErrorDetails = string.Empty;
-            IsErrorDetailsVisible = false;
             ErrorTitle = "Details Unavailable";
             ErrorSubtitle = "The requested title could not be loaded.";
             ErrorIconGlyph = FluentIconsRegular.ErrorCircle24;
@@ -465,7 +458,6 @@ namespace AniSprinkles.PageModels;
 
             StatusMessage = string.Empty;
             ErrorDetails = string.Empty;
-            IsErrorDetailsVisible = false;
             CurrentState = PageState.Content;
             _logger.LogInformation(
                 "NAVTRACE load#{LoadRequestId} reused already-loaded media {MediaId} in {ElapsedMs}ms.",
@@ -504,7 +496,6 @@ namespace AniSprinkles.PageModels;
             ListEntry = listEntry;
             StatusMessage = string.Empty;
             ErrorDetails = string.Empty;
-            IsErrorDetailsVisible = false;
 
             var fetchStopwatch = Stopwatch.StartNew();
             var result = await _aniListClient.GetMediaAsync(mediaId);
@@ -525,7 +516,6 @@ namespace AniSprinkles.PageModels;
                 ErrorSubtitle = "The requested title could not be loaded.";
                 ErrorIconGlyph = FluentIconsRegular.ErrorCircle24;
                 ErrorDetails = string.Empty;
-                IsErrorDetailsVisible = false;
                 CanRetry = true;
                 CurrentState = PageState.Error;
                 _loadedMediaId = null;
@@ -559,7 +549,6 @@ namespace AniSprinkles.PageModels;
             ErrorSubtitle = apiEx?.UserSubtitle ?? "An unexpected error occurred. Try again or check back later.";
             ErrorIconGlyph = apiEx?.IconGlyph ?? FluentIconsRegular.ErrorCircle24;
             ErrorDetails = _errorReportService.Record(ex, "Load details");
-            IsErrorDetailsVisible = false;
             CanRetry = true;
             CurrentState = PageState.Error;
             StatusMessage = string.Empty;
@@ -585,9 +574,6 @@ namespace AniSprinkles.PageModels;
 
     partial void OnStatusMessageChanged(string value)
         => HasStatusMessage = !string.IsNullOrWhiteSpace(value);
-
-    partial void OnErrorDetailsChanged(string value)
-        => HasErrorDetails = !string.IsNullOrWhiteSpace(value);
 
     partial void OnMediaChanged(Media? value)
     {
@@ -709,44 +695,6 @@ namespace AniSprinkles.PageModels;
         OnPropertyChanged(nameof(SmileySadSelected));
         SliderScore = value?.Score ?? 0;
         SliderProgress = value?.Progress ?? 0;
-    }
-
-    [RelayCommand]
-    private void ToggleDetails()
-    {
-        if (!HasErrorDetails)
-        {
-            return;
-        }
-
-        IsErrorDetailsVisible = !IsErrorDetailsVisible;
-    }
-
-    [RelayCommand]
-    private async Task CopyError()
-    {
-        if (!HasErrorDetails)
-        {
-            return;
-        }
-
-        await Clipboard.Default.SetTextAsync(ErrorDetails);
-        StatusMessage = "Error details copied.";
-    }
-
-    [RelayCommand]
-    private async Task ShareError()
-    {
-        if (!HasErrorDetails)
-        {
-            return;
-        }
-
-        await Share.Default.RequestAsync(new ShareTextRequest
-        {
-            Text = ErrorDetails,
-            Title = "AniSprinkles Error Details"
-        });
     }
 
     [RelayCommand]

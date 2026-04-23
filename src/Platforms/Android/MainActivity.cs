@@ -2,10 +2,8 @@
 using Android.Content.PM;
 using Android.OS;
 using Android.Util;
-using Android.Views;
 using AndroidX.Core.View;
 using AndroidColors = Android.Graphics.Color;
-using Microsoft.Maui.Graphics;
 
 namespace AniSprinkles;
 
