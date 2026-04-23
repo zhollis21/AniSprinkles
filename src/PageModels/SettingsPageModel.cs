@@ -500,6 +500,7 @@ public partial class SettingsPageModel : ObservableObject
             _loadedUser = updatedUser;
             PopulateFromUser(updatedUser);
             SentrySdk.AddBreadcrumb("Settings auto-saved", "settings", "user");
+            _dispatcher.Dispatch(() => _ = ShowToastAsync("Settings saved"));
         }
         catch (Exception ex)
         {
