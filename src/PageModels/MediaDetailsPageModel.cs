@@ -73,9 +73,6 @@ namespace AniSprinkles.PageModels;
     private bool _isStatusExpanded;
 
     [ObservableProperty]
-    private bool _isSavingListEntry;
-
-    [ObservableProperty]
     private double _sliderScore;
 
     [ObservableProperty]
@@ -753,7 +750,6 @@ namespace AniSprinkles.PageModels;
             return;
         }
 
-        IsSavingListEntry = true;
         try
         {
             var entry = ListEntry ?? new MediaListEntry { MediaId = Media.Id };
@@ -777,10 +773,6 @@ namespace AniSprinkles.PageModels;
                 action: () => _ = QuickSetStatus(value),
                 actionText: "Retry");
         }
-        finally
-        {
-            IsSavingListEntry = false;
-        }
     }
 
     [RelayCommand]
@@ -803,7 +795,6 @@ namespace AniSprinkles.PageModels;
             return;
         }
 
-        IsSavingListEntry = true;
         try
         {
             var deleted = await _aniListClient.DeleteMediaListEntryAsync(ListEntry.Id);
@@ -825,10 +816,6 @@ namespace AniSprinkles.PageModels;
                 action: () => _ = RemoveFromList(),
                 actionText: "Retry");
         }
-        finally
-        {
-            IsSavingListEntry = false;
-        }
     }
 
     [RelayCommand]
@@ -839,7 +826,6 @@ namespace AniSprinkles.PageModels;
             return;
         }
 
-        IsSavingListEntry = true;
         try
         {
             var entry = new MediaListEntry
@@ -864,10 +850,6 @@ namespace AniSprinkles.PageModels;
                 "Failed to add to list. Please try again.",
                 action: () => _ = AddToList(),
                 actionText: "Retry");
-        }
-        finally
-        {
-            IsSavingListEntry = false;
         }
     }
 
@@ -1066,7 +1048,6 @@ namespace AniSprinkles.PageModels;
             return;
         }
 
-        IsSavingListEntry = true;
         try
         {
             var saved = await _aniListClient.SaveMediaListEntryAsync(ListEntry);
@@ -1084,10 +1065,6 @@ namespace AniSprinkles.PageModels;
                 "Failed to save changes. Please try again.",
                 action: () => _ = SaveCurrentEntryAsync(),
                 actionText: "Retry");
-        }
-        finally
-        {
-            IsSavingListEntry = false;
         }
     }
 
