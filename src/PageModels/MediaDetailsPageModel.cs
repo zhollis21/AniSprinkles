@@ -1152,7 +1152,7 @@ namespace AniSprinkles.PageModels;
         return $"Episode {next.Episode} in {countdown}";
     }
 
-    private static async Task ShowSnackbarAsync(
+    private async Task ShowSnackbarAsync(
         string message,
         Action? action = null,
         string actionText = "Retry",
@@ -1167,21 +1167,21 @@ namespace AniSprinkles.PageModels;
                 duration: duration ?? TimeSpan.FromSeconds(5));
             await snackbar.Show();
         }
-        catch
+        catch (Exception ex)
         {
-            // Swallow — snackbar display should never crash the app.
+            _logger.LogWarning(ex, "Snackbar display failed");
         }
     }
 
-    private static async Task ShowToastAsync(string message)
+    private async Task ShowToastAsync(string message)
     {
         try
         {
             await Toast.Make(message, ToastDuration.Short).Show();
         }
-        catch
+        catch (Exception ex)
         {
-            // Swallow — toast display should never crash the app.
+            _logger.LogWarning(ex, "Toast display failed");
         }
     }
 

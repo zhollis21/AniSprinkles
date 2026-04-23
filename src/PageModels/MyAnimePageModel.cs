@@ -762,20 +762,20 @@ public partial class MyAnimePageModel : ObservableObject
         }
     }
 
-    private static async Task ShowToastAsync(string message)
+    private async Task ShowToastAsync(string message)
     {
         try
         {
             var toast = Toast.Make(message, ToastDuration.Short);
             await toast.Show();
         }
-        catch
+        catch (Exception ex)
         {
-            // Swallow lifecycle-edge failures so the caller path still completes.
+            _logger.LogWarning(ex, "Toast display failed");
         }
     }
 
-    private static async Task ShowSnackbarAsync(
+    private async Task ShowSnackbarAsync(
         string message,
         Action? action = null,
         string actionText = "Retry",
@@ -790,10 +790,9 @@ public partial class MyAnimePageModel : ObservableObject
                 duration: duration ?? TimeSpan.FromSeconds(5));
             await snackbar.Show();
         }
-        catch
+        catch (Exception ex)
         {
-            // Snackbar.Show can throw in rare lifecycle edge cases (e.g. backgrounded page);
-            // swallow so the caller's error path still completes.
+            _logger.LogWarning(ex, "Snackbar display failed");
         }
     }
 
