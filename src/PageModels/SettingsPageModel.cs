@@ -229,7 +229,19 @@ public partial class SettingsPageModel : ObservableObject
 
         try
         {
-            await RefreshAuthStateAsync();
+            // Inner try: if the auth check itself throws (e.g. SecureStorage failure),
+            // ensure IsAuthenticated is false so the outer catch routes to Unauthenticated
+            // rather than the full-page Error state.
+            try
+            {
+                await RefreshAuthStateAsync();
+            }
+            catch
+            {
+                IsAuthenticated = false;
+                throw;
+            }
+
             StatusMessage = IsAuthenticated ? "Signed in to AniList." : "Not signed in.";
 
             if (IsAuthenticated)

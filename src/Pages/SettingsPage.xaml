@@ -12,7 +12,7 @@
 
     <!--
         CurrentStateKey returns null for Content (default child) and the enum
-        name for InitialLoading / Unauthenticated. See SettingsPageModel.CurrentState.
+        name for InitialLoading / Unauthenticated / Error. See SettingsPageModel.CurrentState.
     -->
     <Grid toolkit:StateContainer.CurrentState="{Binding CurrentStateKey}">
         <toolkit:StateContainer.StateViews>
