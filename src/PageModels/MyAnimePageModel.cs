@@ -147,7 +147,7 @@ public partial class MyAnimePageModel : ObservableObject
 
         // Restore persisted UI preferences directly into backing fields to avoid
         // triggering partial property-changed handlers before the object is fully constructed.
-        var savedMode = preferences.Get(ViewModePreferenceKey, nameof(ListViewMode.Standard));
+        var savedMode = preferences.Get(ViewModePreferenceKey, nameof(ListViewMode.Large));
         if (Enum.TryParse<ListViewMode>(savedMode, out var restoredMode))
         {
             _currentViewMode = restoredMode;
