@@ -28,9 +28,9 @@ public static class ListEntryStatusFlow
 
     /// <summary>
     /// Applies <paramref name="target"/> to <paramref name="entry"/> along with any
-    /// status-specific side effects (progress, repeat, score prompt). Returns
-    /// <c>true</c> when the caller should save the entry, <c>false</c> if the user
-    /// bailed out of a required prompt.
+    /// status-specific side effects (progress, repeat, score prompt). Always returns
+    /// <c>true</c> — the score prompt is optional (skipping it preserves the existing
+    /// score but does not cancel the status change).
     /// </summary>
     public static async Task<bool> ApplyStatusChangeAsync(MediaListEntry entry, MediaListStatus target)
     {

@@ -944,6 +944,7 @@ namespace AniSprinkles.PageModels;
             return;
         }
 
+        var previousProgress = ListEntry.Progress;
         ListEntry.Progress = newProgress;
         if (Math.Abs(SliderProgress - newProgress) > 0.01)
         {
@@ -973,8 +974,11 @@ namespace AniSprinkles.PageModels;
                 }
                 else
                 {
-                    // User dismissed the confirmation; still persist the progress bump.
-                    _ = DebouncedSaveAsync();
+                    // User dismissed — revert the progress bump so the UI matches
+                    // My Anime's behaviour (cancel leaves entry unchanged).
+                    ListEntry.Progress = previousProgress;
+                    SliderProgress = previousProgress ?? 0;
+                    NotifyListEntryDisplayChanged();
                 }
             }
             catch (Exception ex)
