@@ -307,8 +307,10 @@ jobs:
               echo "  Still loading anime list... (${ELAPSED}s)"
             else
               echo "  Page appears ready after ${ELAPSED}s"
-              # Brief extra settle time for final render
-              sleep 2
+              # Extra settle time for cover images to finish loading from CDN.
+              # The Large view default uses bigger image files than Standard did,
+              # so 2s was not enough — bumped to 10s.
+              sleep 10
               break
             fi
             sleep $POLL_INTERVAL
