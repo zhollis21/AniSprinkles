@@ -428,6 +428,29 @@ jobs:
           echo "Auth mode: $AUTH_MODE"
           echo "Screenshots captured:"
           ls -la screenshots/
+
+          # Dump device logcat for diagnostics. The 2MB ring buffer covers the
+          # whole test run (boot → final screenshot). Filter to the app's PID
+          # plus image/network/MAUI tags so the artifact is useful without us
+          # having to grep through hundreds of MB.
+          mkdir -p logs
+          PID=$(adb shell pidof "$PACKAGE" 2>/dev/null || true)
+          echo "App PID: ${PID:-<not running>}"
+          adb logcat -d -v threadtime > logs/logcat-full.txt 2>&1 || echo "::warning::Failed to dump full logcat"
+          if [ -n "$PID" ]; then
+            adb logcat -d -v threadtime --pid="$PID" > logs/logcat-app.txt 2>&1 || echo "::warning::Failed to dump app logcat"
+          fi
+          # Tag-filtered slice that's likely to contain image-loading errors
+          adb logcat -d -v threadtime \
+            DOTNET:V mono-stdout:V mono-rt:V Mono:V \
+            ImageLoader:V Glide:V Picasso:V \
+            okhttp:V OkHttp:V \
+            chromium:V cr_BrowserStartup:V \
+            EGL_emulation:W gralloc:W BufferQueueProducer:W \
+            AndroidRuntime:E System.err:E *:F \
+            > logs/logcat-tags.txt 2>&1 || echo "::warning::Failed to dump tag-filtered logcat"
+          echo "Logcat sizes:"
+          ls -la logs/
           SCRIPT
           chmod +x /tmp/capture_screenshots.sh
 
@@ -449,6 +472,15 @@ jobs:
         with:
           name: ui-screenshots
           path: screenshots/
+          retention-days: 5
+          if-no-files-found: warn
+
+      - name: Upload Device Logcat
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: device-logcat
+          path: logs/
           retention-days: 5
           if-no-files-found: warn
 
