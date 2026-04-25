@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:icons="clr-namespace:IconFont.Maui.FluentIcons;assembly=IconFont.Maui.FluentIcons"
+             xmlns:abs="clr-namespace:AniSprinkles.Services.Abstractions;assembly=AniSprinkles"
+             x:Class="AniSprinkles.Views.OutageBanner"
+             x:DataType="abs:IOutageStateService"
+             IsVisible="{Binding IsOutage}">
+
+    <Border StrokeShape="RoundRectangle 10"
+            StrokeThickness="1"
+            Stroke="{StaticResource RainbowOrange}"
+            BackgroundColor="{AppThemeBinding Light=#FFF4E5, Dark=#3A2A10}"
+            Padding="12,10"
+            Margin="0,0,0,8">
+        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+            <Label Grid.Column="0"
+                   Text="{Binding IconGlyph}"
+                   FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                   TextColor="{StaticResource RainbowOrange}"
+                   FontSize="24"
+                   WidthRequest="24" HeightRequest="24"
+                   HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                   VerticalOptions="Start"
+                   AutomationProperties.IsInAccessibleTree="False" />
+            <VerticalStackLayout Grid.Column="1" Spacing="2">
+                <Label Text="{Binding Title}"
+                       Style="{StaticResource Body2Strong}"
+                       TextColor="{StaticResource RainbowOrange}" />
+                <Label Text="{Binding Subtitle}"
+                       Style="{StaticResource Caption1}"
+                       TextColor="{AppThemeBinding Light={StaticResource DarkOnLightBackground}, Dark={StaticResource LightOnDarkBackground}}" />
+            </VerticalStackLayout>
+        </Grid>
+    </Border>
+</ContentView>

@@ -12,6 +12,7 @@ public partial class MediaListEntry : ObservableObject
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(StatusDisplay))]
     [NotifyPropertyChangedFor(nameof(CanIncrementProgress))]
+    [NotifyPropertyChangedFor(nameof(ShouldShowIncrementButton))]
     [NotifyPropertyChangedFor(nameof(MetadataDisplay))]
     private MediaListStatus? _status;
 
@@ -70,11 +71,31 @@ public partial class MediaListEntry : ObservableObject
         or ScoreFormat.Point10Decimal or ScoreFormat.Point10;
 
     /// <summary>
-    /// Maximum episode count for +1 cap logic.
-    /// Uses the next airing episode number (latest aired = episode - 1) if available,
-    /// otherwise falls back to the total episode count.
+    /// Cap for +1 / progress-slider logic. Uses the total episode count when known,
+    /// otherwise falls back to the most-recently-aired episode (<c>NextAiringEpisode.Episode - 1</c>)
+    /// so users of currently-airing shows stop at the latest episode they could have watched.
+    /// Null when neither is known.
     /// </summary>
-    public int? MaxEpisodes => Media?.Episodes;
+    public int? MaxEpisodes =>
+        Media?.Episodes is > 0 ? Media.Episodes :
+        Media?.NextAiringEpisode?.Episode is > 1 ? Media.NextAiringEpisode.Episode - 1 :
+        null;
+
+    /// <summary>
+    /// True only when the total episode count is known (i.e. the show has a finite,
+    /// declared length). Used to gate the completion flow — long-running airing shows
+    /// without a known total should not trigger completion when the cap is reached.
+    /// </summary>
+    public bool HasKnownEpisodeCount => Media?.Episodes is > 0;
+
+    /// <summary>
+    /// Whether the +1 control should be *rendered* at all. True for Watching/Rewatching
+    /// statuses regardless of whether the user has caught up to the cap; the control is
+    /// still hidden entirely for other statuses. Caught-up state is expressed visually
+    /// via <see cref="CanIncrementProgress"/> (dimmed) rather than by disappearing.
+    /// </summary>
+    public bool ShouldShowIncrementButton =>
+        Status is MediaListStatus.Current or MediaListStatus.Repeating;
 
     /// <summary>
     /// Number of episodes behind for currently airing shows.

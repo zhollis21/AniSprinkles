@@ -9,7 +9,7 @@ public partial class RatingPopup : Popup<object>
     private readonly double _maxScore;
     private double _selectedScore;
 
-    public RatingPopup(string? animeTitle = null)
+    public RatingPopup(string? animeTitle = null, double? initialScore = null)
     {
         InitializeComponent();
 
@@ -25,22 +25,39 @@ public partial class RatingPopup : Popup<object>
             _ => 10,
         };
 
+        // Pre-populate when the caller has a non-zero score; otherwise fall back to the
+        // per-format empty/default state (0 for stars/smileys, 1 for sliders).
+        var initial = initialScore is > 0 ? initialScore.Value : 0;
+
         switch (_scoreFormat)
         {
             case ScoreFormat.Point5:
                 StarsLayout.IsVisible = true;
+                if (initial > 0)
+                {
+                    _selectedScore = Math.Clamp((int)Math.Round(initial), 0, 5);
+                    UpdateStarVisuals();
+                }
                 break;
 
             case ScoreFormat.Point3:
                 SmileysLayout.IsVisible = true;
+                if (initial > 0)
+                {
+                    _selectedScore = Math.Clamp((int)Math.Round(initial), 0, 3);
+                    UpdateSmileyVisuals();
+                }
                 break;
 
             default: // Point100, Point10, Point10Decimal
                 SliderLayout.IsVisible = true;
                 ScoreSlider.Maximum = _maxScore;
-                ScoreSlider.Value = 1;
-                _selectedScore = 1;
-                UpdateSliderLabel(1);
+                var start = initial > 0
+                    ? Math.Clamp(initial, ScoreSlider.Minimum, _maxScore)
+                    : 1;
+                ScoreSlider.Value = start;
+                _selectedScore = start;
+                UpdateSliderLabel(start);
                 break;
         }
     }

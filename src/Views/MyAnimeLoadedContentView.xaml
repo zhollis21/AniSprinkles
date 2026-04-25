@@ -72,7 +72,7 @@
                                    IsVisible="{Binding HasAiringInfo}" />
                         </VerticalStackLayout>
 
-                        <!-- +1 button (only on Watching / Rewatching) -->
+                        <!-- +1 button (Watching / Rewatching; dimmed when caught up) -->
                         <Border Grid.Column="2"
                                 StrokeShape="RoundRectangle 18"
                                 StrokeThickness="1"
@@ -82,7 +82,12 @@
                                 HeightRequest="36" WidthRequest="36"
                                 VerticalOptions="Center"
                                 Margin="0,0,10,0"
-                                IsVisible="{Binding CanIncrementProgress}">
+                                IsVisible="{Binding ShouldShowIncrementButton}">
+                            <Border.Triggers>
+                                <DataTrigger TargetType="Border" Binding="{Binding CanIncrementProgress}" Value="False">
+                                    <Setter Property="Opacity" Value="0.35" />
+                                </DataTrigger>
+                            </Border.Triggers>
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer x:DataType="{x:Null}"
                                     Command="{Binding BindingContext.IncrementProgressCommand, Source={RelativeSource AncestorType={x:Type CollectionView}}}"
@@ -121,15 +126,15 @@
 
                         <views:FormatIconBadge Grid.Row="0" Format="{Binding Media.Format}" />
 
-                        <!-- Score badge overlay -->
+                        <!-- Score badge overlay (top-right) -->
                         <Border Grid.Row="0"
                                 StrokeShape="RoundRectangle 10"
                                 StrokeThickness="0"
                                 BackgroundColor="#99000000"
                                 Padding="6,3"
                                 HorizontalOptions="End"
-                                VerticalOptions="End"
-                                Margin="0,0,6,6"
+                                VerticalOptions="Start"
+                                Margin="0,6,6,0"
                                 IsVisible="{Binding HasScore}">
                             <HorizontalStackLayout Spacing="3">
                                 <Label Text="{x:Static icons:FluentIconsFilled.Star24}"
@@ -153,42 +158,47 @@
                             </HorizontalStackLayout>
                         </Border>
 
+                        <!-- +1 overlay (bottom-right; Watching/Rewatching, dimmed when caught up) -->
+                        <Border Grid.Row="0"
+                                StrokeShape="RoundRectangle 16"
+                                StrokeThickness="0"
+                                BackgroundColor="#99000000"
+                                Padding="8,5"
+                                HorizontalOptions="End"
+                                VerticalOptions="End"
+                                Margin="0,0,6,6"
+                                MinimumWidthRequest="32"
+                                MinimumHeightRequest="32"
+                                IsVisible="{Binding ShouldShowIncrementButton}">
+                            <Border.Triggers>
+                                <DataTrigger TargetType="Border" Binding="{Binding CanIncrementProgress}" Value="False">
+                                    <Setter Property="Opacity" Value="0.35" />
+                                </DataTrigger>
+                            </Border.Triggers>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer x:DataType="{x:Null}"
+                                    Command="{Binding BindingContext.IncrementProgressCommand, Source={RelativeSource AncestorType={x:Type CollectionView}}}"
+                                    CommandParameter="{Binding .}" />
+                            </Border.GestureRecognizers>
+                            <Label Text="{x:Static icons:FluentIconsRegular.Add24}"
+                                   FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                   TextColor="{Binding Media.DisplayTitle, Converter={StaticResource RainbowAccentConverter}}"
+                                   FontSize="18"
+                                   HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                                   HorizontalOptions="Center" VerticalOptions="Center"
+                                   AutomationProperties.IsInAccessibleTree="False" />
+                        </Border>
+
                         <!-- Info below cover -->
                         <VerticalStackLayout Grid.Row="1" Padding="8,6,8,8" Spacing="3">
                             <Label Text="{Binding Media.DisplayTitle}"
                                    Style="{StaticResource Caption1Strong}"
                                    MaxLines="2"
                                    LineBreakMode="TailTruncation" />
-                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="6">
-                                <Label Grid.Column="0"
-                                       Text="{Binding ProgressDisplay}"
-                                       Style="{StaticResource Caption2}"
-                                       TextColor="{StaticResource Gray400}"
-                                       VerticalTextAlignment="Center" />
-                                <!-- +1 button (only on Watching / Rewatching) -->
-                                <Border Grid.Column="1"
-                                        StrokeShape="RoundRectangle 12"
-                                        StrokeThickness="1"
-                                        Stroke="{StaticResource Gray600}"
-                                        BackgroundColor="Transparent"
-                                        Padding="0"
-                                        HeightRequest="24" WidthRequest="24"
-                                        VerticalOptions="Center"
-                                        IsVisible="{Binding CanIncrementProgress}">
-                                    <Border.GestureRecognizers>
-                                        <TapGestureRecognizer x:DataType="{x:Null}"
-                                            Command="{Binding BindingContext.IncrementProgressCommand, Source={RelativeSource AncestorType={x:Type CollectionView}}}"
-                                            CommandParameter="{Binding .}" />
-                                    </Border.GestureRecognizers>
-                                    <Label Text="{x:Static icons:FluentIconsRegular.Add24}"
-                                           FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                           TextColor="{Binding Media.DisplayTitle, Converter={StaticResource RainbowAccentConverter}}"
-                                           FontSize="14"
-                                           HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
-                                           HorizontalOptions="Center" VerticalOptions="Center"
-                                           AutomationProperties.IsInAccessibleTree="False" />
-                                </Border>
-                            </Grid>
+                            <Label Text="{Binding ProgressDisplay}"
+                                   Style="{StaticResource Caption2}"
+                                   TextColor="{StaticResource Gray400}"
+                                   VerticalTextAlignment="Center" />
                             <!-- Airing info -->
                             <Label Text="{Binding AiringInfoDisplay}"
                                    Style="{StaticResource Caption2}"
@@ -243,7 +253,7 @@
                             </Label.Triggers>
                         </Label>
                     </HorizontalStackLayout>
-                    <!-- +1 button (only on Watching / Rewatching) -->
+                    <!-- +1 button (Watching / Rewatching; dimmed when caught up) -->
                     <Border Grid.Column="3"
                             StrokeShape="RoundRectangle 14"
                             StrokeThickness="1"
@@ -252,7 +262,12 @@
                             Padding="0"
                             HeightRequest="28" WidthRequest="28"
                             VerticalOptions="Center"
-                            IsVisible="{Binding CanIncrementProgress}">
+                            IsVisible="{Binding ShouldShowIncrementButton}">
+                        <Border.Triggers>
+                            <DataTrigger TargetType="Border" Binding="{Binding CanIncrementProgress}" Value="False">
+                                <Setter Property="Opacity" Value="0.35" />
+                            </DataTrigger>
+                        </Border.Triggers>
                         <Border.GestureRecognizers>
                             <TapGestureRecognizer x:DataType="{x:Null}"
                                 Command="{Binding BindingContext.IncrementProgressCommand, Source={RelativeSource AncestorType={x:Type CollectionView}}}"

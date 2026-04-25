@@ -147,7 +147,7 @@ public partial class MyAnimePageModel : ObservableObject
 
         // Restore persisted UI preferences directly into backing fields to avoid
         // triggering partial property-changed handlers before the object is fully constructed.
-        var savedMode = preferences.Get(ViewModePreferenceKey, nameof(ListViewMode.Standard));
+        var savedMode = preferences.Get(ViewModePreferenceKey, nameof(ListViewMode.Large));
         if (Enum.TryParse<ListViewMode>(savedMode, out var restoredMode))
         {
             _currentViewMode = restoredMode;
@@ -415,11 +415,24 @@ public partial class MyAnimePageModel : ObservableObject
             return;
         }
 
-        var newProgress = (entry.Progress ?? 0) + 1;
-        var totalEpisodes = entry.MaxEpisodes;
+        // Dimmed-but-visible +1 pill (user has caught up) still receives taps. Tell the
+        // user why nothing happened so a repeated tap doesn't feel like a broken button.
+        if (!entry.CanIncrementProgress)
+        {
+            if (entry.ShouldShowIncrementButton)
+            {
+                await ShowToastAsync("You're caught up");
+            }
 
-        // ── Completion flow: no debounce, save immediately ──────────
-        if (totalEpisodes.HasValue && newProgress >= totalEpisodes.Value)
+            return;
+        }
+
+        var newProgress = (entry.Progress ?? 0) + 1;
+
+        // ── Completion flow: only when we know the total. Shows confirm + rating
+        // popups, then saves immediately (no debounce). Long-running airing shows
+        // without a declared episode count fall through to the normal +1 path.
+        if (entry.HasKnownEpisodeCount && entry.MaxEpisodes is { } totalEpisodes && newProgress >= totalEpisodes)
         {
             if (_isCompletionFlowActive)
             {
@@ -432,24 +445,13 @@ public partial class MyAnimePageModel : ObservableObject
                 // Flush any pending debounced save first (may be for this or another entry).
                 await FlushPendingIncrementAsync();
 
-                newProgress = totalEpisodes.Value;
-                var markCompleted = await ShowCompletionPopupAsync(
-                    entry.Media.DisplayTitle, totalEpisodes.Value);
-
-                if (markCompleted)
+                var shouldSave = await ListEntryStatusFlow.ApplyCompletionAsync(entry);
+                if (shouldSave)
                 {
-                    entry.Progress = newProgress;
-                    entry.Status = MediaListStatus.Completed;
-
-                    var score = await PromptForScoreAsync(entry.Media.DisplayTitle);
-                    if (score.HasValue)
-                    {
-                        entry.Score = score.Value;
-                    }
-
                     try
                     {
                         await _aniListClient.SaveMediaListEntryAsync(entry);
+                        await ShowToastAsync("Saved");
                         await LoadAsync(forceReload: true);
                     }
                     catch (Exception ex)
@@ -457,10 +459,10 @@ public partial class MyAnimePageModel : ObservableObject
                         _logger.LogError(ex, "Failed to save completed entry for media {MediaId}", entry.MediaId);
                         // Capture the mutated entry so Retry re-saves the same state.
                         var retryEntry = entry;
-                        await ShowSnackbarAsync(
+                        await ShowFailureSnackbarAsync(
+                            ex,
                             "Failed to save. Please try again.",
-                            action: () => _ = RetrySaveCompletedEntryAsync(retryEntry),
-                            actionText: "Retry");
+                            retryAction: () => _ = RetrySaveCompletedEntryAsync(retryEntry));
                         ErrorDetails = _errorReportService.Record(ex, "Increment progress (complete)");
                     }
                 }
@@ -489,6 +491,14 @@ public partial class MyAnimePageModel : ObservableObject
         }
 
         entry.Progress = newProgress;
+
+        // Immediately tell the user they've caught up the moment the last available
+        // +1 lands. This is instant (pre-debounce) so they see it before scrolling away.
+        // Finite-total shows don't reach here — they go through the completion flow above.
+        if (!entry.HasKnownEpisodeCount && !entry.CanIncrementProgress)
+        {
+            await ShowToastAsync("You're caught up!");
+        }
 
         _logger.LogInformation(
             "+1 debounce: media {MediaId} '{Title}' progress → {New} (original: {Original})",
@@ -546,6 +556,7 @@ public partial class MyAnimePageModel : ObservableObject
             _logger.LogInformation("+1 saving: media {MediaId} progress {Progress}", entry.MediaId, entry.Progress);
             await _aniListClient.SaveMediaListEntryAsync(entry);
             _logger.LogInformation("+1 saved: media {MediaId} progress {Progress}", entry.MediaId, entry.Progress);
+            await ShowToastAsync("Saved");
         }
         catch (Exception ex)
         {
@@ -557,35 +568,9 @@ public partial class MyAnimePageModel : ObservableObject
 
             _logger.LogError(ex, "Failed to save progress for media {MediaId}, reverted to {Progress}", entry.MediaId, originalProgress);
             // Progress was reverted, so there is no simple Retry path — the user can just tap +1 again.
-            await ShowSnackbarAsync("Failed to save. Please try again.");
+            await ShowFailureSnackbarAsync(ex, "Failed to save. Please try again.", retryAction: null);
             ErrorDetails = _errorReportService.Record(ex, "Increment progress");
         }
-    }
-
-    private static readonly PopupOptions TransparentPopupOptions = new()
-    {
-        Shape = null,
-        Shadow = null,
-        CanBeDismissedByTappingOutsideOfPopup = false,
-    };
-
-    private static async Task<bool> ShowCompletionPopupAsync(string animeTitle, int totalEpisodes)
-    {
-        var popup = new Views.CompletionPopup(animeTitle, totalEpisodes);
-        var result = await Shell.Current.CurrentPage.ShowPopupAsync<bool>(popup, TransparentPopupOptions, CancellationToken.None);
-        return !result.WasDismissedByTappingOutsideOfPopup && result.Result;
-    }
-
-    private static async Task<double?> PromptForScoreAsync(string? animeTitle = null)
-    {
-        var popup = new Views.RatingPopup(animeTitle);
-        var result = await Shell.Current.CurrentPage.ShowPopupAsync<object>(popup, TransparentPopupOptions, CancellationToken.None);
-        if (result.WasDismissedByTappingOutsideOfPopup)
-        {
-            return null;
-        }
-
-        return result.Result as double?;
     }
 
     // ── Long-press context menu (move between lists) ───────────────
@@ -674,10 +659,10 @@ public partial class MyAnimePageModel : ObservableObject
             // Capture the id so Retry re-runs the same delete.
             var retryId = entry.Id;
             var retryTitle = title;
-            await ShowSnackbarAsync(
+            await ShowFailureSnackbarAsync(
+                ex,
                 "Failed to remove. Please try again.",
-                action: () => _ = RetryDeleteEntryAsync(retryId, retryTitle),
-                actionText: "Retry");
+                retryAction: () => _ = RetryDeleteEntryAsync(retryId, retryTitle));
             ErrorDetails = _errorReportService.Record(ex, "Delete from list");
             await LoadAsync(forceReload: true);
         }
@@ -693,33 +678,10 @@ public partial class MyAnimePageModel : ObservableObject
         var originalScore = entry.Score;
         var originalRepeat = entry.Repeat;
 
-        // Apply side effects based on target status.
-        switch (targetStatus)
+        var shouldSave = await ListEntryStatusFlow.ApplyStatusChangeAsync(entry, targetStatus);
+        if (!shouldSave)
         {
-            case MediaListStatus.Completed:
-                entry.Status = MediaListStatus.Completed;
-                if (entry.MaxEpisodes.HasValue)
-                {
-                    entry.Progress = entry.MaxEpisodes.Value;
-                }
-
-                var score = await PromptForScoreAsync(title);
-                if (score.HasValue)
-                {
-                    entry.Score = score.Value;
-                }
-
-                break;
-
-            case MediaListStatus.Repeating:
-                entry.Status = MediaListStatus.Repeating;
-                entry.Progress = 0;
-                entry.Repeat = (entry.Repeat ?? 0) + 1;
-                break;
-
-            default:
-                entry.Status = targetStatus;
-                break;
+            return;
         }
 
         // Optimistic removal from source section.
@@ -744,7 +706,7 @@ public partial class MyAnimePageModel : ObservableObject
             _logger.LogError(ex, "Failed to move media {MediaId} to {TargetStatus}", entry.MediaId, targetStatus);
             // Move side effects were reverted, so there is no simple Retry path —
             // the user can long-press the entry again to retry.
-            await ShowSnackbarAsync("Failed to move. Please try again.");
+            await ShowFailureSnackbarAsync(ex, "Failed to move. Please try again.", retryAction: null);
             ErrorDetails = _errorReportService.Record(ex, "Move to list");
             await LoadAsync(forceReload: true);
         }
@@ -796,6 +758,22 @@ public partial class MyAnimePageModel : ObservableObject
         }
     }
 
+    /// <summary>
+    /// Shows a save-failure snackbar that adapts to the exception kind: during a
+    /// service outage the global banner is already visible, so the snackbar repeats
+    /// the outage title and omits the Retry action (retrying won't work for minutes
+    /// or hours). All other exception kinds keep the normal retry flow.
+    /// </summary>
+    private Task ShowFailureSnackbarAsync(Exception ex, string fallbackMessage, Action? retryAction)
+    {
+        if (ex is AniListApiException { Kind: ApiErrorKind.ServiceOutage } apiEx)
+        {
+            return ShowSnackbarAsync(apiEx.UserTitle);
+        }
+
+        return ShowSnackbarAsync(fallbackMessage, action: retryAction);
+    }
+
     private async Task RetrySaveCompletedEntryAsync(MediaListEntry entry)
     {
         try
@@ -806,10 +784,10 @@ public partial class MyAnimePageModel : ObservableObject
         catch (Exception ex)
         {
             _logger.LogError(ex, "Retry failed for completed entry media {MediaId}", entry.MediaId);
-            await ShowSnackbarAsync(
+            await ShowFailureSnackbarAsync(
+                ex,
                 "Failed to save. Please try again.",
-                action: () => _ = RetrySaveCompletedEntryAsync(entry),
-                actionText: "Retry");
+                retryAction: () => _ = RetrySaveCompletedEntryAsync(entry));
             ErrorDetails = _errorReportService.Record(ex, "Retry save completed entry");
         }
     }
@@ -825,10 +803,10 @@ public partial class MyAnimePageModel : ObservableObject
         catch (Exception ex)
         {
             _logger.LogError(ex, "Retry failed for delete entry {EntryId}", entryId);
-            await ShowSnackbarAsync(
+            await ShowFailureSnackbarAsync(
+                ex,
                 "Failed to remove. Please try again.",
-                action: () => _ = RetryDeleteEntryAsync(entryId, title),
-                actionText: "Retry");
+                retryAction: () => _ = RetryDeleteEntryAsync(entryId, title));
             ErrorDetails = _errorReportService.Record(ex, "Retry delete entry");
         }
     }

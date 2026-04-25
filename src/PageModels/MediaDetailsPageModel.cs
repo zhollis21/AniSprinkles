@@ -307,20 +307,21 @@ namespace AniSprinkles.PageModels;
     // --- Progress properties ---
 
     /// <summary>
-    /// The effective maximum episode number: known total episodes, or next airing episode, or null.
-    /// Used consistently for slider max, progress label denominator, increment cap, and edit prompt.
+    /// Effective episode cap for UI: total episodes when known, next-airing episode otherwise.
+    /// Sourced from the list-entry helper so My Anime and Details stay in sync.
     /// </summary>
-    private int? EffectiveMaxEpisodes =>
-        Media?.Episodes is > 0 ? Media.Episodes :
-        Media?.NextAiringEpisode?.Episode is > 0 ? Media.NextAiringEpisode.Episode :
-        null;
+    private int? CurrentMaxEpisodes =>
+        ListEntry?.MaxEpisodes ??
+        (Media?.Episodes is > 0 ? Media.Episodes :
+         Media?.NextAiringEpisode?.Episode is > 0 ? Media.NextAiringEpisode.Episode :
+         null);
 
     public string ProgressLabel
     {
         get
         {
             var progress = ListEntry?.Progress ?? 0;
-            var max = EffectiveMaxEpisodes;
+            var max = CurrentMaxEpisodes;
             return max is > 0 ? $"{progress} / {max}" : $"{progress}";
         }
     }
@@ -329,7 +330,7 @@ namespace AniSprinkles.PageModels;
     {
         get
         {
-            var max = EffectiveMaxEpisodes;
+            var max = CurrentMaxEpisodes;
             if (max is not > 0)
             {
                 return 0;
@@ -339,11 +340,9 @@ namespace AniSprinkles.PageModels;
         }
     }
 
-    public bool HasKnownEpisodeCount => Media?.Episodes is > 0;
+    public bool HasProgressSliderMax => CurrentMaxEpisodes is > 0;
 
-    public bool HasProgressSliderMax => EffectiveMaxEpisodes is > 0;
-
-    public double ProgressSliderMax => EffectiveMaxEpisodes is > 0 ? EffectiveMaxEpisodes.Value : 100;
+    public double ProgressSliderMax => CurrentMaxEpisodes is > 0 ? CurrentMaxEpisodes.Value : 100;
 
     // --- Score format properties ---
     public bool ScoreFormatIsStars => AppSettings.ScoreFormat == ScoreFormat.Point5;
@@ -597,7 +596,6 @@ namespace AniSprinkles.PageModels;
         OnPropertyChanged(nameof(DurationPillDisplay));
         OnPropertyChanged(nameof(SeasonYearDisplay));
         OnPropertyChanged(nameof(CanAddToList));
-        OnPropertyChanged(nameof(HasKnownEpisodeCount));
         OnPropertyChanged(nameof(HasProgressSliderMax));
         OnPropertyChanged(nameof(ProgressSliderMax));
         OnPropertyChanged(nameof(ProgressLabel));
@@ -750,11 +748,18 @@ namespace AniSprinkles.PageModels;
             return;
         }
 
+        var entry = ListEntry ?? new MediaListEntry { MediaId = Media.Id, Media = Media };
+        // Ensure Media is attached so the helper can read MaxEpisodes / HasKnownEpisodeCount.
+        entry.Media ??= Media;
+
+        var shouldSave = await ListEntryStatusFlow.ApplyStatusChangeAsync(entry, status);
+        if (!shouldSave)
+        {
+            return;
+        }
+
         try
         {
-            var entry = ListEntry ?? new MediaListEntry { MediaId = Media.Id };
-            entry.Status = status;
-
             var saved = await _aniListClient.SaveMediaListEntryAsync(entry);
             if (saved is not null)
             {
@@ -768,10 +773,10 @@ namespace AniSprinkles.PageModels;
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to set status for media {MediaId}.", Media.Id);
-            await ShowSnackbarAsync(
+            await ShowFailureSnackbarAsync(
+                ex,
                 "Failed to update status. Please try again.",
-                action: () => _ = QuickSetStatus(value),
-                actionText: "Retry");
+                retryAction: () => _ = QuickSetStatus(value));
         }
     }
 
@@ -822,10 +827,10 @@ namespace AniSprinkles.PageModels;
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to remove media {MediaId} from list.", Media?.Id);
-            await ShowSnackbarAsync(
+            await ShowFailureSnackbarAsync(
+                ex,
                 "Failed to remove from list. Please try again.",
-                action: () => _ = RemoveFromListConfirmedAsync(listEntryId, title),
-                actionText: "Retry");
+                retryAction: () => _ = RemoveFromListConfirmedAsync(listEntryId, title));
         }
     }
 
@@ -857,14 +862,15 @@ namespace AniSprinkles.PageModels;
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to add media {MediaId} to list.", Media.Id);
-            await ShowSnackbarAsync(
+            await ShowFailureSnackbarAsync(
+                ex,
                 "Failed to add to list. Please try again.",
-                action: () => _ = AddToList(),
-                actionText: "Retry");
+                retryAction: () => _ = AddToList());
         }
     }
 
     private CancellationTokenSource? _saveDebounceCts;
+    private bool _isCompletionFlowActive;
 
     [RelayCommand]
     private async Task EditProgress()
@@ -874,7 +880,7 @@ namespace AniSprinkles.PageModels;
             return;
         }
 
-        var max = EffectiveMaxEpisodes;
+        var max = CurrentMaxEpisodes;
         var prompt = max is > 0 ? $"Enter episode (0–{max})" : "Enter episode";
         var current = (ListEntry.Progress ?? 0).ToString();
 
@@ -888,37 +894,26 @@ namespace AniSprinkles.PageModels;
         }
 
         var clamped = Math.Max(0, max is > 0 ? Math.Min(value, max.Value) : value);
-        if ((ListEntry.Progress ?? 0) == clamped)
-        {
-            return;
-        }
-
-        ListEntry.Progress = clamped;
-        SliderProgress = clamped;
-        NotifyListEntryDisplayChanged();
-        _ = DebouncedSaveAsync();
+        await ApplyProgressChangeAsync(clamped);
     }
 
     [RelayCommand]
-    private void IncrementProgress()
+    private async Task IncrementProgress()
     {
         if (ListEntry is null)
         {
             return;
         }
 
-        var max = EffectiveMaxEpisodes ?? int.MaxValue;
+        var max = CurrentMaxEpisodes ?? int.MaxValue;
         if ((ListEntry.Progress ?? 0) < max)
         {
-            ListEntry.Progress = (ListEntry.Progress ?? 0) + 1;
-            SliderProgress = ListEntry.Progress ?? 0;
-            NotifyListEntryDisplayChanged();
-            _ = DebouncedSaveAsync();
+            await ApplyProgressChangeAsync((ListEntry.Progress ?? 0) + 1);
         }
     }
 
     [RelayCommand]
-    private void DecrementProgress()
+    private async Task DecrementProgress()
     {
         if (ListEntry is null)
         {
@@ -927,12 +922,81 @@ namespace AniSprinkles.PageModels;
 
         if ((ListEntry.Progress ?? 0) > 0)
         {
-            ListEntry.Progress = (ListEntry.Progress ?? 0) - 1;
-            SliderProgress = ListEntry.Progress ?? 0;
-            NotifyListEntryDisplayChanged();
-            _ = DebouncedSaveAsync();
+            await ApplyProgressChangeAsync((ListEntry.Progress ?? 0) - 1);
         }
     }
+
+    /// <summary>
+    /// Single entry point for progress changes originating from +1 / -1 / numeric edit.
+    /// Keeps the model, slider binding, and debounced save in sync, and fires the
+    /// completion flow (CompletionPopup + RatingPopup) when the change lands on the
+    /// known total. Slider drags route here via the snapped OnSliderProgressChanged path.
+    /// </summary>
+    private async Task ApplyProgressChangeAsync(int newProgress)
+    {
+        if (ListEntry is null)
+        {
+            return;
+        }
+
+        if ((ListEntry.Progress ?? 0) == newProgress)
+        {
+            return;
+        }
+
+        ListEntry.Progress = newProgress;
+        if (Math.Abs(SliderProgress - newProgress) > 0.01)
+        {
+            SliderProgress = newProgress;
+        }
+
+        NotifyListEntryDisplayChanged();
+
+        if (ShouldTriggerCompletion())
+        {
+            if (_isCompletionFlowActive)
+            {
+                return;
+            }
+
+            _isCompletionFlowActive = true;
+            _saveDebounceCts?.Cancel();
+
+            try
+            {
+                var shouldSave = await ListEntryStatusFlow.ApplyCompletionAsync(ListEntry);
+                if (shouldSave)
+                {
+                    NotifyListEntryDisplayChanged();
+                    IsStatusExpanded = false;
+                    await SaveCurrentEntryAsync();
+                }
+                else
+                {
+                    // User dismissed the confirmation; still persist the progress bump.
+                    _ = DebouncedSaveAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Completion flow failed for media {MediaId}; falling back to normal save.", ListEntry.MediaId);
+                _ = DebouncedSaveAsync();
+            }
+            finally
+            {
+                _isCompletionFlowActive = false;
+            }
+
+            return;
+        }
+
+        _ = DebouncedSaveAsync();
+    }
+
+    private bool ShouldTriggerCompletion() =>
+        ListEntry is { HasKnownEpisodeCount: true, MaxEpisodes: { } max }
+        && (ListEntry.Progress ?? 0) >= max
+        && ListEntry.Status != MediaListStatus.Completed;
 
     [RelayCommand]
     private void SetStarRating(string value)
@@ -1010,9 +1074,7 @@ namespace AniSprinkles.PageModels;
             return;
         }
 
-        ListEntry.Progress = rounded;
-        NotifyListEntryDisplayChanged();
-        _ = DebouncedSaveAsync();
+        _ = ApplyProgressChangeAsync(rounded);
     }
 
     [RelayCommand]
@@ -1072,10 +1134,10 @@ namespace AniSprinkles.PageModels;
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to save list entry for media {MediaId}.", Media.Id);
-            await ShowSnackbarAsync(
+            await ShowFailureSnackbarAsync(
+                ex,
                 "Failed to save changes. Please try again.",
-                action: () => _ = SaveCurrentEntryAsync(),
-                actionText: "Retry");
+                retryAction: () => _ = SaveCurrentEntryAsync());
         }
     }
 
@@ -1182,6 +1244,22 @@ namespace AniSprinkles.PageModels;
         {
             _logger.LogWarning(ex, "Snackbar display failed");
         }
+    }
+
+    /// <summary>
+    /// Shows a save-failure snackbar that adapts to the exception kind: during a
+    /// service outage the global banner is already visible, so the snackbar repeats
+    /// the outage title and omits the Retry action (retrying won't work for minutes
+    /// or hours). All other exception kinds keep the normal retry flow.
+    /// </summary>
+    private Task ShowFailureSnackbarAsync(Exception ex, string fallbackMessage, Action? retryAction)
+    {
+        if (ex is AniListApiException { Kind: ApiErrorKind.ServiceOutage } apiEx)
+        {
+            return ShowSnackbarAsync(apiEx.UserTitle);
+        }
+
+        return ShowSnackbarAsync(fallbackMessage, action: retryAction);
     }
 
     private async Task ShowToastAsync(string message)

@@ -34,6 +34,7 @@
     <Compile Include="..\..\src\Serialization\StringOrNumberJsonConverter.cs" LinkBase="_linked\Serialization" />
     <Compile Include="..\..\src\Utilities\AppSettings.cs" LinkBase="_linked\Utilities" />
     <Compile Include="..\..\src\Services\Abstractions\*.cs" LinkBase="_linked\Services\Abstractions" />
+    <Compile Include="..\..\src\Services\ListEntryStatusMutations.cs" LinkBase="_linked\Services" />
     <Compile Include="..\..\src\PageModels\SortField.cs" LinkBase="_linked\PageModels" />
     <Compile Include="..\..\src\PageModels\MediaListSection.cs" LinkBase="_linked\PageModels" />
     <Compile Include="..\..\src\PageModels\MediaListSectionsMerger.cs" LinkBase="_linked\PageModels" />

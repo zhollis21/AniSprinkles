@@ -9,7 +9,7 @@ description: "AniSprinkles project architecture reference: DI lifetimes, page/Pa
 
 | Registration                                                                                       | Lifetime                                                       |
 | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
-| `ErrorReportService`, `HttpClient`, `IAuthService`, `IAniListClient`, `IAiringNotificationService` | Singleton                                                      |
+| `ErrorReportService`, `HttpClient`, `IAuthService`, `IAniListClient`, `IAiringNotificationService`, `IOutageStateService` | Singleton                                                      |
 | `MyAnimePageModel`, `SettingsPageModel`                                                            | **Singleton** (survive page recreation across flyout switches) |
 | `LoggingHandler`                                                                                   | Transient                                                      |
 | `MyAnimePage`, `SettingsPage`, `MediaDetailsPageModel`, `MediaDetailsPage`                         | Transient                                                      |
