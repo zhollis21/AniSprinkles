@@ -308,9 +308,10 @@ jobs:
             else
               echo "  Page appears ready after ${ELAPSED}s"
               # Extra settle time for cover images to finish loading from CDN.
-              # The Large view default uses bigger image files than Standard did,
-              # so 2s was not enough — bumped to 10s.
-              sleep 10
+              # Large view default uses ~1MB of image data (vs ~300KB for Standard);
+              # CI emulator's throttled NAT makes this slow. Testing 30s to verify
+              # this is a pure timing issue.
+              sleep 30
               break
             fi
             sleep $POLL_INTERVAL
