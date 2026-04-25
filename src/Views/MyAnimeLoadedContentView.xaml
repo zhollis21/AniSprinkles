@@ -118,11 +118,7 @@
                         <Image Grid.Row="0"
                                Source="{Binding Media.CoverImage.Large}"
                                Aspect="AspectFill"
-                               HeightRequest="180">
-                            <Image.Clip>
-                                <RoundRectangleGeometry Rect="0,0,999,180" CornerRadius="16,16,0,0" />
-                            </Image.Clip>
-                        </Image>
+                               HeightRequest="180" />
 
                         <views:FormatIconBadge Grid.Row="0" Format="{Binding Media.Format}" />
 
