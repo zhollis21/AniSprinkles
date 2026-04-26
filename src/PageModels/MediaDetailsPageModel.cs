@@ -752,11 +752,7 @@ namespace AniSprinkles.PageModels;
         // Ensure Media is attached so the helper can read MaxEpisodes / HasKnownEpisodeCount.
         entry.Media ??= Media;
 
-        var shouldSave = await ListEntryStatusFlow.ApplyStatusChangeAsync(entry, status);
-        if (!shouldSave)
-        {
-            return;
-        }
+        await ListEntryStatusFlow.ApplyStatusChangeAsync(entry, status);
 
         try
         {

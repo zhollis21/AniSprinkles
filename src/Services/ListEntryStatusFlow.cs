@@ -28,11 +28,11 @@ public static class ListEntryStatusFlow
 
     /// <summary>
     /// Applies <paramref name="target"/> to <paramref name="entry"/> along with any
-    /// status-specific side effects (progress, repeat, score prompt). Always returns
-    /// <c>true</c> — the score prompt is optional (skipping it preserves the existing
-    /// score but does not cancel the status change).
+    /// status-specific side effects (progress, repeat, score prompt). The score
+    /// prompt is optional (skipping it preserves the existing score but does not
+    /// cancel the status change), so the caller should always proceed to save.
     /// </summary>
-    public static async Task<bool> ApplyStatusChangeAsync(MediaListEntry entry, MediaListStatus target)
+    public static async Task ApplyStatusChangeAsync(MediaListEntry entry, MediaListStatus target)
     {
         var needsScorePrompt = ListEntryStatusMutations.ApplyStatusChange(entry, target);
         if (needsScorePrompt)
@@ -43,8 +43,6 @@ public static class ListEntryStatusFlow
                 entry.Score = score.Value;
             }
         }
-
-        return true;
     }
 
     /// <summary>

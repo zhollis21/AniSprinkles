@@ -21,11 +21,8 @@
                     <Image Grid.Row="0"
                            Source="{Binding BannerImageUrl}"
                            Aspect="AspectFill"
-                           IsVisible="{Binding HasBannerImage}">
-                        <Image.Clip>
-                            <RoundRectangleGeometry Rect="0,0,800,200" CornerRadius="16,16,0,0" />
-                        </Image.Clip>
-                    </Image>
+                           MaximumWidthRequest="1500"
+                           IsVisible="{Binding HasBannerImage}" />
                     <!-- Fallback colour block when no banner -->
                     <BoxView Grid.Row="0"
                              BackgroundColor="{Binding PageTitle, Converter={StaticResource RainbowAccentConverter}}"
@@ -788,11 +785,7 @@
                                             <Image Source="{Binding Node.CoverImage.Large}"
                                                    Aspect="AspectFill"
                                                    HeightRequest="170"
-                                                   WidthRequest="130">
-                                                <Image.Clip>
-                                                    <RoundRectangleGeometry Rect="0,0,130,170" CornerRadius="16,16,0,0" />
-                                                </Image.Clip>
-                                            </Image>
+                                                   WidthRequest="130" />
                                             <views:FormatIconBadge Format="{Binding Node.Format}" />
                                         </Grid>
                                         <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
@@ -841,11 +834,7 @@
                                         <Image Source="{Binding Node.Image.Large}"
                                                Aspect="AspectFill"
                                                HeightRequest="140"
-                                               WidthRequest="110">
-                                            <Image.Clip>
-                                                <RoundRectangleGeometry Rect="0,0,110,140" CornerRadius="16,16,0,0" />
-                                            </Image.Clip>
-                                        </Image>
+                                               WidthRequest="110" />
                                         <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
                                             <Label Text="{Binding Node.Name.Full}"
                                                    Style="{StaticResource Caption1}"
@@ -1011,11 +1000,7 @@
                                             <Image Source="{Binding MediaRecommendation.CoverImage.Large}"
                                                    Aspect="AspectFill"
                                                    HeightRequest="170"
-                                                   WidthRequest="130">
-                                                <Image.Clip>
-                                                    <RoundRectangleGeometry Rect="0,0,130,170" CornerRadius="16,16,0,0" />
-                                                </Image.Clip>
-                                            </Image>
+                                                   WidthRequest="130" />
                                             <views:FormatIconBadge Format="{Binding MediaRecommendation.Format}" />
                                         </Grid>
                                         <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
@@ -1076,11 +1061,7 @@
                                                    Aspect="AspectFill"
                                                    HeightRequest="140"
                                                    WidthRequest="110"
-                                                   IsVisible="{Binding Node.Image.Medium, Converter={StaticResource StringNotNullOrEmptyConverter}}">
-                                                <Image.Clip>
-                                                    <RoundRectangleGeometry Rect="0,0,110,140" CornerRadius="16,16,0,0" />
-                                                </Image.Clip>
-                                            </Image>
+                                                   IsVisible="{Binding Node.Image.Medium, Converter={StaticResource StringNotNullOrEmptyConverter}}" />
                                         </Grid>
                                         <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
                                             <Label Text="{Binding Node.Name.Full}"

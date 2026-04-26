@@ -678,11 +678,7 @@ public partial class MyAnimePageModel : ObservableObject
         var originalScore = entry.Score;
         var originalRepeat = entry.Repeat;
 
-        var shouldSave = await ListEntryStatusFlow.ApplyStatusChangeAsync(entry, targetStatus);
-        if (!shouldSave)
-        {
-            return;
-        }
+        await ListEntryStatusFlow.ApplyStatusChangeAsync(entry, targetStatus);
 
         // Optimistic removal from source section.
         RemoveEntryFromCurrentSection(entry);

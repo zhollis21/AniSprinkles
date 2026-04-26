@@ -20,11 +20,8 @@
                                 <Image Grid.Row="0"
                            Source="{Binding BannerUrl}"
                            Aspect="AspectFill"
-                           IsVisible="{Binding HasBanner}">
-                                    <Image.Clip>
-                                        <RoundRectangleGeometry Rect="0,0,800,140" CornerRadius="16,16,0,0" />
-                                    </Image.Clip>
-                                </Image>
+                           MaximumWidthRequest="1500"
+                           IsVisible="{Binding HasBanner}" />
                                 <BoxView Grid.Row="0"
                              BackgroundColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Profile'}"
                              Opacity="0.3"

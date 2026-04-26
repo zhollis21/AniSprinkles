@@ -26,11 +26,7 @@
                         <Image Grid.Column="0"
                                Source="{Binding Media.CoverImage.Medium}"
                                Aspect="AspectFill"
-                               WidthRequest="70" MinimumHeightRequest="100">
-                            <Image.Clip>
-                                <RoundRectangleGeometry Rect="0,0,70,120" CornerRadius="14,0,0,14" />
-                            </Image.Clip>
-                        </Image>
+                               WidthRequest="70" MinimumHeightRequest="100" />
 
                         <views:FormatIconBadge Grid.Column="0" Format="{Binding Media.Format}" />
 
@@ -115,11 +111,11 @@
                     </Border.GestureRecognizers>
                     <Grid RowDefinitions="180,Auto">
                         <!-- Cover image -->
-                        <!-- MaximumWidthRequest caps Glide's bitmap allocation. Without it, MAUI's
-                             Android measure pass on the swiftshader CI emulator returns UNSPECIFIED
-                             for column width, so Glide tries to allocate an 8M-pixel-wide bitmap
-                             and OOMs — covers render blank. Real devices return a finite measured
-                             width well below the cap, so layout is unchanged. -->
+                        <!-- MaximumWidthRequest caps Glide's bitmap allocation when the Image has no
+                             explicit WidthRequest. Without it, MAUI's Android measure pass can
+                             return UNSPECIFIED in some hosting contexts (e.g. the swiftshader CI
+                             emulator), causing Glide to try to allocate an 8M-pixel-wide bitmap
+                             and OOM. Rounded corners come from the parent CardStyle Border. -->
                         <Image Grid.Row="0"
                                Source="{Binding Media.CoverImage.Large}"
                                Aspect="AspectFill"
