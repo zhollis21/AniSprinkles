@@ -34,8 +34,8 @@ public partial class OutageStateService : ObservableObject, IOutageStateService
             return;
         }
 
-        // Snapshot the message fields before dispatching so the lambda captures value types
-        // rather than the exception reference.
+        // Snapshot the message strings before dispatching so the lambda doesn't retain
+        // the exception instance longer than necessary.
         var title = apiEx.UserTitle;
         var subtitle = apiEx.UserSubtitle;
         var icon = apiEx.IconGlyph;
