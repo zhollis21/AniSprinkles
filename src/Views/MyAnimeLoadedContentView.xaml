@@ -115,10 +115,16 @@
                     </Border.GestureRecognizers>
                     <Grid RowDefinitions="180,Auto">
                         <!-- Cover image -->
+                        <!-- MaximumWidthRequest caps Glide's bitmap allocation. Without it, MAUI's
+                             Android measure pass on the swiftshader CI emulator returns UNSPECIFIED
+                             for column width, so Glide tries to allocate an 8M-pixel-wide bitmap
+                             and OOMs — covers render blank. Real devices return a finite measured
+                             width well below the cap, so layout is unchanged. -->
                         <Image Grid.Row="0"
                                Source="{Binding Media.CoverImage.Large}"
                                Aspect="AspectFill"
-                               HeightRequest="180" />
+                               HeightRequest="180"
+                               MaximumWidthRequest="500" />
 
                         <views:FormatIconBadge Grid.Row="0" Format="{Binding Media.Format}" />
 
