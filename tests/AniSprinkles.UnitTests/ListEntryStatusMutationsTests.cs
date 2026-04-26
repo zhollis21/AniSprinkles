@@ -1,14 +1,13 @@
 namespace AniSprinkles.UnitTests;
 
 /// <summary>
-/// Tests the pure mutation half of the status-change flow. The UI half
-/// (<c>ListEntryStatusFlow</c>) depends on MAUI popups and is covered by manual
-/// testing; <see cref="ListEntryStatusMutations"/> is link-compiled here so the
-/// Progress / Repeat / Status side effects can be verified in isolation.
+/// Tests <see cref="ListEntryStatusMutations"/>, the pure mutation half of the
+/// status-change flow. The UI half (<c>ListEntryStatusFlow</c>) depends on MAUI
+/// popups and is covered by manual testing.
 /// </summary>
-public class ListEntryStatusFlowTests
+public class ListEntryStatusMutationsTests
 {
-    public ListEntryStatusFlowTests() => TestDataBuilder.ResetAppSettings();
+    public ListEntryStatusMutationsTests() => TestDataBuilder.ResetAppSettings();
 
     [Fact]
     public void ApplyStatusChange_Repeating_ResetsProgress_And_IncrementsRepeat()
