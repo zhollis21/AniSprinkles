@@ -979,8 +979,12 @@ namespace AniSprinkles.PageModels;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Completion flow failed for media {MediaId}; falling back to normal save.", ListEntry.MediaId);
-                _ = DebouncedSaveAsync();
+                _logger.LogError(ex, "Completion flow failed for media {MediaId}; reverting optimistic progress change.", ListEntry.MediaId);
+                // Treat popup failure the same as user cancel — don't persist a
+                // completion the user never confirmed.
+                ListEntry.Progress = previousProgress;
+                SliderProgress = previousProgress ?? 0;
+                NotifyListEntryDisplayChanged();
             }
             finally
             {

@@ -13,9 +13,12 @@ namespace AniSprinkles.Services;
 /// the My Anime and Details pages so the two pages behave identically when
 /// completing, rewatching, or switching status.
 ///
-/// All methods mutate the passed <see cref="MediaListEntry"/> in place. Callers are
-/// responsible for persisting the entry via the AniList client when the method
-/// returns <c>true</c>, and for reverting their own optimistic UI on failure.
+/// All methods mutate the passed <see cref="MediaListEntry"/> in place. Callers
+/// should always persist the entry via the AniList client after
+/// <see cref="ApplyStatusChangeAsync(MediaListEntry, MediaListStatus)"/>, and persist
+/// after <see cref="ApplyCompletionAsync(MediaListEntry)"/> only when that method
+/// returns <c>true</c> (it returns <c>false</c> when the user cancels). Callers are
+/// responsible for reverting their own optimistic UI on failure.
 /// </summary>
 public static class ListEntryStatusFlow
 {

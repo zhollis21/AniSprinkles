@@ -51,11 +51,10 @@ public partial class OutageStateService : ObservableObject, IOutageStateService
 
     public void ReportSuccess()
     {
-        if (!IsOutage)
-        {
-            return;
-        }
-
+        // Always dispatch so we can't race with a concurrent ReportFailure that has
+        // scheduled `IsOutage = true` but not yet run on the UI thread. The pre-dispatch
+        // check would otherwise let a success slip through silently, leaving the banner
+        // stuck on. The inner check still skips the no-op write when not in outage.
         DispatchOrInvoke(() =>
         {
             if (!IsOutage)

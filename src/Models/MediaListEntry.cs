@@ -48,7 +48,9 @@ public partial class MediaListEntry : ObservableObject
                 return "-";
             }
 
-            var total = Media?.Episodes;
+            // Use MaxEpisodes (which falls back to NextAiringEpisode.Episode - 1 for
+            // long-running airing shows) so the list display matches the Details page.
+            var total = MaxEpisodes;
             return total is null ? $"{Progress}" : $"{Progress}/{total}";
         }
     }
@@ -196,8 +198,10 @@ public partial class MediaListEntry : ObservableObject
     }
 
     /// <summary>
-    /// True when the +1 increment button should be shown.
-    /// Visible for Watching/Rewatching entries that haven't yet reached the max episode count.
+    /// True when an additional episode is currently watchable — the entry is in
+    /// Watching/Rewatching status AND progress hasn't reached the cap. Used to express
+    /// the dimmed/caught-up state of the +1 control; it does <b>not</b> control
+    /// visibility (see <see cref="ShouldShowIncrementButton"/> for that).
     /// </summary>
     public bool CanIncrementProgress =>
         Status is MediaListStatus.Current or MediaListStatus.Repeating
