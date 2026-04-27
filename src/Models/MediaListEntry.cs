@@ -21,6 +21,8 @@ public partial class MediaListEntry : ObservableObject
     [NotifyPropertyChangedFor(nameof(CanIncrementProgress))]
     [NotifyPropertyChangedFor(nameof(MetadataDisplay))]
     [NotifyPropertyChangedFor(nameof(EpisodesBehind))]
+    [NotifyPropertyChangedFor(nameof(EpisodesBehindDisplay))]
+    [NotifyPropertyChangedFor(nameof(HasEpisodesBehindDisplay))]
     [NotifyPropertyChangedFor(nameof(AiringInfoDisplay))]
     [NotifyPropertyChangedFor(nameof(HasAiringInfo))]
     private int? _progress;
@@ -120,52 +122,82 @@ public partial class MediaListEntry : ObservableObject
     }
 
     /// <summary>
-    /// Display string for airing info, e.g. "2 ep behind · Ep 8 in 3d".
-    /// Null if the show is not currently airing.
+    /// Standalone "X eps behind" display string. Null when there's nothing to show
+    /// (not airing, or progress is current).
+    /// </summary>
+    public string? EpisodesBehindDisplay
+    {
+        get
+        {
+            var behind = EpisodesBehind;
+            if (behind is not > 0)
+            {
+                return null;
+            }
+
+            return behind == 1 ? "1 ep behind" : $"{behind} eps behind";
+        }
+    }
+
+    public bool HasEpisodesBehindDisplay => EpisodesBehindDisplay is not null;
+
+    /// <summary>
+    /// Standalone "Ep N in Xd" countdown for the next airing episode. Null when not
+    /// airing or the airing time is unknown / in the past.
+    /// </summary>
+    public string? NextEpisodeDisplay
+    {
+        get
+        {
+            if (Media?.NextAiringEpisode is not { Episode: var episode, AiringAt: int airingAt })
+            {
+                return null;
+            }
+
+            var airingDate = DateTimeOffset.FromUnixTimeSeconds(airingAt);
+            var timeUntil = airingDate - DateTimeOffset.UtcNow;
+
+            if (timeUntil.TotalSeconds <= 0)
+            {
+                return null;
+            }
+
+            if (timeUntil.TotalHours < 1)
+            {
+                return $"Ep {episode} in {timeUntil.Minutes}m";
+            }
+            if (timeUntil.TotalDays < 1)
+            {
+                return $"Ep {episode} in {(int)timeUntil.TotalHours}h";
+            }
+            if (timeUntil.TotalDays < 7)
+            {
+                return $"Ep {episode} in {(int)timeUntil.TotalDays}d";
+            }
+            return $"Ep {episode} {airingDate.LocalDateTime:MMM d}";
+        }
+    }
+
+    public bool HasNextEpisodeDisplay => NextEpisodeDisplay is not null;
+
+    /// <summary>
+    /// Single-line airing summary, e.g. "2 eps behind · Ep 8 in 3d". Used by the
+    /// Standard template (which shows everything on one row); the Large template
+    /// uses the two split properties instead so each line is short and tidy.
     /// </summary>
     public string? AiringInfoDisplay
     {
         get
         {
-            if (Media?.NextAiringEpisode is null)
-            {
-                return null;
-            }
-
             var parts = new List<string>();
-            var behind = EpisodesBehind;
-
-            if (behind > 0)
+            if (EpisodesBehindDisplay is { } behindStr)
             {
-                parts.Add(behind == 1 ? "1 ep behind" : $"{behind} eps behind");
+                parts.Add(behindStr);
             }
-
-            if (Media.NextAiringEpisode.AiringAt is int airingAt)
+            if (NextEpisodeDisplay is { } nextStr)
             {
-                var airingDate = DateTimeOffset.FromUnixTimeSeconds(airingAt);
-                var timeUntil = airingDate - DateTimeOffset.UtcNow;
-
-                if (timeUntil.TotalSeconds > 0)
-                {
-                    if (timeUntil.TotalHours < 1)
-                    {
-                        parts.Add($"Ep {Media.NextAiringEpisode.Episode} in {timeUntil.Minutes}m");
-                    }
-                    else if (timeUntil.TotalDays < 1)
-                    {
-                        parts.Add($"Ep {Media.NextAiringEpisode.Episode} in {(int)timeUntil.TotalHours}h");
-                    }
-                    else if (timeUntil.TotalDays < 7)
-                    {
-                        parts.Add($"Ep {Media.NextAiringEpisode.Episode} in {(int)timeUntil.TotalDays}d");
-                    }
-                    else
-                    {
-                        parts.Add($"Ep {Media.NextAiringEpisode.Episode} {airingDate.LocalDateTime:MMM d}");
-                    }
-                }
+                parts.Add(nextStr);
             }
-
             return parts.Count > 0 ? string.Join(" · ", parts) : null;
         }
     }
