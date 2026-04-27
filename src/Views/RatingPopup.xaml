@@ -134,7 +134,7 @@
                        Text="Not rated"
                        Style="{StaticResource Title2}" HorizontalTextAlignment="Center"
                        TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='MyScore'}" />
-                <Slider x:Name="ScoreSlider" Minimum="0" Maximum="10" Value="1"
+                <Slider x:Name="ScoreSlider" Minimum="0" Maximum="10" Value="0"
                         ValueChanged="OnSliderValueChanged"
                         MinimumTrackColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='MyScore'}"
                         ThumbColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='MyScore'}" />
