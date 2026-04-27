@@ -102,4 +102,10 @@
 		<!-- Generate native debug symbols for crash reporting (e.g., Sentry, Play Console) -->
 		<AndroidGenerateNativeDebugSymbols>true</AndroidGenerateNativeDebugSymbols>
 	</PropertyGroup>
+	<!--<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net10.0-android|AnyCPU'">
+	  <DefineConstants>$(DefineConstants);CI</DefineConstants>
+	</PropertyGroup>-->
+	<!-- <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net10.0-android|AnyCPU'">
+	  <DefineConstants>$(DefineConstants);ERROR_SIM</DefineConstants>
+	</PropertyGroup> -->
 </Project>

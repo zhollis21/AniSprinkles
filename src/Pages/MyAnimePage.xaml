@@ -40,9 +40,15 @@
         which tells the StateContainer to restore the default children.
         Overlays that cut across states (e.g. IsNavigatingToDetails spinner, status banner)
         live inside the LoadedContentHost's content view, not here.
+
+        The outer Grid reserves a row for the global outage banner so it can appear
+        above ANY page state (loading, error, content) when AniList is down.
     -->
-    <Grid Padding="{StaticResource LayoutPadding}"
-          toolkit:StateContainer.CurrentState="{Binding CurrentStateKey}">
+    <Grid RowDefinitions="Auto,*">
+        <views:OutageBanner Grid.Row="0" Margin="{StaticResource LayoutPadding}" />
+        <Grid Grid.Row="1"
+              Padding="{StaticResource LayoutPadding}"
+              toolkit:StateContainer.CurrentState="{Binding CurrentStateKey}">
         <toolkit:StateContainer.StateViews>
             <!-- Unauthenticated: sign-in prompt -->
             <VerticalStackLayout toolkit:StateView.StateKey="Unauthenticated"
@@ -105,7 +111,8 @@
             </ScrollView>
         </toolkit:StateContainer.StateViews>
 
-        <!-- Default content (CurrentState = Content): loaded content host -->
-        <ContentView x:Name="LoadedContentHost" />
+            <!-- Default content (CurrentState = Content): loaded content host -->
+            <ContentView x:Name="LoadedContentHost" />
+        </Grid>
     </Grid>
 </ContentPage>

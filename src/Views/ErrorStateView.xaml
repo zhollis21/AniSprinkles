@@ -36,7 +36,7 @@
             <!-- Retry button -->
             <Border StrokeShape="RoundRectangle 12" StrokeThickness="1"
                     Stroke="{Binding ErrorAccentColor, Source={x:Reference Self}}"
-                    BackgroundColor="Transparent"
+                    Background="Transparent"
                     Padding="20,10"
                     HorizontalOptions="Center"
                     Margin="0,8,0,0"
@@ -82,7 +82,7 @@
                         </ScrollView>
                         <HorizontalStackLayout Spacing="12" HorizontalOptions="Center">
                             <Border StrokeShape="RoundRectangle 8" StrokeThickness="1"
-                                    Stroke="{StaticResource Gray600}" BackgroundColor="Transparent"
+                                    Stroke="{StaticResource Gray600}" Background="Transparent"
                                     Padding="10,6">
                                 <Border.GestureRecognizers>
                                     <TapGestureRecognizer Tapped="OnCopyTapped" />
@@ -99,7 +99,7 @@
                                 </HorizontalStackLayout>
                             </Border>
                             <Border StrokeShape="RoundRectangle 8" StrokeThickness="1"
-                                    Stroke="{StaticResource Gray600}" BackgroundColor="Transparent"
+                                    Stroke="{StaticResource Gray600}" Background="Transparent"
                                     Padding="10,6">
                                 <Border.GestureRecognizers>
                                     <TapGestureRecognizer Tapped="OnShareTapped" />

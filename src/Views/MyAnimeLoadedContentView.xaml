@@ -26,11 +26,7 @@
                         <Image Grid.Column="0"
                                Source="{Binding Media.CoverImage.Medium}"
                                Aspect="AspectFill"
-                               WidthRequest="70" MinimumHeightRequest="100">
-                            <Image.Clip>
-                                <RoundRectangleGeometry Rect="0,0,70,120" CornerRadius="14,0,0,14" />
-                            </Image.Clip>
-                        </Image>
+                               WidthRequest="70" MinimumHeightRequest="100" />
 
                         <views:FormatIconBadge Grid.Column="0" Format="{Binding Media.Format}" />
 
@@ -72,28 +68,33 @@
                                    IsVisible="{Binding HasAiringInfo}" />
                         </VerticalStackLayout>
 
-                        <!-- +1 button (only on Watching / Rewatching) -->
+                        <!-- +1 EP pill (Watching / Rewatching; dimmed when caught up) -->
                         <Border Grid.Column="2"
                                 StrokeShape="RoundRectangle 18"
                                 StrokeThickness="1"
                                 Stroke="{StaticResource Gray600}"
-                                BackgroundColor="Transparent"
-                                Padding="0"
-                                HeightRequest="36" WidthRequest="36"
+                                Background="Transparent"
+                                Padding="10,0"
+                                HeightRequest="36"
                                 VerticalOptions="Center"
                                 Margin="0,0,10,0"
-                                IsVisible="{Binding CanIncrementProgress}">
+                                IsVisible="{Binding ShouldShowIncrementButton}"
+                                SemanticProperties.Description="Increment episode progress"
+                                SemanticProperties.Hint="Adds one to the watched episode count">
+                            <Border.Triggers>
+                                <DataTrigger TargetType="Border" Binding="{Binding CanIncrementProgress}" Value="False">
+                                    <Setter Property="Opacity" Value="0.35" />
+                                </DataTrigger>
+                            </Border.Triggers>
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer x:DataType="{x:Null}"
                                     Command="{Binding BindingContext.IncrementProgressCommand, Source={RelativeSource AncestorType={x:Type CollectionView}}}"
                                     CommandParameter="{Binding .}" />
                             </Border.GestureRecognizers>
-                            <Label Text="{x:Static icons:FluentIconsRegular.Add24}"
-                                   FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                            <Label Text="+1 EP"
+                                   Style="{StaticResource Caption1Strong}"
                                    TextColor="{Binding Media.DisplayTitle, Converter={StaticResource RainbowAccentConverter}}"
-                                   FontSize="18"
                                    HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
-                                   HorizontalOptions="Center" VerticalOptions="Center"
                                    AutomationProperties.IsInAccessibleTree="False" />
                         </Border>
                     </Grid>
@@ -108,29 +109,40 @@
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnItemTapped" />
                     </Border.GestureRecognizers>
-                    <Grid RowDefinitions="180,Auto">
+                    <!-- Row 1 uses * so the info area fills the card to the bottom even
+                         when the CollectionView stretches this card to match a taller neighbor.
+                         That lets the +1 button (VerticalOptions=End) sit flush at the card bottom. -->
+                    <Grid RowDefinitions="180,*">
                         <!-- Cover image -->
+                        <!-- MaximumWidthRequest caps Glide's bitmap allocation when the Image has no
+                             explicit WidthRequest. Without it, MAUI's Android measure pass can
+                             return UNSPECIFIED in some hosting contexts (e.g. the swiftshader CI
+                             emulator), causing Glide to try to allocate an 8M-pixel-wide bitmap
+                             and OOM. Rounded corners come from the parent CardStyle Border. -->
                         <Image Grid.Row="0"
                                Source="{Binding Media.CoverImage.Large}"
                                Aspect="AspectFill"
-                               HeightRequest="180">
-                            <Image.Clip>
-                                <RoundRectangleGeometry Rect="0,0,999,180" CornerRadius="16,16,0,0" />
-                            </Image.Clip>
-                        </Image>
+                               HeightRequest="180"
+                               MaximumWidthRequest="500" />
 
                         <views:FormatIconBadge Grid.Row="0" Format="{Binding Media.Format}" />
 
-                        <!-- Score badge overlay -->
+                        <!-- Score badge overlay (bottom-right). Must use Border.Background (a Brush)
+                             rather than BackgroundColor — the implicit Border style in AppStyles.xaml
+                             sets Background to the theme's secondary card colour, which paints OVER
+                             any BackgroundColor we set inline. That's why the badge was rendering as
+                             a white oval in light mode. -->
                         <Border Grid.Row="0"
                                 StrokeShape="RoundRectangle 10"
                                 StrokeThickness="0"
-                                BackgroundColor="#99000000"
                                 Padding="6,3"
                                 HorizontalOptions="End"
                                 VerticalOptions="End"
                                 Margin="0,0,6,6"
                                 IsVisible="{Binding HasScore}">
+                            <Border.Background>
+                                <SolidColorBrush Color="{AppThemeBinding Light=#E6000000, Dark=#99000000}" />
+                            </Border.Background>
                             <HorizontalStackLayout Spacing="3">
                                 <Label Text="{x:Static icons:FluentIconsFilled.Star24}"
                                        FontFamily="{x:Static icons:FluentIconsFilled.FontFamily}"
@@ -153,48 +165,63 @@
                             </HorizontalStackLayout>
                         </Border>
 
-                        <!-- Info below cover -->
-                        <VerticalStackLayout Grid.Row="1" Padding="8,6,8,8" Spacing="3">
-                            <Label Text="{Binding Media.DisplayTitle}"
+                        <!-- Info below cover. Title gets full card width on its own row; the bottom
+                             row pairs the short progress/airing labels with the +1 button so the
+                             button can pin to bottom-right while the title isn't squeezed. -->
+                        <Grid Grid.Row="1" Padding="8,6,8,8" RowDefinitions="Auto,*" RowSpacing="4">
+                            <Label Grid.Row="0"
+                                   Text="{Binding Media.DisplayTitle}"
                                    Style="{StaticResource Caption1Strong}"
                                    MaxLines="2"
                                    LineBreakMode="TailTruncation" />
-                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="6">
-                                <Label Grid.Column="0"
-                                       Text="{Binding ProgressDisplay}"
-                                       Style="{StaticResource Caption2}"
-                                       TextColor="{StaticResource Gray400}"
-                                       VerticalTextAlignment="Center" />
-                                <!-- +1 button (only on Watching / Rewatching) -->
+
+                            <Grid Grid.Row="1" ColumnDefinitions="*,Auto" ColumnSpacing="6" VerticalOptions="End">
+                                <VerticalStackLayout Grid.Column="0" Spacing="2" VerticalOptions="End">
+                                    <Label Text="{Binding ProgressDisplay}"
+                                           Style="{StaticResource Caption2}"
+                                           TextColor="{StaticResource Gray400}" />
+                                    <Label Text="{Binding EpisodesBehindDisplay}"
+                                           Style="{StaticResource Caption2}"
+                                           TextColor="{StaticResource RainbowCyan}"
+                                           IsVisible="{Binding HasEpisodesBehindDisplay}" />
+                                    <Label Text="{Binding NextEpisodeDisplay}"
+                                           Style="{StaticResource Caption2}"
+                                           TextColor="{StaticResource RainbowCyan}"
+                                           IsVisible="{Binding HasNextEpisodeDisplay}" />
+                                </VerticalStackLayout>
+
+                                <!-- +1 EP pill (Watching / Rewatching; dimmed when caught up).
+                                     Bottom-right of the card; label spells out the action so users
+                                     don't have to guess what '+' means. -->
                                 <Border Grid.Column="1"
-                                        StrokeShape="RoundRectangle 12"
+                                        StrokeShape="RoundRectangle 18"
                                         StrokeThickness="1"
                                         Stroke="{StaticResource Gray600}"
-                                        BackgroundColor="Transparent"
-                                        Padding="0"
-                                        HeightRequest="24" WidthRequest="24"
-                                        VerticalOptions="Center"
-                                        IsVisible="{Binding CanIncrementProgress}">
+                                        Background="Transparent"
+                                        Padding="10,0"
+                                        HeightRequest="36"
+                                        VerticalOptions="End"
+                                        IsVisible="{Binding ShouldShowIncrementButton}"
+                                        SemanticProperties.Description="Increment episode progress"
+                                        SemanticProperties.Hint="Adds one to the watched episode count">
+                                    <Border.Triggers>
+                                        <DataTrigger TargetType="Border" Binding="{Binding CanIncrementProgress}" Value="False">
+                                            <Setter Property="Opacity" Value="0.35" />
+                                        </DataTrigger>
+                                    </Border.Triggers>
                                     <Border.GestureRecognizers>
                                         <TapGestureRecognizer x:DataType="{x:Null}"
                                             Command="{Binding BindingContext.IncrementProgressCommand, Source={RelativeSource AncestorType={x:Type CollectionView}}}"
                                             CommandParameter="{Binding .}" />
                                     </Border.GestureRecognizers>
-                                    <Label Text="{x:Static icons:FluentIconsRegular.Add24}"
-                                           FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                    <Label Text="+1 EP"
+                                           Style="{StaticResource Caption1Strong}"
                                            TextColor="{Binding Media.DisplayTitle, Converter={StaticResource RainbowAccentConverter}}"
-                                           FontSize="14"
                                            HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
-                                           HorizontalOptions="Center" VerticalOptions="Center"
                                            AutomationProperties.IsInAccessibleTree="False" />
                                 </Border>
                             </Grid>
-                            <!-- Airing info -->
-                            <Label Text="{Binding AiringInfoDisplay}"
-                                   Style="{StaticResource Caption2}"
-                                   TextColor="{StaticResource RainbowCyan}"
-                                   IsVisible="{Binding HasAiringInfo}" />
-                        </VerticalStackLayout>
+                        </Grid>
                     </Grid>
                 </Border>
             </DataTemplate>
@@ -243,16 +270,21 @@
                             </Label.Triggers>
                         </Label>
                     </HorizontalStackLayout>
-                    <!-- +1 button (only on Watching / Rewatching) -->
+                    <!-- +1 button (Watching / Rewatching; dimmed when caught up) -->
                     <Border Grid.Column="3"
                             StrokeShape="RoundRectangle 14"
                             StrokeThickness="1"
                             Stroke="{StaticResource Gray600}"
-                            BackgroundColor="Transparent"
+                            Background="Transparent"
                             Padding="0"
                             HeightRequest="28" WidthRequest="28"
                             VerticalOptions="Center"
-                            IsVisible="{Binding CanIncrementProgress}">
+                            IsVisible="{Binding ShouldShowIncrementButton}">
+                        <Border.Triggers>
+                            <DataTrigger TargetType="Border" Binding="{Binding CanIncrementProgress}" Value="False">
+                                <Setter Property="Opacity" Value="0.35" />
+                            </DataTrigger>
+                        </Border.Triggers>
                         <Border.GestureRecognizers>
                             <TapGestureRecognizer x:DataType="{x:Null}"
                                 Command="{Binding BindingContext.IncrementProgressCommand, Source={RelativeSource AncestorType={x:Type CollectionView}}}"

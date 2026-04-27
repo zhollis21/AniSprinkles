@@ -24,14 +24,16 @@ public class AniListClient : IAniListClient
 
     private readonly HttpClient _httpClient;
     private readonly IAuthService _authService;
+    private readonly IOutageStateService _outageState;
     private readonly ILogger<AniListClient> _logger;
     private int? _cachedViewerId;
     private string? _cachedViewerToken;
 
-    public AniListClient(HttpClient httpClient, IAuthService authService, ILogger<AniListClient> logger)
+    public AniListClient(HttpClient httpClient, IAuthService authService, IOutageStateService outageState, ILogger<AniListClient> logger)
     {
         _httpClient = httpClient;
         _authService = authService;
+        _outageState = outageState;
         _logger = logger;
 
         if (_httpClient.BaseAddress is null)
@@ -357,6 +359,21 @@ public class AniListClient : IAniListClient
     }
 
     private async Task<T> SendAsync<T>(string operationName, string query, object? variables, string? token, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var result = await SendAsyncCore<T>(operationName, query, variables, token, cancellationToken).ConfigureAwait(false);
+            _outageState.ReportSuccess();
+            return result;
+        }
+        catch (AniListApiException ex)
+        {
+            _outageState.ReportFailure(ex);
+            throw;
+        }
+    }
+
+    private async Task<T> SendAsyncCore<T>(string operationName, string query, object? variables, string? token, CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(query))
         {

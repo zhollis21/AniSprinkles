@@ -12,9 +12,13 @@
     <!--
         CurrentStateKey returns null for Content (default child) and the enum
         name for InitialLoading / Error. See MediaDetailsPageModel.CurrentState.
+        Outer grid reserves a row for the global outage banner.
     -->
-    <Grid Padding="24" RowDefinitions="*"
-          toolkit:StateContainer.CurrentState="{Binding CurrentStateKey}">
+    <Grid RowDefinitions="Auto,*">
+        <views:OutageBanner Grid.Row="0" Margin="24,12,24,0" />
+        <Grid Grid.Row="1"
+              Padding="24"
+              toolkit:StateContainer.CurrentState="{Binding CurrentStateKey}">
         <toolkit:StateContainer.StateViews>
             <!-- InitialLoading: centered spinner -->
             <VerticalStackLayout toolkit:StateView.StateKey="InitialLoading"
@@ -40,7 +44,8 @@
             </ScrollView>
         </toolkit:StateContainer.StateViews>
 
-        <!-- Default content (CurrentState = Content): loaded content host -->
-        <ContentView x:Name="LoadedContentHost" />
+            <!-- Default content (CurrentState = Content): loaded content host -->
+            <ContentView x:Name="LoadedContentHost" />
+        </Grid>
     </Grid>
 </ContentPage>
