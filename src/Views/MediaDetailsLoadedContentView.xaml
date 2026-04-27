@@ -205,7 +205,6 @@
                     <!-- "Soon!" badge when < 24h -->
                     <Border Grid.Column="2" Grid.RowSpan="2"
                             StrokeShape="RoundRectangle 10" StrokeThickness="0"
-                            BackgroundColor="{StaticResource RainbowCyan}"
                             Padding="8,4"
                             VerticalOptions="Center"
                             IsVisible="{Binding IsAiringToday}">
@@ -227,7 +226,7 @@
                         <!-- Dropdown button -->
                         <Border StrokeShape="RoundRectangle 10" StrokeThickness="1"
                                 Stroke="{Binding ListStatusDisplay, Converter={StaticResource RainbowAccentConverter}}"
-                                BackgroundColor="Transparent" Padding="12,10">
+                                Background="Transparent" Padding="12,10">
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ToggleStatusExpandedCommand}" />
                             </Border.GestureRecognizers>
@@ -267,7 +266,7 @@
 
                         <!-- ── Dropdown list ── -->
                         <Border StrokeShape="RoundRectangle 10" StrokeThickness="1"
-                                Stroke="{StaticResource Gray600}" BackgroundColor="Transparent"
+                                Stroke="{StaticResource Gray600}" Background="Transparent"
                                 Padding="4,4" Margin="0,10,0,0"
                                 IsVisible="{Binding IsStatusExpanded}">
                         <VerticalStackLayout Spacing="0">
@@ -346,7 +345,7 @@
                             <BoxView HeightRequest="1" Color="{StaticResource Gray600}" Opacity="0.3"
                                      IsVisible="{Binding HasListEntry}" />
                             <Border StrokeShape="RoundRectangle 8" StrokeThickness="0" Padding="10,10"
-                                    BackgroundColor="Transparent"
+                                    Background="Transparent"
                                     IsVisible="{Binding HasListEntry}">
                                 <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding RemoveFromListCommand}" /></Border.GestureRecognizers>
                                 <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
@@ -373,7 +372,7 @@
                             <Label Grid.Column="1" Text="Progress" Style="{StaticResource Caption1Strong}"
                                    TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Progress'}" VerticalTextAlignment="Center" />
                             <Border Grid.Column="2" StrokeShape="RoundRectangle 8" StrokeThickness="1"
-                                    Stroke="{StaticResource Gray600}" BackgroundColor="Transparent"
+                                    Stroke="{StaticResource Gray600}" Background="Transparent"
                                     Padding="8,4" VerticalOptions="Center">
                                 <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding EditProgressCommand}" /></Border.GestureRecognizers>
                                 <HorizontalStackLayout Spacing="6">
@@ -390,7 +389,7 @@
                             </Border>
                             <!-- Minus button -->
                             <Border Grid.Column="3" StrokeShape="RoundRectangle 18" StrokeThickness="1"
-                                    Stroke="{StaticResource Gray600}" BackgroundColor="Transparent"
+                                    Stroke="{StaticResource Gray600}" Background="Transparent"
                                     Padding="0" HeightRequest="36" WidthRequest="36">
                                 <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding DecrementProgressCommand}" /></Border.GestureRecognizers>
                                 <Image WidthRequest="18" HeightRequest="18" HorizontalOptions="Center" VerticalOptions="Center">
@@ -403,7 +402,7 @@
                             </Border>
                             <!-- Plus button -->
                             <Border Grid.Column="4" StrokeShape="RoundRectangle 18" StrokeThickness="1"
-                                    Stroke="{StaticResource Gray600}" BackgroundColor="Transparent"
+                                    Stroke="{StaticResource Gray600}" Background="Transparent"
                                     Padding="0" HeightRequest="36" WidthRequest="36">
                                 <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding IncrementProgressCommand}" /></Border.GestureRecognizers>
                                 <Image WidthRequest="18" HeightRequest="18" HorizontalOptions="Center" VerticalOptions="Center">
@@ -707,7 +706,7 @@
                     <Grid ColumnDefinitions="Auto,*,Auto">
                         <!-- Trailer button (left) -->
                         <Border Grid.Column="0" StrokeShape="RoundRectangle 12" StrokeThickness="1" Stroke="{StaticResource Gray600}"
-                                Padding="12,8" BackgroundColor="Transparent"
+                                Padding="12,8" Background="Transparent"
                                 IsVisible="{Binding HasTrailer}">
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding OpenUrlCommand}" CommandParameter="{Binding TrailerUrl}" />
@@ -728,7 +727,7 @@
                         </Border>
                         <!-- AniList link (right) -->
                         <Border Grid.Column="2" StrokeShape="RoundRectangle 12" StrokeThickness="1" Stroke="{StaticResource Gray600}"
-                                Padding="12,8" BackgroundColor="Transparent"
+                                Padding="12,8" Background="Transparent"
                                 IsVisible="{Binding Media.SiteUrl, Converter={StaticResource StringNotNullOrEmptyConverter}}">
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding OpenUrlCommand}" CommandParameter="{Binding Media.SiteUrl}" />
@@ -883,7 +882,7 @@
                                              WidthRequest="{Binding BarWidth}"
                                              CornerRadius="3"
                                              Color="{Binding Name, Converter={StaticResource RainbowAccentConverter}}"
-                                             BackgroundColor="Transparent"
+                                             Background="Transparent"
                                              HorizontalOptions="Start" VerticalOptions="Center" />
                                     <Label Grid.Column="2" Text="{Binding Rank, StringFormat='{0}%'}"
                                            Style="{StaticResource Caption2}"
@@ -929,7 +928,7 @@
                                                      WidthRequest="20"
                                                      CornerRadius="3"
                                                      Color="{Binding Score, Converter={StaticResource RainbowAccentConverter}}"
-                                                     BackgroundColor="Transparent"
+                                                     Background="Transparent"
                                                      VerticalOptions="End"
                                                      HorizontalOptions="Center" />
                                             <Label Grid.Row="1"
@@ -1044,9 +1043,11 @@
                                     <VerticalStackLayout>
                                         <Grid HeightRequest="140" WidthRequest="110">
                                             <!-- Person silhouette placeholder (underneath, always rendered) -->
-                                            <Border BackgroundColor="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray900}}"
-                                                    StrokeThickness="0" Padding="0"
+                                            <Border StrokeThickness="0" Padding="0"
                                                     StrokeShape="RoundRectangle 16,16,0,0">
+                                                <Border.Background>
+                                                    <SolidColorBrush Color="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray900}}" />
+                                                </Border.Background>
                                                 <Image HorizontalOptions="Center" VerticalOptions="Center"
                                                        WidthRequest="40" HeightRequest="40">
                                                     <Image.Source>

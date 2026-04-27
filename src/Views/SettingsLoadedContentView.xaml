@@ -58,7 +58,7 @@
                                 StrokeThickness="1"
                                 Stroke="{StaticResource Gray600}"
                                 Padding="12,6"
-                                BackgroundColor="Transparent"
+                                Background="Transparent"
                                 HorizontalOptions="Center">
                                         <Border.GestureRecognizers>
                                             <TapGestureRecognizer Command="{Binding OpenAniListProfileCommand}" />

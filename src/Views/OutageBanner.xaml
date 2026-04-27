@@ -10,7 +10,6 @@
     <Border StrokeShape="RoundRectangle 10"
             StrokeThickness="1"
             Stroke="{StaticResource RainbowOrange}"
-            BackgroundColor="{AppThemeBinding Light=#FFF4E5, Dark=#3A2A10}"
             Padding="12,10"
             Margin="0,0,0,8">
         <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
