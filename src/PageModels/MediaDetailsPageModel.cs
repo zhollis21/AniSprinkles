@@ -360,6 +360,13 @@ namespace AniSprinkles.PageModels;
         get
         {
             var score = ListEntry?.Score ?? 0;
+            // 0 in AniList means "no score recorded" — surface that explicitly so the
+            // slider at the bottom doesn't read as a literal "0/10" rating.
+            if (score <= 0)
+            {
+                return "Not rated";
+            }
+
             var max = NumericScoreMax;
             return AppSettings.ScoreFormat == ScoreFormat.Point10Decimal
                 ? $"{score:0.0} / {max:0}"
