@@ -78,7 +78,9 @@
                                 HeightRequest="36"
                                 VerticalOptions="Center"
                                 Margin="0,0,10,0"
-                                IsVisible="{Binding ShouldShowIncrementButton}">
+                                IsVisible="{Binding ShouldShowIncrementButton}"
+                                SemanticProperties.Description="Increment episode progress"
+                                SemanticProperties.Hint="Adds one to the watched episode count">
                             <Border.Triggers>
                                 <DataTrigger TargetType="Border" Binding="{Binding CanIncrementProgress}" Value="False">
                                     <Setter Property="Opacity" Value="0.35" />
@@ -92,7 +94,8 @@
                             <Label Text="+1 EP"
                                    Style="{StaticResource Caption1Strong}"
                                    TextColor="{Binding Media.DisplayTitle, Converter={StaticResource RainbowAccentConverter}}"
-                                   HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                                   HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                                   AutomationProperties.IsInAccessibleTree="False" />
                         </Border>
                     </Grid>
                 </Border>
@@ -198,7 +201,9 @@
                                         Padding="10,0"
                                         HeightRequest="36"
                                         VerticalOptions="End"
-                                        IsVisible="{Binding ShouldShowIncrementButton}">
+                                        IsVisible="{Binding ShouldShowIncrementButton}"
+                                        SemanticProperties.Description="Increment episode progress"
+                                        SemanticProperties.Hint="Adds one to the watched episode count">
                                     <Border.Triggers>
                                         <DataTrigger TargetType="Border" Binding="{Binding CanIncrementProgress}" Value="False">
                                             <Setter Property="Opacity" Value="0.35" />
@@ -212,7 +217,8 @@
                                     <Label Text="+1 EP"
                                            Style="{StaticResource Caption1Strong}"
                                            TextColor="{Binding Media.DisplayTitle, Converter={StaticResource RainbowAccentConverter}}"
-                                           HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                                           HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                                           AutomationProperties.IsInAccessibleTree="False" />
                                 </Border>
                             </Grid>
                         </Grid>
