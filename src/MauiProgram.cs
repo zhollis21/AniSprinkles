@@ -94,6 +94,7 @@ public static class MauiProgram
         builder.Services.TryAddSingleton<IPreferences>(_ => Preferences.Default);
         builder.Services.TryAddSingleton(TimeProvider.System);
         builder.Services.AddSingleton<INavigationService, MauiShellNavigationService>();
+        builder.Services.AddSingleton<IOutageStateService, OutageStateService>();
         builder.Services.AddSingleton<ErrorReportService>();
         builder.Services.AddTransient<LoggingHandler>();
         builder.Services.AddSingleton(sp =>

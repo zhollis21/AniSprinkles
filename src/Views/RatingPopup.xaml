@@ -131,10 +131,10 @@
             <!-- ── Numeric slider (Point100, Point10, Point10Decimal) ── -->
             <VerticalStackLayout x:Name="SliderLayout" Spacing="4" IsVisible="False">
                 <Label x:Name="SliderLabel"
-                       Text="0 / 10"
+                       Text="Not rated"
                        Style="{StaticResource Title2}" HorizontalTextAlignment="Center"
                        TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='MyScore'}" />
-                <Slider x:Name="ScoreSlider" Minimum="1" Maximum="10" Value="1"
+                <Slider x:Name="ScoreSlider" Minimum="0" Maximum="10" Value="0"
                         ValueChanged="OnSliderValueChanged"
                         MinimumTrackColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='MyScore'}"
                         ThumbColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='MyScore'}" />

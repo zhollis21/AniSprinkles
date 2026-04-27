@@ -12,6 +12,7 @@ public partial class MediaListEntry : ObservableObject
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(StatusDisplay))]
     [NotifyPropertyChangedFor(nameof(CanIncrementProgress))]
+    [NotifyPropertyChangedFor(nameof(ShouldShowIncrementButton))]
     [NotifyPropertyChangedFor(nameof(MetadataDisplay))]
     private MediaListStatus? _status;
 
@@ -20,6 +21,8 @@ public partial class MediaListEntry : ObservableObject
     [NotifyPropertyChangedFor(nameof(CanIncrementProgress))]
     [NotifyPropertyChangedFor(nameof(MetadataDisplay))]
     [NotifyPropertyChangedFor(nameof(EpisodesBehind))]
+    [NotifyPropertyChangedFor(nameof(EpisodesBehindDisplay))]
+    [NotifyPropertyChangedFor(nameof(HasEpisodesBehindDisplay))]
     [NotifyPropertyChangedFor(nameof(AiringInfoDisplay))]
     [NotifyPropertyChangedFor(nameof(HasAiringInfo))]
     private int? _progress;
@@ -47,7 +50,9 @@ public partial class MediaListEntry : ObservableObject
                 return "-";
             }
 
-            var total = Media?.Episodes;
+            // Use MaxEpisodes (which falls back to NextAiringEpisode.Episode - 1 for
+            // long-running airing shows) so the list display matches the Details page.
+            var total = MaxEpisodes;
             return total is null ? $"{Progress}" : $"{Progress}/{total}";
         }
     }
@@ -70,11 +75,31 @@ public partial class MediaListEntry : ObservableObject
         or ScoreFormat.Point10Decimal or ScoreFormat.Point10;
 
     /// <summary>
-    /// Maximum episode count for +1 cap logic.
-    /// Uses the next airing episode number (latest aired = episode - 1) if available,
-    /// otherwise falls back to the total episode count.
+    /// Cap for +1 / progress-slider logic. Uses the total episode count when known,
+    /// otherwise falls back to the most-recently-aired episode (<c>NextAiringEpisode.Episode - 1</c>)
+    /// so users of currently-airing shows stop at the latest episode they could have watched.
+    /// Null when neither is known.
     /// </summary>
-    public int? MaxEpisodes => Media?.Episodes;
+    public int? MaxEpisodes =>
+        Media?.Episodes is > 0 ? Media.Episodes :
+        Media?.NextAiringEpisode?.Episode is > 1 ? Media.NextAiringEpisode.Episode - 1 :
+        null;
+
+    /// <summary>
+    /// True only when the total episode count is known (i.e. the show has a finite,
+    /// declared length). Used to gate the completion flow — long-running airing shows
+    /// without a known total should not trigger completion when the cap is reached.
+    /// </summary>
+    public bool HasKnownEpisodeCount => Media?.Episodes is > 0;
+
+    /// <summary>
+    /// Whether the +1 control should be *rendered* at all. True for Watching/Rewatching
+    /// statuses regardless of whether the user has caught up to the cap; the control is
+    /// still hidden entirely for other statuses. Caught-up state is expressed visually
+    /// via <see cref="CanIncrementProgress"/> (dimmed) rather than by disappearing.
+    /// </summary>
+    public bool ShouldShowIncrementButton =>
+        Status is MediaListStatus.Current or MediaListStatus.Repeating;
 
     /// <summary>
     /// Number of episodes behind for currently airing shows.
@@ -97,52 +122,82 @@ public partial class MediaListEntry : ObservableObject
     }
 
     /// <summary>
-    /// Display string for airing info, e.g. "2 ep behind · Ep 8 in 3d".
-    /// Null if the show is not currently airing.
+    /// Standalone "X eps behind" display string. Null when there's nothing to show
+    /// (not airing, or progress is current).
+    /// </summary>
+    public string? EpisodesBehindDisplay
+    {
+        get
+        {
+            var behind = EpisodesBehind;
+            if (behind is not > 0)
+            {
+                return null;
+            }
+
+            return behind == 1 ? "1 ep behind" : $"{behind} eps behind";
+        }
+    }
+
+    public bool HasEpisodesBehindDisplay => EpisodesBehindDisplay is not null;
+
+    /// <summary>
+    /// Standalone "Ep N in Xd" countdown for the next airing episode. Null when not
+    /// airing or the airing time is unknown / in the past.
+    /// </summary>
+    public string? NextEpisodeDisplay
+    {
+        get
+        {
+            if (Media?.NextAiringEpisode is not { Episode: var episode, AiringAt: int airingAt })
+            {
+                return null;
+            }
+
+            var airingDate = DateTimeOffset.FromUnixTimeSeconds(airingAt);
+            var timeUntil = airingDate - DateTimeOffset.UtcNow;
+
+            if (timeUntil.TotalSeconds <= 0)
+            {
+                return null;
+            }
+
+            if (timeUntil.TotalHours < 1)
+            {
+                return $"Ep {episode} in {timeUntil.Minutes}m";
+            }
+            if (timeUntil.TotalDays < 1)
+            {
+                return $"Ep {episode} in {(int)timeUntil.TotalHours}h";
+            }
+            if (timeUntil.TotalDays < 7)
+            {
+                return $"Ep {episode} in {(int)timeUntil.TotalDays}d";
+            }
+            return $"Ep {episode} {airingDate.LocalDateTime:MMM d}";
+        }
+    }
+
+    public bool HasNextEpisodeDisplay => NextEpisodeDisplay is not null;
+
+    /// <summary>
+    /// Single-line airing summary, e.g. "2 eps behind · Ep 8 in 3d". Used by the
+    /// Standard template (which shows everything on one row); the Large template
+    /// uses the two split properties instead so each line is short and tidy.
     /// </summary>
     public string? AiringInfoDisplay
     {
         get
         {
-            if (Media?.NextAiringEpisode is null)
-            {
-                return null;
-            }
-
             var parts = new List<string>();
-            var behind = EpisodesBehind;
-
-            if (behind > 0)
+            if (EpisodesBehindDisplay is { } behindStr)
             {
-                parts.Add(behind == 1 ? "1 ep behind" : $"{behind} eps behind");
+                parts.Add(behindStr);
             }
-
-            if (Media.NextAiringEpisode.AiringAt is int airingAt)
+            if (NextEpisodeDisplay is { } nextStr)
             {
-                var airingDate = DateTimeOffset.FromUnixTimeSeconds(airingAt);
-                var timeUntil = airingDate - DateTimeOffset.UtcNow;
-
-                if (timeUntil.TotalSeconds > 0)
-                {
-                    if (timeUntil.TotalHours < 1)
-                    {
-                        parts.Add($"Ep {Media.NextAiringEpisode.Episode} in {timeUntil.Minutes}m");
-                    }
-                    else if (timeUntil.TotalDays < 1)
-                    {
-                        parts.Add($"Ep {Media.NextAiringEpisode.Episode} in {(int)timeUntil.TotalHours}h");
-                    }
-                    else if (timeUntil.TotalDays < 7)
-                    {
-                        parts.Add($"Ep {Media.NextAiringEpisode.Episode} in {(int)timeUntil.TotalDays}d");
-                    }
-                    else
-                    {
-                        parts.Add($"Ep {Media.NextAiringEpisode.Episode} {airingDate.LocalDateTime:MMM d}");
-                    }
-                }
+                parts.Add(nextStr);
             }
-
             return parts.Count > 0 ? string.Join(" · ", parts) : null;
         }
     }
@@ -175,8 +230,10 @@ public partial class MediaListEntry : ObservableObject
     }
 
     /// <summary>
-    /// True when the +1 increment button should be shown.
-    /// Visible for Watching/Rewatching entries that haven't yet reached the max episode count.
+    /// True when an additional episode is currently watchable — the entry is in
+    /// Watching/Rewatching status AND progress hasn't reached the cap. Used to express
+    /// the dimmed/caught-up state of the +1 control; it does <b>not</b> control
+    /// visibility (see <see cref="ShouldShowIncrementButton"/> for that).
     /// </summary>
     public bool CanIncrementProgress =>
         Status is MediaListStatus.Current or MediaListStatus.Repeating

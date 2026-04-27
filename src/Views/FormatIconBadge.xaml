@@ -8,13 +8,19 @@
              x:Name="Self"
              IsVisible="{Binding Format, Source={x:Reference Self}, Converter={StaticResource StringNotNullOrEmptyConverter}}">
 
+    <!-- Border.Background (Brush) instead of BackgroundColor — the implicit Border style
+         in AppStyles.xaml sets Background to the theme's secondary card colour, which paints
+         OVER any inline BackgroundColor. We use the same opacity recipe as the score badge
+         so the two cover overlays look consistent. -->
     <Border StrokeShape="RoundRectangle 8"
             StrokeThickness="0"
-            BackgroundColor="#99000000"
             Padding="5,3">
+        <Border.Background>
+            <SolidColorBrush Color="{AppThemeBinding Light=#E6000000, Dark=#99000000}" />
+        </Border.Background>
         <Label Text="{Binding Format, Source={x:Reference Self}, Converter={StaticResource MediaFormatIconConverter}}"
                FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-               TextColor="{AppThemeBinding Light=#333333, Dark=White}"
+               TextColor="White"
                FontSize="{Binding Size, Source={x:Reference Self}}"
                WidthRequest="{Binding Size, Source={x:Reference Self}}"
                HeightRequest="{Binding Size, Source={x:Reference Self}}"

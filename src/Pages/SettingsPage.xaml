@@ -13,8 +13,11 @@
     <!--
         CurrentStateKey returns null for Content (default child) and the enum
         name for InitialLoading / Unauthenticated / Error. See SettingsPageModel.CurrentState.
+        Outer grid reserves a row for the global outage banner.
     -->
-    <Grid toolkit:StateContainer.CurrentState="{Binding CurrentStateKey}">
+    <Grid RowDefinitions="Auto,*">
+        <views:OutageBanner Grid.Row="0" Margin="{StaticResource LayoutPadding}" />
+        <Grid Grid.Row="1" toolkit:StateContainer.CurrentState="{Binding CurrentStateKey}">
         <toolkit:StateContainer.StateViews>
             <!-- InitialLoading: centered spinner -->
             <VerticalStackLayout toolkit:StateView.StateKey="InitialLoading"
@@ -67,7 +70,8 @@
             </ScrollView>
         </toolkit:StateContainer.StateViews>
 
-        <!-- Default content (CurrentState = Content): loaded authenticated UI is created programmatically after data loads -->
-        <ContentView x:Name="LoadedContentHost" />
+            <!-- Default content (CurrentState = Content): loaded authenticated UI is created programmatically after data loads -->
+            <ContentView x:Name="LoadedContentHost" />
+        </Grid>
     </Grid>
 </ContentPage>
