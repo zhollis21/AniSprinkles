@@ -78,24 +78,6 @@ public class MainActivity : MauiAppCompatActivity
                     Log.Error(nameof(MainActivity), $"Error setting initial colors: {ex.Message}");
                 }
             });
-
-            // Update colors when theme changes
-            Microsoft.Maui.Controls.Application.Current!.RequestedThemeChanged += (_, __) =>
-            {
-                MainThread.BeginInvokeOnMainThread(() =>
-                {
-                    try
-                    {
-                        var newColor = GetWindowBackgroundColor();
-                        window.SetBackgroundDrawable(new Android.Graphics.Drawables.ColorDrawable(new AndroidColors(newColor)));
-                        ApplySystemBarIconStyle();
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Error(nameof(MainActivity), $"Error updating colors on theme change: {ex.Message}");
-                    }
-                });
-            };
         }
         catch (Exception ex)
         {
@@ -140,24 +122,17 @@ public class MainActivity : MauiAppCompatActivity
             var app = Microsoft.Maui.Controls.Application.Current;
             if (app == null)
             {
-                return AndroidColors.White;
+                return AndroidColors.Black;
             }
 
-            // Get the appropriate background color based on theme
-            var isDarkTheme = app.RequestedTheme == AppTheme.Dark;
-            string colorKey = isDarkTheme ? "DarkBackground" : "LightBackground";
-
-            if (app.Resources.TryGetValue(colorKey, out var colorResource))
+            if (app.Resources.TryGetValue("Background", out var colorResource)
+                && colorResource is Color mauiColor)
             {
-                if (colorResource is Color mauiColor)
-                {
-                    // Convert MAUI Color to Android int
-                    mauiColor.ToRgba(out byte r, out byte g, out byte b, out byte a);
-                    return Android.Graphics.Color.Argb(a, r, g, b);
-                }
+                mauiColor.ToRgba(out byte r, out byte g, out byte b, out byte a);
+                return Android.Graphics.Color.Argb(a, r, g, b);
             }
 
-            return AndroidColors.White;
+            return AndroidColors.Black;
         }
         catch (Exception ex)
         {
@@ -175,10 +150,9 @@ public class MainActivity : MauiAppCompatActivity
                 return;
             }
 
-            var isDark = Microsoft.Maui.Controls.Application.Current!.RequestedTheme == AppTheme.Dark;
             var controller = new WindowInsetsControllerCompat(Window, decorView);
-            controller.AppearanceLightStatusBars = !isDark;       // dark icons on light background
-            controller.AppearanceLightNavigationBars = !isDark;   // if supported
+            controller.AppearanceLightStatusBars = false;
+            controller.AppearanceLightNavigationBars = false;
         }
         catch (Exception ex)
         {

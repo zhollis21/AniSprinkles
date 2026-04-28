@@ -9,10 +9,6 @@ public partial class App : Application
         InitializeComponent();
         AppSettings.Load();
 
-        // App is locked to dark theme. Belt-and-suspenders: forces dark even if a
-        // straggler AppThemeBinding sneaks back in, and keeps platform APIs that
-        // read RequestedTheme (e.g. system-bar icon style) in dark mode regardless
-        // of the device's system theme. See issue #77.
         UserAppTheme = AppTheme.Dark;
 
         AppDomain.CurrentDomain.UnhandledException += (_, e) =>

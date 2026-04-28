@@ -92,17 +92,6 @@
                 Color="{StaticResource OnBackground}"
                 Size="{StaticResource size240}" />
 
-    <FontImageSource x:Key="IconLight"
-                Glyph="{x:Static icons:FluentIconsRegular.WeatherSunny28}"
-                FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                Color="{StaticResource OnBackground}"
-                Size="{StaticResource size240}" />
-    <FontImageSource x:Key="IconDark"
-                Glyph="{x:Static icons:FluentIconsRegular.WeatherMoon28}"
-                FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                Color="{StaticResource OnBackground}"
-                Size="{StaticResource size240}" />
-
     <FontImageSource x:Key="IconChevronRight"
                 Glyph="{x:Static icons:FluentIconsRegular.ChevronRight20}"
                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"

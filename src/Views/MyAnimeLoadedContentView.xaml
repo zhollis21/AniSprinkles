@@ -129,9 +129,8 @@
 
                         <!-- Score badge overlay (bottom-right). Must use Border.Background (a Brush)
                              rather than BackgroundColor — the implicit Border style in AppStyles.xaml
-                             sets Background to the theme's secondary card colour, which paints OVER
-                             any BackgroundColor we set inline. That's why the badge was rendering as
-                             a white oval in light mode. -->
+                             sets Background to the secondary card colour, which paints OVER any
+                             BackgroundColor we set inline. -->
                         <Border Grid.Row="0"
                                 StrokeShape="RoundRectangle 10"
                                 StrokeThickness="0"
