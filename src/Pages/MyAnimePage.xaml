@@ -17,7 +17,7 @@
             <ToolbarItem.IconImageSource>
                 <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Search24}"
                                  FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                 Color="{AppThemeBinding Light={StaticResource DarkOnLightBackground}, Dark={StaticResource LightOnDarkBackground}}"
+                                 Color="{StaticResource OnBackground}"
                                  Size="20" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
@@ -28,7 +28,7 @@
                 <FontImageSource x:Name="ViewModeIcon"
                                  Glyph="{x:Static icons:FluentIconsRegular.List24}"
                                  FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                 Color="{AppThemeBinding Light={StaticResource DarkOnLightBackground}, Dark={StaticResource LightOnDarkBackground}}"
+                                 Color="{StaticResource OnBackground}"
                                  Size="20" />
             </ToolbarItem.IconImageSource>
         </ToolbarItem>

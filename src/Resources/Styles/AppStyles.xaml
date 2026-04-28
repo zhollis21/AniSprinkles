@@ -53,65 +53,54 @@
     <FontImageSource x:Key="IconDashboard"
                      Glyph="{x:Static icons:FluentIconsRegular.Diagram24}"
                      FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                     Color="{AppThemeBinding Light={StaticResource DarkOnLightBackground}, Dark={StaticResource LightOnDarkBackground}}"
+                     Color="{StaticResource OnBackground}"
                      Size="{StaticResource IconSize}" />
 
     <FontImageSource x:Key="IconProjects"
                      Glyph="{x:Static icons:FluentIconsRegular.List24}"
                      FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                     Color="{AppThemeBinding Light={StaticResource DarkOnLightBackground}, Dark={StaticResource LightOnDarkBackground}}"
+                     Color="{StaticResource OnBackground}"
                      Size="{StaticResource IconSize}" />
 
     <FontImageSource x:Key="IconMeta"
                      Glyph="{x:Static icons:FluentIconsRegular.Info24}"
                      FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                     Color="{AppThemeBinding Light={StaticResource DarkOnLightBackground}, Dark={StaticResource LightOnDarkBackground}}"
+                     Color="{StaticResource OnBackground}"
                      Size="{StaticResource IconSize}" />
 
     <FontImageSource x:Key="IconRibbon"
                      Glyph="{x:Static icons:FluentIconsRegular.Ribbon20}"
                      FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                     Color="{AppThemeBinding Light={StaticResource DarkOnLightBackground}, Dark={StaticResource LightOnDarkBackground}}"
+                     Color="{StaticResource OnBackground}"
                      Size="{StaticResource IconSize}" />
 
     <FontImageSource x:Key="IconAdd"
                 Glyph="{x:Static icons:FluentIconsRegular.Add32}"
                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                Color="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource LightOnDarkBackground}}"
+                Color="{StaticResource OnBackground}"
                 Size="{StaticResource IconSize}" />
 
     <FontImageSource x:Key="IconDelete"
                 Glyph="{x:Static icons:FluentIconsRegular.Delete32}"
                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                Color="{AppThemeBinding Light={StaticResource DarkOnLightBackground}, Dark={StaticResource LightOnDarkBackground}}"
+                Color="{StaticResource OnBackground}"
                 Size="{StaticResource IconSize}" />
 
     <FontImageSource x:Key="IconClean"
                 Glyph="{x:Static icons:FluentIconsRegular.Broom32}"
                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                Color="{AppThemeBinding Light={StaticResource DarkOnLightBackground}, Dark={StaticResource LightOnDarkBackground}}"
-                Size="{StaticResource size240}" />
-
-    <FontImageSource x:Key="IconLight"
-                Glyph="{x:Static icons:FluentIconsRegular.WeatherSunny28}"
-                FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                Color="{AppThemeBinding Light={StaticResource DarkOnLightBackground}, Dark={StaticResource LightOnDarkBackground}}"
-                Size="{StaticResource size240}" />
-    <FontImageSource x:Key="IconDark"
-                Glyph="{x:Static icons:FluentIconsRegular.WeatherMoon28}"
-                FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                Color="{AppThemeBinding Light={StaticResource DarkOnLightBackground}, Dark={StaticResource LightOnDarkBackground}}"
+                Color="{StaticResource OnBackground}"
                 Size="{StaticResource size240}" />
 
     <FontImageSource x:Key="IconChevronRight"
                 Glyph="{x:Static icons:FluentIconsRegular.ChevronRight20}"
                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                Color="{AppThemeBinding Light={StaticResource DarkOnLightBackground}, Dark={StaticResource LightOnDarkBackground}}"
+                Color="{StaticResource OnBackground}"
                 Size="{StaticResource size200}" />
 
     <Style TargetType="Label">
         <Setter Property="TextColor"
-                Value="{AppThemeBinding Light={StaticResource DarkOnLightBackground}, Dark={StaticResource LightOnDarkBackground}}" />
+                Value="{StaticResource OnBackground}" />
         <Setter Property="BackgroundColor"
                 Value="Transparent" />
         <Setter Property="FontSize"
@@ -126,7 +115,7 @@
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
                             <Setter Property="TextColor"
-                                    Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
+                                    Value="{StaticResource Gray600}" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
@@ -258,14 +247,14 @@
 
     <Style TargetType="Border">
         <Setter Property="StrokeShape" Value="RoundRectangle 20"/>
-        <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource LightSecondaryBackground},Dark={StaticResource DarkSecondaryBackground}}"/>
+        <Setter Property="Background" Value="{StaticResource SecondaryBackground}"/>
         <Setter Property="StrokeThickness" Value="0"/>
         <Setter Property="Padding" Value="{OnIdiom 15, Desktop=20}"/>
     </Style>
 
     <Style TargetType="Border" x:Key="CardStyle">
         <Setter Property="StrokeShape" Value="RoundRectangle 16"/>
-        <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource LightSecondaryBackground},Dark={StaticResource DarkSecondaryBackground}}"/>
+        <Setter Property="Background" Value="{StaticResource SecondaryBackground}"/>
         <Setter Property="StrokeThickness" Value="0"/>
         <Setter Property="Padding" Value="{OnIdiom 12, Desktop=16}"/>
     </Style>
@@ -288,7 +277,7 @@
         <Setter Property="Margin" Value="0,12,0,6"/>
         <Setter Property="BackgroundColor" Value="Transparent"/>
         <!-- Background is typically provided by a converter (tinted accent). If not, fall back to a neutral surface. -->
-        <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource LightSecondaryBackground},Dark={StaticResource DarkSecondaryBackground}}"/>
+        <Setter Property="Background" Value="{StaticResource SecondaryBackground}"/>
     </Style>
 
     <!-- Count badge inside section header -->
@@ -296,26 +285,25 @@
         <Setter Property="StrokeThickness" Value="0"/>
         <Setter Property="StrokeShape" Value="RoundRectangle 999"/>
         <Setter Property="Padding" Value="10,4"/>
-        <Setter Property="Background" Value="{AppThemeBinding Light=#14FFFFFF, Dark=#22FFFFFF}"/>
+        <Setter Property="Background" Value="#22FFFFFF"/>
     </Style>
 
     <!-- List rows: flatter and more "content" than headers -->
     <Style TargetType="Border" x:Key="ListRowStyle">
         <Setter Property="StrokeThickness" Value="1"/>
-        <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}"/>
+        <Setter Property="Stroke" Value="{StaticResource Gray600}"/>
         <Setter Property="StrokeShape" Value="RoundRectangle 14"/>
         <Setter Property="Padding" Value="0"/>
-        <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource LightSecondaryBackground},Dark={StaticResource DarkSecondaryBackground}}"/>
+        <Setter Property="Background" Value="{StaticResource SecondaryBackground}"/>
     </Style>
 
 
-    <sf:LabelStyle x:Key="lightThemeLabelStyle" TextColor="{StaticResource DarkOnLightBackground}" FontSize="{OnIdiom 18, Desktop=24}"/>
-    <sf:LabelStyle x:Key="darkThemeLabelStyle" TextColor="{StaticResource LightOnDarkBackground}" FontSize="{OnIdiom 18, Desktop=24}"/>
+    <sf:LabelStyle x:Key="InputHintLabelStyle" TextColor="{StaticResource OnBackground}" FontSize="{OnIdiom 18, Desktop=24}"/>
     <Style TargetType="sf:SfTextInputLayout">
         <Setter Property="ContainerType" Value="Outlined"/>
         <Setter Property="ContainerBackground" Value="Transparent"/>
-        <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource DarkOnLightBackground}, Dark={StaticResource LightOnDarkBackground}}"/>
-        <Setter Property="HintLabelStyle" Value="{AppThemeBinding Light={StaticResource lightThemeLabelStyle}, Dark={StaticResource darkThemeLabelStyle}}"/>
+        <Setter Property="Stroke" Value="{StaticResource OnBackground}"/>
+        <Setter Property="HintLabelStyle" Value="{StaticResource InputHintLabelStyle}"/>
     </Style>
 
 
@@ -357,7 +345,7 @@
     <Style x:Key="AccentCardBorderStyle" TargetType="Border" BasedOn="{StaticResource CardStyle}">
         <Setter Property="StrokeThickness" Value="1" />
         <Setter Property="Stroke"
-                Value="{AppThemeBinding Light={StaticResource RainbowPurple}, Dark={StaticResource RainbowPink}}" />
+                Value="{StaticResource RainbowPink}" />
     </Style>
 
 </ResourceDictionary>

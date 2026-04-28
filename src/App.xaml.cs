@@ -9,6 +9,8 @@ public partial class App : Application
         InitializeComponent();
         AppSettings.Load();
 
+        UserAppTheme = AppTheme.Dark;
+
         AppDomain.CurrentDomain.UnhandledException += (_, e) =>
         {
             if (e.ExceptionObject is Exception ex)

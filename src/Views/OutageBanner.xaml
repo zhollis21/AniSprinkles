@@ -28,7 +28,7 @@
                        TextColor="{StaticResource RainbowOrange}" />
                 <Label Text="{Binding Subtitle}"
                        Style="{StaticResource Caption1}"
-                       TextColor="{AppThemeBinding Light={StaticResource DarkOnLightBackground}, Dark={StaticResource LightOnDarkBackground}}" />
+                       TextColor="{StaticResource OnBackground}" />
             </VerticalStackLayout>
         </Grid>
     </Border>
