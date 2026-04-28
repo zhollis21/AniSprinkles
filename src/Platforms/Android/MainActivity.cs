@@ -137,7 +137,7 @@ public class MainActivity : MauiAppCompatActivity
         catch (Exception ex)
         {
             Log.Error(nameof(MainActivity), $"Error getting background color: {ex.Message}");
-            return AndroidColors.White;
+            return AndroidColors.Black;
         }
     }
 

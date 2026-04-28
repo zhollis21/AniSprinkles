@@ -32,7 +32,7 @@ public class AniListApiException : Exception
     /// </summary>
     public string UserTitle => Kind switch
     {
-        ApiErrorKind.ServiceOutage => "AniList is Temporarily Down",
+        ApiErrorKind.ServiceOutage => "AniList is Down",
         ApiErrorKind.Network => "No Internet Connection",
         ApiErrorKind.Authentication => "Session Expired",
         _ => "Something Went Wrong",
@@ -43,7 +43,7 @@ public class AniListApiException : Exception
     /// </summary>
     public string UserSubtitle => Kind switch
     {
-        ApiErrorKind.ServiceOutage => "The AniList servers are having trouble right now. This isn't your fault — try again in a few minutes.",
+        ApiErrorKind.ServiceOutage => "AniList's servers are having trouble. This is on their end, not yours — we'll retry automatically once they're back. Feel free to check anilist.co or @AniList on social for updates.",
         ApiErrorKind.Network => "Check your connection and try again.",
         ApiErrorKind.Authentication => "Please sign in again to continue.",
         _ => "An unexpected error occurred. Try again or check back later.",
