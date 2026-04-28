@@ -43,16 +43,13 @@
     <!-- Tertiary = deep indigo anchor (keeps things grounded) -->
     <Color x:Key="Tertiary">#3A0CA3</Color>
 
-    <!-- Backgrounds / foregrounds -->
-    <Color x:Key="DarkBackground">#17171A</Color>
-    <Color x:Key="LightOnDarkBackground">#E6E6E6</Color>
-
-    <Color x:Key="LightBackground">#FFFFFF</Color>
-    <Color x:Key="DarkOnLightBackground">#0D0D0D</Color>
+    <!-- Backgrounds / foregrounds. App is locked to dark theme (issue #77),
+         so these are the single source of truth — no Light counterparts. -->
+    <Color x:Key="Background">#17171A</Color>
+    <Color x:Key="OnBackground">#E6E6E6</Color>
 
     <!-- Card/surface backgrounds -->
-    <Color x:Key="LightSecondaryBackground">#F7F7FB</Color>
-    <Color x:Key="DarkSecondaryBackground">#1F2026</Color>
+    <Color x:Key="SecondaryBackground">#1F2026</Color>
 
     <!-- Common named colors (kept keys; updated to match vibe) -->
     <Color x:Key="White">White</Color>

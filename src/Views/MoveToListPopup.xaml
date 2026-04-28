@@ -13,8 +13,7 @@
             Padding="0"
             HorizontalOptions="Fill"
             WidthRequest="400"
-            Background="{AppThemeBinding Light={StaticResource LightSecondaryBackground},
-                                         Dark={StaticResource DarkSecondaryBackground}}">
+            Background="{StaticResource SecondaryBackground}">
         <VerticalStackLayout Spacing="0" Padding="0">
 
             <!-- Drag handle -->

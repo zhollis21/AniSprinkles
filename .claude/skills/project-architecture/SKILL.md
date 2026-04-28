@@ -7,12 +7,12 @@ description: "AniSprinkles project architecture reference: DI lifetimes, page/Pa
 
 ## DI Lifetimes (`MauiProgram.cs`)
 
-| Registration                                                                                       | Lifetime                                                       |
-| -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| Registration                                                                                                              | Lifetime                                                       |
+| ------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
 | `ErrorReportService`, `HttpClient`, `IAuthService`, `IAniListClient`, `IAiringNotificationService`, `IOutageStateService` | Singleton                                                      |
-| `MyAnimePageModel`, `SettingsPageModel`                                                            | **Singleton** (survive page recreation across flyout switches) |
-| `LoggingHandler`                                                                                   | Transient                                                      |
-| `MyAnimePage`, `SettingsPage`, `MediaDetailsPageModel`, `MediaDetailsPage`                         | Transient                                                      |
+| `MyAnimePageModel`, `SettingsPageModel`                                                                                   | **Singleton** (survive page recreation across flyout switches) |
+| `LoggingHandler`                                                                                                          | Transient                                                      |
+| `MyAnimePage`, `SettingsPage`, `MediaDetailsPageModel`, `MediaDetailsPage`                                                | Transient                                                      |
 
 ## Page ↔ PageModel Binding
 
@@ -48,23 +48,6 @@ Spinner-first for first loads; inline refresh for cached content. Details page h
 ## AppSettings
 
 Static class (`Utilities/`). Persists title language, score format, adult content toggle, and section order via `Preferences`. Loaded at app start, synced from AniList Viewer when authenticated.
-
-## XAML Styling Gotchas
-
-**Border `Background` vs `BackgroundColor`.** `Resources/Styles/AppStyles.xaml` has an *implicit* `<Style TargetType="Border">` (no `x:Key`) that sets the `Background` property to the theme's secondary card colour. In MAUI, `Background` (a `Brush`) wins over `BackgroundColor` (a `Color`) when both are present — so any `Border` that only sets `BackgroundColor="..."` inline gets the implicit style's themed brush painted over the top.
-
-This bites cover-overlay badges in particular: a `Border` with `BackgroundColor="#99000000"` looks like a translucent dark chip in dark mode but renders as a *white pill* in light mode. To override the implicit brush, set `Border.Background` directly:
-
-```xml
-<Border ...>
-    <Border.Background>
-        <SolidColorBrush Color="{AppThemeBinding Light=#E6000000, Dark=#99000000}" />
-    </Border.Background>
-    ...
-</Border>
-```
-
-See `FormatIconBadge.xaml` and the score badge in `MyAnimeLoadedContentView.xaml` for the canonical pattern. Cover-overlay badges should stay dark-translucent in *both* themes (the cover artwork is the surface they sit on, not the page chrome) — light-theme cards should still go through the implicit style.
 
 ## AniSprinkles-Specific Defaults
 

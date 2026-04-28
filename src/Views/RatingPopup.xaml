@@ -18,8 +18,7 @@
             StrokeThickness="0"
             Padding="24,20,24,20"
             WidthRequest="320"
-            Background="{AppThemeBinding Light={StaticResource LightSecondaryBackground},
-                                         Dark={StaticResource DarkSecondaryBackground}}">
+            Background="{StaticResource SecondaryBackground}">
         <VerticalStackLayout Spacing="16">
 
             <!-- Anime title -->

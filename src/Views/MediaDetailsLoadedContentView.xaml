@@ -49,7 +49,7 @@
                                 WidthRequest="120" HeightRequest="170"
                                 StrokeShape="RoundRectangle 10"
                                 StrokeThickness="2"
-                                Stroke="{AppThemeBinding Light={StaticResource LightSecondaryBackground}, Dark={StaticResource DarkSecondaryBackground}}"
+                                Stroke="{StaticResource SecondaryBackground}"
                                 Padding="0"
                                 Margin="0,60,0,0">
                             <Image Source="{Binding CoverImageUrl}"
@@ -626,7 +626,7 @@
                         </BindableLayout.ItemTemplate>
                     </VerticalStackLayout>
 
-                    <BoxView HeightRequest="1" Color="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}"
+                    <BoxView HeightRequest="1" Color="{StaticResource Gray600}"
                              IsVisible="{Binding HasRankings}" />
 
                     <!-- Info rows -->
@@ -643,7 +643,7 @@
                             <Label Grid.Column="1" Text="Release Window" Style="{StaticResource Caption1}" TextColor="{StaticResource Gray400}" VerticalTextAlignment="Center" />
                             <Label Grid.Column="2" Text="{Binding ReleaseWindowDisplay}" Style="{StaticResource Caption1Strong}" VerticalTextAlignment="Center" />
                         </Grid>
-                        <BoxView HeightRequest="1" Color="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}" Opacity="0.3" />
+                        <BoxView HeightRequest="1" Color="{StaticResource Gray600}" Opacity="0.3" />
 
                         <!-- Source -->
                         <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10" Padding="0,8">
@@ -657,7 +657,7 @@
                             <Label Grid.Column="1" Text="Source" Style="{StaticResource Caption1}" TextColor="{StaticResource Gray400}" VerticalTextAlignment="Center" />
                             <Label Grid.Column="2" Text="{Binding SourceDisplay}" Style="{StaticResource Caption1Strong}" VerticalTextAlignment="Center" />
                         </Grid>
-                        <BoxView HeightRequest="1" Color="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}" Opacity="0.3" />
+                        <BoxView HeightRequest="1" Color="{StaticResource Gray600}" Opacity="0.3" />
 
                         <!-- Country -->
                         <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10" Padding="0,8">
@@ -671,7 +671,7 @@
                             <Label Grid.Column="1" Text="Country" Style="{StaticResource Caption1}" TextColor="{StaticResource Gray400}" VerticalTextAlignment="Center" />
                             <Label Grid.Column="2" Text="{Binding CountryDisplay}" Style="{StaticResource Caption1Strong}" VerticalTextAlignment="Center" />
                         </Grid>
-                        <BoxView HeightRequest="1" Color="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}" Opacity="0.3" />
+                        <BoxView HeightRequest="1" Color="{StaticResource Gray600}" Opacity="0.3" />
 
                         <!-- Licensed -->
                         <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10" Padding="0,8">
@@ -685,7 +685,7 @@
                             <Label Grid.Column="1" Text="Licensed" Style="{StaticResource Caption1}" TextColor="{StaticResource Gray400}" VerticalTextAlignment="Center" />
                             <Label Grid.Column="2" Text="{Binding LicensedDisplay}" Style="{StaticResource Caption1Strong}" VerticalTextAlignment="Center" />
                         </Grid>
-                        <BoxView HeightRequest="1" Color="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}" Opacity="0.3" />
+                        <BoxView HeightRequest="1" Color="{StaticResource Gray600}" Opacity="0.3" />
 
                         <!-- Rating -->
                         <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10" Padding="0,8">
@@ -761,11 +761,11 @@
                             <Image.Source>
                                 <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Link24}"
                                                  FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                 Color="{AppThemeBinding Light=Black, Dark=White}"
+                                                 Color="White"
                                                  Size="20" />
                             </Image.Source>
                         </Image>
-                        <Label Text="Relations" Style="{StaticResource Title3}" TextColor="{AppThemeBinding Light=Black, Dark=White}" />
+                        <Label Text="Relations" Style="{StaticResource Title3}" TextColor="White" />
                     </HorizontalStackLayout>
                 </Border>
                 <ScrollView Orientation="Horizontal">
@@ -816,11 +816,11 @@
                             <Image.Source>
                                 <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.People24}"
                                                  FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                 Color="{AppThemeBinding Light=Black, Dark=White}"
+                                                 Color="White"
                                                  Size="20" />
                             </Image.Source>
                         </Image>
-                        <Label Text="Characters" Style="{StaticResource Title3}" TextColor="{AppThemeBinding Light=Black, Dark=White}" />
+                        <Label Text="Characters" Style="{StaticResource Title3}" TextColor="White" />
                     </HorizontalStackLayout>
                 </Border>
                 <ScrollView Orientation="Horizontal">
@@ -863,11 +863,11 @@
                             <Image.Source>
                                 <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Tag24}"
                                                  FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                 Color="{AppThemeBinding Light=Black, Dark=White}"
+                                                 Color="White"
                                                  Size="20" />
                             </Image.Source>
                         </Image>
-                        <Label Text="Tags" Style="{StaticResource Title3}" TextColor="{AppThemeBinding Light=Black, Dark=White}" />
+                        <Label Text="Tags" Style="{StaticResource Title3}" TextColor="White" />
                     </HorizontalStackLayout>
                 </Border>
                 <Border Style="{StaticResource CardStyle}" Padding="12">
@@ -906,11 +906,11 @@
                             <Image.Source>
                                 <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.DataBarVertical24}"
                                                  FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                 Color="{AppThemeBinding Light=Black, Dark=White}"
+                                                 Color="White"
                                                  Size="20" />
                             </Image.Source>
                         </Image>
-                        <Label Text="Stats" Style="{StaticResource Title3}" TextColor="{AppThemeBinding Light=Black, Dark=White}" />
+                        <Label Text="Stats" Style="{StaticResource Title3}" TextColor="White" />
                     </HorizontalStackLayout>
                 </Border>
                 <Border Style="{StaticResource CardStyle}" Padding="16">
@@ -976,11 +976,11 @@
                             <Image.Source>
                                 <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Sparkle24}"
                                                  FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                 Color="{AppThemeBinding Light=Black, Dark=White}"
+                                                 Color="White"
                                                  Size="20" />
                             </Image.Source>
                         </Image>
-                        <Label Text="Recommendations" Style="{StaticResource Title3}" TextColor="{AppThemeBinding Light=Black, Dark=White}" />
+                        <Label Text="Recommendations" Style="{StaticResource Title3}" TextColor="White" />
                     </HorizontalStackLayout>
                 </Border>
                 <ScrollView Orientation="Horizontal">
@@ -1027,11 +1027,11 @@
                             <Image.Source>
                                 <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Person24}"
                                                  FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                 Color="{AppThemeBinding Light=Black, Dark=White}"
+                                                 Color="White"
                                                  Size="20" />
                             </Image.Source>
                         </Image>
-                        <Label Text="Staff" Style="{StaticResource Title3}" TextColor="{AppThemeBinding Light=Black, Dark=White}" />
+                        <Label Text="Staff" Style="{StaticResource Title3}" TextColor="White" />
                     </HorizontalStackLayout>
                 </Border>
                 <ScrollView Orientation="Horizontal">
@@ -1046,7 +1046,7 @@
                                             <Border StrokeThickness="0" Padding="0"
                                                     StrokeShape="RoundRectangle 16,16,0,0">
                                                 <Border.Background>
-                                                    <SolidColorBrush Color="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray900}}" />
+                                                    <SolidColorBrush Color="{StaticResource Gray900}" />
                                                 </Border.Background>
                                                 <Image HorizontalOptions="Center" VerticalOptions="Center"
                                                        WidthRequest="40" HeightRequest="40">
@@ -1093,11 +1093,11 @@
                             <Image.Source>
                                 <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Globe24}"
                                                  FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                 Color="{AppThemeBinding Light=Black, Dark=White}"
+                                                 Color="White"
                                                  Size="20" />
                             </Image.Source>
                         </Image>
-                        <Label Text="External Links" Style="{StaticResource Title3}" TextColor="{AppThemeBinding Light=Black, Dark=White}" />
+                        <Label Text="External Links" Style="{StaticResource Title3}" TextColor="White" />
                     </HorizontalStackLayout>
                 </Border>
                 <FlexLayout Wrap="Wrap" JustifyContent="Start" AlignItems="Center"

@@ -16,7 +16,7 @@
             StrokeThickness="0"
             Padding="5,3">
         <Border.Background>
-            <SolidColorBrush Color="{AppThemeBinding Light=#E6000000, Dark=#99000000}" />
+            <SolidColorBrush Color="#99000000" />
         </Border.Background>
         <Label Text="{Binding Format, Source={x:Reference Self}, Converter={StaticResource MediaFormatIconConverter}}"
                FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
