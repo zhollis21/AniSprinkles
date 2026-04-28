@@ -870,7 +870,9 @@ public partial class MyAnimePageModel : ObservableObject
         _airingNotificationService.CancelPeriodicCheck();
         _airingNotificationService.ClearNotificationState();
         await _authService.SignOutAsync();
+#if !CI
         AppSettings.Clear();
+#endif
         await LoadAsync(forceReload: true);
     }
 

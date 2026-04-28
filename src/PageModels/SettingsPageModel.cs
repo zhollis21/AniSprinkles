@@ -758,7 +758,9 @@ public partial class SettingsPageModel : ObservableObject
         _airingNotificationService.CancelPeriodicCheck();
         _airingNotificationService.ClearNotificationState();
         await _authService.SignOutAsync();
+#if !CI
         AppSettings.Clear();
+#endif
         await RefreshAuthStateAsync();
         ClearUserData();
         CurrentState = PageState.Unauthenticated;

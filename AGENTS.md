@@ -51,7 +51,7 @@ dotnet test tests/AniSprinkles.UnitTests/AniSprinkles.UnitTests.csproj -c Debug
 
 Passing `-p:CiBuild=true` in a **Debug** build appends `CI` to `DefineConstants`. This activates `#if CI` blocks that swap in stub services. Do **not** use `-p:CiBuild=true` with `-c Release`; the project file only supports this for Debug builds, and Release builds error out.
 
-- `CIAuthService` (`src/Services/CI/`) — always returns `"ci-stub-token"`; app appears authenticated
+- `CIAuthService` (`src/Services/CI/`) — starts authenticated with `"ci-stub-token"`; manual CI sign-out only clears the in-memory stub token, and CI sign-in runs a mock embedded OAuth WebView flow
 - `CIAniListClient` (`src/Services/CI/`) — returns hardcoded anime list and user profile
 - `CIAiringNotificationService` (`src/Services/CI/`) — all methods are no-ops; `RequestPermissionAsync` returns `true`
 
