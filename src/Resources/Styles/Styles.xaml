@@ -25,15 +25,9 @@
     <!-- Borders / Surfaces -->
     <!-- ============================= -->
 
-    <!-- NOTE: You also define Border defaults in AppStyles.xaml.
-         This style is intentionally "outline only" so CardStyle in AppStyles
-         can control the rounded, padded card look consistently. -->
-    <Style TargetType="Border">
-        <Setter Property="Stroke"
-                Value="{StaticResource Gray500}" />
-        <Setter Property="StrokeShape" Value="Rectangle"/>
-        <Setter Property="StrokeThickness" Value="1"/>
-    </Style>
+    <!-- Implicit Border defaults live in AppStyles.xaml (merged after this file).
+         Implicit styles do not compose across merged dictionaries: defining one here
+         would be silently replaced. -->
 
     <Style TargetType="BoxView">
         <Setter Property="BackgroundColor"

@@ -115,6 +115,11 @@ public class MainActivity : MauiAppCompatActivity
         base.OnDestroy();
     }
 
+    // Fallback color matches the "Background" resource in Resources/Styles/Colors.xaml (#17171A).
+    // Used if Application.Current isn't constructed yet or the resource lookup fails, to avoid a
+    // pure-black flash that mismatches the rest of the app surface.
+    private const int FallbackBackgroundArgb = unchecked((int)0xFF17171A);
+
     private int GetWindowBackgroundColor()
     {
         try
@@ -122,7 +127,7 @@ public class MainActivity : MauiAppCompatActivity
             var app = Microsoft.Maui.Controls.Application.Current;
             if (app == null)
             {
-                return AndroidColors.Black;
+                return FallbackBackgroundArgb;
             }
 
             if (app.Resources.TryGetValue("Background", out var colorResource)
@@ -132,12 +137,12 @@ public class MainActivity : MauiAppCompatActivity
                 return Android.Graphics.Color.Argb(a, r, g, b);
             }
 
-            return AndroidColors.Black;
+            return FallbackBackgroundArgb;
         }
         catch (Exception ex)
         {
             Log.Error(nameof(MainActivity), $"Error getting background color: {ex.Message}");
-            return AndroidColors.Black;
+            return FallbackBackgroundArgb;
         }
     }
 
