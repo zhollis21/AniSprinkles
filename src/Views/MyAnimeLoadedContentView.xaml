@@ -129,9 +129,8 @@
 
                         <!-- Score badge overlay (bottom-right). Must use Border.Background (a Brush)
                              rather than BackgroundColor — the implicit Border style in AppStyles.xaml
-                             sets Background to the theme's secondary card colour, which paints OVER
-                             any BackgroundColor we set inline. That's why the badge was rendering as
-                             a white oval in light mode. -->
+                             sets Background to the secondary card colour, which paints OVER any
+                             BackgroundColor we set inline. -->
                         <Border Grid.Row="0"
                                 StrokeShape="RoundRectangle 10"
                                 StrokeThickness="0"
@@ -141,7 +140,7 @@
                                 Margin="0,0,6,6"
                                 IsVisible="{Binding HasScore}">
                             <Border.Background>
-                                <SolidColorBrush Color="{AppThemeBinding Light=#E6000000, Dark=#99000000}" />
+                                <SolidColorBrush Color="#99000000" />
                             </Border.Background>
                             <HorizontalStackLayout Spacing="3">
                                 <Label Text="{x:Static icons:FluentIconsFilled.Star24}"

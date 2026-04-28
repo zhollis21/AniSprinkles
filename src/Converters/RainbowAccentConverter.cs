@@ -85,10 +85,7 @@ public sealed class RainbowAccentConverter : IValueConverter
         {
             if (isTransparent)
             {
-                var theme = Application.Current?.RequestedTheme ?? AppTheme.Unspecified;
-                var alpha = theme == AppTheme.Dark ? 0.28f : 0.14f;
-
-                c = c.WithAlpha(alpha);
+                c = c.WithAlpha(0.28f);
             }
 
             return c;
