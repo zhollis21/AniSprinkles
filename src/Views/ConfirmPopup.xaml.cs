@@ -65,8 +65,15 @@ public partial class ConfirmPopup : Popup<bool>
             CanBeDismissedByTappingOutsideOfPopup = canDismissByTappingOutside,
         };
 
-        var result = await page.ShowPopupAsync<bool>(popup, options, cancellationToken);
-        return !result.WasDismissedByTappingOutsideOfPopup && result.Result;
+        try
+        {
+            var result = await page.ShowPopupAsync<bool>(popup, options, cancellationToken);
+            return !result.WasDismissedByTappingOutsideOfPopup && result.Result;
+        }
+        catch (OperationCanceledException)
+        {
+            return false;
+        }
     }
 
     private async void OnCancelClicked(object? sender, EventArgs e)
