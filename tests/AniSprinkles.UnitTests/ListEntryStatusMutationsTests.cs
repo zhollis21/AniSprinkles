@@ -74,4 +74,44 @@ public class ListEntryStatusMutationsTests
         Assert.Equal(MediaListStatus.Completed, entry.Status);
         Assert.Equal(1000, entry.Progress);
     }
+
+    [Fact]
+    public void ApplyStatusChange_Current_FromCompletedAtCap_WalksProgressBackByOne()
+    {
+        // Completed → Watching with progress already at max would leave the +1 button
+        // dead. Walk progress back by one so there's an episode to watch.
+        var entry = TestDataBuilder.Entry(1, progress: 12, status: MediaListStatus.Completed, episodes: 12);
+
+        var needsScorePrompt = ListEntryStatusMutations.ApplyStatusChange(entry, MediaListStatus.Current);
+
+        Assert.False(needsScorePrompt);
+        Assert.Equal(MediaListStatus.Current, entry.Status);
+        Assert.Equal(11, entry.Progress);
+    }
+
+    [Fact]
+    public void ApplyStatusChange_Current_BelowCap_LeavesProgressUntouched()
+    {
+        var entry = TestDataBuilder.Entry(1, progress: 5, status: MediaListStatus.Paused, episodes: 12);
+
+        ListEntryStatusMutations.ApplyStatusChange(entry, MediaListStatus.Current);
+
+        Assert.Equal(MediaListStatus.Current, entry.Status);
+        Assert.Equal(5, entry.Progress);
+    }
+
+    [Fact]
+    public void ApplyStatusChange_Current_AiringShowAtAiredCap_LeavesProgressUntouched()
+    {
+        // No known total, only a next-airing episode. User is caught up — that's
+        // a normal Watching state, not the dead-button scenario.
+        var entry = TestDataBuilder.Entry(
+            1, progress: 1087, status: MediaListStatus.Completed,
+            episodes: null, nextAiringEpisode: 1088);
+
+        ListEntryStatusMutations.ApplyStatusChange(entry, MediaListStatus.Current);
+
+        Assert.Equal(MediaListStatus.Current, entry.Status);
+        Assert.Equal(1087, entry.Progress);
+    }
 }
