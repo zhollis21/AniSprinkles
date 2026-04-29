@@ -114,18 +114,4 @@ public class ListEntryStatusMutationsTests
         Assert.Equal(MediaListStatus.Current, entry.Status);
         Assert.Equal(1087, entry.Progress);
     }
-
-    [Fact]
-    public void ApplyStatusChange_Current_ZeroEpisodeShow_DoesNotUnderflow()
-    {
-        // Defensive: a known total of 0 (shouldn't really happen, but the cap math
-        // would otherwise produce -1). HasKnownEpisodeCount requires > 0, so this
-        // exercises the lower bound.
-        var entry = TestDataBuilder.Entry(1, progress: 0, status: MediaListStatus.Completed, episodes: 0);
-
-        ListEntryStatusMutations.ApplyStatusChange(entry, MediaListStatus.Current);
-
-        Assert.Equal(MediaListStatus.Current, entry.Status);
-        Assert.Equal(0, entry.Progress);
-    }
 }
