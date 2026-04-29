@@ -26,7 +26,7 @@ public static class ListEntryStatusFlow
     {
         Shape = null,
         Shadow = null,
-        CanBeDismissedByTappingOutsideOfPopup = false,
+        CanBeDismissedByTappingOutsideOfPopup = true,
     };
 
     /// <summary>
@@ -92,8 +92,7 @@ public static class ListEntryStatusFlow
             message: $"You've watched all {totalEpisodes} episodes of {animeTitle}. Mark as Completed?",
             confirmText: "Yes",
             cancelText: "No",
-            iconGlyph: FluentIconsRegular.CheckmarkCircle24,
-            canDismissByTappingOutside: false);
+            iconGlyph: FluentIconsRegular.CheckmarkCircle24);
 
     private static async Task<double?> PromptForScoreAsync(string? animeTitle, double? initialScore)
     {
