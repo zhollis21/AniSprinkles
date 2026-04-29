@@ -91,6 +91,11 @@ public partial class OAuthWebViewPage : ContentPage
         LoadingIndicator.IsVisible = false;
     }
 
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+    }
+
     protected override bool OnBackButtonPressed()
     {
         _ = DismissModalAsync(null);

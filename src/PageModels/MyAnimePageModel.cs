@@ -863,6 +863,12 @@ public partial class MyAnimePageModel : ObservableObject
         }
 
         await LoadAsync(forceReload: true);
+
+        // Issue #60 workaround: a gray scrim appears on the page body after the
+        // OAuth WebView completes. The cause is below the View layer and we can't
+        // clear it via View-tree manipulation. Navigating away and back forces a
+        // full re-layout that clears the scrim, so we mimic that here.
+        await ShellRouteBounce.BounceAsync(_navigationService, "//settings", "//my-anime");
     }
 
     [RelayCommand]

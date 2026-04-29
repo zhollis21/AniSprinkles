@@ -16,6 +16,7 @@ public partial class SettingsPageModel : ObservableObject
     private readonly ErrorReportService _errorReportService;
     private readonly IPreferences _preferences;
     private readonly IDispatcher _dispatcher;
+    private readonly INavigationService _navigationService;
     private readonly ILogger<SettingsPageModel> _logger;
 
     // Snapshot of the loaded state for dirty-tracking
@@ -186,7 +187,7 @@ public partial class SettingsPageModel : ObservableObject
             ActivityMergeTime != _loadedActivityMergeTime ||
             HasNotificationChanges());
 
-    public SettingsPageModel(IAuthService authService, IAniListClient aniListClient, IAiringNotificationService airingNotificationService, ErrorReportService errorReportService, IPreferences preferences, IDispatcher dispatcher, ILogger<SettingsPageModel> logger)
+    public SettingsPageModel(IAuthService authService, IAniListClient aniListClient, IAiringNotificationService airingNotificationService, ErrorReportService errorReportService, IPreferences preferences, IDispatcher dispatcher, INavigationService navigationService, ILogger<SettingsPageModel> logger)
     {
         _authService = authService;
         _aniListClient = aniListClient;
@@ -194,6 +195,7 @@ public partial class SettingsPageModel : ObservableObject
         _errorReportService = errorReportService;
         _preferences = preferences;
         _dispatcher = dispatcher;
+        _navigationService = navigationService;
         _logger = logger;
     }
 
@@ -725,6 +727,12 @@ public partial class SettingsPageModel : ObservableObject
             {
                 await ShowToastAsync("Signed in to AniList.");
                 await LoadAsync();
+
+                // Issue #60 workaround: a gray scrim appears on the page body after the
+                // OAuth WebView completes. The cause is below the View layer and we can't
+                // clear it via View-tree manipulation. Navigating away and back forces a
+                // full re-layout that clears the scrim, so we mimic that here.
+                await ShellRouteBounce.BounceAsync(_navigationService, "//my-anime", "//settings");
             }
             else
             {
