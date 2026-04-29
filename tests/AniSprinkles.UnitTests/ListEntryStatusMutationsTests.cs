@@ -106,7 +106,7 @@ public class ListEntryStatusMutationsTests
         // No known total, only a next-airing episode. User is caught up — that's
         // a normal Watching state, not the dead-button scenario.
         var entry = TestDataBuilder.Entry(
-            1, progress: 1087, status: MediaListStatus.Current,
+            1, progress: 1087, status: MediaListStatus.Completed,
             episodes: null, nextAiringEpisode: 1088);
 
         ListEntryStatusMutations.ApplyStatusChange(entry, MediaListStatus.Current);
@@ -125,6 +125,7 @@ public class ListEntryStatusMutationsTests
 
         ListEntryStatusMutations.ApplyStatusChange(entry, MediaListStatus.Current);
 
+        Assert.Equal(MediaListStatus.Current, entry.Status);
         Assert.Equal(0, entry.Progress);
     }
 }
