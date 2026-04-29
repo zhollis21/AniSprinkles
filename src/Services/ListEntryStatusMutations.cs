@@ -36,6 +36,24 @@ public static class ListEntryStatusMutations
                 entry.Repeat = (entry.Repeat ?? 0) + 1;
                 return false;
 
+            case MediaListStatus.Current:
+                entry.Status = MediaListStatus.Current;
+                // Moving an at-cap entry (typically Completed → Watching) back into
+                // Watching with progress already at the maximum would leave the +1
+                // button dead and violate the "Watching never sits at max" invariant
+                // enforced by the +1 → Complete prompt. Walk progress back by one so
+                // there's at least one episode left to watch. HasKnownEpisodeCount
+                // gates this on a declared total — currently-airing shows whose cap
+                // is the last-aired episode are left untouched (the user is just
+                // caught up, not finished).
+                if (entry.HasKnownEpisodeCount
+                    && entry.MaxEpisodes is { } currentMax
+                    && entry.Progress == currentMax)
+                {
+                    entry.Progress = currentMax - 1;
+                }
+                return false;
+
             default:
                 entry.Status = target;
                 return false;
