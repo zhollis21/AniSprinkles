@@ -791,20 +791,23 @@ namespace AniSprinkles.PageModels;
             return;
         }
 
-        // Capture before the await — DisplayAlertAsync yields and ListEntry could be
-        // set to null by a concurrent refresh before we reach RemoveFromListConfirmedAsync.
+        // Capture before the await — the popup yields and ListEntry could be set
+        // to null by a concurrent refresh before we reach RemoveFromListConfirmedAsync.
         var listEntryId = ListEntry.Id;
         var title = Media.DisplayTitle ?? "this anime";
-        var confirmed = await Shell.Current.CurrentPage.DisplayAlertAsync(
-            "Remove from List",
-            $"Remove {title} from your list?",
-            "Remove",
-            "Cancel");
+        var confirmed = await Views.ConfirmPopup.ShowAsync(
+            title: "Remove from List",
+            message: $"Remove {title} from your list?",
+            confirmText: "Remove",
+            isDestructive: true,
+            iconGlyph: FluentIconsRegular.Delete24);
 
         if (!confirmed)
         {
             return;
         }
+
+        SentrySdk.AddBreadcrumb($"Remove from list confirmed (Details, entry {listEntryId})", "list", "user");
 
         await RemoveFromListConfirmedAsync(listEntryId, title);
     }
@@ -932,7 +935,7 @@ namespace AniSprinkles.PageModels;
     /// <summary>
     /// Single entry point for progress changes originating from +1 / -1 / numeric edit.
     /// Keeps the model, slider binding, and debounced save in sync, and fires the
-    /// completion flow (CompletionPopup + RatingPopup) when the change lands on the
+    /// completion flow (ConfirmPopup + RatingPopup) when the change lands on the
     /// known total. Slider drags route here via the snapped OnSliderProgressChanged path.
     /// </summary>
     private async Task ApplyProgressChangeAsync(int newProgress)

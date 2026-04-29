@@ -26,7 +26,7 @@ public static class ListEntryStatusFlow
     {
         Shape = null,
         Shadow = null,
-        CanBeDismissedByTappingOutsideOfPopup = false,
+        CanBeDismissedByTappingOutsideOfPopup = true,
     };
 
     /// <summary>
@@ -72,6 +72,8 @@ public static class ListEntryStatusFlow
             return false;
         }
 
+        SentrySdk.AddBreadcrumb($"Completion confirmed (entry {entry.Id})", "list", "user");
+
         entry.Progress = total;
         entry.Status = MediaListStatus.Completed;
 
@@ -84,17 +86,13 @@ public static class ListEntryStatusFlow
         return true;
     }
 
-    private static async Task<bool> ShowCompletionPopupAsync(string animeTitle, int totalEpisodes)
-    {
-        if (Shell.Current?.CurrentPage is not { } page)
-        {
-            return false;
-        }
-
-        var popup = new CompletionPopup(animeTitle, totalEpisodes);
-        var result = await page.ShowPopupAsync<bool>(popup, TransparentPopupOptions, CancellationToken.None);
-        return !result.WasDismissedByTappingOutsideOfPopup && result.Result;
-    }
+    private static Task<bool> ShowCompletionPopupAsync(string animeTitle, int totalEpisodes) =>
+        ConfirmPopup.ShowAsync(
+            title: "All episodes watched!",
+            message: $"You've watched all {totalEpisodes} episodes of {animeTitle}. Mark as Completed?",
+            confirmText: "Yes",
+            cancelText: "No",
+            iconGlyph: FluentIconsRegular.CheckmarkCircle24);
 
     private static async Task<double?> PromptForScoreAsync(string? animeTitle, double? initialScore)
     {

@@ -633,16 +633,19 @@ public partial class MyAnimePageModel : ObservableObject
     private async Task HandleDeleteAsync(MediaListEntry entry)
     {
         var title = entry.Media?.DisplayTitle ?? "this anime";
-        var confirmed = await Shell.Current.CurrentPage.DisplayAlertAsync(
-            "Remove from List",
-            $"Remove {title} from your list?",
-            "Remove",
-            "Cancel");
+        var confirmed = await Views.ConfirmPopup.ShowAsync(
+            title: "Remove from List",
+            message: $"Remove {title} from your list?",
+            confirmText: "Remove",
+            isDestructive: true,
+            iconGlyph: FluentIconsRegular.Delete24);
 
         if (!confirmed)
         {
             return;
         }
+
+        SentrySdk.AddBreadcrumb($"Remove from list confirmed (My Anime, entry {entry.Id})", "list", "user");
 
         // Optimistic removal from UI.
         RemoveEntryFromCurrentSection(entry);

@@ -652,6 +652,8 @@ public partial class SettingsPageModel : ObservableObject
                 bool granted = await _airingNotificationService.RequestPermissionAsync();
                 if (!granted)
                 {
+                    SentrySdk.AddBreadcrumb("Notification permission denied", "notification", "user");
+
                     // Revert the toggle without re-triggering the handler.
                     // Must stay on the UI thread — AiringNotifications is a bound property.
                     _suppressNotificationToggle = true;
@@ -660,11 +662,16 @@ public partial class SettingsPageModel : ObservableObject
 
                     // Android won't re-show the system dialog once the user has responded.
                     // Offer to deep-link them directly to the app's notification settings.
-                    bool openSettings = await Shell.Current.CurrentPage.DisplayAlertAsync(
-                        "Notification Permission Required",
-                        "AniSprinkles needs notification permission to alert you when episodes air. Enable it in your device settings, then turn the toggle back on.",
-                        "Open Settings",
-                        "Cancel");
+                    bool openSettings = await Views.ConfirmPopup.ShowAsync(
+                        title: "Notification Permission Required",
+                        message: "AniSprinkles needs notification permission to alert you when episodes air. Enable it in your device settings, then turn the toggle back on.",
+                        confirmText: "Open Settings",
+                        iconGlyph: FluentIconsRegular.Alert24);
+
+                    SentrySdk.AddBreadcrumb(
+                        openSettings ? "Permission settings prompt: opened settings" : "Permission settings prompt: dismissed",
+                        "notification",
+                        "user");
 
                     if (openSettings)
                     {
@@ -676,6 +683,7 @@ public partial class SettingsPageModel : ObservableObject
                     return;
                 }
 
+                SentrySdk.AddBreadcrumb("Notification permission granted", "notification", "user");
                 _airingNotificationService.SchedulePeriodicCheck();
 
                 // If the toggle was flipped back OFF while the permission dialog was open,
@@ -742,19 +750,21 @@ public partial class SettingsPageModel : ObservableObject
     [RelayCommand]
     private async Task SignOut()
     {
-        var confirmed = await Shell.Current.CurrentPage.DisplayAlertAsync(
-            "Sign Out",
-            "Sign out of AniList? Your list data will be cleared from the app until you sign back in.",
-            "Sign Out",
-            "Cancel");
+        SentrySdk.AddBreadcrumb("Sign-out confirmation shown (Settings)", "auth", "user");
+        var confirmed = await Views.ConfirmPopup.ShowAsync(
+            title: "Sign Out",
+            message: "Sign out of AniList? Your list data will be cleared from the app until you sign back in.",
+            confirmText: "Sign Out",
+            isDestructive: true);
 
         if (!confirmed)
         {
+            SentrySdk.AddBreadcrumb("Sign-out canceled (Settings)", "auth", "user");
             return;
         }
 
-        _logger.LogInformation("Sign-out requested from Settings.");
-        SentrySdk.AddBreadcrumb("Sign-out requested (Settings)", "auth", "user");
+        _logger.LogInformation("Sign-out confirmed from Settings.");
+        SentrySdk.AddBreadcrumb("Sign-out confirmed (Settings)", "auth", "user");
         _airingNotificationService.CancelPeriodicCheck();
         _airingNotificationService.ClearNotificationState();
         await _authService.SignOutAsync();

@@ -68,6 +68,15 @@ Review all code written in this session against the checklist below. Fix every i
 - No logging inside tight loops or hot paths that could flood logcat/file log
 - Log messages use structured parameters, not string interpolation
 
+**Sentry breadcrumbs**
+
+- Breadcrumbs are added at decision points and major state transitions (auth, navigation, list mutations, settings changes, notification scheduling), not on every method entry
+- Auth and permission decisions trace **both** branches of the dialog — confirmed and canceled — because "did the user actually sign out / grant permission" is high-value context for crash reports and support
+- Reversible or repeatable user actions (delete-from-list, mark-complete) breadcrumb the **confirmed** branch only — skip the cancel breadcrumb to avoid breadcrumb buffer noise from accidental opens
+- Categories are consistent with existing usage: `auth`, `navigation`, `settings`, `notification`, `list`, `http`, `state`
+- Type tag matches the source: `user` for user-initiated actions, `state` for system/automatic transitions, `http` for network
+- Breadcrumb messages include enough identifying context to be useful in a trace (e.g. entry id, media id) without leaking PII (no titles, no usernames in the message)
+
 **Tests**
 
 - New behavior has new tests; changed behavior has updated tests
