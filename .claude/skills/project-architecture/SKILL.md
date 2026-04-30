@@ -12,7 +12,7 @@ description: "AniSprinkles project architecture reference: DI lifetimes, page/Pa
 | `ErrorReportService`, `HttpClient`, `IAuthService`, `IAniListClient`, `IAiringNotificationService`, `IOutageStateService` | Singleton                                                      |
 | `MyAnimePageModel`, `SettingsPageModel`                                                                                   | **Singleton** (survive page recreation across flyout switches) |
 | `LoggingHandler`                                                                                                          | Transient                                                      |
-| `MyAnimePage`, `SettingsPage`, `MediaDetailsPageModel`, `MediaDetailsPage`                                                | Transient                                                      |
+| `MyAnimePage`, `SettingsPage`, `MediaDetailsPageModel`, `MediaDetailsPage`, `StaffDetailsPageModel`, `StaffDetailsPage`, `CharacterDetailsPageModel`, `CharacterDetailsPage` | Transient                                                      |
 
 ## Page ↔ PageModel Binding
 
@@ -32,7 +32,7 @@ Spinner-first flow: lightweight shell page appears immediately, full content vie
 
 ## Navigation
 
-Shell flyout (`my-anime`, `settings`). Details route: `Routing.RegisterRoute("media-details", typeof(MediaDetailsPage))` in `AppShell.xaml.cs`. Navigate via `Shell.Current.GoToAsync` with lightweight query params (`mediaId` + trace IDs) — never pass full model objects. Rapid-tap prevention on My Anime → details. Default Shell back behavior — no custom Android back overrides.
+Shell flyout (`my-anime`, `settings`). Details routes registered in `AppShell.xaml.cs`: `media-details` → `MediaDetailsPage`, `staff-details` → `StaffDetailsPage`, `character-details` → `CharacterDetailsPage`. Navigate via `Shell.Current.GoToAsync` (or the injected `INavigationService`) with lightweight query params (`mediaId` / `staffId` / `characterId` + trace IDs) — never pass full model objects. Rapid-tap prevention on My Anime → details. Default Shell back behavior — no custom Android back overrides.
 
 ## Performance Defaults
 

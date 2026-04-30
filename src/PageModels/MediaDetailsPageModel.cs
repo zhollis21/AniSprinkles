@@ -705,6 +705,38 @@ namespace AniSprinkles.PageModels;
     }
 
     [RelayCommand]
+    private async Task NavigateToCharacter(int characterId)
+    {
+        _logger.LogInformation("NAVTRACE NavigateToCharacter called with characterId={CharacterId}", characterId);
+        if (characterId <= 0)
+        {
+            _logger.LogWarning("NAVTRACE NavigateToCharacter aborted — invalid characterId {CharacterId}", characterId);
+            return;
+        }
+
+        await _navigationService.GoToAsync("character-details", animate: false, new Dictionary<string, object>
+        {
+            ["characterId"] = characterId,
+        });
+    }
+
+    [RelayCommand]
+    private async Task NavigateToStaff(int staffId)
+    {
+        _logger.LogInformation("NAVTRACE NavigateToStaff called with staffId={StaffId}", staffId);
+        if (staffId <= 0)
+        {
+            _logger.LogWarning("NAVTRACE NavigateToStaff aborted — invalid staffId {StaffId}", staffId);
+            return;
+        }
+
+        await _navigationService.GoToAsync("staff-details", animate: false, new Dictionary<string, object>
+        {
+            ["staffId"] = staffId,
+        });
+    }
+
+    [RelayCommand]
     private void ToggleDescription()
     {
         IsDescriptionExpanded = !IsDescriptionExpanded;
