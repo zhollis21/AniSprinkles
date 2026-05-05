@@ -1,3 +1,5 @@
+using System.Collections.ObjectModel;
+
 namespace AniSprinkles.Models;
 
 public class Staff
@@ -18,10 +20,12 @@ public class Staff
     public int? Favourites { get; set; }
     public string? SiteUrl { get; set; }
 
-    public List<StaffCharacterEdge> Characters { get; set; } = [];
+    // ObservableCollection so PageModel can append on Load More + clear/replace on sort change
+    // and the BindableLayout in XAML refreshes automatically.
+    public ObservableCollection<StaffCharacterEdge> Characters { get; } = [];
     public PageInfo? CharactersPageInfo { get; set; }
 
-    public List<StaffMediaEdge> StaffMedia { get; set; } = [];
+    public ObservableCollection<StaffMediaEdge> StaffMedia { get; } = [];
     public PageInfo? StaffMediaPageInfo { get; set; }
 
     public string DisplayName => Name?.Full ?? Name?.UserPreferred ?? Name?.Native ?? "Unknown";

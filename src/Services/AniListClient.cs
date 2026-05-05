@@ -347,28 +347,137 @@ public class AniListClient : IAniListClient
         return results;
     }
 
-    public async Task<Staff?> GetStaffAsync(int id, int charactersPage = 1, int mediaPage = 1, CancellationToken cancellationToken = default)
+    public async Task<Staff?> GetStaffAsync(
+        int id,
+        string charactersSort = "FAVOURITES_DESC",
+        string mediaSort = "POPULARITY_DESC",
+        int charactersPage = 1,
+        int mediaPage = 1,
+        CancellationToken cancellationToken = default)
     {
+        // AniList expects sort fields as enum arrays (typed [CharacterSort] / [MediaSort]).
+        // GraphQL coerces JSON string arrays into the typed enum array server-side when the
+        // operation declares the variable as the enum type — see StaffQuery below.
         var data = await SendAsync<StaffData>(
             "Staff",
             StaffQuery,
-            new { id, charactersPage, mediaPage },
+            new
+            {
+                id,
+                charactersPage,
+                mediaPage,
+                charactersSort = new[] { charactersSort },
+                mediaSort = new[] { mediaSort },
+            },
             token: null, // Public query — no auth needed
             cancellationToken).ConfigureAwait(false);
 
         return data.Staff is null ? null : MapStaff(data.Staff);
     }
 
-    public async Task<Character?> GetCharacterAsync(int id, int mediaPage = 1, CancellationToken cancellationToken = default)
+    public async Task<Character?> GetCharacterAsync(
+        int id,
+        string mediaSort = "POPULARITY_DESC",
+        int mediaPage = 1,
+        CancellationToken cancellationToken = default)
     {
         var data = await SendAsync<CharacterData>(
             "Character",
             CharacterQuery,
-            new { id, mediaPage },
+            new
+            {
+                id,
+                mediaPage,
+                mediaSort = new[] { mediaSort },
+            },
             token: null, // Public query — no auth needed
             cancellationToken).ConfigureAwait(false);
 
         return data.Character is null ? null : MapCharacter(data.Character);
+    }
+
+    /// <summary>
+    /// Fetches just one page of <c>Staff.characters</c> with a chosen sort. Used by sort changes
+    /// and Load More on the Voice Roles section so the *other* section's accumulated pages
+    /// don't get flushed by a full <see cref="GetStaffAsync"/> round-trip.
+    /// </summary>
+    public async Task<(IReadOnlyList<StaffCharacterEdge> Items, PageInfo? PageInfo)> LoadStaffCharactersPageAsync(
+        int id, int page, string sort, CancellationToken cancellationToken = default)
+    {
+        var data = await SendAsync<StaffData>(
+            "StaffCharactersPage",
+            StaffCharactersPageQuery,
+            new { id, page, sort = new[] { sort } },
+            token: null,
+            cancellationToken).ConfigureAwait(false);
+
+        if (data.Staff?.Characters is null)
+        {
+            return ([], null);
+        }
+
+        var items = data.Staff.Characters.Edges?
+            .Where(e => e.Node is not null)
+            .Select(MapStaffCharacterEdge)
+            .ToList() ?? [];
+        return (items, MapPageInfo(data.Staff.Characters.PageInfo));
+    }
+
+    public async Task<(IReadOnlyList<StaffMediaEdge> Items, PageInfo? PageInfo)> LoadStaffMediaPageAsync(
+        int id, int page, string sort, CancellationToken cancellationToken = default)
+    {
+        var data = await SendAsync<StaffData>(
+            "StaffMediaPage",
+            StaffMediaPageQuery,
+            new { id, page, sort = new[] { sort } },
+            token: null,
+            cancellationToken).ConfigureAwait(false);
+
+        if (data.Staff?.StaffMedia is null)
+        {
+            return ([], null);
+        }
+
+        var items = data.Staff.StaffMedia.Edges?
+            .Where(e => e.Node is not null)
+            .Select(e => new StaffMediaEdge { Node = MapRelatedMedia(e.Node!), StaffRole = e.StaffRole })
+            .ToList() ?? [];
+        return (items, MapPageInfo(data.Staff.StaffMedia.PageInfo));
+    }
+
+    public async Task<(IReadOnlyList<CharacterMediaEdge> Items, PageInfo? PageInfo)> LoadCharacterMediaPageAsync(
+        int id, int page, string sort, CancellationToken cancellationToken = default)
+    {
+        var data = await SendAsync<CharacterData>(
+            "CharacterMediaPage",
+            CharacterMediaPageQuery,
+            new { id, page, sort = new[] { sort } },
+            token: null,
+            cancellationToken).ConfigureAwait(false);
+
+        if (data.Character?.Media is null)
+        {
+            return ([], null);
+        }
+
+        var items = data.Character.Media.Edges?
+            .Where(e => e.Node is not null)
+            .Select(e => new CharacterMediaEdge
+            {
+                Node = MapRelatedMedia(e.Node!),
+                CharacterRole = e.CharacterRole,
+                VoiceActors = e.VoiceActors?
+                    .Select(va => new VoiceActor
+                    {
+                        Id = va.Id,
+                        Name = va.Name,
+                        Image = va.Image,
+                        Language = va.LanguageV2,
+                    })
+                    .ToList() ?? [],
+            })
+            .ToList() ?? [];
+        return (items, MapPageInfo(data.Character.Media.PageInfo));
     }
 
     private async Task<string> RequireAccessTokenAsync(CancellationToken cancellationToken)
@@ -669,7 +778,7 @@ public class AniListClient : IAniListClient
 
     private static Staff MapStaff(StaffDto dto)
     {
-        return new Staff
+        var staff = new Staff
         {
             Id = dto.Id,
             Name = dto.Name,
@@ -686,21 +795,31 @@ public class AniListClient : IAniListClient
             BloodType = dto.BloodType,
             Favourites = dto.Favourites,
             SiteUrl = dto.SiteUrl,
-            Characters = dto.Characters?.Edges?
-                .Where(e => e.Node is not null)
-                .Select(MapStaffCharacterEdge)
-                .ToList() ?? [],
             CharactersPageInfo = MapPageInfo(dto.Characters?.PageInfo),
-            StaffMedia = dto.StaffMedia?.Edges?
-                .Where(e => e.Node is not null)
-                .Select(e => new StaffMediaEdge
-                {
-                    Node = MapRelatedMedia(e.Node!),
-                    StaffRole = e.StaffRole,
-                })
-                .ToList() ?? [],
             StaffMediaPageInfo = MapPageInfo(dto.StaffMedia?.PageInfo),
         };
+
+        if (dto.Characters?.Edges is { } characterEdges)
+        {
+            foreach (var edge in characterEdges.Where(e => e.Node is not null))
+            {
+                staff.Characters.Add(MapStaffCharacterEdge(edge));
+            }
+        }
+
+        if (dto.StaffMedia?.Edges is { } mediaEdges)
+        {
+            foreach (var edge in mediaEdges.Where(e => e.Node is not null))
+            {
+                staff.StaffMedia.Add(new StaffMediaEdge
+                {
+                    Node = MapRelatedMedia(edge.Node!),
+                    StaffRole = edge.StaffRole,
+                });
+            }
+        }
+
+        return staff;
     }
 
     private static StaffCharacterEdge MapStaffCharacterEdge(StaffCharacterEdgeDto edge)
@@ -722,7 +841,7 @@ public class AniListClient : IAniListClient
 
     private static Character MapCharacter(CharacterDto dto)
     {
-        return new Character
+        var character = new Character
         {
             Id = dto.Id,
             Name = dto.Name,
@@ -734,13 +853,18 @@ public class AniListClient : IAniListClient
             DateOfBirth = dto.DateOfBirth,
             Favourites = dto.Favourites,
             SiteUrl = dto.SiteUrl,
-            Media = dto.Media?.Edges?
-                .Where(e => e.Node is not null)
-                .Select(e => new CharacterMediaEdge
+            MediaPageInfo = MapPageInfo(dto.Media?.PageInfo),
+        };
+
+        if (dto.Media?.Edges is { } edges)
+        {
+            foreach (var edge in edges.Where(e => e.Node is not null))
+            {
+                character.Media.Add(new CharacterMediaEdge
                 {
-                    Node = MapRelatedMedia(e.Node!),
-                    CharacterRole = e.CharacterRole,
-                    VoiceActors = e.VoiceActors?
+                    Node = MapRelatedMedia(edge.Node!),
+                    CharacterRole = edge.CharacterRole,
+                    VoiceActors = edge.VoiceActors?
                         .Select(va => new VoiceActor
                         {
                             Id = va.Id,
@@ -749,10 +873,11 @@ public class AniListClient : IAniListClient
                             Language = va.LanguageV2,
                         })
                         .ToList() ?? [],
-                })
-                .ToList() ?? [],
-            MediaPageInfo = MapPageInfo(dto.Media?.PageInfo),
-        };
+                });
+            }
+        }
+
+        return character;
     }
 
     private static PageInfo? MapPageInfo(PageInfoDto? dto)
@@ -1612,7 +1737,7 @@ query AiringSchedule($mediaIds: [Int], $airingAfter: Int, $airingBefore: Int, $p
 }";
 
     private const string StaffQuery = @"
-query Staff($id: Int!, $charactersPage: Int = 1, $mediaPage: Int = 1) {
+query Staff($id: Int!, $charactersPage: Int = 1, $mediaPage: Int = 1, $charactersSort: [CharacterSort] = [FAVOURITES_DESC], $mediaSort: [MediaSort] = [POPULARITY_DESC]) {
   Staff(id: $id) {
     id
     name { full native userPreferred }
@@ -1629,7 +1754,7 @@ query Staff($id: Int!, $charactersPage: Int = 1, $mediaPage: Int = 1) {
     bloodType
     favourites
     siteUrl
-    characters(sort: FAVOURITES_DESC, page: $charactersPage, perPage: 25) {
+    characters(sort: $charactersSort, page: $charactersPage, perPage: 25) {
       pageInfo { hasNextPage currentPage }
       edges {
         node {
@@ -1649,7 +1774,7 @@ query Staff($id: Int!, $charactersPage: Int = 1, $mediaPage: Int = 1) {
         }
       }
     }
-    staffMedia(sort: POPULARITY_DESC, page: $mediaPage, perPage: 25) {
+    staffMedia(sort: $mediaSort, page: $mediaPage, perPage: 25) {
       pageInfo { hasNextPage currentPage }
       edges {
         node {
@@ -1667,8 +1792,78 @@ query Staff($id: Int!, $charactersPage: Int = 1, $mediaPage: Int = 1) {
   }
 }";
 
+    private const string StaffCharactersPageQuery = @"
+query StaffCharactersPage($id: Int!, $page: Int!, $sort: [CharacterSort]) {
+  Staff(id: $id) {
+    characters(sort: $sort, page: $page, perPage: 25) {
+      pageInfo { hasNextPage currentPage }
+      edges {
+        node { id name { full native } image { medium large } }
+        role
+        media {
+          id
+          title { romaji english native }
+          coverImage { medium large }
+          format
+          type
+          status
+          averageScore
+        }
+      }
+    }
+  }
+}";
+
+    private const string StaffMediaPageQuery = @"
+query StaffMediaPage($id: Int!, $page: Int!, $sort: [MediaSort]) {
+  Staff(id: $id) {
+    staffMedia(sort: $sort, page: $page, perPage: 25) {
+      pageInfo { hasNextPage currentPage }
+      edges {
+        node {
+          id
+          title { romaji english native }
+          coverImage { medium large }
+          format
+          type
+          status
+          averageScore
+        }
+        staffRole
+      }
+    }
+  }
+}";
+
+    private const string CharacterMediaPageQuery = @"
+query CharacterMediaPage($id: Int!, $page: Int!, $sort: [MediaSort]) {
+  Character(id: $id) {
+    media(sort: $sort, page: $page, perPage: 25) {
+      pageInfo { hasNextPage currentPage }
+      edges {
+        node {
+          id
+          title { romaji english native }
+          coverImage { medium large }
+          format
+          type
+          status
+          averageScore
+        }
+        characterRole
+        voiceActors(sort: [LANGUAGE, RELEVANCE]) {
+          id
+          name { full native }
+          image { medium large }
+          languageV2
+        }
+      }
+    }
+  }
+}";
+
     private const string CharacterQuery = @"
-query Character($id: Int!, $mediaPage: Int = 1) {
+query Character($id: Int!, $mediaPage: Int = 1, $mediaSort: [MediaSort] = [POPULARITY_DESC]) {
   Character(id: $id) {
     id
     name { full native userPreferred alternative alternativeSpoiler }
@@ -1680,7 +1875,7 @@ query Character($id: Int!, $mediaPage: Int = 1) {
     dateOfBirth { year month day }
     favourites
     siteUrl
-    media(sort: POPULARITY_DESC, page: $mediaPage, perPage: 25) {
+    media(sort: $mediaSort, page: $mediaPage, perPage: 25) {
       pageInfo { hasNextPage currentPage }
       edges {
         node {

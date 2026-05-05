@@ -49,11 +49,36 @@ internal sealed class CIAniListClient : IAniListClient
     public Task<AniListUser> UpdateUserAsync(UpdateUserRequest request, CancellationToken cancellationToken = default)
         => Task.FromResult(StubData.Viewer);
 
-    public Task<Staff?> GetStaffAsync(int id, int charactersPage = 1, int mediaPage = 1, CancellationToken cancellationToken = default)
+    public Task<Staff?> GetStaffAsync(
+        int id,
+        string charactersSort = "FAVOURITES_DESC",
+        string mediaSort = "POPULARITY_DESC",
+        int charactersPage = 1,
+        int mediaPage = 1,
+        CancellationToken cancellationToken = default)
         => Task.FromResult<Staff?>(StubData.Staff);
 
-    public Task<Character?> GetCharacterAsync(int id, int mediaPage = 1, CancellationToken cancellationToken = default)
+    public Task<Character?> GetCharacterAsync(
+        int id,
+        string mediaSort = "POPULARITY_DESC",
+        int mediaPage = 1,
+        CancellationToken cancellationToken = default)
         => Task.FromResult<Character?>(StubData.Character);
+
+    public Task<(IReadOnlyList<StaffCharacterEdge> Items, PageInfo? PageInfo)> LoadStaffCharactersPageAsync(
+        int id, int page, string sort, CancellationToken ct = default)
+        => Task.FromResult<(IReadOnlyList<StaffCharacterEdge>, PageInfo?)>(
+            ([], new PageInfo { HasNextPage = false, CurrentPage = page }));
+
+    public Task<(IReadOnlyList<StaffMediaEdge> Items, PageInfo? PageInfo)> LoadStaffMediaPageAsync(
+        int id, int page, string sort, CancellationToken ct = default)
+        => Task.FromResult<(IReadOnlyList<StaffMediaEdge>, PageInfo?)>(
+            ([], new PageInfo { HasNextPage = false, CurrentPage = page }));
+
+    public Task<(IReadOnlyList<CharacterMediaEdge> Items, PageInfo? PageInfo)> LoadCharacterMediaPageAsync(
+        int id, int page, string sort, CancellationToken ct = default)
+        => Task.FromResult<(IReadOnlyList<CharacterMediaEdge>, PageInfo?)>(
+            ([], new PageInfo { HasNextPage = false, CurrentPage = page }));
 
     public Task<IReadOnlyList<AiringScheduleEntry>> GetAiringScheduleAsync(
         IReadOnlyList<int> mediaIds, int airingAfter, int airingBefore, CancellationToken cancellationToken = default)
@@ -409,110 +434,114 @@ internal sealed class CIAniListClient : IAniListClient
         ];
 
         // ── Staff fixture (Hayao Miyazaki — director). Used when CI deep-links to staff-details. ───────────
-        public static readonly Staff Staff = new()
-        {
-            Id = 96,
-            Name = new CharacterName { Full = "Hayao Miyazaki", Native = "宮崎 駿", UserPreferred = "Hayao Miyazaki" },
-            Image = new CharacterImage
-            {
-                Large = "https://s4.anilist.co/file/anilistcdn/staff/large/n96-2dCmK4q5mUbM.png",
-                Medium = "https://s4.anilist.co/file/anilistcdn/staff/medium/n96-2dCmK4q5mUbM.png",
-            },
-            Description = "Hayao Miyazaki is a Japanese film director, animator, manga artist, and producer. Co-founder of Studio Ghibli.",
-            LanguageV2 = "Japanese",
-            PrimaryOccupations = ["Director", "Animator", "Mangaka"],
-            Gender = "Male",
-            DateOfBirth = new MediaDate { Year = 1941, Month = 1, Day = 5 },
-            HomeTown = "Tokyo, Japan",
-            YearsActive = [1963],
-            Favourites = 14_500,
-            SiteUrl = "https://anilist.co/staff/96",
-            StaffMedia =
-            [
-                new StaffMediaEdge
-                {
-                    StaffRole = "Director",
-                    Node = new RelatedMedia
-                    {
-                        Id = 199, Format = "MOVIE", Type = "ANIME", Status = "FINISHED",
-                        Title = new MediaTitle { Romaji = "Sen to Chihiro no Kamikakushi", English = "Spirited Away" },
-                        CoverImage = new MediaCoverImage
-                        {
-                            Medium = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx199-pHOAlOahL90Q.jpg",
-                            Large = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx199-pHOAlOahL90Q.jpg",
-                        },
-                        AverageScore = 91,
-                    },
-                },
-            ],
-            StaffMediaPageInfo = new PageInfo { HasNextPage = false, CurrentPage = 1 },
-            CharactersPageInfo = new PageInfo { HasNextPage = false, CurrentPage = 1 },
-        };
+        public static readonly Staff Staff = BuildStaffFixture();
+        public static readonly Character Character = BuildCharacterFixture();
 
-        // ── Character fixture (Chihiro). Used when CI deep-links to character-details. ────────────────────
-        public static readonly Character Character = new()
+        private static Staff BuildStaffFixture()
         {
-            Id = 2,
-            Name = new CharacterName
+            var staff = new Staff
             {
-                Full = "Chihiro Ogino",
-                Native = "荻野 千尋",
-                UserPreferred = "Chihiro Ogino",
-                Alternative = ["Sen"],
-            },
-            Image = new CharacterImage
-            {
-                Large = "https://s4.anilist.co/file/anilistcdn/character/large/b2-ZW2EYJTDbrxs.png",
-                Medium = "https://s4.anilist.co/file/anilistcdn/character/medium/b2-ZW2EYJTDbrxs.png",
-            },
-            Description = "Chihiro Ogino is the protagonist of Spirited Away.",
-            Gender = "Female",
-            Age = "10",
-            Favourites = 4_200,
-            SiteUrl = "https://anilist.co/character/2",
-            Media =
-            [
-                new CharacterMediaEdge
+                Id = 96,
+                Name = new CharacterName { Full = "Hayao Miyazaki", Native = "宮崎 駿", UserPreferred = "Hayao Miyazaki" },
+                Image = new CharacterImage
                 {
-                    CharacterRole = "MAIN",
-                    Node = new RelatedMedia
-                    {
-                        Id = 199, Format = "MOVIE", Type = "ANIME", Status = "FINISHED",
-                        Title = new MediaTitle { Romaji = "Sen to Chihiro no Kamikakushi", English = "Spirited Away" },
-                        CoverImage = new MediaCoverImage
-                        {
-                            Medium = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx199-pHOAlOahL90Q.jpg",
-                            Large = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx199-pHOAlOahL90Q.jpg",
-                        },
-                        AverageScore = 91,
-                    },
-                    VoiceActors =
-                    [
-                        new VoiceActor
-                        {
-                            Id = 95041,
-                            Name = new CharacterName { Full = "Rumi Hiiragi", Native = "柊 瑠美" },
-                            Image = new CharacterImage
-                            {
-                                Medium = "https://s4.anilist.co/file/anilistcdn/staff/medium/n95041-default.png",
-                            },
-                            Language = "Japanese",
-                        },
-                        new VoiceActor
-                        {
-                            Id = 95040,
-                            Name = new CharacterName { Full = "Daveigh Chase" },
-                            Image = new CharacterImage
-                            {
-                                Medium = "https://s4.anilist.co/file/anilistcdn/staff/medium/n95040-default.png",
-                            },
-                            Language = "English",
-                        },
-                    ],
+                    Large = "https://s4.anilist.co/file/anilistcdn/staff/large/n96-2dCmK4q5mUbM.png",
+                    Medium = "https://s4.anilist.co/file/anilistcdn/staff/medium/n96-2dCmK4q5mUbM.png",
                 },
-            ],
-            MediaPageInfo = new PageInfo { HasNextPage = false, CurrentPage = 1 },
-        };
+                Description = "Hayao Miyazaki is a Japanese film director, animator, manga artist, and producer. Co-founder of Studio Ghibli.",
+                LanguageV2 = "Japanese",
+                PrimaryOccupations = ["Director", "Animator", "Mangaka"],
+                Gender = "Male",
+                DateOfBirth = new MediaDate { Year = 1941, Month = 1, Day = 5 },
+                HomeTown = "Tokyo, Japan",
+                YearsActive = [1963],
+                Favourites = 14_500,
+                SiteUrl = "https://anilist.co/staff/96",
+                StaffMediaPageInfo = new PageInfo { HasNextPage = false, CurrentPage = 1 },
+                CharactersPageInfo = new PageInfo { HasNextPage = false, CurrentPage = 1 },
+            };
+            staff.StaffMedia.Add(new StaffMediaEdge
+            {
+                StaffRole = "Director",
+                Node = new RelatedMedia
+                {
+                    Id = 199, Format = "MOVIE", Type = "ANIME", Status = "FINISHED",
+                    Title = new MediaTitle { Romaji = "Sen to Chihiro no Kamikakushi", English = "Spirited Away" },
+                    CoverImage = new MediaCoverImage
+                    {
+                        Medium = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx199-pHOAlOahL90Q.jpg",
+                        Large = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx199-pHOAlOahL90Q.jpg",
+                    },
+                    AverageScore = 91,
+                },
+            });
+            return staff;
+        }
+
+        private static Character BuildCharacterFixture()
+        {
+            var character = new Character
+            {
+                Id = 2,
+                Name = new CharacterName
+                {
+                    Full = "Chihiro Ogino",
+                    Native = "荻野 千尋",
+                    UserPreferred = "Chihiro Ogino",
+                    Alternative = ["Sen"],
+                },
+                Image = new CharacterImage
+                {
+                    Large = "https://s4.anilist.co/file/anilistcdn/character/large/b2-ZW2EYJTDbrxs.png",
+                    Medium = "https://s4.anilist.co/file/anilistcdn/character/medium/b2-ZW2EYJTDbrxs.png",
+                },
+                Description = "Chihiro Ogino is the protagonist of Spirited Away.",
+                Gender = "Female",
+                Age = "10",
+                Favourites = 4_200,
+                SiteUrl = "https://anilist.co/character/2",
+                MediaPageInfo = new PageInfo { HasNextPage = false, CurrentPage = 1 },
+            };
+            character.Media.Add(new CharacterMediaEdge
+            {
+                CharacterRole = "MAIN",
+                Node = new RelatedMedia
+                {
+                    Id = 199, Format = "MOVIE", Type = "ANIME", Status = "FINISHED",
+                    Title = new MediaTitle { Romaji = "Sen to Chihiro no Kamikakushi", English = "Spirited Away" },
+                    CoverImage = new MediaCoverImage
+                    {
+                        Medium = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx199-pHOAlOahL90Q.jpg",
+                        Large = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx199-pHOAlOahL90Q.jpg",
+                    },
+                    AverageScore = 91,
+                },
+                VoiceActors =
+                [
+                    new VoiceActor
+                    {
+                        Id = 95041,
+                        Name = new CharacterName { Full = "Rumi Hiiragi", Native = "柊 瑠美" },
+                        Image = new CharacterImage
+                        {
+                            Medium = "https://s4.anilist.co/file/anilistcdn/staff/medium/n95041-default.png",
+                        },
+                        Language = "Japanese",
+                    },
+                    new VoiceActor
+                    {
+                        Id = 95040,
+                        Name = new CharacterName { Full = "Daveigh Chase" },
+                        Image = new CharacterImage
+                        {
+                            Medium = "https://s4.anilist.co/file/anilistcdn/staff/medium/n95040-default.png",
+                        },
+                        Language = "English",
+                    },
+                ],
+            });
+            return character;
+        }
     }
 }
 #endif

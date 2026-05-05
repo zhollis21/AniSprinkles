@@ -13,6 +13,9 @@ public partial class StaffDetailsPageModel : ObservableObject
     private readonly ILogger<StaffDetailsPageModel> _logger;
 
     private int _loadedStaffId;
+    private ParsedDescription _parsedDescription = ParsedDescription.Empty;
+    private string _voiceRolesSort = "FAVOURITES_DESC";
+    private string _productionRolesSort = "POPULARITY_DESC";
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CurrentStateKey))]
@@ -29,20 +32,31 @@ public partial class StaffDetailsPageModel : ObservableObject
     [NotifyPropertyChangedFor(nameof(FavouritesDisplay))]
     [NotifyPropertyChangedFor(nameof(HasFavourites))]
     [NotifyPropertyChangedFor(nameof(IsBirthdayToday))]
-    [NotifyPropertyChangedFor(nameof(HasDescription))]
+    [NotifyPropertyChangedFor(nameof(BioStats))]
+    [NotifyPropertyChangedFor(nameof(HasBioStats))]
+    [NotifyPropertyChangedFor(nameof(BioProse))]
+    [NotifyPropertyChangedFor(nameof(HasBioProse))]
+    [NotifyPropertyChangedFor(nameof(IsDescriptionTruncated))]
     [NotifyPropertyChangedFor(nameof(HasSpoilers))]
-    [NotifyPropertyChangedFor(nameof(BodyText))]
-    [NotifyPropertyChangedFor(nameof(QuickFactsChips))]
-    [NotifyPropertyChangedFor(nameof(HasQuickFacts))]
+    [NotifyPropertyChangedFor(nameof(BornStatDisplay))]
+    [NotifyPropertyChangedFor(nameof(AgeStatDisplay))]
+    [NotifyPropertyChangedFor(nameof(QuickFactChips))]
+    [NotifyPropertyChangedFor(nameof(HasQuickFactChips))]
     [NotifyPropertyChangedFor(nameof(HasVoiceRoles))]
     [NotifyPropertyChangedFor(nameof(HasProductionRoles))]
+    [NotifyPropertyChangedFor(nameof(VoiceRolesHasMore))]
+    [NotifyPropertyChangedFor(nameof(ProductionRolesHasMore))]
     [NotifyPropertyChangedFor(nameof(HasSiteUrl))]
     private Staff? _staff;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(BodyText))]
-    [NotifyPropertyChangedFor(nameof(SpoilerToggleLabel))]
+    [NotifyPropertyChangedFor(nameof(BioProse))]
+    [NotifyPropertyChangedFor(nameof(BioStats))]
     private bool _isShowingSpoilers;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(DescriptionMaxLines))]
+    private bool _isDescriptionExpanded;
 
     [ObservableProperty]
     private string _errorTitle = string.Empty;
@@ -59,6 +73,32 @@ public partial class StaffDetailsPageModel : ObservableObject
     [ObservableProperty]
     private bool _canRetry = true;
 
+    [ObservableProperty]
+    private bool _isLoadingVoiceRoles;
+
+    [ObservableProperty]
+    private bool _isLoadingProductionRoles;
+
+    public IReadOnlyList<SortOption> VoiceRolesSortOptions { get; } =
+    [
+        new SortOption { Code = "FAVOURITES_DESC", Display = "Favorites", IsSelected = true },
+        new SortOption { Code = "ROLE",            Display = "Role" },
+        new SortOption { Code = "RELEVANCE",       Display = "Relevance" },
+    ];
+
+    public IReadOnlyList<SortOption> ProductionRolesSortOptions { get; } =
+    [
+        new SortOption { Code = "POPULARITY_DESC", Display = "Popularity", IsSelected = true },
+        new SortOption { Code = "SCORE_DESC",      Display = "Avg Score" },
+        new SortOption { Code = "FAVOURITES_DESC", Display = "Favorites" },
+        new SortOption { Code = "START_DATE_DESC", Display = "Newest" },
+        new SortOption { Code = "START_DATE",      Display = "Oldest" },
+        new SortOption { Code = "TITLE_ROMAJI",    Display = "Title" },
+    ];
+
+    public bool VoiceRolesHasMore => Staff?.CharactersPageInfo?.HasNextPage == true;
+    public bool ProductionRolesHasMore => Staff?.StaffMediaPageInfo?.HasNextPage == true;
+
     public bool HasStaff => Staff is not null;
 
     public string PageTitle => Staff?.DisplayName ?? "Staff";
@@ -69,17 +109,37 @@ public partial class StaffDetailsPageModel : ObservableObject
 
     public bool IsBirthdayToday => BirthdayChecker.IsBirthdayToday(Staff?.DateOfBirth, DateTime.Today);
 
-    public bool HasDescription => !string.IsNullOrWhiteSpace(Staff?.Description);
+    public IReadOnlyList<BioStatRow> BioStats =>
+        _parsedDescription.Stats.Select(BuildBioStatRow).ToList();
 
-    public bool HasSpoilers => SpoilerHtmlProcessor.ContainsSpoilers(Staff?.Description);
+    public bool HasBioStats => _parsedDescription.Stats.Count > 0;
 
-    public string BodyText => SpoilerHtmlProcessor.Process(Staff?.Description, IsShowingSpoilers);
+    public string BioProse =>
+        SpoilerHtmlProcessor.Process(
+            AniListMarkdownProcessor.Process(_parsedDescription.Prose),
+            IsShowingSpoilers);
 
-    public string SpoilerToggleLabel => IsShowingSpoilers ? "👁  Hide spoilers" : "👁  Reveal spoilers";
+    public bool HasBioProse => !string.IsNullOrWhiteSpace(_parsedDescription.Prose);
 
-    public IReadOnlyList<string> QuickFactsChips => BuildQuickFacts();
+    public bool IsDescriptionTruncated => DescriptionTruncationHeuristic.IsTruncated(_parsedDescription.Prose);
 
-    public bool HasQuickFacts => QuickFactsChips.Count > 0;
+    public int DescriptionMaxLines => IsDescriptionExpanded
+        ? int.MaxValue
+        : DescriptionTruncationHeuristic.CollapsedMaxLines;
+
+    public bool HasSpoilers =>
+        _parsedDescription.Stats.Any(s => s.IsRowSpoiler || s.IsValueSpoiler)
+        || SpoilerHtmlProcessor.ContainsSpoilers(_parsedDescription.Prose);
+
+    public string BornStatDisplay
+        => FuzzyDateFormatter.Format(Staff?.DateOfBirth, includeYear: false) ?? "—";
+
+    public string AgeStatDisplay
+        => Staff?.Age is > 0 ? Staff.Age.Value.ToString(CultureInfo.InvariantCulture) : "—";
+
+    public IReadOnlyList<QuickFactChip> QuickFactChips => BuildQuickFactChips();
+
+    public bool HasQuickFactChips => QuickFactChips.Count > 0;
 
     public bool HasVoiceRoles => Staff?.Characters is { Count: > 0 };
 
@@ -97,6 +157,11 @@ public partial class StaffDetailsPageModel : ObservableObject
         _logger = logger;
     }
 
+    partial void OnStaffChanged(Staff? value)
+    {
+        _parsedDescription = DescriptionParser.Parse(value?.Description);
+    }
+
     public async Task LoadAsync(int staffId)
     {
         if (staffId <= 0)
@@ -111,6 +176,7 @@ public partial class StaffDetailsPageModel : ObservableObject
         {
             CurrentState = PageState.InitialLoading;
             IsShowingSpoilers = false;
+            IsDescriptionExpanded = false;
         }
 
         try
@@ -136,6 +202,59 @@ public partial class StaffDetailsPageModel : ObservableObject
         }
     }
 
+    private BioStatRow BuildBioStatRow(DescriptionStatRow row)
+    {
+        var labelHidden = row.IsRowSpoiler && !IsShowingSpoilers;
+        var valueHidden = (row.IsRowSpoiler || row.IsValueSpoiler) && !IsShowingSpoilers;
+
+        return new BioStatRow
+        {
+            LabelDisplay = labelHidden ? Bar(row.Label.Length, max: 12) : row.Label,
+            ValueDisplay = valueHidden ? Bar(row.Value.Length, max: 24) : row.Value,
+            IsLabelSpoilerHidden = labelHidden,
+            IsValueSpoilerHidden = valueHidden,
+        };
+    }
+
+    private static string Bar(int sourceLength, int max)
+        => new('█', Math.Clamp(sourceLength / 2, 4, max));
+
+    private List<QuickFactChip> BuildQuickFactChips()
+    {
+        var chips = new List<QuickFactChip>();
+        if (Staff is null)
+        {
+            return chips;
+        }
+
+        // Each occupation gets its own chip — they color-code more nicely than a single joined string.
+        if (Staff.PrimaryOccupations is { Count: > 0 } occupations)
+        {
+            foreach (var occ in occupations.Where(o => !string.IsNullOrWhiteSpace(o)))
+            {
+                chips.Add(new QuickFactChip(occ));
+            }
+        }
+
+        var yearsActive = YearsActiveFormatter.Format(Staff.YearsActive, Staff.DateOfDeath);
+        if (yearsActive is not null)
+        {
+            chips.Add(new QuickFactChip(yearsActive));
+        }
+
+        if (!string.IsNullOrWhiteSpace(Staff.LanguageV2))
+        {
+            chips.Add(new QuickFactChip(Staff.LanguageV2));
+        }
+
+        if (!string.IsNullOrWhiteSpace(Staff.HomeTown))
+        {
+            chips.Add(new QuickFactChip(Staff.HomeTown));
+        }
+
+        return chips;
+    }
+
     private void ShowError(string title, string subtitle, bool canRetry, string details = "")
     {
         ErrorTitle = title;
@@ -144,50 +263,6 @@ public partial class StaffDetailsPageModel : ObservableObject
         ErrorDetails = details;
         CanRetry = canRetry;
         CurrentState = PageState.Error;
-    }
-
-    private List<string> BuildQuickFacts()
-    {
-        var chips = new List<string>();
-        if (Staff is null)
-        {
-            return chips;
-        }
-
-        if (Staff.PrimaryOccupations is { Count: > 0 })
-        {
-            chips.Add(string.Join(" · ", Staff.PrimaryOccupations));
-        }
-
-        var yearsActive = YearsActiveFormatter.Format(Staff.YearsActive, Staff.DateOfDeath);
-        if (yearsActive is not null)
-        {
-            chips.Add(yearsActive);
-        }
-
-        if (!string.IsNullOrWhiteSpace(Staff.HomeTown))
-        {
-            chips.Add(Staff.HomeTown);
-        }
-
-        // Suppress year on the DOB chip — the years-active chip already conveys lifespan.
-        var dob = FuzzyDateFormatter.Format(Staff.DateOfBirth, includeYear: false);
-        if (dob is not null)
-        {
-            chips.Add($"Born {dob}");
-        }
-
-        if (Staff.Age is > 0 && Staff.DateOfDeath is null)
-        {
-            chips.Add($"Age {Staff.Age}");
-        }
-
-        if (!string.IsNullOrWhiteSpace(Staff.LanguageV2))
-        {
-            chips.Add(Staff.LanguageV2);
-        }
-
-        return chips;
     }
 
     private static string FormatFavourites(int? favourites)
@@ -212,6 +287,12 @@ public partial class StaffDetailsPageModel : ObservableObject
     }
 
     [RelayCommand]
+    private void ToggleDescription()
+    {
+        IsDescriptionExpanded = !IsDescriptionExpanded;
+    }
+
+    [RelayCommand]
     private async Task OpenSiteUrl()
     {
         if (string.IsNullOrWhiteSpace(Staff?.SiteUrl))
@@ -226,6 +307,157 @@ public partial class StaffDetailsPageModel : ObservableObject
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to open AniList staff URL");
+        }
+    }
+
+    [RelayCommand]
+    private async Task SelectVoiceRolesSort(string? code)
+    {
+        if (string.IsNullOrEmpty(code) || code == _voiceRolesSort || Staff is null || IsLoadingVoiceRoles)
+        {
+            return;
+        }
+
+        var previous = _voiceRolesSort;
+        ApplyVoiceRolesSortSelection(code);
+
+        IsLoadingVoiceRoles = true;
+        try
+        {
+            var (items, pageInfo) = await _aniListClient
+                .LoadStaffCharactersPageAsync(_loadedStaffId, page: 1, sort: code).ConfigureAwait(true);
+            Staff.Characters.Clear();
+            foreach (var item in items)
+            {
+                Staff.Characters.Add(item);
+            }
+            Staff.CharactersPageInfo = pageInfo;
+            OnPropertyChanged(nameof(VoiceRolesHasMore));
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to apply Voice Roles sort {Sort} for staff {StaffId}", code, _loadedStaffId);
+            // Revert chip selection so what's highlighted matches the items actually shown.
+            ApplyVoiceRolesSortSelection(previous);
+        }
+        finally
+        {
+            IsLoadingVoiceRoles = false;
+        }
+    }
+
+    private void ApplyVoiceRolesSortSelection(string code)
+    {
+        foreach (var opt in VoiceRolesSortOptions)
+        {
+            opt.IsSelected = string.Equals(opt.Code, code, StringComparison.Ordinal);
+        }
+        _voiceRolesSort = code;
+    }
+
+    [RelayCommand]
+    private async Task SelectProductionRolesSort(string? code)
+    {
+        if (string.IsNullOrEmpty(code) || code == _productionRolesSort || Staff is null || IsLoadingProductionRoles)
+        {
+            return;
+        }
+
+        var previous = _productionRolesSort;
+        ApplyProductionRolesSortSelection(code);
+
+        IsLoadingProductionRoles = true;
+        try
+        {
+            var (items, pageInfo) = await _aniListClient
+                .LoadStaffMediaPageAsync(_loadedStaffId, page: 1, sort: code).ConfigureAwait(true);
+            Staff.StaffMedia.Clear();
+            foreach (var item in items)
+            {
+                Staff.StaffMedia.Add(item);
+            }
+            Staff.StaffMediaPageInfo = pageInfo;
+            OnPropertyChanged(nameof(ProductionRolesHasMore));
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to apply Production Roles sort {Sort} for staff {StaffId}", code, _loadedStaffId);
+            ApplyProductionRolesSortSelection(previous);
+        }
+        finally
+        {
+            IsLoadingProductionRoles = false;
+        }
+    }
+
+    private void ApplyProductionRolesSortSelection(string code)
+    {
+        foreach (var opt in ProductionRolesSortOptions)
+        {
+            opt.IsSelected = string.Equals(opt.Code, code, StringComparison.Ordinal);
+        }
+        _productionRolesSort = code;
+    }
+
+    [RelayCommand]
+    private async Task LoadMoreVoiceRoles()
+    {
+        if (Staff is null || IsLoadingVoiceRoles || !VoiceRolesHasMore)
+        {
+            return;
+        }
+
+        IsLoadingVoiceRoles = true;
+        try
+        {
+            var nextPage = (Staff.CharactersPageInfo?.CurrentPage ?? 1) + 1;
+            var (items, pageInfo) = await _aniListClient
+                .LoadStaffCharactersPageAsync(_loadedStaffId, page: nextPage, sort: _voiceRolesSort).ConfigureAwait(true);
+            foreach (var item in items)
+            {
+                Staff.Characters.Add(item);
+            }
+            Staff.CharactersPageInfo = pageInfo;
+            OnPropertyChanged(nameof(VoiceRolesHasMore));
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to load more Voice Roles for staff {StaffId}", _loadedStaffId);
+        }
+        finally
+        {
+            IsLoadingVoiceRoles = false;
+        }
+    }
+
+    [RelayCommand]
+    private async Task LoadMoreProductionRoles()
+    {
+        if (Staff is null || IsLoadingProductionRoles || !ProductionRolesHasMore)
+        {
+            return;
+        }
+
+        IsLoadingProductionRoles = true;
+        try
+        {
+            var nextPage = (Staff.StaffMediaPageInfo?.CurrentPage ?? 1) + 1;
+            var (items, pageInfo) = await _aniListClient
+                .LoadStaffMediaPageAsync(_loadedStaffId, page: nextPage, sort: _productionRolesSort).ConfigureAwait(true);
+            foreach (var item in items)
+            {
+                Staff.StaffMedia.Add(item);
+            }
+            Staff.StaffMediaPageInfo = pageInfo;
+            OnPropertyChanged(nameof(ProductionRolesHasMore));
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to load more Production Roles for staff {StaffId}", _loadedStaffId);
+        }
+        finally
+        {
+            IsLoadingProductionRoles = false;
         }
     }
 
@@ -262,3 +494,5 @@ public partial class StaffDetailsPageModel : ObservableObject
         });
     }
 }
+
+public sealed record QuickFactChip(string Display);

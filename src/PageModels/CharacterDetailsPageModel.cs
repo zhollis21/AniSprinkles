@@ -1,4 +1,3 @@
-using System.Collections.ObjectModel;
 using System.Globalization;
 using AniSprinkles.Utilities;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -14,6 +13,9 @@ public partial class CharacterDetailsPageModel : ObservableObject
     private readonly ILogger<CharacterDetailsPageModel> _logger;
 
     private int _loadedCharacterId;
+    private ParsedDescription _parsedDescription = ParsedDescription.Empty;
+    private string _appearancesSort = "POPULARITY_DESC";
+    private string _voiceActorsSort = "LANGUAGE";
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CurrentStateKey))]
@@ -30,26 +32,35 @@ public partial class CharacterDetailsPageModel : ObservableObject
     [NotifyPropertyChangedFor(nameof(FavouritesDisplay))]
     [NotifyPropertyChangedFor(nameof(HasFavourites))]
     [NotifyPropertyChangedFor(nameof(IsBirthdayToday))]
-    [NotifyPropertyChangedFor(nameof(HasDescription))]
+    [NotifyPropertyChangedFor(nameof(BioStats))]
+    [NotifyPropertyChangedFor(nameof(HasBioStats))]
+    [NotifyPropertyChangedFor(nameof(BioProse))]
+    [NotifyPropertyChangedFor(nameof(HasBioProse))]
+    [NotifyPropertyChangedFor(nameof(IsDescriptionTruncated))]
     [NotifyPropertyChangedFor(nameof(HasSpoilers))]
-    [NotifyPropertyChangedFor(nameof(BodyText))]
-    [NotifyPropertyChangedFor(nameof(QuickFactsChips))]
-    [NotifyPropertyChangedFor(nameof(HasQuickFacts))]
     [NotifyPropertyChangedFor(nameof(AlternativeNames))]
     [NotifyPropertyChangedFor(nameof(HasAlternativeNames))]
     [NotifyPropertyChangedFor(nameof(HasAppearances))]
+    [NotifyPropertyChangedFor(nameof(AppearancesHasMore))]
     [NotifyPropertyChangedFor(nameof(HasSiteUrl))]
+    [NotifyPropertyChangedFor(nameof(AgeStatDisplay))]
+    [NotifyPropertyChangedFor(nameof(BirthdayStatDisplay))]
+    [NotifyPropertyChangedFor(nameof(GenderDisplay))]
+    [NotifyPropertyChangedFor(nameof(HasGender))]
+    [NotifyPropertyChangedFor(nameof(BloodTypeDisplay))]
+    [NotifyPropertyChangedFor(nameof(HasBloodType))]
+    [NotifyPropertyChangedFor(nameof(HasQuickFacts))]
     private Character? _character;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(BodyText))]
-    [NotifyPropertyChangedFor(nameof(SpoilerToggleLabel))]
+    [NotifyPropertyChangedFor(nameof(BioProse))]
+    [NotifyPropertyChangedFor(nameof(BioStats))]
     [NotifyPropertyChangedFor(nameof(AlternativeNames))]
     private bool _isShowingSpoilers;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(FilteredVoiceActors))]
-    private string _selectedLanguage = string.Empty;
+    [NotifyPropertyChangedFor(nameof(DescriptionMaxLines))]
+    private bool _isDescriptionExpanded;
 
     [ObservableProperty]
     private string _errorTitle = string.Empty;
@@ -66,9 +77,26 @@ public partial class CharacterDetailsPageModel : ObservableObject
     [ObservableProperty]
     private bool _canRetry = true;
 
-    public ObservableCollection<LanguageChip> LanguageChips { get; } = [];
+    [ObservableProperty]
+    private bool _isLoadingAppearances;
 
-    public bool HasLanguageChoices => LanguageChips.Count > 1;
+    public IReadOnlyList<SortOption> AppearancesSortOptions { get; } =
+    [
+        new SortOption { Code = "POPULARITY_DESC", Display = "Popularity", IsSelected = true },
+        new SortOption { Code = "SCORE_DESC",      Display = "Avg Score" },
+        new SortOption { Code = "FAVOURITES_DESC", Display = "Favorites" },
+        new SortOption { Code = "START_DATE_DESC", Display = "Newest" },
+        new SortOption { Code = "START_DATE",      Display = "Oldest" },
+        new SortOption { Code = "TITLE_ROMAJI",    Display = "Title" },
+    ];
+
+    public IReadOnlyList<SortOption> VoiceActorsSortOptions { get; } =
+    [
+        new SortOption { Code = "LANGUAGE", Display = "Language", IsSelected = true },
+        new SortOption { Code = "NAME",     Display = "Name" },
+    ];
+
+    public bool AppearancesHasMore => Character?.MediaPageInfo?.HasNextPage == true;
 
     public bool HasCharacter => Character is not null;
 
@@ -80,18 +108,45 @@ public partial class CharacterDetailsPageModel : ObservableObject
 
     public bool IsBirthdayToday => BirthdayChecker.IsBirthdayToday(Character?.DateOfBirth, DateTime.Today);
 
-    public bool HasDescription => !string.IsNullOrWhiteSpace(Character?.Description);
+    public IReadOnlyList<BioStatRow> BioStats =>
+        _parsedDescription.Stats.Select(BuildBioStatRow).ToList();
 
-    public bool HasSpoilers => SpoilerHtmlProcessor.ContainsSpoilers(Character?.Description)
+    public bool HasBioStats => _parsedDescription.Stats.Count > 0;
+
+    public string BioProse =>
+        SpoilerHtmlProcessor.Process(
+            AniListMarkdownProcessor.Process(_parsedDescription.Prose),
+            IsShowingSpoilers);
+
+    public bool HasBioProse => !string.IsNullOrWhiteSpace(_parsedDescription.Prose);
+
+    public bool IsDescriptionTruncated => DescriptionTruncationHeuristic.IsTruncated(_parsedDescription.Prose);
+
+    public int DescriptionMaxLines => IsDescriptionExpanded
+        ? int.MaxValue
+        : DescriptionTruncationHeuristic.CollapsedMaxLines;
+
+    public bool HasSpoilers =>
+        _parsedDescription.Stats.Any(s => s.IsRowSpoiler || s.IsValueSpoiler)
+        || SpoilerHtmlProcessor.ContainsSpoilers(_parsedDescription.Prose)
         || (Character?.Name?.AlternativeSpoiler is { Count: > 0 });
 
-    public string BodyText => SpoilerHtmlProcessor.Process(Character?.Description, IsShowingSpoilers);
+    public string AgeStatDisplay => string.IsNullOrWhiteSpace(Character?.Age) ? "—" : Character!.Age!;
 
-    public string SpoilerToggleLabel => IsShowingSpoilers ? "👁  Hide spoilers" : "👁  Reveal spoilers";
+    public string BirthdayStatDisplay
+        => FuzzyDateFormatter.Format(Character?.DateOfBirth, includeYear: false) ?? "—";
 
-    public IReadOnlyList<string> QuickFactsChips => BuildQuickFacts();
+    public string GenderDisplay => Character?.Gender ?? string.Empty;
 
-    public bool HasQuickFacts => QuickFactsChips.Count > 0;
+    public bool HasGender => !string.IsNullOrWhiteSpace(Character?.Gender);
+
+    public string BloodTypeDisplay => string.IsNullOrWhiteSpace(Character?.BloodType)
+        ? string.Empty
+        : $"Blood type {Character!.BloodType}";
+
+    public bool HasBloodType => !string.IsNullOrWhiteSpace(Character?.BloodType);
+
+    public bool HasQuickFacts => HasGender || HasBloodType;
 
     public IReadOnlyList<string> AlternativeNames => BuildAlternativeNames();
 
@@ -101,7 +156,7 @@ public partial class CharacterDetailsPageModel : ObservableObject
 
     public bool HasSiteUrl => !string.IsNullOrWhiteSpace(Character?.SiteUrl);
 
-    public IReadOnlyList<VoiceActor> FilteredVoiceActors => BuildFilteredVoiceActors();
+    public IReadOnlyList<VoiceActor> VoiceActors => BuildVoiceActors();
 
     public CharacterDetailsPageModel(
         IAniListClient aniListClient,
@@ -111,6 +166,11 @@ public partial class CharacterDetailsPageModel : ObservableObject
         _aniListClient = aniListClient;
         _navigationService = navigationService;
         _logger = logger;
+    }
+
+    partial void OnCharacterChanged(Character? value)
+    {
+        _parsedDescription = DescriptionParser.Parse(value?.Description);
     }
 
     public async Task LoadAsync(int characterId)
@@ -127,6 +187,7 @@ public partial class CharacterDetailsPageModel : ObservableObject
         {
             CurrentState = PageState.InitialLoading;
             IsShowingSpoilers = false;
+            IsDescriptionExpanded = false;
         }
 
         try
@@ -139,7 +200,6 @@ public partial class CharacterDetailsPageModel : ObservableObject
             }
 
             Character = character;
-            BuildLanguageChips();
             CurrentState = PageState.Content;
         }
         catch (Exception ex)
@@ -153,71 +213,53 @@ public partial class CharacterDetailsPageModel : ObservableObject
         }
     }
 
-    private void BuildLanguageChips()
+    private BioStatRow BuildBioStatRow(DescriptionStatRow row)
     {
-        LanguageChips.Clear();
-        if (Character is null)
+        var labelHidden = row.IsRowSpoiler && !IsShowingSpoilers;
+        var valueHidden = (row.IsRowSpoiler || row.IsValueSpoiler) && !IsShowingSpoilers;
+
+        return new BioStatRow
         {
-            return;
-        }
-
-        var languages = Character.Media
-            .SelectMany(m => m.VoiceActors)
-            .Select(va => va.Language)
-            .Where(l => !string.IsNullOrWhiteSpace(l))
-            .Distinct(StringComparer.OrdinalIgnoreCase)
-            .OrderBy(l => l, StringComparer.OrdinalIgnoreCase)
-            .ToList();
-
-        // "All" chip first, selected by default.
-        LanguageChips.Add(new LanguageChip { Code = string.Empty, Display = "All", IsSelected = true });
-        foreach (var lang in languages)
-        {
-            LanguageChips.Add(new LanguageChip { Code = lang!, Display = lang! });
-        }
-
-        SelectedLanguage = string.Empty;
-        OnPropertyChanged(nameof(HasLanguageChoices));
+            LabelDisplay = labelHidden ? Bar(row.Label.Length, max: 12) : row.Label,
+            ValueDisplay = valueHidden ? Bar(row.Value.Length, max: 24) : row.Value,
+            IsLabelSpoilerHidden = labelHidden,
+            IsValueSpoilerHidden = valueHidden,
+        };
     }
 
-    [RelayCommand]
-    private void SelectLanguage(string? code)
-    {
-        var normalized = code ?? string.Empty;
-        foreach (var chip in LanguageChips)
-        {
-            chip.IsSelected = string.Equals(chip.Code, normalized, StringComparison.OrdinalIgnoreCase);
-        }
-        SelectedLanguage = normalized;
-    }
+    private static string Bar(int sourceLength, int max)
+        => new('█', Math.Clamp(sourceLength / 2, 4, max));
 
-    private List<VoiceActor> BuildFilteredVoiceActors()
+    private List<VoiceActor> BuildVoiceActors()
     {
         if (Character is null)
         {
             return [];
         }
 
+        // Voice actors are returned nested inside media edges with no AniList sort that survives
+        // the dedup pass — sort applies client-side on the deduped list (LANGUAGE groups by
+        // language so users can scan to a region without an explicit filter).
         var seen = new HashSet<int>();
         var result = new List<VoiceActor>();
         foreach (var edge in Character.Media)
         {
             foreach (var va in edge.VoiceActors)
             {
-                if (!seen.Add(va.Id))
-                {
-                    continue;
-                }
-
-                if (string.IsNullOrEmpty(SelectedLanguage)
-                    || string.Equals(va.Language, SelectedLanguage, StringComparison.OrdinalIgnoreCase))
+                if (seen.Add(va.Id))
                 {
                     result.Add(va);
                 }
             }
         }
 
-        return result;
+        return _voiceActorsSort switch
+        {
+            "NAME" => result.OrderBy(va => va.Name?.Full ?? string.Empty, StringComparer.OrdinalIgnoreCase).ToList(),
+            _     => result.OrderBy(va => va.Language ?? string.Empty, StringComparer.OrdinalIgnoreCase)
+                           .ThenBy(va => va.Name?.Full ?? string.Empty, StringComparer.OrdinalIgnoreCase)
+                           .ToList(),
+        };
     }
 
     private void ShowError(string title, string subtitle, bool canRetry, string details = "")
@@ -228,38 +270,6 @@ public partial class CharacterDetailsPageModel : ObservableObject
         ErrorDetails = details;
         CanRetry = canRetry;
         CurrentState = PageState.Error;
-    }
-
-    private List<string> BuildQuickFacts()
-    {
-        var chips = new List<string>();
-        if (Character is null)
-        {
-            return chips;
-        }
-
-        if (!string.IsNullOrWhiteSpace(Character.Gender))
-        {
-            chips.Add(Character.Gender);
-        }
-
-        if (!string.IsNullOrWhiteSpace(Character.Age))
-        {
-            chips.Add($"Age {Character.Age}");
-        }
-
-        var dob = FuzzyDateFormatter.Format(Character.DateOfBirth, includeYear: false);
-        if (dob is not null)
-        {
-            chips.Add($"Born {dob}");
-        }
-
-        if (!string.IsNullOrWhiteSpace(Character.BloodType))
-        {
-            chips.Add($"Blood type {Character.BloodType}");
-        }
-
-        return chips;
     }
 
     private List<string> BuildAlternativeNames()
@@ -302,6 +312,12 @@ public partial class CharacterDetailsPageModel : ObservableObject
     }
 
     [RelayCommand]
+    private void ToggleDescription()
+    {
+        IsDescriptionExpanded = !IsDescriptionExpanded;
+    }
+
+    [RelayCommand]
     private async Task OpenSiteUrl()
     {
         if (string.IsNullOrWhiteSpace(Character?.SiteUrl))
@@ -317,6 +333,100 @@ public partial class CharacterDetailsPageModel : ObservableObject
         {
             _logger.LogError(ex, "Failed to open AniList character URL");
         }
+    }
+
+    [RelayCommand]
+    private async Task SelectAppearancesSort(string? code)
+    {
+        if (string.IsNullOrEmpty(code) || code == _appearancesSort || Character is null || IsLoadingAppearances)
+        {
+            return;
+        }
+
+        var previous = _appearancesSort;
+        ApplyAppearancesSortSelection(code);
+
+        IsLoadingAppearances = true;
+        try
+        {
+            var (items, pageInfo) = await _aniListClient
+                .LoadCharacterMediaPageAsync(_loadedCharacterId, page: 1, sort: code).ConfigureAwait(true);
+            Character.Media.Clear();
+            foreach (var item in items)
+            {
+                Character.Media.Add(item);
+            }
+            Character.MediaPageInfo = pageInfo;
+            OnPropertyChanged(nameof(VoiceActors));
+            OnPropertyChanged(nameof(AppearancesHasMore));
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to apply Appearances sort {Sort} for character {CharacterId}", code, _loadedCharacterId);
+            // Revert chip selection so what's highlighted matches the items actually shown.
+            ApplyAppearancesSortSelection(previous);
+        }
+        finally
+        {
+            IsLoadingAppearances = false;
+        }
+    }
+
+    private void ApplyAppearancesSortSelection(string code)
+    {
+        foreach (var opt in AppearancesSortOptions)
+        {
+            opt.IsSelected = string.Equals(opt.Code, code, StringComparison.Ordinal);
+        }
+        _appearancesSort = code;
+    }
+
+    [RelayCommand]
+    private async Task LoadMoreAppearances()
+    {
+        if (Character is null || IsLoadingAppearances || !AppearancesHasMore)
+        {
+            return;
+        }
+
+        IsLoadingAppearances = true;
+        try
+        {
+            var nextPage = (Character.MediaPageInfo?.CurrentPage ?? 1) + 1;
+            var (items, pageInfo) = await _aniListClient
+                .LoadCharacterMediaPageAsync(_loadedCharacterId, page: nextPage, sort: _appearancesSort).ConfigureAwait(true);
+            foreach (var item in items)
+            {
+                Character.Media.Add(item);
+            }
+            Character.MediaPageInfo = pageInfo;
+            OnPropertyChanged(nameof(VoiceActors));
+            OnPropertyChanged(nameof(AppearancesHasMore));
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to load more Appearances for character {CharacterId}", _loadedCharacterId);
+        }
+        finally
+        {
+            IsLoadingAppearances = false;
+        }
+    }
+
+    [RelayCommand]
+    private void SelectVoiceActorsSort(string? code)
+    {
+        if (string.IsNullOrEmpty(code) || code == _voiceActorsSort)
+        {
+            return;
+        }
+
+        foreach (var opt in VoiceActorsSortOptions)
+        {
+            opt.IsSelected = string.Equals(opt.Code, code, StringComparison.Ordinal);
+        }
+        _voiceActorsSort = code;
+        OnPropertyChanged(nameof(VoiceActors));
     }
 
     [RelayCommand]
