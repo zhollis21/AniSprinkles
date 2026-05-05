@@ -1,0 +1,534 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pageModels="clr-namespace:AniSprinkles.PageModels"
+             xmlns:models="clr-namespace:AniSprinkles.Models"
+             xmlns:icons="clr-namespace:IconFont.Maui.FluentIcons;assembly=IconFont.Maui.FluentIcons"
+             xmlns:views="clr-namespace:AniSprinkles.Views"
+             x:Class="AniSprinkles.Views.StaffDetailsLoadedContentView"
+             x:DataType="pageModels:StaffDetailsPageModel"
+             x:Name="RootView">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="{StaticResource LayoutPadding}" Spacing="16">
+
+            <!-- ============================================ -->
+            <!-- HERO: dimmed-self backdrop + portrait + name -->
+            <!-- ============================================ -->
+            <Border Style="{StaticResource CardStyle}" Padding="0">
+                <Grid HeightRequest="240">
+                    <Image Source="{Binding Staff.Image.Large}"
+                           Aspect="AspectFill"
+                           Opacity="0.35" />
+
+                    <BoxView>
+                        <BoxView.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <GradientStop Color="#80000000" Offset="0" />
+                                <GradientStop Color="#E8000000" Offset="1" />
+                            </LinearGradientBrush>
+                        </BoxView.Background>
+                    </BoxView>
+
+                    <Grid ColumnDefinitions="120,*"
+                          ColumnSpacing="14"
+                          VerticalOptions="End"
+                          Padding="16,0,16,16">
+                        <Border Grid.Column="0"
+                                WidthRequest="120" HeightRequest="170"
+                                StrokeShape="RoundRectangle 10"
+                                StrokeThickness="2"
+                                Stroke="{StaticResource SecondaryBackground}"
+                                Padding="0"
+                                Margin="0,60,0,0">
+                            <Image Source="{Binding Staff.Image.Large}"
+                                   Aspect="AspectFill"
+                                   WidthRequest="120"
+                                   HeightRequest="170" />
+                        </Border>
+
+                        <VerticalStackLayout Grid.Column="1" Spacing="6" VerticalOptions="End">
+                            <Label Text="{Binding Staff.DisplayName}"
+                                   Style="{StaticResource Title1}"
+                                   FontSize="24"
+                                   TextColor="{Binding Staff.DisplayName, Converter={StaticResource RainbowAccentConverter}}"
+                                   LineBreakMode="WordWrap">
+                                <Label.Shadow>
+                                    <Shadow Offset="0,0" Radius="6" Brush="#000000" Opacity="0.9" />
+                                </Label.Shadow>
+                            </Label>
+                            <Label Text="{Binding Staff.Name.Native}"
+                                   Style="{StaticResource Caption1Strong}"
+                                   TextColor="{StaticResource Gray300}"
+                                   IsVisible="{Binding Staff.Name.Native, Converter={StaticResource StringNotNullOrEmptyConverter}}" />
+
+                            <HorizontalStackLayout Spacing="10" Margin="0,4,0,0">
+                                <HorizontalStackLayout Spacing="4" IsVisible="{Binding HasFavourites}">
+                                    <Image WidthRequest="14" HeightRequest="14" VerticalOptions="Center">
+                                        <Image.Source>
+                                            <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Heart24}"
+                                                             FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                             Color="{StaticResource RainbowPink}"
+                                                             Size="14" />
+                                        </Image.Source>
+                                    </Image>
+                                    <Label Text="{Binding FavouritesDisplay}"
+                                           Style="{StaticResource Caption1Strong}"
+                                           TextColor="{StaticResource Gray100}"
+                                           VerticalTextAlignment="Center" />
+                                </HorizontalStackLayout>
+
+                                <Border BackgroundColor="{StaticResource RainbowYellow}"
+                                        Padding="6,2"
+                                        StrokeShape="RoundRectangle 12"
+                                        StrokeThickness="0"
+                                        IsVisible="{Binding IsBirthdayToday}">
+                                    <Label Text="🎂  Birthday today!"
+                                           Style="{StaticResource Caption2}"
+                                           TextColor="Black"
+                                           FontAttributes="Bold" />
+                                </Border>
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <!-- ============================================ -->
+            <!-- STAT CARDS: Born, Age, Favourites -->
+            <!-- ============================================ -->
+            <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
+                <Border Grid.Column="0" Style="{StaticResource CardStyle}" Padding="10,10">
+                    <VerticalStackLayout Spacing="2" HorizontalOptions="Fill">
+                        <Image WidthRequest="18" HeightRequest="18" HorizontalOptions="Center">
+                            <Image.Source>
+                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Calendar24}"
+                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                 Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Popularity'}"
+                                                 Size="18" />
+                            </Image.Source>
+                        </Image>
+                        <Label Text="{Binding BornStatDisplay}" Style="{StaticResource Title2}" HorizontalTextAlignment="Center"
+                               TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Popularity'}" />
+                        <Label Text="Born" Style="{StaticResource Caption2}" TextColor="{StaticResource Gray400}" HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </Border>
+                <Border Grid.Column="1" Style="{StaticResource CardStyle}" Padding="10,10">
+                    <VerticalStackLayout Spacing="2" HorizontalOptions="Fill">
+                        <Image WidthRequest="18" HeightRequest="18" HorizontalOptions="Center">
+                            <Image.Source>
+                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Person24}"
+                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                 Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Score'}"
+                                                 Size="18" />
+                            </Image.Source>
+                        </Image>
+                        <Label Text="{Binding AgeStatDisplay}" Style="{StaticResource Title2}" HorizontalTextAlignment="Center"
+                               TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Score'}" />
+                        <Label Text="Age" Style="{StaticResource Caption2}" TextColor="{StaticResource Gray400}" HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </Border>
+                <Border Grid.Column="2" Style="{StaticResource CardStyle}" Padding="10,10">
+                    <VerticalStackLayout Spacing="2" HorizontalOptions="Fill">
+                        <Image WidthRequest="18" HeightRequest="18" HorizontalOptions="Center">
+                            <Image.Source>
+                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Heart24}"
+                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                 Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Favourites'}"
+                                                 Size="18" />
+                            </Image.Source>
+                        </Image>
+                        <Label Text="{Binding FavouritesDisplay, FallbackValue='—'}"
+                               Style="{StaticResource Title2}" HorizontalTextAlignment="Center"
+                               TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Favourites'}" />
+                        <Label Text="Favourites" Style="{StaticResource Caption2}" TextColor="{StaticResource Gray400}" HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
+
+            <!-- ============================================ -->
+            <!-- QUICK FACT CHIPS: occupations + years active + language + hometown -->
+            <!-- ============================================ -->
+            <FlexLayout Wrap="Wrap" JustifyContent="Start" AlignItems="Center"
+                        IsVisible="{Binding HasQuickFactChips}"
+                        BindableLayout.ItemsSource="{Binding QuickFactChips}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="pageModels:QuickFactChip">
+                        <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6">
+                            <Label Text="{Binding Display}" Style="{StaticResource ChipLabelStyle}"
+                                   TextColor="{Binding Display, Converter={StaticResource RainbowAccentConverter}}" />
+                        </Border>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </FlexLayout>
+
+            <!-- ============================================ -->
+            <!-- BIO STAT ROWS — parsed __Label:__ value lines (rare on staff but supported) -->
+            <!-- ============================================ -->
+            <Border Style="{StaticResource CardStyle}" Padding="16"
+                    IsVisible="{Binding HasBioStats}">
+                <VerticalStackLayout Spacing="2"
+                                     BindableLayout.ItemsSource="{Binding BioStats}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="pageModels:BioStatRow">
+                            <Grid ColumnDefinitions="130,*" ColumnSpacing="14" Padding="0,4">
+                                <Label Grid.Column="0" Text="{Binding LabelDisplay}"
+                                       Style="{StaticResource Caption2}"
+                                       TextColor="{StaticResource Gray400}"
+                                       FontAttributes="Bold"
+                                       VerticalTextAlignment="Start"
+                                       LineBreakMode="WordWrap" />
+                                <Label Grid.Column="1" Text="{Binding ValueDisplay}"
+                                       Style="{StaticResource Caption1}"
+                                       TextColor="{StaticResource Gray100}"
+                                       LineBreakMode="WordWrap" />
+                            </Grid>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- ============================================ -->
+            <!-- BIO PROSE — Markdown-processed prose w/ Read more + Spoiler toggle -->
+            <!-- ============================================ -->
+            <Border Style="{StaticResource CardStyle}" Padding="16"
+                    IsVisible="{Binding HasBioProse}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="{Binding BioProse}"
+                           Style="{StaticResource Body2}"
+                           TextColor="{StaticResource Gray400}"
+                           TextType="Html"
+                           MaxLines="{Binding DescriptionMaxLines}"
+                           LineBreakMode="TailTruncation" />
+                    <HorizontalStackLayout Spacing="14">
+                        <Label Style="{StaticResource Caption1Strong}"
+                               IsVisible="{Binding IsDescriptionTruncated}"
+                               TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='ReadMore'}">
+                            <Label.Text>
+                                <Binding Path="IsDescriptionExpanded" StringFormat="{}{0}">
+                                    <Binding.FallbackValue>Read more</Binding.FallbackValue>
+                                </Binding>
+                            </Label.Text>
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label" Binding="{Binding IsDescriptionExpanded}" Value="True">
+                                    <Setter Property="Text" Value="Show less" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Label" Binding="{Binding IsDescriptionExpanded}" Value="False">
+                                    <Setter Property="Text" Value="Read more" />
+                                </DataTrigger>
+                            </Label.Triggers>
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ToggleDescriptionCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label Style="{StaticResource Caption1Strong}"
+                               IsVisible="{Binding HasSpoilers}"
+                               TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Spoilers'}">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label" Binding="{Binding IsShowingSpoilers}" Value="True">
+                                    <Setter Property="Text" Value="👁  Hide spoilers" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Label" Binding="{Binding IsShowingSpoilers}" Value="False">
+                                    <Setter Property="Text" Value="👁  Reveal spoilers" />
+                                </DataTrigger>
+                            </Label.Triggers>
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ToggleSpoilersCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- ============================================ -->
+            <!-- VOICE ROLES — split portrait + show-cover badge -->
+            <!-- ============================================ -->
+            <VerticalStackLayout Spacing="10" IsVisible="{Binding HasVoiceRoles}">
+                <Border Style="{StaticResource SectionHeaderStyle}"
+                        Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='CharactersHeader'}">
+                    <HorizontalStackLayout Spacing="8">
+                        <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
+                            <Image.Source>
+                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Mic24}"
+                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                 Color="White"
+                                                 Size="20" />
+                            </Image.Source>
+                        </Image>
+                        <Label Text="Voice Roles" Style="{StaticResource Title3}" TextColor="White" />
+                    </HorizontalStackLayout>
+                </Border>
+
+                <!-- Sort chips -->
+                <ScrollView Orientation="Horizontal">
+                    <HorizontalStackLayout Spacing="6"
+                                           BindableLayout.ItemsSource="{Binding VoiceRolesSortOptions}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="pageModels:SortOption">
+                                <Border StrokeShape="RoundRectangle 12"
+                                        StrokeThickness="1"
+                                        Padding="10,3"
+                                        BackgroundColor="{StaticResource SecondaryBackground}">
+                                    <Border.Triggers>
+                                        <DataTrigger TargetType="Border" Binding="{Binding IsSelected}" Value="True">
+                                            <Setter Property="Stroke" Value="{StaticResource RainbowCyan}" />
+                                            <Setter Property="Opacity" Value="1.0" />
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Border" Binding="{Binding IsSelected}" Value="False">
+                                            <Setter Property="Stroke" Value="Transparent" />
+                                            <Setter Property="Opacity" Value="0.5" />
+                                        </DataTrigger>
+                                    </Border.Triggers>
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer x:DataType="{x:Null}"
+                                                              Command="{Binding Source={x:Reference RootView}, Path=BindingContext.SelectVoiceRolesSortCommand}"
+                                                              CommandParameter="{Binding Code}" />
+                                    </Border.GestureRecognizers>
+                                    <Label Text="{Binding Display}"
+                                           Style="{StaticResource Caption2}"
+                                           FontAttributes="Bold"
+                                           TextColor="{StaticResource Gray100}" />
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </HorizontalStackLayout>
+                </ScrollView>
+
+                <!-- Items + Load More tail card -->
+                <ScrollView Orientation="Horizontal">
+                    <HorizontalStackLayout Spacing="10">
+                        <HorizontalStackLayout Spacing="10"
+                                               BindableLayout.ItemsSource="{Binding Staff.Characters}"
+                                               Opacity="{Binding IsLoadingVoiceRoles, Converter={StaticResource InvertedBoolConverter}}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="models:StaffCharacterEdge">
+                                    <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130">
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer x:DataType="{x:Null}"
+                                                                  Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToCharacterCommand}"
+                                                                  CommandParameter="{Binding Node.Id}" />
+                                        </Border.GestureRecognizers>
+                                        <VerticalStackLayout>
+                                            <Grid HeightRequest="180" WidthRequest="130">
+                                                <Image Source="{Binding Node.Image.Large}"
+                                                       Aspect="AspectFill"
+                                                       HeightRequest="180"
+                                                       WidthRequest="130" />
+                                                <Border WidthRequest="40" HeightRequest="56"
+                                                        StrokeShape="RoundRectangle 6"
+                                                        StrokeThickness="1.5"
+                                                        Stroke="White"
+                                                        HorizontalOptions="End"
+                                                        VerticalOptions="End"
+                                                        Margin="0,0,6,6"
+                                                        Padding="0"
+                                                        IsVisible="{Binding Media.CoverImage.Medium, Converter={StaticResource StringNotNullOrEmptyConverter}}">
+                                                    <Border.GestureRecognizers>
+                                                        <TapGestureRecognizer x:DataType="{x:Null}"
+                                                                              Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToMediaCommand}"
+                                                                              CommandParameter="{Binding Media.Id}" />
+                                                    </Border.GestureRecognizers>
+                                                    <Image Source="{Binding Media.CoverImage.Medium}" Aspect="AspectFill" />
+                                                </Border>
+                                            </Grid>
+                                            <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
+                                                <Label Text="{Binding Node.Name.Full}"
+                                                       Style="{StaticResource Caption1Strong}"
+                                                       MaxLines="1"
+                                                       LineBreakMode="TailTruncation" />
+                                                <Label Text="{Binding Role}"
+                                                       Style="{StaticResource Caption2}"
+                                                       TextColor="{Binding Role, Converter={StaticResource RainbowAccentConverter}}"
+                                                       FontAttributes="Bold" />
+                                                <Label Text="{Binding Media.DisplayTitle}"
+                                                       Style="{StaticResource Caption2}"
+                                                       TextColor="{StaticResource Gray400}"
+                                                       MaxLines="2"
+                                                       LineBreakMode="TailTruncation" />
+                                            </VerticalStackLayout>
+                                        </VerticalStackLayout>
+                                    </Border>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </HorizontalStackLayout>
+
+                        <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130"
+                                IsVisible="{Binding VoiceRolesHasMore}">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding LoadMoreVoiceRolesCommand}" />
+                            </Border.GestureRecognizers>
+                            <Grid HeightRequest="230">
+                                <ActivityIndicator IsRunning="{Binding IsLoadingVoiceRoles}"
+                                                   IsVisible="{Binding IsLoadingVoiceRoles}"
+                                                   Color="{StaticResource RainbowCyan}"
+                                                   HorizontalOptions="Center" VerticalOptions="Center" />
+                                <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="6"
+                                                     IsVisible="{Binding IsLoadingVoiceRoles, Converter={StaticResource InvertedBoolConverter}}">
+                                    <Image WidthRequest="32" HeightRequest="32" HorizontalOptions="Center">
+                                        <Image.Source>
+                                            <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.ArrowCircleRight24}"
+                                                             FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                             Color="{StaticResource Gray400}" Size="32" />
+                                        </Image.Source>
+                                    </Image>
+                                    <Label Text="Load more" Style="{StaticResource Caption1Strong}"
+                                           TextColor="{StaticResource Gray300}" HorizontalTextAlignment="Center" />
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Border>
+                    </HorizontalStackLayout>
+                </ScrollView>
+            </VerticalStackLayout>
+
+            <!-- ============================================ -->
+            <!-- PRODUCTION ROLES -->
+            <!-- ============================================ -->
+            <VerticalStackLayout Spacing="10" IsVisible="{Binding HasProductionRoles}">
+                <Border Style="{StaticResource SectionHeaderStyle}"
+                        Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='StaffHeader'}">
+                    <HorizontalStackLayout Spacing="8">
+                        <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
+                            <Image.Source>
+                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Star24}"
+                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                 Color="White"
+                                                 Size="20" />
+                            </Image.Source>
+                        </Image>
+                        <Label Text="Production Roles" Style="{StaticResource Title3}" TextColor="White" />
+                    </HorizontalStackLayout>
+                </Border>
+
+                <!-- Sort chips -->
+                <ScrollView Orientation="Horizontal">
+                    <HorizontalStackLayout Spacing="6"
+                                           BindableLayout.ItemsSource="{Binding ProductionRolesSortOptions}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="pageModels:SortOption">
+                                <Border StrokeShape="RoundRectangle 12"
+                                        StrokeThickness="1"
+                                        Padding="10,3"
+                                        BackgroundColor="{StaticResource SecondaryBackground}">
+                                    <Border.Triggers>
+                                        <DataTrigger TargetType="Border" Binding="{Binding IsSelected}" Value="True">
+                                            <Setter Property="Stroke" Value="{StaticResource RainbowCyan}" />
+                                            <Setter Property="Opacity" Value="1.0" />
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Border" Binding="{Binding IsSelected}" Value="False">
+                                            <Setter Property="Stroke" Value="Transparent" />
+                                            <Setter Property="Opacity" Value="0.5" />
+                                        </DataTrigger>
+                                    </Border.Triggers>
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer x:DataType="{x:Null}"
+                                                              Command="{Binding Source={x:Reference RootView}, Path=BindingContext.SelectProductionRolesSortCommand}"
+                                                              CommandParameter="{Binding Code}" />
+                                    </Border.GestureRecognizers>
+                                    <Label Text="{Binding Display}"
+                                           Style="{StaticResource Caption2}"
+                                           FontAttributes="Bold"
+                                           TextColor="{StaticResource Gray100}" />
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </HorizontalStackLayout>
+                </ScrollView>
+
+                <ScrollView Orientation="Horizontal">
+                    <HorizontalStackLayout Spacing="10">
+                        <HorizontalStackLayout Spacing="10"
+                                               BindableLayout.ItemsSource="{Binding Staff.StaffMedia}"
+                                               Opacity="{Binding IsLoadingProductionRoles, Converter={StaticResource InvertedBoolConverter}}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="models:StaffMediaEdge">
+                                    <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130">
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer x:DataType="{x:Null}"
+                                                                  Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToMediaCommand}"
+                                                                  CommandParameter="{Binding Node.Id}" />
+                                        </Border.GestureRecognizers>
+                                        <VerticalStackLayout>
+                                            <Grid HeightRequest="180" WidthRequest="130">
+                                                <Image Source="{Binding Node.CoverImage.Large}"
+                                                       Aspect="AspectFill"
+                                                       HeightRequest="180"
+                                                       WidthRequest="130" />
+                                                <views:FormatIconBadge Format="{Binding Node.Format}" />
+                                            </Grid>
+                                            <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
+                                                <Border BackgroundColor="{Binding StaffRole, Converter={StaticResource RainbowAccentConverter}}"
+                                                        StrokeShape="RoundRectangle 8"
+                                                        StrokeThickness="0"
+                                                        Padding="6,2"
+                                                        HorizontalOptions="Start">
+                                                    <Label Text="{Binding StaffRole}"
+                                                           Style="{StaticResource Caption2}"
+                                                           TextColor="White"
+                                                           FontAttributes="Bold" />
+                                                </Border>
+                                                <Label Text="{Binding Node.DisplayTitle}"
+                                                       Style="{StaticResource Caption1}"
+                                                       MaxLines="2"
+                                                       LineBreakMode="TailTruncation" />
+                                            </VerticalStackLayout>
+                                        </VerticalStackLayout>
+                                    </Border>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </HorizontalStackLayout>
+
+                        <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130"
+                                IsVisible="{Binding ProductionRolesHasMore}">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding LoadMoreProductionRolesCommand}" />
+                            </Border.GestureRecognizers>
+                            <Grid HeightRequest="230">
+                                <ActivityIndicator IsRunning="{Binding IsLoadingProductionRoles}"
+                                                   IsVisible="{Binding IsLoadingProductionRoles}"
+                                                   Color="{StaticResource RainbowCyan}"
+                                                   HorizontalOptions="Center" VerticalOptions="Center" />
+                                <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="6"
+                                                     IsVisible="{Binding IsLoadingProductionRoles, Converter={StaticResource InvertedBoolConverter}}">
+                                    <Image WidthRequest="32" HeightRequest="32" HorizontalOptions="Center">
+                                        <Image.Source>
+                                            <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.ArrowCircleRight24}"
+                                                             FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                             Color="{StaticResource Gray400}" Size="32" />
+                                        </Image.Source>
+                                    </Image>
+                                    <Label Text="Load more" Style="{StaticResource Caption1Strong}"
+                                           TextColor="{StaticResource Gray300}" HorizontalTextAlignment="Center" />
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Border>
+                    </HorizontalStackLayout>
+                </ScrollView>
+            </VerticalStackLayout>
+
+            <!-- ============================================ -->
+            <!-- EXTERNAL LINK -->
+            <!-- ============================================ -->
+            <Border Style="{StaticResource CardStyle}" Padding="14,10"
+                    IsVisible="{Binding HasSiteUrl}">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding OpenSiteUrlCommand}" />
+                </Border.GestureRecognizers>
+                <HorizontalStackLayout Spacing="8">
+                    <Image WidthRequest="18" HeightRequest="18" VerticalOptions="Center">
+                        <Image.Source>
+                            <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Globe24}"
+                                             FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                             Color="{StaticResource Gray300}"
+                                             Size="18" />
+                        </Image.Source>
+                    </Image>
+                    <Label Text="View on AniList"
+                           Style="{StaticResource Body2}"
+                           TextColor="{StaticResource Gray100}"
+                           VerticalTextAlignment="Center" />
+                </HorizontalStackLayout>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentView>

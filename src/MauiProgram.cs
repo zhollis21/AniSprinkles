@@ -122,6 +122,10 @@ public static class MauiProgram
         builder.Services.AddTransient<SettingsPage>();
         builder.Services.AddTransient<MediaDetailsPageModel>();
         builder.Services.AddTransient<MediaDetailsPage>();
+        builder.Services.AddTransient<StaffDetailsPageModel>();
+        builder.Services.AddTransient<StaffDetailsPage>();
+        builder.Services.AddTransient<CharacterDetailsPageModel>();
+        builder.Services.AddTransient<CharacterDetailsPage>();
 
         return builder.Build();
     }

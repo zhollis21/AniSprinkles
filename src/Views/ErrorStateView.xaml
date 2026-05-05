@@ -81,7 +81,7 @@
                                    TextColor="{StaticResource Gray500}" />
                         </ScrollView>
                         <HorizontalStackLayout Spacing="12" HorizontalOptions="Center">
-                            <Border StrokeShape="RoundRectangle 8" StrokeThickness="1"
+                            <Border x:Name="CopyButton" StrokeShape="RoundRectangle 8" StrokeThickness="1"
                                     Stroke="{StaticResource Gray600}" Background="Transparent"
                                     Padding="10,6">
                                 <Border.GestureRecognizers>
@@ -98,7 +98,7 @@
                                     <Label Text="Copy" Style="{StaticResource Caption1}" TextColor="{StaticResource Gray400}" VerticalTextAlignment="Center" />
                                 </HorizontalStackLayout>
                             </Border>
-                            <Border StrokeShape="RoundRectangle 8" StrokeThickness="1"
+                            <Border x:Name="ShareButton" StrokeShape="RoundRectangle 8" StrokeThickness="1"
                                     Stroke="{StaticResource Gray600}" Background="Transparent"
                                     Padding="10,6">
                                 <Border.GestureRecognizers>

@@ -75,5 +75,35 @@ internal sealed class FailingAniListClient : IAniListClient
     public Task<IReadOnlyList<AiringScheduleEntry>>
         GetAiringScheduleAsync(IReadOnlyList<int> mediaIds, int airingAfter, int airingBefore, CancellationToken ct = default)
             => throw Fail();
+
+    public Task<Staff?>
+        GetStaffAsync(
+            int id,
+            string charactersSort = "FAVOURITES_DESC",
+            string mediaSort = "POPULARITY_DESC",
+            int charactersPage = 1,
+            int mediaPage = 1,
+            CancellationToken ct = default)
+            => throw Fail();
+
+    public Task<Character?>
+        GetCharacterAsync(
+            int id,
+            string mediaSort = "POPULARITY_DESC",
+            int mediaPage = 1,
+            CancellationToken ct = default)
+            => throw Fail();
+
+    public Task<(IReadOnlyList<StaffCharacterEdge> Items, PageInfo? PageInfo)>
+        LoadStaffCharactersPageAsync(int id, int page, string sort, CancellationToken ct = default)
+            => throw Fail();
+
+    public Task<(IReadOnlyList<StaffMediaEdge> Items, PageInfo? PageInfo)>
+        LoadStaffMediaPageAsync(int id, int page, string sort, CancellationToken ct = default)
+            => throw Fail();
+
+    public Task<(IReadOnlyList<CharacterMediaEdge> Items, PageInfo? PageInfo)>
+        LoadCharacterMediaPageAsync(int id, int page, string sort, CancellationToken ct = default)
+            => throw Fail();
 }
 #endif
