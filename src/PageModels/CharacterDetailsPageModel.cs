@@ -15,7 +15,7 @@ public partial class CharacterDetailsPageModel : ObservableObject
     private int _loadedCharacterId;
     private ParsedDescription _parsedDescription = ParsedDescription.Empty;
     private string _appearancesSort = "POPULARITY_DESC";
-    private string _voiceActorsSort = "LANGUAGE";
+    private string _voiceActorsSort = "FAVOURITES_DESC";
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CurrentStateKey))]
@@ -84,7 +84,7 @@ public partial class CharacterDetailsPageModel : ObservableObject
     [
         new SortOption { Code = "POPULARITY_DESC", Display = "Popularity", IsSelected = true },
         new SortOption { Code = "SCORE_DESC",      Display = "Avg Score" },
-        new SortOption { Code = "FAVOURITES_DESC", Display = "Favorites" },
+        new SortOption { Code = "FAVOURITES_DESC", Display = "Most Favorited" },
         new SortOption { Code = "START_DATE_DESC", Display = "Newest" },
         new SortOption { Code = "START_DATE",      Display = "Oldest" },
         new SortOption { Code = "TITLE_ROMAJI",    Display = "Title" },
@@ -92,8 +92,9 @@ public partial class CharacterDetailsPageModel : ObservableObject
 
     public IReadOnlyList<SortOption> VoiceActorsSortOptions { get; } =
     [
-        new SortOption { Code = "LANGUAGE", Display = "Language", IsSelected = true },
-        new SortOption { Code = "NAME",     Display = "Name" },
+        new SortOption { Code = "FAVOURITES_DESC", Display = "Most Favorited", IsSelected = true },
+        new SortOption { Code = "LANGUAGE",        Display = "Language" },
+        new SortOption { Code = "NAME",            Display = "Name" },
     ];
 
     public bool AppearancesHasMore => Character?.MediaPageInfo?.HasNextPage == true;
@@ -256,9 +257,16 @@ public partial class CharacterDetailsPageModel : ObservableObject
         return _voiceActorsSort switch
         {
             "NAME" => result.OrderBy(va => va.Name?.Full ?? string.Empty, StringComparer.OrdinalIgnoreCase).ToList(),
-            _     => result.OrderBy(va => va.Language ?? string.Empty, StringComparer.OrdinalIgnoreCase)
-                           .ThenBy(va => va.Name?.Full ?? string.Empty, StringComparer.OrdinalIgnoreCase)
-                           .ToList(),
+            "LANGUAGE" => result.OrderBy(va => va.Language ?? string.Empty, StringComparer.OrdinalIgnoreCase)
+                                .ThenByDescending(va => va.Favourites ?? 0)
+                                .ThenBy(va => va.Name?.Full ?? string.Empty, StringComparer.OrdinalIgnoreCase)
+                                .ToList(),
+            // Default: most-favourited VA first. The original-language VA almost always tops this,
+            // so the list naturally surfaces JP first for anime characters without a hardcoded rule.
+            _ => result.OrderByDescending(va => va.Favourites ?? 0)
+                       .ThenBy(va => va.Language ?? string.Empty, StringComparer.OrdinalIgnoreCase)
+                       .ThenBy(va => va.Name?.Full ?? string.Empty, StringComparer.OrdinalIgnoreCase)
+                       .ToList(),
         };
     }
 

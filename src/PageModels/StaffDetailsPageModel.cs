@@ -81,7 +81,7 @@ public partial class StaffDetailsPageModel : ObservableObject
 
     public IReadOnlyList<SortOption> VoiceRolesSortOptions { get; } =
     [
-        new SortOption { Code = "FAVOURITES_DESC", Display = "Favorites", IsSelected = true },
+        new SortOption { Code = "FAVOURITES_DESC", Display = "Most Favorited", IsSelected = true },
         new SortOption { Code = "ROLE",            Display = "Role" },
         new SortOption { Code = "RELEVANCE",       Display = "Relevance" },
     ];
@@ -90,7 +90,7 @@ public partial class StaffDetailsPageModel : ObservableObject
     [
         new SortOption { Code = "POPULARITY_DESC", Display = "Popularity", IsSelected = true },
         new SortOption { Code = "SCORE_DESC",      Display = "Avg Score" },
-        new SortOption { Code = "FAVOURITES_DESC", Display = "Favorites" },
+        new SortOption { Code = "FAVOURITES_DESC", Display = "Most Favorited" },
         new SortOption { Code = "START_DATE_DESC", Display = "Newest" },
         new SortOption { Code = "START_DATE",      Display = "Oldest" },
         new SortOption { Code = "TITLE_ROMAJI",    Display = "Title" },

@@ -473,6 +473,7 @@ public class AniListClient : IAniListClient
                         Name = va.Name,
                         Image = va.Image,
                         Language = va.LanguageV2,
+                        Favourites = va.Favourites,
                     })
                     .ToList() ?? [],
             })
@@ -871,6 +872,7 @@ public class AniListClient : IAniListClient
                             Name = va.Name,
                             Image = va.Image,
                             Language = va.LanguageV2,
+                            Favourites = va.Favourites,
                         })
                         .ToList() ?? [],
                 });
@@ -1351,6 +1353,7 @@ public class AniListClient : IAniListClient
         public CharacterName? Name { get; set; }
         public CharacterImage? Image { get; set; }
         public string? LanguageV2 { get; set; }
+        public int? Favourites { get; set; }
     }
 
     private sealed class RecommendationConnectionDto
@@ -1856,6 +1859,7 @@ query CharacterMediaPage($id: Int!, $page: Int!, $sort: [MediaSort]) {
           name { full native }
           image { medium large }
           languageV2
+          favourites
         }
       }
     }
@@ -1893,6 +1897,7 @@ query Character($id: Int!, $mediaPage: Int = 1, $mediaSort: [MediaSort] = [POPUL
           name { full native }
           image { medium large }
           languageV2
+          favourites
         }
       }
     }

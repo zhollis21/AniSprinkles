@@ -294,12 +294,20 @@
                     </HorizontalStackLayout>
                 </ScrollView>
 
-                <!-- Items + Load More tail card -->
-                <ScrollView Orientation="Horizontal">
+                <!-- Loading overlay: cards stay rendered (so the row preserves its natural height,
+                     no layout jump in the section below). During load they dim to 0.4 and a spinner
+                     overlays in the center of the visible viewport. Same treatment for sort and load more. -->
+                <Grid>
+                    <ScrollView Orientation="Horizontal">
                     <HorizontalStackLayout Spacing="10">
                         <HorizontalStackLayout Spacing="10"
-                                               BindableLayout.ItemsSource="{Binding Staff.Characters}"
-                                               Opacity="{Binding IsLoadingVoiceRoles, Converter={StaticResource InvertedBoolConverter}}">
+                                               BindableLayout.ItemsSource="{Binding Staff.Characters}">
+                            <HorizontalStackLayout.Triggers>
+                                <DataTrigger TargetType="HorizontalStackLayout"
+                                             Binding="{Binding IsLoadingVoiceRoles}" Value="True">
+                                    <Setter Property="Opacity" Value="0.4" />
+                                </DataTrigger>
+                            </HorizontalStackLayout.Triggers>
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate x:DataType="models:StaffCharacterEdge">
                                     <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130">
@@ -358,12 +366,7 @@
                                 <TapGestureRecognizer Command="{Binding LoadMoreVoiceRolesCommand}" />
                             </Border.GestureRecognizers>
                             <Grid HeightRequest="230">
-                                <ActivityIndicator IsRunning="{Binding IsLoadingVoiceRoles}"
-                                                   IsVisible="{Binding IsLoadingVoiceRoles}"
-                                                   Color="{StaticResource RainbowCyan}"
-                                                   HorizontalOptions="Center" VerticalOptions="Center" />
-                                <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="6"
-                                                     IsVisible="{Binding IsLoadingVoiceRoles, Converter={StaticResource InvertedBoolConverter}}">
+                                <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="6">
                                     <Image WidthRequest="32" HeightRequest="32" HorizontalOptions="Center">
                                         <Image.Source>
                                             <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.ArrowCircleRight24}"
@@ -377,7 +380,15 @@
                             </Grid>
                         </Border>
                     </HorizontalStackLayout>
-                </ScrollView>
+                    </ScrollView>
+
+                    <!-- Spinner overlay centered in the viewport. -->
+                    <ActivityIndicator IsRunning="{Binding IsLoadingVoiceRoles}"
+                                       IsVisible="{Binding IsLoadingVoiceRoles}"
+                                       Color="{StaticResource RainbowCyan}"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center" />
+                </Grid>
             </VerticalStackLayout>
 
             <!-- ============================================ -->
@@ -434,11 +445,20 @@
                     </HorizontalStackLayout>
                 </ScrollView>
 
-                <ScrollView Orientation="Horizontal">
+                <!-- Loading overlay: cards stay rendered (so the row preserves its natural height,
+                     no layout jump in the section below). During load they dim to 0.4 and a spinner
+                     overlays in the center of the visible viewport. Same treatment for sort and load more. -->
+                <Grid>
+                    <ScrollView Orientation="Horizontal">
                     <HorizontalStackLayout Spacing="10">
                         <HorizontalStackLayout Spacing="10"
-                                               BindableLayout.ItemsSource="{Binding Staff.StaffMedia}"
-                                               Opacity="{Binding IsLoadingProductionRoles, Converter={StaticResource InvertedBoolConverter}}">
+                                               BindableLayout.ItemsSource="{Binding Staff.StaffMedia}">
+                            <HorizontalStackLayout.Triggers>
+                                <DataTrigger TargetType="HorizontalStackLayout"
+                                             Binding="{Binding IsLoadingProductionRoles}" Value="True">
+                                    <Setter Property="Opacity" Value="0.4" />
+                                </DataTrigger>
+                            </HorizontalStackLayout.Triggers>
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate x:DataType="models:StaffMediaEdge">
                                     <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130">
@@ -483,12 +503,7 @@
                                 <TapGestureRecognizer Command="{Binding LoadMoreProductionRolesCommand}" />
                             </Border.GestureRecognizers>
                             <Grid HeightRequest="230">
-                                <ActivityIndicator IsRunning="{Binding IsLoadingProductionRoles}"
-                                                   IsVisible="{Binding IsLoadingProductionRoles}"
-                                                   Color="{StaticResource RainbowCyan}"
-                                                   HorizontalOptions="Center" VerticalOptions="Center" />
-                                <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="6"
-                                                     IsVisible="{Binding IsLoadingProductionRoles, Converter={StaticResource InvertedBoolConverter}}">
+                                <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="6">
                                     <Image WidthRequest="32" HeightRequest="32" HorizontalOptions="Center">
                                         <Image.Source>
                                             <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.ArrowCircleRight24}"
@@ -502,7 +517,15 @@
                             </Grid>
                         </Border>
                     </HorizontalStackLayout>
-                </ScrollView>
+                    </ScrollView>
+
+                    <!-- Spinner overlay centered in the viewport. -->
+                    <ActivityIndicator IsRunning="{Binding IsLoadingProductionRoles}"
+                                       IsVisible="{Binding IsLoadingProductionRoles}"
+                                       Color="{StaticResource RainbowCyan}"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center" />
+                </Grid>
             </VerticalStackLayout>
 
             <!-- ============================================ -->

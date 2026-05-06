@@ -527,6 +527,7 @@ internal sealed class CIAniListClient : IAniListClient
                             Medium = "https://s4.anilist.co/file/anilistcdn/staff/medium/n95041-default.png",
                         },
                         Language = "Japanese",
+                        Favourites = 542,
                     },
                     new VoiceActor
                     {
@@ -537,6 +538,7 @@ internal sealed class CIAniListClient : IAniListClient
                             Medium = "https://s4.anilist.co/file/anilistcdn/staff/medium/n95040-default.png",
                         },
                         Language = "English",
+                        Favourites = 187,
                     },
                 ],
             });
