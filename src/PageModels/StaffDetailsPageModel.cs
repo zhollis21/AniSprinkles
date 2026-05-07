@@ -1,8 +1,11 @@
+using System.Collections.ObjectModel;
 using System.Globalization;
 using AniSprinkles.Utilities;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using IconFont.Maui.FluentIcons;
 using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Graphics;
 
 namespace AniSprinkles.PageModels;
 
@@ -12,10 +15,20 @@ public partial class StaffDetailsPageModel : ObservableObject
     private readonly INavigationService _navigationService;
     private readonly ILogger<StaffDetailsPageModel> _logger;
 
+    private const int InitialDisplayCount = 25;
+    private const int LoadMorePageSize = 25;
+    private const int FetchPageSize = 50;
+
     private int _loadedStaffId;
     private ParsedDescription _parsedDescription = ParsedDescription.Empty;
     private string _voiceRolesSort = "FAVOURITES_DESC";
     private string _productionRolesSort = "POPULARITY_DESC";
+
+    // Eager-fetched complete rosters held in sorted form for the active sort. The Displayed*
+    // ObservableCollections expose a prefix that grows on Load More. Sort changes / Load More
+    // are pure local list ops — no API calls.
+    private List<StaffCharacterEdge> _sortedVoiceRoles = [];
+    private List<StaffMediaEdge> _sortedProductionRoles = [];
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CurrentStateKey))]
@@ -73,11 +86,6 @@ public partial class StaffDetailsPageModel : ObservableObject
     [ObservableProperty]
     private bool _canRetry = true;
 
-    [ObservableProperty]
-    private bool _isLoadingVoiceRoles;
-
-    [ObservableProperty]
-    private bool _isLoadingProductionRoles;
 
     public IReadOnlyList<SortOption> VoiceRolesSortOptions { get; } =
     [
@@ -88,7 +96,7 @@ public partial class StaffDetailsPageModel : ObservableObject
 
     public IReadOnlyList<SortOption> ProductionRolesSortOptions { get; } =
     [
-        new SortOption { Code = "POPULARITY_DESC", Display = "Popularity", IsSelected = true },
+        new SortOption { Code = "POPULARITY_DESC", Display = "Most Watched", IsSelected = true },
         new SortOption { Code = "SCORE_DESC",      Display = "Avg Score" },
         new SortOption { Code = "FAVOURITES_DESC", Display = "Most Favorited" },
         new SortOption { Code = "START_DATE_DESC", Display = "Newest" },
@@ -96,8 +104,11 @@ public partial class StaffDetailsPageModel : ObservableObject
         new SortOption { Code = "TITLE_ROMAJI",    Display = "Title" },
     ];
 
-    public bool VoiceRolesHasMore => Staff?.CharactersPageInfo?.HasNextPage == true;
-    public bool ProductionRolesHasMore => Staff?.StaffMediaPageInfo?.HasNextPage == true;
+    public bool VoiceRolesHasMore => DisplayedVoiceRoles.Count < _sortedVoiceRoles.Count;
+    public bool ProductionRolesHasMore => DisplayedProductionRoles.Count < _sortedProductionRoles.Count;
+
+    public ObservableCollection<StaffCharacterEdge> DisplayedVoiceRoles { get; } = [];
+    public ObservableCollection<StaffMediaEdge> DisplayedProductionRoles { get; } = [];
 
     public bool HasStaff => Staff is not null;
 
@@ -160,6 +171,45 @@ public partial class StaffDetailsPageModel : ObservableObject
     partial void OnStaffChanged(Staff? value)
     {
         _parsedDescription = DescriptionParser.Parse(value?.Description);
+        // Staff.Characters and Staff.StaffMedia are the complete rosters by the time this fires;
+        // LoadAsync eager-fetches all pages up front. Badge stamping and Displayed* population
+        // happen explicitly in LoadAsync after the eager fetch completes.
+    }
+
+    private static ItemMetricBadge? BuildProductionMetricBadge(RelatedMedia? media, string sort)
+    {
+        if (media is null)
+        {
+            return null;
+        }
+        return sort switch
+        {
+            "POPULARITY_DESC" when media.HasPopularity => new ItemMetricBadge
+            {
+                Glyph = FluentIconsRegular.People24,
+                IconColor = Color.FromArgb("#FF9500"),
+                Text = media.PopularityDisplay,
+            },
+            "SCORE_DESC" when media.HasScore => new ItemMetricBadge
+            {
+                Glyph = FluentIconsRegular.Star24,
+                IconColor = Color.FromArgb("#FFCC00"),
+                Text = media.ScoreDisplay,
+            },
+            "FAVOURITES_DESC" when media.HasFavourites => new ItemMetricBadge
+            {
+                Glyph = FluentIconsRegular.Heart24,
+                IconColor = Color.FromArgb("#FF2D95"),
+                Text = media.FavouritesDisplay,
+            },
+            "START_DATE_DESC" or "START_DATE" when media.HasYear => new ItemMetricBadge
+            {
+                Glyph = FluentIconsRegular.Calendar24,
+                IconColor = Color.FromArgb("#00C2FF"),
+                Text = media.YearDisplay,
+            },
+            _ => null,
+        };
     }
 
     public async Task LoadAsync(int staffId)
@@ -188,7 +238,18 @@ public partial class StaffDetailsPageModel : ObservableObject
                 return;
             }
 
+            // Eager-fetch every remaining page of BOTH Voice Roles and Production Roles in
+            // parallel, so sort/Load More across both sections become pure local list ops.
+            await Task.WhenAll(
+                FillRemainingVoiceRolesAsync(staff, staffId),
+                FillRemainingProductionRolesAsync(staff, staffId)
+            ).ConfigureAwait(true);
+
+            StampProductionBadges(staff);
+
             Staff = staff;
+            ResetDisplayedVoiceRoles();
+            ResetDisplayedProductionRoles();
             CurrentState = PageState.Content;
         }
         catch (Exception ex)
@@ -201,6 +262,119 @@ public partial class StaffDetailsPageModel : ObservableObject
             IsBusy = false;
         }
     }
+
+    private async Task FillRemainingVoiceRolesAsync(Staff staff, int staffId)
+    {
+        var pageInfo = staff.CharactersPageInfo;
+        if (pageInfo is null || pageInfo.LastPage <= 1) return;
+
+        var tasks = new List<Task<(IReadOnlyList<StaffCharacterEdge> Items, PageInfo? PageInfo)>>();
+        for (var page = 2; page <= pageInfo.LastPage; page++)
+        {
+            tasks.Add(_aniListClient.LoadStaffCharactersPageAsync(
+                staffId, page, "FAVOURITES_DESC", perPage: FetchPageSize));
+        }
+        var results = await Task.WhenAll(tasks).ConfigureAwait(true);
+        foreach (var (items, _) in results)
+        {
+            foreach (var item in items)
+            {
+                staff.Characters.Add(item);
+            }
+        }
+    }
+
+    private async Task FillRemainingProductionRolesAsync(Staff staff, int staffId)
+    {
+        var pageInfo = staff.StaffMediaPageInfo;
+        if (pageInfo is null || pageInfo.LastPage <= 1) return;
+
+        var tasks = new List<Task<(IReadOnlyList<StaffMediaEdge> Items, PageInfo? PageInfo)>>();
+        for (var page = 2; page <= pageInfo.LastPage; page++)
+        {
+            tasks.Add(_aniListClient.LoadStaffMediaPageAsync(
+                staffId, page, "POPULARITY_DESC", perPage: FetchPageSize));
+        }
+        var results = await Task.WhenAll(tasks).ConfigureAwait(true);
+        foreach (var (items, _) in results)
+        {
+            foreach (var item in items)
+            {
+                staff.StaffMedia.Add(item);
+            }
+        }
+    }
+
+    private void StampProductionBadges(Staff staff)
+    {
+        foreach (var edge in staff.StaffMedia)
+        {
+            edge.MetricBadge = BuildProductionMetricBadge(edge.Node, _productionRolesSort);
+        }
+    }
+
+    private void ResetDisplayedVoiceRoles()
+    {
+        DisplayedVoiceRoles.Clear();
+        if (Staff is null)
+        {
+            _sortedVoiceRoles = [];
+            OnPropertyChanged(nameof(VoiceRolesHasMore));
+            return;
+        }
+        _sortedVoiceRoles = SortVoiceRoles(Staff.Characters, _voiceRolesSort);
+        var initial = Math.Min(InitialDisplayCount, _sortedVoiceRoles.Count);
+        for (var i = 0; i < initial; i++)
+        {
+            DisplayedVoiceRoles.Add(_sortedVoiceRoles[i]);
+        }
+        OnPropertyChanged(nameof(VoiceRolesHasMore));
+    }
+
+    private void ResetDisplayedProductionRoles()
+    {
+        DisplayedProductionRoles.Clear();
+        if (Staff is null)
+        {
+            _sortedProductionRoles = [];
+            OnPropertyChanged(nameof(ProductionRolesHasMore));
+            return;
+        }
+        _sortedProductionRoles = SortProductionRoles(Staff.StaffMedia, _productionRolesSort);
+        var initial = Math.Min(InitialDisplayCount, _sortedProductionRoles.Count);
+        for (var i = 0; i < initial; i++)
+        {
+            DisplayedProductionRoles.Add(_sortedProductionRoles[i]);
+        }
+        OnPropertyChanged(nameof(ProductionRolesHasMore));
+    }
+
+    private static List<StaffCharacterEdge> SortVoiceRoles(IEnumerable<StaffCharacterEdge> source, string sort) =>
+        sort switch
+        {
+            "ROLE"      => source.OrderBy(e => RolePriority(e.Role)).ToList(),
+            "RELEVANCE" => source.ToList(), // server returned RELEVANCE order; preserve it
+            _           => source.OrderByDescending(e => e.Node?.Favourites ?? 0).ToList(),
+        };
+
+    private static int RolePriority(string? role) => role switch
+    {
+        "MAIN"       => 0,
+        "SUPPORTING" => 1,
+        "BACKGROUND" => 2,
+        _            => 3,
+    };
+
+    private static List<StaffMediaEdge> SortProductionRoles(IEnumerable<StaffMediaEdge> source, string sort) =>
+        sort switch
+        {
+            "SCORE_DESC"      => source.OrderByDescending(e => e.Node?.AverageScore ?? 0).ToList(),
+            "FAVOURITES_DESC" => source.OrderByDescending(e => e.Node?.Favourites ?? 0).ToList(),
+            "START_DATE_DESC" => source.OrderByDescending(e => e.Node?.StartDate?.Year ?? 0).ToList(),
+            "START_DATE"      => source.OrderBy(e => e.Node?.StartDate?.Year ?? int.MaxValue).ToList(),
+            "TITLE_ROMAJI"    => source.OrderBy(e => e.Node?.Title?.Romaji ?? string.Empty, StringComparer.OrdinalIgnoreCase).ToList(),
+            _                 => source.OrderByDescending(e => e.Node?.Popularity ?? 0).ToList(),
+        };
 
     private BioStatRow BuildBioStatRow(DescriptionStatRow row)
     {
@@ -311,39 +485,12 @@ public partial class StaffDetailsPageModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task SelectVoiceRolesSort(string? code)
+    private void SelectVoiceRolesSort(string? code)
     {
-        if (string.IsNullOrEmpty(code) || code == _voiceRolesSort || Staff is null || IsLoadingVoiceRoles)
-        {
-            return;
-        }
+        if (string.IsNullOrEmpty(code) || code == _voiceRolesSort || Staff is null) return;
 
-        var previous = _voiceRolesSort;
         ApplyVoiceRolesSortSelection(code);
-
-        IsLoadingVoiceRoles = true;
-        try
-        {
-            var (items, pageInfo) = await _aniListClient
-                .LoadStaffCharactersPageAsync(_loadedStaffId, page: 1, sort: code).ConfigureAwait(true);
-            Staff.Characters.Clear();
-            foreach (var item in items)
-            {
-                Staff.Characters.Add(item);
-            }
-            Staff.CharactersPageInfo = pageInfo;
-            OnPropertyChanged(nameof(VoiceRolesHasMore));
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Failed to apply Voice Roles sort {Sort} for staff {StaffId}", code, _loadedStaffId);
-            // Revert chip selection so what's highlighted matches the items actually shown.
-            ApplyVoiceRolesSortSelection(previous);
-        }
-        finally
-        {
-            IsLoadingVoiceRoles = false;
-        }
+        ResetDisplayedVoiceRoles();
     }
 
     private void ApplyVoiceRolesSortSelection(string code)
@@ -356,38 +503,14 @@ public partial class StaffDetailsPageModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task SelectProductionRolesSort(string? code)
+    private void SelectProductionRolesSort(string? code)
     {
-        if (string.IsNullOrEmpty(code) || code == _productionRolesSort || Staff is null || IsLoadingProductionRoles)
-        {
-            return;
-        }
+        if (string.IsNullOrEmpty(code) || code == _productionRolesSort || Staff is null) return;
 
-        var previous = _productionRolesSort;
         ApplyProductionRolesSortSelection(code);
-
-        IsLoadingProductionRoles = true;
-        try
-        {
-            var (items, pageInfo) = await _aniListClient
-                .LoadStaffMediaPageAsync(_loadedStaffId, page: 1, sort: code).ConfigureAwait(true);
-            Staff.StaffMedia.Clear();
-            foreach (var item in items)
-            {
-                Staff.StaffMedia.Add(item);
-            }
-            Staff.StaffMediaPageInfo = pageInfo;
-            OnPropertyChanged(nameof(ProductionRolesHasMore));
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Failed to apply Production Roles sort {Sort} for staff {StaffId}", code, _loadedStaffId);
-            ApplyProductionRolesSortSelection(previous);
-        }
-        finally
-        {
-            IsLoadingProductionRoles = false;
-        }
+        // Re-stamp badges so each card shows the value matching the new sort.
+        StampProductionBadges(Staff);
+        ResetDisplayedProductionRoles();
     }
 
     private void ApplyProductionRolesSortSelection(string code)
@@ -400,65 +523,31 @@ public partial class StaffDetailsPageModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task LoadMoreVoiceRoles()
+    private void LoadMoreVoiceRoles()
     {
-        if (Staff is null || IsLoadingVoiceRoles || !VoiceRolesHasMore)
-        {
-            return;
-        }
+        if (!VoiceRolesHasMore) return;
 
-        IsLoadingVoiceRoles = true;
-        try
+        var start = DisplayedVoiceRoles.Count;
+        var end = Math.Min(start + LoadMorePageSize, _sortedVoiceRoles.Count);
+        for (var i = start; i < end; i++)
         {
-            var nextPage = (Staff.CharactersPageInfo?.CurrentPage ?? 1) + 1;
-            var (items, pageInfo) = await _aniListClient
-                .LoadStaffCharactersPageAsync(_loadedStaffId, page: nextPage, sort: _voiceRolesSort).ConfigureAwait(true);
-            foreach (var item in items)
-            {
-                Staff.Characters.Add(item);
-            }
-            Staff.CharactersPageInfo = pageInfo;
-            OnPropertyChanged(nameof(VoiceRolesHasMore));
+            DisplayedVoiceRoles.Add(_sortedVoiceRoles[i]);
         }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Failed to load more Voice Roles for staff {StaffId}", _loadedStaffId);
-        }
-        finally
-        {
-            IsLoadingVoiceRoles = false;
-        }
+        OnPropertyChanged(nameof(VoiceRolesHasMore));
     }
 
     [RelayCommand]
-    private async Task LoadMoreProductionRoles()
+    private void LoadMoreProductionRoles()
     {
-        if (Staff is null || IsLoadingProductionRoles || !ProductionRolesHasMore)
-        {
-            return;
-        }
+        if (!ProductionRolesHasMore) return;
 
-        IsLoadingProductionRoles = true;
-        try
+        var start = DisplayedProductionRoles.Count;
+        var end = Math.Min(start + LoadMorePageSize, _sortedProductionRoles.Count);
+        for (var i = start; i < end; i++)
         {
-            var nextPage = (Staff.StaffMediaPageInfo?.CurrentPage ?? 1) + 1;
-            var (items, pageInfo) = await _aniListClient
-                .LoadStaffMediaPageAsync(_loadedStaffId, page: nextPage, sort: _productionRolesSort).ConfigureAwait(true);
-            foreach (var item in items)
-            {
-                Staff.StaffMedia.Add(item);
-            }
-            Staff.StaffMediaPageInfo = pageInfo;
-            OnPropertyChanged(nameof(ProductionRolesHasMore));
+            DisplayedProductionRoles.Add(_sortedProductionRoles[i]);
         }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Failed to load more Production Roles for staff {StaffId}", _loadedStaffId);
-        }
-        finally
-        {
-            IsLoadingProductionRoles = false;
-        }
+        OnPropertyChanged(nameof(ProductionRolesHasMore));
     }
 
     [RelayCommand]

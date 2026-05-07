@@ -27,11 +27,11 @@ public interface IAniListClient
         CancellationToken cancellationToken = default);
 
     Task<(IReadOnlyList<StaffCharacterEdge> Items, PageInfo? PageInfo)> LoadStaffCharactersPageAsync(
-        int id, int page, string sort, CancellationToken cancellationToken = default);
+        int id, int page, string sort, int perPage = 25, CancellationToken cancellationToken = default);
 
     Task<(IReadOnlyList<StaffMediaEdge> Items, PageInfo? PageInfo)> LoadStaffMediaPageAsync(
-        int id, int page, string sort, CancellationToken cancellationToken = default);
+        int id, int page, string sort, int perPage = 25, CancellationToken cancellationToken = default);
 
     Task<(IReadOnlyList<CharacterMediaEdge> Items, PageInfo? PageInfo)> LoadCharacterMediaPageAsync(
-        int id, int page, string sort, CancellationToken cancellationToken = default);
+        int id, int page, string sort, int perPage = 25, CancellationToken cancellationToken = default);
 }

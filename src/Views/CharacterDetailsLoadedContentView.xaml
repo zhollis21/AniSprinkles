@@ -350,20 +350,21 @@
                                                        FontAttributes="Bold"
                                                        LineBreakMode="TailTruncation"
                                                        VerticalTextAlignment="Center" />
-                                                <HorizontalStackLayout Grid.Column="1" Spacing="2"
+                                                <HorizontalStackLayout Grid.Column="1" Spacing="3"
                                                                        IsVisible="{Binding HasFavourites}"
                                                                        VerticalOptions="Center">
-                                                    <Image WidthRequest="10" HeightRequest="10" VerticalOptions="Center">
+                                                    <Image WidthRequest="12" HeightRequest="12" VerticalOptions="Center">
                                                         <Image.Source>
                                                             <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Heart24}"
                                                                              FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                                              Color="{StaticResource RainbowPink}"
-                                                                             Size="10" />
+                                                                             Size="12" />
                                                         </Image.Source>
                                                     </Image>
                                                     <Label Text="{Binding FavouritesDisplay}"
                                                            Style="{StaticResource Caption2}"
-                                                           TextColor="{StaticResource Gray300}"
+                                                           FontAttributes="Bold"
+                                                           TextColor="{StaticResource Gray100}"
                                                            VerticalTextAlignment="Center" />
                                                 </HorizontalStackLayout>
                                             </Grid>
@@ -429,20 +430,12 @@
                     </HorizontalStackLayout>
                 </ScrollView>
 
-                <!-- Loading overlay: cards stay rendered (so the row preserves its natural height,
-                     no layout jump in the section below). During load they dim to 0.4 and a spinner
-                     overlays in the center of the visible viewport. Same treatment for sort and load more. -->
-                <Grid>
-                    <ScrollView Orientation="Horizontal">
+                <!-- All character.media is fetched eagerly in LoadAsync; sort/Load More are pure
+                     local list ops on DisplayedAppearances (a sorted prefix of the full cache). -->
+                <ScrollView Orientation="Horizontal">
                     <HorizontalStackLayout Spacing="10">
                         <HorizontalStackLayout Spacing="10"
-                                               BindableLayout.ItemsSource="{Binding Character.Media}">
-                            <HorizontalStackLayout.Triggers>
-                                <DataTrigger TargetType="HorizontalStackLayout"
-                                             Binding="{Binding IsLoadingAppearances}" Value="True">
-                                    <Setter Property="Opacity" Value="0.4" />
-                                </DataTrigger>
-                            </HorizontalStackLayout.Triggers>
+                                               BindableLayout.ItemsSource="{Binding DisplayedAppearances}">
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate x:DataType="models:CharacterMediaEdge">
                                     <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130">
@@ -452,18 +445,42 @@
                                                                   CommandParameter="{Binding Node.Id}" />
                                         </Border.GestureRecognizers>
                                         <VerticalStackLayout>
-                                            <Grid HeightRequest="180" WidthRequest="130">
+                                            <Grid HeightRequest="170" WidthRequest="130">
                                                 <Image Source="{Binding Node.CoverImage.Large}"
                                                        Aspect="AspectFill"
-                                                       HeightRequest="180"
+                                                       HeightRequest="170"
                                                        WidthRequest="130" />
                                                 <views:FormatIconBadge Format="{Binding Node.Format}" />
                                             </Grid>
                                             <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
-                                                <Label Text="{Binding CharacterRole}"
-                                                       Style="{StaticResource Caption2}"
-                                                       TextColor="{Binding CharacterRole, Converter={StaticResource RainbowAccentConverter}}"
-                                                       FontAttributes="Bold" />
+                                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="4">
+                                                    <Label Grid.Column="0"
+                                                           Text="{Binding CharacterRole}"
+                                                           Style="{StaticResource Caption2}"
+                                                           TextColor="{Binding CharacterRole, Converter={StaticResource RainbowAccentConverter}}"
+                                                           FontAttributes="Bold"
+                                                           VerticalTextAlignment="Center" />
+                                                    <!-- Pre-resolved per-item badge whose icon/color/text are stamped by the
+                                                         PageModel based on the active sort. Single binding path keeps the
+                                                         template light enough to scale across many cards. -->
+                                                    <HorizontalStackLayout Grid.Column="1" Spacing="3"
+                                                                           IsVisible="{Binding HasMetricBadge}"
+                                                                           VerticalOptions="Center">
+                                                        <Image WidthRequest="12" HeightRequest="12" VerticalOptions="Center">
+                                                            <Image.Source>
+                                                                <FontImageSource Glyph="{Binding MetricBadge.Glyph}"
+                                                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                                                 Color="{Binding MetricBadge.IconColor}"
+                                                                                 Size="12" />
+                                                            </Image.Source>
+                                                        </Image>
+                                                        <Label Text="{Binding MetricBadge.Text}"
+                                                               Style="{StaticResource Caption2}"
+                                                               FontAttributes="Bold"
+                                                               TextColor="{StaticResource Gray100}"
+                                                               VerticalTextAlignment="Center" />
+                                                    </HorizontalStackLayout>
+                                                </Grid>
                                                 <Label Text="{Binding Node.DisplayTitle}"
                                                        Style="{StaticResource Caption1}"
                                                        MaxLines="2"
@@ -495,15 +512,7 @@
                             </Grid>
                         </Border>
                     </HorizontalStackLayout>
-                    </ScrollView>
-
-                    <!-- Spinner overlay centered in the viewport. -->
-                    <ActivityIndicator IsRunning="{Binding IsLoadingAppearances}"
-                                       IsVisible="{Binding IsLoadingAppearances}"
-                                       Color="{StaticResource RainbowCyan}"
-                                       HorizontalOptions="Center"
-                                       VerticalOptions="Center" />
-                </Grid>
+                </ScrollView>
             </VerticalStackLayout>
 
             <!-- ============================================ -->

@@ -294,20 +294,12 @@
                     </HorizontalStackLayout>
                 </ScrollView>
 
-                <!-- Loading overlay: cards stay rendered (so the row preserves its natural height,
-                     no layout jump in the section below). During load they dim to 0.4 and a spinner
-                     overlays in the center of the visible viewport. Same treatment for sort and load more. -->
-                <Grid>
-                    <ScrollView Orientation="Horizontal">
+                <!-- Eager-fetched complete roster; sort/Load More are local list ops on
+                     DisplayedVoiceRoles (a sorted prefix of the full cache). -->
+                <ScrollView Orientation="Horizontal">
                     <HorizontalStackLayout Spacing="10">
                         <HorizontalStackLayout Spacing="10"
-                                               BindableLayout.ItemsSource="{Binding Staff.Characters}">
-                            <HorizontalStackLayout.Triggers>
-                                <DataTrigger TargetType="HorizontalStackLayout"
-                                             Binding="{Binding IsLoadingVoiceRoles}" Value="True">
-                                    <Setter Property="Opacity" Value="0.4" />
-                                </DataTrigger>
-                            </HorizontalStackLayout.Triggers>
+                                               BindableLayout.ItemsSource="{Binding DisplayedVoiceRoles}">
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate x:DataType="models:StaffCharacterEdge">
                                     <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130">
@@ -380,15 +372,7 @@
                             </Grid>
                         </Border>
                     </HorizontalStackLayout>
-                    </ScrollView>
-
-                    <!-- Spinner overlay centered in the viewport. -->
-                    <ActivityIndicator IsRunning="{Binding IsLoadingVoiceRoles}"
-                                       IsVisible="{Binding IsLoadingVoiceRoles}"
-                                       Color="{StaticResource RainbowCyan}"
-                                       HorizontalOptions="Center"
-                                       VerticalOptions="Center" />
-                </Grid>
+                </ScrollView>
             </VerticalStackLayout>
 
             <!-- ============================================ -->
@@ -445,20 +429,12 @@
                     </HorizontalStackLayout>
                 </ScrollView>
 
-                <!-- Loading overlay: cards stay rendered (so the row preserves its natural height,
-                     no layout jump in the section below). During load they dim to 0.4 and a spinner
-                     overlays in the center of the visible viewport. Same treatment for sort and load more. -->
-                <Grid>
-                    <ScrollView Orientation="Horizontal">
+                <!-- Eager-fetched complete roster; sort/Load More are local list ops on
+                     DisplayedProductionRoles (a sorted prefix of the full cache). -->
+                <ScrollView Orientation="Horizontal">
                     <HorizontalStackLayout Spacing="10">
                         <HorizontalStackLayout Spacing="10"
-                                               BindableLayout.ItemsSource="{Binding Staff.StaffMedia}">
-                            <HorizontalStackLayout.Triggers>
-                                <DataTrigger TargetType="HorizontalStackLayout"
-                                             Binding="{Binding IsLoadingProductionRoles}" Value="True">
-                                    <Setter Property="Opacity" Value="0.4" />
-                                </DataTrigger>
-                            </HorizontalStackLayout.Triggers>
+                                               BindableLayout.ItemsSource="{Binding DisplayedProductionRoles}">
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate x:DataType="models:StaffMediaEdge">
                                     <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130">
@@ -468,24 +444,48 @@
                                                                   CommandParameter="{Binding Node.Id}" />
                                         </Border.GestureRecognizers>
                                         <VerticalStackLayout>
-                                            <Grid HeightRequest="180" WidthRequest="130">
+                                            <Grid HeightRequest="170" WidthRequest="130">
                                                 <Image Source="{Binding Node.CoverImage.Large}"
                                                        Aspect="AspectFill"
-                                                       HeightRequest="180"
+                                                       HeightRequest="170"
                                                        WidthRequest="130" />
                                                 <views:FormatIconBadge Format="{Binding Node.Format}" />
                                             </Grid>
                                             <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
-                                                <Border BackgroundColor="{Binding StaffRole, Converter={StaticResource RainbowAccentConverter}}"
-                                                        StrokeShape="RoundRectangle 8"
-                                                        StrokeThickness="0"
-                                                        Padding="6,2"
-                                                        HorizontalOptions="Start">
-                                                    <Label Text="{Binding StaffRole}"
-                                                           Style="{StaticResource Caption2}"
-                                                           TextColor="White"
-                                                           FontAttributes="Bold" />
-                                                </Border>
+                                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="4">
+                                                    <Border Grid.Column="0"
+                                                            BackgroundColor="{Binding StaffRole, Converter={StaticResource RainbowAccentConverter}}"
+                                                            StrokeShape="RoundRectangle 8"
+                                                            StrokeThickness="0"
+                                                            Padding="6,2"
+                                                            HorizontalOptions="Start"
+                                                            VerticalOptions="Center">
+                                                        <Label Text="{Binding StaffRole}"
+                                                               Style="{StaticResource Caption2}"
+                                                               TextColor="White"
+                                                               FontAttributes="Bold" />
+                                                    </Border>
+                                                    <!-- Pre-resolved per-item badge whose icon/color/text are stamped by the
+                                                         PageModel based on the active sort. Single binding path keeps the
+                                                         template light enough to scale across many cards. -->
+                                                    <HorizontalStackLayout Grid.Column="1" Spacing="3"
+                                                                           IsVisible="{Binding HasMetricBadge}"
+                                                                           VerticalOptions="Center">
+                                                        <Image WidthRequest="12" HeightRequest="12" VerticalOptions="Center">
+                                                            <Image.Source>
+                                                                <FontImageSource Glyph="{Binding MetricBadge.Glyph}"
+                                                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                                                 Color="{Binding MetricBadge.IconColor}"
+                                                                                 Size="12" />
+                                                            </Image.Source>
+                                                        </Image>
+                                                        <Label Text="{Binding MetricBadge.Text}"
+                                                               Style="{StaticResource Caption2}"
+                                                               FontAttributes="Bold"
+                                                               TextColor="{StaticResource Gray100}"
+                                                               VerticalTextAlignment="Center" />
+                                                    </HorizontalStackLayout>
+                                                </Grid>
                                                 <Label Text="{Binding Node.DisplayTitle}"
                                                        Style="{StaticResource Caption1}"
                                                        MaxLines="2"
@@ -517,15 +517,7 @@
                             </Grid>
                         </Border>
                     </HorizontalStackLayout>
-                    </ScrollView>
-
-                    <!-- Spinner overlay centered in the viewport. -->
-                    <ActivityIndicator IsRunning="{Binding IsLoadingProductionRoles}"
-                                       IsVisible="{Binding IsLoadingProductionRoles}"
-                                       Color="{StaticResource RainbowCyan}"
-                                       HorizontalOptions="Center"
-                                       VerticalOptions="Center" />
-                </Grid>
+                </ScrollView>
             </VerticalStackLayout>
 
             <!-- ============================================ -->

@@ -95,15 +95,15 @@ internal sealed class FailingAniListClient : IAniListClient
             => throw Fail();
 
     public Task<(IReadOnlyList<StaffCharacterEdge> Items, PageInfo? PageInfo)>
-        LoadStaffCharactersPageAsync(int id, int page, string sort, CancellationToken ct = default)
+        LoadStaffCharactersPageAsync(int id, int page, string sort, int perPage = 25, CancellationToken ct = default)
             => throw Fail();
 
     public Task<(IReadOnlyList<StaffMediaEdge> Items, PageInfo? PageInfo)>
-        LoadStaffMediaPageAsync(int id, int page, string sort, CancellationToken ct = default)
+        LoadStaffMediaPageAsync(int id, int page, string sort, int perPage = 25, CancellationToken ct = default)
             => throw Fail();
 
     public Task<(IReadOnlyList<CharacterMediaEdge> Items, PageInfo? PageInfo)>
-        LoadCharacterMediaPageAsync(int id, int page, string sort, CancellationToken ct = default)
+        LoadCharacterMediaPageAsync(int id, int page, string sort, int perPage = 25, CancellationToken ct = default)
             => throw Fail();
 }
 #endif

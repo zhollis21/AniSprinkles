@@ -402,12 +402,12 @@ public class AniListClient : IAniListClient
     /// don't get flushed by a full <see cref="GetStaffAsync"/> round-trip.
     /// </summary>
     public async Task<(IReadOnlyList<StaffCharacterEdge> Items, PageInfo? PageInfo)> LoadStaffCharactersPageAsync(
-        int id, int page, string sort, CancellationToken cancellationToken = default)
+        int id, int page, string sort, int perPage = 25, CancellationToken cancellationToken = default)
     {
         var data = await SendAsync<StaffData>(
             "StaffCharactersPage",
             StaffCharactersPageQuery,
-            new { id, page, sort = new[] { sort } },
+            new { id, page, sort = new[] { sort }, perPage },
             token: null,
             cancellationToken).ConfigureAwait(false);
 
@@ -424,12 +424,12 @@ public class AniListClient : IAniListClient
     }
 
     public async Task<(IReadOnlyList<StaffMediaEdge> Items, PageInfo? PageInfo)> LoadStaffMediaPageAsync(
-        int id, int page, string sort, CancellationToken cancellationToken = default)
+        int id, int page, string sort, int perPage = 25, CancellationToken cancellationToken = default)
     {
         var data = await SendAsync<StaffData>(
             "StaffMediaPage",
             StaffMediaPageQuery,
-            new { id, page, sort = new[] { sort } },
+            new { id, page, sort = new[] { sort }, perPage },
             token: null,
             cancellationToken).ConfigureAwait(false);
 
@@ -446,12 +446,12 @@ public class AniListClient : IAniListClient
     }
 
     public async Task<(IReadOnlyList<CharacterMediaEdge> Items, PageInfo? PageInfo)> LoadCharacterMediaPageAsync(
-        int id, int page, string sort, CancellationToken cancellationToken = default)
+        int id, int page, string sort, int perPage = 25, CancellationToken cancellationToken = default)
     {
         var data = await SendAsync<CharacterData>(
             "CharacterMediaPage",
             CharacterMediaPageQuery,
-            new { id, page, sort = new[] { sort } },
+            new { id, page, sort = new[] { sort }, perPage },
             token: null,
             cancellationToken).ConfigureAwait(false);
 
@@ -775,6 +775,9 @@ public class AniListClient : IAniListClient
         Status = dto.Status,
         CoverImage = dto.CoverImage,
         AverageScore = dto.AverageScore,
+        Favourites = dto.Favourites,
+        Popularity = dto.Popularity,
+        StartDate = dto.StartDate,
     };
 
     private static Staff MapStaff(StaffDto dto)
@@ -832,6 +835,7 @@ public class AniListClient : IAniListClient
                 Id = edge.Node.Id,
                 Name = edge.Node.Name,
                 Image = edge.Node.Image,
+                Favourites = edge.Node.Favourites,
             },
             Role = edge.Role,
             Media = edge.Media?.FirstOrDefault() is { } firstMedia
@@ -893,6 +897,7 @@ public class AniListClient : IAniListClient
         {
             HasNextPage = dto.HasNextPage ?? false,
             CurrentPage = dto.CurrentPage ?? 0,
+            LastPage = dto.LastPage ?? 0,
         };
     }
 
@@ -1125,6 +1130,7 @@ public class AniListClient : IAniListClient
     {
         public bool? HasNextPage { get; set; }
         public int? CurrentPage { get; set; }
+        public int? LastPage { get; set; }
     }
 
     private sealed class AiringScheduleDto
@@ -1326,6 +1332,9 @@ public class AniListClient : IAniListClient
         public string? Status { get; set; }
         public MediaCoverImage? CoverImage { get; set; }
         public int? AverageScore { get; set; }
+        public int? Favourites { get; set; }
+        public int? Popularity { get; set; }
+        public MediaDate? StartDate { get; set; }
     }
 
     private sealed class CharacterConnectionDto
@@ -1345,6 +1354,7 @@ public class AniListClient : IAniListClient
         public int Id { get; set; }
         public CharacterName? Name { get; set; }
         public CharacterImage? Image { get; set; }
+        public int? Favourites { get; set; }
     }
 
     private sealed class VoiceActorDto
@@ -1758,12 +1768,13 @@ query Staff($id: Int!, $charactersPage: Int = 1, $mediaPage: Int = 1, $character
     favourites
     siteUrl
     characters(sort: $charactersSort, page: $charactersPage, perPage: 25) {
-      pageInfo { hasNextPage currentPage }
+      pageInfo { hasNextPage currentPage lastPage }
       edges {
         node {
           id
           name { full native }
           image { medium large }
+          favourites
         }
         role
         media {
@@ -1778,7 +1789,7 @@ query Staff($id: Int!, $charactersPage: Int = 1, $mediaPage: Int = 1, $character
       }
     }
     staffMedia(sort: $mediaSort, page: $mediaPage, perPage: 25) {
-      pageInfo { hasNextPage currentPage }
+      pageInfo { hasNextPage currentPage lastPage }
       edges {
         node {
           id
@@ -1788,6 +1799,9 @@ query Staff($id: Int!, $charactersPage: Int = 1, $mediaPage: Int = 1, $character
           type
           status
           averageScore
+          favourites
+          popularity
+          startDate { year }
         }
         staffRole
       }
@@ -1796,12 +1810,12 @@ query Staff($id: Int!, $charactersPage: Int = 1, $mediaPage: Int = 1, $character
 }";
 
     private const string StaffCharactersPageQuery = @"
-query StaffCharactersPage($id: Int!, $page: Int!, $sort: [CharacterSort]) {
+query StaffCharactersPage($id: Int!, $page: Int!, $sort: [CharacterSort], $perPage: Int = 25) {
   Staff(id: $id) {
-    characters(sort: $sort, page: $page, perPage: 25) {
-      pageInfo { hasNextPage currentPage }
+    characters(sort: $sort, page: $page, perPage: $perPage) {
+      pageInfo { hasNextPage currentPage lastPage }
       edges {
-        node { id name { full native } image { medium large } }
+        node { id name { full native } image { medium large } favourites }
         role
         media {
           id
@@ -1818,10 +1832,10 @@ query StaffCharactersPage($id: Int!, $page: Int!, $sort: [CharacterSort]) {
 }";
 
     private const string StaffMediaPageQuery = @"
-query StaffMediaPage($id: Int!, $page: Int!, $sort: [MediaSort]) {
+query StaffMediaPage($id: Int!, $page: Int!, $sort: [MediaSort], $perPage: Int = 25) {
   Staff(id: $id) {
-    staffMedia(sort: $sort, page: $page, perPage: 25) {
-      pageInfo { hasNextPage currentPage }
+    staffMedia(sort: $sort, page: $page, perPage: $perPage) {
+      pageInfo { hasNextPage currentPage lastPage }
       edges {
         node {
           id
@@ -1831,6 +1845,9 @@ query StaffMediaPage($id: Int!, $page: Int!, $sort: [MediaSort]) {
           type
           status
           averageScore
+          favourites
+          popularity
+          startDate { year }
         }
         staffRole
       }
@@ -1839,10 +1856,10 @@ query StaffMediaPage($id: Int!, $page: Int!, $sort: [MediaSort]) {
 }";
 
     private const string CharacterMediaPageQuery = @"
-query CharacterMediaPage($id: Int!, $page: Int!, $sort: [MediaSort]) {
+query CharacterMediaPage($id: Int!, $page: Int!, $sort: [MediaSort], $perPage: Int = 25) {
   Character(id: $id) {
-    media(sort: $sort, page: $page, perPage: 25) {
-      pageInfo { hasNextPage currentPage }
+    media(sort: $sort, page: $page, perPage: $perPage) {
+      pageInfo { hasNextPage currentPage lastPage }
       edges {
         node {
           id
@@ -1852,6 +1869,9 @@ query CharacterMediaPage($id: Int!, $page: Int!, $sort: [MediaSort]) {
           type
           status
           averageScore
+          favourites
+          popularity
+          startDate { year }
         }
         characterRole
         voiceActors(sort: [LANGUAGE, RELEVANCE]) {
@@ -1880,7 +1900,7 @@ query Character($id: Int!, $mediaPage: Int = 1, $mediaSort: [MediaSort] = [POPUL
     favourites
     siteUrl
     media(sort: $mediaSort, page: $mediaPage, perPage: 25) {
-      pageInfo { hasNextPage currentPage }
+      pageInfo { hasNextPage currentPage lastPage }
       edges {
         node {
           id
@@ -1890,6 +1910,9 @@ query Character($id: Int!, $mediaPage: Int = 1, $mediaSort: [MediaSort] = [POPUL
           type
           status
           averageScore
+          favourites
+          popularity
+          startDate { year }
         }
         characterRole
         voiceActors(sort: [LANGUAGE, RELEVANCE]) {

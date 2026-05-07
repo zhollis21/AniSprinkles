@@ -66,17 +66,17 @@ internal sealed class CIAniListClient : IAniListClient
         => Task.FromResult<Character?>(StubData.Character);
 
     public Task<(IReadOnlyList<StaffCharacterEdge> Items, PageInfo? PageInfo)> LoadStaffCharactersPageAsync(
-        int id, int page, string sort, CancellationToken ct = default)
+        int id, int page, string sort, int perPage = 25, CancellationToken ct = default)
         => Task.FromResult<(IReadOnlyList<StaffCharacterEdge>, PageInfo?)>(
             ([], new PageInfo { HasNextPage = false, CurrentPage = page }));
 
     public Task<(IReadOnlyList<StaffMediaEdge> Items, PageInfo? PageInfo)> LoadStaffMediaPageAsync(
-        int id, int page, string sort, CancellationToken ct = default)
+        int id, int page, string sort, int perPage = 25, CancellationToken ct = default)
         => Task.FromResult<(IReadOnlyList<StaffMediaEdge>, PageInfo?)>(
             ([], new PageInfo { HasNextPage = false, CurrentPage = page }));
 
     public Task<(IReadOnlyList<CharacterMediaEdge> Items, PageInfo? PageInfo)> LoadCharacterMediaPageAsync(
-        int id, int page, string sort, CancellationToken ct = default)
+        int id, int page, string sort, int perPage = 25, CancellationToken ct = default)
         => Task.FromResult<(IReadOnlyList<CharacterMediaEdge>, PageInfo?)>(
             ([], new PageInfo { HasNextPage = false, CurrentPage = page }));
 
