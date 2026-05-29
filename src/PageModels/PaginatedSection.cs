@@ -48,7 +48,12 @@ public sealed class PaginatedSection<T>
 
     public bool IsLoadingMore { get; private set; }
 
-    /// <summary>Raised after any change to <see cref="Sort"/>, <see cref="HasNextPage"/>, or <see cref="IsLoadingMore"/>.</summary>
+    public bool IsChangingSort { get; private set; }
+
+    /// <summary>True while a sort refetch or Load More round-trip is in flight — bind a spinner to this.</summary>
+    public bool IsBusy => IsLoadingMore || IsChangingSort;
+
+    /// <summary>Raised after any change to <see cref="Sort"/>, <see cref="HasNextPage"/>, <see cref="IsLoadingMore"/>, or <see cref="IsChangingSort"/>.</summary>
     public event Action? Changed;
 
     /// <summary>Seeds the section with the first page returned by the heavy Character/Staff query.</summary>
@@ -113,20 +118,35 @@ public sealed class PaginatedSection<T>
 
         var generation = ++_generation; // supersede any in-flight LoadMore
         IsLoadingMore = false;
+        IsChangingSort = true;
         Notify();
 
-        var (items, pageInfo) = await _fetchPage(1, sort, cancellationToken).ConfigureAwait(true);
-        if (generation != _generation)
+        try
         {
-            return; // a newer sort change won
-        }
+            var (items, pageInfo) = await _fetchPage(1, sort, cancellationToken).ConfigureAwait(true);
+            if (generation != _generation)
+            {
+                return; // a newer sort change won — it owns the busy state now
+            }
 
-        Sort = sort;
-        ResetItems();
-        AppendDeduped(items);
-        _currentPage = pageInfo?.CurrentPage ?? 1;
-        HasNextPage = pageInfo?.HasNextPage ?? false;
-        Notify();
+            Sort = sort;
+            ResetItems();
+            AppendDeduped(items);
+            _currentPage = pageInfo?.CurrentPage ?? 1;
+            HasNextPage = pageInfo?.HasNextPage ?? false;
+        }
+        catch (OperationCanceledException)
+        {
+            // Page torn down mid-fetch — drop silently.
+        }
+        finally
+        {
+            if (generation == _generation)
+            {
+                IsChangingSort = false;
+                Notify();
+            }
+        }
     }
 
     /// <summary>Clears everything and supersedes any in-flight fetch (used when loading a new id).</summary>
@@ -143,6 +163,7 @@ public sealed class PaginatedSection<T>
         _currentPage = 0;
         HasNextPage = false;
         IsLoadingMore = false;
+        IsChangingSort = false;
     }
 
     private void ResetItems()

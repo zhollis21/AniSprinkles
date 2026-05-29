@@ -120,7 +120,9 @@ public static class MauiProgram
         builder.Services.AddSingleton<IAuthService, AuthService>();
         builder.Services.AddSingleton<AniListClient>();
         builder.Services.AddSingleton<IAniListClient>(sp =>
-            new CachingAniListClient(sp.GetRequiredService<AniListClient>()));
+            new CachingAniListClient(
+                sp.GetRequiredService<AniListClient>(),
+                sp.GetRequiredService<ILogger<CachingAniListClient>>()));
         builder.Services.AddSingleton<IAiringNotificationService, AiringNotificationService>();
 #endif
         builder.Services.AddSingleton<MyAnimePageModel>();

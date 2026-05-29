@@ -260,6 +260,10 @@
                             </Image.Source>
                         </Image>
                         <Label Text="Voice Roles" Style="{StaticResource Title3}" TextColor="White" />
+                        <ActivityIndicator IsRunning="{Binding VoiceRolesBusy}"
+                                           IsVisible="{Binding VoiceRolesBusy}"
+                                           Color="White" HeightRequest="16" WidthRequest="16"
+                                           VerticalOptions="Center" />
                     </HorizontalStackLayout>
                 </Border>
 
@@ -395,6 +399,10 @@
                             </Image.Source>
                         </Image>
                         <Label Text="Production Roles" Style="{StaticResource Title3}" TextColor="White" />
+                        <ActivityIndicator IsRunning="{Binding ProductionRolesBusy}"
+                                           IsVisible="{Binding ProductionRolesBusy}"
+                                           Color="White" HeightRequest="16" WidthRequest="16"
+                                           VerticalOptions="Center" />
                     </HorizontalStackLayout>
                 </Border>
 

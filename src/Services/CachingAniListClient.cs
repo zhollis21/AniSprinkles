@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using Microsoft.Extensions.Logging;
 
 namespace AniSprinkles.Services;
 
@@ -20,9 +21,14 @@ namespace AniSprinkles.Services;
 public sealed class CachingAniListClient : IAniListClient
 {
     private readonly IAniListClient _inner;
+    private readonly ILogger<CachingAniListClient>? _logger;
     private readonly ConcurrentDictionary<string, Lazy<Task<object?>>> _cache = new();
 
-    public CachingAniListClient(IAniListClient inner) => _inner = inner;
+    public CachingAniListClient(IAniListClient inner, ILogger<CachingAniListClient>? logger = null)
+    {
+        _inner = inner;
+        _logger = logger;
+    }
 
     // ---- Cached detail-page reads -------------------------------------------------------------
 
@@ -101,9 +107,16 @@ public sealed class CachingAniListClient : IAniListClient
     private async Task<T> GetOrAddAsync<T>(string key, Func<Task<T>> factory)
     {
         // Lazy ensures the factory runs at most once even under concurrent access (coalescing).
+        var miss = false;
         var lazy = _cache.GetOrAdd(
             key,
-            _ => new Lazy<Task<object?>>(async () => await factory().ConfigureAwait(false)));
+            _ =>
+            {
+                miss = true;
+                return new Lazy<Task<object?>>(async () => await factory().ConfigureAwait(false));
+            });
+
+        _logger?.LogInformation("CACHE {Result} {Key}", miss ? "miss" : "hit", key);
 
         try
         {
