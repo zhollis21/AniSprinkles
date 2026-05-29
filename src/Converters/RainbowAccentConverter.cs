@@ -62,7 +62,7 @@ public sealed class RainbowAccentConverter : IValueConverter
 
         if (string.IsNullOrWhiteSpace(key))
         {
-            return Colors.Transparent;
+            return ToTarget(Colors.Transparent, targetType);
         }
 
         // Apply key mapping if one exists (e.g., "Current" → "Watching", "Repeating" → "Rewatching")
@@ -88,15 +88,21 @@ public sealed class RainbowAccentConverter : IValueConverter
                 c = c.WithAlpha(0.28f);
             }
 
-            return c;
+            return ToTarget(c, targetType);
         }
 
         // If Colors.xaml wasn't merged or key missing:
-        return Colors.Transparent;
+        return ToTarget(Colors.Transparent, targetType);
     }
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         => throw new NotSupportedException();
+
+    // Borders carry an implicit style that sets Background (a Brush), and MAUI's Background always
+    // wins over BackgroundColor — so a Border accent must bind Background, not BackgroundColor. When
+    // the binding target is a Brush, hand back a SolidColorBrush; otherwise (TextColor etc.) a Color.
+    private static object ToTarget(Color color, Type targetType)
+        => typeof(Brush).IsAssignableFrom(targetType) ? new SolidColorBrush(color) : color;
 
     private static int StableHash(string s)
     {

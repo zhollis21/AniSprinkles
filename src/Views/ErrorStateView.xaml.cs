@@ -1,4 +1,6 @@
 using System.Windows.Input;
+using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 
 namespace AniSprinkles.Views;
 
@@ -112,7 +114,16 @@ public partial class ErrorStateView : ContentView
     {
         if (HasErrorDetails)
         {
+            await AnimatePressAsync(CopyButton);
             await Clipboard.Default.SetTextAsync(ErrorDetails);
+            try
+            {
+                await Toast.Make("Copied to clipboard", ToastDuration.Short).Show();
+            }
+            catch
+            {
+                // Toast failures are non-fatal — clipboard write already succeeded.
+            }
         }
     }
 
@@ -120,11 +131,18 @@ public partial class ErrorStateView : ContentView
     {
         if (HasErrorDetails)
         {
+            await AnimatePressAsync(ShareButton);
             await Share.Default.RequestAsync(new ShareTextRequest
             {
                 Text = ErrorDetails,
                 Title = "AniSprinkles Error Details"
             });
         }
+    }
+
+    private static async Task AnimatePressAsync(VisualElement element)
+    {
+        await element.ScaleToAsync(0.92, 60, Easing.CubicOut);
+        await element.ScaleToAsync(1.0, 80, Easing.CubicOut);
     }
 }
