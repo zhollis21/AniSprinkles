@@ -145,6 +145,9 @@ public partial class StaffDetailsPage : ContentPage, IQueryAttributable
         {
             if (!_hasCreatedLoadedContent)
             {
+                Logger.LogInformation(
+                    "LOADEDHOST StaffDetails attach (hasStaff={HasStaff}, isBusy={IsBusy}, currentState={CurrentState})",
+                    ViewModel.HasStaff, ViewModel.IsBusy, ViewModel.CurrentState);
                 try
                 {
                     LoadedContentHost.Content = new Views.StaffDetailsLoadedContentView
@@ -167,6 +170,9 @@ public partial class StaffDetailsPage : ContentPage, IQueryAttributable
         }
         else if (_hasCreatedLoadedContent)
         {
+            Logger.LogInformation(
+                "LOADEDHOST StaffDetails detach (hasStaff={HasStaff}, isBusy={IsBusy}, currentState={CurrentState})",
+                ViewModel.HasStaff, ViewModel.IsBusy, ViewModel.CurrentState);
             HandlerHelper.DisconnectAll(LoadedContentHost.Content);
             LoadedContentHost.Content = null;
             _hasCreatedLoadedContent = false;

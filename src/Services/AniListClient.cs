@@ -598,45 +598,10 @@ public class AniListClient : IAniListClient
     }
 
     private static ApiErrorKind ClassifyHttpError(System.Net.HttpStatusCode statusCode, string? apiMessage)
-    {
-        // Known AniList outage pattern: 403 with a human-readable "disabled" message.
-        if (apiMessage is not null &&
-            (apiMessage.Contains("temporarily disabled", StringComparison.OrdinalIgnoreCase) ||
-             apiMessage.Contains("stability issues", StringComparison.OrdinalIgnoreCase) ||
-             apiMessage.Contains("under maintenance", StringComparison.OrdinalIgnoreCase)))
-        {
-            return ApiErrorKind.ServiceOutage;
-        }
-
-        return statusCode switch
-        {
-            System.Net.HttpStatusCode.TooManyRequests => ApiErrorKind.RateLimited,
-            System.Net.HttpStatusCode.Unauthorized => ApiErrorKind.Authentication,
-            System.Net.HttpStatusCode.Forbidden when apiMessage is null => ApiErrorKind.Authentication,
-            System.Net.HttpStatusCode.ServiceUnavailable or
-            System.Net.HttpStatusCode.BadGateway or
-            System.Net.HttpStatusCode.GatewayTimeout => ApiErrorKind.ServiceOutage,
-            _ => ApiErrorKind.Unknown,
-        };
-    }
+        => AniListErrorClassifier.ClassifyHttpError(statusCode, apiMessage);
 
     private static ApiErrorKind ClassifyGraphQlError(string message)
-    {
-        if (message.Contains("temporarily disabled", StringComparison.OrdinalIgnoreCase) ||
-            message.Contains("stability issues", StringComparison.OrdinalIgnoreCase) ||
-            message.Contains("under maintenance", StringComparison.OrdinalIgnoreCase))
-        {
-            return ApiErrorKind.ServiceOutage;
-        }
-
-        if (message.Contains("Invalid token", StringComparison.OrdinalIgnoreCase) ||
-            message.Contains("Unauthorized", StringComparison.OrdinalIgnoreCase))
-        {
-            return ApiErrorKind.Authentication;
-        }
-
-        return ApiErrorKind.Unknown;
-    }
+        => AniListErrorClassifier.ClassifyGraphQlError(message);
 
     private static MediaListEntry? MapEntry(MediaListEntryDto? dto)
     {

@@ -1,6 +1,8 @@
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Globalization;
 using AniSprinkles.Utilities;
+using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using IconFont.Maui.FluentIcons;
@@ -128,6 +130,8 @@ public partial class CharacterDetailsPageModel : ObservableObject
 
     public bool AppearancesHasMore => _appearances.HasNextPage;
 
+    public bool AppearancesBusy => _appearances.IsBusy;
+
     // ---- Voice Actors ---------------------------------------------------------------------------
 
     public ObservableCollection<VoiceActor> VoiceActors => _voiceActors.Items;
@@ -214,6 +218,9 @@ public partial class CharacterDetailsPageModel : ObservableObject
         _parsedDescription = DescriptionParser.Parse(value?.Description);
     }
 
+    partial void OnCurrentStateChanged(PageState oldValue, PageState newValue)
+        => _logger.LogInformation("PageState: {OldState} → {NewState} (key={StateKey})", oldValue, newValue, CurrentStateKey ?? "(null)");
+
     // ---- Load -----------------------------------------------------------------------------------
 
     public async Task LoadAsync(int characterId)
@@ -243,6 +250,9 @@ public partial class CharacterDetailsPageModel : ObservableObject
         _voiceActors.Reset();
         ResetAppearancesSortSelection();
 
+        var stopwatch = Stopwatch.StartNew();
+        _logger.LogInformation("NAVTRACE CharacterDetails load start (character {CharacterId})", characterId);
+
         try
         {
             var character = await _aniListClient.GetCharacterAsync(characterId, cancellationToken: token).ConfigureAwait(true);
@@ -260,10 +270,13 @@ public partial class CharacterDetailsPageModel : ObservableObject
             _voiceActors.Seed(pageOne, character.MediaPageInfo);
 
             CurrentState = PageState.Content;
+            _logger.LogInformation(
+                "NAVTRACE CharacterDetails loaded in {ElapsedMs}ms (character {CharacterId}, {Appearances} appearances, {VoiceActors} VAs)",
+                stopwatch.ElapsedMilliseconds, characterId, _appearances.Items.Count, _voiceActors.Items.Count);
         }
         catch (OperationCanceledException)
         {
-            // Navigated away mid-load — nothing to show.
+            _logger.LogInformation("NAVTRACE CharacterDetails load cancelled after {ElapsedMs}ms (character {CharacterId})", stopwatch.ElapsedMilliseconds, characterId);
         }
         catch (Exception ex)
         {
@@ -297,52 +310,79 @@ public partial class CharacterDetailsPageModel : ObservableObject
     // ---- Commands -------------------------------------------------------------------------------
 
     [RelayCommand]
-    private async Task LoadMoreAppearances()
-    {
-        try
-        {
-            await _appearances.LoadMoreAsync(_pageCts?.Token ?? CancellationToken.None).ConfigureAwait(true);
-        }
-        catch (Exception ex)
-        {
-            // Leave the Load More affordance in place so the user can simply try again.
-            _logger.LogWarning(ex, "Load more appearances failed for character {CharacterId}", _loadedCharacterId);
-        }
-    }
+    private Task LoadMoreAppearances()
+        => RunTracedListOpAsync(
+            "Appears In · Load More",
+            () => _appearances.LoadMoreAsync(_pageCts?.Token ?? CancellationToken.None),
+            () => _appearances.Items.Count);
 
     [RelayCommand]
-    private async Task SelectAppearancesSort(string? code)
+    private Task SelectAppearancesSort(string? code)
     {
         if (string.IsNullOrEmpty(code) || string.Equals(code, _appearances.Sort, StringComparison.Ordinal))
         {
-            return;
+            return Task.CompletedTask;
         }
 
-        try
-        {
-            await _appearances.ChangeSortAsync(code, _pageCts?.Token ?? CancellationToken.None).ConfigureAwait(true);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogWarning(ex, "Appearances sort change failed for character {CharacterId}", _loadedCharacterId);
-        }
-        finally
-        {
+        return RunTracedListOpAsync(
+            $"Appears In · sort→{code}",
+            () => _appearances.ChangeSortAsync(code, _pageCts?.Token ?? CancellationToken.None),
+            () => _appearances.Items.Count,
             // Keep the chip selection in sync with the sort that actually took effect.
-            SyncAppearancesSortSelection(_appearances.Sort);
-        }
+            onComplete: () => SyncAppearancesSortSelection(_appearances.Sort));
     }
 
     [RelayCommand]
-    private async Task CheckForMoreVoiceActors()
+    private Task CheckForMoreVoiceActors()
+        => RunTracedListOpAsync(
+            "Voice Actors · check for more",
+            () => _voiceActors.CheckForMoreAsync(_pageCts?.Token ?? CancellationToken.None),
+            () => _voiceActors.Items.Count);
+
+    // LISTTRACE: times the network fetch + collection apply for a list op so we can tell API cost
+    // (logged here) apart from the subsequent UI render of the bound list (which happens after this
+    // returns, on the UI thread). Failures are logged but swallowed so the affordance stays usable.
+    private async Task RunTracedListOpAsync(string op, Func<Task> operation, Func<int> loadedCount, Action? onComplete = null)
     {
+        var stopwatch = Stopwatch.StartNew();
+        _logger.LogInformation("LISTTRACE {Op} start (character {CharacterId})", op, _loadedCharacterId);
         try
         {
-            await _voiceActors.CheckForMoreAsync(_pageCts?.Token ?? CancellationToken.None).ConfigureAwait(true);
+            await operation().ConfigureAwait(true);
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Check for more voice actors failed for character {CharacterId}", _loadedCharacterId);
+            _logger.LogWarning(ex, "LISTTRACE {Op} failed (character {CharacterId})", op, _loadedCharacterId);
+            await ShowListErrorSnackbarAsync(ex).ConfigureAwait(true);
+        }
+        finally
+        {
+            onComplete?.Invoke();
+            _logger.LogInformation(
+                "LISTTRACE {Op} fetch+apply in {ElapsedMs}ms ({Count} loaded); UI render follows",
+                op, stopwatch.ElapsedMilliseconds, loadedCount());
+        }
+    }
+
+    // A failed sort/Load More leaves the existing list intact; surface a transient message so the
+    // failure isn't silent. Rate-limit/outage kinds carry their own user-facing title.
+    private Task ShowListErrorSnackbarAsync(Exception ex)
+    {
+        var message = ex is AniListApiException apiEx
+            ? apiEx.UserTitle
+            : "Couldn't update the list. Check your connection and try again.";
+        return ShowSnackbarAsync(message);
+    }
+
+    private async Task ShowSnackbarAsync(string message)
+    {
+        try
+        {
+            await Snackbar.Make(message, duration: TimeSpan.FromSeconds(4)).Show().ConfigureAwait(true);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Snackbar display failed");
         }
     }
 
@@ -409,6 +449,7 @@ public partial class CharacterDetailsPageModel : ObservableObject
     {
         OnPropertyChanged(nameof(HasAppearances));
         OnPropertyChanged(nameof(AppearancesHasMore));
+        OnPropertyChanged(nameof(AppearancesBusy));
     }
 
     private void OnVoiceActorsChanged()

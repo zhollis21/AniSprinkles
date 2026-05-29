@@ -163,4 +163,21 @@ public class PaginatedSectionTests
         Assert.Equal((2, "POPULARITY_DESC"), stamped[0]);
         Assert.Equal((1, "POPULARITY_DESC"), stamped[1]);
     }
+
+    [Fact]
+    public async Task ChangeSortAsync_WhileRefetching_ReportsBusyThenClears()
+    {
+        var gate = new TaskCompletionSource<(IReadOnlyList<Item>, PageInfo?)>(TaskCreationOptions.RunContinuationsAsynchronously);
+        var section = Section((page, sort, _) => gate.Task);
+        section.Seed([new Item(1)], Page(1, hasNext: true));
+        Assert.False(section.IsBusy);
+
+        var changing = section.ChangeSortAsync("SCORE_DESC", TestContext.Current.CancellationToken);
+        Assert.True(section.IsBusy); // spinner should be showing during the refetch
+
+        gate.SetResult(Result(Page(1, hasNext: false), 2));
+        await changing;
+
+        Assert.False(section.IsBusy);
+    }
 }
