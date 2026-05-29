@@ -298,8 +298,8 @@
                     </HorizontalStackLayout>
                 </ScrollView>
 
-                <!-- Eager-fetched complete roster; sort/Load More are local list ops on
-                     DisplayedVoiceRoles (a sorted prefix of the full cache). -->
+                <!-- Lazily paged via PaginatedSection: page 1 from the heavy Staff query; sort
+                     re-fetches page 1 server-side and Load More appends the next server page. -->
                 <ScrollView Orientation="Horizontal">
                     <HorizontalStackLayout Spacing="10">
                         <HorizontalStackLayout Spacing="10"
@@ -433,8 +433,8 @@
                     </HorizontalStackLayout>
                 </ScrollView>
 
-                <!-- Eager-fetched complete roster; sort/Load More are local list ops on
-                     DisplayedProductionRoles (a sorted prefix of the full cache). -->
+                <!-- Lazily paged via PaginatedSection: page 1 from the heavy Staff query; sort
+                     re-fetches page 1 server-side and Load More appends the next server page. -->
                 <ScrollView Orientation="Horizontal">
                     <HorizontalStackLayout Spacing="10">
                         <HorizontalStackLayout Spacing="10"

@@ -272,9 +272,9 @@
             </Border>
 
             <!-- ============================================ -->
-            <!-- VOICE ACTORS w/ language filter -->
+            <!-- VOICE ACTORS — deduped, grouped by language -->
             <!-- ============================================ -->
-            <VerticalStackLayout Spacing="10" IsVisible="{Binding HasAppearances}">
+            <VerticalStackLayout Spacing="10" IsVisible="{Binding ShowVoiceActorsSection}">
                 <Border Style="{StaticResource SectionHeaderStyle}"
                         Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='CharactersHeader'}">
                     <HorizontalStackLayout Spacing="8">

@@ -134,6 +134,11 @@ public partial class CharacterDetailsPageModel : ObservableObject
 
     public bool HasVoiceActors => !_voiceActors.IsEmpty;
 
+    // Gate the section on its own state (not HasAppearances) so the empty-state message is
+    // reachable even for a character with no media at all. After load this is always true —
+    // there's always a definitive answer: a list, more to load, or the empty state.
+    public bool ShowVoiceActorsSection => HasVoiceActors || VoiceActorsHasMore || ShowVoiceActorsEmptyState;
+
     public bool VoiceActorsHasMore => _voiceActors.HasMore;
 
     public bool IsCheckingVoiceActors => _voiceActors.IsChecking;
@@ -409,6 +414,7 @@ public partial class CharacterDetailsPageModel : ObservableObject
     private void OnVoiceActorsChanged()
     {
         OnPropertyChanged(nameof(HasVoiceActors));
+        OnPropertyChanged(nameof(ShowVoiceActorsSection));
         OnPropertyChanged(nameof(VoiceActorsHasMore));
         OnPropertyChanged(nameof(IsCheckingVoiceActors));
         OnPropertyChanged(nameof(ShowVoiceActorsEmptyState));
