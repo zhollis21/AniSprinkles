@@ -78,11 +78,15 @@
                                            VerticalTextAlignment="Center" />
                                 </HorizontalStackLayout>
 
-                                <Border BackgroundColor="{StaticResource RainbowYellow}"
-                                        Padding="6,2"
+                                <!-- Background (not BackgroundColor): the implicit Border style sets a
+                                     Background brush that would otherwise override BackgroundColor. -->
+                                <Border Padding="6,2"
                                         StrokeShape="RoundRectangle 12"
                                         StrokeThickness="0"
                                         IsVisible="{Binding IsBirthdayToday}">
+                                    <Border.Background>
+                                        <SolidColorBrush Color="{StaticResource RainbowYellow}" />
+                                    </Border.Background>
                                     <Label Text="🎂  Birthday today!"
                                            Style="{StaticResource Caption2}"
                                            TextColor="Black"
@@ -454,7 +458,7 @@
                                             <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
                                                 <Grid ColumnDefinitions="*,Auto" ColumnSpacing="4">
                                                     <Border Grid.Column="0"
-                                                            BackgroundColor="{Binding StaffRole, Converter={StaticResource RainbowAccentConverter}}"
+                                                            Background="{Binding StaffRole, Converter={StaticResource RainbowAccentConverter}}"
                                                             StrokeShape="RoundRectangle 8"
                                                             StrokeThickness="0"
                                                             Padding="6,2"

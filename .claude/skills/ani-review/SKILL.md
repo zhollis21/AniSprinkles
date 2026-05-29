@@ -28,6 +28,12 @@ Review all code written in this session against the checklist below. Fix every i
 - Every `[ObservableProperty]` or bound property is set from the UI thread
 - After `await` with `ConfigureAwait(false)`, continuation may be on a pool thread — check all failure/revert paths that set bound properties
 
+**XAML / styling**
+
+- Implicit styles (`<Style TargetType="X">` with no `x:Key`) apply to **every** matching element — a locally-set property can be silently overridden. Verify each local style value actually takes effect.
+- **MAUI `Background` (Brush) always wins over `BackgroundColor` (Color).** The app's implicit `<Style TargetType="Border">` sets `Background`, so any `Border` needing a custom fill must set `Background` (e.g. a `SolidColorBrush`), **not** `BackgroundColor` — otherwise the accent silently renders as the default card background. For dynamic colors, the binding/converter must produce a `Brush`.
+- New views are not in the CI screenshot set by default — visual-only regressions (wrong/missing accent colors) won't be caught by screenshots, so check styling by reading, not just by trusting the build.
+
 **Execution trace**
 
 - Walk the happy path end-to-end

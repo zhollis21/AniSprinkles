@@ -4,7 +4,7 @@ namespace AniSprinkles.Utilities;
 
 /// <summary>
 /// AniList descriptions are a mix of HTML and a bespoke flavor of Markdown
-/// (<c>__bold__</c>, <c>**bold**</c>, <c>*italic*</c>, <c>[text](url)</c>, <c>~~~strikethrough~~~</c>,
+/// (<c>__bold__</c>, <c>**bold**</c>, <c>*italic*</c>, <c>[text](url)</c>, <c>~~strikethrough~~</c>,
 /// <c>img(url)</c>, plus AniList's <c>~!spoiler!~</c> form). MAUI <c>Label.TextType="Html"</c>
 /// only renders the HTML half, so the Markdown leftovers leak through verbatim — for example
 /// <c>__Height:__ 172 cm</c> shows literal underscores. This helper rewrites the Markdown
