@@ -15,20 +15,18 @@ public partial class StaffDetailsPageModel : ObservableObject
     private readonly INavigationService _navigationService;
     private readonly ILogger<StaffDetailsPageModel> _logger;
 
-    private const int InitialDisplayCount = 25;
-    private const int LoadMorePageSize = 25;
-    private const int FetchPageSize = 50;
+    private const int PageSize = 25;
+    private const string VoiceRolesDefaultSort = "FAVOURITES_DESC";
+    private const string ProductionRolesDefaultSort = "POPULARITY_DESC";
 
     private int _loadedStaffId;
     private ParsedDescription _parsedDescription = ParsedDescription.Empty;
-    private string _voiceRolesSort = "FAVOURITES_DESC";
-    private string _productionRolesSort = "POPULARITY_DESC";
+    private CancellationTokenSource? _pageCts;
 
-    // Eager-fetched complete rosters held in sorted form for the active sort. The Displayed*
-    // ObservableCollections expose a prefix that grows on Load More. Sort changes / Load More
-    // are pure local list ops — no API calls.
-    private List<StaffCharacterEdge> _sortedVoiceRoles = [];
-    private List<StaffMediaEdge> _sortedProductionRoles = [];
+    // Voice Roles (Staff.characters) and Production Roles (Staff.staffMedia) are two genuinely
+    // separate AniList connections — each lazily paged and server-side sorted, fully independent.
+    private readonly PaginatedSection<StaffCharacterEdge> _voiceRoles;
+    private readonly PaginatedSection<StaffMediaEdge> _productionRoles;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CurrentStateKey))]
@@ -55,10 +53,6 @@ public partial class StaffDetailsPageModel : ObservableObject
     [NotifyPropertyChangedFor(nameof(AgeStatDisplay))]
     [NotifyPropertyChangedFor(nameof(QuickFactChips))]
     [NotifyPropertyChangedFor(nameof(HasQuickFactChips))]
-    [NotifyPropertyChangedFor(nameof(HasVoiceRoles))]
-    [NotifyPropertyChangedFor(nameof(HasProductionRoles))]
-    [NotifyPropertyChangedFor(nameof(VoiceRolesHasMore))]
-    [NotifyPropertyChangedFor(nameof(ProductionRolesHasMore))]
     [NotifyPropertyChangedFor(nameof(HasSiteUrl))]
     private Staff? _staff;
 
@@ -86,7 +80,6 @@ public partial class StaffDetailsPageModel : ObservableObject
     [ObservableProperty]
     private bool _canRetry = true;
 
-
     public IReadOnlyList<SortOption> VoiceRolesSortOptions { get; } =
     [
         new SortOption { Code = "FAVOURITES_DESC", Display = "Most Favorited", IsSelected = true },
@@ -104,11 +97,41 @@ public partial class StaffDetailsPageModel : ObservableObject
         new SortOption { Code = "TITLE_ROMAJI",    Display = "Title" },
     ];
 
-    public bool VoiceRolesHasMore => DisplayedVoiceRoles.Count < _sortedVoiceRoles.Count;
-    public bool ProductionRolesHasMore => DisplayedProductionRoles.Count < _sortedProductionRoles.Count;
+    public StaffDetailsPageModel(
+        IAniListClient aniListClient,
+        INavigationService navigationService,
+        ILogger<StaffDetailsPageModel> logger)
+    {
+        _aniListClient = aniListClient;
+        _navigationService = navigationService;
+        _logger = logger;
 
-    public ObservableCollection<StaffCharacterEdge> DisplayedVoiceRoles { get; } = [];
-    public ObservableCollection<StaffMediaEdge> DisplayedProductionRoles { get; } = [];
+        _voiceRoles = new PaginatedSection<StaffCharacterEdge>(
+            VoiceRolesDefaultSort,
+            FetchVoiceRolesPageAsync,
+            edge => edge.Node?.Id ?? 0);
+        _voiceRoles.Changed += OnVoiceRolesChanged;
+
+        _productionRoles = new PaginatedSection<StaffMediaEdge>(
+            ProductionRolesDefaultSort,
+            FetchProductionRolesPageAsync,
+            edge => (edge.Node?.Id ?? 0, edge.StaffRole ?? string.Empty),
+            StampProductionBadges);
+        _productionRoles.Changed += OnProductionRolesChanged;
+    }
+
+    // ---- Sections -------------------------------------------------------------------------------
+
+    public ObservableCollection<StaffCharacterEdge> DisplayedVoiceRoles => _voiceRoles.Items;
+    public ObservableCollection<StaffMediaEdge> DisplayedProductionRoles => _productionRoles.Items;
+
+    public bool HasVoiceRoles => _voiceRoles.Items.Count > 0;
+    public bool HasProductionRoles => _productionRoles.Items.Count > 0;
+
+    public bool VoiceRolesHasMore => _voiceRoles.HasNextPage;
+    public bool ProductionRolesHasMore => _productionRoles.HasNextPage;
+
+    // ---- Hero / bio / quick facts (unchanged) ---------------------------------------------------
 
     public bool HasStaff => Staff is not null;
 
@@ -152,29 +175,258 @@ public partial class StaffDetailsPageModel : ObservableObject
 
     public bool HasQuickFactChips => QuickFactChips.Count > 0;
 
-    public bool HasVoiceRoles => Staff?.Characters is { Count: > 0 };
-
-    public bool HasProductionRoles => Staff?.StaffMedia is { Count: > 0 };
-
     public bool HasSiteUrl => !string.IsNullOrWhiteSpace(Staff?.SiteUrl);
-
-    public StaffDetailsPageModel(
-        IAniListClient aniListClient,
-        INavigationService navigationService,
-        ILogger<StaffDetailsPageModel> logger)
-    {
-        _aniListClient = aniListClient;
-        _navigationService = navigationService;
-        _logger = logger;
-    }
 
     partial void OnStaffChanged(Staff? value)
     {
         _parsedDescription = DescriptionParser.Parse(value?.Description);
-        // Staff.Characters and Staff.StaffMedia are the complete rosters by the time this fires;
-        // LoadAsync eager-fetches all pages up front. Badge stamping and Displayed* population
-        // happen explicitly in LoadAsync after the eager fetch completes.
     }
+
+    // ---- Load -----------------------------------------------------------------------------------
+
+    public async Task LoadAsync(int staffId)
+    {
+        if (staffId <= 0)
+        {
+            ShowError("Not Found", "Invalid staff id.", canRetry: false);
+            return;
+        }
+
+        _loadedStaffId = staffId;
+        StartNewPageScope();
+        var token = _pageCts!.Token; // StartNewPageScope just assigned a fresh CTS
+
+
+
+        IsBusy = true;
+        if (Staff is null || Staff.Id != staffId)
+        {
+            CurrentState = PageState.InitialLoading;
+            IsShowingSpoilers = false;
+            IsDescriptionExpanded = false;
+        }
+
+        _voiceRoles.Reset();
+        _productionRoles.Reset();
+        ResetVoiceRolesSortSelection();
+        ResetProductionRolesSortSelection();
+
+        try
+        {
+            var staff = await _aniListClient.GetStaffAsync(staffId, cancellationToken: token).ConfigureAwait(true);
+            if (staff is null)
+            {
+                ShowError("Not Found", "We couldn't find this staff member.", canRetry: false);
+                return;
+            }
+
+            Staff = staff;
+
+            _voiceRoles.Seed(staff.Characters.ToList(), staff.CharactersPageInfo);
+            _productionRoles.Seed(staff.StaffMedia.ToList(), staff.StaffMediaPageInfo);
+
+            CurrentState = PageState.Content;
+        }
+        catch (OperationCanceledException)
+        {
+            // Navigated away mid-load — nothing to show.
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to load staff {StaffId}", staffId);
+            var (title, subtitle) = DescribeError(ex);
+            ShowError(title, subtitle, canRetry: true, details: ex.Message);
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
+
+    public void CancelInFlight() => _pageCts?.Cancel();
+
+    private void StartNewPageScope()
+    {
+        _pageCts?.Cancel();
+        _pageCts?.Dispose();
+        _pageCts = new CancellationTokenSource();
+    }
+
+    private Task<(IReadOnlyList<StaffCharacterEdge> Items, PageInfo? PageInfo)> FetchVoiceRolesPageAsync(
+        int page, string sort, CancellationToken cancellationToken)
+        => _aniListClient.LoadStaffCharactersPageAsync(_loadedStaffId, page, sort, PageSize, cancellationToken);
+
+    private Task<(IReadOnlyList<StaffMediaEdge> Items, PageInfo? PageInfo)> FetchProductionRolesPageAsync(
+        int page, string sort, CancellationToken cancellationToken)
+        => _aniListClient.LoadStaffMediaPageAsync(_loadedStaffId, page, sort, PageSize, cancellationToken);
+
+    // ---- Commands -------------------------------------------------------------------------------
+
+    [RelayCommand]
+    private async Task LoadMoreVoiceRoles()
+    {
+        try
+        {
+            await _voiceRoles.LoadMoreAsync(_pageCts?.Token ?? CancellationToken.None).ConfigureAwait(true);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Load more voice roles failed for staff {StaffId}", _loadedStaffId);
+        }
+    }
+
+    [RelayCommand]
+    private async Task LoadMoreProductionRoles()
+    {
+        try
+        {
+            await _productionRoles.LoadMoreAsync(_pageCts?.Token ?? CancellationToken.None).ConfigureAwait(true);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Load more production roles failed for staff {StaffId}", _loadedStaffId);
+        }
+    }
+
+    [RelayCommand]
+    private async Task SelectVoiceRolesSort(string? code)
+    {
+        if (string.IsNullOrEmpty(code) || string.Equals(code, _voiceRoles.Sort, StringComparison.Ordinal))
+        {
+            return;
+        }
+
+        try
+        {
+            await _voiceRoles.ChangeSortAsync(code, _pageCts?.Token ?? CancellationToken.None).ConfigureAwait(true);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Voice roles sort change failed for staff {StaffId}", _loadedStaffId);
+        }
+        finally
+        {
+            SyncSortSelection(VoiceRolesSortOptions, _voiceRoles.Sort);
+        }
+    }
+
+    [RelayCommand]
+    private async Task SelectProductionRolesSort(string? code)
+    {
+        if (string.IsNullOrEmpty(code) || string.Equals(code, _productionRoles.Sort, StringComparison.Ordinal))
+        {
+            return;
+        }
+
+        try
+        {
+            await _productionRoles.ChangeSortAsync(code, _pageCts?.Token ?? CancellationToken.None).ConfigureAwait(true);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Production roles sort change failed for staff {StaffId}", _loadedStaffId);
+        }
+        finally
+        {
+            SyncSortSelection(ProductionRolesSortOptions, _productionRoles.Sort);
+        }
+    }
+
+    [RelayCommand]
+    private void ToggleSpoilers() => IsShowingSpoilers = !IsShowingSpoilers;
+
+    [RelayCommand]
+    private void ToggleDescription() => IsDescriptionExpanded = !IsDescriptionExpanded;
+
+    [RelayCommand]
+    private async Task OpenSiteUrl()
+    {
+        if (string.IsNullOrWhiteSpace(Staff?.SiteUrl))
+        {
+            return;
+        }
+
+        try
+        {
+            await Browser.Default.OpenAsync(new Uri(Staff.SiteUrl), BrowserLaunchMode.SystemPreferred);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to open AniList staff URL");
+        }
+    }
+
+    [RelayCommand]
+    private Task RetryLoad() => LoadAsync(_loadedStaffId);
+
+    [RelayCommand]
+    private async Task NavigateToCharacter(int characterId)
+    {
+        _logger.LogInformation("NAVTRACE Staff→Character with id={CharacterId}", characterId);
+        if (characterId <= 0)
+        {
+            return;
+        }
+
+        await _navigationService.GoToAsync("character-details", animate: false, new Dictionary<string, object>
+        {
+            ["characterId"] = characterId,
+        });
+    }
+
+    [RelayCommand]
+    private async Task NavigateToMedia(int mediaId)
+    {
+        _logger.LogInformation("NAVTRACE Staff→Media with id={MediaId}", mediaId);
+        if (mediaId <= 0)
+        {
+            return;
+        }
+
+        await _navigationService.GoToAsync("media-details", animate: false, new Dictionary<string, object>
+        {
+            ["mediaId"] = mediaId,
+        });
+    }
+
+    // ---- Helpers --------------------------------------------------------------------------------
+
+    private void OnVoiceRolesChanged()
+    {
+        OnPropertyChanged(nameof(HasVoiceRoles));
+        OnPropertyChanged(nameof(VoiceRolesHasMore));
+    }
+
+    private void OnProductionRolesChanged()
+    {
+        OnPropertyChanged(nameof(HasProductionRoles));
+        OnPropertyChanged(nameof(ProductionRolesHasMore));
+    }
+
+    private void StampProductionBadges(IReadOnlyList<StaffMediaEdge> items, string sort)
+    {
+        foreach (var edge in items)
+        {
+            edge.MetricBadge = BuildProductionMetricBadge(edge.Node, sort);
+        }
+    }
+
+    private void ResetVoiceRolesSortSelection() => SyncSortSelection(VoiceRolesSortOptions, VoiceRolesDefaultSort);
+
+    private void ResetProductionRolesSortSelection() => SyncSortSelection(ProductionRolesSortOptions, ProductionRolesDefaultSort);
+
+    private static void SyncSortSelection(IReadOnlyList<SortOption> options, string code)
+    {
+        foreach (var opt in options)
+        {
+            opt.IsSelected = string.Equals(opt.Code, code, StringComparison.Ordinal);
+        }
+    }
+
+    private static (string Title, string Subtitle) DescribeError(Exception ex)
+        => ex is AniListApiException apiEx
+            ? (apiEx.UserTitle, apiEx.UserSubtitle)
+            : ("Something Went Wrong", "Failed to load staff details.");
 
     private static ItemMetricBadge? BuildProductionMetricBadge(RelatedMedia? media, string sort)
     {
@@ -182,6 +434,7 @@ public partial class StaffDetailsPageModel : ObservableObject
         {
             return null;
         }
+
         return sort switch
         {
             "POPULARITY_DESC" when media.HasPopularity => new ItemMetricBadge
@@ -212,170 +465,6 @@ public partial class StaffDetailsPageModel : ObservableObject
         };
     }
 
-    public async Task LoadAsync(int staffId)
-    {
-        if (staffId <= 0)
-        {
-            ShowError("Not Found", "Invalid staff id.", canRetry: false);
-            return;
-        }
-
-        _loadedStaffId = staffId;
-        IsBusy = true;
-        if (Staff is null || Staff.Id != staffId)
-        {
-            CurrentState = PageState.InitialLoading;
-            IsShowingSpoilers = false;
-            IsDescriptionExpanded = false;
-        }
-
-        try
-        {
-            var staff = await _aniListClient.GetStaffAsync(staffId);
-            if (staff is null)
-            {
-                ShowError("Not Found", "We couldn't find this staff member.", canRetry: false);
-                return;
-            }
-
-            // Eager-fetch every remaining page of BOTH Voice Roles and Production Roles in
-            // parallel, so sort/Load More across both sections become pure local list ops.
-            await Task.WhenAll(
-                FillRemainingVoiceRolesAsync(staff, staffId),
-                FillRemainingProductionRolesAsync(staff, staffId)
-            ).ConfigureAwait(true);
-
-            StampProductionBadges(staff);
-
-            Staff = staff;
-            ResetDisplayedVoiceRoles();
-            ResetDisplayedProductionRoles();
-            CurrentState = PageState.Content;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Failed to load staff {StaffId}", staffId);
-            ShowError("Something Went Wrong", "Failed to load staff details.", canRetry: true, details: ex.Message);
-        }
-        finally
-        {
-            IsBusy = false;
-        }
-    }
-
-    private async Task FillRemainingVoiceRolesAsync(Staff staff, int staffId)
-    {
-        var pageInfo = staff.CharactersPageInfo;
-        if (pageInfo is null || pageInfo.LastPage <= 1) return;
-
-        var tasks = new List<Task<(IReadOnlyList<StaffCharacterEdge> Items, PageInfo? PageInfo)>>();
-        for (var page = 2; page <= pageInfo.LastPage; page++)
-        {
-            tasks.Add(_aniListClient.LoadStaffCharactersPageAsync(
-                staffId, page, "FAVOURITES_DESC", perPage: FetchPageSize));
-        }
-        var results = await Task.WhenAll(tasks).ConfigureAwait(true);
-        foreach (var (items, _) in results)
-        {
-            foreach (var item in items)
-            {
-                staff.Characters.Add(item);
-            }
-        }
-    }
-
-    private async Task FillRemainingProductionRolesAsync(Staff staff, int staffId)
-    {
-        var pageInfo = staff.StaffMediaPageInfo;
-        if (pageInfo is null || pageInfo.LastPage <= 1) return;
-
-        var tasks = new List<Task<(IReadOnlyList<StaffMediaEdge> Items, PageInfo? PageInfo)>>();
-        for (var page = 2; page <= pageInfo.LastPage; page++)
-        {
-            tasks.Add(_aniListClient.LoadStaffMediaPageAsync(
-                staffId, page, "POPULARITY_DESC", perPage: FetchPageSize));
-        }
-        var results = await Task.WhenAll(tasks).ConfigureAwait(true);
-        foreach (var (items, _) in results)
-        {
-            foreach (var item in items)
-            {
-                staff.StaffMedia.Add(item);
-            }
-        }
-    }
-
-    private void StampProductionBadges(Staff staff)
-    {
-        foreach (var edge in staff.StaffMedia)
-        {
-            edge.MetricBadge = BuildProductionMetricBadge(edge.Node, _productionRolesSort);
-        }
-    }
-
-    private void ResetDisplayedVoiceRoles()
-    {
-        DisplayedVoiceRoles.Clear();
-        if (Staff is null)
-        {
-            _sortedVoiceRoles = [];
-            OnPropertyChanged(nameof(VoiceRolesHasMore));
-            return;
-        }
-        _sortedVoiceRoles = SortVoiceRoles(Staff.Characters, _voiceRolesSort);
-        var initial = Math.Min(InitialDisplayCount, _sortedVoiceRoles.Count);
-        for (var i = 0; i < initial; i++)
-        {
-            DisplayedVoiceRoles.Add(_sortedVoiceRoles[i]);
-        }
-        OnPropertyChanged(nameof(VoiceRolesHasMore));
-    }
-
-    private void ResetDisplayedProductionRoles()
-    {
-        DisplayedProductionRoles.Clear();
-        if (Staff is null)
-        {
-            _sortedProductionRoles = [];
-            OnPropertyChanged(nameof(ProductionRolesHasMore));
-            return;
-        }
-        _sortedProductionRoles = SortProductionRoles(Staff.StaffMedia, _productionRolesSort);
-        var initial = Math.Min(InitialDisplayCount, _sortedProductionRoles.Count);
-        for (var i = 0; i < initial; i++)
-        {
-            DisplayedProductionRoles.Add(_sortedProductionRoles[i]);
-        }
-        OnPropertyChanged(nameof(ProductionRolesHasMore));
-    }
-
-    private static List<StaffCharacterEdge> SortVoiceRoles(IEnumerable<StaffCharacterEdge> source, string sort) =>
-        sort switch
-        {
-            "ROLE"      => source.OrderBy(e => RolePriority(e.Role)).ToList(),
-            "RELEVANCE" => source.ToList(), // server returned RELEVANCE order; preserve it
-            _           => source.OrderByDescending(e => e.Node?.Favourites ?? 0).ToList(),
-        };
-
-    private static int RolePriority(string? role) => role switch
-    {
-        "MAIN"       => 0,
-        "SUPPORTING" => 1,
-        "BACKGROUND" => 2,
-        _            => 3,
-    };
-
-    private static List<StaffMediaEdge> SortProductionRoles(IEnumerable<StaffMediaEdge> source, string sort) =>
-        sort switch
-        {
-            "SCORE_DESC"      => source.OrderByDescending(e => e.Node?.AverageScore ?? 0).ToList(),
-            "FAVOURITES_DESC" => source.OrderByDescending(e => e.Node?.Favourites ?? 0).ToList(),
-            "START_DATE_DESC" => source.OrderByDescending(e => e.Node?.StartDate?.Year ?? 0).ToList(),
-            "START_DATE"      => source.OrderBy(e => e.Node?.StartDate?.Year ?? int.MaxValue).ToList(),
-            "TITLE_ROMAJI"    => source.OrderBy(e => e.Node?.Title?.Romaji ?? string.Empty, StringComparer.OrdinalIgnoreCase).ToList(),
-            _                 => source.OrderByDescending(e => e.Node?.Popularity ?? 0).ToList(),
-        };
-
     private BioStatRow BuildBioStatRow(DescriptionStatRow row)
     {
         var labelHidden = row.IsRowSpoiler && !IsShowingSpoilers;
@@ -401,7 +490,6 @@ public partial class StaffDetailsPageModel : ObservableObject
             return chips;
         }
 
-        // Each occupation gets its own chip — they color-code more nicely than a single joined string.
         if (Staff.PrimaryOccupations is { Count: > 0 } occupations)
         {
             foreach (var occ in occupations.Where(o => !string.IsNullOrWhiteSpace(o)))
@@ -452,135 +540,6 @@ public partial class StaffDetailsPageModel : ObservableObject
         }
 
         return favourites.Value.ToString(CultureInfo.InvariantCulture);
-    }
-
-    [RelayCommand]
-    private void ToggleSpoilers()
-    {
-        IsShowingSpoilers = !IsShowingSpoilers;
-    }
-
-    [RelayCommand]
-    private void ToggleDescription()
-    {
-        IsDescriptionExpanded = !IsDescriptionExpanded;
-    }
-
-    [RelayCommand]
-    private async Task OpenSiteUrl()
-    {
-        if (string.IsNullOrWhiteSpace(Staff?.SiteUrl))
-        {
-            return;
-        }
-
-        try
-        {
-            await Browser.Default.OpenAsync(new Uri(Staff.SiteUrl), BrowserLaunchMode.SystemPreferred);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Failed to open AniList staff URL");
-        }
-    }
-
-    [RelayCommand]
-    private void SelectVoiceRolesSort(string? code)
-    {
-        if (string.IsNullOrEmpty(code) || code == _voiceRolesSort || Staff is null) return;
-
-        ApplyVoiceRolesSortSelection(code);
-        ResetDisplayedVoiceRoles();
-    }
-
-    private void ApplyVoiceRolesSortSelection(string code)
-    {
-        foreach (var opt in VoiceRolesSortOptions)
-        {
-            opt.IsSelected = string.Equals(opt.Code, code, StringComparison.Ordinal);
-        }
-        _voiceRolesSort = code;
-    }
-
-    [RelayCommand]
-    private void SelectProductionRolesSort(string? code)
-    {
-        if (string.IsNullOrEmpty(code) || code == _productionRolesSort || Staff is null) return;
-
-        ApplyProductionRolesSortSelection(code);
-        // Re-stamp badges so each card shows the value matching the new sort.
-        StampProductionBadges(Staff);
-        ResetDisplayedProductionRoles();
-    }
-
-    private void ApplyProductionRolesSortSelection(string code)
-    {
-        foreach (var opt in ProductionRolesSortOptions)
-        {
-            opt.IsSelected = string.Equals(opt.Code, code, StringComparison.Ordinal);
-        }
-        _productionRolesSort = code;
-    }
-
-    [RelayCommand]
-    private void LoadMoreVoiceRoles()
-    {
-        if (!VoiceRolesHasMore) return;
-
-        var start = DisplayedVoiceRoles.Count;
-        var end = Math.Min(start + LoadMorePageSize, _sortedVoiceRoles.Count);
-        for (var i = start; i < end; i++)
-        {
-            DisplayedVoiceRoles.Add(_sortedVoiceRoles[i]);
-        }
-        OnPropertyChanged(nameof(VoiceRolesHasMore));
-    }
-
-    [RelayCommand]
-    private void LoadMoreProductionRoles()
-    {
-        if (!ProductionRolesHasMore) return;
-
-        var start = DisplayedProductionRoles.Count;
-        var end = Math.Min(start + LoadMorePageSize, _sortedProductionRoles.Count);
-        for (var i = start; i < end; i++)
-        {
-            DisplayedProductionRoles.Add(_sortedProductionRoles[i]);
-        }
-        OnPropertyChanged(nameof(ProductionRolesHasMore));
-    }
-
-    [RelayCommand]
-    private Task RetryLoad() => LoadAsync(_loadedStaffId);
-
-    [RelayCommand]
-    private async Task NavigateToCharacter(int characterId)
-    {
-        _logger.LogInformation("NAVTRACE Staff→Character with id={CharacterId}", characterId);
-        if (characterId <= 0)
-        {
-            return;
-        }
-
-        await _navigationService.GoToAsync("character-details", animate: false, new Dictionary<string, object>
-        {
-            ["characterId"] = characterId,
-        });
-    }
-
-    [RelayCommand]
-    private async Task NavigateToMedia(int mediaId)
-    {
-        _logger.LogInformation("NAVTRACE Staff→Media with id={MediaId}", mediaId);
-        if (mediaId <= 0)
-        {
-            return;
-        }
-
-        await _navigationService.GoToAsync("media-details", animate: false, new Dictionary<string, object>
-        {
-            ["mediaId"] = mediaId,
-        });
     }
 }
 

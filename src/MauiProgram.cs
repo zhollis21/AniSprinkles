@@ -97,11 +97,16 @@ public static class MauiProgram
         builder.Services.AddSingleton<IOutageStateService, OutageStateService>();
         builder.Services.AddSingleton<ErrorReportService>();
         builder.Services.AddTransient<LoggingHandler>();
+        builder.Services.AddTransient<AniListRateLimitHandler>();
         builder.Services.AddSingleton(sp =>
         {
-            var handler = sp.GetRequiredService<LoggingHandler>();
-            handler.InnerHandler = new HttpClientHandler();
-            return new HttpClient(handler);
+            // Pipeline (outermost first): rate-limit gate → logging → network. The gate is outermost
+            // so each retried attempt still flows through LoggingHandler and gets logged individually.
+            var logging = sp.GetRequiredService<LoggingHandler>();
+            logging.InnerHandler = new HttpClientHandler();
+            var rateLimit = sp.GetRequiredService<AniListRateLimitHandler>();
+            rateLimit.InnerHandler = logging;
+            return new HttpClient(rateLimit);
         });
 #if CI
         builder.Services.AddSingleton<IAuthService, CIAuthService>();
@@ -113,7 +118,9 @@ public static class MauiProgram
         builder.Services.AddSingleton<IAiringNotificationService, AiringNotificationService>();
 #else
         builder.Services.AddSingleton<IAuthService, AuthService>();
-        builder.Services.AddSingleton<IAniListClient, AniListClient>();
+        builder.Services.AddSingleton<AniListClient>();
+        builder.Services.AddSingleton<IAniListClient>(sp =>
+            new CachingAniListClient(sp.GetRequiredService<AniListClient>()));
         builder.Services.AddSingleton<IAiringNotificationService, AiringNotificationService>();
 #endif
         builder.Services.AddSingleton<MyAnimePageModel>();

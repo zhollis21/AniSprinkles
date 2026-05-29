@@ -82,6 +82,9 @@ public partial class CharacterDetailsPage : ContentPage, IQueryAttributable
         base.OnDisappearing();
         _hasAppeared = false;
         _pendingQueryVersion++;
+        // Abandon any in-flight fetches so a half-loaded page doesn't keep hitting the API after
+        // the user has navigated away.
+        ViewModel.CancelInFlight();
     }
 
     private void TryScheduleDeferredLoad()

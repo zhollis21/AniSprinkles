@@ -15,22 +15,21 @@ public partial class CharacterDetailsPageModel : ObservableObject
     private readonly INavigationService _navigationService;
     private readonly ILogger<CharacterDetailsPageModel> _logger;
 
-    private const int InitialDisplayCount = 25;
-    private const int LoadMorePageSize = 25;
-    // perPage on AniList Character.media accepts up to 50; keep request count low while leaving
-    // initial first paint within budget.
-    private const int FetchPageSize = 50;
+    private const int PageSize = 25;
+    private const string AppearancesDefaultSort = "POPULARITY_DESC";
+
+    // The fixed media ordering the Voice Actors list walks. Kept independent of the Appears In sort
+    // so changing that sort never disturbs the voice-actor list (a UX bug in the prior design).
+    private const string VoiceActorMediaSort = "POPULARITY_DESC";
 
     private int _loadedCharacterId;
     private ParsedDescription _parsedDescription = ParsedDescription.Empty;
-    private string _appearancesSort = "POPULARITY_DESC";
-    private string _voiceActorsSort = "FAVOURITES_DESC";
+    private CancellationTokenSource? _pageCts;
 
-    // After initial load, _sortedAppearances holds the entire character roster sorted client-side
-    // by the active Appears In sort. DisplayedAppearances takes a prefix that grows on Load More.
-    // Sort changes / Load More are pure local list ops — no API calls.
-    private List<CharacterMediaEdge> _sortedAppearances = [];
-    private readonly HashSet<int> _seenVoiceActorIds = [];
+    // The Appears In list and the deduped Voice Actors list are two fully independent views over
+    // Character.media. Each owns its cursor; neither mutates the other.
+    private readonly PaginatedSection<CharacterMediaEdge> _appearances;
+    private readonly VoiceActorAggregator _voiceActors;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CurrentStateKey))]
@@ -55,8 +54,6 @@ public partial class CharacterDetailsPageModel : ObservableObject
     [NotifyPropertyChangedFor(nameof(HasSpoilers))]
     [NotifyPropertyChangedFor(nameof(AlternativeNames))]
     [NotifyPropertyChangedFor(nameof(HasAlternativeNames))]
-    [NotifyPropertyChangedFor(nameof(HasAppearances))]
-    [NotifyPropertyChangedFor(nameof(AppearancesHasMore))]
     [NotifyPropertyChangedFor(nameof(HasSiteUrl))]
     [NotifyPropertyChangedFor(nameof(AgeStatDisplay))]
     [NotifyPropertyChangedFor(nameof(BirthdayStatDisplay))]
@@ -92,7 +89,6 @@ public partial class CharacterDetailsPageModel : ObservableObject
     [ObservableProperty]
     private bool _canRetry = true;
 
-
     public IReadOnlyList<SortOption> AppearancesSortOptions { get; } =
     [
         new SortOption { Code = "POPULARITY_DESC", Display = "Most Watched", IsSelected = true },
@@ -103,17 +99,54 @@ public partial class CharacterDetailsPageModel : ObservableObject
         new SortOption { Code = "TITLE_ROMAJI",    Display = "Title" },
     ];
 
-    public IReadOnlyList<SortOption> VoiceActorsSortOptions { get; } =
-    [
-        new SortOption { Code = "FAVOURITES_DESC", Display = "Most Favorited", IsSelected = true },
-        new SortOption { Code = "LANGUAGE",        Display = "Language" },
-        new SortOption { Code = "NAME",            Display = "Name" },
-    ];
+    public CharacterDetailsPageModel(
+        IAniListClient aniListClient,
+        INavigationService navigationService,
+        ILogger<CharacterDetailsPageModel> logger)
+    {
+        _aniListClient = aniListClient;
+        _navigationService = navigationService;
+        _logger = logger;
 
-    public bool AppearancesHasMore => DisplayedAppearances.Count < _sortedAppearances.Count;
+        _appearances = new PaginatedSection<CharacterMediaEdge>(
+            AppearancesDefaultSort,
+            FetchAppearancesPageAsync,
+            edge => edge.Node?.Id ?? 0,
+            StampAppearanceBadges);
+        _appearances.Changed += OnAppearancesChanged;
 
-    // The visible subset of _sortedAppearances. BindableLayout binds to this; never to Character.Media.
-    public ObservableCollection<CharacterMediaEdge> DisplayedAppearances { get; } = [];
+        _voiceActors = new VoiceActorAggregator(FetchVoiceActorMediaPageAsync);
+        _voiceActors.Changed += OnVoiceActorsChanged;
+    }
+
+    // ---- Appears In -----------------------------------------------------------------------------
+
+    // Bind XAML to these; the collection instances are stable for the page model's life.
+    public ObservableCollection<CharacterMediaEdge> DisplayedAppearances => _appearances.Items;
+
+    public bool HasAppearances => _appearances.Items.Count > 0;
+
+    public bool AppearancesHasMore => _appearances.HasNextPage;
+
+    // ---- Voice Actors ---------------------------------------------------------------------------
+
+    public ObservableCollection<VoiceActor> VoiceActors => _voiceActors.Items;
+
+    public bool HasVoiceActors => !_voiceActors.IsEmpty;
+
+    public bool VoiceActorsHasMore => _voiceActors.HasMore;
+
+    public bool IsCheckingVoiceActors => _voiceActors.IsChecking;
+
+    // No voice actors found and nothing left to search → show the friendly empty state.
+    public bool ShowVoiceActorsEmptyState => _voiceActors.IsEmpty && !_voiceActors.HasMore;
+
+    // Found some and there's nothing more to search → quietly confirm the list is complete.
+    public bool ShowVoiceActorsEndReached => !_voiceActors.IsEmpty && !_voiceActors.HasMore;
+
+    public string VoiceActorsEmptyMessage => "No voice actors here — looks like this one lives in the manga panels. 📖";
+
+    // ---- Hero / bio / stat surface (unchanged) --------------------------------------------------
 
     public bool HasCharacter => Character is not null;
 
@@ -169,31 +202,241 @@ public partial class CharacterDetailsPageModel : ObservableObject
 
     public bool HasAlternativeNames => AlternativeNames.Count > 0;
 
-    public bool HasAppearances => Character?.Media is { Count: > 0 };
-
     public bool HasSiteUrl => !string.IsNullOrWhiteSpace(Character?.SiteUrl);
-
-    // ObservableCollection so the BindableLayout updates incrementally instead of rebuilding
-    // (which resets the horizontal scroll position when nothing actually changed).
-    public ObservableCollection<VoiceActor> VoiceActors { get; } = [];
-
-    public CharacterDetailsPageModel(
-        IAniListClient aniListClient,
-        INavigationService navigationService,
-        ILogger<CharacterDetailsPageModel> logger)
-    {
-        _aniListClient = aniListClient;
-        _navigationService = navigationService;
-        _logger = logger;
-    }
 
     partial void OnCharacterChanged(Character? value)
     {
         _parsedDescription = DescriptionParser.Parse(value?.Description);
-        // Character.Media is the complete roster by the time this fires (LoadAsync eager-fetches
-        // all pages first); VAs come along as a deduped sorted snapshot.
-        RepopulateVoiceActorsFromCharacter();
     }
+
+    // ---- Load -----------------------------------------------------------------------------------
+
+    public async Task LoadAsync(int characterId)
+    {
+        if (characterId <= 0)
+        {
+            ShowError("Not Found", "Invalid character id.", canRetry: false);
+            return;
+        }
+
+        _loadedCharacterId = characterId;
+        StartNewPageScope();
+        var token = _pageCts!.Token; // StartNewPageScope just assigned a fresh CTS
+
+
+
+        IsBusy = true;
+        if (Character is null || Character.Id != characterId)
+        {
+            CurrentState = PageState.InitialLoading;
+            IsShowingSpoilers = false;
+            IsDescriptionExpanded = false;
+        }
+
+        // Clear any state from a previously-loaded character before fetching the new one.
+        _appearances.Reset();
+        _voiceActors.Reset();
+        ResetAppearancesSortSelection();
+
+        try
+        {
+            var character = await _aniListClient.GetCharacterAsync(characterId, cancellationToken: token).ConfigureAwait(true);
+            if (character is null)
+            {
+                ShowError("Not Found", "We couldn't find this character.", canRetry: false);
+                return;
+            }
+
+            Character = character;
+
+            // Seed both independent sections from the single heavy first-page query.
+            var pageOne = character.Media.ToList();
+            _appearances.Seed(pageOne, character.MediaPageInfo);
+            _voiceActors.Seed(pageOne, character.MediaPageInfo);
+
+            CurrentState = PageState.Content;
+        }
+        catch (OperationCanceledException)
+        {
+            // Navigated away mid-load — nothing to show.
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to load character {CharacterId}", characterId);
+            var (title, subtitle) = DescribeError(ex);
+            ShowError(title, subtitle, canRetry: true, details: ex.Message);
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
+
+    public void CancelInFlight() => _pageCts?.Cancel();
+
+    private void StartNewPageScope()
+    {
+        _pageCts?.Cancel();
+        _pageCts?.Dispose();
+        _pageCts = new CancellationTokenSource();
+    }
+
+    private Task<(IReadOnlyList<CharacterMediaEdge> Items, PageInfo? PageInfo)> FetchAppearancesPageAsync(
+        int page, string sort, CancellationToken cancellationToken)
+        => _aniListClient.LoadCharacterMediaPageAsync(_loadedCharacterId, page, sort, PageSize, cancellationToken);
+
+    private Task<(IReadOnlyList<CharacterMediaEdge> Items, PageInfo? PageInfo)> FetchVoiceActorMediaPageAsync(
+        int page, CancellationToken cancellationToken)
+        => _aniListClient.LoadCharacterMediaPageAsync(_loadedCharacterId, page, VoiceActorMediaSort, PageSize, cancellationToken);
+
+    // ---- Commands -------------------------------------------------------------------------------
+
+    [RelayCommand]
+    private async Task LoadMoreAppearances()
+    {
+        try
+        {
+            await _appearances.LoadMoreAsync(_pageCts?.Token ?? CancellationToken.None).ConfigureAwait(true);
+        }
+        catch (Exception ex)
+        {
+            // Leave the Load More affordance in place so the user can simply try again.
+            _logger.LogWarning(ex, "Load more appearances failed for character {CharacterId}", _loadedCharacterId);
+        }
+    }
+
+    [RelayCommand]
+    private async Task SelectAppearancesSort(string? code)
+    {
+        if (string.IsNullOrEmpty(code) || string.Equals(code, _appearances.Sort, StringComparison.Ordinal))
+        {
+            return;
+        }
+
+        try
+        {
+            await _appearances.ChangeSortAsync(code, _pageCts?.Token ?? CancellationToken.None).ConfigureAwait(true);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Appearances sort change failed for character {CharacterId}", _loadedCharacterId);
+        }
+        finally
+        {
+            // Keep the chip selection in sync with the sort that actually took effect.
+            SyncAppearancesSortSelection(_appearances.Sort);
+        }
+    }
+
+    [RelayCommand]
+    private async Task CheckForMoreVoiceActors()
+    {
+        try
+        {
+            await _voiceActors.CheckForMoreAsync(_pageCts?.Token ?? CancellationToken.None).ConfigureAwait(true);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Check for more voice actors failed for character {CharacterId}", _loadedCharacterId);
+        }
+    }
+
+    [RelayCommand]
+    private void ToggleSpoilers() => IsShowingSpoilers = !IsShowingSpoilers;
+
+    [RelayCommand]
+    private void ToggleDescription() => IsDescriptionExpanded = !IsDescriptionExpanded;
+
+    [RelayCommand]
+    private async Task OpenSiteUrl()
+    {
+        if (string.IsNullOrWhiteSpace(Character?.SiteUrl))
+        {
+            return;
+        }
+
+        try
+        {
+            await Browser.Default.OpenAsync(new Uri(Character.SiteUrl), BrowserLaunchMode.SystemPreferred);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to open AniList character URL");
+        }
+    }
+
+    [RelayCommand]
+    private Task RetryLoad() => LoadAsync(_loadedCharacterId);
+
+    [RelayCommand]
+    private async Task NavigateToStaff(int staffId)
+    {
+        _logger.LogInformation("NAVTRACE Character→Staff with id={StaffId}", staffId);
+        if (staffId <= 0)
+        {
+            return;
+        }
+
+        await _navigationService.GoToAsync("staff-details", animate: false, new Dictionary<string, object>
+        {
+            ["staffId"] = staffId,
+        });
+    }
+
+    [RelayCommand]
+    private async Task NavigateToMedia(int mediaId)
+    {
+        _logger.LogInformation("NAVTRACE Character→Media with id={MediaId}", mediaId);
+        if (mediaId <= 0)
+        {
+            return;
+        }
+
+        await _navigationService.GoToAsync("media-details", animate: false, new Dictionary<string, object>
+        {
+            ["mediaId"] = mediaId,
+        });
+    }
+
+    // ---- Helpers --------------------------------------------------------------------------------
+
+    private void OnAppearancesChanged()
+    {
+        OnPropertyChanged(nameof(HasAppearances));
+        OnPropertyChanged(nameof(AppearancesHasMore));
+    }
+
+    private void OnVoiceActorsChanged()
+    {
+        OnPropertyChanged(nameof(HasVoiceActors));
+        OnPropertyChanged(nameof(VoiceActorsHasMore));
+        OnPropertyChanged(nameof(IsCheckingVoiceActors));
+        OnPropertyChanged(nameof(ShowVoiceActorsEmptyState));
+        OnPropertyChanged(nameof(ShowVoiceActorsEndReached));
+    }
+
+    private void StampAppearanceBadges(IReadOnlyList<CharacterMediaEdge> items, string sort)
+    {
+        foreach (var edge in items)
+        {
+            edge.MetricBadge = BuildAppearanceMetricBadge(edge.Node, sort);
+        }
+    }
+
+    private void ResetAppearancesSortSelection() => SyncAppearancesSortSelection(AppearancesDefaultSort);
+
+    private void SyncAppearancesSortSelection(string code)
+    {
+        foreach (var opt in AppearancesSortOptions)
+        {
+            opt.IsSelected = string.Equals(opt.Code, code, StringComparison.Ordinal);
+        }
+    }
+
+    private static (string Title, string Subtitle) DescribeError(Exception ex)
+        => ex is AniListApiException apiEx
+            ? (apiEx.UserTitle, apiEx.UserSubtitle)
+            : ("Something Went Wrong", "Failed to load character details.");
 
     private static ItemMetricBadge? BuildAppearanceMetricBadge(RelatedMedia? media, string sort)
     {
@@ -201,6 +444,7 @@ public partial class CharacterDetailsPageModel : ObservableObject
         {
             return null;
         }
+
         return sort switch
         {
             "POPULARITY_DESC" when media.HasPopularity => new ItemMetricBadge
@@ -231,161 +475,6 @@ public partial class CharacterDetailsPageModel : ObservableObject
         };
     }
 
-    public async Task LoadAsync(int characterId)
-    {
-        if (characterId <= 0)
-        {
-            ShowError("Not Found", "Invalid character id.", canRetry: false);
-            return;
-        }
-
-        _loadedCharacterId = characterId;
-        IsBusy = true;
-        if (Character is null || Character.Id != characterId)
-        {
-            CurrentState = PageState.InitialLoading;
-            IsShowingSpoilers = false;
-            IsDescriptionExpanded = false;
-        }
-
-        try
-        {
-            var character = await _aniListClient.GetCharacterAsync(characterId);
-            if (character is null)
-            {
-                ShowError("Not Found", "We couldn't find this character.", canRetry: false);
-                return;
-            }
-
-            // Eager-fetch every remaining page of media in parallel before showing the page. After
-            // this returns, Character.Media is the complete roster — sort changes and Load More
-            // become pure local list ops, the VA section is complete from first paint, and there's
-            // no leaky abstraction between Appears In paging and what shows up under Voice Actors.
-            await FillRemainingAppearancesAsync(character, characterId).ConfigureAwait(true);
-
-            // Stamp metric badges using the active sort code on the now-complete media set.
-            StampAppearanceBadges(character);
-
-            Character = character;
-            ResetDisplayedAppearances();
-            CurrentState = PageState.Content;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Failed to load character {CharacterId}", characterId);
-            ShowError("Something Went Wrong", "Failed to load character details.", canRetry: true, details: ex.Message);
-        }
-        finally
-        {
-            IsBusy = false;
-        }
-    }
-
-    private async Task FillRemainingAppearancesAsync(Character character, int characterId)
-    {
-        var pageInfo = character.MediaPageInfo;
-        if (pageInfo is null || pageInfo.LastPage <= 1) return;
-
-        // Heavy CharacterQuery returns page 1; spawn parallel requests for pages 2..lastPage.
-        // Order of returned items doesn't matter — we sort client-side by the active sort code.
-        var tasks = new List<Task<(IReadOnlyList<CharacterMediaEdge> Items, PageInfo? PageInfo)>>();
-        for (var page = 2; page <= pageInfo.LastPage; page++)
-        {
-            tasks.Add(_aniListClient.LoadCharacterMediaPageAsync(
-                characterId, page, "POPULARITY_DESC", perPage: FetchPageSize));
-        }
-
-        var results = await Task.WhenAll(tasks).ConfigureAwait(true);
-        foreach (var (items, _) in results)
-        {
-            foreach (var item in items)
-            {
-                character.Media.Add(item);
-            }
-        }
-    }
-
-    private void StampAppearanceBadges(Character character)
-    {
-        foreach (var edge in character.Media)
-        {
-            edge.MetricBadge = BuildAppearanceMetricBadge(edge.Node, _appearancesSort);
-        }
-    }
-
-    private void ResetDisplayedAppearances()
-    {
-        DisplayedAppearances.Clear();
-        if (Character is null)
-        {
-            _sortedAppearances = [];
-            OnPropertyChanged(nameof(AppearancesHasMore));
-            return;
-        }
-        _sortedAppearances = SortAppearances(Character.Media, _appearancesSort);
-        var initial = Math.Min(InitialDisplayCount, _sortedAppearances.Count);
-        for (var i = 0; i < initial; i++)
-        {
-            DisplayedAppearances.Add(_sortedAppearances[i]);
-        }
-        OnPropertyChanged(nameof(AppearancesHasMore));
-    }
-
-    private static List<CharacterMediaEdge> SortAppearances(IEnumerable<CharacterMediaEdge> source, string sort) =>
-        sort switch
-        {
-            "SCORE_DESC"       => source.OrderByDescending(e => e.Node?.AverageScore ?? 0).ToList(),
-            "FAVOURITES_DESC"  => source.OrderByDescending(e => e.Node?.Favourites ?? 0).ToList(),
-            "START_DATE_DESC"  => source.OrderByDescending(e => e.Node?.StartDate?.Year ?? 0).ToList(),
-            "START_DATE"       => source.OrderBy(e => e.Node?.StartDate?.Year ?? int.MaxValue).ToList(),
-            "TITLE_ROMAJI"     => source.OrderBy(e => e.Node?.Title?.Romaji ?? string.Empty, StringComparer.OrdinalIgnoreCase).ToList(),
-            _                  => source.OrderByDescending(e => e.Node?.Popularity ?? 0).ToList(), // POPULARITY_DESC
-        };
-
-    private void AddVoiceActorIfNew(VoiceActor va)
-    {
-        if (!_seenVoiceActorIds.Add(va.Id)) return;
-        var index = FindVoiceActorInsertIndex(va);
-        VoiceActors.Insert(index, va);
-    }
-
-    private int FindVoiceActorInsertIndex(VoiceActor va)
-    {
-        // Linear scan — the VA list tops out at a couple hundred even for prolific characters,
-        // and we only insert during the brief background accumulation window.
-        for (var i = 0; i < VoiceActors.Count; i++)
-        {
-            if (CompareVoiceActorsForCurrentSort(va, VoiceActors[i]) < 0) return i;
-        }
-        return VoiceActors.Count;
-    }
-
-    private int CompareVoiceActorsForCurrentSort(VoiceActor a, VoiceActor b)
-    {
-        return _voiceActorsSort switch
-        {
-            "NAME" => string.Compare(a.Name?.Full ?? string.Empty, b.Name?.Full ?? string.Empty, StringComparison.OrdinalIgnoreCase),
-            "LANGUAGE" => CompareBy(a, b,
-                static x => x.Language ?? string.Empty,
-                static x => -(x.Favourites ?? 0),
-                static x => x.Name?.Full ?? string.Empty),
-            _ => CompareBy(a, b,
-                static x => -(x.Favourites ?? 0),
-                static x => x.Language ?? string.Empty,
-                static x => x.Name?.Full ?? string.Empty),
-        };
-    }
-
-    private static int CompareBy(VoiceActor a, VoiceActor b, params Func<VoiceActor, IComparable>[] keys)
-    {
-        foreach (var key in keys)
-        {
-            var cmp = Comparer<IComparable>.Default.Compare(key(a), key(b));
-            if (cmp != 0) return cmp;
-        }
-        return 0;
-    }
-
     private BioStatRow BuildBioStatRow(DescriptionStatRow row)
     {
         var labelHidden = row.IsRowSpoiler && !IsShowingSpoilers;
@@ -402,30 +491,6 @@ public partial class CharacterDetailsPageModel : ObservableObject
 
     private static string Bar(int sourceLength, int max)
         => new('█', Math.Clamp(sourceLength / 2, 4, max));
-
-    private void RepopulateVoiceActorsFromCharacter()
-    {
-        VoiceActors.Clear();
-        _seenVoiceActorIds.Clear();
-        if (Character is null) return;
-        foreach (var edge in Character.Media)
-        {
-            foreach (var va in edge.VoiceActors)
-            {
-                AddVoiceActorIfNew(va);
-            }
-        }
-    }
-
-    private void ResortVoiceActors()
-    {
-        // VA sort change re-orders the same accumulated set. Clear+Add preserves contents (and
-        // _seenVoiceActorIds), only horizontal scroll position resets — that's the intended UX.
-        var snapshot = VoiceActors.ToList();
-        snapshot.Sort(CompareVoiceActorsForCurrentSort);
-        VoiceActors.Clear();
-        foreach (var va in snapshot) VoiceActors.Add(va);
-    }
 
     private void ShowError(string title, string subtitle, bool canRetry, string details = "")
     {
@@ -468,118 +533,5 @@ public partial class CharacterDetailsPageModel : ObservableObject
         }
 
         return favourites.Value.ToString(CultureInfo.InvariantCulture);
-    }
-
-    [RelayCommand]
-    private void ToggleSpoilers()
-    {
-        IsShowingSpoilers = !IsShowingSpoilers;
-    }
-
-    [RelayCommand]
-    private void ToggleDescription()
-    {
-        IsDescriptionExpanded = !IsDescriptionExpanded;
-    }
-
-    [RelayCommand]
-    private async Task OpenSiteUrl()
-    {
-        if (string.IsNullOrWhiteSpace(Character?.SiteUrl))
-        {
-            return;
-        }
-
-        try
-        {
-            await Browser.Default.OpenAsync(new Uri(Character.SiteUrl), BrowserLaunchMode.SystemPreferred);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Failed to open AniList character URL");
-        }
-    }
-
-    [RelayCommand]
-    private void SelectAppearancesSort(string? code)
-    {
-        if (string.IsNullOrEmpty(code) || code == _appearancesSort || Character is null) return;
-
-        ApplyAppearancesSortSelection(code);
-        // Re-stamp badges so the icon/value reflect the new sort, then re-sort + reset visible window.
-        StampAppearanceBadges(Character);
-        ResetDisplayedAppearances();
-    }
-
-    private void ApplyAppearancesSortSelection(string code)
-    {
-        foreach (var opt in AppearancesSortOptions)
-        {
-            opt.IsSelected = string.Equals(opt.Code, code, StringComparison.Ordinal);
-        }
-        _appearancesSort = code;
-    }
-
-    [RelayCommand]
-    private void LoadMoreAppearances()
-    {
-        if (!AppearancesHasMore) return;
-
-        var start = DisplayedAppearances.Count;
-        var end = Math.Min(start + LoadMorePageSize, _sortedAppearances.Count);
-        for (var i = start; i < end; i++)
-        {
-            DisplayedAppearances.Add(_sortedAppearances[i]);
-        }
-        OnPropertyChanged(nameof(AppearancesHasMore));
-    }
-
-    [RelayCommand]
-    private void SelectVoiceActorsSort(string? code)
-    {
-        if (string.IsNullOrEmpty(code) || code == _voiceActorsSort)
-        {
-            return;
-        }
-
-        foreach (var opt in VoiceActorsSortOptions)
-        {
-            opt.IsSelected = string.Equals(opt.Code, code, StringComparison.Ordinal);
-        }
-        _voiceActorsSort = code;
-        ResortVoiceActors();
-    }
-
-    [RelayCommand]
-    private Task RetryLoad() => LoadAsync(_loadedCharacterId);
-
-    [RelayCommand]
-    private async Task NavigateToStaff(int staffId)
-    {
-        _logger.LogInformation("NAVTRACE Character→Staff with id={StaffId}", staffId);
-        if (staffId <= 0)
-        {
-            return;
-        }
-
-        await _navigationService.GoToAsync("staff-details", animate: false, new Dictionary<string, object>
-        {
-            ["staffId"] = staffId,
-        });
-    }
-
-    [RelayCommand]
-    private async Task NavigateToMedia(int mediaId)
-    {
-        _logger.LogInformation("NAVTRACE Character→Media with id={MediaId}", mediaId);
-        if (mediaId <= 0)
-        {
-            return;
-        }
-
-        await _navigationService.GoToAsync("media-details", animate: false, new Dictionary<string, object>
-        {
-            ["mediaId"] = mediaId,
-        });
     }
 }

@@ -20,8 +20,9 @@
 - **Endpoint**: `https://graphql.anilist.co`. Auth: OAuth implicit grant, redirect URI `anisprinkles://auth`, token in `SecureStorage` keys `anilist_access_token` and `anilist_access_token_expires_at`.
 - **Viewer ID caching**: lightweight `Viewer { id }` query cached by token string; invalidates on re-auth.
 - **Operations**: `Viewer`, `ViewerFull`, `MediaListCollection`, `Search`, `Media`, `SaveMediaListEntry`, `DeleteMediaListEntry`, `UpdateUser`, `AiringSchedule` / `Staff` / `Character` (the latter three are public — no auth required).
-- **Rate limiting**: not yet implemented. Planned: `X-RateLimit-Remaining`/`Retry-After`, 30 req/min, exponential backoff on 429.
-- **HttpClient**: singleton with `LoggingHandler`. Bearer token attached per-request in `AniListClient.SendAsync`. No timeout, retry, or rate-limit middleware yet.
+- **Rate limiting**: `AniListRateLimitHandler` (a `DelegatingHandler`) serializes all requests, reads `X-RateLimit-Remaining`/`X-RateLimit-Reset` for adaptive spacing, and does bounded `Retry-After`-aware retry on 429 (surfacing `ApiErrorKind.RateLimited` when the wait exceeds the cap or retries are exhausted).
+- **Caching**: `CachingAniListClient` decorates `IAniListClient`, caching character/staff reads for the session and coalescing concurrent same-key fetches. Other reads (lists, search, media) pass through — broader caching is a planned follow-up.
+- **HttpClient**: singleton; pipeline is `AniListRateLimitHandler` → `LoggingHandler` → `HttpClientHandler`. Bearer token attached per-request in `AniListClient.SendAsync`.
 
 ## Airing Notifications
 

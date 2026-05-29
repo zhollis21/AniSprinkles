@@ -286,42 +286,15 @@
                     </HorizontalStackLayout>
                 </Border>
 
-                <!-- Sort chips (client-side reorder of the deduped list — LANGUAGE groups by region) -->
-                <ScrollView Orientation="Horizontal">
-                    <HorizontalStackLayout Spacing="6"
-                                           BindableLayout.ItemsSource="{Binding VoiceActorsSortOptions}">
-                        <BindableLayout.ItemTemplate>
-                            <DataTemplate x:DataType="pageModels:SortOption">
-                                <Border StrokeShape="RoundRectangle 12"
-                                        StrokeThickness="1"
-                                        Padding="10,3"
-                                        BackgroundColor="{StaticResource SecondaryBackground}">
-                                    <Border.Triggers>
-                                        <DataTrigger TargetType="Border" Binding="{Binding IsSelected}" Value="True">
-                                            <Setter Property="Stroke" Value="{StaticResource RainbowCyan}" />
-                                            <Setter Property="Opacity" Value="1.0" />
-                                        </DataTrigger>
-                                        <DataTrigger TargetType="Border" Binding="{Binding IsSelected}" Value="False">
-                                            <Setter Property="Stroke" Value="Transparent" />
-                                            <Setter Property="Opacity" Value="0.5" />
-                                        </DataTrigger>
-                                    </Border.Triggers>
-                                    <Border.GestureRecognizers>
-                                        <TapGestureRecognizer x:DataType="{x:Null}"
-                                                              Command="{Binding Source={x:Reference RootView}, Path=BindingContext.SelectVoiceActorsSortCommand}"
-                                                              CommandParameter="{Binding Code}" />
-                                    </Border.GestureRecognizers>
-                                    <Label Text="{Binding Display}"
-                                           Style="{StaticResource Caption2}"
-                                           FontAttributes="Bold"
-                                           TextColor="{StaticResource Gray100}" />
-                                </Border>
-                            </DataTemplate>
-                        </BindableLayout.ItemTemplate>
-                    </HorizontalStackLayout>
-                </ScrollView>
+                <!-- Empty state — a character with no listed voice actors (e.g. manga-only). -->
+                <Label Text="{Binding VoiceActorsEmptyMessage}"
+                       Style="{StaticResource Body2}"
+                       TextColor="{StaticResource Gray400}"
+                       IsVisible="{Binding ShowVoiceActorsEmptyState}" />
 
-                <ScrollView Orientation="Horizontal">
+                <!-- Deduped, language-grouped voice actors (Japanese first). Intentionally unsorted:
+                     it's a partial list that grows via "check for more", never re-ordered. -->
+                <ScrollView Orientation="Horizontal" IsVisible="{Binding HasVoiceActors}">
                     <HorizontalStackLayout Spacing="10"
                                            BindableLayout.ItemsSource="{Binding VoiceActors}">
                         <BindableLayout.ItemTemplate>
@@ -375,6 +348,32 @@
                         </BindableLayout.ItemTemplate>
                     </HorizontalStackLayout>
                 </ScrollView>
+
+                <!-- "Check for more" rather than "load more": deeper titles usually repeat the same
+                     seiyuu, so a tap may surface nobody new (or reach the end). -->
+                <Border Style="{StaticResource CardStyle}" Padding="12,10"
+                        IsVisible="{Binding VoiceActorsHasMore}">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding CheckForMoreVoiceActorsCommand}" />
+                    </Border.GestureRecognizers>
+                    <HorizontalStackLayout Spacing="8" HorizontalOptions="Center">
+                        <ActivityIndicator IsRunning="{Binding IsCheckingVoiceActors}"
+                                           IsVisible="{Binding IsCheckingVoiceActors}"
+                                           HeightRequest="16" WidthRequest="16"
+                                           Color="{StaticResource Gray300}"
+                                           VerticalOptions="Center" />
+                        <Label Text="Check for more voice actors"
+                               Style="{StaticResource Caption1Strong}"
+                               TextColor="{StaticResource Gray300}"
+                               VerticalTextAlignment="Center" />
+                    </HorizontalStackLayout>
+                </Border>
+
+                <Label Text="That's everyone we found."
+                       Style="{StaticResource Caption2}"
+                       TextColor="{StaticResource Gray400}"
+                       HorizontalTextAlignment="Center"
+                       IsVisible="{Binding ShowVoiceActorsEndReached}" />
             </VerticalStackLayout>
 
             <!-- ============================================ -->
@@ -430,8 +429,8 @@
                     </HorizontalStackLayout>
                 </ScrollView>
 
-                <!-- All character.media is fetched eagerly in LoadAsync; sort/Load More are pure
-                     local list ops on DisplayedAppearances (a sorted prefix of the full cache). -->
+                <!-- Lazily paged: page 1 comes from the heavy Character query; sort re-fetches page 1
+                     server-side and Load More fetches the next page on demand. -->
                 <ScrollView Orientation="Horizontal">
                     <HorizontalStackLayout Spacing="10">
                         <HorizontalStackLayout Spacing="10"

@@ -610,6 +610,7 @@ public class AniListClient : IAniListClient
 
         return statusCode switch
         {
+            System.Net.HttpStatusCode.TooManyRequests => ApiErrorKind.RateLimited,
             System.Net.HttpStatusCode.Unauthorized => ApiErrorKind.Authentication,
             System.Net.HttpStatusCode.Forbidden when apiMessage is null => ApiErrorKind.Authentication,
             System.Net.HttpStatusCode.ServiceUnavailable or
