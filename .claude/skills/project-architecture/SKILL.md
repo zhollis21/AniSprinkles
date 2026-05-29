@@ -11,8 +11,10 @@ description: "AniSprinkles project architecture reference: DI lifetimes, page/Pa
 | ------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
 | `ErrorReportService`, `HttpClient`, `IAuthService`, `IAniListClient`, `IAiringNotificationService`, `IOutageStateService` | Singleton                                                      |
 | `MyAnimePageModel`, `SettingsPageModel`                                                                                   | **Singleton** (survive page recreation across flyout switches) |
-| `LoggingHandler`                                                                                                          | Transient                                                      |
-| `MyAnimePage`, `SettingsPage`, `MediaDetailsPageModel`, `MediaDetailsPage`                                                | Transient                                                      |
+| `LoggingHandler`, `AniListRateLimitHandler`                                                                               | Transient                                                      |
+
+`IAniListClient` resolves to `CachingAniListClient` wrapping the concrete `AniListClient` (session-lifetime in-memory cache of character/staff reads, with request coalescing). The shared `HttpClient` pipeline is `AniListRateLimitHandler` → `LoggingHandler` → `HttpClientHandler`, so every AniList call is serialized and 429/`Retry-After`-aware app-wide.
+| `MyAnimePage`, `SettingsPage`, `MediaDetailsPageModel`, `MediaDetailsPage`, `StaffDetailsPageModel`, `StaffDetailsPage`, `CharacterDetailsPageModel`, `CharacterDetailsPage` | Transient                                                      |
 
 ## Page ↔ PageModel Binding
 
@@ -32,7 +34,7 @@ Spinner-first flow: lightweight shell page appears immediately, full content vie
 
 ## Navigation
 
-Shell flyout (`my-anime`, `settings`). Details route: `Routing.RegisterRoute("media-details", typeof(MediaDetailsPage))` in `AppShell.xaml.cs`. Navigate via `Shell.Current.GoToAsync` with lightweight query params (`mediaId` + trace IDs) — never pass full model objects. Rapid-tap prevention on My Anime → details. Default Shell back behavior — no custom Android back overrides.
+Shell flyout (`my-anime`, `settings`). Details routes registered in `AppShell.xaml.cs`: `media-details` → `MediaDetailsPage`, `staff-details` → `StaffDetailsPage`, `character-details` → `CharacterDetailsPage`. Navigate via `Shell.Current.GoToAsync` (or the injected `INavigationService`) with lightweight query params (`mediaId` / `staffId` / `characterId` + trace IDs) — never pass full model objects. Rapid-tap prevention on My Anime → details. Default Shell back behavior — no custom Android back overrides.
 
 ## Performance Defaults
 
@@ -53,6 +55,6 @@ Static class (`Utilities/`). Persists title language, score format, adult conten
 
 **List screens:** Cache My Anime in-memory with timestamp. Show cached list immediately, refresh in background when stale (>5 min) or user pulls to refresh. Preserve expanded section states and scroll position when returning from details.
 
-**API:** Use cancellation tokens per navigation context. Coalesce duplicate in-flight calls for same endpoint + params. Add bounded retry only for transient failures and rate limits (not yet implemented).
+**API:** Use cancellation tokens per navigation context. Duplicate in-flight character/staff reads are coalesced and cached by `CachingAniListClient`. Rate-limit handling is centralized in `AniListRateLimitHandler` (serialized requests, `Retry-After`-aware bounded retry, `ApiErrorKind.RateLimited` when exhausted) — do **not** add per-call retry loops. Character/staff detail lists are lazily paged with server-side sort (`PaginatedSection<T>`); a character's voice actors are deduped/grouped by `VoiceActorAggregator` walking a fixed popularity cursor independent of the Appears-In sort.
 
 **Diagnostics workflow:** For every jank bug — pull both logs (`/ani-debug`), classify as startup/bind/navigation/network, fix one hot path at a time. Validate on release-like builds, not only debugger-attached sessions.

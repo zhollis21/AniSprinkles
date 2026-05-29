@@ -1,0 +1,546 @@
+using System.Collections.ObjectModel;
+using System.Globalization;
+using AniSprinkles.Utilities;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using IconFont.Maui.FluentIcons;
+using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Graphics;
+
+namespace AniSprinkles.PageModels;
+
+public partial class StaffDetailsPageModel : ObservableObject
+{
+    private readonly IAniListClient _aniListClient;
+    private readonly INavigationService _navigationService;
+    private readonly ILogger<StaffDetailsPageModel> _logger;
+
+    private const int PageSize = 25;
+    private const string VoiceRolesDefaultSort = "FAVOURITES_DESC";
+    private const string ProductionRolesDefaultSort = "POPULARITY_DESC";
+
+    private int _loadedStaffId;
+    private ParsedDescription _parsedDescription = ParsedDescription.Empty;
+    private CancellationTokenSource? _pageCts;
+
+    // Voice Roles (Staff.characters) and Production Roles (Staff.staffMedia) are two genuinely
+    // separate AniList connections — each lazily paged and server-side sorted, fully independent.
+    private readonly PaginatedSection<StaffCharacterEdge> _voiceRoles;
+    private readonly PaginatedSection<StaffMediaEdge> _productionRoles;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CurrentStateKey))]
+    private PageState _currentState = PageState.InitialLoading;
+
+    public string? CurrentStateKey => CurrentState == PageState.Content ? null : CurrentState.ToString();
+
+    [ObservableProperty]
+    private bool _isBusy;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(HasStaff))]
+    [NotifyPropertyChangedFor(nameof(PageTitle))]
+    [NotifyPropertyChangedFor(nameof(FavouritesDisplay))]
+    [NotifyPropertyChangedFor(nameof(HasFavourites))]
+    [NotifyPropertyChangedFor(nameof(IsBirthdayToday))]
+    [NotifyPropertyChangedFor(nameof(BioStats))]
+    [NotifyPropertyChangedFor(nameof(HasBioStats))]
+    [NotifyPropertyChangedFor(nameof(BioProse))]
+    [NotifyPropertyChangedFor(nameof(HasBioProse))]
+    [NotifyPropertyChangedFor(nameof(IsDescriptionTruncated))]
+    [NotifyPropertyChangedFor(nameof(HasSpoilers))]
+    [NotifyPropertyChangedFor(nameof(BornStatDisplay))]
+    [NotifyPropertyChangedFor(nameof(AgeStatDisplay))]
+    [NotifyPropertyChangedFor(nameof(QuickFactChips))]
+    [NotifyPropertyChangedFor(nameof(HasQuickFactChips))]
+    [NotifyPropertyChangedFor(nameof(HasSiteUrl))]
+    private Staff? _staff;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(BioProse))]
+    [NotifyPropertyChangedFor(nameof(BioStats))]
+    private bool _isShowingSpoilers;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(DescriptionMaxLines))]
+    private bool _isDescriptionExpanded;
+
+    [ObservableProperty]
+    private string _errorTitle = string.Empty;
+
+    [ObservableProperty]
+    private string _errorSubtitle = string.Empty;
+
+    [ObservableProperty]
+    private string _errorIconGlyph = string.Empty;
+
+    [ObservableProperty]
+    private string _errorDetails = string.Empty;
+
+    [ObservableProperty]
+    private bool _canRetry = true;
+
+    public IReadOnlyList<SortOption> VoiceRolesSortOptions { get; } =
+    [
+        new SortOption { Code = "FAVOURITES_DESC", Display = "Most Favorited", IsSelected = true },
+        new SortOption { Code = "ROLE",            Display = "Role" },
+        new SortOption { Code = "RELEVANCE",       Display = "Relevance" },
+    ];
+
+    public IReadOnlyList<SortOption> ProductionRolesSortOptions { get; } =
+    [
+        new SortOption { Code = "POPULARITY_DESC", Display = "Most Watched", IsSelected = true },
+        new SortOption { Code = "SCORE_DESC",      Display = "Avg Score" },
+        new SortOption { Code = "FAVOURITES_DESC", Display = "Most Favorited" },
+        new SortOption { Code = "START_DATE_DESC", Display = "Newest" },
+        new SortOption { Code = "START_DATE",      Display = "Oldest" },
+        new SortOption { Code = "TITLE_ROMAJI",    Display = "Title" },
+    ];
+
+    public StaffDetailsPageModel(
+        IAniListClient aniListClient,
+        INavigationService navigationService,
+        ILogger<StaffDetailsPageModel> logger)
+    {
+        _aniListClient = aniListClient;
+        _navigationService = navigationService;
+        _logger = logger;
+
+        _voiceRoles = new PaginatedSection<StaffCharacterEdge>(
+            VoiceRolesDefaultSort,
+            FetchVoiceRolesPageAsync,
+            edge => edge.Node?.Id ?? 0);
+        _voiceRoles.Changed += OnVoiceRolesChanged;
+
+        _productionRoles = new PaginatedSection<StaffMediaEdge>(
+            ProductionRolesDefaultSort,
+            FetchProductionRolesPageAsync,
+            edge => (edge.Node?.Id ?? 0, edge.StaffRole ?? string.Empty),
+            StampProductionBadges);
+        _productionRoles.Changed += OnProductionRolesChanged;
+    }
+
+    // ---- Sections -------------------------------------------------------------------------------
+
+    public ObservableCollection<StaffCharacterEdge> DisplayedVoiceRoles => _voiceRoles.Items;
+    public ObservableCollection<StaffMediaEdge> DisplayedProductionRoles => _productionRoles.Items;
+
+    public bool HasVoiceRoles => _voiceRoles.Items.Count > 0;
+    public bool HasProductionRoles => _productionRoles.Items.Count > 0;
+
+    public bool VoiceRolesHasMore => _voiceRoles.HasNextPage;
+    public bool ProductionRolesHasMore => _productionRoles.HasNextPage;
+
+    // ---- Hero / bio / quick facts (unchanged) ---------------------------------------------------
+
+    public bool HasStaff => Staff is not null;
+
+    public string PageTitle => Staff?.DisplayName ?? "Staff";
+
+    public bool HasFavourites => Staff?.Favourites is > 0;
+
+    public string FavouritesDisplay => FormatFavourites(Staff?.Favourites);
+
+    public bool IsBirthdayToday => BirthdayChecker.IsBirthdayToday(Staff?.DateOfBirth, DateTime.Today);
+
+    public IReadOnlyList<BioStatRow> BioStats =>
+        _parsedDescription.Stats.Select(BuildBioStatRow).ToList();
+
+    public bool HasBioStats => _parsedDescription.Stats.Count > 0;
+
+    public string BioProse =>
+        SpoilerHtmlProcessor.Process(
+            AniListMarkdownProcessor.Process(_parsedDescription.Prose),
+            IsShowingSpoilers);
+
+    public bool HasBioProse => !string.IsNullOrWhiteSpace(_parsedDescription.Prose);
+
+    public bool IsDescriptionTruncated => DescriptionTruncationHeuristic.IsTruncated(_parsedDescription.Prose);
+
+    public int DescriptionMaxLines => IsDescriptionExpanded
+        ? int.MaxValue
+        : DescriptionTruncationHeuristic.CollapsedMaxLines;
+
+    public bool HasSpoilers =>
+        _parsedDescription.Stats.Any(s => s.IsRowSpoiler || s.IsValueSpoiler)
+        || SpoilerHtmlProcessor.ContainsSpoilers(_parsedDescription.Prose);
+
+    public string BornStatDisplay
+        => FuzzyDateFormatter.Format(Staff?.DateOfBirth, includeYear: false) ?? "—";
+
+    public string AgeStatDisplay
+        => Staff?.Age is > 0 ? Staff.Age.Value.ToString(CultureInfo.InvariantCulture) : "—";
+
+    public IReadOnlyList<QuickFactChip> QuickFactChips => BuildQuickFactChips();
+
+    public bool HasQuickFactChips => QuickFactChips.Count > 0;
+
+    public bool HasSiteUrl => !string.IsNullOrWhiteSpace(Staff?.SiteUrl);
+
+    partial void OnStaffChanged(Staff? value)
+    {
+        _parsedDescription = DescriptionParser.Parse(value?.Description);
+    }
+
+    // ---- Load -----------------------------------------------------------------------------------
+
+    public async Task LoadAsync(int staffId)
+    {
+        if (staffId <= 0)
+        {
+            ShowError("Not Found", "Invalid staff id.", canRetry: false);
+            return;
+        }
+
+        _loadedStaffId = staffId;
+        StartNewPageScope();
+        var token = _pageCts!.Token; // StartNewPageScope just assigned a fresh CTS
+
+
+
+        IsBusy = true;
+        if (Staff is null || Staff.Id != staffId)
+        {
+            CurrentState = PageState.InitialLoading;
+            IsShowingSpoilers = false;
+            IsDescriptionExpanded = false;
+        }
+
+        _voiceRoles.Reset();
+        _productionRoles.Reset();
+        ResetVoiceRolesSortSelection();
+        ResetProductionRolesSortSelection();
+
+        try
+        {
+            var staff = await _aniListClient.GetStaffAsync(staffId, cancellationToken: token).ConfigureAwait(true);
+            if (staff is null)
+            {
+                ShowError("Not Found", "We couldn't find this staff member.", canRetry: false);
+                return;
+            }
+
+            Staff = staff;
+
+            _voiceRoles.Seed(staff.Characters.ToList(), staff.CharactersPageInfo);
+            _productionRoles.Seed(staff.StaffMedia.ToList(), staff.StaffMediaPageInfo);
+
+            CurrentState = PageState.Content;
+        }
+        catch (OperationCanceledException)
+        {
+            // Navigated away mid-load — nothing to show.
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to load staff {StaffId}", staffId);
+            var (title, subtitle) = DescribeError(ex);
+            ShowError(title, subtitle, canRetry: true, details: ex.Message);
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
+
+    public void CancelInFlight() => _pageCts?.Cancel();
+
+    private void StartNewPageScope()
+    {
+        _pageCts?.Cancel();
+        _pageCts?.Dispose();
+        _pageCts = new CancellationTokenSource();
+    }
+
+    private Task<(IReadOnlyList<StaffCharacterEdge> Items, PageInfo? PageInfo)> FetchVoiceRolesPageAsync(
+        int page, string sort, CancellationToken cancellationToken)
+        => _aniListClient.LoadStaffCharactersPageAsync(_loadedStaffId, page, sort, PageSize, cancellationToken);
+
+    private Task<(IReadOnlyList<StaffMediaEdge> Items, PageInfo? PageInfo)> FetchProductionRolesPageAsync(
+        int page, string sort, CancellationToken cancellationToken)
+        => _aniListClient.LoadStaffMediaPageAsync(_loadedStaffId, page, sort, PageSize, cancellationToken);
+
+    // ---- Commands -------------------------------------------------------------------------------
+
+    [RelayCommand]
+    private async Task LoadMoreVoiceRoles()
+    {
+        try
+        {
+            await _voiceRoles.LoadMoreAsync(_pageCts?.Token ?? CancellationToken.None).ConfigureAwait(true);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Load more voice roles failed for staff {StaffId}", _loadedStaffId);
+        }
+    }
+
+    [RelayCommand]
+    private async Task LoadMoreProductionRoles()
+    {
+        try
+        {
+            await _productionRoles.LoadMoreAsync(_pageCts?.Token ?? CancellationToken.None).ConfigureAwait(true);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Load more production roles failed for staff {StaffId}", _loadedStaffId);
+        }
+    }
+
+    [RelayCommand]
+    private async Task SelectVoiceRolesSort(string? code)
+    {
+        if (string.IsNullOrEmpty(code) || string.Equals(code, _voiceRoles.Sort, StringComparison.Ordinal))
+        {
+            return;
+        }
+
+        try
+        {
+            await _voiceRoles.ChangeSortAsync(code, _pageCts?.Token ?? CancellationToken.None).ConfigureAwait(true);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Voice roles sort change failed for staff {StaffId}", _loadedStaffId);
+        }
+        finally
+        {
+            SyncSortSelection(VoiceRolesSortOptions, _voiceRoles.Sort);
+        }
+    }
+
+    [RelayCommand]
+    private async Task SelectProductionRolesSort(string? code)
+    {
+        if (string.IsNullOrEmpty(code) || string.Equals(code, _productionRoles.Sort, StringComparison.Ordinal))
+        {
+            return;
+        }
+
+        try
+        {
+            await _productionRoles.ChangeSortAsync(code, _pageCts?.Token ?? CancellationToken.None).ConfigureAwait(true);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Production roles sort change failed for staff {StaffId}", _loadedStaffId);
+        }
+        finally
+        {
+            SyncSortSelection(ProductionRolesSortOptions, _productionRoles.Sort);
+        }
+    }
+
+    [RelayCommand]
+    private void ToggleSpoilers() => IsShowingSpoilers = !IsShowingSpoilers;
+
+    [RelayCommand]
+    private void ToggleDescription() => IsDescriptionExpanded = !IsDescriptionExpanded;
+
+    [RelayCommand]
+    private async Task OpenSiteUrl()
+    {
+        if (string.IsNullOrWhiteSpace(Staff?.SiteUrl))
+        {
+            return;
+        }
+
+        try
+        {
+            await Browser.Default.OpenAsync(new Uri(Staff.SiteUrl), BrowserLaunchMode.SystemPreferred);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to open AniList staff URL");
+        }
+    }
+
+    [RelayCommand]
+    private Task RetryLoad() => LoadAsync(_loadedStaffId);
+
+    [RelayCommand]
+    private async Task NavigateToCharacter(int characterId)
+    {
+        _logger.LogInformation("NAVTRACE Staff→Character with id={CharacterId}", characterId);
+        if (characterId <= 0)
+        {
+            return;
+        }
+
+        await _navigationService.GoToAsync("character-details", animate: false, new Dictionary<string, object>
+        {
+            ["characterId"] = characterId,
+        });
+    }
+
+    [RelayCommand]
+    private async Task NavigateToMedia(int mediaId)
+    {
+        _logger.LogInformation("NAVTRACE Staff→Media with id={MediaId}", mediaId);
+        if (mediaId <= 0)
+        {
+            return;
+        }
+
+        await _navigationService.GoToAsync("media-details", animate: false, new Dictionary<string, object>
+        {
+            ["mediaId"] = mediaId,
+        });
+    }
+
+    // ---- Helpers --------------------------------------------------------------------------------
+
+    private void OnVoiceRolesChanged()
+    {
+        OnPropertyChanged(nameof(HasVoiceRoles));
+        OnPropertyChanged(nameof(VoiceRolesHasMore));
+    }
+
+    private void OnProductionRolesChanged()
+    {
+        OnPropertyChanged(nameof(HasProductionRoles));
+        OnPropertyChanged(nameof(ProductionRolesHasMore));
+    }
+
+    private void StampProductionBadges(IReadOnlyList<StaffMediaEdge> items, string sort)
+    {
+        foreach (var edge in items)
+        {
+            edge.MetricBadge = BuildProductionMetricBadge(edge.Node, sort);
+        }
+    }
+
+    private void ResetVoiceRolesSortSelection() => SyncSortSelection(VoiceRolesSortOptions, VoiceRolesDefaultSort);
+
+    private void ResetProductionRolesSortSelection() => SyncSortSelection(ProductionRolesSortOptions, ProductionRolesDefaultSort);
+
+    private static void SyncSortSelection(IReadOnlyList<SortOption> options, string code)
+    {
+        foreach (var opt in options)
+        {
+            opt.IsSelected = string.Equals(opt.Code, code, StringComparison.Ordinal);
+        }
+    }
+
+    private static (string Title, string Subtitle) DescribeError(Exception ex)
+        => ex is AniListApiException apiEx
+            ? (apiEx.UserTitle, apiEx.UserSubtitle)
+            : ("Something Went Wrong", "Failed to load staff details.");
+
+    private static ItemMetricBadge? BuildProductionMetricBadge(RelatedMedia? media, string sort)
+    {
+        if (media is null)
+        {
+            return null;
+        }
+
+        return sort switch
+        {
+            "POPULARITY_DESC" when media.HasPopularity => new ItemMetricBadge
+            {
+                Glyph = FluentIconsRegular.People24,
+                IconColor = Color.FromArgb("#FF9500"),
+                Text = media.PopularityDisplay,
+            },
+            "SCORE_DESC" when media.HasScore => new ItemMetricBadge
+            {
+                Glyph = FluentIconsRegular.Star24,
+                IconColor = Color.FromArgb("#FFCC00"),
+                Text = media.ScoreDisplay,
+            },
+            "FAVOURITES_DESC" when media.HasFavourites => new ItemMetricBadge
+            {
+                Glyph = FluentIconsRegular.Heart24,
+                IconColor = Color.FromArgb("#FF2D95"),
+                Text = media.FavouritesDisplay,
+            },
+            "START_DATE_DESC" or "START_DATE" when media.HasYear => new ItemMetricBadge
+            {
+                Glyph = FluentIconsRegular.Calendar24,
+                IconColor = Color.FromArgb("#00C2FF"),
+                Text = media.YearDisplay,
+            },
+            _ => null,
+        };
+    }
+
+    private BioStatRow BuildBioStatRow(DescriptionStatRow row)
+    {
+        var labelHidden = row.IsRowSpoiler && !IsShowingSpoilers;
+        var valueHidden = (row.IsRowSpoiler || row.IsValueSpoiler) && !IsShowingSpoilers;
+
+        return new BioStatRow
+        {
+            LabelDisplay = labelHidden ? Bar(row.Label.Length, max: 12) : row.Label,
+            ValueDisplay = valueHidden ? Bar(row.Value.Length, max: 24) : row.Value,
+            IsLabelSpoilerHidden = labelHidden,
+            IsValueSpoilerHidden = valueHidden,
+        };
+    }
+
+    private static string Bar(int sourceLength, int max)
+        => new('█', Math.Clamp(sourceLength / 2, 4, max));
+
+    private List<QuickFactChip> BuildQuickFactChips()
+    {
+        var chips = new List<QuickFactChip>();
+        if (Staff is null)
+        {
+            return chips;
+        }
+
+        if (Staff.PrimaryOccupations is { Count: > 0 } occupations)
+        {
+            foreach (var occ in occupations.Where(o => !string.IsNullOrWhiteSpace(o)))
+            {
+                chips.Add(new QuickFactChip(occ));
+            }
+        }
+
+        var yearsActive = YearsActiveFormatter.Format(Staff.YearsActive, Staff.DateOfDeath);
+        if (yearsActive is not null)
+        {
+            chips.Add(new QuickFactChip(yearsActive));
+        }
+
+        if (!string.IsNullOrWhiteSpace(Staff.LanguageV2))
+        {
+            chips.Add(new QuickFactChip(Staff.LanguageV2));
+        }
+
+        if (!string.IsNullOrWhiteSpace(Staff.HomeTown))
+        {
+            chips.Add(new QuickFactChip(Staff.HomeTown));
+        }
+
+        return chips;
+    }
+
+    private void ShowError(string title, string subtitle, bool canRetry, string details = "")
+    {
+        ErrorTitle = title;
+        ErrorSubtitle = subtitle;
+        ErrorIconGlyph = FluentIconsRegular.ErrorCircle24;
+        ErrorDetails = details;
+        CanRetry = canRetry;
+        CurrentState = PageState.Error;
+    }
+
+    private static string FormatFavourites(int? favourites)
+    {
+        if (favourites is null or <= 0)
+        {
+            return string.Empty;
+        }
+
+        if (favourites >= 1000)
+        {
+            return (favourites.Value / 1000.0).ToString("0.#k", CultureInfo.InvariantCulture);
+        }
+
+        return favourites.Value.ToString(CultureInfo.InvariantCulture);
+    }
+}
+
+public sealed record QuickFactChip(string Display);

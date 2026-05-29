@@ -829,6 +829,11 @@
                         <BindableLayout.ItemTemplate>
                             <DataTemplate x:DataType="models:CharacterEdge">
                                 <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="110">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer x:DataType="{x:Null}"
+                                                              Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToCharacterCommand}"
+                                                              CommandParameter="{Binding Node.Id}" />
+                                    </Border.GestureRecognizers>
                                     <VerticalStackLayout>
                                         <Image Source="{Binding Node.Image.Large}"
                                                Aspect="AspectFill"
@@ -1040,6 +1045,11 @@
                         <BindableLayout.ItemTemplate>
                             <DataTemplate x:DataType="models:StaffEdge">
                                 <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="110">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer x:DataType="{x:Null}"
+                                                              Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToStaffCommand}"
+                                                              CommandParameter="{Binding Node.Id}" />
+                                    </Border.GestureRecognizers>
                                     <VerticalStackLayout>
                                         <Grid HeightRequest="140" WidthRequest="110">
                                             <!-- Person silhouette placeholder (underneath, always rendered) -->

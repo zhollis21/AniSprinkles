@@ -10,6 +10,7 @@ public enum ApiErrorKind
     ServiceOutage,
     Network,
     Authentication,
+    RateLimited,
 }
 
 /// <summary>
@@ -17,7 +18,7 @@ public enum ApiErrorKind
 /// classified <see cref="Kind"/> so page models can display user-friendly
 /// error messages without string-matching.
 /// </summary>
-public class AniListApiException : Exception
+public partial class AniListApiException : Exception
 {
     public ApiErrorKind Kind { get; }
 
@@ -35,6 +36,7 @@ public class AniListApiException : Exception
         ApiErrorKind.ServiceOutage => "AniList is Down",
         ApiErrorKind.Network => "No Internet Connection",
         ApiErrorKind.Authentication => "Session Expired",
+        ApiErrorKind.RateLimited => "Slow Down a Sec",
         _ => "Something Went Wrong",
     };
 
@@ -46,17 +48,7 @@ public class AniListApiException : Exception
         ApiErrorKind.ServiceOutage => "AniList's servers are having trouble. This is on their end, not yours — we'll retry automatically once they're back. Feel free to check anilist.co or @AniList on social for updates.",
         ApiErrorKind.Network => "Check your connection and try again.",
         ApiErrorKind.Authentication => "Please sign in again to continue.",
+        ApiErrorKind.RateLimited => "AniList is asking us to slow down. Give it a moment, then try again.",
         _ => "An unexpected error occurred. Try again or check back later.",
-    };
-
-    /// <summary>
-    /// Returns the Fluent icon glyph appropriate for this error kind.
-    /// </summary>
-    public string IconGlyph => Kind switch
-    {
-        ApiErrorKind.ServiceOutage => FluentIconsRegular.CloudDismiss24,
-        ApiErrorKind.Network => FluentIconsRegular.WifiOff24,
-        ApiErrorKind.Authentication => FluentIconsRegular.LockClosed24,
-        _ => FluentIconsRegular.ErrorCircle24,
     };
 }
