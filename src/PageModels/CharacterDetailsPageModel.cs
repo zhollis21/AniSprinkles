@@ -258,6 +258,7 @@ public partial class CharacterDetailsPageModel : ObservableObject
             var character = await _aniListClient.GetCharacterAsync(characterId, cancellationToken: token).ConfigureAwait(true);
             if (character is null)
             {
+                _logger.LogInformation("NAVTRACE CharacterDetails not found in {ElapsedMs}ms (character {CharacterId})", stopwatch.ElapsedMilliseconds, characterId);
                 ShowError("Not Found", "We couldn't find this character.", canRetry: false);
                 return;
             }
@@ -271,7 +272,7 @@ public partial class CharacterDetailsPageModel : ObservableObject
 
             CurrentState = PageState.Content;
             _logger.LogInformation(
-                "NAVTRACE CharacterDetails loaded in {ElapsedMs}ms (character {CharacterId}, {Appearances} appearances, {VoiceActors} VAs)",
+                "NAVTRACE CharacterDetails fetch+seed in {ElapsedMs}ms (character {CharacterId}, {Appearances} appearances, {VoiceActors} VAs); UI render follows",
                 stopwatch.ElapsedMilliseconds, characterId, _appearances.Items.Count, _voiceActors.Items.Count);
         }
         catch (OperationCanceledException)
@@ -280,7 +281,7 @@ public partial class CharacterDetailsPageModel : ObservableObject
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to load character {CharacterId}", characterId);
+            _logger.LogError(ex, "NAVTRACE CharacterDetails load failed in {ElapsedMs}ms (character {CharacterId})", stopwatch.ElapsedMilliseconds, characterId);
             var (title, subtitle) = DescribeError(ex);
             ShowError(title, subtitle, canRetry: true, details: ex.Message);
         }

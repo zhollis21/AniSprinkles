@@ -227,6 +227,7 @@ public partial class StaffDetailsPageModel : ObservableObject
             var staff = await _aniListClient.GetStaffAsync(staffId, cancellationToken: token).ConfigureAwait(true);
             if (staff is null)
             {
+                _logger.LogInformation("NAVTRACE StaffDetails not found in {ElapsedMs}ms (staff {StaffId})", stopwatch.ElapsedMilliseconds, staffId);
                 ShowError("Not Found", "We couldn't find this staff member.", canRetry: false);
                 return;
             }
@@ -238,7 +239,7 @@ public partial class StaffDetailsPageModel : ObservableObject
 
             CurrentState = PageState.Content;
             _logger.LogInformation(
-                "NAVTRACE StaffDetails loaded in {ElapsedMs}ms (staff {StaffId}, {VoiceRoles} voice roles, {ProductionRoles} production roles)",
+                "NAVTRACE StaffDetails fetch+seed in {ElapsedMs}ms (staff {StaffId}, {VoiceRoles} voice roles, {ProductionRoles} production roles); UI render follows",
                 stopwatch.ElapsedMilliseconds, staffId, _voiceRoles.Items.Count, _productionRoles.Items.Count);
         }
         catch (OperationCanceledException)
@@ -247,7 +248,7 @@ public partial class StaffDetailsPageModel : ObservableObject
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to load staff {StaffId}", staffId);
+            _logger.LogError(ex, "NAVTRACE StaffDetails load failed in {ElapsedMs}ms (staff {StaffId})", stopwatch.ElapsedMilliseconds, staffId);
             var (title, subtitle) = DescribeError(ex);
             ShowError(title, subtitle, canRetry: true, details: ex.Message);
         }
