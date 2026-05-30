@@ -149,6 +149,20 @@ public class PaginatedSectionTests
     }
 
     [Fact]
+    public async Task Reset_AfterSortChange_RestoresInitialSort()
+    {
+        var section = Section((page, sort, _) => Task.FromResult(Result(Page(1, hasNext: false), 5, 6)));
+        section.Seed([new Item(1)], Page(1, hasNext: true));
+        await section.ChangeSortAsync("SCORE_DESC", TestContext.Current.CancellationToken);
+        Assert.Equal("SCORE_DESC", section.Sort);
+
+        section.Reset(); // e.g. a reused section loading a new entity
+
+        // Cursor must return to the default so it matches the default-sorted re-seed + reset chip.
+        Assert.Equal("POPULARITY_DESC", section.Sort);
+    }
+
+    [Fact]
     public async Task LoadMoreAsync_WithStampHook_InvokesHookWithAddedItems()
     {
         var stamped = new List<(int Count, string Sort)>();

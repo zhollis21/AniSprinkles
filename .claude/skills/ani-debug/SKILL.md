@@ -39,7 +39,7 @@ A disposed ViewModel or HttpClient used from an async continuation. Search for t
 Look for rapid back-and-forth flips (sub-second Content↔InitialLoading, or Content→Unauthenticated→Content). These indicate an auth race or feedback loop. Each non-Content↔Content flip is expensive under the StateContainer model — it detaches the heavy content host.
 
 ### NAVTRACE
-Navigation phase timings. `details load finished in Nms` > ~1500ms indicates the details-page fetch is blocking visible rendering. `ApplyQueryAttributes → OnAppearing` gap > 300ms suggests Shell transition contention. Character/Staff pages emit `NAVTRACE CharacterDetails|StaffDetails loaded in Nms (… counts)` from `LoadAsync`.
+Navigation phase timings. `details load finished in Nms` > ~1500ms indicates the details-page fetch is blocking visible rendering. `ApplyQueryAttributes → OnAppearing` gap > 300ms suggests Shell transition contention. Character/Staff pages emit `NAVTRACE CharacterDetails|StaffDetails fetch+seed in Nms (… counts); UI render follows` from `LoadAsync` (also `not found` / `load failed` / `load cancelled` variants).
 
 ### LISTTRACE (app log)
 `LISTTRACE <section> · <op> fetch+apply in Nms (M loaded); UI render follows` brackets a Character/Staff list operation (sort / Load More / check-for-more). The logged ms is **fetch + collection-apply only** — it deliberately excludes the subsequent UI render of the bound list. So if a sort *feels* slow but `LISTTRACE` shows ~150ms, the cost is the (non-virtualized horizontal `BindableLayout`) re-render, not the API. Compare against the `GraphQL <op> response ok in Nms` line for the network portion.

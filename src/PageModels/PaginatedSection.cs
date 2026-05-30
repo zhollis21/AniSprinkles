@@ -22,6 +22,7 @@ public sealed class PaginatedSection<T>
     private readonly FetchPageDelegate _fetchPage;
     private readonly Func<T, object> _keySelector;
     private readonly Action<IReadOnlyList<T>, string>? _onItemsAdded;
+    private readonly string _initialSort;
 
     private readonly HashSet<object> _seenKeys = [];
     private int _currentPage;
@@ -33,6 +34,7 @@ public sealed class PaginatedSection<T>
         Func<T, object> keySelector,
         Action<IReadOnlyList<T>, string>? onItemsAdded = null)
     {
+        _initialSort = initialSort;
         Sort = initialSort;
         _fetchPage = fetchPage;
         _keySelector = keySelector;
@@ -168,6 +170,10 @@ public sealed class PaginatedSection<T>
         HasNextPage = false;
         IsLoadingMore = false;
         IsChangingSort = false;
+        // Restore the default sort: a reused section is re-seeded with default-sorted page 1 and the
+        // page model resets the chip to default, so the data cursor must match or Load More would
+        // fetch with the previous entity's stale sort.
+        Sort = _initialSort;
     }
 
     private void ResetItems()
