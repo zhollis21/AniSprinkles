@@ -165,6 +165,32 @@ public class PaginatedSectionTests
     }
 
     [Fact]
+    public async Task LoadMoreAsync_WhileSortChangeInFlight_DoesNotFetchOrAppendStaleItems()
+    {
+        var sortGate = new TaskCompletionSource<(IReadOnlyList<Item>, PageInfo?)>(TaskCreationOptions.RunContinuationsAsynchronously);
+        var fetchedPages = new List<int>();
+        var section = Section((page, sort, _) =>
+        {
+            fetchedPages.Add(page);
+            // Page 1 = the sort refetch (held open); any other page = a Load More fetch.
+            return page == 1 ? sortGate.Task : Task.FromResult(Result(Page(page, hasNext: false), 99));
+        });
+        section.Seed([new Item(1)], Page(1, hasNext: true));
+
+        var sortTask = section.ChangeSortAsync("SCORE_DESC", TestContext.Current.CancellationToken); // in flight
+        Assert.True(section.IsBusy);
+
+        await section.LoadMoreAsync(TestContext.Current.CancellationToken); // must be a no-op during the sort
+
+        Assert.DoesNotContain(2, fetchedPages); // Load More never fetched the next page
+
+        sortGate.SetResult(Result(Page(1, hasNext: false), 5, 6));
+        await sortTask;
+
+        Assert.Equal([5, 6], section.Items.Select(i => i.Id)); // only the new-sort page, no stale items
+    }
+
+    [Fact]
     public async Task ChangeSortAsync_WhileRefetching_ReportsBusyThenClears()
     {
         var gate = new TaskCompletionSource<(IReadOnlyList<Item>, PageInfo?)>(TaskCreationOptions.RunContinuationsAsynchronously);

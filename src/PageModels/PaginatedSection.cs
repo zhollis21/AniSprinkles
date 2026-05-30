@@ -66,10 +66,14 @@ public sealed class PaginatedSection<T>
         Notify();
     }
 
-    /// <summary>Fetches and appends the next page. No-op while already loading or fully paged.</summary>
+    /// <summary>Fetches and appends the next page. No-op while busy (a Load More or a sort refetch is
+    /// in flight) or fully paged.</summary>
     public async Task LoadMoreAsync(CancellationToken cancellationToken = default)
     {
-        if (IsLoadingMore || !HasNextPage)
+        // Must include IsChangingSort (via IsBusy): a sort refetch reads the current page with the
+        // OLD Sort, and since the sort already bumped the generation, a concurrent Load More would
+        // pass its stale-check and append old-sort items into the freshly sorted list.
+        if (IsBusy || !HasNextPage)
         {
             return;
         }
