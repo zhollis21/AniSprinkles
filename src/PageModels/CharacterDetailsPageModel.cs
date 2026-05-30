@@ -346,22 +346,32 @@ public partial class CharacterDetailsPageModel : ObservableObject
     {
         var stopwatch = Stopwatch.StartNew();
         _logger.LogInformation("LISTTRACE {Op} start (character {CharacterId})", op, _loadedCharacterId);
+
+        Exception? failure = null;
         try
         {
             await operation().ConfigureAwait(true);
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "LISTTRACE {Op} failed (character {CharacterId})", op, _loadedCharacterId);
-            await ShowListErrorSnackbarAsync(ex).ConfigureAwait(true);
+            failure = ex;
         }
-        finally
+
+        // Stop + log the timed section BEFORE any user feedback, so the snackbar's display time never
+        // inflates the reported fetch+apply duration (failures are exactly what we want to time).
+        stopwatch.Stop();
+        onComplete?.Invoke();
+
+        if (failure is null)
         {
-            onComplete?.Invoke();
             _logger.LogInformation(
                 "LISTTRACE {Op} fetch+apply in {ElapsedMs}ms ({Count} loaded); UI render follows",
                 op, stopwatch.ElapsedMilliseconds, loadedCount());
+            return;
         }
+
+        _logger.LogWarning(failure, "LISTTRACE {Op} failed in {ElapsedMs}ms (character {CharacterId})", op, stopwatch.ElapsedMilliseconds, _loadedCharacterId);
+        await ShowListErrorSnackbarAsync(failure).ConfigureAwait(true);
     }
 
     // A failed sort/Load More leaves the existing list intact; surface a transient message so the
