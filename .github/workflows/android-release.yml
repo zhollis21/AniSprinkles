@@ -130,8 +130,9 @@ jobs:
       - name: Build Signed AAB
         env:
           # Enables Sentry native-symbol + ProGuard-mapping upload (see AniSprinkles.csproj).
-          # Org is resolved from this org-scoped token; absent token = no upload (e.g. forks).
+          # Upload activates only when BOTH are set; otherwise it's off (e.g. forks).
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ vars.SENTRY_ORG }}
         run: |
           dotnet publish src/AniSprinkles.csproj \
             -c Release \
