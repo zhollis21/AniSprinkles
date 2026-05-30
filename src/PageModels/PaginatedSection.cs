@@ -181,13 +181,17 @@ public sealed class PaginatedSection<T>
         Sort = sort;
 
         var sorted = _localSort!(sort, Items.ToList());
+
+        // Stamp badges BEFORE re-adding: the edge types don't raise PropertyChanged for MetricBadge,
+        // so a binding that materializes on CollectionChanged(Add) would otherwise read the previous
+        // sort's (stale) badge.
+        _onItemsAdded?.Invoke(sorted, sort);
         Items.Clear();
         foreach (var item in sorted)
         {
             Items.Add(item);
         }
 
-        _onItemsAdded?.Invoke(sorted, sort); // re-stamp metric badges for the new sort
         Notify();
     }
 
@@ -225,14 +229,21 @@ public sealed class PaginatedSection<T>
         {
             if (_seenKeys.Add(_keySelector(item)))
             {
-                Items.Add(item);
                 added.Add(item);
             }
         }
 
-        if (added.Count > 0)
+        if (added.Count == 0)
         {
-            _onItemsAdded?.Invoke(added, Sort);
+            return;
+        }
+
+        // Stamp badges before adding to the collection (see ApplyLocalSort): MetricBadge isn't an
+        // observable property, so a binding must see the correct badge at CollectionChanged(Add) time.
+        _onItemsAdded?.Invoke(added, Sort);
+        foreach (var item in added)
+        {
+            Items.Add(item);
         }
     }
 
