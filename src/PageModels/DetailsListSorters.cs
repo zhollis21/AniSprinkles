@@ -21,33 +21,37 @@ public static class DetailsListSorters
         => SortByMedia(sort, items, e => e.Node, e => e.Node?.Id ?? 0);
 
     public static IReadOnlyList<StaffCharacterEdge> SortVoiceRoles(string sort, IReadOnlyList<StaffCharacterEdge> items)
-        => sort switch
+    {
+        // Null-node edges always sort after real voice roles, before applying the active key — a
+        // null node otherwise ties on a zero key and wins the id=0 tiebreak.
+        var ordered = items.OrderBy(e => e.Node is null);
+        var withKey = sort switch
         {
-            "ROLE" => items
-                .OrderBy(e => RolePriority(e.Role))
-                .ThenByDescending(e => e.Node?.Favourites ?? 0)
-                .ThenBy(e => e.Node?.Id ?? 0)
-                .ToList(),
+            "ROLE" => ordered.ThenBy(e => RolePriority(e.Role)).ThenByDescending(e => e.Node?.Favourites ?? 0),
             // FAVOURITES_DESC (default)
-            _ => items
-                .OrderByDescending(e => e.Node?.Favourites ?? 0)
-                .ThenBy(e => e.Node?.Id ?? 0)
-                .ToList(),
+            _ => ordered.ThenByDescending(e => e.Node?.Favourites ?? 0),
         };
+        return withKey.ThenBy(e => e.Node?.Id ?? 0).ToList();
+    }
 
     private static IReadOnlyList<T> SortByMedia<T>(
         string sort, IReadOnlyList<T> items, Func<T, RelatedMedia?> node, Func<T, int> id)
-        => sort switch
+    {
+        // Null-node edges always sort after real media, regardless of the active key.
+        var ordered = items.OrderBy(e => node(e) is null);
+        var withKey = sort switch
         {
-            "SCORE_DESC" => items.OrderByDescending(e => node(e)?.AverageScore ?? 0).ThenBy(id).ToList(),
-            "FAVOURITES_DESC" => items.OrderByDescending(e => node(e)?.Favourites ?? 0).ThenBy(id).ToList(),
-            "START_DATE_DESC" => items.OrderByDescending(e => node(e)?.StartDate?.Year ?? 0).ThenBy(id).ToList(),
+            "SCORE_DESC" => ordered.ThenByDescending(e => node(e)?.AverageScore ?? 0),
+            "FAVOURITES_DESC" => ordered.ThenByDescending(e => node(e)?.Favourites ?? 0),
+            "START_DATE_DESC" => ordered.ThenByDescending(e => node(e)?.StartDate?.Year ?? 0),
             // Oldest first: missing years sort last so undated media doesn't masquerade as ancient.
-            "START_DATE" => items.OrderBy(e => node(e)?.StartDate?.Year ?? int.MaxValue).ThenBy(id).ToList(),
-            "TITLE_ROMAJI" => items.OrderBy(e => node(e)?.Title?.Romaji ?? string.Empty, StringComparer.OrdinalIgnoreCase).ThenBy(id).ToList(),
+            "START_DATE" => ordered.ThenBy(e => node(e)?.StartDate?.Year ?? int.MaxValue),
+            "TITLE_ROMAJI" => ordered.ThenBy(e => node(e)?.Title?.Romaji ?? string.Empty, StringComparer.OrdinalIgnoreCase),
             // POPULARITY_DESC (default)
-            _ => items.OrderByDescending(e => node(e)?.Popularity ?? 0).ThenBy(id).ToList(),
+            _ => ordered.ThenByDescending(e => node(e)?.Popularity ?? 0),
         };
+        return withKey.ThenBy(id).ToList();
+    }
 
     private static int RolePriority(string? role) => role switch
     {

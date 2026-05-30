@@ -83,6 +83,32 @@ public class DetailsListSortersTests
         Assert.Null(result[1].Node);
     }
 
+    [Theory]
+    [InlineData("POPULARITY_DESC")]
+    [InlineData("TITLE_ROMAJI")] // null title → empty string ties with the null node's empty string
+    public void SortAppearances_NullNode_SortsAfterRealItemEvenWhenKeyTies(string sort)
+    {
+        // Real item has a zero/empty key, so it ties the null node on the primary key; the null node
+        // must still come last (it would otherwise win the id=0 tiebreak).
+        var items = new List<CharacterMediaEdge> { new() { Node = null }, Media(7, pop: 0, title: null) };
+
+        var result = DetailsListSorters.SortAppearances(sort, items);
+
+        Assert.Equal(7, result[0].Node!.Id);
+        Assert.Null(result[1].Node);
+    }
+
+    [Fact]
+    public void SortVoiceRoles_NullNode_SortsAfterRealItemEvenWhenFavouritesZero()
+    {
+        var items = new List<StaffCharacterEdge> { new() { Node = null }, VoiceRole(7, fav: 0) };
+
+        var result = DetailsListSorters.SortVoiceRoles("FAVOURITES_DESC", items);
+
+        Assert.Equal(7, result[0].Node!.Id);
+        Assert.Null(result[1].Node);
+    }
+
     [Fact]
     public void SortProductionRoles_SharesMediaSortLogic()
     {

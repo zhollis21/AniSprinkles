@@ -106,25 +106,21 @@ public sealed class CachingAniListClient : IAniListClient
 
     private async Task<T> GetOrAddAsync<T>(string key, Func<Task<T>> factory)
     {
-        // Lazy ensures the underlying fetch runs at most once even under concurrent access (coalescing).
-        Lazy<Task<object?>> lazy;
-        if (_cache.TryGetValue(key, out var existing))
+        // Log the miss *inside* the Lazy factory: it runs exactly once (ExecutionAndPublication), so
+        // "miss" tracks an actual network fetch. Then compare GetOrAdd's result to our candidate by
+        // reference: if it isn't ours, the entry already existed (or we lost the create race) and this
+        // read is served without a fetch — a hit. This logs hit/miss correctly for every caller,
+        // including concurrent ones, and never over-reports misses.
+        var candidate = new Lazy<Task<object?>>(async () =>
+        {
+            _logger?.LogInformation("CACHE miss {Key}", key);
+            return await factory().ConfigureAwait(false);
+        });
+
+        var lazy = _cache.GetOrAdd(key, candidate);
+        if (!ReferenceEquals(lazy, candidate))
         {
             _logger?.LogInformation("CACHE hit {Key}", key);
-            lazy = existing;
-        }
-        else
-        {
-            // Log the miss *inside* the Lazy factory: it runs exactly once (ExecutionAndPublication),
-            // so "miss" tracks an actual network fetch even when concurrent callers race to create the
-            // entry — the losers reuse the winner's task and never run their own factory body. (Setting
-            // a flag in the GetOrAdd value factory would over-report misses, since that factory can run
-            // on multiple threads for a single insert.)
-            lazy = _cache.GetOrAdd(key, _ => new Lazy<Task<object?>>(async () =>
-            {
-                _logger?.LogInformation("CACHE miss {Key}", key);
-                return await factory().ConfigureAwait(false);
-            }));
         }
 
         try
