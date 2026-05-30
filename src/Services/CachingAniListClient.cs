@@ -106,17 +106,26 @@ public sealed class CachingAniListClient : IAniListClient
 
     private async Task<T> GetOrAddAsync<T>(string key, Func<Task<T>> factory)
     {
-        // Lazy ensures the factory runs at most once even under concurrent access (coalescing).
-        var miss = false;
-        var lazy = _cache.GetOrAdd(
-            key,
-            _ =>
+        // Lazy ensures the underlying fetch runs at most once even under concurrent access (coalescing).
+        Lazy<Task<object?>> lazy;
+        if (_cache.TryGetValue(key, out var existing))
+        {
+            _logger?.LogInformation("CACHE hit {Key}", key);
+            lazy = existing;
+        }
+        else
+        {
+            // Log the miss *inside* the Lazy factory: it runs exactly once (ExecutionAndPublication),
+            // so "miss" tracks an actual network fetch even when concurrent callers race to create the
+            // entry — the losers reuse the winner's task and never run their own factory body. (Setting
+            // a flag in the GetOrAdd value factory would over-report misses, since that factory can run
+            // on multiple threads for a single insert.)
+            lazy = _cache.GetOrAdd(key, _ => new Lazy<Task<object?>>(async () =>
             {
-                miss = true;
-                return new Lazy<Task<object?>>(async () => await factory().ConfigureAwait(false));
-            });
-
-        _logger?.LogInformation("CACHE {Result} {Key}", miss ? "miss" : "hit", key);
+                _logger?.LogInformation("CACHE miss {Key}", key);
+                return await factory().ConfigureAwait(false);
+            }));
+        }
 
         try
         {
