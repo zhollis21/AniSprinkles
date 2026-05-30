@@ -86,7 +86,6 @@ public partial class StaffDetailsPageModel : ObservableObject
     [
         new SortOption { Code = "FAVOURITES_DESC", Display = "Most Favorited", IsSelected = true },
         new SortOption { Code = "ROLE",            Display = "Role" },
-        new SortOption { Code = "RELEVANCE",       Display = "Relevance" },
     ];
 
     public IReadOnlyList<SortOption> ProductionRolesSortOptions { get; } =
@@ -111,14 +110,16 @@ public partial class StaffDetailsPageModel : ObservableObject
         _voiceRoles = new PaginatedSection<StaffCharacterEdge>(
             VoiceRolesDefaultSort,
             FetchVoiceRolesPageAsync,
-            edge => edge.Node?.Id ?? 0);
+            edge => edge.Node?.Id ?? 0,
+            localSort: DetailsListSorters.SortVoiceRoles);
         _voiceRoles.Changed += OnVoiceRolesChanged;
 
         _productionRoles = new PaginatedSection<StaffMediaEdge>(
             ProductionRolesDefaultSort,
             FetchProductionRolesPageAsync,
             edge => (edge.Node?.Id ?? 0, edge.StaffRole ?? string.Empty),
-            StampProductionBadges);
+            StampProductionBadges,
+            DetailsListSorters.SortProductionRoles);
         _productionRoles.Changed += OnProductionRolesChanged;
     }
 
@@ -346,7 +347,7 @@ public partial class StaffDetailsPageModel : ObservableObject
         if (failure is null)
         {
             _logger.LogInformation(
-                "LISTTRACE {Op} fetch+apply in {ElapsedMs}ms ({Count} loaded); UI render follows",
+                "LISTTRACE {Op} completed in {ElapsedMs}ms ({Count} loaded); UI render follows",
                 op, stopwatch.ElapsedMilliseconds, loadedCount());
             return;
         }

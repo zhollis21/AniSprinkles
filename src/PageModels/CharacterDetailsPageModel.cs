@@ -114,7 +114,8 @@ public partial class CharacterDetailsPageModel : ObservableObject
             AppearancesDefaultSort,
             FetchAppearancesPageAsync,
             edge => edge.Node?.Id ?? 0,
-            StampAppearanceBadges);
+            StampAppearanceBadges,
+            DetailsListSorters.SortAppearances);
         _appearances.Changed += OnAppearancesChanged;
 
         _voiceActors = new VoiceActorAggregator(FetchVoiceActorMediaPageAsync);
@@ -366,7 +367,7 @@ public partial class CharacterDetailsPageModel : ObservableObject
         if (failure is null)
         {
             _logger.LogInformation(
-                "LISTTRACE {Op} fetch+apply in {ElapsedMs}ms ({Count} loaded); UI render follows",
+                "LISTTRACE {Op} completed in {ElapsedMs}ms ({Count} loaded); UI render follows",
                 op, stopwatch.ElapsedMilliseconds, loadedCount());
             return;
         }

@@ -15,8 +15,9 @@ public class PaginatedSectionTests
 
     private static PaginatedSection<Item> Section(
         PaginatedSection<Item>.FetchPageDelegate fetch,
-        Action<IReadOnlyList<Item>, string>? onItemsAdded = null)
-        => new("POPULARITY_DESC", fetch, item => item.Id, onItemsAdded);
+        Action<IReadOnlyList<Item>, string>? onItemsAdded = null,
+        PaginatedSection<Item>.LocalSortDelegate? localSort = null)
+        => new("POPULARITY_DESC", fetch, item => item.Id, onItemsAdded, localSort);
 
     [Fact]
     public void Seed_WithItemsAndPageInfo_PopulatesItemsAndPagingState()
@@ -146,6 +147,55 @@ public class PaginatedSectionTests
 
         Assert.Empty(section.Items);
         Assert.False(section.HasNextPage);
+    }
+
+    [Fact]
+    public async Task ChangeSortAsync_OnCompleteSet_SortsLocallyWithoutFetching()
+    {
+        var fetchCalls = 0;
+        var stamped = new List<string>();
+        var section = Section(
+            (page, sort, _) => { fetchCalls++; return Task.FromResult(Result(Page(1, hasNext: false), 99)); },
+            onItemsAdded: (items, sort) => stamped.Add(sort),
+            localSort: (sort, items) => items.Reverse().ToList());
+        section.Seed([new Item(1), new Item(2), new Item(3)], Page(1, hasNext: false)); // complete set
+        stamped.Clear(); // drop the seed stamp
+
+        await section.ChangeSortAsync("SCORE_DESC", TestContext.Current.CancellationToken);
+
+        Assert.Equal(0, fetchCalls);                                  // no API call
+        Assert.Equal([3, 2, 1], section.Items.Select(i => i.Id));     // reordered by the local sorter
+        Assert.Equal("SCORE_DESC", section.Sort);                     // sort committed
+        Assert.False(section.IsBusy);                                 // never shows a spinner
+        Assert.Equal(["SCORE_DESC"], stamped);                        // badges re-stamped for the new sort
+    }
+
+    [Fact]
+    public async Task ChangeSortAsync_OnPartialSet_RefetchesEvenWhenLocalSorterPresent()
+    {
+        var fetchedSorts = new List<string>();
+        var section = Section(
+            (page, sort, _) => { fetchedSorts.Add(sort); return Task.FromResult(Result(Page(1, hasNext: false), 5, 6)); },
+            localSort: (sort, items) => items.Reverse().ToList());
+        section.Seed([new Item(1)], Page(1, hasNext: true)); // partial — more pages exist on the server
+
+        await section.ChangeSortAsync("SCORE_DESC", TestContext.Current.CancellationToken);
+
+        Assert.Equal(["SCORE_DESC"], fetchedSorts);                   // server refetch, not a local reorder
+        Assert.Equal([5, 6], section.Items.Select(i => i.Id));
+    }
+
+    [Fact]
+    public async Task ChangeSortAsync_CompleteSetButNoLocalSorter_FallsBackToRefetch()
+    {
+        var fetchCalls = 0;
+        var section = Section((page, sort, _) => { fetchCalls++; return Task.FromResult(Result(Page(1, hasNext: false), 5, 6)); });
+        section.Seed([new Item(1)], Page(1, hasNext: false));
+
+        await section.ChangeSortAsync("SCORE_DESC", TestContext.Current.CancellationToken);
+
+        Assert.Equal(1, fetchCalls); // without a local sorter, a complete set still refetches
+        Assert.Equal([5, 6], section.Items.Select(i => i.Id));
     }
 
     [Fact]

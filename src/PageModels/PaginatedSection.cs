@@ -19,9 +19,13 @@ public sealed class PaginatedSection<T>
     public delegate Task<(IReadOnlyList<T> Items, PageInfo? PageInfo)> FetchPageDelegate(
         int page, string sort, CancellationToken cancellationToken);
 
+    /// <summary>Reorders an already-complete in-memory set for a new sort code (no API call).</summary>
+    public delegate IReadOnlyList<T> LocalSortDelegate(string sort, IReadOnlyList<T> items);
+
     private readonly FetchPageDelegate _fetchPage;
     private readonly Func<T, object> _keySelector;
     private readonly Action<IReadOnlyList<T>, string>? _onItemsAdded;
+    private readonly LocalSortDelegate? _localSort;
     private readonly string _initialSort;
 
     private readonly HashSet<object> _seenKeys = [];
@@ -32,13 +36,15 @@ public sealed class PaginatedSection<T>
         string initialSort,
         FetchPageDelegate fetchPage,
         Func<T, object> keySelector,
-        Action<IReadOnlyList<T>, string>? onItemsAdded = null)
+        Action<IReadOnlyList<T>, string>? onItemsAdded = null,
+        LocalSortDelegate? localSort = null)
     {
         _initialSort = initialSort;
         Sort = initialSort;
         _fetchPage = fetchPage;
         _keySelector = keySelector;
         _onItemsAdded = onItemsAdded;
+        _localSort = localSort;
     }
 
     /// <summary>The items loaded so far. Bind XAML to this; the instance is stable for the section's life.</summary>
@@ -112,13 +118,23 @@ public sealed class PaginatedSection<T>
     }
 
     /// <summary>
-    /// Re-fetches page 1 with a new server-side sort and replaces the list. The new sort is only
-    /// committed once the fetch succeeds, so a failed sort change leaves the existing list intact.
+    /// Changes the sort. When the whole set is already in memory (<see cref="HasNextPage"/> is false)
+    /// this reorders <see cref="Items"/> locally — instant, no API call, no spinner. Otherwise it
+    /// re-fetches page 1 with the new server-side sort; the new sort is only committed once that
+    /// fetch succeeds, so a failed sort change leaves the existing list intact.
     /// </summary>
     public async Task ChangeSortAsync(string sort, CancellationToken cancellationToken = default)
     {
         if (string.Equals(sort, Sort, StringComparison.Ordinal))
         {
+            return;
+        }
+
+        // Fast path: the complete set is loaded, so the server can't know anything we don't — reorder
+        // in memory. (A partial set must refetch: the server sorts across pages we haven't loaded.)
+        if (!HasNextPage && _localSort is not null)
+        {
+            ApplyLocalSort(sort);
             return;
         }
 
@@ -153,6 +169,26 @@ public sealed class PaginatedSection<T>
                 Notify();
             }
         }
+    }
+
+    private void ApplyLocalSort(string sort)
+    {
+        // Synchronous, no fetch. Bump the generation to supersede any (defensive) in-flight op, then
+        // reorder the in-memory set. _seenKeys is preserved — these are the same already-seen items.
+        _generation++;
+        IsLoadingMore = false;
+        IsChangingSort = false;
+        Sort = sort;
+
+        var sorted = _localSort!(sort, Items.ToList());
+        Items.Clear();
+        foreach (var item in sorted)
+        {
+            Items.Add(item);
+        }
+
+        _onItemsAdded?.Invoke(sorted, sort); // re-stamp metric badges for the new sort
+        Notify();
     }
 
     /// <summary>Clears everything and supersedes any in-flight fetch (used when loading a new id).</summary>
