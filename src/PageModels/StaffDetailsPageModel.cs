@@ -1,6 +1,8 @@
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Globalization;
 using AniSprinkles.Utilities;
+using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using IconFont.Maui.FluentIcons;
@@ -84,7 +86,6 @@ public partial class StaffDetailsPageModel : ObservableObject
     [
         new SortOption { Code = "FAVOURITES_DESC", Display = "Most Favorited", IsSelected = true },
         new SortOption { Code = "ROLE",            Display = "Role" },
-        new SortOption { Code = "RELEVANCE",       Display = "Relevance" },
     ];
 
     public IReadOnlyList<SortOption> ProductionRolesSortOptions { get; } =
@@ -109,14 +110,16 @@ public partial class StaffDetailsPageModel : ObservableObject
         _voiceRoles = new PaginatedSection<StaffCharacterEdge>(
             VoiceRolesDefaultSort,
             FetchVoiceRolesPageAsync,
-            edge => edge.Node?.Id ?? 0);
+            edge => edge.Node?.Id ?? 0,
+            localSort: DetailsListSorters.SortVoiceRoles);
         _voiceRoles.Changed += OnVoiceRolesChanged;
 
         _productionRoles = new PaginatedSection<StaffMediaEdge>(
             ProductionRolesDefaultSort,
             FetchProductionRolesPageAsync,
             edge => (edge.Node?.Id ?? 0, edge.StaffRole ?? string.Empty),
-            StampProductionBadges);
+            StampProductionBadges,
+            DetailsListSorters.SortProductionRoles);
         _productionRoles.Changed += OnProductionRolesChanged;
     }
 
@@ -130,6 +133,9 @@ public partial class StaffDetailsPageModel : ObservableObject
 
     public bool VoiceRolesHasMore => _voiceRoles.HasNextPage;
     public bool ProductionRolesHasMore => _productionRoles.HasNextPage;
+
+    public bool VoiceRolesBusy => _voiceRoles.IsBusy;
+    public bool ProductionRolesBusy => _productionRoles.IsBusy;
 
     // ---- Hero / bio / quick facts (unchanged) ---------------------------------------------------
 
@@ -182,6 +188,9 @@ public partial class StaffDetailsPageModel : ObservableObject
         _parsedDescription = DescriptionParser.Parse(value?.Description);
     }
 
+    partial void OnCurrentStateChanged(PageState oldValue, PageState newValue)
+        => _logger.LogInformation("PageState: {OldState} → {NewState} (key={StateKey})", oldValue, newValue, CurrentStateKey ?? "(null)");
+
     // ---- Load -----------------------------------------------------------------------------------
 
     public async Task LoadAsync(int staffId)
@@ -211,11 +220,15 @@ public partial class StaffDetailsPageModel : ObservableObject
         ResetVoiceRolesSortSelection();
         ResetProductionRolesSortSelection();
 
+        var stopwatch = Stopwatch.StartNew();
+        _logger.LogInformation("NAVTRACE StaffDetails load start (staff {StaffId})", staffId);
+
         try
         {
             var staff = await _aniListClient.GetStaffAsync(staffId, cancellationToken: token).ConfigureAwait(true);
             if (staff is null)
             {
+                _logger.LogInformation("NAVTRACE StaffDetails not found in {ElapsedMs}ms (staff {StaffId})", stopwatch.ElapsedMilliseconds, staffId);
                 ShowError("Not Found", "We couldn't find this staff member.", canRetry: false);
                 return;
             }
@@ -226,14 +239,17 @@ public partial class StaffDetailsPageModel : ObservableObject
             _productionRoles.Seed(staff.StaffMedia.ToList(), staff.StaffMediaPageInfo);
 
             CurrentState = PageState.Content;
+            _logger.LogInformation(
+                "NAVTRACE StaffDetails fetch+seed in {ElapsedMs}ms (staff {StaffId}, {VoiceRoles} voice roles, {ProductionRoles} production roles); UI render follows",
+                stopwatch.ElapsedMilliseconds, staffId, _voiceRoles.Items.Count, _productionRoles.Items.Count);
         }
         catch (OperationCanceledException)
         {
-            // Navigated away mid-load — nothing to show.
+            _logger.LogInformation("NAVTRACE StaffDetails load cancelled after {ElapsedMs}ms (staff {StaffId})", stopwatch.ElapsedMilliseconds, staffId);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to load staff {StaffId}", staffId);
+            _logger.LogError(ex, "NAVTRACE StaffDetails load failed in {ElapsedMs}ms (staff {StaffId})", stopwatch.ElapsedMilliseconds, staffId);
             var (title, subtitle) = DescribeError(ex);
             ShowError(title, subtitle, canRetry: true, details: ex.Message);
         }
@@ -263,72 +279,102 @@ public partial class StaffDetailsPageModel : ObservableObject
     // ---- Commands -------------------------------------------------------------------------------
 
     [RelayCommand]
-    private async Task LoadMoreVoiceRoles()
-    {
-        try
-        {
-            await _voiceRoles.LoadMoreAsync(_pageCts?.Token ?? CancellationToken.None).ConfigureAwait(true);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogWarning(ex, "Load more voice roles failed for staff {StaffId}", _loadedStaffId);
-        }
-    }
+    private Task LoadMoreVoiceRoles()
+        => RunTracedListOpAsync(
+            "Voice Roles · Load More",
+            () => _voiceRoles.LoadMoreAsync(_pageCts?.Token ?? CancellationToken.None),
+            () => _voiceRoles.Items.Count);
 
     [RelayCommand]
-    private async Task LoadMoreProductionRoles()
-    {
-        try
-        {
-            await _productionRoles.LoadMoreAsync(_pageCts?.Token ?? CancellationToken.None).ConfigureAwait(true);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogWarning(ex, "Load more production roles failed for staff {StaffId}", _loadedStaffId);
-        }
-    }
+    private Task LoadMoreProductionRoles()
+        => RunTracedListOpAsync(
+            "Production Roles · Load More",
+            () => _productionRoles.LoadMoreAsync(_pageCts?.Token ?? CancellationToken.None),
+            () => _productionRoles.Items.Count);
 
     [RelayCommand]
-    private async Task SelectVoiceRolesSort(string? code)
+    private Task SelectVoiceRolesSort(string? code)
     {
         if (string.IsNullOrEmpty(code) || string.Equals(code, _voiceRoles.Sort, StringComparison.Ordinal))
         {
-            return;
+            return Task.CompletedTask;
         }
 
-        try
-        {
-            await _voiceRoles.ChangeSortAsync(code, _pageCts?.Token ?? CancellationToken.None).ConfigureAwait(true);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogWarning(ex, "Voice roles sort change failed for staff {StaffId}", _loadedStaffId);
-        }
-        finally
-        {
-            SyncSortSelection(VoiceRolesSortOptions, _voiceRoles.Sort);
-        }
+        return RunTracedListOpAsync(
+            $"Voice Roles · sort→{code}",
+            () => _voiceRoles.ChangeSortAsync(code, _pageCts?.Token ?? CancellationToken.None),
+            () => _voiceRoles.Items.Count,
+            onComplete: () => SyncSortSelection(VoiceRolesSortOptions, _voiceRoles.Sort));
     }
 
     [RelayCommand]
-    private async Task SelectProductionRolesSort(string? code)
+    private Task SelectProductionRolesSort(string? code)
     {
         if (string.IsNullOrEmpty(code) || string.Equals(code, _productionRoles.Sort, StringComparison.Ordinal))
         {
-            return;
+            return Task.CompletedTask;
         }
 
+        return RunTracedListOpAsync(
+            $"Production Roles · sort→{code}",
+            () => _productionRoles.ChangeSortAsync(code, _pageCts?.Token ?? CancellationToken.None),
+            () => _productionRoles.Items.Count,
+            onComplete: () => SyncSortSelection(ProductionRolesSortOptions, _productionRoles.Sort));
+    }
+
+    // LISTTRACE: times the network fetch + collection apply so API cost (logged here) is separable
+    // from the UI render of the bound list (which happens after this returns, on the UI thread).
+    private async Task RunTracedListOpAsync(string op, Func<Task> operation, Func<int> loadedCount, Action? onComplete = null)
+    {
+        var stopwatch = Stopwatch.StartNew();
+        _logger.LogInformation("LISTTRACE {Op} start (staff {StaffId})", op, _loadedStaffId);
+
+        Exception? failure = null;
         try
         {
-            await _productionRoles.ChangeSortAsync(code, _pageCts?.Token ?? CancellationToken.None).ConfigureAwait(true);
+            await operation().ConfigureAwait(true);
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Production roles sort change failed for staff {StaffId}", _loadedStaffId);
+            failure = ex;
         }
-        finally
+
+        // Stop + log the timed section BEFORE any user feedback, so the snackbar's display time never
+        // inflates the reported fetch+apply duration (failures are exactly what we want to time).
+        stopwatch.Stop();
+        onComplete?.Invoke();
+
+        if (failure is null)
         {
-            SyncSortSelection(ProductionRolesSortOptions, _productionRoles.Sort);
+            _logger.LogInformation(
+                "LISTTRACE {Op} completed in {ElapsedMs}ms ({Count} loaded); UI render follows",
+                op, stopwatch.ElapsedMilliseconds, loadedCount());
+            return;
+        }
+
+        _logger.LogWarning(failure, "LISTTRACE {Op} failed in {ElapsedMs}ms (staff {StaffId})", op, stopwatch.ElapsedMilliseconds, _loadedStaffId);
+        await ShowListErrorSnackbarAsync(failure).ConfigureAwait(true);
+    }
+
+    // A failed sort/Load More leaves the existing list intact; surface a transient message so the
+    // failure isn't silent. Rate-limit/outage kinds carry their own user-facing title.
+    private Task ShowListErrorSnackbarAsync(Exception ex)
+    {
+        var message = ex is AniListApiException apiEx
+            ? apiEx.UserTitle
+            : "Couldn't update the list. Check your connection and try again.";
+        return ShowSnackbarAsync(message);
+    }
+
+    private async Task ShowSnackbarAsync(string message)
+    {
+        try
+        {
+            await Snackbar.Make(message, duration: TimeSpan.FromSeconds(4)).Show().ConfigureAwait(true);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Snackbar display failed");
         }
     }
 
@@ -395,12 +441,14 @@ public partial class StaffDetailsPageModel : ObservableObject
     {
         OnPropertyChanged(nameof(HasVoiceRoles));
         OnPropertyChanged(nameof(VoiceRolesHasMore));
+        OnPropertyChanged(nameof(VoiceRolesBusy));
     }
 
     private void OnProductionRolesChanged()
     {
         OnPropertyChanged(nameof(HasProductionRoles));
         OnPropertyChanged(nameof(ProductionRolesHasMore));
+        OnPropertyChanged(nameof(ProductionRolesBusy));
     }
 
     private void StampProductionBadges(IReadOnlyList<StaffMediaEdge> items, string sort)

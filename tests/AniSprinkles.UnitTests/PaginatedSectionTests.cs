@@ -15,8 +15,9 @@ public class PaginatedSectionTests
 
     private static PaginatedSection<Item> Section(
         PaginatedSection<Item>.FetchPageDelegate fetch,
-        Action<IReadOnlyList<Item>, string>? onItemsAdded = null)
-        => new("POPULARITY_DESC", fetch, item => item.Id, onItemsAdded);
+        Action<IReadOnlyList<Item>, string>? onItemsAdded = null,
+        PaginatedSection<Item>.LocalSortDelegate? localSort = null)
+        => new("POPULARITY_DESC", fetch, item => item.Id, onItemsAdded, localSort);
 
     [Fact]
     public void Seed_WithItemsAndPageInfo_PopulatesItemsAndPagingState()
@@ -149,6 +150,69 @@ public class PaginatedSectionTests
     }
 
     [Fact]
+    public async Task ChangeSortAsync_OnCompleteSet_SortsLocallyWithoutFetching()
+    {
+        var fetchCalls = 0;
+        var stamped = new List<string>();
+        var section = Section(
+            (page, sort, _) => { fetchCalls++; return Task.FromResult(Result(Page(1, hasNext: false), 99)); },
+            onItemsAdded: (items, sort) => stamped.Add(sort),
+            localSort: (sort, items) => items.Reverse().ToList());
+        section.Seed([new Item(1), new Item(2), new Item(3)], Page(1, hasNext: false)); // complete set
+        stamped.Clear(); // drop the seed stamp
+
+        await section.ChangeSortAsync("SCORE_DESC", TestContext.Current.CancellationToken);
+
+        Assert.Equal(0, fetchCalls);                                  // no API call
+        Assert.Equal([3, 2, 1], section.Items.Select(i => i.Id));     // reordered by the local sorter
+        Assert.Equal("SCORE_DESC", section.Sort);                     // sort committed
+        Assert.False(section.IsBusy);                                 // never shows a spinner
+        Assert.Equal(["SCORE_DESC"], stamped);                        // badges re-stamped for the new sort
+    }
+
+    [Fact]
+    public async Task ChangeSortAsync_OnPartialSet_RefetchesEvenWhenLocalSorterPresent()
+    {
+        var fetchedSorts = new List<string>();
+        var section = Section(
+            (page, sort, _) => { fetchedSorts.Add(sort); return Task.FromResult(Result(Page(1, hasNext: false), 5, 6)); },
+            localSort: (sort, items) => items.Reverse().ToList());
+        section.Seed([new Item(1)], Page(1, hasNext: true)); // partial — more pages exist on the server
+
+        await section.ChangeSortAsync("SCORE_DESC", TestContext.Current.CancellationToken);
+
+        Assert.Equal(["SCORE_DESC"], fetchedSorts);                   // server refetch, not a local reorder
+        Assert.Equal([5, 6], section.Items.Select(i => i.Id));
+    }
+
+    [Fact]
+    public async Task ChangeSortAsync_CompleteSetButNoLocalSorter_FallsBackToRefetch()
+    {
+        var fetchCalls = 0;
+        var section = Section((page, sort, _) => { fetchCalls++; return Task.FromResult(Result(Page(1, hasNext: false), 5, 6)); });
+        section.Seed([new Item(1)], Page(1, hasNext: false));
+
+        await section.ChangeSortAsync("SCORE_DESC", TestContext.Current.CancellationToken);
+
+        Assert.Equal(1, fetchCalls); // without a local sorter, a complete set still refetches
+        Assert.Equal([5, 6], section.Items.Select(i => i.Id));
+    }
+
+    [Fact]
+    public async Task Reset_AfterSortChange_RestoresInitialSort()
+    {
+        var section = Section((page, sort, _) => Task.FromResult(Result(Page(1, hasNext: false), 5, 6)));
+        section.Seed([new Item(1)], Page(1, hasNext: true));
+        await section.ChangeSortAsync("SCORE_DESC", TestContext.Current.CancellationToken);
+        Assert.Equal("SCORE_DESC", section.Sort);
+
+        section.Reset(); // e.g. a reused section loading a new entity
+
+        // Cursor must return to the default so it matches the default-sorted re-seed + reset chip.
+        Assert.Equal("POPULARITY_DESC", section.Sort);
+    }
+
+    [Fact]
     public async Task LoadMoreAsync_WithStampHook_InvokesHookWithAddedItems()
     {
         var stamped = new List<(int Count, string Sort)>();
@@ -162,5 +226,48 @@ public class PaginatedSectionTests
         Assert.Equal(2, stamped.Count);
         Assert.Equal((2, "POPULARITY_DESC"), stamped[0]);
         Assert.Equal((1, "POPULARITY_DESC"), stamped[1]);
+    }
+
+    [Fact]
+    public async Task LoadMoreAsync_WhileSortChangeInFlight_DoesNotFetchOrAppendStaleItems()
+    {
+        var sortGate = new TaskCompletionSource<(IReadOnlyList<Item>, PageInfo?)>(TaskCreationOptions.RunContinuationsAsynchronously);
+        var fetchedPages = new List<int>();
+        var section = Section((page, sort, _) =>
+        {
+            fetchedPages.Add(page);
+            // Page 1 = the sort refetch (held open); any other page = a Load More fetch.
+            return page == 1 ? sortGate.Task : Task.FromResult(Result(Page(page, hasNext: false), 99));
+        });
+        section.Seed([new Item(1)], Page(1, hasNext: true));
+
+        var sortTask = section.ChangeSortAsync("SCORE_DESC", TestContext.Current.CancellationToken); // in flight
+        Assert.True(section.IsBusy);
+
+        await section.LoadMoreAsync(TestContext.Current.CancellationToken); // must be a no-op during the sort
+
+        Assert.DoesNotContain(2, fetchedPages); // Load More never fetched the next page
+
+        sortGate.SetResult(Result(Page(1, hasNext: false), 5, 6));
+        await sortTask;
+
+        Assert.Equal([5, 6], section.Items.Select(i => i.Id)); // only the new-sort page, no stale items
+    }
+
+    [Fact]
+    public async Task ChangeSortAsync_WhileRefetching_ReportsBusyThenClears()
+    {
+        var gate = new TaskCompletionSource<(IReadOnlyList<Item>, PageInfo?)>(TaskCreationOptions.RunContinuationsAsynchronously);
+        var section = Section((page, sort, _) => gate.Task);
+        section.Seed([new Item(1)], Page(1, hasNext: true));
+        Assert.False(section.IsBusy);
+
+        var changing = section.ChangeSortAsync("SCORE_DESC", TestContext.Current.CancellationToken);
+        Assert.True(section.IsBusy); // spinner should be showing during the refetch
+
+        gate.SetResult(Result(Page(1, hasNext: false), 2));
+        await changing;
+
+        Assert.False(section.IsBusy);
     }
 }

@@ -396,6 +396,10 @@
                             </Image.Source>
                         </Image>
                         <Label Text="Appears In" Style="{StaticResource Title3}" TextColor="White" />
+                        <ActivityIndicator IsRunning="{Binding AppearancesBusy}"
+                                           IsVisible="{Binding AppearancesBusy}"
+                                           Color="White" HeightRequest="16" WidthRequest="16"
+                                           VerticalOptions="Center" />
                     </HorizontalStackLayout>
                 </Border>
                 <!-- Sort chips -->
