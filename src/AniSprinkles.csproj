@@ -99,8 +99,21 @@
 		<EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
 		<RunAOTCompilation>True</RunAOTCompilation>
 		<AndroidLinkTool>r8</AndroidLinkTool>
-		<!-- Generate native debug symbols for crash reporting (e.g., Sentry, Play Console) -->
+		<!-- Native debug symbols: bundled into the AAB for Google Play Console, and uploaded to
+		     Sentry by the gated PropertyGroup below when SENTRY_AUTH_TOKEN is present. -->
 		<AndroidGenerateNativeDebugSymbols>true</AndroidGenerateNativeDebugSymbols>
+	</PropertyGroup>
+
+	<!-- Upload native debug symbols + ProGuard mapping to Sentry on release builds. Gated on BOTH a
+	     token AND an explicit org (CI provides SENTRY_AUTH_TOKEN + SENTRY_ORG). sentry-cli needs the
+	     org to be set explicitly — a token alone isn't reliable for org selection — so we require it
+	     rather than risk the upload failing mid-release. With either unset the upload is simply off,
+	     so local/tokenless Release builds are unaffected. -->
+	<PropertyGroup Condition="'$(Configuration)' == 'Release' AND $([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android' AND '$(SENTRY_AUTH_TOKEN)' != '' AND '$(SENTRY_ORG)' != ''">
+		<SentryUploadSymbols>true</SentryUploadSymbols>
+		<SentryUploadAndroidProGuardMapping>true</SentryUploadAndroidProGuardMapping>
+		<SentryOrg>$(SENTRY_ORG)</SentryOrg>
+		<SentryProject>anisprinkles</SentryProject>
 	</PropertyGroup>
 	<!--<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net10.0-android|AnyCPU'">
 	  <DefineConstants>$(DefineConstants);CI</DefineConstants>

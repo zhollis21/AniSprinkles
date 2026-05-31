@@ -145,6 +145,9 @@ public partial class CharacterDetailsPage : ContentPage, IQueryAttributable
         {
             if (!_hasCreatedLoadedContent)
             {
+                Logger.LogInformation(
+                    "LOADEDHOST CharacterDetails attach (hasCharacter={HasCharacter}, isBusy={IsBusy}, currentState={CurrentState})",
+                    ViewModel.HasCharacter, ViewModel.IsBusy, ViewModel.CurrentState);
                 try
                 {
                     LoadedContentHost.Content = new Views.CharacterDetailsLoadedContentView
@@ -167,6 +170,9 @@ public partial class CharacterDetailsPage : ContentPage, IQueryAttributable
         }
         else if (_hasCreatedLoadedContent)
         {
+            Logger.LogInformation(
+                "LOADEDHOST CharacterDetails detach (hasCharacter={HasCharacter}, isBusy={IsBusy}, currentState={CurrentState})",
+                ViewModel.HasCharacter, ViewModel.IsBusy, ViewModel.CurrentState);
             HandlerHelper.DisconnectAll(LoadedContentHost.Content);
             LoadedContentHost.Content = null;
             _hasCreatedLoadedContent = false;

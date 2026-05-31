@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using Microsoft.Extensions.Logging;
 
 namespace AniSprinkles.Services;
 
@@ -20,9 +21,14 @@ namespace AniSprinkles.Services;
 public sealed class CachingAniListClient : IAniListClient
 {
     private readonly IAniListClient _inner;
+    private readonly ILogger<CachingAniListClient>? _logger;
     private readonly ConcurrentDictionary<string, Lazy<Task<object?>>> _cache = new();
 
-    public CachingAniListClient(IAniListClient inner) => _inner = inner;
+    public CachingAniListClient(IAniListClient inner, ILogger<CachingAniListClient>? logger = null)
+    {
+        _inner = inner;
+        _logger = logger;
+    }
 
     // ---- Cached detail-page reads -------------------------------------------------------------
 
@@ -100,10 +106,22 @@ public sealed class CachingAniListClient : IAniListClient
 
     private async Task<T> GetOrAddAsync<T>(string key, Func<Task<T>> factory)
     {
-        // Lazy ensures the factory runs at most once even under concurrent access (coalescing).
-        var lazy = _cache.GetOrAdd(
-            key,
-            _ => new Lazy<Task<object?>>(async () => await factory().ConfigureAwait(false)));
+        // Log the miss *inside* the Lazy factory: it runs exactly once (ExecutionAndPublication), so
+        // "miss" tracks an actual network fetch. Then compare GetOrAdd's result to our candidate by
+        // reference: if it isn't ours, the entry already existed (or we lost the create race) and this
+        // read is served without a fetch — a hit. This logs hit/miss correctly for every caller,
+        // including concurrent ones, and never over-reports misses.
+        var candidate = new Lazy<Task<object?>>(async () =>
+        {
+            _logger?.LogInformation("CACHE miss {Key}", key);
+            return await factory().ConfigureAwait(false);
+        });
+
+        var lazy = _cache.GetOrAdd(key, candidate);
+        if (!ReferenceEquals(lazy, candidate))
+        {
+            _logger?.LogInformation("CACHE hit {Key}", key);
+        }
 
         try
         {
