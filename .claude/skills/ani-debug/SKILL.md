@@ -19,6 +19,8 @@ The block below runs at skill invocation. Raw logs are written to `/tmp/anidebug
 
 Read the **Signals** counters first, then correlate hits with the PageState / NAVTRACE timeline.
 
+> **Log level note:** the app-log trace lines below (NAVTRACE, LISTTRACE, CACHE, PageState, LOADEDHOST/LOADEDVIEW, AUTH) are `LogInformation`. They land in `anisprinkles.log` on **debug** builds, but on **release** the `FileLoggerProvider` only persists Warning+, so there they appear in **logcat** (`logcat.txt`) instead — not the app log. The collector pulls both; grep whichever matches the build under test.
+
 ### ANR / input dispatch timeouts (cross-PID logcat)
 The main thread was blocked >5s. `ANR in <pkg>` is logged by system_server (not the app PID), so this counter uses the separate cross-PID slice. Find the hit timestamp, then look ~5–10s earlier in the app log for the operation that started the block. For the main-thread stack, use the bugreport command in **Drill-in** — skipped by default because it pulls ~80MB.
 
