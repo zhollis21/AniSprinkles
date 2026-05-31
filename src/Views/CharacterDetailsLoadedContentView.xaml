@@ -396,10 +396,6 @@
                             </Image.Source>
                         </Image>
                         <Label Text="Appears In" Style="{StaticResource Title3}" TextColor="White" />
-                        <ActivityIndicator IsRunning="{Binding AppearancesBusy}"
-                                           IsVisible="{Binding AppearancesBusy}"
-                                           Color="White" HeightRequest="16" WidthRequest="16"
-                                           VerticalOptions="Center" />
                     </HorizontalStackLayout>
                 </Border>
                 <!-- Sort chips -->
@@ -438,8 +434,15 @@
                 </ScrollView>
 
                 <!-- Lazily paged: page 1 comes from the heavy Character query; sort re-fetches page 1
-                     server-side and Load More fetches the next page on demand. -->
-                <ScrollView Orientation="Horizontal">
+                     server-side and Load More fetches the next page on demand. While the section is
+                     busy (sort refetch or Load More) the list dims and a spinner overlays it. -->
+                <Grid>
+                    <ScrollView Orientation="Horizontal" InputTransparent="{Binding AppearancesBusy}">
+                        <ScrollView.Triggers>
+                            <DataTrigger TargetType="ScrollView" Binding="{Binding AppearancesBusy}" Value="True">
+                                <Setter Property="Opacity" Value="0.35" />
+                            </DataTrigger>
+                        </ScrollView.Triggers>
                     <HorizontalStackLayout Spacing="10">
                         <HorizontalStackLayout Spacing="10"
                                                BindableLayout.ItemsSource="{Binding DisplayedAppearances}">
@@ -519,7 +522,12 @@
                             </Grid>
                         </Border>
                     </HorizontalStackLayout>
-                </ScrollView>
+                    </ScrollView>
+                    <ActivityIndicator IsRunning="{Binding AppearancesBusy}"
+                                       IsVisible="{Binding AppearancesBusy}"
+                                       HorizontalOptions="Center" VerticalOptions="Center"
+                                       Color="{StaticResource RainbowCyan}" HeightRequest="36" WidthRequest="36" />
+                </Grid>
             </VerticalStackLayout>
 
             <!-- ============================================ -->

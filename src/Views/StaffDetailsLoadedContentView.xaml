@@ -260,10 +260,6 @@
                             </Image.Source>
                         </Image>
                         <Label Text="Voice Roles" Style="{StaticResource Title3}" TextColor="White" />
-                        <ActivityIndicator IsRunning="{Binding VoiceRolesBusy}"
-                                           IsVisible="{Binding VoiceRolesBusy}"
-                                           Color="White" HeightRequest="16" WidthRequest="16"
-                                           VerticalOptions="Center" />
                     </HorizontalStackLayout>
                 </Border>
 
@@ -304,7 +300,13 @@
 
                 <!-- Lazily paged via PaginatedSection: page 1 from the heavy Staff query; sort
                      re-fetches page 1 server-side and Load More appends the next server page. -->
-                <ScrollView Orientation="Horizontal">
+                <Grid>
+                    <ScrollView Orientation="Horizontal" InputTransparent="{Binding VoiceRolesBusy}">
+                        <ScrollView.Triggers>
+                            <DataTrigger TargetType="ScrollView" Binding="{Binding VoiceRolesBusy}" Value="True">
+                                <Setter Property="Opacity" Value="0.35" />
+                            </DataTrigger>
+                        </ScrollView.Triggers>
                     <HorizontalStackLayout Spacing="10">
                         <HorizontalStackLayout Spacing="10"
                                                BindableLayout.ItemsSource="{Binding DisplayedVoiceRoles}">
@@ -381,6 +383,11 @@
                         </Border>
                     </HorizontalStackLayout>
                 </ScrollView>
+                    <ActivityIndicator IsRunning="{Binding VoiceRolesBusy}"
+                                       IsVisible="{Binding VoiceRolesBusy}"
+                                       HorizontalOptions="Center" VerticalOptions="Center"
+                                       Color="{StaticResource RainbowCyan}" HeightRequest="36" WidthRequest="36" />
+                </Grid>
             </VerticalStackLayout>
 
             <!-- ============================================ -->
@@ -399,10 +406,6 @@
                             </Image.Source>
                         </Image>
                         <Label Text="Production Roles" Style="{StaticResource Title3}" TextColor="White" />
-                        <ActivityIndicator IsRunning="{Binding ProductionRolesBusy}"
-                                           IsVisible="{Binding ProductionRolesBusy}"
-                                           Color="White" HeightRequest="16" WidthRequest="16"
-                                           VerticalOptions="Center" />
                     </HorizontalStackLayout>
                 </Border>
 
@@ -443,7 +446,13 @@
 
                 <!-- Lazily paged via PaginatedSection: page 1 from the heavy Staff query; sort
                      re-fetches page 1 server-side and Load More appends the next server page. -->
-                <ScrollView Orientation="Horizontal">
+                <Grid>
+                    <ScrollView Orientation="Horizontal" InputTransparent="{Binding ProductionRolesBusy}">
+                        <ScrollView.Triggers>
+                            <DataTrigger TargetType="ScrollView" Binding="{Binding ProductionRolesBusy}" Value="True">
+                                <Setter Property="Opacity" Value="0.35" />
+                            </DataTrigger>
+                        </ScrollView.Triggers>
                     <HorizontalStackLayout Spacing="10">
                         <HorizontalStackLayout Spacing="10"
                                                BindableLayout.ItemsSource="{Binding DisplayedProductionRoles}">
@@ -530,6 +539,11 @@
                         </Border>
                     </HorizontalStackLayout>
                 </ScrollView>
+                    <ActivityIndicator IsRunning="{Binding ProductionRolesBusy}"
+                                       IsVisible="{Binding ProductionRolesBusy}"
+                                       HorizontalOptions="Center" VerticalOptions="Center"
+                                       Color="{StaticResource RainbowCyan}" HeightRequest="36" WidthRequest="36" />
+                </Grid>
             </VerticalStackLayout>
 
             <!-- ============================================ -->
