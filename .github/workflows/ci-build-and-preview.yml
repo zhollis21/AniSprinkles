@@ -387,9 +387,9 @@ jobs:
           adb pull /sdcard/one_piece_details.png screenshots/one_piece_details.png || echo "::warning::Failed to pull details screenshot"
           echo "Captured: one_piece_details.png (One Piece Details — $AUTH_MODE)"
 
-          # Screenshot 3: Character details (Monkey D. Luffy). Scroll the details page down to the
-          # Characters section, tap Luffy, then scroll his page to the Voice Actors list so the
-          # capture shows the lists (not just the hero).
+          # Screenshot 3: Character details (Monkey D. Luffy). Scroll the One Piece details page
+          # down to the Characters section and tap Luffy, then capture his page at the TOP so the
+          # hero (portrait, name, stat cards) represents the page.
           scroll_until_text "Monkey D. Luffy" && tap_element_by_text "Monkey D. Luffy" || echo "::warning::Could not reach Luffy from the details page"
 
           CHAR_WAIT=0
@@ -402,14 +402,17 @@ jobs:
             sleep 1
             CHAR_WAIT=$((CHAR_WAIT + 1))
           done
-          # Bring the voice-actor strip into view (this also locates the tap target for the staff page).
-          scroll_until_text "Mayumi Tanaka" || echo "::warning::Voice Actors list did not appear"
-          sleep 1
+          # Slightly longer settle: the hero portrait is a large remote image captured early in
+          # the page's life, so give Glide a moment to paint it before the screenshot.
+          sleep 2
           adb shell screencap -p /sdcard/character_details.png || echo "::warning::Failed to capture character screenshot"
           adb pull /sdcard/character_details.png screenshots/character_details.png || echo "::warning::Failed to pull character screenshot"
           echo "Captured: character_details.png (Luffy — $AUTH_MODE)"
+          # Now scroll the voice-actor strip into view to locate the staff-page tap target below.
+          scroll_until_text "Mayumi Tanaka" || echo "::warning::Voice Actors list did not appear"
 
-          # Screenshot 4: Staff details (Mayumi Tanaka) — tap her in the now-visible Voice Actors list.
+          # Screenshot 4: Staff details (Mayumi Tanaka) — tap her in the now-visible Voice Actors
+          # list, then capture at the TOP so the hero represents the page.
           tap_element_by_text "Mayumi Tanaka" || echo "::warning::Could not tap Mayumi Tanaka"
 
           STAFF_WAIT=0
@@ -422,9 +425,8 @@ jobs:
             sleep 1
             STAFF_WAIT=$((STAFF_WAIT + 1))
           done
-          # Reveal the Voice Roles list (Krillin is one of the role entries).
-          scroll_until_text "Krillin" || echo "::warning::Voice Roles list did not appear"
-          sleep 1
+          # Slightly longer settle so the hero portrait paints before capture (see above).
+          sleep 2
           adb shell screencap -p /sdcard/staff_details.png || echo "::warning::Failed to capture staff screenshot"
           adb pull /sdcard/staff_details.png screenshots/staff_details.png || echo "::warning::Failed to pull staff screenshot"
           echo "Captured: staff_details.png (Mayumi Tanaka — $AUTH_MODE)"
