@@ -241,7 +241,7 @@ jobs:
             for i in $(seq 1 "$max"); do
               adb shell rm -f /sdcard/ui_scroll.xml >/dev/null 2>&1 || true
               if adb shell uiautomator dump /sdcard/ui_scroll.xml >/dev/null 2>&1 \
-                 && adb shell cat /sdcard/ui_scroll.xml 2>/dev/null | grep -q "text=\"${needle}\""; then
+                 && adb shell cat /sdcard/ui_scroll.xml 2>/dev/null | grep -qF "text=\"${needle}\""; then
                 echo "Found '${needle}' after $((i - 1)) swipe(s)"
                 return 0
               fi
