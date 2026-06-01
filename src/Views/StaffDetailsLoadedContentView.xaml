@@ -302,7 +302,7 @@
                      re-fetches page 1 server-side and Load More appends the next server page. -->
                 <Grid>
                     <CollectionView ItemsSource="{Binding DisplayedVoiceRoles}"
-                                    HeightRequest="260"
+                                    HeightRequest="266"
                                     ItemSizingStrategy="MeasureFirstItem"
                                     RemainingItemsThreshold="3"
                                     RemainingItemsThresholdReachedCommand="{Binding LoadMoreVoiceRolesCommand}"

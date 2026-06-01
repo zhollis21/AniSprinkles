@@ -561,14 +561,14 @@ internal sealed class CIAniListClient : IAniListClient
 
             foreach (var edge in new[]
             {
-                Appearance("MAIN", 21, "TV", "ANIME", "RELEASING", 87, 708_195, 103_507, 1999, "ONE PIECE", "ONE PIECE", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx21-ELSYx3yMPcKM.jpg", "#e49335", onePieceVoiceActors),
-                Appearance("MAIN", 30013, "MANGA", "MANGA", "RELEASING", 91, 224_960, 44_955, 1997, "ONE PIECE", "One Piece", "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx30013-BeslEMqiPhlk.jpg", "#f1935d"),
-                Appearance("MAIN", 141902, "MOVIE", "ANIME", "FINISHED", 78, 74_600, 2_048, 2022, "ONE PIECE FILM: RED", "One Piece Film: Red", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx141902-fTyoTk8F8qOl.jpg", "#f1c950", tanakaOnly),
-                Appearance("MAIN", 12859, "MOVIE", "ANIME", "FINISHED", 79, 62_142, 867, 2012, "ONE PIECE FILM: Z", "One Piece Film: Z", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx12859-uQFENDPzMWz6.jpg", "#f1ae5d", tanakaOnly),
-                Appearance("MAIN", 105143, "MOVIE", "ANIME", "FINISHED", 80, 59_768, 1_228, 2019, "ONE PIECE STAMPEDE", "One Piece: Stampede", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx105143-5uBDmhvMr6At.png", "#e4e450", tanakaOnly),
-                Appearance("MAIN", 21335, "MOVIE", "ANIME", "FINISHED", 77, 55_738, 704, 2016, "ONE PIECE FILM: GOLD", "One Piece Film: Gold", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/nx21335-XsXdE0AeOkkZ.jpg", "#f1bb35", tanakaOnly),
-                Appearance("MAIN", 4155, "MOVIE", "ANIME", "FINISHED", 78, 53_829, 637, 2009, "ONE PIECE FILM: STRONG WORLD", "One Piece Film: Strong World", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx4155-P5TDf6t6qFwX.png", "#e4ae50", tanakaOnly),
-                Appearance("SUPPORTING", 182469, "SPECIAL", "ANIME", "FINISHED", 90, 52_986, 3_032, 2024, "ONE PIECE FAN LETTER", "ONE PIECE FAN LETTER", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx182469-JQ808NBPxmgn.jpg", "#e4935d", tanakaOnly),
+                Appearance("MAIN", 21, "TV", "ANIME", "RELEASING", 87, 708_195, 103_507, 1999, "ONE PIECE", "ONE PIECE", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21-ELSYx3yMPcKM.jpg", "#e49335", onePieceVoiceActors),
+                Appearance("MAIN", 30013, "MANGA", "MANGA", "RELEASING", 91, 224_960, 44_955, 1997, "ONE PIECE", "One Piece", "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30013-BeslEMqiPhlk.jpg", "#f1935d"),
+                Appearance("MAIN", 141902, "MOVIE", "ANIME", "FINISHED", 78, 74_600, 2_048, 2022, "ONE PIECE FILM: RED", "One Piece Film: Red", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx141902-fTyoTk8F8qOl.jpg", "#f1c950", tanakaOnly),
+                Appearance("MAIN", 12859, "MOVIE", "ANIME", "FINISHED", 79, 62_142, 867, 2012, "ONE PIECE FILM: Z", "One Piece Film: Z", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx12859-uQFENDPzMWz6.jpg", "#f1ae5d", tanakaOnly),
+                Appearance("MAIN", 105143, "MOVIE", "ANIME", "FINISHED", 80, 59_768, 1_228, 2019, "ONE PIECE STAMPEDE", "One Piece: Stampede", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx105143-5uBDmhvMr6At.png", "#e4e450", tanakaOnly),
+                Appearance("MAIN", 21335, "MOVIE", "ANIME", "FINISHED", 77, 55_738, 704, 2016, "ONE PIECE FILM: GOLD", "One Piece Film: Gold", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx21335-XsXdE0AeOkkZ.jpg", "#f1bb35", tanakaOnly),
+                Appearance("MAIN", 4155, "MOVIE", "ANIME", "FINISHED", 78, 53_829, 637, 2009, "ONE PIECE FILM: STRONG WORLD", "One Piece Film: Strong World", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx4155-P5TDf6t6qFwX.png", "#e4ae50", tanakaOnly),
+                Appearance("SUPPORTING", 182469, "SPECIAL", "ANIME", "FINISHED", 90, 52_986, 3_032, 2024, "ONE PIECE FAN LETTER", "ONE PIECE FAN LETTER", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx182469-JQ808NBPxmgn.jpg", "#e4935d", tanakaOnly),
             })
             {
                 character.Media.Add(edge);
@@ -603,14 +603,14 @@ internal sealed class CIAniListClient : IAniListClient
 
             foreach (var role in new[]
             {
-                VoiceRole("MAIN", 40, "Monkey D. Luffy", "https://s4.anilist.co/file/anilistcdn/character/large/b40-MNypXsxSRb1R.png", 35_362, 21, "ONE PIECE", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx21-ELSYx3yMPcKM.jpg", "TV"),
-                VoiceRole("MAIN", 1336, "Char Aznable", "https://s4.anilist.co/file/anilistcdn/character/large/b1336-VjllcTHMDuhI.png", 3_161, 10937, "Mobile Suit Gundam: The Origin", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx10937-yNrI4MUsigat.png", "OVA"),
-                VoiceRole("MAIN", 2159, "Krillin", "https://s4.anilist.co/file/anilistcdn/character/large/b2159-qtEuMYyOUkwY.jpg", 958, 223, "Dragon Ball", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx223-scE5uJfXqqj8.png", "TV"),
-                VoiceRole("SUPPORTING", 239956, "Turbo Granny", "https://s4.anilist.co/file/anilistcdn/character/large/b239956-Fok0Pl3rNOEL.png", 835, 171018, "Dan Da Dan", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx171018-60q1B6GK2Ghb.jpg", "TV"),
-                VoiceRole("SUPPORTING", 2305, "Koenma", "https://s4.anilist.co/file/anilistcdn/character/large/2305.jpg", 268, 392, "Yu Yu Hakusho", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx392-z90299zIvYmx.png", "TV"),
-                VoiceRole("MAIN", 8524, "Pazu", "https://s4.anilist.co/file/anilistcdn/character/large/b8524-GsNaG6GxiZrP.jpg", 253, 513, "Castle in the Sky", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx513-yM7Dlt65N4Rl.jpg", "MOVIE"),
-                VoiceRole("SUPPORTING", 2097, "Yajirobe", "https://s4.anilist.co/file/anilistcdn/character/large/2097.jpg", 100, 223, "Dragon Ball", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx223-scE5uJfXqqj8.png", "TV"),
-                VoiceRole("MAIN", 19095, "Giovanni", "https://s4.anilist.co/file/anilistcdn/character/large/19095.jpg", 38, 1175, "Night on the Galactic Railroad", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx1175-default.jpg", "MOVIE"),
+                VoiceRole("MAIN", 40, "Monkey D. Luffy", "https://s4.anilist.co/file/anilistcdn/character/large/b40-MNypXsxSRb1R.png", 35_362, 21, "ONE PIECE", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21-ELSYx3yMPcKM.jpg", "TV"),
+                VoiceRole("MAIN", 1336, "Char Aznable", "https://s4.anilist.co/file/anilistcdn/character/large/b1336-VjllcTHMDuhI.png", 3_161, 10937, "Mobile Suit Gundam: The Origin", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx10937-yNrI4MUsigat.png", "OVA"),
+                VoiceRole("MAIN", 2159, "Krillin", "https://s4.anilist.co/file/anilistcdn/character/large/b2159-qtEuMYyOUkwY.jpg", 958, 223, "Dragon Ball", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx223-scE5uJfXqqj8.png", "TV"),
+                VoiceRole("SUPPORTING", 239956, "Turbo Granny", "https://s4.anilist.co/file/anilistcdn/character/large/b239956-Fok0Pl3rNOEL.png", 835, 171018, "Dan Da Dan", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx171018-60q1B6GK2Ghb.jpg", "TV"),
+                VoiceRole("SUPPORTING", 2305, "Koenma", "https://s4.anilist.co/file/anilistcdn/character/large/2305.jpg", 268, 392, "Yu Yu Hakusho", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx392-z90299zIvYmx.png", "TV"),
+                VoiceRole("MAIN", 8524, "Pazu", "https://s4.anilist.co/file/anilistcdn/character/large/b8524-GsNaG6GxiZrP.jpg", 253, 513, "Castle in the Sky", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx513-yM7Dlt65N4Rl.jpg", "MOVIE"),
+                VoiceRole("SUPPORTING", 2097, "Yajirobe", "https://s4.anilist.co/file/anilistcdn/character/large/2097.jpg", 100, 223, "Dragon Ball", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx223-scE5uJfXqqj8.png", "TV"),
+                VoiceRole("MAIN", 19095, "Giovanni", "https://s4.anilist.co/file/anilistcdn/character/large/b19095-GB6OYl2A5EuH.png", 38, 1441, "Night on the Galactic Railroad", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b1441-NOIDPZ2svpoS.jpg", "MOVIE"),
             })
             {
                 staff.Characters.Add(role);
@@ -618,10 +618,10 @@ internal sealed class CIAniListClient : IAniListClient
 
             foreach (var role in new[]
             {
-                ProductionRole("Theme Song Performance (OP, ED2)", 1165, "OVA", "Sakura Wars: The Gorgeous Blooming Cherry Blossoms", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/b1165-cmxTudQc5wHO.jpg", 1997, 64),
-                ProductionRole("Theme Song Performance (ED)", 4150, "OVA", "Cosmos Pink Shock", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/nx4150-ab0QGFDZIn68.jpg", 1986, 52),
-                ProductionRole("Theme Song Performance (ED)", 15913, "TV", "Happy Lucky Bikkuriman", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/15913.jpg", 2006, 58),
-                ProductionRole("Insert Song Performance", 16253, "MOVIE", "Umi da! Funade da! Nikoniko, Pun", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx16253-ckp6jCg44OHf.png", 1990, 54),
+                ProductionRole("Theme Song Performance (OP, ED2)", 1165, "OVA", "Sakura Wars: The Gorgeous Blooming Cherry Blossoms", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b1165-cmxTudQc5wHO.jpg", 1997, 64),
+                ProductionRole("Theme Song Performance (ED)", 4150, "OVA", "Cosmos Pink Shock", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx4150-ab0QGFDZIn68.jpg", 1986, 52),
+                ProductionRole("Theme Song Performance (ED)", 15913, "TV", "Happy Lucky Bikkuriman", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/15913.jpg", 2006, 58),
+                ProductionRole("Insert Song Performance", 16253, "MOVIE", "Umi da! Funade da! Nikoniko, Pun", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx16253-ckp6jCg44OHf.png", 1990, 54),
             })
             {
                 staff.StaffMedia.Add(role);

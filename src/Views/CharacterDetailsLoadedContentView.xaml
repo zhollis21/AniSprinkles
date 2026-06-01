@@ -301,7 +301,7 @@
                 <!-- Virtualized like the other detail lists. No RemainingItemsThreshold here: growth
                      is the explicit, capped "check for more" walk below, never auto-triggered on scroll. -->
                 <CollectionView ItemsSource="{Binding VoiceActors}"
-                                HeightRequest="215"
+                                HeightRequest="220"
                                 ItemSizingStrategy="MeasureFirstItem"
                                 IsVisible="{Binding HasVoiceActors}">
                     <CollectionView.ItemsLayout>
@@ -443,7 +443,7 @@
                      busy (sort refetch or Load More) the list dims and a spinner overlays it. -->
                 <Grid>
                     <CollectionView ItemsSource="{Binding DisplayedAppearances}"
-                                    HeightRequest="230"
+                                    HeightRequest="240"
                                     ItemSizingStrategy="MeasureFirstItem"
                                     RemainingItemsThreshold="3"
                                     RemainingItemsThresholdReachedCommand="{Binding LoadMoreAppearancesCommand}"
