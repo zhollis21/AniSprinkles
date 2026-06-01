@@ -309,12 +309,17 @@ public partial class CharacterDetailsPageModel : ObservableObject
 
     // ---- Commands -------------------------------------------------------------------------------
 
-    [RelayCommand]
+    // CanExecute gates the scroll-threshold trigger: with no next page or while a fetch/sort is in
+    // flight, the CollectionView's RemainingItemsThresholdReached can't re-invoke this (which would
+    // otherwise log a no-op LISTTRACE pair on every scroll-to-end). LoadMoreAsync stays guarded too.
+    [RelayCommand(CanExecute = nameof(CanLoadMoreAppearances))]
     private Task LoadMoreAppearances()
         => RunTracedListOpAsync(
             "Appears In · Load More",
             () => _appearances.LoadMoreAsync(_pageCts?.Token ?? CancellationToken.None),
             () => _appearances.Items.Count);
+
+    private bool CanLoadMoreAppearances() => !_appearances.IsBusy && _appearances.HasNextPage;
 
     [RelayCommand]
     private Task SelectAppearancesSort(string? code)
@@ -460,6 +465,7 @@ public partial class CharacterDetailsPageModel : ObservableObject
     {
         OnPropertyChanged(nameof(HasAppearances));
         OnPropertyChanged(nameof(AppearancesBusy));
+        LoadMoreAppearancesCommand.NotifyCanExecuteChanged();
     }
 
     private void OnVoiceActorsChanged()

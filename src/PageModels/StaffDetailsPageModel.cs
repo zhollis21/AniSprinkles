@@ -275,19 +275,26 @@ public partial class StaffDetailsPageModel : ObservableObject
 
     // ---- Commands -------------------------------------------------------------------------------
 
-    [RelayCommand]
+    // CanExecute gates the scroll-threshold trigger: with no next page or while a fetch/sort is in
+    // flight, the CollectionView's RemainingItemsThresholdReached can't re-invoke this (which would
+    // otherwise log a no-op LISTTRACE pair on every scroll-to-end). LoadMoreAsync stays guarded too.
+    [RelayCommand(CanExecute = nameof(CanLoadMoreVoiceRoles))]
     private Task LoadMoreVoiceRoles()
         => RunTracedListOpAsync(
             "Voice Roles · Load More",
             () => _voiceRoles.LoadMoreAsync(_pageCts?.Token ?? CancellationToken.None),
             () => _voiceRoles.Items.Count);
 
-    [RelayCommand]
+    private bool CanLoadMoreVoiceRoles() => !_voiceRoles.IsBusy && _voiceRoles.HasNextPage;
+
+    [RelayCommand(CanExecute = nameof(CanLoadMoreProductionRoles))]
     private Task LoadMoreProductionRoles()
         => RunTracedListOpAsync(
             "Production Roles · Load More",
             () => _productionRoles.LoadMoreAsync(_pageCts?.Token ?? CancellationToken.None),
             () => _productionRoles.Items.Count);
+
+    private bool CanLoadMoreProductionRoles() => !_productionRoles.IsBusy && _productionRoles.HasNextPage;
 
     [RelayCommand]
     private Task SelectVoiceRolesSort(string? code)
@@ -439,12 +446,14 @@ public partial class StaffDetailsPageModel : ObservableObject
     {
         OnPropertyChanged(nameof(HasVoiceRoles));
         OnPropertyChanged(nameof(VoiceRolesBusy));
+        LoadMoreVoiceRolesCommand.NotifyCanExecuteChanged();
     }
 
     private void OnProductionRolesChanged()
     {
         OnPropertyChanged(nameof(HasProductionRoles));
         OnPropertyChanged(nameof(ProductionRolesBusy));
+        LoadMoreProductionRolesCommand.NotifyCanExecuteChanged();
     }
 
     private void StampProductionBadges(IReadOnlyList<StaffMediaEdge> items, string sort)
