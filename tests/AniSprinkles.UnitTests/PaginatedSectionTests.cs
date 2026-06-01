@@ -270,4 +270,72 @@ public class PaginatedSectionTests
 
         Assert.False(section.IsBusy);
     }
+
+    // CanLoadMore is the LoadMore command's CanExecute guard: it must be true only when another page
+    // exists and no fetch/sort is in flight, so the CollectionView's scroll threshold can't re-invoke
+    // Load More while busy or once fully paged.
+
+    [Fact]
+    public void CanLoadMore_AfterSeedWithNextPage_IsTrue()
+    {
+        var section = Section((_, _, _) => throw new InvalidOperationException("should not fetch"));
+
+        section.Seed([new Item(1)], Page(1, hasNext: true));
+
+        Assert.True(section.CanLoadMore);
+    }
+
+    [Fact]
+    public void CanLoadMore_AfterSeedWithoutNextPage_IsFalse()
+    {
+        var section = Section((_, _, _) => throw new InvalidOperationException("should not fetch"));
+
+        section.Seed([new Item(1)], Page(1, hasNext: false));
+
+        Assert.False(section.CanLoadMore);
+    }
+
+    [Fact]
+    public async Task CanLoadMore_AfterLastPageLoaded_IsFalse()
+    {
+        var section = Section((page, _, _) => Task.FromResult(Result(Page(2, hasNext: false), 2)));
+        section.Seed([new Item(1)], Page(1, hasNext: true));
+        Assert.True(section.CanLoadMore);
+
+        await section.LoadMoreAsync(TestContext.Current.CancellationToken);
+
+        Assert.False(section.CanLoadMore); // server is exhausted
+    }
+
+    [Fact]
+    public async Task CanLoadMore_WhileLoadMoreInFlight_IsFalseThenTrueAfter()
+    {
+        var gate = new TaskCompletionSource<(IReadOnlyList<Item>, PageInfo?)>(TaskCreationOptions.RunContinuationsAsynchronously);
+        var section = Section((page, _, _) => gate.Task);
+        section.Seed([new Item(1)], Page(1, hasNext: true));
+
+        var load = section.LoadMoreAsync(TestContext.Current.CancellationToken);
+        Assert.False(section.CanLoadMore); // busy fetching the next page
+
+        gate.SetResult(Result(Page(2, hasNext: true), 2));
+        await load;
+
+        Assert.True(section.CanLoadMore); // free again, and another page still exists
+    }
+
+    [Fact]
+    public async Task CanLoadMore_WhileSortChangeInFlight_IsFalse()
+    {
+        var gate = new TaskCompletionSource<(IReadOnlyList<Item>, PageInfo?)>(TaskCreationOptions.RunContinuationsAsynchronously);
+        var section = Section((page, _, _) => gate.Task);
+        section.Seed([new Item(1)], Page(1, hasNext: true));
+
+        var sort = section.ChangeSortAsync("SCORE_DESC", TestContext.Current.CancellationToken);
+        Assert.False(section.CanLoadMore); // busy on the sort refetch
+
+        gate.SetResult(Result(Page(1, hasNext: true), 2));
+        await sort;
+
+        Assert.True(section.CanLoadMore);
+    }
 }

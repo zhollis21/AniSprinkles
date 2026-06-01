@@ -131,9 +131,6 @@ public partial class StaffDetailsPageModel : ObservableObject
     public bool HasVoiceRoles => _voiceRoles.Items.Count > 0;
     public bool HasProductionRoles => _productionRoles.Items.Count > 0;
 
-    public bool VoiceRolesHasMore => _voiceRoles.HasNextPage;
-    public bool ProductionRolesHasMore => _productionRoles.HasNextPage;
-
     public bool VoiceRolesBusy => _voiceRoles.IsBusy;
     public bool ProductionRolesBusy => _productionRoles.IsBusy;
 
@@ -278,19 +275,26 @@ public partial class StaffDetailsPageModel : ObservableObject
 
     // ---- Commands -------------------------------------------------------------------------------
 
-    [RelayCommand]
+    // CanExecute gates the scroll-threshold trigger: with no next page or while a fetch/sort is in
+    // flight, the CollectionView's RemainingItemsThresholdReached can't re-invoke this (which would
+    // otherwise log a no-op LISTTRACE pair on every scroll-to-end). LoadMoreAsync stays guarded too.
+    [RelayCommand(CanExecute = nameof(CanLoadMoreVoiceRoles))]
     private Task LoadMoreVoiceRoles()
         => RunTracedListOpAsync(
             "Voice Roles · Load More",
             () => _voiceRoles.LoadMoreAsync(_pageCts?.Token ?? CancellationToken.None),
             () => _voiceRoles.Items.Count);
 
-    [RelayCommand]
+    private bool CanLoadMoreVoiceRoles() => _voiceRoles.CanLoadMore;
+
+    [RelayCommand(CanExecute = nameof(CanLoadMoreProductionRoles))]
     private Task LoadMoreProductionRoles()
         => RunTracedListOpAsync(
             "Production Roles · Load More",
             () => _productionRoles.LoadMoreAsync(_pageCts?.Token ?? CancellationToken.None),
             () => _productionRoles.Items.Count);
+
+    private bool CanLoadMoreProductionRoles() => _productionRoles.CanLoadMore;
 
     [RelayCommand]
     private Task SelectVoiceRolesSort(string? code)
@@ -357,11 +361,12 @@ public partial class StaffDetailsPageModel : ObservableObject
     }
 
     // A failed sort/Load More leaves the existing list intact; surface a transient message so the
-    // failure isn't silent. Rate-limit/outage kinds carry their own user-facing title.
+    // failure isn't silent. Use the subtitle (the actionable guidance) rather than the terse title,
+    // so the toast reads as clearly as the full-page error state does.
     private Task ShowListErrorSnackbarAsync(Exception ex)
     {
         var message = ex is AniListApiException apiEx
-            ? apiEx.UserTitle
+            ? apiEx.UserSubtitle
             : "Couldn't update the list. Check your connection and try again.";
         return ShowSnackbarAsync(message);
     }
@@ -440,15 +445,15 @@ public partial class StaffDetailsPageModel : ObservableObject
     private void OnVoiceRolesChanged()
     {
         OnPropertyChanged(nameof(HasVoiceRoles));
-        OnPropertyChanged(nameof(VoiceRolesHasMore));
         OnPropertyChanged(nameof(VoiceRolesBusy));
+        LoadMoreVoiceRolesCommand.NotifyCanExecuteChanged();
     }
 
     private void OnProductionRolesChanged()
     {
         OnPropertyChanged(nameof(HasProductionRoles));
-        OnPropertyChanged(nameof(ProductionRolesHasMore));
         OnPropertyChanged(nameof(ProductionRolesBusy));
+        LoadMoreProductionRolesCommand.NotifyCanExecuteChanged();
     }
 
     private void StampProductionBadges(IReadOnlyList<StaffMediaEdge> items, string sort)

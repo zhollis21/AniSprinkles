@@ -1,7 +1,6 @@
 ---
 name: ani-pr-feedback
 description: "Pull and evaluate open PR review comments for this repository. Use when asked to address PR feedback, review open comments, or work through reviewer notes."
-disable-model-invocation: true
 allowed-tools: Bash(pwsh tools/Get-OpenPrComments.ps1) Bash(gh pr edit:*) Bash(gh pr view:*) Bash(gh api graphql:*) Read Glob Grep
 ---
 

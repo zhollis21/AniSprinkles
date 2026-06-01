@@ -61,6 +61,11 @@ public sealed class PaginatedSection<T>
     /// <summary>True while a sort refetch or Load More round-trip is in flight — bind a spinner to this.</summary>
     public bool IsBusy => IsLoadingMore || IsChangingSort;
 
+    /// <summary>True when a Load More is permitted right now — not already fetching/sorting, and the
+    /// server has another page. The detail pages bind their LoadMore command's CanExecute to this so
+    /// the CollectionView's scroll threshold can't re-invoke while busy or once fully paged.</summary>
+    public bool CanLoadMore => !IsBusy && HasNextPage;
+
     /// <summary>Raised after any change to <see cref="Sort"/>, <see cref="HasNextPage"/>, <see cref="IsLoadingMore"/>, or <see cref="IsChangingSort"/>.</summary>
     public event Action? Changed;
 
