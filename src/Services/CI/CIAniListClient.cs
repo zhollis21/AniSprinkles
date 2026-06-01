@@ -182,6 +182,19 @@ internal sealed class CIAniListClient : IAniListClient
                 ],
                 // Airs today in 3 hours — exercises the short countdown airing path
                 NextAiringEpisode = MakeAiringEpisode(1160, DateTimeOffset.UtcNow.AddHours(3)),
+                // Main Straw Hats (real AniList ids + JP seiyuu). Tapping Luffy deep-links to the
+                // character page; tapping his VA from there reaches the staff page.
+                Characters =
+                [
+                    Cast(40, "Monkey D. Luffy", "https://s4.anilist.co/file/anilistcdn/character/large/b40-MNypXsxSRb1R.png", 95075, "Mayumi Tanaka", "https://s4.anilist.co/file/anilistcdn/staff/medium/n95075-1qD4TeW1ON92.png"),
+                    Cast(62, "Roronoa Zoro", "https://s4.anilist.co/file/anilistcdn/character/large/b62-S7oAeA9WInjV.png", 95123, "Kazuya Nakai", "https://s4.anilist.co/file/anilistcdn/staff/medium/n95123-54LrTiD9kGwY.jpg"),
+                    Cast(723, "Nami", "https://s4.anilist.co/file/anilistcdn/character/large/b723-vp5hPptgnNEC.png", 95076, "Akemi Okamura", "https://s4.anilist.co/file/anilistcdn/staff/medium/n95076-itRGy8F3x5Em.png"),
+                    Cast(305, "Sanji", "https://s4.anilist.co/file/anilistcdn/character/large/b305-6lisPmHtCnLT.png", 95125, "Hiroaki Hirata", "https://s4.anilist.co/file/anilistcdn/staff/medium/n95125-NeFFiJupoDVj.png"),
+                    Cast(309, "Tony Tony Chopper", "https://s4.anilist.co/file/anilistcdn/character/large/b309-H64NhbJ2ywIQ.jpg", 95128, "Ikue Otani", "https://s4.anilist.co/file/anilistcdn/staff/medium/n95128-9YWpE1d2U8Sj.png"),
+                    Cast(724, "Usopp", "https://s4.anilist.co/file/anilistcdn/character/large/b724-GFGgI9AJQkfy.jpg", 95067, "Kappei Yamaguchi", "https://s4.anilist.co/file/anilistcdn/staff/medium/n95067-hqIpNxMfAuN2.png"),
+                    Cast(61, "Nico Robin", "https://s4.anilist.co/file/anilistcdn/character/large/b61-ywXUyyocEEqt.png", 95130, "Yuriko Yamaguchi", "https://s4.anilist.co/file/anilistcdn/staff/medium/n95130-GoO41ve3YWQw.png"),
+                    Cast(64, "Franky", "https://s4.anilist.co/file/anilistcdn/character/large/n64-ChX6ZzHHjXqA.png", 95131, "Kazuki Yao", "https://s4.anilist.co/file/anilistcdn/staff/medium/n95131-TCVTgxb08tfE.png"),
+                ],
             },
         };
 
@@ -433,116 +446,188 @@ internal sealed class CIAniListClient : IAniListClient
             ("Completed", [FmaB, DeathNote, ASilentVoice, DemonSlayer]),
         ];
 
-        // ── Staff fixture (Hayao Miyazaki — director). Used when CI deep-links to staff-details. ───────────
+        // ── Character / Staff fixtures (Monkey D. Luffy + his JP seiyuu Mayumi Tanaka). ──────────────
+        // Real AniList ids, images, scores, and roles, captured from the live API so the
+        // character/staff detail screenshots show production-shaped lists. The page-1 sets are
+        // marked complete (HasNextPage = false) so no Load More fires during capture.
         public static readonly Staff Staff = BuildStaffFixture();
         public static readonly Character Character = BuildCharacterFixture();
+
+        // ---- Fixture builders ---------------------------------------------------------------------
+
+        private static CharacterEdge Cast(int id, string name, string image, int vaId, string vaName, string vaImage) => new()
+        {
+            Role = "MAIN",
+            Node = new Character { Id = id, Name = new CharacterName { Full = name }, Image = new CharacterImage { Large = image, Medium = image } },
+            VoiceActors = [Va(vaId, vaName, vaImage, "Japanese", null)],
+        };
+
+        private static VoiceActor Va(int id, string name, string image, string language, int? favourites) => new()
+        {
+            Id = id,
+            Name = new CharacterName { Full = name },
+            Image = new CharacterImage { Large = image, Medium = image },
+            Language = language,
+            Favourites = favourites,
+        };
+
+        private static CharacterMediaEdge Appearance(
+            string role, int id, string format, string type, string status, int score, int popularity, int favourites,
+            int year, string romaji, string english, string cover, string color, IReadOnlyList<VoiceActor>? voiceActors = null) => new()
+        {
+            CharacterRole = role,
+            Node = new RelatedMedia
+            {
+                Id = id, Format = format, Type = type, Status = status,
+                AverageScore = score, Popularity = popularity, Favourites = favourites,
+                StartDate = new MediaDate { Year = year },
+                Title = new MediaTitle { Romaji = romaji, English = english },
+                CoverImage = new MediaCoverImage { Large = cover, Medium = cover, Color = color },
+            },
+            VoiceActors = voiceActors?.ToList() ?? [],
+        };
+
+        private static StaffCharacterEdge VoiceRole(
+            string role, int charId, string charName, string charImage, int favourites,
+            int mediaId, string mediaTitle, string mediaCover, string format) => new()
+        {
+            Role = role,
+            Node = new Character
+            {
+                Id = charId, Favourites = favourites,
+                Name = new CharacterName { Full = charName },
+                Image = new CharacterImage { Large = charImage, Medium = charImage },
+            },
+            Media = new RelatedMedia
+            {
+                Id = mediaId, Format = format, Type = "ANIME",
+                Title = new MediaTitle { Romaji = mediaTitle, English = mediaTitle },
+                CoverImage = new MediaCoverImage { Large = mediaCover, Medium = mediaCover },
+            },
+        };
+
+        private static StaffMediaEdge ProductionRole(
+            string role, int id, string format, string title, string cover, int year, int score) => new()
+        {
+            StaffRole = role,
+            Node = new RelatedMedia
+            {
+                Id = id, Format = format, Type = "ANIME", Status = "FINISHED", AverageScore = score,
+                StartDate = new MediaDate { Year = year },
+                Title = new MediaTitle { Romaji = title, English = title },
+                CoverImage = new MediaCoverImage { Large = cover, Medium = cover },
+            },
+        };
+
+        private static Character BuildCharacterFixture()
+        {
+            // The voice-actor strip is built from the per-edge voiceActors below; the aggregator
+            // dedups by staff id and groups by language (Japanese first), so this varied set yields
+            // Mayumi Tanaka first, then the English / Italian / German dub actors.
+            var onePieceVoiceActors = new List<VoiceActor>
+            {
+                Va(95075, "Mayumi Tanaka", "https://s4.anilist.co/file/anilistcdn/staff/medium/n95075-1qD4TeW1ON92.png", "Japanese", 2418),
+                Va(95472, "Colleen Clinkenbeard", "https://s4.anilist.co/file/anilistcdn/staff/medium/n95472-fznpewUW95vm.jpg", "English", 622),
+                Va(101906, "Erica Schroeder", "https://s4.anilist.co/file/anilistcdn/staff/medium/n101906-Cul50rrR8cSA.png", "English", 20),
+                Va(96163, "Renato Novara", "https://s4.anilist.co/file/anilistcdn/staff/medium/n96163-YaGjTo1XM8qd.png", "Italian", 56),
+                Va(100143, "Daniel Schlauch", "https://s4.anilist.co/file/anilistcdn/staff/medium/n100143-47anXO76XYj9.png", "German", 60),
+            };
+            var tanakaOnly = new List<VoiceActor> { onePieceVoiceActors[0] };
+
+            var character = new Character
+            {
+                Id = 40,
+                Name = new CharacterName
+                {
+                    Full = "Monkey D. Luffy",
+                    Native = "モンキー・D・ルフィ",
+                    UserPreferred = "Monkey D. Luffy",
+                    Alternative = ["Straw Hat", "Mugiwara no Luffy"],
+                },
+                Image = new CharacterImage
+                {
+                    Large = "https://s4.anilist.co/file/anilistcdn/character/large/b40-MNypXsxSRb1R.png",
+                    Medium = "https://s4.anilist.co/file/anilistcdn/character/medium/b40-MNypXsxSRb1R.png",
+                },
+                Description = "Monkey D. Luffy is the founder and captain of the Straw Hat Pirates, and dreams of becoming the Pirate King by finding the legendary treasure, One Piece. After eating the Gum-Gum Fruit, his body gained the properties of rubber.",
+                Gender = "Male",
+                Age = "17-19",
+                DateOfBirth = new MediaDate { Month = 5, Day = 5 },
+                BloodType = "F",
+                Favourites = 35_362,
+                SiteUrl = "https://anilist.co/character/40",
+                MediaPageInfo = new PageInfo { HasNextPage = false, CurrentPage = 1 },
+            };
+
+            foreach (var edge in new[]
+            {
+                Appearance("MAIN", 21, "TV", "ANIME", "RELEASING", 87, 708_195, 103_507, 1999, "ONE PIECE", "ONE PIECE", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx21-ELSYx3yMPcKM.jpg", "#e49335", onePieceVoiceActors),
+                Appearance("MAIN", 30013, "MANGA", "MANGA", "RELEASING", 91, 224_960, 44_955, 1997, "ONE PIECE", "One Piece", "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx30013-BeslEMqiPhlk.jpg", "#f1935d"),
+                Appearance("MAIN", 141902, "MOVIE", "ANIME", "FINISHED", 78, 74_600, 2_048, 2022, "ONE PIECE FILM: RED", "One Piece Film: Red", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx141902-fTyoTk8F8qOl.jpg", "#f1c950", tanakaOnly),
+                Appearance("MAIN", 12859, "MOVIE", "ANIME", "FINISHED", 79, 62_142, 867, 2012, "ONE PIECE FILM: Z", "One Piece Film: Z", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx12859-uQFENDPzMWz6.jpg", "#f1ae5d", tanakaOnly),
+                Appearance("MAIN", 105143, "MOVIE", "ANIME", "FINISHED", 80, 59_768, 1_228, 2019, "ONE PIECE STAMPEDE", "One Piece: Stampede", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx105143-5uBDmhvMr6At.png", "#e4e450", tanakaOnly),
+                Appearance("MAIN", 21335, "MOVIE", "ANIME", "FINISHED", 77, 55_738, 704, 2016, "ONE PIECE FILM: GOLD", "One Piece Film: Gold", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/nx21335-XsXdE0AeOkkZ.jpg", "#f1bb35", tanakaOnly),
+                Appearance("MAIN", 4155, "MOVIE", "ANIME", "FINISHED", 78, 53_829, 637, 2009, "ONE PIECE FILM: STRONG WORLD", "One Piece Film: Strong World", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx4155-P5TDf6t6qFwX.png", "#e4ae50", tanakaOnly),
+                Appearance("SUPPORTING", 182469, "SPECIAL", "ANIME", "FINISHED", 90, 52_986, 3_032, 2024, "ONE PIECE FAN LETTER", "ONE PIECE FAN LETTER", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx182469-JQ808NBPxmgn.jpg", "#e4935d", tanakaOnly),
+            })
+            {
+                character.Media.Add(edge);
+            }
+
+            return character;
+        }
 
         private static Staff BuildStaffFixture()
         {
             var staff = new Staff
             {
-                Id = 96,
-                Name = new CharacterName { Full = "Hayao Miyazaki", Native = "宮崎 駿", UserPreferred = "Hayao Miyazaki" },
+                Id = 95075,
+                Name = new CharacterName { Full = "Mayumi Tanaka", Native = "田中真弓", UserPreferred = "Mayumi Tanaka" },
                 Image = new CharacterImage
                 {
-                    Large = "https://s4.anilist.co/file/anilistcdn/staff/large/n96-2dCmK4q5mUbM.png",
-                    Medium = "https://s4.anilist.co/file/anilistcdn/staff/medium/n96-2dCmK4q5mUbM.png",
+                    Large = "https://s4.anilist.co/file/anilistcdn/staff/large/n95075-1qD4TeW1ON92.png",
+                    Medium = "https://s4.anilist.co/file/anilistcdn/staff/medium/n95075-1qD4TeW1ON92.png",
                 },
-                Description = "Hayao Miyazaki is a Japanese film director, animator, manga artist, and producer. Co-founder of Studio Ghibli.",
+                Description = "Mayumi Tanaka is a Japanese actress and voice actress from Tokyo, affiliated with Aoni Production. She is best known as the voice of Monkey D. Luffy in One Piece and Krillin in Dragon Ball.",
                 LanguageV2 = "Japanese",
-                PrimaryOccupations = ["Director", "Animator", "Mangaka"],
-                Gender = "Male",
-                DateOfBirth = new MediaDate { Year = 1941, Month = 1, Day = 5 },
+                PrimaryOccupations = ["Voice Actor"],
+                Gender = "Female",
+                DateOfBirth = new MediaDate { Year = 1955, Month = 1, Day = 15 },
                 HomeTown = "Tokyo, Japan",
-                YearsActive = [1963],
-                Favourites = 14_500,
-                SiteUrl = "https://anilist.co/staff/96",
+                YearsActive = [1978],
+                Favourites = 2_418,
+                SiteUrl = "https://anilist.co/staff/95075",
                 StaffMediaPageInfo = new PageInfo { HasNextPage = false, CurrentPage = 1 },
                 CharactersPageInfo = new PageInfo { HasNextPage = false, CurrentPage = 1 },
             };
-            staff.StaffMedia.Add(new StaffMediaEdge
-            {
-                StaffRole = "Director",
-                Node = new RelatedMedia
-                {
-                    Id = 199, Format = "MOVIE", Type = "ANIME", Status = "FINISHED",
-                    Title = new MediaTitle { Romaji = "Sen to Chihiro no Kamikakushi", English = "Spirited Away" },
-                    CoverImage = new MediaCoverImage
-                    {
-                        Medium = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx199-pHOAlOahL90Q.jpg",
-                        Large = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx199-pHOAlOahL90Q.jpg",
-                    },
-                    AverageScore = 91,
-                },
-            });
-            return staff;
-        }
 
-        private static Character BuildCharacterFixture()
-        {
-            var character = new Character
+            foreach (var role in new[]
             {
-                Id = 2,
-                Name = new CharacterName
-                {
-                    Full = "Chihiro Ogino",
-                    Native = "荻野 千尋",
-                    UserPreferred = "Chihiro Ogino",
-                    Alternative = ["Sen"],
-                },
-                Image = new CharacterImage
-                {
-                    Large = "https://s4.anilist.co/file/anilistcdn/character/large/b2-ZW2EYJTDbrxs.png",
-                    Medium = "https://s4.anilist.co/file/anilistcdn/character/medium/b2-ZW2EYJTDbrxs.png",
-                },
-                Description = "Chihiro Ogino is the protagonist of Spirited Away.",
-                Gender = "Female",
-                Age = "10",
-                Favourites = 4_200,
-                SiteUrl = "https://anilist.co/character/2",
-                MediaPageInfo = new PageInfo { HasNextPage = false, CurrentPage = 1 },
-            };
-            character.Media.Add(new CharacterMediaEdge
+                VoiceRole("MAIN", 40, "Monkey D. Luffy", "https://s4.anilist.co/file/anilistcdn/character/large/b40-MNypXsxSRb1R.png", 35_362, 21, "ONE PIECE", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx21-ELSYx3yMPcKM.jpg", "TV"),
+                VoiceRole("MAIN", 1336, "Char Aznable", "https://s4.anilist.co/file/anilistcdn/character/large/b1336-VjllcTHMDuhI.png", 3_161, 10937, "Mobile Suit Gundam: The Origin", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx10937-yNrI4MUsigat.png", "OVA"),
+                VoiceRole("MAIN", 2159, "Krillin", "https://s4.anilist.co/file/anilistcdn/character/large/b2159-qtEuMYyOUkwY.jpg", 958, 223, "Dragon Ball", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx223-scE5uJfXqqj8.png", "TV"),
+                VoiceRole("SUPPORTING", 239956, "Turbo Granny", "https://s4.anilist.co/file/anilistcdn/character/large/b239956-Fok0Pl3rNOEL.png", 835, 171018, "Dan Da Dan", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx171018-60q1B6GK2Ghb.jpg", "TV"),
+                VoiceRole("SUPPORTING", 2305, "Koenma", "https://s4.anilist.co/file/anilistcdn/character/large/2305.jpg", 268, 392, "Yu Yu Hakusho", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx392-z90299zIvYmx.png", "TV"),
+                VoiceRole("MAIN", 8524, "Pazu", "https://s4.anilist.co/file/anilistcdn/character/large/b8524-GsNaG6GxiZrP.jpg", 253, 513, "Castle in the Sky", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx513-yM7Dlt65N4Rl.jpg", "MOVIE"),
+                VoiceRole("SUPPORTING", 2097, "Yajirobe", "https://s4.anilist.co/file/anilistcdn/character/large/2097.jpg", 100, 223, "Dragon Ball", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx223-scE5uJfXqqj8.png", "TV"),
+                VoiceRole("MAIN", 19095, "Giovanni", "https://s4.anilist.co/file/anilistcdn/character/large/19095.jpg", 38, 1175, "Night on the Galactic Railroad", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx1175-default.jpg", "MOVIE"),
+            })
             {
-                CharacterRole = "MAIN",
-                Node = new RelatedMedia
-                {
-                    Id = 199, Format = "MOVIE", Type = "ANIME", Status = "FINISHED",
-                    Title = new MediaTitle { Romaji = "Sen to Chihiro no Kamikakushi", English = "Spirited Away" },
-                    CoverImage = new MediaCoverImage
-                    {
-                        Medium = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx199-pHOAlOahL90Q.jpg",
-                        Large = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx199-pHOAlOahL90Q.jpg",
-                    },
-                    AverageScore = 91,
-                },
-                VoiceActors =
-                [
-                    new VoiceActor
-                    {
-                        Id = 95041,
-                        Name = new CharacterName { Full = "Rumi Hiiragi", Native = "柊 瑠美" },
-                        Image = new CharacterImage
-                        {
-                            Medium = "https://s4.anilist.co/file/anilistcdn/staff/medium/n95041-default.png",
-                        },
-                        Language = "Japanese",
-                        Favourites = 542,
-                    },
-                    new VoiceActor
-                    {
-                        Id = 95040,
-                        Name = new CharacterName { Full = "Daveigh Chase" },
-                        Image = new CharacterImage
-                        {
-                            Medium = "https://s4.anilist.co/file/anilistcdn/staff/medium/n95040-default.png",
-                        },
-                        Language = "English",
-                        Favourites = 187,
-                    },
-                ],
-            });
-            return character;
+                staff.Characters.Add(role);
+            }
+
+            foreach (var role in new[]
+            {
+                ProductionRole("Theme Song Performance (OP, ED2)", 1165, "OVA", "Sakura Wars: The Gorgeous Blooming Cherry Blossoms", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/b1165-cmxTudQc5wHO.jpg", 1997, 64),
+                ProductionRole("Theme Song Performance (ED)", 4150, "OVA", "Cosmos Pink Shock", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/nx4150-ab0QGFDZIn68.jpg", 1986, 52),
+                ProductionRole("Theme Song Performance (ED)", 15913, "TV", "Happy Lucky Bikkuriman", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/15913.jpg", 2006, 58),
+                ProductionRole("Insert Song Performance", 16253, "MOVIE", "Umi da! Funade da! Nikoniko, Pun", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx16253-ckp6jCg44OHf.png", 1990, 54),
+            })
+            {
+                staff.StaffMedia.Add(role);
+            }
+
+            return staff;
         }
     }
 }
