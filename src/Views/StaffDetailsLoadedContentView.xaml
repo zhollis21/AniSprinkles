@@ -431,7 +431,7 @@
                      re-fetches page 1 server-side and Load More appends the next server page. -->
                 <Grid>
                     <CollectionView ItemsSource="{Binding DisplayedProductionRoles}"
-                                    HeightRequest="240"
+                                    HeightRequest="264"
                                     ItemSizingStrategy="MeasureFirstItem"
                                     RemainingItemsThreshold="3"
                                     RemainingItemsThresholdReachedCommand="{Binding LoadMoreProductionRolesCommand}"
@@ -469,10 +469,15 @@
                                                         Padding="6,2"
                                                         HorizontalOptions="Start"
                                                         VerticalOptions="Center">
+                                                    <!-- StaffRole is free-form and can be long ("Theme Song
+                                                         Performance (OP, ED2)"); cap it so the chip can't wrap
+                                                         past the card and clip the title below. -->
                                                     <Label Text="{Binding StaffRole}"
                                                            Style="{StaticResource Caption2}"
                                                            TextColor="White"
-                                                           FontAttributes="Bold" />
+                                                           FontAttributes="Bold"
+                                                           MaxLines="2"
+                                                           LineBreakMode="TailTruncation" />
                                                 </Border>
                                                 <!-- Per-item badge stamped by the PageModel for the active sort. -->
                                                 <HorizontalStackLayout Grid.Column="1" Spacing="3"
