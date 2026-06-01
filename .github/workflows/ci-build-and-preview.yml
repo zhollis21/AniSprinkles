@@ -199,13 +199,16 @@ jobs:
               echo "::warning::UI hierarchy dump was not written"
               return 1
             fi
-            local bounds
+            local bounds value_re
+            # The node grep below is a regex, but callers pass UI text that can contain
+            # regex metacharacters (e.g. the "." in "Monkey D. Luffy"), which would match
+            # unintended nodes. Escape everything but alphanumerics/spaces so the value is
+            # matched literally; the bounds extraction stays a fixed regex.
+            value_re=$(printf '%s' "$value" | sed 's/[^a-zA-Z0-9 ]/\\&/g')
             # `|| true` suppresses pipefail when grep finds no match (exits 1),
             # leaving $bounds empty — handled by the guard below.
-            # Note: grep -o is regex; all current callers pass plain string literals
-            # with no metacharacters, so this is safe as-is.
             bounds=$(adb shell cat /sdcard/ui_tap.xml 2>/dev/null \
-              | grep -o "${attr}=\"${value}\"[^>]*" \
+              | grep -o "${attr}=\"${value_re}\"[^>]*" \
               | grep -o 'bounds="\[[0-9]*,[0-9]*\]\[[0-9]*,[0-9]*\]"' \
               | head -1 \
               | sed 's/bounds="//;s/"//') || true
@@ -286,7 +289,7 @@ jobs:
 
           # Verify the package actually installed before trying to launch it.
           PACKAGE="com.RainbowSprinkles.AniSprinkles"
-          if ! adb shell pm list packages | grep -q "$PACKAGE"; then
+          if ! adb shell pm list packages | grep -qF "$PACKAGE"; then
             echo "::error::Package $PACKAGE not found after install — aborting"
             exit 1
           fi
@@ -314,7 +317,7 @@ jobs:
           echo "Waiting for app to start..."
           WINDOW_FOUND=0
           for i in $(seq 1 30); do
-            if adb shell dumpsys window windows 2>/dev/null | grep -q "$PACKAGE"; then
+            if adb shell dumpsys window windows 2>/dev/null | grep -qF "$PACKAGE"; then
               echo "App window detected after ${i}s"
               WINDOW_FOUND=1
               break
