@@ -16,9 +16,9 @@ A colourful .NET MAUI Android app for tracking your anime with [AniList](https:/
 
 ## Screenshots
 
-|                 My Anime                 |                       Media Details                        |                 Settings                 |
-| :--------------------------------------: | :--------------------------------------------------------: | :--------------------------------------: |
-| ![My Anime](screenshots/01_my_anime.png) | ![One Piece Details](screenshots/02_one_piece_details.png) | ![Settings](screenshots/03_settings.png) |
+| My Anime | Media Details | Character | Staff | Settings |
+| :---: | :---: | :---: | :---: | :---: |
+| ![My Anime](screenshots/my_anime.png) | ![One Piece Details](screenshots/one_piece_details.png) | ![Luffy](screenshots/character_details.png) | ![Mayumi Tanaka](screenshots/staff_details.png) | ![Settings](screenshots/settings.png) |
 
 > Screenshots generated automatically by CI using compile-time stub services — no OAuth token required.
 

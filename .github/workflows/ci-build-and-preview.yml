@@ -199,13 +199,16 @@ jobs:
               echo "::warning::UI hierarchy dump was not written"
               return 1
             fi
-            local bounds
+            local bounds value_re
+            # The node grep below is a regex, but callers pass UI text that can contain
+            # regex metacharacters (e.g. the "." in "Monkey D. Luffy"), which would match
+            # unintended nodes. Escape everything but alphanumerics/spaces so the value is
+            # matched literally; the bounds extraction stays a fixed regex.
+            value_re=$(printf '%s' "$value" | sed 's/[^a-zA-Z0-9 ]/\\&/g')
             # `|| true` suppresses pipefail when grep finds no match (exits 1),
             # leaving $bounds empty — handled by the guard below.
-            # Note: grep -o is regex; all current callers pass plain string literals
-            # with no metacharacters, so this is safe as-is.
             bounds=$(adb shell cat /sdcard/ui_tap.xml 2>/dev/null \
-              | grep -o "${attr}=\"${value}\"[^>]*" \
+              | grep -o "${attr}=\"${value_re}\"[^>]*" \
               | grep -o 'bounds="\[[0-9]*,[0-9]*\]\[[0-9]*,[0-9]*\]"' \
               | head -1 \
               | sed 's/bounds="//;s/"//') || true
@@ -232,6 +235,46 @@ jobs:
           # Usage: tap_element_by_content_desc "Open navigation drawer"
           tap_element_by_content_desc() { _tap_by_attribute "content-desc" "$1"; }
 
+          # Swipe up (scroll the page down) until an element with the given visible text is on
+          # screen, so off-screen sections (character/voice-actor lists below the fold) can be
+          # revealed and then tapped. Returns success as soon as the text is found.
+          # Usage: scroll_until_text "Monkey D. Luffy" [max_swipes]
+          scroll_until_text() {
+            local needle="$1" max="${2:-10}" i
+            for i in $(seq 1 "$max"); do
+              adb shell rm -f /sdcard/ui_scroll.xml >/dev/null 2>&1 || true
+              if adb shell uiautomator dump /sdcard/ui_scroll.xml >/dev/null 2>&1 \
+                 && adb shell cat /sdcard/ui_scroll.xml 2>/dev/null | grep -qF "text=\"${needle}\""; then
+                echo "Found '${needle}' after $((i - 1)) swipe(s)"
+                return 0
+              fi
+              # Pixel 7 Pro is 1440x3120; swipe within the content area, leaving the toolbar alone.
+              adb shell input swipe 720 2200 720 800 300
+              sleep 1
+            done
+            echo "::warning::'${needle}' not found after ${max} swipe(s)"
+            return 1
+          }
+
+          # Press BACK until the My Anime page (its toolbar title) is showing again, so the flyout
+          # step runs from the root regardless of how deep navigation went.
+          # Usage: back_to_my_anime [max_presses]
+          back_to_my_anime() {
+            local max="${1:-6}" i
+            for i in $(seq 1 "$max"); do
+              adb shell rm -f /sdcard/ui_back.xml >/dev/null 2>&1 || true
+              if adb shell uiautomator dump /sdcard/ui_back.xml >/dev/null 2>&1 \
+                 && adb shell cat /sdcard/ui_back.xml 2>/dev/null | grep -q "My Anime"; then
+                echo "Back on My Anime after $((i - 1)) back press(es)"
+                return 0
+              fi
+              adb shell input keyevent KEYCODE_BACK
+              sleep 1.5
+            done
+            echo "::warning::Did not return to My Anime after ${max} back press(es)"
+            return 1
+          }
+
           # Locate the APK
           APK_PATH=$(find /tmp/apk -name "*-Signed.apk" -type f | head -1 || true)
           if [ -z "$APK_PATH" ]; then
@@ -246,7 +289,7 @@ jobs:
 
           # Verify the package actually installed before trying to launch it.
           PACKAGE="com.RainbowSprinkles.AniSprinkles"
-          if ! adb shell pm list packages | grep -q "$PACKAGE"; then
+          if ! adb shell pm list packages | grep -qF "$PACKAGE"; then
             echo "::error::Package $PACKAGE not found after install — aborting"
             exit 1
           fi
@@ -274,7 +317,7 @@ jobs:
           echo "Waiting for app to start..."
           WINDOW_FOUND=0
           for i in $(seq 1 30); do
-            if adb shell dumpsys window windows 2>/dev/null | grep -q "$PACKAGE"; then
+            if adb shell dumpsys window windows 2>/dev/null | grep -qF "$PACKAGE"; then
               echo "App window detected after ${i}s"
               WINDOW_FOUND=1
               break
@@ -320,8 +363,8 @@ jobs:
 
           # Screenshot 1: My Anime page (default flyout destination)
           adb shell screencap -p /sdcard/my_anime.png || echo "::warning::Failed to capture My Anime screenshot"
-          adb pull /sdcard/my_anime.png screenshots/01_my_anime.png || echo "::warning::Failed to pull My Anime screenshot"
-          echo "Captured: 01_my_anime.png (My Anime — $AUTH_MODE)"
+          adb pull /sdcard/my_anime.png screenshots/my_anime.png || echo "::warning::Failed to pull My Anime screenshot"
+          echo "Captured: my_anime.png (My Anime — $AUTH_MODE)"
 
           # Tap One Piece to open its details page
           tap_element_by_text "ONE PIECE" || echo "::warning::Could not find ONE PIECE in list"
@@ -341,32 +384,55 @@ jobs:
 
           # Screenshot 2: One Piece details page
           adb shell screencap -p /sdcard/one_piece_details.png || echo "::warning::Failed to capture details screenshot"
-          adb pull /sdcard/one_piece_details.png screenshots/02_one_piece_details.png || echo "::warning::Failed to pull details screenshot"
-          echo "Captured: 02_one_piece_details.png (One Piece Details — $AUTH_MODE)"
+          adb pull /sdcard/one_piece_details.png screenshots/one_piece_details.png || echo "::warning::Failed to pull details screenshot"
+          echo "Captured: one_piece_details.png (One Piece Details — $AUTH_MODE)"
 
-          # Navigate back to My Anime, then open the Shell flyout and tap Settings.
-          adb shell input keyevent KEYCODE_BACK
+          # Screenshot 3: Character details (Monkey D. Luffy). Scroll the One Piece details page
+          # down to the Characters section and tap Luffy, then capture his page at the TOP so the
+          # hero (portrait, name, stat cards) represents the page.
+          scroll_until_text "Monkey D. Luffy" && tap_element_by_text "Monkey D. Luffy" || echo "::warning::Could not reach Luffy from the details page"
 
-          # Poll for My Anime page to confirm the back navigation completed (up to 10s)
-          # before attempting to open the flyout.
-          # "My Anime" is the Shell page title for this route — always present in the
-          # toolbar once the page is active, and never shown on the Details page.
-          BACK_WAIT=0
-          while [ $BACK_WAIT -lt 10 ]; do
-            adb shell rm -f /sdcard/ui_back.xml >/dev/null 2>&1 || true
-            if adb shell uiautomator dump /sdcard/ui_back.xml >/dev/null 2>&1 && \
-               adb shell test -s /sdcard/ui_back.xml >/dev/null 2>&1 && \
-               adb shell cat /sdcard/ui_back.xml 2>/dev/null | grep -q "My Anime"; then
-              echo "  Back on My Anime after ${BACK_WAIT}s"
-              sleep 1
+          CHAR_WAIT=0
+          while [ $CHAR_WAIT -lt 15 ]; do
+            adb shell uiautomator dump /sdcard/ui_char.xml 2>/dev/null || true
+            if adb shell cat /sdcard/ui_char.xml 2>/dev/null | grep -qi "Voice Actors\|Appears In"; then
+              echo "  Character page ready after ${CHAR_WAIT}s"
               break
             fi
             sleep 1
-            BACK_WAIT=$((BACK_WAIT + 1))
+            CHAR_WAIT=$((CHAR_WAIT + 1))
           done
-          if [ "$BACK_WAIT" -ge 10 ]; then
-            echo "::warning::Back navigation did not complete — flyout tap may fire on wrong page"
-          fi
+          # Slightly longer settle: the hero portrait is a large remote image captured early in
+          # the page's life, so give Glide a moment to paint it before the screenshot.
+          sleep 2
+          adb shell screencap -p /sdcard/character_details.png || echo "::warning::Failed to capture character screenshot"
+          adb pull /sdcard/character_details.png screenshots/character_details.png || echo "::warning::Failed to pull character screenshot"
+          echo "Captured: character_details.png (Luffy — $AUTH_MODE)"
+          # Now scroll the voice-actor strip into view to locate the staff-page tap target below.
+          scroll_until_text "Mayumi Tanaka" || echo "::warning::Voice Actors list did not appear"
+
+          # Screenshot 4: Staff details (Mayumi Tanaka) — tap her in the now-visible Voice Actors
+          # list, then capture at the TOP so the hero represents the page.
+          tap_element_by_text "Mayumi Tanaka" || echo "::warning::Could not tap Mayumi Tanaka"
+
+          STAFF_WAIT=0
+          while [ $STAFF_WAIT -lt 15 ]; do
+            adb shell uiautomator dump /sdcard/ui_staff.xml 2>/dev/null || true
+            if adb shell cat /sdcard/ui_staff.xml 2>/dev/null | grep -qi "Voice Roles\|Production"; then
+              echo "  Staff page ready after ${STAFF_WAIT}s"
+              break
+            fi
+            sleep 1
+            STAFF_WAIT=$((STAFF_WAIT + 1))
+          done
+          # Slightly longer settle so the hero portrait paints before capture (see above).
+          sleep 2
+          adb shell screencap -p /sdcard/staff_details.png || echo "::warning::Failed to capture staff screenshot"
+          adb pull /sdcard/staff_details.png screenshots/staff_details.png || echo "::warning::Failed to pull staff screenshot"
+          echo "Captured: staff_details.png (Mayumi Tanaka — $AUTH_MODE)"
+
+          # Navigate back to My Anime (now several levels deep), then open the flyout and tap Settings.
+          back_to_my_anime
 
           # Open the Shell flyout via the hamburger icon ("Open navigation drawer").
           # Android 10+ gesture navigation intercepts left-edge swipes before they
@@ -414,10 +480,10 @@ jobs:
             echo "::warning::Settings page did not finish loading — capturing anyway"
           fi
 
-          # Screenshot 3: Settings page
+          # Screenshot 5: Settings page
           adb shell screencap -p /sdcard/settings.png || echo "::warning::Failed to capture Settings screenshot"
-          adb pull /sdcard/settings.png screenshots/03_settings.png || echo "::warning::Failed to pull Settings screenshot"
-          echo "Captured: 03_settings.png (Settings — $AUTH_MODE)"
+          adb pull /sdcard/settings.png screenshots/settings.png || echo "::warning::Failed to pull Settings screenshot"
+          echo "Captured: settings.png (Settings — $AUTH_MODE)"
 
           echo ""
           echo "Auth mode: $AUTH_MODE"
@@ -531,9 +597,11 @@ jobs:
             const screenshotsPublished = process.env.SCREENSHOTS_PUBLISHED === 'true';
 
             const screenshots = [
-              { file: 'screenshots/01_my_anime.png', label: 'My Anime' },
-              { file: 'screenshots/02_one_piece_details.png', label: 'One Piece Details' },
-              { file: 'screenshots/03_settings.png', label: 'Settings' },
+              { file: 'screenshots/my_anime.png', label: 'My Anime' },
+              { file: 'screenshots/one_piece_details.png', label: 'One Piece Details' },
+              { file: 'screenshots/character_details.png', label: 'Luffy (Character)' },
+              { file: 'screenshots/staff_details.png', label: 'Mayumi Tanaka (Staff)' },
+              { file: 'screenshots/settings.png', label: 'Settings' },
             ];
 
             // Build image URLs using the commit SHA for reliable, cache-proof links
@@ -621,9 +689,11 @@ jobs:
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "| Screenshot | Page |" >> $GITHUB_STEP_SUMMARY
             echo "|---|---|" >> $GITHUB_STEP_SUMMARY
-            echo "| \`01_my_anime.png\` | My Anime |" >> $GITHUB_STEP_SUMMARY
-            echo "| \`02_one_piece_details.png\` | One Piece Details |" >> $GITHUB_STEP_SUMMARY
-            echo "| \`03_settings.png\` | Settings |" >> $GITHUB_STEP_SUMMARY
+            echo "| \`my_anime.png\` | My Anime |" >> $GITHUB_STEP_SUMMARY
+            echo "| \`one_piece_details.png\` | One Piece Details |" >> $GITHUB_STEP_SUMMARY
+            echo "| \`character_details.png\` | Luffy (Character) |" >> $GITHUB_STEP_SUMMARY
+            echo "| \`staff_details.png\` | Mayumi Tanaka (Staff) |" >> $GITHUB_STEP_SUMMARY
+            echo "| \`settings.png\` | Settings |" >> $GITHUB_STEP_SUMMARY
           else
             echo "⚠️ No screenshots were captured. Check the emulator step logs." >> $GITHUB_STEP_SUMMARY
           fi

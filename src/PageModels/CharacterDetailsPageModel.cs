@@ -129,8 +129,6 @@ public partial class CharacterDetailsPageModel : ObservableObject
 
     public bool HasAppearances => _appearances.Items.Count > 0;
 
-    public bool AppearancesHasMore => _appearances.HasNextPage;
-
     public bool AppearancesBusy => _appearances.IsBusy;
 
     // ---- Voice Actors ---------------------------------------------------------------------------
@@ -311,12 +309,17 @@ public partial class CharacterDetailsPageModel : ObservableObject
 
     // ---- Commands -------------------------------------------------------------------------------
 
-    [RelayCommand]
+    // CanExecute gates the scroll-threshold trigger: with no next page or while a fetch/sort is in
+    // flight, the CollectionView's RemainingItemsThresholdReached can't re-invoke this (which would
+    // otherwise log a no-op LISTTRACE pair on every scroll-to-end). LoadMoreAsync stays guarded too.
+    [RelayCommand(CanExecute = nameof(CanLoadMoreAppearances))]
     private Task LoadMoreAppearances()
         => RunTracedListOpAsync(
             "Appears In · Load More",
             () => _appearances.LoadMoreAsync(_pageCts?.Token ?? CancellationToken.None),
             () => _appearances.Items.Count);
+
+    private bool CanLoadMoreAppearances() => _appearances.CanLoadMore;
 
     [RelayCommand]
     private Task SelectAppearancesSort(string? code)
@@ -377,11 +380,12 @@ public partial class CharacterDetailsPageModel : ObservableObject
     }
 
     // A failed sort/Load More leaves the existing list intact; surface a transient message so the
-    // failure isn't silent. Rate-limit/outage kinds carry their own user-facing title.
+    // failure isn't silent. Use the subtitle (the actionable guidance) rather than the terse title,
+    // so the toast reads as clearly as the full-page error state does.
     private Task ShowListErrorSnackbarAsync(Exception ex)
     {
         var message = ex is AniListApiException apiEx
-            ? apiEx.UserTitle
+            ? apiEx.UserSubtitle
             : "Couldn't update the list. Check your connection and try again.";
         return ShowSnackbarAsync(message);
     }
@@ -460,8 +464,8 @@ public partial class CharacterDetailsPageModel : ObservableObject
     private void OnAppearancesChanged()
     {
         OnPropertyChanged(nameof(HasAppearances));
-        OnPropertyChanged(nameof(AppearancesHasMore));
         OnPropertyChanged(nameof(AppearancesBusy));
+        LoadMoreAppearancesCommand.NotifyCanExecuteChanged();
     }
 
     private void OnVoiceActorsChanged()
