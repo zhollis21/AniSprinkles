@@ -131,9 +131,6 @@ public partial class StaffDetailsPageModel : ObservableObject
     public bool HasVoiceRoles => _voiceRoles.Items.Count > 0;
     public bool HasProductionRoles => _productionRoles.Items.Count > 0;
 
-    public bool VoiceRolesHasMore => _voiceRoles.HasNextPage;
-    public bool ProductionRolesHasMore => _productionRoles.HasNextPage;
-
     public bool VoiceRolesBusy => _voiceRoles.IsBusy;
     public bool ProductionRolesBusy => _productionRoles.IsBusy;
 
@@ -440,14 +437,12 @@ public partial class StaffDetailsPageModel : ObservableObject
     private void OnVoiceRolesChanged()
     {
         OnPropertyChanged(nameof(HasVoiceRoles));
-        OnPropertyChanged(nameof(VoiceRolesHasMore));
         OnPropertyChanged(nameof(VoiceRolesBusy));
     }
 
     private void OnProductionRolesChanged()
     {
         OnPropertyChanged(nameof(HasProductionRoles));
-        OnPropertyChanged(nameof(ProductionRolesHasMore));
         OnPropertyChanged(nameof(ProductionRolesBusy));
     }
 

@@ -298,60 +298,65 @@
 
                 <!-- Deduped, language-grouped voice actors (Japanese first). Intentionally unsorted:
                      it's a partial list that grows via "check for more", never re-ordered. -->
-                <ScrollView Orientation="Horizontal" IsVisible="{Binding HasVoiceActors}">
-                    <HorizontalStackLayout Spacing="10"
-                                           BindableLayout.ItemsSource="{Binding VoiceActors}">
-                        <BindableLayout.ItemTemplate>
-                            <DataTemplate x:DataType="models:VoiceActor">
-                                <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="110">
-                                    <Border.GestureRecognizers>
-                                        <TapGestureRecognizer x:DataType="{x:Null}"
-                                                              Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToStaffCommand}"
-                                                              CommandParameter="{Binding Id}" />
-                                    </Border.GestureRecognizers>
-                                    <VerticalStackLayout>
-                                        <Image Source="{Binding Image.Large}"
-                                               Aspect="AspectFill"
-                                               HeightRequest="150"
-                                               WidthRequest="110" />
-                                        <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
-                                            <Label Text="{Binding Name.Full}"
-                                                   Style="{StaticResource Caption1Strong}"
-                                                   MaxLines="2"
-                                                   LineBreakMode="TailTruncation" />
-                                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="4">
-                                                <Label Grid.Column="0"
-                                                       Text="{Binding Language}"
+                <!-- Virtualized like the other detail lists. No RemainingItemsThreshold here: growth
+                     is the explicit, capped "check for more" walk below, never auto-triggered on scroll. -->
+                <CollectionView ItemsSource="{Binding VoiceActors}"
+                                HeightRequest="215"
+                                ItemSizingStrategy="MeasureFirstItem"
+                                IsVisible="{Binding HasVoiceActors}">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Horizontal" ItemSpacing="10" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:VoiceActor">
+                            <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="110">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer x:DataType="{x:Null}"
+                                                          Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToStaffCommand}"
+                                                          CommandParameter="{Binding Id}" />
+                                </Border.GestureRecognizers>
+                                <VerticalStackLayout>
+                                    <Image Source="{Binding Image.Large}"
+                                           Aspect="AspectFill"
+                                           HeightRequest="150"
+                                           WidthRequest="110" />
+                                    <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
+                                        <Label Text="{Binding Name.Full}"
+                                               Style="{StaticResource Caption1Strong}"
+                                               MaxLines="2"
+                                               LineBreakMode="TailTruncation" />
+                                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="4">
+                                            <Label Grid.Column="0"
+                                                   Text="{Binding Language}"
+                                                   Style="{StaticResource Caption2}"
+                                                   TextColor="{Binding Language, Converter={StaticResource RainbowAccentConverter}}"
+                                                   FontAttributes="Bold"
+                                                   LineBreakMode="TailTruncation"
+                                                   VerticalTextAlignment="Center" />
+                                            <HorizontalStackLayout Grid.Column="1" Spacing="3"
+                                                                   IsVisible="{Binding HasFavourites}"
+                                                                   VerticalOptions="Center">
+                                                <Image WidthRequest="12" HeightRequest="12" VerticalOptions="Center">
+                                                    <Image.Source>
+                                                        <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Heart24}"
+                                                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                                         Color="{StaticResource RainbowPink}"
+                                                                         Size="12" />
+                                                    </Image.Source>
+                                                </Image>
+                                                <Label Text="{Binding FavouritesDisplay}"
                                                        Style="{StaticResource Caption2}"
-                                                       TextColor="{Binding Language, Converter={StaticResource RainbowAccentConverter}}"
                                                        FontAttributes="Bold"
-                                                       LineBreakMode="TailTruncation"
+                                                       TextColor="{StaticResource Gray100}"
                                                        VerticalTextAlignment="Center" />
-                                                <HorizontalStackLayout Grid.Column="1" Spacing="3"
-                                                                       IsVisible="{Binding HasFavourites}"
-                                                                       VerticalOptions="Center">
-                                                    <Image WidthRequest="12" HeightRequest="12" VerticalOptions="Center">
-                                                        <Image.Source>
-                                                            <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Heart24}"
-                                                                             FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                                             Color="{StaticResource RainbowPink}"
-                                                                             Size="12" />
-                                                        </Image.Source>
-                                                    </Image>
-                                                    <Label Text="{Binding FavouritesDisplay}"
-                                                           Style="{StaticResource Caption2}"
-                                                           FontAttributes="Bold"
-                                                           TextColor="{StaticResource Gray100}"
-                                                           VerticalTextAlignment="Center" />
-                                                </HorizontalStackLayout>
-                                            </Grid>
-                                        </VerticalStackLayout>
+                                            </HorizontalStackLayout>
+                                        </Grid>
                                     </VerticalStackLayout>
-                                </Border>
-                            </DataTemplate>
-                        </BindableLayout.ItemTemplate>
-                    </HorizontalStackLayout>
-                </ScrollView>
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
 
                 <!-- "Check for more" rather than "load more": deeper titles usually repeat the same
                      seiyuu, so a tap may surface nobody new (or reach the end). -->
@@ -437,92 +442,73 @@
                      server-side and Load More fetches the next page on demand. While the section is
                      busy (sort refetch or Load More) the list dims and a spinner overlays it. -->
                 <Grid>
-                    <ScrollView Orientation="Horizontal" InputTransparent="{Binding AppearancesBusy}">
-                        <ScrollView.Triggers>
-                            <DataTrigger TargetType="ScrollView" Binding="{Binding AppearancesBusy}" Value="True">
+                    <CollectionView ItemsSource="{Binding DisplayedAppearances}"
+                                    HeightRequest="230"
+                                    ItemSizingStrategy="MeasureFirstItem"
+                                    RemainingItemsThreshold="3"
+                                    RemainingItemsThresholdReachedCommand="{Binding LoadMoreAppearancesCommand}"
+                                    InputTransparent="{Binding AppearancesBusy}">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Horizontal" ItemSpacing="10" />
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.Triggers>
+                            <DataTrigger TargetType="CollectionView" Binding="{Binding AppearancesBusy}" Value="True">
                                 <Setter Property="Opacity" Value="0.35" />
                             </DataTrigger>
-                        </ScrollView.Triggers>
-                    <HorizontalStackLayout Spacing="10">
-                        <HorizontalStackLayout Spacing="10"
-                                               BindableLayout.ItemsSource="{Binding DisplayedAppearances}">
-                            <BindableLayout.ItemTemplate>
-                                <DataTemplate x:DataType="models:CharacterMediaEdge">
-                                    <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130">
-                                        <Border.GestureRecognizers>
-                                            <TapGestureRecognizer x:DataType="{x:Null}"
-                                                                  Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToMediaCommand}"
-                                                                  CommandParameter="{Binding Node.Id}" />
-                                        </Border.GestureRecognizers>
-                                        <VerticalStackLayout>
-                                            <Grid HeightRequest="170" WidthRequest="130">
-                                                <Image Source="{Binding Node.CoverImage.Large}"
-                                                       Aspect="AspectFill"
-                                                       HeightRequest="170"
-                                                       WidthRequest="130" />
-                                                <views:FormatIconBadge Format="{Binding Node.Format}" />
-                                            </Grid>
-                                            <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
-                                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="4">
-                                                    <Label Grid.Column="0"
-                                                           Text="{Binding CharacterRole}"
+                        </CollectionView.Triggers>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:CharacterMediaEdge">
+                                <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer x:DataType="{x:Null}"
+                                                              Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToMediaCommand}"
+                                                              CommandParameter="{Binding Node.Id}" />
+                                    </Border.GestureRecognizers>
+                                    <VerticalStackLayout>
+                                        <Grid HeightRequest="170" WidthRequest="130">
+                                            <Image Source="{Binding Node.CoverImage.Large}"
+                                                   Aspect="AspectFill"
+                                                   HeightRequest="170"
+                                                   WidthRequest="130" />
+                                            <views:FormatIconBadge Format="{Binding Node.Format}" />
+                                        </Grid>
+                                        <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
+                                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="4">
+                                                <Label Grid.Column="0"
+                                                       Text="{Binding CharacterRole}"
+                                                       Style="{StaticResource Caption2}"
+                                                       TextColor="{Binding CharacterRole, Converter={StaticResource RainbowAccentConverter}}"
+                                                       FontAttributes="Bold"
+                                                       VerticalTextAlignment="Center" />
+                                                <!-- Per-item badge stamped by the PageModel for the active sort. -->
+                                                <HorizontalStackLayout Grid.Column="1" Spacing="3"
+                                                                       IsVisible="{Binding HasMetricBadge}"
+                                                                       VerticalOptions="Center">
+                                                    <Image WidthRequest="12" HeightRequest="12" VerticalOptions="Center">
+                                                        <Image.Source>
+                                                            <FontImageSource Glyph="{Binding MetricBadge.Glyph}"
+                                                                             FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                                             Color="{Binding MetricBadge.IconColor}"
+                                                                             Size="12" />
+                                                        </Image.Source>
+                                                    </Image>
+                                                    <Label Text="{Binding MetricBadge.Text}"
                                                            Style="{StaticResource Caption2}"
-                                                           TextColor="{Binding CharacterRole, Converter={StaticResource RainbowAccentConverter}}"
                                                            FontAttributes="Bold"
+                                                           TextColor="{StaticResource Gray100}"
                                                            VerticalTextAlignment="Center" />
-                                                    <!-- Pre-resolved per-item badge whose icon/color/text are stamped by the
-                                                         PageModel based on the active sort. Single binding path keeps the
-                                                         template light enough to scale across many cards. -->
-                                                    <HorizontalStackLayout Grid.Column="1" Spacing="3"
-                                                                           IsVisible="{Binding HasMetricBadge}"
-                                                                           VerticalOptions="Center">
-                                                        <Image WidthRequest="12" HeightRequest="12" VerticalOptions="Center">
-                                                            <Image.Source>
-                                                                <FontImageSource Glyph="{Binding MetricBadge.Glyph}"
-                                                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                                                 Color="{Binding MetricBadge.IconColor}"
-                                                                                 Size="12" />
-                                                            </Image.Source>
-                                                        </Image>
-                                                        <Label Text="{Binding MetricBadge.Text}"
-                                                               Style="{StaticResource Caption2}"
-                                                               FontAttributes="Bold"
-                                                               TextColor="{StaticResource Gray100}"
-                                                               VerticalTextAlignment="Center" />
-                                                    </HorizontalStackLayout>
-                                                </Grid>
-                                                <Label Text="{Binding Node.DisplayTitle}"
-                                                       Style="{StaticResource Caption1}"
-                                                       MaxLines="2"
-                                                       LineBreakMode="TailTruncation" />
-                                            </VerticalStackLayout>
+                                                </HorizontalStackLayout>
+                                            </Grid>
+                                            <Label Text="{Binding Node.DisplayTitle}"
+                                                   Style="{StaticResource Caption1}"
+                                                   MaxLines="2"
+                                                   LineBreakMode="TailTruncation" />
                                         </VerticalStackLayout>
-                                    </Border>
-                                </DataTemplate>
-                            </BindableLayout.ItemTemplate>
-                        </HorizontalStackLayout>
-
-                        <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130"
-                                IsVisible="{Binding AppearancesHasMore}">
-                            <Border.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding LoadMoreAppearancesCommand}" />
-                            </Border.GestureRecognizers>
-                            <Grid HeightRequest="230">
-                                <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="6">
-                                    <Image WidthRequest="32" HeightRequest="32" HorizontalOptions="Center">
-                                        <Image.Source>
-                                            <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.ArrowCircleRight24}"
-                                                             FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                             Color="{StaticResource Gray400}" Size="32" />
-                                        </Image.Source>
-                                    </Image>
-                                    <Label Text="Load more" Style="{StaticResource Caption1Strong}"
-                                           TextColor="{StaticResource Gray300}" HorizontalTextAlignment="Center" />
-                                </VerticalStackLayout>
-                            </Grid>
-                        </Border>
-                    </HorizontalStackLayout>
-                    </ScrollView>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
                     <ActivityIndicator IsRunning="{Binding AppearancesBusy}"
                                        IsVisible="{Binding AppearancesBusy}"
                                        HorizontalOptions="Center" VerticalOptions="Center"

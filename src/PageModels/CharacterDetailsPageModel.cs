@@ -129,8 +129,6 @@ public partial class CharacterDetailsPageModel : ObservableObject
 
     public bool HasAppearances => _appearances.Items.Count > 0;
 
-    public bool AppearancesHasMore => _appearances.HasNextPage;
-
     public bool AppearancesBusy => _appearances.IsBusy;
 
     // ---- Voice Actors ---------------------------------------------------------------------------
@@ -460,7 +458,6 @@ public partial class CharacterDetailsPageModel : ObservableObject
     private void OnAppearancesChanged()
     {
         OnPropertyChanged(nameof(HasAppearances));
-        OnPropertyChanged(nameof(AppearancesHasMore));
         OnPropertyChanged(nameof(AppearancesBusy));
     }
 

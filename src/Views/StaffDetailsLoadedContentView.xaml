@@ -301,88 +301,71 @@
                 <!-- Lazily paged via PaginatedSection: page 1 from the heavy Staff query; sort
                      re-fetches page 1 server-side and Load More appends the next server page. -->
                 <Grid>
-                    <ScrollView Orientation="Horizontal" InputTransparent="{Binding VoiceRolesBusy}">
-                        <ScrollView.Triggers>
-                            <DataTrigger TargetType="ScrollView" Binding="{Binding VoiceRolesBusy}" Value="True">
+                    <CollectionView ItemsSource="{Binding DisplayedVoiceRoles}"
+                                    HeightRequest="260"
+                                    ItemSizingStrategy="MeasureFirstItem"
+                                    RemainingItemsThreshold="3"
+                                    RemainingItemsThresholdReachedCommand="{Binding LoadMoreVoiceRolesCommand}"
+                                    InputTransparent="{Binding VoiceRolesBusy}">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Horizontal" ItemSpacing="10" />
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.Triggers>
+                            <DataTrigger TargetType="CollectionView" Binding="{Binding VoiceRolesBusy}" Value="True">
                                 <Setter Property="Opacity" Value="0.35" />
                             </DataTrigger>
-                        </ScrollView.Triggers>
-                    <HorizontalStackLayout Spacing="10">
-                        <HorizontalStackLayout Spacing="10"
-                                               BindableLayout.ItemsSource="{Binding DisplayedVoiceRoles}">
-                            <BindableLayout.ItemTemplate>
-                                <DataTemplate x:DataType="models:StaffCharacterEdge">
-                                    <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130">
-                                        <Border.GestureRecognizers>
-                                            <TapGestureRecognizer x:DataType="{x:Null}"
-                                                                  Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToCharacterCommand}"
-                                                                  CommandParameter="{Binding Node.Id}" />
-                                        </Border.GestureRecognizers>
-                                        <VerticalStackLayout>
-                                            <Grid HeightRequest="180" WidthRequest="130">
-                                                <Image Source="{Binding Node.Image.Large}"
-                                                       Aspect="AspectFill"
-                                                       HeightRequest="180"
-                                                       WidthRequest="130" />
-                                                <Border WidthRequest="40" HeightRequest="56"
-                                                        StrokeShape="RoundRectangle 6"
-                                                        StrokeThickness="1.5"
-                                                        Stroke="White"
-                                                        HorizontalOptions="End"
-                                                        VerticalOptions="End"
-                                                        Margin="0,0,6,6"
-                                                        Padding="0"
-                                                        IsVisible="{Binding Media.CoverImage.Medium, Converter={StaticResource StringNotNullOrEmptyConverter}}">
-                                                    <Border.GestureRecognizers>
-                                                        <TapGestureRecognizer x:DataType="{x:Null}"
-                                                                              Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToMediaCommand}"
-                                                                              CommandParameter="{Binding Media.Id}" />
-                                                    </Border.GestureRecognizers>
-                                                    <Image Source="{Binding Media.CoverImage.Medium}" Aspect="AspectFill" />
-                                                </Border>
-                                            </Grid>
-                                            <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
-                                                <Label Text="{Binding Node.Name.Full}"
-                                                       Style="{StaticResource Caption1Strong}"
-                                                       MaxLines="1"
-                                                       LineBreakMode="TailTruncation" />
-                                                <Label Text="{Binding Role}"
-                                                       Style="{StaticResource Caption2}"
-                                                       TextColor="{Binding Role, Converter={StaticResource RainbowAccentConverter}}"
-                                                       FontAttributes="Bold" />
-                                                <Label Text="{Binding Media.DisplayTitle}"
-                                                       Style="{StaticResource Caption2}"
-                                                       TextColor="{StaticResource Gray400}"
-                                                       MaxLines="2"
-                                                       LineBreakMode="TailTruncation" />
-                                            </VerticalStackLayout>
+                        </CollectionView.Triggers>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:StaffCharacterEdge">
+                                <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer x:DataType="{x:Null}"
+                                                              Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToCharacterCommand}"
+                                                              CommandParameter="{Binding Node.Id}" />
+                                    </Border.GestureRecognizers>
+                                    <VerticalStackLayout>
+                                        <Grid HeightRequest="180" WidthRequest="130">
+                                            <Image Source="{Binding Node.Image.Large}"
+                                                   Aspect="AspectFill"
+                                                   HeightRequest="180"
+                                                   WidthRequest="130" />
+                                            <Border WidthRequest="40" HeightRequest="56"
+                                                    StrokeShape="RoundRectangle 6"
+                                                    StrokeThickness="1.5"
+                                                    Stroke="White"
+                                                    HorizontalOptions="End"
+                                                    VerticalOptions="End"
+                                                    Margin="0,0,6,6"
+                                                    Padding="0"
+                                                    IsVisible="{Binding Media.CoverImage.Medium, Converter={StaticResource StringNotNullOrEmptyConverter}}">
+                                                <Border.GestureRecognizers>
+                                                    <TapGestureRecognizer x:DataType="{x:Null}"
+                                                                          Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToMediaCommand}"
+                                                                          CommandParameter="{Binding Media.Id}" />
+                                                </Border.GestureRecognizers>
+                                                <Image Source="{Binding Media.CoverImage.Medium}" Aspect="AspectFill" />
+                                            </Border>
+                                        </Grid>
+                                        <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
+                                            <Label Text="{Binding Node.Name.Full}"
+                                                   Style="{StaticResource Caption1Strong}"
+                                                   MaxLines="1"
+                                                   LineBreakMode="TailTruncation" />
+                                            <Label Text="{Binding Role}"
+                                                   Style="{StaticResource Caption2}"
+                                                   TextColor="{Binding Role, Converter={StaticResource RainbowAccentConverter}}"
+                                                   FontAttributes="Bold" />
+                                            <Label Text="{Binding Media.DisplayTitle}"
+                                                   Style="{StaticResource Caption2}"
+                                                   TextColor="{StaticResource Gray400}"
+                                                   MaxLines="2"
+                                                   LineBreakMode="TailTruncation" />
                                         </VerticalStackLayout>
-                                    </Border>
-                                </DataTemplate>
-                            </BindableLayout.ItemTemplate>
-                        </HorizontalStackLayout>
-
-                        <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130"
-                                IsVisible="{Binding VoiceRolesHasMore}">
-                            <Border.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding LoadMoreVoiceRolesCommand}" />
-                            </Border.GestureRecognizers>
-                            <Grid HeightRequest="230">
-                                <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="6">
-                                    <Image WidthRequest="32" HeightRequest="32" HorizontalOptions="Center">
-                                        <Image.Source>
-                                            <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.ArrowCircleRight24}"
-                                                             FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                             Color="{StaticResource Gray400}" Size="32" />
-                                        </Image.Source>
-                                    </Image>
-                                    <Label Text="Load more" Style="{StaticResource Caption1Strong}"
-                                           TextColor="{StaticResource Gray300}" HorizontalTextAlignment="Center" />
-                                </VerticalStackLayout>
-                            </Grid>
-                        </Border>
-                    </HorizontalStackLayout>
-                </ScrollView>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
                     <ActivityIndicator IsRunning="{Binding VoiceRolesBusy}"
                                        IsVisible="{Binding VoiceRolesBusy}"
                                        HorizontalOptions="Center" VerticalOptions="Center"
@@ -447,98 +430,79 @@
                 <!-- Lazily paged via PaginatedSection: page 1 from the heavy Staff query; sort
                      re-fetches page 1 server-side and Load More appends the next server page. -->
                 <Grid>
-                    <ScrollView Orientation="Horizontal" InputTransparent="{Binding ProductionRolesBusy}">
-                        <ScrollView.Triggers>
-                            <DataTrigger TargetType="ScrollView" Binding="{Binding ProductionRolesBusy}" Value="True">
+                    <CollectionView ItemsSource="{Binding DisplayedProductionRoles}"
+                                    HeightRequest="240"
+                                    ItemSizingStrategy="MeasureFirstItem"
+                                    RemainingItemsThreshold="3"
+                                    RemainingItemsThresholdReachedCommand="{Binding LoadMoreProductionRolesCommand}"
+                                    InputTransparent="{Binding ProductionRolesBusy}">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Horizontal" ItemSpacing="10" />
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.Triggers>
+                            <DataTrigger TargetType="CollectionView" Binding="{Binding ProductionRolesBusy}" Value="True">
                                 <Setter Property="Opacity" Value="0.35" />
                             </DataTrigger>
-                        </ScrollView.Triggers>
-                    <HorizontalStackLayout Spacing="10">
-                        <HorizontalStackLayout Spacing="10"
-                                               BindableLayout.ItemsSource="{Binding DisplayedProductionRoles}">
-                            <BindableLayout.ItemTemplate>
-                                <DataTemplate x:DataType="models:StaffMediaEdge">
-                                    <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130">
-                                        <Border.GestureRecognizers>
-                                            <TapGestureRecognizer x:DataType="{x:Null}"
-                                                                  Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToMediaCommand}"
-                                                                  CommandParameter="{Binding Node.Id}" />
-                                        </Border.GestureRecognizers>
-                                        <VerticalStackLayout>
-                                            <Grid HeightRequest="170" WidthRequest="130">
-                                                <Image Source="{Binding Node.CoverImage.Large}"
-                                                       Aspect="AspectFill"
-                                                       HeightRequest="170"
-                                                       WidthRequest="130" />
-                                                <views:FormatIconBadge Format="{Binding Node.Format}" />
+                        </CollectionView.Triggers>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:StaffMediaEdge">
+                                <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer x:DataType="{x:Null}"
+                                                              Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToMediaCommand}"
+                                                              CommandParameter="{Binding Node.Id}" />
+                                    </Border.GestureRecognizers>
+                                    <VerticalStackLayout>
+                                        <Grid HeightRequest="170" WidthRequest="130">
+                                            <Image Source="{Binding Node.CoverImage.Large}"
+                                                   Aspect="AspectFill"
+                                                   HeightRequest="170"
+                                                   WidthRequest="130" />
+                                            <views:FormatIconBadge Format="{Binding Node.Format}" />
+                                        </Grid>
+                                        <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
+                                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="4">
+                                                <Border Grid.Column="0"
+                                                        Background="{Binding StaffRole, Converter={StaticResource RainbowAccentConverter}}"
+                                                        StrokeShape="RoundRectangle 8"
+                                                        StrokeThickness="0"
+                                                        Padding="6,2"
+                                                        HorizontalOptions="Start"
+                                                        VerticalOptions="Center">
+                                                    <Label Text="{Binding StaffRole}"
+                                                           Style="{StaticResource Caption2}"
+                                                           TextColor="White"
+                                                           FontAttributes="Bold" />
+                                                </Border>
+                                                <!-- Per-item badge stamped by the PageModel for the active sort. -->
+                                                <HorizontalStackLayout Grid.Column="1" Spacing="3"
+                                                                       IsVisible="{Binding HasMetricBadge}"
+                                                                       VerticalOptions="Center">
+                                                    <Image WidthRequest="12" HeightRequest="12" VerticalOptions="Center">
+                                                        <Image.Source>
+                                                            <FontImageSource Glyph="{Binding MetricBadge.Glyph}"
+                                                                             FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                                             Color="{Binding MetricBadge.IconColor}"
+                                                                             Size="12" />
+                                                        </Image.Source>
+                                                    </Image>
+                                                    <Label Text="{Binding MetricBadge.Text}"
+                                                           Style="{StaticResource Caption2}"
+                                                           FontAttributes="Bold"
+                                                           TextColor="{StaticResource Gray100}"
+                                                           VerticalTextAlignment="Center" />
+                                                </HorizontalStackLayout>
                                             </Grid>
-                                            <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
-                                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="4">
-                                                    <Border Grid.Column="0"
-                                                            Background="{Binding StaffRole, Converter={StaticResource RainbowAccentConverter}}"
-                                                            StrokeShape="RoundRectangle 8"
-                                                            StrokeThickness="0"
-                                                            Padding="6,2"
-                                                            HorizontalOptions="Start"
-                                                            VerticalOptions="Center">
-                                                        <Label Text="{Binding StaffRole}"
-                                                               Style="{StaticResource Caption2}"
-                                                               TextColor="White"
-                                                               FontAttributes="Bold" />
-                                                    </Border>
-                                                    <!-- Pre-resolved per-item badge whose icon/color/text are stamped by the
-                                                         PageModel based on the active sort. Single binding path keeps the
-                                                         template light enough to scale across many cards. -->
-                                                    <HorizontalStackLayout Grid.Column="1" Spacing="3"
-                                                                           IsVisible="{Binding HasMetricBadge}"
-                                                                           VerticalOptions="Center">
-                                                        <Image WidthRequest="12" HeightRequest="12" VerticalOptions="Center">
-                                                            <Image.Source>
-                                                                <FontImageSource Glyph="{Binding MetricBadge.Glyph}"
-                                                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                                                 Color="{Binding MetricBadge.IconColor}"
-                                                                                 Size="12" />
-                                                            </Image.Source>
-                                                        </Image>
-                                                        <Label Text="{Binding MetricBadge.Text}"
-                                                               Style="{StaticResource Caption2}"
-                                                               FontAttributes="Bold"
-                                                               TextColor="{StaticResource Gray100}"
-                                                               VerticalTextAlignment="Center" />
-                                                    </HorizontalStackLayout>
-                                                </Grid>
-                                                <Label Text="{Binding Node.DisplayTitle}"
-                                                       Style="{StaticResource Caption1}"
-                                                       MaxLines="2"
-                                                       LineBreakMode="TailTruncation" />
-                                            </VerticalStackLayout>
+                                            <Label Text="{Binding Node.DisplayTitle}"
+                                                   Style="{StaticResource Caption1}"
+                                                   MaxLines="2"
+                                                   LineBreakMode="TailTruncation" />
                                         </VerticalStackLayout>
-                                    </Border>
-                                </DataTemplate>
-                            </BindableLayout.ItemTemplate>
-                        </HorizontalStackLayout>
-
-                        <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130"
-                                IsVisible="{Binding ProductionRolesHasMore}">
-                            <Border.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding LoadMoreProductionRolesCommand}" />
-                            </Border.GestureRecognizers>
-                            <Grid HeightRequest="230">
-                                <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="6">
-                                    <Image WidthRequest="32" HeightRequest="32" HorizontalOptions="Center">
-                                        <Image.Source>
-                                            <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.ArrowCircleRight24}"
-                                                             FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                             Color="{StaticResource Gray400}" Size="32" />
-                                        </Image.Source>
-                                    </Image>
-                                    <Label Text="Load more" Style="{StaticResource Caption1Strong}"
-                                           TextColor="{StaticResource Gray300}" HorizontalTextAlignment="Center" />
-                                </VerticalStackLayout>
-                            </Grid>
-                        </Border>
-                    </HorizontalStackLayout>
-                </ScrollView>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
                     <ActivityIndicator IsRunning="{Binding ProductionRolesBusy}"
                                        IsVisible="{Binding ProductionRolesBusy}"
                                        HorizontalOptions="Center" VerticalOptions="Center"
