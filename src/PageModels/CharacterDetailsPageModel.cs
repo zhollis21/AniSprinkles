@@ -319,7 +319,7 @@ public partial class CharacterDetailsPageModel : ObservableObject
             () => _appearances.LoadMoreAsync(_pageCts?.Token ?? CancellationToken.None),
             () => _appearances.Items.Count);
 
-    private bool CanLoadMoreAppearances() => !_appearances.IsBusy && _appearances.HasNextPage;
+    private bool CanLoadMoreAppearances() => _appearances.CanLoadMore;
 
     [RelayCommand]
     private Task SelectAppearancesSort(string? code)

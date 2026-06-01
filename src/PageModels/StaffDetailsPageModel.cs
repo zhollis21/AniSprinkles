@@ -285,7 +285,7 @@ public partial class StaffDetailsPageModel : ObservableObject
             () => _voiceRoles.LoadMoreAsync(_pageCts?.Token ?? CancellationToken.None),
             () => _voiceRoles.Items.Count);
 
-    private bool CanLoadMoreVoiceRoles() => !_voiceRoles.IsBusy && _voiceRoles.HasNextPage;
+    private bool CanLoadMoreVoiceRoles() => _voiceRoles.CanLoadMore;
 
     [RelayCommand(CanExecute = nameof(CanLoadMoreProductionRoles))]
     private Task LoadMoreProductionRoles()
@@ -294,7 +294,7 @@ public partial class StaffDetailsPageModel : ObservableObject
             () => _productionRoles.LoadMoreAsync(_pageCts?.Token ?? CancellationToken.None),
             () => _productionRoles.Items.Count);
 
-    private bool CanLoadMoreProductionRoles() => !_productionRoles.IsBusy && _productionRoles.HasNextPage;
+    private bool CanLoadMoreProductionRoles() => _productionRoles.CanLoadMore;
 
     [RelayCommand]
     private Task SelectVoiceRolesSort(string? code)
