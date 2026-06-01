@@ -354,11 +354,12 @@ public partial class StaffDetailsPageModel : ObservableObject
     }
 
     // A failed sort/Load More leaves the existing list intact; surface a transient message so the
-    // failure isn't silent. Rate-limit/outage kinds carry their own user-facing title.
+    // failure isn't silent. Use the subtitle (the actionable guidance) rather than the terse title,
+    // so the toast reads as clearly as the full-page error state does.
     private Task ShowListErrorSnackbarAsync(Exception ex)
     {
         var message = ex is AniListApiException apiEx
-            ? apiEx.UserTitle
+            ? apiEx.UserSubtitle
             : "Couldn't update the list. Check your connection and try again.";
         return ShowSnackbarAsync(message);
     }
