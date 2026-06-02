@@ -15,6 +15,7 @@ public partial class AniListApiException
         ApiErrorKind.Network => FluentIconsRegular.WifiOff24,
         ApiErrorKind.Authentication => FluentIconsRegular.LockClosed24,
         ApiErrorKind.RateLimited => FluentIconsRegular.Clock24,
+        ApiErrorKind.NotFound => FluentIconsRegular.DismissCircle24,
         _ => FluentIconsRegular.ErrorCircle24,
     };
 }

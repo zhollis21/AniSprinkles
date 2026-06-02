@@ -541,19 +541,37 @@ namespace AniSprinkles.PageModels;
         catch (Exception ex)
         {
             var apiEx = ex as AniListApiException;
+            var isNotFound = apiEx?.Kind == ApiErrorKind.NotFound;
             ErrorTitle = apiEx?.UserTitle ?? "Something Went Wrong";
             ErrorSubtitle = apiEx?.UserSubtitle ?? "An unexpected error occurred. Try again or check back later.";
             ErrorIconGlyph = apiEx?.IconGlyph ?? FluentIconsRegular.ErrorCircle24;
-            ErrorDetails = _errorReportService.Record(ex, "Load details");
-            CanRetry = true;
+            // Retrying a dangling AniList id never succeeds, so hide Retry for NotFound.
+            CanRetry = !isNotFound;
             CurrentState = PageState.Error;
             _loadedMediaId = null;
-            _logger.LogError(
-                ex,
-                "NAVTRACE load#{LoadRequestId} failed in {ElapsedMs}ms for media {MediaId}.",
-                loadRequestId,
-                loadStopwatch.ElapsedMilliseconds,
-                mediaId);
+
+            if (isNotFound)
+            {
+                // Expected AniList-side condition, not an app fault — keep it out of Sentry.
+                // Warning stays a breadcrumb (below Sentry's Error event threshold).
+                ErrorDetails = string.Empty;
+                _logger.LogWarning(
+                    ex,
+                    "NAVTRACE load#{LoadRequestId} media {MediaId} not found on AniList (dangling id) after {ElapsedMs}ms.",
+                    loadRequestId,
+                    mediaId,
+                    loadStopwatch.ElapsedMilliseconds);
+            }
+            else
+            {
+                ErrorDetails = _errorReportService.Record(ex, "Load details");
+                _logger.LogError(
+                    ex,
+                    "NAVTRACE load#{LoadRequestId} failed in {ElapsedMs}ms for media {MediaId}.",
+                    loadRequestId,
+                    loadStopwatch.ElapsedMilliseconds,
+                    mediaId);
+            }
         }
         finally
         {

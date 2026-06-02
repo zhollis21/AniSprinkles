@@ -11,6 +11,14 @@ public enum ApiErrorKind
     Network,
     Authentication,
     RateLimited,
+
+    /// <summary>
+    /// AniList returned 404 (or a "Not Found" GraphQL error) for a media/character/staff id we
+    /// requested. This is an AniList-side dangling reference (an id from a relation, recommendation,
+    /// or list entry that no longer resolves) — not an app bug — so it is non-retryable and is not
+    /// reported to Sentry.
+    /// </summary>
+    NotFound,
 }
 
 /// <summary>
@@ -37,6 +45,7 @@ public partial class AniListApiException : Exception
         ApiErrorKind.Network => "No Internet Connection",
         ApiErrorKind.Authentication => "Session Expired",
         ApiErrorKind.RateLimited => "Slow Down a Sec",
+        ApiErrorKind.NotFound => "Title Unavailable",
         _ => "Something Went Wrong",
     };
 
@@ -49,6 +58,7 @@ public partial class AniListApiException : Exception
         ApiErrorKind.Network => "Check your connection and try again.",
         ApiErrorKind.Authentication => "Please sign in again to continue.",
         ApiErrorKind.RateLimited => "AniList is asking us to slow down. Give it a moment, then try again.",
+        ApiErrorKind.NotFound => "This title isn't on AniList anymore — it may have been removed or merged into another entry.",
         _ => "An unexpected error occurred. Try again or check back later.",
     };
 }

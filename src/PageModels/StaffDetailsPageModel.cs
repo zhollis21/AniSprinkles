@@ -246,9 +246,19 @@ public partial class StaffDetailsPageModel : ObservableObject
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "NAVTRACE StaffDetails load failed in {ElapsedMs}ms (staff {StaffId})", stopwatch.ElapsedMilliseconds, staffId);
+            var isNotFound = ex is AniListApiException { Kind: ApiErrorKind.NotFound };
+            if (isNotFound)
+            {
+                // Expected AniList-side dangling id — keep it out of Sentry (Warning stays a breadcrumb).
+                _logger.LogWarning(ex, "NAVTRACE StaffDetails not found on AniList in {ElapsedMs}ms (staff {StaffId})", stopwatch.ElapsedMilliseconds, staffId);
+            }
+            else
+            {
+                _logger.LogError(ex, "NAVTRACE StaffDetails load failed in {ElapsedMs}ms (staff {StaffId})", stopwatch.ElapsedMilliseconds, staffId);
+            }
+
             var (title, subtitle) = DescribeError(ex);
-            ShowError(title, subtitle, canRetry: true, details: ex.Message);
+            ShowError(title, subtitle, canRetry: !isNotFound, details: isNotFound ? string.Empty : ex.Message);
         }
         finally
         {

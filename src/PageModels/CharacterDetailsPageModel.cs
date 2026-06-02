@@ -280,9 +280,19 @@ public partial class CharacterDetailsPageModel : ObservableObject
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "NAVTRACE CharacterDetails load failed in {ElapsedMs}ms (character {CharacterId})", stopwatch.ElapsedMilliseconds, characterId);
+            var isNotFound = ex is AniListApiException { Kind: ApiErrorKind.NotFound };
+            if (isNotFound)
+            {
+                // Expected AniList-side dangling id — keep it out of Sentry (Warning stays a breadcrumb).
+                _logger.LogWarning(ex, "NAVTRACE CharacterDetails not found on AniList in {ElapsedMs}ms (character {CharacterId})", stopwatch.ElapsedMilliseconds, characterId);
+            }
+            else
+            {
+                _logger.LogError(ex, "NAVTRACE CharacterDetails load failed in {ElapsedMs}ms (character {CharacterId})", stopwatch.ElapsedMilliseconds, characterId);
+            }
+
             var (title, subtitle) = DescribeError(ex);
-            ShowError(title, subtitle, canRetry: true, details: ex.Message);
+            ShowError(title, subtitle, canRetry: !isNotFound, details: isNotFound ? string.Empty : ex.Message);
         }
         finally
         {

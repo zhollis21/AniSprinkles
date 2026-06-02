@@ -10,6 +10,7 @@ public class AniListErrorClassifierTests
     [InlineData(HttpStatusCode.ServiceUnavailable, ApiErrorKind.ServiceOutage)]
     [InlineData(HttpStatusCode.BadGateway, ApiErrorKind.ServiceOutage)]
     [InlineData(HttpStatusCode.GatewayTimeout, ApiErrorKind.ServiceOutage)]
+    [InlineData(HttpStatusCode.NotFound, ApiErrorKind.NotFound)]
     [InlineData(HttpStatusCode.InternalServerError, ApiErrorKind.Unknown)]
     public void ClassifyHttpError_ByStatusCode_MapsToExpectedKind(HttpStatusCode status, ApiErrorKind expected)
     {
@@ -42,6 +43,7 @@ public class AniListErrorClassifierTests
     [InlineData("Invalid token provided", ApiErrorKind.Authentication)]
     [InlineData("Unauthorized", ApiErrorKind.Authentication)]
     [InlineData("AniList is under maintenance", ApiErrorKind.ServiceOutage)]
+    [InlineData("Not Found.", ApiErrorKind.NotFound)]
     [InlineData("Validation error: bad field", ApiErrorKind.Unknown)]
     public void ClassifyGraphQlError_ByMessage_MapsToExpectedKind(string message, ApiErrorKind expected)
     {
@@ -54,6 +56,15 @@ public class AniListErrorClassifierTests
         var ex = new AniListApiException(ApiErrorKind.RateLimited, "rate limited");
 
         Assert.Equal("Slow Down a Sec", ex.UserTitle);
+        Assert.False(string.IsNullOrWhiteSpace(ex.UserSubtitle));
+    }
+
+    [Fact]
+    public void AniListApiException_NotFound_HasFriendlyTitleAndSubtitle()
+    {
+        var ex = new AniListApiException(ApiErrorKind.NotFound, "Not Found.");
+
+        Assert.Equal("Title Unavailable", ex.UserTitle);
         Assert.False(string.IsNullOrWhiteSpace(ex.UserSubtitle));
     }
 }
