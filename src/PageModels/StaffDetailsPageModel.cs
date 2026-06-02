@@ -246,7 +246,8 @@ public partial class StaffDetailsPageModel : ObservableObject
         }
         catch (Exception ex)
         {
-            var isNotFound = ex is AniListApiException { Kind: ApiErrorKind.NotFound };
+            var apiEx = ex as AniListApiException;
+            var isNotFound = apiEx?.Kind == ApiErrorKind.NotFound;
             if (isNotFound)
             {
                 // Expected AniList-side dangling id — keep it out of Sentry (Warning stays a breadcrumb).
@@ -258,7 +259,7 @@ public partial class StaffDetailsPageModel : ObservableObject
             }
 
             var (title, subtitle) = DescribeError(ex);
-            ShowError(title, subtitle, canRetry: !isNotFound, details: isNotFound ? string.Empty : ex.Message);
+            ShowError(title, subtitle, canRetry: !isNotFound, details: isNotFound ? string.Empty : ex.Message, iconGlyph: apiEx?.IconGlyph);
         }
         finally
         {
@@ -580,11 +581,13 @@ public partial class StaffDetailsPageModel : ObservableObject
         return chips;
     }
 
-    private void ShowError(string title, string subtitle, bool canRetry, string details = "")
+    // iconGlyph lets the catch path surface a classified AniListApiException.IconGlyph (e.g. NotFound
+    // → DismissCircle24); the static "invalid id" / "couldn't find" callers fall back to ErrorCircle24.
+    private void ShowError(string title, string subtitle, bool canRetry, string details = "", string? iconGlyph = null)
     {
         ErrorTitle = title;
         ErrorSubtitle = subtitle;
-        ErrorIconGlyph = FluentIconsRegular.ErrorCircle24;
+        ErrorIconGlyph = iconGlyph ?? FluentIconsRegular.ErrorCircle24;
         ErrorDetails = details;
         CanRetry = canRetry;
         CurrentState = PageState.Error;
