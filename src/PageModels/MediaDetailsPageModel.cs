@@ -545,7 +545,7 @@ namespace AniSprinkles.PageModels;
             ErrorTitle = apiEx?.UserTitle ?? "Something Went Wrong";
             ErrorSubtitle = apiEx?.UserSubtitle ?? "An unexpected error occurred. Try again or check back later.";
             ErrorIconGlyph = apiEx?.IconGlyph ?? FluentIconsRegular.ErrorCircle24;
-            // Retrying a dangling AniList id never succeeds, so hide Retry for NotFound.
+            // A NotFound result won't change on a retry, so hide Retry.
             CanRetry = !isNotFound;
             CurrentState = PageState.Error;
             _loadedMediaId = null;
