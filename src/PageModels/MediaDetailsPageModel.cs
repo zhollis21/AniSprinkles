@@ -541,19 +541,37 @@ namespace AniSprinkles.PageModels;
         catch (Exception ex)
         {
             var apiEx = ex as AniListApiException;
+            var isNotFound = apiEx?.Kind == ApiErrorKind.NotFound;
             ErrorTitle = apiEx?.UserTitle ?? "Something Went Wrong";
             ErrorSubtitle = apiEx?.UserSubtitle ?? "An unexpected error occurred. Try again or check back later.";
             ErrorIconGlyph = apiEx?.IconGlyph ?? FluentIconsRegular.ErrorCircle24;
-            ErrorDetails = _errorReportService.Record(ex, "Load details");
-            CanRetry = true;
+            // A NotFound result won't change on a retry, so hide Retry.
+            CanRetry = !isNotFound;
             CurrentState = PageState.Error;
             _loadedMediaId = null;
-            _logger.LogError(
-                ex,
-                "NAVTRACE load#{LoadRequestId} failed in {ElapsedMs}ms for media {MediaId}.",
-                loadRequestId,
-                loadStopwatch.ElapsedMilliseconds,
-                mediaId);
+
+            if (isNotFound)
+            {
+                // NotFound is non-retryable and intentionally not reported to Sentry; log at Warning
+                // so it stays a breadcrumb (below Sentry's Error event threshold).
+                ErrorDetails = string.Empty;
+                _logger.LogWarning(
+                    ex,
+                    "NAVTRACE load#{LoadRequestId} media {MediaId} not found on AniList after {ElapsedMs}ms.",
+                    loadRequestId,
+                    mediaId,
+                    loadStopwatch.ElapsedMilliseconds);
+            }
+            else
+            {
+                ErrorDetails = _errorReportService.Record(ex, "Load details");
+                _logger.LogError(
+                    ex,
+                    "NAVTRACE load#{LoadRequestId} failed in {ElapsedMs}ms for media {MediaId}.",
+                    loadRequestId,
+                    loadStopwatch.ElapsedMilliseconds,
+                    mediaId);
+            }
         }
         finally
         {
@@ -689,12 +707,23 @@ namespace AniSprinkles.PageModels;
     }
 
     [RelayCommand]
-    private async Task NavigateToMedia(int mediaId)
+    private async Task NavigateToMedia(RelatedMedia? media)
     {
+        var mediaId = media?.Id ?? 0;
         _logger.LogInformation("NAVTRACE NavigateToMedia called with mediaId={MediaId}", mediaId);
         if (mediaId <= 0)
         {
             _logger.LogWarning("NAVTRACE NavigateToMedia aborted — invalid mediaId {MediaId}", mediaId);
+            return;
+        }
+
+        // The detail screen queries Media(id:, type: ANIME); a manga/novel id would 404. Relations,
+        // recommendations and staff/character media can all point at non-anime entries, so surface a
+        // toast instead of navigating into a doomed fetch.
+        if (media is { IsAnime: false })
+        {
+            _logger.LogInformation("NAVTRACE NavigateToMedia skipped non-anime media {MediaId} (type={Type}).", mediaId, media.Type);
+            await ShowToastAsync("Manga & Novel details aren't supported yet.");
             return;
         }
 
