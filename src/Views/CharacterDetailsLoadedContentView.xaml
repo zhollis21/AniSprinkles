@@ -462,7 +462,7 @@
                                     <Border.GestureRecognizers>
                                         <TapGestureRecognizer x:DataType="{x:Null}"
                                                               Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToMediaCommand}"
-                                                              CommandParameter="{Binding Node.Id}" />
+                                                              CommandParameter="{Binding Node}" />
                                     </Border.GestureRecognizers>
                                     <VerticalStackLayout>
                                         <Grid HeightRequest="170" WidthRequest="130">

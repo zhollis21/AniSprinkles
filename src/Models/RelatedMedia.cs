@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 using AniSprinkles.Utilities;
 
@@ -22,6 +23,13 @@ public class RelatedMedia
         UserTitleLanguage.Native => Title?.Native ?? Title?.Romaji ?? Title?.English ?? "Unknown",
         _ => Title?.Romaji ?? Title?.English ?? Title?.Native ?? "Unknown",
     };
+
+    /// <summary>
+    /// True when this entry is an anime. The media detail screen queries
+    /// <c>Media(id:, type: ANIME)</c>, so navigating to a non-anime id (manga/novel) returns 404.
+    /// Tile navigation gates on this to show a "not supported" toast instead of a doomed fetch.
+    /// </summary>
+    public bool IsAnime => string.Equals(Type, "ANIME", StringComparison.OrdinalIgnoreCase);
 
     public bool HasScore => AverageScore is > 0;
     public bool HasFavourites => Favourites is > 0;

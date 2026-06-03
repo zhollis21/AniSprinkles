@@ -1590,6 +1590,7 @@ query Media($id: Int!) {
           id
           title { romaji english native }
           format
+          type
           coverImage { medium large }
           averageScore
         }

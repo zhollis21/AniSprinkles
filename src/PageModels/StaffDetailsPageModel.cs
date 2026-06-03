@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Globalization;
 using AniSprinkles.Utilities;
 using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using IconFont.Maui.FluentIcons;
@@ -394,6 +395,18 @@ public partial class StaffDetailsPageModel : ObservableObject
         }
     }
 
+    private async Task ShowToastAsync(string message)
+    {
+        try
+        {
+            await Toast.Make(message, ToastDuration.Short).Show().ConfigureAwait(true);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Toast display failed");
+        }
+    }
+
     [RelayCommand]
     private void ToggleSpoilers() => IsShowingSpoilers = !IsShowingSpoilers;
 
@@ -437,11 +450,21 @@ public partial class StaffDetailsPageModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task NavigateToMedia(int mediaId)
+    private async Task NavigateToMedia(RelatedMedia? media)
     {
+        var mediaId = media?.Id ?? 0;
         _logger.LogInformation("NAVTRACE Staff→Media with id={MediaId}", mediaId);
         if (mediaId <= 0)
         {
+            return;
+        }
+
+        // Detail screen is anime-only (Media(id:, type: ANIME)); a manga/novel id would 404.
+        // Staff production roles and voice-role media can include manga, so toast instead of navigating.
+        if (media is { IsAnime: false })
+        {
+            _logger.LogInformation("NAVTRACE Staff→Media skipped non-anime {MediaId} (type={Type}).", mediaId, media.Type);
+            await ShowToastAsync("Manga & novel details aren't supported yet.");
             return;
         }
 

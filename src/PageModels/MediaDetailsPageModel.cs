@@ -707,12 +707,23 @@ namespace AniSprinkles.PageModels;
     }
 
     [RelayCommand]
-    private async Task NavigateToMedia(int mediaId)
+    private async Task NavigateToMedia(RelatedMedia? media)
     {
+        var mediaId = media?.Id ?? 0;
         _logger.LogInformation("NAVTRACE NavigateToMedia called with mediaId={MediaId}", mediaId);
         if (mediaId <= 0)
         {
             _logger.LogWarning("NAVTRACE NavigateToMedia aborted — invalid mediaId {MediaId}", mediaId);
+            return;
+        }
+
+        // The detail screen queries Media(id:, type: ANIME); a manga/novel id would 404. Relations,
+        // recommendations and staff/character media can all point at non-anime entries, so surface a
+        // toast instead of navigating into a doomed fetch.
+        if (media is { IsAnime: false })
+        {
+            _logger.LogInformation("NAVTRACE NavigateToMedia skipped non-anime media {MediaId} (type={Type}).", mediaId, media.Type);
+            await ShowToastAsync("Manga & novel details aren't supported yet.");
             return;
         }
 
