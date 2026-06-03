@@ -62,10 +62,10 @@ public sealed class CachingAniListClient : IAniListClient
             // already hold that exact data. PerPage is the SeededPerPage const — see its remarks.
             SeedPageCache(
                 $"StaffCharactersPage:{id}:{charactersPage}:{charactersSort}:{SeededPerPage}",
-                ((IReadOnlyList<StaffCharacterEdge>)staff.Characters.ToList(), staff.CharactersPageInfo));
+                () => ((IReadOnlyList<StaffCharacterEdge>)staff.Characters.ToList(), staff.CharactersPageInfo));
             SeedPageCache(
                 $"StaffMediaPage:{id}:{mediaPage}:{mediaSort}:{SeededPerPage}",
-                ((IReadOnlyList<StaffMediaEdge>)staff.StaffMedia.ToList(), staff.StaffMediaPageInfo));
+                () => ((IReadOnlyList<StaffMediaEdge>)staff.StaffMedia.ToList(), staff.StaffMediaPageInfo));
         }
 
         return staff;
@@ -87,7 +87,7 @@ public sealed class CachingAniListClient : IAniListClient
             // See GetStaffAsync: seed the embedded first page so a sort toggle back to it is a hit.
             SeedPageCache(
                 $"CharacterMediaPage:{id}:{mediaPage}:{mediaSort}:{SeededPerPage}",
-                ((IReadOnlyList<CharacterMediaEdge>)character.Media.ToList(), character.MediaPageInfo));
+                () => ((IReadOnlyList<CharacterMediaEdge>)character.Media.ToList(), character.MediaPageInfo));
         }
 
         return character;
@@ -146,12 +146,24 @@ public sealed class CachingAniListClient : IAniListClient
     // ---- Cache machinery ----------------------------------------------------------------------
 
     /// <summary>
-    /// Pre-populates a cache entry with an already-resolved value (no fetch). <see cref="ConcurrentDictionary{TKey,TValue}.TryAdd"/>
-    /// is intentional: if the user already fetched this page directly, keep that entry untouched.
-    /// A later read of a seeded entry through <see cref="GetOrAddAsync"/> correctly logs a CACHE hit.
+    /// Pre-populates a cache entry with an already-resolved value (no fetch). The value is built via a
+    /// factory so we skip snapshotting the model's collection when the key is already present — the
+    /// common case on a composite cache hit (back-navigation), where seeding would otherwise allocate
+    /// a throwaway list only for <see cref="ConcurrentDictionary{TKey,TValue}.TryAdd"/> to discard it.
+    /// <see cref="ConcurrentDictionary{TKey,TValue}.TryAdd"/> stays as the correctness backstop for the
+    /// ContainsKey→TryAdd race: if the user already fetched this page directly, keep that entry
+    /// untouched. A later read of a seeded entry through <see cref="GetOrAddAsync"/> logs a CACHE hit.
     /// </summary>
-    private void SeedPageCache<T>(string key, T value)
-        => _cache.TryAdd(key, new Lazy<Task<object?>>(() => Task.FromResult<object?>(value)));
+    private void SeedPageCache<T>(string key, Func<T> valueFactory)
+    {
+        if (_cache.ContainsKey(key))
+        {
+            return;
+        }
+
+        var value = valueFactory();
+        _cache.TryAdd(key, new Lazy<Task<object?>>(() => Task.FromResult<object?>(value)));
+    }
 
     private async Task<T> GetOrAddAsync<T>(string key, Func<Task<T>> factory)
     {
