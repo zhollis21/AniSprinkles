@@ -66,7 +66,7 @@ public class AniListErrorClassifierTests
     [InlineData(ApiErrorKind.Network, "No Internet Connection")]
     [InlineData(ApiErrorKind.Authentication, "Session Expired")]
     [InlineData(ApiErrorKind.RateLimited, "Slow Down a Sec")]
-    [InlineData(ApiErrorKind.NotFound, "Title Unavailable")]
+    [InlineData(ApiErrorKind.NotFound, "Entry Unavailable")]
     [InlineData(ApiErrorKind.Unknown, "Something Went Wrong")]
     public void AniListApiException_EveryKind_HasFriendlyTitleAndNonEmptySubtitle(ApiErrorKind kind, string expectedTitle)
     {
