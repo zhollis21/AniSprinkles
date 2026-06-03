@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Globalization;
 using AniSprinkles.Utilities;
 using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using IconFont.Maui.FluentIcons;
@@ -280,9 +281,20 @@ public partial class CharacterDetailsPageModel : ObservableObject
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "NAVTRACE CharacterDetails load failed in {ElapsedMs}ms (character {CharacterId})", stopwatch.ElapsedMilliseconds, characterId);
+            var apiEx = ex as AniListApiException;
+            var isNotFound = apiEx?.Kind == ApiErrorKind.NotFound;
+            if (isNotFound)
+            {
+                // NotFound is non-retryable and intentionally kept out of Sentry — log at Warning so it stays a breadcrumb.
+                _logger.LogWarning(ex, "NAVTRACE CharacterDetails not found on AniList in {ElapsedMs}ms (character {CharacterId})", stopwatch.ElapsedMilliseconds, characterId);
+            }
+            else
+            {
+                _logger.LogError(ex, "NAVTRACE CharacterDetails load failed in {ElapsedMs}ms (character {CharacterId})", stopwatch.ElapsedMilliseconds, characterId);
+            }
+
             var (title, subtitle) = DescribeError(ex);
-            ShowError(title, subtitle, canRetry: true, details: ex.Message);
+            ShowError(title, subtitle, canRetry: !isNotFound, details: isNotFound ? string.Empty : ex.Message, iconGlyph: apiEx?.IconGlyph);
         }
         finally
         {
@@ -402,6 +414,18 @@ public partial class CharacterDetailsPageModel : ObservableObject
         }
     }
 
+    private async Task ShowToastAsync(string message)
+    {
+        try
+        {
+            await Toast.Make(message, ToastDuration.Short).Show().ConfigureAwait(true);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Toast display failed");
+        }
+    }
+
     [RelayCommand]
     private void ToggleSpoilers() => IsShowingSpoilers = !IsShowingSpoilers;
 
@@ -445,11 +469,21 @@ public partial class CharacterDetailsPageModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task NavigateToMedia(int mediaId)
+    private async Task NavigateToMedia(RelatedMedia? media)
     {
+        var mediaId = media?.Id ?? 0;
         _logger.LogInformation("NAVTRACE Character→Media with id={MediaId}", mediaId);
         if (mediaId <= 0)
         {
+            return;
+        }
+
+        // Detail screen is anime-only (Media(id:, type: ANIME)); a manga/novel id would 404.
+        // Character "Appears In" media can include manga, so toast instead of navigating.
+        if (media is { IsAnime: false })
+        {
+            _logger.LogInformation("NAVTRACE Character→Media skipped non-anime {MediaId} (type={Type}).", mediaId, media.Type);
+            await ShowToastAsync("Manga & Novel details aren't supported yet.");
             return;
         }
 
@@ -555,11 +589,13 @@ public partial class CharacterDetailsPageModel : ObservableObject
     private static string Bar(int sourceLength, int max)
         => new('█', Math.Clamp(sourceLength / 2, 4, max));
 
-    private void ShowError(string title, string subtitle, bool canRetry, string details = "")
+    // iconGlyph lets the catch path surface a classified AniListApiException.IconGlyph (e.g. NotFound
+    // → DismissCircle24); the static "invalid id" / "couldn't find" callers fall back to ErrorCircle24.
+    private void ShowError(string title, string subtitle, bool canRetry, string details = "", string? iconGlyph = null)
     {
         ErrorTitle = title;
         ErrorSubtitle = subtitle;
-        ErrorIconGlyph = FluentIconsRegular.ErrorCircle24;
+        ErrorIconGlyph = iconGlyph ?? FluentIconsRegular.ErrorCircle24;
         ErrorDetails = details;
         CanRetry = canRetry;
         CurrentState = PageState.Error;

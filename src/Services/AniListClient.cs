@@ -492,18 +492,52 @@ public class AniListClient : IAniListClient
         return token;
     }
 
+    // AniList occasionally fails a request transiently and then succeeds on an immediate re-try —
+    // e.g. it rejected a perfectly valid OAuth token with HTTP 400 "Invalid token", then accepted the
+    // identical token seconds later (observed in Production; we send the stored token verbatim, so it
+    // isn't ours). Rather than surface the alarming error state on such a blip, retry once after a
+    // short delay for the kinds that are plausibly transient. A persistent failure just fails the
+    // retry too and surfaces normally, one short delay later.
+    //
+    // Deliberately NOT retried here:
+    //   • RateLimited — AniListRateLimitHandler already retries 429 honoring Retry-After; a second
+    //     blind retry would ignore that backoff and risk hammering the limiter.
+    //   • NotFound    — deterministic; the id won't appear on a retry.
+    //   • ServiceOutage — a maintenance window won't clear in a few hundred ms; the outage banner owns it.
+    // Mutations ride this path too, but SaveMediaListEntry is an upsert and delete-by-id is
+    // idempotent, so a retry can't double-apply.
+    private const int MaxRetries = 1;
+    private static readonly TimeSpan RetryDelay = TimeSpan.FromMilliseconds(750);
+
+    private static bool IsTransient(ApiErrorKind kind) => kind is
+        ApiErrorKind.Network or ApiErrorKind.Authentication or ApiErrorKind.Unknown;
+
     private async Task<T> SendAsync<T>(string operationName, string query, object? variables, string? token, CancellationToken cancellationToken)
     {
-        try
+        for (var attempt = 0; ; attempt++)
         {
-            var result = await SendAsyncCore<T>(operationName, query, variables, token, cancellationToken).ConfigureAwait(false);
-            _outageState.ReportSuccess();
-            return result;
-        }
-        catch (AniListApiException ex)
-        {
-            _outageState.ReportFailure(ex);
-            throw;
+            try
+            {
+                var result = await SendAsyncCore<T>(operationName, query, variables, token, cancellationToken).ConfigureAwait(false);
+                _outageState.ReportSuccess();
+                return result;
+            }
+            catch (AniListApiException ex) when (IsTransient(ex.Kind) && attempt < MaxRetries)
+            {
+                // Don't report the transient blip to the outage tracker — only a failed retry counts.
+                _logger.LogWarning(
+                    ex,
+                    "AniList {Operation} failed transiently ({Kind}) — retrying once after {DelayMs}ms.",
+                    operationName,
+                    ex.Kind,
+                    RetryDelay.TotalMilliseconds);
+                await Task.Delay(RetryDelay, cancellationToken).ConfigureAwait(false);
+            }
+            catch (AniListApiException ex)
+            {
+                _outageState.ReportFailure(ex);
+                throw;
+            }
         }
     }
 
@@ -1590,6 +1624,7 @@ query Media($id: Int!) {
           id
           title { romaji english native }
           format
+          type
           coverImage { medium large }
           averageScore
         }

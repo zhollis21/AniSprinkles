@@ -24,6 +24,15 @@ public sealed class CachingAniListClient : IAniListClient
     private readonly ILogger<CachingAniListClient>? _logger;
     private readonly ConcurrentDictionary<string, Lazy<Task<object?>>> _cache = new();
 
+    /// <remarks>
+    /// The page size baked into the per-page seed keys. It MUST match the embedded
+    /// <c>perPage: 25</c> in <c>StaffQuery</c>/<c>CharacterQuery</c> (the data we're seeding) and
+    /// the <c>LoadXxxPageAsync</c> default <c>perPage</c> / page-model <c>PageSize</c> (the key a
+    /// later sort-toggle looks up). The composite query's page size is the source of truth; if it
+    /// changes, change this too or the seeded entry won't be found.
+    /// </remarks>
+    private const int SeededPerPage = 25;
+
     public CachingAniListClient(IAniListClient inner, ILogger<CachingAniListClient>? logger = null)
     {
         _inner = inner;
@@ -32,25 +41,57 @@ public sealed class CachingAniListClient : IAniListClient
 
     // ---- Cached detail-page reads -------------------------------------------------------------
 
-    public Task<Staff?> GetStaffAsync(
+    public async Task<Staff?> GetStaffAsync(
         int id,
         string charactersSort = "FAVOURITES_DESC",
         string mediaSort = "POPULARITY_DESC",
         int charactersPage = 1,
         int mediaPage = 1,
         CancellationToken cancellationToken = default)
-        => GetOrAddAsync(
+    {
+        var staff = await GetOrAddAsync(
             $"Staff:{id}:{charactersSort}:{mediaSort}:{charactersPage}:{mediaPage}",
-            () => _inner.GetStaffAsync(id, charactersSort, mediaSort, charactersPage, mediaPage, cancellationToken));
+            () => _inner.GetStaffAsync(id, charactersSort, mediaSort, charactersPage, mediaPage, cancellationToken))
+            .ConfigureAwait(false);
 
-    public Task<Character?> GetCharacterAsync(
+        if (staff is not null)
+        {
+            // The composite query already returns each section's requested page embedded in the
+            // payload, so pre-seed the per-page caches with it. Without this, toggling a list's sort
+            // away and back to the seeded sort would re-fetch page 1 over the network even though we
+            // already hold that exact data. PerPage is the SeededPerPage const — see its remarks.
+            SeedPageCache(
+                $"StaffCharactersPage:{id}:{charactersPage}:{charactersSort}:{SeededPerPage}",
+                () => ((IReadOnlyList<StaffCharacterEdge>)staff.Characters.ToList(), staff.CharactersPageInfo));
+            SeedPageCache(
+                $"StaffMediaPage:{id}:{mediaPage}:{mediaSort}:{SeededPerPage}",
+                () => ((IReadOnlyList<StaffMediaEdge>)staff.StaffMedia.ToList(), staff.StaffMediaPageInfo));
+        }
+
+        return staff;
+    }
+
+    public async Task<Character?> GetCharacterAsync(
         int id,
         string mediaSort = "POPULARITY_DESC",
         int mediaPage = 1,
         CancellationToken cancellationToken = default)
-        => GetOrAddAsync(
+    {
+        var character = await GetOrAddAsync(
             $"Character:{id}:{mediaSort}:{mediaPage}",
-            () => _inner.GetCharacterAsync(id, mediaSort, mediaPage, cancellationToken));
+            () => _inner.GetCharacterAsync(id, mediaSort, mediaPage, cancellationToken))
+            .ConfigureAwait(false);
+
+        if (character is not null)
+        {
+            // See GetStaffAsync: seed the embedded first page so a sort toggle back to it is a hit.
+            SeedPageCache(
+                $"CharacterMediaPage:{id}:{mediaPage}:{mediaSort}:{SeededPerPage}",
+                () => ((IReadOnlyList<CharacterMediaEdge>)character.Media.ToList(), character.MediaPageInfo));
+        }
+
+        return character;
+    }
 
     public Task<(IReadOnlyList<StaffCharacterEdge> Items, PageInfo? PageInfo)> LoadStaffCharactersPageAsync(
         int id, int page, string sort, int perPage = 25, CancellationToken cancellationToken = default)
@@ -103,6 +144,26 @@ public sealed class CachingAniListClient : IAniListClient
         => _inner.GetAiringScheduleAsync(mediaIds, airingAfter, airingBefore, cancellationToken);
 
     // ---- Cache machinery ----------------------------------------------------------------------
+
+    /// <summary>
+    /// Pre-populates a cache entry with an already-resolved value (no fetch). The value is built via a
+    /// factory so we skip snapshotting the model's collection when the key is already present — the
+    /// common case on a composite cache hit (back-navigation), where seeding would otherwise allocate
+    /// a throwaway list only for <see cref="ConcurrentDictionary{TKey,TValue}.TryAdd"/> to discard it.
+    /// <see cref="ConcurrentDictionary{TKey,TValue}.TryAdd"/> stays as the correctness backstop for the
+    /// ContainsKey→TryAdd race: if the user already fetched this page directly, keep that entry
+    /// untouched. A later read of a seeded entry through <see cref="GetOrAddAsync"/> logs a CACHE hit.
+    /// </summary>
+    private void SeedPageCache<T>(string key, Func<T> valueFactory)
+    {
+        if (_cache.ContainsKey(key))
+        {
+            return;
+        }
+
+        var value = valueFactory();
+        _cache.TryAdd(key, new Lazy<Task<object?>>(() => Task.FromResult<object?>(value)));
+    }
 
     private async Task<T> GetOrAddAsync<T>(string key, Func<Task<T>> factory)
     {

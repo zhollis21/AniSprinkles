@@ -17,11 +17,21 @@ public static class AniListErrorClassifier
             return ApiErrorKind.ServiceOutage;
         }
 
+        // AniList returns HTTP 400 (not 401) with an "Invalid token" body for a rejected OAuth token,
+        // so classify on the message, not just the status code. Mirrors ClassifyGraphQlError below.
+        if (apiMessage is not null &&
+            (apiMessage.Contains("Invalid token", StringComparison.OrdinalIgnoreCase) ||
+             apiMessage.Contains("Unauthorized", StringComparison.OrdinalIgnoreCase)))
+        {
+            return ApiErrorKind.Authentication;
+        }
+
         return statusCode switch
         {
             HttpStatusCode.TooManyRequests => ApiErrorKind.RateLimited,
             HttpStatusCode.Unauthorized => ApiErrorKind.Authentication,
             HttpStatusCode.Forbidden when apiMessage is null => ApiErrorKind.Authentication,
+            HttpStatusCode.NotFound => ApiErrorKind.NotFound,
             HttpStatusCode.ServiceUnavailable or
             HttpStatusCode.BadGateway or
             HttpStatusCode.GatewayTimeout => ApiErrorKind.ServiceOutage,
@@ -40,6 +50,12 @@ public static class AniListErrorClassifier
             message.Contains("Unauthorized", StringComparison.OrdinalIgnoreCase))
         {
             return ApiErrorKind.Authentication;
+        }
+
+        // AniList also surfaces missing ids as a GraphQL-level "Not Found." error in some responses.
+        if (message.Contains("Not Found", StringComparison.OrdinalIgnoreCase))
+        {
+            return ApiErrorKind.NotFound;
         }
 
         return ApiErrorKind.Unknown;
