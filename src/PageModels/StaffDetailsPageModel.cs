@@ -251,7 +251,7 @@ public partial class StaffDetailsPageModel : ObservableObject
             var isNotFound = apiEx?.Kind == ApiErrorKind.NotFound;
             if (isNotFound)
             {
-                // Expected AniList-side dangling id — keep it out of Sentry (Warning stays a breadcrumb).
+                // NotFound is non-retryable and intentionally kept out of Sentry — log at Warning so it stays a breadcrumb.
                 _logger.LogWarning(ex, "NAVTRACE StaffDetails not found on AniList in {ElapsedMs}ms (staff {StaffId})", stopwatch.ElapsedMilliseconds, staffId);
             }
             else

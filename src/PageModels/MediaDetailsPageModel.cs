@@ -552,12 +552,12 @@ namespace AniSprinkles.PageModels;
 
             if (isNotFound)
             {
-                // Expected AniList-side condition, not an app fault — keep it out of Sentry.
-                // Warning stays a breadcrumb (below Sentry's Error event threshold).
+                // NotFound is non-retryable and intentionally not reported to Sentry; log at Warning
+                // so it stays a breadcrumb (below Sentry's Error event threshold).
                 ErrorDetails = string.Empty;
                 _logger.LogWarning(
                     ex,
-                    "NAVTRACE load#{LoadRequestId} media {MediaId} not found on AniList (dangling id) after {ElapsedMs}ms.",
+                    "NAVTRACE load#{LoadRequestId} media {MediaId} not found on AniList after {ElapsedMs}ms.",
                     loadRequestId,
                     mediaId,
                     loadStopwatch.ElapsedMilliseconds);
