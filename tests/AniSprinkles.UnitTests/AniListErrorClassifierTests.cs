@@ -61,21 +61,19 @@ public class AniListErrorClassifierTests
         Assert.Equal(expected, AniListErrorClassifier.ClassifyGraphQlError(message));
     }
 
-    [Fact]
-    public void AniListApiException_RateLimited_HasFriendlyTitleAndSubtitle()
+    [Theory]
+    [InlineData(ApiErrorKind.ServiceOutage, "AniList is Down")]
+    [InlineData(ApiErrorKind.Network, "No Internet Connection")]
+    [InlineData(ApiErrorKind.Authentication, "Session Expired")]
+    [InlineData(ApiErrorKind.RateLimited, "Slow Down a Sec")]
+    [InlineData(ApiErrorKind.NotFound, "Title Unavailable")]
+    [InlineData(ApiErrorKind.Unknown, "Something Went Wrong")]
+    public void AniListApiException_EveryKind_HasFriendlyTitleAndNonEmptySubtitle(ApiErrorKind kind, string expectedTitle)
     {
-        var ex = new AniListApiException(ApiErrorKind.RateLimited, "rate limited");
+        var ex = new AniListApiException(kind, "raw message");
 
-        Assert.Equal("Slow Down a Sec", ex.UserTitle);
-        Assert.False(string.IsNullOrWhiteSpace(ex.UserSubtitle));
-    }
-
-    [Fact]
-    public void AniListApiException_NotFound_HasFriendlyTitleAndSubtitle()
-    {
-        var ex = new AniListApiException(ApiErrorKind.NotFound, "Not Found.");
-
-        Assert.Equal("Title Unavailable", ex.UserTitle);
+        // Every kind must map to a curated title (not leak the raw message) and offer guidance.
+        Assert.Equal(expectedTitle, ex.UserTitle);
         Assert.False(string.IsNullOrWhiteSpace(ex.UserSubtitle));
     }
 }

@@ -140,6 +140,71 @@ public class CachingAniListClientTests
     }
 
     [Fact]
+    public async Task GetCharacterAsync_FailedFetch_IsNotCached()
+    {
+        var inner = Inner();
+        inner.GetCharacterAsync(9, Arg.Any<string>(), Arg.Any<int>(), Arg.Any<CancellationToken>())
+             .Returns(
+                 _ => Task.FromException<Character?>(new AniListApiException(ApiErrorKind.Network, "boom")),
+                 _ => Task.FromResult<Character?>(new Character { Id = 9 }));
+        var cache = new CachingAniListClient(inner);
+
+        await Assert.ThrowsAsync<AniListApiException>(() => cache.GetCharacterAsync(9));
+        var recovered = await cache.GetCharacterAsync(9);
+
+        Assert.Equal(9, recovered!.Id);
+        await inner.Received(2).GetCharacterAsync(9, Arg.Any<string>(), Arg.Any<int>(), Arg.Any<CancellationToken>());
+    }
+
+    [Fact]
+    public async Task GetStaffAsync_NullResult_DoesNotSeedAndIsNotCached()
+    {
+        var inner = Inner();
+        inner.GetStaffAsync(5, Arg.Any<string>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<CancellationToken>())
+             .Returns((Staff?)null);
+        inner.LoadStaffCharactersPageAsync(5, 1, "FAVOURITES_DESC", 25, Arg.Any<CancellationToken>())
+             .Returns(((IReadOnlyList<StaffCharacterEdge>)new List<StaffCharacterEdge>(), (PageInfo?)null));
+        var cache = new CachingAniListClient(inner);
+
+        var result = await cache.GetStaffAsync(5);
+
+        Assert.Null(result);
+        // A null composite seeds nothing, so the page must still hit the inner client.
+        await cache.LoadStaffCharactersPageAsync(5, 1, "FAVOURITES_DESC", 25);
+        await inner.Received(1).LoadStaffCharactersPageAsync(5, 1, "FAVOURITES_DESC", 25, Arg.Any<CancellationToken>());
+    }
+
+    [Fact]
+    public async Task GetStaffAsync_DoesNotOverwriteAPageAlreadyFetchedDirectly()
+    {
+        // If the per-page key was populated by a direct page fetch first, the composite query's
+        // seeding must leave it intact (the ContainsKey/TryAdd backstop) rather than clobber it.
+        var inner = Inner();
+        var directPage = (IReadOnlyList<StaffCharacterEdge>)new List<StaffCharacterEdge>
+        {
+            new(), new(), new(),
+        };
+        inner.LoadStaffCharactersPageAsync(5, 1, "FAVOURITES_DESC", 25, Arg.Any<CancellationToken>())
+             .Returns((directPage, (PageInfo?)null));
+
+        var staff = new Staff { Id = 5 };
+        staff.Characters.Add(new StaffCharacterEdge());     // composite carries a DIFFERENT (1-item) page
+        staff.CharactersPageInfo = new PageInfo { CurrentPage = 1, HasNextPage = true };
+        inner.GetStaffAsync(5, Arg.Any<string>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<CancellationToken>())
+             .Returns(staff);
+        var cache = new CachingAniListClient(inner);
+
+        await cache.LoadStaffCharactersPageAsync(5, 1, "FAVOURITES_DESC", 25);   // populate the per-page key
+        await cache.GetStaffAsync(5);                                            // composite tries to seed it
+
+        var (items, _) = await cache.LoadStaffCharactersPageAsync(5, 1, "FAVOURITES_DESC", 25);
+
+        // The originally-fetched 3-item page survives; seeding didn't replace it with the 1-item one.
+        Assert.Equal(3, items.Count);
+        await inner.Received(1).LoadStaffCharactersPageAsync(5, 1, "FAVOURITES_DESC", 25, Arg.Any<CancellationToken>());
+    }
+
+    [Fact]
     public async Task SaveMediaListEntryAsync_CalledTwice_PassesThroughEachTime()
     {
         var inner = Inner();
