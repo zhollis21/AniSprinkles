@@ -17,6 +17,15 @@ public static class AniListErrorClassifier
             return ApiErrorKind.ServiceOutage;
         }
 
+        // AniList returns HTTP 400 (not 401) with an "Invalid token" body for a rejected OAuth token,
+        // so classify on the message, not just the status code. Mirrors ClassifyGraphQlError below.
+        if (apiMessage is not null &&
+            (apiMessage.Contains("Invalid token", StringComparison.OrdinalIgnoreCase) ||
+             apiMessage.Contains("Unauthorized", StringComparison.OrdinalIgnoreCase)))
+        {
+            return ApiErrorKind.Authentication;
+        }
+
         return statusCode switch
         {
             HttpStatusCode.TooManyRequests => ApiErrorKind.RateLimited,
