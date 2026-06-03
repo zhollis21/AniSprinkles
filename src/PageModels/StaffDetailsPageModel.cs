@@ -464,7 +464,7 @@ public partial class StaffDetailsPageModel : ObservableObject
         if (media is { IsAnime: false })
         {
             _logger.LogInformation("NAVTRACE Staff→Media skipped non-anime {MediaId} (type={Type}).", mediaId, media.Type);
-            await ShowToastAsync("Manga & novel details aren't supported yet.");
+            await ShowToastAsync("Manga & Novel details aren't supported yet.");
             return;
         }
 

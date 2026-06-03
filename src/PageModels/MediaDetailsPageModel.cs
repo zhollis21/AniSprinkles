@@ -723,7 +723,7 @@ namespace AniSprinkles.PageModels;
         if (media is { IsAnime: false })
         {
             _logger.LogInformation("NAVTRACE NavigateToMedia skipped non-anime media {MediaId} (type={Type}).", mediaId, media.Type);
-            await ShowToastAsync("Manga & novel details aren't supported yet.");
+            await ShowToastAsync("Manga & Novel details aren't supported yet.");
             return;
         }
 
