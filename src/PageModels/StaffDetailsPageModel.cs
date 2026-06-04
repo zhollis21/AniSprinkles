@@ -135,6 +135,9 @@ public partial class StaffDetailsPageModel : ObservableObject
     public bool VoiceRolesBusy => _voiceRoles.IsBusy;
     public bool ProductionRolesBusy => _productionRoles.IsBusy;
 
+    public string VoiceRolesSort => _voiceRoles.Sort;
+    public string ProductionRolesSort => _productionRoles.Sort;
+
     // ---- Hero / bio / quick facts (unchanged) ---------------------------------------------------
 
     public bool HasStaff => Staff is not null;
@@ -196,6 +199,16 @@ public partial class StaffDetailsPageModel : ObservableObject
         if (staffId <= 0)
         {
             ShowError("Not Found", "Invalid staff id.", canRetry: false);
+            return;
+        }
+
+        // Same staff already loaded: keep its sections + sort and just restore Content state. This is hit
+        // when returning from a pushed sub-page and — importantly — when a CommunityToolkit sort popup
+        // closes (it fires the host page's OnAppearing → reload). Without this guard the popup would reset
+        // the sort the user just picked. Mirrors MediaDetailsPageModel.
+        if (Staff is not null && Staff.Id == staffId)
+        {
+            CurrentState = PageState.Content;
             return;
         }
 
@@ -294,7 +307,7 @@ public partial class StaffDetailsPageModel : ObservableObject
     private Task LoadMoreVoiceRoles()
         => RunTracedListOpAsync(
             "Voice Roles · Load More",
-            () => _voiceRoles.LoadMoreAsync(_pageCts?.Token ?? CancellationToken.None),
+            () => _voiceRoles.LoadMoreAsync(CancellationToken.None),
             () => _voiceRoles.Items.Count);
 
     private bool CanLoadMoreVoiceRoles() => _voiceRoles.CanLoadMore;
@@ -303,7 +316,7 @@ public partial class StaffDetailsPageModel : ObservableObject
     private Task LoadMoreProductionRoles()
         => RunTracedListOpAsync(
             "Production Roles · Load More",
-            () => _productionRoles.LoadMoreAsync(_pageCts?.Token ?? CancellationToken.None),
+            () => _productionRoles.LoadMoreAsync(CancellationToken.None),
             () => _productionRoles.Items.Count);
 
     private bool CanLoadMoreProductionRoles() => _productionRoles.CanLoadMore;
@@ -318,7 +331,7 @@ public partial class StaffDetailsPageModel : ObservableObject
 
         return RunTracedListOpAsync(
             $"Voice Roles · sort→{code}",
-            () => _voiceRoles.ChangeSortAsync(code, _pageCts?.Token ?? CancellationToken.None),
+            () => _voiceRoles.ChangeSortAsync(code, CancellationToken.None),
             () => _voiceRoles.Items.Count,
             onComplete: () => SyncSortSelection(VoiceRolesSortOptions, _voiceRoles.Sort));
     }
@@ -333,7 +346,7 @@ public partial class StaffDetailsPageModel : ObservableObject
 
         return RunTracedListOpAsync(
             $"Production Roles · sort→{code}",
-            () => _productionRoles.ChangeSortAsync(code, _pageCts?.Token ?? CancellationToken.None),
+            () => _productionRoles.ChangeSortAsync(code, CancellationToken.None),
             () => _productionRoles.Items.Count,
             onComplete: () => SyncSortSelection(ProductionRolesSortOptions, _productionRoles.Sort));
     }
@@ -480,6 +493,7 @@ public partial class StaffDetailsPageModel : ObservableObject
     {
         OnPropertyChanged(nameof(HasVoiceRoles));
         OnPropertyChanged(nameof(VoiceRolesBusy));
+        OnPropertyChanged(nameof(VoiceRolesSort));
         LoadMoreVoiceRolesCommand.NotifyCanExecuteChanged();
     }
 
@@ -487,6 +501,7 @@ public partial class StaffDetailsPageModel : ObservableObject
     {
         OnPropertyChanged(nameof(HasProductionRoles));
         OnPropertyChanged(nameof(ProductionRolesBusy));
+        OnPropertyChanged(nameof(ProductionRolesSort));
         LoadMoreProductionRolesCommand.NotifyCanExecuteChanged();
     }
 

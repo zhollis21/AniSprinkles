@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:icons="clr-namespace:IconFont.Maui.FluentIcons;assembly=IconFont.Maui.FluentIcons"
+             x:Class="AniSprinkles.Views.SortDropdown">
+
+    <!-- A compact pill that lives right-aligned inside a colored section header. Tap opens the sort
+         picker (bottom sheet or anchored, per Placement); white-on-translucent reads on any header tint. -->
+    <!-- Background (Brush), not BackgroundColor: the implicit Border style sets Background and a Brush
+         wins over a Color, so BackgroundColor here would be silently overridden by the card default. -->
+    <Border x:Name="Pill"
+            StrokeShape="RoundRectangle 12"
+            StrokeThickness="0"
+            Padding="10,3"
+            Background="{StaticResource SecondaryBackground}"
+            HorizontalOptions="End"
+            VerticalOptions="Center">
+        <Border.GestureRecognizers>
+            <TapGestureRecognizer Tapped="OnTapped" />
+        </Border.GestureRecognizers>
+        <HorizontalStackLayout Spacing="4">
+            <Label x:Name="SelectedLabel"
+                   Style="{StaticResource Caption2}"
+                   FontAttributes="Bold"
+                   TextColor="White"
+                   VerticalTextAlignment="Center" />
+            <Image WidthRequest="12" HeightRequest="12" VerticalOptions="Center">
+                <Image.Source>
+                    <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.ChevronDown24}"
+                                     FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                     Color="White" Size="12" />
+                </Image.Source>
+            </Image>
+        </HorizontalStackLayout>
+    </Border>
+
+</ContentView>

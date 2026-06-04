@@ -391,52 +391,25 @@
             <VerticalStackLayout Spacing="10" IsVisible="{Binding HasAppearances}">
                 <Border Style="{StaticResource SectionHeaderStyle}"
                         Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='RelationsHeader'}">
-                    <HorizontalStackLayout Spacing="8">
-                        <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
-                            <Image.Source>
-                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.PlayCircle24}"
-                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                 Color="White"
-                                                 Size="20" />
-                            </Image.Source>
-                        </Image>
-                        <Label Text="Appears In" Style="{StaticResource Title3}" TextColor="White" />
-                    </HorizontalStackLayout>
+                    <Grid ColumnDefinitions="*,Auto">
+                        <HorizontalStackLayout Grid.Column="0" Spacing="8">
+                            <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
+                                <Image.Source>
+                                    <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.PlayCircle24}"
+                                                     FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                     Color="White"
+                                                     Size="20" />
+                                </Image.Source>
+                            </Image>
+                            <Label Text="Appears In" Style="{StaticResource Title3}" TextColor="White" />
+                        </HorizontalStackLayout>
+                        <views:SortDropdown Grid.Column="1"
+                                            Title="Sort Appears In"
+                                            Options="{Binding AppearancesSortOptions}"
+                                            SelectedCode="{Binding AppearancesSort}"
+                                            SelectSortCommand="{Binding SelectAppearancesSortCommand}" />
+                    </Grid>
                 </Border>
-                <!-- Sort chips -->
-                <ScrollView Orientation="Horizontal">
-                    <HorizontalStackLayout Spacing="6"
-                                           BindableLayout.ItemsSource="{Binding AppearancesSortOptions}">
-                        <BindableLayout.ItemTemplate>
-                            <DataTemplate x:DataType="pageModels:SortOption">
-                                <Border StrokeShape="RoundRectangle 12"
-                                        StrokeThickness="1"
-                                        Padding="10,3"
-                                        BackgroundColor="{StaticResource SecondaryBackground}">
-                                    <Border.Triggers>
-                                        <DataTrigger TargetType="Border" Binding="{Binding IsSelected}" Value="True">
-                                            <Setter Property="Stroke" Value="{StaticResource RainbowCyan}" />
-                                            <Setter Property="Opacity" Value="1.0" />
-                                        </DataTrigger>
-                                        <DataTrigger TargetType="Border" Binding="{Binding IsSelected}" Value="False">
-                                            <Setter Property="Stroke" Value="Transparent" />
-                                            <Setter Property="Opacity" Value="0.5" />
-                                        </DataTrigger>
-                                    </Border.Triggers>
-                                    <Border.GestureRecognizers>
-                                        <TapGestureRecognizer x:DataType="{x:Null}"
-                                                              Command="{Binding Source={x:Reference RootView}, Path=BindingContext.SelectAppearancesSortCommand}"
-                                                              CommandParameter="{Binding Code}" />
-                                    </Border.GestureRecognizers>
-                                    <Label Text="{Binding Display}"
-                                           Style="{StaticResource Caption2}"
-                                           FontAttributes="Bold"
-                                           TextColor="{StaticResource Gray100}" />
-                                </Border>
-                            </DataTemplate>
-                        </BindableLayout.ItemTemplate>
-                    </HorizontalStackLayout>
-                </ScrollView>
 
                 <!-- Lazily paged: page 1 comes from the heavy Character query; sort re-fetches page 1
                      server-side and Load More fetches the next page on demand. While the section is

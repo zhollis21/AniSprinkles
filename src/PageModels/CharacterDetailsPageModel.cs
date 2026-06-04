@@ -132,6 +132,8 @@ public partial class CharacterDetailsPageModel : ObservableObject
 
     public bool AppearancesBusy => _appearances.IsBusy;
 
+    public string AppearancesSort => _appearances.Sort;
+
     // ---- Voice Actors ---------------------------------------------------------------------------
 
     public ObservableCollection<VoiceActor> VoiceActors => _voiceActors.Items;
@@ -228,6 +230,16 @@ public partial class CharacterDetailsPageModel : ObservableObject
         if (characterId <= 0)
         {
             ShowError("Not Found", "Invalid character id.", canRetry: false);
+            return;
+        }
+
+        // Same character already loaded: keep its sections + sort and just restore Content state. This is
+        // hit when returning from a pushed sub-page (e.g. a voice actor's staff page) and — importantly —
+        // when a CommunityToolkit sort popup closes (it fires the host page's OnAppearing → reload). Without
+        // this guard the popup would reset the sort the user just picked. Mirrors MediaDetailsPageModel.
+        if (Character is not null && Character.Id == characterId)
+        {
+            CurrentState = PageState.Content;
             return;
         }
 
@@ -328,7 +340,7 @@ public partial class CharacterDetailsPageModel : ObservableObject
     private Task LoadMoreAppearances()
         => RunTracedListOpAsync(
             "Appears In · Load More",
-            () => _appearances.LoadMoreAsync(_pageCts?.Token ?? CancellationToken.None),
+            () => _appearances.LoadMoreAsync(CancellationToken.None),
             () => _appearances.Items.Count);
 
     private bool CanLoadMoreAppearances() => _appearances.CanLoadMore;
@@ -343,7 +355,7 @@ public partial class CharacterDetailsPageModel : ObservableObject
 
         return RunTracedListOpAsync(
             $"Appears In · sort→{code}",
-            () => _appearances.ChangeSortAsync(code, _pageCts?.Token ?? CancellationToken.None),
+            () => _appearances.ChangeSortAsync(code, CancellationToken.None),
             () => _appearances.Items.Count,
             // Keep the chip selection in sync with the sort that actually took effect.
             onComplete: () => SyncAppearancesSortSelection(_appearances.Sort));
@@ -353,7 +365,7 @@ public partial class CharacterDetailsPageModel : ObservableObject
     private Task CheckForMoreVoiceActors()
         => RunTracedListOpAsync(
             "Voice Actors · check for more",
-            () => _voiceActors.CheckForMoreAsync(_pageCts?.Token ?? CancellationToken.None),
+            () => _voiceActors.CheckForMoreAsync(CancellationToken.None),
             () => _voiceActors.Items.Count);
 
     // LISTTRACE: times the network fetch + collection apply for a list op so we can tell API cost
@@ -499,6 +511,7 @@ public partial class CharacterDetailsPageModel : ObservableObject
     {
         OnPropertyChanged(nameof(HasAppearances));
         OnPropertyChanged(nameof(AppearancesBusy));
+        OnPropertyChanged(nameof(AppearancesSort));
         LoadMoreAppearancesCommand.NotifyCanExecuteChanged();
     }
 
