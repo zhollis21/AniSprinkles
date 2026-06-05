@@ -511,6 +511,7 @@ public class AniListClient : IAniListClient
                     Id = e.Node!.Id,
                     Name = e.Node.Name,
                     Image = e.Node.Image,
+                    Favourites = e.Node.Favourites,
                 },
                 Role = e.Role,
             })
@@ -542,6 +543,7 @@ public class AniListClient : IAniListClient
                     Id = e.Node!.Id,
                     Name = e.Node.Name,
                     Image = e.Node.Image,
+                    Favourites = e.Node.Favourites,
                 },
                 Role = e.Role,
             })
@@ -820,6 +822,7 @@ public class AniListClient : IAniListClient
                         Id = e.Node!.Id,
                         Name = e.Node.Name,
                         Image = e.Node.Image,
+                        Favourites = e.Node.Favourites,
                     },
                     Role = e.Role,
                     VoiceActors = e.VoiceActors?
@@ -853,6 +856,7 @@ public class AniListClient : IAniListClient
                         Id = e.Node!.Id,
                         Name = e.Node.Name,
                         Image = e.Node.Image,
+                        Favourites = e.Node.Favourites,
                     },
                     Role = e.Role,
                 })
@@ -1505,6 +1509,7 @@ public class AniListClient : IAniListClient
         public int Id { get; set; }
         public CharacterName? Name { get; set; }
         public CharacterImage? Image { get; set; }
+        public int? Favourites { get; set; }
     }
 
     private sealed class StaffData
@@ -1709,6 +1714,7 @@ query Media($id: Int!) {
           id
           name { full native }
           image { medium large }
+          favourites
         }
         role
         voiceActors(sort: [RELEVANCE, ID]) {
@@ -1744,6 +1750,7 @@ query Media($id: Int!) {
           id
           name { full native }
           image { medium }
+          favourites
         }
         role
       }
@@ -2005,6 +2012,7 @@ query MediaCharactersPage($id: Int!, $page: Int!, $sort: [CharacterSort], $perPa
           id
           name { full native }
           image { medium large }
+          favourites
         }
         role
       }
@@ -2022,6 +2030,7 @@ query MediaStaffPage($id: Int!, $page: Int!, $sort: [StaffSort], $perPage: Int =
           id
           name { full native }
           image { medium }
+          favourites
         }
         role
       }

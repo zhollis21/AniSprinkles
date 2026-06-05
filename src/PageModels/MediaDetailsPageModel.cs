@@ -3,7 +3,9 @@ using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using IconFont.Maui.FluentIcons;
 using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Graphics;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -108,7 +110,8 @@ namespace AniSprinkles.PageModels;
         _characters = new PaginatedSection<CharacterEdge>(
             CharactersDefaultSort,
             FetchCharactersPageAsync,
-            edge => edge.Node?.Id ?? 0);
+            edge => edge.Node?.Id ?? 0,
+            StampCharacterBadges);
         _characters.Changed += OnCharactersChanged;
 
         // A staff member can appear under multiple roles, so key on (id, role) to avoid the dedup
@@ -116,13 +119,15 @@ namespace AniSprinkles.PageModels;
         _staff = new PaginatedSection<StaffEdge>(
             StaffDefaultSort,
             FetchStaffPageAsync,
-            edge => (edge.Node?.Id ?? 0, edge.Role ?? string.Empty));
+            edge => (edge.Node?.Id ?? 0, edge.Role ?? string.Empty),
+            StampStaffBadges);
         _staff.Changed += OnStaffChanged;
 
         _recommendations = new PaginatedSection<MediaRecommendationNode>(
             RecommendationsDefaultSort,
             FetchRecommendationsPageAsync,
-            node => node.MediaRecommendation?.Id ?? 0);
+            node => node.MediaRecommendation?.Id ?? 0,
+            StampRecommendationBadges);
         _recommendations.Changed += OnRecommendationsChanged;
     }
 
@@ -140,7 +145,8 @@ namespace AniSprinkles.PageModels;
 
     public ObservableCollection<MediaRecommendationNode> DisplayedRecommendations => _recommendations.Items;
     public bool RecommendationsBusy => _recommendations.IsBusy;
-    public string RecommendationsSort => _recommendations.Sort;
+    // Recommendations have a single natural order (most recommended) so there's no sort dropdown — the
+    // section just seeds/loads in RATING_DESC.
 
     // Relations: client-side sort only, no pagination — instant reorder, no busy/spinner.
     public ObservableCollection<MediaRelationEdge> DisplayedRelations { get; } = [];
@@ -150,20 +156,14 @@ namespace AniSprinkles.PageModels;
     [
         new SortOption { Code = "ROLE",            Display = "Role", IsSelected = true },
         new SortOption { Code = "FAVOURITES_DESC", Display = "Most Favorited" },
-        new SortOption { Code = "RELEVANCE",       Display = "Relevance" },
+        new SortOption { Code = "RELEVANCE",       Display = "Featured" },
     ];
 
     public IReadOnlyList<SortOption> StaffSortOptions { get; } =
     [
-        new SortOption { Code = "RELEVANCE",       Display = "Relevance", IsSelected = true },
+        new SortOption { Code = "RELEVANCE",       Display = "Featured", IsSelected = true },
         new SortOption { Code = "FAVOURITES_DESC", Display = "Most Favorited" },
         new SortOption { Code = "ROLE",            Display = "Role" },
-    ];
-
-    public IReadOnlyList<SortOption> RecommendationsSortOptions { get; } =
-    [
-        new SortOption { Code = "RATING_DESC", Display = "Most Recommended", IsSelected = true },
-        new SortOption { Code = "ID_DESC",     Display = "Newest Added" },
     ];
 
     public IReadOnlyList<SortOption> RelationsSortOptions { get; } =
@@ -733,7 +733,6 @@ namespace AniSprinkles.PageModels;
         _recommendations.Seed(value?.Recommendations ?? [], value?.RecommendationsPageInfo);
         SyncCharactersSortSelection(CharactersDefaultSort);
         SyncStaffSortSelection(StaffDefaultSort);
-        SyncRecommendationsSortSelection(RecommendationsDefaultSort);
 
         // Relations sorts entirely client-side over a fixed set; capture it and apply the default order.
         _allRelations = value?.Relations ?? [];
@@ -761,7 +760,6 @@ namespace AniSprinkles.PageModels;
         OnPropertyChanged(nameof(HasCharacters));
         OnPropertyChanged(nameof(CharactersSort));
         OnPropertyChanged(nameof(HasRecommendations));
-        OnPropertyChanged(nameof(RecommendationsSort));
         OnPropertyChanged(nameof(ScoreDistribution));
         OnPropertyChanged(nameof(StatusDistribution));
         OnPropertyChanged(nameof(HasStats));
@@ -832,11 +830,7 @@ namespace AniSprinkles.PageModels;
 
     private bool CanLoadMoreRecommendations() => _recommendations.CanLoadMore;
 
-    [RelayCommand]
-    private Task SelectRecommendationsSort(string? code)
-        => SelectSectionSortAsync(code, _recommendations, RecommendationsSortOptions, "Recommendations");
-
-    // Shared sort-change flow for the three server-paginated sections: re-fetch page 1 with the new
+    // Shared sort-change flow for the server-paginated sections: re-fetch page 1 with the new
     // sort, and once it settles re-sync the dropdown highlight to the sort that actually took effect
     // (a failed change leaves the old sort, so the highlight reverts).
     private Task SelectSectionSortAsync<T>(string? code, PaginatedSection<T> section, IReadOnlyList<SortOption> options, string label)
@@ -875,11 +869,77 @@ namespace AniSprinkles.PageModels;
         DisplayedRelations.Clear();
         foreach (var edge in sorted)
         {
+            // Stamp the year badge before adding (relations always show their year).
+            edge.MetricBadge = BuildRelationBadge(edge.Node);
             DisplayedRelations.Add(edge);
         }
 
         OnPropertyChanged(nameof(HasRelations));
     }
+
+    // ── Metric badges ───────────────────────────────────────────────
+    // Each Media section has a single natural metric, so its card always shows it (a heart + favourites for
+    // Characters/Staff, 👍 + rating for Recommendations, 📅 + year for Relations) regardless of the active
+    // sort. (The detail pages, which offer several metric sorts, keep their badge sort-dependent instead.)
+    // Stamping runs via PaginatedSection.onItemsAdded (Seed / Load More / sort refetch); Relations stamps in
+    // ApplyRelationsSort. The `sort` arg is required by the onItemsAdded delegate but unused here.
+
+    private static void StampCharacterBadges(IReadOnlyList<CharacterEdge> items, string sort)
+    {
+        foreach (var edge in items)
+        {
+            edge.MetricBadge = BuildCharacterBadge(edge.Node);
+        }
+    }
+
+    private static void StampStaffBadges(IReadOnlyList<StaffEdge> items, string sort)
+    {
+        foreach (var edge in items)
+        {
+            edge.MetricBadge = BuildStaffBadge(edge.Node);
+        }
+    }
+
+    private static void StampRecommendationBadges(IReadOnlyList<MediaRecommendationNode> items, string sort)
+    {
+        foreach (var node in items)
+        {
+            node.MetricBadge = BuildRecommendationBadge(node);
+        }
+    }
+
+    private static ItemMetricBadge? BuildCharacterBadge(Character? node) =>
+        node is { HasFavourites: true } ? FavouritesBadge(node.FavouritesDisplay) : null;
+
+    private static ItemMetricBadge? BuildStaffBadge(StaffNode? node) =>
+        node is { HasFavourites: true } ? FavouritesBadge(node.FavouritesDisplay) : null;
+
+    private static ItemMetricBadge? BuildRecommendationBadge(MediaRecommendationNode node) =>
+        node.HasRating
+            ? new ItemMetricBadge
+            {
+                Glyph = FluentIconsRegular.ThumbLike24,
+                IconColor = Color.FromArgb("#34C759"),
+                Text = node.RatingDisplay,
+            }
+            : null;
+
+    private static ItemMetricBadge? BuildRelationBadge(RelatedMedia? node) =>
+        node is { HasYear: true }
+            ? new ItemMetricBadge
+            {
+                Glyph = FluentIconsRegular.Calendar24,
+                IconColor = Color.FromArgb("#00C2FF"),
+                Text = node.YearDisplay,
+            }
+            : null;
+
+    private static ItemMetricBadge FavouritesBadge(string text) => new()
+    {
+        Glyph = FluentIconsRegular.Heart24,
+        IconColor = Color.FromArgb("#FF2D95"),
+        Text = text,
+    };
 
     // --- Changed handlers + selection sync ---
 
@@ -903,13 +963,11 @@ namespace AniSprinkles.PageModels;
     {
         OnPropertyChanged(nameof(HasRecommendations));
         OnPropertyChanged(nameof(RecommendationsBusy));
-        OnPropertyChanged(nameof(RecommendationsSort));
         LoadMoreRecommendationsCommand.NotifyCanExecuteChanged();
     }
 
     private void SyncCharactersSortSelection(string code) => SyncSortSelection(CharactersSortOptions, code);
     private void SyncStaffSortSelection(string code) => SyncSortSelection(StaffSortOptions, code);
-    private void SyncRecommendationsSortSelection(string code) => SyncSortSelection(RecommendationsSortOptions, code);
     private void SyncRelationsSortSelection(string code) => SyncSortSelection(RelationsSortOptions, code);
 
     private static void SyncSortSelection(IReadOnlyList<SortOption> options, string code)

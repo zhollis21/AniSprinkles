@@ -40,19 +40,9 @@ public class RelatedMedia
         ? (AverageScore!.Value / 10.0).ToString("0.0", CultureInfo.InvariantCulture)
         : string.Empty;
 
-    public string FavouritesDisplay => Favourites switch
-    {
-        null or <= 0 => string.Empty,
-        >= 1000 => (Favourites.Value / 1000.0).ToString("0.#k", CultureInfo.InvariantCulture),
-        _ => Favourites.Value.ToString(CultureInfo.InvariantCulture),
-    };
+    public string FavouritesDisplay => MetricFormat.Compact(Favourites);
 
-    public string PopularityDisplay => Popularity switch
-    {
-        null or <= 0 => string.Empty,
-        >= 1000 => (Popularity.Value / 1000.0).ToString("0.#k", CultureInfo.InvariantCulture),
-        _ => Popularity.Value.ToString(CultureInfo.InvariantCulture),
-    };
+    public string PopularityDisplay => MetricFormat.Compact(Popularity);
 
     public string YearDisplay => HasYear ? StartDate!.Year!.Value.ToString(CultureInfo.InvariantCulture) : string.Empty;
 }

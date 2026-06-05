@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using AniSprinkles.Utilities;
 
 namespace AniSprinkles.Models;
 
@@ -20,6 +21,9 @@ public class Character
     public PageInfo? MediaPageInfo { get; set; }
 
     public string DisplayName => Name?.Full ?? Name?.UserPreferred ?? Name?.Native ?? "Unknown";
+
+    public bool HasFavourites => Favourites is > 0;
+    public string FavouritesDisplay => MetricFormat.Compact(Favourites);
 }
 
 public class CharacterName

@@ -36,6 +36,7 @@
     <Compile Include="..\..\src\Models\*.cs" LinkBase="_linked\Models" />
     <Compile Include="..\..\src\Serialization\StringOrNumberJsonConverter.cs" LinkBase="_linked\Serialization" />
     <Compile Include="..\..\src\Utilities\AppSettings.cs" LinkBase="_linked\Utilities" />
+    <Compile Include="..\..\src\Utilities\MetricFormat.cs" LinkBase="_linked\Utilities" />
     <Compile Include="..\..\src\Utilities\SpoilerHtmlProcessor.cs" LinkBase="_linked\Utilities" />
     <Compile Include="..\..\src\Utilities\FuzzyDateFormatter.cs" LinkBase="_linked\Utilities" />
     <Compile Include="..\..\src\Utilities\YearsActiveFormatter.cs" LinkBase="_linked\Utilities" />
