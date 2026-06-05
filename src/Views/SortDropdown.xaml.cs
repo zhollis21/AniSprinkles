@@ -68,7 +68,7 @@ public partial class SortDropdown : ContentView
         {
             var anchor = ComputeAnchor(options.Count);
             var result = await SortPopup.ShowAsync(
-                options, anchor.OpenUp, anchor.CardLeft, anchor.PillVEdge, GapDip);
+                options, anchor.OpenUp, anchor.CardLeft, anchor.VEdge, GapDip);
             if (!string.IsNullOrEmpty(result)
                 && !string.Equals(result, SelectedCode, StringComparison.Ordinal)
                 && SelectSortCommand?.CanExecute(result) == true)
@@ -92,13 +92,13 @@ public partial class SortDropdown : ContentView
     private const double MinEdgeDip = 10;
     private const double BottomSafeDip = 40;
 
-    // Measures the pill's rect in the popup's coordinate space so the picker can float just beneath it (or
-    // above, when there's no room below), right edges aligned under the chevron. The toolkit positions the
-    // popup's content-sized host Border within the modal page via the Popup's Margin, and that page's origin
-    // is the Activity content view (android.R.id.content) — so we convert the pill's absolute on-screen
-    // coordinates into that space by subtracting the content view's origin (cancels the status-bar offset).
-    // Android-only (the app's sole target); elsewhere falls back to a fixed top-right card.
-    private (bool OpenUp, double CardLeft, double PillVEdge) ComputeAnchor(int optionCount)
+    // Computes where the picker should open: floating just below the section header bar (or above it, when
+    // there's no room below), right edge aligned under the chevron. We anchor vertically to the whole header
+    // BAR — not just the pill — because the pill is centered in a taller colored header, so a gap below the
+    // pill alone still overlaps the bar; clearing the bar is what "opens outside the pill" means.
+    // Coordinates are converted into the popup page's space (which starts below the status bar) by
+    // subtracting the system-bar insets. Android-only; elsewhere falls back to a fixed top-right card.
+    private (bool OpenUp, double CardLeft, double VEdge) ComputeAnchor(int optionCount)
     {
 #if ANDROID
         if (Pill.Handler?.PlatformView is Android.Views.View native)
@@ -126,25 +126,43 @@ public partial class SortDropdown : ContentView
             var pageHeightDip = (screenHeightPx - originY - (bars?.Bottom ?? 0)) / density;
 
             var pillRightDip = ((pillLoc[0] + native.Width) - originX) / density;
-            var pillTopDip = (pillLoc[1] - originY) / density;
-            var pillBottomDip = ((pillLoc[1] + native.Height) - originY) / density;
+
+            // Find the section header bar: walk up to the nearest wide-but-short ancestor (the full-width
+            // colored header row that the pill sits at the right of). Clearing this — rather than just the
+            // pill — keeps the card from opening over the header. Falls back to the pill if none qualifies.
+            var bar = native;
+            var ancestor = native.Parent;
+            for (var i = 0; i < 6 && ancestor is Android.Views.View av; i++)
+            {
+                if (av.Width >= screenWidthPx * 0.6 && av.Height <= screenHeightPx * 0.25)
+                {
+                    bar = av;
+                }
+
+                ancestor = av.Parent;
+            }
+
+            var barLoc = new int[2];
+            bar.GetLocationOnScreen(barLoc);
+            var barTopDip = (barLoc[1] - originY) / density;
+            var barBottomDip = ((barLoc[1] + bar.Height) - originY) / density;
 
             var estHeight = ChromeHeightDip + (optionCount * RowHeightDip);
             var bottomLimitDip = pageHeightDip - BottomSafeDip;
-            // Flip up only when there isn't room below within the safe area AND there is room above. The
-            // estimate only drives this decision; the popup positions itself off the card's real height.
-            var openUp = (pillBottomDip + GapDip + estHeight) > bottomLimitDip
-                && pillTopDip > (estHeight + GapDip + MinEdgeDip);
+            // Flip up only when there isn't room below the bar within the safe area AND there is room above.
+            // The estimate only drives this decision; the popup positions itself off the card's real height.
+            var openUp = (barBottomDip + GapDip + estHeight) > bottomLimitDip
+                && barTopDip > (estHeight + GapDip + MinEdgeDip);
 
             // Right-align the card's right edge under the pill's right edge (the chevron), clamped so the
-            // rounded corners + shadow stay clear of the screen edges.
+            // rounded corners stay clear of the screen edges.
             var maxLeft = Math.Max(MinEdgeDip, pageWidthDip - SortPopup.CardWidth - MinEdgeDip);
             var cardLeft = Math.Clamp(pillRightDip - SortPopup.CardWidth, MinEdgeDip, maxLeft);
 
-            // The pill edge the card hugs: its TOP when flipping up, its BOTTOM when opening down.
-            var pillVEdge = openUp ? pillTopDip : pillBottomDip;
+            // The header-bar edge the card hugs: its TOP when flipping up, its BOTTOM when opening down.
+            var vEdge = openUp ? barTopDip : barBottomDip;
 
-            return (openUp, cardLeft, pillVEdge);
+            return (openUp, cardLeft, vEdge);
         }
 #endif
         return (false, 12, 0);
