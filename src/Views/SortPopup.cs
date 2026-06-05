@@ -9,24 +9,40 @@ namespace AniSprinkles.Views;
 
 /// <summary>
 /// A compact sort picker (#85) that floats just beneath (or above) the tapped <see cref="SortDropdown"/>,
-/// AniList-web style. CommunityToolkit.Maui 14.x has no popup anchor API and ignores VerticalOptions/
-/// HorizontalOptions on the popup root (it centers), so we instead fill the screen with a transparent
-/// scrim and absolutely position the card inside it from coordinates the caller measured off the trigger
-/// (see <see cref="SortDropdown.OnTapped"/>). That also gives us reliable tap-to-dismiss: a tap on the
-/// scrim closes with no result. Returns the chosen <see cref="SortOption.Code"/>, or <c>null</c> when
-/// dismissed; it never mutates selection itself, so a failed server sort can revert the highlight upstream.
+/// AniList-web style.
+/// <para>
+/// CommunityToolkit.Maui 14.x hosts a Popup as a full-screen modal page whose <c>PopupPageLayout</c> places
+/// a single <c>PopupBorder</c> (the visible card) inside a full-screen <c>Grid</c>, aligned by the Popup's
+/// own <see cref="VisualElement.VerticalOptions"/>/<see cref="VisualElement.HorizontalOptions"/> (where
+/// <c>Fill</c> is coerced to <c>Center</c>) and offset by <see cref="VisualElement.Margin"/> in page
+/// coordinates. We therefore: set the Popup to <c>Start</c>/<c>Start</c> and position it with
+/// <see cref="VisualElement.Margin"/>; give the card its rounded shape + shadow through
+/// <see cref="PopupOptions.Shape"/>/<see cref="PopupOptions.Shadow"/> so the positioned <c>PopupBorder</c>
+/// IS the card (no nested Border whose shadow would offset us); and let the toolkit supply the dim
+/// (<see cref="PopupOptions.PageOverlayColor"/>) and tap-outside dismissal. The anchor coordinates are
+/// measured in page space by <see cref="SortDropdown.ComputeAnchor"/>.
+/// </para>
+/// Returns the chosen <see cref="SortOption.Code"/>, or <c>null</c> when dismissed; it never mutates
+/// selection itself, so a failed server sort can revert the highlight upstream.
 /// </summary>
 public sealed class SortPopup : Popup<string?>
 {
     public const double CardWidth = 210;
 
+    // Smallest top margin we'll allow so a flipped-up card never runs under the status bar.
+    private const double MinTopDip = 8;
+
+    // The toolkit's PopupBorder insets our content by the popup's default Padding (15dp) on every side, and
+    // that Padding can't be reliably zeroed from a Popup subclass. Popup.Margin positions the *outer* border,
+    // so we subtract this inset from the margin to land the *visible content* on the measured anchor.
+    public const double ContentInsetDip = 15;
+
     public static async Task<string?> ShowAsync(
-        string title,
         IReadOnlyList<SortOption> options,
-        double screenWidthDip,
-        double screenHeightDip,
-        double cardTopDip,
-        double cardRightDip,
+        bool openUp,
+        double cardLeftDip,
+        double pillVEdgeDip,
+        double gapDip,
         CancellationToken cancellationToken = default)
     {
         if (Shell.Current?.CurrentPage is not { } page)
@@ -34,14 +50,23 @@ public sealed class SortPopup : Popup<string?>
             return null;
         }
 
-        var popup = new SortPopup(title, options, screenWidthDip, screenHeightDip, cardTopDip, cardRightDip);
+        var popup = new SortPopup(options, openUp, cardLeftDip, pillVEdgeDip, gapDip);
         var popupOptions = new PopupOptions
         {
-            Shape = null,
+            // The toolkit's PopupBorder is the visible card: give it our rounded shape + stroke so
+            // Popup.Margin positions the card itself (no nested Border whose shadow bleed would offset us).
+            Shape = new RoundRectangle
+            {
+                CornerRadius = new CornerRadius(14),
+                Stroke = Res<Color>("Gray600"),
+                StrokeThickness = 1,
+            },
+            // No Shadow: a Shadow expands the PopupBorder's layout box by its bleed (~40dp) and centers the
+            // visible card inside it, which silently offset our anchored position. The 1px stroke + the dim
+            // page overlay give enough separation. (Re-add only if we also offset Margin by the bleed.)
             Shadow = null,
-            // We own the scrim + dismiss inside the full-screen content, so disable the toolkit's.
-            CanBeDismissedByTappingOutsideOfPopup = false,
-            PageOverlayColor = Colors.Transparent,
+            // Toolkit-owned scrim dim + tap-outside dismissal (default CanBeDismissedByTappingOutsideOfPopup).
+            PageOverlayColor = Color.FromArgb("#59000000"),
         };
 
         try
@@ -56,64 +81,72 @@ public sealed class SortPopup : Popup<string?>
     }
 
     private SortPopup(
-        string title,
         IReadOnlyList<SortOption> options,
-        double screenWidthDip,
-        double screenHeightDip,
-        double cardTopDip,
-        double cardRightDip)
+        bool openUp,
+        double cardLeftDip,
+        double pillVEdgeDip,
+        double gapDip)
     {
-        BackgroundColor = Colors.Transparent;
+        // The PopupBorder paints the card fill; our content is just the rows.
+        BackgroundColor = Res<Color>("SecondaryBackground");
+        // Zero our own padding: it works and removing it adds a second 15dp inset between the positioned
+        // border and the visible content (we compensate for the toolkit's single inherent inset below).
         Padding = 0;
-        Margin = 0;
+        // Start/Start: the toolkit coerces Fill->Center, but Start passes through, making the page content's
+        // top-left the origin so our Margin positions the card absolutely (in page coordinates).
+        HorizontalOptions = LayoutOptions.Start;
+        VerticalOptions = LayoutOptions.Start;
 
-        var content = new VerticalStackLayout { Spacing = 0, Padding = new Thickness(0, 6) };
-        content.Add(new Label
+        // No heading: the card opens directly above/below the pill the user just tapped, so the section is
+        // already obvious. Keep the top/bottom padding so the first/last row clears the rounded corners.
+        var content = new VerticalStackLayout
         {
-            Text = title,
-            Style = Res<Style>("Caption2"),
-            FontAttributes = FontAttributes.Bold,
-            TextColor = Res<Color>("Gray400"),
-            Margin = new Thickness(16, 6, 16, 6),
-        });
-        content.Add(new BoxView { HeightRequest = 1, Color = Res<Color>("Gray600"), Opacity = 0.6 });
+            Spacing = 0,
+            Padding = new Thickness(0, 6),
+            WidthRequest = CardWidth,
+        };
         foreach (var option in options)
         {
             content.Add(BuildRow(option));
         }
 
-        var card = new Border
-        {
-            StrokeThickness = 1,
-            Stroke = Res<Color>("Gray600"),
-            // Set Background (Brush), not BackgroundColor: the app's implicit Border style sets Background,
-            // and Brush wins over Color, so a BackgroundColor here would be silently overridden.
-            Background = new SolidColorBrush(Res<Color>("SecondaryBackground")),
-            StrokeShape = new RoundRectangle { CornerRadius = 14 },
-            Padding = 0,
-            WidthRequest = CardWidth,
-            HorizontalOptions = LayoutOptions.End,
-            VerticalOptions = LayoutOptions.Start,
-            Margin = new Thickness(0, cardTopDip, cardRightDip, 0),
-            Shadow = new Shadow { Brush = Brush.Black, Opacity = 0.45f, Radius = 18, Offset = new Point(0, 4) },
-            Content = content,
-        };
-        // Swallow taps on the card's non-row areas so they don't reach the scrim's dismiss handler.
-        card.GestureRecognizers.Add(new TapGestureRecognizer());
+        Content = content;
 
-        // Full-screen transparent scrim: provides the dim, owns placement, and dismisses on outside tap.
-        var scrim = new Grid
-        {
-            WidthRequest = screenWidthDip,
-            HeightRequest = screenHeightDip,
-            BackgroundColor = Color.FromArgb("#59000000"),
-        };
-        var dismiss = new TapGestureRecognizer();
-        dismiss.Tapped += async (_, _) => await CloseAsync(null);
-        scrim.GestureRecognizers.Add(dismiss);
-        scrim.Add(card);
+        // cardLeftDip is the desired *content* left; the margin (positioning the outer border) is inset less.
+        var marginLeft = cardLeftDip - ContentInsetDip;
 
-        Content = scrim;
+        if (openUp)
+        {
+            // The exact top needs the card's real height, unknown until it lays out. Seed with an estimate so
+            // the first frame is already close, then refine on SizeChanged so the gap is exact. pillVEdgeDip
+            // is the pill's TOP here; the card's visible bottom sits gapDip above it.
+            var estHeight = 12 + (options.Count * 44);
+            Margin = new Thickness(marginLeft, UpMarginTop(pillVEdgeDip, estHeight, gapDip), 0, 0);
+            EventHandler? onSized = null;
+            onSized = (_, _) =>
+            {
+                if (content.Height <= 0)
+                {
+                    return;
+                }
+
+                Margin = new Thickness(marginLeft, UpMarginTop(pillVEdgeDip, content.Height, gapDip), 0, 0);
+                content.SizeChanged -= onSized;
+            };
+            content.SizeChanged += onSized;
+        }
+        else
+        {
+            // pillVEdgeDip is the pill's BOTTOM; the visible content top sits gapDip below it (less the inset).
+            Margin = new Thickness(marginLeft, pillVEdgeDip + gapDip - ContentInsetDip, 0, 0);
+        }
+    }
+
+    // Top margin so the card's visible bottom lands gapDip above the pill top: content bottom =
+    // marginTop + inset + height, so marginTop = pillTop - height - gap - inset.
+    private static double UpMarginTop(double pillTopDip, double cardHeightDip, double gapDip)
+    {
+        return Math.Max(pillTopDip - cardHeightDip - gapDip - ContentInsetDip, MinTopDip);
     }
 
     private View BuildRow(SortOption option)
@@ -155,7 +188,8 @@ public sealed class SortPopup : Popup<string?>
         {
             StrokeThickness = 0,
             Padding = new Thickness(16, 11),
-            // Transparent fill so the card shows through — must be a Brush (see card comment).
+            // Transparent fill so the card shows through — must be a Brush (the implicit Border style sets
+            // Background and a Brush wins over a Color).
             Background = Brush.Transparent,
             Content = grid,
         };

@@ -6,6 +6,8 @@
                x:Class="AniSprinkles.Views.MoveToListPopup"
                x:TypeArguments="x:Object"
                BackgroundColor="Transparent"
+               Margin="0"
+               HorizontalOptions="Fill"
                VerticalOptions="End">
 
     <Border StrokeShape="RoundRectangle 20,20,0,0"

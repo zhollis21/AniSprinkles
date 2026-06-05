@@ -16,16 +16,6 @@ public partial class SortDropdown : ContentView
         UpdateLabel();
     }
 
-    public static readonly BindableProperty TitleProperty =
-        BindableProperty.Create(nameof(Title), typeof(string), typeof(SortDropdown), default(string));
-
-    /// <summary>Heading shown atop the picker, e.g. "Sort Characters".</summary>
-    public string? Title
-    {
-        get => (string?)GetValue(TitleProperty);
-        set => SetValue(TitleProperty, value);
-    }
-
     public static readonly BindableProperty OptionsProperty =
         BindableProperty.Create(nameof(Options), typeof(IReadOnlyList<SortOption>), typeof(SortDropdown), null, propertyChanged: OnVisualChanged);
 
@@ -60,7 +50,7 @@ public partial class SortDropdown : ContentView
     private void UpdateLabel()
     {
         var selected = Options?.FirstOrDefault(o => string.Equals(o.Code, SelectedCode, StringComparison.Ordinal));
-        SelectedLabel.Text = selected?.Display ?? Options?.FirstOrDefault()?.Display ?? Title ?? "Sort";
+        SelectedLabel.Text = selected?.Display ?? Options?.FirstOrDefault()?.Display ?? "Sort";
     }
 
     private bool _isOpen;
@@ -78,7 +68,7 @@ public partial class SortDropdown : ContentView
         {
             var anchor = ComputeAnchor(options.Count);
             var result = await SortPopup.ShowAsync(
-                Title ?? "Sort by", options, anchor.ScreenWidth, anchor.ScreenHeight, anchor.Top, anchor.Right);
+                options, anchor.OpenUp, anchor.CardLeft, anchor.PillVEdge, GapDip);
             if (!string.IsNullOrEmpty(result)
                 && !string.Equals(result, SelectedCode, StringComparison.Ordinal)
                 && SelectSortCommand?.CanExecute(result) == true)
@@ -92,21 +82,27 @@ public partial class SortDropdown : ContentView
         }
     }
 
-    // Approx picker height for the flip decision: header + divider + padding + rows.
+    // Approx picker height for the flip decision: top/bottom card padding + rows (the title is gone).
     private const double RowHeightDip = 44;
-    private const double ChromeHeightDip = 46;
+    private const double ChromeHeightDip = 12;
     private const double GapDip = 6;
+    // Keep the card clear of the screen edges so its rounded corners + shadow aren't clipped (right) and it
+    // doesn't run under the gesture/home-indicator (bottom). Constant insets are adequate for ≤6 short rows;
+    // querying real RootWindowInsets would be more precise but isn't worth it at this size.
+    private const double MinEdgeDip = 10;
+    private const double BottomSafeDip = 40;
 
-    // Measures the pill's on-screen rect so the picker can float just beneath it (or above, when there's
-    // no room below), right edges aligned. Android-only (the app's sole target); elsewhere falls back to a
-    // top-right card. The scrim is sized to the screen, so the card margin is in that same coordinate space.
-    private (double Top, double Right, double ScreenWidth, double ScreenHeight) ComputeAnchor(int optionCount)
+    // Measures the pill's rect in the popup's coordinate space so the picker can float just beneath it (or
+    // above, when there's no room below), right edges aligned under the chevron. The toolkit positions the
+    // popup's content-sized host Border within the modal page via the Popup's Margin, and that page's origin
+    // is the Activity content view (android.R.id.content) — so we convert the pill's absolute on-screen
+    // coordinates into that space by subtracting the content view's origin (cancels the status-bar offset).
+    // Android-only (the app's sole target); elsewhere falls back to a fixed top-right card.
+    private (bool OpenUp, double CardLeft, double PillVEdge) ComputeAnchor(int optionCount)
     {
 #if ANDROID
         if (Pill.Handler?.PlatformView is Android.Views.View native)
         {
-            var location = new int[2];
-            native.GetLocationOnScreen(location);
             var metrics = native.Context?.Resources?.DisplayMetrics;
             var density = metrics?.Density ?? 1f;
             if (density <= 0)
@@ -114,21 +110,43 @@ public partial class SortDropdown : ContentView
                 density = 1f;
             }
 
-            var screenWidthDip = (metrics?.WidthPixels ?? native.Width) / density;
-            var screenHeightDip = (metrics?.HeightPixels ?? native.Height) / density;
-            var pillTopDip = location[1] / density;
-            var pillBottomDip = (location[1] + native.Height) / density;
-            var rightInsetDip = screenWidthDip - ((location[0] + native.Width) / density);
+            var pillLoc = new int[2];
+            native.GetLocationOnScreen(pillLoc);
+
+            // Page-space origin = the system-bar insets (status bar on top). The toolkit's popup page lays out
+            // its content below the status bar, so Popup.Margin is measured from there; converting the pill's
+            // absolute on-screen coords into that space means subtracting the status-bar inset. We read the
+            // insets off the pill's RootWindowInsets (reliable; the Activity/content-view lookups returned null).
+            var bars = native.RootWindowInsets?.GetInsets(Android.Views.WindowInsets.Type.SystemBars());
+            double originX = bars?.Left ?? 0;
+            double originY = bars?.Top ?? 0;
+            var screenWidthPx = metrics?.WidthPixels ?? native.Width;
+            var screenHeightPx = metrics?.HeightPixels ?? native.Height;
+            var pageWidthDip = (screenWidthPx - originX - (bars?.Right ?? 0)) / density;
+            var pageHeightDip = (screenHeightPx - originY - (bars?.Bottom ?? 0)) / density;
+
+            var pillRightDip = ((pillLoc[0] + native.Width) - originX) / density;
+            var pillTopDip = (pillLoc[1] - originY) / density;
+            var pillBottomDip = ((pillLoc[1] + native.Height) - originY) / density;
 
             var estHeight = ChromeHeightDip + (optionCount * RowHeightDip);
-            var openUp = (estHeight + GapDip) > (screenHeightDip - pillBottomDip) && pillTopDip > estHeight;
-            var top = openUp
-                ? Math.Max(pillTopDip - estHeight - GapDip, GapDip)
-                : pillBottomDip + GapDip;
+            var bottomLimitDip = pageHeightDip - BottomSafeDip;
+            // Flip up only when there isn't room below within the safe area AND there is room above. The
+            // estimate only drives this decision; the popup positions itself off the card's real height.
+            var openUp = (pillBottomDip + GapDip + estHeight) > bottomLimitDip
+                && pillTopDip > (estHeight + GapDip + MinEdgeDip);
 
-            return (top, Math.Max(rightInsetDip, 0), screenWidthDip, screenHeightDip);
+            // Right-align the card's right edge under the pill's right edge (the chevron), clamped so the
+            // rounded corners + shadow stay clear of the screen edges.
+            var maxLeft = Math.Max(MinEdgeDip, pageWidthDip - SortPopup.CardWidth - MinEdgeDip);
+            var cardLeft = Math.Clamp(pillRightDip - SortPopup.CardWidth, MinEdgeDip, maxLeft);
+
+            // The pill edge the card hugs: its TOP when flipping up, its BOTTOM when opening down.
+            var pillVEdge = openUp ? pillTopDip : pillBottomDip;
+
+            return (openUp, cardLeft, pillVEdge);
         }
 #endif
-        return (0, 12, 360, 640);
+        return (false, 12, 0);
     }
 }

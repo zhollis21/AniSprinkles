@@ -404,7 +404,6 @@
                             <Label Text="Appears In" Style="{StaticResource Title3}" TextColor="White" />
                         </HorizontalStackLayout>
                         <views:SortDropdown Grid.Column="1"
-                                            Title="Sort Appears In"
                                             Options="{Binding AppearancesSortOptions}"
                                             SelectedCode="{Binding AppearancesSort}"
                                             SelectSortCommand="{Binding SelectAppearancesSortCommand}" />

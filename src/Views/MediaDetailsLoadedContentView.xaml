@@ -769,7 +769,6 @@
                             <Label Text="Relations" Style="{StaticResource Title3}" TextColor="White" />
                         </HorizontalStackLayout>
                         <views:SortDropdown Grid.Column="1"
-                                            Title="Sort Relations"
                                             Options="{Binding RelationsSortOptions}"
                                             SelectedCode="{Binding RelationsSort}"
                                             SelectSortCommand="{Binding SelectRelationsSortCommand}" />
@@ -831,7 +830,6 @@
                             <Label Text="Characters" Style="{StaticResource Title3}" TextColor="White" />
                         </HorizontalStackLayout>
                         <views:SortDropdown Grid.Column="1"
-                                            Title="Sort Characters"
                                             Options="{Binding CharactersSortOptions}"
                                             SelectedCode="{Binding CharactersSort}"
                                             SelectSortCommand="{Binding SelectCharactersSortCommand}" />
@@ -1021,7 +1019,6 @@
                             <Label Text="Recommendations" Style="{StaticResource Title3}" TextColor="White" />
                         </HorizontalStackLayout>
                         <views:SortDropdown Grid.Column="1"
-                                            Title="Sort Recommendations"
                                             Options="{Binding RecommendationsSortOptions}"
                                             SelectedCode="{Binding RecommendationsSort}"
                                             SelectSortCommand="{Binding SelectRecommendationsSortCommand}" />
@@ -1095,7 +1092,6 @@
                             <Label Text="Staff" Style="{StaticResource Title3}" TextColor="White" />
                         </HorizontalStackLayout>
                         <views:SortDropdown Grid.Column="1"
-                                            Title="Sort Staff"
                                             Options="{Binding StaffSortOptions}"
                                             SelectedCode="{Binding StaffSort}"
                                             SelectSortCommand="{Binding SelectStaffSortCommand}" />

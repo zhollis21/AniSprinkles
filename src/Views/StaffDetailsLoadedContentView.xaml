@@ -263,7 +263,6 @@
                             <Label Text="Voice Roles" Style="{StaticResource Title3}" TextColor="White" />
                         </HorizontalStackLayout>
                         <views:SortDropdown Grid.Column="1"
-                                            Title="Sort Voice Roles"
                                             Options="{Binding VoiceRolesSortOptions}"
                                             SelectedCode="{Binding VoiceRolesSort}"
                                             SelectSortCommand="{Binding SelectVoiceRolesSortCommand}" />
@@ -364,7 +363,6 @@
                             <Label Text="Production Roles" Style="{StaticResource Title3}" TextColor="White" />
                         </HorizontalStackLayout>
                         <views:SortDropdown Grid.Column="1"
-                                            Title="Sort Production Roles"
                                             Options="{Binding ProductionRolesSortOptions}"
                                             SelectedCode="{Binding ProductionRolesSort}"
                                             SelectSortCommand="{Binding SelectProductionRolesSortCommand}" />
