@@ -774,41 +774,46 @@
                                             SelectSortCommand="{Binding SelectRelationsSortCommand}" />
                     </Grid>
                 </Border>
-                <ScrollView Orientation="Horizontal">
-                    <HorizontalStackLayout Spacing="10"
-                                           BindableLayout.ItemsSource="{Binding DisplayedRelations}">
-                        <BindableLayout.ItemTemplate>
-                            <DataTemplate x:DataType="models:MediaRelationEdge">
-                                <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130">
-                                    <Border.GestureRecognizers>
-                                        <TapGestureRecognizer x:DataType="{x:Null}"
-                                                              Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToMediaCommand}"
-                                                              CommandParameter="{Binding Node}" />
-                                    </Border.GestureRecognizers>
-                                    <VerticalStackLayout>
-                                        <Grid>
-                                            <Image Source="{Binding Node.CoverImage.Large}"
-                                                   Aspect="AspectFill"
-                                                   HeightRequest="170"
-                                                   WidthRequest="130" />
-                                            <views:FormatIconBadge Format="{Binding Node.Format}" />
-                                        </Grid>
-                                        <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
-                                            <Label Text="{Binding RelationType}"
-                                                   Style="{StaticResource Caption2}"
-                                                   TextColor="{Binding RelationType, Converter={StaticResource RainbowAccentConverter}}"
-                                                   FontAttributes="Bold" />
-                                            <Label Text="{Binding Node.DisplayTitle}"
-                                                   Style="{StaticResource Caption1}"
-                                                   MaxLines="2"
-                                                   LineBreakMode="TailTruncation" />
-                                        </VerticalStackLayout>
+                <!-- Virtualized like Characters/Staff/Recommendations: Relations is the complete set from
+                     first paint and sorts client-side, so no paging/busy/spinner — just a horizontal,
+                     recycling CollectionView so first paint and re-sort only realize the visible cards. -->
+                <CollectionView ItemsSource="{Binding DisplayedRelations}"
+                                HeightRequest="250"
+                                ItemSizingStrategy="MeasureFirstItem">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Horizontal" ItemSpacing="10" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:MediaRelationEdge">
+                            <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer x:DataType="{x:Null}"
+                                                          Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToMediaCommand}"
+                                                          CommandParameter="{Binding Node}" />
+                                </Border.GestureRecognizers>
+                                <VerticalStackLayout>
+                                    <Grid>
+                                        <Image Source="{Binding Node.CoverImage.Large}"
+                                               Aspect="AspectFill"
+                                               HeightRequest="170"
+                                               WidthRequest="130" />
+                                        <views:FormatIconBadge Format="{Binding Node.Format}" />
+                                    </Grid>
+                                    <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
+                                        <Label Text="{Binding RelationType}"
+                                               Style="{StaticResource Caption2}"
+                                               TextColor="{Binding RelationType, Converter={StaticResource RainbowAccentConverter}}"
+                                               FontAttributes="Bold" />
+                                        <Label Text="{Binding Node.DisplayTitle}"
+                                               Style="{StaticResource Caption1}"
+                                               MaxLines="2"
+                                               LineBreakMode="TailTruncation" />
                                     </VerticalStackLayout>
-                                </Border>
-                            </DataTemplate>
-                        </BindableLayout.ItemTemplate>
-                    </HorizontalStackLayout>
-                </ScrollView>
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
             </VerticalStackLayout>
 
             <!-- ============================================ -->
