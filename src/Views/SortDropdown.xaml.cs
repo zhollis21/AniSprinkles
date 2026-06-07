@@ -97,7 +97,8 @@ public partial class SortDropdown : ContentView
     // BAR — not just the pill — because the pill is centered in a taller colored header, so a gap below the
     // pill alone still overlaps the bar; clearing the bar is what "opens outside the pill" means.
     // Coordinates are converted into the popup page's space (which starts below the status bar) by
-    // subtracting the system-bar insets. Android-only; elsewhere falls back to a fixed top-right card.
+    // subtracting the system-bar insets. Android-only; if the pill's platform handler isn't ready yet,
+    // falls back to a fixed card near the top-left.
     private (bool OpenUp, double CardLeft, double VEdge) ComputeAnchor(int optionCount)
     {
 #if ANDROID
