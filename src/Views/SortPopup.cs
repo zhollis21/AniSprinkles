@@ -138,7 +138,11 @@ public sealed class SortPopup : Popup<string?>
         else
         {
             // pillVEdgeDip is the pill's BOTTOM; the visible content top sits gapDip below it (less the inset).
-            Margin = new Thickness(marginLeft, pillVEdgeDip + gapDip - ContentInsetDip, 0, 0);
+            // Clamp to MinTopDip so a degenerate anchor (e.g. the handler-not-ready fallback's VEdge of 0)
+            // can't produce a negative top margin that pushes the card under the status bar — mirrors the
+            // up-open path's clamp.
+            var topDip = Math.Max(pillVEdgeDip + gapDip - ContentInsetDip, MinTopDip);
+            Margin = new Thickness(marginLeft, topDip, 0, 0);
         }
     }
 
