@@ -555,31 +555,33 @@ public partial class CharacterDetailsPageModel : ObservableObject
             return null;
         }
 
+        // When the active sort IS a metric, always show the badge with a 0/— fallback so missing data doesn't
+        // look broken; only non-metric sorts (Title) show no badge.
         return sort switch
         {
-            "POPULARITY_DESC" when media.HasPopularity => new ItemMetricBadge
+            "POPULARITY_DESC" => new ItemMetricBadge
             {
                 Glyph = FluentIconsRegular.People24,
                 IconColor = Color.FromArgb("#FF9500"),
-                Text = media.PopularityDisplay,
+                Text = media.PopularityOrZero,
             },
-            "SCORE_DESC" when media.HasScore => new ItemMetricBadge
+            "SCORE_DESC" => new ItemMetricBadge
             {
                 Glyph = FluentIconsRegular.Star24,
                 IconColor = Color.FromArgb("#FFCC00"),
-                Text = media.ScoreDisplay,
+                Text = media.ScoreOrDash,
             },
-            "FAVOURITES_DESC" when media.HasFavourites => new ItemMetricBadge
+            "FAVOURITES_DESC" => new ItemMetricBadge
             {
                 Glyph = FluentIconsRegular.Heart24,
                 IconColor = Color.FromArgb("#FF2D95"),
-                Text = media.FavouritesDisplay,
+                Text = media.FavouritesOrZero,
             },
-            "START_DATE_DESC" or "START_DATE" when media.HasYear => new ItemMetricBadge
+            "START_DATE_DESC" or "START_DATE" => new ItemMetricBadge
             {
                 Glyph = FluentIconsRegular.Calendar24,
                 IconColor = Color.FromArgb("#00C2FF"),
-                Text = media.YearDisplay,
+                Text = media.YearOrDash,
             },
             _ => null,
         };

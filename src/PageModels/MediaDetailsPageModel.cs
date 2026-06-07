@@ -168,9 +168,10 @@ namespace AniSprinkles.PageModels;
 
     public IReadOnlyList<SortOption> RelationsSortOptions { get; } =
     [
-        new SortOption { Code = "RELATION", Display = "Relation Type", IsSelected = true },
-        new SortOption { Code = "YEAR",     Display = "Year" },
-        new SortOption { Code = "TITLE",    Display = "Title" },
+        new SortOption { Code = "RELATION",  Display = "Relation Type", IsSelected = true },
+        new SortOption { Code = "YEAR_DESC", Display = "Newest" },
+        new SortOption { Code = "YEAR_ASC",  Display = "Oldest" },
+        new SortOption { Code = "TITLE",     Display = "Title" },
     ];
 
     public string PageTitle => Media?.DisplayTitle ?? "Details";
@@ -908,31 +909,32 @@ namespace AniSprinkles.PageModels;
         }
     }
 
+    // The metric is always shown (a blank card reads as broken), so missing counts render as "0" and a
+    // missing year as "—" (the app's existing empty-value convention). A null node — a degenerate edge —
+    // is the only case with no badge at all.
     private static ItemMetricBadge? BuildCharacterBadge(Character? node) =>
-        node is { HasFavourites: true } ? FavouritesBadge(node.FavouritesDisplay) : null;
+        node is null ? null : FavouritesBadge(node.HasFavourites ? node.FavouritesDisplay : "0");
 
     private static ItemMetricBadge? BuildStaffBadge(StaffNode? node) =>
-        node is { HasFavourites: true } ? FavouritesBadge(node.FavouritesDisplay) : null;
+        node is null ? null : FavouritesBadge(node.HasFavourites ? node.FavouritesDisplay : "0");
 
-    private static ItemMetricBadge? BuildRecommendationBadge(MediaRecommendationNode node) =>
-        node.HasRating
-            ? new ItemMetricBadge
-            {
-                Glyph = FluentIconsRegular.ThumbLike24,
-                IconColor = Color.FromArgb("#34C759"),
-                Text = node.RatingDisplay,
-            }
-            : null;
+    private static ItemMetricBadge BuildRecommendationBadge(MediaRecommendationNode node) =>
+        new()
+        {
+            Glyph = FluentIconsRegular.ThumbLike24,
+            IconColor = Color.FromArgb("#34C759"),
+            Text = node.HasRating ? node.RatingDisplay : "0",
+        };
 
     private static ItemMetricBadge? BuildRelationBadge(RelatedMedia? node) =>
-        node is { HasYear: true }
-            ? new ItemMetricBadge
+        node is null
+            ? null
+            : new ItemMetricBadge
             {
                 Glyph = FluentIconsRegular.Calendar24,
                 IconColor = Color.FromArgb("#00C2FF"),
-                Text = node.YearDisplay,
-            }
-            : null;
+                Text = node.HasYear ? node.YearDisplay : "—",
+            };
 
     private static ItemMetricBadge FavouritesBadge(string text) => new()
     {

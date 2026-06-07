@@ -14,4 +14,8 @@ public static class MetricFormat
         >= 1000 => (value.Value / 1000.0).ToString("0.#k", CultureInfo.InvariantCulture),
         _ => value.Value.ToString(CultureInfo.InvariantCulture),
     };
+
+    /// <summary>Like <see cref="Compact"/> but renders missing/non-positive values as "0" rather than
+    /// blank — for always-on metric badges where an empty value would read as broken.</summary>
+    public static string CompactOrZero(int? value) => value is > 0 ? Compact(value) : "0";
 }

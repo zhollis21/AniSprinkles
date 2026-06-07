@@ -37,8 +37,8 @@ public static class DetailsListSorters
     /// <summary>
     /// Orders a media's relations entirely client-side (AniList exposes no relation sort enum). The
     /// default groups by relation type in a curated narrative order (Sequel → Prequel → Side Story → …);
-    /// YEAR and TITLE sort across the whole small set. Matches on the formatted <c>RelationType</c> string
-    /// (<c>SIDE_STORY</c> → "Side Story") that the mapper already stored.
+    /// YEAR_DESC/YEAR_ASC and TITLE sort across the whole small set. Matches on the formatted
+    /// <c>RelationType</c> string (<c>SIDE_STORY</c> → "Side Story") that the mapper already stored.
     /// </summary>
     public static IReadOnlyList<MediaRelationEdge> SortRelations(string sort, IReadOnlyList<MediaRelationEdge> items)
     {
@@ -47,7 +47,9 @@ public static class DetailsListSorters
         var withKey = sort switch
         {
             // Newest first; relations with no start year sort last (int.MinValue under descending).
-            "YEAR" => ordered.ThenByDescending(e => e.Node?.StartDate?.Year ?? int.MinValue),
+            "YEAR_DESC" => ordered.ThenByDescending(e => e.Node?.StartDate?.Year ?? int.MinValue),
+            // Oldest first; undated relations sort last (int.MaxValue) so they don't masquerade as ancient.
+            "YEAR_ASC" => ordered.ThenBy(e => e.Node?.StartDate?.Year ?? int.MaxValue),
             // Untitled relations sort last (an empty string would otherwise win the A–Z ordering).
             "TITLE" => ordered
                 .ThenBy(e => string.IsNullOrEmpty(e.Node?.Title?.Romaji))

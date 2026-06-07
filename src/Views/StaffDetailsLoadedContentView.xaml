@@ -273,7 +273,7 @@
                      re-fetches page 1 server-side and Load More appends the next server page. -->
                 <Grid>
                     <CollectionView ItemsSource="{Binding DisplayedVoiceRoles}"
-                                    HeightRequest="266"
+                                    HeightRequest="300"
                                     ItemSizingStrategy="MeasureFirstItem"
                                     RemainingItemsThreshold="3"
                                     RemainingItemsThresholdReachedCommand="{Binding LoadMoreVoiceRolesCommand}"
@@ -295,11 +295,9 @@
                                                               CommandParameter="{Binding Node.Id}" />
                                     </Border.GestureRecognizers>
                                     <VerticalStackLayout>
-                                        <Grid HeightRequest="180" WidthRequest="130">
-                                            <Image Source="{Binding Node.Image.Large}"
-                                                   Aspect="AspectFill"
-                                                   HeightRequest="180"
-                                                   WidthRequest="130" />
+                                        <Grid>
+                                            <views:CoverImage Source="{Binding Node.Image.Large}" />
+                                            <!-- Mini cover of the media this character is from; taps through to it. -->
                                             <Border WidthRequest="40" HeightRequest="56"
                                                     StrokeShape="RoundRectangle 6"
                                                     StrokeThickness="1.5"
@@ -320,7 +318,7 @@
                                         <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
                                             <Label Text="{Binding Node.Name.Full}"
                                                    Style="{StaticResource Caption1Strong}"
-                                                   MaxLines="1"
+                                                   MaxLines="2"
                                                    LineBreakMode="TailTruncation" />
                                             <Label Text="{Binding Role}"
                                                    Style="{StaticResource Caption2}"
@@ -331,6 +329,11 @@
                                                    TextColor="{StaticResource Gray400}"
                                                    MaxLines="2"
                                                    LineBreakMode="TailTruncation" />
+                                            <!-- Always-on heart: Voice Roles can be sorted by Most Favorited, so the
+                                                 character's favourites must be visible (0 when none). -->
+                                            <views:MetricBadgeView Glyph="{x:Static icons:FluentIconsRegular.Heart24}"
+                                                                   IconColor="{StaticResource RainbowPink}"
+                                                                   Text="{Binding Node.FavouritesOrZero}" />
                                         </VerticalStackLayout>
                                     </VerticalStackLayout>
                                 </Border>
@@ -373,7 +376,7 @@
                      re-fetches page 1 server-side and Load More appends the next server page. -->
                 <Grid>
                     <CollectionView ItemsSource="{Binding DisplayedProductionRoles}"
-                                    HeightRequest="264"
+                                    HeightRequest="280"
                                     ItemSizingStrategy="MeasureFirstItem"
                                     RemainingItemsThreshold="3"
                                     RemainingItemsThresholdReachedCommand="{Binding LoadMoreProductionRolesCommand}"
@@ -395,55 +398,26 @@
                                                               CommandParameter="{Binding Node}" />
                                     </Border.GestureRecognizers>
                                     <VerticalStackLayout>
-                                        <Grid HeightRequest="170" WidthRequest="130">
-                                            <Image Source="{Binding Node.CoverImage.Large}"
-                                                   Aspect="AspectFill"
-                                                   HeightRequest="170"
-                                                   WidthRequest="130" />
-                                            <views:FormatIconBadge Format="{Binding Node.Format}" />
-                                        </Grid>
+                                        <views:CoverImage Source="{Binding Node.CoverImage.Large}"
+                                                          Format="{Binding Node.Format}"
+                                                          PlaceholderGlyph="{x:Static icons:FluentIconsRegular.MoviesAndTv24}" />
                                         <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
-                                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="4">
-                                                <Border Grid.Column="0"
-                                                        Background="{Binding StaffRole, Converter={StaticResource RainbowAccentConverter}}"
-                                                        StrokeShape="RoundRectangle 8"
-                                                        StrokeThickness="0"
-                                                        Padding="6,2"
-                                                        HorizontalOptions="Start"
-                                                        VerticalOptions="Center">
-                                                    <!-- StaffRole is free-form and can be long ("Theme Song
-                                                         Performance (OP, ED2)"); cap it so the chip can't wrap
-                                                         past the card and clip the title below. -->
-                                                    <Label Text="{Binding StaffRole}"
-                                                           Style="{StaticResource Caption2}"
-                                                           TextColor="White"
-                                                           FontAttributes="Bold"
-                                                           MaxLines="2"
-                                                           LineBreakMode="TailTruncation" />
-                                                </Border>
-                                                <!-- Per-item badge stamped by the PageModel for the active sort. -->
-                                                <HorizontalStackLayout Grid.Column="1" Spacing="3"
-                                                                       IsVisible="{Binding HasMetricBadge}"
-                                                                       VerticalOptions="Center">
-                                                    <Image WidthRequest="12" HeightRequest="12" VerticalOptions="Center">
-                                                        <Image.Source>
-                                                            <FontImageSource Glyph="{Binding MetricBadge.Glyph}"
-                                                                             FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                                             Color="{Binding MetricBadge.IconColor}"
-                                                                             Size="12" />
-                                                        </Image.Source>
-                                                    </Image>
-                                                    <Label Text="{Binding MetricBadge.Text}"
-                                                           Style="{StaticResource Caption2}"
-                                                           FontAttributes="Bold"
-                                                           TextColor="{StaticResource Gray100}"
-                                                           VerticalTextAlignment="Center" />
-                                                </HorizontalStackLayout>
-                                            </Grid>
-                                            <Label Text="{Binding Node.DisplayTitle}"
-                                                   Style="{StaticResource Caption1}"
+                                            <!-- StaffRole is free-form and can be long ("Theme Song Performance (OP, ED2)"); cap at 2 lines. -->
+                                            <Label Text="{Binding StaffRole}"
+                                                   Style="{StaticResource Caption2}"
+                                                   TextColor="{Binding StaffRole, Converter={StaticResource RainbowAccentConverter}}"
+                                                   FontAttributes="Bold"
                                                    MaxLines="2"
                                                    LineBreakMode="TailTruncation" />
+                                            <Label Text="{Binding Node.DisplayTitle}"
+                                                   Style="{StaticResource Caption1Strong}"
+                                                   MaxLines="2"
+                                                   LineBreakMode="TailTruncation" />
+                                            <!-- Per-item badge stamped by the PageModel for the active sort. -->
+                                            <views:MetricBadgeView Glyph="{Binding MetricBadge.Glyph}"
+                                                                   IconColor="{Binding MetricBadge.IconColor}"
+                                                                   Text="{Binding MetricBadge.Text}"
+                                                                   IsVisible="{Binding HasMetricBadge}" />
                                         </VerticalStackLayout>
                                     </VerticalStackLayout>
                                 </Border>

@@ -24,6 +24,9 @@ public class Character
 
     public bool HasFavourites => Favourites is > 0;
     public string FavouritesDisplay => MetricFormat.Compact(Favourites);
+
+    // Always-on heart on a card shows "0" rather than blank when a character has no favourites.
+    public string FavouritesOrZero => MetricFormat.CompactOrZero(Favourites);
 }
 
 public class CharacterName

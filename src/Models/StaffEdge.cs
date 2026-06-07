@@ -7,7 +7,7 @@ public class StaffEdge
     public StaffNode? Node { get; set; }
     public string? Role { get; set; }
 
-    // The card's metric badge (favourites), stamped by the PageModel; null when the value is absent.
+    // The card's metric badge (favourites), stamped by the PageModel; always shown (0 when none).
     public ItemMetricBadge? MetricBadge { get; set; }
     public bool HasMetricBadge => MetricBadge is not null;
 }

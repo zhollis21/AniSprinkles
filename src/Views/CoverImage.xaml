@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:icons="clr-namespace:IconFont.Maui.FluentIcons;assembly=IconFont.Maui.FluentIcons"
+             xmlns:views="clr-namespace:AniSprinkles.Views"
+             x:Class="AniSprinkles.Views.CoverImage"
+             x:DataType="views:CoverImage"
+             x:Name="Self">
+
+    <!-- One consistent 130×170 cover for every carousel card: a placeholder (person silhouette or media
+         glyph) underneath the real image, which is hidden when the URL is missing OR is AniList's
+         "default.jpg" no-image graphic. The card's CardStyle border clips the top corners. FormatIconBadge
+         shows only when Format is set (media covers). -->
+    <Grid WidthRequest="130" HeightRequest="170">
+        <Grid BackgroundColor="{StaticResource Gray900}">
+            <Image HorizontalOptions="Center" VerticalOptions="Center" WidthRequest="72" HeightRequest="72">
+                <Image.Source>
+                    <FontImageSource Glyph="{Binding PlaceholderGlyph, Source={x:Reference Self}}"
+                                     FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                     Color="{StaticResource Gray500}"
+                                     Size="72" />
+                </Image.Source>
+            </Image>
+        </Grid>
+        <Image Source="{Binding Source, Source={x:Reference Self}}"
+               Aspect="AspectFill"
+               IsVisible="{Binding HasRealImage, Source={x:Reference Self}}" />
+        <views:FormatIconBadge Format="{Binding Format, Source={x:Reference Self}}" />
+    </Grid>
+</ContentView>

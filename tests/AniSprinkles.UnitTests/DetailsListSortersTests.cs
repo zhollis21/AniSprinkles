@@ -217,7 +217,7 @@ public class DetailsListSortersTests
     }
 
     [Fact]
-    public void SortRelations_ByYear_NewestFirstWithMissingYearsLast()
+    public void SortRelations_ByYearDesc_NewestFirstWithMissingYearsLast()
     {
         var items = new List<MediaRelationEdge>
         {
@@ -226,9 +226,24 @@ public class DetailsListSortersTests
             Relation(3, year: 1990),
         };
 
-        var result = DetailsListSorters.SortRelations("YEAR", items);
+        var result = DetailsListSorters.SortRelations("YEAR_DESC", items);
 
         Assert.Equal(new[] { 1, 3, 2 }, result.Select(e => e.Node!.Id)); // 2005, 1990, (undated)
+    }
+
+    [Fact]
+    public void SortRelations_ByYearAsc_OldestFirstWithMissingYearsLast()
+    {
+        var items = new List<MediaRelationEdge>
+        {
+            Relation(1, year: 2005),
+            Relation(2, year: null),
+            Relation(3, year: 1990),
+        };
+
+        var result = DetailsListSorters.SortRelations("YEAR_ASC", items);
+
+        Assert.Equal(new[] { 3, 1, 2 }, result.Select(e => e.Node!.Id)); // 1990, 2005, (undated)
     }
 
     [Fact]
@@ -268,7 +283,7 @@ public class DetailsListSortersTests
         };
 
         var byRelation = DetailsListSorters.SortRelations("RELATION", items);
-        var byYear = DetailsListSorters.SortRelations("YEAR", byRelation);
+        var byYear = DetailsListSorters.SortRelations("YEAR_DESC", byRelation);
         var backToRelation = DetailsListSorters.SortRelations("RELATION", byYear);
 
         Assert.Equal(byRelation.Select(e => e.Node!.Id), backToRelation.Select(e => e.Node!.Id));

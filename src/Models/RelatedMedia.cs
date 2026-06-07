@@ -45,4 +45,14 @@ public class RelatedMedia
     public string PopularityDisplay => MetricFormat.Compact(Popularity);
 
     public string YearDisplay => HasYear ? StartDate!.Year!.Value.ToString(CultureInfo.InvariantCulture) : string.Empty;
+
+    // Sort-metric fallbacks: when a list is sorted by a metric, the badge must still show (never blank, which
+    // looks broken). Counts read "0"; a year or rating reads "—" since 0 would misrepresent "unknown".
+    public string FavouritesOrZero => MetricFormat.CompactOrZero(Favourites);
+
+    public string PopularityOrZero => MetricFormat.CompactOrZero(Popularity);
+
+    public string ScoreOrDash => HasScore ? ScoreDisplay : "—";
+
+    public string YearOrDash => HasYear ? YearDisplay : "—";
 }
