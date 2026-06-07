@@ -13,10 +13,10 @@ namespace AniSprinkles.Views;
 /// <para>
 /// CommunityToolkit.Maui 14.x hosts a Popup as a full-screen modal page whose <c>PopupPageLayout</c> places
 /// a single <c>PopupBorder</c> (the visible card) inside a full-screen <c>Grid</c>, aligned by the Popup's
-/// own <see cref="VisualElement.VerticalOptions"/>/<see cref="VisualElement.HorizontalOptions"/> (where
-/// <c>Fill</c> is coerced to <c>Center</c>) and offset by <see cref="VisualElement.Margin"/> in page
+/// own <c>VerticalOptions</c>/<c>HorizontalOptions</c> (where
+/// <c>Fill</c> is coerced to <c>Center</c>) and offset by <c>Margin</c> in page
 /// coordinates. We therefore: set the Popup to <c>Start</c>/<c>Start</c> and position it with
-/// <see cref="VisualElement.Margin"/>; give the card its rounded shape + shadow through
+/// <c>Margin</c>; give the card its rounded shape + shadow through
 /// <see cref="PopupOptions.Shape"/>/<see cref="PopupOptions.Shadow"/> so the positioned <c>PopupBorder</c>
 /// IS the card (no nested Border whose shadow would offset us); and let the toolkit supply the dim
 /// (<see cref="PopupOptions.PageOverlayColor"/>) and tap-outside dismissal. The anchor coordinates are
