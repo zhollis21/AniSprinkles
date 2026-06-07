@@ -135,13 +135,14 @@
                         <!-- 3. DISPLAY PREFERENCES -->
                         <Border Style="{StaticResource SectionHeaderStyle}"
                     Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}"
-                    AutomationProperties.Name="Display Preferences"
-                    AutomationProperties.HelpText="Toggle Display Preferences section">
+                    SemanticProperties.Description="Display Preferences"
+                    SemanticProperties.Hint="Toggle Display Preferences section">
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ToggleDisplayPreferencesCommand}" />
                             </Border.GestureRecognizers>
                             <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
-                                <Image Grid.Column="0" WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
+                                <Image Grid.Column="0" WidthRequest="20" HeightRequest="20" VerticalOptions="Center"
+                           AutomationProperties.IsInAccessibleTree="False">
                                     <Image.Source>
                                         <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Translate24}"
                                              FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
@@ -151,7 +152,8 @@
                                 </Image>
                                 <Label Grid.Column="1" Text="Display Preferences" Style="{StaticResource Title3}"
                            TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Display'}"
-                           VerticalTextAlignment="Center" />
+                           VerticalTextAlignment="Center"
+                           AutomationProperties.IsInAccessibleTree="False" />
                                 <Label Grid.Column="2"
                            Text="{x:Static icons:FluentIconsRegular.ChevronDown24}"
                            FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
@@ -280,13 +282,14 @@
                         <!-- 4. CONTENT & PRIVACY -->
                         <Border Style="{StaticResource SectionHeaderStyle}"
                     Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}"
-                    AutomationProperties.Name="Content &amp; Privacy"
-                    AutomationProperties.HelpText="Toggle Content &amp; Privacy section">
+                    SemanticProperties.Description="Content &amp; Privacy"
+                    SemanticProperties.Hint="Toggle Content &amp; Privacy section">
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ToggleContentPrivacyCommand}" />
                             </Border.GestureRecognizers>
                             <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
-                                <Image Grid.Column="0" WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
+                                <Image Grid.Column="0" WidthRequest="20" HeightRequest="20" VerticalOptions="Center"
+                           AutomationProperties.IsInAccessibleTree="False">
                                     <Image.Source>
                                         <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.ShieldLock24}"
                                              FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
@@ -296,7 +299,8 @@
                                 </Image>
                                 <Label Grid.Column="1" Text="Content &amp; Privacy" Style="{StaticResource Title3}"
                            TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Privacy'}"
-                           VerticalTextAlignment="Center" />
+                           VerticalTextAlignment="Center"
+                           AutomationProperties.IsInAccessibleTree="False" />
                                 <Label Grid.Column="2"
                            Text="{x:Static icons:FluentIconsRegular.ChevronDown24}"
                            FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
@@ -345,13 +349,14 @@
                         <!-- 5. NOTIFICATION PREFERENCES -->
                         <Border Style="{StaticResource SectionHeaderStyle}"
                     Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}"
-                    AutomationProperties.Name="Notifications"
-                    AutomationProperties.HelpText="Toggle Notifications section">
+                    SemanticProperties.Description="Notifications"
+                    SemanticProperties.Hint="Toggle Notifications section">
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ToggleNotificationsCommand}" />
                             </Border.GestureRecognizers>
                             <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
-                                <Image Grid.Column="0" WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
+                                <Image Grid.Column="0" WidthRequest="20" HeightRequest="20" VerticalOptions="Center"
+                           AutomationProperties.IsInAccessibleTree="False">
                                     <Image.Source>
                                         <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Alert24}"
                                              FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
@@ -361,7 +366,8 @@
                                 </Image>
                                 <Label Grid.Column="1" Text="Notifications" Style="{StaticResource Title3}"
                            TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Notifications'}"
-                           VerticalTextAlignment="Center" />
+                           VerticalTextAlignment="Center"
+                           AutomationProperties.IsInAccessibleTree="False" />
                                 <Label Grid.Column="2"
                            Text="{x:Static icons:FluentIconsRegular.ChevronDown24}"
                            FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
@@ -398,13 +404,14 @@
                         <!-- 6. ACCOUNT -->
                         <Border Style="{StaticResource SectionHeaderStyle}"
                     Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}"
-                    AutomationProperties.Name="Account"
-                    AutomationProperties.HelpText="Toggle Account section">
+                    SemanticProperties.Description="Account"
+                    SemanticProperties.Hint="Toggle Account section">
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ToggleAccountCommand}" />
                             </Border.GestureRecognizers>
                             <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
-                                <Image Grid.Column="0" WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
+                                <Image Grid.Column="0" WidthRequest="20" HeightRequest="20" VerticalOptions="Center"
+                           AutomationProperties.IsInAccessibleTree="False">
                                     <Image.Source>
                                         <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Person24}"
                                              FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
@@ -414,7 +421,8 @@
                                 </Image>
                                 <Label Grid.Column="1" Text="Account" Style="{StaticResource Title3}"
                            TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Account'}"
-                           VerticalTextAlignment="Center" />
+                           VerticalTextAlignment="Center"
+                           AutomationProperties.IsInAccessibleTree="False" />
                                 <Label Grid.Column="2"
                            Text="{x:Static icons:FluentIconsRegular.ChevronDown24}"
                            FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
