@@ -135,8 +135,8 @@
                         <!-- 3. DISPLAY PREFERENCES -->
                         <Border Style="{StaticResource SectionHeaderStyle}"
                     Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}"
-                    AutomationProperties.Name="Display Preferences"
-                    AutomationProperties.HelpText="Toggle Display Preferences section">
+                    SemanticProperties.Description="Display Preferences"
+                    SemanticProperties.Hint="Toggle Display Preferences section">
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ToggleDisplayPreferencesCommand}" />
                             </Border.GestureRecognizers>
@@ -280,8 +280,8 @@
                         <!-- 4. CONTENT & PRIVACY -->
                         <Border Style="{StaticResource SectionHeaderStyle}"
                     Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}"
-                    AutomationProperties.Name="Content &amp; Privacy"
-                    AutomationProperties.HelpText="Toggle Content &amp; Privacy section">
+                    SemanticProperties.Description="Content &amp; Privacy"
+                    SemanticProperties.Hint="Toggle Content &amp; Privacy section">
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ToggleContentPrivacyCommand}" />
                             </Border.GestureRecognizers>
@@ -345,8 +345,8 @@
                         <!-- 5. NOTIFICATION PREFERENCES -->
                         <Border Style="{StaticResource SectionHeaderStyle}"
                     Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}"
-                    AutomationProperties.Name="Notifications"
-                    AutomationProperties.HelpText="Toggle Notifications section">
+                    SemanticProperties.Description="Notifications"
+                    SemanticProperties.Hint="Toggle Notifications section">
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ToggleNotificationsCommand}" />
                             </Border.GestureRecognizers>
@@ -398,8 +398,8 @@
                         <!-- 6. ACCOUNT -->
                         <Border Style="{StaticResource SectionHeaderStyle}"
                     Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}"
-                    AutomationProperties.Name="Account"
-                    AutomationProperties.HelpText="Toggle Account section">
+                    SemanticProperties.Description="Account"
+                    SemanticProperties.Hint="Toggle Account section">
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ToggleAccountCommand}" />
                             </Border.GestureRecognizers>
