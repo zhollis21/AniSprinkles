@@ -323,6 +323,20 @@ public partial class CharacterDetailsPageModel : ObservableObject
         _pageCts = new CancellationTokenSource();
     }
 
+    // The CommunityToolkit sort popup is a modal page, so opening it fires this page's OnDisappearing →
+    // CancelInFlight() → _pageCts cancel. A list op therefore can't blindly reuse _pageCts (the sort the user
+    // just picked would run on an already-cancelled token). Recreate the scope when it's been cancelled while
+    // we're still on the page, so the op runs on a live token that a real navigate-away can still cancel.
+    private CancellationToken EnsurePageScope()
+    {
+        if (_pageCts is null || _pageCts.IsCancellationRequested)
+        {
+            StartNewPageScope();
+        }
+
+        return _pageCts!.Token;
+    }
+
     private Task<(IReadOnlyList<CharacterMediaEdge> Items, PageInfo? PageInfo)> FetchAppearancesPageAsync(
         int page, string sort, CancellationToken cancellationToken)
         => _aniListClient.LoadCharacterMediaPageAsync(_loadedCharacterId, page, sort, PageSize, cancellationToken);
@@ -340,7 +354,7 @@ public partial class CharacterDetailsPageModel : ObservableObject
     private Task LoadMoreAppearances()
         => RunTracedListOpAsync(
             "Appears In · Load More",
-            () => _appearances.LoadMoreAsync(CancellationToken.None),
+            () => _appearances.LoadMoreAsync(EnsurePageScope()),
             () => _appearances.Items.Count);
 
     private bool CanLoadMoreAppearances() => _appearances.CanLoadMore;
@@ -355,7 +369,7 @@ public partial class CharacterDetailsPageModel : ObservableObject
 
         return RunTracedListOpAsync(
             $"Appears In · sort→{code}",
-            () => _appearances.ChangeSortAsync(code, CancellationToken.None),
+            () => _appearances.ChangeSortAsync(code, EnsurePageScope()),
             () => _appearances.Items.Count,
             // Keep the chip selection in sync with the sort that actually took effect.
             onComplete: () => SyncAppearancesSortSelection(_appearances.Sort));
@@ -365,7 +379,7 @@ public partial class CharacterDetailsPageModel : ObservableObject
     private Task CheckForMoreVoiceActors()
         => RunTracedListOpAsync(
             "Voice Actors · check for more",
-            () => _voiceActors.CheckForMoreAsync(CancellationToken.None),
+            () => _voiceActors.CheckForMoreAsync(EnsurePageScope()),
             () => _voiceActors.Items.Count);
 
     // LISTTRACE: times the network fetch + collection apply for a list op so we can tell API cost
