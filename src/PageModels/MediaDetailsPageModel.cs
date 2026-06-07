@@ -22,6 +22,7 @@ namespace AniSprinkles.PageModels;
         private readonly ILogger<MediaDetailsPageModel> _logger;
         private int? _loadedMediaId;
         private int _loadRequestSequence;
+        private CancellationTokenSource? _pageCts;
         private int _lastRequestedMediaId;
         private MediaListEntry? _lastRequestedListEntry;
 
@@ -549,6 +550,10 @@ namespace AniSprinkles.PageModels;
         _lastRequestedMediaId = mediaId;
         _lastRequestedListEntry = listEntry;
 
+        // Fresh page scope for this load: cancels any in-flight fetch from a prior media and gives the
+        // main load + section ops a token that OnDisappearing cancels when the user navigates away.
+        StartNewPageScope();
+
         // Query updates can happen on the same page instance. Clear previous media for a different id
         // so we display an intentional loading state instead of stale details during transition.
         if (_loadedMediaId != mediaId)
@@ -573,7 +578,7 @@ namespace AniSprinkles.PageModels;
             ErrorDetails = string.Empty;
 
             var fetchStopwatch = Stopwatch.StartNew();
-            var result = await _aniListClient.GetMediaAsync(mediaId);
+            var result = await _aniListClient.GetMediaAsync(mediaId, _pageCts!.Token);
             fetchStopwatch.Stop();
             _logger.LogInformation(
                 "NAVTRACE load#{LoadRequestId} media fetch completed in {FetchElapsedMs}ms for media {MediaId}.",
@@ -616,6 +621,12 @@ namespace AniSprinkles.PageModels;
                 loadRequestId,
                 loadStopwatch.ElapsedMilliseconds,
                 mediaId);
+        }
+        catch (OperationCanceledException)
+        {
+            // The user navigated away mid-load (OnDisappearing cancelled the page scope). Abandon quietly —
+            // no error UI and no Sentry report; OnAppearing will reload if they return.
+            _logger.LogInformation("NAVTRACE load#{LoadRequestId} cancelled (navigated away) for media {MediaId}.", loadRequestId, mediaId);
         }
         catch (Exception ex)
         {
@@ -770,11 +781,34 @@ namespace AniSprinkles.PageModels;
 
     // ── Section sort + pagination ────────────────────────────────────
     //
-    // Section sort/Load More ops pass CancellationToken.None: PaginatedSection's generation guard already
-    // drops stale responses (a new-media load re-seeds each section, bumping its generation), so no page
-    // CTS is needed — and crucially, the sort dropdown is a CommunityToolkit popup, which fires the host
-    // page's OnDisappearing; cancelling a page-scoped token there would abort the sort the popup is about
-    // to request. The same-id reuse guard in LoadAsync makes the popup's OnAppearing reload a no-op.
+    // The main load and section ops run under a page-scoped CTS that OnDisappearing cancels, so we stop
+    // hitting the API once the user navigates away (matches Character/Staff details). PaginatedSection's
+    // generation guard stays as defense-in-depth (it drops stale responses when a new-media load re-seeds).
+    // The sort dropdown is a CommunityToolkit popup that fires the host page's OnDisappearing, which would
+    // cancel the very sort it's about to request — so list ops go through EnsurePageScope(), which recreates
+    // a cancelled scope while still on the page; the same-id reuse guard in LoadAsync keeps the popup's
+    // OnAppearing reload a no-op.
+
+    public void CancelInFlight() => _pageCts?.Cancel();
+
+    private void StartNewPageScope()
+    {
+        _pageCts?.Cancel();
+        _pageCts?.Dispose();
+        _pageCts = new CancellationTokenSource();
+    }
+
+    // Recreate the scope when it's been cancelled while still on the page (e.g. by the sort popup's
+    // OnDisappearing), so a list op runs on a live token that a real navigate-away can still cancel.
+    private CancellationToken EnsurePageScope()
+    {
+        if (_pageCts is null || _pageCts.IsCancellationRequested)
+        {
+            StartNewPageScope();
+        }
+
+        return _pageCts!.Token;
+    }
 
     private Task<(IReadOnlyList<CharacterEdge> Items, PageInfo? PageInfo)> FetchCharactersPageAsync(
         int page, string sort, CancellationToken cancellationToken)
@@ -796,7 +830,7 @@ namespace AniSprinkles.PageModels;
     private Task LoadMoreCharacters()
         => RunTracedListOpAsync(
             "Characters · Load More",
-            () => _characters.LoadMoreAsync(CancellationToken.None),
+            () => _characters.LoadMoreAsync(EnsurePageScope()),
             () => _characters.Items.Count);
 
     private bool CanLoadMoreCharacters() => _characters.CanLoadMore;
@@ -811,7 +845,7 @@ namespace AniSprinkles.PageModels;
     private Task LoadMoreStaff()
         => RunTracedListOpAsync(
             "Staff · Load More",
-            () => _staff.LoadMoreAsync(CancellationToken.None),
+            () => _staff.LoadMoreAsync(EnsurePageScope()),
             () => _staff.Items.Count);
 
     private bool CanLoadMoreStaff() => _staff.CanLoadMore;
@@ -826,7 +860,7 @@ namespace AniSprinkles.PageModels;
     private Task LoadMoreRecommendations()
         => RunTracedListOpAsync(
             "Recommendations · Load More",
-            () => _recommendations.LoadMoreAsync(CancellationToken.None),
+            () => _recommendations.LoadMoreAsync(EnsurePageScope()),
             () => _recommendations.Items.Count);
 
     private bool CanLoadMoreRecommendations() => _recommendations.CanLoadMore;
@@ -843,7 +877,7 @@ namespace AniSprinkles.PageModels;
 
         return RunTracedListOpAsync(
             $"{label} · sort→{code}",
-            () => section.ChangeSortAsync(code, CancellationToken.None),
+            () => section.ChangeSortAsync(code, EnsurePageScope()),
             () => section.Items.Count,
             onComplete: () => SyncSortSelection(options, section.Sort));
     }

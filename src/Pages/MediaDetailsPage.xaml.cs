@@ -116,6 +116,9 @@ public partial class MediaDetailsPage : ContentPage, IQueryAttributable
         base.OnDisappearing();
         _hasAppeared = false;
         _pendingQueryVersion++;
+        // Abandon any in-flight load / section fetch so we don't keep hitting the API after navigating away.
+        // List ops recreate the scope via EnsurePageScope, so the sort popup's OnDisappearing stays harmless.
+        ViewModel.CancelInFlight();
     }
 
     private void TryScheduleDeferredLoad()
