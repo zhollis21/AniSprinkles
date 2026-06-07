@@ -366,8 +366,8 @@ public class AniListClient : IAniListClient
                 id,
                 charactersPage,
                 mediaPage,
-                charactersSort = new[] { charactersSort },
-                mediaSort = new[] { mediaSort },
+                charactersSort = WithTiebreaker(charactersSort),
+                mediaSort = WithTiebreaker(mediaSort),
             },
             token: null, // Public query — no auth needed
             cancellationToken).ConfigureAwait(false);
@@ -388,13 +388,25 @@ public class AniListClient : IAniListClient
             {
                 id,
                 mediaPage,
-                mediaSort = new[] { mediaSort },
+                mediaSort = WithTiebreaker(mediaSort),
             },
             token: null, // Public query — no auth needed
             cancellationToken).ConfigureAwait(false);
 
         return data.Character is null ? null : MapCharacter(data.Character);
     }
+
+    // Every server-side sort needs a stable, unique final tiebreaker or pagination can duplicate/skip rows
+    // when many edges share the primary key (e.g. lots of SUPPORTING characters past page 1). Append ID
+    // (ascending, matching the client-side DetailsListSorters tiebreak) so page boundaries are deterministic
+    // and the seed's page 1 orders identically to Load More's page 2.
+    private static string[] WithTiebreaker(string sort) =>
+        string.Equals(sort, "ID", StringComparison.Ordinal) ? [sort] : [sort, "ID"];
+
+    // Media Characters' default (ROLE) keeps its RELEVANCE secondary to match the heavy seed query's
+    // [ROLE, RELEVANCE, ID]; every other code just gets the ID tiebreaker.
+    private static string[] CharacterPageSort(string sort) =>
+        string.Equals(sort, "ROLE", StringComparison.Ordinal) ? ["ROLE", "RELEVANCE", "ID"] : WithTiebreaker(sort);
 
     /// <summary>
     /// Fetches just one page of <c>Staff.characters</c> with a chosen sort. Used by sort changes
@@ -407,7 +419,7 @@ public class AniListClient : IAniListClient
         var data = await SendAsync<StaffData>(
             "StaffCharactersPage",
             StaffCharactersPageQuery,
-            new { id, page, sort = new[] { sort }, perPage },
+            new { id, page, sort = WithTiebreaker(sort), perPage },
             token: null,
             cancellationToken).ConfigureAwait(false);
 
@@ -429,7 +441,7 @@ public class AniListClient : IAniListClient
         var data = await SendAsync<StaffData>(
             "StaffMediaPage",
             StaffMediaPageQuery,
-            new { id, page, sort = new[] { sort }, perPage },
+            new { id, page, sort = WithTiebreaker(sort), perPage },
             token: null,
             cancellationToken).ConfigureAwait(false);
 
@@ -451,7 +463,7 @@ public class AniListClient : IAniListClient
         var data = await SendAsync<CharacterData>(
             "CharacterMediaPage",
             CharacterMediaPageQuery,
-            new { id, page, sort = new[] { sort }, perPage },
+            new { id, page, sort = WithTiebreaker(sort), perPage },
             token: null,
             cancellationToken).ConfigureAwait(false);
 
@@ -493,7 +505,7 @@ public class AniListClient : IAniListClient
         var data = await SendAsync<MediaData>(
             "MediaCharactersPage",
             MediaCharactersPageQuery,
-            new { id, page, sort = new[] { sort }, perPage },
+            new { id, page, sort = CharacterPageSort(sort), perPage },
             token: null,
             cancellationToken).ConfigureAwait(false);
 
@@ -525,7 +537,7 @@ public class AniListClient : IAniListClient
         var data = await SendAsync<MediaData>(
             "MediaStaffPage",
             MediaStaffPageQuery,
-            new { id, page, sort = new[] { sort }, perPage },
+            new { id, page, sort = WithTiebreaker(sort), perPage },
             token: null,
             cancellationToken).ConfigureAwait(false);
 
@@ -557,7 +569,7 @@ public class AniListClient : IAniListClient
         var data = await SendAsync<MediaData>(
             "MediaRecommendationsPage",
             MediaRecommendationsPageQuery,
-            new { id, page, sort = new[] { sort }, perPage },
+            new { id, page, sort = WithTiebreaker(sort), perPage },
             token: null,
             cancellationToken).ConfigureAwait(false);
 
@@ -1725,7 +1737,7 @@ query Media($id: Int!) {
         }
       }
     }
-    recommendations(page: 1, perPage: 25, sort: [RATING_DESC]) {
+    recommendations(page: 1, perPage: 25, sort: [RATING_DESC, ID]) {
       pageInfo { hasNextPage currentPage lastPage }
       nodes {
         rating
