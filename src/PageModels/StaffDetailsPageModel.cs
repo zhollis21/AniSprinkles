@@ -24,7 +24,7 @@ public partial class StaffDetailsPageModel : ObservableObject
 
     private int _loadedStaffId;
     private ParsedDescription _parsedDescription = ParsedDescription.Empty;
-    private CancellationTokenSource? _pageCts;
+    private readonly PageLoadScope _scope = new();
 
     // Voice Roles (Staff.characters) and Production Roles (Staff.staffMedia) are two genuinely
     // separate AniList connections — each lazily paged and server-side sorted, fully independent.
@@ -135,6 +135,9 @@ public partial class StaffDetailsPageModel : ObservableObject
     public bool VoiceRolesBusy => _voiceRoles.IsBusy;
     public bool ProductionRolesBusy => _productionRoles.IsBusy;
 
+    public string VoiceRolesSort => _voiceRoles.Sort;
+    public string ProductionRolesSort => _productionRoles.Sort;
+
     // ---- Hero / bio / quick facts (unchanged) ---------------------------------------------------
 
     public bool HasStaff => Staff is not null;
@@ -199,9 +202,18 @@ public partial class StaffDetailsPageModel : ObservableObject
             return;
         }
 
+        // Same staff already loaded: keep its sections + sort and just restore Content state. This is hit
+        // when returning from a pushed sub-page and — importantly — when a CommunityToolkit sort popup
+        // closes (it fires the host page's OnAppearing → reload). Without this guard the popup would reset
+        // the sort the user just picked. Mirrors MediaDetailsPageModel.
+        if (Staff is not null && Staff.Id == staffId)
+        {
+            CurrentState = PageState.Content;
+            return;
+        }
+
         _loadedStaffId = staffId;
-        StartNewPageScope();
-        var token = _pageCts!.Token; // StartNewPageScope just assigned a fresh CTS
+        var token = _scope.Begin(); // fresh page scope; OnDisappearing cancels it on navigate-away
 
 
 
@@ -268,14 +280,7 @@ public partial class StaffDetailsPageModel : ObservableObject
         }
     }
 
-    public void CancelInFlight() => _pageCts?.Cancel();
-
-    private void StartNewPageScope()
-    {
-        _pageCts?.Cancel();
-        _pageCts?.Dispose();
-        _pageCts = new CancellationTokenSource();
-    }
+    public void CancelInFlight() => _scope.Cancel();
 
     private Task<(IReadOnlyList<StaffCharacterEdge> Items, PageInfo? PageInfo)> FetchVoiceRolesPageAsync(
         int page, string sort, CancellationToken cancellationToken)
@@ -294,7 +299,7 @@ public partial class StaffDetailsPageModel : ObservableObject
     private Task LoadMoreVoiceRoles()
         => RunTracedListOpAsync(
             "Voice Roles · Load More",
-            () => _voiceRoles.LoadMoreAsync(_pageCts?.Token ?? CancellationToken.None),
+            () => _voiceRoles.LoadMoreAsync(_scope.EnsureActive()),
             () => _voiceRoles.Items.Count);
 
     private bool CanLoadMoreVoiceRoles() => _voiceRoles.CanLoadMore;
@@ -303,7 +308,7 @@ public partial class StaffDetailsPageModel : ObservableObject
     private Task LoadMoreProductionRoles()
         => RunTracedListOpAsync(
             "Production Roles · Load More",
-            () => _productionRoles.LoadMoreAsync(_pageCts?.Token ?? CancellationToken.None),
+            () => _productionRoles.LoadMoreAsync(_scope.EnsureActive()),
             () => _productionRoles.Items.Count);
 
     private bool CanLoadMoreProductionRoles() => _productionRoles.CanLoadMore;
@@ -318,7 +323,7 @@ public partial class StaffDetailsPageModel : ObservableObject
 
         return RunTracedListOpAsync(
             $"Voice Roles · sort→{code}",
-            () => _voiceRoles.ChangeSortAsync(code, _pageCts?.Token ?? CancellationToken.None),
+            () => _voiceRoles.ChangeSortAsync(code, _scope.EnsureActive()),
             () => _voiceRoles.Items.Count,
             onComplete: () => SyncSortSelection(VoiceRolesSortOptions, _voiceRoles.Sort));
     }
@@ -333,7 +338,7 @@ public partial class StaffDetailsPageModel : ObservableObject
 
         return RunTracedListOpAsync(
             $"Production Roles · sort→{code}",
-            () => _productionRoles.ChangeSortAsync(code, _pageCts?.Token ?? CancellationToken.None),
+            () => _productionRoles.ChangeSortAsync(code, _scope.EnsureActive()),
             () => _productionRoles.Items.Count,
             onComplete: () => SyncSortSelection(ProductionRolesSortOptions, _productionRoles.Sort));
     }
@@ -480,6 +485,7 @@ public partial class StaffDetailsPageModel : ObservableObject
     {
         OnPropertyChanged(nameof(HasVoiceRoles));
         OnPropertyChanged(nameof(VoiceRolesBusy));
+        OnPropertyChanged(nameof(VoiceRolesSort));
         LoadMoreVoiceRolesCommand.NotifyCanExecuteChanged();
     }
 
@@ -487,6 +493,7 @@ public partial class StaffDetailsPageModel : ObservableObject
     {
         OnPropertyChanged(nameof(HasProductionRoles));
         OnPropertyChanged(nameof(ProductionRolesBusy));
+        OnPropertyChanged(nameof(ProductionRolesSort));
         LoadMoreProductionRolesCommand.NotifyCanExecuteChanged();
     }
 
@@ -522,31 +529,33 @@ public partial class StaffDetailsPageModel : ObservableObject
             return null;
         }
 
+        // When the active sort IS a metric, always show the badge with a 0/— fallback so missing data doesn't
+        // look broken; only non-metric sorts (Title) show no badge.
         return sort switch
         {
-            "POPULARITY_DESC" when media.HasPopularity => new ItemMetricBadge
+            "POPULARITY_DESC" => new ItemMetricBadge
             {
                 Glyph = FluentIconsRegular.People24,
                 IconColor = Color.FromArgb("#FF9500"),
-                Text = media.PopularityDisplay,
+                Text = media.PopularityOrZero,
             },
-            "SCORE_DESC" when media.HasScore => new ItemMetricBadge
+            "SCORE_DESC" => new ItemMetricBadge
             {
                 Glyph = FluentIconsRegular.Star24,
                 IconColor = Color.FromArgb("#FFCC00"),
-                Text = media.ScoreDisplay,
+                Text = media.ScoreOrDash,
             },
-            "FAVOURITES_DESC" when media.HasFavourites => new ItemMetricBadge
+            "FAVOURITES_DESC" => new ItemMetricBadge
             {
                 Glyph = FluentIconsRegular.Heart24,
                 IconColor = Color.FromArgb("#FF2D95"),
-                Text = media.FavouritesDisplay,
+                Text = media.FavouritesOrZero,
             },
-            "START_DATE_DESC" or "START_DATE" when media.HasYear => new ItemMetricBadge
+            "START_DATE_DESC" or "START_DATE" => new ItemMetricBadge
             {
                 Glyph = FluentIconsRegular.Calendar24,
                 IconColor = Color.FromArgb("#00C2FF"),
-                Text = media.YearDisplay,
+                Text = media.YearOrDash,
             },
             _ => null,
         };

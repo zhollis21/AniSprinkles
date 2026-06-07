@@ -1,4 +1,4 @@
-using System.Globalization;
+using AniSprinkles.Utilities;
 
 namespace AniSprinkles.Models;
 
@@ -11,11 +11,8 @@ public class VoiceActor
     public int? Favourites { get; set; }
 
     public bool HasFavourites => Favourites is > 0;
+    public string FavouritesDisplay => MetricFormat.Compact(Favourites);
 
-    public string FavouritesDisplay => Favourites switch
-    {
-        null or <= 0 => string.Empty,
-        >= 1000 => (Favourites.Value / 1000.0).ToString("0.#k", CultureInfo.InvariantCulture),
-        _ => Favourites.Value.ToString(CultureInfo.InvariantCulture),
-    };
+    // Always-on heart on the card shows "0" rather than blank when a VA has no favourites.
+    public string FavouritesOrZero => MetricFormat.CompactOrZero(Favourites);
 }

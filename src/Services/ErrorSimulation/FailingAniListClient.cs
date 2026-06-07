@@ -105,5 +105,17 @@ internal sealed class FailingAniListClient : IAniListClient
     public Task<(IReadOnlyList<CharacterMediaEdge> Items, PageInfo? PageInfo)>
         LoadCharacterMediaPageAsync(int id, int page, string sort, int perPage = 25, CancellationToken ct = default)
             => throw Fail();
+
+    public Task<(IReadOnlyList<CharacterEdge> Items, PageInfo? PageInfo)>
+        LoadMediaCharactersPageAsync(int id, int page, string sort, int perPage = 25, CancellationToken ct = default)
+            => throw Fail();
+
+    public Task<(IReadOnlyList<StaffEdge> Items, PageInfo? PageInfo)>
+        LoadMediaStaffPageAsync(int id, int page, string sort, int perPage = 25, CancellationToken ct = default)
+            => throw Fail();
+
+    public Task<(IReadOnlyList<MediaRecommendationNode> Items, PageInfo? PageInfo)>
+        LoadMediaRecommendationsPageAsync(int id, int page, string sort, int perPage = 25, CancellationToken ct = default)
+            => throw Fail();
 }
 #endif

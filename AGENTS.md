@@ -113,7 +113,7 @@ When presenting 2+ approaches to the user, list them clearly with tradeoffs for 
 
 ### Output style
 
-- No AI attribution footers (e.g. "Generated with Claude Code", "Made with Copilot") in PR descriptions, issue bodies, or commit messages
+- No AI attribution or agent branding anywhere in generated project artifacts. This includes branch names, commit messages, PR titles, PR descriptions, issue bodies, comments, release notes, and footers. Avoid labels such as "codex", "Claude", "Copilot", "AI-generated", or similar unless the user explicitly asks for them.
 - Be terse. Skip pleasantries and preamble.
 
 ## Security

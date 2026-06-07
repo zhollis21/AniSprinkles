@@ -301,7 +301,7 @@
                 <!-- Virtualized like the other detail lists. No RemainingItemsThreshold here: growth
                      is the explicit, capped "check for more" walk below, never auto-triggered on scroll. -->
                 <CollectionView ItemsSource="{Binding VoiceActors}"
-                                HeightRequest="220"
+                                HeightRequest="280"
                                 ItemSizingStrategy="MeasureFirstItem"
                                 IsVisible="{Binding HasVoiceActors}">
                     <CollectionView.ItemsLayout>
@@ -309,48 +309,28 @@
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:VoiceActor">
-                            <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="110">
+                            <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130">
                                 <Border.GestureRecognizers>
                                     <TapGestureRecognizer x:DataType="{x:Null}"
                                                           Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToStaffCommand}"
                                                           CommandParameter="{Binding Id}" />
                                 </Border.GestureRecognizers>
                                 <VerticalStackLayout>
-                                    <Image Source="{Binding Image.Large}"
-                                           Aspect="AspectFill"
-                                           HeightRequest="150"
-                                           WidthRequest="110" />
+                                    <views:CoverImage Source="{Binding Image.Large}" />
                                     <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
                                         <Label Text="{Binding Name.Full}"
                                                Style="{StaticResource Caption1Strong}"
                                                MaxLines="2"
                                                LineBreakMode="TailTruncation" />
-                                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="4">
-                                            <Label Grid.Column="0"
-                                                   Text="{Binding Language}"
-                                                   Style="{StaticResource Caption2}"
-                                                   TextColor="{Binding Language, Converter={StaticResource RainbowAccentConverter}}"
-                                                   FontAttributes="Bold"
-                                                   LineBreakMode="TailTruncation"
-                                                   VerticalTextAlignment="Center" />
-                                            <HorizontalStackLayout Grid.Column="1" Spacing="3"
-                                                                   IsVisible="{Binding HasFavourites}"
-                                                                   VerticalOptions="Center">
-                                                <Image WidthRequest="12" HeightRequest="12" VerticalOptions="Center">
-                                                    <Image.Source>
-                                                        <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Heart24}"
-                                                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                                         Color="{StaticResource RainbowPink}"
-                                                                         Size="12" />
-                                                    </Image.Source>
-                                                </Image>
-                                                <Label Text="{Binding FavouritesDisplay}"
-                                                       Style="{StaticResource Caption2}"
-                                                       FontAttributes="Bold"
-                                                       TextColor="{StaticResource Gray100}"
-                                                       VerticalTextAlignment="Center" />
-                                            </HorizontalStackLayout>
-                                        </Grid>
+                                        <Label Text="{Binding Language}"
+                                               Style="{StaticResource Caption2}"
+                                               TextColor="{Binding Language, Converter={StaticResource RainbowAccentConverter}}"
+                                               FontAttributes="Bold"
+                                               MaxLines="2"
+                                               LineBreakMode="TailTruncation" />
+                                        <views:MetricBadgeView Glyph="{x:Static icons:FluentIconsRegular.Heart24}"
+                                                               IconColor="{StaticResource RainbowPink}"
+                                                               Text="{Binding FavouritesOrZero}" />
                                     </VerticalStackLayout>
                                 </VerticalStackLayout>
                             </Border>
@@ -391,59 +371,31 @@
             <VerticalStackLayout Spacing="10" IsVisible="{Binding HasAppearances}">
                 <Border Style="{StaticResource SectionHeaderStyle}"
                         Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='RelationsHeader'}">
-                    <HorizontalStackLayout Spacing="8">
-                        <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
-                            <Image.Source>
-                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.PlayCircle24}"
-                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                 Color="White"
-                                                 Size="20" />
-                            </Image.Source>
-                        </Image>
-                        <Label Text="Appears In" Style="{StaticResource Title3}" TextColor="White" />
-                    </HorizontalStackLayout>
+                    <Grid ColumnDefinitions="*,Auto">
+                        <HorizontalStackLayout Grid.Column="0" Spacing="8">
+                            <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
+                                <Image.Source>
+                                    <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.PlayCircle24}"
+                                                     FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                     Color="White"
+                                                     Size="20" />
+                                </Image.Source>
+                            </Image>
+                            <Label Text="Appears In" Style="{StaticResource Title3}" TextColor="White" />
+                        </HorizontalStackLayout>
+                        <views:SortDropdown Grid.Column="1"
+                                            Options="{Binding AppearancesSortOptions}"
+                                            SelectedCode="{Binding AppearancesSort}"
+                                            SelectSortCommand="{Binding SelectAppearancesSortCommand}" />
+                    </Grid>
                 </Border>
-                <!-- Sort chips -->
-                <ScrollView Orientation="Horizontal">
-                    <HorizontalStackLayout Spacing="6"
-                                           BindableLayout.ItemsSource="{Binding AppearancesSortOptions}">
-                        <BindableLayout.ItemTemplate>
-                            <DataTemplate x:DataType="pageModels:SortOption">
-                                <Border StrokeShape="RoundRectangle 12"
-                                        StrokeThickness="1"
-                                        Padding="10,3"
-                                        BackgroundColor="{StaticResource SecondaryBackground}">
-                                    <Border.Triggers>
-                                        <DataTrigger TargetType="Border" Binding="{Binding IsSelected}" Value="True">
-                                            <Setter Property="Stroke" Value="{StaticResource RainbowCyan}" />
-                                            <Setter Property="Opacity" Value="1.0" />
-                                        </DataTrigger>
-                                        <DataTrigger TargetType="Border" Binding="{Binding IsSelected}" Value="False">
-                                            <Setter Property="Stroke" Value="Transparent" />
-                                            <Setter Property="Opacity" Value="0.5" />
-                                        </DataTrigger>
-                                    </Border.Triggers>
-                                    <Border.GestureRecognizers>
-                                        <TapGestureRecognizer x:DataType="{x:Null}"
-                                                              Command="{Binding Source={x:Reference RootView}, Path=BindingContext.SelectAppearancesSortCommand}"
-                                                              CommandParameter="{Binding Code}" />
-                                    </Border.GestureRecognizers>
-                                    <Label Text="{Binding Display}"
-                                           Style="{StaticResource Caption2}"
-                                           FontAttributes="Bold"
-                                           TextColor="{StaticResource Gray100}" />
-                                </Border>
-                            </DataTemplate>
-                        </BindableLayout.ItemTemplate>
-                    </HorizontalStackLayout>
-                </ScrollView>
 
                 <!-- Lazily paged: page 1 comes from the heavy Character query; sort re-fetches page 1
                      server-side and Load More fetches the next page on demand. While the section is
                      busy (sort refetch or Load More) the list dims and a spinner overlays it. -->
                 <Grid>
                     <CollectionView ItemsSource="{Binding DisplayedAppearances}"
-                                    HeightRequest="240"
+                                    HeightRequest="280"
                                     ItemSizingStrategy="MeasureFirstItem"
                                     RemainingItemsThreshold="3"
                                     RemainingItemsThresholdReachedCommand="{Binding LoadMoreAppearancesCommand}"
@@ -465,44 +417,25 @@
                                                               CommandParameter="{Binding Node}" />
                                     </Border.GestureRecognizers>
                                     <VerticalStackLayout>
-                                        <Grid HeightRequest="170" WidthRequest="130">
-                                            <Image Source="{Binding Node.CoverImage.Large}"
-                                                   Aspect="AspectFill"
-                                                   HeightRequest="170"
-                                                   WidthRequest="130" />
-                                            <views:FormatIconBadge Format="{Binding Node.Format}" />
-                                        </Grid>
+                                        <views:CoverImage Source="{Binding Node.CoverImage.Large}"
+                                                          Format="{Binding Node.Format}"
+                                                          PlaceholderGlyph="{x:Static icons:FluentIconsRegular.MoviesAndTv24}" />
                                         <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
-                                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="4">
-                                                <Label Grid.Column="0"
-                                                       Text="{Binding CharacterRole}"
-                                                       Style="{StaticResource Caption2}"
-                                                       TextColor="{Binding CharacterRole, Converter={StaticResource RainbowAccentConverter}}"
-                                                       FontAttributes="Bold"
-                                                       VerticalTextAlignment="Center" />
-                                                <!-- Per-item badge stamped by the PageModel for the active sort. -->
-                                                <HorizontalStackLayout Grid.Column="1" Spacing="3"
-                                                                       IsVisible="{Binding HasMetricBadge}"
-                                                                       VerticalOptions="Center">
-                                                    <Image WidthRequest="12" HeightRequest="12" VerticalOptions="Center">
-                                                        <Image.Source>
-                                                            <FontImageSource Glyph="{Binding MetricBadge.Glyph}"
-                                                                             FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                                             Color="{Binding MetricBadge.IconColor}"
-                                                                             Size="12" />
-                                                        </Image.Source>
-                                                    </Image>
-                                                    <Label Text="{Binding MetricBadge.Text}"
-                                                           Style="{StaticResource Caption2}"
-                                                           FontAttributes="Bold"
-                                                           TextColor="{StaticResource Gray100}"
-                                                           VerticalTextAlignment="Center" />
-                                                </HorizontalStackLayout>
-                                            </Grid>
-                                            <Label Text="{Binding Node.DisplayTitle}"
-                                                   Style="{StaticResource Caption1}"
+                                            <Label Text="{Binding CharacterRole}"
+                                                   Style="{StaticResource Caption2}"
+                                                   TextColor="{Binding CharacterRole, Converter={StaticResource RainbowAccentConverter}}"
+                                                   FontAttributes="Bold"
                                                    MaxLines="2"
                                                    LineBreakMode="TailTruncation" />
+                                            <Label Text="{Binding Node.DisplayTitle}"
+                                                   Style="{StaticResource Caption1Strong}"
+                                                   MaxLines="2"
+                                                   LineBreakMode="TailTruncation" />
+                                            <!-- Per-item badge stamped by the PageModel for the active sort. -->
+                                            <views:MetricBadgeView Glyph="{Binding MetricBadge.Glyph}"
+                                                                   IconColor="{Binding MetricBadge.IconColor}"
+                                                                   Text="{Binding MetricBadge.Text}"
+                                                                   IsVisible="{Binding HasMetricBadge}" />
                                         </VerticalStackLayout>
                                     </VerticalStackLayout>
                                 </Border>

@@ -164,4 +164,128 @@ public class DetailsListSortersTests
 
         Assert.Equal(new[] { 2, 3, 1 }, result.Select(e => e.Node!.Id));
     }
+
+    // ---- Relations (client-side; RelationType is the mapper's display string, e.g. "Side Story") ----
+
+    private static MediaRelationEdge Relation(int id, string? type = null, int? year = null, string? title = null)
+        => new()
+        {
+            RelationType = type,
+            Node = new RelatedMedia
+            {
+                Id = id,
+                StartDate = year is null ? null : new MediaDate { Year = year },
+                Title = title is null ? null : new MediaTitle { Romaji = title },
+            },
+        };
+
+    [Fact]
+    public void SortRelations_ByRelationType_OrdersByCuratedNarrativeOrder()
+    {
+        var items = new List<MediaRelationEdge>
+        {
+            Relation(1, "Spin Off"),
+            Relation(2, "Sequel"),
+            Relation(3, "Other"),
+            Relation(4, "Prequel"),
+            Relation(5, "Side Story"),
+            Relation(6, "Parent"),
+            Relation(7, "Adaptation"),
+            Relation(8, "Alternative"),
+        };
+
+        var result = DetailsListSorters.SortRelations("RELATION", items);
+
+        // Sequel → Prequel → Side Story → Parent → Adaptation → Spin Off → Alternative → other
+        Assert.Equal(new[] { 2, 4, 5, 6, 7, 1, 8, 3 }, result.Select(e => e.Node!.Id));
+    }
+
+    [Fact]
+    public void SortRelations_UnknownAndNullTypes_LandInTrailingBucketStableById()
+    {
+        var items = new List<MediaRelationEdge>
+        {
+            Relation(30, "Other"),
+            Relation(10, null),
+            Relation(20, "Character"), // a real AniList type we don't curate → trailing bucket
+            Relation(5, "Sequel"),
+        };
+
+        var result = DetailsListSorters.SortRelations("RELATION", items);
+
+        Assert.Equal(new[] { 5, 10, 20, 30 }, result.Select(e => e.Node!.Id));
+    }
+
+    [Fact]
+    public void SortRelations_ByYearDesc_NewestFirstWithMissingYearsLast()
+    {
+        var items = new List<MediaRelationEdge>
+        {
+            Relation(1, year: 2005),
+            Relation(2, year: null),
+            Relation(3, year: 1990),
+        };
+
+        var result = DetailsListSorters.SortRelations("YEAR_DESC", items);
+
+        Assert.Equal(new[] { 1, 3, 2 }, result.Select(e => e.Node!.Id)); // 2005, 1990, (undated)
+    }
+
+    [Fact]
+    public void SortRelations_ByYearAsc_OldestFirstWithMissingYearsLast()
+    {
+        var items = new List<MediaRelationEdge>
+        {
+            Relation(1, year: 2005),
+            Relation(2, year: null),
+            Relation(3, year: 1990),
+        };
+
+        var result = DetailsListSorters.SortRelations("YEAR_ASC", items);
+
+        Assert.Equal(new[] { 3, 1, 2 }, result.Select(e => e.Node!.Id)); // 1990, 2005, (undated)
+    }
+
+    [Fact]
+    public void SortRelations_ByTitle_CaseInsensitiveWithNullTitlesLast()
+    {
+        var items = new List<MediaRelationEdge>
+        {
+            Relation(1, title: "Beta"),
+            Relation(2, title: "alpha"),
+            Relation(3, title: null),
+        };
+
+        var result = DetailsListSorters.SortRelations("TITLE", items);
+
+        Assert.Equal(new[] { 2, 1, 3 }, result.Select(e => e.Node!.Id)); // alpha, Beta, (untitled)
+    }
+
+    [Fact]
+    public void SortRelations_NullNode_SortsLast()
+    {
+        var items = new List<MediaRelationEdge> { new() { Node = null, RelationType = "Sequel" }, Relation(5, "Sequel") };
+
+        var result = DetailsListSorters.SortRelations("RELATION", items);
+
+        Assert.Equal(5, result[0].Node!.Id);
+        Assert.Null(result[1].Node);
+    }
+
+    [Fact]
+    public void SortRelations_ToggleBackToRelation_IsStable()
+    {
+        var items = new List<MediaRelationEdge>
+        {
+            Relation(1, "Side Story", year: 2010),
+            Relation(2, "Sequel", year: 2000),
+            Relation(3, "Prequel", year: 2020),
+        };
+
+        var byRelation = DetailsListSorters.SortRelations("RELATION", items);
+        var byYear = DetailsListSorters.SortRelations("YEAR_DESC", byRelation);
+        var backToRelation = DetailsListSorters.SortRelations("RELATION", byYear);
+
+        Assert.Equal(byRelation.Select(e => e.Node!.Id), backToRelation.Select(e => e.Node!.Id));
+    }
 }

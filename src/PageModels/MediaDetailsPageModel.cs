@@ -3,7 +3,10 @@ using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using IconFont.Maui.FluentIcons;
 using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Graphics;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Net;
@@ -19,8 +22,27 @@ namespace AniSprinkles.PageModels;
         private readonly ILogger<MediaDetailsPageModel> _logger;
         private int? _loadedMediaId;
         private int _loadRequestSequence;
+        private readonly PageLoadScope _scope = new();
         private int _lastRequestedMediaId;
         private MediaListEntry? _lastRequestedListEntry;
+
+        // Per-section sort + pagination, layered on top of the heavy first-paint MediaQuery (which seeds
+        // page 1 at perPage 25). Characters/Staff/Recommendations sort server-side and Load More; Relations
+        // sorts entirely client-side over a fixed set (no pagination). Defaults MUST match the MediaQuery
+        // sub-block sorts so the seeded page and the highlighted dropdown option agree. Mirrors
+        // CharacterDetailsPageModel.
+        private const int PageSize = 25;
+        private const string CharactersDefaultSort = "ROLE";
+        private const string StaffDefaultSort = "RELEVANCE";
+        private const string RecommendationsDefaultSort = "RATING_DESC";
+        private const string RelationsDefaultSort = "RELATION";
+
+        private readonly PaginatedSection<CharacterEdge> _characters;
+        private readonly PaginatedSection<StaffEdge> _staff;
+        private readonly PaginatedSection<MediaRecommendationNode> _recommendations;
+
+        // Relations is the complete set from the first-paint query; DisplayedRelations is the sorted view.
+        private IReadOnlyList<MediaRelationEdge> _allRelations = [];
 
     // ── Main page state (mutually exclusive) ────────────────────────
     // Transitions:
@@ -85,7 +107,73 @@ namespace AniSprinkles.PageModels;
         _errorReportService = errorReportService;
         _navigationService = navigationService;
         _logger = logger;
+
+        _characters = new PaginatedSection<CharacterEdge>(
+            CharactersDefaultSort,
+            FetchCharactersPageAsync,
+            edge => edge.Node?.Id ?? 0,
+            StampCharacterBadges);
+        _characters.Changed += OnCharactersChanged;
+
+        // A staff member can appear under multiple roles, so key on (id, role) to avoid the dedup
+        // HashSet dropping a second role of the same person across pages.
+        _staff = new PaginatedSection<StaffEdge>(
+            StaffDefaultSort,
+            FetchStaffPageAsync,
+            edge => (edge.Node?.Id ?? 0, edge.Role ?? string.Empty),
+            StampStaffBadges);
+        _staff.Changed += OnStaffChanged;
+
+        _recommendations = new PaginatedSection<MediaRecommendationNode>(
+            RecommendationsDefaultSort,
+            FetchRecommendationsPageAsync,
+            node => node.MediaRecommendation?.Id ?? 0,
+            StampRecommendationBadges);
+        _recommendations.Changed += OnRecommendationsChanged;
     }
+
+    // ── Sortable / paginated sections ───────────────────────────────
+    // Bind XAML to the Displayed* collections (instances are stable for the page model's life) and to
+    // the *Busy / *Sort / Has* facets. SelectedCode on the SortDropdown binds to *Sort.
+
+    public ObservableCollection<CharacterEdge> DisplayedCharacters => _characters.Items;
+    public bool CharactersBusy => _characters.IsBusy;
+    public string CharactersSort => _characters.Sort;
+
+    public ObservableCollection<StaffEdge> DisplayedStaff => _staff.Items;
+    public bool StaffBusy => _staff.IsBusy;
+    public string StaffSort => _staff.Sort;
+
+    public ObservableCollection<MediaRecommendationNode> DisplayedRecommendations => _recommendations.Items;
+    public bool RecommendationsBusy => _recommendations.IsBusy;
+    // Recommendations have a single natural order (most recommended) so there's no sort dropdown — the
+    // section just seeds/loads in RATING_DESC.
+
+    // Relations: client-side sort only, no pagination — instant reorder, no busy/spinner.
+    public ObservableCollection<MediaRelationEdge> DisplayedRelations { get; } = [];
+    public string RelationsSort { get; private set; } = RelationsDefaultSort;
+
+    public IReadOnlyList<SortOption> CharactersSortOptions { get; } =
+    [
+        new SortOption { Code = "ROLE",            Display = "Role", IsSelected = true },
+        new SortOption { Code = "FAVOURITES_DESC", Display = "Most Favorited" },
+        new SortOption { Code = "RELEVANCE",       Display = "Featured" },
+    ];
+
+    public IReadOnlyList<SortOption> StaffSortOptions { get; } =
+    [
+        new SortOption { Code = "RELEVANCE",       Display = "Featured", IsSelected = true },
+        new SortOption { Code = "FAVOURITES_DESC", Display = "Most Favorited" },
+        new SortOption { Code = "ROLE",            Display = "Role" },
+    ];
+
+    public IReadOnlyList<SortOption> RelationsSortOptions { get; } =
+    [
+        new SortOption { Code = "RELATION",  Display = "Relation Type", IsSelected = true },
+        new SortOption { Code = "YEAR_DESC", Display = "Newest" },
+        new SortOption { Code = "YEAR_ASC",  Display = "Oldest" },
+        new SortOption { Code = "TITLE",     Display = "Title" },
+    ];
 
     public string PageTitle => Media?.DisplayTitle ?? "Details";
 
@@ -266,15 +354,15 @@ namespace AniSprinkles.PageModels;
 
     public string SeasonYearDisplay => SeasonDisplay != "-" ? SeasonDisplay : "";
 
-    public bool HasRelations => Relations.Count > 0;
+    public bool HasRelations => DisplayedRelations.Count > 0;
 
-    public bool HasCharacters => Characters.Count > 0;
+    public bool HasCharacters => _characters.Items.Count > 0;
 
-    public bool HasRecommendations => Recommendations.Count > 0;
+    public bool HasRecommendations => _recommendations.Items.Count > 0;
 
     public bool HasStats => ScoreDistribution.Count > 0 || StatusDistribution.Count > 0;
 
-    public bool HasStaff => Staff.Count > 0;
+    public bool HasStaff => _staff.Items.Count > 0;
 
     public bool IsAuthenticated { get; private set; }
 
@@ -400,17 +488,9 @@ namespace AniSprinkles.PageModels;
 
     public string? TrailerUrl { get; private set; }
 
-    public IReadOnlyList<MediaRelationEdge> Relations { get; private set; } = [];
-
-    public IReadOnlyList<CharacterEdge> Characters { get; private set; } = [];
-
-    public IReadOnlyList<MediaRecommendationNode> Recommendations { get; private set; } = [];
-
     public IReadOnlyList<ScoreDistributionItem> ScoreDistribution { get; private set; } = [];
 
     public IReadOnlyList<StatusDistribution> StatusDistribution { get; private set; } = [];
-
-    public IReadOnlyList<StaffEdge> Staff { get; private set; } = [];
 
     public async Task LoadAsync(int mediaId, MediaListEntry? listEntry)
     {
@@ -470,6 +550,10 @@ namespace AniSprinkles.PageModels;
         _lastRequestedMediaId = mediaId;
         _lastRequestedListEntry = listEntry;
 
+        // Fresh page scope for this load: cancels any in-flight fetch from a prior media and gives the
+        // main load + section ops a token that OnDisappearing cancels when the user navigates away.
+        var pageToken = _scope.Begin();
+
         // Query updates can happen on the same page instance. Clear previous media for a different id
         // so we display an intentional loading state instead of stale details during transition.
         if (_loadedMediaId != mediaId)
@@ -494,7 +578,7 @@ namespace AniSprinkles.PageModels;
             ErrorDetails = string.Empty;
 
             var fetchStopwatch = Stopwatch.StartNew();
-            var result = await _aniListClient.GetMediaAsync(mediaId);
+            var result = await _aniListClient.GetMediaAsync(mediaId, pageToken);
             fetchStopwatch.Stop();
             _logger.LogInformation(
                 "NAVTRACE load#{LoadRequestId} media fetch completed in {FetchElapsedMs}ms for media {MediaId}.",
@@ -537,6 +621,12 @@ namespace AniSprinkles.PageModels;
                 loadRequestId,
                 loadStopwatch.ElapsedMilliseconds,
                 mediaId);
+        }
+        catch (OperationCanceledException)
+        {
+            // The user navigated away mid-load (OnDisappearing cancelled the page scope). Abandon quietly —
+            // no error UI and no Sentry report; OnAppearing will reload if they return.
+            _logger.LogInformation("NAVTRACE load#{LoadRequestId} cancelled (navigated away) for media {MediaId}.", loadRequestId, mediaId);
         }
         catch (Exception ex)
         {
@@ -644,12 +734,23 @@ namespace AniSprinkles.PageModels;
             .ToList();
         ExternalLinks = value?.ExternalLinks ?? [];
         TrailerUrl = BuildTrailerUrl(value?.Trailer);
-        Relations = value?.Relations ?? [];
-        Characters = value?.Characters ?? [];
-        Recommendations = value?.Recommendations ?? [];
         ScoreDistribution = value?.ScoreDistribution ?? [];
         StatusDistribution = value?.StatusDistribution ?? [];
-        Staff = value?.Staff ?? [];
+
+        // Seed the paginated sections from the heavy first-page query and reset their dropdowns to the
+        // default sort. Seed() resets each section first, so a null Media (set during a new-id transition)
+        // clears them. Each section's Changed event drives its Has*/Busy/Sort notifications.
+        _characters.Seed(value?.Characters ?? [], value?.CharactersPageInfo);
+        _staff.Seed(value?.Staff ?? [], value?.StaffPageInfo);
+        _recommendations.Seed(value?.Recommendations ?? [], value?.RecommendationsPageInfo);
+        SyncCharactersSortSelection(CharactersDefaultSort);
+        SyncStaffSortSelection(StaffDefaultSort);
+
+        // Relations sorts entirely client-side over a fixed set; capture it and apply the default order.
+        _allRelations = value?.Relations ?? [];
+        RelationsSort = RelationsDefaultSort;
+        SyncRelationsSortSelection(RelationsDefaultSort);
+        ApplyRelationsSort();
 
         OnPropertyChanged(nameof(Genres));
         OnPropertyChanged(nameof(HasGenres));
@@ -666,17 +767,275 @@ namespace AniSprinkles.PageModels;
         OnPropertyChanged(nameof(HasExternalLinks));
         OnPropertyChanged(nameof(TrailerUrl));
         OnPropertyChanged(nameof(HasTrailer));
-        OnPropertyChanged(nameof(Relations));
         OnPropertyChanged(nameof(HasRelations));
-        OnPropertyChanged(nameof(Characters));
+        OnPropertyChanged(nameof(RelationsSort));
         OnPropertyChanged(nameof(HasCharacters));
-        OnPropertyChanged(nameof(Recommendations));
+        OnPropertyChanged(nameof(CharactersSort));
         OnPropertyChanged(nameof(HasRecommendations));
         OnPropertyChanged(nameof(ScoreDistribution));
         OnPropertyChanged(nameof(StatusDistribution));
         OnPropertyChanged(nameof(HasStats));
-        OnPropertyChanged(nameof(Staff));
         OnPropertyChanged(nameof(HasStaff));
+        OnPropertyChanged(nameof(StaffSort));
+    }
+
+    // ── Section sort + pagination ────────────────────────────────────
+    //
+    // The main load and section ops run under a page-scoped CTS that OnDisappearing cancels, so we stop
+    // hitting the API once the user navigates away (matches Character/Staff details). PaginatedSection's
+    // generation guard stays as defense-in-depth (it drops stale responses when a new-media load re-seeds).
+    // The sort dropdown is a CommunityToolkit popup that fires the host page's OnDisappearing, which would
+    // cancel the very sort it's about to request — so list ops go through EnsurePageScope(), which recreates
+    // a cancelled scope while still on the page; the same-id reuse guard in LoadAsync keeps the popup's
+    // OnAppearing reload a no-op.
+
+    public void CancelInFlight() => _scope.Cancel();
+
+    private Task<(IReadOnlyList<CharacterEdge> Items, PageInfo? PageInfo)> FetchCharactersPageAsync(
+        int page, string sort, CancellationToken cancellationToken)
+        => _aniListClient.LoadMediaCharactersPageAsync(_loadedMediaId ?? 0, page, sort, PageSize, cancellationToken);
+
+    private Task<(IReadOnlyList<StaffEdge> Items, PageInfo? PageInfo)> FetchStaffPageAsync(
+        int page, string sort, CancellationToken cancellationToken)
+        => _aniListClient.LoadMediaStaffPageAsync(_loadedMediaId ?? 0, page, sort, PageSize, cancellationToken);
+
+    private Task<(IReadOnlyList<MediaRecommendationNode> Items, PageInfo? PageInfo)> FetchRecommendationsPageAsync(
+        int page, string sort, CancellationToken cancellationToken)
+        => _aniListClient.LoadMediaRecommendationsPageAsync(_loadedMediaId ?? 0, page, sort, PageSize, cancellationToken);
+
+    // --- Characters ---
+
+    // CanExecute gates the scroll-threshold trigger so RemainingItemsThresholdReached can't re-invoke
+    // while a fetch/sort is in flight or once fully paged (matches CharacterDetailsPageModel).
+    [RelayCommand(CanExecute = nameof(CanLoadMoreCharacters))]
+    private Task LoadMoreCharacters()
+        => RunTracedListOpAsync(
+            "Characters · Load More",
+            () => _characters.LoadMoreAsync(_scope.EnsureActive()),
+            () => _characters.Items.Count);
+
+    private bool CanLoadMoreCharacters() => _characters.CanLoadMore;
+
+    [RelayCommand]
+    private Task SelectCharactersSort(string? code)
+        => SelectSectionSortAsync(code, _characters, CharactersSortOptions, "Characters");
+
+    // --- Staff ---
+
+    [RelayCommand(CanExecute = nameof(CanLoadMoreStaff))]
+    private Task LoadMoreStaff()
+        => RunTracedListOpAsync(
+            "Staff · Load More",
+            () => _staff.LoadMoreAsync(_scope.EnsureActive()),
+            () => _staff.Items.Count);
+
+    private bool CanLoadMoreStaff() => _staff.CanLoadMore;
+
+    [RelayCommand]
+    private Task SelectStaffSort(string? code)
+        => SelectSectionSortAsync(code, _staff, StaffSortOptions, "Staff");
+
+    // --- Recommendations ---
+
+    [RelayCommand(CanExecute = nameof(CanLoadMoreRecommendations))]
+    private Task LoadMoreRecommendations()
+        => RunTracedListOpAsync(
+            "Recommendations · Load More",
+            () => _recommendations.LoadMoreAsync(_scope.EnsureActive()),
+            () => _recommendations.Items.Count);
+
+    private bool CanLoadMoreRecommendations() => _recommendations.CanLoadMore;
+
+    // Shared sort-change flow for the server-paginated sections: re-fetch page 1 with the new
+    // sort, and once it settles re-sync the dropdown highlight to the sort that actually took effect
+    // (a failed change leaves the old sort, so the highlight reverts).
+    private Task SelectSectionSortAsync<T>(string? code, PaginatedSection<T> section, IReadOnlyList<SortOption> options, string label)
+    {
+        if (string.IsNullOrEmpty(code) || string.Equals(code, section.Sort, StringComparison.Ordinal))
+        {
+            return Task.CompletedTask;
+        }
+
+        return RunTracedListOpAsync(
+            $"{label} · sort→{code}",
+            () => section.ChangeSortAsync(code, _scope.EnsureActive()),
+            () => section.Items.Count,
+            onComplete: () => SyncSortSelection(options, section.Sort));
+    }
+
+    // --- Relations (client-side sort, no pagination) ---
+
+    [RelayCommand]
+    private void SelectRelationsSort(string? code)
+    {
+        if (string.IsNullOrEmpty(code) || string.Equals(code, RelationsSort, StringComparison.Ordinal))
+        {
+            return;
+        }
+
+        RelationsSort = code;
+        OnPropertyChanged(nameof(RelationsSort));
+        SyncRelationsSortSelection(code);
+        ApplyRelationsSort();
+    }
+
+    private void ApplyRelationsSort()
+    {
+        var sorted = DetailsListSorters.SortRelations(RelationsSort, _allRelations);
+        DisplayedRelations.Clear();
+        foreach (var edge in sorted)
+        {
+            // Stamp the year badge before adding (relations always show their year).
+            edge.MetricBadge = BuildRelationBadge(edge.Node);
+            DisplayedRelations.Add(edge);
+        }
+
+        OnPropertyChanged(nameof(HasRelations));
+    }
+
+    // ── Metric badges ───────────────────────────────────────────────
+    // Each Media section has a single natural metric, so its card always shows it (a heart + favourites for
+    // Characters/Staff, 👍 + rating for Recommendations, 📅 + year for Relations) regardless of the active
+    // sort. (The detail pages, which offer several metric sorts, keep their badge sort-dependent instead.)
+    // Stamping runs via PaginatedSection.onItemsAdded (Seed / Load More / sort refetch); Relations stamps in
+    // ApplyRelationsSort. The `sort` arg is required by the onItemsAdded delegate but unused here.
+
+    private static void StampCharacterBadges(IReadOnlyList<CharacterEdge> items, string sort)
+    {
+        foreach (var edge in items)
+        {
+            edge.MetricBadge = BuildCharacterBadge(edge.Node);
+        }
+    }
+
+    private static void StampStaffBadges(IReadOnlyList<StaffEdge> items, string sort)
+    {
+        foreach (var edge in items)
+        {
+            edge.MetricBadge = BuildStaffBadge(edge.Node);
+        }
+    }
+
+    private static void StampRecommendationBadges(IReadOnlyList<MediaRecommendationNode> items, string sort)
+    {
+        foreach (var node in items)
+        {
+            node.MetricBadge = BuildRecommendationBadge(node);
+        }
+    }
+
+    // The metric is always shown (a blank card reads as broken), so missing counts render as "0" and a
+    // missing year as "—" (the app's existing empty-value convention). A null node — a degenerate edge —
+    // is the only case with no badge at all.
+    private static ItemMetricBadge? BuildCharacterBadge(Character? node) =>
+        node is null ? null : FavouritesBadge(node.HasFavourites ? node.FavouritesDisplay : "0");
+
+    private static ItemMetricBadge? BuildStaffBadge(StaffNode? node) =>
+        node is null ? null : FavouritesBadge(node.HasFavourites ? node.FavouritesDisplay : "0");
+
+    private static ItemMetricBadge BuildRecommendationBadge(MediaRecommendationNode node) =>
+        new()
+        {
+            Glyph = FluentIconsRegular.ThumbLike24,
+            IconColor = Color.FromArgb("#34C759"),
+            Text = node.HasRating ? node.RatingDisplay : "0",
+        };
+
+    private static ItemMetricBadge? BuildRelationBadge(RelatedMedia? node) =>
+        node is null
+            ? null
+            : new ItemMetricBadge
+            {
+                Glyph = FluentIconsRegular.Calendar24,
+                IconColor = Color.FromArgb("#00C2FF"),
+                Text = node.HasYear ? node.YearDisplay : "—",
+            };
+
+    private static ItemMetricBadge FavouritesBadge(string text) => new()
+    {
+        Glyph = FluentIconsRegular.Heart24,
+        IconColor = Color.FromArgb("#FF2D95"),
+        Text = text,
+    };
+
+    // --- Changed handlers + selection sync ---
+
+    private void OnCharactersChanged()
+    {
+        OnPropertyChanged(nameof(HasCharacters));
+        OnPropertyChanged(nameof(CharactersBusy));
+        OnPropertyChanged(nameof(CharactersSort));
+        LoadMoreCharactersCommand.NotifyCanExecuteChanged();
+    }
+
+    private void OnStaffChanged()
+    {
+        OnPropertyChanged(nameof(HasStaff));
+        OnPropertyChanged(nameof(StaffBusy));
+        OnPropertyChanged(nameof(StaffSort));
+        LoadMoreStaffCommand.NotifyCanExecuteChanged();
+    }
+
+    private void OnRecommendationsChanged()
+    {
+        OnPropertyChanged(nameof(HasRecommendations));
+        OnPropertyChanged(nameof(RecommendationsBusy));
+        LoadMoreRecommendationsCommand.NotifyCanExecuteChanged();
+    }
+
+    private void SyncCharactersSortSelection(string code) => SyncSortSelection(CharactersSortOptions, code);
+    private void SyncStaffSortSelection(string code) => SyncSortSelection(StaffSortOptions, code);
+    private void SyncRelationsSortSelection(string code) => SyncSortSelection(RelationsSortOptions, code);
+
+    private static void SyncSortSelection(IReadOnlyList<SortOption> options, string code)
+    {
+        foreach (var opt in options)
+        {
+            opt.IsSelected = string.Equals(opt.Code, code, StringComparison.Ordinal);
+        }
+    }
+
+    // LISTTRACE: times the network fetch + collection apply for a section op so API cost (logged here)
+    // is separable from the UI render that follows. Failures surface via snackbar but are swallowed so
+    // the affordance stays usable; onComplete re-syncs the dropdown highlight to the effective sort.
+    private async Task RunTracedListOpAsync(string op, Func<Task> operation, Func<int> loadedCount, Action? onComplete = null)
+    {
+        var stopwatch = Stopwatch.StartNew();
+        _logger.LogInformation("LISTTRACE {Op} start (media {MediaId})", op, _loadedMediaId);
+
+        Exception? failure = null;
+        try
+        {
+            await operation().ConfigureAwait(true);
+        }
+        catch (Exception ex)
+        {
+            failure = ex;
+        }
+
+        stopwatch.Stop();
+        onComplete?.Invoke();
+
+        if (failure is null)
+        {
+            _logger.LogInformation(
+                "LISTTRACE {Op} completed in {ElapsedMs}ms ({Count} loaded); UI render follows",
+                op, stopwatch.ElapsedMilliseconds, loadedCount());
+            return;
+        }
+
+        _logger.LogWarning(failure, "LISTTRACE {Op} failed in {ElapsedMs}ms (media {MediaId})", op, stopwatch.ElapsedMilliseconds, _loadedMediaId);
+        await ShowListErrorSnackbarAsync(failure).ConfigureAwait(true);
+    }
+
+    // A failed sort/Load More leaves the existing list intact; surface the actionable subtitle so the
+    // failure isn't silent (mirrors the detail pages' chip-reverts-on-failure behavior).
+    private Task ShowListErrorSnackbarAsync(Exception ex)
+    {
+        var message = ex is AniListApiException apiEx
+            ? apiEx.UserSubtitle
+            : "Couldn't update the list. Check your connection and try again.";
+        return ShowSnackbarAsync(message);
     }
 
     partial void OnListEntryChanged(MediaListEntry? value)

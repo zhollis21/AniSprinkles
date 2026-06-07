@@ -111,6 +111,24 @@ public sealed class CachingAniListClient : IAniListClient
             $"CharacterMediaPage:{id}:{page}:{sort}:{perPage}",
             () => _inner.LoadCharacterMediaPageAsync(id, page, sort, perPage, cancellationToken));
 
+    public Task<(IReadOnlyList<CharacterEdge> Items, PageInfo? PageInfo)> LoadMediaCharactersPageAsync(
+        int id, int page, string sort, int perPage = 25, CancellationToken cancellationToken = default)
+        => GetOrAddAsync(
+            $"MediaCharactersPage:{id}:{page}:{sort}:{perPage}",
+            () => _inner.LoadMediaCharactersPageAsync(id, page, sort, perPage, cancellationToken));
+
+    public Task<(IReadOnlyList<StaffEdge> Items, PageInfo? PageInfo)> LoadMediaStaffPageAsync(
+        int id, int page, string sort, int perPage = 25, CancellationToken cancellationToken = default)
+        => GetOrAddAsync(
+            $"MediaStaffPage:{id}:{page}:{sort}:{perPage}",
+            () => _inner.LoadMediaStaffPageAsync(id, page, sort, perPage, cancellationToken));
+
+    public Task<(IReadOnlyList<MediaRecommendationNode> Items, PageInfo? PageInfo)> LoadMediaRecommendationsPageAsync(
+        int id, int page, string sort, int perPage = 25, CancellationToken cancellationToken = default)
+        => GetOrAddAsync(
+            $"MediaRecommendationsPage:{id}:{page}:{sort}:{perPage}",
+            () => _inner.LoadMediaRecommendationsPageAsync(id, page, sort, perPage, cancellationToken));
+
     // ---- Pass-throughs (uncached) -------------------------------------------------------------
 
     public Task<IReadOnlyList<MediaListEntry>> GetMyAnimeListAsync(CancellationToken cancellationToken = default)
@@ -122,8 +140,30 @@ public sealed class CachingAniListClient : IAniListClient
     public Task<IReadOnlyList<Media>> SearchAnimeAsync(string search, int page = 1, int perPage = 20, CancellationToken cancellationToken = default)
         => _inner.SearchAnimeAsync(search, page, perPage, cancellationToken);
 
-    public Task<(Media? Media, MediaListEntry? ListEntry)> GetMediaAsync(int id, CancellationToken cancellationToken = default)
-        => _inner.GetMediaAsync(id, cancellationToken);
+    public async Task<(Media? Media, MediaListEntry? ListEntry)> GetMediaAsync(int id, CancellationToken cancellationToken = default)
+    {
+        // Media itself isn't cached — a list-entry mutation would stale it. But the heavy MediaQuery
+        // embeds the first page (perPage 25) of each sortable section, so seed those per-section page
+        // caches: a sort toggle back to the default, or a Load More the section already holds, becomes a
+        // hit. The sort codes MUST match MediaDetailsPageModel's section defaults and SeededPerPage MUST
+        // match the MediaQuery perPage (see its remarks).
+        var result = await _inner.GetMediaAsync(id, cancellationToken).ConfigureAwait(false);
+
+        if (result.Media is { } media)
+        {
+            SeedPageCache(
+                $"MediaCharactersPage:{id}:1:ROLE:{SeededPerPage}",
+                () => ((IReadOnlyList<CharacterEdge>)media.Characters.ToList(), media.CharactersPageInfo));
+            SeedPageCache(
+                $"MediaStaffPage:{id}:1:RELEVANCE:{SeededPerPage}",
+                () => ((IReadOnlyList<StaffEdge>)media.Staff.ToList(), media.StaffPageInfo));
+            SeedPageCache(
+                $"MediaRecommendationsPage:{id}:1:RATING_DESC:{SeededPerPage}",
+                () => ((IReadOnlyList<MediaRecommendationNode>)media.Recommendations.ToList(), media.RecommendationsPageInfo));
+        }
+
+        return result;
+    }
 
     public Task<MediaListEntry?> SaveMediaListEntryAsync(MediaListEntry entry, CancellationToken cancellationToken = default)
         => _inner.SaveMediaListEntryAsync(entry, cancellationToken);

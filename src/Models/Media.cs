@@ -44,6 +44,13 @@ public class Media
     public List<StatusDistribution> StatusDistribution { get; set; } = [];
     public List<StaffEdge> Staff { get; set; } = [];
 
+    // Page cursors for the sections the heavy MediaQuery seeds at perPage 25. The details page seeds
+    // each PaginatedSection with the first page's items + this cursor so Load More / sort refetches stay
+    // consistent. Relations is intentionally unpaged (client-side sort only), so it has no PageInfo.
+    public PageInfo? CharactersPageInfo { get; set; }
+    public PageInfo? StaffPageInfo { get; set; }
+    public PageInfo? RecommendationsPageInfo { get; set; }
+
     public string DisplayTitle => AppSettings.TitleLanguage switch
     {
         UserTitleLanguage.English
