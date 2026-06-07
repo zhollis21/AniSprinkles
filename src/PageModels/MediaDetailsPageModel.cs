@@ -22,7 +22,7 @@ namespace AniSprinkles.PageModels;
         private readonly ILogger<MediaDetailsPageModel> _logger;
         private int? _loadedMediaId;
         private int _loadRequestSequence;
-        private CancellationTokenSource? _pageCts;
+        private readonly PageLoadScope _scope = new();
         private int _lastRequestedMediaId;
         private MediaListEntry? _lastRequestedListEntry;
 
@@ -552,7 +552,7 @@ namespace AniSprinkles.PageModels;
 
         // Fresh page scope for this load: cancels any in-flight fetch from a prior media and gives the
         // main load + section ops a token that OnDisappearing cancels when the user navigates away.
-        StartNewPageScope();
+        var pageToken = _scope.Begin();
 
         // Query updates can happen on the same page instance. Clear previous media for a different id
         // so we display an intentional loading state instead of stale details during transition.
@@ -578,7 +578,7 @@ namespace AniSprinkles.PageModels;
             ErrorDetails = string.Empty;
 
             var fetchStopwatch = Stopwatch.StartNew();
-            var result = await _aniListClient.GetMediaAsync(mediaId, _pageCts!.Token);
+            var result = await _aniListClient.GetMediaAsync(mediaId, pageToken);
             fetchStopwatch.Stop();
             _logger.LogInformation(
                 "NAVTRACE load#{LoadRequestId} media fetch completed in {FetchElapsedMs}ms for media {MediaId}.",
@@ -789,26 +789,7 @@ namespace AniSprinkles.PageModels;
     // a cancelled scope while still on the page; the same-id reuse guard in LoadAsync keeps the popup's
     // OnAppearing reload a no-op.
 
-    public void CancelInFlight() => _pageCts?.Cancel();
-
-    private void StartNewPageScope()
-    {
-        _pageCts?.Cancel();
-        _pageCts?.Dispose();
-        _pageCts = new CancellationTokenSource();
-    }
-
-    // Recreate the scope when it's been cancelled while still on the page (e.g. by the sort popup's
-    // OnDisappearing), so a list op runs on a live token that a real navigate-away can still cancel.
-    private CancellationToken EnsurePageScope()
-    {
-        if (_pageCts is null || _pageCts.IsCancellationRequested)
-        {
-            StartNewPageScope();
-        }
-
-        return _pageCts!.Token;
-    }
+    public void CancelInFlight() => _scope.Cancel();
 
     private Task<(IReadOnlyList<CharacterEdge> Items, PageInfo? PageInfo)> FetchCharactersPageAsync(
         int page, string sort, CancellationToken cancellationToken)
@@ -830,7 +811,7 @@ namespace AniSprinkles.PageModels;
     private Task LoadMoreCharacters()
         => RunTracedListOpAsync(
             "Characters · Load More",
-            () => _characters.LoadMoreAsync(EnsurePageScope()),
+            () => _characters.LoadMoreAsync(_scope.EnsureActive()),
             () => _characters.Items.Count);
 
     private bool CanLoadMoreCharacters() => _characters.CanLoadMore;
@@ -845,7 +826,7 @@ namespace AniSprinkles.PageModels;
     private Task LoadMoreStaff()
         => RunTracedListOpAsync(
             "Staff · Load More",
-            () => _staff.LoadMoreAsync(EnsurePageScope()),
+            () => _staff.LoadMoreAsync(_scope.EnsureActive()),
             () => _staff.Items.Count);
 
     private bool CanLoadMoreStaff() => _staff.CanLoadMore;
@@ -860,7 +841,7 @@ namespace AniSprinkles.PageModels;
     private Task LoadMoreRecommendations()
         => RunTracedListOpAsync(
             "Recommendations · Load More",
-            () => _recommendations.LoadMoreAsync(EnsurePageScope()),
+            () => _recommendations.LoadMoreAsync(_scope.EnsureActive()),
             () => _recommendations.Items.Count);
 
     private bool CanLoadMoreRecommendations() => _recommendations.CanLoadMore;
@@ -877,7 +858,7 @@ namespace AniSprinkles.PageModels;
 
         return RunTracedListOpAsync(
             $"{label} · sort→{code}",
-            () => section.ChangeSortAsync(code, EnsurePageScope()),
+            () => section.ChangeSortAsync(code, _scope.EnsureActive()),
             () => section.Items.Count,
             onComplete: () => SyncSortSelection(options, section.Sort));
     }

@@ -27,7 +27,7 @@ public partial class CharacterDetailsPageModel : ObservableObject
 
     private int _loadedCharacterId;
     private ParsedDescription _parsedDescription = ParsedDescription.Empty;
-    private CancellationTokenSource? _pageCts;
+    private readonly PageLoadScope _scope = new();
 
     // The Appears In list and the deduped Voice Actors list are two fully independent views over
     // Character.media. Each owns its cursor; neither mutates the other.
@@ -244,8 +244,7 @@ public partial class CharacterDetailsPageModel : ObservableObject
         }
 
         _loadedCharacterId = characterId;
-        StartNewPageScope();
-        var token = _pageCts!.Token; // StartNewPageScope just assigned a fresh CTS
+        var token = _scope.Begin(); // fresh page scope; OnDisappearing cancels it on navigate-away
 
 
 
@@ -314,28 +313,7 @@ public partial class CharacterDetailsPageModel : ObservableObject
         }
     }
 
-    public void CancelInFlight() => _pageCts?.Cancel();
-
-    private void StartNewPageScope()
-    {
-        _pageCts?.Cancel();
-        _pageCts?.Dispose();
-        _pageCts = new CancellationTokenSource();
-    }
-
-    // The CommunityToolkit sort popup is a modal page, so opening it fires this page's OnDisappearing →
-    // CancelInFlight() → _pageCts cancel. A list op therefore can't blindly reuse _pageCts (the sort the user
-    // just picked would run on an already-cancelled token). Recreate the scope when it's been cancelled while
-    // we're still on the page, so the op runs on a live token that a real navigate-away can still cancel.
-    private CancellationToken EnsurePageScope()
-    {
-        if (_pageCts is null || _pageCts.IsCancellationRequested)
-        {
-            StartNewPageScope();
-        }
-
-        return _pageCts!.Token;
-    }
+    public void CancelInFlight() => _scope.Cancel();
 
     private Task<(IReadOnlyList<CharacterMediaEdge> Items, PageInfo? PageInfo)> FetchAppearancesPageAsync(
         int page, string sort, CancellationToken cancellationToken)
@@ -354,7 +332,7 @@ public partial class CharacterDetailsPageModel : ObservableObject
     private Task LoadMoreAppearances()
         => RunTracedListOpAsync(
             "Appears In · Load More",
-            () => _appearances.LoadMoreAsync(EnsurePageScope()),
+            () => _appearances.LoadMoreAsync(_scope.EnsureActive()),
             () => _appearances.Items.Count);
 
     private bool CanLoadMoreAppearances() => _appearances.CanLoadMore;
@@ -369,7 +347,7 @@ public partial class CharacterDetailsPageModel : ObservableObject
 
         return RunTracedListOpAsync(
             $"Appears In · sort→{code}",
-            () => _appearances.ChangeSortAsync(code, EnsurePageScope()),
+            () => _appearances.ChangeSortAsync(code, _scope.EnsureActive()),
             () => _appearances.Items.Count,
             // Keep the chip selection in sync with the sort that actually took effect.
             onComplete: () => SyncAppearancesSortSelection(_appearances.Sort));
@@ -379,7 +357,7 @@ public partial class CharacterDetailsPageModel : ObservableObject
     private Task CheckForMoreVoiceActors()
         => RunTracedListOpAsync(
             "Voice Actors · check for more",
-            () => _voiceActors.CheckForMoreAsync(EnsurePageScope()),
+            () => _voiceActors.CheckForMoreAsync(_scope.EnsureActive()),
             () => _voiceActors.Items.Count);
 
     // LISTTRACE: times the network fetch + collection apply for a list op so we can tell API cost

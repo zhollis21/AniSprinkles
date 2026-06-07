@@ -61,6 +61,34 @@ public class PaginatedSectionTests
     }
 
     [Fact]
+    public async Task LoadMoreAsync_FetchCancelled_DropsWithoutAppendingOrThrowing()
+    {
+        // A page-scoped cancellation (navigate-away) surfaces as OperationCanceledException from the fetch.
+        // The whole cancel-on-nav-away feature relies on this dropping cleanly instead of propagating.
+        var section = Section((_, _, _) => throw new OperationCanceledException());
+        section.Seed([new Item(1), new Item(2)], Page(1, hasNext: true));
+
+        await section.LoadMoreAsync(TestContext.Current.CancellationToken); // must not throw
+
+        Assert.Equal([1, 2], section.Items.Select(i => i.Id)); // nothing appended
+        Assert.False(section.IsLoadingMore);                   // busy state reset
+        Assert.True(section.HasNextPage);                      // paging cursor untouched
+    }
+
+    [Fact]
+    public async Task ChangeSortAsync_FetchCancelled_KeepsCurrentSortAndItems()
+    {
+        var section = Section((_, _, _) => throw new OperationCanceledException());
+        section.Seed([new Item(1), new Item(2)], Page(1, hasNext: true));
+
+        await section.ChangeSortAsync("SCORE_DESC", TestContext.Current.CancellationToken); // must not throw
+
+        Assert.Equal("POPULARITY_DESC", section.Sort);         // sort NOT committed on a cancelled refetch
+        Assert.Equal([1, 2], section.Items.Select(i => i.Id)); // items unchanged
+        Assert.False(section.IsChangingSort);                  // busy state reset
+    }
+
+    [Fact]
     public async Task ChangeSortAsync_NewSort_RefetchesPageOneAndReplaces()
     {
         var section = Section((page, sort, _) =>
