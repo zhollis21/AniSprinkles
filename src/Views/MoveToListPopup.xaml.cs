@@ -23,6 +23,73 @@ public partial class MoveToListPopup : Popup<object>
         InitializeComponent();
         TitleLabel.Text = animeTitle;
         BuildStatusRows(currentStatus);
+
+        // Anchor as a bottom sheet. CommunityToolkit Popup V2 re-declares these as `new` BindableProperties,
+        // so they must be set in code (not on the XAML root) to reach the binding the PopupBorder reads.
+        // Zero the toolkit's default 15dp content inset so the sheet content uses the full width. (Same lesson
+        // as SortPopup; the rounded-top sheet itself is the toolkit's PopupBorder, shaped via PopupOptions.)
+        Padding = new Thickness(0);
+        VerticalOptions = LayoutOptions.End;
+        // Fill is coerced to Center by the toolkit; full width comes from the screen-width WidthRequest below.
+        HorizontalOptions = LayoutOptions.Center;
+        // Must NOT be all-zero: the toolkit's MarginConverter treats Thickness(0) as "empty" and swaps in the
+        // default Thickness(30). The 1dp top is invisible for a bottom-anchored sheet; sides/bottom stay flush.
+        Margin = new Thickness(0, 1, 0, 0);
+
+        var display = DeviceDisplay.MainDisplayInfo;
+        SheetBorder.WidthRequest = display.Width / display.Density;
+
+        // The sheet should reach the physical bottom edge, behind the gesture bar. The toolkit hosts the popup
+        // in a Grid (PopupPageLayout) which, since .NET 10, defaults to SafeAreaEdges=Container and so reserves
+        // the Android navigation-bar inset — leaving the End-anchored sheet stopping above the gesture bar with
+        // the dim scrim showing through. We can only reach that Grid once attached, so finish in OnOpened.
+        Opened += OnOpenedGoEdgeToEdge;
+    }
+
+    private void OnOpenedGoEdgeToEdge(object? sender, EventArgs e)
+    {
+        Opened -= OnOpenedGoEdgeToEdge;
+
+        // Make the popup chrome (the toolkit's Border + Grid ancestors, up to the page) edge-to-edge so the
+        // bottom-anchored sheet extends behind the navigation bar instead of stopping above it.
+        for (Element? element = this; element is not null and not Page; element = element.Parent)
+        {
+            switch (element)
+            {
+                case Layout layout:
+                    layout.SafeAreaEdges = SafeAreaEdges.None;
+                    break;
+                case ContentView contentView:
+                    contentView.SafeAreaEdges = SafeAreaEdges.None;
+                    break;
+                case Border border:
+                    border.SafeAreaEdges = SafeAreaEdges.None;
+                    break;
+            }
+        }
+
+        // The sheet colour now fills the navigation-bar strip; pad the content up by the inset so the last row
+        // still clears the gesture bar.
+        var bottomInsetDip = GetBottomSystemBarInsetDip();
+        if (bottomInsetDip > 0)
+        {
+            SheetContent.Padding = new Thickness(0, 0, 0, bottomInsetDip);
+        }
+    }
+
+    private static double GetBottomSystemBarInsetDip()
+    {
+#if ANDROID
+        var activity = Platform.CurrentActivity;
+        var insets = activity?.Window?.DecorView?.RootWindowInsets?
+            .GetInsets(Android.Views.WindowInsets.Type.SystemBars());
+        var density = activity?.Resources?.DisplayMetrics?.Density ?? 1f;
+        if (insets is not null && density > 0)
+        {
+            return insets.Bottom / density;
+        }
+#endif
+        return 0;
     }
 
     private void BuildStatusRows(MediaListStatus currentStatus)

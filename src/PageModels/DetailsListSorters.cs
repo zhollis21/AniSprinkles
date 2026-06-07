@@ -34,6 +34,46 @@ public static class DetailsListSorters
         return withKey.ThenBy(e => e.Node?.Id ?? 0).ToList();
     }
 
+    /// <summary>
+    /// Orders a media's relations entirely client-side (AniList exposes no relation sort enum). The
+    /// default groups by relation type in a curated narrative order (Sequel → Prequel → Side Story → …);
+    /// YEAR_DESC/YEAR_ASC and TITLE sort across the whole small set. Matches on the formatted
+    /// <c>RelationType</c> string (<c>SIDE_STORY</c> → "Side Story") that the mapper already stored.
+    /// </summary>
+    public static IReadOnlyList<MediaRelationEdge> SortRelations(string sort, IReadOnlyList<MediaRelationEdge> items)
+    {
+        // Null-node edges always sort after real relations, regardless of the active key.
+        var ordered = items.OrderBy(e => e.Node is null);
+        var withKey = sort switch
+        {
+            // Newest first; relations with no start year sort last (int.MinValue under descending).
+            "YEAR_DESC" => ordered.ThenByDescending(e => e.Node?.StartDate?.Year ?? int.MinValue),
+            // Oldest first; undated relations sort last (int.MaxValue) so they don't masquerade as ancient.
+            "YEAR_ASC" => ordered.ThenBy(e => e.Node?.StartDate?.Year ?? int.MaxValue),
+            // Untitled relations sort last (an empty string would otherwise win the A–Z ordering).
+            "TITLE" => ordered
+                .ThenBy(e => string.IsNullOrEmpty(e.Node?.Title?.Romaji))
+                .ThenBy(e => e.Node?.Title?.Romaji ?? string.Empty, StringComparer.OrdinalIgnoreCase),
+            // RELATION (default): bucket by relation type, then a stable id tiebreak within each bucket.
+            _ => ordered.ThenBy(e => RelationTypePriority(e.RelationType)),
+        };
+        return withKey.ThenBy(e => e.Node?.Id ?? 0).ToList();
+    }
+
+    // Normalize underscores so this matches both the mapper's display form ("Side Story") and any raw
+    // AniList enum that slips through ("SIDE_STORY") — e.g. the CI stub builds edges with raw values.
+    private static int RelationTypePriority(string? relationType) => relationType?.Replace('_', ' ').ToLowerInvariant() switch
+    {
+        "sequel" => 0,
+        "prequel" => 1,
+        "side story" => 2,
+        "parent" => 3,
+        "adaptation" => 4,
+        "spin off" => 5,
+        "alternative" => 6,
+        _ => 7,
+    };
+
     private static IReadOnlyList<T> SortByMedia<T>(
         string sort, IReadOnlyList<T> items, Func<T, RelatedMedia?> node, Func<T, int> id)
     {

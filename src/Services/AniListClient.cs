@@ -366,8 +366,8 @@ public class AniListClient : IAniListClient
                 id,
                 charactersPage,
                 mediaPage,
-                charactersSort = new[] { charactersSort },
-                mediaSort = new[] { mediaSort },
+                charactersSort = WithTiebreaker(charactersSort),
+                mediaSort = WithTiebreaker(mediaSort),
             },
             token: null, // Public query — no auth needed
             cancellationToken).ConfigureAwait(false);
@@ -388,13 +388,25 @@ public class AniListClient : IAniListClient
             {
                 id,
                 mediaPage,
-                mediaSort = new[] { mediaSort },
+                mediaSort = WithTiebreaker(mediaSort),
             },
             token: null, // Public query — no auth needed
             cancellationToken).ConfigureAwait(false);
 
         return data.Character is null ? null : MapCharacter(data.Character);
     }
+
+    // Every server-side sort needs a stable, unique final tiebreaker or pagination can duplicate/skip rows
+    // when many edges share the primary key (e.g. lots of SUPPORTING characters past page 1). Append ID
+    // (ascending, matching the client-side DetailsListSorters tiebreak) so page boundaries are deterministic
+    // and the seed's page 1 orders identically to Load More's page 2.
+    private static string[] WithTiebreaker(string sort) =>
+        string.Equals(sort, "ID", StringComparison.Ordinal) ? [sort] : [sort, "ID"];
+
+    // Media Characters' default (ROLE) keeps its RELEVANCE secondary to match the heavy seed query's
+    // [ROLE, RELEVANCE, ID]; every other code just gets the ID tiebreaker.
+    private static string[] CharacterPageSort(string sort) =>
+        string.Equals(sort, "ROLE", StringComparison.Ordinal) ? ["ROLE", "RELEVANCE", "ID"] : WithTiebreaker(sort);
 
     /// <summary>
     /// Fetches just one page of <c>Staff.characters</c> with a chosen sort. Used by sort changes
@@ -407,7 +419,7 @@ public class AniListClient : IAniListClient
         var data = await SendAsync<StaffData>(
             "StaffCharactersPage",
             StaffCharactersPageQuery,
-            new { id, page, sort = new[] { sort }, perPage },
+            new { id, page, sort = WithTiebreaker(sort), perPage },
             token: null,
             cancellationToken).ConfigureAwait(false);
 
@@ -429,7 +441,7 @@ public class AniListClient : IAniListClient
         var data = await SendAsync<StaffData>(
             "StaffMediaPage",
             StaffMediaPageQuery,
-            new { id, page, sort = new[] { sort }, perPage },
+            new { id, page, sort = WithTiebreaker(sort), perPage },
             token: null,
             cancellationToken).ConfigureAwait(false);
 
@@ -451,7 +463,7 @@ public class AniListClient : IAniListClient
         var data = await SendAsync<CharacterData>(
             "CharacterMediaPage",
             CharacterMediaPageQuery,
-            new { id, page, sort = new[] { sort }, perPage },
+            new { id, page, sort = WithTiebreaker(sort), perPage },
             token: null,
             cancellationToken).ConfigureAwait(false);
 
@@ -479,6 +491,102 @@ public class AniListClient : IAniListClient
             })
             .ToList() ?? [];
         return (items, MapPageInfo(data.Character.Media.PageInfo));
+    }
+
+    /// <summary>
+    /// Fetches one page of a media's <c>characters</c> with a chosen sort. Used by sort changes and
+    /// Load More on Media Details' Characters section, layered on top of the heavy <see cref="GetMediaAsync"/>
+    /// first paint so the other sections' accumulated pages aren't flushed. Voice actors are omitted —
+    /// the Media character card doesn't render them.
+    /// </summary>
+    public async Task<(IReadOnlyList<CharacterEdge> Items, PageInfo? PageInfo)> LoadMediaCharactersPageAsync(
+        int id, int page, string sort, int perPage = 25, CancellationToken cancellationToken = default)
+    {
+        var data = await SendAsync<MediaData>(
+            "MediaCharactersPage",
+            MediaCharactersPageQuery,
+            new { id, page, sort = CharacterPageSort(sort), perPage },
+            token: null,
+            cancellationToken).ConfigureAwait(false);
+
+        if (data.Media?.Characters is null)
+        {
+            return ([], null);
+        }
+
+        var items = data.Media.Characters.Edges?
+            .Where(e => e.Node is not null)
+            .Select(e => new CharacterEdge
+            {
+                Node = new Character
+                {
+                    Id = e.Node!.Id,
+                    Name = e.Node.Name,
+                    Image = e.Node.Image,
+                    Favourites = e.Node.Favourites,
+                },
+                Role = e.Role,
+            })
+            .ToList() ?? [];
+        return (items, MapPageInfo(data.Media.Characters.PageInfo));
+    }
+
+    public async Task<(IReadOnlyList<StaffEdge> Items, PageInfo? PageInfo)> LoadMediaStaffPageAsync(
+        int id, int page, string sort, int perPage = 25, CancellationToken cancellationToken = default)
+    {
+        var data = await SendAsync<MediaData>(
+            "MediaStaffPage",
+            MediaStaffPageQuery,
+            new { id, page, sort = WithTiebreaker(sort), perPage },
+            token: null,
+            cancellationToken).ConfigureAwait(false);
+
+        if (data.Media?.Staff is null)
+        {
+            return ([], null);
+        }
+
+        var items = data.Media.Staff.Edges?
+            .Where(e => e.Node is not null)
+            .Select(e => new StaffEdge
+            {
+                Node = new StaffNode
+                {
+                    Id = e.Node!.Id,
+                    Name = e.Node.Name,
+                    Image = e.Node.Image,
+                    Favourites = e.Node.Favourites,
+                },
+                Role = e.Role,
+            })
+            .ToList() ?? [];
+        return (items, MapPageInfo(data.Media.Staff.PageInfo));
+    }
+
+    public async Task<(IReadOnlyList<MediaRecommendationNode> Items, PageInfo? PageInfo)> LoadMediaRecommendationsPageAsync(
+        int id, int page, string sort, int perPage = 25, CancellationToken cancellationToken = default)
+    {
+        var data = await SendAsync<MediaData>(
+            "MediaRecommendationsPage",
+            MediaRecommendationsPageQuery,
+            new { id, page, sort = WithTiebreaker(sort), perPage },
+            token: null,
+            cancellationToken).ConfigureAwait(false);
+
+        if (data.Media?.Recommendations is null)
+        {
+            return ([], null);
+        }
+
+        var items = data.Media.Recommendations.Nodes?
+            .Where(n => n.MediaRecommendation is not null)
+            .Select(n => new MediaRecommendationNode
+            {
+                Rating = n.Rating,
+                MediaRecommendation = MapRelatedMedia(n.MediaRecommendation!),
+            })
+            .ToList() ?? [];
+        return (items, MapPageInfo(data.Media.Recommendations.PageInfo));
     }
 
     private async Task<string> RequireAccessTokenAsync(CancellationToken cancellationToken)
@@ -726,6 +834,7 @@ public class AniListClient : IAniListClient
                         Id = e.Node!.Id,
                         Name = e.Node.Name,
                         Image = e.Node.Image,
+                        Favourites = e.Node.Favourites,
                     },
                     Role = e.Role,
                     VoiceActors = e.VoiceActors?
@@ -759,10 +868,14 @@ public class AniListClient : IAniListClient
                         Id = e.Node!.Id,
                         Name = e.Node.Name,
                         Image = e.Node.Image,
+                        Favourites = e.Node.Favourites,
                     },
                     Role = e.Role,
                 })
                 .ToList() ?? [],
+            CharactersPageInfo = MapPageInfo(dto.Characters?.PageInfo),
+            StaffPageInfo = MapPageInfo(dto.Staff?.PageInfo),
+            RecommendationsPageInfo = MapPageInfo(dto.Recommendations?.PageInfo),
         };
     }
 
@@ -1339,6 +1452,7 @@ public class AniListClient : IAniListClient
 
     private sealed class CharacterConnectionDto
     {
+        public PageInfoDto? PageInfo { get; set; }
         public List<CharacterEdgeDto>? Edges { get; set; }
     }
 
@@ -1368,6 +1482,7 @@ public class AniListClient : IAniListClient
 
     private sealed class RecommendationConnectionDto
     {
+        public PageInfoDto? PageInfo { get; set; }
         public List<RecommendationNodeDto>? Nodes { get; set; }
     }
 
@@ -1391,6 +1506,7 @@ public class AniListClient : IAniListClient
 
     private sealed class StaffConnectionDto
     {
+        public PageInfoDto? PageInfo { get; set; }
         public List<StaffEdgeDto>? Edges { get; set; }
     }
 
@@ -1405,6 +1521,7 @@ public class AniListClient : IAniListClient
         public int Id { get; set; }
         public CharacterName? Name { get; set; }
         public CharacterImage? Image { get; set; }
+        public int? Favourites { get; set; }
     }
 
     private sealed class StaffData
@@ -1598,15 +1715,18 @@ query Media($id: Int!) {
           type
           status
           coverImage { medium large }
+          startDate { year }
         }
       }
     }
-    characters(page: 1, perPage: 10, sort: [ROLE, RELEVANCE, ID]) {
+    characters(page: 1, perPage: 25, sort: [ROLE, RELEVANCE, ID]) {
+      pageInfo { hasNextPage currentPage lastPage }
       edges {
         node {
           id
           name { full native }
           image { medium large }
+          favourites
         }
         role
         voiceActors(sort: [RELEVANCE, ID]) {
@@ -1617,7 +1737,8 @@ query Media($id: Int!) {
         }
       }
     }
-    recommendations(page: 1, perPage: 8, sort: [RATING_DESC]) {
+    recommendations(page: 1, perPage: 25, sort: [RATING_DESC, ID]) {
+      pageInfo { hasNextPage currentPage lastPage }
       nodes {
         rating
         mediaRecommendation {
@@ -1634,12 +1755,14 @@ query Media($id: Int!) {
       scoreDistribution { score amount }
       statusDistribution { status amount }
     }
-    staff(page: 1, perPage: 10, sort: [RELEVANCE, ID]) {
+    staff(page: 1, perPage: 25, sort: [RELEVANCE, ID]) {
+      pageInfo { hasNextPage currentPage lastPage }
       edges {
         node {
           id
           name { full native }
           image { medium }
+          favourites
         }
         role
       }
@@ -1881,6 +2004,66 @@ query CharacterMediaPage($id: Int!, $page: Int!, $sort: [MediaSort], $perPage: I
           image { medium large }
           languageV2
           favourites
+        }
+      }
+    }
+  }
+}";
+
+    // Per-section page queries for Media Details. Each fetches a single connection of Media(id, type: ANIME)
+    // with the section's sort + page, mirroring the corresponding sub-block of the heavy MediaQuery so
+    // Load-More items render identically to the seeded first page. Characters omits voiceActors (unused on
+    // the Media character card).
+    private const string MediaCharactersPageQuery = @"
+query MediaCharactersPage($id: Int!, $page: Int!, $sort: [CharacterSort], $perPage: Int = 25) {
+  Media(id: $id, type: ANIME) {
+    characters(sort: $sort, page: $page, perPage: $perPage) {
+      pageInfo { hasNextPage currentPage lastPage }
+      edges {
+        node {
+          id
+          name { full native }
+          image { medium large }
+          favourites
+        }
+        role
+      }
+    }
+  }
+}";
+
+    private const string MediaStaffPageQuery = @"
+query MediaStaffPage($id: Int!, $page: Int!, $sort: [StaffSort], $perPage: Int = 25) {
+  Media(id: $id, type: ANIME) {
+    staff(sort: $sort, page: $page, perPage: $perPage) {
+      pageInfo { hasNextPage currentPage lastPage }
+      edges {
+        node {
+          id
+          name { full native }
+          image { medium }
+          favourites
+        }
+        role
+      }
+    }
+  }
+}";
+
+    private const string MediaRecommendationsPageQuery = @"
+query MediaRecommendationsPage($id: Int!, $page: Int!, $sort: [RecommendationSort], $perPage: Int = 25) {
+  Media(id: $id, type: ANIME) {
+    recommendations(sort: $sort, page: $page, perPage: $perPage) {
+      pageInfo { hasNextPage currentPage lastPage }
+      nodes {
+        rating
+        mediaRecommendation {
+          id
+          title { romaji english native }
+          format
+          type
+          coverImage { medium large }
+          averageScore
         }
       }
     }

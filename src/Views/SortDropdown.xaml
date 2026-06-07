@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:icons="clr-namespace:IconFont.Maui.FluentIcons;assembly=IconFont.Maui.FluentIcons"
+             x:Class="AniSprinkles.Views.SortDropdown">
+
+    <!-- A flat, right-aligned sort trigger inside a colored section header: just the white label + chevron,
+         no fill or border, so it stays light against any header tint. Keep the padding as the tap target. -->
+    <!-- Background="Transparent" (a Brush) overrides the implicit Border style's card Background, which a
+         plain BackgroundColor would not — so the chip never paints a solid blob over the header. -->
+    <Border x:Name="Pill"
+            StrokeThickness="0"
+            Padding="8,4"
+            Background="Transparent"
+            HorizontalOptions="End"
+            VerticalOptions="Center">
+        <Border.GestureRecognizers>
+            <TapGestureRecognizer Tapped="OnTapped" />
+        </Border.GestureRecognizers>
+        <HorizontalStackLayout Spacing="4">
+            <Label x:Name="SelectedLabel"
+                   Style="{StaticResource Caption2}"
+                   FontAttributes="Bold"
+                   TextColor="White"
+                   VerticalTextAlignment="Center" />
+            <Image WidthRequest="12" HeightRequest="12" VerticalOptions="Center">
+                <Image.Source>
+                    <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.ChevronDown24}"
+                                     FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                     Color="White" Size="12" />
+                </Image.Source>
+            </Image>
+        </HorizontalStackLayout>
+    </Border>
+
+</ContentView>

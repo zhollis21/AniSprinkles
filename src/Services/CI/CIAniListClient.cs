@@ -80,6 +80,21 @@ internal sealed class CIAniListClient : IAniListClient
         => Task.FromResult<(IReadOnlyList<CharacterMediaEdge>, PageInfo?)>(
             ([], new PageInfo { HasNextPage = false, CurrentPage = page }));
 
+    public Task<(IReadOnlyList<CharacterEdge> Items, PageInfo? PageInfo)> LoadMediaCharactersPageAsync(
+        int id, int page, string sort, int perPage = 25, CancellationToken ct = default)
+        => Task.FromResult<(IReadOnlyList<CharacterEdge>, PageInfo?)>(
+            ([], new PageInfo { HasNextPage = false, CurrentPage = page }));
+
+    public Task<(IReadOnlyList<StaffEdge> Items, PageInfo? PageInfo)> LoadMediaStaffPageAsync(
+        int id, int page, string sort, int perPage = 25, CancellationToken ct = default)
+        => Task.FromResult<(IReadOnlyList<StaffEdge>, PageInfo?)>(
+            ([], new PageInfo { HasNextPage = false, CurrentPage = page }));
+
+    public Task<(IReadOnlyList<MediaRecommendationNode> Items, PageInfo? PageInfo)> LoadMediaRecommendationsPageAsync(
+        int id, int page, string sort, int perPage = 25, CancellationToken ct = default)
+        => Task.FromResult<(IReadOnlyList<MediaRecommendationNode>, PageInfo?)>(
+            ([], new PageInfo { HasNextPage = false, CurrentPage = page }));
+
     public Task<IReadOnlyList<AiringScheduleEntry>> GetAiringScheduleAsync(
         IReadOnlyList<int> mediaIds, int airingAfter, int airingBefore, CancellationToken cancellationToken = default)
     {

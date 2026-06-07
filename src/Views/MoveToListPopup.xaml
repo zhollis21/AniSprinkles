@@ -5,16 +5,18 @@
                xmlns:icons="clr-namespace:IconFont.Maui.FluentIcons;assembly=IconFont.Maui.FluentIcons"
                x:Class="AniSprinkles.Views.MoveToListPopup"
                x:TypeArguments="x:Object"
-               BackgroundColor="Transparent"
-               VerticalOptions="End">
+               BackgroundColor="{StaticResource SecondaryBackground}">
 
-    <Border StrokeShape="RoundRectangle 20,20,0,0"
+    <!-- Bottom-sheet sizing/anchoring is set in code-behind: CommunityToolkit Popup V2 ignores
+         VerticalOptions/Margin set on this XAML root (it re-declares them as `new` BindableProperties),
+         and full width comes from a screen-width WidthRequest since Fill is coerced to Center. -->
+    <Border x:Name="SheetBorder"
+            StrokeShape="RoundRectangle 20,20,0,0"
             StrokeThickness="0"
             Padding="0"
             HorizontalOptions="Fill"
-            WidthRequest="400"
             Background="{StaticResource SecondaryBackground}">
-        <VerticalStackLayout Spacing="0" Padding="0">
+        <VerticalStackLayout x:Name="SheetContent" Spacing="0" Padding="0">
 
             <!-- Drag handle -->
             <BoxView HeightRequest="4" WidthRequest="36"
