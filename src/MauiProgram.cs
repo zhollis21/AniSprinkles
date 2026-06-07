@@ -136,6 +136,23 @@ public static class MauiProgram
         builder.Services.AddTransient<CharacterDetailsPageModel>();
         builder.Services.AddTransient<CharacterDetailsPage>();
 
+#if ANDROID
+        // Android paints a focus highlight (a stray blue outline) on a CollectionView's RecyclerView when a
+        // modal popup is pushed over it and focus shifts — it shows up behind the sort picker. Turn the
+        // highlight off for every CollectionView app-wide so it can't bleed behind any popup. This is purely
+        // cosmetic (it doesn't change focusability or touch handling), so it's safe across all lists.
+        // DefaultFocusHighlightEnabled is API 26+; the app's min SDK is well above that.
+        Microsoft.Maui.Controls.Handlers.Items.CollectionViewHandler.Mapper.AppendToMapping(
+            "AniSprinkles.DisableFocusHighlight",
+            static (handler, _) =>
+            {
+                if (handler.PlatformView is Android.Views.View view)
+                {
+                    view.DefaultFocusHighlightEnabled = false;
+                }
+            });
+#endif
+
         return builder.Build();
     }
 }

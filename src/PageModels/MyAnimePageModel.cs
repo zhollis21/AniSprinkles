@@ -607,7 +607,14 @@ public partial class MyAnimePageModel : ObservableObject
         var popup = new Views.MoveToListPopup(entry.Media.DisplayTitle, entry.Status.Value);
         var popupOptions = new PopupOptions
         {
-            Shape = null,
+            // The toolkit's PopupBorder is the element that reaches the screen edge, so it must BE the visible
+            // sheet: give it the rounded-top bottom-sheet shape (the popup's BackgroundColor fills it). A nested
+            // rounded Border would leave the PopupBorder's own bottom strip transparent, showing the dim scrim.
+            Shape = new Microsoft.Maui.Controls.Shapes.RoundRectangle
+            {
+                CornerRadius = new CornerRadius(20, 20, 0, 0),
+                StrokeThickness = 0,
+            },
             Shadow = null,
             CanBeDismissedByTappingOutsideOfPopup = true,
         };

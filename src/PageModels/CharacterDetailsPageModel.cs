@@ -27,7 +27,7 @@ public partial class CharacterDetailsPageModel : ObservableObject
 
     private int _loadedCharacterId;
     private ParsedDescription _parsedDescription = ParsedDescription.Empty;
-    private CancellationTokenSource? _pageCts;
+    private readonly PageLoadScope _scope = new();
 
     // The Appears In list and the deduped Voice Actors list are two fully independent views over
     // Character.media. Each owns its cursor; neither mutates the other.
@@ -132,6 +132,8 @@ public partial class CharacterDetailsPageModel : ObservableObject
 
     public bool AppearancesBusy => _appearances.IsBusy;
 
+    public string AppearancesSort => _appearances.Sort;
+
     // ---- Voice Actors ---------------------------------------------------------------------------
 
     public ObservableCollection<VoiceActor> VoiceActors => _voiceActors.Items;
@@ -231,9 +233,18 @@ public partial class CharacterDetailsPageModel : ObservableObject
             return;
         }
 
+        // Same character already loaded: keep its sections + sort and just restore Content state. This is
+        // hit when returning from a pushed sub-page (e.g. a voice actor's staff page) and — importantly —
+        // when a CommunityToolkit sort popup closes (it fires the host page's OnAppearing → reload). Without
+        // this guard the popup would reset the sort the user just picked. Mirrors MediaDetailsPageModel.
+        if (Character is not null && Character.Id == characterId)
+        {
+            CurrentState = PageState.Content;
+            return;
+        }
+
         _loadedCharacterId = characterId;
-        StartNewPageScope();
-        var token = _pageCts!.Token; // StartNewPageScope just assigned a fresh CTS
+        var token = _scope.Begin(); // fresh page scope; OnDisappearing cancels it on navigate-away
 
 
 
@@ -302,14 +313,7 @@ public partial class CharacterDetailsPageModel : ObservableObject
         }
     }
 
-    public void CancelInFlight() => _pageCts?.Cancel();
-
-    private void StartNewPageScope()
-    {
-        _pageCts?.Cancel();
-        _pageCts?.Dispose();
-        _pageCts = new CancellationTokenSource();
-    }
+    public void CancelInFlight() => _scope.Cancel();
 
     private Task<(IReadOnlyList<CharacterMediaEdge> Items, PageInfo? PageInfo)> FetchAppearancesPageAsync(
         int page, string sort, CancellationToken cancellationToken)
@@ -328,7 +332,7 @@ public partial class CharacterDetailsPageModel : ObservableObject
     private Task LoadMoreAppearances()
         => RunTracedListOpAsync(
             "Appears In · Load More",
-            () => _appearances.LoadMoreAsync(_pageCts?.Token ?? CancellationToken.None),
+            () => _appearances.LoadMoreAsync(_scope.EnsureActive()),
             () => _appearances.Items.Count);
 
     private bool CanLoadMoreAppearances() => _appearances.CanLoadMore;
@@ -343,7 +347,7 @@ public partial class CharacterDetailsPageModel : ObservableObject
 
         return RunTracedListOpAsync(
             $"Appears In · sort→{code}",
-            () => _appearances.ChangeSortAsync(code, _pageCts?.Token ?? CancellationToken.None),
+            () => _appearances.ChangeSortAsync(code, _scope.EnsureActive()),
             () => _appearances.Items.Count,
             // Keep the chip selection in sync with the sort that actually took effect.
             onComplete: () => SyncAppearancesSortSelection(_appearances.Sort));
@@ -353,7 +357,7 @@ public partial class CharacterDetailsPageModel : ObservableObject
     private Task CheckForMoreVoiceActors()
         => RunTracedListOpAsync(
             "Voice Actors · check for more",
-            () => _voiceActors.CheckForMoreAsync(_pageCts?.Token ?? CancellationToken.None),
+            () => _voiceActors.CheckForMoreAsync(_scope.EnsureActive()),
             () => _voiceActors.Items.Count);
 
     // LISTTRACE: times the network fetch + collection apply for a list op so we can tell API cost
@@ -499,6 +503,7 @@ public partial class CharacterDetailsPageModel : ObservableObject
     {
         OnPropertyChanged(nameof(HasAppearances));
         OnPropertyChanged(nameof(AppearancesBusy));
+        OnPropertyChanged(nameof(AppearancesSort));
         LoadMoreAppearancesCommand.NotifyCanExecuteChanged();
     }
 
@@ -542,31 +547,33 @@ public partial class CharacterDetailsPageModel : ObservableObject
             return null;
         }
 
+        // When the active sort IS a metric, always show the badge with a 0/— fallback so missing data doesn't
+        // look broken; only non-metric sorts (Title) show no badge.
         return sort switch
         {
-            "POPULARITY_DESC" when media.HasPopularity => new ItemMetricBadge
+            "POPULARITY_DESC" => new ItemMetricBadge
             {
                 Glyph = FluentIconsRegular.People24,
                 IconColor = Color.FromArgb("#FF9500"),
-                Text = media.PopularityDisplay,
+                Text = media.PopularityOrZero,
             },
-            "SCORE_DESC" when media.HasScore => new ItemMetricBadge
+            "SCORE_DESC" => new ItemMetricBadge
             {
                 Glyph = FluentIconsRegular.Star24,
                 IconColor = Color.FromArgb("#FFCC00"),
-                Text = media.ScoreDisplay,
+                Text = media.ScoreOrDash,
             },
-            "FAVOURITES_DESC" when media.HasFavourites => new ItemMetricBadge
+            "FAVOURITES_DESC" => new ItemMetricBadge
             {
                 Glyph = FluentIconsRegular.Heart24,
                 IconColor = Color.FromArgb("#FF2D95"),
-                Text = media.FavouritesDisplay,
+                Text = media.FavouritesOrZero,
             },
-            "START_DATE_DESC" or "START_DATE" when media.HasYear => new ItemMetricBadge
+            "START_DATE_DESC" or "START_DATE" => new ItemMetricBadge
             {
                 Glyph = FluentIconsRegular.Calendar24,
                 IconColor = Color.FromArgb("#00C2FF"),
-                Text = media.YearDisplay,
+                Text = media.YearOrDash,
             },
             _ => null,
         };

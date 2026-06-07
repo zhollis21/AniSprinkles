@@ -756,53 +756,66 @@
             <VerticalStackLayout Spacing="10" IsVisible="{Binding HasRelations}">
                 <Border Style="{StaticResource SectionHeaderStyle}"
                         Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='RelationsHeader'}">
-                    <HorizontalStackLayout Spacing="8">
-                        <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
-                            <Image.Source>
-                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Link24}"
-                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                 Color="White"
-                                                 Size="20" />
-                            </Image.Source>
-                        </Image>
-                        <Label Text="Relations" Style="{StaticResource Title3}" TextColor="White" />
-                    </HorizontalStackLayout>
+                    <Grid ColumnDefinitions="*,Auto">
+                        <HorizontalStackLayout Grid.Column="0" Spacing="8">
+                            <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
+                                <Image.Source>
+                                    <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Link24}"
+                                                     FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                     Color="White"
+                                                     Size="20" />
+                                </Image.Source>
+                            </Image>
+                            <Label Text="Relations" Style="{StaticResource Title3}" TextColor="White" />
+                        </HorizontalStackLayout>
+                        <views:SortDropdown Grid.Column="1"
+                                            Options="{Binding RelationsSortOptions}"
+                                            SelectedCode="{Binding RelationsSort}"
+                                            SelectSortCommand="{Binding SelectRelationsSortCommand}" />
+                    </Grid>
                 </Border>
-                <ScrollView Orientation="Horizontal">
-                    <HorizontalStackLayout Spacing="10"
-                                           BindableLayout.ItemsSource="{Binding Relations}">
-                        <BindableLayout.ItemTemplate>
-                            <DataTemplate x:DataType="models:MediaRelationEdge">
-                                <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130">
-                                    <Border.GestureRecognizers>
-                                        <TapGestureRecognizer x:DataType="{x:Null}"
-                                                              Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToMediaCommand}"
-                                                              CommandParameter="{Binding Node}" />
-                                    </Border.GestureRecognizers>
-                                    <VerticalStackLayout>
-                                        <Grid>
-                                            <Image Source="{Binding Node.CoverImage.Large}"
-                                                   Aspect="AspectFill"
-                                                   HeightRequest="170"
-                                                   WidthRequest="130" />
-                                            <views:FormatIconBadge Format="{Binding Node.Format}" />
-                                        </Grid>
-                                        <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
-                                            <Label Text="{Binding RelationType}"
-                                                   Style="{StaticResource Caption2}"
-                                                   TextColor="{Binding RelationType, Converter={StaticResource RainbowAccentConverter}}"
-                                                   FontAttributes="Bold" />
-                                            <Label Text="{Binding Node.DisplayTitle}"
-                                                   Style="{StaticResource Caption1}"
-                                                   MaxLines="2"
-                                                   LineBreakMode="TailTruncation" />
-                                        </VerticalStackLayout>
+                <!-- Virtualized like Characters/Staff/Recommendations: Relations is the complete set from
+                     first paint and sorts client-side, so no paging/busy/spinner — just a horizontal,
+                     recycling CollectionView so first paint and re-sort only realize the visible cards. -->
+                <CollectionView ItemsSource="{Binding DisplayedRelations}"
+                                HeightRequest="280"
+                                ItemSizingStrategy="MeasureFirstItem">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Horizontal" ItemSpacing="10" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:MediaRelationEdge">
+                            <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer x:DataType="{x:Null}"
+                                                          Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToMediaCommand}"
+                                                          CommandParameter="{Binding Node}" />
+                                </Border.GestureRecognizers>
+                                <VerticalStackLayout>
+                                    <views:CoverImage Source="{Binding Node.CoverImage.Large}"
+                                                      Format="{Binding Node.Format}"
+                                                      PlaceholderGlyph="{x:Static icons:FluentIconsRegular.MoviesAndTv24}" />
+                                    <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
+                                        <Label Text="{Binding RelationType}"
+                                               Style="{StaticResource Caption2}"
+                                               TextColor="{Binding RelationType, Converter={StaticResource RainbowAccentConverter}}"
+                                               FontAttributes="Bold"
+                                               MaxLines="2"
+                                               LineBreakMode="TailTruncation" />
+                                        <Label Text="{Binding Node.DisplayTitle}"
+                                               Style="{StaticResource Caption1Strong}"
+                                               MaxLines="2"
+                                               LineBreakMode="TailTruncation" />
+                                        <views:MetricBadgeView Glyph="{Binding MetricBadge.Glyph}"
+                                                               IconColor="{Binding MetricBadge.IconColor}"
+                                                               Text="{Binding MetricBadge.Text}"
+                                                               IsVisible="{Binding HasMetricBadge}" />
                                     </VerticalStackLayout>
-                                </Border>
-                            </DataTemplate>
-                        </BindableLayout.ItemTemplate>
-                    </HorizontalStackLayout>
-                </ScrollView>
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
             </VerticalStackLayout>
 
             <!-- ============================================ -->
@@ -811,50 +824,77 @@
             <VerticalStackLayout Spacing="10" IsVisible="{Binding HasCharacters}">
                 <Border Style="{StaticResource SectionHeaderStyle}"
                         Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='CharactersHeader'}">
-                    <HorizontalStackLayout Spacing="8">
-                        <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
-                            <Image.Source>
-                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.People24}"
-                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                 Color="White"
-                                                 Size="20" />
-                            </Image.Source>
-                        </Image>
-                        <Label Text="Characters" Style="{StaticResource Title3}" TextColor="White" />
-                    </HorizontalStackLayout>
+                    <Grid ColumnDefinitions="*,Auto">
+                        <HorizontalStackLayout Grid.Column="0" Spacing="8">
+                            <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
+                                <Image.Source>
+                                    <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.People24}"
+                                                     FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                     Color="White"
+                                                     Size="20" />
+                                </Image.Source>
+                            </Image>
+                            <Label Text="Characters" Style="{StaticResource Title3}" TextColor="White" />
+                        </HorizontalStackLayout>
+                        <views:SortDropdown Grid.Column="1"
+                                            Options="{Binding CharactersSortOptions}"
+                                            SelectedCode="{Binding CharactersSort}"
+                                            SelectSortCommand="{Binding SelectCharactersSortCommand}" />
+                    </Grid>
                 </Border>
-                <ScrollView Orientation="Horizontal">
-                    <HorizontalStackLayout Spacing="10"
-                                           BindableLayout.ItemsSource="{Binding Characters}">
-                        <BindableLayout.ItemTemplate>
+                <!-- Lazily paged: page 1 seeds from the heavy MediaQuery; sort re-fetches page 1 server-side
+                     and Load More fetches the next page. While busy the list dims behind a spinner. -->
+                <Grid>
+                    <CollectionView ItemsSource="{Binding DisplayedCharacters}"
+                                    HeightRequest="280"
+                                    ItemSizingStrategy="MeasureFirstItem"
+                                    RemainingItemsThreshold="3"
+                                    RemainingItemsThresholdReachedCommand="{Binding LoadMoreCharactersCommand}"
+                                    InputTransparent="{Binding CharactersBusy}">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Horizontal" ItemSpacing="10" />
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.Triggers>
+                            <DataTrigger TargetType="CollectionView" Binding="{Binding CharactersBusy}" Value="True">
+                                <Setter Property="Opacity" Value="0.35" />
+                            </DataTrigger>
+                        </CollectionView.Triggers>
+                        <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="models:CharacterEdge">
-                                <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="110">
+                                <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130">
                                     <Border.GestureRecognizers>
                                         <TapGestureRecognizer x:DataType="{x:Null}"
                                                               Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToCharacterCommand}"
                                                               CommandParameter="{Binding Node.Id}" />
                                     </Border.GestureRecognizers>
                                     <VerticalStackLayout>
-                                        <Image Source="{Binding Node.Image.Large}"
-                                               Aspect="AspectFill"
-                                               HeightRequest="140"
-                                               WidthRequest="110" />
+                                        <views:CoverImage Source="{Binding Node.Image.Large}" />
                                         <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
                                             <Label Text="{Binding Node.Name.Full}"
-                                                   Style="{StaticResource Caption1}"
+                                                   Style="{StaticResource Caption1Strong}"
                                                    MaxLines="2"
                                                    LineBreakMode="TailTruncation" />
                                             <Label Text="{Binding Role}"
                                                    Style="{StaticResource Caption2}"
                                                    TextColor="{Binding Role, Converter={StaticResource RainbowAccentConverter}}"
-                                                   FontAttributes="Bold" />
+                                                   FontAttributes="Bold"
+                                                   MaxLines="2"
+                                                   LineBreakMode="TailTruncation" />
+                                            <views:MetricBadgeView Glyph="{Binding MetricBadge.Glyph}"
+                                                                   IconColor="{Binding MetricBadge.IconColor}"
+                                                                   Text="{Binding MetricBadge.Text}"
+                                                                   IsVisible="{Binding HasMetricBadge}" />
                                         </VerticalStackLayout>
                                     </VerticalStackLayout>
                                 </Border>
                             </DataTemplate>
-                        </BindableLayout.ItemTemplate>
-                    </HorizontalStackLayout>
-                </ScrollView>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                    <ActivityIndicator IsRunning="{Binding CharactersBusy}"
+                                       IsVisible="{Binding CharactersBusy}"
+                                       HorizontalOptions="Center" VerticalOptions="Center"
+                                       Color="{StaticResource RainbowCyan}" HeightRequest="36" WidthRequest="36" />
+                </Grid>
             </VerticalStackLayout>
 
             <!-- ============================================ -->
@@ -976,6 +1016,7 @@
             <VerticalStackLayout Spacing="10" IsVisible="{Binding HasRecommendations}">
                 <Border Style="{StaticResource SectionHeaderStyle}"
                         Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='RecsHeader'}">
+                    <!-- No sort dropdown: recommendations have a single natural order (most recommended). -->
                     <HorizontalStackLayout Spacing="8">
                         <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
                             <Image.Source>
@@ -988,10 +1029,22 @@
                         <Label Text="Recommendations" Style="{StaticResource Title3}" TextColor="White" />
                     </HorizontalStackLayout>
                 </Border>
-                <ScrollView Orientation="Horizontal">
-                    <HorizontalStackLayout Spacing="10"
-                                           BindableLayout.ItemsSource="{Binding Recommendations}">
-                        <BindableLayout.ItemTemplate>
+                <Grid>
+                    <CollectionView ItemsSource="{Binding DisplayedRecommendations}"
+                                    HeightRequest="248"
+                                    ItemSizingStrategy="MeasureFirstItem"
+                                    RemainingItemsThreshold="3"
+                                    RemainingItemsThresholdReachedCommand="{Binding LoadMoreRecommendationsCommand}"
+                                    InputTransparent="{Binding RecommendationsBusy}">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Horizontal" ItemSpacing="10" />
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.Triggers>
+                            <DataTrigger TargetType="CollectionView" Binding="{Binding RecommendationsBusy}" Value="True">
+                                <Setter Property="Opacity" Value="0.35" />
+                            </DataTrigger>
+                        </CollectionView.Triggers>
+                        <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="models:MediaRecommendationNode">
                                 <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130">
                                     <Border.GestureRecognizers>
@@ -1000,25 +1053,29 @@
                                                               CommandParameter="{Binding MediaRecommendation}" />
                                     </Border.GestureRecognizers>
                                     <VerticalStackLayout>
-                                        <Grid>
-                                            <Image Source="{Binding MediaRecommendation.CoverImage.Large}"
-                                                   Aspect="AspectFill"
-                                                   HeightRequest="170"
-                                                   WidthRequest="130" />
-                                            <views:FormatIconBadge Format="{Binding MediaRecommendation.Format}" />
-                                        </Grid>
+                                        <views:CoverImage Source="{Binding MediaRecommendation.CoverImage.Large}"
+                                                          Format="{Binding MediaRecommendation.Format}"
+                                                          PlaceholderGlyph="{x:Static icons:FluentIconsRegular.MoviesAndTv24}" />
                                         <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
                                             <Label Text="{Binding MediaRecommendation.DisplayTitle}"
-                                                   Style="{StaticResource Caption1}"
+                                                   Style="{StaticResource Caption1Strong}"
                                                    MaxLines="2"
                                                    LineBreakMode="TailTruncation" />
+                                            <views:MetricBadgeView Glyph="{Binding MetricBadge.Glyph}"
+                                                                   IconColor="{Binding MetricBadge.IconColor}"
+                                                                   Text="{Binding MetricBadge.Text}"
+                                                                   IsVisible="{Binding HasMetricBadge}" />
                                         </VerticalStackLayout>
                                     </VerticalStackLayout>
                                 </Border>
                             </DataTemplate>
-                        </BindableLayout.ItemTemplate>
-                    </HorizontalStackLayout>
-                </ScrollView>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                    <ActivityIndicator IsRunning="{Binding RecommendationsBusy}"
+                                       IsVisible="{Binding RecommendationsBusy}"
+                                       HorizontalOptions="Center" VerticalOptions="Center"
+                                       Color="{StaticResource RainbowCyan}" HeightRequest="36" WidthRequest="36" />
+                </Grid>
             </VerticalStackLayout>
 
             <!-- ============================================ -->
@@ -1027,69 +1084,75 @@
             <VerticalStackLayout Spacing="10" IsVisible="{Binding HasStaff}">
                 <Border Style="{StaticResource SectionHeaderStyle}"
                         Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='StaffHeader'}">
-                    <HorizontalStackLayout Spacing="8">
-                        <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
-                            <Image.Source>
-                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Person24}"
-                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                 Color="White"
-                                                 Size="20" />
-                            </Image.Source>
-                        </Image>
-                        <Label Text="Staff" Style="{StaticResource Title3}" TextColor="White" />
-                    </HorizontalStackLayout>
+                    <Grid ColumnDefinitions="*,Auto">
+                        <HorizontalStackLayout Grid.Column="0" Spacing="8">
+                            <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
+                                <Image.Source>
+                                    <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Person24}"
+                                                     FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                     Color="White"
+                                                     Size="20" />
+                                </Image.Source>
+                            </Image>
+                            <Label Text="Staff" Style="{StaticResource Title3}" TextColor="White" />
+                        </HorizontalStackLayout>
+                        <views:SortDropdown Grid.Column="1"
+                                            Options="{Binding StaffSortOptions}"
+                                            SelectedCode="{Binding StaffSort}"
+                                            SelectSortCommand="{Binding SelectStaffSortCommand}" />
+                    </Grid>
                 </Border>
-                <ScrollView Orientation="Horizontal">
-                    <HorizontalStackLayout Spacing="10"
-                                           BindableLayout.ItemsSource="{Binding Staff}">
-                        <BindableLayout.ItemTemplate>
+                <Grid>
+                    <CollectionView ItemsSource="{Binding DisplayedStaff}"
+                                    HeightRequest="280"
+                                    ItemSizingStrategy="MeasureFirstItem"
+                                    RemainingItemsThreshold="3"
+                                    RemainingItemsThresholdReachedCommand="{Binding LoadMoreStaffCommand}"
+                                    InputTransparent="{Binding StaffBusy}">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Horizontal" ItemSpacing="10" />
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.Triggers>
+                            <DataTrigger TargetType="CollectionView" Binding="{Binding StaffBusy}" Value="True">
+                                <Setter Property="Opacity" Value="0.35" />
+                            </DataTrigger>
+                        </CollectionView.Triggers>
+                        <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="models:StaffEdge">
-                                <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="110">
+                                <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130">
                                     <Border.GestureRecognizers>
                                         <TapGestureRecognizer x:DataType="{x:Null}"
                                                               Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToStaffCommand}"
                                                               CommandParameter="{Binding Node.Id}" />
                                     </Border.GestureRecognizers>
                                     <VerticalStackLayout>
-                                        <Grid HeightRequest="140" WidthRequest="110">
-                                            <!-- Person silhouette placeholder (underneath, always rendered) -->
-                                            <Border StrokeThickness="0" Padding="0"
-                                                    StrokeShape="RoundRectangle 16,16,0,0">
-                                                <Border.Background>
-                                                    <SolidColorBrush Color="{StaticResource Gray900}" />
-                                                </Border.Background>
-                                                <Image HorizontalOptions="Center" VerticalOptions="Center"
-                                                       WidthRequest="40" HeightRequest="40">
-                                                    <Image.Source>
-                                                        <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Person48}"
-                                                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                                         Color="{StaticResource Gray500}" Size="40" />
-                                                    </Image.Source>
-                                                </Image>
-                                            </Border>
-                                            <!-- Actual staff image (covers placeholder when URL exists) -->
-                                            <Image Source="{Binding Node.Image.Medium}"
-                                                   Aspect="AspectFill"
-                                                   HeightRequest="140"
-                                                   WidthRequest="110"
-                                                   IsVisible="{Binding Node.Image.Medium, Converter={StaticResource StringNotNullOrEmptyConverter}}" />
-                                        </Grid>
+                                        <views:CoverImage Source="{Binding Node.Image.Medium}" />
                                         <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
                                             <Label Text="{Binding Node.Name.Full}"
-                                                   Style="{StaticResource Caption1}"
+                                                   Style="{StaticResource Caption1Strong}"
                                                    MaxLines="2"
                                                    LineBreakMode="TailTruncation" />
                                             <Label Text="{Binding Role}"
                                                    Style="{StaticResource Caption2}"
                                                    TextColor="{Binding Role, Converter={StaticResource RainbowAccentConverter}}"
-                                                   FontAttributes="Bold" />
+                                                   FontAttributes="Bold"
+                                                   MaxLines="2"
+                                                   LineBreakMode="TailTruncation" />
+                                            <views:MetricBadgeView Glyph="{Binding MetricBadge.Glyph}"
+                                                                   IconColor="{Binding MetricBadge.IconColor}"
+                                                                   Text="{Binding MetricBadge.Text}"
+                                                                   IsVisible="{Binding HasMetricBadge}" />
                                         </VerticalStackLayout>
                                     </VerticalStackLayout>
                                 </Border>
                             </DataTemplate>
-                        </BindableLayout.ItemTemplate>
-                    </HorizontalStackLayout>
-                </ScrollView>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                    <ActivityIndicator IsRunning="{Binding StaffBusy}"
+                                       IsVisible="{Binding StaffBusy}"
+                                       HorizontalOptions="Center" VerticalOptions="Center"
+                                       Color="{StaticResource RainbowCyan}" HeightRequest="36" WidthRequest="36" />
+                </Grid>
             </VerticalStackLayout>
 
             <!-- ============================================ -->
