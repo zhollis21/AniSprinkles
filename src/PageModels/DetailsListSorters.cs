@@ -20,6 +20,9 @@ public static class DetailsListSorters
     public static IReadOnlyList<StaffMediaEdge> SortProductionRoles(string sort, IReadOnlyList<StaffMediaEdge> items)
         => SortByMedia(sort, items, e => e.Node, e => e.Node?.Id ?? 0);
 
+    public static IReadOnlyList<StudioMediaEdge> SortStudioProductions(string sort, IReadOnlyList<StudioMediaEdge> items)
+        => SortByMedia(sort, items, e => e.Node, e => e.Node?.Id ?? 0);
+
     public static IReadOnlyList<StaffCharacterEdge> SortVoiceRoles(string sort, IReadOnlyList<StaffCharacterEdge> items)
     {
         // Null-node edges always sort after real voice roles, before applying the active key — a

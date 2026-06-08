@@ -343,7 +343,9 @@ namespace AniSprinkles.PageModels;
         ? CultureInfo.InvariantCulture.TextInfo.ToTitleCase(s.ToLowerInvariant())
         : "--";
 
-    public string MainStudioName => Media?.Studios.FirstOrDefault(s => s.IsAnimationStudio == true)?.Name
+    public string MainStudioName => Studios.FirstOrDefault(s => s.IsMain == true)?.Name
+        ?? Studios.FirstOrDefault()?.Name
+        ?? Media?.Studios.FirstOrDefault(s => s.IsAnimationStudio == true)?.Name
         ?? Media?.Studios.FirstOrDefault()?.Name ?? "";
 
     public bool HasMainStudio => !string.IsNullOrWhiteSpace(MainStudioName);
@@ -726,7 +728,7 @@ namespace AniSprinkles.PageModels;
     {
         Genres = value?.Genres ?? [];
         Synonyms = value?.Synonyms ?? [];
-        Studios = value?.Studios ?? [];
+        Studios = BuildStudioChips(value?.Studios);
         Tags = value?.Tags ?? [];
         RankingGroups = (value?.Rankings ?? [])
             .GroupBy(r => r.ScopeKey)
@@ -1121,6 +1123,22 @@ namespace AniSprinkles.PageModels;
         await _navigationService.GoToAsync("staff-details", animate: false, new Dictionary<string, object>
         {
             ["staffId"] = staffId,
+        });
+    }
+
+    [RelayCommand]
+    private async Task NavigateToStudio(int studioId)
+    {
+        _logger.LogInformation("NAVTRACE NavigateToStudio called with studioId={StudioId}", studioId);
+        if (studioId <= 0)
+        {
+            _logger.LogWarning("NAVTRACE NavigateToStudio aborted — invalid studioId {StudioId}", studioId);
+            return;
+        }
+
+        await _navigationService.GoToAsync("studio-details", animate: false, new Dictionary<string, object>
+        {
+            ["studioId"] = studioId,
         });
     }
 
@@ -1721,5 +1739,27 @@ namespace AniSprinkles.PageModels;
             "dailymotion" => $"https://www.dailymotion.com/video/{trailer.Id}",
             _ => null
         };
+    }
+
+    private static IReadOnlyList<Studio> BuildStudioChips(IReadOnlyList<Studio>? studios)
+    {
+        if (studios is null || studios.Count == 0)
+        {
+            return [];
+        }
+
+        var candidates = studios.Where(s => s.IsAnimationStudio == true).ToList();
+        if (candidates.Count == 0)
+        {
+            candidates = studios.ToList();
+        }
+
+        return candidates
+            .Where(s => s.Id > 0 && !string.IsNullOrWhiteSpace(s.Name))
+            .GroupBy(s => s.Id)
+            .Select(g => g.First())
+            .OrderByDescending(s => s.IsMain == true)
+            .ThenBy(s => s.Name, StringComparer.OrdinalIgnoreCase)
+            .ToList();
     }
 }

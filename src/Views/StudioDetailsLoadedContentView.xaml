@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pageModels="clr-namespace:AniSprinkles.PageModels"
+             xmlns:models="clr-namespace:AniSprinkles.Models"
+             xmlns:icons="clr-namespace:IconFont.Maui.FluentIcons;assembly=IconFont.Maui.FluentIcons"
+             xmlns:views="clr-namespace:AniSprinkles.Views"
+             x:Class="AniSprinkles.Views.StudioDetailsLoadedContentView"
+             x:DataType="pageModels:StudioDetailsPageModel"
+             x:Name="RootView">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="{StaticResource LayoutPadding}" Spacing="16">
+
+            <Border Style="{StaticResource CardStyle}" Padding="0">
+                <Grid HeightRequest="210">
+                    <BoxView Opacity="0.2"
+                             BackgroundColor="{Binding PageTitle, Converter={StaticResource RainbowAccentConverter}}" />
+
+                    <BoxView>
+                        <BoxView.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <GradientStop Color="#40000000" Offset="0" />
+                                <GradientStop Color="#E8000000" Offset="1" />
+                            </LinearGradientBrush>
+                        </BoxView.Background>
+                    </BoxView>
+
+                    <Grid ColumnDefinitions="72,*"
+                          ColumnSpacing="14"
+                          VerticalOptions="End"
+                          Padding="16,0,16,16">
+                        <Border Grid.Column="0"
+                                WidthRequest="72"
+                                HeightRequest="72"
+                                StrokeShape="RoundRectangle 18"
+                                StrokeThickness="2"
+                                Stroke="{StaticResource SecondaryBackground}"
+                                Padding="0">
+                            <Border.Background>
+                                <SolidColorBrush Color="{StaticResource SecondaryBackground}" />
+                            </Border.Background>
+                            <Image WidthRequest="34" HeightRequest="34" HorizontalOptions="Center" VerticalOptions="Center">
+                                <Image.Source>
+                                    <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.MoviesAndTv24}"
+                                                     FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                     Color="{Binding PageTitle, Converter={StaticResource RainbowAccentConverter}}"
+                                                     Size="34" />
+                                </Image.Source>
+                            </Image>
+                        </Border>
+
+                        <VerticalStackLayout Grid.Column="1" Spacing="8" VerticalOptions="End">
+                            <Label Text="{Binding Studio.DisplayName}"
+                                   Style="{StaticResource Title1}"
+                                   FontSize="26"
+                                   TextColor="{Binding PageTitle, Converter={StaticResource RainbowAccentConverter}}"
+                                   LineBreakMode="WordWrap">
+                                <Label.Shadow>
+                                    <Shadow Offset="0,0" Radius="6" Brush="#000000" Opacity="0.9" />
+                                </Label.Shadow>
+                            </Label>
+
+                            <HorizontalStackLayout Spacing="4" IsVisible="{Binding HasFavourites}">
+                                <Image WidthRequest="14" HeightRequest="14" VerticalOptions="Center">
+                                    <Image.Source>
+                                        <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Heart24}"
+                                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                         Color="{StaticResource RainbowPink}"
+                                                         Size="14" />
+                                    </Image.Source>
+                                </Image>
+                                <Label Text="{Binding FavouritesDisplay}"
+                                       Style="{StaticResource Caption1Strong}"
+                                       TextColor="{StaticResource Gray100}"
+                                       VerticalTextAlignment="Center" />
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                <Border Grid.Column="0" Style="{StaticResource CardStyle}" Padding="10,10">
+                    <VerticalStackLayout Spacing="2" HorizontalOptions="Fill">
+                        <Image WidthRequest="18" HeightRequest="18" HorizontalOptions="Center">
+                            <Image.Source>
+                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Heart24}"
+                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                 Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Favourites'}"
+                                                 Size="18" />
+                            </Image.Source>
+                        </Image>
+                        <Label Text="{Binding Studio.FavouritesDisplay}"
+                               Style="{StaticResource Title2}"
+                               HorizontalTextAlignment="Center"
+                               TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Favourites'}" />
+                        <Label Text="Favourites" Style="{StaticResource Caption2}" TextColor="{StaticResource Gray400}" HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Grid.Column="1" Style="{StaticResource CardStyle}" Padding="10,10">
+                    <VerticalStackLayout Spacing="2" HorizontalOptions="Fill">
+                        <Image WidthRequest="18" HeightRequest="18" HorizontalOptions="Center">
+                            <Image.Source>
+                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.MoviesAndTv24}"
+                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                 Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Productions'}"
+                                                 Size="18" />
+                            </Image.Source>
+                        </Image>
+                        <Label Text="{Binding DisplayedProductions.Count}"
+                               Style="{StaticResource Title2}"
+                               HorizontalTextAlignment="Center"
+                               TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Productions'}" />
+                        <Label Text="Loaded" Style="{StaticResource Caption2}" TextColor="{StaticResource Gray400}" HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
+
+            <VerticalStackLayout Spacing="10" IsVisible="{Binding HasProductions}">
+                <Border Style="{StaticResource SectionHeaderStyle}"
+                        Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='StudioHeader'}">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <HorizontalStackLayout Grid.Column="0" Spacing="8">
+                            <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
+                                <Image.Source>
+                                    <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.MoviesAndTv24}"
+                                                     FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                     Color="White"
+                                                     Size="20" />
+                                </Image.Source>
+                            </Image>
+                            <Label Text="Productions" Style="{StaticResource Title3}" TextColor="White" />
+                        </HorizontalStackLayout>
+                        <views:SortDropdown Grid.Column="1"
+                                            Options="{Binding ProductionsSortOptions}"
+                                            SelectedCode="{Binding ProductionsSort}"
+                                            SelectSortCommand="{Binding SelectProductionsSortCommand}" />
+                    </Grid>
+                </Border>
+
+                <Grid>
+                    <CollectionView ItemsSource="{Binding DisplayedProductions}"
+                                    HeightRequest="248"
+                                    ItemSizingStrategy="MeasureFirstItem"
+                                    RemainingItemsThreshold="3"
+                                    RemainingItemsThresholdReachedCommand="{Binding LoadMoreProductionsCommand}"
+                                    InputTransparent="{Binding ProductionsBusy}">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Horizontal" ItemSpacing="10" />
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.Triggers>
+                            <DataTrigger TargetType="CollectionView" Binding="{Binding ProductionsBusy}" Value="True">
+                                <Setter Property="Opacity" Value="0.35" />
+                            </DataTrigger>
+                        </CollectionView.Triggers>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:StudioMediaEdge">
+                                <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer x:DataType="{x:Null}"
+                                                              Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToMediaCommand}"
+                                                              CommandParameter="{Binding Node}" />
+                                    </Border.GestureRecognizers>
+                                    <VerticalStackLayout>
+                                        <views:CoverImage Source="{Binding Node.CoverImage.Large}"
+                                                          Format="{Binding Node.Format}"
+                                                          PlaceholderGlyph="{x:Static icons:FluentIconsRegular.MoviesAndTv24}" />
+                                        <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
+                                            <Label Text="{Binding Node.DisplayTitle}"
+                                                   Style="{StaticResource Caption1Strong}"
+                                                   MaxLines="2"
+                                                   LineBreakMode="TailTruncation" />
+                                            <Label Text="{Binding Node.Format}"
+                                                   Style="{StaticResource Caption2}"
+                                                   TextColor="{Binding Node.Format, Converter={StaticResource RainbowAccentConverter}}"
+                                                   FontAttributes="Bold"
+                                                   MaxLines="1"
+                                                   LineBreakMode="TailTruncation" />
+                                            <views:MetricBadgeView Glyph="{Binding MetricBadge.Glyph}"
+                                                                   IconColor="{Binding MetricBadge.IconColor}"
+                                                                   Text="{Binding MetricBadge.Text}"
+                                                                   IsVisible="{Binding HasMetricBadge}" />
+                                        </VerticalStackLayout>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                    <ActivityIndicator IsRunning="{Binding ProductionsBusy}"
+                                       IsVisible="{Binding ProductionsBusy}"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center"
+                                       Color="{StaticResource RainbowCyan}"
+                                       HeightRequest="36"
+                                       WidthRequest="36" />
+                </Grid>
+            </VerticalStackLayout>
+
+            <Border Style="{StaticResource CardStyle}" Padding="14,10"
+                    IsVisible="{Binding HasSiteUrl}">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding OpenSiteUrlCommand}" />
+                </Border.GestureRecognizers>
+                <HorizontalStackLayout Spacing="8">
+                    <Image WidthRequest="18" HeightRequest="18" VerticalOptions="Center">
+                        <Image.Source>
+                            <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Globe24}"
+                                             FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                             Color="{StaticResource Gray300}"
+                                             Size="18" />
+                        </Image.Source>
+                    </Image>
+                    <Label Text="View on AniList"
+                           Style="{StaticResource Body2}"
+                           TextColor="{StaticResource Gray100}"
+                           VerticalTextAlignment="Center" />
+                </HorizontalStackLayout>
+            </Border>
+
+            <ContentView HeightRequest="24" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentView>

@@ -135,6 +135,8 @@ public static class MauiProgram
         builder.Services.AddTransient<StaffDetailsPage>();
         builder.Services.AddTransient<CharacterDetailsPageModel>();
         builder.Services.AddTransient<CharacterDetailsPage>();
+        builder.Services.AddTransient<StudioDetailsPageModel>();
+        builder.Services.AddTransient<StudioDetailsPage>();
 
 #if ANDROID
         // Android paints a focus highlight (a stray blue outline) on a CollectionView's RecyclerView when a

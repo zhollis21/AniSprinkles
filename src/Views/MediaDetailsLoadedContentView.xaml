@@ -159,11 +159,56 @@
                     <Label Text="{Binding SeasonYearDisplay}" Style="{StaticResource ChipLabelStyle}"
                            TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Season'}" />
                 </Border>
-                <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
-                        IsVisible="{Binding HasMainStudio}">
-                    <Label Text="{Binding MainStudioName}" Style="{StaticResource ChipLabelStyle}"
-                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Studio'}" />
-                </Border>
+                <FlexLayout Wrap="Wrap"
+                            JustifyContent="Start"
+                            AlignItems="Center"
+                            IsVisible="{Binding HasStudios}"
+                            BindableLayout.ItemsSource="{Binding Studios}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="models:Studio">
+                            <Border Style="{StaticResource ChipBorderStyle}"
+                                    Padding="10,6"
+                                    Margin="0,0,6,6"
+                                    StrokeThickness="1"
+                                    Stroke="{Binding Name, Converter={StaticResource RainbowAccentConverter}}">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer x:DataType="{x:Null}"
+                                                          Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToStudioCommand}"
+                                                          CommandParameter="{Binding Id}" />
+                                </Border.GestureRecognizers>
+                                <Grid ColumnDefinitions="Auto,Auto,Auto" ColumnSpacing="5">
+                                    <Image Grid.Column="0"
+                                           WidthRequest="14"
+                                           HeightRequest="14"
+                                           VerticalOptions="Center">
+                                        <Image.Source>
+                                            <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.MoviesAndTv24}"
+                                                             FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                             Color="{Binding Name, Converter={StaticResource RainbowAccentConverter}}"
+                                                             Size="14" />
+                                        </Image.Source>
+                                    </Image>
+                                    <Label Grid.Column="1"
+                                           Text="{Binding Name}"
+                                           Style="{StaticResource ChipLabelStyle}"
+                                           TextColor="{Binding Name, Converter={StaticResource RainbowAccentConverter}}"
+                                           VerticalTextAlignment="Center" />
+                                    <Image Grid.Column="2"
+                                           WidthRequest="12"
+                                           HeightRequest="12"
+                                           VerticalOptions="Center">
+                                        <Image.Source>
+                                            <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.ChevronRight20}"
+                                                             FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                             Color="{Binding Name, Converter={StaticResource RainbowAccentConverter}}"
+                                                             Size="12" />
+                                        </Image.Source>
+                                    </Image>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </FlexLayout>
             </FlexLayout>
 
             <!-- ============================================ -->

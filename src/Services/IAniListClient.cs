@@ -26,6 +26,12 @@ public interface IAniListClient
         int mediaPage = 1,
         CancellationToken cancellationToken = default);
 
+    Task<Studio?> GetStudioAsync(
+        int id,
+        string mediaSort = "POPULARITY_DESC",
+        int mediaPage = 1,
+        CancellationToken cancellationToken = default);
+
     Task<(IReadOnlyList<StaffCharacterEdge> Items, PageInfo? PageInfo)> LoadStaffCharactersPageAsync(
         int id, int page, string sort, int perPage = 25, CancellationToken cancellationToken = default);
 
@@ -33,6 +39,9 @@ public interface IAniListClient
         int id, int page, string sort, int perPage = 25, CancellationToken cancellationToken = default);
 
     Task<(IReadOnlyList<CharacterMediaEdge> Items, PageInfo? PageInfo)> LoadCharacterMediaPageAsync(
+        int id, int page, string sort, int perPage = 25, CancellationToken cancellationToken = default);
+
+    Task<(IReadOnlyList<StudioMediaEdge> Items, PageInfo? PageInfo)> LoadStudioMediaPageAsync(
         int id, int page, string sort, int perPage = 25, CancellationToken cancellationToken = default);
 
     Task<(IReadOnlyList<CharacterEdge> Items, PageInfo? PageInfo)> LoadMediaCharactersPageAsync(

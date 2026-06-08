@@ -22,6 +22,17 @@ public class DetailsListSortersTests
     private static StaffMediaEdge ProdMedia(int id, int? pop = null)
         => new() { Node = new RelatedMedia { Id = id, Popularity = pop } };
 
+    private static StudioMediaEdge StudioMedia(int id, int? pop = null, int? year = null)
+        => new()
+        {
+            Node = new RelatedMedia
+            {
+                Id = id,
+                Popularity = pop,
+                StartDate = year is null ? null : new MediaDate { Year = year },
+            },
+        };
+
     private static StaffCharacterEdge VoiceRole(int id, string? role = null, int? fav = null)
         => new() { Role = role, Node = new Character { Id = id, Favourites = fav } };
 
@@ -117,6 +128,23 @@ public class DetailsListSortersTests
         var result = DetailsListSorters.SortProductionRoles("POPULARITY_DESC", items);
 
         Assert.Equal(new[] { 2, 3, 1 }, result.Select(e => e.Node!.Id));
+    }
+
+    [Fact]
+    public void SortStudioProductions_SharesMediaSortLogic()
+    {
+        var items = new List<StudioMediaEdge>
+        {
+            StudioMedia(1, pop: 10, year: 2010),
+            StudioMedia(2, pop: 30, year: null),
+            StudioMedia(3, pop: 20, year: 2000),
+        };
+
+        var byPopularity = DetailsListSorters.SortStudioProductions("POPULARITY_DESC", items);
+        var byOldest = DetailsListSorters.SortStudioProductions("START_DATE", items);
+
+        Assert.Equal(new[] { 2, 3, 1 }, byPopularity.Select(e => e.Node!.Id));
+        Assert.Equal(new[] { 3, 1, 2 }, byOldest.Select(e => e.Node!.Id));
     }
 
     [Fact]
