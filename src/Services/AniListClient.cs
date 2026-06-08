@@ -400,6 +400,7 @@ public class AniListClient : IAniListClient
         int id,
         string mediaSort = "POPULARITY_DESC",
         int mediaPage = 1,
+        int mediaPerPage = 25,
         CancellationToken cancellationToken = default)
     {
         var data = await SendAsync<StudioData>(
@@ -409,6 +410,7 @@ public class AniListClient : IAniListClient
             {
                 id,
                 mediaPage,
+                mediaPerPage,
                 mediaSort = WithTiebreaker(mediaSort),
             },
             token: null, // Public query — no auth needed
@@ -2200,14 +2202,14 @@ query MediaRecommendationsPage($id: Int!, $page: Int!, $sort: [RecommendationSor
 }";
 
     private const string StudioQuery = @"
-query Studio($id: Int!, $mediaPage: Int = 1, $mediaSort: [MediaSort] = [POPULARITY_DESC]) {
+query Studio($id: Int!, $mediaPage: Int = 1, $mediaPerPage: Int = 25, $mediaSort: [MediaSort] = [POPULARITY_DESC]) {
   Studio(id: $id) {
     id
     name
     isAnimationStudio
     favourites
     siteUrl
-    media(sort: $mediaSort, page: $mediaPage, perPage: 25) {
+    media(sort: $mediaSort, page: $mediaPage, perPage: $mediaPerPage) {
       pageInfo { hasNextPage currentPage lastPage }
       nodes {
         id

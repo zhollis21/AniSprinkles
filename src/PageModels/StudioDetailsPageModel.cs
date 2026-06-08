@@ -1,13 +1,10 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Globalization;
-using CommunityToolkit.Maui.Alerts;
-using CommunityToolkit.Maui.Core;
+using AniSprinkles.Utilities;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using IconFont.Maui.FluentIcons;
 using Microsoft.Extensions.Logging;
-using Microsoft.Maui.Graphics;
 
 namespace AniSprinkles.PageModels;
 
@@ -15,7 +12,9 @@ public partial class StudioDetailsPageModel : ObservableObject
 {
     private readonly IAniListClient _aniListClient;
     private readonly INavigationService _navigationService;
+    private readonly IUserFeedback _feedback;
     private readonly ILogger<StudioDetailsPageModel> _logger;
+    private readonly ListOperationRunner _listOps;
 
     private const int PageSize = 25;
     private const string ProductionsDefaultSort = "POPULARITY_DESC";
@@ -69,11 +68,14 @@ public partial class StudioDetailsPageModel : ObservableObject
     public StudioDetailsPageModel(
         IAniListClient aniListClient,
         INavigationService navigationService,
+        IUserFeedback feedback,
         ILogger<StudioDetailsPageModel> logger)
     {
         _aniListClient = aniListClient;
         _navigationService = navigationService;
+        _feedback = feedback;
         _logger = logger;
+        _listOps = new ListOperationRunner(logger, feedback);
 
         _productions = new PaginatedSection<StudioMediaEdge>(
             ProductionsDefaultSort,
@@ -98,7 +100,7 @@ public partial class StudioDetailsPageModel : ObservableObject
 
     public bool HasFavourites => Studio?.Favourites is > 0;
 
-    public string FavouritesDisplay => FormatFavourites(Studio?.Favourites);
+    public string FavouritesDisplay => MetricFormat.Compact(Studio?.Favourites);
 
     public bool HasSiteUrl => !string.IsNullOrWhiteSpace(Studio?.SiteUrl);
 
@@ -123,10 +125,7 @@ public partial class StudioDetailsPageModel : ObservableObject
         var token = _scope.Begin();
 
         IsBusy = true;
-        if (Studio is null || Studio.Id != studioId)
-        {
-            CurrentState = PageState.InitialLoading;
-        }
+        CurrentState = PageState.InitialLoading;
 
         _productions.Reset();
         ResetProductionsSortSelection();
@@ -136,7 +135,7 @@ public partial class StudioDetailsPageModel : ObservableObject
 
         try
         {
-            var studio = await _aniListClient.GetStudioAsync(studioId, cancellationToken: token).ConfigureAwait(true);
+            var studio = await _aniListClient.GetStudioAsync(studioId, mediaPerPage: PageSize, cancellationToken: token).ConfigureAwait(true);
             if (studio is null)
             {
                 _logger.LogInformation("NAVTRACE StudioDetails not found in {ElapsedMs}ms (studio {StudioId})", stopwatch.ElapsedMilliseconds, studioId);
@@ -145,7 +144,7 @@ public partial class StudioDetailsPageModel : ObservableObject
             }
 
             Studio = studio;
-            _productions.Seed(studio.Media.ToList(), studio.MediaPageInfo);
+            _productions.Seed(studio.Media, studio.MediaPageInfo);
 
             CurrentState = PageState.Content;
             _logger.LogInformation(
@@ -186,8 +185,10 @@ public partial class StudioDetailsPageModel : ObservableObject
 
     [RelayCommand(CanExecute = nameof(CanLoadMoreProductions))]
     private Task LoadMoreProductions()
-        => RunTracedListOpAsync(
+        => _listOps.RunAsync(
             "Studio Productions · Load More",
+            "studio",
+            _loadedStudioId,
             () => _productions.LoadMoreAsync(_scope.EnsureActive()),
             () => _productions.Items.Count);
 
@@ -201,8 +202,10 @@ public partial class StudioDetailsPageModel : ObservableObject
             return Task.CompletedTask;
         }
 
-        return RunTracedListOpAsync(
+        return _listOps.RunAsync(
             $"Studio Productions · sort→{code}",
+            "studio",
+            _loadedStudioId,
             () => _productions.ChangeSortAsync(code, _scope.EnsureActive()),
             () => _productions.Items.Count,
             onComplete: () => SyncSortSelection(ProductionsSortOptions, _productions.Sort));
@@ -242,7 +245,7 @@ public partial class StudioDetailsPageModel : ObservableObject
         if (media is { IsAnime: false })
         {
             _logger.LogInformation("NAVTRACE Studio→Media skipped non-anime {MediaId} (type={Type}).", mediaId, media.Type);
-            await ShowToastAsync("Manga & Novel details aren't supported yet.");
+            await _feedback.ShowToastAsync("Manga & Novel details aren't supported yet.");
             return;
         }
 
@@ -250,68 +253,6 @@ public partial class StudioDetailsPageModel : ObservableObject
         {
             ["mediaId"] = mediaId,
         });
-    }
-
-    private async Task RunTracedListOpAsync(string op, Func<Task> operation, Func<int> loadedCount, Action? onComplete = null)
-    {
-        var stopwatch = Stopwatch.StartNew();
-        _logger.LogInformation("LISTTRACE {Op} start (studio {StudioId})", op, _loadedStudioId);
-
-        Exception? failure = null;
-        try
-        {
-            await operation().ConfigureAwait(true);
-        }
-        catch (Exception ex)
-        {
-            failure = ex;
-        }
-
-        stopwatch.Stop();
-        onComplete?.Invoke();
-
-        if (failure is null)
-        {
-            _logger.LogInformation(
-                "LISTTRACE {Op} completed in {ElapsedMs}ms ({Count} loaded); UI render follows",
-                op, stopwatch.ElapsedMilliseconds, loadedCount());
-            return;
-        }
-
-        _logger.LogWarning(failure, "LISTTRACE {Op} failed in {ElapsedMs}ms (studio {StudioId})", op, stopwatch.ElapsedMilliseconds, _loadedStudioId);
-        await ShowListErrorSnackbarAsync(failure).ConfigureAwait(true);
-    }
-
-    private Task ShowListErrorSnackbarAsync(Exception ex)
-    {
-        var message = ex is AniListApiException apiEx
-            ? apiEx.UserSubtitle
-            : "Couldn't update the list. Check your connection and try again.";
-        return ShowSnackbarAsync(message);
-    }
-
-    private async Task ShowSnackbarAsync(string message)
-    {
-        try
-        {
-            await Snackbar.Make(message, duration: TimeSpan.FromSeconds(4)).Show().ConfigureAwait(true);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogWarning(ex, "Snackbar display failed");
-        }
-    }
-
-    private async Task ShowToastAsync(string message)
-    {
-        try
-        {
-            await Toast.Make(message, ToastDuration.Short).Show().ConfigureAwait(true);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogWarning(ex, "Toast display failed");
-        }
     }
 
     private void OnProductionsChanged()
@@ -326,7 +267,7 @@ public partial class StudioDetailsPageModel : ObservableObject
     {
         foreach (var edge in items)
         {
-            edge.MetricBadge = BuildProductionMetricBadge(edge.Node, sort);
+            edge.MetricBadge = MediaMetricBadges.ForMediaSort(edge.Node, sort);
         }
     }
 
@@ -345,43 +286,6 @@ public partial class StudioDetailsPageModel : ObservableObject
             ? (apiEx.UserTitle, apiEx.UserSubtitle)
             : ("Something Went Wrong", "Failed to load studio details.");
 
-    private static ItemMetricBadge? BuildProductionMetricBadge(RelatedMedia? media, string sort)
-    {
-        if (media is null)
-        {
-            return null;
-        }
-
-        return sort switch
-        {
-            "POPULARITY_DESC" => new ItemMetricBadge
-            {
-                Glyph = FluentIconsRegular.People24,
-                IconColor = Color.FromArgb("#FF9500"),
-                Text = media.PopularityOrZero,
-            },
-            "SCORE_DESC" => new ItemMetricBadge
-            {
-                Glyph = FluentIconsRegular.Star24,
-                IconColor = Color.FromArgb("#FFCC00"),
-                Text = media.ScoreOrDash,
-            },
-            "FAVOURITES_DESC" => new ItemMetricBadge
-            {
-                Glyph = FluentIconsRegular.Heart24,
-                IconColor = Color.FromArgb("#FF2D95"),
-                Text = media.FavouritesOrZero,
-            },
-            "START_DATE_DESC" or "START_DATE" => new ItemMetricBadge
-            {
-                Glyph = FluentIconsRegular.Calendar24,
-                IconColor = Color.FromArgb("#00C2FF"),
-                Text = media.YearOrDash,
-            },
-            _ => null,
-        };
-    }
-
     private void ShowError(string title, string subtitle, bool canRetry, string details = "", string? iconGlyph = null)
     {
         ErrorTitle = title;
@@ -390,20 +294,5 @@ public partial class StudioDetailsPageModel : ObservableObject
         ErrorDetails = details;
         CanRetry = canRetry;
         CurrentState = PageState.Error;
-    }
-
-    private static string FormatFavourites(int? favourites)
-    {
-        if (favourites is null or <= 0)
-        {
-            return string.Empty;
-        }
-
-        if (favourites >= 1000)
-        {
-            return (favourites.Value / 1000.0).ToString("0.#k", CultureInfo.InvariantCulture);
-        }
-
-        return favourites.Value.ToString(CultureInfo.InvariantCulture);
     }
 }

@@ -99,6 +99,7 @@ internal sealed class FailingAniListClient : IAniListClient
             int id,
             string mediaSort = "POPULARITY_DESC",
             int mediaPage = 1,
+            int mediaPerPage = 25,
             CancellationToken ct = default)
             => throw Fail();
 

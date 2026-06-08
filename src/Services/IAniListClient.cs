@@ -30,6 +30,7 @@ public interface IAniListClient
         int id,
         string mediaSort = "POPULARITY_DESC",
         int mediaPage = 1,
+        int mediaPerPage = 25,
         CancellationToken cancellationToken = default);
 
     Task<(IReadOnlyList<StaffCharacterEdge> Items, PageInfo? PageInfo)> LoadStaffCharactersPageAsync(

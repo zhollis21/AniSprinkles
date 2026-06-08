@@ -37,6 +37,7 @@
     <Compile Include="..\..\src\Serialization\StringOrNumberJsonConverter.cs" LinkBase="_linked\Serialization" />
     <Compile Include="..\..\src\Utilities\AppSettings.cs" LinkBase="_linked\Utilities" />
     <Compile Include="..\..\src\Utilities\MetricFormat.cs" LinkBase="_linked\Utilities" />
+    <Compile Include="..\..\src\Utilities\QueryAttributeParser.cs" LinkBase="_linked\Utilities" />
     <Compile Include="..\..\src\Utilities\SpoilerHtmlProcessor.cs" LinkBase="_linked\Utilities" />
     <Compile Include="..\..\src\Utilities\FuzzyDateFormatter.cs" LinkBase="_linked\Utilities" />
     <Compile Include="..\..\src\Utilities\YearsActiveFormatter.cs" LinkBase="_linked\Utilities" />
@@ -56,6 +57,7 @@
     <Compile Include="..\..\src\PageModels\MediaListSection.cs" LinkBase="_linked\PageModels" />
     <Compile Include="..\..\src\PageModels\MediaListSectionsMerger.cs" LinkBase="_linked\PageModels" />
     <Compile Include="..\..\src\PageModels\PaginatedSection.cs" LinkBase="_linked\PageModels" />
+    <Compile Include="..\..\src\PageModels\ListOperationRunner.cs" LinkBase="_linked\PageModels" />
     <Compile Include="..\..\src\PageModels\PageLoadScope.cs" LinkBase="_linked\PageModels" />
     <Compile Include="..\..\src\PageModels\VoiceActorAggregator.cs" LinkBase="_linked\PageModels" />
     <Compile Include="..\..\src\PageModels\DetailsListSorters.cs" LinkBase="_linked\PageModels" />

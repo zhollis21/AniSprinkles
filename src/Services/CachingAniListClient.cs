@@ -97,17 +97,20 @@ public sealed class CachingAniListClient : IAniListClient
         int id,
         string mediaSort = "POPULARITY_DESC",
         int mediaPage = 1,
+        int mediaPerPage = 25,
         CancellationToken cancellationToken = default)
     {
         var studio = await GetOrAddAsync(
             $"Studio:{id}:{mediaSort}:{mediaPage}",
-            () => _inner.GetStudioAsync(id, mediaSort, mediaPage, cancellationToken))
+            () => _inner.GetStudioAsync(id, mediaSort, mediaPage, mediaPerPage, cancellationToken))
             .ConfigureAwait(false);
 
         if (studio is not null)
         {
+            // Key off the perPage GetStudioAsync was asked for (sourced from the page model's PageSize),
+            // so the seed matches the LoadStudioMediaPageAsync lookup for page 1 even if PageSize changes.
             SeedPageCache(
-                $"StudioMediaPage:{id}:{mediaPage}:{mediaSort}:{SeededPerPage}",
+                $"StudioMediaPage:{id}:{mediaPage}:{mediaSort}:{mediaPerPage}",
                 () => ((IReadOnlyList<StudioMediaEdge>)studio.Media.ToList(), studio.MediaPageInfo));
         }
 
