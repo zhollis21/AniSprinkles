@@ -1103,6 +1103,7 @@ public class AniListClient : IAniListClient
             HasNextPage = dto.HasNextPage ?? false,
             CurrentPage = dto.CurrentPage ?? 0,
             LastPage = dto.LastPage ?? 0,
+            Total = dto.Total,
         };
     }
 
@@ -1336,6 +1337,7 @@ public class AniListClient : IAniListClient
         public bool? HasNextPage { get; set; }
         public int? CurrentPage { get; set; }
         public int? LastPage { get; set; }
+        public int? Total { get; set; }
     }
 
     private sealed class AiringScheduleDto
@@ -2210,7 +2212,7 @@ query Studio($id: Int!, $mediaPage: Int = 1, $mediaPerPage: Int = 25, $mediaSort
     favourites
     siteUrl
     media(sort: $mediaSort, page: $mediaPage, perPage: $mediaPerPage) {
-      pageInfo { hasNextPage currentPage lastPage }
+      pageInfo { total hasNextPage currentPage lastPage }
       nodes {
         id
         title { romaji english native }

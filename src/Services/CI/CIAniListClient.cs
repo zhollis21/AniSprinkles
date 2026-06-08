@@ -204,9 +204,13 @@ internal sealed class CIAniListClient : IAniListClient
                 Description = "Gol D. Roger was known as the \"Pirate King,\" the strongest and most infamous being to have sailed the Grand Line. The capture and execution of Roger by the World Government brought a change throughout the world. His last words before his death revealed the existence of the greatest treasure in the world, One Piece. It was this revelation that brought about the Grand Age of Pirates, men who dreamed of finding One Piece—which promises an unlimited amount of riches and fame—and quite possibly the pinnacle of glory and the title of the Pirate King.<br><br>Enter Monkey D. Luffy, a 17-year-old boy who defies your standard definition of a pirate. Rather than the popular persona of a wicked, hardened, toothless pirate ransacking villages for fun, Luffy's reason for being a pirate is one of pure wonder: the thought of an exciting adventure that leads him to intriguing people and ultimately, the promised treasure.",
                 StartDate = new MediaDate { Year = 1999, Month = 10, Day = 20 },
                 Genres = ["Action", "Adventure", "Comedy", "Drama", "Fantasy"],
+                // Toei is One Piece's real (sole) animation studio; the two secondary entries are synthetic
+                // so the Media Details "Studios" section renders multiple cards in the CI screenshot.
                 Studios =
                 [
                     new Studio { Id = 18, Name = "Toei Animation", IsAnimationStudio = true, IsMain = true },
+                    new Studio { Id = 11, Name = "Madhouse", IsAnimationStudio = true, IsMain = false },
+                    new Studio { Id = 1, Name = "Studio Pierrot", IsAnimationStudio = true, IsMain = false },
                 ],
                 // Airs today in 3 hours — exercises the short countdown airing path
                 NextAiringEpisode = MakeAiringEpisode(1160, DateTimeOffset.UtcNow.AddHours(3)),
@@ -682,7 +686,7 @@ internal sealed class CIAniListClient : IAniListClient
                 IsAnimationStudio = true,
                 Favourites = 8_730,
                 SiteUrl = "https://anilist.co/studio/18",
-                MediaPageInfo = new PageInfo { HasNextPage = false, CurrentPage = 1 },
+                MediaPageInfo = new PageInfo { HasNextPage = false, CurrentPage = 1, Total = 6 },
             };
 
             foreach (var production in new[]

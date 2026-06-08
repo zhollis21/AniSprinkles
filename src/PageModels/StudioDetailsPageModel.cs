@@ -38,6 +38,8 @@ public partial class StudioDetailsPageModel : ObservableObject
     [NotifyPropertyChangedFor(nameof(HasFavourites))]
     [NotifyPropertyChangedFor(nameof(FavouritesDisplay))]
     [NotifyPropertyChangedFor(nameof(HasSiteUrl))]
+    [NotifyPropertyChangedFor(nameof(HasProductionsTotal))]
+    [NotifyPropertyChangedFor(nameof(ProductionsTotalDisplay))]
     private Studio? _studio;
 
     [ObservableProperty]
@@ -103,6 +105,11 @@ public partial class StudioDetailsPageModel : ObservableObject
     public string FavouritesDisplay => MetricFormat.Compact(Studio?.Favourites);
 
     public bool HasSiteUrl => !string.IsNullOrWhiteSpace(Studio?.SiteUrl);
+
+    // Total productions across all pages (AniList pageInfo.total), independent of how many are paged in.
+    public bool HasProductionsTotal => Studio?.MediaPageInfo?.Total is > 0;
+
+    public string ProductionsTotalDisplay => MetricFormat.Compact(Studio?.MediaPageInfo?.Total);
 
     partial void OnCurrentStateChanged(PageState oldValue, PageState newValue)
         => _logger.LogInformation("PageState: {OldState} → {NewState} (key={StateKey})", oldValue, newValue, CurrentStateKey ?? "(null)");

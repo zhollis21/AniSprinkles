@@ -12,111 +12,69 @@
     <ScrollView>
         <VerticalStackLayout Padding="{StaticResource LayoutPadding}" Spacing="16">
 
-            <Border Style="{StaticResource CardStyle}" Padding="0">
-                <Grid HeightRequest="210">
-                    <BoxView Opacity="0.2"
-                             BackgroundColor="{Binding PageTitle, Converter={StaticResource RainbowAccentConverter}}" />
-
-                    <BoxView>
-                        <BoxView.Background>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                <GradientStop Color="#40000000" Offset="0" />
-                                <GradientStop Color="#E8000000" Offset="1" />
-                            </LinearGradientBrush>
-                        </BoxView.Background>
-                    </BoxView>
-
-                    <Grid ColumnDefinitions="72,*"
-                          ColumnSpacing="14"
-                          VerticalOptions="End"
-                          Padding="16,0,16,16">
-                        <Border Grid.Column="0"
-                                WidthRequest="72"
-                                HeightRequest="72"
-                                StrokeShape="RoundRectangle 18"
-                                StrokeThickness="2"
-                                Stroke="{StaticResource SecondaryBackground}"
-                                Padding="0">
-                            <Border.Background>
-                                <SolidColorBrush Color="{StaticResource SecondaryBackground}" />
-                            </Border.Background>
-                            <Image WidthRequest="34" HeightRequest="34" HorizontalOptions="Center" VerticalOptions="Center">
-                                <Image.Source>
-                                    <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.MoviesAndTv24}"
-                                                     FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                     Color="{Binding PageTitle, Converter={StaticResource RainbowAccentConverter}}"
-                                                     Size="34" />
-                                </Image.Source>
-                            </Image>
-                        </Border>
-
-                        <VerticalStackLayout Grid.Column="1" Spacing="8" VerticalOptions="End">
-                            <Label Text="{Binding Studio.DisplayName}"
-                                   Style="{StaticResource Title1}"
-                                   FontSize="26"
-                                   TextColor="{Binding PageTitle, Converter={StaticResource RainbowAccentConverter}}"
-                                   LineBreakMode="WordWrap">
-                                <Label.Shadow>
-                                    <Shadow Offset="0,0" Radius="6" Brush="#000000" Opacity="0.9" />
-                                </Label.Shadow>
-                            </Label>
-
-                            <HorizontalStackLayout Spacing="4" IsVisible="{Binding HasFavourites}">
-                                <Image WidthRequest="14" HeightRequest="14" VerticalOptions="Center">
-                                    <Image.Source>
-                                        <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Heart24}"
-                                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                         Color="{StaticResource RainbowPink}"
-                                                         Size="14" />
-                                    </Image.Source>
-                                </Image>
-                                <Label Text="{Binding FavouritesDisplay}"
-                                       Style="{StaticResource Caption1Strong}"
-                                       TextColor="{StaticResource Gray100}"
-                                       VerticalTextAlignment="Center" />
-                            </HorizontalStackLayout>
-                        </VerticalStackLayout>
-                    </Grid>
-                </Grid>
-            </Border>
-
-            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
-                <Border Grid.Column="0" Style="{StaticResource CardStyle}" Padding="10,10">
-                    <VerticalStackLayout Spacing="2" HorizontalOptions="Fill">
-                        <Image WidthRequest="18" HeightRequest="18" HorizontalOptions="Center">
-                            <Image.Source>
-                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Heart24}"
-                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                 Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Favourites'}"
-                                                 Size="18" />
-                            </Image.Source>
-                        </Image>
-                        <Label Text="{Binding FavouritesDisplay}"
-                               Style="{StaticResource Title2}"
-                               HorizontalTextAlignment="Center"
-                               TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Favourites'}" />
-                        <Label Text="Favourites" Style="{StaticResource Caption2}" TextColor="{StaticResource Gray400}" HorizontalTextAlignment="Center" />
-                    </VerticalStackLayout>
-                </Border>
-
-                <Border Grid.Column="1" Style="{StaticResource CardStyle}" Padding="10,10">
-                    <VerticalStackLayout Spacing="2" HorizontalOptions="Fill">
-                        <Image WidthRequest="18" HeightRequest="18" HorizontalOptions="Center">
+            <Border Style="{StaticResource CardStyle}" Padding="14,12">
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                    <Border Grid.Column="0"
+                            WidthRequest="56"
+                            HeightRequest="56"
+                            StrokeShape="RoundRectangle 16"
+                            StrokeThickness="0"
+                            Padding="0"
+                            VerticalOptions="Center">
+                        <Border.Background>
+                            <SolidColorBrush Color="{StaticResource SecondaryBackground}" />
+                        </Border.Background>
+                        <Image WidthRequest="28" HeightRequest="28" HorizontalOptions="Center" VerticalOptions="Center">
                             <Image.Source>
                                 <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.MoviesAndTv24}"
                                                  FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                 Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Productions'}"
-                                                 Size="18" />
+                                                 Color="{Binding PageTitle, Converter={StaticResource RainbowAccentConverter}}"
+                                                 Size="28" />
                             </Image.Source>
                         </Image>
-                        <Label Text="{Binding DisplayedProductions.Count}"
+                    </Border>
+
+                    <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
+                        <Label Text="{Binding Studio.DisplayName}"
                                Style="{StaticResource Title2}"
-                               HorizontalTextAlignment="Center"
-                               TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Productions'}" />
-                        <Label Text="Loaded" Style="{StaticResource Caption2}" TextColor="{StaticResource Gray400}" HorizontalTextAlignment="Center" />
+                               TextColor="{Binding PageTitle, Converter={StaticResource RainbowAccentConverter}}"
+                               LineBreakMode="WordWrap" />
+
+                        <HorizontalStackLayout Spacing="4" IsVisible="{Binding HasFavourites}">
+                            <Image WidthRequest="14" HeightRequest="14" VerticalOptions="Center">
+                                <Image.Source>
+                                    <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Heart24}"
+                                                     FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                     Color="{StaticResource RainbowPink}"
+                                                     Size="14" />
+                                </Image.Source>
+                            </Image>
+                            <Label Text="{Binding FavouritesDisplay}"
+                                   Style="{StaticResource Caption1Strong}"
+                                   TextColor="{StaticResource Gray100}"
+                                   VerticalTextAlignment="Center" />
+                        </HorizontalStackLayout>
                     </VerticalStackLayout>
-                </Border>
-            </Grid>
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource CardStyle}" Padding="10,10" IsVisible="{Binding HasProductionsTotal}">
+                <VerticalStackLayout Spacing="2" HorizontalOptions="Fill">
+                    <Image WidthRequest="18" HeightRequest="18" HorizontalOptions="Center">
+                        <Image.Source>
+                            <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.MoviesAndTv24}"
+                                             FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                             Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Productions'}"
+                                             Size="18" />
+                        </Image.Source>
+                    </Image>
+                    <Label Text="{Binding ProductionsTotalDisplay}"
+                           Style="{StaticResource Title2}"
+                           HorizontalTextAlignment="Center"
+                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Productions'}" />
+                    <Label Text="Productions" Style="{StaticResource Caption2}" TextColor="{StaticResource Gray400}" HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+            </Border>
 
             <VerticalStackLayout Spacing="10" IsVisible="{Binding HasProductions}">
                 <Border Style="{StaticResource SectionHeaderStyle}"

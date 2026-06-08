@@ -12,4 +12,7 @@ public class Studio
     public PageInfo? MediaPageInfo { get; set; }
 
     public string DisplayName => string.IsNullOrWhiteSpace(Name) ? "Studio" : Name;
+
+    /// <summary>Role subtitle for the Media Details studios section: the primary studio is "Main Studio".</summary>
+    public string RoleLabel => IsMain == true ? "Main Studio" : "Studio";
 }
