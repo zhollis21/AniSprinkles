@@ -86,6 +86,26 @@ public static class ListEntryStatusFlow
         return true;
     }
 
+    /// <summary>
+    /// Prompts for a score (pre-populated from <paramref name="entry"/>'s existing score) and applies
+    /// it to the entry. Returns <c>true</c> only when the user chose a score, so the caller knows
+    /// whether to persist; skipping or dismissing the popup leaves the score unchanged and returns
+    /// <c>false</c>.
+    /// </summary>
+    public static async Task<bool> ApplyRatingAsync(MediaListEntry entry)
+    {
+        ArgumentNullException.ThrowIfNull(entry);
+
+        var score = await PromptForScoreAsync(entry.Media?.DisplayTitle, entry.Score);
+        if (score.HasValue)
+        {
+            entry.Score = score.Value;
+            return true;
+        }
+
+        return false;
+    }
+
     private static Task<bool> ShowCompletionPopupAsync(string animeTitle, int totalEpisodes) =>
         ConfirmPopup.ShowAsync(
             title: "All episodes watched!",

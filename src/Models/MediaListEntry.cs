@@ -238,4 +238,37 @@ public partial class MediaListEntry : ObservableObject
     public bool CanIncrementProgress =>
         Status is MediaListStatus.Current or MediaListStatus.Repeating
         && (MaxEpisodes is null || Progress < MaxEpisodes);
+
+    /// <summary>
+    /// True when progress is meaningful to edit from the long-press action menu — anything but a
+    /// not-yet-started (<see cref="MediaListStatus.Planning"/>) or finished
+    /// (<see cref="MediaListStatus.Completed"/>) show.
+    /// </summary>
+    public bool CanEditProgress =>
+        Status is not (MediaListStatus.Planning or MediaListStatus.Completed);
+
+    /// <summary>
+    /// True when the entry can be marked completed from the long-press action menu: a finite total
+    /// is known and it isn't already Completed. Intentionally allowed from any other list (not just
+    /// Watching/Rewatching) — users forget to move a finished show out of Planning/Paused/etc.
+    /// </summary>
+    public bool CanMarkCompleted =>
+        HasKnownEpisodeCount && Status is not MediaListStatus.Completed;
+
+    /// <summary>
+    /// True when setting progress to <paramref name="progress"/> means the show is complete: a finite
+    /// total is known, the value reaches it, and the entry isn't already Completed. Shared by the
+    /// Details page and My Anime (+1 and Edit-progress) so "reaching the cap completes the show" is
+    /// defined in exactly one place.
+    /// </summary>
+    public bool IsCompletionAt(int progress) =>
+        HasKnownEpisodeCount && MaxEpisodes is { } max && progress >= max && Status is not MediaListStatus.Completed;
+
+    /// <summary>
+    /// Clamps a candidate progress value to the valid range: <c>0</c> to <see cref="MaxEpisodes"/>
+    /// (or unbounded above when the max is unknown). Shared by the progress-edit surfaces so the
+    /// bounds are defined in one place.
+    /// </summary>
+    public int ClampProgress(int value) =>
+        Math.Clamp(value, 0, MaxEpisodes ?? int.MaxValue);
 }

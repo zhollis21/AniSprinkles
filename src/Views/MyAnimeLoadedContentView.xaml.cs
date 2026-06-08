@@ -275,7 +275,7 @@ public partial class MyAnimeLoadedContentView : ContentView
             }
 
             _owner._longPressFired = true;
-            _ = vm.ShowMoveMenuCommand.ExecuteAsync(entry);
+            _ = vm.ShowActionMenuCommand.ExecuteAsync(entry);
         }
     }
 #endif
