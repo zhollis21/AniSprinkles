@@ -91,7 +91,7 @@
                                                  Size="18" />
                             </Image.Source>
                         </Image>
-                        <Label Text="{Binding Studio.FavouritesDisplay}"
+                        <Label Text="{Binding FavouritesDisplay}"
                                Style="{StaticResource Title2}"
                                HorizontalTextAlignment="Center"
                                TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Favourites'}" />

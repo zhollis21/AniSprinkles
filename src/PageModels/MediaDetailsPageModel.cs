@@ -343,13 +343,6 @@ namespace AniSprinkles.PageModels;
         ? CultureInfo.InvariantCulture.TextInfo.ToTitleCase(s.ToLowerInvariant())
         : "--";
 
-    public string MainStudioName => Studios.FirstOrDefault(s => s.IsMain == true)?.Name
-        ?? Studios.FirstOrDefault()?.Name
-        ?? Media?.Studios.FirstOrDefault(s => s.IsAnimationStudio == true)?.Name
-        ?? Media?.Studios.FirstOrDefault()?.Name ?? "";
-
-    public bool HasMainStudio => !string.IsNullOrWhiteSpace(MainStudioName);
-
     public string EpisodesDisplay => Media?.Episodes is > 0 ? $"{Media.Episodes} Episodes" : "";
 
     public string DurationPillDisplay => Media?.Duration is > 0 ? $"{Media.Duration} min/ep" : "";
@@ -707,8 +700,6 @@ namespace AniSprinkles.PageModels;
         OnPropertyChanged(nameof(FavouritesDisplay));
         OnPropertyChanged(nameof(FormatDisplay));
         OnPropertyChanged(nameof(StatusFormatted));
-        OnPropertyChanged(nameof(MainStudioName));
-        OnPropertyChanged(nameof(HasMainStudio));
         OnPropertyChanged(nameof(EpisodesDisplay));
         OnPropertyChanged(nameof(DurationPillDisplay));
         OnPropertyChanged(nameof(SeasonYearDisplay));

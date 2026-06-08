@@ -12,6 +12,4 @@ public class Studio
     public PageInfo? MediaPageInfo { get; set; }
 
     public string DisplayName => string.IsNullOrWhiteSpace(Name) ? "Studio" : Name;
-
-    public string FavouritesDisplay => Favourites is > 0 ? $"{Favourites:N0}" : "--";
 }

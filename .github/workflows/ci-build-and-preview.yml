@@ -235,6 +235,34 @@ jobs:
           # Usage: tap_element_by_content_desc "Open navigation drawer"
           tap_element_by_content_desc() { _tap_by_attribute "content-desc" "$1"; }
 
+          # Scroll until a target studio chip is visible, then tap it. Prefer the
+          # semantic description because it is tied to the tappable chip container;
+          # fall back to visible text for platform differences.
+          # Usage: tap_studio_chip "Toei Animation" [max_swipes]
+          tap_studio_chip() {
+            local studio="$1" max="${2:-6}" i
+            for i in $(seq 1 "$max"); do
+              adb shell rm -f /sdcard/ui_studio_chip.xml >/dev/null 2>&1 || true
+              if adb shell uiautomator dump /sdcard/ui_studio_chip.xml >/dev/null 2>&1 \
+                 && adb shell test -s /sdcard/ui_studio_chip.xml >/dev/null 2>&1; then
+                local ui_dump
+                ui_dump=$(adb shell cat /sdcard/ui_studio_chip.xml 2>/dev/null || echo "")
+                if echo "$ui_dump" | grep -qF "content-desc=\"Open studio ${studio}\""; then
+                  tap_element_by_content_desc "Open studio ${studio}"
+                  return $?
+                fi
+                if echo "$ui_dump" | grep -qF "text=\"${studio}\""; then
+                  tap_element_by_text "$studio"
+                  return $?
+                fi
+              fi
+              adb shell input swipe 720 2200 720 800 300
+              sleep 1
+            done
+            echo "::warning::Could not find studio chip '${studio}' after ${max} swipe(s)"
+            return 1
+          }
+
           # Swipe up (scroll the page down) until an element with the given visible text is on
           # screen, so off-screen sections (character/voice-actor lists below the fold) can be
           # revealed and then tapped. Returns success as soon as the text is found.
@@ -389,7 +417,7 @@ jobs:
 
           # Screenshot 3: Studio details (Toei Animation). Tap the studio chip in the One Piece
           # quick-info row, capture the Studio Details page, then return to One Piece details.
-          if tap_element_by_text "Toei Animation"; then
+          if tap_studio_chip "Toei Animation" 6; then
             STUDIO_WAIT=0
             STUDIO_READY=0
             while [ $STUDIO_WAIT -lt 15 ]; do
@@ -721,12 +749,21 @@ jobs:
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "| Screenshot | Page |" >> $GITHUB_STEP_SUMMARY
             echo "|---|---|" >> $GITHUB_STEP_SUMMARY
-            echo "| \`my_anime.png\` | My Anime |" >> $GITHUB_STEP_SUMMARY
-            echo "| \`one_piece_details.png\` | One Piece Details |" >> $GITHUB_STEP_SUMMARY
-            echo "| \`studio_details.png\` | Toei Animation (Studio) |" >> $GITHUB_STEP_SUMMARY
-            echo "| \`character_details.png\` | Luffy (Character) |" >> $GITHUB_STEP_SUMMARY
-            echo "| \`staff_details.png\` | Mayumi Tanaka (Staff) |" >> $GITHUB_STEP_SUMMARY
-            echo "| \`settings.png\` | Settings |" >> $GITHUB_STEP_SUMMARY
+            for shot in \
+              "my_anime.png|My Anime" \
+              "one_piece_details.png|One Piece Details" \
+              "studio_details.png|Toei Animation (Studio)" \
+              "character_details.png|Luffy (Character)" \
+              "staff_details.png|Mayumi Tanaka (Staff)" \
+              "settings.png|Settings"; do
+              file="${shot%%|*}"
+              label="${shot#*|}"
+              if [ -f "screenshots/$file" ]; then
+                echo "| \`$file\` | $label |" >> $GITHUB_STEP_SUMMARY
+              else
+                echo "::warning::Expected screenshot missing: $file"
+              fi
+            done
           else
             echo "⚠️ No screenshots were captured. Check the emulator step logs." >> $GITHUB_STEP_SUMMARY
           fi

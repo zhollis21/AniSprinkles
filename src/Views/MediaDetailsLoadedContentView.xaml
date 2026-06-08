@@ -143,7 +143,8 @@
             <!-- ============================================ -->
             <!-- 3. QUICK INFO CHIPS -->
             <!-- ============================================ -->
-            <FlexLayout Wrap="Wrap" JustifyContent="Start" AlignItems="Center">
+            <VerticalStackLayout Spacing="6">
+                <FlexLayout Wrap="Wrap" JustifyContent="Start" AlignItems="Center">
                 <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
                         IsVisible="{Binding EpisodesDisplay, Converter={StaticResource StringNotNullOrEmptyConverter}}">
                     <Label Text="{Binding EpisodesDisplay}" Style="{StaticResource ChipLabelStyle}"
@@ -159,6 +160,7 @@
                     <Label Text="{Binding SeasonYearDisplay}" Style="{StaticResource ChipLabelStyle}"
                            TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Season'}" />
                 </Border>
+                </FlexLayout>
                 <FlexLayout Wrap="Wrap"
                             JustifyContent="Start"
                             AlignItems="Center"
@@ -170,7 +172,8 @@
                                     Padding="10,6"
                                     Margin="0,0,6,6"
                                     StrokeThickness="1"
-                                    Stroke="{Binding Name, Converter={StaticResource RainbowAccentConverter}}">
+                                    Stroke="{Binding Name, Converter={StaticResource RainbowAccentConverter}}"
+                                    SemanticProperties.Description="{Binding Name, StringFormat='Open studio {0}'}">
                                 <Border.GestureRecognizers>
                                     <TapGestureRecognizer x:DataType="{x:Null}"
                                                           Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToStudioCommand}"
@@ -209,7 +212,7 @@
                         </DataTemplate>
                     </BindableLayout.ItemTemplate>
                 </FlexLayout>
-            </FlexLayout>
+            </VerticalStackLayout>
 
             <!-- ============================================ -->
             <!-- 3b. NEXT EPISODE AIRING COUNTDOWN -->
