@@ -1319,7 +1319,7 @@ namespace AniSprinkles.PageModels;
             return;
         }
 
-        var clamped = Math.Max(0, max is > 0 ? Math.Min(value, max.Value) : value);
+        var clamped = ListEntry.ClampProgress(value);
         await ApplyProgressChangeAsync(clamped);
     }
 
@@ -1428,9 +1428,7 @@ namespace AniSprinkles.PageModels;
     }
 
     private bool ShouldTriggerCompletion() =>
-        ListEntry is { HasKnownEpisodeCount: true, MaxEpisodes: { } max }
-        && (ListEntry.Progress ?? 0) >= max
-        && ListEntry.Status != MediaListStatus.Completed;
+        ListEntry?.IsCompletionAt(ListEntry.Progress ?? 0) ?? false;
 
     [RelayCommand]
     private void SetStarRating(string value)
