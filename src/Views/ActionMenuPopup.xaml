@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               x:Class="AniSprinkles.Views.ActionMenuPopup"
+               x:TypeArguments="x:Object"
+               BackgroundColor="{StaticResource SecondaryBackground}">
+
+    <!-- Bottom-sheet sizing/anchoring is set in code-behind: CommunityToolkit Popup V2 ignores
+         VerticalOptions/Margin set on this XAML root (it re-declares them as `new` BindableProperties),
+         and full width comes from a screen-width WidthRequest since Fill is coerced to Center.
+         Mirrors MoveToListPopup. -->
+    <Border x:Name="SheetBorder"
+            StrokeShape="RoundRectangle 20,20,0,0"
+            StrokeThickness="0"
+            Padding="0"
+            HorizontalOptions="Fill"
+            Background="{StaticResource SecondaryBackground}">
+        <VerticalStackLayout x:Name="SheetContent" Spacing="0" Padding="0">
+
+            <!-- Drag handle -->
+            <BoxView HeightRequest="4" WidthRequest="36"
+                     CornerRadius="2"
+                     Color="{StaticResource Gray500}"
+                     HorizontalOptions="Center"
+                     Margin="0,10,0,6" />
+
+            <!-- Anime title -->
+            <Label x:Name="TitleLabel"
+                   Style="{StaticResource Title3}"
+                   HorizontalTextAlignment="Center"
+                   MaxLines="2"
+                   LineBreakMode="TailTruncation"
+                   Margin="20,4,20,2" />
+
+            <!-- Subtitle -->
+            <Label Text="Choose an action"
+                   Style="{StaticResource Caption1}"
+                   TextColor="{StaticResource Gray400}"
+                   HorizontalTextAlignment="Center"
+                   Margin="0,0,0,8" />
+
+            <!-- Divider -->
+            <BoxView HeightRequest="1" Color="{StaticResource Gray600}" Opacity="0.3" />
+
+            <!-- Action rows are added dynamically in code-behind -->
+            <VerticalStackLayout x:Name="ActionsLayout" Spacing="0" Padding="8,4" />
+
+        </VerticalStackLayout>
+    </Border>
+
+</toolkit:Popup>
