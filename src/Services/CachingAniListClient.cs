@@ -101,7 +101,7 @@ public sealed class CachingAniListClient : IAniListClient
         CancellationToken cancellationToken = default)
     {
         var studio = await GetOrAddAsync(
-            $"Studio:{id}:{mediaSort}:{mediaPage}",
+            $"Studio:{id}:{mediaSort}:{mediaPage}:{mediaPerPage}",
             () => _inner.GetStudioAsync(id, mediaSort, mediaPage, mediaPerPage, cancellationToken))
             .ConfigureAwait(false);
 
