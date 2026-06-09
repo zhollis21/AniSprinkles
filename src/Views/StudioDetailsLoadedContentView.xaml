@@ -58,24 +58,6 @@
                 </Grid>
             </Border>
 
-            <Border Style="{StaticResource CardStyle}" Padding="10,10" IsVisible="{Binding HasProductionsTotal}">
-                <VerticalStackLayout Spacing="2" HorizontalOptions="Fill">
-                    <Image WidthRequest="18" HeightRequest="18" HorizontalOptions="Center">
-                        <Image.Source>
-                            <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.MoviesAndTv24}"
-                                             FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                             Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Productions'}"
-                                             Size="18" />
-                        </Image.Source>
-                    </Image>
-                    <Label Text="{Binding ProductionsTotalDisplay}"
-                           Style="{StaticResource Title2}"
-                           HorizontalTextAlignment="Center"
-                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Productions'}" />
-                    <Label Text="Productions" Style="{StaticResource Caption2}" TextColor="{StaticResource Gray400}" HorizontalTextAlignment="Center" />
-                </VerticalStackLayout>
-            </Border>
-
             <VerticalStackLayout Spacing="10" IsVisible="{Binding HasProductions}">
                 <Border Style="{StaticResource SectionHeaderStyle}"
                         Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='StudioHeader'}">
@@ -89,7 +71,13 @@
                                                      Size="20" />
                                 </Image.Source>
                             </Image>
-                            <Label Text="Productions" Style="{StaticResource Title3}" TextColor="White" />
+                            <Label Text="Productions" Style="{StaticResource Title3}" TextColor="White" VerticalTextAlignment="Center" />
+                            <Label Text="{Binding ProductionsTotalDisplay, StringFormat='· {0}'}"
+                                   Style="{StaticResource Title3}"
+                                   TextColor="White"
+                                   Opacity="0.75"
+                                   VerticalTextAlignment="Center"
+                                   IsVisible="{Binding HasProductionsTotal}" />
                         </HorizontalStackLayout>
                         <views:SortDropdown Grid.Column="1"
                                             Options="{Binding ProductionsSortOptions}"
