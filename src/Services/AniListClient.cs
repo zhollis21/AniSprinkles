@@ -950,6 +950,7 @@ public class AniListClient : IAniListClient
                     Name = node?.Name,
                     IsAnimationStudio = node?.IsAnimationStudio,
                     IsMain = e.IsMain,
+                    Favourites = node?.Favourites,
                 };
             })
             .ToList() ?? [];
@@ -1102,8 +1103,6 @@ public class AniListClient : IAniListClient
         {
             HasNextPage = dto.HasNextPage ?? false,
             CurrentPage = dto.CurrentPage ?? 0,
-            LastPage = dto.LastPage ?? 0,
-            Total = dto.Total,
         };
     }
 
@@ -1336,8 +1335,6 @@ public class AniListClient : IAniListClient
     {
         public bool? HasNextPage { get; set; }
         public int? CurrentPage { get; set; }
-        public int? LastPage { get; set; }
-        public int? Total { get; set; }
     }
 
     private sealed class AiringScheduleDto
@@ -1530,6 +1527,7 @@ public class AniListClient : IAniListClient
         public int Id { get; set; }
         public string? Name { get; set; }
         public bool? IsAnimationStudio { get; set; }
+        public int? Favourites { get; set; }
     }
 
     private sealed class MediaRelationConnectionDto
@@ -1821,7 +1819,7 @@ query Media($id: Int!) {
     startDate { year month day }
     endDate { year month day }
     nextAiringEpisode { airingAt timeUntilAiring episode }
-    trailer { id site thumbnail }
+    trailer { id site }
     synonyms
     genres
     averageScore
@@ -1833,11 +1831,11 @@ query Media($id: Int!) {
     studios {
       edges {
         isMain
-        node { id name isAnimationStudio }
+        node { id name isAnimationStudio favourites }
       }
     }
     rankings { rank type format year season allTime context }
-    externalLinks { id url site siteId type language color isDisabled }
+    externalLinks { id url site type language color isDisabled }
     relations {
       edges {
         relationType(version: 2)
@@ -1853,7 +1851,7 @@ query Media($id: Int!) {
       }
     }
     characters(page: 1, perPage: 25, sort: [ROLE, RELEVANCE, ID]) {
-      pageInfo { hasNextPage currentPage lastPage }
+      pageInfo { hasNextPage currentPage }
       edges {
         node {
           id
@@ -1871,7 +1869,7 @@ query Media($id: Int!) {
       }
     }
     recommendations(page: 1, perPage: 25, sort: [RATING_DESC, ID]) {
-      pageInfo { hasNextPage currentPage lastPage }
+      pageInfo { hasNextPage currentPage }
       nodes {
         rating
         mediaRecommendation {
@@ -1889,7 +1887,7 @@ query Media($id: Int!) {
       statusDistribution { status amount }
     }
     staff(page: 1, perPage: 25, sort: [RELEVANCE, ID]) {
-      pageInfo { hasNextPage currentPage lastPage }
+      pageInfo { hasNextPage currentPage }
       edges {
         node {
           id
@@ -2025,7 +2023,7 @@ query Staff($id: Int!, $charactersPage: Int = 1, $mediaPage: Int = 1, $character
     favourites
     siteUrl
     characters(sort: $charactersSort, page: $charactersPage, perPage: 25) {
-      pageInfo { hasNextPage currentPage lastPage }
+      pageInfo { hasNextPage currentPage }
       edges {
         node {
           id
@@ -2046,7 +2044,7 @@ query Staff($id: Int!, $charactersPage: Int = 1, $mediaPage: Int = 1, $character
       }
     }
     staffMedia(sort: $mediaSort, page: $mediaPage, perPage: 25) {
-      pageInfo { hasNextPage currentPage lastPage }
+      pageInfo { hasNextPage currentPage }
       edges {
         node {
           id
@@ -2070,7 +2068,7 @@ query Staff($id: Int!, $charactersPage: Int = 1, $mediaPage: Int = 1, $character
 query StaffCharactersPage($id: Int!, $page: Int!, $sort: [CharacterSort], $perPage: Int = 25) {
   Staff(id: $id) {
     characters(sort: $sort, page: $page, perPage: $perPage) {
-      pageInfo { hasNextPage currentPage lastPage }
+      pageInfo { hasNextPage currentPage }
       edges {
         node { id name { full native } image { medium large } favourites }
         role
@@ -2092,7 +2090,7 @@ query StaffCharactersPage($id: Int!, $page: Int!, $sort: [CharacterSort], $perPa
 query StaffMediaPage($id: Int!, $page: Int!, $sort: [MediaSort], $perPage: Int = 25) {
   Staff(id: $id) {
     staffMedia(sort: $sort, page: $page, perPage: $perPage) {
-      pageInfo { hasNextPage currentPage lastPage }
+      pageInfo { hasNextPage currentPage }
       edges {
         node {
           id
@@ -2116,7 +2114,7 @@ query StaffMediaPage($id: Int!, $page: Int!, $sort: [MediaSort], $perPage: Int =
 query CharacterMediaPage($id: Int!, $page: Int!, $sort: [MediaSort], $perPage: Int = 25) {
   Character(id: $id) {
     media(sort: $sort, page: $page, perPage: $perPage) {
-      pageInfo { hasNextPage currentPage lastPage }
+      pageInfo { hasNextPage currentPage }
       edges {
         node {
           id
@@ -2151,7 +2149,7 @@ query CharacterMediaPage($id: Int!, $page: Int!, $sort: [MediaSort], $perPage: I
 query MediaCharactersPage($id: Int!, $page: Int!, $sort: [CharacterSort], $perPage: Int = 25) {
   Media(id: $id, type: ANIME) {
     characters(sort: $sort, page: $page, perPage: $perPage) {
-      pageInfo { hasNextPage currentPage lastPage }
+      pageInfo { hasNextPage currentPage }
       edges {
         node {
           id
@@ -2169,7 +2167,7 @@ query MediaCharactersPage($id: Int!, $page: Int!, $sort: [CharacterSort], $perPa
 query MediaStaffPage($id: Int!, $page: Int!, $sort: [StaffSort], $perPage: Int = 25) {
   Media(id: $id, type: ANIME) {
     staff(sort: $sort, page: $page, perPage: $perPage) {
-      pageInfo { hasNextPage currentPage lastPage }
+      pageInfo { hasNextPage currentPage }
       edges {
         node {
           id
@@ -2187,7 +2185,7 @@ query MediaStaffPage($id: Int!, $page: Int!, $sort: [StaffSort], $perPage: Int =
 query MediaRecommendationsPage($id: Int!, $page: Int!, $sort: [RecommendationSort], $perPage: Int = 25) {
   Media(id: $id, type: ANIME) {
     recommendations(sort: $sort, page: $page, perPage: $perPage) {
-      pageInfo { hasNextPage currentPage lastPage }
+      pageInfo { hasNextPage currentPage }
       nodes {
         rating
         mediaRecommendation {
@@ -2212,7 +2210,7 @@ query Studio($id: Int!, $mediaPage: Int = 1, $mediaPerPage: Int = 25, $mediaSort
     favourites
     siteUrl
     media(sort: $mediaSort, page: $mediaPage, perPage: $mediaPerPage) {
-      pageInfo { total hasNextPage currentPage lastPage }
+      pageInfo { hasNextPage currentPage }
       nodes {
         id
         title { romaji english native }
@@ -2233,7 +2231,7 @@ query Studio($id: Int!, $mediaPage: Int = 1, $mediaPerPage: Int = 25, $mediaSort
 query StudioMediaPage($id: Int!, $page: Int!, $sort: [MediaSort], $perPage: Int = 25) {
   Studio(id: $id) {
     media(sort: $sort, page: $page, perPage: $perPage) {
-      pageInfo { hasNextPage currentPage lastPage }
+      pageInfo { hasNextPage currentPage }
       nodes {
         id
         title { romaji english native }
@@ -2264,7 +2262,7 @@ query Character($id: Int!, $mediaPage: Int = 1, $mediaSort: [MediaSort] = [POPUL
     favourites
     siteUrl
     media(sort: $mediaSort, page: $mediaPage, perPage: 25) {
-      pageInfo { hasNextPage currentPage lastPage }
+      pageInfo { hasNextPage currentPage }
       edges {
         node {
           id

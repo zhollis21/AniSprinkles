@@ -208,9 +208,9 @@ internal sealed class CIAniListClient : IAniListClient
                 // so the Media Details "Studios" section renders multiple cards in the CI screenshot.
                 Studios =
                 [
-                    new Studio { Id = 18, Name = "Toei Animation", IsAnimationStudio = true, IsMain = true },
-                    new Studio { Id = 11, Name = "Madhouse", IsAnimationStudio = true, IsMain = false },
-                    new Studio { Id = 1, Name = "Studio Pierrot", IsAnimationStudio = true, IsMain = false },
+                    new Studio { Id = 18, Name = "Toei Animation", IsAnimationStudio = true, IsMain = true, Favourites = 8_730 },
+                    new Studio { Id = 11, Name = "Madhouse", IsAnimationStudio = true, IsMain = false, Favourites = 31_200 },
+                    new Studio { Id = 1, Name = "Studio Pierrot", IsAnimationStudio = true, IsMain = false, Favourites = 9_800 },
                 ],
                 // Airs today in 3 hours — exercises the short countdown airing path
                 NextAiringEpisode = MakeAiringEpisode(1160, DateTimeOffset.UtcNow.AddHours(3)),
@@ -686,7 +686,7 @@ internal sealed class CIAniListClient : IAniListClient
                 IsAnimationStudio = true,
                 Favourites = 8_730,
                 SiteUrl = "https://anilist.co/studio/18",
-                MediaPageInfo = new PageInfo { HasNextPage = false, CurrentPage = 1, Total = 6 },
+                MediaPageInfo = new PageInfo { HasNextPage = false, CurrentPage = 1 },
             };
 
             foreach (var production in new[]

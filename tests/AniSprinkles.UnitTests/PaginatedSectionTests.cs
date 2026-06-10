@@ -8,7 +8,7 @@ public class PaginatedSectionTests
     private sealed record Item(int Id);
 
     private static PageInfo Page(int current, bool hasNext) =>
-        new() { CurrentPage = current, HasNextPage = hasNext, LastPage = hasNext ? current + 1 : current };
+        new() { CurrentPage = current, HasNextPage = hasNext };
 
     private static (IReadOnlyList<Item> Items, PageInfo? PageInfo) Result(PageInfo info, params int[] ids) =>
         (ids.Select(i => new Item(i)).ToList(), info);

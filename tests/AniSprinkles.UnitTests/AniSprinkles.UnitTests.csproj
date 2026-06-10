@@ -34,7 +34,6 @@
   -->
   <ItemGroup>
     <Compile Include="..\..\src\Models\*.cs" LinkBase="_linked\Models" />
-    <Compile Include="..\..\src\Serialization\StringOrNumberJsonConverter.cs" LinkBase="_linked\Serialization" />
     <Compile Include="..\..\src\Utilities\AppSettings.cs" LinkBase="_linked\Utilities" />
     <Compile Include="..\..\src\Utilities\MetricFormat.cs" LinkBase="_linked\Utilities" />
     <Compile Include="..\..\src\Utilities\QueryAttributeParser.cs" LinkBase="_linked\Utilities" />

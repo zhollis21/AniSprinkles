@@ -1,3 +1,5 @@
+using AniSprinkles.Utilities;
+
 namespace AniSprinkles.Models;
 
 public class Studio
@@ -13,6 +15,15 @@ public class Studio
 
     public string DisplayName => string.IsNullOrWhiteSpace(Name) ? "Studio" : Name;
 
-    /// <summary>Role subtitle for the Media Details studios section: the primary studio is "Main Studio".</summary>
-    public string RoleLabel => IsMain == true ? "Main Studio" : "Studio";
+    /// <summary>
+    /// Whether to show the "Main Studio" label on the Media Details studios row. Set by
+    /// <c>BuildStudioChips</c> only for the main studio when there's more than one — with a single
+    /// studio the "main" distinction is implied, so it stays off.
+    /// </summary>
+    public bool ShowMainStudioLabel { get; set; }
+
+    /// <summary>Compact favourites for list cards (k-format, blank when missing) — mirrors the other detail models.</summary>
+    public string FavouritesDisplay => MetricFormat.Compact(Favourites);
+
+    public bool HasFavourites => Favourites is > 0;
 }

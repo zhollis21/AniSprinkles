@@ -1699,12 +1699,23 @@ namespace AniSprinkles.PageModels;
             candidates = studios.ToList();
         }
 
-        return candidates
+        var result = candidates
             .Where(s => s.Id > 0 && !string.IsNullOrWhiteSpace(s.Name))
             .GroupBy(s => s.Id)
             .Select(g => g.First())
             .OrderByDescending(s => s.IsMain == true)
             .ThenBy(s => s.Name, StringComparer.OrdinalIgnoreCase)
             .ToList();
+
+        // Only call out the main studio when there's more than one — with a single studio it's implied.
+        if (result.Count > 1)
+        {
+            foreach (var studio in result)
+            {
+                studio.ShowMainStudioLabel = studio.IsMain == true;
+            }
+        }
+
+        return result;
     }
 }

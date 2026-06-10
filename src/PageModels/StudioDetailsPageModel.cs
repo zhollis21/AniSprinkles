@@ -1,6 +1,5 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using AniSprinkles.Utilities;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using IconFont.Maui.FluentIcons;
@@ -35,11 +34,7 @@ public partial class StudioDetailsPageModel : ObservableObject
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasStudio))]
     [NotifyPropertyChangedFor(nameof(PageTitle))]
-    [NotifyPropertyChangedFor(nameof(HasFavourites))]
-    [NotifyPropertyChangedFor(nameof(FavouritesDisplay))]
     [NotifyPropertyChangedFor(nameof(HasSiteUrl))]
-    [NotifyPropertyChangedFor(nameof(HasProductionsTotal))]
-    [NotifyPropertyChangedFor(nameof(ProductionsTotalDisplay))]
     private Studio? _studio;
 
     [ObservableProperty]
@@ -100,16 +95,7 @@ public partial class StudioDetailsPageModel : ObservableObject
 
     public string PageTitle => Studio?.DisplayName ?? "Studio";
 
-    public bool HasFavourites => Studio?.Favourites is > 0;
-
-    public string FavouritesDisplay => MetricFormat.Compact(Studio?.Favourites);
-
     public bool HasSiteUrl => !string.IsNullOrWhiteSpace(Studio?.SiteUrl);
-
-    // Total productions across all pages (AniList pageInfo.total), independent of how many are paged in.
-    public bool HasProductionsTotal => Studio?.MediaPageInfo?.Total is > 0;
-
-    public string ProductionsTotalDisplay => MetricFormat.Compact(Studio?.MediaPageInfo?.Total);
 
     partial void OnCurrentStateChanged(PageState oldValue, PageState newValue)
         => _logger.LogInformation("PageState: {OldState} → {NewState} (key={StateKey})", oldValue, newValue, CurrentStateKey ?? "(null)");

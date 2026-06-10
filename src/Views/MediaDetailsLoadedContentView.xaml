@@ -1168,48 +1168,47 @@
                         <Label Text="Studios" Style="{StaticResource Title3}" TextColor="White" />
                     </HorizontalStackLayout>
                 </Border>
-                <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
-                    <HorizontalStackLayout Spacing="10" BindableLayout.ItemsSource="{Binding Studios}">
+                <Border Style="{StaticResource CardStyle}" Padding="0">
+                    <VerticalStackLayout Spacing="0" BindableLayout.ItemsSource="{Binding Studios}">
                         <BindableLayout.ItemTemplate>
                             <DataTemplate x:DataType="models:Studio">
-                                <Border Style="{StaticResource CardStyle}"
-                                        Padding="12,10"
-                                        WidthRequest="210"
-                                        SemanticProperties.Description="{Binding Name, StringFormat='Open studio {0}'}">
-                                    <Border.GestureRecognizers>
-                                        <TapGestureRecognizer x:DataType="{x:Null}"
-                                                              Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToStudioCommand}"
-                                                              CommandParameter="{Binding Id}" />
-                                    </Border.GestureRecognizers>
-                                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
-                                        <Border Grid.Column="0"
-                                                WidthRequest="40"
-                                                HeightRequest="40"
-                                                StrokeShape="RoundRectangle 12"
-                                                StrokeThickness="0"
-                                                Padding="0"
-                                                VerticalOptions="Center">
-                                            <Border.Background>
-                                                <SolidColorBrush Color="{StaticResource SecondaryBackground}" />
-                                            </Border.Background>
-                                            <Image WidthRequest="20" HeightRequest="20" HorizontalOptions="Center" VerticalOptions="Center">
-                                                <Image.Source>
-                                                    <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.MoviesAndTv24}"
-                                                                     FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                                     Color="{Binding Name, Converter={StaticResource RainbowAccentConverter}}"
-                                                                     Size="20" />
-                                                </Image.Source>
-                                            </Image>
-                                        </Border>
+                                <VerticalStackLayout>
+                                    <Grid ColumnDefinitions="Auto,*,Auto"
+                                          ColumnSpacing="12"
+                                          Padding="14,12"
+                                          SemanticProperties.Description="{Binding Name, StringFormat='Open studio {0}'}">
+                                        <Grid.GestureRecognizers>
+                                            <TapGestureRecognizer x:DataType="{x:Null}"
+                                                                  Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToStudioCommand}"
+                                                                  CommandParameter="{Binding Id}" />
+                                        </Grid.GestureRecognizers>
+                                        <Image Grid.Column="0" WidthRequest="22" HeightRequest="22" VerticalOptions="Center">
+                                            <Image.Source>
+                                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.MoviesAndTv24}"
+                                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                                 Color="{Binding Name, Converter={StaticResource RainbowAccentConverter}}"
+                                                                 Size="22" />
+                                            </Image.Source>
+                                        </Image>
                                         <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
                                             <Label Text="{Binding Name}"
-                                                   Style="{StaticResource Caption1Strong}"
-                                                   MaxLines="2"
-                                                   LineBreakMode="TailTruncation" />
-                                            <Label Text="{Binding RoleLabel}"
-                                                   Style="{StaticResource Caption2}"
+                                                   Style="{StaticResource Body2}"
                                                    TextColor="{Binding Name, Converter={StaticResource RainbowAccentConverter}}"
-                                                   FontAttributes="Bold" />
+                                                   MaxLines="1"
+                                                   LineBreakMode="TailTruncation" />
+                                            <HorizontalStackLayout Spacing="8">
+                                                <Label Text="Main Studio"
+                                                       Style="{StaticResource Caption2}"
+                                                       TextColor="{StaticResource Gray400}"
+                                                       FontAttributes="Bold"
+                                                       VerticalTextAlignment="Center"
+                                                       IsVisible="{Binding ShowMainStudioLabel}" />
+                                                <views:MetricBadgeView Glyph="{x:Static icons:FluentIconsRegular.Heart24}"
+                                                                       IconColor="{StaticResource RainbowPink}"
+                                                                       Text="{Binding FavouritesDisplay}"
+                                                                       IsVisible="{Binding HasFavourites}"
+                                                                       VerticalOptions="Center" />
+                                            </HorizontalStackLayout>
                                         </VerticalStackLayout>
                                         <Image Grid.Column="2" WidthRequest="14" HeightRequest="14" VerticalOptions="Center">
                                             <Image.Source>
@@ -1220,11 +1219,12 @@
                                             </Image.Source>
                                         </Image>
                                     </Grid>
-                                </Border>
+                                    <BoxView HeightRequest="1" Color="{StaticResource Gray900}" Margin="14,0" />
+                                </VerticalStackLayout>
                             </DataTemplate>
                         </BindableLayout.ItemTemplate>
-                    </HorizontalStackLayout>
-                </ScrollView>
+                    </VerticalStackLayout>
+                </Border>
             </VerticalStackLayout>
 
             <!-- ============================================ -->

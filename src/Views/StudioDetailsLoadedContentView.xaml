@@ -40,7 +40,7 @@
                                TextColor="{Binding PageTitle, Converter={StaticResource RainbowAccentConverter}}"
                                LineBreakMode="WordWrap" />
 
-                        <HorizontalStackLayout Spacing="4" IsVisible="{Binding HasFavourites}">
+                        <HorizontalStackLayout Spacing="4" IsVisible="{Binding Studio.HasFavourites}">
                             <Image WidthRequest="14" HeightRequest="14" VerticalOptions="Center">
                                 <Image.Source>
                                     <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Heart24}"
@@ -49,7 +49,7 @@
                                                      Size="14" />
                                 </Image.Source>
                             </Image>
-                            <Label Text="{Binding FavouritesDisplay}"
+                            <Label Text="{Binding Studio.FavouritesDisplay}"
                                    Style="{StaticResource Caption1Strong}"
                                    TextColor="{StaticResource Gray100}"
                                    VerticalTextAlignment="Center" />
@@ -72,12 +72,6 @@
                                 </Image.Source>
                             </Image>
                             <Label Text="Productions" Style="{StaticResource Title3}" TextColor="White" VerticalTextAlignment="Center" />
-                            <Label Text="{Binding ProductionsTotalDisplay, StringFormat='· {0}'}"
-                                   Style="{StaticResource Title3}"
-                                   TextColor="White"
-                                   Opacity="0.75"
-                                   VerticalTextAlignment="Center"
-                                   IsVisible="{Binding HasProductionsTotal}" />
                         </HorizontalStackLayout>
                         <views:SortDropdown Grid.Column="1"
                                             Options="{Binding ProductionsSortOptions}"
