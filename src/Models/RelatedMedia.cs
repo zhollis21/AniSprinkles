@@ -23,6 +23,9 @@ public class RelatedMedia
         _ => Title?.Romaji ?? Title?.English ?? Title?.Native ?? "Unknown",
     };
 
+    /// <summary>Human-readable format for list cards: AniList's <c>TV_SHORT</c> → "TV SHORT". Blank when absent.</summary>
+    public string FormatDisplay => Format?.Replace("_", " ") ?? "";
+
     /// <summary>
     /// True when this entry is an anime. The media detail screen queries
     /// <c>Media(id:, type: ANIME)</c>, so navigating to a non-anime id (manga/novel) returns 404.

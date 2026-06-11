@@ -1,6 +1,5 @@
 using AniSprinkles.Utilities;
 using CommunityToolkit.Maui.Alerts;
-using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using IconFont.Maui.FluentIcons;
@@ -19,7 +18,9 @@ namespace AniSprinkles.PageModels;
         private readonly IAuthService _authService;
         private readonly ErrorReportService _errorReportService;
         private readonly INavigationService _navigationService;
+        private readonly IUserFeedback _feedback;
         private readonly ILogger<MediaDetailsPageModel> _logger;
+        private readonly ListOperationRunner _listOps;
         private int? _loadedMediaId;
         private int _loadRequestSequence;
         private readonly PageLoadScope _scope = new();
@@ -100,13 +101,15 @@ namespace AniSprinkles.PageModels;
     [ObservableProperty]
     private double _sliderProgress;
 
-    public MediaDetailsPageModel(IAniListClient aniListClient, IAuthService authService, ErrorReportService errorReportService, INavigationService navigationService, ILogger<MediaDetailsPageModel> logger)
+    public MediaDetailsPageModel(IAniListClient aniListClient, IAuthService authService, ErrorReportService errorReportService, INavigationService navigationService, IUserFeedback feedback, ILogger<MediaDetailsPageModel> logger)
     {
         _aniListClient = aniListClient;
         _authService = authService;
         _errorReportService = errorReportService;
         _navigationService = navigationService;
+        _feedback = feedback;
         _logger = logger;
+        _listOps = new ListOperationRunner(logger, feedback);
 
         _characters = new PaginatedSection<CharacterEdge>(
             CharactersDefaultSort,
@@ -342,11 +345,6 @@ namespace AniSprinkles.PageModels;
     public string StatusFormatted => Media?.Status?.Replace("_", " ") is { } s
         ? CultureInfo.InvariantCulture.TextInfo.ToTitleCase(s.ToLowerInvariant())
         : "--";
-
-    public string MainStudioName => Media?.Studios.FirstOrDefault(s => s.IsAnimationStudio == true)?.Name
-        ?? Media?.Studios.FirstOrDefault()?.Name ?? "";
-
-    public bool HasMainStudio => !string.IsNullOrWhiteSpace(MainStudioName);
 
     public string EpisodesDisplay => Media?.Episodes is > 0 ? $"{Media.Episodes} Episodes" : "";
 
@@ -705,8 +703,6 @@ namespace AniSprinkles.PageModels;
         OnPropertyChanged(nameof(FavouritesDisplay));
         OnPropertyChanged(nameof(FormatDisplay));
         OnPropertyChanged(nameof(StatusFormatted));
-        OnPropertyChanged(nameof(MainStudioName));
-        OnPropertyChanged(nameof(HasMainStudio));
         OnPropertyChanged(nameof(EpisodesDisplay));
         OnPropertyChanged(nameof(DurationPillDisplay));
         OnPropertyChanged(nameof(SeasonYearDisplay));
@@ -726,7 +722,7 @@ namespace AniSprinkles.PageModels;
     {
         Genres = value?.Genres ?? [];
         Synonyms = value?.Synonyms ?? [];
-        Studios = value?.Studios ?? [];
+        Studios = BuildStudioChips(value?.Studios);
         Tags = value?.Tags ?? [];
         RankingGroups = (value?.Rankings ?? [])
             .GroupBy(r => r.ScopeKey)
@@ -809,8 +805,10 @@ namespace AniSprinkles.PageModels;
     // while a fetch/sort is in flight or once fully paged (matches CharacterDetailsPageModel).
     [RelayCommand(CanExecute = nameof(CanLoadMoreCharacters))]
     private Task LoadMoreCharacters()
-        => RunTracedListOpAsync(
+        => _listOps.RunAsync(
             "Characters · Load More",
+            "media",
+            _loadedMediaId ?? 0,
             () => _characters.LoadMoreAsync(_scope.EnsureActive()),
             () => _characters.Items.Count);
 
@@ -824,8 +822,10 @@ namespace AniSprinkles.PageModels;
 
     [RelayCommand(CanExecute = nameof(CanLoadMoreStaff))]
     private Task LoadMoreStaff()
-        => RunTracedListOpAsync(
+        => _listOps.RunAsync(
             "Staff · Load More",
+            "media",
+            _loadedMediaId ?? 0,
             () => _staff.LoadMoreAsync(_scope.EnsureActive()),
             () => _staff.Items.Count);
 
@@ -839,8 +839,10 @@ namespace AniSprinkles.PageModels;
 
     [RelayCommand(CanExecute = nameof(CanLoadMoreRecommendations))]
     private Task LoadMoreRecommendations()
-        => RunTracedListOpAsync(
+        => _listOps.RunAsync(
             "Recommendations · Load More",
+            "media",
+            _loadedMediaId ?? 0,
             () => _recommendations.LoadMoreAsync(_scope.EnsureActive()),
             () => _recommendations.Items.Count);
 
@@ -856,8 +858,10 @@ namespace AniSprinkles.PageModels;
             return Task.CompletedTask;
         }
 
-        return RunTracedListOpAsync(
+        return _listOps.RunAsync(
             $"{label} · sort→{code}",
+            "media",
+            _loadedMediaId ?? 0,
             () => section.ChangeSortAsync(code, _scope.EnsureActive()),
             () => section.Items.Count,
             onComplete: () => SyncSortSelection(options, section.Sort));
@@ -995,49 +999,6 @@ namespace AniSprinkles.PageModels;
         }
     }
 
-    // LISTTRACE: times the network fetch + collection apply for a section op so API cost (logged here)
-    // is separable from the UI render that follows. Failures surface via snackbar but are swallowed so
-    // the affordance stays usable; onComplete re-syncs the dropdown highlight to the effective sort.
-    private async Task RunTracedListOpAsync(string op, Func<Task> operation, Func<int> loadedCount, Action? onComplete = null)
-    {
-        var stopwatch = Stopwatch.StartNew();
-        _logger.LogInformation("LISTTRACE {Op} start (media {MediaId})", op, _loadedMediaId);
-
-        Exception? failure = null;
-        try
-        {
-            await operation().ConfigureAwait(true);
-        }
-        catch (Exception ex)
-        {
-            failure = ex;
-        }
-
-        stopwatch.Stop();
-        onComplete?.Invoke();
-
-        if (failure is null)
-        {
-            _logger.LogInformation(
-                "LISTTRACE {Op} completed in {ElapsedMs}ms ({Count} loaded); UI render follows",
-                op, stopwatch.ElapsedMilliseconds, loadedCount());
-            return;
-        }
-
-        _logger.LogWarning(failure, "LISTTRACE {Op} failed in {ElapsedMs}ms (media {MediaId})", op, stopwatch.ElapsedMilliseconds, _loadedMediaId);
-        await ShowListErrorSnackbarAsync(failure).ConfigureAwait(true);
-    }
-
-    // A failed sort/Load More leaves the existing list intact; surface the actionable subtitle so the
-    // failure isn't silent (mirrors the detail pages' chip-reverts-on-failure behavior).
-    private Task ShowListErrorSnackbarAsync(Exception ex)
-    {
-        var message = ex is AniListApiException apiEx
-            ? apiEx.UserSubtitle
-            : "Couldn't update the list. Check your connection and try again.";
-        return ShowSnackbarAsync(message);
-    }
-
     partial void OnListEntryChanged(MediaListEntry? value)
     {
         _logger.LogInformation(
@@ -1082,7 +1043,7 @@ namespace AniSprinkles.PageModels;
         if (media is { IsAnime: false })
         {
             _logger.LogInformation("NAVTRACE NavigateToMedia skipped non-anime media {MediaId} (type={Type}).", mediaId, media.Type);
-            await ShowToastAsync("Manga & Novel details aren't supported yet.");
+            await _feedback.ShowToastAsync("Manga & Novel details aren't supported yet.");
             return;
         }
 
@@ -1121,6 +1082,22 @@ namespace AniSprinkles.PageModels;
         await _navigationService.GoToAsync("staff-details", animate: false, new Dictionary<string, object>
         {
             ["staffId"] = staffId,
+        });
+    }
+
+    [RelayCommand]
+    private async Task NavigateToStudio(int studioId)
+    {
+        _logger.LogInformation("NAVTRACE NavigateToStudio called with studioId={StudioId}", studioId);
+        if (studioId <= 0)
+        {
+            _logger.LogWarning("NAVTRACE NavigateToStudio aborted — invalid studioId {StudioId}", studioId);
+            return;
+        }
+
+        await _navigationService.GoToAsync("studio-details", animate: false, new Dictionary<string, object>
+        {
+            ["studioId"] = studioId,
         });
     }
 
@@ -1190,7 +1167,7 @@ namespace AniSprinkles.PageModels;
                 ListEntry = saved;
                 IsStatusExpanded = false;
                 OnPropertyChanged(nameof(CanAddToList));
-                await ShowToastAsync("Status updated");
+                await _feedback.ShowToastAsync("Status updated");
             }
         }
         catch (Exception ex)
@@ -1247,7 +1224,7 @@ namespace AniSprinkles.PageModels;
                 OnPropertyChanged(nameof(CanAddToList));
                 OnPropertyChanged(nameof(HasListEntry));
                 NotifyListEntryDisplayChanged();
-                await ShowToastAsync($"{title} removed from list");
+                await _feedback.ShowToastAsync($"{title} removed from list");
             }
         }
         catch (Exception ex)
@@ -1282,7 +1259,7 @@ namespace AniSprinkles.PageModels;
                 saved.Media = Media;
                 ListEntry = saved;
                 OnPropertyChanged(nameof(CanAddToList));
-                await ShowToastAsync("Added to list");
+                await _feedback.ShowToastAsync("Added to list");
             }
         }
         catch (Exception ex)
@@ -1560,7 +1537,7 @@ namespace AniSprinkles.PageModels;
             {
                 saved.Media = Media;
                 ListEntry = saved;
-                await ShowToastAsync("Changes saved");
+                await _feedback.ShowToastAsync("Changes saved");
             }
         }
         catch (Exception ex)
@@ -1694,18 +1671,6 @@ namespace AniSprinkles.PageModels;
         return ShowSnackbarAsync(fallbackMessage, action: retryAction);
     }
 
-    private async Task ShowToastAsync(string message)
-    {
-        try
-        {
-            await Toast.Make(message, ToastDuration.Short).Show();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogWarning(ex, "Toast display failed");
-        }
-    }
-
     private static string? BuildTrailerUrl(MediaTrailer? trailer)
     {
         if (string.IsNullOrWhiteSpace(trailer?.Id) || string.IsNullOrWhiteSpace(trailer.Site))
@@ -1719,5 +1684,38 @@ namespace AniSprinkles.PageModels;
             "dailymotion" => $"https://www.dailymotion.com/video/{trailer.Id}",
             _ => null
         };
+    }
+
+    private static IReadOnlyList<Studio> BuildStudioChips(IReadOnlyList<Studio>? studios)
+    {
+        if (studios is null || studios.Count == 0)
+        {
+            return [];
+        }
+
+        var candidates = studios.Where(s => s.IsAnimationStudio == true).ToList();
+        if (candidates.Count == 0)
+        {
+            candidates = studios.ToList();
+        }
+
+        var result = candidates
+            .Where(s => s.Id > 0 && !string.IsNullOrWhiteSpace(s.Name))
+            .GroupBy(s => s.Id)
+            .Select(g => g.First())
+            .OrderByDescending(s => s.IsMain == true)
+            .ThenBy(s => s.Name, StringComparer.OrdinalIgnoreCase)
+            .ToList();
+
+        // Only call out the main studio when there's more than one — with a single studio it's implied.
+        if (result.Count > 1)
+        {
+            foreach (var studio in result)
+            {
+                studio.ShowMainStudioLabel = studio.IsMain == true;
+            }
+        }
+
+        return result;
     }
 }

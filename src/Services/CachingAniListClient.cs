@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 namespace AniSprinkles.Services;
 
 /// <summary>
-/// An <see cref="IAniListClient"/> decorator that caches the read-only character/staff lookups
+/// An <see cref="IAniListClient"/> decorator that caches the read-only character/staff/studio lookups
 /// (and their per-section page fetches) for the lifetime of the app session. AniList character
 /// and staff records are effectively static reference data, so caching them:
 /// <list type="bullet">
@@ -93,6 +93,30 @@ public sealed class CachingAniListClient : IAniListClient
         return character;
     }
 
+    public async Task<Studio?> GetStudioAsync(
+        int id,
+        string mediaSort = "POPULARITY_DESC",
+        int mediaPage = 1,
+        int mediaPerPage = 25,
+        CancellationToken cancellationToken = default)
+    {
+        var studio = await GetOrAddAsync(
+            $"Studio:{id}:{mediaSort}:{mediaPage}:{mediaPerPage}",
+            () => _inner.GetStudioAsync(id, mediaSort, mediaPage, mediaPerPage, cancellationToken))
+            .ConfigureAwait(false);
+
+        if (studio is not null)
+        {
+            // Key off the perPage GetStudioAsync was asked for (sourced from the page model's PageSize),
+            // so the seed matches the LoadStudioMediaPageAsync lookup for page 1 even if PageSize changes.
+            SeedPageCache(
+                $"StudioMediaPage:{id}:{mediaPage}:{mediaSort}:{mediaPerPage}",
+                () => ((IReadOnlyList<StudioMediaEdge>)studio.Media.ToList(), studio.MediaPageInfo));
+        }
+
+        return studio;
+    }
+
     public Task<(IReadOnlyList<StaffCharacterEdge> Items, PageInfo? PageInfo)> LoadStaffCharactersPageAsync(
         int id, int page, string sort, int perPage = 25, CancellationToken cancellationToken = default)
         => GetOrAddAsync(
@@ -110,6 +134,12 @@ public sealed class CachingAniListClient : IAniListClient
         => GetOrAddAsync(
             $"CharacterMediaPage:{id}:{page}:{sort}:{perPage}",
             () => _inner.LoadCharacterMediaPageAsync(id, page, sort, perPage, cancellationToken));
+
+    public Task<(IReadOnlyList<StudioMediaEdge> Items, PageInfo? PageInfo)> LoadStudioMediaPageAsync(
+        int id, int page, string sort, int perPage = 25, CancellationToken cancellationToken = default)
+        => GetOrAddAsync(
+            $"StudioMediaPage:{id}:{page}:{sort}:{perPage}",
+            () => _inner.LoadStudioMediaPageAsync(id, page, sort, perPage, cancellationToken));
 
     public Task<(IReadOnlyList<CharacterEdge> Items, PageInfo? PageInfo)> LoadMediaCharactersPageAsync(
         int id, int page, string sort, int perPage = 25, CancellationToken cancellationToken = default)

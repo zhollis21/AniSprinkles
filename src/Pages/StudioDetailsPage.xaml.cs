@@ -4,21 +4,21 @@ using Microsoft.Extensions.Logging;
 
 namespace AniSprinkles.Pages;
 
-public partial class StaffDetailsPage : ContentPage, IQueryAttributable
+public partial class StudioDetailsPage : ContentPage, IQueryAttributable
 {
-    private StaffDetailsPageModel ViewModel { get; }
-    private ILogger<StaffDetailsPage> Logger { get; }
+    private StudioDetailsPageModel ViewModel { get; }
+    private ILogger<StudioDetailsPage> Logger { get; }
     private readonly DeferredContentLoader _loader;
-    private int _pendingStaffId;
+    private int _pendingStudioId;
 
-    public StaffDetailsPage()
+    public StudioDetailsPage()
         : this(
-            ServiceProviderHelper.GetServiceProvider().GetRequiredService<StaffDetailsPageModel>(),
-            ServiceProviderHelper.GetServiceProvider().GetRequiredService<ILogger<StaffDetailsPage>>())
+            ServiceProviderHelper.GetServiceProvider().GetRequiredService<StudioDetailsPageModel>(),
+            ServiceProviderHelper.GetServiceProvider().GetRequiredService<ILogger<StudioDetailsPage>>())
     {
     }
 
-    public StaffDetailsPage(StaffDetailsPageModel viewModel, ILogger<StaffDetailsPage> logger)
+    public StudioDetailsPage(StudioDetailsPageModel viewModel, ILogger<StudioDetailsPage> logger)
     {
         InitializeComponent();
         ViewModel = viewModel;
@@ -28,13 +28,13 @@ public partial class StaffDetailsPage : ContentPage, IQueryAttributable
         _loader = new DeferredContentLoader(
             logger,
             LoadedContentHost,
-            entityName: "staff",
-            shouldShowContent: () => ViewModel.HasStaff && !ViewModel.IsBusy && ViewModel.CurrentState == PageState.Content,
-            createView: () => new Views.StaffDetailsLoadedContentView { BindingContext = ViewModel },
+            entityName: "studio",
+            shouldShowContent: () => ViewModel.HasStudio && !ViewModel.IsBusy && ViewModel.CurrentState == PageState.Content,
+            createView: () => new Views.StudioDetailsLoadedContentView { BindingContext = ViewModel },
             onRenderError: ex =>
             {
                 ViewModel.ErrorTitle = "Something Went Wrong";
-                ViewModel.ErrorSubtitle = "Failed to render the staff view.";
+                ViewModel.ErrorSubtitle = "Failed to render the studio view.";
                 ViewModel.ErrorIconGlyph = FluentIconsRegular.ErrorCircle24;
                 ViewModel.ErrorDetails = $"{ex.GetType().Name}: {ex.Message}";
                 ViewModel.CanRetry = true;
@@ -56,32 +56,30 @@ public partial class StaffDetailsPage : ContentPage, IQueryAttributable
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
-        var staffId = QueryAttributeParser.ParseInt(query, "staffId");
-        Logger.LogInformation("NAVTRACE StaffDetailsPage.ApplyQueryAttributes staffId={StaffId}", staffId);
+        var studioId = QueryAttributeParser.ParseInt(query, "studioId");
+        Logger.LogInformation("NAVTRACE StudioDetailsPage.ApplyQueryAttributes studioId={StudioId}", studioId);
 
-        _loader.ResetContentIfStale(staffId != _pendingStaffId);
-        _pendingStaffId = staffId;
+        _loader.ResetContentIfStale(studioId != _pendingStudioId);
+        _pendingStudioId = studioId;
         _loader.BumpVersion();
-        _loader.TrySchedule(version => RunDeferredLoadAsync(version, _pendingStaffId));
+        _loader.TrySchedule(version => RunDeferredLoadAsync(version, _pendingStudioId));
     }
 
     protected override void OnAppearing()
     {
         base.OnAppearing();
         _loader.OnAppearing();
-        _loader.TrySchedule(version => RunDeferredLoadAsync(version, _pendingStaffId));
+        _loader.TrySchedule(version => RunDeferredLoadAsync(version, _pendingStudioId));
     }
 
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
         _loader.OnDisappearing();
-        // Abandon any in-flight fetches so a half-loaded page doesn't keep hitting the API after
-        // the user has navigated away.
         ViewModel.CancelInFlight();
     }
 
-    private async Task RunDeferredLoadAsync(int version, int staffId)
+    private async Task RunDeferredLoadAsync(int version, int studioId)
     {
         try
         {
@@ -92,19 +90,19 @@ public partial class StaffDetailsPage : ContentPage, IQueryAttributable
                 return;
             }
 
-            await ViewModel.LoadAsync(staffId);
+            await ViewModel.LoadAsync(studioId);
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, "StaffDetailsPage load failed for staff {StaffId}", staffId);
+            Logger.LogError(ex, "StudioDetailsPage load failed for studio {StudioId}", studioId);
         }
     }
 
     private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName is nameof(StaffDetailsPageModel.IsBusy)
-            or nameof(StaffDetailsPageModel.HasStaff)
-            or nameof(StaffDetailsPageModel.CurrentState))
+        if (e.PropertyName is nameof(StudioDetailsPageModel.IsBusy)
+            or nameof(StudioDetailsPageModel.HasStudio)
+            or nameof(StudioDetailsPageModel.CurrentState))
         {
             _loader.UpdateHost();
         }

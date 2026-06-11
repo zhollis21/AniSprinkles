@@ -94,6 +94,15 @@ internal sealed class FailingAniListClient : IAniListClient
             CancellationToken ct = default)
             => throw Fail();
 
+    public Task<Studio?>
+        GetStudioAsync(
+            int id,
+            string mediaSort = "POPULARITY_DESC",
+            int mediaPage = 1,
+            int mediaPerPage = 25,
+            CancellationToken ct = default)
+            => throw Fail();
+
     public Task<(IReadOnlyList<StaffCharacterEdge> Items, PageInfo? PageInfo)>
         LoadStaffCharactersPageAsync(int id, int page, string sort, int perPage = 25, CancellationToken ct = default)
             => throw Fail();
@@ -104,6 +113,10 @@ internal sealed class FailingAniListClient : IAniListClient
 
     public Task<(IReadOnlyList<CharacterMediaEdge> Items, PageInfo? PageInfo)>
         LoadCharacterMediaPageAsync(int id, int page, string sort, int perPage = 25, CancellationToken ct = default)
+            => throw Fail();
+
+    public Task<(IReadOnlyList<StudioMediaEdge> Items, PageInfo? PageInfo)>
+        LoadStudioMediaPageAsync(int id, int page, string sort, int perPage = 25, CancellationToken ct = default)
             => throw Fail();
 
     public Task<(IReadOnlyList<CharacterEdge> Items, PageInfo? PageInfo)>
