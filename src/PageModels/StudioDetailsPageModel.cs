@@ -91,6 +91,13 @@ public partial class StudioDetailsPageModel : ObservableObject
 
     public string ProductionsSort => _productions.Sort;
 
+    // No productions loaded and nothing in flight → show the friendly empty state instead of a blank section.
+    public bool ShowProductionsEmptyState => !HasProductions && !ProductionsBusy;
+
+    public bool ShowProductionsSection => HasProductions || ShowProductionsEmptyState;
+
+    public string ProductionsEmptyMessage => "No productions found for this studio.";
+
     public bool HasStudio => Studio is not null;
 
     public string PageTitle => Studio?.DisplayName ?? "Studio";
@@ -154,6 +161,7 @@ public partial class StudioDetailsPageModel : ObservableObject
             var isNotFound = apiEx?.Kind == ApiErrorKind.NotFound;
             if (isNotFound)
             {
+                // NotFound is non-retryable and intentionally kept out of Sentry — log at Warning so it stays a breadcrumb.
                 _logger.LogWarning(ex, "NAVTRACE StudioDetails not found on AniList in {ElapsedMs}ms (studio {StudioId})", stopwatch.ElapsedMilliseconds, studioId);
             }
             else
@@ -253,6 +261,8 @@ public partial class StudioDetailsPageModel : ObservableObject
         OnPropertyChanged(nameof(HasProductions));
         OnPropertyChanged(nameof(ProductionsBusy));
         OnPropertyChanged(nameof(ProductionsSort));
+        OnPropertyChanged(nameof(ShowProductionsEmptyState));
+        OnPropertyChanged(nameof(ShowProductionsSection));
         LoadMoreProductionsCommand.NotifyCanExecuteChanged();
     }
 

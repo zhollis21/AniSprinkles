@@ -1846,7 +1846,7 @@ query Media($id: Int!) {
           type
           status
           coverImage { medium large }
-          startDate { year }
+          startDate { year month day }
         }
       }
     }
@@ -2056,7 +2056,7 @@ query Staff($id: Int!, $charactersPage: Int = 1, $mediaPage: Int = 1, $character
           averageScore
           favourites
           popularity
-          startDate { year }
+          startDate { year month day }
         }
         staffRole
       }
@@ -2102,7 +2102,7 @@ query StaffMediaPage($id: Int!, $page: Int!, $sort: [MediaSort], $perPage: Int =
           averageScore
           favourites
           popularity
-          startDate { year }
+          startDate { year month day }
         }
         staffRole
       }
@@ -2126,7 +2126,7 @@ query CharacterMediaPage($id: Int!, $page: Int!, $sort: [MediaSort], $perPage: I
           averageScore
           favourites
           popularity
-          startDate { year }
+          startDate { year month day }
         }
         characterRole
         voiceActors(sort: [LANGUAGE, RELEVANCE]) {
@@ -2221,7 +2221,7 @@ query Studio($id: Int!, $mediaPage: Int = 1, $mediaPerPage: Int = 25, $mediaSort
         averageScore
         favourites
         popularity
-        startDate { year }
+        startDate { year month day }
       }
     }
   }
@@ -2242,7 +2242,7 @@ query StudioMediaPage($id: Int!, $page: Int!, $sort: [MediaSort], $perPage: Int 
         averageScore
         favourites
         popularity
-        startDate { year }
+        startDate { year month day }
       }
     }
   }
@@ -2274,7 +2274,7 @@ query Character($id: Int!, $mediaPage: Int = 1, $mediaSort: [MediaSort] = [POPUL
           averageScore
           favourites
           popularity
-          startDate { year }
+          startDate { year month day }
         }
         characterRole
         voiceActors(sort: [LANGUAGE, RELEVANCE]) {

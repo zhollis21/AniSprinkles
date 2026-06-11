@@ -1196,18 +1196,24 @@
                                                    TextColor="{Binding Name, Converter={StaticResource RainbowAccentConverter}}"
                                                    MaxLines="1"
                                                    LineBreakMode="TailTruncation" />
-                                            <HorizontalStackLayout Spacing="8">
-                                                <Label Text="Main Studio"
-                                                       Style="{StaticResource Caption2}"
-                                                       TextColor="{StaticResource Gray400}"
-                                                       FontAttributes="Bold"
-                                                       VerticalTextAlignment="Center"
-                                                       IsVisible="{Binding ShowMainStudioLabel}" />
+                                            <HorizontalStackLayout Spacing="6">
                                                 <views:MetricBadgeView Glyph="{x:Static icons:FluentIconsRegular.Heart24}"
                                                                        IconColor="{StaticResource RainbowPink}"
                                                                        Text="{Binding FavouritesDisplay}"
                                                                        IsVisible="{Binding HasFavourites}"
                                                                        VerticalOptions="Center" />
+                                                <HorizontalStackLayout Spacing="6" IsVisible="{Binding ShowMainStudioLabel}">
+                                                    <Label Text="·"
+                                                           Style="{StaticResource Caption2}"
+                                                           TextColor="{StaticResource Gray400}"
+                                                           VerticalTextAlignment="Center"
+                                                           IsVisible="{Binding HasFavourites}" />
+                                                    <Label Text="Main Studio"
+                                                           Style="{StaticResource Caption2}"
+                                                           FontAttributes="Bold"
+                                                           TextColor="{StaticResource Gray100}"
+                                                           VerticalTextAlignment="Center" />
+                                                </HorizontalStackLayout>
                                             </HorizontalStackLayout>
                                         </VerticalStackLayout>
                                         <Image Grid.Column="2" WidthRequest="14" HeightRequest="14" VerticalOptions="Center">

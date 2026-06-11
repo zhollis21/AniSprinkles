@@ -58,7 +58,7 @@
                 </Grid>
             </Border>
 
-            <VerticalStackLayout Spacing="10" IsVisible="{Binding HasProductions}">
+            <VerticalStackLayout Spacing="10" IsVisible="{Binding ShowProductionsSection}">
                 <Border Style="{StaticResource SectionHeaderStyle}"
                         Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='StudioHeader'}">
                     <Grid ColumnDefinitions="*,Auto">
@@ -76,9 +76,16 @@
                         <views:SortDropdown Grid.Column="1"
                                             Options="{Binding ProductionsSortOptions}"
                                             SelectedCode="{Binding ProductionsSort}"
-                                            SelectSortCommand="{Binding SelectProductionsSortCommand}" />
+                                            SelectSortCommand="{Binding SelectProductionsSortCommand}"
+                                            IsVisible="{Binding HasProductions}" />
                     </Grid>
                 </Border>
+
+                <!-- Empty state — a studio with no listed productions (rare; defensive parity with the other detail lists). -->
+                <Label Text="{Binding ProductionsEmptyMessage}"
+                       Style="{StaticResource Body2}"
+                       TextColor="{StaticResource Gray400}"
+                       IsVisible="{Binding ShowProductionsEmptyState}" />
 
                 <Grid>
                     <CollectionView ItemsSource="{Binding DisplayedProductions}"
@@ -86,7 +93,8 @@
                                     ItemSizingStrategy="MeasureFirstItem"
                                     RemainingItemsThreshold="3"
                                     RemainingItemsThresholdReachedCommand="{Binding LoadMoreProductionsCommand}"
-                                    InputTransparent="{Binding ProductionsBusy}">
+                                    InputTransparent="{Binding ProductionsBusy}"
+                                    IsVisible="{Binding HasProductions}">
                         <CollectionView.ItemsLayout>
                             <LinearItemsLayout Orientation="Horizontal" ItemSpacing="10" />
                         </CollectionView.ItemsLayout>
@@ -111,12 +119,6 @@
                                             <Label Text="{Binding Node.DisplayTitle}"
                                                    Style="{StaticResource Caption1Strong}"
                                                    MaxLines="2"
-                                                   LineBreakMode="TailTruncation" />
-                                            <Label Text="{Binding Node.Format}"
-                                                   Style="{StaticResource Caption2}"
-                                                   TextColor="{Binding Node.Format, Converter={StaticResource RainbowAccentConverter}}"
-                                                   FontAttributes="Bold"
-                                                   MaxLines="1"
                                                    LineBreakMode="TailTruncation" />
                                             <views:MetricBadgeView Glyph="{Binding MetricBadge.Glyph}"
                                                                    IconColor="{Binding MetricBadge.IconColor}"

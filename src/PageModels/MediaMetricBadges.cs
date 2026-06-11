@@ -1,3 +1,4 @@
+using AniSprinkles.Converters;
 using Microsoft.Maui.Graphics;
 
 namespace AniSprinkles.PageModels;
@@ -8,7 +9,8 @@ namespace AniSprinkles.PageModels;
 /// Studio productions, Staff production roles, and Character appearances.
 ///
 /// When the active sort IS a metric, the badge always renders (with a 0/— fallback) so missing data
-/// doesn't look broken; only non-metric sorts (e.g. Title) show no badge.
+/// doesn't look broken. The Title sort has no numeric metric, so it shows the media format instead
+/// (so the slot is never empty); only items with no format at all show no badge.
 /// </summary>
 public static class MediaMetricBadges
 {
@@ -44,6 +46,13 @@ public static class MediaMetricBadges
                 Glyph = FluentIconsRegular.Calendar24,
                 IconColor = Color.FromArgb("#00C2FF"),
                 Text = media.YearOrDash,
+            },
+            // Title has no numeric metric — show the media format so the badge slot isn't empty.
+            "TITLE_ROMAJI" when !string.IsNullOrEmpty(media.Format) => new ItemMetricBadge
+            {
+                Glyph = MediaFormatIcons.GlyphFor(media.Format) ?? FluentIconsRegular.MoviesAndTv24,
+                IconColor = Color.FromArgb("#AF52DE"),
+                Text = media.FormatDisplay,
             },
             _ => null,
         };
