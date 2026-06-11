@@ -9,8 +9,8 @@
 ## Architecture
 
 - **.NET MAUI Android-only** app (`net10.0-android`; `SupportedOSPlatformVersion` 31.0), single project in `src/`. App ID: `com.RainbowSprinkles.AniSprinkles`.
-- **MVVM** via CommunityToolkit.Mvvm: PageModels extend `ObservableObject`, use `[ObservableProperty]`, `[RelayCommand]`, `[NotifyPropertyChangedFor]`. Shell flyout navigation (`my-anime`, `settings`) with programmatic `media-details`, `staff-details`, and `character-details` routes. PageModels navigate through the injected `INavigationService` (routes + lightweight query params — never full objects); persist state via the injected `IPreferences`; marshal pool-thread continuations back to the UI via the injected `IDispatcher`. View-facing UX calls (`Shell.Current.DisplayAlertAsync`, `ShowPopupAsync`, `Browser.Default`) are allowed to keep using MAUI statics because they only run inside view-attached paths.
-- **DI**: Services and flyout PageModels (`MyAnimePageModel`, `SettingsPageModel`) are singleton. All Pages and details PageModels (`MediaDetailsPageModel`, `StaffDetailsPageModel`, `CharacterDetailsPageModel`) are transient. See `/project-architecture` for the full DI table and page patterns.
+- **MVVM** via CommunityToolkit.Mvvm: PageModels extend `ObservableObject`, use `[ObservableProperty]`, `[RelayCommand]`, `[NotifyPropertyChangedFor]`. Shell flyout navigation (`my-anime`, `settings`) with programmatic `media-details`, `staff-details`, `character-details`, and `studio-details` routes. PageModels navigate through the injected `INavigationService` (routes + lightweight query params — never full objects); persist state via the injected `IPreferences`; marshal pool-thread continuations back to the UI via the injected `IDispatcher`. View-facing UX calls (`Shell.Current.DisplayAlertAsync`, `ShowPopupAsync`, `Browser.Default`) are allowed to keep using MAUI statics because they only run inside view-attached paths.
+- **DI**: Services and flyout PageModels (`MyAnimePageModel`, `SettingsPageModel`) are singleton. All Pages and details PageModels (`MediaDetailsPageModel`, `StaffDetailsPageModel`, `CharacterDetailsPageModel`, `StudioDetailsPageModel`) are transient. See `/project-architecture` for the full DI table and page patterns.
 - **Services**: `AuthService` (OAuth + SecureStorage), `AniListClient` (GraphQL + viewer ID cache), `ErrorReportService` (Sentry + `ILogger` + token redaction), `FileLoggerProvider` (rotating async file log, Debug = 1 MB × 3 / Release = 256 KB × 3), `AndroidLogcatLoggerProvider` (bridges `ILogger` → `adb logcat` on Android), `LoggingHandler` (HTTP DelegatingHandler), `AiringNotificationService` (WorkManager periodic check). See `/airing-notifications` for the notification subsystem.
 - **Global usings** (`GlobalUsings.cs`): `Models`, `PageModels`, `Pages`, `Services`, `IconFont.Maui.FluentIcons`. `Converters` and `Utilities` require explicit `using`.
 - **Key NuGet packages**: `Microsoft.Maui.Controls`, `CommunityToolkit.Mvvm`, `CommunityToolkit.Maui`, `Sentry.Maui`, `Syncfusion.Maui.Toolkit`, `IconFont.Maui.FluentIcons`.
@@ -19,10 +19,10 @@
 
 - **Endpoint**: `https://graphql.anilist.co`. Auth: OAuth implicit grant, redirect URI `anisprinkles://auth`, token in `SecureStorage` keys `anilist_access_token` and `anilist_access_token_expires_at`.
 - **Viewer ID caching**: lightweight `Viewer { id }` query cached by token string; invalidates on re-auth.
-- **Operations**: `Viewer`, `ViewerFull`, `MediaListCollection`, `Search`, `Media`, `SaveMediaListEntry`, `DeleteMediaListEntry`, `UpdateUser`, `AiringSchedule` / `Staff` / `Character` (the latter three are public — no auth required).
+- **Operations**: `Viewer`, `ViewerFull`, `MediaListCollection`, `Search`, `Media`, `SaveMediaListEntry`, `DeleteMediaListEntry`, `UpdateUser`, `AiringSchedule` / `Staff` / `Character` / `Studio` (the latter four are public — no auth required).
 - **Rate limiting**: `AniListRateLimitHandler` (a `DelegatingHandler`) serializes all requests, reads `X-RateLimit-Remaining`/`X-RateLimit-Reset` for adaptive spacing, and does bounded `Retry-After`-aware retry on 429 (surfacing `ApiErrorKind.RateLimited` when the wait exceeds the cap or retries are exhausted).
 - **Transient retry**: `AniListClient.SendAsync` retries once (short delay) on plausibly transient failures — `Network`, `Authentication` (e.g. AniList's sporadic `400 "Invalid token"` on a valid token), and `Unknown` — and **not** `RateLimited` (owned by the handler above), `NotFound`, or `ServiceOutage`. A recovered blip stays a `Warning` breadcrumb and isn't reported to the outage tracker.
-- **Caching**: `CachingAniListClient` decorates `IAniListClient`, caching character/staff reads for the session and coalescing concurrent same-key fetches. Other reads (lists, search, media) pass through — broader caching is a planned follow-up.
+- **Caching**: `CachingAniListClient` decorates `IAniListClient`, caching character/staff/studio reads for the session and coalescing concurrent same-key fetches. Other reads (lists, search, media) pass through — broader caching is a planned follow-up.
 - **HttpClient**: singleton; pipeline is `AniListRateLimitHandler` → `LoggingHandler` → `HttpClientHandler`. Bearer token attached per-request in `AniListClient.SendAsync`.
 
 ## Airing Notifications
@@ -54,7 +54,7 @@ dotnet test tests/AniSprinkles.UnitTests/AniSprinkles.UnitTests.csproj -c Debug
 Passing `-p:CiBuild=true` in a **Debug** build appends `CI` to `DefineConstants`. This activates `#if CI` blocks that swap in stub services. Do **not** use `-p:CiBuild=true` with `-c Release`; the project file only supports this for Debug builds, and Release builds error out.
 
 - `CIAuthService` (`src/Services/CI/`) — always returns `"ci-stub-token"`; app appears authenticated
-- `CIAniListClient` (`src/Services/CI/`) — returns hardcoded anime list and user profile
+- `CIAniListClient` (`src/Services/CI/`) — returns hardcoded anime list, user profile, and details-page fixtures
 - `CIAiringNotificationService` (`src/Services/CI/`) — all methods are no-ops; `RequestPermissionAsync` returns `true`
 
 These stubs are **compiled out entirely** in standard Debug and Release builds.

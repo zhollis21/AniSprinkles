@@ -65,6 +65,14 @@ internal sealed class CIAniListClient : IAniListClient
         CancellationToken cancellationToken = default)
         => Task.FromResult<Character?>(StubData.Character);
 
+    public Task<Studio?> GetStudioAsync(
+        int id,
+        string mediaSort = "POPULARITY_DESC",
+        int mediaPage = 1,
+        int mediaPerPage = 25,
+        CancellationToken cancellationToken = default)
+        => Task.FromResult<Studio?>(StubData.Studio);
+
     public Task<(IReadOnlyList<StaffCharacterEdge> Items, PageInfo? PageInfo)> LoadStaffCharactersPageAsync(
         int id, int page, string sort, int perPage = 25, CancellationToken ct = default)
         => Task.FromResult<(IReadOnlyList<StaffCharacterEdge>, PageInfo?)>(
@@ -78,6 +86,11 @@ internal sealed class CIAniListClient : IAniListClient
     public Task<(IReadOnlyList<CharacterMediaEdge> Items, PageInfo? PageInfo)> LoadCharacterMediaPageAsync(
         int id, int page, string sort, int perPage = 25, CancellationToken ct = default)
         => Task.FromResult<(IReadOnlyList<CharacterMediaEdge>, PageInfo?)>(
+            ([], new PageInfo { HasNextPage = false, CurrentPage = page }));
+
+    public Task<(IReadOnlyList<StudioMediaEdge> Items, PageInfo? PageInfo)> LoadStudioMediaPageAsync(
+        int id, int page, string sort, int perPage = 25, CancellationToken ct = default)
+        => Task.FromResult<(IReadOnlyList<StudioMediaEdge>, PageInfo?)>(
             ([], new PageInfo { HasNextPage = false, CurrentPage = page }));
 
     public Task<(IReadOnlyList<CharacterEdge> Items, PageInfo? PageInfo)> LoadMediaCharactersPageAsync(
@@ -191,9 +204,13 @@ internal sealed class CIAniListClient : IAniListClient
                 Description = "Gol D. Roger was known as the \"Pirate King,\" the strongest and most infamous being to have sailed the Grand Line. The capture and execution of Roger by the World Government brought a change throughout the world. His last words before his death revealed the existence of the greatest treasure in the world, One Piece. It was this revelation that brought about the Grand Age of Pirates, men who dreamed of finding One Piece—which promises an unlimited amount of riches and fame—and quite possibly the pinnacle of glory and the title of the Pirate King.<br><br>Enter Monkey D. Luffy, a 17-year-old boy who defies your standard definition of a pirate. Rather than the popular persona of a wicked, hardened, toothless pirate ransacking villages for fun, Luffy's reason for being a pirate is one of pure wonder: the thought of an exciting adventure that leads him to intriguing people and ultimately, the promised treasure.",
                 StartDate = new MediaDate { Year = 1999, Month = 10, Day = 20 },
                 Genres = ["Action", "Adventure", "Comedy", "Drama", "Fantasy"],
+                // Toei is One Piece's real (sole) animation studio; the two secondary entries are synthetic
+                // so the Media Details "Studios" section renders multiple cards in the CI screenshot.
                 Studios =
                 [
-                    new Studio { Id = 18, Name = "Toei Animation", IsAnimationStudio = true },
+                    new Studio { Id = 18, Name = "Toei Animation", IsAnimationStudio = true, IsMain = true, Favourites = 8_730 },
+                    new Studio { Id = 11, Name = "Madhouse", IsAnimationStudio = true, IsMain = false, Favourites = 31_200 },
+                    new Studio { Id = 1, Name = "Studio Pierrot", IsAnimationStudio = true, IsMain = false, Favourites = 9_800 },
                 ],
                 // Airs today in 3 hours — exercises the short countdown airing path
                 NextAiringEpisode = MakeAiringEpisode(1160, DateTimeOffset.UtcNow.AddHours(3)),
@@ -467,6 +484,7 @@ internal sealed class CIAniListClient : IAniListClient
         // marked complete (HasNextPage = false) so no Load More fires during capture.
         public static readonly Staff Staff = BuildStaffFixture();
         public static readonly Character Character = BuildCharacterFixture();
+        public static readonly Studio Studio = BuildStudioFixture();
 
         // ---- Fixture builders ---------------------------------------------------------------------
 
@@ -531,6 +549,20 @@ internal sealed class CIAniListClient : IAniListClient
                 StartDate = new MediaDate { Year = year },
                 Title = new MediaTitle { Romaji = title, English = title },
                 CoverImage = new MediaCoverImage { Large = cover, Medium = cover },
+            },
+        };
+
+        private static StudioMediaEdge StudioProduction(
+            int id, string format, string type, string status, int score, int popularity, int favourites,
+            int year, string romaji, string english, string cover, string color) => new()
+        {
+            Node = new RelatedMedia
+            {
+                Id = id, Format = format, Type = type, Status = status,
+                AverageScore = score, Popularity = popularity, Favourites = favourites,
+                StartDate = new MediaDate { Year = year },
+                Title = new MediaTitle { Romaji = romaji, English = english },
+                CoverImage = new MediaCoverImage { Large = cover, Medium = cover, Color = color },
             },
         };
 
@@ -643,6 +675,34 @@ internal sealed class CIAniListClient : IAniListClient
             }
 
             return staff;
+        }
+
+        private static Studio BuildStudioFixture()
+        {
+            var studio = new Studio
+            {
+                Id = 18,
+                Name = "Toei Animation",
+                IsAnimationStudio = true,
+                Favourites = 8_730,
+                SiteUrl = "https://anilist.co/studio/18",
+                MediaPageInfo = new PageInfo { HasNextPage = false, CurrentPage = 1 },
+            };
+
+            foreach (var production in new[]
+            {
+                StudioProduction(21, "TV", "ANIME", "RELEASING", 87, 708_195, 103_507, 1999, "ONE PIECE", "ONE PIECE", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21-ELSYx3yMPcKM.jpg", "#e49335"),
+                StudioProduction(223, "TV", "ANIME", "FINISHED", 78, 387_724, 9_173, 1986, "Dragon Ball", "Dragon Ball", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx223-scE5uJfXqqj8.png", "#f1bb35"),
+                StudioProduction(813, "TV", "ANIME", "FINISHED", 82, 420_892, 11_246, 1989, "Dragon Ball Z", "Dragon Ball Z", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx813-vG7I3BTL9H3G.jpg", "#f1ae35"),
+                StudioProduction(141902, "MOVIE", "ANIME", "FINISHED", 78, 74_600, 2_048, 2022, "ONE PIECE FILM: RED", "One Piece Film: Red", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx141902-fTyoTk8F8qOl.jpg", "#f1c950"),
+                StudioProduction(12859, "MOVIE", "ANIME", "FINISHED", 79, 62_142, 867, 2012, "ONE PIECE FILM: Z", "One Piece Film: Z", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx12859-uQFENDPzMWz6.jpg", "#f1ae5d"),
+                StudioProduction(101001, "MOVIE", "ANIME", "FINISHED", 82, 114_793, 2_522, 2018, "Dragon Ball Super: Broly", "Dragon Ball Super: Broly", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101001-N4Dy57wKQf0g.jpg", "#0da1e4"),
+            })
+            {
+                studio.Media.Add(production);
+            }
+
+            return studio;
         }
     }
 }

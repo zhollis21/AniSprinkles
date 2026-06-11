@@ -12,7 +12,7 @@ public class VoiceActorAggregatorTests
         new() { VoiceActors = actors.ToList() };
 
     private static PageInfo Page(int current, bool hasNext) =>
-        new() { CurrentPage = current, HasNextPage = hasNext, LastPage = hasNext ? current + 1 : current };
+        new() { CurrentPage = current, HasNextPage = hasNext };
 
     private static (IReadOnlyList<CharacterMediaEdge> Items, PageInfo? PageInfo) Result(
         PageInfo info, params CharacterMediaEdge[] edges) => (edges.ToList(), info);

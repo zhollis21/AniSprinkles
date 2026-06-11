@@ -1,7 +1,7 @@
-using System.Diagnostics;
 using System.ComponentModel;
-using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 using AniSprinkles.Utilities;
+using Microsoft.Extensions.Logging;
 
 namespace AniSprinkles.Pages;
 
@@ -9,14 +9,11 @@ public partial class MediaDetailsPage : ContentPage, IQueryAttributable
 {
     private MediaDetailsPageModel ViewModel { get; }
     private ILogger<MediaDetailsPage> Logger { get; }
+    private readonly DeferredContentLoader _loader;
     private string _activeNavTraceId = "none";
     private DateTimeOffset? _activeNavStartUtc;
-    private bool _hasCreatedLoadedContent;
-    private bool _hasAppeared;
     private int _pendingMediaId;
     private MediaListEntry? _pendingListEntry;
-    private int _pendingQueryVersion;
-    private int _scheduledQueryVersion;
 
     public MediaDetailsPage()
         : this(
@@ -32,6 +29,23 @@ public partial class MediaDetailsPage : ContentPage, IQueryAttributable
         ViewModel = viewModel;
         Logger = logger;
         BindingContext = ViewModel;
+
+        _loader = new DeferredContentLoader(
+            logger,
+            LoadedContentHost,
+            entityName: "media",
+            shouldShowContent: () => ViewModel.HasMedia && !ViewModel.IsBusy && ViewModel.CurrentState == PageState.Content,
+            createView: () => new Views.MediaDetailsLoadedContentView { BindingContext = ViewModel },
+            onRenderError: ex =>
+            {
+                ViewModel.ErrorTitle = "Something Went Wrong";
+                ViewModel.ErrorSubtitle = "Failed to render the details view.";
+                ViewModel.ErrorIconGlyph = FluentIconsRegular.ErrorCircle24;
+                ViewModel.ErrorDetails = $"{ex.GetType().Name}: {ex.Message}\n\n{ex.StackTrace}";
+                ViewModel.CanRetry = true;
+                ViewModel.CurrentState = PageState.Error;
+            });
+
         ViewModel.PropertyChanged += OnViewModelPropertyChanged;
     }
 
@@ -50,18 +64,7 @@ public partial class MediaDetailsPage : ContentPage, IQueryAttributable
     {
         _activeNavTraceId = NavigationTelemetryHelper.ParseTraceId(query);
         _activeNavStartUtc = NavigationTelemetryHelper.ParseNavigationStart(query);
-        var mediaId = 0;
-        if (query.TryGetValue("mediaId", out var rawId))
-        {
-            if (rawId is int id)
-            {
-                mediaId = id;
-            }
-            else if (rawId is string text && int.TryParse(text, out var parsed))
-            {
-                mediaId = parsed;
-            }
-        }
+        var mediaId = QueryAttributeParser.ParseInt(query, "mediaId");
 
         MediaListEntry? entry = null;
         if (query.TryGetValue("listEntry", out var rawEntry) && rawEntry is MediaListEntry castEntry)
@@ -80,76 +83,44 @@ public partial class MediaDetailsPage : ContentPage, IQueryAttributable
             DateTimeOffset.UtcNow,
             NavigationTelemetryHelper.GetElapsedFromTapMilliseconds(_activeNavStartUtc));
 
-        // Only tear down the heavy content view when navigating to a different media.
-        // On back navigation Shell re-applies the same query attributes, so keep the existing
-        // view intact to avoid a costly XAML re-inflation that causes a multi-second hang.
-        if (mediaId != _pendingMediaId || !_hasCreatedLoadedContent)
-        {
-            HandlerHelper.DisconnectAll(LoadedContentHost.Content);
-            LoadedContentHost.Content = null;
-            _hasCreatedLoadedContent = false;
-        }
+        // Only tear down the heavy content view when navigating to a different media. On back
+        // navigation Shell re-applies the same query attributes, so keeping the existing view avoids
+        // a costly XAML re-inflation that causes a multi-second hang.
+        _loader.ResetContentIfStale(mediaId != _pendingMediaId);
 
         // Queue requested media; actual load starts after the page has appeared and yielded a frame.
-        // This keeps Shell transition animation smooth instead of competing with immediate details work.
+        // This keeps the Shell transition animation smooth instead of competing with details work.
         _pendingMediaId = mediaId;
         _pendingListEntry = entry;
-        _pendingQueryVersion++;
-        TryScheduleDeferredLoad();
+        _loader.BumpVersion();
+        ScheduleLoad();
     }
 
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        _hasAppeared = true;
-        UpdateLoadedContentHost();
+        _loader.OnAppearing();
         Logger.LogInformation(
             "NAVTRACE {TraceId} MediaDetailsPage.OnAppearing at {NowUtc:O} (+{SinceTapMs}ms)",
             _activeNavTraceId,
             DateTimeOffset.UtcNow,
             NavigationTelemetryHelper.GetElapsedFromTapMilliseconds(_activeNavStartUtc));
-        TryScheduleDeferredLoad();
+        ScheduleLoad();
     }
 
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
-        _hasAppeared = false;
-        _pendingQueryVersion++;
-        // Abandon any in-flight load / section fetch so we don't keep hitting the API after navigating away.
-        // List ops recreate the scope via EnsurePageScope, so the sort popup's OnDisappearing stays harmless.
+        _loader.OnDisappearing();
+        // Abandon any in-flight load / section fetch so we don't keep hitting the API after navigating
+        // away. List ops recreate the scope via EnsurePageScope, so the sort popup's OnDisappearing
+        // stays harmless.
         ViewModel.CancelInFlight();
     }
 
-    private void TryScheduleDeferredLoad()
-    {
-        if (!_hasAppeared || _pendingQueryVersion == _scheduledQueryVersion)
-        {
-            return;
-        }
-
-        var queryVersion = _pendingQueryVersion;
-        _scheduledQueryVersion = queryVersion;
-        var mediaId = _pendingMediaId;
-        var entry = _pendingListEntry;
-        var navTraceId = _activeNavTraceId;
-        var navStartUtc = _activeNavStartUtc;
-
-        RunDeferredLoadAsync(queryVersion, mediaId, entry, navTraceId, navStartUtc)
-            .ContinueWith(
-                task =>
-                {
-                    if (task.IsFaulted)
-                    {
-                        Logger.LogError(
-                            task.Exception,
-                            "NAVTRACE {TraceId} deferred load task faulted for media {MediaId}",
-                            navTraceId,
-                            mediaId);
-                    }
-                },
-                TaskScheduler.FromCurrentSynchronizationContext());
-    }
+    private void ScheduleLoad()
+        => _loader.TrySchedule(version => RunDeferredLoadAsync(
+            version, _pendingMediaId, _pendingListEntry, _activeNavTraceId, _activeNavStartUtc));
 
     private async Task RunDeferredLoadAsync(
         int queryVersion,
@@ -162,7 +133,7 @@ public partial class MediaDetailsPage : ContentPage, IQueryAttributable
         {
             await Task.Yield();
 
-            if (!_hasAppeared || queryVersion != _pendingQueryVersion)
+            if (!_loader.IsCurrent(queryVersion))
             {
                 return;
             }
@@ -217,49 +188,7 @@ public partial class MediaDetailsPage : ContentPage, IQueryAttributable
             or nameof(MediaDetailsPageModel.HasMedia)
             or nameof(MediaDetailsPageModel.CurrentState))
         {
-            UpdateLoadedContentHost();
-        }
-    }
-
-    private void UpdateLoadedContentHost()
-    {
-        if (ViewModel.HasMedia && !ViewModel.IsBusy && ViewModel.CurrentState == PageState.Content)
-        {
-            if (!_hasCreatedLoadedContent)
-            {
-                try
-                {
-                    Logger.LogInformation(
-                        "LOADEDHOST MediaDetails attach (hasMedia={HasMedia}, isBusy={IsBusy}, currentState={CurrentState})",
-                        ViewModel.HasMedia, ViewModel.IsBusy, ViewModel.CurrentState);
-                    // Keep first navigation frame lightweight: create the heavy details subtree only after
-                    // data has loaded, so the user sees the loading page instantly.
-                    LoadedContentHost.Content = new Views.MediaDetailsLoadedContentView
-                    {
-                        BindingContext = ViewModel
-                    };
-                    _hasCreatedLoadedContent = true;
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(ex, "Failed to create MediaDetailsLoadedContentView");
-                    ViewModel.ErrorTitle = "Something Went Wrong";
-                    ViewModel.ErrorSubtitle = "Failed to render the details view.";
-                    ViewModel.ErrorIconGlyph = FluentIconsRegular.ErrorCircle24;
-                    ViewModel.ErrorDetails = $"{ex.GetType().Name}: {ex.Message}\n\n{ex.StackTrace}";
-                    ViewModel.CanRetry = true;
-                    ViewModel.CurrentState = PageState.Error;
-                }
-            }
-        }
-        else if (_hasCreatedLoadedContent)
-        {
-            Logger.LogInformation(
-                "LOADEDHOST MediaDetails detach (hasMedia={HasMedia}, isBusy={IsBusy}, currentState={CurrentState})",
-                ViewModel.HasMedia, ViewModel.IsBusy, ViewModel.CurrentState);
-            HandlerHelper.DisconnectAll(LoadedContentHost.Content);
-            LoadedContentHost.Content = null;
-            _hasCreatedLoadedContent = false;
+            _loader.UpdateHost();
         }
     }
 }

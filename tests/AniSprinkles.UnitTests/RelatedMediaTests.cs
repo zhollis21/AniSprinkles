@@ -55,4 +55,14 @@ public class RelatedMediaTests
     [Fact]
     public void YearOrDash_ShowsYearWhenPresent()
         => Assert.Equal("2014", new RelatedMedia { StartDate = new MediaDate { Year = 2014 } }.YearOrDash);
+
+    // FormatDisplay prettifies AniList's enum for card labels (used by the Title-sort metric badge).
+    [Theory]
+    [InlineData("TV", "TV")]
+    [InlineData("MOVIE", "MOVIE")]
+    [InlineData("TV_SHORT", "TV SHORT")]
+    [InlineData("ONE_SHOT", "ONE SHOT")]
+    [InlineData(null, "")]
+    public void FormatDisplay_ReplacesUnderscores(string? format, string expected)
+        => Assert.Equal(expected, new RelatedMedia { Format = format }.FormatDisplay);
 }

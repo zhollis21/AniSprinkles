@@ -2,13 +2,10 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
 using AniSprinkles.Utilities;
-using CommunityToolkit.Maui.Alerts;
-using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using IconFont.Maui.FluentIcons;
 using Microsoft.Extensions.Logging;
-using Microsoft.Maui.Graphics;
 
 namespace AniSprinkles.PageModels;
 
@@ -16,7 +13,9 @@ public partial class CharacterDetailsPageModel : ObservableObject
 {
     private readonly IAniListClient _aniListClient;
     private readonly INavigationService _navigationService;
+    private readonly IUserFeedback _feedback;
     private readonly ILogger<CharacterDetailsPageModel> _logger;
+    private readonly ListOperationRunner _listOps;
 
     private const int PageSize = 25;
     private const string AppearancesDefaultSort = "POPULARITY_DESC";
@@ -105,11 +104,14 @@ public partial class CharacterDetailsPageModel : ObservableObject
     public CharacterDetailsPageModel(
         IAniListClient aniListClient,
         INavigationService navigationService,
+        IUserFeedback feedback,
         ILogger<CharacterDetailsPageModel> logger)
     {
         _aniListClient = aniListClient;
         _navigationService = navigationService;
+        _feedback = feedback;
         _logger = logger;
+        _listOps = new ListOperationRunner(logger, feedback);
 
         _appearances = new PaginatedSection<CharacterMediaEdge>(
             AppearancesDefaultSort,
@@ -330,8 +332,10 @@ public partial class CharacterDetailsPageModel : ObservableObject
     // otherwise log a no-op LISTTRACE pair on every scroll-to-end). LoadMoreAsync stays guarded too.
     [RelayCommand(CanExecute = nameof(CanLoadMoreAppearances))]
     private Task LoadMoreAppearances()
-        => RunTracedListOpAsync(
+        => _listOps.RunAsync(
             "Appears In · Load More",
+            "character",
+            _loadedCharacterId,
             () => _appearances.LoadMoreAsync(_scope.EnsureActive()),
             () => _appearances.Items.Count);
 
@@ -345,8 +349,10 @@ public partial class CharacterDetailsPageModel : ObservableObject
             return Task.CompletedTask;
         }
 
-        return RunTracedListOpAsync(
+        return _listOps.RunAsync(
             $"Appears In · sort→{code}",
+            "character",
+            _loadedCharacterId,
             () => _appearances.ChangeSortAsync(code, _scope.EnsureActive()),
             () => _appearances.Items.Count,
             // Keep the chip selection in sync with the sort that actually took effect.
@@ -355,80 +361,12 @@ public partial class CharacterDetailsPageModel : ObservableObject
 
     [RelayCommand]
     private Task CheckForMoreVoiceActors()
-        => RunTracedListOpAsync(
+        => _listOps.RunAsync(
             "Voice Actors · check for more",
+            "character",
+            _loadedCharacterId,
             () => _voiceActors.CheckForMoreAsync(_scope.EnsureActive()),
             () => _voiceActors.Items.Count);
-
-    // LISTTRACE: times the network fetch + collection apply for a list op so we can tell API cost
-    // (logged here) apart from the subsequent UI render of the bound list (which happens after this
-    // returns, on the UI thread). Failures are logged but swallowed so the affordance stays usable.
-    private async Task RunTracedListOpAsync(string op, Func<Task> operation, Func<int> loadedCount, Action? onComplete = null)
-    {
-        var stopwatch = Stopwatch.StartNew();
-        _logger.LogInformation("LISTTRACE {Op} start (character {CharacterId})", op, _loadedCharacterId);
-
-        Exception? failure = null;
-        try
-        {
-            await operation().ConfigureAwait(true);
-        }
-        catch (Exception ex)
-        {
-            failure = ex;
-        }
-
-        // Stop + log the timed section BEFORE any user feedback, so the snackbar's display time never
-        // inflates the reported fetch+apply duration (failures are exactly what we want to time).
-        stopwatch.Stop();
-        onComplete?.Invoke();
-
-        if (failure is null)
-        {
-            _logger.LogInformation(
-                "LISTTRACE {Op} completed in {ElapsedMs}ms ({Count} loaded); UI render follows",
-                op, stopwatch.ElapsedMilliseconds, loadedCount());
-            return;
-        }
-
-        _logger.LogWarning(failure, "LISTTRACE {Op} failed in {ElapsedMs}ms (character {CharacterId})", op, stopwatch.ElapsedMilliseconds, _loadedCharacterId);
-        await ShowListErrorSnackbarAsync(failure).ConfigureAwait(true);
-    }
-
-    // A failed sort/Load More leaves the existing list intact; surface a transient message so the
-    // failure isn't silent. Use the subtitle (the actionable guidance) rather than the terse title,
-    // so the toast reads as clearly as the full-page error state does.
-    private Task ShowListErrorSnackbarAsync(Exception ex)
-    {
-        var message = ex is AniListApiException apiEx
-            ? apiEx.UserSubtitle
-            : "Couldn't update the list. Check your connection and try again.";
-        return ShowSnackbarAsync(message);
-    }
-
-    private async Task ShowSnackbarAsync(string message)
-    {
-        try
-        {
-            await Snackbar.Make(message, duration: TimeSpan.FromSeconds(4)).Show().ConfigureAwait(true);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogWarning(ex, "Snackbar display failed");
-        }
-    }
-
-    private async Task ShowToastAsync(string message)
-    {
-        try
-        {
-            await Toast.Make(message, ToastDuration.Short).Show().ConfigureAwait(true);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogWarning(ex, "Toast display failed");
-        }
-    }
 
     [RelayCommand]
     private void ToggleSpoilers() => IsShowingSpoilers = !IsShowingSpoilers;
@@ -487,7 +425,7 @@ public partial class CharacterDetailsPageModel : ObservableObject
         if (media is { IsAnime: false })
         {
             _logger.LogInformation("NAVTRACE Character→Media skipped non-anime {MediaId} (type={Type}).", mediaId, media.Type);
-            await ShowToastAsync("Manga & Novel details aren't supported yet.");
+            await _feedback.ShowToastAsync("Manga & Novel details aren't supported yet.");
             return;
         }
 
@@ -521,7 +459,7 @@ public partial class CharacterDetailsPageModel : ObservableObject
     {
         foreach (var edge in items)
         {
-            edge.MetricBadge = BuildAppearanceMetricBadge(edge.Node, sort);
+            edge.MetricBadge = MediaMetricBadges.ForMediaSort(edge.Node, sort);
         }
     }
 
@@ -539,45 +477,6 @@ public partial class CharacterDetailsPageModel : ObservableObject
         => ex is AniListApiException apiEx
             ? (apiEx.UserTitle, apiEx.UserSubtitle)
             : ("Something Went Wrong", "Failed to load character details.");
-
-    private static ItemMetricBadge? BuildAppearanceMetricBadge(RelatedMedia? media, string sort)
-    {
-        if (media is null)
-        {
-            return null;
-        }
-
-        // When the active sort IS a metric, always show the badge with a 0/— fallback so missing data doesn't
-        // look broken; only non-metric sorts (Title) show no badge.
-        return sort switch
-        {
-            "POPULARITY_DESC" => new ItemMetricBadge
-            {
-                Glyph = FluentIconsRegular.People24,
-                IconColor = Color.FromArgb("#FF9500"),
-                Text = media.PopularityOrZero,
-            },
-            "SCORE_DESC" => new ItemMetricBadge
-            {
-                Glyph = FluentIconsRegular.Star24,
-                IconColor = Color.FromArgb("#FFCC00"),
-                Text = media.ScoreOrDash,
-            },
-            "FAVOURITES_DESC" => new ItemMetricBadge
-            {
-                Glyph = FluentIconsRegular.Heart24,
-                IconColor = Color.FromArgb("#FF2D95"),
-                Text = media.FavouritesOrZero,
-            },
-            "START_DATE_DESC" or "START_DATE" => new ItemMetricBadge
-            {
-                Glyph = FluentIconsRegular.Calendar24,
-                IconColor = Color.FromArgb("#00C2FF"),
-                Text = media.YearOrDash,
-            },
-            _ => null,
-        };
-    }
 
     private BioStatRow BuildBioStatRow(DescriptionStatRow row)
     {

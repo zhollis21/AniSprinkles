@@ -396,6 +396,29 @@ public class AniListClient : IAniListClient
         return data.Character is null ? null : MapCharacter(data.Character);
     }
 
+    public async Task<Studio?> GetStudioAsync(
+        int id,
+        string mediaSort = "POPULARITY_DESC",
+        int mediaPage = 1,
+        int mediaPerPage = 25,
+        CancellationToken cancellationToken = default)
+    {
+        var data = await SendAsync<StudioData>(
+            "Studio",
+            StudioQuery,
+            new
+            {
+                id,
+                mediaPage,
+                mediaPerPage,
+                mediaSort = WithTiebreaker(mediaSort),
+            },
+            token: null, // Public query — no auth needed
+            cancellationToken).ConfigureAwait(false);
+
+        return data.Studio is null ? null : MapStudio(data.Studio);
+    }
+
     // Every server-side sort needs a stable, unique final tiebreaker or pagination can duplicate/skip rows
     // when many edges share the primary key (e.g. lots of SUPPORTING characters past page 1). Append ID
     // (ascending, matching the client-side DetailsListSorters tiebreak) so page boundaries are deterministic
@@ -491,6 +514,28 @@ public class AniListClient : IAniListClient
             })
             .ToList() ?? [];
         return (items, MapPageInfo(data.Character.Media.PageInfo));
+    }
+
+    public async Task<(IReadOnlyList<StudioMediaEdge> Items, PageInfo? PageInfo)> LoadStudioMediaPageAsync(
+        int id, int page, string sort, int perPage = 25, CancellationToken cancellationToken = default)
+    {
+        var data = await SendAsync<StudioData>(
+            "StudioMediaPage",
+            StudioMediaPageQuery,
+            new { id, page, sort = WithTiebreaker(sort), perPage },
+            token: null,
+            cancellationToken).ConfigureAwait(false);
+
+        if (data.Studio?.Media is null)
+        {
+            return ([], null);
+        }
+
+        var items = data.Studio.Media.Nodes?
+            .Where(n => n is not null)
+            .Select(n => new StudioMediaEdge { Node = MapRelatedMedia(n!) })
+            .ToList() ?? [];
+        return (items, MapPageInfo(data.Studio.Media.PageInfo));
     }
 
     /// <summary>
@@ -808,7 +853,7 @@ public class AniListClient : IAniListClient
                 .OrderByDescending(tag => tag.Rank ?? -1)
                 .Take(15)
                 .ToList() ?? [],
-            Studios = dto.Studios?.Nodes ?? [],
+            Studios = MapStudios(dto.Studios),
             Rankings = dto.Rankings?
                 .OrderBy(rank => rank.Rank ?? int.MaxValue)
                 .Take(12)
@@ -892,6 +937,54 @@ public class AniListClient : IAniListClient
         Popularity = dto.Popularity,
         StartDate = dto.StartDate,
     };
+
+    private static List<Studio> MapStudios(StudioConnectionDto? connection)
+        => connection?.Edges?
+            .Where(e => e.Node is not null)
+            .Select(e =>
+            {
+                var node = e.Node;
+                return new Studio
+                {
+                    Id = node?.Id ?? 0,
+                    Name = node?.Name,
+                    IsAnimationStudio = node?.IsAnimationStudio,
+                    IsMain = e.IsMain,
+                    Favourites = node?.Favourites,
+                };
+            })
+            .ToList() ?? [];
+
+    private static Studio MapStudio(StudioDto dto)
+    {
+        var studio = new Studio
+        {
+            Id = dto.Id,
+            Name = dto.Name,
+            IsAnimationStudio = dto.IsAnimationStudio,
+            Favourites = dto.Favourites,
+            SiteUrl = dto.SiteUrl,
+            MediaPageInfo = MapPageInfo(dto.Media?.PageInfo),
+        };
+
+        if (dto.Media?.Nodes is { } mediaNodes)
+        {
+            foreach (var media in mediaNodes)
+            {
+                if (media is null)
+                {
+                    continue;
+                }
+
+                studio.Media.Add(new StudioMediaEdge
+                {
+                    Node = MapRelatedMedia(media),
+                });
+            }
+        }
+
+        return studio;
+    }
 
     private static Staff MapStaff(StaffDto dto)
     {
@@ -1010,7 +1103,6 @@ public class AniListClient : IAniListClient
         {
             HasNextPage = dto.HasNextPage ?? false,
             CurrentPage = dto.CurrentPage ?? 0,
-            LastPage = dto.LastPage ?? 0,
         };
     }
 
@@ -1243,7 +1335,6 @@ public class AniListClient : IAniListClient
     {
         public bool? HasNextPage { get; set; }
         public int? CurrentPage { get; set; }
-        public int? LastPage { get; set; }
     }
 
     private sealed class AiringScheduleDto
@@ -1409,7 +1500,7 @@ public class AniListClient : IAniListClient
         public List<string>? Synonyms { get; set; }
         public List<string>? Genres { get; set; }
         public List<MediaTag>? Tags { get; set; }
-        public StudioConnection? Studios { get; set; }
+        public StudioConnectionDto? Studios { get; set; }
         public List<MediaRanking>? Rankings { get; set; }
         public List<MediaExternalLink>? ExternalLinks { get; set; }
         public MediaRelationConnectionDto? Relations { get; set; }
@@ -1420,9 +1511,23 @@ public class AniListClient : IAniListClient
         public MediaListEntryDto? MediaListEntry { get; set; }
     }
 
-    private sealed class StudioConnection
+    private sealed class StudioConnectionDto
     {
-        public List<Studio>? Nodes { get; set; }
+        public List<StudioEdgeDto>? Edges { get; set; }
+    }
+
+    private sealed class StudioEdgeDto
+    {
+        public bool? IsMain { get; set; }
+        public StudioNodeDto? Node { get; set; }
+    }
+
+    private sealed class StudioNodeDto
+    {
+        public int Id { get; set; }
+        public string? Name { get; set; }
+        public bool? IsAnimationStudio { get; set; }
+        public int? Favourites { get; set; }
     }
 
     private sealed class MediaRelationConnectionDto
@@ -1580,6 +1685,27 @@ public class AniListClient : IAniListClient
         public CharacterDto? Character { get; set; }
     }
 
+    private sealed class StudioData
+    {
+        public StudioDto? Studio { get; set; }
+    }
+
+    private sealed class StudioDto
+    {
+        public int Id { get; set; }
+        public string? Name { get; set; }
+        public bool? IsAnimationStudio { get; set; }
+        public int? Favourites { get; set; }
+        public string? SiteUrl { get; set; }
+        public StudioMediaConnectionDto? Media { get; set; }
+    }
+
+    private sealed class StudioMediaConnectionDto
+    {
+        public PageInfoDto? PageInfo { get; set; }
+        public List<RelatedMediaDto>? Nodes { get; set; }
+    }
+
     private sealed class CharacterDto
     {
         public int Id { get; set; }
@@ -1693,7 +1819,7 @@ query Media($id: Int!) {
     startDate { year month day }
     endDate { year month day }
     nextAiringEpisode { airingAt timeUntilAiring episode }
-    trailer { id site thumbnail }
+    trailer { id site }
     synonyms
     genres
     averageScore
@@ -1702,9 +1828,14 @@ query Media($id: Int!) {
     favourites
     trending
     tags { id name rank isMediaSpoiler isGeneralSpoiler isAdult description category }
-    studios(isMain: true) { nodes { id name isAnimationStudio } }
+    studios {
+      edges {
+        isMain
+        node { id name isAnimationStudio favourites }
+      }
+    }
     rankings { rank type format year season allTime context }
-    externalLinks { id url site siteId type language color isDisabled }
+    externalLinks { id url site type language color isDisabled }
     relations {
       edges {
         relationType(version: 2)
@@ -1715,12 +1846,12 @@ query Media($id: Int!) {
           type
           status
           coverImage { medium large }
-          startDate { year }
+          startDate { year month day }
         }
       }
     }
     characters(page: 1, perPage: 25, sort: [ROLE, RELEVANCE, ID]) {
-      pageInfo { hasNextPage currentPage lastPage }
+      pageInfo { hasNextPage currentPage }
       edges {
         node {
           id
@@ -1738,7 +1869,7 @@ query Media($id: Int!) {
       }
     }
     recommendations(page: 1, perPage: 25, sort: [RATING_DESC, ID]) {
-      pageInfo { hasNextPage currentPage lastPage }
+      pageInfo { hasNextPage currentPage }
       nodes {
         rating
         mediaRecommendation {
@@ -1756,7 +1887,7 @@ query Media($id: Int!) {
       statusDistribution { status amount }
     }
     staff(page: 1, perPage: 25, sort: [RELEVANCE, ID]) {
-      pageInfo { hasNextPage currentPage lastPage }
+      pageInfo { hasNextPage currentPage }
       edges {
         node {
           id
@@ -1892,7 +2023,7 @@ query Staff($id: Int!, $charactersPage: Int = 1, $mediaPage: Int = 1, $character
     favourites
     siteUrl
     characters(sort: $charactersSort, page: $charactersPage, perPage: 25) {
-      pageInfo { hasNextPage currentPage lastPage }
+      pageInfo { hasNextPage currentPage }
       edges {
         node {
           id
@@ -1913,7 +2044,7 @@ query Staff($id: Int!, $charactersPage: Int = 1, $mediaPage: Int = 1, $character
       }
     }
     staffMedia(sort: $mediaSort, page: $mediaPage, perPage: 25) {
-      pageInfo { hasNextPage currentPage lastPage }
+      pageInfo { hasNextPage currentPage }
       edges {
         node {
           id
@@ -1925,7 +2056,7 @@ query Staff($id: Int!, $charactersPage: Int = 1, $mediaPage: Int = 1, $character
           averageScore
           favourites
           popularity
-          startDate { year }
+          startDate { year month day }
         }
         staffRole
       }
@@ -1937,7 +2068,7 @@ query Staff($id: Int!, $charactersPage: Int = 1, $mediaPage: Int = 1, $character
 query StaffCharactersPage($id: Int!, $page: Int!, $sort: [CharacterSort], $perPage: Int = 25) {
   Staff(id: $id) {
     characters(sort: $sort, page: $page, perPage: $perPage) {
-      pageInfo { hasNextPage currentPage lastPage }
+      pageInfo { hasNextPage currentPage }
       edges {
         node { id name { full native } image { medium large } favourites }
         role
@@ -1959,7 +2090,7 @@ query StaffCharactersPage($id: Int!, $page: Int!, $sort: [CharacterSort], $perPa
 query StaffMediaPage($id: Int!, $page: Int!, $sort: [MediaSort], $perPage: Int = 25) {
   Staff(id: $id) {
     staffMedia(sort: $sort, page: $page, perPage: $perPage) {
-      pageInfo { hasNextPage currentPage lastPage }
+      pageInfo { hasNextPage currentPage }
       edges {
         node {
           id
@@ -1971,7 +2102,7 @@ query StaffMediaPage($id: Int!, $page: Int!, $sort: [MediaSort], $perPage: Int =
           averageScore
           favourites
           popularity
-          startDate { year }
+          startDate { year month day }
         }
         staffRole
       }
@@ -1983,7 +2114,7 @@ query StaffMediaPage($id: Int!, $page: Int!, $sort: [MediaSort], $perPage: Int =
 query CharacterMediaPage($id: Int!, $page: Int!, $sort: [MediaSort], $perPage: Int = 25) {
   Character(id: $id) {
     media(sort: $sort, page: $page, perPage: $perPage) {
-      pageInfo { hasNextPage currentPage lastPage }
+      pageInfo { hasNextPage currentPage }
       edges {
         node {
           id
@@ -1995,7 +2126,7 @@ query CharacterMediaPage($id: Int!, $page: Int!, $sort: [MediaSort], $perPage: I
           averageScore
           favourites
           popularity
-          startDate { year }
+          startDate { year month day }
         }
         characterRole
         voiceActors(sort: [LANGUAGE, RELEVANCE]) {
@@ -2018,7 +2149,7 @@ query CharacterMediaPage($id: Int!, $page: Int!, $sort: [MediaSort], $perPage: I
 query MediaCharactersPage($id: Int!, $page: Int!, $sort: [CharacterSort], $perPage: Int = 25) {
   Media(id: $id, type: ANIME) {
     characters(sort: $sort, page: $page, perPage: $perPage) {
-      pageInfo { hasNextPage currentPage lastPage }
+      pageInfo { hasNextPage currentPage }
       edges {
         node {
           id
@@ -2036,7 +2167,7 @@ query MediaCharactersPage($id: Int!, $page: Int!, $sort: [CharacterSort], $perPa
 query MediaStaffPage($id: Int!, $page: Int!, $sort: [StaffSort], $perPage: Int = 25) {
   Media(id: $id, type: ANIME) {
     staff(sort: $sort, page: $page, perPage: $perPage) {
-      pageInfo { hasNextPage currentPage lastPage }
+      pageInfo { hasNextPage currentPage }
       edges {
         node {
           id
@@ -2054,7 +2185,7 @@ query MediaStaffPage($id: Int!, $page: Int!, $sort: [StaffSort], $perPage: Int =
 query MediaRecommendationsPage($id: Int!, $page: Int!, $sort: [RecommendationSort], $perPage: Int = 25) {
   Media(id: $id, type: ANIME) {
     recommendations(sort: $sort, page: $page, perPage: $perPage) {
-      pageInfo { hasNextPage currentPage lastPage }
+      pageInfo { hasNextPage currentPage }
       nodes {
         rating
         mediaRecommendation {
@@ -2065,6 +2196,53 @@ query MediaRecommendationsPage($id: Int!, $page: Int!, $sort: [RecommendationSor
           coverImage { medium large }
           averageScore
         }
+      }
+    }
+  }
+}";
+
+    private const string StudioQuery = @"
+query Studio($id: Int!, $mediaPage: Int = 1, $mediaPerPage: Int = 25, $mediaSort: [MediaSort] = [POPULARITY_DESC]) {
+  Studio(id: $id) {
+    id
+    name
+    isAnimationStudio
+    favourites
+    siteUrl
+    media(sort: $mediaSort, page: $mediaPage, perPage: $mediaPerPage) {
+      pageInfo { hasNextPage currentPage }
+      nodes {
+        id
+        title { romaji english native }
+        coverImage { medium large }
+        format
+        type
+        status
+        averageScore
+        favourites
+        popularity
+        startDate { year month day }
+      }
+    }
+  }
+}";
+
+    private const string StudioMediaPageQuery = @"
+query StudioMediaPage($id: Int!, $page: Int!, $sort: [MediaSort], $perPage: Int = 25) {
+  Studio(id: $id) {
+    media(sort: $sort, page: $page, perPage: $perPage) {
+      pageInfo { hasNextPage currentPage }
+      nodes {
+        id
+        title { romaji english native }
+        coverImage { medium large }
+        format
+        type
+        status
+        averageScore
+        favourites
+        popularity
+        startDate { year month day }
       }
     }
   }
@@ -2084,7 +2262,7 @@ query Character($id: Int!, $mediaPage: Int = 1, $mediaSort: [MediaSort] = [POPUL
     favourites
     siteUrl
     media(sort: $mediaSort, page: $mediaPage, perPage: 25) {
-      pageInfo { hasNextPage currentPage lastPage }
+      pageInfo { hasNextPage currentPage }
       edges {
         node {
           id
@@ -2096,7 +2274,7 @@ query Character($id: Int!, $mediaPage: Int = 1, $mediaSort: [MediaSort] = [POPUL
           averageScore
           favourites
           popularity
-          startDate { year }
+          startDate { year month day }
         }
         characterRole
         voiceActors(sort: [LANGUAGE, RELEVANCE]) {

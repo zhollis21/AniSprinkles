@@ -5,7 +5,7 @@ namespace AniSprinkles.UnitTests;
 
 public class DetailsListSortersTests
 {
-    private static CharacterMediaEdge Media(int id, int? pop = null, int? score = null, int? fav = null, int? year = null, string? title = null)
+    private static CharacterMediaEdge Media(int id, int? pop = null, int? score = null, int? fav = null, int? year = null, int? month = null, int? day = null, string? title = null)
         => new()
         {
             Node = new RelatedMedia
@@ -14,13 +14,24 @@ public class DetailsListSortersTests
                 Popularity = pop,
                 AverageScore = score,
                 Favourites = fav,
-                StartDate = year is null ? null : new MediaDate { Year = year },
+                StartDate = year is null && month is null && day is null ? null : new MediaDate { Year = year, Month = month, Day = day },
                 Title = title is null ? null : new MediaTitle { Romaji = title },
             },
         };
 
     private static StaffMediaEdge ProdMedia(int id, int? pop = null)
         => new() { Node = new RelatedMedia { Id = id, Popularity = pop } };
+
+    private static StudioMediaEdge StudioMedia(int id, int? pop = null, int? year = null)
+        => new()
+        {
+            Node = new RelatedMedia
+            {
+                Id = id,
+                Popularity = pop,
+                StartDate = year is null ? null : new MediaDate { Year = year },
+            },
+        };
 
     private static StaffCharacterEdge VoiceRole(int id, string? role = null, int? fav = null)
         => new() { Role = role, Node = new Character { Id = id, Favourites = fav } };
@@ -63,13 +74,43 @@ public class DetailsListSortersTests
     }
 
     [Fact]
-    public void SortAppearances_StartDateOldest_SortsMissingYearsLast()
+    public void SortAppearances_StartDate_FloatsUndatedFirstBothDirections()
     {
+        // Mirrors AniList's server order: undated entries first in BOTH directions, then by date.
         var items = new List<CharacterMediaEdge> { Media(1, year: 2005), Media(2, year: null), Media(3, year: 1990) };
 
-        var result = DetailsListSorters.SortAppearances("START_DATE", items);
+        var oldest = DetailsListSorters.SortAppearances("START_DATE", items);
+        var newest = DetailsListSorters.SortAppearances("START_DATE_DESC", items);
 
-        Assert.Equal(new[] { 3, 1, 2 }, result.Select(e => e.Node!.Id)); // 1990, 2005, (undated)
+        Assert.Equal(new[] { 2, 3, 1 }, oldest.Select(e => e.Node!.Id)); // (undated), 1990, 2005
+        Assert.Equal(new[] { 2, 1, 3 }, newest.Select(e => e.Node!.Id)); // (undated), 2005, 1990
+    }
+
+    [Fact]
+    public void SortAppearances_StartDate_SameYearOrdersByMonthThenDay()
+    {
+        var items = new List<CharacterMediaEdge>
+        {
+            Media(1, year: 2020, month: 6, day: 1),
+            Media(2, year: 2020, month: 1, day: 15),
+            Media(3, year: 2020, month: 1, day: 2),
+        };
+
+        var oldest = DetailsListSorters.SortAppearances("START_DATE", items);
+        var newest = DetailsListSorters.SortAppearances("START_DATE_DESC", items);
+
+        Assert.Equal(new[] { 3, 2, 1 }, oldest.Select(e => e.Node!.Id)); // Jan 2, Jan 15, Jun 1
+        Assert.Equal(new[] { 1, 2, 3 }, newest.Select(e => e.Node!.Id)); // Jun 1, Jan 15, Jan 2
+    }
+
+    [Fact]
+    public void SortAppearances_ByTitle_UntitledSortsLast()
+    {
+        var items = new List<CharacterMediaEdge> { Media(1, title: "Beta"), Media(2, title: null), Media(3, title: "alpha") };
+
+        var result = DetailsListSorters.SortAppearances("TITLE_ROMAJI", items);
+
+        Assert.Equal(new[] { 3, 1, 2 }, result.Select(e => e.Node!.Id)); // alpha, Beta, (untitled)
     }
 
     [Fact]
@@ -117,6 +158,23 @@ public class DetailsListSortersTests
         var result = DetailsListSorters.SortProductionRoles("POPULARITY_DESC", items);
 
         Assert.Equal(new[] { 2, 3, 1 }, result.Select(e => e.Node!.Id));
+    }
+
+    [Fact]
+    public void SortStudioProductions_SharesMediaSortLogic()
+    {
+        var items = new List<StudioMediaEdge>
+        {
+            StudioMedia(1, pop: 10, year: 2010),
+            StudioMedia(2, pop: 30, year: null),
+            StudioMedia(3, pop: 20, year: 2000),
+        };
+
+        var byPopularity = DetailsListSorters.SortStudioProductions("POPULARITY_DESC", items);
+        var byOldest = DetailsListSorters.SortStudioProductions("START_DATE", items);
+
+        Assert.Equal(new[] { 2, 3, 1 }, byPopularity.Select(e => e.Node!.Id));
+        Assert.Equal(new[] { 2, 3, 1 }, byOldest.Select(e => e.Node!.Id)); // (undated), 2000, 2010
     }
 
     [Fact]
@@ -217,8 +275,9 @@ public class DetailsListSortersTests
     }
 
     [Fact]
-    public void SortRelations_ByYearDesc_NewestFirstWithMissingYearsLast()
+    public void SortRelations_ByYear_FloatsUndatedFirstBothDirections()
     {
+        // Same rule as the productions lists: undated first in both directions, then by date.
         var items = new List<MediaRelationEdge>
         {
             Relation(1, year: 2005),
@@ -226,24 +285,11 @@ public class DetailsListSortersTests
             Relation(3, year: 1990),
         };
 
-        var result = DetailsListSorters.SortRelations("YEAR_DESC", items);
+        var newest = DetailsListSorters.SortRelations("YEAR_DESC", items);
+        var oldest = DetailsListSorters.SortRelations("YEAR_ASC", items);
 
-        Assert.Equal(new[] { 1, 3, 2 }, result.Select(e => e.Node!.Id)); // 2005, 1990, (undated)
-    }
-
-    [Fact]
-    public void SortRelations_ByYearAsc_OldestFirstWithMissingYearsLast()
-    {
-        var items = new List<MediaRelationEdge>
-        {
-            Relation(1, year: 2005),
-            Relation(2, year: null),
-            Relation(3, year: 1990),
-        };
-
-        var result = DetailsListSorters.SortRelations("YEAR_ASC", items);
-
-        Assert.Equal(new[] { 3, 1, 2 }, result.Select(e => e.Node!.Id)); // 1990, 2005, (undated)
+        Assert.Equal(new[] { 2, 1, 3 }, newest.Select(e => e.Node!.Id)); // (undated), 2005, 1990
+        Assert.Equal(new[] { 2, 3, 1 }, oldest.Select(e => e.Node!.Id)); // (undated), 1990, 2005
     }
 
     [Fact]

@@ -1,6 +1,6 @@
 using System.ComponentModel;
-using Microsoft.Extensions.Logging;
 using AniSprinkles.Utilities;
+using Microsoft.Extensions.Logging;
 
 namespace AniSprinkles.Pages;
 
@@ -8,11 +8,8 @@ public partial class StaffDetailsPage : ContentPage, IQueryAttributable
 {
     private StaffDetailsPageModel ViewModel { get; }
     private ILogger<StaffDetailsPage> Logger { get; }
-    private bool _hasCreatedLoadedContent;
-    private bool _hasAppeared;
+    private readonly DeferredContentLoader _loader;
     private int _pendingStaffId;
-    private int _pendingQueryVersion;
-    private int _scheduledQueryVersion;
 
     public StaffDetailsPage()
         : this(
@@ -27,6 +24,23 @@ public partial class StaffDetailsPage : ContentPage, IQueryAttributable
         ViewModel = viewModel;
         Logger = logger;
         BindingContext = ViewModel;
+
+        _loader = new DeferredContentLoader(
+            logger,
+            LoadedContentHost,
+            entityName: "staff",
+            shouldShowContent: () => ViewModel.HasStaff && !ViewModel.IsBusy && ViewModel.CurrentState == PageState.Content,
+            createView: () => new Views.StaffDetailsLoadedContentView { BindingContext = ViewModel },
+            onRenderError: ex =>
+            {
+                ViewModel.ErrorTitle = "Something Went Wrong";
+                ViewModel.ErrorSubtitle = "Failed to render the staff view.";
+                ViewModel.ErrorIconGlyph = FluentIconsRegular.ErrorCircle24;
+                ViewModel.ErrorDetails = $"{ex.GetType().Name}: {ex.Message}";
+                ViewModel.CanRetry = true;
+                ViewModel.CurrentState = PageState.Error;
+            });
+
         ViewModel.PropertyChanged += OnViewModelPropertyChanged;
     }
 
@@ -42,72 +56,29 @@ public partial class StaffDetailsPage : ContentPage, IQueryAttributable
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
-        var staffId = 0;
-        if (query.TryGetValue("staffId", out var raw))
-        {
-            if (raw is int id)
-            {
-                staffId = id;
-            }
-            else if (raw is string text && int.TryParse(text, out var parsed))
-            {
-                staffId = parsed;
-            }
-        }
-
+        var staffId = QueryAttributeParser.ParseInt(query, "staffId");
         Logger.LogInformation("NAVTRACE StaffDetailsPage.ApplyQueryAttributes staffId={StaffId}", staffId);
 
-        if (staffId != _pendingStaffId || !_hasCreatedLoadedContent)
-        {
-            HandlerHelper.DisconnectAll(LoadedContentHost.Content);
-            LoadedContentHost.Content = null;
-            _hasCreatedLoadedContent = false;
-        }
-
+        _loader.ResetContentIfStale(staffId != _pendingStaffId);
         _pendingStaffId = staffId;
-        _pendingQueryVersion++;
-        TryScheduleDeferredLoad();
+        _loader.BumpVersion();
+        _loader.TrySchedule(version => RunDeferredLoadAsync(version, _pendingStaffId));
     }
 
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        _hasAppeared = true;
-        UpdateLoadedContentHost();
-        TryScheduleDeferredLoad();
+        _loader.OnAppearing();
+        _loader.TrySchedule(version => RunDeferredLoadAsync(version, _pendingStaffId));
     }
 
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
-        _hasAppeared = false;
-        _pendingQueryVersion++;
+        _loader.OnDisappearing();
         // Abandon any in-flight fetches so a half-loaded page doesn't keep hitting the API after
         // the user has navigated away.
         ViewModel.CancelInFlight();
-    }
-
-    private void TryScheduleDeferredLoad()
-    {
-        if (!_hasAppeared || _pendingQueryVersion == _scheduledQueryVersion)
-        {
-            return;
-        }
-
-        var version = _pendingQueryVersion;
-        var staffId = _pendingStaffId;
-        _scheduledQueryVersion = version;
-
-        RunDeferredLoadAsync(version, staffId)
-            .ContinueWith(
-                task =>
-                {
-                    if (task.IsFaulted)
-                    {
-                        Logger.LogError(task.Exception, "StaffDetailsPage deferred load faulted for staff {StaffId}", staffId);
-                    }
-                },
-                TaskScheduler.FromCurrentSynchronizationContext());
     }
 
     private async Task RunDeferredLoadAsync(int version, int staffId)
@@ -116,7 +87,7 @@ public partial class StaffDetailsPage : ContentPage, IQueryAttributable
         {
             await Task.Yield();
 
-            if (!_hasAppeared || version != _pendingQueryVersion)
+            if (!_loader.IsCurrent(version))
             {
                 return;
             }
@@ -135,47 +106,7 @@ public partial class StaffDetailsPage : ContentPage, IQueryAttributable
             or nameof(StaffDetailsPageModel.HasStaff)
             or nameof(StaffDetailsPageModel.CurrentState))
         {
-            UpdateLoadedContentHost();
-        }
-    }
-
-    private void UpdateLoadedContentHost()
-    {
-        if (ViewModel.HasStaff && !ViewModel.IsBusy && ViewModel.CurrentState == PageState.Content)
-        {
-            if (!_hasCreatedLoadedContent)
-            {
-                Logger.LogInformation(
-                    "LOADEDHOST StaffDetails attach (hasStaff={HasStaff}, isBusy={IsBusy}, currentState={CurrentState})",
-                    ViewModel.HasStaff, ViewModel.IsBusy, ViewModel.CurrentState);
-                try
-                {
-                    LoadedContentHost.Content = new Views.StaffDetailsLoadedContentView
-                    {
-                        BindingContext = ViewModel
-                    };
-                    _hasCreatedLoadedContent = true;
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(ex, "Failed to create StaffDetailsLoadedContentView");
-                    ViewModel.ErrorTitle = "Something Went Wrong";
-                    ViewModel.ErrorSubtitle = "Failed to render the staff view.";
-                    ViewModel.ErrorIconGlyph = FluentIconsRegular.ErrorCircle24;
-                    ViewModel.ErrorDetails = $"{ex.GetType().Name}: {ex.Message}";
-                    ViewModel.CanRetry = true;
-                    ViewModel.CurrentState = PageState.Error;
-                }
-            }
-        }
-        else if (_hasCreatedLoadedContent)
-        {
-            Logger.LogInformation(
-                "LOADEDHOST StaffDetails detach (hasStaff={HasStaff}, isBusy={IsBusy}, currentState={CurrentState})",
-                ViewModel.HasStaff, ViewModel.IsBusy, ViewModel.CurrentState);
-            HandlerHelper.DisconnectAll(LoadedContentHost.Content);
-            LoadedContentHost.Content = null;
-            _hasCreatedLoadedContent = false;
+            _loader.UpdateHost();
         }
     }
 }

@@ -217,4 +217,35 @@ public class CachingAniListClientTests
 
         await inner.Received(2).SaveMediaListEntryAsync(entry, Arg.Any<CancellationToken>());
     }
+
+    [Fact]
+    public async Task GetStudioAsync_SameKey_FetchesInnerOnce()
+    {
+        var inner = Inner();
+        inner.GetStudioAsync(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<CancellationToken>())
+             .Returns(new Studio { Id = 18 });
+        var cache = new CachingAniListClient(inner);
+
+        await cache.GetStudioAsync(18, mediaPerPage: 25);
+        await cache.GetStudioAsync(18, mediaPerPage: 25);
+
+        await inner.Received(1).GetStudioAsync(18, Arg.Any<string>(), Arg.Any<int>(), 25, Arg.Any<CancellationToken>());
+    }
+
+    [Fact]
+    public async Task GetStudioAsync_DifferentPerPage_FetchesInnerSeparately()
+    {
+        // Regression: the object cache key must include mediaPerPage; otherwise a second request with a
+        // different page size returns the first studio's wrong-sized Media list.
+        var inner = Inner();
+        inner.GetStudioAsync(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<CancellationToken>())
+             .Returns(ci => new Studio { Id = ci.ArgAt<int>(0) });
+        var cache = new CachingAniListClient(inner);
+
+        await cache.GetStudioAsync(18, mediaPerPage: 25);
+        await cache.GetStudioAsync(18, mediaPerPage: 50);
+
+        await inner.Received(1).GetStudioAsync(18, Arg.Any<string>(), Arg.Any<int>(), 25, Arg.Any<CancellationToken>());
+        await inner.Received(1).GetStudioAsync(18, Arg.Any<string>(), Arg.Any<int>(), 50, Arg.Any<CancellationToken>());
+    }
 }

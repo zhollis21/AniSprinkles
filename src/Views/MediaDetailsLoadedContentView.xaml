@@ -159,11 +159,6 @@
                     <Label Text="{Binding SeasonYearDisplay}" Style="{StaticResource ChipLabelStyle}"
                            TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Season'}" />
                 </Border>
-                <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
-                        IsVisible="{Binding HasMainStudio}">
-                    <Label Text="{Binding MainStudioName}" Style="{StaticResource ChipLabelStyle}"
-                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Studio'}" />
-                </Border>
             </FlexLayout>
 
             <!-- ============================================ -->
@@ -1153,6 +1148,89 @@
                                        HorizontalOptions="Center" VerticalOptions="Center"
                                        Color="{StaticResource RainbowCyan}" HeightRequest="36" WidthRequest="36" />
                 </Grid>
+            </VerticalStackLayout>
+
+            <!-- ============================================ -->
+            <!-- 13. STUDIOS -->
+            <!-- ============================================ -->
+            <VerticalStackLayout Spacing="10" IsVisible="{Binding HasStudios}">
+                <Border Style="{StaticResource SectionHeaderStyle}"
+                        Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='StudiosHeader'}">
+                    <HorizontalStackLayout Spacing="8">
+                        <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
+                            <Image.Source>
+                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.MoviesAndTv24}"
+                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                 Color="White"
+                                                 Size="20" />
+                            </Image.Source>
+                        </Image>
+                        <Label Text="Studios" Style="{StaticResource Title3}" TextColor="White" />
+                    </HorizontalStackLayout>
+                </Border>
+                <Border Style="{StaticResource CardStyle}" Padding="0">
+                    <VerticalStackLayout Spacing="0" BindableLayout.ItemsSource="{Binding Studios}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="models:Studio">
+                                <VerticalStackLayout>
+                                    <Grid ColumnDefinitions="Auto,*,Auto"
+                                          ColumnSpacing="12"
+                                          Padding="14,12"
+                                          SemanticProperties.Description="{Binding Name, StringFormat='Open studio {0}'}">
+                                        <Grid.GestureRecognizers>
+                                            <TapGestureRecognizer x:DataType="{x:Null}"
+                                                                  Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToStudioCommand}"
+                                                                  CommandParameter="{Binding Id}" />
+                                        </Grid.GestureRecognizers>
+                                        <Image Grid.Column="0" WidthRequest="22" HeightRequest="22" VerticalOptions="Center">
+                                            <Image.Source>
+                                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.MoviesAndTv24}"
+                                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                                 Color="{Binding Name, Converter={StaticResource RainbowAccentConverter}}"
+                                                                 Size="22" />
+                                            </Image.Source>
+                                        </Image>
+                                        <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                                            <Label Text="{Binding Name}"
+                                                   Style="{StaticResource Body2}"
+                                                   TextColor="{Binding Name, Converter={StaticResource RainbowAccentConverter}}"
+                                                   MaxLines="1"
+                                                   LineBreakMode="TailTruncation" />
+                                            <HorizontalStackLayout Spacing="6">
+                                                <views:MetricBadgeView Glyph="{x:Static icons:FluentIconsRegular.Heart24}"
+                                                                       IconColor="{StaticResource RainbowPink}"
+                                                                       Text="{Binding FavouritesDisplay}"
+                                                                       IsVisible="{Binding HasFavourites}"
+                                                                       VerticalOptions="Center" />
+                                                <HorizontalStackLayout Spacing="6" IsVisible="{Binding ShowMainStudioLabel}">
+                                                    <Label Text="·"
+                                                           Style="{StaticResource Caption2}"
+                                                           TextColor="{StaticResource Gray400}"
+                                                           VerticalTextAlignment="Center"
+                                                           IsVisible="{Binding HasFavourites}" />
+                                                    <Label Text="Main Studio"
+                                                           Style="{StaticResource Caption2}"
+                                                           FontAttributes="Bold"
+                                                           TextColor="{StaticResource Gray100}"
+                                                           VerticalTextAlignment="Center" />
+                                                </HorizontalStackLayout>
+                                            </HorizontalStackLayout>
+                                        </VerticalStackLayout>
+                                        <Image Grid.Column="2" WidthRequest="14" HeightRequest="14" VerticalOptions="Center">
+                                            <Image.Source>
+                                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.ChevronRight20}"
+                                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                                 Color="{StaticResource Gray400}"
+                                                                 Size="14" />
+                                            </Image.Source>
+                                        </Image>
+                                    </Grid>
+                                    <BoxView HeightRequest="1" Color="{StaticResource Gray900}" Margin="14,0" />
+                                </VerticalStackLayout>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </Border>
             </VerticalStackLayout>
 
             <!-- ============================================ -->

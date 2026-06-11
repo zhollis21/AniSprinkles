@@ -1,6 +1,6 @@
 using System.ComponentModel;
-using Microsoft.Extensions.Logging;
 using AniSprinkles.Utilities;
+using Microsoft.Extensions.Logging;
 
 namespace AniSprinkles.Pages;
 
@@ -8,11 +8,8 @@ public partial class CharacterDetailsPage : ContentPage, IQueryAttributable
 {
     private CharacterDetailsPageModel ViewModel { get; }
     private ILogger<CharacterDetailsPage> Logger { get; }
-    private bool _hasCreatedLoadedContent;
-    private bool _hasAppeared;
+    private readonly DeferredContentLoader _loader;
     private int _pendingCharacterId;
-    private int _pendingQueryVersion;
-    private int _scheduledQueryVersion;
 
     public CharacterDetailsPage()
         : this(
@@ -27,6 +24,23 @@ public partial class CharacterDetailsPage : ContentPage, IQueryAttributable
         ViewModel = viewModel;
         Logger = logger;
         BindingContext = ViewModel;
+
+        _loader = new DeferredContentLoader(
+            logger,
+            LoadedContentHost,
+            entityName: "character",
+            shouldShowContent: () => ViewModel.HasCharacter && !ViewModel.IsBusy && ViewModel.CurrentState == PageState.Content,
+            createView: () => new Views.CharacterDetailsLoadedContentView { BindingContext = ViewModel },
+            onRenderError: ex =>
+            {
+                ViewModel.ErrorTitle = "Something Went Wrong";
+                ViewModel.ErrorSubtitle = "Failed to render the character view.";
+                ViewModel.ErrorIconGlyph = FluentIconsRegular.ErrorCircle24;
+                ViewModel.ErrorDetails = $"{ex.GetType().Name}: {ex.Message}";
+                ViewModel.CanRetry = true;
+                ViewModel.CurrentState = PageState.Error;
+            });
+
         ViewModel.PropertyChanged += OnViewModelPropertyChanged;
     }
 
@@ -42,72 +56,29 @@ public partial class CharacterDetailsPage : ContentPage, IQueryAttributable
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
-        var characterId = 0;
-        if (query.TryGetValue("characterId", out var raw))
-        {
-            if (raw is int id)
-            {
-                characterId = id;
-            }
-            else if (raw is string text && int.TryParse(text, out var parsed))
-            {
-                characterId = parsed;
-            }
-        }
-
+        var characterId = QueryAttributeParser.ParseInt(query, "characterId");
         Logger.LogInformation("NAVTRACE CharacterDetailsPage.ApplyQueryAttributes characterId={CharacterId}", characterId);
 
-        if (characterId != _pendingCharacterId || !_hasCreatedLoadedContent)
-        {
-            HandlerHelper.DisconnectAll(LoadedContentHost.Content);
-            LoadedContentHost.Content = null;
-            _hasCreatedLoadedContent = false;
-        }
-
+        _loader.ResetContentIfStale(characterId != _pendingCharacterId);
         _pendingCharacterId = characterId;
-        _pendingQueryVersion++;
-        TryScheduleDeferredLoad();
+        _loader.BumpVersion();
+        _loader.TrySchedule(version => RunDeferredLoadAsync(version, _pendingCharacterId));
     }
 
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        _hasAppeared = true;
-        UpdateLoadedContentHost();
-        TryScheduleDeferredLoad();
+        _loader.OnAppearing();
+        _loader.TrySchedule(version => RunDeferredLoadAsync(version, _pendingCharacterId));
     }
 
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
-        _hasAppeared = false;
-        _pendingQueryVersion++;
+        _loader.OnDisappearing();
         // Abandon any in-flight fetches so a half-loaded page doesn't keep hitting the API after
         // the user has navigated away.
         ViewModel.CancelInFlight();
-    }
-
-    private void TryScheduleDeferredLoad()
-    {
-        if (!_hasAppeared || _pendingQueryVersion == _scheduledQueryVersion)
-        {
-            return;
-        }
-
-        var version = _pendingQueryVersion;
-        var characterId = _pendingCharacterId;
-        _scheduledQueryVersion = version;
-
-        RunDeferredLoadAsync(version, characterId)
-            .ContinueWith(
-                task =>
-                {
-                    if (task.IsFaulted)
-                    {
-                        Logger.LogError(task.Exception, "CharacterDetailsPage deferred load faulted for character {CharacterId}", characterId);
-                    }
-                },
-                TaskScheduler.FromCurrentSynchronizationContext());
     }
 
     private async Task RunDeferredLoadAsync(int version, int characterId)
@@ -116,7 +87,7 @@ public partial class CharacterDetailsPage : ContentPage, IQueryAttributable
         {
             await Task.Yield();
 
-            if (!_hasAppeared || version != _pendingQueryVersion)
+            if (!_loader.IsCurrent(version))
             {
                 return;
             }
@@ -135,47 +106,7 @@ public partial class CharacterDetailsPage : ContentPage, IQueryAttributable
             or nameof(CharacterDetailsPageModel.HasCharacter)
             or nameof(CharacterDetailsPageModel.CurrentState))
         {
-            UpdateLoadedContentHost();
-        }
-    }
-
-    private void UpdateLoadedContentHost()
-    {
-        if (ViewModel.HasCharacter && !ViewModel.IsBusy && ViewModel.CurrentState == PageState.Content)
-        {
-            if (!_hasCreatedLoadedContent)
-            {
-                Logger.LogInformation(
-                    "LOADEDHOST CharacterDetails attach (hasCharacter={HasCharacter}, isBusy={IsBusy}, currentState={CurrentState})",
-                    ViewModel.HasCharacter, ViewModel.IsBusy, ViewModel.CurrentState);
-                try
-                {
-                    LoadedContentHost.Content = new Views.CharacterDetailsLoadedContentView
-                    {
-                        BindingContext = ViewModel
-                    };
-                    _hasCreatedLoadedContent = true;
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(ex, "Failed to create CharacterDetailsLoadedContentView");
-                    ViewModel.ErrorTitle = "Something Went Wrong";
-                    ViewModel.ErrorSubtitle = "Failed to render the character view.";
-                    ViewModel.ErrorIconGlyph = FluentIconsRegular.ErrorCircle24;
-                    ViewModel.ErrorDetails = $"{ex.GetType().Name}: {ex.Message}";
-                    ViewModel.CanRetry = true;
-                    ViewModel.CurrentState = PageState.Error;
-                }
-            }
-        }
-        else if (_hasCreatedLoadedContent)
-        {
-            Logger.LogInformation(
-                "LOADEDHOST CharacterDetails detach (hasCharacter={HasCharacter}, isBusy={IsBusy}, currentState={CurrentState})",
-                ViewModel.HasCharacter, ViewModel.IsBusy, ViewModel.CurrentState);
-            HandlerHelper.DisconnectAll(LoadedContentHost.Content);
-            LoadedContentHost.Content = null;
-            _hasCreatedLoadedContent = false;
+            _loader.UpdateHost();
         }
     }
 }

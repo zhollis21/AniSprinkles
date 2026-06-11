@@ -20,6 +20,9 @@ public static class DetailsListSorters
     public static IReadOnlyList<StaffMediaEdge> SortProductionRoles(string sort, IReadOnlyList<StaffMediaEdge> items)
         => SortByMedia(sort, items, e => e.Node, e => e.Node?.Id ?? 0);
 
+    public static IReadOnlyList<StudioMediaEdge> SortStudioProductions(string sort, IReadOnlyList<StudioMediaEdge> items)
+        => SortByMedia(sort, items, e => e.Node, e => e.Node?.Id ?? 0);
+
     public static IReadOnlyList<StaffCharacterEdge> SortVoiceRoles(string sort, IReadOnlyList<StaffCharacterEdge> items)
     {
         // Null-node edges always sort after real voice roles, before applying the active key — a
@@ -46,10 +49,14 @@ public static class DetailsListSorters
         var ordered = items.OrderBy(e => e.Node is null);
         var withKey = sort switch
         {
-            // Newest first; relations with no start year sort last (int.MinValue under descending).
-            "YEAR_DESC" => ordered.ThenByDescending(e => e.Node?.StartDate?.Year ?? int.MinValue),
-            // Oldest first; undated relations sort last (int.MaxValue) so they don't masquerade as ancient.
-            "YEAR_ASC" => ordered.ThenBy(e => e.Node?.StartDate?.Year ?? int.MaxValue),
+            // Undated first in BOTH directions, then by full date — same rule as the productions lists
+            // (SortByMedia) so every date sort in the app behaves identically.
+            "YEAR_DESC" => ordered
+                .ThenBy(e => e.Node?.StartDate?.Year is not null)
+                .ThenByDescending(e => DateKey(e.Node)),
+            "YEAR_ASC" => ordered
+                .ThenBy(e => e.Node?.StartDate?.Year is not null)
+                .ThenBy(e => DateKey(e.Node)),
             // Untitled relations sort last (an empty string would otherwise win the A–Z ordering).
             "TITLE" => ordered
                 .ThenBy(e => string.IsNullOrEmpty(e.Node?.Title?.Romaji))
@@ -83,15 +90,30 @@ public static class DetailsListSorters
         {
             "SCORE_DESC" => ordered.ThenByDescending(e => node(e)?.AverageScore ?? 0),
             "FAVOURITES_DESC" => ordered.ThenByDescending(e => node(e)?.Favourites ?? 0),
-            "START_DATE_DESC" => ordered.ThenByDescending(e => node(e)?.StartDate?.Year ?? 0),
-            // Oldest first: missing years sort last so undated media doesn't masquerade as ancient.
-            "START_DATE" => ordered.ThenBy(e => node(e)?.StartDate?.Year ?? int.MaxValue),
-            "TITLE_ROMAJI" => ordered.ThenBy(e => node(e)?.Title?.Romaji ?? string.Empty, StringComparer.OrdinalIgnoreCase),
+            // Match AniList's server date order so small (client-sorted) and large (server-sorted) lists
+            // agree: undated entries sort FIRST in BOTH directions, then by full date (year→month→day).
+            "START_DATE_DESC" => ordered
+                .ThenBy(e => node(e)?.StartDate?.Year is not null)
+                .ThenByDescending(e => DateKey(node(e))),
+            "START_DATE" => ordered
+                .ThenBy(e => node(e)?.StartDate?.Year is not null)
+                .ThenBy(e => DateKey(node(e))),
+            // Untitled sorts last (empty string would otherwise win A–Z) — same as SortRelations' TITLE.
+            "TITLE_ROMAJI" => ordered
+                .ThenBy(e => string.IsNullOrEmpty(node(e)?.Title?.Romaji))
+                .ThenBy(e => node(e)?.Title?.Romaji ?? string.Empty, StringComparer.OrdinalIgnoreCase),
             // POPULARITY_DESC (default)
             _ => ordered.ThenByDescending(e => node(e)?.Popularity ?? 0),
         };
+        // Final id tiebreak keeps the order stable/toggle-consistent. AniList's own among-equal order
+        // isn't the id we pass and isn't reproducible, but those differences are not visible.
         return withKey.ThenBy(id).ToList();
     }
+
+    // Full start date as one sortable int (year→month→day); missing parts count as 0. Undated media
+    // (year null → 0) is grouped separately by the date arms, so its key value is never compared.
+    private static int DateKey(RelatedMedia? media)
+        => (media?.StartDate?.Year ?? 0) * 10000 + (media?.StartDate?.Month ?? 0) * 100 + (media?.StartDate?.Day ?? 0);
 
     private static int RolePriority(string? role) => role switch
     {
