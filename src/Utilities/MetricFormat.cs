@@ -4,8 +4,8 @@ namespace AniSprinkles.Utilities;
 
 /// <summary>
 /// Formats count-style metrics (favourites, popularity, recommendation rating) for compact display on
-/// list cards: empty for null/non-positive, "1.2M" once it reaches a million, "1.2k" once it reaches
-/// 1000, plain otherwise.
+/// list cards: empty for null/non-positive, "1.2M" once it reaches ~a million (promoted at 999,950 so
+/// the k tier never rounds to "1000k"), "1.2k" once it reaches 1000, plain otherwise.
 /// </summary>
 public static class MetricFormat
 {
