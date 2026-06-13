@@ -128,25 +128,95 @@ public class AniListClient : IAniListClient
         return viewerId;
     }
 
-    public async Task<IReadOnlyList<Media>> SearchAnimeAsync(string search, int page = 1, int perPage = 20, CancellationToken cancellationToken = default)
+    public async Task<(IReadOnlyList<BrowseMediaItem> Items, PageInfo? PageInfo)> SearchAnimePageAsync(
+        string search, bool? isAdult = false, int page = 1, int perPage = 20, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(search))
         {
-            return Array.Empty<Media>();
+            return ([], null);
         }
 
+        // Token is optional — public search works signed out; signed in additionally fills mediaListEntry.
         var token = await _authService.GetAccessTokenAsync(cancellationToken).ConfigureAwait(false);
-        var data = await SendAsync<SearchData>(
+        var data = await SendAsync<BrowsePageData>(
             "Search",
             SearchQuery,
-            new { search, page, perPage },
+            new { search, page, perPage, isAdult }, // null isAdult serializes away → 18+ allowed
             token,
             cancellationToken).ConfigureAwait(false);
 
-        return data.Page?.Media?
-            .Where(m => m is not null)
-            .Select(MapMedia)
-            .ToList() ?? [];
+        return (MapBrowseItems(data.Page), MapPageInfo(data.Page?.PageInfo));
+    }
+
+    public async Task<DiscoverSections> GetDiscoverSectionsAsync(
+        string currentSeason,
+        int currentSeasonYear,
+        string nextSeason,
+        int nextSeasonYear,
+        bool filterAdult,
+        bool includeAdultSections,
+        int perPage = 20,
+        CancellationToken cancellationToken = default)
+    {
+        // Token is optional — Discover is fully public; signed in additionally fills mediaListEntry.
+        var token = await _authService.GetAccessTokenAsync(cancellationToken).ConfigureAwait(false);
+
+        // All sections ride ONE aliased request: the rate-limit handler serializes requests, so
+        // separate per-section fetches would queue behind each other on a degraded 30 req/min budget.
+        var data = await SendAsync<DiscoverSectionsData>(
+            "DiscoverSections",
+            includeAdultSections ? DiscoverSectionsWithAdultQuery : DiscoverSectionsQuery,
+            new
+            {
+                season = currentSeason,
+                seasonYear = currentSeasonYear,
+                nextSeason,
+                nextSeasonYear,
+                perPage,
+                // false = SFW only; null serializes away entirely, so the argument is "not provided"
+                // and 18+ titles may mix into the general sections (adult toggle on).
+                isAdult = filterAdult ? false : (bool?)null,
+            },
+            token,
+            cancellationToken).ConfigureAwait(false);
+
+        return new DiscoverSections
+        {
+            Airing = MapSectionPage(data.Airing),
+            Trending = MapSectionPage(data.Trending),
+            Top = MapSectionPage(data.Top),
+            TopMovies = MapSectionPage(data.Movies),
+            AllTimePopular = MapSectionPage(data.AllTimePopular),
+            Upcoming = MapSectionPage(data.Upcoming),
+            PopularAdult = MapSectionPage(data.Adult),
+            TopRatedAdult = MapSectionPage(data.TopRatedAdult),
+        };
+    }
+
+    public async Task<(IReadOnlyList<BrowseMediaItem> Items, PageInfo? PageInfo)> BrowseAnimePageAsync(
+        string sort,
+        string? status = null,
+        string? season = null,
+        int? seasonYear = null,
+        bool? isAdult = null,
+        string? format = null,
+        int page = 1,
+        int perPage = 25,
+        CancellationToken cancellationToken = default)
+    {
+        // Token is optional — browse is fully public; signed in additionally fills mediaListEntry.
+        var token = await _authService.GetAccessTokenAsync(cancellationToken).ConfigureAwait(false);
+        var data = await SendAsync<BrowsePageData>(
+            "BrowseAnime",
+            BrowseAnimeQuery,
+            // Null filters serialize away (JsonWriteOptions ignores nulls), so the corresponding
+            // GraphQL arguments are "not provided" rather than literal nulls — a literal
+            // status: null / isAdult: null would filter instead of matching everything.
+            new { page, perPage, sort = WithTiebreaker(sort), status, season, seasonYear, isAdult, format },
+            token,
+            cancellationToken).ConfigureAwait(false);
+
+        return (MapBrowseItems(data.Page), MapPageInfo(data.Page?.PageInfo));
     }
 
     public async Task<(Media? Media, MediaListEntry? ListEntry)> GetMediaAsync(int id, CancellationToken cancellationToken = default)
@@ -424,7 +494,7 @@ public class AniListClient : IAniListClient
     // (ascending, matching the client-side DetailsListSorters tiebreak) so page boundaries are deterministic
     // and the seed's page 1 orders identically to Load More's page 2.
     private static string[] WithTiebreaker(string sort) =>
-        string.Equals(sort, "ID", StringComparison.Ordinal) ? [sort] : [sort, "ID"];
+        sort is "ID" or "ID_DESC" ? [sort] : [sort, "ID"];
 
     // Media Characters' default (ROLE) keeps its RELEVANCE secondary to match the heavy seed query's
     // [ROLE, RELEVANCE, ID]; every other code just gets the ID tiebreaker.
@@ -936,7 +1006,22 @@ public class AniListClient : IAniListClient
         Favourites = dto.Favourites,
         Popularity = dto.Popularity,
         StartDate = dto.StartDate,
+        // Only the browseMedia fragment (Discover/browse/search) requests these; null elsewhere.
+        Episodes = dto.Episodes,
+        ListEntryId = dto.MediaListEntry?.Id,
+        ListStatus = ParseStatus(dto.MediaListEntry?.Status),
+        ListProgress = dto.MediaListEntry?.Progress,
+        ListScore = dto.MediaListEntry?.Score,
     };
+
+    private static List<BrowseMediaItem> MapBrowseItems(BrowsePageDto? page) =>
+        page?.Media?
+            .Where(m => m is not null)
+            .Select(m => new BrowseMediaItem { Node = MapRelatedMedia(m) })
+            .ToList() ?? [];
+
+    private static DiscoverSectionPage MapSectionPage(BrowsePageDto? page) =>
+        page is null ? DiscoverSectionPage.Empty : new(MapBrowseItems(page), MapPageInfo(page.PageInfo));
 
     private static List<Studio> MapStudios(StudioConnectionDto? connection)
         => connection?.Edges?
@@ -1319,9 +1404,28 @@ public class AniListClient : IAniListClient
         public MediaDto? Media { get; set; }
     }
 
-    private sealed class SearchData
+    private sealed class BrowsePageData
     {
-        public Page? Page { get; set; }
+        public BrowsePageDto? Page { get; set; }
+    }
+
+    private sealed class BrowsePageDto
+    {
+        public PageInfoDto? PageInfo { get; set; }
+        public List<RelatedMediaDto>? Media { get; set; }
+    }
+
+    // Property names must match the DiscoverSections query aliases (deserialization is case-insensitive).
+    private sealed class DiscoverSectionsData
+    {
+        public BrowsePageDto? Airing { get; set; }
+        public BrowsePageDto? Trending { get; set; }
+        public BrowsePageDto? Top { get; set; }
+        public BrowsePageDto? Movies { get; set; }
+        public BrowsePageDto? AllTimePopular { get; set; }
+        public BrowsePageDto? Upcoming { get; set; }
+        public BrowsePageDto? Adult { get; set; }         // 18+ pair: only present in the WithAdult query
+        public BrowsePageDto? TopRatedAdult { get; set; }
     }
 
     private sealed class Page
@@ -1553,6 +1657,9 @@ public class AniListClient : IAniListClient
         public int? Favourites { get; set; }
         public int? Popularity { get; set; }
         public MediaDate? StartDate { get; set; }
+        // browseMedia fragment only (Discover/browse/search).
+        public int? Episodes { get; set; }
+        public MediaListEntryDto? MediaListEntry { get; set; }
     }
 
     private sealed class CharacterConnectionDto
@@ -1776,24 +1883,85 @@ query MediaListCollection($userId: Int) {
   }
 }";
 
-    private const string SearchQuery = @"
-query Search($search: String!, $page: Int, $perPage: Int) {
-  Page(page: $page, perPage: $perPage) {
-    media(type: ANIME, search: $search, sort: SEARCH_MATCH) {
-      id
-      title { romaji english native }
-      coverImage { medium large }
-      format
-      status
-      episodes
-      season
-      seasonYear
-      averageScore
-      popularity
-      genres
-    }
-  }
+    // Shared field selection for Discover/browse/search results (maps to RelatedMedia).
+    // mediaListEntry is the viewer's list snapshot — null unless the request is authenticated.
+    private const string BrowseMediaFragment = @"
+fragment browseMedia on Media {
+  id
+  title { romaji english native }
+  coverImage { medium large }
+  format
+  type
+  status
+  episodes
+  averageScore
+  favourites
+  popularity
+  startDate { year month day }
+  mediaListEntry { id status progress score }
 }";
+
+    private const string SearchQuery = @"
+query Search($search: String!, $page: Int, $perPage: Int, $isAdult: Boolean) {
+  Page(page: $page, perPage: $perPage) {
+    pageInfo { hasNextPage currentPage }
+    media(type: ANIME, search: $search, isAdult: $isAdult, sort: SEARCH_MATCH) { ...browseMedia }
+  }
+}" + BrowseMediaFragment;
+
+    // Aliases and sorts must stay in sync with DiscoverSectionDefinitions (badge keys + View All)
+    // and DiscoverSectionsData (deserialization property names). Each alias carries pageInfo so the
+    // Discover rows can be seeded as PaginatedSections (per-row infinite scroll via BrowseAnime).
+    private const string DiscoverSectionsQueryBody = @"
+query DiscoverSections($season: MediaSeason, $seasonYear: Int, $nextSeason: MediaSeason, $nextSeasonYear: Int, $perPage: Int, $isAdult: Boolean) {
+  airing: Page(page: 1, perPage: $perPage) {
+    pageInfo { hasNextPage currentPage }
+    media(type: ANIME, status: RELEASING, season: $season, seasonYear: $seasonYear, isAdult: $isAdult, sort: [POPULARITY_DESC, ID]) { ...browseMedia }
+  }
+  trending: Page(page: 1, perPage: $perPage) {
+    pageInfo { hasNextPage currentPage }
+    media(type: ANIME, isAdult: $isAdult, sort: [TRENDING_DESC, ID]) { ...browseMedia }
+  }
+  top: Page(page: 1, perPage: $perPage) {
+    pageInfo { hasNextPage currentPage }
+    media(type: ANIME, isAdult: $isAdult, sort: [SCORE_DESC, ID]) { ...browseMedia }
+  }
+  movies: Page(page: 1, perPage: $perPage) {
+    pageInfo { hasNextPage currentPage }
+    media(type: ANIME, format: MOVIE, isAdult: $isAdult, sort: [SCORE_DESC, ID]) { ...browseMedia }
+  }
+  allTimePopular: Page(page: 1, perPage: $perPage) {
+    pageInfo { hasNextPage currentPage }
+    media(type: ANIME, isAdult: $isAdult, sort: [POPULARITY_DESC, ID]) { ...browseMedia }
+  }
+  upcoming: Page(page: 1, perPage: $perPage) {
+    pageInfo { hasNextPage currentPage }
+    media(type: ANIME, status: NOT_YET_RELEASED, season: $nextSeason, seasonYear: $nextSeasonYear, isAdult: $isAdult, sort: [POPULARITY_DESC, ID]) { ...browseMedia }
+  }";
+
+    private const string DiscoverSectionsQuery = DiscoverSectionsQueryBody + @"
+}" + BrowseMediaFragment;
+
+    // Variant with the 18+ aliases, requested only when the adult toggle is on so SFW sessions
+    // never download 18+ covers. Verified live: 8 aliases stay under AniList's complexity limit.
+    private const string DiscoverSectionsWithAdultQuery = DiscoverSectionsQueryBody + @"
+  adult: Page(page: 1, perPage: $perPage) {
+    pageInfo { hasNextPage currentPage }
+    media(type: ANIME, isAdult: true, sort: [POPULARITY_DESC, ID]) { ...browseMedia }
+  }
+  topRatedAdult: Page(page: 1, perPage: $perPage) {
+    pageInfo { hasNextPage currentPage }
+    media(type: ANIME, isAdult: true, sort: [SCORE_DESC, ID]) { ...browseMedia }
+  }
+}" + BrowseMediaFragment;
+
+    private const string BrowseAnimeQuery = @"
+query BrowseAnime($page: Int!, $perPage: Int!, $sort: [MediaSort], $status: MediaStatus, $season: MediaSeason, $seasonYear: Int, $isAdult: Boolean, $format: MediaFormat) {
+  Page(page: $page, perPage: $perPage) {
+    pageInfo { hasNextPage currentPage }
+    media(type: ANIME, sort: $sort, status: $status, season: $season, seasonYear: $seasonYear, isAdult: $isAdult, format: $format) { ...browseMedia }
+  }
+}" + BrowseMediaFragment;
 
     private const string MediaQuery = @"
 query Media($id: Int!) {

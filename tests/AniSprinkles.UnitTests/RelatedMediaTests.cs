@@ -21,6 +21,42 @@ public class RelatedMediaTests
         Assert.Equal(expected, media.IsAnime);
     }
 
+    [Theory]
+    [InlineData("RELEASING", "Releasing")]
+    [InlineData("NOT_YET_RELEASED", "Not Yet Released")]
+    [InlineData("FINISHED", "Finished")]
+    [InlineData(null, "")]
+    [InlineData("", "")]
+    public void MediaStatusDisplay_TitleCasesAniListStatus(string? status, string expected)
+        => Assert.Equal(expected, new RelatedMedia { Status = status }.MediaStatusDisplay);
+
+    [Fact]
+    public void BrowseMetaDisplay_JoinsPresentPartsOnly()
+    {
+        var full = new RelatedMedia { Format = "TV", StartDate = new MediaDate { Year = 2026 }, Status = "RELEASING" };
+        Assert.Equal("TV · 2026 · Releasing", full.BrowseMetaDisplay);
+
+        var sparse = new RelatedMedia { Format = "MOVIE" };
+        Assert.Equal("MOVIE", sparse.BrowseMetaDisplay);
+
+        Assert.Equal(string.Empty, new RelatedMedia().BrowseMetaDisplay);
+    }
+
+    // Chip labels use the friendly names ("Watching"/"Rewatching"), matching the My Anime sections.
+    [Theory]
+    [InlineData(MediaListStatus.Current, "Watching")]
+    [InlineData(MediaListStatus.Repeating, "Rewatching")]
+    [InlineData(MediaListStatus.Planning, "Planning")]
+    [InlineData(MediaListStatus.Completed, "Completed")]
+    [InlineData(null, "")]
+    public void ListStatusDisplay_UsesFriendlyNames(MediaListStatus? status, string expected)
+    {
+        var media = new RelatedMedia { ListStatus = status };
+
+        Assert.Equal(expected, media.ListStatusDisplay);
+        Assert.Equal(status is not null, media.HasListStatus);
+    }
+
     // Sort-metric fallbacks: when a list is sorted by a metric, the card's badge must always show — never
     // blank, which reads as broken. Counts fall back to "0"; year/rating fall back to "—" (0 would lie).
     [Theory]

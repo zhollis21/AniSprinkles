@@ -53,8 +53,20 @@ internal sealed class FailingAniListClient : IAniListClient
     public Task<(Media? Media, MediaListEntry? ListEntry)>
         GetMediaAsync(int id, CancellationToken ct = default) => throw Fail();
 
-    public Task<IReadOnlyList<Media>>
-        SearchAnimeAsync(string search, int page = 1, int perPage = 20, CancellationToken ct = default)
+    public Task<(IReadOnlyList<BrowseMediaItem> Items, PageInfo? PageInfo)>
+        SearchAnimePageAsync(string search, bool? isAdult = false, int page = 1, int perPage = 20, CancellationToken ct = default)
+            => throw Fail();
+
+    public Task<DiscoverSections>
+        GetDiscoverSectionsAsync(
+            string currentSeason, int currentSeasonYear, string nextSeason, int nextSeasonYear,
+            bool filterAdult, bool includeAdultSections, int perPage = 20, CancellationToken ct = default)
+            => throw Fail();
+
+    public Task<(IReadOnlyList<BrowseMediaItem> Items, PageInfo? PageInfo)>
+        BrowseAnimePageAsync(
+            string sort, string? status = null, string? season = null, int? seasonYear = null, bool? isAdult = null,
+            string? format = null, int page = 1, int perPage = 25, CancellationToken ct = default)
             => throw Fail();
 
     public Task<MediaListEntry?>

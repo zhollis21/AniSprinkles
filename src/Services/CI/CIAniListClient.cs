@@ -32,9 +32,37 @@ internal sealed class CIAniListClient : IAniListClient
         return Task.FromResult((entry?.Media, entry));
     }
 
-    public Task<IReadOnlyList<Media>> SearchAnimeAsync(
-        string search, int page = 1, int perPage = 20, CancellationToken cancellationToken = default)
-        => Task.FromResult<IReadOnlyList<Media>>([]);
+    public Task<(IReadOnlyList<BrowseMediaItem> Items, PageInfo? PageInfo)> SearchAnimePageAsync(
+        string search, bool? isAdult = false, int page = 1, int perPage = 20, CancellationToken cancellationToken = default)
+    {
+        IReadOnlyList<BrowseMediaItem> items = StubData.BrowseItems
+            .Where(i => i.Node?.DisplayTitle.Contains(search, StringComparison.OrdinalIgnoreCase) == true)
+            .ToList();
+        return Task.FromResult((items, (PageInfo?)new PageInfo { HasNextPage = false, CurrentPage = page }));
+    }
+
+    public Task<DiscoverSections> GetDiscoverSectionsAsync(
+        string currentSeason, int currentSeasonYear, string nextSeason, int nextSeasonYear,
+        bool filterAdult, bool includeAdultSections, int perPage = 20, CancellationToken cancellationToken = default)
+        => Task.FromResult(new DiscoverSections
+        {
+            Airing = StubSectionPage(),
+            Trending = StubSectionPage(),
+            Top = StubSectionPage(),
+            TopMovies = StubSectionPage(),
+            AllTimePopular = StubSectionPage(),
+            Upcoming = StubSectionPage(),
+            PopularAdult = includeAdultSections ? StubSectionPage() : DiscoverSectionPage.Empty,
+            TopRatedAdult = includeAdultSections ? StubSectionPage() : DiscoverSectionPage.Empty,
+        });
+
+    private static DiscoverSectionPage StubSectionPage()
+        => new(StubData.BrowseItems, new PageInfo { HasNextPage = false, CurrentPage = 1 });
+
+    public Task<(IReadOnlyList<BrowseMediaItem> Items, PageInfo? PageInfo)> BrowseAnimePageAsync(
+        string sort, string? status = null, string? season = null, int? seasonYear = null, bool? isAdult = null,
+        string? format = null, int page = 1, int perPage = 25, CancellationToken ct = default)
+        => Task.FromResult((StubData.BrowseItems, (PageInfo?)new PageInfo { HasNextPage = false, CurrentPage = page }));
 
     public Task<MediaListEntry?> SaveMediaListEntryAsync(
         MediaListEntry entry, CancellationToken cancellationToken = default)
@@ -477,6 +505,36 @@ internal sealed class CIAniListClient : IAniListClient
             ("Planning",  [YourName, PromisedNeverland]),
             ("Completed", [FmaB, DeathNote, ASilentVoice, DemonSlayer]),
         ];
+
+        /// <summary>
+        /// Discover/browse/search fixture: the stub list entries reshaped as browse items, so every
+        /// Discover section renders populated cards with on-list status chips in CI screenshots.
+        /// </summary>
+        public static readonly IReadOnlyList<BrowseMediaItem> BrowseItems = GroupedList
+            .SelectMany(g => g.Entries)
+            .Where(e => e.Media is not null)
+            .Select(e => new BrowseMediaItem
+            {
+                Node = new RelatedMedia
+                {
+                    Id = e.Media!.Id,
+                    Title = e.Media.Title,
+                    Format = e.Media.Format,
+                    Type = "ANIME",
+                    Status = e.Media.Status,
+                    CoverImage = e.Media.CoverImage,
+                    AverageScore = e.Media.AverageScore,
+                    Favourites = e.Media.Favourites,
+                    Popularity = e.Media.Popularity,
+                    StartDate = e.Media.StartDate,
+                    Episodes = e.Media.Episodes,
+                    ListEntryId = e.Id,
+                    ListStatus = e.Status,
+                    ListProgress = e.Progress,
+                    ListScore = e.Score,
+                },
+            })
+            .ToList();
 
         // ── Character / Staff fixtures (Monkey D. Luffy + his JP seiyuu Mayumi Tanaka). ──────────────
         // Real AniList ids, images, scores, and roles, captured from the live API so the

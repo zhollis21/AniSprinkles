@@ -1,5 +1,6 @@
 using System.Globalization;
 using AniSprinkles.Utilities;
+using Microsoft.Maui.Graphics;
 
 namespace AniSprinkles.Models;
 
@@ -15,6 +16,14 @@ public class RelatedMedia
     public int? Favourites { get; set; }
     public int? Popularity { get; set; }
     public MediaDate? StartDate { get; set; }
+    public int? Episodes { get; set; }
+
+    // Viewer's list-entry snapshot (Discover/browse/search queries request mediaListEntry when
+    // authenticated). Null in every other query, which keeps existing carousels untouched.
+    public int? ListEntryId { get; set; }
+    public MediaListStatus? ListStatus { get; set; }
+    public int? ListProgress { get; set; }
+    public double? ListScore { get; set; }
 
     public string DisplayTitle => AppSettings.TitleLanguage switch
     {
@@ -58,4 +67,36 @@ public class RelatedMedia
     public string ScoreOrDash => HasScore ? ScoreDisplay : "—";
 
     public string YearOrDash => HasYear ? YearDisplay : "—";
+
+    /// <summary>AniList's <c>NOT_YET_RELEASED</c> → "Not Yet Released". Blank when absent.</summary>
+    public string MediaStatusDisplay => string.IsNullOrEmpty(Status)
+        ? string.Empty
+        : CultureInfo.InvariantCulture.TextInfo.ToTitleCase(Status.Replace('_', ' ').ToLowerInvariant());
+
+    /// <summary>Single-line metadata for browse/search rows: "TV · 2026 · Releasing" (absent parts omitted).</summary>
+    public string BrowseMetaDisplay => string.Join(
+        " · ",
+        new[] { FormatDisplay, YearDisplay, MediaStatusDisplay }.Where(part => !string.IsNullOrEmpty(part)));
+
+    public bool HasListStatus => ListStatus is not null;
+
+    /// <summary>Friendly list-status label for chips ("Watching"/"Rewatching" instead of the raw enum names).</summary>
+    public string ListStatusDisplay => ListStatus switch
+    {
+        MediaListStatus.Current => "Watching",
+        MediaListStatus.Repeating => "Rewatching",
+        { } status => status.ToString(),
+        null => string.Empty,
+    };
+
+    public Color ListStatusColor => ListStatus switch
+    {
+        MediaListStatus.Current => Color.FromArgb("#00C2FF"),
+        MediaListStatus.Planning => Color.FromArgb("#4E7CFF"),
+        MediaListStatus.Completed => Color.FromArgb("#34C759"),
+        MediaListStatus.Paused => Color.FromArgb("#FF9500"),
+        MediaListStatus.Dropped => Color.FromArgb("#FF3B30"),
+        MediaListStatus.Repeating => Color.FromArgb("#AF52DE"),
+        _ => Colors.Transparent,
+    };
 }

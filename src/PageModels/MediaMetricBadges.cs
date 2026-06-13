@@ -23,7 +23,9 @@ public static class MediaMetricBadges
 
         return sort switch
         {
-            "POPULARITY_DESC" => new ItemMetricBadge
+            // TRENDING_DESC's raw trending value is an opaque internal number, so trending rows
+            // show the popularity count instead — the nearest meaningful stand-in.
+            "POPULARITY_DESC" or "TRENDING_DESC" => new ItemMetricBadge
             {
                 Glyph = FluentIconsRegular.People24,
                 IconColor = Color.FromArgb("#FF9500"),

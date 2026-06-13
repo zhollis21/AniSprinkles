@@ -1,14 +1,11 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
-using CommunityToolkit.Maui.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using AniSprinkles.Utilities;
-using AniSprinkles.Views;
 
 namespace AniSprinkles.PageModels;
 
@@ -19,7 +16,7 @@ public partial class MyAnimePageModel : ObservableObject
     private const string DetailsRoute = "media-details";
 
     // ── Persisted UI preferences (device-scoped, not cleared on sign-out) ──
-    private const string ViewModePreferenceKey = "anime_view_mode";
+    // View mode lives in ListViewModePreference — shared with the media-browse (View All) lists.
     private const string SortFieldPreferenceKey = "anime_sort_field";
     private const string SortAscendingPreferenceKey = "anime_sort_ascending";
 
@@ -30,6 +27,7 @@ public partial class MyAnimePageModel : ObservableObject
     private readonly IPreferences _preferences;
     private readonly INavigationService _navigationService;
     private readonly ILogger<MyAnimePageModel> _logger;
+    private readonly EntryActionCoordinator _entryActions;
     private bool _hasLoaded;
     private DateTimeOffset _lastSuccessfulLoadUtc;
 
@@ -37,7 +35,6 @@ public partial class MyAnimePageModel : ObservableObject
     private CancellationTokenSource? _incrementDebounceCts;
     private MediaListEntry? _pendingIncrementEntry;
     private int? _preIncrementProgress;
-    private bool _isCompletionFlowActive;
 
     // ── Main page state (mutually exclusive) ────────────────────────
     // Transitions:
@@ -146,13 +143,24 @@ public partial class MyAnimePageModel : ObservableObject
         _navigationService = navigationService;
         _logger = logger;
 
+        // Long-press flows live in the shared coordinator (also used by Discover/browse);
+        // the hooks keep this page's section bookkeeping and +1-debounce semantics intact.
+        _entryActions = new EntryActionCoordinator(aniListClient, errorReportService, logger, new EntryActionHost
+        {
+            OpenDetailsAsync = entry => OpenDetails(entry),
+            OnBeforeFlowAsync = FlushPendingIncrementAsync,
+            OnOptimisticRemove = RemoveEntryFromCurrentSection,
+            // In-place saves (rate, progress edit) need no reload — the entry's observable
+            // properties refresh the card.
+            OnEntryStatusChangedAsync = _ => LoadAsync(forceReload: true),
+            OnEntryRemovedAsync = _ => LoadAsync(forceReload: true),
+            OnMutationFailedAsync = () => LoadAsync(forceReload: true),
+            SetErrorDetails = details => ErrorDetails = details,
+        });
+
         // Restore persisted UI preferences directly into backing fields to avoid
         // triggering partial property-changed handlers before the object is fully constructed.
-        var savedMode = preferences.Get(ViewModePreferenceKey, nameof(ListViewMode.Large));
-        if (Enum.TryParse<ListViewMode>(savedMode, out var restoredMode))
-        {
-            _currentViewMode = restoredMode;
-        }
+        _currentViewMode = ListViewModePreference.Load(preferences);
 
         var savedSort = preferences.Get(SortFieldPreferenceKey, nameof(SortField.LastUpdated));
         if (Enum.TryParse<SortField>(savedSort, out var restoredSort))
@@ -341,7 +349,17 @@ public partial class MyAnimePageModel : ObservableObject
     }
 
     partial void OnCurrentViewModeChanged(ListViewMode value)
-        => _preferences.Set(ViewModePreferenceKey, value.ToString());
+        => ListViewModePreference.Save(_preferences, value);
+
+    /// <summary>Re-reads the shared view-mode preference (it can change from media-browse pages).</summary>
+    public void SyncViewModeFromPreference()
+    {
+        var stored = ListViewModePreference.Load(_preferences);
+        if (stored != CurrentViewMode)
+        {
+            CurrentViewMode = stored; // the changed handler re-saves the same value — harmless
+        }
+    }
 
     partial void OnCurrentSortFieldChanged(SortField value)
     {
@@ -435,7 +453,7 @@ public partial class MyAnimePageModel : ObservableObject
         // without a declared episode count fall through to the normal +1 path.
         if (entry.IsCompletionAt(newProgress))
         {
-            await RunCompletionFlowAsync(entry);
+            await _entryActions.RunCompletionFlowAsync(entry);
             return;
         }
 
@@ -537,106 +555,10 @@ public partial class MyAnimePageModel : ObservableObject
         }
     }
 
-    // ── Shared completion / save helpers ─────────────────────────────
-
-    /// <summary>
-    /// Runs the shared completion flow (confirm + rating popups) and saves on confirm. Reused by the
-    /// +1-reaches-total path, the long-press "Mark as completed" action, and Edit-progress reaching
-    /// the known total. Guarded so overlapping triggers don't double-run.
-    /// </summary>
-    private async Task RunCompletionFlowAsync(MediaListEntry entry)
-    {
-        if (_isCompletionFlowActive)
-        {
-            return;
-        }
-
-        _isCompletionFlowActive = true;
-        try
-        {
-            // Flush any pending debounced save first (may be for this or another entry).
-            await FlushPendingIncrementAsync();
-
-            var shouldSave = await ListEntryStatusFlow.ApplyCompletionAsync(entry);
-            if (shouldSave)
-            {
-                await SaveCompletedEntryAsync(entry);
-            }
-        }
-        finally
-        {
-            _isCompletionFlowActive = false;
-        }
-    }
-
-    /// <summary>Saves a just-completed entry and reloads (status changed, so the entry moves sections).</summary>
-    private async Task SaveCompletedEntryAsync(MediaListEntry entry)
-    {
-        try
-        {
-            await _aniListClient.SaveMediaListEntryAsync(entry);
-            await ShowToastAsync("Saved");
-            await LoadAsync(forceReload: true);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Failed to save completed entry for media {MediaId}", entry.MediaId);
-            // Capture the mutated entry so Retry re-saves the same state.
-            var retryEntry = entry;
-            await ShowFailureSnackbarAsync(
-                ex,
-                "Failed to save. Please try again.",
-                retryAction: () => _ = RetrySaveCompletedEntryAsync(retryEntry));
-            ErrorDetails = _errorReportService.Record(ex, "Save completed entry");
-        }
-    }
-
-    /// <summary>
-    /// Saves an in-place edit (score or progress) that doesn't change which section the entry lives
-    /// in, so no reload is needed — the observable property update refreshes the card. Reverts via
-    /// <paramref name="revert"/> on failure, matching the +1 save behavior.
-    /// </summary>
-    private async Task SaveEntryInPlaceAsync(MediaListEntry entry, Action revert, string context)
-    {
-        try
-        {
-            await _aniListClient.SaveMediaListEntryAsync(entry);
-            await ShowToastAsync("Saved");
-        }
-        catch (Exception ex)
-        {
-            revert();
-            _logger.LogError(ex, "Failed to save entry ({Context}) for media {MediaId}", context, entry.MediaId);
-            await ShowFailureSnackbarAsync(ex, "Failed to save. Please try again.", retryAction: null);
-            ErrorDetails = _errorReportService.Record(ex, context);
-        }
-    }
-
     // ── Long-press action menu ─────────────────────────────────────
-
-    private static readonly Dictionary<MediaListStatus, string> StatusDisplayNames = new()
-    {
-        [MediaListStatus.Current] = "Watching",
-        [MediaListStatus.Planning] = "Planning",
-        [MediaListStatus.Completed] = "Completed",
-        [MediaListStatus.Paused] = "Paused",
-        [MediaListStatus.Dropped] = "Dropped",
-        [MediaListStatus.Repeating] = "Rewatching",
-    };
-
-    // The toolkit's PopupBorder is the element that reaches the screen edge, so it must BE the visible
-    // sheet: give it the rounded-top bottom-sheet shape (the popup's BackgroundColor fills it). A nested
-    // rounded Border would leave the PopupBorder's own bottom strip transparent, showing the dim scrim.
-    private static PopupOptions BottomSheetPopupOptions => new()
-    {
-        Shape = new Microsoft.Maui.Controls.Shapes.RoundRectangle
-        {
-            CornerRadius = new CornerRadius(20, 20, 0, 0),
-            StrokeThickness = 0,
-        },
-        Shadow = null,
-        CanBeDismissedByTappingOutsideOfPopup = true,
-    };
+    // The menu and all of its flows (edit progress, complete, rate, move, remove, and the popup +
+    // persistence plumbing) live in the shared EntryActionCoordinator, so Discover/browse/search
+    // surfaces behave identically. This page contributes only the host hooks wired in the ctor.
 
     [RelayCommand]
     private async Task ShowActionMenu(MediaListEntry? entry)
@@ -646,227 +568,7 @@ public partial class MyAnimePageModel : ObservableObject
             return;
         }
 
-        await FlushPendingIncrementAsync();
-
-        try
-        {
-            HapticFeedback.Default.Perform(HapticFeedbackType.LongPress);
-        }
-        catch
-        {
-            // Haptic feedback is best-effort.
-        }
-
-        var popup = new Views.ActionMenuPopup(entry.Media.DisplayTitle, BuildEntryActions(entry));
-        var result = await Shell.Current.CurrentPage.ShowPopupAsync<object>(popup, BottomSheetPopupOptions, CancellationToken.None);
-        if (result.WasDismissedByTappingOutsideOfPopup || result.Result is not MyAnimeEntryAction action)
-        {
-            return;
-        }
-
-        switch (action)
-        {
-            case MyAnimeEntryAction.OpenDetails:
-                await OpenDetails(entry);
-                break;
-            case MyAnimeEntryAction.EditProgress:
-                await HandleEditProgressAsync(entry);
-                break;
-            case MyAnimeEntryAction.MarkCompleted:
-                await RunCompletionFlowAsync(entry);
-                break;
-            case MyAnimeEntryAction.Rate:
-                await HandleRateAsync(entry);
-                break;
-            case MyAnimeEntryAction.MoveToList:
-                await HandleMoveToListAsync(entry);
-                break;
-            case MyAnimeEntryAction.Remove:
-                await HandleDeleteAsync(entry);
-                break;
-        }
-    }
-
-    private static IReadOnlyList<MyAnimeEntryAction> BuildEntryActions(MediaListEntry entry)
-    {
-        var actions = new List<MyAnimeEntryAction> { MyAnimeEntryAction.OpenDetails };
-
-        if (entry.CanEditProgress)
-        {
-            actions.Add(MyAnimeEntryAction.EditProgress);
-        }
-
-        if (entry.CanMarkCompleted)
-        {
-            actions.Add(MyAnimeEntryAction.MarkCompleted);
-        }
-
-        actions.Add(MyAnimeEntryAction.Rate);
-        actions.Add(MyAnimeEntryAction.MoveToList);
-        actions.Add(MyAnimeEntryAction.Remove);
-        return actions;
-    }
-
-    private async Task HandleMoveToListAsync(MediaListEntry entry)
-    {
-        if (entry.Media is null || entry.Status is null)
-        {
-            return;
-        }
-
-        var popup = new Views.MoveToListPopup(entry.Media.DisplayTitle, entry.Status.Value);
-        var result = await Shell.Current.CurrentPage.ShowPopupAsync<object>(popup, BottomSheetPopupOptions, CancellationToken.None);
-        if (result.WasDismissedByTappingOutsideOfPopup || result.Result is null)
-        {
-            return;
-        }
-
-        if (result.Result is string action && action == "delete")
-        {
-            await HandleDeleteAsync(entry);
-            return;
-        }
-
-        if (result.Result is MediaListStatus targetStatus)
-        {
-            await HandleMoveAsync(entry, targetStatus);
-        }
-    }
-
-    private async Task HandleRateAsync(MediaListEntry entry)
-    {
-        var originalScore = entry.Score;
-        if (await ListEntryStatusFlow.ApplyRatingAsync(entry))
-        {
-            await SaveEntryInPlaceAsync(entry, () => entry.Score = originalScore, "Rate");
-        }
-    }
-
-    private async Task HandleEditProgressAsync(MediaListEntry entry)
-    {
-        if (entry.Media is null || Shell.Current?.CurrentPage is not { } page)
-        {
-            return;
-        }
-
-        var popup = new Views.EditProgressPopup(entry.Media.DisplayTitle, entry.Progress ?? 0, entry.MaxEpisodes);
-        var options = new PopupOptions
-        {
-            Shape = null,
-            Shadow = null,
-            CanBeDismissedByTappingOutsideOfPopup = true,
-        };
-
-        var result = await page.ShowPopupAsync<object>(popup, options, CancellationToken.None);
-        if (result.WasDismissedByTappingOutsideOfPopup || result.Result is not int newProgress)
-        {
-            return;
-        }
-
-        await CommitProgressEditAsync(entry, newProgress);
-    }
-
-    private async Task CommitProgressEditAsync(MediaListEntry entry, int newProgress)
-    {
-        // Authoritative clamp (the popup also clamps for its UI, but the model owns the bounds).
-        newProgress = entry.ClampProgress(newProgress);
-
-        // Reaching the known total routes through the same completion flow as +1 EP (consistency).
-        if (entry.IsCompletionAt(newProgress))
-        {
-            await RunCompletionFlowAsync(entry);
-            return;
-        }
-
-        if (newProgress == (entry.Progress ?? 0))
-        {
-            return;
-        }
-
-        var originalProgress = entry.Progress;
-        entry.Progress = newProgress;
-        await SaveEntryInPlaceAsync(entry, () => entry.Progress = originalProgress, "Edit progress");
-    }
-
-    private async Task HandleDeleteAsync(MediaListEntry entry)
-    {
-        var title = entry.Media?.DisplayTitle ?? "this anime";
-        var confirmed = await Views.ConfirmPopup.ShowAsync(
-            title: "Remove from List",
-            message: $"Remove {title} from your list?",
-            confirmText: "Remove",
-            isDestructive: true,
-            iconGlyph: FluentIconsRegular.Delete24);
-
-        if (!confirmed)
-        {
-            return;
-        }
-
-        SentrySdk.AddBreadcrumb($"Remove from list confirmed (My Anime, entry {entry.Id})", "list", "user");
-
-        // Optimistic removal from UI.
-        RemoveEntryFromCurrentSection(entry);
-
-        try
-        {
-            await _aniListClient.DeleteMediaListEntryAsync(entry.Id);
-            await ShowToastAsync($"{title} removed from list");
-            await LoadAsync(forceReload: true);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Failed to delete entry {EntryId} for media {MediaId}", entry.Id, entry.MediaId);
-            // Capture the id so Retry re-runs the same delete.
-            var retryId = entry.Id;
-            var retryTitle = title;
-            await ShowFailureSnackbarAsync(
-                ex,
-                "Failed to remove. Please try again.",
-                retryAction: () => _ = RetryDeleteEntryAsync(retryId, retryTitle));
-            ErrorDetails = _errorReportService.Record(ex, "Delete from list");
-            await LoadAsync(forceReload: true);
-        }
-    }
-
-    private async Task HandleMoveAsync(MediaListEntry entry, MediaListStatus targetStatus)
-    {
-        var title = entry.Media?.DisplayTitle ?? "this anime";
-
-        // Snapshot original state for rollback.
-        var originalStatus = entry.Status;
-        var originalProgress = entry.Progress;
-        var originalScore = entry.Score;
-        var originalRepeat = entry.Repeat;
-
-        await ListEntryStatusFlow.ApplyStatusChangeAsync(entry, targetStatus);
-
-        // Optimistic removal from source section.
-        RemoveEntryFromCurrentSection(entry);
-
-        var targetName = StatusDisplayNames.GetValueOrDefault(targetStatus, targetStatus.ToString());
-
-        try
-        {
-            await _aniListClient.SaveMediaListEntryAsync(entry);
-            await ShowToastAsync($"{title} moved to {targetName}");
-            await LoadAsync(forceReload: true);
-        }
-        catch (Exception ex)
-        {
-            // Revert entry state.
-            entry.Status = originalStatus;
-            entry.Progress = originalProgress;
-            entry.Score = originalScore;
-            entry.Repeat = originalRepeat;
-
-            _logger.LogError(ex, "Failed to move media {MediaId} to {TargetStatus}", entry.MediaId, targetStatus);
-            // Move side effects were reverted, so there is no simple Retry path —
-            // the user can long-press the entry again to retry.
-            await ShowFailureSnackbarAsync(ex, "Failed to move. Please try again.", retryAction: null);
-            ErrorDetails = _errorReportService.Record(ex, "Move to list");
-            await LoadAsync(forceReload: true);
-        }
+        await _entryActions.ShowEntryMenuAsync(entry);
     }
 
     private void RemoveEntryFromCurrentSection(MediaListEntry entry)
@@ -929,43 +631,6 @@ public partial class MyAnimePageModel : ObservableObject
         }
 
         return ShowSnackbarAsync(fallbackMessage, action: retryAction);
-    }
-
-    private async Task RetrySaveCompletedEntryAsync(MediaListEntry entry)
-    {
-        try
-        {
-            await _aniListClient.SaveMediaListEntryAsync(entry);
-            await LoadAsync(forceReload: true);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Retry failed for completed entry media {MediaId}", entry.MediaId);
-            await ShowFailureSnackbarAsync(
-                ex,
-                "Failed to save. Please try again.",
-                retryAction: () => _ = RetrySaveCompletedEntryAsync(entry));
-            ErrorDetails = _errorReportService.Record(ex, "Retry save completed entry");
-        }
-    }
-
-    private async Task RetryDeleteEntryAsync(int entryId, string title)
-    {
-        try
-        {
-            await _aniListClient.DeleteMediaListEntryAsync(entryId);
-            await ShowToastAsync($"{title} removed from list");
-            await LoadAsync(forceReload: true);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Retry failed for delete entry {EntryId}", entryId);
-            await ShowFailureSnackbarAsync(
-                ex,
-                "Failed to remove. Please try again.",
-                retryAction: () => _ = RetryDeleteEntryAsync(entryId, title));
-            ErrorDetails = _errorReportService.Record(ex, "Retry delete entry");
-        }
     }
 
     // ── Pull to refresh ──────────────────────────────────────────────

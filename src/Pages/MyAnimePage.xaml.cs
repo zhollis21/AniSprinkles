@@ -48,6 +48,9 @@ public partial class MyAnimePage : ContentPage
             return;
         }
 
+        // The view mode is shared with media-browse (View All); re-read it in case it was
+        // changed there since this singleton VM was constructed.
+        _viewModel.SyncViewModeFromPreference();
         UpdateViewModeIcon(_viewModel.CurrentViewMode);
         UpdateToolbarItems();
 
