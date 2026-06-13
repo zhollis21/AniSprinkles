@@ -549,11 +549,13 @@ internal sealed class CIAniListClient : IAniListClient
                     Trending = (media.Popularity ?? 0) / 250,
                     StartDate = media.StartDate,
                     Episodes = media.Episodes,
-                    // Off-list items carry no entry id/status/progress/score, so they show no pill.
+                    // Off-list items carry no entry id/status/progress/score — null everything, so
+                    // the stub matches the real API (mediaListEntry absent → these are null) and no
+                    // phantom score leaks into ToListEntry() if an add-to-list flow runs under stubs.
                     ListEntryId = onList ? entry.Id : null,
                     ListStatus = status,
                     ListProgress = onList ? entry.Progress : null,
-                    ListScore = onList ? entry.Score : 0,
+                    ListScore = onList ? entry.Score : null,
                 },
             };
         }
