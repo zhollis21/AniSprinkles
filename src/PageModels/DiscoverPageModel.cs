@@ -234,7 +234,7 @@ public partial class DiscoverPageModel : ObservableObject
         try
         {
             var (items, pageInfo) = await _aniListClient.SearchAnimePageAsync(
-                query, AdultFilter, page: 1, SearchPerPage, token);
+                query, AdultFilter, page: 1, perPage: SearchPerPage, cancellationToken: token);
             if (token.IsCancellationRequested || !string.Equals(_activeSearchQuery, query, StringComparison.Ordinal))
             {
                 return; // superseded while the fetch was in flight
@@ -364,7 +364,7 @@ public partial class DiscoverPageModel : ObservableObject
                 currentSeason, currentYear, nextSeason, nextYear,
                 filterAdult: !displayAdult,
                 includeAdultSections: displayAdult,
-                SectionPerPage);
+                perPage: SectionPerPage);
 
             // Re-seeding resets each row to page 1 and supersedes any in-flight row Load More.
             foreach (var row in Rows)

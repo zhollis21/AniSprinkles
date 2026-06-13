@@ -213,6 +213,10 @@ public partial class MediaBrowsePageModel : ObservableObject
     {
         // Called before the items enter the ObservableCollection, so Items.Count is the pre-append
         // count and ranks continue seamlessly across pages (dedup keeps them contiguous).
+        // Badge off the section's definition sort, not the passed `sort`: this section is seeded
+        // with a placeholder initial sort (there's no sort picker here), so PaginatedSection.Sort
+        // stays that placeholder and would badge every section as popularity.
+        var badgeSort = _definition?.Sort ?? sort;
         var baseRank = _items.Items.Count;
         for (var i = 0; i < added.Count; i++)
         {
@@ -221,7 +225,7 @@ public partial class MediaBrowsePageModel : ObservableObject
                 added[i].Rank = baseRank + i + 1;
             }
 
-            added[i].MetricBadge = MediaMetricBadges.ForMediaSort(added[i].Node, sort);
+            added[i].MetricBadge = MediaMetricBadges.ForMediaSort(added[i].Node, badgeSort);
         }
     }
 
