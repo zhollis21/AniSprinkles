@@ -192,8 +192,11 @@ public partial class DiscoverPageModel : ObservableObject
 
     partial void OnSearchTextChanged(string value)
     {
-        // Cancel any pending debounce timer and any in-flight fetch it started.
+        // Cancel + dispose any pending debounce timer and any in-flight fetch it started, so the
+        // per-keystroke CTSs (and their Task.Delay registrations) don't accumulate over a session.
         _searchDebounceCts?.Cancel();
+        _searchDebounceCts?.Dispose();
+        _searchDebounceCts = null;
 
         var query = value?.Trim() ?? string.Empty;
         if (query.Length < SearchMinLength)
@@ -270,7 +273,17 @@ public partial class DiscoverPageModel : ObservableObject
 
     [RelayCommand]
     private Task LoadMoreSearchResults()
-        => SearchSection.CanLoadMore ? SearchSection.LoadMoreAsync() : Task.CompletedTask;
+        // Via ListOperationRunner like the section rows: PaginatedSection.LoadMoreAsync only
+        // swallows cancellation, so a network/API failure here would otherwise propagate out of
+        // the CollectionView's threshold command and crash. The runner swallows + snackbars it.
+        => SearchSection.CanLoadMore
+            ? _listOps.RunAsync(
+                "Discover Search · Load More",
+                "discover-search",
+                0,
+                () => SearchSection.LoadMoreAsync(),
+                () => SearchSection.Items.Count)
+            : Task.CompletedTask;
 
     // ── Error state ──────────────────────────────────────────────────
 
@@ -298,17 +311,28 @@ public partial class DiscoverPageModel : ObservableObject
         var displayAdult = AppSettings.DisplayAdultContent;
         var now = _timeProvider.GetUtcNow();
 
-        // Sign-in/sign-out changes the data, not just chrome: mediaListEntry chips ride the cached
-        // sections, so an auth flip must invalidate the TTL cache (and any chip-carrying search results).
+        // Two things invalidate the cached, viewer-relative section data AND any active search:
+        //  - an auth flip: mediaListEntry chips ride the results, so they must be refetched.
+        //  - an adult-toggle flip: the search's AdultFilter changes, and stale results fetched
+        //    under the old filter (e.g. 18+ covers after turning the toggle OFF) must not linger
+        //    until the user edits the query.
         var isAuthenticated = !string.IsNullOrWhiteSpace(await _authService.GetAccessTokenAsync());
-        if (_hasLoaded && isAuthenticated != _loadedAuthenticated)
+        var authChanged = _hasLoaded && isAuthenticated != _loadedAuthenticated;
+        var adultChanged = _hasLoaded && _loadedWithAdultContent != displayAdult;
+        if (authChanged || adultChanged)
         {
-            _logger.LogInformation("Discover cache invalidated: auth state changed (authenticated={IsAuthenticated}).", isAuthenticated);
+            _logger.LogInformation(
+                "Discover cache invalidated (authChanged={AuthChanged}, adultChanged={AdultChanged}).",
+                authChanged, adultChanged);
             forceReload = true;
             IsSearchVisible = false;
             if (!string.IsNullOrEmpty(SearchText))
             {
                 SearchText = string.Empty; // OnSearchTextChanged resets the search state
+            }
+            else
+            {
+                SearchSection.Reset(); // empty SearchText leaves no keystroke to trigger the reset
             }
         }
 
