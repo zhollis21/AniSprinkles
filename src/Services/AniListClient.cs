@@ -1008,6 +1008,7 @@ public class AniListClient : IAniListClient
         StartDate = dto.StartDate,
         // Only the browseMedia fragment (Discover/browse/search) requests these; null elsewhere.
         Episodes = dto.Episodes,
+        Trending = dto.Trending,
         ListEntryId = dto.MediaListEntry?.Id,
         ListStatus = ParseStatus(dto.MediaListEntry?.Status),
         ListProgress = dto.MediaListEntry?.Progress,
@@ -1659,6 +1660,7 @@ public class AniListClient : IAniListClient
         public MediaDate? StartDate { get; set; }
         // browseMedia fragment only (Discover/browse/search).
         public int? Episodes { get; set; }
+        public int? Trending { get; set; }
         public MediaListEntryDto? MediaListEntry { get; set; }
     }
 
@@ -1897,6 +1899,7 @@ fragment browseMedia on Media {
   averageScore
   favourites
   popularity
+  trending
   startDate { year month day }
   mediaListEntry { id status progress score }
 }";

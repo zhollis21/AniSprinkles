@@ -526,6 +526,8 @@ internal sealed class CIAniListClient : IAniListClient
                     AverageScore = e.Media.AverageScore,
                     Favourites = e.Media.Favourites,
                     Popularity = e.Media.Popularity,
+                    // Derived stub value so the Trending row's flame badge isn't all zeros in CI.
+                    Trending = (e.Media.Popularity ?? 0) / 250,
                     StartDate = e.Media.StartDate,
                     Episodes = e.Media.Episodes,
                     ListEntryId = e.Id,

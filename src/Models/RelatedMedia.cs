@@ -15,6 +15,7 @@ public class RelatedMedia
     public int? AverageScore { get; set; }
     public int? Favourites { get; set; }
     public int? Popularity { get; set; }
+    public int? Trending { get; set; }
     public MediaDate? StartDate { get; set; }
     public int? Episodes { get; set; }
 
@@ -63,6 +64,8 @@ public class RelatedMedia
     public string FavouritesOrZero => MetricFormat.CompactOrZero(Favourites);
 
     public string PopularityOrZero => MetricFormat.CompactOrZero(Popularity);
+
+    public string TrendingOrZero => MetricFormat.CompactOrZero(Trending);
 
     public string ScoreOrDash => HasScore ? ScoreDisplay : "—";
 

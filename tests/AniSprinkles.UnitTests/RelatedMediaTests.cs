@@ -75,6 +75,13 @@ public class RelatedMediaTests
         => Assert.Equal(expected, new RelatedMedia { Popularity = popularity }.PopularityOrZero);
 
     [Theory]
+    [InlineData(null, "0")]
+    [InlineData(0, "0")]
+    [InlineData(411, "411")]
+    public void TrendingOrZero_ShowsZeroWhenMissing(int? trending, string expected)
+        => Assert.Equal(expected, new RelatedMedia { Trending = trending }.TrendingOrZero);
+
+    [Theory]
     [InlineData(null, "—")]
     [InlineData(0, "—")]
     [InlineData(85, "8.5")]
