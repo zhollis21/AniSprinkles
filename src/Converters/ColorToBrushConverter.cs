@@ -12,7 +12,9 @@ namespace AniSprinkles.Converters;
 public sealed class ColorToBrushConverter : IValueConverter
 {
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-        => value is Color color ? new SolidColorBrush(color) : new SolidColorBrush(Colors.Transparent);
+        // Brush.Transparent is a shared static — avoids allocating a brush for the common
+        // no-status path (every card without a list-status pill hits this).
+        => value is Color color ? new SolidColorBrush(color) : Brush.Transparent;
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         => throw new NotSupportedException();

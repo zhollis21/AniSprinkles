@@ -13,7 +13,8 @@
                 Background="{Binding Source={x:Reference SectionRoot}, Path=HeaderText, Converter={StaticResource RainbowAccentConverter}}">
             <Grid ColumnDefinitions="*,Auto">
                 <HorizontalStackLayout Grid.Column="0" Spacing="8">
-                    <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
+                    <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center"
+                           AutomationProperties.IsInAccessibleTree="False">
                         <Image.Source>
                             <FontImageSource Glyph="{Binding Source={x:Reference SectionRoot}, Path=HeaderGlyph}"
                                              FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
@@ -30,7 +31,9 @@
                        Style="{StaticResource Caption1Strong}"
                        TextColor="White"
                        VerticalTextAlignment="Center"
-                       Padding="8,0,0,0">
+                       Padding="8,0,0,0"
+                       SemanticProperties.Description="{Binding Source={x:Reference SectionRoot}, Path=HeaderText, StringFormat='View all {0}'}"
+                       SemanticProperties.Hint="Opens the full list for this section">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding Source={x:Reference SectionRoot}, Path=ViewAllCommand}"
                                               CommandParameter="{Binding Source={x:Reference SectionRoot}, Path=SectionKey}" />

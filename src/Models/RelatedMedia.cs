@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Text;
 using AniSprinkles.Utilities;
 using Microsoft.Maui.Graphics;
 
@@ -76,10 +77,34 @@ public class RelatedMedia
         ? string.Empty
         : CultureInfo.InvariantCulture.TextInfo.ToTitleCase(Status.Replace('_', ' ').ToLowerInvariant());
 
-    /// <summary>Single-line metadata for browse/search rows: "TV · 2026 · Releasing" (absent parts omitted).</summary>
-    public string BrowseMetaDisplay => string.Join(
-        " · ",
-        new[] { FormatDisplay, YearDisplay, MediaStatusDisplay }.Where(part => !string.IsNullOrEmpty(part)));
+    /// <summary>Single-line metadata for browse/search rows: "TV · 2026 · Releasing" (absent parts omitted).
+    /// Hand-composed (no LINQ/array) — this is evaluated per visible row while scrolling.</summary>
+    public string BrowseMetaDisplay
+    {
+        get
+        {
+            var sb = new StringBuilder();
+            AppendMetaPart(sb, FormatDisplay);
+            AppendMetaPart(sb, YearDisplay);
+            AppendMetaPart(sb, MediaStatusDisplay);
+            return sb.ToString();
+        }
+    }
+
+    private static void AppendMetaPart(StringBuilder sb, string part)
+    {
+        if (string.IsNullOrEmpty(part))
+        {
+            return;
+        }
+
+        if (sb.Length > 0)
+        {
+            sb.Append(" · ");
+        }
+
+        sb.Append(part);
+    }
 
     public bool HasListStatus => ListStatus is not null;
 
