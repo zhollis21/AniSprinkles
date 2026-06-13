@@ -475,10 +475,19 @@ public sealed class EntryActionCoordinator(
     /// </summary>
     private async Task SaveAndAdoptIdAsync(MediaListEntry entry)
     {
+        var wasCreate = entry.Id <= 0;
         var saved = await aniListClient.SaveMediaListEntryAsync(entry);
         if (saved is { Id: > 0 })
         {
             entry.Id = saved.Id;
+        }
+        else if (wasCreate)
+        {
+            // Creating an entry must yield a server id — a later Remove/Move needs it. A null or
+            // id-less result means the create didn't really take, so fail loudly rather than show
+            // a false success: the caller's catch surfaces the failure snackbar.
+            throw new InvalidOperationException(
+                "SaveMediaListEntry returned no entry id when creating a list entry.");
         }
     }
 

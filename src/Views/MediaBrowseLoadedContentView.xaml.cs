@@ -67,12 +67,18 @@ public partial class MediaBrowseLoadedContentView : ContentView
             return;
         }
 
-        cv.ItemTemplate = mode switch
+        // Only swap the template when the lookup succeeds — assigning a null ItemTemplate would
+        // blank the list, which is hard to diagnose. A miss keeps the current/XAML default.
+        var template = mode switch
         {
             ListViewMode.Large => FindAppTemplate("BrowseMediaLargeTemplate"),
             ListViewMode.Compact => FindAppTemplate("BrowseMediaCompactTemplate"),
             _ => FindAppTemplate("BrowseMediaRowTemplate"),
         };
+        if (template is not null)
+        {
+            cv.ItemTemplate = template;
+        }
 
         cv.ItemsLayout = mode switch
         {

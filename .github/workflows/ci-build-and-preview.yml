@@ -680,12 +680,14 @@ jobs:
               # auto-focuses on reveal, but a tap is a cheap belt-and-suspenders for CI).
               tap_element_by_text "Search all anime..." || true
               sleep 1
-              # "One" matches "ONE PIECE" in the stub fixtures.
-              adb shell input text "One"
+              # "no" matches five romaji stub titles (Shingeki no Kyojin, Kimi no Na wa, Yakusoku
+              # no Neverland, Hagane no Renkinjutsushi, Kimetsu no Yaiba) so the results list is
+              # full and shows a mix of status pills (and some off-list rows).
+              adb shell input text "no"
               SEARCH_WAIT=0
               while [ $SEARCH_WAIT -lt 12 ]; do
                 adb shell uiautomator dump /sdcard/ui_search.xml 2>/dev/null || true
-                if adb shell cat /sdcard/ui_search.xml 2>/dev/null | grep -qi "ONE PIECE"; then
+                if adb shell cat /sdcard/ui_search.xml 2>/dev/null | grep -qi "Shingeki no Kyojin"; then
                   echo "  Search results ready after ${SEARCH_WAIT}s"
                   break
                 fi

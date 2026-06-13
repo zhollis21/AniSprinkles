@@ -507,36 +507,56 @@ internal sealed class CIAniListClient : IAniListClient
         ];
 
         /// <summary>
-        /// Discover/browse/search fixture: the stub list entries reshaped as browse items, so every
-        /// Discover section renders populated cards with on-list status chips in CI screenshots.
+        /// Discover/browse/search fixture: the stub list entries reshaped as browse items so every
+        /// Discover section renders populated cards in CI screenshots. The order interleaves list
+        /// statuses (and leaves some items off-list entirely) so the carousels and search results
+        /// show a realistic mix of pills — Watching / Planning / Completed / none — rather than a
+        /// run of identical chips. The explicit <c>status</c> override drives the pill independently
+        /// of the entry's real status in <see cref="GroupedList"/>.
         /// </summary>
-        public static readonly IReadOnlyList<BrowseMediaItem> BrowseItems = GroupedList
-            .SelectMany(g => g.Entries)
-            .Where(e => e.Media is not null)
-            .Select(e => new BrowseMediaItem
+        public static readonly IReadOnlyList<BrowseMediaItem> BrowseItems =
+        [
+            BrowseItem(OnePiece, MediaListStatus.Current),
+            BrowseItem(FmaB, MediaListStatus.Completed),
+            BrowseItem(YourName, MediaListStatus.Planning),
+            BrowseItem(JujutsuKaisen, status: null),          // not on list
+            BrowseItem(AttackOnTitan, MediaListStatus.Current),
+            BrowseItem(DemonSlayer, status: null),            // not on list
+            BrowseItem(PromisedNeverland, MediaListStatus.Planning),
+            BrowseItem(DeathNote, MediaListStatus.Completed),
+            BrowseItem(HunterXHunter, status: null),          // not on list
+            BrowseItem(ASilentVoice, MediaListStatus.Completed),
+        ];
+
+        private static BrowseMediaItem BrowseItem(MediaListEntry entry, MediaListStatus? status)
+        {
+            var media = entry.Media!;
+            var onList = status is not null;
+            return new BrowseMediaItem
             {
                 Node = new RelatedMedia
                 {
-                    Id = e.Media!.Id,
-                    Title = e.Media.Title,
-                    Format = e.Media.Format,
+                    Id = media.Id,
+                    Title = media.Title,
+                    Format = media.Format,
                     Type = "ANIME",
-                    Status = e.Media.Status,
-                    CoverImage = e.Media.CoverImage,
-                    AverageScore = e.Media.AverageScore,
-                    Favourites = e.Media.Favourites,
-                    Popularity = e.Media.Popularity,
+                    Status = media.Status,
+                    CoverImage = media.CoverImage,
+                    AverageScore = media.AverageScore,
+                    Favourites = media.Favourites,
+                    Popularity = media.Popularity,
                     // Derived stub value so the Trending row's flame badge isn't all zeros in CI.
-                    Trending = (e.Media.Popularity ?? 0) / 250,
-                    StartDate = e.Media.StartDate,
-                    Episodes = e.Media.Episodes,
-                    ListEntryId = e.Id,
-                    ListStatus = e.Status,
-                    ListProgress = e.Progress,
-                    ListScore = e.Score,
+                    Trending = (media.Popularity ?? 0) / 250,
+                    StartDate = media.StartDate,
+                    Episodes = media.Episodes,
+                    // Off-list items carry no entry id/status/progress/score, so they show no pill.
+                    ListEntryId = onList ? entry.Id : null,
+                    ListStatus = status,
+                    ListProgress = onList ? entry.Progress : null,
+                    ListScore = onList ? entry.Score : 0,
                 },
-            })
-            .ToList();
+            };
+        }
 
         // ── Character / Staff fixtures (Monkey D. Luffy + his JP seiyuu Mayumi Tanaka). ──────────────
         // Real AniList ids, images, scores, and roles, captured from the live API so the
