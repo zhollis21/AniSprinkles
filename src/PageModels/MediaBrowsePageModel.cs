@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using IconFont.Maui.FluentIcons;
 using Microsoft.Extensions.Logging;
+using AniSprinkles.Utilities;
 
 namespace AniSprinkles.PageModels;
 
@@ -29,6 +30,10 @@ public partial class MediaBrowsePageModel : ObservableObject
     private readonly PaginatedSection<BrowseMediaItem> _items;
 
     private DiscoverSectionDefinition? _definition;
+    // Viewer-relative inputs captured at the last successful load, so a revisit refetches when
+    // they change rather than short-circuiting to stale items (see LoadAsync).
+    private bool _loadedWithAdultContent;
+    private bool _loadedAuthenticated;
 
     public MediaBrowsePageModel(
         IAniListClient aniListClient,
@@ -149,7 +154,15 @@ public partial class MediaBrowsePageModel : ObservableObject
             return;
         }
 
-        if (_definition?.Section == section && HasItems)
+        var displayAdult = AppSettings.DisplayAdultContent;
+        var isAuthenticated = !string.IsNullOrWhiteSpace(await _authService.GetAccessTokenAsync());
+
+        // Short-circuit a revisit only when nothing viewer-relative changed. A sign-in/out shifts
+        // the mediaListEntry chips, and an adult-toggle flip changes the browse filter — either
+        // must refetch rather than show stale (and possibly 18+) cached items.
+        if (_definition?.Section == section && HasItems
+            && _loadedWithAdultContent == displayAdult
+            && _loadedAuthenticated == isAuthenticated)
         {
             CurrentState = PageState.Content;
             return;
@@ -169,6 +182,8 @@ public partial class MediaBrowsePageModel : ObservableObject
         {
             var (items, pageInfo) = await FetchPageAsync(1, _definition.Sort, token).ConfigureAwait(true);
             _items.Seed(items, pageInfo);
+            _loadedWithAdultContent = displayAdult;
+            _loadedAuthenticated = isAuthenticated;
             CurrentState = PageState.Content;
             _logger.LogInformation(
                 "NAVTRACE MediaBrowse seeded {Count} items (section {Section}, hasNext={HasNext})",

@@ -69,8 +69,12 @@ public partial class MediaBrowsePage : ContentPage, IQueryAttributable
     {
         DiscoverSection? section = null;
         if (query.TryGetValue("section", out var raw)
-            && Enum.TryParse<DiscoverSection>(raw?.ToString(), ignoreCase: true, out var parsed))
+            && Enum.TryParse<DiscoverSection>(raw?.ToString(), ignoreCase: true, out var parsed)
+            && Enum.IsDefined(parsed))
         {
+            // IsDefined rejects numeric strings ("999" parses to an undefined enum value), which
+            // would otherwise throw in DiscoverSectionDefinitions.Get(); a null section falls
+            // through to the page model's "Unknown browse section" error.
             section = parsed;
         }
 

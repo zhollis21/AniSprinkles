@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Globalization;
 
 namespace AniSprinkles.Converters;
@@ -11,10 +12,18 @@ namespace AniSprinkles.Converters;
 /// </summary>
 public sealed class ColorToBrushConverter : IValueConverter
 {
+    // The app uses a small, fixed set of status colors, and this converter runs per pill in
+    // scrolling lists — cache one brush per Color so a recycled cell reuses the instance instead
+    // of allocating. Color has value equality (RGBA), so it's a sound key. Bound brushes are
+    // read-only in MAUI, so sharing an instance across cells is safe.
+    private static readonly ConcurrentDictionary<Color, SolidColorBrush> BrushCache = new();
+
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-        // Brush.Transparent is a shared static — avoids allocating a brush for the common
-        // no-status path (every card without a list-status pill hits this).
-        => value is Color color ? new SolidColorBrush(color) : Brush.Transparent;
+        // Brush.Transparent is a shared static — avoids a brush for the common no-status path
+        // (every card without a list-status pill hits this).
+        => value is Color color
+            ? BrushCache.GetOrAdd(color, static c => new SolidColorBrush(c))
+            : Brush.Transparent;
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         => throw new NotSupportedException();
