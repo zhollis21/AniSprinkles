@@ -1908,7 +1908,7 @@ fragment browseMedia on Media {
 query Search($search: String!, $page: Int, $perPage: Int, $isAdult: Boolean) {
   Page(page: $page, perPage: $perPage) {
     pageInfo { hasNextPage currentPage }
-    media(type: ANIME, search: $search, isAdult: $isAdult, sort: SEARCH_MATCH) { ...browseMedia }
+    media(type: ANIME, search: $search, isAdult: $isAdult, sort: [SEARCH_MATCH, ID]) { ...browseMedia }
   }
 }" + BrowseMediaFragment;
 
