@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pageModels="clr-namespace:AniSprinkles.PageModels"
+             xmlns:views="clr-namespace:AniSprinkles.Views"
+             xmlns:pullToRefresh="clr-namespace:Syncfusion.Maui.Toolkit.PullToRefresh;assembly=Syncfusion.Maui.Toolkit"
+             xmlns:icons="clr-namespace:IconFont.Maui.FluentIcons;assembly=IconFont.Maui.FluentIcons"
+             x:Class="AniSprinkles.Views.DiscoverLoadedContentView"
+             x:DataType="pageModels:DiscoverPageModel"
+             x:Name="RootView">
+
+    <!-- No RowSpacing: the Grid would apply it even while the search row is collapsed, leaving a
+         permanent extra gap under the toolbar. The search bar carries its own bottom margin. -->
+    <Grid RowDefinitions="Auto,*">
+
+        <!-- Row 0: expandable search (issue #16), revealed by the toolbar icon like My Anime.
+             2+ chars swaps the rows for results. -->
+        <Border Grid.Row="0"
+                Style="{StaticResource CardStyle}"
+                Padding="4,0"
+                Margin="0,0,0,8"
+                IsVisible="{Binding IsSearchVisible}">
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                <Label Grid.Column="0"
+                       Text="{x:Static icons:FluentIconsRegular.Search24}"
+                       FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                       TextColor="{StaticResource Gray400}"
+                       FontSize="18"
+                       WidthRequest="18" HeightRequest="18"
+                       HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                       VerticalOptions="Center" Margin="8,0,0,0"
+                       AutomationProperties.IsInAccessibleTree="False" />
+                <Entry Grid.Column="1"
+                       x:Name="SearchEntry"
+                       Placeholder="Search all anime..."
+                       Text="{Binding SearchText}"
+                       ClearButtonVisibility="WhileEditing"
+                       FontSize="15"
+                       BackgroundColor="Transparent"
+                       VerticalOptions="Center" />
+            </Grid>
+        </Border>
+
+        <!-- Row 1a: search results — a sibling (not a swap-out) of the sections, so the rows
+             survive behind an active search and restore instantly when it clears. Lives outside
+             any ScrollView so virtualization and the scroll threshold work. -->
+        <Grid Grid.Row="1" IsVisible="{Binding IsSearchActive}">
+            <CollectionView x:Name="SearchResultsList"
+                            ItemsSource="{Binding SearchSection.Items}"
+                            ItemTemplate="{StaticResource BrowseMediaRowTemplate}"
+                            ItemSizingStrategy="MeasureFirstItem"
+                            RemainingItemsThreshold="5"
+                            RemainingItemsThresholdReachedCommand="{Binding LoadMoreSearchResultsCommand}">
+                <CollectionView.Footer>
+                    <ActivityIndicator IsRunning="{Binding SearchIsLoadingMore}"
+                                       IsVisible="{Binding SearchIsLoadingMore}"
+                                       Margin="0,8,0,16" />
+                </CollectionView.Footer>
+            </CollectionView>
+
+            <!-- Initial-search spinner (results list is empty while the first page loads) -->
+            <ActivityIndicator IsRunning="{Binding IsSearching}"
+                               IsVisible="{Binding IsSearching}"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center" />
+
+            <!-- No matches -->
+            <VerticalStackLayout VerticalOptions="Center"
+                                 HorizontalOptions="Center"
+                                 Spacing="8"
+                                 IsVisible="{Binding HasNoSearchResults}">
+                <Image WidthRequest="40" HeightRequest="40" HorizontalOptions="Center">
+                    <Image.Source>
+                        <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Search24}"
+                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                         Color="{StaticResource Gray400}"
+                                         Size="40" />
+                    </Image.Source>
+                </Image>
+                <Label Text="No anime found"
+                       Style="{StaticResource Body2Strong}"
+                       TextColor="{StaticResource Gray400}"
+                       HorizontalTextAlignment="Center" />
+            </VerticalStackLayout>
+        </Grid>
+
+        <!-- Row 1b: discover section rows -->
+        <pullToRefresh:SfPullToRefresh Grid.Row="1"
+                                       IsVisible="{Binding AreSectionsVisible}"
+                                       IsRefreshing="{Binding IsBusy}"
+                                       RefreshCommand="{Binding RefreshCommand}">
+        <pullToRefresh:SfPullToRefresh.PullableContent>
+            <ScrollView>
+                <!-- One DiscoverSectionView per row, in DiscoverSectionDefinitions order. Only ~8
+                     items, so a non-virtualizing BindableLayout is fine (the carousels inside
+                     virtualize themselves). Empty rows (e.g. 18+ with the toggle off) self-hide. -->
+                <VerticalStackLayout Spacing="20" Padding="0,0,0,24"
+                                     BindableLayout.ItemsSource="{Binding Rows}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="pageModels:DiscoverRow">
+                            <views:DiscoverSectionView IsVisible="{Binding HasItems}"
+                                                       HeaderText="{Binding Definition.Title}"
+                                                       HeaderGlyph="{Binding HeaderGlyph}"
+                                                       SectionKey="{Binding SectionKey}"
+                                                       ItemsSource="{Binding Items}"
+                                                       IsLoadingMore="{Binding IsLoadingMore}"
+                                                       NavigateCommand="{Binding BindingContext.NavigateToMediaCommand, Source={x:Reference RootView}}"
+                                                       LongPressCommand="{Binding BindingContext.ShowItemActionsCommand, Source={x:Reference RootView}}"
+                                                       ViewAllCommand="{Binding BindingContext.ViewAllCommand, Source={x:Reference RootView}}"
+                                                       LoadMoreCommand="{Binding BindingContext.LoadMoreSectionCommand, Source={x:Reference RootView}}" />
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+            </ScrollView>
+        </pullToRefresh:SfPullToRefresh.PullableContent>
+        </pullToRefresh:SfPullToRefresh>
+    </Grid>
+</ContentView>

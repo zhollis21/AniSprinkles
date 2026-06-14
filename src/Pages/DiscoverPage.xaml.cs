@@ -3,31 +3,31 @@ using Microsoft.Extensions.Logging;
 
 namespace AniSprinkles.Pages;
 
-public partial class SettingsPage : ContentPage
+public partial class DiscoverPage : ContentPage
 {
     private static readonly TimeSpan DeferredLoadDelay = TimeSpan.FromMilliseconds(120);
 
-    private SettingsPageModel? _viewModel;
+    private DiscoverPageModel? _viewModel;
     private bool _hasAppeared;
     private bool _hasCreatedLoadedContent;
     private int _loadVersion;
-    private readonly ILogger<SettingsPage>? _logger;
+    private readonly ILogger<DiscoverPage>? _logger;
 
-    public SettingsPage()
+    public DiscoverPage()
     {
         InitializeComponent();
 
         try
         {
             _logger = ServiceProviderHelper.GetServiceProvider()
-                .GetService<ILoggerFactory>()?.CreateLogger<SettingsPage>();
+                .GetService<ILoggerFactory>()?.CreateLogger<DiscoverPage>();
         }
         catch (InvalidOperationException)
         {
         }
     }
 
-    public SettingsPage(SettingsPageModel viewModel)
+    public DiscoverPage(DiscoverPageModel viewModel)
         : this()
     {
         SetViewModel(viewModel);
@@ -43,24 +43,22 @@ public partial class SettingsPage : ContentPage
             return;
         }
 
-        // Content survived the flyout switch — just refresh data in background.
+        // Content survived the flyout switch — LoadAsync is a no-op within the TTL,
+        // a background refresh past it.
         if (LoadedContentHost.Content is not null)
         {
             await _viewModel.LoadAsync();
+            UpdateLoadedContentHost();
             return;
         }
 
-        // Content needs to be (re)created. Reset tracking flag.
         _hasCreatedLoadedContent = false;
 
         int version;
 
-        // Fast path: the singleton ViewModel already has cached profile data
-        // from a previous visit. We still defer view creation so the Shell
-        // transition animation completes first (InitializeComponent of the
-        // heavy content view blocks the UI thread), but we skip the API call.
-        // Flip CurrentState to InitialLoading during the delay so the spinner
-        // is visible instead of a blank page.
+        // Fast path: the singleton ViewModel already has cached sections. Defer view creation so
+        // the Shell transition animation completes first (the content view's InitializeComponent
+        // blocks the UI thread), but skip the API call when the TTL hasn't lapsed.
         if (_viewModel.HasLoadedData)
         {
             var savedState = _viewModel.CurrentState;
@@ -81,15 +79,13 @@ public partial class SettingsPage : ContentPage
 
             _viewModel.CurrentState = PageState.Content;
             UpdateLoadedContentHost();
-            // Background refresh with existing data visible.
+            // TTL-aware refresh with existing data visible.
             await _viewModel.LoadAsync();
             return;
         }
 
-        // Slow path (first load): yield so the Shell transition animation can
-        // complete before we run the data fetch and create the heavy XAML
-        // content view. During this deferred delay, the current StateContainer
-        // view remains visible until LoadAsync updates the page state.
+        // Slow path (first load): yield so the Shell transition animation can complete
+        // before the data fetch and heavy content view creation.
         version = ++_loadVersion;
         await Task.Yield();
         await Task.Delay(DeferredLoadDelay);
@@ -139,25 +135,26 @@ public partial class SettingsPage : ContentPage
 
     private void UpdateLoadedContentHost()
     {
-        var shouldShow = _viewModel?.IsAuthenticated == true
-            && _viewModel?.CurrentState == PageState.Content;
+        var isError = _viewModel?.CurrentState == PageState.Error;
 
-        if (shouldShow && !_hasCreatedLoadedContent)
+        if (!isError && !_hasCreatedLoadedContent)
         {
-            _logger?.LogInformation(
-                "LOADEDHOST Settings attach (isAuth={IsAuth}, currentState={CurrentState})",
-                _viewModel?.IsAuthenticated, _viewModel?.CurrentState);
-            LoadedContentHost.Content = new Views.SettingsLoadedContentView
+            var view = new Views.DiscoverLoadedContentView
             {
                 BindingContext = _viewModel
             };
+
+            _logger?.LogInformation(
+                "LOADEDHOST Discover attach (isError={IsError}, currentState={CurrentState})",
+                isError, _viewModel?.CurrentState);
+            LoadedContentHost.Content = view;
             _hasCreatedLoadedContent = true;
         }
-        else if (!shouldShow && _hasCreatedLoadedContent)
+        else if (isError && _hasCreatedLoadedContent)
         {
             _logger?.LogInformation(
-                "LOADEDHOST Settings detach (isAuth={IsAuth}, currentState={CurrentState})",
-                _viewModel?.IsAuthenticated, _viewModel?.CurrentState);
+                "LOADEDHOST Discover detach (currentState={CurrentState})",
+                _viewModel?.CurrentState);
             HandlerHelper.DisconnectAll(LoadedContentHost.Content);
             LoadedContentHost.Content = null;
             _hasCreatedLoadedContent = false;
@@ -171,34 +168,40 @@ public partial class SettingsPage : ContentPage
             return;
         }
 
-        var services = Handler?.MauiContext?.Services
-            ?? IPlatformApplication.Current?.Services
-            ?? Application.Current?.Handler?.MauiContext?.Services;
-        var viewModel = services?.GetService<SettingsPageModel>();
-        if (viewModel is null)
+        try
         {
-            return;
-        }
+            var services = ServiceProviderHelper.GetServiceProvider();
+            var viewModel = services?.GetService<DiscoverPageModel>();
+            if (viewModel is null)
+            {
+                return;
+            }
 
-        SetViewModel(viewModel);
+            SetViewModel(viewModel);
+        }
+        catch (InvalidOperationException)
+        {
+        }
     }
 
     private void OnViewModelPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
-        // UpdateLoadedContentHost gates on both IsAuthenticated and CurrentState == Content,
-        // so react to either changing. Keeps the heavy SettingsLoadedContentView off the UI
-        // thread during InitialLoading / Unauthenticated and tears it down on sign-out or
-        // when CurrentState leaves Content (e.g., auth succeeded but viewer fetch failed
-        // without cached data).
-        if ((e.PropertyName is nameof(SettingsPageModel.IsAuthenticated)
-                or nameof(SettingsPageModel.CurrentState))
-            && _hasAppeared)
+        // Create the loaded content view only when CurrentState == Content (not during
+        // InitialLoading) so the heavy InitializeComponent stays off the UI thread until
+        // the Shell transition animation has finished. Tear it down on Error so the
+        // full-page error view is visible.
+        if (e.PropertyName != nameof(DiscoverPageModel.CurrentState) || !_hasAppeared)
+        {
+            return;
+        }
+
+        if (_viewModel?.CurrentState is PageState.Content or PageState.Error)
         {
             UpdateLoadedContentHost();
         }
     }
 
-    private void SetViewModel(SettingsPageModel viewModel)
+    private void SetViewModel(DiscoverPageModel viewModel)
     {
         _viewModel?.PropertyChanged -= OnViewModelPropertyChanged;
 

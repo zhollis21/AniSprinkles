@@ -29,6 +29,14 @@ public static class MediaMetricBadges
                 IconColor = Color.FromArgb("#FF9500"),
                 Text = media.PopularityOrZero,
             },
+            // Trending shows its own metric (recent activity) with a distinct flame glyph so a
+            // Trending row never reads identically to the popularity-sorted rows next to it.
+            "TRENDING_DESC" => new ItemMetricBadge
+            {
+                Glyph = FluentIconsRegular.Fire24,
+                IconColor = Color.FromArgb("#FF3B30"),
+                Text = media.TrendingOrZero,
+            },
             "SCORE_DESC" => new ItemMetricBadge
             {
                 Glyph = FluentIconsRegular.Star24,

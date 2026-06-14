@@ -48,6 +48,9 @@ public partial class MyAnimePage : ContentPage
             return;
         }
 
+        // The view mode is shared with media-browse (View All); re-read it in case it was
+        // changed there since this singleton VM was constructed.
+        _viewModel.SyncViewModeFromPreference();
         UpdateViewModeIcon(_viewModel.CurrentViewMode);
         UpdateToolbarItems();
 
@@ -122,7 +125,28 @@ public partial class MyAnimePage : ContentPage
     protected override void OnHandlerChanged()
     {
         base.OnHandlerChanged();
+
+        // Transient page + singleton page model: when the platform view is torn down (Handler
+        // becomes null) drop the PropertyChanged subscription, or the singleton would pin this
+        // orphaned page and stack a duplicate handler if Shell recreates/reattaches the page.
+        if (Handler is null)
+        {
+            if (_viewModel is not null)
+            {
+                _viewModel.PropertyChanged -= OnViewModelPropertyChanged;
+            }
+
+            return;
+        }
+
         EnsureViewModel();
+
+        // Re-subscribe on reattach (EnsureViewModel no-ops once the VM is set); -= keeps it idempotent.
+        if (_viewModel is not null)
+        {
+            _viewModel.PropertyChanged -= OnViewModelPropertyChanged;
+            _viewModel.PropertyChanged += OnViewModelPropertyChanged;
+        }
     }
 
     private void UpdateLoadedContentHost()

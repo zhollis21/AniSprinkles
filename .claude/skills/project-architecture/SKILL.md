@@ -10,23 +10,30 @@ description: "AniSprinkles project architecture reference: DI lifetimes, page/Pa
 | Registration                                                                                                              | Lifetime                                                       |
 | ------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
 | `ErrorReportService`, `HttpClient`, `IAuthService`, `IAniListClient`, `IAiringNotificationService`, `IOutageStateService`, `INavigationService`, `IUserFeedback` | Singleton                                                      |
-| `MyAnimePageModel`, `SettingsPageModel`                                                                                   | **Singleton** (survive page recreation across flyout switches) |
+| `MyAnimePageModel`, `DiscoverPageModel`, `SettingsPageModel`                                                              | **Singleton** (survive page recreation across flyout switches) |
 | `LoggingHandler`, `AniListRateLimitHandler`                                                                               | Transient                                                      |
 
 `IAniListClient` resolves to `CachingAniListClient` wrapping the concrete `AniListClient` (session-lifetime in-memory cache of character/staff reads, with request coalescing). The shared `HttpClient` pipeline is `AniListRateLimitHandler` → `LoggingHandler` → `HttpClientHandler`, so every AniList call is serialized and 429/`Retry-After`-aware app-wide.
-| `MyAnimePage`, `SettingsPage`, `MediaDetailsPageModel`, `MediaDetailsPage`, `StaffDetailsPageModel`, `StaffDetailsPage`, `CharacterDetailsPageModel`, `CharacterDetailsPage`, `StudioDetailsPageModel`, `StudioDetailsPage` | Transient                                                      |
+| `MyAnimePage`, `DiscoverPage`, `SettingsPage`, `MediaDetailsPageModel`, `MediaDetailsPage`, `StaffDetailsPageModel`, `StaffDetailsPage`, `CharacterDetailsPageModel`, `CharacterDetailsPage`, `StudioDetailsPageModel`, `StudioDetailsPage`, `MediaBrowsePageModel`, `MediaBrowsePage` | Transient                                                      |
 
 ## Page ↔ PageModel Binding
 
 Two-constructor pattern: parameterless (for XAML tooling) + DI constructor. `ServiceProviderHelper` provides `IServiceProvider` fallback via `IPlatformApplication.Current.Services` when `Application.Current.Handler` is not ready during Shell startup.
 
-## OnAppearing Three-Branch Pattern (both flyout pages)
+## OnAppearing Three-Branch Pattern (all flyout pages)
 
 1. Content alive → background refresh
 2. Content gone + `HasLoadedData` → immediate rebuild + background refresh
 3. First load → spinner + deferred fetch
 
-See `MyAnimePage.xaml.cs` and `SettingsPage.xaml.cs` for reference implementations.
+See `MyAnimePage.xaml.cs` and `SettingsPage.xaml.cs` for reference implementations. `DiscoverPage.xaml.cs` is the auth-free variant (no Unauthenticated/AuthenticationPending states); its singleton page model doubles as a ~20-minute TTL cache for the Discover sections (bypassed by pull-to-refresh, invalidated by adult-toggle or auth changes).
+
+## Discover / Browse / Search
+
+- `DiscoverPageModel` (singleton): one aliased `DiscoverSections` request seeds every row (a `DiscoverRow` wrapping a `PaginatedSection<BrowseMediaItem>`); rows then page themselves horizontally through `BrowseAnimePageAsync` (one request per row-page) via the shared `DiscoverSectionFetch` helper. Card badges follow the row's sort via `MediaMetricBadges.ForMediaSort`. Search is revealed by a toolbar icon (same toggle pattern as My Anime); debounced (600 ms, 2+ chars) queries swap the rows for a `PaginatedSection` results list via visibility (rows stay alive underneath).
+- `MediaBrowsePage` ("View All", transient): `DeferredContentLoader` + one `PaginatedSection<BrowseMediaItem>` over the same `DiscoverSectionFetch`; `DiscoverSectionDefinitions` is the single source of truth for section title/sort/filters/format/rank. Has the My Anime view-mode switcher; the mode persists to the shared `ListViewModePreference` key, so My Anime and View All always match (My Anime re-syncs in `OnAppearing`).
+- `BrowseTemplates.xaml` (merged in App.xaml) holds the shared templates: `BrowseMediaRowTemplate` (Standard, also used by search results), `BrowseMediaLargeTemplate` (2-col grid), `BrowseMediaCompactTemplate`, plus `ListStatusPillStyle` — the ONE on-list status pill used by rows, grid cards, and the Discover carousel cards. Tap commands resolve from the hosting CollectionView's BindingContext (`NavigateToMediaCommand`).
+- `EntryActionCoordinator` (`PageModels/`) owns the long-press action flows (menu, add/move/rate/edit-progress/complete/remove, persistence, toasts/snackbars) for My Anime AND the browse surfaces; page models supply `EntryActionHost` callbacks (optimistic removal, reload vs in-place chip update, error details). `CollectionViewLongPress` (`Views/`) is the reusable Android RecyclerView long-press hook for flat CollectionViews; navigate commands call `ShouldSuppressTap()` to swallow the synthetic tap that follows a long press.
 
 ## Details Page UX
 
@@ -41,7 +48,7 @@ Spinner-first flow: lightweight shell page appears immediately, full content vie
 
 ## Navigation
 
-Shell flyout (`my-anime`, `settings`). Details routes registered in `AppShell.xaml.cs`: `media-details` → `MediaDetailsPage`, `staff-details` → `StaffDetailsPage`, `character-details` → `CharacterDetailsPage`, `studio-details` → `StudioDetailsPage`. Navigate via `Shell.Current.GoToAsync` (or the injected `INavigationService`) with lightweight query params (`mediaId` / `staffId` / `characterId` / `studioId` + trace IDs) — never pass full model objects. Rapid-tap prevention on My Anime → details. Default Shell back behavior — no custom Android back overrides.
+Shell flyout (`my-anime`, `discover`, `settings`). Details routes registered in `AppShell.xaml.cs`: `media-details` → `MediaDetailsPage`, `staff-details` → `StaffDetailsPage`, `character-details` → `CharacterDetailsPage`, `studio-details` → `StudioDetailsPage`, `media-browse` → `MediaBrowsePage` (Discover "View All"; takes a `section` enum-name param decoded against `DiscoverSectionDefinitions`). Navigate via `Shell.Current.GoToAsync` (or the injected `INavigationService`) with lightweight query params (`mediaId` / `staffId` / `characterId` / `studioId` / `section` + trace IDs) — never pass full model objects. Rapid-tap prevention on My Anime → details. Default Shell back behavior — no custom Android back overrides.
 
 ## Performance Defaults
 

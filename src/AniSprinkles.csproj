@@ -48,7 +48,10 @@
 
 	<ItemGroup>
 		<PackageReference Include="IconFont.Maui.FluentIcons" Version="1.1.0" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.70" />
+		<!-- Held at 10.0.60: 10.0.70 added an AccessibilityNodeInfoCompat.set_Checked(bool) call compiled
+		     against AndroidX.Core 1.16, which crashes app-wide under TalkBack/uiautomator with the Core 1.17+
+		     train below (dotnet/maui#35584). Upgrade once the .NET 10 SR8 fix ships. -->
+		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.60" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.8" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
 		<PackageReference Include="CommunityToolkit.Maui" Version="14.2.0" />

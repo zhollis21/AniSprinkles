@@ -6,6 +6,7 @@ public partial class AppShell : Shell
     private const string StaffDetailsRoute = "staff-details";
     private const string CharacterDetailsRoute = "character-details";
     private const string StudioDetailsRoute = "studio-details";
+    private const string MediaBrowseRoute = "media-browse";
 
     public AppShell()
     {
@@ -14,5 +15,6 @@ public partial class AppShell : Shell
         Routing.RegisterRoute(StaffDetailsRoute, typeof(StaffDetailsPage));
         Routing.RegisterRoute(CharacterDetailsRoute, typeof(CharacterDetailsPage));
         Routing.RegisterRoute(StudioDetailsRoute, typeof(StudioDetailsPage));
+        Routing.RegisterRoute(MediaBrowseRoute, typeof(MediaBrowsePage));
     }
 }
