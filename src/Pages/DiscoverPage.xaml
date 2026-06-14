@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pageModels="clr-namespace:AniSprinkles.PageModels"
+             xmlns:views="clr-namespace:AniSprinkles.Views"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:icons="clr-namespace:IconFont.Maui.FluentIcons;assembly=IconFont.Maui.FluentIcons"
+             x:Class="AniSprinkles.Pages.DiscoverPage"
+             x:DataType="pageModels:DiscoverPageModel"
+             Title="{Binding Title}"
+             Shell.TitleColor="{Binding Title, Converter={StaticResource RainbowAccentConverter}}">
+
+    <!-- Same expandable-search pattern as MyAnimePage: the icon toggles the search bar. -->
+    <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="SearchToolbarItem"
+                     Command="{Binding ToggleSearchCommand}"
+                     Order="Primary">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Search24}"
+                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                 Color="{StaticResource OnBackground}"
+                                 Size="20" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
+    <!--
+        Same StateContainer pattern as MyAnimePage, minus the auth states — Discover is public.
+        The default children (LoadedContentHost) show when CurrentStateKey is null (Content).
+    -->
+    <Grid RowDefinitions="Auto,*">
+        <views:OutageBanner Grid.Row="0" Margin="{StaticResource LayoutPadding}" />
+        <Grid Grid.Row="1"
+              Padding="{StaticResource LayoutPadding}"
+              toolkit:StateContainer.CurrentState="{Binding CurrentStateKey}">
+            <toolkit:StateContainer.StateViews>
+                <!-- InitialLoading: first data fetch spinner -->
+                <VerticalStackLayout toolkit:StateView.StateKey="InitialLoading"
+                                     Spacing="8"
+                                     HorizontalOptions="Center"
+                                     VerticalOptions="Center">
+                    <ActivityIndicator IsRunning="True" IsVisible="True" />
+                    <Label Text="Loading discover..."
+                           Style="{StaticResource Caption1}"
+                           TextColor="{StaticResource Gray400}" />
+                </VerticalStackLayout>
+
+                <!-- Error: full-page error view (no cached data fallback) -->
+                <ScrollView toolkit:StateView.StateKey="Error"
+                            VerticalOptions="Center">
+                    <views:ErrorStateView ErrorTitle="{Binding ErrorTitle}"
+                                          ErrorSubtitle="{Binding ErrorSubtitle}"
+                                          ErrorIconGlyph="{Binding ErrorIconGlyph}"
+                                          ErrorAccentColor="{StaticResource RainbowOrange}"
+                                          RetryCommand="{Binding RetryLoadCommand}"
+                                          ErrorDetails="{Binding ErrorDetails}"
+                                          Margin="0,24" />
+                </ScrollView>
+            </toolkit:StateContainer.StateViews>
+
+            <!-- Default content (CurrentState = Content): loaded content host -->
+            <ContentView x:Name="LoadedContentHost" />
+        </Grid>
+    </Grid>
+</ContentPage>

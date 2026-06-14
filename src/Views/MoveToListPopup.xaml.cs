@@ -19,9 +19,29 @@ public partial class MoveToListPopup : Popup<object>
     ];
 
     public MoveToListPopup(string animeTitle, MediaListStatus currentStatus)
+        : this(animeTitle, (MediaListStatus?)currentStatus, allowRemove: true, subtitle: null)
+    {
+    }
+
+    /// <summary>
+    /// <paramref name="currentStatus"/> null shows every status (add-to-list: nothing to omit);
+    /// <paramref name="allowRemove"/> false hides the Remove row (the media isn't on the list yet).
+    /// </summary>
+    public MoveToListPopup(string animeTitle, MediaListStatus? currentStatus, bool allowRemove, string? subtitle)
     {
         InitializeComponent();
         TitleLabel.Text = animeTitle;
+        if (subtitle is not null)
+        {
+            SubtitleLabel.Text = subtitle;
+        }
+
+        if (!allowRemove)
+        {
+            DeleteDivider.IsVisible = false;
+            DeleteRow.IsVisible = false;
+        }
+
         BuildStatusRows(currentStatus);
 
         // Anchor as a bottom sheet. CommunityToolkit Popup V2 re-declares these as `new` BindableProperties,
@@ -92,7 +112,7 @@ public partial class MoveToListPopup : Popup<object>
         return 0;
     }
 
-    private void BuildStatusRows(MediaListStatus currentStatus)
+    private void BuildStatusRows(MediaListStatus? currentStatus)
     {
         foreach (var (status, label, glyph) in AllStatuses)
         {

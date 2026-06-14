@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    xmlns:models="clr-namespace:AniSprinkles.Models"
+                    xmlns:views="clr-namespace:AniSprinkles.Views"
+                    xmlns:icons="clr-namespace:IconFont.Maui.FluentIcons;assembly=IconFont.Maui.FluentIcons"
+                    x:Class="AniSprinkles.Views.BrowseTemplates">
+
+    <!-- The one on-list status pill: browse/search rows, View All cards, and the Discover
+         carousel cards all use this style so the status visual can't drift between surfaces.
+         Consumers bind Background to ListStatusColor (Background, not BackgroundColor — the
+         implicit Border style's Background brush always wins over BackgroundColor). -->
+    <Style x:Key="ListStatusPillStyle" TargetType="Border">
+        <Setter Property="StrokeShape" Value="RoundRectangle 8" />
+        <Setter Property="StrokeThickness" Value="0" />
+        <Setter Property="Padding" Value="7,2" />
+    </Style>
+
+    <!--
+        Shared list templates for browse surfaces: Discover search results and the
+        media-browse (View All) page. The tap command is resolved from the hosting
+        CollectionView's BindingContext, so any page model exposing NavigateToMediaCommand
+        (DiscoverPageModel, MediaBrowsePageModel) can host these templates.
+
+        Standard/Large/Compact mirror My Anime's three view modes (MyAnimeLoadedContentView);
+        media-browse switches between them with the shared view-mode preference.
+    -->
+    <DataTemplate x:Key="BrowseMediaRowTemplate" x:DataType="models:BrowseMediaItem">
+        <Border Style="{StaticResource ListRowStyle}" Margin="0,0,0,6">
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer x:DataType="{x:Null}"
+                                      Command="{Binding BindingContext.NavigateToMediaCommand, Source={RelativeSource AncestorType={x:Type CollectionView}}}"
+                                      CommandParameter="{Binding .}" />
+            </Border.GestureRecognizers>
+            <Grid ColumnDefinitions="Auto,70,*" ColumnSpacing="0" Padding="0">
+                <!-- Rank (Top Anime View All only) -->
+                <Label Grid.Column="0"
+                       Text="{Binding RankDisplay}"
+                       Style="{StaticResource Body2Strong}"
+                       TextColor="{StaticResource Gray400}"
+                       VerticalTextAlignment="Center"
+                       HorizontalTextAlignment="Center"
+                       MinimumWidthRequest="44"
+                       IsVisible="{Binding HasRank}" />
+
+                <!-- Cover -->
+                <Image Grid.Column="1"
+                       Source="{Binding Node.CoverImage.Medium}"
+                       Aspect="AspectFill"
+                       WidthRequest="70" MinimumHeightRequest="100" />
+                <views:FormatIconBadge Grid.Column="1" Format="{Binding Node.Format}" />
+
+                <!-- Info stack -->
+                <VerticalStackLayout Grid.Column="2" Spacing="3" VerticalOptions="Center" Padding="10,6">
+                    <Label Text="{Binding Node.DisplayTitle}"
+                           Style="{StaticResource Body2Strong}"
+                           MaxLines="2"
+                           LineBreakMode="TailTruncation" />
+                    <Label Text="{Binding Node.BrowseMetaDisplay}"
+                           Style="{StaticResource Caption1}"
+                           TextColor="{StaticResource Gray400}" />
+                    <HorizontalStackLayout Spacing="8">
+                        <!-- Community score -->
+                        <HorizontalStackLayout Spacing="3" IsVisible="{Binding Node.HasScore}">
+                            <Label Text="{x:Static icons:FluentIconsFilled.Star24}"
+                                   FontFamily="{x:Static icons:FluentIconsFilled.FontFamily}"
+                                   TextColor="#FFD700"
+                                   FontSize="12"
+                                   WidthRequest="12" HeightRequest="12"
+                                   HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                                   VerticalOptions="Center"
+                                   AutomationProperties.IsInAccessibleTree="False" />
+                            <Label Text="{Binding Node.ScoreDisplay}"
+                                   Style="{StaticResource Caption1}"
+                                   TextColor="#FFD700" />
+                        </HorizontalStackLayout>
+                        <!-- On-list status chip (signed-in only; absent items have no chip). -->
+                        <Border Style="{StaticResource ListStatusPillStyle}"
+                                Background="{Binding ListStatusColor, Converter={StaticResource ColorToBrushConverter}}"
+                                IsVisible="{Binding HasListStatus}">
+                            <Label Text="{Binding ListStatusDisplay}"
+                                   Style="{StaticResource Caption2}"
+                                   FontAttributes="Bold"
+                                   TextColor="White" />
+                        </Border>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Grid>
+        </Border>
+    </DataTemplate>
+
+    <!-- Large: 2-column grid cards, modeled on My Anime's LargeItemTemplate. Rank rides the
+         cover as a dark corner badge (no rank column in a grid). -->
+    <DataTemplate x:Key="BrowseMediaLargeTemplate" x:DataType="models:BrowseMediaItem">
+        <Border Style="{StaticResource CardStyle}" Padding="0" Margin="4">
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer x:DataType="{x:Null}"
+                                      Command="{Binding BindingContext.NavigateToMediaCommand, Source={RelativeSource AncestorType={x:Type CollectionView}}}"
+                                      CommandParameter="{Binding .}" />
+            </Border.GestureRecognizers>
+            <Grid RowDefinitions="180,*">
+                <!-- MaximumWidthRequest caps Glide's bitmap allocation when the Image has no
+                     explicit WidthRequest (see My Anime's LargeItemTemplate). -->
+                <Image Grid.Row="0"
+                       Source="{Binding Node.CoverImage.Large}"
+                       Aspect="AspectFill"
+                       HeightRequest="180"
+                       MaximumWidthRequest="500" />
+
+                <views:FormatIconBadge Grid.Row="0" Format="{Binding Node.Format}" />
+
+                <!-- On-list status pill on the cover's top-left, exactly like the Discover cards. -->
+                <Border Grid.Row="0"
+                        Style="{StaticResource ListStatusPillStyle}"
+                        Background="{Binding ListStatusColor, Converter={StaticResource ColorToBrushConverter}}"
+                        HorizontalOptions="Start"
+                        VerticalOptions="Start"
+                        Margin="6,6,0,0"
+                        IsVisible="{Binding HasListStatus}">
+                    <Label Text="{Binding ListStatusDisplay}"
+                           Style="{StaticResource Caption2}"
+                           FontAttributes="Bold"
+                           TextColor="White" />
+                </Border>
+
+                <!-- Rank badge overlay (Top lists only) -->
+                <Border Grid.Row="0"
+                        StrokeShape="RoundRectangle 10"
+                        StrokeThickness="0"
+                        Padding="6,3"
+                        HorizontalOptions="End"
+                        VerticalOptions="Start"
+                        Margin="0,6,6,0"
+                        IsVisible="{Binding HasRank}">
+                    <Border.Background>
+                        <SolidColorBrush Color="#99000000" />
+                    </Border.Background>
+                    <Label Text="{Binding RankDisplay}"
+                           Style="{StaticResource Caption2}"
+                           FontAttributes="Bold"
+                           TextColor="White" />
+                </Border>
+
+                <VerticalStackLayout Grid.Row="1" Padding="8,6,8,8" Spacing="3">
+                    <Label Text="{Binding Node.DisplayTitle}"
+                           Style="{StaticResource Caption1Strong}"
+                           MaxLines="2"
+                           LineBreakMode="TailTruncation" />
+                    <Label Text="{Binding Node.BrowseMetaDisplay}"
+                           Style="{StaticResource Caption2}"
+                           TextColor="{StaticResource Gray400}" />
+                    <HorizontalStackLayout Spacing="3" IsVisible="{Binding Node.HasScore}">
+                        <Label Text="{x:Static icons:FluentIconsFilled.Star24}"
+                               FontFamily="{x:Static icons:FluentIconsFilled.FontFamily}"
+                               TextColor="#FFD700"
+                               FontSize="11"
+                               WidthRequest="11" HeightRequest="11"
+                               HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                               VerticalOptions="Center"
+                               AutomationProperties.IsInAccessibleTree="False" />
+                        <Label Text="{Binding Node.ScoreDisplay}"
+                               Style="{StaticResource Caption2}"
+                               TextColor="#FFD700" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Grid>
+        </Border>
+    </DataTemplate>
+
+    <!-- Compact: text-only rows, modeled on My Anime's CompactItemTemplate.
+         Column order is Title → List → Metric, and the metric is the list's sort-metric badge
+         (always renders, 0/— fallback) so the right edge stays aligned on every row — a score
+         star would go blank on unaired entries. -->
+    <DataTemplate x:Key="BrowseMediaCompactTemplate" x:DataType="models:BrowseMediaItem">
+        <Grid ColumnDefinitions="Auto,*,Auto,Auto"
+              ColumnSpacing="8"
+              Padding="12,7"
+              MinimumHeightRequest="36">
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer x:DataType="{x:Null}"
+                                      Command="{Binding BindingContext.NavigateToMediaCommand, Source={RelativeSource AncestorType={x:Type CollectionView}}}"
+                                      CommandParameter="{Binding .}" />
+            </Grid.GestureRecognizers>
+            <Label Grid.Column="0"
+                   Text="{Binding RankDisplay}"
+                   Style="{StaticResource Caption1}"
+                   TextColor="{StaticResource Gray400}"
+                   VerticalTextAlignment="Center"
+                   IsVisible="{Binding HasRank}" />
+            <Label Grid.Column="1"
+                   Text="{Binding Node.DisplayTitle}"
+                   Style="{StaticResource Body2}"
+                   MaxLines="1"
+                   LineBreakMode="TailTruncation"
+                   VerticalTextAlignment="Center" />
+            <Border Grid.Column="2"
+                    Style="{StaticResource ListStatusPillStyle}"
+                    Background="{Binding ListStatusColor, Converter={StaticResource ColorToBrushConverter}}"
+                    VerticalOptions="Center"
+                    IsVisible="{Binding HasListStatus}">
+                <Label Text="{Binding ListStatusDisplay}"
+                       Style="{StaticResource Caption2}"
+                       FontAttributes="Bold"
+                       TextColor="White" />
+            </Border>
+            <views:MetricBadgeView Grid.Column="3"
+                                   Glyph="{Binding MetricBadge.Glyph}"
+                                   IconColor="{Binding MetricBadge.IconColor}"
+                                   Text="{Binding MetricBadge.Text}"
+                                   VerticalOptions="Center"
+                                   IsVisible="{Binding HasMetricBadge}" />
+        </Grid>
+    </DataTemplate>
+</ResourceDictionary>

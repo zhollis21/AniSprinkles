@@ -4,7 +4,37 @@ public interface IAniListClient
 {
     Task<IReadOnlyList<MediaListEntry>> GetMyAnimeListAsync(CancellationToken cancellationToken = default);
     Task<IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)>> GetMyAnimeListGroupedAsync(CancellationToken cancellationToken = default);
-    Task<IReadOnlyList<Media>> SearchAnimeAsync(string search, int page = 1, int perPage = 20, CancellationToken cancellationToken = default);
+    Task<(IReadOnlyList<BrowseMediaItem> Items, PageInfo? PageInfo)> SearchAnimePageAsync(
+        string search, bool? isAdult = false, int page = 1, int perPage = 20, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// All Discover sections' first pages in one aliased request (rate-limit friendly). Seasons are
+    /// computed by the caller via <c>AniListSeason</c>. <paramref name="filterAdult"/> false omits
+    /// the isAdult filter so 18+ titles may mix into the general sections;
+    /// <paramref name="includeAdultSections"/> requests the 18+ aliases (adult toggle on).
+    /// </summary>
+    Task<DiscoverSections> GetDiscoverSectionsAsync(
+        string currentSeason,
+        int currentSeasonYear,
+        string nextSeason,
+        int nextSeasonYear,
+        bool filterAdult,
+        bool includeAdultSections,
+        int perPage = 20,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>One browse page; powers the View All lists and the Discover rows' Load More.
+    /// Null filters are omitted, not sent as null.</summary>
+    Task<(IReadOnlyList<BrowseMediaItem> Items, PageInfo? PageInfo)> BrowseAnimePageAsync(
+        string sort,
+        string? status = null,
+        string? season = null,
+        int? seasonYear = null,
+        bool? isAdult = null,
+        string? format = null,
+        int page = 1,
+        int perPage = 25,
+        CancellationToken cancellationToken = default);
     Task<(Media? Media, MediaListEntry? ListEntry)> GetMediaAsync(int id, CancellationToken cancellationToken = default);
     Task<MediaListEntry?> SaveMediaListEntryAsync(MediaListEntry entry, CancellationToken cancellationToken = default);
     Task<bool> DeleteMediaListEntryAsync(int entryId, CancellationToken cancellationToken = default);

@@ -128,6 +128,8 @@ public static class MauiProgram
 #endif
         builder.Services.AddSingleton<MyAnimePageModel>();
         builder.Services.AddTransient<MyAnimePage>();
+        builder.Services.AddSingleton<DiscoverPageModel>();
+        builder.Services.AddTransient<DiscoverPage>();
         builder.Services.AddSingleton<SettingsPageModel>();
         builder.Services.AddTransient<SettingsPage>();
         builder.Services.AddTransient<MediaDetailsPageModel>();
@@ -138,6 +140,8 @@ public static class MauiProgram
         builder.Services.AddTransient<CharacterDetailsPage>();
         builder.Services.AddTransient<StudioDetailsPageModel>();
         builder.Services.AddTransient<StudioDetailsPage>();
+        builder.Services.AddTransient<MediaBrowsePageModel>();
+        builder.Services.AddTransient<MediaBrowsePage>();
 
 #if ANDROID
         // Android paints a focus highlight (a stray blue outline) on a CollectionView's RecyclerView when a

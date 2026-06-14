@@ -27,6 +27,8 @@ A colourful .NET MAUI Android app for tracking your anime with [AniList](https:/
 ## Features
 
 - **My Anime list** — library grouped by status (Watching, Rewatching, Planning, Completed, Paused, Dropped) with collapsible sections, sort controls, and pull-to-refresh
+- **Discover** — Currently Airing, Trending Now, Top Anime, Top Movies, All Time Popular, and Upcoming Next Season rows (plus optional 18+ rows) with infinite scrolling and "View All" browse lists, plus debounced search across all of AniList; works signed-out, and shows your list status on every card when signed in
+- **Quick list actions** — long-press any anime (in your list, Discover, browse, or search) to add it to a list or edit progress, rating, and status without leaving the page
 - **Media details** — full AniList metadata: synopsis with Read more/Show less, scores, airing schedule, genres, tags, rankings, studios, staff, related media, external links, and trailer
 - **List entry editing** — update watch progress, score, and status directly from the details page; changes sync back to AniList
 - **AniList sign-in** — OAuth implicit grant via the system browser; token stored in Android SecureStorage

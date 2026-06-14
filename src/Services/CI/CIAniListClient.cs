@@ -32,9 +32,37 @@ internal sealed class CIAniListClient : IAniListClient
         return Task.FromResult((entry?.Media, entry));
     }
 
-    public Task<IReadOnlyList<Media>> SearchAnimeAsync(
-        string search, int page = 1, int perPage = 20, CancellationToken cancellationToken = default)
-        => Task.FromResult<IReadOnlyList<Media>>([]);
+    public Task<(IReadOnlyList<BrowseMediaItem> Items, PageInfo? PageInfo)> SearchAnimePageAsync(
+        string search, bool? isAdult = false, int page = 1, int perPage = 20, CancellationToken cancellationToken = default)
+    {
+        IReadOnlyList<BrowseMediaItem> items = StubData.BrowseItems
+            .Where(i => i.Node?.DisplayTitle.Contains(search, StringComparison.OrdinalIgnoreCase) == true)
+            .ToList();
+        return Task.FromResult((items, (PageInfo?)new PageInfo { HasNextPage = false, CurrentPage = page }));
+    }
+
+    public Task<DiscoverSections> GetDiscoverSectionsAsync(
+        string currentSeason, int currentSeasonYear, string nextSeason, int nextSeasonYear,
+        bool filterAdult, bool includeAdultSections, int perPage = 20, CancellationToken cancellationToken = default)
+        => Task.FromResult(new DiscoverSections
+        {
+            Airing = StubSectionPage(),
+            Trending = StubSectionPage(),
+            Top = StubSectionPage(),
+            TopMovies = StubSectionPage(),
+            AllTimePopular = StubSectionPage(),
+            Upcoming = StubSectionPage(),
+            PopularAdult = includeAdultSections ? StubSectionPage() : DiscoverSectionPage.Empty,
+            TopRatedAdult = includeAdultSections ? StubSectionPage() : DiscoverSectionPage.Empty,
+        });
+
+    private static DiscoverSectionPage StubSectionPage()
+        => new(StubData.BrowseItems, new PageInfo { HasNextPage = false, CurrentPage = 1 });
+
+    public Task<(IReadOnlyList<BrowseMediaItem> Items, PageInfo? PageInfo)> BrowseAnimePageAsync(
+        string sort, string? status = null, string? season = null, int? seasonYear = null, bool? isAdult = null,
+        string? format = null, int page = 1, int perPage = 25, CancellationToken ct = default)
+        => Task.FromResult((StubData.BrowseItems, (PageInfo?)new PageInfo { HasNextPage = false, CurrentPage = page }));
 
     public Task<MediaListEntry?> SaveMediaListEntryAsync(
         MediaListEntry entry, CancellationToken cancellationToken = default)
@@ -477,6 +505,60 @@ internal sealed class CIAniListClient : IAniListClient
             ("Planning",  [YourName, PromisedNeverland]),
             ("Completed", [FmaB, DeathNote, ASilentVoice, DemonSlayer]),
         ];
+
+        /// <summary>
+        /// Discover/browse/search fixture: the stub list entries reshaped as browse items so every
+        /// Discover section renders populated cards in CI screenshots. The order interleaves list
+        /// statuses (and leaves some items off-list entirely) so the carousels and search results
+        /// show a realistic mix of pills — Watching / Planning / Completed / none — rather than a
+        /// run of identical chips. The explicit <c>status</c> override drives the pill independently
+        /// of the entry's real status in <see cref="GroupedList"/>.
+        /// </summary>
+        public static readonly IReadOnlyList<BrowseMediaItem> BrowseItems =
+        [
+            BrowseItem(OnePiece, MediaListStatus.Current),
+            BrowseItem(FmaB, MediaListStatus.Completed),
+            BrowseItem(YourName, MediaListStatus.Planning),
+            BrowseItem(JujutsuKaisen, status: null),          // not on list
+            BrowseItem(AttackOnTitan, MediaListStatus.Current),
+            BrowseItem(DemonSlayer, status: null),            // not on list
+            BrowseItem(PromisedNeverland, MediaListStatus.Planning),
+            BrowseItem(DeathNote, MediaListStatus.Completed),
+            BrowseItem(HunterXHunter, status: null),          // not on list
+            BrowseItem(ASilentVoice, MediaListStatus.Completed),
+        ];
+
+        private static BrowseMediaItem BrowseItem(MediaListEntry entry, MediaListStatus? status)
+        {
+            var media = entry.Media!;
+            var onList = status is not null;
+            return new BrowseMediaItem
+            {
+                Node = new RelatedMedia
+                {
+                    Id = media.Id,
+                    Title = media.Title,
+                    Format = media.Format,
+                    Type = "ANIME",
+                    Status = media.Status,
+                    CoverImage = media.CoverImage,
+                    AverageScore = media.AverageScore,
+                    Favourites = media.Favourites,
+                    Popularity = media.Popularity,
+                    // Derived stub value so the Trending row's flame badge isn't all zeros in CI.
+                    Trending = (media.Popularity ?? 0) / 250,
+                    StartDate = media.StartDate,
+                    Episodes = media.Episodes,
+                    // Off-list items carry no entry id/status/progress/score — null everything, so
+                    // the stub matches the real API (mediaListEntry absent → these are null) and no
+                    // phantom score leaks into ToListEntry() if an add-to-list flow runs under stubs.
+                    ListEntryId = onList ? entry.Id : null,
+                    ListStatus = status,
+                    ListProgress = onList ? entry.Progress : null,
+                    ListScore = onList ? entry.Score : null,
+                },
+            };
+        }
 
         // ── Character / Staff fixtures (Monkey D. Luffy + his JP seiyuu Mayumi Tanaka). ──────────────
         // Real AniList ids, images, scores, and roles, captured from the live API so the

@@ -113,7 +113,28 @@ public partial class SettingsPage : ContentPage
     protected override void OnHandlerChanged()
     {
         base.OnHandlerChanged();
+
+        // Transient page + singleton page model: when the platform view is torn down (Handler
+        // becomes null) drop the PropertyChanged subscription, or the singleton would pin this
+        // orphaned page and stack a duplicate handler if Shell recreates/reattaches the page.
+        if (Handler is null)
+        {
+            if (_viewModel is not null)
+            {
+                _viewModel.PropertyChanged -= OnViewModelPropertyChanged;
+            }
+
+            return;
+        }
+
         EnsureViewModel();
+
+        // Re-subscribe on reattach (EnsureViewModel no-ops once the VM is set); -= keeps it idempotent.
+        if (_viewModel is not null)
+        {
+            _viewModel.PropertyChanged -= OnViewModelPropertyChanged;
+            _viewModel.PropertyChanged += OnViewModelPropertyChanged;
+        }
     }
 
     private void UpdateLoadedContentHost()

@@ -167,8 +167,21 @@ public sealed class CachingAniListClient : IAniListClient
     public Task<IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)>> GetMyAnimeListGroupedAsync(CancellationToken cancellationToken = default)
         => _inner.GetMyAnimeListGroupedAsync(cancellationToken);
 
-    public Task<IReadOnlyList<Media>> SearchAnimeAsync(string search, int page = 1, int perPage = 20, CancellationToken cancellationToken = default)
-        => _inner.SearchAnimeAsync(search, page, perPage, cancellationToken);
+    public Task<(IReadOnlyList<BrowseMediaItem> Items, PageInfo? PageInfo)> SearchAnimePageAsync(
+        string search, bool? isAdult = false, int page = 1, int perPage = 20, CancellationToken cancellationToken = default)
+        => _inner.SearchAnimePageAsync(search, isAdult, page, perPage, cancellationToken);
+
+    // Discover/browse stay uncached here: they carry the viewer's mediaListEntry state (mutations
+    // would stale it) and Discover already has its own TTL cache in DiscoverPageModel.
+    public Task<DiscoverSections> GetDiscoverSectionsAsync(
+        string currentSeason, int currentSeasonYear, string nextSeason, int nextSeasonYear,
+        bool filterAdult, bool includeAdultSections, int perPage = 20, CancellationToken cancellationToken = default)
+        => _inner.GetDiscoverSectionsAsync(currentSeason, currentSeasonYear, nextSeason, nextSeasonYear, filterAdult, includeAdultSections, perPage, cancellationToken);
+
+    public Task<(IReadOnlyList<BrowseMediaItem> Items, PageInfo? PageInfo)> BrowseAnimePageAsync(
+        string sort, string? status = null, string? season = null, int? seasonYear = null, bool? isAdult = null,
+        string? format = null, int page = 1, int perPage = 25, CancellationToken cancellationToken = default)
+        => _inner.BrowseAnimePageAsync(sort, status, season, seasonYear, isAdult, format, page, perPage, cancellationToken);
 
     public async Task<(Media? Media, MediaListEntry? ListEntry)> GetMediaAsync(int id, CancellationToken cancellationToken = default)
     {
