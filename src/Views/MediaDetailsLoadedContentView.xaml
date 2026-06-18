@@ -789,6 +789,8 @@
                                 <VerticalStackLayout>
                                     <views:CoverImage Source="{Binding Node.CoverImage.Large}"
                                                       Format="{Binding Node.Format}"
+                                                      ListStatusColor="{Binding Node.ListStatusColor}"
+                                                      ListStatusText="{Binding Node.ListStatusDisplay}"
                                                       PlaceholderGlyph="{x:Static icons:FluentIconsRegular.MoviesAndTv24}" />
                                     <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
                                         <Label Text="{Binding RelationType}"
@@ -1050,6 +1052,8 @@
                                     <VerticalStackLayout>
                                         <views:CoverImage Source="{Binding MediaRecommendation.CoverImage.Large}"
                                                           Format="{Binding MediaRecommendation.Format}"
+                                                          ListStatusColor="{Binding MediaRecommendation.ListStatusColor}"
+                                                          ListStatusText="{Binding MediaRecommendation.ListStatusDisplay}"
                                                           PlaceholderGlyph="{x:Static icons:FluentIconsRegular.MoviesAndTv24}" />
                                         <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
                                             <Label Text="{Binding MediaRecommendation.DisplayTitle}"
