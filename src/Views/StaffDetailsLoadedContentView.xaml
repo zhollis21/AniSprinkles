@@ -400,6 +400,8 @@
                                     <VerticalStackLayout>
                                         <views:CoverImage Source="{Binding Node.CoverImage.Large}"
                                                           Format="{Binding Node.Format}"
+                                                          ListStatusColor="{Binding Node.ListStatusColor}"
+                                                          ListStatusText="{Binding Node.ListStatusDisplay}"
                                                           PlaceholderGlyph="{x:Static icons:FluentIconsRegular.MoviesAndTv24}" />
                                         <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
                                             <!-- StaffRole is free-form and can be long ("Theme Song Performance (OP, ED2)"); cap at 2 lines. -->

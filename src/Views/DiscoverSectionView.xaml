@@ -71,26 +71,13 @@
                                                   CommandParameter="{Binding}" />
                         </Border.GestureRecognizers>
                         <VerticalStackLayout>
-                            <Grid>
-                                <views:CoverImage Source="{Binding Node.CoverImage.Large}"
-                                                  Format="{Binding Node.Format}"
-                                                  PlaceholderGlyph="{x:Static icons:FluentIconsRegular.MoviesAndTv24}" />
-                                <!-- On-list status pill: the same chip as the browse/search rows
-                                     (ListStatusPillStyle in BrowseTemplates.xaml), overlaid on the
-                                     cover. Background (not BackgroundColor): the implicit Border
-                                     style's Background brush always wins over BackgroundColor. -->
-                                <Border Style="{StaticResource ListStatusPillStyle}"
-                                        Background="{Binding ListStatusColor, Converter={StaticResource ColorToBrushConverter}}"
-                                        HorizontalOptions="Start"
-                                        VerticalOptions="Start"
-                                        Margin="6,6,0,0"
-                                        IsVisible="{Binding HasListStatus}">
-                                    <Label Text="{Binding ListStatusDisplay}"
-                                           Style="{StaticResource Caption2}"
-                                           FontAttributes="Bold"
-                                           TextColor="White" />
-                                </Border>
-                            </Grid>
+                            <!-- On-list status pill lives inside CoverImage (top-left), shared with the
+                                 detail-page carousels — set ListStatusText/Color to light it up. -->
+                            <views:CoverImage Source="{Binding Node.CoverImage.Large}"
+                                              Format="{Binding Node.Format}"
+                                              ListStatusColor="{Binding ListStatusColor}"
+                                              ListStatusText="{Binding ListStatusDisplay}"
+                                              PlaceholderGlyph="{x:Static icons:FluentIconsRegular.MoviesAndTv24}" />
                             <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
                                 <Label Text="{Binding Node.DisplayTitle}"
                                        Style="{StaticResource Caption1Strong}"
