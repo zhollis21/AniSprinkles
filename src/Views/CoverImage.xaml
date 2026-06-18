@@ -26,5 +26,19 @@
                Aspect="AspectFill"
                IsVisible="{Binding HasRealImage, Source={x:Reference Self}}" />
         <views:FormatIconBadge Format="{Binding Format, Source={x:Reference Self}}" />
+        <!-- On-list status pill (top-left), shown when ListStatusText is set. Reuses the browse/search chip
+             (ListStatusPillStyle + ColorToBrushConverter); sits opposite FormatIconBadge (bottom-left).
+             Background (not BackgroundColor): the implicit Border style's Background brush always wins. -->
+        <Border Style="{StaticResource ListStatusPillStyle}"
+                Background="{Binding ListStatusColor, Source={x:Reference Self}, Converter={StaticResource ColorToBrushConverter}}"
+                HorizontalOptions="Start"
+                VerticalOptions="Start"
+                Margin="6,6,0,0"
+                IsVisible="{Binding ListStatusText, Source={x:Reference Self}, Converter={StaticResource StringNotNullOrEmptyConverter}}">
+            <Label Text="{Binding ListStatusText, Source={x:Reference Self}}"
+                   Style="{StaticResource Caption2}"
+                   FontAttributes="Bold"
+                   TextColor="White" />
+        </Border>
     </Grid>
 </ContentView>

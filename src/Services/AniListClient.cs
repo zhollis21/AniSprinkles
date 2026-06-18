@@ -428,6 +428,9 @@ public class AniListClient : IAniListClient
         // AniList expects sort fields as enum arrays (typed [CharacterSort] / [MediaSort]).
         // GraphQL coerces JSON string arrays into the typed enum array server-side when the
         // operation declares the variable as the enum type — see StaffQuery below.
+        // Send the viewer's token when present so the staffMedia cards can show on-list status pills;
+        // null (logged out) just yields mediaListEntry: null and an anonymous request.
+        var token = await _authService.GetAccessTokenAsync(cancellationToken).ConfigureAwait(false);
         var data = await SendAsync<StaffData>(
             "Staff",
             StaffQuery,
@@ -439,7 +442,7 @@ public class AniListClient : IAniListClient
                 charactersSort = WithTiebreaker(charactersSort),
                 mediaSort = WithTiebreaker(mediaSort),
             },
-            token: null, // Public query — no auth needed
+            token,
             cancellationToken).ConfigureAwait(false);
 
         return data.Staff is null ? null : MapStaff(data.Staff);
@@ -451,6 +454,8 @@ public class AniListClient : IAniListClient
         int mediaPage = 1,
         CancellationToken cancellationToken = default)
     {
+        // Token when present so the appearances cards can show on-list status pills (null = anonymous).
+        var token = await _authService.GetAccessTokenAsync(cancellationToken).ConfigureAwait(false);
         var data = await SendAsync<CharacterData>(
             "Character",
             CharacterQuery,
@@ -460,7 +465,7 @@ public class AniListClient : IAniListClient
                 mediaPage,
                 mediaSort = WithTiebreaker(mediaSort),
             },
-            token: null, // Public query — no auth needed
+            token,
             cancellationToken).ConfigureAwait(false);
 
         return data.Character is null ? null : MapCharacter(data.Character);
@@ -473,6 +478,8 @@ public class AniListClient : IAniListClient
         int mediaPerPage = 25,
         CancellationToken cancellationToken = default)
     {
+        // Token when present so the productions cards can show on-list status pills (null = anonymous).
+        var token = await _authService.GetAccessTokenAsync(cancellationToken).ConfigureAwait(false);
         var data = await SendAsync<StudioData>(
             "Studio",
             StudioQuery,
@@ -483,7 +490,7 @@ public class AniListClient : IAniListClient
                 mediaPerPage,
                 mediaSort = WithTiebreaker(mediaSort),
             },
-            token: null, // Public query — no auth needed
+            token,
             cancellationToken).ConfigureAwait(false);
 
         return data.Studio is null ? null : MapStudio(data.Studio);
@@ -531,11 +538,13 @@ public class AniListClient : IAniListClient
     public async Task<(IReadOnlyList<StaffMediaEdge> Items, PageInfo? PageInfo)> LoadStaffMediaPageAsync(
         int id, int page, string sort, int perPage = 25, CancellationToken cancellationToken = default)
     {
+        // Token when present so re-sorted / Load-More cards keep their on-list status pills (null = anonymous).
+        var token = await _authService.GetAccessTokenAsync(cancellationToken).ConfigureAwait(false);
         var data = await SendAsync<StaffData>(
             "StaffMediaPage",
             StaffMediaPageQuery,
             new { id, page, sort = WithTiebreaker(sort), perPage },
-            token: null,
+            token,
             cancellationToken).ConfigureAwait(false);
 
         if (data.Staff?.StaffMedia is null)
@@ -553,11 +562,13 @@ public class AniListClient : IAniListClient
     public async Task<(IReadOnlyList<CharacterMediaEdge> Items, PageInfo? PageInfo)> LoadCharacterMediaPageAsync(
         int id, int page, string sort, int perPage = 25, CancellationToken cancellationToken = default)
     {
+        // Token when present so re-sorted / Load-More cards keep their on-list status pills (null = anonymous).
+        var token = await _authService.GetAccessTokenAsync(cancellationToken).ConfigureAwait(false);
         var data = await SendAsync<CharacterData>(
             "CharacterMediaPage",
             CharacterMediaPageQuery,
             new { id, page, sort = WithTiebreaker(sort), perPage },
-            token: null,
+            token,
             cancellationToken).ConfigureAwait(false);
 
         if (data.Character?.Media is null)
@@ -589,11 +600,13 @@ public class AniListClient : IAniListClient
     public async Task<(IReadOnlyList<StudioMediaEdge> Items, PageInfo? PageInfo)> LoadStudioMediaPageAsync(
         int id, int page, string sort, int perPage = 25, CancellationToken cancellationToken = default)
     {
+        // Token when present so re-sorted / Load-More cards keep their on-list status pills (null = anonymous).
+        var token = await _authService.GetAccessTokenAsync(cancellationToken).ConfigureAwait(false);
         var data = await SendAsync<StudioData>(
             "StudioMediaPage",
             StudioMediaPageQuery,
             new { id, page, sort = WithTiebreaker(sort), perPage },
-            token: null,
+            token,
             cancellationToken).ConfigureAwait(false);
 
         if (data.Studio?.Media is null)
@@ -681,11 +694,13 @@ public class AniListClient : IAniListClient
     public async Task<(IReadOnlyList<MediaRecommendationNode> Items, PageInfo? PageInfo)> LoadMediaRecommendationsPageAsync(
         int id, int page, string sort, int perPage = 25, CancellationToken cancellationToken = default)
     {
+        // Token when present so re-sorted / Load-More cards keep their on-list status pills (null = anonymous).
+        var token = await _authService.GetAccessTokenAsync(cancellationToken).ConfigureAwait(false);
         var data = await SendAsync<MediaData>(
             "MediaRecommendationsPage",
             MediaRecommendationsPageQuery,
             new { id, page, sort = WithTiebreaker(sort), perPage },
-            token: null,
+            token,
             cancellationToken).ConfigureAwait(false);
 
         if (data.Media?.Recommendations is null)
@@ -2018,6 +2033,7 @@ query Media($id: Int!) {
           status
           coverImage { medium large }
           startDate { year month day }
+          mediaListEntry { id status progress score }
         }
       }
     }
@@ -2050,6 +2066,7 @@ query Media($id: Int!) {
           type
           coverImage { medium large }
           averageScore
+          mediaListEntry { id status progress score }
         }
       }
     }
@@ -2228,6 +2245,7 @@ query Staff($id: Int!, $charactersPage: Int = 1, $mediaPage: Int = 1, $character
           favourites
           popularity
           startDate { year month day }
+          mediaListEntry { id status progress score }
         }
         staffRole
       }
@@ -2274,6 +2292,7 @@ query StaffMediaPage($id: Int!, $page: Int!, $sort: [MediaSort], $perPage: Int =
           favourites
           popularity
           startDate { year month day }
+          mediaListEntry { id status progress score }
         }
         staffRole
       }
@@ -2298,6 +2317,7 @@ query CharacterMediaPage($id: Int!, $page: Int!, $sort: [MediaSort], $perPage: I
           favourites
           popularity
           startDate { year month day }
+          mediaListEntry { id status progress score }
         }
         characterRole
         voiceActors(sort: [LANGUAGE, RELEVANCE]) {
@@ -2366,6 +2386,7 @@ query MediaRecommendationsPage($id: Int!, $page: Int!, $sort: [RecommendationSor
           type
           coverImage { medium large }
           averageScore
+          mediaListEntry { id status progress score }
         }
       }
     }
@@ -2393,6 +2414,7 @@ query Studio($id: Int!, $mediaPage: Int = 1, $mediaPerPage: Int = 25, $mediaSort
         favourites
         popularity
         startDate { year month day }
+        mediaListEntry { id status progress score }
       }
     }
   }
@@ -2414,6 +2436,7 @@ query StudioMediaPage($id: Int!, $page: Int!, $sort: [MediaSort], $perPage: Int 
         favourites
         popularity
         startDate { year month day }
+        mediaListEntry { id status progress score }
       }
     }
   }
@@ -2446,6 +2469,7 @@ query Character($id: Int!, $mediaPage: Int = 1, $mediaSort: [MediaSort] = [POPUL
           favourites
           popularity
           startDate { year month day }
+          mediaListEntry { id status progress score }
         }
         characterRole
         voiceActors(sort: [LANGUAGE, RELEVANCE]) {
