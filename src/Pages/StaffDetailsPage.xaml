@@ -10,7 +10,7 @@
              Shell.TitleColor="{Binding PageTitle, Converter={StaticResource RainbowAccentConverter}}">
 
     <Grid RowDefinitions="Auto,*">
-        <views:OutageBanner Grid.Row="0" Margin="24,12,24,0" />
+        <views:OutageBanner Grid.Row="0" Margin="{StaticResource LayoutPadding}" />
         <Grid Grid.Row="1"
               toolkit:StateContainer.CurrentState="{Binding CurrentStateKey}">
             <toolkit:StateContainer.StateViews>
