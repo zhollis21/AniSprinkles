@@ -5,6 +5,7 @@
              xmlns:models="clr-namespace:AniSprinkles.Models"
              xmlns:icons="clr-namespace:IconFont.Maui.FluentIcons;assembly=IconFont.Maui.FluentIcons"
              xmlns:views="clr-namespace:AniSprinkles.Views"
+             xmlns:behaviors="clr-namespace:AniSprinkles.Behaviors"
              x:Class="AniSprinkles.Views.MediaDetailsLoadedContentView"
              x:DataType="pageModels:MediaDetailsPageModel"
              x:Name="RootView">
@@ -778,6 +779,9 @@
                     <CollectionView.ItemsLayout>
                         <LinearItemsLayout Orientation="Horizontal" ItemSpacing="10" />
                     </CollectionView.ItemsLayout>
+                    <CollectionView.Behaviors>
+                        <behaviors:ScrollToStartBehavior Trigger="{Binding RelationsSort}" />
+                    </CollectionView.Behaviors>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:MediaRelationEdge">
                             <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130">
@@ -851,6 +855,9 @@
                         <CollectionView.ItemsLayout>
                             <LinearItemsLayout Orientation="Horizontal" ItemSpacing="10" />
                         </CollectionView.ItemsLayout>
+                        <CollectionView.Behaviors>
+                            <behaviors:ScrollToStartBehavior Trigger="{Binding CharactersSort}" />
+                        </CollectionView.Behaviors>
                         <CollectionView.Triggers>
                             <DataTrigger TargetType="CollectionView" Binding="{Binding CharactersBusy}" Value="True">
                                 <Setter Property="Opacity" Value="0.35" />
@@ -1111,6 +1118,9 @@
                         <CollectionView.ItemsLayout>
                             <LinearItemsLayout Orientation="Horizontal" ItemSpacing="10" />
                         </CollectionView.ItemsLayout>
+                        <CollectionView.Behaviors>
+                            <behaviors:ScrollToStartBehavior Trigger="{Binding StaffSort}" />
+                        </CollectionView.Behaviors>
                         <CollectionView.Triggers>
                             <DataTrigger TargetType="CollectionView" Binding="{Binding StaffBusy}" Value="True">
                                 <Setter Property="Opacity" Value="0.35" />

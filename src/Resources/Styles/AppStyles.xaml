@@ -40,8 +40,8 @@
 
     <OnIdiom x:Key="LayoutPadding"
              x:TypeArguments="Thickness"
-             Default="15">
-        <OnIdiom.Desktop>30</OnIdiom.Desktop>
+             Default="12">
+        <OnIdiom.Desktop>24</OnIdiom.Desktop>
     </OnIdiom>
 
     <OnIdiom x:Key="LayoutSpacing"
