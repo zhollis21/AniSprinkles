@@ -15,9 +15,8 @@
         Outer grid reserves a row for the global outage banner.
     -->
     <Grid RowDefinitions="Auto,*">
-        <views:OutageBanner Grid.Row="0" Margin="24,12,24,0" />
+        <views:OutageBanner Grid.Row="0" Margin="{StaticResource LayoutPadding}" />
         <Grid Grid.Row="1"
-              Padding="24"
               toolkit:StateContainer.CurrentState="{Binding CurrentStateKey}">
         <toolkit:StateContainer.StateViews>
             <!-- InitialLoading: centered spinner -->
@@ -33,7 +32,8 @@
 
             <!-- Error: full-page error view -->
             <ScrollView toolkit:StateView.StateKey="Error"
-                        VerticalOptions="Center">
+                        VerticalOptions="Center"
+                        Padding="{StaticResource LayoutPadding}">
                 <views:ErrorStateView ErrorTitle="{Binding ErrorTitle}"
                                       ErrorSubtitle="{Binding ErrorSubtitle}"
                                       ErrorIconGlyph="{Binding ErrorIconGlyph}"

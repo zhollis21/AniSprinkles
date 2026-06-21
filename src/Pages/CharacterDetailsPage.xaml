@@ -10,9 +10,8 @@
              Shell.TitleColor="{Binding PageTitle, Converter={StaticResource RainbowAccentConverter}}">
 
     <Grid RowDefinitions="Auto,*">
-        <views:OutageBanner Grid.Row="0" Margin="24,12,24,0" />
+        <views:OutageBanner Grid.Row="0" Margin="{StaticResource LayoutPadding}" />
         <Grid Grid.Row="1"
-              Padding="24"
               toolkit:StateContainer.CurrentState="{Binding CurrentStateKey}">
             <toolkit:StateContainer.StateViews>
                 <VerticalStackLayout toolkit:StateView.StateKey="InitialLoading"
@@ -26,7 +25,8 @@
                 </VerticalStackLayout>
 
                 <ScrollView toolkit:StateView.StateKey="Error"
-                            VerticalOptions="Center">
+                            VerticalOptions="Center"
+                            Padding="{StaticResource LayoutPadding}">
                     <views:ErrorStateView ErrorTitle="{Binding ErrorTitle}"
                                           ErrorSubtitle="{Binding ErrorSubtitle}"
                                           ErrorIconGlyph="{Binding ErrorIconGlyph}"
