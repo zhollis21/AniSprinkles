@@ -5,6 +5,7 @@
              xmlns:models="clr-namespace:AniSprinkles.Models"
              xmlns:icons="clr-namespace:IconFont.Maui.FluentIcons;assembly=IconFont.Maui.FluentIcons"
              xmlns:views="clr-namespace:AniSprinkles.Views"
+             xmlns:behaviors="clr-namespace:AniSprinkles.Behaviors"
              x:Class="AniSprinkles.Views.StaffDetailsLoadedContentView"
              x:DataType="pageModels:StaffDetailsPageModel"
              x:Name="RootView">
@@ -281,6 +282,9 @@
                         <CollectionView.ItemsLayout>
                             <LinearItemsLayout Orientation="Horizontal" ItemSpacing="10" />
                         </CollectionView.ItemsLayout>
+                        <CollectionView.Behaviors>
+                            <behaviors:ScrollToStartBehavior Trigger="{Binding VoiceRolesSort}" />
+                        </CollectionView.Behaviors>
                         <CollectionView.Triggers>
                             <DataTrigger TargetType="CollectionView" Binding="{Binding VoiceRolesBusy}" Value="True">
                                 <Setter Property="Opacity" Value="0.35" />
@@ -384,6 +388,9 @@
                         <CollectionView.ItemsLayout>
                             <LinearItemsLayout Orientation="Horizontal" ItemSpacing="10" />
                         </CollectionView.ItemsLayout>
+                        <CollectionView.Behaviors>
+                            <behaviors:ScrollToStartBehavior Trigger="{Binding ProductionRolesSort}" />
+                        </CollectionView.Behaviors>
                         <CollectionView.Triggers>
                             <DataTrigger TargetType="CollectionView" Binding="{Binding ProductionRolesBusy}" Value="True">
                                 <Setter Property="Opacity" Value="0.35" />
