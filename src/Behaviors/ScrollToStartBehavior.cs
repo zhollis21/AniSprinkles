@@ -45,6 +45,10 @@ public sealed class ScrollToStartBehavior : Behavior<CollectionView>
     {
         bindable.BindingContextChanged -= OnElementBindingContextChanged;
         _collectionView = null;
+        // Drop the page-model reference and reset the first-value flag so a later re-attach starts
+        // clean (the re-bound initial sort is treated as initial again, not as a change that scrolls).
+        BindingContext = null;
+        _hasInitialValue = false;
         base.OnDetachingFrom(bindable);
     }
 
@@ -74,7 +78,9 @@ public sealed class ScrollToStartBehavior : Behavior<CollectionView>
         collectionView.Dispatcher.Dispatch(() =>
         {
             // ScrollTo by index on an empty list can throw; only reset when there's something to show.
-            if (collectionView.ItemsSource is System.Collections.IEnumerable items && items.GetEnumerator().MoveNext())
+            // The carousels bind ObservableCollection, so a non-generic ICollection.Count check is
+            // allocation-free and avoids enumerating (and disposing) an enumerator.
+            if (collectionView.ItemsSource is System.Collections.ICollection { Count: > 0 })
             {
                 collectionView.ScrollTo(0, position: ScrollToPosition.Start, animate: false);
             }
