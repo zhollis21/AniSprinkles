@@ -11,14 +11,19 @@ public partial class MyAnimePage : ContentPage
     private bool _hasAppeared;
     private bool _hasCreatedLoadedContent;
     private int _loadVersion;
+    private readonly ToolbarItem? _sortToolbarItem;
     private readonly ToolbarItem? _searchToolbarItem;
     private readonly ToolbarItem? _viewModeToolbarItem;
     private readonly ILogger<MyAnimePage>? _logger;
+
+    // Re-entrancy guard: a second tap while the picker is up would stack popups (mirrors SortDropdown).
+    private bool _sortPopupOpen;
 
     public MyAnimePage()
     {
         InitializeComponent();
         // Stash toolbar items so we can add/remove them based on auth state.
+        _sortToolbarItem = SortToolbarItem;
         _searchToolbarItem = SearchToolbarItem;
         _viewModeToolbarItem = ViewModeToolbarItem;
 
@@ -52,6 +57,7 @@ public partial class MyAnimePage : ContentPage
         // changed there since this singleton VM was constructed.
         _viewModel.SyncViewModeFromPreference();
         UpdateViewModeIcon(_viewModel.CurrentViewMode);
+        UpdateSortIcon();
         UpdateToolbarItems();
 
         // Content survived the flyout switch — just refresh data in background.
@@ -239,11 +245,15 @@ public partial class MyAnimePage : ContentPage
         {
             UpdateViewModeIcon(_viewModel.CurrentViewMode);
         }
+        else if (e.PropertyName == nameof(MyAnimePageModel.SortIconGlyph) && _viewModel is not null)
+        {
+            UpdateSortIcon();
+        }
     }
 
     private void UpdateToolbarItems()
     {
-        if (_searchToolbarItem is null || _viewModeToolbarItem is null)
+        if (_sortToolbarItem is null || _searchToolbarItem is null || _viewModeToolbarItem is null)
         {
             return;
         }
@@ -253,13 +263,53 @@ public partial class MyAnimePage : ContentPage
 
         if (authenticated && !hasSearch)
         {
+            ToolbarItems.Add(_sortToolbarItem);
             ToolbarItems.Add(_searchToolbarItem);
             ToolbarItems.Add(_viewModeToolbarItem);
         }
         else if (!authenticated && hasSearch)
         {
+            ToolbarItems.Remove(_sortToolbarItem);
             ToolbarItems.Remove(_searchToolbarItem);
             ToolbarItems.Remove(_viewModeToolbarItem);
+        }
+    }
+
+    // Opens the shared sort picker (SortPopup) anchored just below the top bar, right-aligned. Unlike the
+    // carousel SortDropdown (a pill that measures itself), there's no anchor view in the toolbar, so we
+    // compute a fixed top-right "open-down" anchor from the display metrics. The picked code is handed to
+    // the page model's SelectSort command, which applies + persists the sort.
+    private async void OnSortClicked(object? sender, EventArgs e)
+    {
+        if (_sortPopupOpen || _viewModel?.SortOptions is not { Count: > 0 } options)
+        {
+            return;
+        }
+
+        _sortPopupOpen = true;
+        try
+        {
+            var info = DeviceDisplay.Current.MainDisplayInfo;
+            var density = info.Density > 0 ? info.Density : 1;
+            var widthDip = info.Width / density;
+
+            // Right-align the card under the right edge, clamped clear of the screen edge (10dip inset).
+            var cardLeft = Math.Max(10, widthDip - Views.SortPopup.CardWidth - 10);
+            // Anchor to the bottom of the action bar (~56dip standard Android action-bar height); open down.
+            const double actionBarBottomDip = 56;
+
+            var result = await Views.SortPopup.ShowAsync(
+                options, openUp: false, cardLeft, actionBarBottomDip, gapDip: 6);
+
+            if (!string.IsNullOrEmpty(result)
+                && _viewModel.SelectSortCommand.CanExecute(result))
+            {
+                _viewModel.SelectSortCommand.Execute(result);
+            }
+        }
+        finally
+        {
+            _sortPopupOpen = false;
         }
     }
 
@@ -273,6 +323,14 @@ public partial class MyAnimePage : ContentPage
         };
 
         ViewModeIcon.Glyph = glyph;
+    }
+
+    private void UpdateSortIcon()
+    {
+        if (_viewModel is not null)
+        {
+            SortIcon.Glyph = _viewModel.SortIconGlyph;
+        }
     }
 
     private void SetViewModel(MyAnimePageModel viewModel)

@@ -358,12 +358,13 @@
     <pullToRefresh:SfPullToRefresh IsRefreshing="{Binding IsBusy}"
                                    RefreshCommand="{Binding RefreshCommand}">
         <pullToRefresh:SfPullToRefresh.PullableContent>
-            <Grid RowDefinitions="Auto,Auto,*" RowSpacing="8">
+            <Grid RowDefinitions="Auto,*">
 
                 <!-- Row 0: Expandable search bar -->
                 <Border Grid.Row="0"
                         Style="{StaticResource CardStyle}"
                         Padding="4,0"
+                        Margin="0,0,0,8"
                         IsVisible="{Binding IsSearchVisible}">
                     <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
                         <Label Grid.Column="0"
@@ -385,137 +386,8 @@
                     </Grid>
                 </Border>
 
-                <!-- Row 1: Sort chips (horizontal scroll) -->
-                <ScrollView Grid.Row="1" Orientation="Horizontal"
-                            HorizontalScrollBarVisibility="Never"
-                            Padding="0,2">
-                    <HorizontalStackLayout Spacing="8">
-
-                        <!-- Updated chip -->
-                        <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6"
-                                Stroke="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=LastUpdated}"
-                                Background="{Binding CurrentSortField, Converter={StaticResource SortFieldBackgroundConverter}, ConverterParameter=LastUpdated}">
-                            <Border.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding SetSortCommand}" CommandParameter="LastUpdated" />
-                            </Border.GestureRecognizers>
-                            <HorizontalStackLayout Spacing="4">
-                                <Label Text="{x:Static icons:FluentIconsRegular.Clock24}"
-                                       FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                       TextColor="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=LastUpdated}"
-                                       FontSize="14"
-                                       WidthRequest="14" HeightRequest="14"
-                                       HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
-                                       VerticalOptions="Center"
-                                       AutomationProperties.IsInAccessibleTree="False" />
-                                <Label Text="Updated" Style="{StaticResource ChipLabelStyle}"
-                                       TextColor="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=LastUpdated}" />
-                                <Label Text="{Binding SortDirectionGlyph}"
-                                       FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                       TextColor="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=LastUpdated}"
-                                       FontSize="12"
-                                       WidthRequest="12" HeightRequest="12"
-                                       HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
-                                       VerticalOptions="Center"
-                                       AutomationProperties.IsInAccessibleTree="False"
-                                       IsVisible="{Binding CurrentSortField, Converter={StaticResource SortFieldActiveConverter}, ConverterParameter=LastUpdated}" />
-                            </HorizontalStackLayout>
-                        </Border>
-
-                        <!-- Title chip -->
-                        <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6"
-                                Stroke="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Title}"
-                                Background="{Binding CurrentSortField, Converter={StaticResource SortFieldBackgroundConverter}, ConverterParameter=Title}">
-                            <Border.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding SetSortCommand}" CommandParameter="Title" />
-                            </Border.GestureRecognizers>
-                            <HorizontalStackLayout Spacing="4">
-                                <Label Text="{x:Static icons:FluentIconsRegular.Book24}"
-                                       FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                       TextColor="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Title}"
-                                       FontSize="14"
-                                       WidthRequest="14" HeightRequest="14"
-                                       HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
-                                       VerticalOptions="Center"
-                                       AutomationProperties.IsInAccessibleTree="False" />
-                                <Label Text="Title" Style="{StaticResource ChipLabelStyle}"
-                                       TextColor="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Title}" />
-                                <Label Text="{Binding SortDirectionGlyph}"
-                                       FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                       TextColor="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Title}"
-                                       FontSize="12"
-                                       WidthRequest="12" HeightRequest="12"
-                                       HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
-                                       VerticalOptions="Center"
-                                       AutomationProperties.IsInAccessibleTree="False"
-                                       IsVisible="{Binding CurrentSortField, Converter={StaticResource SortFieldActiveConverter}, ConverterParameter=Title}" />
-                            </HorizontalStackLayout>
-                        </Border>
-
-                        <!-- My Score chip -->
-                        <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6"
-                                Stroke="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Score}"
-                                Background="{Binding CurrentSortField, Converter={StaticResource SortFieldBackgroundConverter}, ConverterParameter=Score}">
-                            <Border.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding SetSortCommand}" CommandParameter="Score" />
-                            </Border.GestureRecognizers>
-                            <HorizontalStackLayout Spacing="4">
-                                <Label Text="{x:Static icons:FluentIconsRegular.Star24}"
-                                       FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                       TextColor="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Score}"
-                                       FontSize="14"
-                                       WidthRequest="14" HeightRequest="14"
-                                       HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
-                                       VerticalOptions="Center"
-                                       AutomationProperties.IsInAccessibleTree="False" />
-                                <Label Text="My Score" Style="{StaticResource ChipLabelStyle}"
-                                       TextColor="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Score}" />
-                                <Label Text="{Binding SortDirectionGlyph}"
-                                       FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                       TextColor="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Score}"
-                                       FontSize="12"
-                                       WidthRequest="12" HeightRequest="12"
-                                       HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
-                                       VerticalOptions="Center"
-                                       AutomationProperties.IsInAccessibleTree="False"
-                                       IsVisible="{Binding CurrentSortField, Converter={StaticResource SortFieldActiveConverter}, ConverterParameter=Score}" />
-                            </HorizontalStackLayout>
-                        </Border>
-
-                        <!-- Avg Score chip -->
-                        <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6"
-                                Stroke="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=AverageScore}"
-                                Background="{Binding CurrentSortField, Converter={StaticResource SortFieldBackgroundConverter}, ConverterParameter=AverageScore}">
-                            <Border.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding SetSortCommand}" CommandParameter="AverageScore" />
-                            </Border.GestureRecognizers>
-                            <HorizontalStackLayout Spacing="4">
-                                <Label Text="{x:Static icons:FluentIconsRegular.People24}"
-                                       FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                       TextColor="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=AverageScore}"
-                                       FontSize="14"
-                                       WidthRequest="14" HeightRequest="14"
-                                       HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
-                                       VerticalOptions="Center"
-                                       AutomationProperties.IsInAccessibleTree="False" />
-                                <Label Text="Avg Score" Style="{StaticResource ChipLabelStyle}"
-                                       TextColor="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=AverageScore}" />
-                                <Label Text="{Binding SortDirectionGlyph}"
-                                       FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                       TextColor="{Binding CurrentSortField, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=AverageScore}"
-                                       FontSize="12"
-                                       WidthRequest="12" HeightRequest="12"
-                                       HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
-                                       VerticalOptions="Center"
-                                       AutomationProperties.IsInAccessibleTree="False"
-                                       IsVisible="{Binding CurrentSortField, Converter={StaticResource SortFieldActiveConverter}, ConverterParameter=AverageScore}" />
-                            </HorizontalStackLayout>
-                        </Border>
-
-                    </HorizontalStackLayout>
-                </ScrollView>
-
-                <!-- Row 2: Grouped CollectionView -->
-                <CollectionView Grid.Row="2"
+                <!-- Row 1: Grouped CollectionView -->
+                <CollectionView Grid.Row="1"
                                 x:Name="AnimeCollectionView"
                                 ItemsSource="{Binding Sections}"
                                 IsGrouped="True"

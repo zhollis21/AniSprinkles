@@ -91,19 +91,42 @@ public partial class MyAnimePageModel : ObservableObject
     // ── Sort / Filter / View Mode ────────────────────────────────────
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(SortDirectionGlyph))]
+    [NotifyPropertyChangedFor(nameof(SelectedSortCode))]
     private SortField _currentSortField = SortField.LastUpdated;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(SortDirectionGlyph))]
+    [NotifyPropertyChangedFor(nameof(SelectedSortCode))]
+    [NotifyPropertyChangedFor(nameof(SortIconGlyph))]
     private bool _sortAscending;
 
     /// <summary>
-    /// Icon glyph indicating current sort direction, shown on the active chip.
+    /// Glyph for the top-bar sort button, flipped to mirror the active direction: lines ascending
+    /// (small→large up) for ascending sorts, descending for descending.
     /// </summary>
-    public string SortDirectionGlyph => SortAscending
-        ? FluentIconsRegular.ArrowUp24
-        : FluentIconsRegular.ArrowDown24;
+    public string SortIconGlyph => SortAscending
+        ? FluentIconsRegular.ArrowSortUpLines24
+        : FluentIconsRegular.ArrowSortDownLines24;
+
+    /// <summary>
+    /// Rows for the shared sort picker (<see cref="Views.SortPopup"/>), shown from the top-bar sort icon.
+    /// Each <see cref="SortOption.Code"/> encodes field + direction as "Field:dir" so one tap fully
+    /// specifies the sort; <see cref="SelectSort"/> parses it back into <see cref="CurrentSortField"/> +
+    /// <see cref="SortAscending"/>.
+    /// </summary>
+    public IReadOnlyList<SortOption> SortOptions { get; } =
+    [
+        new SortOption { Code = "LastUpdated:desc",  Display = "Recently Updated" },
+        new SortOption { Code = "LastUpdated:asc",   Display = "Oldest Updated" },
+        new SortOption { Code = "Title:asc",         Display = "Title (A→Z)" },
+        new SortOption { Code = "Title:desc",        Display = "Title (Z→A)" },
+        new SortOption { Code = "Score:desc",        Display = "My Score (high→low)" },
+        new SortOption { Code = "Score:asc",         Display = "My Score (low→high)" },
+        new SortOption { Code = "AverageScore:desc", Display = "Avg Score (high→low)" },
+        new SortOption { Code = "AverageScore:asc",  Display = "Avg Score (low→high)" },
+    ];
+
+    /// <summary>The active sort as a "Field:dir" code, matching one <see cref="SortOptions"/> entry.</summary>
+    public string SelectedSortCode => $"{CurrentSortField}:{(SortAscending ? "asc" : "desc")}";
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(ViewModeIconGlyph))]
@@ -169,6 +192,9 @@ public partial class MyAnimePageModel : ObservableObject
         }
 
         _sortAscending = preferences.Get(SortAscendingPreferenceKey, false);
+
+        // Highlight the restored sort in the picker rows (the popup reads IsSelected at build time).
+        SyncSortSelection();
     }
 
     public async Task LoadAsync(bool forceReload = false)
@@ -364,13 +390,24 @@ public partial class MyAnimePageModel : ObservableObject
     partial void OnCurrentSortFieldChanged(SortField value)
     {
         _preferences.Set(SortFieldPreferenceKey, value.ToString());
+        SyncSortSelection();
         ApplySortToAllSections();
     }
 
     partial void OnSortAscendingChanged(bool value)
     {
         _preferences.Set(SortAscendingPreferenceKey, value);
+        SyncSortSelection();
         ApplySortToAllSections();
+    }
+
+    /// <summary>Mark the picker row matching the active sort as selected (drives the popup highlight).</summary>
+    private void SyncSortSelection()
+    {
+        foreach (var option in SortOptions)
+        {
+            option.IsSelected = string.Equals(option.Code, SelectedSortCode, StringComparison.Ordinal);
+        }
     }
 
     // ── Sort / Filter / View Mode commands ───────────────────────────
@@ -397,23 +434,27 @@ public partial class MyAnimePageModel : ObservableObject
     }
 
     [RelayCommand]
-    private void SetSort(string? fieldName)
+    private void SelectSort(string? code)
     {
-        if (fieldName is null || !Enum.TryParse<SortField>(fieldName, out var field))
+        // Code is "Field:dir" (e.g. "LastUpdated:desc") from the picker. Parse both halves; bail on anything
+        // malformed or unchanged so we don't churn preferences / re-sort needlessly.
+        if (string.IsNullOrEmpty(code) || string.Equals(code, SelectedSortCode, StringComparison.Ordinal))
         {
             return;
         }
 
-        if (field == CurrentSortField)
+        var parts = code.Split(':');
+        if (parts.Length != 2 || !Enum.TryParse<SortField>(parts[0], out var field))
         {
-            SortAscending = !SortAscending;
+            return;
         }
-        else
-        {
-            CurrentSortField = field;
-            // Title defaults ascending; everything else defaults descending.
-            SortAscending = field is SortField.Title;
-        }
+
+        var ascending = string.Equals(parts[1], "asc", StringComparison.Ordinal);
+
+        // Set the field first; both change handlers persist, re-sync the highlight, and re-sort. Setting the
+        // field before the direction means at most one redundant re-sort with the old direction — harmless.
+        CurrentSortField = field;
+        SortAscending = ascending;
     }
 
     private void ApplySortToAllSections()
