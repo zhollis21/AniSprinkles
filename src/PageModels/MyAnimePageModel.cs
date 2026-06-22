@@ -100,12 +100,12 @@ public partial class MyAnimePageModel : ObservableObject
     private bool _sortAscending;
 
     /// <summary>
-    /// Glyph for the top-bar sort button, flipped to mirror the active direction: lines ascending
-    /// (small→large up) for ascending sorts, descending for descending.
+    /// Glyph for the top-bar sort button, mirroring the active direction as the picker rows read:
+    /// down-lines for ascending (A→Z, low→high — first/smallest on top), up-lines for descending.
     /// </summary>
     public string SortIconGlyph => SortAscending
-        ? FluentIconsRegular.ArrowSortUpLines24
-        : FluentIconsRegular.ArrowSortDownLines24;
+        ? FluentIconsRegular.ArrowSortDownLines24
+        : FluentIconsRegular.ArrowSortUpLines24;
 
     /// <summary>
     /// Rows for the shared sort picker (<see cref="Views.SortPopup"/>), shown from the top-bar sort icon.
