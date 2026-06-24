@@ -444,8 +444,13 @@ public partial class MyAnimePageModel : ObservableObject
         }
 
         var parts = code.Split(':');
-        if (parts.Length != 2 || !Enum.TryParse<SortField>(parts[0], out var field))
+        if (parts.Length != 2 || !Enum.TryParse<SortField>(parts[0], out var field)
+            || parts[1] is not ("asc" or "desc"))
         {
+            // The picker only ever emits valid "Field:asc"/"Field:desc" codes, so a malformed one
+            // is a wiring bug (e.g. a typo'd picker entry), not user state. Log at Error so it surfaces
+            // as a Sentry issue (a "should never happen" tripwire), not just a silent no-op.
+            _logger.LogError("Ignoring malformed sort code: {SortCode}", code);
             return;
         }
 
