@@ -111,19 +111,13 @@ public partial class MyAnimePageModel : ObservableObject
     /// Rows for the shared sort picker (<see cref="Views.SortPopup"/>), shown from the top-bar sort icon.
     /// Each <see cref="SortOption.Code"/> encodes field + direction as "Field:dir" so one tap fully
     /// specifies the sort; <see cref="SelectSort"/> parses it back into <see cref="CurrentSortField"/> +
-    /// <see cref="SortAscending"/>.
+    /// <see cref="SortAscending"/>. Built from <see cref="MyAnimeSortDefinitions"/> (pure, unit-tested data)
+    /// so the codes are validated at build time and each instance gets its own mutable IsSelected state.
     /// </summary>
     public IReadOnlyList<SortOption> SortOptions { get; } =
-    [
-        new SortOption { Code = "LastUpdated:desc",  Display = "Recently Updated" },
-        new SortOption { Code = "LastUpdated:asc",   Display = "Oldest Updated" },
-        new SortOption { Code = "Title:asc",         Display = "Title (A→Z)" },
-        new SortOption { Code = "Title:desc",        Display = "Title (Z→A)" },
-        new SortOption { Code = "Score:desc",        Display = "My Score (high→low)" },
-        new SortOption { Code = "Score:asc",         Display = "My Score (low→high)" },
-        new SortOption { Code = "AverageScore:desc", Display = "Avg Score (high→low)" },
-        new SortOption { Code = "AverageScore:asc",  Display = "Avg Score (low→high)" },
-    ];
+        MyAnimeSortDefinitions.All
+            .Select(d => new SortOption { Code = d.Code, Display = d.Display })
+            .ToList();
 
     /// <summary>The active sort as a "Field:dir" code, matching one <see cref="SortOptions"/> entry.</summary>
     public string SelectedSortCode => $"{CurrentSortField}:{(SortAscending ? "asc" : "desc")}";
@@ -387,18 +381,28 @@ public partial class MyAnimePageModel : ObservableObject
         }
     }
 
+    // Set while SelectSort changes field + direction together, so the per-property handlers persist and
+    // re-sync the highlight but skip their own re-sort; SelectSort applies one re-sort after both are set.
+    private bool _suppressSectionSort;
+
     partial void OnCurrentSortFieldChanged(SortField value)
     {
         _preferences.Set(SortFieldPreferenceKey, value.ToString());
         SyncSortSelection();
-        ApplySortToAllSections();
+        if (!_suppressSectionSort)
+        {
+            ApplySortToAllSections();
+        }
     }
 
     partial void OnSortAscendingChanged(bool value)
     {
         _preferences.Set(SortAscendingPreferenceKey, value);
         SyncSortSelection();
-        ApplySortToAllSections();
+        if (!_suppressSectionSort)
+        {
+            ApplySortToAllSections();
+        }
     }
 
     /// <summary>Mark the picker row matching the active sort as selected (drives the popup highlight).</summary>
@@ -456,10 +460,21 @@ public partial class MyAnimePageModel : ObservableObject
 
         var ascending = string.Equals(parts[1], "asc", StringComparison.Ordinal);
 
-        // Set the field first; both change handlers persist, re-sync the highlight, and re-sort. Setting the
-        // field before the direction means at most one redundant re-sort with the old direction — harmless.
-        CurrentSortField = field;
-        SortAscending = ascending;
+        // Set both halves, then re-sort once. The change handlers each persist + re-sync the highlight, but
+        // _suppressSectionSort stops them from re-sorting mid-update (which would sort every section twice —
+        // once with the new field but stale direction). Apply the single, correct sort after both are set.
+        _suppressSectionSort = true;
+        try
+        {
+            CurrentSortField = field;
+            SortAscending = ascending;
+        }
+        finally
+        {
+            _suppressSectionSort = false;
+        }
+
+        ApplySortToAllSections();
     }
 
     private void ApplySortToAllSections()

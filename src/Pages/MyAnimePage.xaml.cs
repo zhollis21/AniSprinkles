@@ -291,10 +291,16 @@ public partial class MyAnimePage : ContentPage
         {
             var info = DeviceDisplay.Current.MainDisplayInfo;
             var density = info.Density > 0 ? info.Density : 1;
-            var widthDip = info.Width / density;
+
+            // SortPopup positions the card in popup-PAGE coordinates, which exclude the left/right system-bar
+            // insets (matching SortDropdown.ComputeAnchor). Subtract those insets so the right-aligned card
+            // lands correctly even with side insets (landscape / multi-window / cutouts); both are 0 on a
+            // standard portrait phone, so this is a no-op under the current SensorPortrait lock.
+            var (leftInsetPx, rightInsetPx) = GetHorizontalSystemBarInsetsPx();
+            var pageWidthDip = (info.Width - leftInsetPx - rightInsetPx) / density;
 
             // Right-align the card under the right edge, clamped clear of the screen edge (10dip inset).
-            var cardLeft = Math.Max(10, widthDip - Views.SortPopup.CardWidth - 10);
+            var cardLeft = Math.Max(10, pageWidthDip - Views.SortPopup.CardWidth - 10);
             // Anchor to the bottom of the action bar (~56dip standard Android action-bar height); open down.
             const double actionBarBottomDip = 56;
 
@@ -311,6 +317,22 @@ public partial class MyAnimePage : ContentPage
         {
             _sortPopupOpen = false;
         }
+    }
+
+    // Left/right system-bar insets in physical pixels (side nav bars / display cutouts). 0 on a standard
+    // portrait phone; nonzero only in landscape / multi-window, which the SensorPortrait lock disallows
+    // today — read anyway so the sort anchor stays correct if that lock is ever lifted.
+    private static (double Left, double Right) GetHorizontalSystemBarInsetsPx()
+    {
+#if ANDROID
+        var insets = Platform.CurrentActivity?.Window?.DecorView?.RootWindowInsets?
+            .GetInsets(Android.Views.WindowInsets.Type.SystemBars());
+        if (insets is not null)
+        {
+            return (insets.Left, insets.Right);
+        }
+#endif
+        return (0, 0);
     }
 
     private void UpdateViewModeIcon(ListViewMode mode)
