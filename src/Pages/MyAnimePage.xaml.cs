@@ -11,14 +11,19 @@ public partial class MyAnimePage : ContentPage
     private bool _hasAppeared;
     private bool _hasCreatedLoadedContent;
     private int _loadVersion;
+    private readonly ToolbarItem? _sortToolbarItem;
     private readonly ToolbarItem? _searchToolbarItem;
     private readonly ToolbarItem? _viewModeToolbarItem;
     private readonly ILogger<MyAnimePage>? _logger;
+
+    // Re-entrancy guard: a second tap while the picker is up would stack popups (mirrors SortDropdown).
+    private bool _sortPopupOpen;
 
     public MyAnimePage()
     {
         InitializeComponent();
         // Stash toolbar items so we can add/remove them based on auth state.
+        _sortToolbarItem = SortToolbarItem;
         _searchToolbarItem = SearchToolbarItem;
         _viewModeToolbarItem = ViewModeToolbarItem;
 
@@ -52,6 +57,7 @@ public partial class MyAnimePage : ContentPage
         // changed there since this singleton VM was constructed.
         _viewModel.SyncViewModeFromPreference();
         UpdateViewModeIcon(_viewModel.CurrentViewMode);
+        UpdateSortIcon();
         UpdateToolbarItems();
 
         // Content survived the flyout switch — just refresh data in background.
@@ -239,11 +245,15 @@ public partial class MyAnimePage : ContentPage
         {
             UpdateViewModeIcon(_viewModel.CurrentViewMode);
         }
+        else if (e.PropertyName == nameof(MyAnimePageModel.SortIconGlyph) && _viewModel is not null)
+        {
+            UpdateSortIcon();
+        }
     }
 
     private void UpdateToolbarItems()
     {
-        if (_searchToolbarItem is null || _viewModeToolbarItem is null)
+        if (_sortToolbarItem is null || _searchToolbarItem is null || _viewModeToolbarItem is null)
         {
             return;
         }
@@ -253,14 +263,99 @@ public partial class MyAnimePage : ContentPage
 
         if (authenticated && !hasSearch)
         {
+            ToolbarItems.Add(_sortToolbarItem);
             ToolbarItems.Add(_searchToolbarItem);
             ToolbarItems.Add(_viewModeToolbarItem);
         }
         else if (!authenticated && hasSearch)
         {
+            ToolbarItems.Remove(_sortToolbarItem);
             ToolbarItems.Remove(_searchToolbarItem);
             ToolbarItems.Remove(_viewModeToolbarItem);
         }
+    }
+
+    // Opens the shared sort picker (SortPopup) anchored just below the top bar, right-aligned. Unlike the
+    // carousel SortDropdown (a pill that measures itself), there's no anchor view in the toolbar, so we
+    // compute a fixed top-right "open-down" anchor from the display metrics. The picked code is handed to
+    // the page model's SelectSort command, which applies + persists the sort.
+    private async void OnSortClicked(object? sender, EventArgs e)
+    {
+        if (_sortPopupOpen || _viewModel?.SortOptions is not { Count: > 0 } options)
+        {
+            return;
+        }
+
+        _sortPopupOpen = true;
+        try
+        {
+            var info = DeviceDisplay.Current.MainDisplayInfo;
+            var density = info.Density > 0 ? info.Density : 1;
+
+            // SortPopup positions the card in popup-PAGE coordinates, which exclude the left/right system-bar
+            // insets (matching SortDropdown.ComputeAnchor). Subtract those insets so the right-aligned card
+            // lands correctly even with side insets (landscape / multi-window / cutouts); both are 0 on a
+            // standard portrait phone, so this is a no-op under the current SensorPortrait lock.
+            var (leftInsetPx, rightInsetPx) = GetHorizontalSystemBarInsetsPx();
+            var pageWidthDip = (info.Width - leftInsetPx - rightInsetPx) / density;
+
+            // Right-align the card under the right edge, clamped clear of the screen edge (10dip inset).
+            var cardLeft = Math.Max(10, pageWidthDip - Views.SortPopup.CardWidth - 10);
+            // Anchor to the bottom of the action bar; open down. Resolved from the theme so it tracks the
+            // real toolbar height (56dip portrait phone, 64dip tablet, 48dip landscape) instead of a magic
+            // number that only holds under today's portrait lock.
+            var actionBarBottomDip = GetActionBarHeightDip(density);
+
+            var result = await Views.SortPopup.ShowAsync(
+                options, openUp: false, cardLeft, actionBarBottomDip, gapDip: 6);
+
+            if (!string.IsNullOrEmpty(result)
+                && _viewModel.SelectSortCommand.CanExecute(result))
+            {
+                _viewModel.SelectSortCommand.Execute(result);
+            }
+        }
+        finally
+        {
+            _sortPopupOpen = false;
+        }
+    }
+
+    // Left/right system-bar insets in physical pixels (side nav bars / display cutouts). 0 on a standard
+    // portrait phone; nonzero only in landscape / multi-window, which the SensorPortrait lock disallows
+    // today — read anyway so the sort anchor stays correct if that lock is ever lifted.
+    private static (double Left, double Right) GetHorizontalSystemBarInsetsPx()
+    {
+#if ANDROID
+        var insets = Platform.CurrentActivity?.Window?.DecorView?.RootWindowInsets?
+            .GetInsets(Android.Views.WindowInsets.Type.SystemBars());
+        if (insets is not null)
+        {
+            return (insets.Left, insets.Right);
+        }
+#endif
+        return (0, 0);
+    }
+
+    // The action-bar (toolbar) height in dips, resolved from Android's actionBarSize theme attribute so it
+    // tracks the device/orientation (56dip portrait phone, 64dip tablet, 48dip landscape). Falls back to the
+    // standard 56dip portrait value if the attribute can't be resolved. Note: this is the theme's action-bar
+    // size, which MAUI's MaterialToolbar follows in practice but isn't strictly bound to.
+    private static double GetActionBarHeightDip(double density)
+    {
+#if ANDROID
+        var context = Platform.CurrentActivity ?? Android.App.Application.Context;
+        var value = new Android.Util.TypedValue();
+        if (context?.Theme?.ResolveAttribute(Android.Resource.Attribute.ActionBarSize, value, true) == true)
+        {
+            var px = Android.Util.TypedValue.ComplexToDimensionPixelSize(value.Data, context.Resources?.DisplayMetrics);
+            if (px > 0)
+            {
+                return px / density;
+            }
+        }
+#endif
+        return 56;
     }
 
     private void UpdateViewModeIcon(ListViewMode mode)
@@ -273,6 +368,14 @@ public partial class MyAnimePage : ContentPage
         };
 
         ViewModeIcon.Glyph = glyph;
+    }
+
+    private void UpdateSortIcon()
+    {
+        if (_viewModel is not null)
+        {
+            SortIcon.Glyph = _viewModel.SortIconGlyph;
+        }
     }
 
     private void SetViewModel(MyAnimePageModel viewModel)

@@ -11,6 +11,17 @@
              Shell.TitleColor="{Binding Title, Converter={StaticResource RainbowAccentConverter}}">
 
     <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="SortToolbarItem"
+                     Clicked="OnSortClicked"
+                     Order="Primary">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource x:Name="SortIcon"
+                                 Glyph="{x:Static icons:FluentIconsRegular.ArrowSortUpLines24}"
+                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                 Color="{StaticResource OnBackground}"
+                                 Size="20" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
         <ToolbarItem x:Name="SearchToolbarItem"
                      Command="{Binding ToggleSearchCommand}"
                      Order="Primary">
