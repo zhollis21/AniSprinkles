@@ -301,8 +301,10 @@ public partial class MyAnimePage : ContentPage
 
             // Right-align the card under the right edge, clamped clear of the screen edge (10dip inset).
             var cardLeft = Math.Max(10, pageWidthDip - Views.SortPopup.CardWidth - 10);
-            // Anchor to the bottom of the action bar (~56dip standard Android action-bar height); open down.
-            const double actionBarBottomDip = 56;
+            // Anchor to the bottom of the action bar; open down. Resolved from the theme so it tracks the
+            // real toolbar height (56dip portrait phone, 64dip tablet, 48dip landscape) instead of a magic
+            // number that only holds under today's portrait lock.
+            var actionBarBottomDip = GetActionBarHeightDip(density);
 
             var result = await Views.SortPopup.ShowAsync(
                 options, openUp: false, cardLeft, actionBarBottomDip, gapDip: 6);
@@ -333,6 +335,27 @@ public partial class MyAnimePage : ContentPage
         }
 #endif
         return (0, 0);
+    }
+
+    // The action-bar (toolbar) height in dips, resolved from Android's actionBarSize theme attribute so it
+    // tracks the device/orientation (56dip portrait phone, 64dip tablet, 48dip landscape). Falls back to the
+    // standard 56dip portrait value if the attribute can't be resolved. Note: this is the theme's action-bar
+    // size, which MAUI's MaterialToolbar follows in practice but isn't strictly bound to.
+    private static double GetActionBarHeightDip(double density)
+    {
+#if ANDROID
+        var context = Platform.CurrentActivity ?? Android.App.Application.Context;
+        var value = new Android.Util.TypedValue();
+        if (context?.Theme?.ResolveAttribute(Android.Resource.Attribute.ActionBarSize, value, true) == true)
+        {
+            var px = Android.Util.TypedValue.ComplexToDimensionPixelSize(value.Data, context.Resources?.DisplayMetrics);
+            if (px > 0)
+            {
+                return px / density;
+            }
+        }
+#endif
+        return 56;
     }
 
     private void UpdateViewModeIcon(ListViewMode mode)
