@@ -38,10 +38,12 @@
         <OnIdiom.Desktop>18</OnIdiom.Desktop>
     </OnIdiom>
 
+    <!-- Horizontal-only page inset: left/right edge margin with no top/bottom band, so content sits flush
+         under the nav bar and against the bottom edge (two-value Thickness is "horizontal,vertical"). -->
     <OnIdiom x:Key="LayoutPadding"
              x:TypeArguments="Thickness"
-             Default="12">
-        <OnIdiom.Desktop>24</OnIdiom.Desktop>
+             Default="12,0">
+        <OnIdiom.Desktop>24,0</OnIdiom.Desktop>
     </OnIdiom>
 
     <OnIdiom x:Key="LayoutSpacing"
