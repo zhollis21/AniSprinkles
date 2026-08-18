@@ -399,7 +399,9 @@ public partial class StaffDetailsPageModel : ObservableObject
     private async Task ToggleFavourite()
     {
         var staff = Staff;
-        if (staff is null)
+        // Re-check the gate here (not just via the command's CanExecute) so the failure-snackbar
+        // Retry can't run an optimistic flip if auth/busy state changed since the failure.
+        if (staff is null || !CanToggleFavourite)
         {
             return;
         }

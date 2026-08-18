@@ -1194,7 +1194,9 @@ namespace AniSprinkles.PageModels;
     private async Task ToggleFavourite()
     {
         var media = Media;
-        if (media is null)
+        // Re-check the gate here (not just via the command's CanExecute) so the failure-snackbar
+        // Retry can't run an optimistic flip if auth/busy state changed since the failure.
+        if (media is null || !CanToggleFavourite)
         {
             return;
         }

@@ -14,7 +14,7 @@
         <VerticalStackLayout Padding="{StaticResource LayoutPadding}" Spacing="16">
 
             <Border Style="{StaticResource CardStyle}" Padding="14,12">
-                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
                     <Border Grid.Column="0"
                             WidthRequest="56"
                             HeightRequest="56"
@@ -42,13 +42,10 @@
                                LineBreakMode="WordWrap" />
 
                         <HorizontalStackLayout Spacing="4" IsVisible="{Binding Studio.HasFavourites}">
-                            <HorizontalStackLayout.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding ToggleFavouriteCommand}" />
-                            </HorizontalStackLayout.GestureRecognizers>
                             <Image WidthRequest="14" HeightRequest="14" VerticalOptions="Center">
                                 <Image.Source>
-                                    <FontImageSource Glyph="{Binding IsFavourite, Converter={StaticResource FavouriteHeartGlyphConverter}}"
-                                                     FontFamily="{Binding IsFavourite, Converter={StaticResource FavouriteHeartFontConverter}}"
+                                    <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Heart24}"
+                                                     FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                      Color="{StaticResource RainbowPink}"
                                                      Size="14" />
                                 </Image.Source>
@@ -59,6 +56,25 @@
                                    VerticalTextAlignment="Center" />
                         </HorizontalStackLayout>
                     </VerticalStackLayout>
+
+                    <!-- Favorite toggle: only shown when signed in. -->
+                    <Border Grid.Column="2"
+                            Style="{StaticResource FavouriteToggleButtonStyle}"
+                            VerticalOptions="Center"
+                            SemanticProperties.Description="Toggle favorite"
+                            IsVisible="{Binding IsAuthenticated}">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ToggleFavouriteCommand}" />
+                        </Border.GestureRecognizers>
+                        <Image WidthRequest="22" HeightRequest="22" HorizontalOptions="Center" VerticalOptions="Center">
+                            <Image.Source>
+                                <FontImageSource Glyph="{Binding IsFavourite, Converter={StaticResource FavouriteHeartGlyphConverter}}"
+                                                 FontFamily="{Binding IsFavourite, Converter={StaticResource FavouriteHeartFontConverter}}"
+                                                 Color="{StaticResource RainbowPink}"
+                                                 Size="22" />
+                            </Image.Source>
+                        </Image>
+                    </Border>
                 </Grid>
             </Border>
 

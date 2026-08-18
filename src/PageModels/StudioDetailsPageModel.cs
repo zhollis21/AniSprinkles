@@ -256,7 +256,9 @@ public partial class StudioDetailsPageModel : ObservableObject
     private async Task ToggleFavourite()
     {
         var studio = Studio;
-        if (studio is null)
+        // Re-check the gate here (not just via the command's CanExecute) so the failure-snackbar
+        // Retry can't run an optimistic flip if auth/busy state changed since the failure.
+        if (studio is null || !CanToggleFavourite)
         {
             return;
         }

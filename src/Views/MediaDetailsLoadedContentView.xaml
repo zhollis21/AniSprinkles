@@ -84,6 +84,26 @@
                             </HorizontalStackLayout>
                         </VerticalStackLayout>
                     </Grid>
+
+                    <!-- Favorite toggle: floats top-right over the hero; only shown when signed in. -->
+                    <Border Grid.Row="0" Grid.RowSpan="2"
+                            Style="{StaticResource FavouriteToggleButtonStyle}"
+                            HorizontalOptions="End" VerticalOptions="Start"
+                            Margin="0,12,12,0"
+                            SemanticProperties.Description="Toggle favorite"
+                            IsVisible="{Binding IsAuthenticated}">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ToggleFavouriteCommand}" />
+                        </Border.GestureRecognizers>
+                        <Image WidthRequest="22" HeightRequest="22" HorizontalOptions="Center" VerticalOptions="Center">
+                            <Image.Source>
+                                <FontImageSource Glyph="{Binding IsFavourite, Converter={StaticResource FavouriteHeartGlyphConverter}}"
+                                                 FontFamily="{Binding IsFavourite, Converter={StaticResource FavouriteHeartFontConverter}}"
+                                                 Color="{StaticResource RainbowPink}"
+                                                 Size="22" />
+                            </Image.Source>
+                        </Image>
+                    </Border>
                 </Grid>
             </Border>
 
@@ -123,16 +143,13 @@
                         <Label Text="Popularity" Style="{StaticResource Caption2}" TextColor="{StaticResource Gray400}" HorizontalTextAlignment="Center" />
                     </VerticalStackLayout>
                 </Border>
-                <!-- Favourites pill (tap to favorite/unfavorite when signed in) -->
+                <!-- Favourites pill -->
                 <Border Grid.Column="2" Style="{StaticResource CardStyle}" Padding="10,10">
-                    <Border.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding ToggleFavouriteCommand}" />
-                    </Border.GestureRecognizers>
                     <VerticalStackLayout Spacing="2" HorizontalOptions="Fill">
                         <Image WidthRequest="18" HeightRequest="18" HorizontalOptions="Center">
                             <Image.Source>
-                                <FontImageSource Glyph="{Binding IsFavourite, Converter={StaticResource FavouriteHeartGlyphConverter}}"
-                                                 FontFamily="{Binding IsFavourite, Converter={StaticResource FavouriteHeartFontConverter}}"
+                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Heart24}"
+                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                                  Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Favourites'}"
                                                  Size="18" />
                             </Image.Source>

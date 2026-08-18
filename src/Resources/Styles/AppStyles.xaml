@@ -350,4 +350,19 @@
                 Value="{StaticResource RainbowPink}" />
     </Style>
 
+    <!-- Circular favorite-toggle button that floats over a details-page hero. Dark scrim + pink ring
+         so the pink heart reads as a tappable control on any hero image. Keyed (not implicit) so it
+         fully replaces the implicit Border style, including its Background. -->
+    <Style x:Key="FavouriteToggleButtonStyle" TargetType="Border">
+        <Setter Property="WidthRequest" Value="44" />
+        <Setter Property="HeightRequest" Value="44" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 22" />
+        <Setter Property="StrokeThickness" Value="1.5" />
+        <Setter Property="Stroke" Value="{StaticResource RainbowPink}" />
+        <Setter Property="Background">
+            <SolidColorBrush Color="#99000000" />
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

@@ -414,7 +414,9 @@ public partial class CharacterDetailsPageModel : ObservableObject
     private async Task ToggleFavourite()
     {
         var character = Character;
-        if (character is null)
+        // Re-check the gate here (not just via the command's CanExecute) so the failure-snackbar
+        // Retry can't run an optimistic flip if auth/busy state changed since the failure.
+        if (character is null || !CanToggleFavourite)
         {
             return;
         }
