@@ -1,7 +1,23 @@
 namespace AniSprinkles.Services;
 
+/// <summary>Entity type for the AniList <c>ToggleFavourite</c> mutation.</summary>
+public enum FavouriteKind
+{
+    Anime,
+    Character,
+    Staff,
+    Studio,
+}
+
 public interface IAniListClient
 {
+    /// <summary>
+    /// Toggles the signed-in viewer's favorite state for the given entity via AniList's
+    /// <c>ToggleFavourite</c> mutation. Requires authentication. Returns true when the mutation
+    /// succeeds (callers drive the on/off state optimistically).
+    /// </summary>
+    Task<bool> ToggleFavouriteAsync(FavouriteKind kind, int id, CancellationToken cancellationToken = default);
+
     Task<IReadOnlyList<MediaListEntry>> GetMyAnimeListAsync(CancellationToken cancellationToken = default);
     Task<IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)>> GetMyAnimeListGroupedAsync(CancellationToken cancellationToken = default);
     Task<(IReadOnlyList<BrowseMediaItem> Items, PageInfo? PageInfo)> SearchAnimePageAsync(

@@ -21,6 +21,7 @@ namespace AniSprinkles.PageModels;
         private readonly IUserFeedback _feedback;
         private readonly ILogger<MediaDetailsPageModel> _logger;
         private readonly ListOperationRunner _listOps;
+        private readonly FavouriteToggleRunner _favouriteRunner;
         private int? _loadedMediaId;
         private int _loadRequestSequence;
         private readonly PageLoadScope _scope = new();
@@ -110,6 +111,7 @@ namespace AniSprinkles.PageModels;
         _feedback = feedback;
         _logger = logger;
         _listOps = new ListOperationRunner(logger, feedback);
+        _favouriteRunner = new FavouriteToggleRunner(aniListClient, feedback, logger);
 
         _characters = new PaginatedSection<CharacterEdge>(
             CharactersDefaultSort,
@@ -366,6 +368,11 @@ namespace AniSprinkles.PageModels;
 
     public bool CanAddToList => IsAuthenticated && !HasListEntry;
 
+    /// <summary>Viewer's favorite state for this title; drives the heart fill on the favourites pill.</summary>
+    public bool IsFavourite => Media?.IsFavourite ?? false;
+
+    public bool CanToggleFavourite => IsAuthenticated && !_favouriteRunner.IsBusy && Media is not null;
+
     public string ListStatusDisplay => ListEntry?.Status switch
     {
         MediaListStatus.Current => "Watching",
@@ -564,6 +571,7 @@ namespace AniSprinkles.PageModels;
             var token = await _authService.GetAccessTokenAsync();
             IsAuthenticated = !string.IsNullOrWhiteSpace(token);
             OnPropertyChanged(nameof(CanAddToList));
+            ToggleFavouriteCommand.NotifyCanExecuteChanged();
 
             CurrentState = PageState.InitialLoading;
             _logger.LogInformation("NAVTRACE load#{LoadRequestId} starting details fetch for media {MediaId}.", loadRequestId, mediaId);
@@ -701,6 +709,8 @@ namespace AniSprinkles.PageModels;
         OnPropertyChanged(nameof(ScorePercentDisplay));
         OnPropertyChanged(nameof(PopularityDisplay));
         OnPropertyChanged(nameof(FavouritesDisplay));
+        OnPropertyChanged(nameof(IsFavourite));
+        ToggleFavouriteCommand.NotifyCanExecuteChanged();
         OnPropertyChanged(nameof(FormatDisplay));
         OnPropertyChanged(nameof(StatusFormatted));
         OnPropertyChanged(nameof(EpisodesDisplay));
@@ -1178,6 +1188,28 @@ namespace AniSprinkles.PageModels;
                 "Failed to update status. Please try again.",
                 retryAction: () => _ = QuickSetStatus(value));
         }
+    }
+
+    [RelayCommand(CanExecute = nameof(CanToggleFavourite))]
+    private async Task ToggleFavourite()
+    {
+        var media = Media;
+        if (media is null)
+        {
+            return;
+        }
+
+        if (await _favouriteRunner.ToggleAsync(media, FavouriteKind.Anime, NotifyFavouriteChanged, () => _ = ToggleFavourite()))
+        {
+            SentrySdk.AddBreadcrumb($"Favourite toggled (media {media.Id} → {(media.IsFavourite ? "on" : "off")})", "list", "user");
+        }
+    }
+
+    private void NotifyFavouriteChanged()
+    {
+        OnPropertyChanged(nameof(IsFavourite));
+        OnPropertyChanged(nameof(FavouritesDisplay));
+        ToggleFavouriteCommand.NotifyCanExecuteChanged();
     }
 
     [RelayCommand]

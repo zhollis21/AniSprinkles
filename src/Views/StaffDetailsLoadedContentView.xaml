@@ -65,10 +65,13 @@
 
                             <HorizontalStackLayout Spacing="10" Margin="0,4,0,0">
                                 <HorizontalStackLayout Spacing="4" IsVisible="{Binding HasFavourites}">
+                                    <HorizontalStackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding ToggleFavouriteCommand}" />
+                                    </HorizontalStackLayout.GestureRecognizers>
                                     <Image WidthRequest="14" HeightRequest="14" VerticalOptions="Center">
                                         <Image.Source>
-                                            <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Heart24}"
-                                                             FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                            <FontImageSource Glyph="{Binding IsFavourite, Converter={StaticResource FavouriteHeartGlyphConverter}}"
+                                                             FontFamily="{Binding IsFavourite, Converter={StaticResource FavouriteHeartFontConverter}}"
                                                              Color="{StaticResource RainbowPink}"
                                                              Size="14" />
                                         </Image.Source>
@@ -134,11 +137,14 @@
                     </VerticalStackLayout>
                 </Border>
                 <Border Grid.Column="2" Style="{StaticResource CardStyle}" Padding="10,10">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ToggleFavouriteCommand}" />
+                    </Border.GestureRecognizers>
                     <VerticalStackLayout Spacing="2" HorizontalOptions="Fill">
                         <Image WidthRequest="18" HeightRequest="18" HorizontalOptions="Center">
                             <Image.Source>
-                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Heart24}"
-                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                <FontImageSource Glyph="{Binding IsFavourite, Converter={StaticResource FavouriteHeartGlyphConverter}}"
+                                                 FontFamily="{Binding IsFavourite, Converter={StaticResource FavouriteHeartFontConverter}}"
                                                  Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Favourites'}"
                                                  Size="18" />
                             </Image.Source>

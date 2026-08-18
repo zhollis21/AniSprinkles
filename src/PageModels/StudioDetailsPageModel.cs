@@ -4,16 +4,19 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using IconFont.Maui.FluentIcons;
 using Microsoft.Extensions.Logging;
+using Sentry;
 
 namespace AniSprinkles.PageModels;
 
 public partial class StudioDetailsPageModel : ObservableObject
 {
     private readonly IAniListClient _aniListClient;
+    private readonly IAuthService _authService;
     private readonly INavigationService _navigationService;
     private readonly IUserFeedback _feedback;
     private readonly ILogger<StudioDetailsPageModel> _logger;
     private readonly ListOperationRunner _listOps;
+    private readonly FavouriteToggleRunner _favouriteRunner;
 
     private const int PageSize = 25;
     private const string ProductionsDefaultSort = "POPULARITY_DESC";
@@ -64,15 +67,18 @@ public partial class StudioDetailsPageModel : ObservableObject
 
     public StudioDetailsPageModel(
         IAniListClient aniListClient,
+        IAuthService authService,
         INavigationService navigationService,
         IUserFeedback feedback,
         ILogger<StudioDetailsPageModel> logger)
     {
         _aniListClient = aniListClient;
+        _authService = authService;
         _navigationService = navigationService;
         _feedback = feedback;
         _logger = logger;
         _listOps = new ListOperationRunner(logger, feedback);
+        _favouriteRunner = new FavouriteToggleRunner(aniListClient, feedback, logger);
 
         _productions = new PaginatedSection<StudioMediaEdge>(
             ProductionsDefaultSort,
@@ -103,6 +109,19 @@ public partial class StudioDetailsPageModel : ObservableObject
     public string PageTitle => Studio?.DisplayName ?? "Studio";
 
     public bool HasSiteUrl => !string.IsNullOrWhiteSpace(Studio?.SiteUrl);
+
+    public bool IsAuthenticated { get; private set; }
+
+    /// <summary>Viewer's favorite state for this studio; drives the heart fill on the favourites pill.</summary>
+    public bool IsFavourite => Studio?.IsFavourite ?? false;
+
+    public bool CanToggleFavourite => IsAuthenticated && !_favouriteRunner.IsBusy && Studio is not null;
+
+    partial void OnStudioChanged(Studio? value)
+    {
+        OnPropertyChanged(nameof(IsFavourite));
+        ToggleFavouriteCommand.NotifyCanExecuteChanged();
+    }
 
     partial void OnCurrentStateChanged(PageState oldValue, PageState newValue)
         => _logger.LogInformation("PageState: {OldState} → {NewState} (key={StateKey})", oldValue, newValue, CurrentStateKey ?? "(null)");
@@ -135,6 +154,9 @@ public partial class StudioDetailsPageModel : ObservableObject
 
         try
         {
+            IsAuthenticated = !string.IsNullOrWhiteSpace(await _authService.GetAccessTokenAsync(token).ConfigureAwait(true));
+            ToggleFavouriteCommand.NotifyCanExecuteChanged();
+
             var studio = await _aniListClient.GetStudioAsync(studioId, mediaPerPage: PageSize, cancellationToken: token).ConfigureAwait(true);
             if (studio is null)
             {
@@ -228,6 +250,29 @@ public partial class StudioDetailsPageModel : ObservableObject
         {
             _logger.LogError(ex, "Failed to open AniList studio URL");
         }
+    }
+
+    [RelayCommand(CanExecute = nameof(CanToggleFavourite))]
+    private async Task ToggleFavourite()
+    {
+        var studio = Studio;
+        if (studio is null)
+        {
+            return;
+        }
+
+        if (await _favouriteRunner.ToggleAsync(studio, FavouriteKind.Studio, NotifyFavouriteChanged, () => _ = ToggleFavourite()))
+        {
+            SentrySdk.AddBreadcrumb($"Favourite toggled (studio {studio.Id} → {(studio.IsFavourite ? "on" : "off")})", "list", "user");
+        }
+    }
+
+    // The favourites display binds through Studio.*, so re-raise Studio to refresh those nested bindings.
+    private void NotifyFavouriteChanged()
+    {
+        OnPropertyChanged(nameof(Studio));
+        OnPropertyChanged(nameof(IsFavourite));
+        ToggleFavouriteCommand.NotifyCanExecuteChanged();
     }
 
     [RelayCommand]

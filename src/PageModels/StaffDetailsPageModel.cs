@@ -6,16 +6,19 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using IconFont.Maui.FluentIcons;
 using Microsoft.Extensions.Logging;
+using Sentry;
 
 namespace AniSprinkles.PageModels;
 
 public partial class StaffDetailsPageModel : ObservableObject
 {
     private readonly IAniListClient _aniListClient;
+    private readonly IAuthService _authService;
     private readonly INavigationService _navigationService;
     private readonly IUserFeedback _feedback;
     private readonly ILogger<StaffDetailsPageModel> _logger;
     private readonly ListOperationRunner _listOps;
+    private readonly FavouriteToggleRunner _favouriteRunner;
 
     private const int PageSize = 25;
     private const string VoiceRolesDefaultSort = "FAVOURITES_DESC";
@@ -100,15 +103,18 @@ public partial class StaffDetailsPageModel : ObservableObject
 
     public StaffDetailsPageModel(
         IAniListClient aniListClient,
+        IAuthService authService,
         INavigationService navigationService,
         IUserFeedback feedback,
         ILogger<StaffDetailsPageModel> logger)
     {
         _aniListClient = aniListClient;
+        _authService = authService;
         _navigationService = navigationService;
         _feedback = feedback;
         _logger = logger;
         _listOps = new ListOperationRunner(logger, feedback);
+        _favouriteRunner = new FavouriteToggleRunner(aniListClient, feedback, logger);
 
         _voiceRoles = new PaginatedSection<StaffCharacterEdge>(
             VoiceRolesDefaultSort,
@@ -186,9 +192,18 @@ public partial class StaffDetailsPageModel : ObservableObject
 
     public bool HasSiteUrl => !string.IsNullOrWhiteSpace(Staff?.SiteUrl);
 
+    public bool IsAuthenticated { get; private set; }
+
+    /// <summary>Viewer's favorite state for this staff member; drives the heart fill on the favourites stat.</summary>
+    public bool IsFavourite => Staff?.IsFavourite ?? false;
+
+    public bool CanToggleFavourite => IsAuthenticated && !_favouriteRunner.IsBusy && Staff is not null;
+
     partial void OnStaffChanged(Staff? value)
     {
         _parsedDescription = DescriptionParser.Parse(value?.Description);
+        OnPropertyChanged(nameof(IsFavourite));
+        ToggleFavouriteCommand.NotifyCanExecuteChanged();
     }
 
     partial void OnCurrentStateChanged(PageState oldValue, PageState newValue)
@@ -237,6 +252,9 @@ public partial class StaffDetailsPageModel : ObservableObject
 
         try
         {
+            IsAuthenticated = !string.IsNullOrWhiteSpace(await _authService.GetAccessTokenAsync(token).ConfigureAwait(true));
+            ToggleFavouriteCommand.NotifyCanExecuteChanged();
+
             var staff = await _aniListClient.GetStaffAsync(staffId, cancellationToken: token).ConfigureAwait(true);
             if (staff is null)
             {
@@ -375,6 +393,29 @@ public partial class StaffDetailsPageModel : ObservableObject
         {
             _logger.LogError(ex, "Failed to open AniList staff URL");
         }
+    }
+
+    [RelayCommand(CanExecute = nameof(CanToggleFavourite))]
+    private async Task ToggleFavourite()
+    {
+        var staff = Staff;
+        if (staff is null)
+        {
+            return;
+        }
+
+        if (await _favouriteRunner.ToggleAsync(staff, FavouriteKind.Staff, NotifyFavouriteChanged, () => _ = ToggleFavourite()))
+        {
+            SentrySdk.AddBreadcrumb($"Favourite toggled (staff {staff.Id} → {(staff.IsFavourite ? "on" : "off")})", "list", "user");
+        }
+    }
+
+    private void NotifyFavouriteChanged()
+    {
+        OnPropertyChanged(nameof(IsFavourite));
+        OnPropertyChanged(nameof(FavouritesDisplay));
+        OnPropertyChanged(nameof(HasFavourites));
+        ToggleFavouriteCommand.NotifyCanExecuteChanged();
     }
 
     [RelayCommand]

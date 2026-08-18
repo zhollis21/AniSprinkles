@@ -214,6 +214,9 @@ public sealed class CachingAniListClient : IAniListClient
     public Task<bool> DeleteMediaListEntryAsync(int entryId, CancellationToken cancellationToken = default)
         => _inner.DeleteMediaListEntryAsync(entryId, cancellationToken);
 
+    public Task<bool> ToggleFavouriteAsync(FavouriteKind kind, int id, CancellationToken cancellationToken = default)
+        => _inner.ToggleFavouriteAsync(kind, id, cancellationToken);
+
     public Task<int> GetCurrentUserIdAsync(CancellationToken cancellationToken = default)
         => _inner.GetCurrentUserIdAsync(cancellationToken);
 

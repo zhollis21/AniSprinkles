@@ -42,10 +42,13 @@
                                LineBreakMode="WordWrap" />
 
                         <HorizontalStackLayout Spacing="4" IsVisible="{Binding Studio.HasFavourites}">
+                            <HorizontalStackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ToggleFavouriteCommand}" />
+                            </HorizontalStackLayout.GestureRecognizers>
                             <Image WidthRequest="14" HeightRequest="14" VerticalOptions="Center">
                                 <Image.Source>
-                                    <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Heart24}"
-                                                     FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                    <FontImageSource Glyph="{Binding IsFavourite, Converter={StaticResource FavouriteHeartGlyphConverter}}"
+                                                     FontFamily="{Binding IsFavourite, Converter={StaticResource FavouriteHeartFontConverter}}"
                                                      Color="{StaticResource RainbowPink}"
                                                      Size="14" />
                                 </Image.Source>

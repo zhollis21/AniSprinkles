@@ -17,6 +17,8 @@
             <converters:SortFieldSelectedTextConverter x:Key="SortFieldSelectedTextConverter" />
             <converters:MediaFormatIconConverter x:Key="MediaFormatIconConverter" />
             <converters:ColorToBrushConverter x:Key="ColorToBrushConverter" />
+            <converters:FavouriteHeartGlyphConverter x:Key="FavouriteHeartGlyphConverter" />
+            <converters:FavouriteHeartFontConverter x:Key="FavouriteHeartFontConverter" />
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
