@@ -23,11 +23,15 @@ branch to build it on.
 
 ```bash
 gh issue view <N> --json number,title,state,body,labels,createdAt,updatedAt,closedAt,comments \
-  --template '#{{.number}} {{.title}} [{{.state}}] created={{.createdAt}} updated={{.updatedAt}} comments={{len .comments}}{{"\n"}}labels:{{range .labels}} {{.name}}{{end}}{{"\n"}}---{{"\n"}}{{.body}}'
+  --template '#{{.number}} {{.title}} [{{.state}}] created={{.createdAt}} updated={{.updatedAt}} closed={{.closedAt}}{{"\n"}}labels:{{range .labels}} {{.name}}{{end}}{{"\n"}}--- body ---{{"\n"}}{{.body}}{{range .comments}}{{"\n"}}--- comment by {{.author.login}} @ {{.createdAt}} ---{{"\n"}}{{.body}}{{end}}'
 ```
 
-Read the comments too — they often contain the decision that the body never got
-updated to reflect.
+That template deliberately renders every comment body, not just a count. Comments
+are where the decision that nobody folded back into the body tends to live, and
+they are disproportionately likely to be the thing that settles an issue: #56's
+entire status is a one-line comment saying it was filed by mistake, and #52's
+open design question exists only in its comment thread. A count tells you
+nothing.
 
 Issue bodies in this repo vary wildly in density, and that difference should
 change how you work:

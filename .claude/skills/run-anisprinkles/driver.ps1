@@ -61,13 +61,68 @@ $Sdk = Resolve-Sdk
 $Adb = Join-Path $Sdk 'platform-tools\adb.exe'
 $Emu = Join-Path $Sdk 'emulator\emulator.exe'
 
-function Adb { & $Adb @args }
+# ---------------------------------------------------------------- device target
+# Every adb call routes through Adb/AdbOut so a single `-s <serial>` is applied
+# consistently. Without it a second attached device (a phone plugged in, a
+# leftover AVD) makes every command die with "more than one device/emulator",
+# which reads like a driver bug rather than an ambiguity.
+$script:Serial = $env:ANDROID_SERIAL
+
+function Adb {
+    if ($script:Serial) { & $Adb -s $script:Serial @args } else { & $Adb @args }
+}
 
 # `adb shell` translates LF -> CRLF and mangles binary. `exec-out` does not.
 # Always use this for anything you intend to parse or write to a file.
-function AdbOut { & $Adb exec-out @args }
+function AdbOut {
+    if ($script:Serial) { & $Adb -s $script:Serial exec-out @args } else { & $Adb exec-out @args }
+}
 
 function Say($msg) { Write-Host "[driver] $msg" }
+
+function Get-AttachedDevices {
+    # Only devices in `device` state — `offline` and `unauthorized` cannot be driven.
+    @(& $Adb devices | ForEach-Object { if ($_ -match '^(\S+)\s+device\s*$') { $Matches[1] } })
+}
+
+function Get-AvdName {
+    param([string]$DeviceSerial)
+    # `adb -s <serial> emu avd name` prints the AVD name, then a line reading OK.
+    # Physical devices have no console and just error, so treat failure as "no AVD".
+    $out = & $Adb -s $DeviceSerial emu avd name 2>$null
+    if (-not $out) { return $null }
+    ($out | Where-Object { $_ -and $_.Trim() -and $_.Trim() -ne 'OK' } | Select-Object -First 1).Trim()
+}
+
+function Resolve-Target {
+    # Pick the device every later command will talk to. Explicit ANDROID_SERIAL wins;
+    # otherwise a lone device is unambiguous, and anything else needs the user to say.
+    param([switch]$Required)
+    if ($script:Serial) { return $script:Serial }
+    # @() is required at the CALL site, not just inside the function: PowerShell
+    # unrolls a one-element array on return, so without it $devices is a bare
+    # string and $devices[0] silently yields its first character.
+    $devices = @(Get-AttachedDevices)
+    if ($devices.Count -eq 1) { $script:Serial = $devices[0]; return $script:Serial }
+    if ($devices.Count -gt 1) {
+        $detail = ($devices | ForEach-Object { "  $_  (avd: $(Get-AvdName $_))" }) -join "`n"
+        throw "More than one device attached — set ANDROID_SERIAL to choose:`n$detail"
+    }
+    if ($Required) { throw 'No device attached. Run: driver.ps1 boot' }
+    return $null
+}
+
+function Wait-BootCompleted {
+    param([int]$Seconds = 180)
+    for ($i = 0; $i -lt $Seconds; $i++) {
+        $b = (AdbOut getprop sys.boot_completed) -join '' -replace '\s', ''
+        if ($b -eq '1') { Say "boot complete after ${i}s"; return }
+        Start-Sleep -Seconds 1
+    }
+    # Previously this loop just fell through, so a device that never finished
+    # booting was reported as ready and the next command failed confusingly.
+    throw "sys.boot_completed never reached 1 after ${Seconds}s"
+}
 
 # ------------------------------------------------------------------- UI probing
 
@@ -176,30 +231,47 @@ function Cmd-Env {
     Say "repo     : $RepoRoot"
     Say "apk      : $Apk  (exists: $(Test-Path $Apk))"
     Say 'devices  :'
-    Adb devices
+    foreach ($d in Get-AttachedDevices) { Say "  $d  (avd: $(Get-AvdName $d))" }
+    # Deliberately non-fatal: `env` is what you run to diagnose "no device", so it
+    # must report the situation rather than throw on it.
+    $t = try { Resolve-Target } catch { $null }
+    Say "target   : $(if ($t) { $t } else { '(none resolved)' })"
 }
 
 function Cmd-Boot {
     param([string]$Avd = 'pixel_9_-_api_36')
 
-    $running = (Adb devices) -match 'emulator-\d+\s+device'
-    if ($running) { Say 'emulator already online'; return }
+    # Reuse an emulator only if it is the AVD that was actually asked for. Matching
+    # on "any emulator is online" meant `boot <other-avd>` silently did nothing and
+    # every subsequent command drove the wrong device.
+    $existing = Get-AttachedDevices | Where-Object { (Get-AvdName $_) -eq $Avd } | Select-Object -First 1
+    if ($existing) {
+        $script:Serial = $existing
+        Say "AVD $Avd already online at $existing"
+    } else {
+        $others = @(Get-AttachedDevices)
+        if ($others) { Say "note: $($others.Count) other device(s) attached; targeting $Avd once it boots" }
 
-    Say "starting AVD $Avd"
-    # ANDROID_SDK_ROOT must match the emulator we picked, or it re-searches PATH's SDK.
-    $env:ANDROID_SDK_ROOT = $Sdk
-    $env:ANDROID_HOME = $Sdk
-    Start-Process -FilePath $Emu `
-        -ArgumentList @('-avd', $Avd, '-no-boot-anim', '-no-snapshot-save') `
-        -WindowStyle Minimized
+        Say "starting AVD $Avd"
+        # ANDROID_SDK_ROOT must match the emulator we picked, or it re-searches PATH's SDK.
+        $env:ANDROID_SDK_ROOT = $Sdk
+        $env:ANDROID_HOME = $Sdk
+        Start-Process -FilePath $Emu `
+            -ArgumentList @('-avd', $Avd, '-no-boot-anim', '-no-snapshot-save') `
+            -WindowStyle Minimized
 
-    Adb wait-for-device
-    Say 'device attached, waiting for sys.boot_completed'
-    for ($i = 0; $i -lt 180; $i++) {
-        $b = (AdbOut getprop sys.boot_completed) -join '' -replace '\s', ''
-        if ($b -eq '1') { Say "boot complete after ${i}s"; break }
-        Start-Sleep -Seconds 1
+        Say 'waiting for the new emulator to attach'
+        for ($i = 0; $i -lt 180; $i++) {
+            $match = Get-AttachedDevices | Where-Object { (Get-AvdName $_) -eq $Avd } | Select-Object -First 1
+            if ($match) { $script:Serial = $match; Say "attached at $match after ${i}s"; break }
+            Start-Sleep -Seconds 1
+        }
+        if (-not $script:Serial) { throw "AVD $Avd never attached to adb" }
     }
+
+    # Run this even when reusing a device: `device` state only means adb can talk
+    # to it, not that Android has finished booting.
+    Wait-BootCompleted
     Adb shell wm dismiss-keyguard *> $null
     Adb shell settings put global window_animation_scale 0 *> $null
     Adb shell settings put global transition_animation_scale 0 *> $null
@@ -381,7 +453,17 @@ function Cmd-AppLog {
 # --------------------------------------------------------------- dispatch
 
 $a = @($Args)
-switch ($Command.ToLowerInvariant()) {
+$cmd = $Command.ToLowerInvariant()
+
+# Anything that talks to a device needs an unambiguous target resolved up front,
+# so ambiguity surfaces as "set ANDROID_SERIAL to choose" rather than adb's bare
+# "more than one device/emulator" halfway through a flow. `boot` and `up` pick
+# their own target from the requested AVD; the rest need one already attached.
+if ($cmd -notin @('help', 'env', 'build', 'boot', 'up')) {
+    Resolve-Target -Required | Out-Null
+}
+
+switch ($cmd) {
     'help'       { Cmd-Help }
     'env'        { Cmd-Env }
     'boot'       { if ($a[0]) { Cmd-Boot $a[0] } else { Cmd-Boot } }

@@ -94,7 +94,7 @@ Then drive it. Every command is `driver.ps1 <command> [args]`:
 text you saw → `wait-for` the text you expect next → `shot` → `dump` again.
 Never `shot` straight after a `tap` that navigates (see Gotchas).
 
-### Worked example — verify the favorite toggle (this branch's feature)
+### Worked example — a full round trip
 
 Every line below was run against the emulator; the output is verbatim.
 
@@ -210,6 +210,25 @@ works — that is what the driver above is for.
   prints `Failure [...]` and can still exit 0 — the driver parses the output text,
   so don't trust a bare `adb install`'s exit code.
 
+- **With two devices attached, pick one explicitly.** Every driver command targets
+  a single device via `adb -s`. With one device it resolves automatically; with
+  more than one it stops and lists them rather than letting `adb` fail with a bare
+  "more than one device/emulator" partway through a flow. Set `ANDROID_SERIAL` to
+  choose:
+
+  ```bash
+  ANDROID_SERIAL=emulator-5554 pwsh -NoProfile -File .claude/skills/run-anisprinkles/driver.ps1 shot home
+  ```
+
+  `driver.ps1 env` lists every attached device with its AVD name and shows which
+  one is currently resolved.
+
+- **`boot` reuses an emulator only if it is the AVD you asked for.** A different
+  AVD already running does not count, so `boot tablet_h-dpi_13_5in_-_api_36_0`
+  starts that tablet even with a Pixel online. It also waits for
+  `sys.boot_completed` on reuse, because `device` state only means adb can talk to
+  the emulator — not that Android finished booting.
+
 - **Cold launch is ~19s** (`TotalTime: 18697`) — Debug MAUI with embedded
   assemblies. `driver.ps1 launch` polls for the process, so it returns before the
   UI has content. `wait-for` is what tells you the page actually rendered.
@@ -226,6 +245,8 @@ works — that is what the driver above is for.
 | `UI dump was empty — is the app foregrounded?` | The app is backgrounded or crashed. `driver.ps1 resume`, then `driver.ps1 logcat`. |
 | `No node with text='X'` right after it worked | You probably backed out to the launcher. `driver.ps1 dump` to confirm, then `resume`. |
 | `'X' never appeared within Ns` on Discover | Search bar is still open with an old query — `driver.ps1 search`. |
+| `More than one device attached — set ANDROID_SERIAL to choose` | Two emulators/devices online. Pick one with `ANDROID_SERIAL=<serial>`, or shut the other down. `driver.ps1 env` lists them. |
+| `sys.boot_completed never reached 1 after 180s` | The emulator attached to adb but never finished booting. Check the emulator window; a wipe-data from Device Manager usually clears it. |
 | `df 'C:/Program Files/Git/data': No such file` | Git Bash path mangling — `MSYS_NO_PATHCONV=1`. |
 | App runs but shows the signed-out screen | You built without `-p:CiBuild=true`. Rebuild with `driver.ps1 build`. |
 
