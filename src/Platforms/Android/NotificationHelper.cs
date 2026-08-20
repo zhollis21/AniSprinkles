@@ -41,8 +41,8 @@ public static class NotificationHelper
 
         var builder = new NotificationCompat.Builder(context, ChannelId);
         builder.SetSmallIcon(_Microsoft.Android.Resource.Designer.ResourceConstant.Mipmap.appicon);
-        builder.SetContentTitle($"{title} \u00b7 Ep {episode}");
-        builder.SetContentText("New episode aired");
+        builder.SetContentTitle(title);
+        builder.SetContentText($"Episode {episode} is now available");
         builder.SetAutoCancel(true);
         builder.SetGroup(GroupKey);
 

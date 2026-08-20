@@ -71,6 +71,9 @@ internal sealed class CIAniListClient : IAniListClient
     public Task<bool> DeleteMediaListEntryAsync(int entryId, CancellationToken cancellationToken = default)
         => Task.FromResult(true);
 
+    public Task<bool> ToggleFavouriteAsync(FavouriteKind kind, int id, CancellationToken cancellationToken = default)
+        => Task.FromResult(true);
+
     public Task<int> GetCurrentUserIdAsync(CancellationToken cancellationToken = default)
         => Task.FromResult(StubData.Viewer.Id);
 

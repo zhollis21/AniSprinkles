@@ -6,16 +6,19 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using IconFont.Maui.FluentIcons;
 using Microsoft.Extensions.Logging;
+using Sentry;
 
 namespace AniSprinkles.PageModels;
 
 public partial class CharacterDetailsPageModel : ObservableObject
 {
     private readonly IAniListClient _aniListClient;
+    private readonly IAuthService _authService;
     private readonly INavigationService _navigationService;
     private readonly IUserFeedback _feedback;
     private readonly ILogger<CharacterDetailsPageModel> _logger;
     private readonly ListOperationRunner _listOps;
+    private readonly FavouriteToggleRunner _favouriteRunner;
 
     private const int PageSize = 25;
     private const string AppearancesDefaultSort = "POPULARITY_DESC";
@@ -103,15 +106,18 @@ public partial class CharacterDetailsPageModel : ObservableObject
 
     public CharacterDetailsPageModel(
         IAniListClient aniListClient,
+        IAuthService authService,
         INavigationService navigationService,
         IUserFeedback feedback,
         ILogger<CharacterDetailsPageModel> logger)
     {
         _aniListClient = aniListClient;
+        _authService = authService;
         _navigationService = navigationService;
         _feedback = feedback;
         _logger = logger;
         _listOps = new ListOperationRunner(logger, feedback);
+        _favouriteRunner = new FavouriteToggleRunner(aniListClient, feedback, logger);
 
         _appearances = new PaginatedSection<CharacterMediaEdge>(
             AppearancesDefaultSort,
@@ -217,9 +223,18 @@ public partial class CharacterDetailsPageModel : ObservableObject
 
     public bool HasSiteUrl => !string.IsNullOrWhiteSpace(Character?.SiteUrl);
 
+    public bool IsAuthenticated { get; private set; }
+
+    /// <summary>Viewer's favorite state for this character; drives the heart fill on the favourites stat.</summary>
+    public bool IsFavourite => Character?.IsFavourite ?? false;
+
+    public bool CanToggleFavourite => IsAuthenticated && !_favouriteRunner.IsBusy && Character is not null;
+
     partial void OnCharacterChanged(Character? value)
     {
         _parsedDescription = DescriptionParser.Parse(value?.Description);
+        OnPropertyChanged(nameof(IsFavourite));
+        ToggleFavouriteCommand.NotifyCanExecuteChanged();
     }
 
     partial void OnCurrentStateChanged(PageState oldValue, PageState newValue)
@@ -268,6 +283,9 @@ public partial class CharacterDetailsPageModel : ObservableObject
 
         try
         {
+            IsAuthenticated = !string.IsNullOrWhiteSpace(await _authService.GetAccessTokenAsync(token).ConfigureAwait(true));
+            ToggleFavouriteCommand.NotifyCanExecuteChanged();
+
             var character = await _aniListClient.GetCharacterAsync(characterId, cancellationToken: token).ConfigureAwait(true);
             if (character is null)
             {
@@ -390,6 +408,31 @@ public partial class CharacterDetailsPageModel : ObservableObject
         {
             _logger.LogError(ex, "Failed to open AniList character URL");
         }
+    }
+
+    [RelayCommand(CanExecute = nameof(CanToggleFavourite))]
+    private async Task ToggleFavourite()
+    {
+        var character = Character;
+        // Re-check the gate here (not just via the command's CanExecute) so the failure-snackbar
+        // Retry can't run an optimistic flip if auth/busy state changed since the failure.
+        if (character is null || !CanToggleFavourite)
+        {
+            return;
+        }
+
+        if (await _favouriteRunner.ToggleAsync(character, FavouriteKind.Character, NotifyFavouriteChanged, () => _ = ToggleFavourite()))
+        {
+            SentrySdk.AddBreadcrumb($"Favourite toggled (character {character.Id} → {(character.IsFavourite ? "on" : "off")})", "list", "user");
+        }
+    }
+
+    private void NotifyFavouriteChanged()
+    {
+        OnPropertyChanged(nameof(IsFavourite));
+        OnPropertyChanged(nameof(FavouritesDisplay));
+        OnPropertyChanged(nameof(HasFavourites));
+        ToggleFavouriteCommand.NotifyCanExecuteChanged();
     }
 
     [RelayCommand]
