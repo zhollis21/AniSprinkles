@@ -12,6 +12,21 @@ name: CI Build & UI Preview
 on:
   pull_request:
     branches: [main]
+    # This workflow costs a full MAUI build plus an emulator boot (~20-30 min), so
+    # skip it for changes that cannot affect the app. GitHub skips the run only when
+    # EVERY changed file matches one of these, so a PR touching both docs and src/
+    # still builds.
+    #
+    # Deliberately NOT ignored: .github/** (workflow edits should be validated by
+    # running) and .editorconfig (it carries analyzer rules, and the build must stay
+    # at zero warnings).
+    paths-ignore:
+      - ".claude/**"
+      - "**/*.md"
+      - "StoreImages/**"
+      - "screenshots/**"
+      - ".gitignore"
+      - ".gitattributes"
 
 permissions:
   contents: write
