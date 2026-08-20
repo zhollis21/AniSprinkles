@@ -95,4 +95,4 @@ dotnet build src/AniSprinkles.csproj -c Debug -f net10.0-android -p:EmbedAssembl
 | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
 | [`AGENTS.md`](AGENTS.md)                   | Architecture reference, conventions, build commands, and AI agent instructions                                             |
 | [`DEVELOPER_NOTES.md`](DEVELOPER_NOTES.md) | Local dev notes: error simulation, troubleshooting tips                                                                    |
-| [`.claude/skills/`](.claude/skills/)       | Workflow slash commands: `/ani-debug`, `/ani-review`, `/ani-pr-feedback`, `/project-architecture`, `/airing-notifications` |
+| [`.claude/skills/`](.claude/skills/)       | Workflow slash commands: `/ani-kickoff`, `/run-anisprinkles`, `/ani-debug`, `/ani-review`, `/ani-pr-feedback`, `/project-architecture`, `/airing-notifications` |

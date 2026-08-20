@@ -91,7 +91,7 @@ pwsh tools/Get-OpenPrComments.ps1
 
 Requires `gh` CLI authenticated (or `GH_TOKEN` env var). See `.claude/skills/ani-pr-feedback/SKILL.md` (`/ani-pr-feedback`) for the full evaluation workflow.
 
-Project slash commands (`/ani-debug`, `/ani-review`, `/ani-pr-feedback`, `/project-architecture`, `/airing-notifications`) live in `.claude/skills/`.
+Project slash commands (`/ani-kickoff`, `/run-anisprinkles`, `/ani-debug`, `/ani-review`, `/ani-pr-feedback`, `/project-architecture`, `/airing-notifications`) live in `.claude/skills/`.
 
 ## Working with AI Agents
 
