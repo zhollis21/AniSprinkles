@@ -2,13 +2,15 @@ using AniSprinkles.Utilities;
 
 namespace AniSprinkles.Models;
 
-public class Studio
+public class Studio : IFavouritable
 {
     public int Id { get; set; }
     public string? Name { get; set; }
     public bool? IsAnimationStudio { get; set; }
     public bool? IsMain { get; set; }
     public int? Favourites { get; set; }
+    /// <summary>Whether the signed-in viewer has favorited this entity (from <c>isFavourite</c>).</summary>
+    public bool IsFavourite { get; set; }
     public string? SiteUrl { get; set; }
     public List<StudioMediaEdge> Media { get; set; } = [];
     public PageInfo? MediaPageInfo { get; set; }

@@ -11,6 +11,12 @@ public interface IUserFeedback
     /// <summary>Shows a brief snackbar with the given message. Never throws — display failures are logged.</summary>
     Task ShowSnackbarAsync(string message);
 
+    /// <summary>
+    /// Shows a snackbar with an action button (e.g. "Retry") that invokes <paramref name="action"/>
+    /// when tapped. Never throws — display failures are logged.
+    /// </summary>
+    Task ShowSnackbarAsync(string message, string actionText, Action action);
+
     /// <summary>Shows a short toast with the given message. Never throws — display failures are logged.</summary>
     Task ShowToastAsync(string message);
 }

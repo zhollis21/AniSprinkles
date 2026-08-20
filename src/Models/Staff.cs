@@ -3,7 +3,7 @@ using AniSprinkles.Utilities;
 
 namespace AniSprinkles.Models;
 
-public class Staff
+public class Staff : IFavouritable
 {
     public int Id { get; set; }
     public CharacterName? Name { get; set; }
@@ -19,6 +19,8 @@ public class Staff
     public string? HomeTown { get; set; }
     public string? BloodType { get; set; }
     public int? Favourites { get; set; }
+    /// <summary>Whether the signed-in viewer has favorited this entity (from <c>isFavourite</c>).</summary>
+    public bool IsFavourite { get; set; }
     public string? SiteUrl { get; set; }
 
     // ObservableCollection so PageModel can append on Load More + clear/replace on sort change

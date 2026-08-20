@@ -286,6 +286,29 @@ public class AniListClient : IAniListClient
         return data.DeleteMediaListEntry?.Deleted == true;
     }
 
+    public async Task<bool> ToggleFavouriteAsync(FavouriteKind kind, int id, CancellationToken cancellationToken = default)
+    {
+        var token = await RequireAccessTokenAsync(cancellationToken).ConfigureAwait(false);
+        var variables = new
+        {
+            animeId = kind == FavouriteKind.Anime ? id : (int?)null,
+            characterId = kind == FavouriteKind.Character ? id : (int?)null,
+            staffId = kind == FavouriteKind.Staff ? id : (int?)null,
+            studioId = kind == FavouriteKind.Studio ? id : (int?)null,
+        };
+
+        // We only care that the mutation succeeds; the on/off state is driven optimistically by the
+        // caller, so the selection set exists purely to make the mutation valid.
+        await SendAsync<ToggleFavouriteData>(
+            "ToggleFavourite",
+            ToggleFavouriteMutation,
+            variables,
+            token,
+            cancellationToken).ConfigureAwait(false);
+
+        return true;
+    }
+
     public async Task<int> GetCurrentUserIdAsync(CancellationToken cancellationToken = default)
     {
         var token = await RequireAccessTokenAsync(cancellationToken).ConfigureAwait(false);
@@ -927,6 +950,7 @@ public class AniListClient : IAniListClient
             MeanScore = dto.MeanScore,
             Popularity = dto.Popularity,
             Favourites = dto.Favourites,
+            IsFavourite = dto.IsFavourite ?? false,
             Trending = dto.Trending,
             StartDate = dto.StartDate,
             EndDate = dto.EndDate,
@@ -1064,6 +1088,7 @@ public class AniListClient : IAniListClient
             Name = dto.Name,
             IsAnimationStudio = dto.IsAnimationStudio,
             Favourites = dto.Favourites,
+            IsFavourite = dto.IsFavourite ?? false,
             SiteUrl = dto.SiteUrl,
             MediaPageInfo = MapPageInfo(dto.Media?.PageInfo),
         };
@@ -1105,6 +1130,7 @@ public class AniListClient : IAniListClient
             HomeTown = dto.HomeTown,
             BloodType = dto.BloodType,
             Favourites = dto.Favourites,
+            IsFavourite = dto.IsFavourite ?? false,
             SiteUrl = dto.SiteUrl,
             CharactersPageInfo = MapPageInfo(dto.Characters?.PageInfo),
             StaffMediaPageInfo = MapPageInfo(dto.StaffMedia?.PageInfo),
@@ -1164,6 +1190,7 @@ public class AniListClient : IAniListClient
             BloodType = dto.BloodType,
             DateOfBirth = dto.DateOfBirth,
             Favourites = dto.Favourites,
+            IsFavourite = dto.IsFavourite ?? false,
             SiteUrl = dto.SiteUrl,
             MediaPageInfo = MapPageInfo(dto.Media?.PageInfo),
         };
@@ -1498,6 +1525,12 @@ public class AniListClient : IAniListClient
         public DeletedResult? DeleteMediaListEntry { get; set; }
     }
 
+    private sealed class ToggleFavouriteData
+    {
+        // The response body is intentionally unused — success is signalled by the absence of errors.
+        public object? ToggleFavourite { get; set; }
+    }
+
     private sealed class DeletedResult
     {
         public bool Deleted { get; set; }
@@ -1612,6 +1645,7 @@ public class AniListClient : IAniListClient
         public int? MeanScore { get; set; }
         public int? Popularity { get; set; }
         public int? Favourites { get; set; }
+        public bool? IsFavourite { get; set; }
         public int? Trending { get; set; }
         public MediaDate? StartDate { get; set; }
         public MediaDate? EndDate { get; set; }
@@ -1774,6 +1808,7 @@ public class AniListClient : IAniListClient
         public string? HomeTown { get; set; }
         public string? BloodType { get; set; }
         public int? Favourites { get; set; }
+        public bool? IsFavourite { get; set; }
         public string? SiteUrl { get; set; }
         public StaffCharacterConnectionDto? Characters { get; set; }
         public StaffMediaConnectionDto? StaffMedia { get; set; }
@@ -1820,6 +1855,7 @@ public class AniListClient : IAniListClient
         public string? Name { get; set; }
         public bool? IsAnimationStudio { get; set; }
         public int? Favourites { get; set; }
+        public bool? IsFavourite { get; set; }
         public string? SiteUrl { get; set; }
         public StudioMediaConnectionDto? Media { get; set; }
     }
@@ -1841,6 +1877,7 @@ public class AniListClient : IAniListClient
         public string? BloodType { get; set; }
         public MediaDate? DateOfBirth { get; set; }
         public int? Favourites { get; set; }
+        public bool? IsFavourite { get; set; }
         public string? SiteUrl { get; set; }
         public CharacterMediaConnectionDto? Media { get; set; }
     }
@@ -2012,6 +2049,7 @@ query Media($id: Int!) {
     meanScore
     popularity
     favourites
+    isFavourite
     trending
     tags { id name rank isMediaSpoiler isGeneralSpoiler isAdult description category }
     studios {
@@ -2136,6 +2174,13 @@ mutation DeleteMediaListEntry($id: Int!) {
   }
 }";
 
+    private const string ToggleFavouriteMutation = @"
+mutation ToggleFavourite($animeId: Int, $characterId: Int, $staffId: Int, $studioId: Int) {
+  ToggleFavourite(animeId: $animeId, characterId: $characterId, staffId: $staffId, studioId: $studioId) {
+    anime(page: 1, perPage: 1) { pageInfo { total } }
+  }
+}";
+
     private const string ViewerFullQuery = @"
 query ViewerFull {
   Viewer {
@@ -2209,6 +2254,7 @@ query Staff($id: Int!, $charactersPage: Int = 1, $mediaPage: Int = 1, $character
     homeTown
     bloodType
     favourites
+    isFavourite
     siteUrl
     characters(sort: $charactersSort, page: $charactersPage, perPage: 25) {
       pageInfo { hasNextPage currentPage }
@@ -2400,6 +2446,7 @@ query Studio($id: Int!, $mediaPage: Int = 1, $mediaPerPage: Int = 25, $mediaSort
     name
     isAnimationStudio
     favourites
+    isFavourite
     siteUrl
     media(sort: $mediaSort, page: $mediaPage, perPage: $mediaPerPage) {
       pageInfo { hasNextPage currentPage }
@@ -2454,6 +2501,7 @@ query Character($id: Int!, $mediaPage: Int = 1, $mediaSort: [MediaSort] = [POPUL
     bloodType
     dateOfBirth { year month day }
     favourites
+    isFavourite
     siteUrl
     media(sort: $mediaSort, page: $mediaPage, perPage: 25) {
       pageInfo { hasNextPage currentPage }

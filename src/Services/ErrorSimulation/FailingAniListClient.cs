@@ -75,6 +75,9 @@ internal sealed class FailingAniListClient : IAniListClient
     public Task<bool>
         DeleteMediaListEntryAsync(int entryId, CancellationToken ct = default) => throw Fail();
 
+    public Task<bool>
+        ToggleFavouriteAsync(FavouriteKind kind, int id, CancellationToken ct = default) => throw Fail();
+
     public Task<int>
         GetCurrentUserIdAsync(CancellationToken ct = default) => throw Fail();
 

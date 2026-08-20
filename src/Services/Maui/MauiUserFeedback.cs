@@ -24,6 +24,19 @@ public sealed class MauiUserFeedback(ILogger<MauiUserFeedback> logger) : IUserFe
         }
     }
 
+    public async Task ShowSnackbarAsync(string message, string actionText, Action action)
+    {
+        try
+        {
+            await Snackbar.Make(message, action: action, actionButtonText: actionText, duration: TimeSpan.FromSeconds(5))
+                .Show().ConfigureAwait(true);
+        }
+        catch (Exception ex)
+        {
+            logger.LogWarning(ex, "Snackbar display failed");
+        }
+    }
+
     public async Task ShowToastAsync(string message)
     {
         try

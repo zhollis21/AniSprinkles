@@ -2,7 +2,7 @@ using AniSprinkles.Utilities;
 
 namespace AniSprinkles.Models;
 
-public class Media
+public class Media : IFavouritable
 {
     public int Id { get; set; }
     public int? IdMal { get; set; }
@@ -26,6 +26,8 @@ public class Media
     public int? MeanScore { get; set; }
     public int? Popularity { get; set; }
     public int? Favourites { get; set; }
+    /// <summary>Whether the signed-in viewer has favorited this entity (from <c>isFavourite</c>).</summary>
+    public bool IsFavourite { get; set; }
     public int? Trending { get; set; }
     public MediaDate? StartDate { get; set; }
     public MediaDate? EndDate { get; set; }
