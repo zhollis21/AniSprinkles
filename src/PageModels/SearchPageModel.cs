@@ -219,6 +219,28 @@ public partial class SearchPageModel : ObservableObject
         _hasSearchedThisSession = true;
         _searchedWithAdultContent = AppSettings.DisplayAdultContent;
 
+        // Auth is read here too, so both halves of the context describe the same moment rather than
+        // the adult flag coming from issue time and auth from whenever the page last appeared.
+        // Deliberately outside the fetch's try below: that catch reports "Search failed", and a
+        // token read blowing up must not be presented to the user as a failed search. On failure,
+        // keep whatever OnAppearingAsync last recorded instead of guessing — a wrong value here
+        // either strands stale results or forces a pointless refetch.
+        try
+        {
+            _searchedAuthenticated = !string.IsNullOrWhiteSpace(await _authService.GetAccessTokenAsync());
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Search auth-context read failed; keeping the previous baseline.");
+        }
+
+        // That await is a new suspension point, so a keystroke may have superseded this search
+        // while it ran. Bail before spending the request.
+        if (token.IsCancellationRequested)
+        {
+            return;
+        }
+
         try
         {
             var (items, pageInfo) = await _aniListClient.SearchAnimePageAsync(
