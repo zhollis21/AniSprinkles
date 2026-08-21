@@ -180,6 +180,16 @@ public partial class SearchPageModel : ObservableObject
         IsSearchActive = true;
         IsSearching = true;
         HasNoSearchResults = false; // a previous query's empty state must not show under the new fetch
+
+        // Drop the previous query's results the moment a new query starts. Keeping them on screen
+        // through the debounce reads nicer, but it leaves items belonging to the OLD query sitting
+        // in the section with HasNextPage still set while _activeSearchQuery has moved on. If the
+        // new query's page 1 then FAILS, nothing re-seeds, and scrolling to the threshold fetches
+        // page 2 of the new query and appends it to the old query's results — one list, silently
+        // mixing two searches. Reset clears HasNextPage (so Load More cannot fire until a
+        // successful Seed) and bumps the generation, superseding any Load More already in flight.
+        SearchSection.Reset();
+
         _searchDebounceCts = new CancellationTokenSource();
         _ = DebouncedSearchAsync(query, _searchDebounceCts.Token);
     }
@@ -255,13 +265,11 @@ public partial class SearchPageModel : ObservableObject
         // network/API failure here would otherwise propagate out of the CollectionView's threshold
         // command and crash. The runner swallows + snackbars it.
         //
-        // !IsSearching matters: between the debounce firing (which switches _activeSearchQuery to
-        // the new text) and the page-1 response landing, the OLD query's items are still on screen
-        // with HasNextPage set. Scrolling to the threshold in that window would fetch page 2 of the
-        // NEW query and append it to the OLD results. A successful Seed bumps the section's
-        // generation and discards that, but a FAILED page 1 never seeds — leaving the mixed list
-        // visible. Gating on the in-flight search closes the window instead of relying on the seed.
-        => SearchSection.CanLoadMore && !IsSearching
+        // No in-flight check needed: OnSearchTextChanged resets the section on every new query, so
+        // HasNextPage (and therefore CanLoadMore) stays false until a successful Seed for the
+        // CURRENT query. There is no window where the section can page a query its items did not
+        // come from.
+        => SearchSection.CanLoadMore
             ? _listOps.RunAsync(
                 "Search · Load More",
                 "search",

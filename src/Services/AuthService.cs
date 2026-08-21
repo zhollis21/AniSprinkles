@@ -46,6 +46,14 @@ public class AuthService : IAuthService
             {
                 await SignOutAsync();
             }
+            catch (OperationCanceledException)
+            {
+                // As in LoadAsync: let cancellation propagate to the caller that owns the token.
+                // This path is the more exposed of the two — SignOutAsync drives the Android
+                // CookieManager through MainThread.InvokeOnMainThreadAsync, which can surface a
+                // cancellation on its own during teardown.
+                throw;
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "AUTH sign-out after expiry failed; reporting no token anyway.");
@@ -164,6 +172,16 @@ public class AuthService : IAuthService
             {
                 ExpiresAt = expiry;
             }
+        }
+        catch (OperationCanceledException)
+        {
+            // Cancellation is the caller's business, not a storage failure. The detail page models
+            // pass a PageLoadScope token into GetAccessTokenAsync and expect navigating away to
+            // cancel rather than to quietly report "signed out" and wipe the shared auth state.
+            // Nothing below currently takes the token — MAUI's ISecureStorage.GetAsync has no
+            // overload for one — but this keeps the broad catch from swallowing a cancellation if
+            // that changes, which is exactly the kind of thing that would be silent for months.
+            throw;
         }
         catch (Exception ex)
         {
