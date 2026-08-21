@@ -17,6 +17,18 @@ deliberately: understand → verify → analyze → ask → agree → *then* bra
 Nothing gets implemented during this skill. It ends at an approved plan and a
 branch to build it on.
 
+It does write to GitHub, in two narrow places, because findings that live only in
+a chat window get re-derived at full price by the next person to open the issue:
+
+- **Step 2** posts verified facts it observed — issue state, code that exists at a
+  cited line, the commit that changed something. Facts only, never conclusions.
+- **Step 6** corrects statements in the issue that the approved plan just made
+  untrue.
+
+Both are deliberate. What it never does unattended is publish a judgement — that
+an issue is stale, or should be closed, or that one approach beats another. Those
+stay in the conversation where they can be argued with.
+
 ---
 
 ## Step 1 — Load the issues
@@ -165,6 +177,56 @@ rather than impressions — "this looks outdated" is not actionable; "PR #61
 shipped the logger provider but not the worker migration, so the second half is
 still valid" is.
 
+**Record verified facts on the issue.** Findings die in the chat window otherwise,
+and the next person to open the issue pays the same verification cost again. Post
+them without asking — but only facts, and only with citations, because an
+unattended write to a public issue is the one place a wrong claim does lasting
+damage.
+
+**Post automatically only what a command proved.** Each line must be checkable by
+someone reading it, and carry the evidence that makes it falsifiable:
+
+- issue state and dates (`#56 was closed 2026-04-16`)
+- code that exists now, cited as `path:line`
+- a commit or PR that changed something, cited by SHA or number
+- another issue covering related scope, cited by number — state the overlap you
+  observed; *blocks* and *supersedes* are conclusions rather than observations,
+  so they stay in the chat
+
+**Never post automatically:** that an issue is stale, that it should be closed or
+narrowed, which approach is better, or anything else you concluded rather than
+observed. Those belong in the chat, where the user can correct them — and they
+do get corrected. A first reading of #63 that AGENTS.md had overruled it looked
+solid and was wrong; only comparing timestamps showed why. Had that been posted
+unattended, a false claim would be sitting on the issue with no one to catch it.
+
+**Update your previous comment instead of adding another.** Kickoff runs repeat,
+and an issue accumulating near-identical findings comments is worse than no
+findings at all. Mark the comment and look for that marker first — the same
+pattern `ci-build-and-preview.yml` uses for screenshots:
+
+```bash
+# Find a previous findings comment (numeric id, or empty if this is the first).
+# --paginate is load-bearing: the endpoint returns 30 comments per page by
+# default, so on a busy issue an unpaginated lookup misses the marker and
+# silently posts a duplicate instead of updating.
+gh api --paginate 'repos/<owner>/<repo>/issues/<N>/comments?per_page=100' \
+  --jq '.[] | select(.body | contains("<!-- ani-kickoff-findings -->")) | .id'
+
+# Update it in place
+gh api repos/<owner>/<repo>/issues/comments/<id> -X PATCH -f body='<!-- ani-kickoff-findings -->
+...'
+
+# Or, if none exists, create it
+gh issue comment <N> --body '<!-- ani-kickoff-findings -->
+...'
+```
+
+Write it in the user's own voice as plain repo notes — no agent branding, per
+`AGENTS.md`. One consolidated comment per issue, not one per finding. If
+verification turned up nothing worth persisting, post nothing; silence is a
+perfectly good result.
+
 ---
 
 ## Step 3 — Work out the right solution
@@ -253,7 +315,65 @@ should be able to see their input reflected rather than having to check.
 
 ---
 
-## Step 6 — Cut the branch
+## Step 6 — Correct what the plan just made untrue
+
+Planning frequently supersedes something the issue states outright. If the issue
+says four tabs and you agreed on five, the issue is now wrong, and it will stay
+wrong until someone rediscovers it mid-implementation. Fixing it costs seconds
+here and is the cheapest moment it will ever cost.
+
+Compare the approved plan against the issue's **specific claims** — acceptance
+criteria, checklists, counts, named files, proposed APIs — and change only what
+the plan actually contradicts. This is narrow work. You are not rewriting the
+issue, summarising the plan into it, or tidying its prose; you are correcting
+statements that stopped being true in the last ten minutes.
+
+Where the issue states a spec (checkboxes, acceptance criteria, an options list),
+edit the body so future readers see current intent rather than a stale spec they
+have to mentally patch.
+
+`gh issue edit --body-file` **replaces the entire body**, so never compose a
+replacement from scratch — fetch what is there, change the contradicted claims in
+place, and write the whole thing back. Composing it fresh is how a narrow
+correction turns into silently deleting everything else the issue said.
+
+Keep the working files in a scratch directory outside the repo (`$SCRATCH` below
+— your session scratchpad, or any temp dir), so a stray issue body can never end
+up in a commit:
+
+```bash
+# 1. Fetch the current body, and keep a pristine copy to diff against.
+gh issue view <N> --json body --jq .body > "$SCRATCH/issue-<N>-body.md"
+cp "$SCRATCH/issue-<N>-body.md" "$SCRATCH/issue-<N>-body.orig.md"
+
+# 2. Edit issue-<N>-body.md, changing only the claims the plan contradicts.
+#    Everything else must survive the round trip byte for byte.
+
+# 3. Confirm the diff contains only deliberate changes.
+diff "$SCRATCH/issue-<N>-body.orig.md" "$SCRATCH/issue-<N>-body.md"
+
+# 4. Write the complete, modified body back.
+gh issue edit <N> --body-file "$SCRATCH/issue-<N>-body.md"
+```
+
+If step 3 shows anything you did not deliberately change, do not run step 4.
+
+Then leave a short comment recording what changed and why. The edit keeps the
+issue truthful; the comment keeps the history, so nobody wonders whether the
+original said something different:
+
+```
+Updated during planning: tab count 4 → 5. The fifth is needed because <reason>.
+```
+
+This is safe to do without asking, because you are recording a decision the user
+just approved rather than one you reached on your own. That is the distinction —
+you may write down what was decided, not what you concluded. If the plan
+contradicts nothing the issue states, change nothing.
+
+---
+
+## Step 7 — Cut the branch
 
 Only after approval. Branch off `main`, named `feature/<issue#>-<short-slug>`
 (e.g. `feature/112-diagnostic-log-export`) — that convention is the most useful
