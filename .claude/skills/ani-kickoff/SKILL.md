@@ -189,7 +189,9 @@ someone reading it, and carry the evidence that makes it falsifiable:
 - issue state and dates (`#56 was closed 2026-04-16`)
 - code that exists now, cited as `path:line`
 - a commit or PR that changed something, cited by SHA or number
-- another issue that blocks or overlaps this one, cited by number
+- another issue covering related scope, cited by number — state the overlap you
+  observed; *blocks* and *supersedes* are conclusions rather than observations,
+  so they stay in the chat
 
 **Never post automatically:** that an issue is stale, that it should be closed or
 narrowed, which approach is better, or anything else you concluded rather than
@@ -204,8 +206,11 @@ findings at all. Mark the comment and look for that marker first — the same
 pattern `ci-build-and-preview.yml` uses for screenshots:
 
 ```bash
-# Find a previous findings comment (numeric id, or empty if this is the first)
-gh api repos/<owner>/<repo>/issues/<N>/comments \
+# Find a previous findings comment (numeric id, or empty if this is the first).
+# --paginate is load-bearing: the endpoint returns 30 comments per page by
+# default, so on a busy issue an unpaginated lookup misses the marker and
+# silently posts a duplicate instead of updating.
+gh api --paginate 'repos/<owner>/<repo>/issues/<N>/comments?per_page=100' \
   --jq '.[] | select(.body | contains("<!-- ani-kickoff-findings -->")) | .id'
 
 # Update it in place
@@ -325,11 +330,33 @@ statements that stopped being true in the last ten minutes.
 
 Where the issue states a spec (checkboxes, acceptance criteria, an options list),
 edit the body so future readers see current intent rather than a stale spec they
-have to mentally patch:
+have to mentally patch.
+
+`gh issue edit --body-file` **replaces the entire body**, so never compose a
+replacement from scratch — fetch what is there, change the contradicted claims in
+place, and write the whole thing back. Composing it fresh is how a narrow
+correction turns into silently deleting everything else the issue said.
+
+Keep the working files in a scratch directory outside the repo (`$SCRATCH` below
+— your session scratchpad, or any temp dir), so a stray issue body can never end
+up in a commit:
 
 ```bash
-gh issue edit <N> --body-file -
+# 1. Fetch the current body, and keep a pristine copy to diff against.
+gh issue view <N> --json body --jq .body > "$SCRATCH/issue-<N>-body.md"
+cp "$SCRATCH/issue-<N>-body.md" "$SCRATCH/issue-<N>-body.orig.md"
+
+# 2. Edit issue-<N>-body.md, changing only the claims the plan contradicts.
+#    Everything else must survive the round trip byte for byte.
+
+# 3. Confirm the diff contains only deliberate changes.
+diff "$SCRATCH/issue-<N>-body.orig.md" "$SCRATCH/issue-<N>-body.md"
+
+# 4. Write the complete, modified body back.
+gh issue edit <N> --body-file "$SCRATCH/issue-<N>-body.md"
 ```
+
+If step 3 shows anything you did not deliberately change, do not run step 4.
 
 Then leave a short comment recording what changed and why. The edit keeps the
 issue truthful; the comment keeps the history, so nobody wonders whether the
