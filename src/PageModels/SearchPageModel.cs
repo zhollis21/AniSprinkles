@@ -199,6 +199,16 @@ public partial class SearchPageModel : ObservableObject
         _activeSearchQuery = query;
         _logger.LogInformation("Search firing for \"{Query}\"", query);
 
+        // Record the context at issue time, not on success. If this is recorded only after the
+        // fetch lands, a first search still in flight leaves _hasSearchedThisSession false, so a
+        // user who tabs away, flips the adult toggle and returns hits OnAppearingAsync's
+        // "nothing to invalidate" branch — which baselines the NEW context without cancelling
+        // this request. The old-filter response would then land and be marked current, and no
+        // later appearance would ever invalidate it. Recording here means that user takes the
+        // normal path instead, which cancels this fetch and re-runs the query.
+        _hasSearchedThisSession = true;
+        _searchedWithAdultContent = AppSettings.DisplayAdultContent;
+
         try
         {
             var (items, pageInfo) = await _aniListClient.SearchAnimePageAsync(
@@ -210,15 +220,6 @@ public partial class SearchPageModel : ObservableObject
 
             SearchSection.Seed(items, pageInfo);
             HasNoSearchResults = items.Count == 0;
-
-            // Record the context these results were fetched under, so OnAppearingAsync can spot a
-            // flip. Deliberately no auth call here: it can throw, and this is inside the try whose
-            // catch reports "Search failed" — a token refresh blowing up after a perfectly good
-            // fetch would show the user a failure that did not happen. Auth is baselined in
-            // OnAppearingAsync instead, which is sufficient because signing in or out means
-            // visiting Settings, and coming back re-runs that check.
-            _hasSearchedThisSession = true;
-            _searchedWithAdultContent = AppSettings.DisplayAdultContent;
         }
         catch (OperationCanceledException)
         {
@@ -253,7 +254,14 @@ public partial class SearchPageModel : ObservableObject
         // Via ListOperationRunner: PaginatedSection.LoadMoreAsync only swallows cancellation, so a
         // network/API failure here would otherwise propagate out of the CollectionView's threshold
         // command and crash. The runner swallows + snackbars it.
-        => SearchSection.CanLoadMore
+        //
+        // !IsSearching matters: between the debounce firing (which switches _activeSearchQuery to
+        // the new text) and the page-1 response landing, the OLD query's items are still on screen
+        // with HasNextPage set. Scrolling to the threshold in that window would fetch page 2 of the
+        // NEW query and append it to the OLD results. A successful Seed bumps the section's
+        // generation and discards that, but a FAILED page 1 never seeds — leaving the mixed list
+        // visible. Gating on the in-flight search closes the window instead of relying on the seed.
+        => SearchSection.CanLoadMore && !IsSearching
             ? _listOps.RunAsync(
                 "Search · Load More",
                 "search",

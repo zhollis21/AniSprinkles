@@ -242,7 +242,7 @@ than saying it was the only thing considered.
 
 Check candidate approaches against the conventions that actually bite here:
 
-- **DI lifetimes** — services and flyout PageModels are singleton; pages and
+- **DI lifetimes** — services and tab PageModels are singleton; pages and
   details PageModels are transient. Getting this wrong produces state that leaks
   across navigations or is silently discarded. See `/project-architecture`.
 - **Navigation** — routes plus lightweight query params, never full objects.

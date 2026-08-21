@@ -35,7 +35,24 @@ public class AuthService : IAuthService
         if (IsExpired())
         {
             _logger.LogInformation("AUTH token-check: expired (expiresAt={ExpiresAt}), signing out.", ExpiresAt);
-            await SignOutAsync();
+
+            // Guarded for the same reason as LoadAsync: SignOutAsync clears SecureStorage and
+            // drives the Android CookieManager on the main thread, either of which can throw, and
+            // this runs inside the token check that every tab's async void OnAppearing awaits.
+            // The answer is "no valid token" either way, so a failed cleanup must not become a
+            // crash. Explicit sign-out (the Settings button) still calls SignOutAsync directly
+            // and keeps surfacing its failures.
+            try
+            {
+                await SignOutAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "AUTH sign-out after expiry failed; reporting no token anyway.");
+                AccessToken = null;
+                ExpiresAt = null;
+            }
+
             return null;
         }
 
@@ -133,11 +150,26 @@ public class AuthService : IAuthService
 
     private async Task LoadAsync(CancellationToken cancellationToken)
     {
-        AccessToken = await SecureStorage.Default.GetAsync(TokenKey);
-        var rawExpiry = await SecureStorage.Default.GetAsync(TokenExpiryKey);
-        if (DateTimeOffset.TryParse(rawExpiry, out var expiry))
+        // SecureStorage sits on the Android keystore, which can fail for reasons that have nothing
+        // to do with us (corrupted keystore, a restored backup, a device-credential change). Those
+        // surface as assorted platform exceptions, hence the broad catch. Letting one escape would
+        // take the app down: every tab page model calls GetAccessTokenAsync from an async void
+        // OnAppearing, where there is nothing to catch it. An unreadable token is functionally the
+        // same as an absent one, so fall back to signed-out and let the user sign in again.
+        try
         {
-            ExpiresAt = expiry;
+            AccessToken = await SecureStorage.Default.GetAsync(TokenKey);
+            var rawExpiry = await SecureStorage.Default.GetAsync(TokenExpiryKey);
+            if (DateTimeOffset.TryParse(rawExpiry, out var expiry))
+            {
+                ExpiresAt = expiry;
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "AUTH token-load failed; treating as signed out.");
+            AccessToken = null;
+            ExpiresAt = null;
         }
     }
 
