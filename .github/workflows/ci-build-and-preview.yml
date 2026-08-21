@@ -437,9 +437,9 @@ jobs:
           mkdir -p screenshots
 
           # Screenshot 1: Library tab, Anime sub-tab (the app's launch destination)
-          adb shell screencap -p /sdcard/my_anime.png || echo "::warning::Failed to capture My Anime screenshot"
-          adb pull /sdcard/my_anime.png screenshots/my_anime.png || echo "::warning::Failed to pull My Anime screenshot"
-          echo "Captured: my_anime.png (My Anime — $AUTH_MODE)"
+          adb shell screencap -p /sdcard/my_anime.png || echo "::warning::Failed to capture Library screenshot"
+          adb pull /sdcard/my_anime.png screenshots/my_anime.png || echo "::warning::Failed to pull Library screenshot"
+          echo "Captured: my_anime.png (Library — $AUTH_MODE)"
 
           # Tap One Piece to open its details page
           tap_element_by_text "ONE PIECE" || echo "::warning::Could not find ONE PIECE in list"
@@ -771,7 +771,7 @@ jobs:
             const screenshotsPublished = process.env.SCREENSHOTS_PUBLISHED === 'true';
 
             const screenshots = [
-              { file: 'screenshots/my_anime.png', label: 'My Anime' },
+              { file: 'screenshots/my_anime.png', label: 'Library' },
               { file: 'screenshots/discover.png', label: 'Discover' },
               { file: 'screenshots/browse.png', label: 'View All (Browse)' },
               { file: 'screenshots/search.png', label: 'Discover Search' },
@@ -868,7 +868,7 @@ jobs:
             echo "| Screenshot | Page |" >> $GITHUB_STEP_SUMMARY
             echo "|---|---|" >> $GITHUB_STEP_SUMMARY
             for shot in \
-              "my_anime.png|My Anime" \
+              "my_anime.png|Library" \
               "discover.png|Discover" \
               "browse.png|View All (Browse)" \
               "search.png|Discover Search" \
