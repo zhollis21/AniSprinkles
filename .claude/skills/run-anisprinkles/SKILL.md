@@ -127,7 +127,7 @@ Then `Read` the two PNGs: heart outline → filled, Favourites `90,457` → `90,
   studios `Toei Animation` / `Madhouse` / `Studio Pierrot`; content-descs
   `Toggle favorite` and `Open studio Toei Animation`
 - **Discover**: `Currently Airing`, `Trending Now`, `Top Anime`, `View All ›`
-- **Search** filters that same fixture list client-side — `one` matches `ONE PIECE`;
+- **Search tab** filters that same fixture list client-side — `one` matches `ONE PIECE`;
   anything else (e.g. `cowboy bebop`) correctly renders `No anime found`. That is
   the stub, not a bug.
 
@@ -181,11 +181,17 @@ works — that is what the driver above is for.
   post-tap settle. Always `wait-for "<text you expect>"` between them. I caught
   `Loading discover...` and a stale details page this way twice.
 
-- **`DiscoverPageModel` is a singleton, so the search bar keeps its text forever** —
-  navigating away, backing out of the app entirely, and coming back still shows the
-  old query and its results, not the section rows. Phase 2 moves this to the Search tab. If `wait-for "Trending Now"`
-  times out on Discover, the search bar is open: `driver.ps1 search` toggles it
-  shut and the sections come back.
+- **`SearchPageModel` is a singleton, so the Search tab keeps its query forever** —
+  leaving the tab, backing out of the app entirely, and coming back still shows the
+  old query and its results. That is deliberate, not a bug. Clear the field (or the
+  `clear` command) if a test needs the idle prompt back. Discover no longer has a
+  search bar at all, so a `wait-for "Trending Now"` timeout there means something
+  else went wrong.
+
+- **The Search tab's keyboard covers the bottom tab bar.** The field auto-focuses
+  when the query is empty, so arriving on the tab immediately raises the keyboard and
+  hides every tab label — a `goto` straight after typing taps the keyboard instead and
+  silently stays put. Send `back` first to dismiss it, then switch tabs.
 
 - **MAUI Shell toolbar items are invisible to uiautomator, and there is no longer an
   anchor to mirror.** The page-level search / sort / layout icons have no node at
@@ -247,7 +253,7 @@ works — that is what the driver above is for.
 | `INSUFFICIENT_STORAGE: Failed to override installation location` | `driver.ps1 install` handles it; if it still fails, wipe the AVD from Device Manager. |
 | `UI dump was empty — is the app foregrounded?` | The app is backgrounded or crashed. `driver.ps1 resume`, then `driver.ps1 logcat`. |
 | `No node with text='X'` right after it worked | You probably backed out to the launcher. `driver.ps1 dump` to confirm, then `resume`. |
-| `'X' never appeared within Ns` on Discover | Search bar is still open with an old query — `driver.ps1 search`. |
+| `'X' never appeared within Ns` right after typing a query | The keyboard is covering the tab bar — `driver.ps1 back`, then `goto`. |
 | `More than one device attached — set ANDROID_SERIAL to choose` | Two emulators/devices online. Pick one with `ANDROID_SERIAL=<serial>`, or shut the other down. `driver.ps1 env` lists them. |
 | `sys.boot_completed never reached 1 after 180s` | The emulator attached to adb but never finished booting. Check the emulator window; a wipe-data from Device Manager usually clears it. |
 | `df 'C:/Program Files/Git/data': No such file` | Git Bash path mangling — `MSYS_NO_PATHCONV=1`. |

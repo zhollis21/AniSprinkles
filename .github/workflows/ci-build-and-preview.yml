@@ -201,7 +201,7 @@ jobs:
 
           # Shared helper: find a UI node by attribute value, parse its bounds, and tap it.
           # Usage: _tap_by_attribute "text" "ONE PIECE"
-          #        _tap_by_attribute "content-desc" "Open navigation drawer"
+          #        _tap_by_attribute "content-desc" "Toggle favorite"
           _tap_by_attribute() {
             local attr="$1" value="$2"
             # Remove any previous dump so a failed dump cannot leave us parsing stale UI.
@@ -247,7 +247,7 @@ jobs:
           tap_element_by_text()         { _tap_by_attribute "text"         "$1"; }
 
           # Tap a UI element by its content-desc attribute (for icon buttons with no label).
-          # Usage: tap_element_by_content_desc "Open navigation drawer"
+          # Usage: tap_element_by_content_desc "Toggle favorite"
           tap_element_by_content_desc() { _tap_by_attribute "content-desc" "$1"; }
 
           # Scroll until a target studio chip is visible, then tap it. Prefer the
@@ -299,38 +299,13 @@ jobs:
             return 1
           }
 
-          # Open the Discover search bar by tapping the lone right-side toolbar icon. MAUI Shell's
-          # action icons aren't exposed to uiautomator as findable nodes (only the hamburger has a
-          # content-desc), so we mirror the hamburger's position to the right edge: toolbars are
-          # horizontally symmetric, so the rightmost icon center sits at (screen_width - drawer_cx,
-          # drawer_cy). Resolution-independent and needs no node for the icon itself.
-          # Usage: tap_search_toggle
-          tap_search_toggle() {
-            adb shell rm -f /sdcard/ui_toolbar.xml >/dev/null 2>&1 || true
-            if ! adb shell uiautomator dump /sdcard/ui_toolbar.xml >/dev/null 2>&1 \
-               || ! adb shell test -s /sdcard/ui_toolbar.xml >/dev/null 2>&1; then
-              echo "::warning::Failed to dump UI for the search toggle"
-              return 1
-            fi
-            local drawer_bounds
-            drawer_bounds=$(adb shell cat /sdcard/ui_toolbar.xml 2>/dev/null | tr '>' '>\n' \
-              | grep -o 'content-desc="Open navigation drawer"[^/]*bounds="\[[0-9]*,[0-9]*\]\[[0-9]*,[0-9]*\]"' \
-              | grep -o 'bounds="\[[0-9]*,[0-9]*\]\[[0-9]*,[0-9]*\]"' | head -1 | sed 's/bounds="//;s/"//') || true
-            if [ -z "$drawer_bounds" ]; then
-              echo "::warning::Could not locate the toolbar hamburger to mirror the search icon"
-              return 1
-            fi
-            local dl dt dr dbot dcx dcy width tap_x
-            dl=$(echo "$drawer_bounds" | sed 's/\[//g;s/\]/ /g' | awk -F'[, ]' '{print $1}')
-            dt=$(echo "$drawer_bounds" | sed 's/\[//g;s/\]/ /g' | awk -F'[, ]' '{print $2}')
-            dr=$(echo "$drawer_bounds" | sed 's/\[//g;s/\]/ /g' | awk -F'[, ]' '{print $3}')
-            dbot=$(echo "$drawer_bounds" | sed 's/\[//g;s/\]/ /g' | awk -F'[, ]' '{print $4}')
-            dcx=$(( (dl + dr) / 2 )); dcy=$(( (dt + dbot) / 2 ))
-            width=$(adb shell wm size | grep -o '[0-9]*x[0-9]*' | head -1 | cut -dx -f1)
-            [ -z "$width" ] && { echo "::warning::Could not read screen width"; return 1; }
-            tap_x=$(( width - dcx ))
-            echo "Tapping search toggle at (${tap_x}, ${dcy}) [mirror of hamburger ${dcx},${dcy} on width ${width}]"
-            adb shell input tap "$tap_x" "$dcy"
+          # Search is its own tab now (issue #43), with an always-visible search bar. The old
+          # helper here mirrored the hamburger's x across the screen width to find Discover's
+          # toolbar search icon, because MAUI toolbar icons expose no uiautomator node; the
+          # bottom tab bar removed both the hamburger anchor and the need for the trick.
+          # Usage: open_search_tab
+          open_search_tab() {
+            goto_tab "Search"
           }
 
           # Tap the first "View All ›" row link. Its text node carries the chevron (a multibyte
@@ -363,23 +338,16 @@ jobs:
             adb shell input tap "$cx" "$cy"
           }
 
-          # Press BACK until the My Anime page (its toolbar title) is showing again, so the flyout
-          # step runs from the root regardless of how deep navigation went.
-          # Usage: back_to_my_anime [max_presses]
-          back_to_my_anime() {
-            local max="${1:-6}" i
-            for i in $(seq 1 "$max"); do
-              adb shell rm -f /sdcard/ui_back.xml >/dev/null 2>&1 || true
-              if adb shell uiautomator dump /sdcard/ui_back.xml >/dev/null 2>&1 \
-                 && adb shell cat /sdcard/ui_back.xml 2>/dev/null | grep -q "My Anime"; then
-                echo "Back on My Anime after $((i - 1)) back press(es)"
-                return 0
-              fi
-              adb shell input keyevent KEYCODE_BACK
-              sleep 1.5
-            done
-            echo "::warning::Did not return to My Anime after ${max} back press(es)"
-            return 1
+          # Switch bottom tabs by tapping the tab's label (issue #43). Tab labels are real
+          # uiautomator nodes carrying both text and content-desc, so this is an ordinary text
+          # tap that works from anywhere — including partway down a pushed details stack, which
+          # is why it replaced the old back-out-then-open-the-drawer dance entirely.
+          # Returns non-zero when the tab label was not found, so callers can skip the
+          # screenshots that depend on having arrived (the trailing sleep must not mask it).
+          # Usage: goto_tab "Discover"
+          goto_tab() {
+            tap_element_by_text "$1" || return 1
+            sleep 2
           }
 
           # Locate the APK
@@ -468,7 +436,7 @@ jobs:
 
           mkdir -p screenshots
 
-          # Screenshot 1: My Anime page (default flyout destination)
+          # Screenshot 1: Library tab, Anime sub-tab (the app's launch destination)
           adb shell screencap -p /sdcard/my_anime.png || echo "::warning::Failed to capture My Anime screenshot"
           adb pull /sdcard/my_anime.png screenshots/my_anime.png || echo "::warning::Failed to pull My Anime screenshot"
           echo "Captured: my_anime.png (My Anime — $AUTH_MODE)"
@@ -569,33 +537,11 @@ jobs:
           adb pull /sdcard/staff_details.png screenshots/staff_details.png || echo "::warning::Failed to pull staff screenshot"
           echo "Captured: staff_details.png (Mayumi Tanaka — $AUTH_MODE)"
 
-          # Navigate back to My Anime (now several levels deep), then open the flyout and tap Settings.
-          back_to_my_anime
-
-          # Open the Shell flyout via the hamburger icon ("Open navigation drawer").
-          # Android 10+ gesture navigation intercepts left-edge swipes before they
-          # reach the app, so tapping the DrawerToggle button is reliable regardless
-          # of the system navigation mode.
-          FLYOUT_OPENED=0
-          for FLYOUT_ATTEMPT in 1 2 3; do
-            echo "Flyout open attempt ${FLYOUT_ATTEMPT}..."
-            tap_element_by_content_desc "Open navigation drawer" || true
-            sleep 1
-            adb shell rm -f /sdcard/ui_flyout_check.xml >/dev/null 2>&1 || true
-            if adb shell uiautomator dump /sdcard/ui_flyout_check.xml >/dev/null 2>&1 && \
-               adb shell test -s /sdcard/ui_flyout_check.xml >/dev/null 2>&1 && \
-               adb shell cat /sdcard/ui_flyout_check.xml 2>/dev/null | grep -qi '"Settings"'; then
-              echo "  Flyout confirmed open on attempt ${FLYOUT_ATTEMPT}"
-              FLYOUT_OPENED=1
-              break
-            fi
-          done
-
-          if [ "$FLYOUT_OPENED" -eq 1 ]; then
-            tap_element_by_text "Settings"
-            sleep 2
-          else
-            echo "::warning::Flyout did not open — Settings screenshot may be incorrect"
+          # Straight to the Settings tab. The details stack this leaves behind on the Library tab
+          # does not matter — the next section taps its own tab too. Guarded because `set -e`
+          # would otherwise abort the whole run (and lose every later screenshot) on one miss.
+          if ! goto_tab "Settings"; then
+            echo "::warning::Could not reach the Settings tab — Settings screenshot may be incorrect"
           fi
 
           # Poll for Settings page to finish loading (up to 15s)
@@ -627,23 +573,16 @@ jobs:
           # All rendered from CI stub fixtures (popular SFW titles); the adult toggle defaults off,
           # so the 18+ rows are never requested.
 
-          # Open the flyout from Settings and tap Discover.
+          # Straight to the Discover tab. Kept behind DISCOVER_OPENED so a failure to reach the
+          # tab skips the dependent screenshots rather than capturing whatever was on screen.
           DISCOVER_OPENED=0
-          for FLYOUT_ATTEMPT in 1 2 3; do
-            echo "Flyout open attempt ${FLYOUT_ATTEMPT} (Discover)..."
-            tap_element_by_content_desc "Open navigation drawer" || true
-            sleep 1
-            adb shell rm -f /sdcard/ui_flyout_disc.xml >/dev/null 2>&1 || true
-            if adb shell uiautomator dump /sdcard/ui_flyout_disc.xml >/dev/null 2>&1 && \
-               adb shell test -s /sdcard/ui_flyout_disc.xml >/dev/null 2>&1 && \
-               adb shell cat /sdcard/ui_flyout_disc.xml 2>/dev/null | grep -qi '"Discover"'; then
-              DISCOVER_OPENED=1
-              break
-            fi
-          done
+          if goto_tab "Discover"; then
+            DISCOVER_OPENED=1
+          else
+            echo "::warning::Could not reach the Discover tab — skipping its screenshots"
+          fi
 
           if [ "$DISCOVER_OPENED" -eq 1 ]; then
-            tap_element_by_text "Discover"
             # Wait for the rows to populate (a known section header appears once loaded).
             DISC_WAIT=0
             while [ $DISC_WAIT -lt 20 ]; do
@@ -687,12 +626,12 @@ jobs:
               echo "::warning::Could not open a View All list — skipping browse screenshot"
             fi
 
-            # Screenshot 9: Search results. Open the search bar, focus the field, type a popular
-            # SFW query that matches a stub title, capture results.
-            if tap_search_toggle; then
+            # Screenshot 9: Search results. Switch to the Search tab, focus the field, type a
+            # popular SFW query that matches a stub title, capture results.
+            if open_search_tab; then
               sleep 1
-              # Tap the revealed field by its hint to guarantee focus before typing (the field
-              # auto-focuses on reveal, but a tap is a cheap belt-and-suspenders for CI).
+              # Tap the field by its hint to guarantee focus before typing. The page focuses it
+              # on appear when empty, but a tap is a cheap belt-and-suspenders for CI.
               tap_element_by_text "Search all anime..." || true
               sleep 1
               # "no" matches five romaji stub titles (Shingeki no Kyojin, Kimi no Na wa, Yakusoku
@@ -712,12 +651,12 @@ jobs:
               sleep 1
               adb shell screencap -p /sdcard/search.png || echo "::warning::Failed to capture Search screenshot"
               adb pull /sdcard/search.png screenshots/search.png || echo "::warning::Failed to pull Search screenshot"
-              echo "Captured: search.png (Discover Search — $AUTH_MODE)"
+              echo "Captured: search.png (Search — $AUTH_MODE)"
             else
-              echo "::warning::Could not open the search bar — skipping search screenshot"
+              echo "::warning::Could not reach the Search tab — skipping search screenshot"
             fi
           else
-            echo "::warning::Flyout did not open for Discover — skipping Discover/View All/Search screenshots"
+            echo "::warning::Discover tab unreachable — skipped Discover/View All/Search screenshots"
           fi
 
           echo ""
