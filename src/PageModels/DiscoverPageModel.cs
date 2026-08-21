@@ -118,6 +118,19 @@ public partial class DiscoverPageModel : ObservableObject
             return Task.CompletedTask;
         }
 
+        // IsBusy means a full refresh is in flight, and the row is not marked busy during it —
+        // PaginatedSection only knows about its own operations. That matters because
+        // DiscoverSectionFetch reads AppSettings.DisplayAdultContent live, per page: a Load More
+        // racing an adult-toggle refresh fetches under the NEW filter and appends onto items
+        // fetched under the OLD one, mixing 18+ results into a row that was SFW. A successful
+        // refresh re-Seeds and the generation bump discards the stray page, but a FAILED refresh
+        // never seeds — and Discover deliberately keeps showing content on refresh failure, so the
+        // mixed row is what the user is left looking at.
+        if (IsBusy)
+        {
+            return Task.CompletedTask;
+        }
+
         return _listOps.RunAsync(
             $"Discover {section} · Load More",
             "discover",

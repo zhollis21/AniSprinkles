@@ -213,6 +213,24 @@ works — that is what the driver above is for.
 - **`KEYCODE_CTRL_A` is not select-all on Android.** `driver.ps1 clear` spams
   `KEYCODE_DEL` instead.
 
+- **A plain `dotnet build` silently clobbers the deployable APK.** Running
+  `dotnet build src/AniSprinkles.csproj -c Debug -f net10.0-android` to check for
+  warnings is fine, but it omits `-p:EmbedAssembliesIntoApk=true` and leaves a
+  ~19 MB *Fast Deployment* APK where the ~97 MB one was. Installing that gives a
+  process that dies instantly, before any managed code, with no .NET stack trace —
+  just `SIGABRT` and, buried in logcat:
+
+  ```
+  F/monodroid: No assemblies found in '.../files/.__override__/x86_64'
+               Assuming this is part of Fast Deployment. Exiting...
+  ```
+
+  It reads like a crash in your change and is not one. **Check the APK size** — if
+  it is ~19 MB rather than ~97 MB, that is the whole story. Rebuild with
+  `driver.ps1 build` (which passes both flags) before installing. A leftover
+  `.__override__` directory can also survive an uninstall, so if it persists after
+  a correct rebuild, uninstall the package before reinstalling.
+
 - **The debug APK is ~97 MB and installs land on `INSUFFICIENT_STORAGE`** once the
   AVD's `/data` gets tight (mine had 570 MB free and still failed). `driver.ps1
   install` detects it, uninstalls the old copy, and retries. Note that `adb install`
@@ -258,6 +276,7 @@ works — that is what the driver above is for.
 | `sys.boot_completed never reached 1 after 180s` | The emulator attached to adb but never finished booting. Check the emulator window; a wipe-data from Device Manager usually clears it. |
 | `df 'C:/Program Files/Git/data': No such file` | Git Bash path mangling — `MSYS_NO_PATHCONV=1`. |
 | App runs but shows the signed-out screen | You built without `-p:CiBuild=true`. Rebuild with `driver.ps1 build`. |
+| App dies instantly, `SIGABRT`, no .NET stack | APK is ~19 MB not ~97 MB — a plain `dotnet build` overwrote it. `driver.ps1 build`. |
 
 For deeper on-device diagnostics (ANR / jank / Glide cascades / NAVTRACE timings),
 switch to **`/ani-debug`** — it has the full log-collection and interpretation
