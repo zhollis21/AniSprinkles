@@ -78,6 +78,17 @@ function AdbOut {
     if ($script:Serial) { & $Adb -s $script:Serial exec-out @args } else { & $Adb exec-out @args }
 }
 
+# Free 1K-blocks on /data, or $null if the output could not be parsed. `df` prints a header
+# plus one row; column 4 is "Available". Returns $null rather than throwing so callers can
+# treat "unknown" as "proceed and let the install tell us".
+function FreeDataKb {
+    $row = @(AdbOut df /data 2>$null) | Where-Object { $_ -match '^\S+\s+\d+' } | Select-Object -Last 1
+    if (-not $row) { return $null }
+    $cols = @(($row -split '\s+') | Where-Object { $_ })
+    if ($cols.Count -ge 4 -and $cols[3] -match '^\d+$') { return [int64]$cols[3] }
+    return $null
+}
+
 function Say($msg) { Write-Host "[driver] $msg" }
 
 function Get-AttachedDevices {
@@ -297,24 +308,38 @@ function Cmd-Install {
     $mb = [math]::Round((Get-Item $Apk).Length / 1MB)
     Say "installing $(Split-Path $Apk -Leaf) (${mb} MB)"
 
+    # Android wants several times the APK size free during install, and the default AVD's
+    # 6 GB data partition sits close to full with just this app on it. Drop the old copy up
+    # front when space is short rather than discovering it through a failed install: the
+    # uninstall costs seconds, the failed install costs a whole retry cycle.
+    $freeKb = FreeDataKb
+    $needKb = [int64]((Get-Item $Apk).Length / 1KB) * 4
+    if ($null -ne $freeKb -and $freeKb -lt $needKb) {
+        Say "only $([math]::Round($freeKb / 1024)) MB free on /data — removing the old copy first"
+        & $Adb uninstall $Package *> $null
+    }
+
     # NOTE: `adb install` prints "Failure [...]" to STDOUT and STILL exits 0 in some
     # adb builds, and a stale build of the package left installed would make a
     # naive `pm list packages` check pass. Parse the output text instead.
-    $out = (& $Adb install -r -d $Apk 2>&1) -join "`n"
+    $out = @(& $Adb install -r -d $Apk 2>&1) -join "`n"
     Write-Host $out
 
     if ($out -match 'INSUFFICIENT_STORAGE') {
-        # The CI-stub debug APK is ~100 MB (EmbedAssembliesIntoApk + debug symbols),
-        # and Android wants several times that free during install. Dropping the old
-        # copy first is usually enough.
+        # Space was fine (or unreadable) going in but the install still did not fit.
         Say 'insufficient storage — uninstalling old copy and retrying'
         & $Adb uninstall $Package *> $null
-        $out = (& $Adb install $Apk 2>&1) -join "`n"
+        $out = @(& $Adb install $Apk 2>&1) -join "`n"
         Write-Host $out
     }
 
     if ($out -notmatch 'Success') {
-        throw "install failed. Free space on the AVD:`n$((AdbOut df /data) -join "`n")"
+        # @() around every capture: AdbOut returns $null when the device is gone, and `-join`
+        # on $null throws "You cannot call a method on a null-valued expression", which used to
+        # replace this diagnostic with a PowerShell error that said nothing about the install.
+        $df = @(AdbOut df -h /data 2>$null) -join "`n"
+        if (-not $df) { $df = '(could not read free space — device gone?)' }
+        throw "install failed.`nadb said:`n$out`n`nFree space on the AVD:`n$df"
     }
     Say 'installed'
 }

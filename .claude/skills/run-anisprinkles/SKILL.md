@@ -53,6 +53,21 @@ Takes **~6 minutes** from cold (`Time Elapsed 00:05:53`) and produces a ~97 MB A
 at `src/bin/Debug/net10.0-android/com.RainbowSprinkles.AniSprinkles-Signed.apk`.
 Skip it if you have not touched `src/` since the last build.
 
+**Build the Android head exactly one way: `driver.ps1 build`.** It is tempting to run a
+plain `dotnet build src/AniSprinkles.csproj -c Debug -f net10.0-android` to check for
+warnings and then `driver.ps1 build` for the APK — that wastes a second ~6-minute build
+*and* leaves a broken APK, because the plain build omits `EmbedAssembliesIntoApk` and
+overwrites the deployable ~97 MB APK with a ~19 MB Fast Deployment one (see Gotchas). The
+driver's build prints the same warning and error counts, so it covers the review pass too.
+
+`dotnet test` does **not** need any of this — the test project targets plain `net10.0`, so
+run it directly and never build the Android head just to run tests.
+
+**Do not chain a build with device driving in one shell call.** `build` alone can run 6+
+minutes; adding `install`/`launch`/`tap` behind it means one stalled step burns the whole
+timeout and takes the completed steps down with it. Build in its own call (background it if
+you have other work), then drive in a second.
+
 ---
 
 ## Run (agent path)
