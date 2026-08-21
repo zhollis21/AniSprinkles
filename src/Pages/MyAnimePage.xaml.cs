@@ -60,7 +60,7 @@ public partial class MyAnimePage : ContentPage
         UpdateSortIcon();
         UpdateToolbarItems();
 
-        // Content survived the flyout switch — just refresh data in background.
+        // Content survived the tab switch — just refresh data in background.
         if (LoadedContentHost.Content is not null)
         {
             await _viewModel.LoadAsync();

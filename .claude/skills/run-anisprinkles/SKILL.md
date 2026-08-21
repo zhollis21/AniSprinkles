@@ -84,8 +84,8 @@ Then drive it. Every command is `driver.ps1 <command> [args]`:
 | `swipe up\|down\|left\|right` | one content-area swipe |
 | `scroll-to <text>` | swipe up until `<text>` is on screen (max 10) |
 | `wait-for <text> [secs]` | poll until `<text>` appears (default 30s) |
-| `flyout` / `goto <page>` | open the drawer / open the drawer and pick `My Anime`\|`Discover`\|`Settings` |
-| `search` | tap the Discover toolbar search icon (see Gotchas) |
+| `goto <tab>` | switch tabs: `Library`\|`Discover`\|`Search`\|`Feed`\|`Settings` — a plain label tap, so it works from inside a pushed details stack too |
+| `search` | shortcut for `goto Search` |
 | `logcat [n]` / `applog` | app-PID logcat tail / the on-device rotating file log |
 
 `driver.ps1 help` prints the same list.
@@ -121,7 +121,7 @@ Then `Read` the two PNGs: heart outline → filled, Favourites `90,457` → `90,
 
 `CIAniListClient` serves a fixed set, so these strings are always tappable:
 
-- **My Anime**: `ONE PIECE`, `Shingeki no Kyojin`, `Jujutsu Kaisen`, `HUNTER×HUNTER (2011)`;
+- **Library › Anime** (nav title reads "Library"; sub-tabs are `ANIME` / `MANGA`): `ONE PIECE`, `Shingeki no Kyojin`, `Jujutsu Kaisen`, `HUNTER×HUNTER (2011)`;
   section headers `Watching` / `Planning` / `Completed`
 - **Media details** (ONE PIECE): `Monkey D. Luffy`, `Roronoa Zoro`, `Nami`,
   studios `Toei Animation` / `Madhouse` / `Studio Pierrot`; content-descs
@@ -183,20 +183,23 @@ works — that is what the driver above is for.
 
 - **`DiscoverPageModel` is a singleton, so the search bar keeps its text forever** —
   navigating away, backing out of the app entirely, and coming back still shows the
-  old query and its results, not the section rows. If `wait-for "Trending Now"`
+  old query and its results, not the section rows. Phase 2 moves this to the Search tab. If `wait-for "Trending Now"`
   times out on Discover, the search bar is open: `driver.ps1 search` toggles it
   shut and the sections come back.
 
-- **MAUI Shell toolbar items are invisible to uiautomator.** Only the hamburger has
-  a content-desc; the search / sort / layout icons have no node at all, so there is
-  nothing to `tap-desc`. `driver.ps1 search` works around it by mirroring the
-  hamburger's x across the screen width (`1080 - 74 = 1006`), which is
-  resolution-independent.
+- **MAUI Shell toolbar items are invisible to uiautomator, and there is no longer an
+  anchor to mirror.** The page-level search / sort / layout icons have no node at
+  all. This used to be worked around by mirroring the hamburger's x across the
+  screen width, but the bottom tab bar (issue #43) removed the hamburger, so that
+  trick has no anchor left. Tab **labels** are real nodes, so navigation is fine —
+  it is only the in-page toolbar icons (My Anime's sort / search / layout) that now
+  need hand-computed coordinates: they sit in the nav-bar row, right-aligned, about
+  `74px` in from each edge at 1080 wide.
 
-- **`back` at a flyout root exits the app silently** — no confirm dialog, you just
+- **`back` at a tab root exits the app silently** — no confirm dialog, you just
   land on the launcher and every subsequent `tap` fails with a confusing
   "No node with text=...". `driver.ps1 resume` gets you back in ~3s. Prefer `goto`
-  over `back` for switching pages.
+  over `back` for switching tabs.
 
 - **`View All ›` carries a multibyte chevron in its text node.** Exact-match `tap`
   never finds it; use `tap-prefix "View All"`.

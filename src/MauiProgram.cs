@@ -130,6 +130,10 @@ public static class MauiProgram
         builder.Services.AddTransient<MyAnimePage>();
         builder.Services.AddSingleton<DiscoverPageModel>();
         builder.Services.AddTransient<DiscoverPage>();
+        // Stub pages (issue #43): no PageModel yet. SearchPage gets one in phase 2.
+        builder.Services.AddTransient<SearchPage>();
+        builder.Services.AddTransient<FeedPage>();
+        builder.Services.AddTransient<MyMangaPage>();
         builder.Services.AddSingleton<SettingsPageModel>();
         builder.Services.AddTransient<SettingsPage>();
         builder.Services.AddTransient<MediaDetailsPageModel>();

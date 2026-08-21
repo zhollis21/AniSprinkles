@@ -4,19 +4,64 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:pages="clr-namespace:AniSprinkles.Pages"
+    xmlns:icons="clr-namespace:IconFont.Maui.FluentIcons;assembly=IconFont.Maui.FluentIcons"
     Title="AniSprinkles"
-    FlyoutBehavior="Flyout"
+    FlyoutBehavior="Disabled"
     NavBarHasShadow="False">
 
-    <FlyoutItem Title="My Anime" Route="my-anime">
-        <ShellContent ContentTemplate="{DataTemplate pages:MyAnimePage}" />
-    </FlyoutItem>
+    <!--
+        Bottom tab bar (issue #43), replacing the hamburger flyout. Tab titles drive the tab
+        label; each page keeps its own Title for the nav bar. Routes are unchanged from the
+        old FlyoutItems so existing GoToAsync calls and AGENTS.md stay accurate — the first
+        tab reads "Library" but stays on route `my-anime` until #12 renames it for real.
+        TabBar colors come from the Shell style in Styles.xaml.
+    -->
+    <TabBar>
+        <Tab x:Name="LibraryTab" Title="Library" Route="my-anime">
+            <Tab.Icon>
+                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Library24}"
+                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}" />
+            </Tab.Icon>
+            <!--
+                Two ShellContents under one Tab render as a swipeable top tab strip on
+                Android — Shell's native sub-tab support, no custom control. Manga is a
+                placeholder until #12; the Tab keeps Route="my-anime" so existing
+                navigation is unaffected.
+            -->
+            <ShellContent Title="Anime" Route="anime" ContentTemplate="{DataTemplate pages:MyAnimePage}" />
+            <ShellContent Title="Manga" Route="manga" ContentTemplate="{DataTemplate pages:MyMangaPage}" />
+        </Tab>
 
-    <FlyoutItem Title="Discover" Route="discover">
-        <ShellContent ContentTemplate="{DataTemplate pages:DiscoverPage}" />
-    </FlyoutItem>
+        <Tab x:Name="DiscoverTab" Title="Discover" Route="discover">
+            <Tab.Icon>
+                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Rocket24}"
+                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}" />
+            </Tab.Icon>
+            <ShellContent ContentTemplate="{DataTemplate pages:DiscoverPage}" />
+        </Tab>
 
-    <FlyoutItem Title="Settings" Route="settings">
-        <ShellContent ContentTemplate="{DataTemplate pages:SettingsPage}" />
-    </FlyoutItem>
+        <Tab x:Name="SearchTab" Title="Search" Route="search">
+            <Tab.Icon>
+                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Search24}"
+                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}" />
+            </Tab.Icon>
+            <ShellContent ContentTemplate="{DataTemplate pages:SearchPage}" />
+        </Tab>
+
+        <Tab x:Name="FeedTab" Title="Feed" Route="feed">
+            <Tab.Icon>
+                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Feed24}"
+                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}" />
+            </Tab.Icon>
+            <ShellContent ContentTemplate="{DataTemplate pages:FeedPage}" />
+        </Tab>
+
+        <Tab x:Name="SettingsTab" Title="Settings" Route="settings">
+            <Tab.Icon>
+                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Settings24}"
+                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}" />
+            </Tab.Icon>
+            <ShellContent ContentTemplate="{DataTemplate pages:SettingsPage}" />
+        </Tab>
+    </TabBar>
 </Shell>

@@ -71,7 +71,7 @@ dotnet build src/AniSprinkles.csproj -c Debug -f net10.0-android -p:EmbedAssembl
 | ---------- | ------------------------------------------------------------------------------------------ |
 | Platform   | .NET MAUI Android-only (`net10.0-android`, min SDK 31)                                     |
 | Pattern    | MVVM — CommunityToolkit.Mvvm (`[ObservableProperty]`, `[RelayCommand]`)                    |
-| Navigation | Shell flyout + programmatic details routes (`media-details`, `character-details`, `staff-details`, `studio-details`) |
+| Navigation | Shell bottom tab bar + programmatic details routes (`media-details`, `character-details`, `staff-details`, `studio-details`) |
 | Auth       | AniList OAuth implicit grant; redirect URI `anisprinkles://auth`; token in `SecureStorage` |
 | HTTP       | Singleton `HttpClient` with `LoggingHandler` (Bearer token redaction)                      |
 | Background | WorkManager periodic job for airing notifications                                          |

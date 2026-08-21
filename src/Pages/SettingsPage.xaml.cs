@@ -43,7 +43,7 @@ public partial class SettingsPage : ContentPage
             return;
         }
 
-        // Content survived the flyout switch — just refresh data in background.
+        // Content survived the tab switch — just refresh data in background.
         if (LoadedContentHost.Content is not null)
         {
             await _viewModel.LoadAsync();

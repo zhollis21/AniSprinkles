@@ -7,7 +7,7 @@ namespace AniSprinkles.PageModels;
 
 /// <summary>
 /// Discover page (issues #15/#16): public browse sections + search, no auth required.
-/// Singleton, like the other flyout page models — the section data doubles as the TTL cache:
+/// Singleton, like the other tab page models — the section data doubles as the TTL cache:
 /// Discover data changes slowly, so revisits within <see cref="SectionsTtl"/> skip the network
 /// entirely and pull-to-refresh is the explicit bypass. A flipped adult-content toggle also
 /// invalidates the cache, since it changes both the query filters and which sections exist.

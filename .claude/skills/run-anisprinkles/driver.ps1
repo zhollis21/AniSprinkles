@@ -215,9 +215,8 @@ AniSprinkles driver — pwsh .claude/skills/run-anisprinkles/driver.ps1 <command
   swipe up|down|left|right  One content-area swipe
   scroll-to <text>          Swipe up until <text> appears (max 10)
   wait-for <text> [secs]    Poll the UI until <text> appears (default 30s)
-  flyout                    Open the Shell navigation drawer
-  search                    Tap the Discover toolbar search icon (see Gotchas)
-  goto <My Anime|Discover|Settings>   Open the drawer and pick a page
+  goto <tab>                Switch tabs: Library|Discover|Search|Feed|Settings
+  search                    Shortcut for `goto Search`
 
   logcat [lines]            App-PID logcat tail (default 200)
   applog                    Pull the on-device rotating file log
@@ -411,32 +410,19 @@ function Cmd-WaitFor {
     throw "'$Text' never appeared within ${Seconds}s"
 }
 
-function Cmd-Flyout {
-    # The hamburger is the only Shell toolbar item uiautomator exposes with a
-    # content-desc; the page's own toolbar icons are invisible to it (see Gotchas).
-    Tap-By -Attr 'content-desc' -Value 'Open navigation drawer'
-    Start-Sleep -Milliseconds 800
-}
-
 function Cmd-Goto {
     param([string]$Page)
-    Cmd-Flyout
+    # Bottom tab bar (issue #43): every tab label is a real uiautomator node carrying
+    # both text and content-desc, so a tab switch is a plain text tap. This replaced
+    # the old open-the-drawer-then-pick dance, and works from anywhere — including
+    # partway down a pushed details stack.
     Tap-By -Attr 'text' -Value $Page
     Start-Sleep -Seconds 2
 }
 
 function Cmd-Search {
-    # MAUI Shell's page-level ToolbarItems are NOT exposed to uiautomator — they have
-    # no text and no content-desc, so there is no node to find. The hamburger IS
-    # exposed, and the toolbar is horizontally symmetric, so the rightmost icon sits
-    # at (screenWidth - hamburgerCX, hamburgerCY). Resolution-independent.
-    $b = Find-Bounds -Xml (Get-UiDump) -Attr 'content-desc' -Value 'Open navigation drawer'
-    if (-not $b) { throw 'toolbar hamburger not found — is a flyout page foregrounded?' }
-    $w, $null = Get-ScreenSize
-    $x = $w - $b.CX
-    Say "tap toolbar search at ($x,$($b.CY)) [mirror of hamburger $($b.CX),$($b.CY) on width $w]"
-    Adb shell input tap $x $b.CY *> $null
-    Start-Sleep -Milliseconds 1200
+    # Search is its own tab now, so this is just a tab switch.
+    Cmd-Goto 'Search'
 }
 
 function Cmd-Logcat {
@@ -495,7 +481,6 @@ switch ($cmd) {
     'wait-for'   { $secs = 30; $txt = $a -join ' '
                    if ($a.Count -gt 1 -and $a[-1] -match '^\d+$') { $secs = [int]$a[-1]; $txt = ($a[0..($a.Count - 2)] -join ' ') }
                    Cmd-WaitFor $txt $secs }
-    'flyout'     { Cmd-Flyout }
     'search'     { Cmd-Search }
     'goto'       { Cmd-Goto ($a -join ' ') }
     'logcat'     { if ($a[0]) { Cmd-Logcat ([int]$a[0]) } else { Cmd-Logcat } }

@@ -50,7 +50,7 @@ public partial class SettingsPageModel : ObservableObject
 
     /// <summary>
     /// True when the singleton ViewModel already has authenticated profile data
-    /// available for immediate display (e.g. after a flyout page switch).
+    /// available for immediate display (e.g. after a tab switch).
     /// </summary>
     public bool HasLoadedData => _loadedUser is not null;
 

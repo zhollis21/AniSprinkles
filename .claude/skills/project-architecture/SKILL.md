@@ -10,7 +10,7 @@ description: "AniSprinkles project architecture reference: DI lifetimes, page/Pa
 | Registration                                                                                                              | Lifetime                                                       |
 | ------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
 | `ErrorReportService`, `HttpClient`, `IAuthService`, `IAniListClient`, `IAiringNotificationService`, `IOutageStateService`, `INavigationService`, `IUserFeedback` | Singleton                                                      |
-| `MyAnimePageModel`, `DiscoverPageModel`, `SettingsPageModel`                                                              | **Singleton** (survive page recreation across flyout switches) |
+| `MyAnimePageModel`, `DiscoverPageModel`, `SettingsPageModel`                                                              | **Singleton** (survive page recreation across tab switches) |
 | `LoggingHandler`, `AniListRateLimitHandler`                                                                               | Transient                                                      |
 
 `IAniListClient` resolves to `CachingAniListClient` wrapping the concrete `AniListClient` (session-lifetime in-memory cache of character/staff reads, with request coalescing). The shared `HttpClient` pipeline is `AniListRateLimitHandler` → `LoggingHandler` → `HttpClientHandler`, so every AniList call is serialized and 429/`Retry-After`-aware app-wide.
@@ -20,7 +20,7 @@ description: "AniSprinkles project architecture reference: DI lifetimes, page/Pa
 
 Two-constructor pattern: parameterless (for XAML tooling) + DI constructor. `ServiceProviderHelper` provides `IServiceProvider` fallback via `IPlatformApplication.Current.Services` when `Application.Current.Handler` is not ready during Shell startup.
 
-## OnAppearing Three-Branch Pattern (all flyout pages)
+## OnAppearing Three-Branch Pattern (all tab pages)
 
 1. Content alive → background refresh
 2. Content gone + `HasLoadedData` → immediate rebuild + background refresh
@@ -49,11 +49,11 @@ Spinner-first flow: lightweight shell page appears immediately, full content vie
 
 ## Navigation
 
-Shell flyout (`my-anime`, `discover`, `settings`). Details routes registered in `AppShell.xaml.cs`: `media-details` → `MediaDetailsPage`, `staff-details` → `StaffDetailsPage`, `character-details` → `CharacterDetailsPage`, `studio-details` → `StudioDetailsPage`, `media-browse` → `MediaBrowsePage` (Discover "View All"; takes a `section` enum-name param decoded against `DiscoverSectionDefinitions`). Navigate via `Shell.Current.GoToAsync` (or the injected `INavigationService`) with lightweight query params (`mediaId` / `staffId` / `characterId` / `studioId` / `section` + trace IDs) — never pass full model objects. Rapid-tap prevention on My Anime → details. Default Shell back behavior — no custom Android back overrides.
+Shell bottom tab bar (`my-anime` shown as "Library", `discover`, `search`, `feed`, `settings`). The Library tab holds two `ShellContent`s (`anime`, `manga`), which Shell renders as a native swipeable top tab strip. Placeholder pages: `manga` pending #12, `search` pending #43 phase 2, `feed` pending #14. Details routes registered in `AppShell.xaml.cs`: `media-details` → `MediaDetailsPage`, `staff-details` → `StaffDetailsPage`, `character-details` → `CharacterDetailsPage`, `studio-details` → `StudioDetailsPage`, `media-browse` → `MediaBrowsePage` (Discover "View All"; takes a `section` enum-name param decoded against `DiscoverSectionDefinitions`). Navigate via `Shell.Current.GoToAsync` (or the injected `INavigationService`) with lightweight query params (`mediaId` / `staffId` / `characterId` / `studioId` / `section` + trace IDs) — never pass full model objects. Rapid-tap prevention on My Anime → details. Default Shell back behavior — no custom Android back overrides.
 
 ## Performance Defaults
 
-- 5-minute stale refresh window for flyout pages.
+- 5-minute stale refresh window for tab pages.
 - Compiled XAML bindings enabled (`MauiEnableXamlCBindingWithSourceCompilation`).
 - Details page: keep above-the-fold small; lazy-load extended sections below; one primary spinner per screen state.
 - My Anime selection clear deferred until after navigation begins.

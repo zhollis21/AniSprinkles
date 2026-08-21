@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:icons="clr-namespace:IconFont.Maui.FluentIcons;assembly=IconFont.Maui.FluentIcons"
+             x:Class="AniSprinkles.Pages.SearchPage"
+             Title="Search"
+             Shell.TitleColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Search'}">
+
+    <!--
+        Phase 1 placeholder (issue #43). Exists so the 5-tab bar can be evaluated on device
+        before the real work: phase 2 moves the search already built into Discover
+        (DiscoverPageModel / DiscoverLoadedContentView) into this page.
+    -->
+    <VerticalStackLayout Padding="{StaticResource LayoutPadding}"
+                         Spacing="12"
+                         HorizontalOptions="Center"
+                         VerticalOptions="Center">
+        <Label Text="{x:Static icons:FluentIconsRegular.Search24}"
+               FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+               FontSize="48"
+               TextColor="{StaticResource Gray400}"
+               HorizontalOptions="Center"
+               AutomationProperties.IsInAccessibleTree="False" />
+        <Label Text="Search"
+               Style="{StaticResource Title2}"
+               TextColor="{StaticResource OnBackground}"
+               HorizontalOptions="Center" />
+        <Label Text="Coming soon."
+               Style="{StaticResource Caption1}"
+               TextColor="{StaticResource Gray400}"
+               HorizontalTextAlignment="Center"
+               HorizontalOptions="Center" />
+    </VerticalStackLayout>
+</ContentPage>
