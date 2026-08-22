@@ -23,12 +23,12 @@ SettingsPageModel (toggle on/off)
 
 | File                                              | Role                                                             |
 | ------------------------------------------------- | ---------------------------------------------------------------- |
-| `src/Services/IAiringNotificationService.cs`      | Interface: permission, schedule, cancel, clear                   |
-| `src/Services/AiringNotificationService.cs`       | Android impl: WorkManager + MAUI Permissions                     |
-| `src/Platforms/Android/AiringCheckWorker.cs`      | Self-contained Worker: own HTTP client + DTOs, no DI             |
-| `src/Platforms/Android/NotificationHelper.cs`     | Channel creation, notification posting, cover image download     |
-| `src/Platforms/Android/NotificationPermission.cs` | Custom `BasePlatformPermission` for POST_NOTIFICATIONS (API 33+) |
-| `src/Services/CI/CIAiringNotificationService.cs`  | CI stub (all no-ops)                                             |
+|  `src/AniSprinkles.Core/Services/IAiringNotificationService.cs` | Interface: permission, schedule, cancel, clear                   |
+| `src/AniSprinkles/Services/AiringNotificationService.cs`       | Android impl: WorkManager + MAUI Permissions                     |
+| `src/AniSprinkles/Platforms/Android/AiringCheckWorker.cs`      | Self-contained Worker: own HTTP client + DTOs, no DI             |
+| `src/AniSprinkles/Platforms/Android/NotificationHelper.cs`     | Channel creation, notification posting, cover image download     |
+| `src/AniSprinkles/Platforms/Android/NotificationPermission.cs` | Custom `BasePlatformPermission` for POST_NOTIFICATIONS (API 33+) |
+| `src/AniSprinkles/Services/CI/CIAiringNotificationService.cs`  | CI stub (all no-ops)                                             |
 
 ## Preferences Keys
 

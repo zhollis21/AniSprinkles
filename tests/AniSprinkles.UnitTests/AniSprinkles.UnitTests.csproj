@@ -19,52 +19,16 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.8" />
-    <!-- Kept in lockstep with the app's Microsoft.Maui.Controls version (held at 10.0.60 — see src/AniSprinkles.csproj). -->
-    <PackageReference Include="Microsoft.Maui.Essentials" Version="10.0.60" />
-    <PackageReference Include="Microsoft.Maui.Core" Version="10.0.60" />
     <PackageReference Include="NSubstitute" Version="5.3.0" />
   </ItemGroup>
 
-  <!--
-    AniSprinkles.csproj targets net10.0-android, which is not a compatible ProjectReference
-    target for a plain net10.0 test project. Instead we link-compile the specific pure-algorithm
-    source files the merger exercises. The MAUI-dependent half of AppSettings lives in
-    AppSettings.Storage.cs, which is deliberately NOT linked here.
-  -->
   <ItemGroup>
-    <Compile Include="..\..\src\Models\*.cs" LinkBase="_linked\Models" />
-    <Compile Include="..\..\src\Utilities\AniListSeason.cs" LinkBase="_linked\Utilities" />
-    <Compile Include="..\..\src\Utilities\AppSettings.cs" LinkBase="_linked\Utilities" />
-    <Compile Include="..\..\src\Utilities\MetricFormat.cs" LinkBase="_linked\Utilities" />
-    <Compile Include="..\..\src\Utilities\QueryAttributeParser.cs" LinkBase="_linked\Utilities" />
-    <Compile Include="..\..\src\Utilities\SpoilerHtmlProcessor.cs" LinkBase="_linked\Utilities" />
-    <Compile Include="..\..\src\Utilities\FuzzyDateFormatter.cs" LinkBase="_linked\Utilities" />
-    <Compile Include="..\..\src\Utilities\YearsActiveFormatter.cs" LinkBase="_linked\Utilities" />
-    <Compile Include="..\..\src\Utilities\BirthdayChecker.cs" LinkBase="_linked\Utilities" />
-    <Compile Include="..\..\src\Utilities\DescriptionParser.cs" LinkBase="_linked\Utilities" />
-    <Compile Include="..\..\src\Utilities\DescriptionTruncationHeuristic.cs" LinkBase="_linked\Utilities" />
-    <Compile Include="..\..\src\Utilities\AniListMarkdownProcessor.cs" LinkBase="_linked\Utilities" />
-    <Compile Include="..\..\src\Services\Abstractions\*.cs" LinkBase="_linked\Services\Abstractions" />
-    <Compile Include="..\..\src\Services\ListEntryStatusMutations.cs" LinkBase="_linked\Services" />
-    <!-- AniListApiException.cs only (NOT .Icon.cs, which depends on the MAUI-only IconFont package). -->
-    <Compile Include="..\..\src\Services\AniListApiException.cs" LinkBase="_linked\Services" />
-    <Compile Include="..\..\src\Services\AniListErrorClassifier.cs" LinkBase="_linked\Services" />
-    <Compile Include="..\..\src\Services\IAniListClient.cs" LinkBase="_linked\Services" />
-    <Compile Include="..\..\src\Services\AniListRateLimitHandler.cs" LinkBase="_linked\Services" />
-    <Compile Include="..\..\src\Services\CachingAniListClient.cs" LinkBase="_linked\Services" />
-    <Compile Include="..\..\src\PageModels\DiscoverSectionDefinitions.cs" LinkBase="_linked\PageModels" />
-    <Compile Include="..\..\src\PageModels\SortField.cs" LinkBase="_linked\PageModels" />
-    <Compile Include="..\..\src\PageModels\MyAnimeSortDefinitions.cs" LinkBase="_linked\PageModels" />
-    <Compile Include="..\..\src\PageModels\MediaListSection.cs" LinkBase="_linked\PageModels" />
-    <Compile Include="..\..\src\PageModels\MediaListSectionsMerger.cs" LinkBase="_linked\PageModels" />
-    <Compile Include="..\..\src\PageModels\PaginatedSection.cs" LinkBase="_linked\PageModels" />
-    <Compile Include="..\..\src\PageModels\ListOperationRunner.cs" LinkBase="_linked\PageModels" />
-    <Compile Include="..\..\src\PageModels\FavouriteToggleRunner.cs" LinkBase="_linked\PageModels" />
-    <Compile Include="..\..\src\PageModels\PageLoadScope.cs" LinkBase="_linked\PageModels" />
-    <Compile Include="..\..\src\PageModels\VoiceActorAggregator.cs" LinkBase="_linked\PageModels" />
-    <Compile Include="..\..\src\PageModels\DetailsListSorters.cs" LinkBase="_linked\PageModels" />
+    <!-- AniSprinkles.Core targets plain net10.0 precisely so this project can reference it. Before
+         #62 the models, services and page models were link-compiled here file by file, which meant
+         nothing that touched Shell, a popup or the icon font could be tested at all. CommunityToolkit.Mvvm,
+         Microsoft.Maui.Essentials/Core and Microsoft.Extensions.Logging.Abstractions all arrive
+         transitively from Core, so they are no longer listed above. -->
+    <ProjectReference Include="..\..\src\AniSprinkles.Core\AniSprinkles.Core.csproj" />
   </ItemGroup>
 
 </Project>

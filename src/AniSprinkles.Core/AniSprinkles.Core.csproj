@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<!-- Plain net10.0, no platform TFM: this is what lets tests/AniSprinkles.UnitTests
+		     ProjectReference the app's models, services and page models instead of link-compiling
+		     individual source files out of src/. See AGENTS.md and issue #62. -->
+		<TargetFramework>net10.0</TargetFramework>
+		<RootNamespace>AniSprinkles</RootNamespace>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<LangVersion>latest</LangVersion>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- Microsoft.Maui.Controls is referenced, not the whole MAUI workload: Controls.Core and
+		     Controls.Xaml both ship net10.0 assemblies, which is where IValueConverter,
+		     IQueryAttributable and Microsoft.Maui.Graphics.Color come from.
+
+		     Deliberately NOT referenced here:
+		       - CommunityToolkit.Maui — popups and snackbars belong behind IDialogService /
+		         IUserFeedback, implemented in src/Services/Maui/. Leaving the package out is what
+		         keeps that seam from quietly eroding.
+		       - IconFont.Maui.FluentIcons — platform TFMs only. Core mirrors the glyphs it needs in
+		         Icons/Glyphs.cs; see tools/generate-glyphs.cs.
+
+		     Versions are kept in lockstep with src/AniSprinkles.csproj. -->
+		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.60" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.8" />
+		<PackageReference Include="Sentry" Version="6.6.0" />
+	</ItemGroup>
+
+</Project>
