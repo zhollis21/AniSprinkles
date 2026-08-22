@@ -57,16 +57,16 @@ dotnet workload install maui-android
 # Debug compile (type-check + analyzers). NOT an installable APK: without
 # EmbedAssembliesIntoApk this leaves a ~19 MB Fast Deployment package that aborts
 # at launch with no managed stack trace.
-dotnet build src/AniSprinkles.csproj -c Debug -f net10.0-android
+dotnet build src/AniSprinkles/AniSprinkles.csproj -c Debug -f net10.0-android
 
 # Debug APK you can actually install (~97 MB)
-dotnet build src/AniSprinkles.csproj -c Debug -f net10.0-android -p:EmbedAssembliesIntoApk=true
+dotnet build src/AniSprinkles/AniSprinkles.csproj -c Debug -f net10.0-android -p:EmbedAssembliesIntoApk=true
 
 # Release AAB
-dotnet publish src/AniSprinkles.csproj -c Release -f net10.0-android -p:AndroidPackageFormat=aab -o output
+dotnet publish src/AniSprinkles/AniSprinkles.csproj -c Release -f net10.0-android -p:AndroidPackageFormat=aab -o output
 
 # CI build — compile-time stub services, no OAuth token required
-dotnet build src/AniSprinkles.csproj -c Debug -f net10.0-android -p:EmbedAssembliesIntoApk=true -p:CiBuild=true
+dotnet build src/AniSprinkles/AniSprinkles.csproj -c Debug -f net10.0-android -p:EmbedAssembliesIntoApk=true -p:CiBuild=true
 ```
 
 ---

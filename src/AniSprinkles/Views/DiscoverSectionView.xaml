@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:AniSprinkles.Models;assembly=AniSprinkles.Core"
+             xmlns:views="clr-namespace:AniSprinkles.Views"
+             xmlns:icons="clr-namespace:IconFont.Maui.FluentIcons;assembly=IconFont.Maui.FluentIcons"
+             x:Class="AniSprinkles.Views.DiscoverSectionView"
+             x:Name="SectionRoot">
+
+    <VerticalStackLayout Spacing="10">
+        <!-- Section header: accent color is derived from the header text, like the details pages. -->
+        <Border Style="{StaticResource SectionHeaderStyle}"
+                Background="{Binding Source={x:Reference SectionRoot}, Path=HeaderText, Converter={StaticResource RainbowAccentConverter}}">
+            <Grid ColumnDefinitions="*,Auto">
+                <HorizontalStackLayout Grid.Column="0" Spacing="8">
+                    <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center"
+                           AutomationProperties.IsInAccessibleTree="False">
+                        <Image.Source>
+                            <FontImageSource Glyph="{Binding Source={x:Reference SectionRoot}, Path=HeaderGlyph}"
+                                             FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                             Color="White"
+                                             Size="20" />
+                        </Image.Source>
+                    </Image>
+                    <Label Text="{Binding Source={x:Reference SectionRoot}, Path=HeaderText}"
+                           Style="{StaticResource Title3}"
+                           TextColor="White" />
+                </HorizontalStackLayout>
+                <Label Grid.Column="1"
+                       Text="View All ›"
+                       Style="{StaticResource Caption1Strong}"
+                       TextColor="White"
+                       VerticalTextAlignment="Center"
+                       Padding="8,0,0,0"
+                       SemanticProperties.Description="{Binding Source={x:Reference SectionRoot}, Path=HeaderText, StringFormat='View all {0}'}"
+                       SemanticProperties.Hint="Opens the full list for this section">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding Source={x:Reference SectionRoot}, Path=ViewAllCommand}"
+                                              CommandParameter="{Binding Source={x:Reference SectionRoot}, Path=SectionKey}" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </Grid>
+        </Border>
+
+        <!-- Horizontal cover-card carousel: same recycling pattern as the details-page relations row.
+             Infinite: nearing the end pages the row via the page model's LoadMoreSection command. -->
+        <!-- Height fits a 2-line-title card snugly (170 cover + paddings + 2 title lines + badge);
+             anything taller stretches every card's background into dead space at the bottom. -->
+        <CollectionView x:Name="Carousel"
+                        ItemsSource="{Binding Source={x:Reference SectionRoot}, Path=ItemsSource}"
+                        HeightRequest="242"
+                        ItemSizingStrategy="MeasureFirstItem"
+                        RemainingItemsThreshold="4"
+                        RemainingItemsThresholdReachedCommand="{Binding Source={x:Reference SectionRoot}, Path=LoadMoreCommand}"
+                        RemainingItemsThresholdReachedCommandParameter="{Binding Source={x:Reference SectionRoot}, Path=SectionKey}">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Horizontal" ItemSpacing="10" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.Footer>
+                <ActivityIndicator IsRunning="{Binding Source={x:Reference SectionRoot}, Path=IsLoadingMore}"
+                                   IsVisible="{Binding Source={x:Reference SectionRoot}, Path=IsLoadingMore}"
+                                   VerticalOptions="Center"
+                                   Margin="8,0,16,0" />
+            </CollectionView.Footer>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:BrowseMediaItem">
+                    <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer x:DataType="{x:Null}"
+                                                  Command="{Binding Source={x:Reference SectionRoot}, Path=NavigateCommand}"
+                                                  CommandParameter="{Binding}" />
+                        </Border.GestureRecognizers>
+                        <VerticalStackLayout>
+                            <!-- On-list status pill lives inside CoverImage (top-left), shared with the
+                                 detail-page carousels — set ListStatusText/Color to light it up. -->
+                            <views:CoverImage Source="{Binding Node.CoverImage.Large}"
+                                              Format="{Binding Node.Format}"
+                                              ListStatusColor="{Binding ListStatusColor}"
+                                              ListStatusText="{Binding ListStatusDisplay}"
+                                              PlaceholderGlyph="{x:Static icons:FluentIconsRegular.MoviesAndTv24}" />
+                            <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
+                                <Label Text="{Binding Node.DisplayTitle}"
+                                       Style="{StaticResource Caption1Strong}"
+                                       MaxLines="2"
+                                       LineBreakMode="TailTruncation" />
+                                <views:MetricBadgeView Glyph="{Binding MetricBadge.Glyph}"
+                                                       IconColor="{Binding MetricBadge.IconColor}"
+                                                       Text="{Binding MetricBadge.Text}"
+                                                       IsVisible="{Binding HasMetricBadge}" />
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </VerticalStackLayout>
+</ContentView>

@@ -5,6 +5,7 @@ namespace AniSprinkles.UnitTests;
 /// Anime (+1 and Edit-progress) both route through: <see cref="MediaListEntry.IsCompletionAt"/> and
 /// <see cref="MediaListEntry.ClampProgress"/>.
 /// </summary>
+[Collection(AppSettingsCollection.Name)]
 public class MediaListEntryProgressTests
 {
     public MediaListEntryProgressTests() => TestDataBuilder.ResetAppSettings();

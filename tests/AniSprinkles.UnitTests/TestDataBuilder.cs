@@ -86,8 +86,10 @@ internal static class TestDataBuilder
 
     /// <summary>
     /// Resets AppSettings to known defaults before a test so shared static state doesn't bleed
-    /// across tests. AppSettings.Load()/Save()/Clear() require MAUI Preferences and are not
-    /// linked into the test project.
+    /// across tests. The properties are set directly rather than through Load()/Clear(), which go
+    /// via the static Preferences.Default and throw NotImplementedInReferenceAssemblyException on
+    /// this TFM. Test classes that call this belong in the <see cref="AppSettingsCollection"/> so
+    /// they don't race each other.
     /// </summary>
     public static void ResetAppSettings()
     {

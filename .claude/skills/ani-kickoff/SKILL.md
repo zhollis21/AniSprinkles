@@ -253,9 +253,13 @@ Check candidate approaches against the conventions that actually bite here:
   `CIAniListClient` twin, or the CI screenshot job breaks. Easy to forget, and it
   fails well after the fact.
 - **Zero warnings** — the build must stay clean.
-- **Testability** — `tests/` link-compiles individual files from `src/` rather
-  than referencing the MAUI app, so what is practically testable is constrained.
-  If an approach is untestable under that setup, that is a real tradeoff to name.
+- **Testability** — `tests/` project-references `src/AniSprinkles.Core/`, so
+  anything in Core is testable and anything in the MAUI app project is not. If an
+  approach puts logic on the app side of that line, that is a real tradeoff to
+  name. Watch the off-device asymmetry too: `Shell.Current` and
+  `Application.Current` are `null` there (a silent no-op that passes as a test),
+  while `Preferences`, `MainThread`, `AppInfo` and `Browser` throw. Reaching any
+  of them from a page model instead of an injected seam makes it untestable.
 
 Name the tradeoffs plainly, including the ones that argue against your own
 recommendation. Flag anything that is hard to reverse, touches auth or tokens,

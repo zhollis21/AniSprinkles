@@ -5,11 +5,31 @@ description: "AniSprinkles project architecture reference: DI lifetimes, page/Pa
 
 # Project Architecture
 
+## Project Split (`src/`)
+
+Two **sibling** projects since #62:
+
+```
+src/AniSprinkles/          net10.0-android   the MAUI app
+src/AniSprinkles.Core/     net10.0           models, services, page models
+tests/AniSprinkles.UnitTests/                project-references Core
+```
+
+- **`src/AniSprinkles.Core/`** — `Models/`, `Utilities/`, non-platform `Services/`, `Services/Abstractions/`, `Converters/`, `Icons/`, and **all** `PageModels/`. Plain TFM so the unit tests can project-reference it. References neither `CommunityToolkit.Maui` nor `IconFont.Maui.FluentIcons`, on purpose.
+- **`src/AniSprinkles/`** — `Pages/`, `Views/`, `Behaviors/`, `Platforms/`, `MauiProgram.cs`, `AuthService`, `AiringNotificationService`, the CI/ErrorSim stubs, and the `Services/Maui/` adapters implementing Core's abstractions.
+
+**Keep them siblings — don't nest a project inside another project's folder.** Core briefly lived at `src/AniSprinkles.Core/` while the app was still `src/AniSprinkles.csproj`, and the app's default globs swept up 602 of Core's sources plus its `obj/` generated assembly attributes. It fails as `CS0579: Duplicate 'TargetFrameworkAttribute'`, which reads like a corrupt build rather than a layout problem. `<DefaultItemExcludes>` does suppress it (one property, honoured by `Compile`/`None`/`EmbeddedResource`/`MauiXaml` alike) if you ever need the trick elsewhere — but the sibling layout means nothing needs suppressing.
+
+A PageModel must never touch `Shell.Current`, a popup type, `Browser`, `AppInfo`, `Preferences` or `MainThread` directly. Use `INavigationService`, `IDialogService`, `IUserFeedback`, `IExternalBrowser`, `IAppInfo`, `IPreferences`, `IDispatcher`. Off-device `Shell.Current` and `Application.Current` are **null** rather than throwing, so a direct call silently no-ops and its test passes without exercising anything.
+
+XAML referencing a Core type needs `;assembly=AniSprinkles.Core` on the `clr-namespace:` — XamlC catches a miss at build time.
+
 ## DI Lifetimes (`MauiProgram.cs`)
 
 | Registration                                                                                                              | Lifetime                                                       |
 | ------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
-| `ErrorReportService`, `HttpClient`, `IAuthService`, `IAniListClient`, `IAiringNotificationService`, `IOutageStateService`, `INavigationService`, `IUserFeedback` | Singleton                                                      |
+| `ErrorReportService`, `HttpClient`, `IAuthService`, `IAniListClient`, `IAiringNotificationService`, `IOutageStateService`, `INavigationService`, `IUserFeedback`, `IDialogService`, `IExternalBrowser`, `ListEntryStatusFlow` | Singleton                                                      |
+| `IPreferences`, `IAppInfo`, `TimeProvider` (`TryAddSingleton` — MAUI exposes the first two only as statics, so DI has no default) | Singleton                                                      |
 | `MyAnimePageModel`, `DiscoverPageModel`, `SearchPageModel`, `SettingsPageModel`                                           | **Singleton** (survive page recreation across tab switches) |
 | `LoggingHandler`, `AniListRateLimitHandler`                                                                               | Transient                                                      |
 

@@ -8,7 +8,8 @@
     <File Path="DEVELOPER_NOTES.md" />
     <File Path="README.md" />
   </Folder>
-  <Project Path="src/AniSprinkles.csproj">
+  <Project Path="src/AniSprinkles.Core/AniSprinkles.Core.csproj" />
+  <Project Path="src/AniSprinkles/AniSprinkles.csproj">
     <Deploy Solution="Debug|*" />
   </Project>
   <Project Path="tests/AniSprinkles.UnitTests/AniSprinkles.UnitTests.csproj" />

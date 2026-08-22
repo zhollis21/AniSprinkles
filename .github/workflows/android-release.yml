@@ -47,7 +47,7 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('src/AniSprinkles.csproj') }}
+          key: ${{ runner.os }}-nuget-${{ hashFiles('src/**/*.csproj') }}
           restore-keys: |
             ${{ runner.os }}-nuget-
 
@@ -125,7 +125,7 @@ jobs:
           echo "::notice::Keystore decoded successfully ($FILE_SIZE bytes)"
 
       - name: Restore NuGet Packages
-        run: dotnet restore src/AniSprinkles.csproj
+        run: dotnet restore src/AniSprinkles/AniSprinkles.csproj
 
       - name: Build Signed AAB
         env:
@@ -134,7 +134,7 @@ jobs:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: ${{ vars.SENTRY_ORG }}
         run: |
-          dotnet publish src/AniSprinkles.csproj \
+          dotnet publish src/AniSprinkles/AniSprinkles.csproj \
             -c Release \
             -f net10.0-android \
             -p:AndroidPackageFormat=aab \

@@ -18,10 +18,10 @@ Or in Visual Studio: **Project Properties → Build → Conditional compilation 
 
 This swaps in two pre-built stubs automatically:
 
-- `SimAuthService` (`src/Services/ErrorSimulation/SimAuthService.cs`) — always reports the app as authenticated, no real sign-in needed
-- `FailingAniListClient` (`src/Services/ErrorSimulation/FailingAniListClient.cs`) — throws a classified `AniListApiException` on every data call
+- `SimAuthService` (`src/AniSprinkles/Services/ErrorSimulation/SimAuthService.cs`) — always reports the app as authenticated, no real sign-in needed
+- `FailingAniListClient` (`src/AniSprinkles/Services/ErrorSimulation/FailingAniListClient.cs`) — throws a classified `AniListApiException` on every data call
 
-To change which error kind is simulated, open `src/Services/ErrorSimulation/FailingAniListClient.cs` and
+To change which error kind is simulated, open `src/AniSprinkles/Services/ErrorSimulation/FailingAniListClient.cs` and
 change the `SimulatedError` constant, then rebuild:
 
 ```csharp

@@ -3,6 +3,7 @@ using System.Collections.Specialized;
 
 namespace AniSprinkles.UnitTests;
 
+[Collection(AppSettingsCollection.Name)]
 public class MediaListSectionsMergerTests
 {
     public MediaListSectionsMergerTests() => TestDataBuilder.ResetAppSettings();

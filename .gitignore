@@ -84,8 +84,13 @@ Thumbs.db
 .env.local
 *.pfx
 
-# PR Tool Results
-tools/
+# PR Tool Results. The directory is scratch space, so ignore its contents and re-include the
+# few scripts that are actually part of the repo. (`tools/` alone would exclude the directory
+# itself, and git never descends into an excluded directory — so the negations below need
+# `tools/*`, not `tools/`.)
+tools/*
+!tools/Get-OpenPrComments.ps1
+!tools/generate-glyphs.cs
 
 # Tmp and Testing Files
 /tmp

@@ -28,7 +28,7 @@ $ErrorActionPreference = 'Stop'
 $Package  = 'com.RainbowSprinkles.AniSprinkles'
 $RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..\..')).Path
 $ShotDir  = Join-Path $RepoRoot 'tmp\driver-screens'
-$Apk      = Join-Path $RepoRoot 'src\bin\Debug\net10.0-android\com.RainbowSprinkles.AniSprinkles-Signed.apk'
+$Apk      = Join-Path $RepoRoot 'src\AniSprinkles\bin\Debug\net10.0-android\com.RainbowSprinkles.AniSprinkles-Signed.apk'
 
 # ---------------------------------------------------------------- SDK plumbing
 
@@ -296,7 +296,7 @@ function Cmd-Build {
     Say 'dotnet build (Debug, CI stubs)'
     Push-Location $RepoRoot
     try {
-        & dotnet build src/AniSprinkles.csproj -c Debug -f net10.0-android `
+        & dotnet build src/AniSprinkles/AniSprinkles.csproj -c Debug -f net10.0-android `
             -p:EmbedAssembliesIntoApk=true -p:CiBuild=true
         if ($LASTEXITCODE -ne 0) { throw "build failed ($LASTEXITCODE)" }
     } finally { Pop-Location }

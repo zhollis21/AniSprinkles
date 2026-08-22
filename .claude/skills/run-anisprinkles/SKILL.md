@@ -39,7 +39,7 @@ pwsh -NoProfile -File .claude/skills/run-anisprinkles/driver.ps1 env
 ## Build
 
 Always build with `-p:CiBuild=true`. That swaps in `CIAuthService` /
-`CIAniListClient` / `CIAiringNotificationService` (`src/Services/CI/`), so the app
+`CIAniListClient` / `CIAiringNotificationService` (`src/AniSprinkles/Services/CI/`), so the app
 launches **already signed in** against hardcoded fixtures: no OAuth round-trip, no
 real AniList traffic, no rate-limit budget spent, and a deterministic list every
 run. A plain Debug build drops you on the signed-out screen and there is no
@@ -50,11 +50,11 @@ pwsh -NoProfile -File .claude/skills/run-anisprinkles/driver.ps1 build
 ```
 
 Takes **~6 minutes** from cold (`Time Elapsed 00:05:53`) and produces a ~97 MB APK
-at `src/bin/Debug/net10.0-android/com.RainbowSprinkles.AniSprinkles-Signed.apk`.
+at `src/AniSprinkles/bin/Debug/net10.0-android/com.RainbowSprinkles.AniSprinkles-Signed.apk`.
 Skip it if you have not touched `src/` since the last build.
 
 **Build the Android head exactly one way: `driver.ps1 build`.** It is tempting to run a
-plain `dotnet build src/AniSprinkles.csproj -c Debug -f net10.0-android` to check for
+plain `dotnet build src/AniSprinkles/AniSprinkles.csproj -c Debug -f net10.0-android` to check for
 warnings and then `driver.ps1 build` for the APK — that wastes a second ~6-minute build
 *and* leaves a broken APK, because the plain build omits `EmbedAssembliesIntoApk` and
 overwrites the deployable ~97 MB APK with a ~19 MB Fast Deployment one (see Gotchas). The
@@ -229,7 +229,7 @@ works — that is what the driver above is for.
   `KEYCODE_DEL` instead.
 
 - **A plain `dotnet build` silently clobbers the deployable APK.** Running
-  `dotnet build src/AniSprinkles.csproj -c Debug -f net10.0-android` to check for
+  `dotnet build src/AniSprinkles/AniSprinkles.csproj -c Debug -f net10.0-android` to check for
   warnings is fine, but it omits `-p:EmbedAssembliesIntoApk=true` and leaves a
   ~19 MB *Fast Deployment* APK where the ~97 MB one was. Installing that gives a
   process that dies instantly, before any managed code, with no .NET stack trace —
