@@ -46,12 +46,15 @@ public class AuthService : IAuthService
             {
                 await SignOutAsync();
             }
-            catch (OperationCanceledException)
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
             {
-                // As in LoadAsync: let cancellation propagate to the caller that owns the token.
-                // This path is the more exposed of the two — SignOutAsync drives the Android
-                // CookieManager through MainThread.InvokeOnMainThreadAsync, which can surface a
-                // cancellation on its own during teardown.
+                // Propagate ONLY the caller's own cancellation. The filter is load-bearing: ten
+                // call sites across six page models call GetAccessTokenAsync with no token at all,
+                // from async void OnAppearing paths with nothing to catch. SignOutAsync drives the
+                // Android CookieManager through MainThread.InvokeOnMainThreadAsync, which can
+                // surface a cancellation of its own during teardown — rethrowing that to a caller
+                // who never asked for cancellation turns a survivable cleanup failure into a
+                // crash. Unfiltered, this catch did exactly that.
                 throw;
             }
             catch (Exception ex)
@@ -173,7 +176,7 @@ public class AuthService : IAuthService
                 ExpiresAt = expiry;
             }
         }
-        catch (OperationCanceledException)
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {
             // Cancellation is the caller's business, not a storage failure. The detail page models
             // pass a PageLoadScope token into GetAccessTokenAsync and expect navigating away to
@@ -181,6 +184,9 @@ public class AuthService : IAuthService
             // Nothing below currently takes the token — MAUI's ISecureStorage.GetAsync has no
             // overload for one — but this keeps the broad catch from swallowing a cancellation if
             // that changes, which is exactly the kind of thing that would be silent for months.
+            //
+            // Filtered so only the CALLER'S cancellation escapes: most callers pass no token and
+            // await this from async void lifecycle paths, where an unfiltered rethrow is a crash.
             throw;
         }
         catch (Exception ex)
