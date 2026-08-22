@@ -71,14 +71,14 @@ public partial class OutageStateService(IDispatcher dispatcher) : ObservableObje
 
     private void DispatchOrInvoke(Action action)
     {
-        // Was MainThread.IsMainThread, which throws NotImplementedInReferenceAssemblyException on the
-        // plain net10.0 TFM this library now targets. The old catch only covered
-        // InvalidOperationException, so the "falls back inline in unit tests" the comment promised
-        // never actually happened — the throw escaped. IDispatcher is injected instead, and a test
-        // can supply one that runs inline.
+        // Injected IDispatcher rather than MainThread, which throws
+        // NotImplementedInReferenceAssemblyException on the plain net10.0 TFM this library targets —
+        // the old catch only covered InvalidOperationException, so the "falls back inline in unit
+        // tests" its comment promised never actually happened.
+        //
         // Dispatch returns false when it could not queue the work (no dispatcher loop yet — the
-        // early-bootstrap case the old catch was reaching for). Running inline is better than
-        // dropping the state change, which would strand the outage banner.
+        // early-bootstrap case that catch was reaching for). Falling through to run inline is better
+        // than dropping the state change, which would strand the outage banner.
         if (dispatcher.IsDispatchRequired && dispatcher.Dispatch(action))
         {
             return;

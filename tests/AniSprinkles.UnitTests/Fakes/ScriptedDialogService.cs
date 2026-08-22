@@ -19,6 +19,15 @@ public sealed class ScriptedDialogService : IDialogService
     /// <summary>Names of the dialogs shown, in order.</summary>
     public IReadOnlyList<string> Calls => _calls;
 
+    /// <summary>Invoked as each dialog is shown, for tests that assert on ordering.</summary>
+    public Action<string>? OnCall { get; set; }
+
+    /// <summary>
+    /// Runs before <see cref="ConfirmAsync"/> returns. Lets a test hold a confirmation open and act
+    /// while the flow is genuinely mid-dialog.
+    /// </summary>
+    public Func<Task>? BeforeConfirmAsync { get; set; }
+
     public MyAnimeEntryAction? EntryActionAnswer { get; set; }
 
     public MoveToListChoice? MoveToListAnswer { get; set; }
@@ -35,7 +44,7 @@ public sealed class ScriptedDialogService : IDialogService
         string animeTitle,
         IReadOnlyList<MyAnimeEntryAction> actions)
     {
-        _calls.Add(nameof(ShowEntryActionsAsync));
+        Record(nameof(ShowEntryActionsAsync));
         return Task.FromResult(EntryActionAnswer);
     }
 
@@ -45,19 +54,19 @@ public sealed class ScriptedDialogService : IDialogService
         bool allowRemove = true,
         string? subtitle = null)
     {
-        _calls.Add(nameof(ShowMoveToListAsync));
+        Record(nameof(ShowMoveToListAsync));
         return Task.FromResult(MoveToListAnswer);
     }
 
     public Task<int?> ShowEditProgressAsync(string animeTitle, int currentProgress, int? maxEpisodes)
     {
-        _calls.Add(nameof(ShowEditProgressAsync));
+        Record(nameof(ShowEditProgressAsync));
         return Task.FromResult(EditProgressAnswer);
     }
 
     public Task<double?> ShowRatingAsync(string? animeTitle, double? initialScore)
     {
-        _calls.Add(nameof(ShowRatingAsync));
+        Record(nameof(ShowRatingAsync));
         return Task.FromResult(RatingAnswer);
     }
 
@@ -69,8 +78,14 @@ public sealed class ScriptedDialogService : IDialogService
         bool isDestructive = false,
         string? iconGlyph = null)
     {
-        _calls.Add(nameof(ConfirmAsync));
-        return Task.FromResult(ConfirmAnswer);
+        Record(nameof(ConfirmAsync));
+        return BeforeConfirmAsync is null ? Task.FromResult(ConfirmAnswer) : AwaitThenAnswerAsync();
+
+        async Task<bool> AwaitThenAnswerAsync()
+        {
+            await BeforeConfirmAsync();
+            return ConfirmAnswer;
+        }
     }
 
     public Task<string?> PromptAsync(
@@ -80,7 +95,13 @@ public sealed class ScriptedDialogService : IDialogService
         int maxLength = -1,
         bool numericKeyboard = false)
     {
-        _calls.Add(nameof(PromptAsync));
+        Record(nameof(PromptAsync));
         return Task.FromResult(PromptAnswer);
+    }
+
+    private void Record(string call)
+    {
+        _calls.Add(call);
+        OnCall?.Invoke(call);
     }
 }

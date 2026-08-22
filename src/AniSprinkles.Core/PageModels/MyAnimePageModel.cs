@@ -25,6 +25,7 @@ public partial class MyAnimePageModel : ObservableObject
     private readonly IPreferences _preferences;
     private readonly INavigationService _navigationService;
     private readonly IUserFeedback _feedback;
+    private readonly TimeProvider _timeProvider;
     private readonly ILogger<MyAnimePageModel> _logger;
     private readonly EntryActionCoordinator _entryActions;
     private bool _hasLoaded;
@@ -149,7 +150,7 @@ public partial class MyAnimePageModel : ObservableObject
         _ => Glyphs.Regular.List24,
     };
 
-    public MyAnimePageModel(IAniListClient aniListClient, IAuthService authService, IAiringNotificationService airingNotificationService, ErrorReportService errorReportService, IPreferences preferences, INavigationService navigationService, IDialogService dialogs, IUserFeedback feedback, ListEntryStatusFlow statusFlow, ILogger<MyAnimePageModel> logger)
+    public MyAnimePageModel(IAniListClient aniListClient, IAuthService authService, IAiringNotificationService airingNotificationService, ErrorReportService errorReportService, IPreferences preferences, INavigationService navigationService, IDialogService dialogs, IUserFeedback feedback, ListEntryStatusFlow statusFlow, TimeProvider timeProvider, ILogger<MyAnimePageModel> logger)
     {
         _aniListClient = aniListClient;
         _authService = authService;
@@ -158,6 +159,7 @@ public partial class MyAnimePageModel : ObservableObject
         _preferences = preferences;
         _navigationService = navigationService;
         _feedback = feedback;
+        _timeProvider = timeProvider;
         _logger = logger;
 
         // Long-press flows live in the shared coordinator (also used by Discover/browse);
@@ -554,7 +556,8 @@ public partial class MyAnimePageModel : ObservableObject
 
         try
         {
-            await Task.Delay(IncrementDebounceDelay, token);
+            // Through TimeProvider so the 1500 ms batching window is deterministic under test.
+            await Task.Delay(IncrementDebounceDelay, _timeProvider, token);
         }
         catch (TaskCanceledException)
         {
