@@ -434,6 +434,11 @@ jobs:
             echo "::warning::Timed out waiting for page to load after ${MAX_WAIT}s — capturing anyway"
           fi
 
+          # Start from empty. The checkout carries the PREVIOUS run's screenshots (they are
+          # committed to the branch), so without this any capture that fails silently leaves last
+          # run's PNG on disk — and the publish step then commits and embeds it as if it were
+          # current. A missing screenshot is obvious; a stale one that looks plausible is not.
+          rm -rf screenshots
           mkdir -p screenshots
 
           # Screenshot 1: Library tab, Anime sub-tab (the app's launch destination)
@@ -540,34 +545,37 @@ jobs:
           # Straight to the Settings tab. The details stack this leaves behind on the Library tab
           # does not matter — the next section taps its own tab too. Guarded because `set -e`
           # would otherwise abort the whole run (and lose every later screenshot) on one miss.
-          if ! goto_tab "Settings"; then
-            echo "::warning::Could not reach the Settings tab — Settings screenshot may be incorrect"
-          fi
-
-          # Poll for Settings page to finish loading (up to 15s)
-          # "Display Preferences" is a static label always visible once loaded.
-          SETTINGS_LOAD_WAIT=0
-          while [ $SETTINGS_LOAD_WAIT -lt 15 ]; do
-            adb shell uiautomator dump /sdcard/ui_settings_loaded.xml 2>/dev/null || true
-            SETTINGS_DUMP=$(adb shell cat /sdcard/ui_settings_loaded.xml 2>/dev/null || echo "")
-            if echo "$SETTINGS_DUMP" | grep -q "Loading settings"; then
-              echo "  Still loading settings... (${SETTINGS_LOAD_WAIT}s)"
-            elif echo "$SETTINGS_DUMP" | grep -q "Display Preferences"; then
-              echo "  Settings loaded after ${SETTINGS_LOAD_WAIT}s"
+          # Gated like the Discover capture below: on a missed tab we are still sitting on the
+          # staff details page, and capturing anyway would file THAT as settings.png. Skipping
+          # leaves the screenshot absent, which is visible; publishing the wrong page is not.
+          if goto_tab "Settings"; then
+            # Poll for Settings page to finish loading (up to 15s)
+            # "Display Preferences" is a static label always visible once loaded.
+            SETTINGS_LOAD_WAIT=0
+            while [ $SETTINGS_LOAD_WAIT -lt 15 ]; do
+              adb shell uiautomator dump /sdcard/ui_settings_loaded.xml 2>/dev/null || true
+              SETTINGS_DUMP=$(adb shell cat /sdcard/ui_settings_loaded.xml 2>/dev/null || echo "")
+              if echo "$SETTINGS_DUMP" | grep -q "Loading settings"; then
+                echo "  Still loading settings... (${SETTINGS_LOAD_WAIT}s)"
+              elif echo "$SETTINGS_DUMP" | grep -q "Display Preferences"; then
+                echo "  Settings loaded after ${SETTINGS_LOAD_WAIT}s"
+                sleep 1
+                break
+              fi
               sleep 1
-              break
+              SETTINGS_LOAD_WAIT=$((SETTINGS_LOAD_WAIT + 1))
+            done
+            if [ $SETTINGS_LOAD_WAIT -ge 15 ]; then
+              echo "::warning::Settings page did not finish loading — capturing anyway"
             fi
-            sleep 1
-            SETTINGS_LOAD_WAIT=$((SETTINGS_LOAD_WAIT + 1))
-          done
-          if [ $SETTINGS_LOAD_WAIT -ge 15 ]; then
-            echo "::warning::Settings page did not finish loading — capturing anyway"
-          fi
 
-          # Screenshot 6: Settings page
-          adb shell screencap -p /sdcard/settings.png || echo "::warning::Failed to capture Settings screenshot"
-          adb pull /sdcard/settings.png screenshots/settings.png || echo "::warning::Failed to pull Settings screenshot"
-          echo "Captured: settings.png (Settings — $AUTH_MODE)"
+            # Screenshot 6: Settings page
+            adb shell screencap -p /sdcard/settings.png || echo "::warning::Failed to capture Settings screenshot"
+            adb pull /sdcard/settings.png screenshots/settings.png || echo "::warning::Failed to pull Settings screenshot"
+            echo "Captured: settings.png (Settings — $AUTH_MODE)"
+          else
+            echo "::warning::Could not reach the Settings tab — skipping Settings screenshot"
+          fi
 
           # ---- Discover / View All / Search (issues #15/#16) ----
           # All rendered from CI stub fixtures (popular SFW titles); the adult toggle defaults off,
@@ -626,37 +634,40 @@ jobs:
               echo "::warning::Could not open a View All list — skipping browse screenshot"
             fi
 
-            # Screenshot 9: Search results. Switch to the Search tab, focus the field, type a
-            # popular SFW query that matches a stub title, capture results.
-            if open_search_tab; then
-              sleep 1
-              # Tap the field by its hint to guarantee focus before typing. The page focuses it
-              # on appear when empty, but a tap is a cheap belt-and-suspenders for CI.
-              tap_element_by_text "Search all anime..." || true
-              sleep 1
-              # "no" matches five romaji stub titles (Shingeki no Kyojin, Kimi no Na wa, Yakusoku
-              # no Neverland, Hagane no Renkinjutsushi, Kimetsu no Yaiba) so the results list is
-              # full and shows a mix of status pills (and some off-list rows).
-              adb shell input text "no"
-              SEARCH_WAIT=0
-              while [ $SEARCH_WAIT -lt 12 ]; do
-                adb shell uiautomator dump /sdcard/ui_search.xml 2>/dev/null || true
-                if adb shell cat /sdcard/ui_search.xml 2>/dev/null | grep -qi "Shingeki no Kyojin"; then
-                  echo "  Search results ready after ${SEARCH_WAIT}s"
-                  break
-                fi
-                sleep 1
-                SEARCH_WAIT=$((SEARCH_WAIT + 1))
-              done
-              sleep 1
-              adb shell screencap -p /sdcard/search.png || echo "::warning::Failed to capture Search screenshot"
-              adb pull /sdcard/search.png screenshots/search.png || echo "::warning::Failed to pull Search screenshot"
-              echo "Captured: search.png (Search — $AUTH_MODE)"
-            else
-              echo "::warning::Could not reach the Search tab — skipping search screenshot"
-            fi
           else
-            echo "::warning::Discover tab unreachable — skipped Discover/View All/Search screenshots"
+            echo "::warning::Discover tab unreachable — skipped Discover/View All screenshots"
+          fi
+
+          # Screenshot 9: Search results. Its own tab since #43, so this deliberately sits OUTSIDE
+          # the Discover guard — nested under DISCOVER_OPENED, one failed Discover tap silently
+          # skipped the Search capture as well. goto_tab works from anywhere, including a pushed
+          # details stack, so there is nothing to unwind first.
+          if open_search_tab; then
+            sleep 1
+            # Tap the field by its hint to guarantee focus before typing. The page focuses it
+            # on appear when empty, but a tap is a cheap belt-and-suspenders for CI.
+            tap_element_by_text "Search all anime..." || true
+            sleep 1
+            # "no" matches five romaji stub titles (Shingeki no Kyojin, Kimi no Na wa, Yakusoku
+            # no Neverland, Hagane no Renkinjutsushi, Kimetsu no Yaiba) so the results list is
+            # full and shows a mix of status pills (and some off-list rows).
+            adb shell input text "no"
+            SEARCH_WAIT=0
+            while [ $SEARCH_WAIT -lt 12 ]; do
+              adb shell uiautomator dump /sdcard/ui_search.xml 2>/dev/null || true
+              if adb shell cat /sdcard/ui_search.xml 2>/dev/null | grep -qi "Shingeki no Kyojin"; then
+                echo "  Search results ready after ${SEARCH_WAIT}s"
+                break
+              fi
+              sleep 1
+              SEARCH_WAIT=$((SEARCH_WAIT + 1))
+            done
+            sleep 1
+            adb shell screencap -p /sdcard/search.png || echo "::warning::Failed to capture Search screenshot"
+            adb pull /sdcard/search.png screenshots/search.png || echo "::warning::Failed to pull Search screenshot"
+            echo "Captured: search.png (Search — $AUTH_MODE)"
+          else
+            echo "::warning::Could not reach the Search tab — skipping search screenshot"
           fi
 
           echo ""

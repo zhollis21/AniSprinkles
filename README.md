@@ -16,9 +16,9 @@ A colourful .NET MAUI Android app for tracking your anime with [AniList](https:/
 
 ## Screenshots
 
-| My Anime | Media Details | Character | Staff | Settings |
+| Library | Media Details | Character | Staff | Settings |
 | :---: | :---: | :---: | :---: | :---: |
-| ![My Anime](screenshots/my_anime.png) | ![One Piece Details](screenshots/one_piece_details.png) | ![Luffy](screenshots/character_details.png) | ![Mayumi Tanaka](screenshots/staff_details.png) | ![Settings](screenshots/settings.png) |
+| ![Library](screenshots/my_anime.png) | ![One Piece Details](screenshots/one_piece_details.png) | ![Luffy](screenshots/character_details.png) | ![Mayumi Tanaka](screenshots/staff_details.png) | ![Settings](screenshots/settings.png) |
 
 > Screenshots generated automatically by CI using compile-time stub services — no OAuth token required.
 
@@ -26,8 +26,9 @@ A colourful .NET MAUI Android app for tracking your anime with [AniList](https:/
 
 ## Features
 
-- **My Anime list** — library grouped by status (Watching, Rewatching, Planning, Completed, Paused, Dropped) with collapsible sections, sort controls, and pull-to-refresh
-- **Discover** — Currently Airing, Trending Now, Top Anime, Top Movies, All Time Popular, and Upcoming Next Season rows (plus optional 18+ rows) with infinite scrolling and "View All" browse lists, plus debounced search across all of AniList; works signed-out, and shows your list status on every card when signed in
+- **Library** — your anime list grouped by status (Watching, Rewatching, Planning, Completed, Paused, Dropped) with collapsible sections, sort controls, and pull-to-refresh; an Anime/Manga sub-tab strip sits above it, with manga still to come
+- **Discover** — Currently Airing, Trending Now, Top Anime, Top Movies, All Time Popular, and Upcoming Next Season rows (plus optional 18+ rows) with infinite scrolling and "View All" browse lists; works signed-out, and shows your list status on every card when signed in
+- **Search** — debounced search across all of AniList on its own tab, with infinite scrolling; works signed-out, and shows your list status on every result when signed in
 - **Quick list actions** — long-press any anime (in your list, Discover, browse, or search) to add it to a list or edit progress, rating, and status without leaving the page
 - **Media details** — full AniList metadata: synopsis with Read more/Show less, scores, airing schedule, genres, tags, rankings, studios, staff, related media, external links, and trailer
 - **List entry editing** — update watch progress, score, and status directly from the details page; changes sync back to AniList
@@ -53,8 +54,13 @@ dotnet workload install maui-android
 ```
 
 ```powershell
-# Debug APK
+# Debug compile (type-check + analyzers). NOT an installable APK: without
+# EmbedAssembliesIntoApk this leaves a ~19 MB Fast Deployment package that aborts
+# at launch with no managed stack trace.
 dotnet build src/AniSprinkles.csproj -c Debug -f net10.0-android
+
+# Debug APK you can actually install (~97 MB)
+dotnet build src/AniSprinkles.csproj -c Debug -f net10.0-android -p:EmbedAssembliesIntoApk=true
 
 # Release AAB
 dotnet publish src/AniSprinkles.csproj -c Release -f net10.0-android -p:AndroidPackageFormat=aab -o output

@@ -32,7 +32,9 @@ See `/airing-notifications` for the full subsystem architecture, key files, Pref
 ## Build and Test
 
 ```powershell
-# Debug build
+# Debug build — compiles and runs analyzers, but does NOT produce an installable
+# APK. Add -p:EmbedAssembliesIntoApk=true if you intend to deploy it, or the
+# artifact is a ~19 MB Fast Deployment package that aborts at launch.
 dotnet build src/AniSprinkles.csproj -c Debug -f net10.0-android
 
 # Release AAB (CI uses this with signing args — see .github/workflows/android-release.yml)
