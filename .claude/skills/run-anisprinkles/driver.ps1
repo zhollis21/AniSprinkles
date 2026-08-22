@@ -78,6 +78,17 @@ function AdbOut {
     if ($script:Serial) { & $Adb -s $script:Serial exec-out @args } else { & $Adb exec-out @args }
 }
 
+# Free 1K-blocks on /data, or $null if the output could not be parsed. `df` prints a header
+# plus one row; column 4 is "Available". Returns $null rather than throwing so callers can
+# treat "unknown" as "proceed and let the install tell us".
+function FreeDataKb {
+    $row = @(AdbOut df /data 2>$null) | Where-Object { $_ -match '^\S+\s+\d+' } | Select-Object -Last 1
+    if (-not $row) { return $null }
+    $cols = @(($row -split '\s+') | Where-Object { $_ })
+    if ($cols.Count -ge 4 -and $cols[3] -match '^\d+$') { return [int64]$cols[3] }
+    return $null
+}
+
 function Say($msg) { Write-Host "[driver] $msg" }
 
 function Get-AttachedDevices {
@@ -215,9 +226,8 @@ AniSprinkles driver — pwsh .claude/skills/run-anisprinkles/driver.ps1 <command
   swipe up|down|left|right  One content-area swipe
   scroll-to <text>          Swipe up until <text> appears (max 10)
   wait-for <text> [secs]    Poll the UI until <text> appears (default 30s)
-  flyout                    Open the Shell navigation drawer
-  search                    Tap the Discover toolbar search icon (see Gotchas)
-  goto <My Anime|Discover|Settings>   Open the drawer and pick a page
+  goto <tab>                Switch tabs: Library|Discover|Search|Feed|Settings
+  search                    Shortcut for `goto Search`
 
   logcat [lines]            App-PID logcat tail (default 200)
   applog                    Pull the on-device rotating file log
@@ -298,24 +308,43 @@ function Cmd-Install {
     $mb = [math]::Round((Get-Item $Apk).Length / 1MB)
     Say "installing $(Split-Path $Apk -Leaf) (${mb} MB)"
 
+    # Android wants several times the APK size free during install, and the default AVD's
+    # 6 GB data partition sits close to full with just this app on it. Drop the old copy up
+    # front when space is short rather than discovering it through a failed install: the
+    # uninstall costs seconds, the failed install costs a whole retry cycle.
+    $freeKb = FreeDataKb
+    $needKb = [int64]((Get-Item $Apk).Length / 1KB) * 4
+    if ($null -ne $freeKb -and $freeKb -lt $needKb) {
+        Say "only $([math]::Round($freeKb / 1024)) MB free on /data — removing the old copy first"
+        Adb uninstall $Package *> $null
+    }
+
+    # Every adb call here goes through the `Adb` wrapper, not `& $Adb`: the wrapper adds
+    # `-s $script:Serial` from Resolve-Target. Calling the binary directly ignores that, so with
+    # ANDROID_SERIAL set or two devices attached the free-space check could read one device while
+    # the install targeted another — or adb would just fail on "more than one device".
+    #
     # NOTE: `adb install` prints "Failure [...]" to STDOUT and STILL exits 0 in some
     # adb builds, and a stale build of the package left installed would make a
     # naive `pm list packages` check pass. Parse the output text instead.
-    $out = (& $Adb install -r -d $Apk 2>&1) -join "`n"
+    $out = @(Adb install -r -d $Apk 2>&1) -join "`n"
     Write-Host $out
 
     if ($out -match 'INSUFFICIENT_STORAGE') {
-        # The CI-stub debug APK is ~100 MB (EmbedAssembliesIntoApk + debug symbols),
-        # and Android wants several times that free during install. Dropping the old
-        # copy first is usually enough.
+        # Space was fine (or unreadable) going in but the install still did not fit.
         Say 'insufficient storage — uninstalling old copy and retrying'
-        & $Adb uninstall $Package *> $null
-        $out = (& $Adb install $Apk 2>&1) -join "`n"
+        Adb uninstall $Package *> $null
+        $out = @(Adb install $Apk 2>&1) -join "`n"
         Write-Host $out
     }
 
     if ($out -notmatch 'Success') {
-        throw "install failed. Free space on the AVD:`n$((AdbOut df /data) -join "`n")"
+        # @() around every capture: AdbOut returns $null when the device is gone, and `-join`
+        # on $null throws "You cannot call a method on a null-valued expression", which used to
+        # replace this diagnostic with a PowerShell error that said nothing about the install.
+        $df = @(AdbOut df -h /data 2>$null) -join "`n"
+        if (-not $df) { $df = '(could not read free space — device gone?)' }
+        throw "install failed.`nadb said:`n$out`n`nFree space on the AVD:`n$df"
     }
     Say 'installed'
 }
@@ -411,32 +440,19 @@ function Cmd-WaitFor {
     throw "'$Text' never appeared within ${Seconds}s"
 }
 
-function Cmd-Flyout {
-    # The hamburger is the only Shell toolbar item uiautomator exposes with a
-    # content-desc; the page's own toolbar icons are invisible to it (see Gotchas).
-    Tap-By -Attr 'content-desc' -Value 'Open navigation drawer'
-    Start-Sleep -Milliseconds 800
-}
-
 function Cmd-Goto {
     param([string]$Page)
-    Cmd-Flyout
+    # Bottom tab bar (issue #43): every tab label is a real uiautomator node carrying
+    # both text and content-desc, so a tab switch is a plain text tap. This replaced
+    # the old open-the-drawer-then-pick dance, and works from anywhere — including
+    # partway down a pushed details stack.
     Tap-By -Attr 'text' -Value $Page
     Start-Sleep -Seconds 2
 }
 
 function Cmd-Search {
-    # MAUI Shell's page-level ToolbarItems are NOT exposed to uiautomator — they have
-    # no text and no content-desc, so there is no node to find. The hamburger IS
-    # exposed, and the toolbar is horizontally symmetric, so the rightmost icon sits
-    # at (screenWidth - hamburgerCX, hamburgerCY). Resolution-independent.
-    $b = Find-Bounds -Xml (Get-UiDump) -Attr 'content-desc' -Value 'Open navigation drawer'
-    if (-not $b) { throw 'toolbar hamburger not found — is a flyout page foregrounded?' }
-    $w, $null = Get-ScreenSize
-    $x = $w - $b.CX
-    Say "tap toolbar search at ($x,$($b.CY)) [mirror of hamburger $($b.CX),$($b.CY) on width $w]"
-    Adb shell input tap $x $b.CY *> $null
-    Start-Sleep -Milliseconds 1200
+    # Search is its own tab now, so this is just a tab switch.
+    Cmd-Goto 'Search'
 }
 
 function Cmd-Logcat {
@@ -495,7 +511,6 @@ switch ($cmd) {
     'wait-for'   { $secs = 30; $txt = $a -join ' '
                    if ($a.Count -gt 1 -and $a[-1] -match '^\d+$') { $secs = [int]$a[-1]; $txt = ($a[0..($a.Count - 2)] -join ' ') }
                    Cmd-WaitFor $txt $secs }
-    'flyout'     { Cmd-Flyout }
     'search'     { Cmd-Search }
     'goto'       { Cmd-Goto ($a -join ' ') }
     'logcat'     { if ($a[0]) { Cmd-Logcat ([int]$a[0]) } else { Cmd-Logcat } }

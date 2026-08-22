@@ -53,6 +53,21 @@ Takes **~6 minutes** from cold (`Time Elapsed 00:05:53`) and produces a ~97 MB A
 at `src/bin/Debug/net10.0-android/com.RainbowSprinkles.AniSprinkles-Signed.apk`.
 Skip it if you have not touched `src/` since the last build.
 
+**Build the Android head exactly one way: `driver.ps1 build`.** It is tempting to run a
+plain `dotnet build src/AniSprinkles.csproj -c Debug -f net10.0-android` to check for
+warnings and then `driver.ps1 build` for the APK — that wastes a second ~6-minute build
+*and* leaves a broken APK, because the plain build omits `EmbedAssembliesIntoApk` and
+overwrites the deployable ~97 MB APK with a ~19 MB Fast Deployment one (see Gotchas). The
+driver's build prints the same warning and error counts, so it covers the review pass too.
+
+`dotnet test` does **not** need any of this — the test project targets plain `net10.0`, so
+run it directly and never build the Android head just to run tests.
+
+**Do not chain a build with device driving in one shell call.** `build` alone can run 6+
+minutes; adding `install`/`launch`/`tap` behind it means one stalled step burns the whole
+timeout and takes the completed steps down with it. Build in its own call (background it if
+you have other work), then drive in a second.
+
 ---
 
 ## Run (agent path)
@@ -84,8 +99,8 @@ Then drive it. Every command is `driver.ps1 <command> [args]`:
 | `swipe up\|down\|left\|right` | one content-area swipe |
 | `scroll-to <text>` | swipe up until `<text>` is on screen (max 10) |
 | `wait-for <text> [secs]` | poll until `<text>` appears (default 30s) |
-| `flyout` / `goto <page>` | open the drawer / open the drawer and pick `My Anime`\|`Discover`\|`Settings` |
-| `search` | tap the Discover toolbar search icon (see Gotchas) |
+| `goto <tab>` | switch tabs: `Library`\|`Discover`\|`Search`\|`Feed`\|`Settings` — a plain label tap, so it works from inside a pushed details stack too |
+| `search` | shortcut for `goto Search` |
 | `logcat [n]` / `applog` | app-PID logcat tail / the on-device rotating file log |
 
 `driver.ps1 help` prints the same list.
@@ -121,13 +136,13 @@ Then `Read` the two PNGs: heart outline → filled, Favourites `90,457` → `90,
 
 `CIAniListClient` serves a fixed set, so these strings are always tappable:
 
-- **My Anime**: `ONE PIECE`, `Shingeki no Kyojin`, `Jujutsu Kaisen`, `HUNTER×HUNTER (2011)`;
+- **Library › Anime** (nav title reads "Library"; sub-tabs are `ANIME` / `MANGA`): `ONE PIECE`, `Shingeki no Kyojin`, `Jujutsu Kaisen`, `HUNTER×HUNTER (2011)`;
   section headers `Watching` / `Planning` / `Completed`
 - **Media details** (ONE PIECE): `Monkey D. Luffy`, `Roronoa Zoro`, `Nami`,
   studios `Toei Animation` / `Madhouse` / `Studio Pierrot`; content-descs
   `Toggle favorite` and `Open studio Toei Animation`
 - **Discover**: `Currently Airing`, `Trending Now`, `Top Anime`, `View All ›`
-- **Search** filters that same fixture list client-side — `one` matches `ONE PIECE`;
+- **Search tab** filters that same fixture list client-side — `one` matches `ONE PIECE`;
   anything else (e.g. `cowboy bebop`) correctly renders `No anime found`. That is
   the stub, not a bug.
 
@@ -181,28 +196,55 @@ works — that is what the driver above is for.
   post-tap settle. Always `wait-for "<text you expect>"` between them. I caught
   `Loading discover...` and a stale details page this way twice.
 
-- **`DiscoverPageModel` is a singleton, so the search bar keeps its text forever** —
-  navigating away, backing out of the app entirely, and coming back still shows the
-  old query and its results, not the section rows. If `wait-for "Trending Now"`
-  times out on Discover, the search bar is open: `driver.ps1 search` toggles it
-  shut and the sections come back.
+- **`SearchPageModel` is a singleton, so the Search tab keeps its query forever** —
+  leaving the tab, backing out of the app entirely, and coming back still shows the
+  old query and its results. That is deliberate, not a bug. Clear the field (or the
+  `clear` command) if a test needs the idle prompt back. Discover no longer has a
+  search bar at all, so a `wait-for "Trending Now"` timeout there means something
+  else went wrong.
 
-- **MAUI Shell toolbar items are invisible to uiautomator.** Only the hamburger has
-  a content-desc; the search / sort / layout icons have no node at all, so there is
-  nothing to `tap-desc`. `driver.ps1 search` works around it by mirroring the
-  hamburger's x across the screen width (`1080 - 74 = 1006`), which is
-  resolution-independent.
+- **The Search tab's keyboard covers the bottom tab bar.** The field auto-focuses
+  when the query is empty, so arriving on the tab immediately raises the keyboard and
+  hides every tab label — a `goto` straight after typing taps the keyboard instead and
+  silently stays put. Send `back` first to dismiss it, then switch tabs.
 
-- **`back` at a flyout root exits the app silently** — no confirm dialog, you just
+- **MAUI Shell toolbar items are invisible to uiautomator, and there is no longer an
+  anchor to mirror.** The page-level search / sort / layout icons have no node at
+  all. This used to be worked around by mirroring the hamburger's x across the
+  screen width, but the bottom tab bar (issue #43) removed the hamburger, so that
+  trick has no anchor left. Tab **labels** are real nodes, so navigation is fine —
+  it is only the in-page toolbar icons (My Anime's sort / search / layout) that now
+  need hand-computed coordinates: they sit in the nav-bar row, right-aligned, about
+  `74px` in from each edge at 1080 wide.
+
+- **`back` at a tab root exits the app silently** — no confirm dialog, you just
   land on the launcher and every subsequent `tap` fails with a confusing
   "No node with text=...". `driver.ps1 resume` gets you back in ~3s. Prefer `goto`
-  over `back` for switching pages.
+  over `back` for switching tabs.
 
 - **`View All ›` carries a multibyte chevron in its text node.** Exact-match `tap`
   never finds it; use `tap-prefix "View All"`.
 
 - **`KEYCODE_CTRL_A` is not select-all on Android.** `driver.ps1 clear` spams
   `KEYCODE_DEL` instead.
+
+- **A plain `dotnet build` silently clobbers the deployable APK.** Running
+  `dotnet build src/AniSprinkles.csproj -c Debug -f net10.0-android` to check for
+  warnings is fine, but it omits `-p:EmbedAssembliesIntoApk=true` and leaves a
+  ~19 MB *Fast Deployment* APK where the ~97 MB one was. Installing that gives a
+  process that dies instantly, before any managed code, with no .NET stack trace —
+  just `SIGABRT` and, buried in logcat:
+
+  ```
+  F/monodroid: No assemblies found in '.../files/.__override__/x86_64'
+               Assuming this is part of Fast Deployment. Exiting...
+  ```
+
+  It reads like a crash in your change and is not one. **Check the APK size** — if
+  it is ~19 MB rather than ~97 MB, that is the whole story. Rebuild with
+  `driver.ps1 build` (which passes both flags) before installing. A leftover
+  `.__override__` directory can also survive an uninstall, so if it persists after
+  a correct rebuild, uninstall the package before reinstalling.
 
 - **The debug APK is ~97 MB and installs land on `INSUFFICIENT_STORAGE`** once the
   AVD's `/data` gets tight (mine had 570 MB free and still failed). `driver.ps1
@@ -244,11 +286,12 @@ works — that is what the driver above is for.
 | `INSUFFICIENT_STORAGE: Failed to override installation location` | `driver.ps1 install` handles it; if it still fails, wipe the AVD from Device Manager. |
 | `UI dump was empty — is the app foregrounded?` | The app is backgrounded or crashed. `driver.ps1 resume`, then `driver.ps1 logcat`. |
 | `No node with text='X'` right after it worked | You probably backed out to the launcher. `driver.ps1 dump` to confirm, then `resume`. |
-| `'X' never appeared within Ns` on Discover | Search bar is still open with an old query — `driver.ps1 search`. |
+| `'X' never appeared within Ns` right after typing a query | The keyboard is covering the tab bar — `driver.ps1 back`, then `goto`. |
 | `More than one device attached — set ANDROID_SERIAL to choose` | Two emulators/devices online. Pick one with `ANDROID_SERIAL=<serial>`, or shut the other down. `driver.ps1 env` lists them. |
 | `sys.boot_completed never reached 1 after 180s` | The emulator attached to adb but never finished booting. Check the emulator window; a wipe-data from Device Manager usually clears it. |
 | `df 'C:/Program Files/Git/data': No such file` | Git Bash path mangling — `MSYS_NO_PATHCONV=1`. |
 | App runs but shows the signed-out screen | You built without `-p:CiBuild=true`. Rebuild with `driver.ps1 build`. |
+| App dies instantly, `SIGABRT`, no .NET stack | APK is ~19 MB not ~97 MB — a plain `dotnet build` overwrote it. `driver.ps1 build`. |
 
 For deeper on-device diagnostics (ANR / jank / Glide cascades / NAVTRACE timings),
 switch to **`/ani-debug`** — it has the full log-collection and interpretation

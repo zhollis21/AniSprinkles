@@ -35,7 +35,35 @@ public class AuthService : IAuthService
         if (IsExpired())
         {
             _logger.LogInformation("AUTH token-check: expired (expiresAt={ExpiresAt}), signing out.", ExpiresAt);
-            await SignOutAsync();
+
+            // Guarded for the same reason as LoadAsync: SignOutAsync clears SecureStorage and
+            // drives the Android CookieManager on the main thread, either of which can throw, and
+            // this runs inside the token check that every tab's async void OnAppearing awaits.
+            // The answer is "no valid token" either way, so a failed cleanup must not become a
+            // crash. Explicit sign-out (the Settings button) still calls SignOutAsync directly
+            // and keeps surfacing its failures.
+            try
+            {
+                await SignOutAsync();
+            }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+                // Propagate ONLY the caller's own cancellation. The filter is load-bearing: ten
+                // call sites across six page models call GetAccessTokenAsync with no token at all,
+                // from async void OnAppearing paths with nothing to catch. SignOutAsync drives the
+                // Android CookieManager through MainThread.InvokeOnMainThreadAsync, which can
+                // surface a cancellation of its own during teardown — rethrowing that to a caller
+                // who never asked for cancellation turns a survivable cleanup failure into a
+                // crash. Unfiltered, this catch did exactly that.
+                throw;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "AUTH sign-out after expiry failed; reporting no token anyway.");
+                AccessToken = null;
+                ExpiresAt = null;
+            }
+
             return null;
         }
 
@@ -133,11 +161,39 @@ public class AuthService : IAuthService
 
     private async Task LoadAsync(CancellationToken cancellationToken)
     {
-        AccessToken = await SecureStorage.Default.GetAsync(TokenKey);
-        var rawExpiry = await SecureStorage.Default.GetAsync(TokenExpiryKey);
-        if (DateTimeOffset.TryParse(rawExpiry, out var expiry))
+        // SecureStorage sits on the Android keystore, which can fail for reasons that have nothing
+        // to do with us (corrupted keystore, a restored backup, a device-credential change). Those
+        // surface as assorted platform exceptions, hence the broad catch. Letting one escape would
+        // take the app down: every tab page model calls GetAccessTokenAsync from an async void
+        // OnAppearing, where there is nothing to catch it. An unreadable token is functionally the
+        // same as an absent one, so fall back to signed-out and let the user sign in again.
+        try
         {
-            ExpiresAt = expiry;
+            AccessToken = await SecureStorage.Default.GetAsync(TokenKey);
+            var rawExpiry = await SecureStorage.Default.GetAsync(TokenExpiryKey);
+            if (DateTimeOffset.TryParse(rawExpiry, out var expiry))
+            {
+                ExpiresAt = expiry;
+            }
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            // Cancellation is the caller's business, not a storage failure. The detail page models
+            // pass a PageLoadScope token into GetAccessTokenAsync and expect navigating away to
+            // cancel rather than to quietly report "signed out" and wipe the shared auth state.
+            // Nothing below currently takes the token — MAUI's ISecureStorage.GetAsync has no
+            // overload for one — but this keeps the broad catch from swallowing a cancellation if
+            // that changes, which is exactly the kind of thing that would be silent for months.
+            //
+            // Filtered so only the CALLER'S cancellation escapes: most callers pass no token and
+            // await this from async void lifecycle paths, where an unfiltered rethrow is a crash.
+            throw;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "AUTH token-load failed; treating as signed out.");
+            AccessToken = null;
+            ExpiresAt = null;
         }
     }
 
