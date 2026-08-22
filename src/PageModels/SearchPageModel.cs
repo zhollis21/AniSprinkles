@@ -36,6 +36,11 @@ public partial class SearchPageModel : ObservableObject
     private CancellationTokenSource? _searchDebounceCts;
     private string _activeSearchQuery = string.Empty;
 
+    /// <summary>The DisplayAdultContent value page 1 of the current results was fetched under;
+    /// null when nothing is seeded. Every later page reuses it so one result set cannot mix
+    /// policies. See <see cref="ActiveAdultFilter"/>.</summary>
+    private bool? _seededDisplayAdult;
+
     // Context the current results were fetched under, so a flip can invalidate them.
     private bool _hasSearchedThisSession;
     private bool _searchedWithAdultContent;
@@ -70,9 +75,18 @@ public partial class SearchPageModel : ObservableObject
 
         // Results pagination: dedup + generation guarding live in the section; each new query
         // re-Seeds it (the generation bump supersedes any in-flight Load More).
+        //
+        // Later pages reuse the filter page 1 was fetched under, NOT a fresh read of AdultFilter.
+        // The adult toggle does not reach AppSettings when the user flips it: Settings debounces
+        // for 1500 ms, saves, and only applies the value from the server response. So the user can
+        // toggle, return to Search inside that window, have OnAppearingAsync read the OLD value and
+        // find nothing to invalidate, and then have the new value land — at which point a live read
+        // here would page a different policy onto the results already on screen. Turning adult
+        // content OFF is the bad direction: 18+ page-1 items stay visible with SFW pages beneath.
         SearchSection = new PaginatedSection<BrowseMediaItem>(
             "SEARCH_MATCH",
-            (page, _, ct) => _aniListClient.SearchAnimePageAsync(_activeSearchQuery, AdultFilter, page, SearchPerPage, ct),
+            (page, _, ct) => _aniListClient.SearchAnimePageAsync(
+                _activeSearchQuery, ActiveAdultFilter, page, SearchPerPage, ct),
             item => item.Node?.Id ?? 0);
         SearchSection.Changed += () =>
         {
@@ -82,7 +96,22 @@ public partial class SearchPageModel : ObservableObject
     }
 
     /// <summary>false = SFW only; null omits the filter (adult toggle on), letting 18+ titles match.</summary>
-    private static bool? AdultFilter => AppSettings.DisplayAdultContent ? null : false;
+    private static bool? ToAdultFilter(bool displayAdult) => displayAdult ? null : false;
+
+    /// <summary>The filter as the setting stands right now — used to seed a new query.</summary>
+    private static bool? AdultFilter => ToAdultFilter(AppSettings.DisplayAdultContent);
+
+    /// <summary>
+    /// The filter every page of the CURRENT result set must use. Falls back to the live setting
+    /// only before a query has been seeded.
+    ///
+    /// Deliberately keyed off the raw <c>DisplayAdultContent</c> bool rather than the derived
+    /// filter: the filter's own <c>null</c> means "adult allowed", so it cannot double as
+    /// "nothing seeded yet" — a null-coalesce here would silently fall back to a live read in
+    /// exactly the adult-enabled case.
+    /// </summary>
+    private bool? ActiveAdultFilter =>
+        _seededDisplayAdult is bool seeded ? ToAdultFilter(seeded) : AdultFilter;
 
     /// <summary>Search results with infinite scroll; re-seeded per query.</summary>
     public PaginatedSection<BrowseMediaItem> SearchSection { get; }
@@ -154,7 +183,7 @@ public partial class SearchPageModel : ObservableObject
         }
         else
         {
-            SearchSection.Reset();
+            ResetResults();
         }
     }
 
@@ -173,7 +202,7 @@ public partial class SearchPageModel : ObservableObject
             IsSearchActive = false;
             IsSearching = false;
             HasNoSearchResults = false;
-            SearchSection.Reset();
+            ResetResults();
             return;
         }
 
@@ -188,7 +217,7 @@ public partial class SearchPageModel : ObservableObject
         // page 2 of the new query and appends it to the old query's results — one list, silently
         // mixing two searches. Reset clears HasNextPage (so Load More cannot fire until a
         // successful Seed) and bumps the generation, superseding any Load More already in flight.
-        SearchSection.Reset();
+        ResetResults();
 
         _searchDebounceCts = new CancellationTokenSource();
         _ = DebouncedSearchAsync(query, _searchDebounceCts.Token);
@@ -218,6 +247,10 @@ public partial class SearchPageModel : ObservableObject
         // normal path instead, which cancels this fetch and re-runs the query.
         _hasSearchedThisSession = true;
         _searchedWithAdultContent = AppSettings.DisplayAdultContent;
+
+        // Pin the filter for this result set. Read once here so page 1 below and every Load More
+        // afterwards agree, no matter what the setting does in between.
+        _seededDisplayAdult = AppSettings.DisplayAdultContent;
 
         // Auth is read here too, so both halves of the context describe the same moment rather than
         // the adult flag coming from issue time and auth from whenever the page last appeared.
@@ -253,7 +286,7 @@ public partial class SearchPageModel : ObservableObject
         try
         {
             var (items, pageInfo) = await _aniListClient.SearchAnimePageAsync(
-                query, AdultFilter, page: 1, perPage: SearchPerPage, cancellationToken: token);
+                query, ActiveAdultFilter, page: 1, perPage: SearchPerPage, cancellationToken: token);
             if (token.IsCancellationRequested || !string.Equals(_activeSearchQuery, query, StringComparison.Ordinal))
             {
                 return; // superseded while the fetch was in flight
@@ -369,6 +402,17 @@ public partial class SearchPageModel : ObservableObject
         {
             await _entryActions.ShowEntryMenuAsync(entry);
         }
+    }
+
+    /// <summary>
+    /// Clears the results and the adult filter they were pinned to, together. Always use this
+    /// rather than calling <c>SearchSection.Reset()</c> directly: a snapshot outliving the results
+    /// it describes would pin the NEXT query to the previous query's policy.
+    /// </summary>
+    private void ResetResults()
+    {
+        SearchSection.Reset();
+        _seededDisplayAdult = null;
     }
 
     private void ApplyEntryToItems(MediaListEntry entry)

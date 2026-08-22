@@ -33,6 +33,11 @@ public partial class DiscoverPageModel : ObservableObject
     private bool _loadedWithAdultContent;
     private bool _loadedAuthenticated;
 
+    /// <summary>True from the moment <see cref="LoadAsync"/> is entered until it finishes, which
+    /// includes the auth read that runs before <c>IsBusy</c> is set. Load More checks this so no
+    /// page can be fetched under a context the in-progress refresh is about to replace.</summary>
+    private bool _refreshEvaluating;
+
     public DiscoverPageModel(
         IAniListClient aniListClient,
         IAuthService authService,
@@ -118,15 +123,18 @@ public partial class DiscoverPageModel : ObservableObject
             return Task.CompletedTask;
         }
 
-        // IsBusy means a full refresh is in flight, and the row is not marked busy during it —
-        // PaginatedSection only knows about its own operations. That matters because
-        // DiscoverSectionFetch reads AppSettings.DisplayAdultContent live, per page: a Load More
-        // racing an adult-toggle refresh fetches under the NEW filter and appends onto items
-        // fetched under the OLD one, mixing 18+ results into a row that was SFW. A successful
-        // refresh re-Seeds and the generation bump discards the stray page, but a FAILED refresh
-        // never seeds — and Discover deliberately keeps showing content on refresh failure, so the
-        // mixed row is what the user is left looking at.
-        if (IsBusy)
+        // A refresh being in flight means the row is not marked busy — PaginatedSection only knows
+        // about its own operations. That matters because DiscoverSectionFetch reads
+        // AppSettings.DisplayAdultContent live, per page: a Load More racing an adult-toggle
+        // refresh fetches under the NEW filter and appends onto items fetched under the OLD one,
+        // mixing 18+ results into a row that was SFW. A successful refresh re-Seeds and the
+        // generation bump discards the stray page, but a FAILED refresh never seeds — and Discover
+        // deliberately keeps showing content on refresh failure, so the mixed row is what the user
+        // is left looking at.
+        //
+        // Both flags are needed: IsBusy only goes up once the fetch starts, leaving the auth read
+        // ahead of it as an open window.
+        if (IsBusy || _refreshEvaluating)
         {
             return Task.CompletedTask;
         }
@@ -157,11 +165,29 @@ public partial class DiscoverPageModel : ObservableObject
 
     public async Task LoadAsync(bool forceReload = false)
     {
-        if (IsBusy)
+        if (IsBusy || _refreshEvaluating)
         {
             return;
         }
 
+        // _refreshEvaluating is raised before the FIRST await, unlike IsBusy which is only set
+        // once the fetch actually starts. The auth read in LoadCoreAsync suspends while IsBusy is
+        // still false, so a row near its threshold could start a Load More that sailed past
+        // LoadMoreSection's IsBusy check, fetch under the new filter, and append onto rows still
+        // holding the old context. Gating Load More on IsBusy alone left exactly that window open.
+        _refreshEvaluating = true;
+        try
+        {
+            await LoadCoreAsync(forceReload);
+        }
+        finally
+        {
+            _refreshEvaluating = false;
+        }
+    }
+
+    private async Task LoadCoreAsync(bool forceReload)
+    {
         var displayAdult = AppSettings.DisplayAdultContent;
         var now = _timeProvider.GetUtcNow();
 
