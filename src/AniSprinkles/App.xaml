@@ -1,0 +1,30 @@
+﻿<?xml version = "1.0" encoding = "UTF-8" ?>
+<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:AniSprinkles"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:converters="clr-namespace:AniSprinkles.Converters;assembly=AniSprinkles.Core"
+             xmlns:views="clr-namespace:AniSprinkles.Views"
+             x:Class="AniSprinkles.App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+            <converters:StringNotNullOrEmptyConverter x:Key="StringNotNullOrEmptyConverter" />
+            <converters:RainbowAccentConverter x:Key="RainbowAccentConverter" />
+            <converters:SortFieldOpacityConverter x:Key="SortFieldOpacityConverter" />
+            <converters:SortFieldStrokeConverter x:Key="SortFieldStrokeConverter" />
+            <converters:SortFieldBackgroundConverter x:Key="SortFieldBackgroundConverter" />
+            <converters:SortFieldSelectedTextConverter x:Key="SortFieldSelectedTextConverter" />
+            <converters:MediaFormatIconConverter x:Key="MediaFormatIconConverter" />
+            <converters:ColorToBrushConverter x:Key="ColorToBrushConverter" />
+            <converters:FavouriteHeartGlyphConverter x:Key="FavouriteHeartGlyphConverter" />
+            <converters:FavouriteHeartFontConverter x:Key="FavouriteHeartFontConverter" />
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+                <ResourceDictionary Source="Resources/Styles/AppStyles.xaml" />
+                <views:BrowseTemplates />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

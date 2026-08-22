@@ -56,7 +56,7 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('AniSprinkles.slnx', 'src/AniSprinkles.csproj', 'tests/**/*.csproj') }}
+          key: ${{ runner.os }}-nuget-${{ hashFiles('AniSprinkles.slnx', 'src/**/*.csproj', 'tests/**/*.csproj') }}
           restore-keys: |
             ${{ runner.os }}-nuget-
 
@@ -68,7 +68,7 @@ jobs:
 
       - name: Build
         run: |
-          dotnet build src/AniSprinkles.csproj \
+          dotnet build src/AniSprinkles/AniSprinkles.csproj \
             -c Debug \
             -f net10.0-android \
             -p:EmbedAssembliesIntoApk=true \
@@ -147,7 +147,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: debug-apk
-          path: src/bin/Debug/net10.0-android/*-Signed.apk
+          path: src/AniSprinkles/bin/Debug/net10.0-android/*-Signed.apk
           retention-days: 5
           if-no-files-found: error
 

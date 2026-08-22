@@ -1,0 +1,440 @@
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
+using AniSprinkles.Utilities;
+
+namespace AniSprinkles.PageModels;
+
+/// <summary>
+/// Search tab (issues #16/#43): global anime search, no auth required. Extracted from
+/// <see cref="DiscoverPageModel"/> when search became its own tab — the debounce, generation
+/// guarding and long-press write-back are the same logic that shipped on Discover.
+///
+/// Singleton, like the other tab page models, so the query and its results survive a tab
+/// switch. That is deliberate here: coming back to the Search tab should show what you were
+/// looking at, not a cleared box. An auth or adult-toggle flip does clear it, because both
+/// change what the results should contain.
+/// </summary>
+public partial class SearchPageModel : ObservableObject
+{
+    private static readonly TimeSpan SearchDebounceDelay = TimeSpan.FromMilliseconds(600);
+    private const int SearchPerPage = 20;
+
+    /// <summary>Below this many trimmed characters no search fires (rate-limit caution + junk-match avoidance).</summary>
+    private const int SearchMinLength = 2;
+
+    private readonly IAniListClient _aniListClient;
+    private readonly IAuthService _authService;
+    private readonly INavigationService _navigationService;
+    private readonly IUserFeedback _feedback;
+    private readonly ErrorReportService _errorReportService;
+    private readonly TimeProvider _timeProvider;
+    private readonly ILogger<SearchPageModel> _logger;
+    private readonly EntryActionCoordinator _entryActions;
+    private readonly ListOperationRunner _listOps;
+
+    // Search debounce state: a new keystroke cancels the pending (or in-flight) search.
+    private CancellationTokenSource? _searchDebounceCts;
+    private string _activeSearchQuery = string.Empty;
+
+    /// <summary>The DisplayAdultContent value page 1 of the current results was fetched under;
+    /// null when nothing is seeded. Every later page reuses it so one result set cannot mix
+    /// policies. See <see cref="ActiveAdultFilter"/>.</summary>
+    private bool? _seededDisplayAdult;
+
+    // Context the current results were fetched under, so a flip can invalidate them.
+    private bool _hasSearchedThisSession;
+    private bool _searchedWithAdultContent;
+    private bool _searchedAuthenticated;
+
+    public SearchPageModel(
+        IAniListClient aniListClient,
+        IAuthService authService,
+        INavigationService navigationService,
+        IUserFeedback feedback,
+        IDialogService dialogs,
+        ListEntryStatusFlow statusFlow,
+        ErrorReportService errorReportService,
+        TimeProvider timeProvider,
+        ILogger<SearchPageModel> logger)
+    {
+        _aniListClient = aniListClient;
+        _authService = authService;
+        _navigationService = navigationService;
+        _feedback = feedback;
+        _errorReportService = errorReportService;
+        _timeProvider = timeProvider;
+        _logger = logger;
+        _listOps = new ListOperationRunner(logger, feedback);
+
+        // Long-press flows, as on Discover. A successful mutation is written back onto every
+        // matching result so the status chips stay right without refetching the query.
+        _entryActions = new EntryActionCoordinator(aniListClient, errorReportService, dialogs, feedback, statusFlow, logger, new EntryActionHost
+        {
+            OpenDetailsAsync = entry => NavigateToMediaByIdAsync(entry.MediaId),
+            OnEntrySavedInPlaceAsync = entry => { ApplyEntryToItems(entry); return Task.CompletedTask; },
+            OnEntryStatusChangedAsync = entry => { ApplyEntryToItems(entry); return Task.CompletedTask; },
+            OnEntryRemovedAsync = entry => { ClearEntryFromItems(entry.MediaId); return Task.CompletedTask; },
+            SetErrorDetails = details => ErrorDetails = details,
+        });
+
+        // Results pagination: dedup + generation guarding live in the section; each new query
+        // re-Seeds it (the generation bump supersedes any in-flight Load More).
+        //
+        // Later pages reuse the filter page 1 was fetched under, NOT a fresh read of AdultFilter.
+        // The adult toggle does not reach AppSettings when the user flips it: Settings debounces
+        // for 1500 ms, saves, and only applies the value from the server response. So the user can
+        // toggle, return to Search inside that window, have OnAppearingAsync read the OLD value and
+        // find nothing to invalidate, and then have the new value land — at which point a live read
+        // here would page a different policy onto the results already on screen. Turning adult
+        // content OFF is the bad direction: 18+ page-1 items stay visible with SFW pages beneath.
+        SearchSection = new PaginatedSection<BrowseMediaItem>(
+            "SEARCH_MATCH",
+            (page, _, ct) => _aniListClient.SearchAnimePageAsync(
+                _activeSearchQuery, ActiveAdultFilter, page, SearchPerPage, ct),
+            item => item.Node?.Id ?? 0);
+        SearchSection.Changed += () =>
+        {
+            OnPropertyChanged(nameof(SearchIsLoadingMore));
+            LoadMoreSearchResultsCommand.NotifyCanExecuteChanged();
+        };
+    }
+
+    /// <summary>false = SFW only; null omits the filter (adult toggle on), letting 18+ titles match.</summary>
+    private static bool? ToAdultFilter(bool displayAdult) => displayAdult ? null : false;
+
+    /// <summary>The filter as the setting stands right now — used to seed a new query.</summary>
+    private static bool? AdultFilter => ToAdultFilter(AppSettings.DisplayAdultContent);
+
+    /// <summary>
+    /// The filter every page of the CURRENT result set must use. Falls back to the live setting
+    /// only before a query has been seeded.
+    ///
+    /// Deliberately keyed off the raw <c>DisplayAdultContent</c> bool rather than the derived
+    /// filter: the filter's own <c>null</c> means "adult allowed", so it cannot double as
+    /// "nothing seeded yet" — a null-coalesce here would silently fall back to a live read in
+    /// exactly the adult-enabled case.
+    /// </summary>
+    private bool? ActiveAdultFilter =>
+        _seededDisplayAdult is bool seeded ? ToAdultFilter(seeded) : AdultFilter;
+
+    /// <summary>Search results with infinite scroll; re-seeded per query.</summary>
+    public PaginatedSection<BrowseMediaItem> SearchSection { get; }
+
+    [ObservableProperty]
+    private string _searchText = string.Empty;
+
+    /// <summary>True once a query of <see cref="SearchMinLength"/>+ characters is entered — swaps the
+    /// idle prompt for the results list.</summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsIdle))]
+    private bool _isSearchActive;
+
+    /// <summary>Nothing typed yet (or below the minimum): show the "search for something" prompt.
+    /// The Search tab has no rows to fall back to the way Discover did.</summary>
+    public bool IsIdle => !IsSearchActive;
+
+    /// <summary>True from first qualifying keystroke until the winning (non-superseded) fetch settles.</summary>
+    [ObservableProperty]
+    private bool _isSearching;
+
+    [ObservableProperty]
+    private bool _hasNoSearchResults;
+
+    [ObservableProperty]
+    private string _errorDetails = string.Empty;
+
+    public bool SearchIsLoadingMore => SearchSection.IsLoadingMore;
+
+    /// <summary>
+    /// Called from the page's OnAppearing. Discover used to fold this into its LoadAsync; with
+    /// search on its own tab there is no load to piggyback on, so the check happens on appear.
+    /// An auth flip changes the mediaListEntry chips riding the results, and an adult-toggle flip
+    /// changes AdultFilter — stale results fetched under the old filter (18+ covers after turning
+    /// the toggle off) must not linger until the user edits the query.
+    /// </summary>
+    public async Task OnAppearingAsync()
+    {
+        var displayAdult = AppSettings.DisplayAdultContent;
+        var isAuthenticated = !string.IsNullOrWhiteSpace(await _authService.GetAccessTokenAsync());
+
+        if (!_hasSearchedThisSession)
+        {
+            _searchedWithAdultContent = displayAdult;
+            _searchedAuthenticated = isAuthenticated;
+            return;
+        }
+
+        var authChanged = isAuthenticated != _searchedAuthenticated;
+        var adultChanged = displayAdult != _searchedWithAdultContent;
+        if (!authChanged && !adultChanged)
+        {
+            return;
+        }
+
+        _logger.LogInformation(
+            "Search results invalidated (authChanged={AuthChanged}, adultChanged={AdultChanged}).",
+            authChanged, adultChanged);
+
+        _searchedWithAdultContent = displayAdult;
+        _searchedAuthenticated = isAuthenticated;
+
+        if (!string.IsNullOrEmpty(SearchText))
+        {
+            // Re-run the same query under the new context rather than dumping what the user typed.
+            var query = SearchText;
+            SearchText = string.Empty; // OnSearchTextChanged resets the section and cancels in-flight work
+            SearchText = query;
+        }
+        else
+        {
+            ResetResults();
+        }
+    }
+
+    partial void OnSearchTextChanged(string value)
+    {
+        // Cancel + dispose any pending debounce timer and any in-flight fetch it started, so the
+        // per-keystroke CTSs (and their Task.Delay registrations) don't accumulate over a session.
+        _searchDebounceCts?.Cancel();
+        _searchDebounceCts?.Dispose();
+        _searchDebounceCts = null;
+
+        var query = value?.Trim() ?? string.Empty;
+        if (query.Length < SearchMinLength)
+        {
+            _activeSearchQuery = string.Empty;
+            IsSearchActive = false;
+            IsSearching = false;
+            HasNoSearchResults = false;
+            ResetResults();
+            return;
+        }
+
+        IsSearchActive = true;
+        IsSearching = true;
+        HasNoSearchResults = false; // a previous query's empty state must not show under the new fetch
+
+        // Drop the previous query's results the moment a new query starts. Keeping them on screen
+        // through the debounce reads nicer, but it leaves items belonging to the OLD query sitting
+        // in the section with HasNextPage still set while _activeSearchQuery has moved on. If the
+        // new query's page 1 then FAILS, nothing re-seeds, and scrolling to the threshold fetches
+        // page 2 of the new query and appends it to the old query's results — one list, silently
+        // mixing two searches. Reset clears HasNextPage (so Load More cannot fire until a
+        // successful Seed) and bumps the generation, superseding any Load More already in flight.
+        ResetResults();
+
+        _searchDebounceCts = new CancellationTokenSource();
+        _ = DebouncedSearchAsync(query, _searchDebounceCts.Token);
+    }
+
+    private async Task DebouncedSearchAsync(string query, CancellationToken token)
+    {
+        try
+        {
+            // Through TimeProvider so the debounce is deterministic under test rather than a
+            // 600 ms real sleep per case (DiscoverPageModel already takes one).
+            await Task.Delay(SearchDebounceDelay, _timeProvider, token);
+        }
+        catch (TaskCanceledException)
+        {
+            // Another keystroke came in — this search is superseded.
+            return;
+        }
+
+        _activeSearchQuery = query;
+        _logger.LogInformation("Search firing for \"{Query}\"", query);
+
+        // Record the context at issue time, not on success. If this is recorded only after the
+        // fetch lands, a first search still in flight leaves _hasSearchedThisSession false, so a
+        // user who tabs away, flips the adult toggle and returns hits OnAppearingAsync's
+        // "nothing to invalidate" branch — which baselines the NEW context without cancelling
+        // this request. The old-filter response would then land and be marked current, and no
+        // later appearance would ever invalidate it. Recording here means that user takes the
+        // normal path instead, which cancels this fetch and re-runs the query.
+        _hasSearchedThisSession = true;
+        _searchedWithAdultContent = AppSettings.DisplayAdultContent;
+
+        // Pin the filter for this result set. Read once here so page 1 below and every Load More
+        // afterwards agree, no matter what the setting does in between.
+        _seededDisplayAdult = AppSettings.DisplayAdultContent;
+
+        // Auth is read here too, so both halves of the context describe the same moment rather than
+        // the adult flag coming from issue time and auth from whenever the page last appeared.
+        // Deliberately outside the fetch's try below: that catch reports "Search failed", and a
+        // token read blowing up must not be presented to the user as a failed search. On failure,
+        // keep whatever OnAppearingAsync last recorded instead of guessing — a wrong value here
+        // either strands stale results or forces a pointless refetch.
+        bool? authenticated = null;
+        try
+        {
+            authenticated = !string.IsNullOrWhiteSpace(await _authService.GetAccessTokenAsync());
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Search auth-context read failed; keeping the previous baseline.");
+        }
+
+        // That await is a new suspension point, so a keystroke may have superseded this search
+        // while it ran. Bail before spending the request — and before writing the context, since
+        // this continuation can resume AFTER a newer search has already recorded its own. Writing
+        // it here would let an older read clobber a newer one (reachable via token expiry, the one
+        // way auth flips without leaving the tab).
+        if (token.IsCancellationRequested)
+        {
+            return;
+        }
+
+        if (authenticated.HasValue)
+        {
+            _searchedAuthenticated = authenticated.Value;
+        }
+
+        try
+        {
+            var (items, pageInfo) = await _aniListClient.SearchAnimePageAsync(
+                query, ActiveAdultFilter, page: 1, perPage: SearchPerPage, cancellationToken: token);
+            if (token.IsCancellationRequested || !string.Equals(_activeSearchQuery, query, StringComparison.Ordinal))
+            {
+                return; // superseded while the fetch was in flight
+            }
+
+            SearchSection.Seed(items, pageInfo);
+            HasNoSearchResults = items.Count == 0;
+        }
+        catch (OperationCanceledException)
+        {
+            return;
+        }
+        catch (Exception ex)
+        {
+            if (!string.Equals(_activeSearchQuery, query, StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            // Keep whatever results are showing; the snackbar is the failure signal.
+            var apiEx = ex as AniListApiException;
+            await _feedback.ShowSnackbarAsync(apiEx?.UserTitle ?? "Search failed. Please try again.");
+            _errorReportService.Record(ex, "Search");
+        }
+        finally
+        {
+            // Only the still-active, non-superseded query owns the spinner. The token check matters:
+            // a cancelled search can reach here BEFORE its successor's debounce sets _activeSearchQuery,
+            // and must not clear the spinner the successor's keystroke just turned on.
+            if (!token.IsCancellationRequested && string.Equals(_activeSearchQuery, query, StringComparison.Ordinal))
+            {
+                IsSearching = false;
+            }
+        }
+    }
+
+    [RelayCommand]
+    private Task LoadMoreSearchResults()
+        // Via ListOperationRunner: PaginatedSection.LoadMoreAsync only swallows cancellation, so a
+        // network/API failure here would otherwise propagate out of the CollectionView's threshold
+        // command and crash. The runner swallows + snackbars it.
+        //
+        // No in-flight check needed: OnSearchTextChanged resets the section on every new query, so
+        // HasNextPage (and therefore CanLoadMore) stays false until a successful Seed for the
+        // CURRENT query. There is no window where the section can page a query its items did not
+        // come from.
+        => SearchSection.CanLoadMore
+            ? _listOps.RunAsync(
+                "Search · Load More",
+                "search",
+                0,
+                () => SearchSection.LoadMoreAsync(),
+                () => SearchSection.Items.Count)
+            : Task.CompletedTask;
+
+    [RelayCommand]
+    private async Task NavigateToMedia(BrowseMediaItem? item)
+    {
+        // A long-press release still triggers the card's tap recognizer — swallow it so the
+        // action sheet doesn't get a navigation underneath.
+        if (LongPressTapSuppressor.ShouldSuppressTap())
+        {
+            return;
+        }
+
+        var media = item?.Node;
+        var mediaId = media?.Id ?? 0;
+        _logger.LogInformation("NAVTRACE Search NavigateToMedia called with mediaId={MediaId}", mediaId);
+        if (mediaId <= 0)
+        {
+            return;
+        }
+
+        // Media Details queries type: ANIME, so a non-anime id (search can return manga and
+        // novels) would 404.
+        if (media is { IsAnime: false })
+        {
+            await _feedback.ShowToastAsync("Manga & Novel details aren't supported yet.");
+            return;
+        }
+
+        await NavigateToMediaByIdAsync(mediaId);
+    }
+
+    private Task NavigateToMediaByIdAsync(int mediaId)
+        => _navigationService.GoToAsync("media-details", animate: false, new Dictionary<string, object>
+        {
+            ["mediaId"] = mediaId,
+        });
+
+    /// <summary>Long-press entry point: full menu for on-list media, Add to list otherwise.</summary>
+    [RelayCommand]
+    private async Task ShowItemActions(BrowseMediaItem? item)
+    {
+        if (item?.Node is null)
+        {
+            return;
+        }
+
+        var token = await _authService.GetAccessTokenAsync();
+        if (string.IsNullOrWhiteSpace(token))
+        {
+            await _feedback.ShowToastAsync("Sign in to manage your list.");
+            return;
+        }
+
+        var entry = item.ToListEntry();
+        if (item.Node.ListStatus is null)
+        {
+            await _entryActions.ShowAddToListAsync(entry);
+        }
+        else
+        {
+            await _entryActions.ShowEntryMenuAsync(entry);
+        }
+    }
+
+    /// <summary>
+    /// Clears the results and the adult filter they were pinned to, together. Always use this
+    /// rather than calling <c>SearchSection.Reset()</c> directly: a snapshot outliving the results
+    /// it describes would pin the NEXT query to the previous query's policy.
+    /// </summary>
+    private void ResetResults()
+    {
+        SearchSection.Reset();
+        _seededDisplayAdult = null;
+    }
+
+    private void ApplyEntryToItems(MediaListEntry entry)
+    {
+        foreach (var item in SearchSection.Items.Where(i => i.Node?.Id == entry.MediaId))
+        {
+            item.ApplyListEntry(entry);
+        }
+    }
+
+    private void ClearEntryFromItems(int mediaId)
+    {
+        foreach (var item in SearchSection.Items.Where(i => i.Node?.Id == mediaId))
+        {
+            item.ClearListEntry();
+        }
+    }
+}

@@ -5,6 +5,7 @@ namespace AniSprinkles.UnitTests;
 /// <see cref="MediaListEntry.CanEditProgress"/> and <see cref="MediaListEntry.CanMarkCompleted"/>.
 /// The popup/PageModel routing itself depends on MAUI popups and is covered by manual testing.
 /// </summary>
+[Collection(AppSettingsCollection.Name)]
 public class MediaListEntryActionPredicatesTests
 {
     public MediaListEntryActionPredicatesTests() => TestDataBuilder.ResetAppSettings();
