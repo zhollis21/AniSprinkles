@@ -225,9 +225,10 @@ public partial class SearchPageModel : ObservableObject
         // token read blowing up must not be presented to the user as a failed search. On failure,
         // keep whatever OnAppearingAsync last recorded instead of guessing — a wrong value here
         // either strands stale results or forces a pointless refetch.
+        bool? authenticated = null;
         try
         {
-            _searchedAuthenticated = !string.IsNullOrWhiteSpace(await _authService.GetAccessTokenAsync());
+            authenticated = !string.IsNullOrWhiteSpace(await _authService.GetAccessTokenAsync());
         }
         catch (Exception ex)
         {
@@ -235,10 +236,18 @@ public partial class SearchPageModel : ObservableObject
         }
 
         // That await is a new suspension point, so a keystroke may have superseded this search
-        // while it ran. Bail before spending the request.
+        // while it ran. Bail before spending the request — and before writing the context, since
+        // this continuation can resume AFTER a newer search has already recorded its own. Writing
+        // it here would let an older read clobber a newer one (reachable via token expiry, the one
+        // way auth flips without leaving the tab).
         if (token.IsCancellationRequested)
         {
             return;
+        }
+
+        if (authenticated.HasValue)
+        {
+            _searchedAuthenticated = authenticated.Value;
         }
 
         try

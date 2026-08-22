@@ -316,20 +316,25 @@ function Cmd-Install {
     $needKb = [int64]((Get-Item $Apk).Length / 1KB) * 4
     if ($null -ne $freeKb -and $freeKb -lt $needKb) {
         Say "only $([math]::Round($freeKb / 1024)) MB free on /data — removing the old copy first"
-        & $Adb uninstall $Package *> $null
+        Adb uninstall $Package *> $null
     }
 
+    # Every adb call here goes through the `Adb` wrapper, not `& $Adb`: the wrapper adds
+    # `-s $script:Serial` from Resolve-Target. Calling the binary directly ignores that, so with
+    # ANDROID_SERIAL set or two devices attached the free-space check could read one device while
+    # the install targeted another — or adb would just fail on "more than one device".
+    #
     # NOTE: `adb install` prints "Failure [...]" to STDOUT and STILL exits 0 in some
     # adb builds, and a stale build of the package left installed would make a
     # naive `pm list packages` check pass. Parse the output text instead.
-    $out = @(& $Adb install -r -d $Apk 2>&1) -join "`n"
+    $out = @(Adb install -r -d $Apk 2>&1) -join "`n"
     Write-Host $out
 
     if ($out -match 'INSUFFICIENT_STORAGE') {
         # Space was fine (or unreadable) going in but the install still did not fit.
         Say 'insufficient storage — uninstalling old copy and retrying'
-        & $Adb uninstall $Package *> $null
-        $out = @(& $Adb install $Apk 2>&1) -join "`n"
+        Adb uninstall $Package *> $null
+        $out = @(Adb install $Apk 2>&1) -join "`n"
         Write-Host $out
     }
 
