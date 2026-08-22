@@ -5,6 +5,7 @@ namespace AniSprinkles.UnitTests;
 /// status-change flow. The UI half (<c>ListEntryStatusFlow</c>) depends on MAUI
 /// popups and is covered by manual testing.
 /// </summary>
+[Collection(AppSettingsCollection.Name)]
 public class ListEntryStatusMutationsTests
 {
     public ListEntryStatusMutationsTests() => TestDataBuilder.ResetAppSettings();
