@@ -254,12 +254,23 @@ public partial class MediaBrowsePageModel : ObservableObject
 
     [RelayCommand(CanExecute = nameof(CanLoadMore))]
     private Task LoadMore()
-        => _listOps.RunAsync(
-            $"MediaBrowse {_definition?.Section} · Load More",
-            "browse",
-            (int?)_definition?.Section ?? 0,
-            () => _items.LoadMoreAsync(_scope.EnsureActive()),
-            () => _items.Items.Count);
+        // Same guard as Discover's LoadMoreSection: IsBusy means a reload is in flight, and the
+        // section is not marked busy during it. DiscoverSectionFetch reads
+        // AppSettings.DisplayAdultContent live per page, so a Load More racing an adult-toggle
+        // reload appends new-filter items onto old-filter ones. The page load scope does not cover
+        // this ordering — Begin() cancels the PREVIOUS token, but a Load More started after the
+        // reload began shares the reload's token and so survives it.
+        //
+        // Checked here rather than in CanExecute: IsBusy changing does not notify the command, so
+        // folding it into the predicate risks leaving Load More stuck disabled after a reload.
+        => IsBusy
+            ? Task.CompletedTask
+            : _listOps.RunAsync(
+                $"MediaBrowse {_definition?.Section} · Load More",
+                "browse",
+                (int?)_definition?.Section ?? 0,
+                () => _items.LoadMoreAsync(_scope.EnsureActive()),
+                () => _items.Items.Count);
 
     private bool CanLoadMore() => _items.CanLoadMore;
 

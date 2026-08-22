@@ -68,7 +68,7 @@ public partial class MyAnimePageModel : ObservableObject
     private bool _isAuthenticated;
 
     [ObservableProperty]
-    private string _title = "My Anime";
+    private string _title = "Library";
 
     [ObservableProperty]
     private ObservableCollection<MediaListSection> _sections = [];
@@ -251,7 +251,7 @@ public partial class MyAnimePageModel : ObservableObject
                 CurrentState = PageState.InitialLoading;
             }
 
-            Title = "My Anime";
+            Title = "Library";
             ErrorDetails = string.Empty;
 
             // Sync display preferences from AniList before building the list so that

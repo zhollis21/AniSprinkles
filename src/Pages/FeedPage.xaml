@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:icons="clr-namespace:IconFont.Maui.FluentIcons;assembly=IconFont.Maui.FluentIcons"
+             x:Class="AniSprinkles.Pages.FeedPage"
+             Title="Feed"
+             Shell.TitleColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Feed'}">
+
+    <!-- Placeholder until the social features in #14 land. -->
+    <VerticalStackLayout Padding="{StaticResource LayoutPadding}"
+                         Spacing="12"
+                         HorizontalOptions="Center"
+                         VerticalOptions="Center">
+        <Label Text="{x:Static icons:FluentIconsRegular.Feed24}"
+               FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+               FontSize="48"
+               TextColor="{StaticResource Gray400}"
+               HorizontalOptions="Center"
+               AutomationProperties.IsInAccessibleTree="False" />
+        <Label Text="Feed"
+               Style="{StaticResource Title2}"
+               TextColor="{StaticResource OnBackground}"
+               HorizontalOptions="Center" />
+        <Label Text="Activity, follows, and replies are coming soon."
+               Style="{StaticResource Caption1}"
+               TextColor="{StaticResource Gray400}"
+               HorizontalTextAlignment="Center"
+               HorizontalOptions="Center" />
+    </VerticalStackLayout>
+</ContentPage>

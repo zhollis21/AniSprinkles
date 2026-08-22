@@ -130,6 +130,11 @@ public static class MauiProgram
         builder.Services.AddTransient<MyAnimePage>();
         builder.Services.AddSingleton<DiscoverPageModel>();
         builder.Services.AddTransient<DiscoverPage>();
+        builder.Services.AddSingleton<SearchPageModel>();
+        builder.Services.AddTransient<SearchPage>();
+        // Placeholder pages: no PageModel until their features land (manga #12, feed #14).
+        builder.Services.AddTransient<FeedPage>();
+        builder.Services.AddTransient<MyMangaPage>();
         builder.Services.AddSingleton<SettingsPageModel>();
         builder.Services.AddTransient<SettingsPage>();
         builder.Services.AddTransient<MediaDetailsPageModel>();

@@ -43,7 +43,7 @@ public partial class DiscoverPage : ContentPage
             return;
         }
 
-        // Content survived the flyout switch — LoadAsync is a no-op within the TTL,
+        // Content survived the tab switch — LoadAsync is a no-op within the TTL,
         // a background refresh past it.
         if (LoadedContentHost.Content is not null)
         {

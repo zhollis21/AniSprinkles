@@ -8,7 +8,7 @@
              x:Class="AniSprinkles.Pages.MyAnimePage"
              x:DataType="pageModels:MyAnimePageModel"
              Title="{Binding Title}"
-             Shell.TitleColor="{Binding Title, Converter={StaticResource RainbowAccentConverter}}">
+             Shell.TitleColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='My Anime'}">
 
     <ContentPage.ToolbarItems>
         <ToolbarItem x:Name="SortToolbarItem"

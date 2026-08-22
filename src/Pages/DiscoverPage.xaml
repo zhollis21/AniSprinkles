@@ -4,25 +4,10 @@
              xmlns:pageModels="clr-namespace:AniSprinkles.PageModels"
              xmlns:views="clr-namespace:AniSprinkles.Views"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:icons="clr-namespace:IconFont.Maui.FluentIcons;assembly=IconFont.Maui.FluentIcons"
              x:Class="AniSprinkles.Pages.DiscoverPage"
              x:DataType="pageModels:DiscoverPageModel"
              Title="{Binding Title}"
              Shell.TitleColor="{Binding Title, Converter={StaticResource RainbowAccentConverter}}">
-
-    <!-- Same expandable-search pattern as MyAnimePage: the icon toggles the search bar. -->
-    <ContentPage.ToolbarItems>
-        <ToolbarItem x:Name="SearchToolbarItem"
-                     Command="{Binding ToggleSearchCommand}"
-                     Order="Primary">
-            <ToolbarItem.IconImageSource>
-                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Search24}"
-                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                 Color="{StaticResource OnBackground}"
-                                 Size="20" />
-            </ToolbarItem.IconImageSource>
-        </ToolbarItem>
-    </ContentPage.ToolbarItems>
 
     <!--
         Same StateContainer pattern as MyAnimePage, minus the auth states — Discover is public.
