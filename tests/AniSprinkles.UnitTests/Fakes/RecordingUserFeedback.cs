@@ -16,12 +16,19 @@ public sealed class RecordingUserFeedback : IUserFeedback
 
     public IReadOnlyList<string> Toasts => _toasts;
 
-    /// <summary>The action attached to the most recent snackbar that offered one.</summary>
+    /// <summary>
+    /// The action attached to the most recent snackbar, or <c>null</c> when that snackbar offered
+    /// none. Deliberately tracks the latest snackbar rather than the latest snackbar *with* an
+    /// action: "this failure offered no retry" is a statement about the last thing shown, and a
+    /// retry chain shows several. Scoping it to the filtered subset let an earlier snackbar's action
+    /// answer for a later one.
+    /// </summary>
     public Action? LastSnackbarAction { get; private set; }
 
     public Task ShowSnackbarAsync(string message)
     {
         _snackbars.Add(message);
+        LastSnackbarAction = null;
         return Task.CompletedTask;
     }
 

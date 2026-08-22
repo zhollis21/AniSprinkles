@@ -163,6 +163,31 @@ public class EntryActionCoordinatorTests
     }
 
     [Fact]
+    public async Task Remove_WhenTheRetryItselfFailsIntoAnOutage_StopsOfferingRetry()
+    {
+        // The retry path can fail again, and it re-enters the same failure handler. Once the failure
+        // becomes an outage the chain has to stop offering a button that cannot work — otherwise the
+        // user is invited to hammer a dead API indefinitely.
+        var harness = new Harness();
+        harness.Dialogs.EntryActionAnswer = MyAnimeEntryAction.Remove;
+        harness.Dialogs.ConfirmAnswer = true;
+        harness.Client.DeleteMediaListEntryAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromException<bool>(new AniListApiException(ApiErrorKind.Network, "offline")));
+
+        await harness.Coordinator.ShowEntryMenuAsync(harness.Entry);
+        Assert.NotNull(harness.Feedback.LastSnackbarAction);
+
+        // The retry runs while AniList is down.
+        harness.Client.DeleteMediaListEntryAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromException<bool>(new AniListApiException(ApiErrorKind.ServiceOutage, "down")));
+        harness.Feedback.LastSnackbarAction!();
+        await harness.WaitUntilAsync(() => harness.Feedback.Snackbars.Count == 2);
+
+        Assert.Equal("AniList is Down", harness.Feedback.Snackbars[1]);
+        Assert.Null(harness.Feedback.LastSnackbarAction);
+    }
+
+    [Fact]
     public async Task Remove_DuringAServiceOutage_OmitsTheRetryAction()
     {
         // The outage banner is already up and a retry cannot succeed for minutes; offering Retry
