@@ -31,15 +31,12 @@ public partial class CharacterDetailsPage : ContentPage, IQueryAttributable
             entityName: "character",
             shouldShowContent: () => ViewModel.HasCharacter && !ViewModel.IsBusy && ViewModel.CurrentState == PageState.Content,
             createView: () => new Views.CharacterDetailsLoadedContentView { BindingContext = ViewModel },
-            onRenderError: ex =>
-            {
-                ViewModel.ErrorTitle = "Something Went Wrong";
-                ViewModel.ErrorSubtitle = "Failed to render the character view.";
-                ViewModel.ErrorIconGlyph = FluentIconsRegular.ErrorCircle24;
-                ViewModel.ErrorDetails = $"{ex.GetType().Name}: {ex.Message}";
-                ViewModel.CanRetry = true;
-                ViewModel.CurrentState = PageState.Error;
-            });
+            onRenderError: ex => ViewModel.ShowError(
+                "Something Went Wrong",
+                "Failed to render the character view.",
+                canRetry: true,
+                details: $"{ex.GetType().Name}: {ex.Message}",
+                iconGlyph: FluentIconsRegular.ErrorCircle24));
 
         ViewModel.PropertyChanged += OnViewModelPropertyChanged;
     }

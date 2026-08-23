@@ -10,58 +10,45 @@ using System.Net;
 
 namespace AniSprinkles.PageModels;
 
-    public partial class MediaDetailsPageModel : ObservableObject
-    {
-        private readonly IAniListClient _aniListClient;
-        private readonly IAuthService _authService;
-        private readonly ErrorReportService _errorReportService;
-        private readonly INavigationService _navigationService;
-        private readonly IUserFeedback _feedback;
-        private readonly IDialogService _dialogs;
-        private readonly ListEntryStatusFlow _statusFlow;
-        private readonly ILogger<MediaDetailsPageModel> _logger;
-        private readonly ListOperationRunner _listOps;
-        private readonly FavouriteToggleRunner _favouriteRunner;
-        private int? _loadedMediaId;
-        private int _loadRequestSequence;
-        private readonly PageLoadScope _scope = new();
-        private int _lastRequestedMediaId;
-        private MediaListEntry? _lastRequestedListEntry;
+public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
+{
+    private readonly IDialogService _dialogs;
+    private readonly ListEntryStatusFlow _statusFlow;
 
-        // Per-section sort + pagination, layered on top of the heavy first-paint MediaQuery (which seeds
-        // page 1 at perPage 25). Characters/Staff/Recommendations sort server-side and Load More; Relations
-        // sorts entirely client-side over a fixed set (no pagination). Defaults MUST match the MediaQuery
-        // sub-block sorts so the seeded page and the highlighted dropdown option agree. Mirrors
-        // CharacterDetailsPageModel.
-        private const int PageSize = 25;
-        private const string CharactersDefaultSort = "ROLE";
-        private const string StaffDefaultSort = "RELEVANCE";
-        private const string RecommendationsDefaultSort = "RATING_DESC";
-        private const string RelationsDefaultSort = "RELATION";
+    // Correlates this page's own trace lines within one load. The in-flight guard in LoadAsync means
+    // loads cannot interleave, so the base's NAVTRACE lines correlate to the current load by time.
+    private int _loadRequestSequence;
+    private int _loadRequestId;
 
-        private readonly PaginatedSection<CharacterEdge> _characters;
-        private readonly PaginatedSection<StaffEdge> _staff;
-        private readonly PaginatedSection<MediaRecommendationNode> _recommendations;
+    // The list entry the navigation carried, kept so RetryLoad can re-invoke with it.
+    private MediaListEntry? _lastRequestedListEntry;
 
-        // Relations is the complete set from the first-paint query; DisplayedRelations is the sorted view.
-        private IReadOnlyList<MediaRelationEdge> _allRelations = [];
+    // The list entry the last fetch returned, applied when its media is seeded.
+    private MediaListEntry? _fetchedListEntry;
 
-    // ── Main page state (mutually exclusive) ────────────────────────
+    // Per-section sort + pagination, layered on top of the heavy first-paint MediaQuery (which seeds
+    // page 1 at perPage 25). Characters/Staff/Recommendations sort server-side and Load More; Relations
+    // sorts entirely client-side over a fixed set (no pagination). Defaults MUST match the MediaQuery
+    // sub-block sorts so the seeded page and the highlighted dropdown option agree. Mirrors
+    // CharacterDetailsPageModel.
+    private const int PageSize = 25;
+    private const string CharactersDefaultSort = "ROLE";
+    private const string StaffDefaultSort = "RELEVANCE";
+    private const string RecommendationsDefaultSort = "RATING_DESC";
+    private const string RelationsDefaultSort = "RELATION";
+
+    private readonly PaginatedSection<CharacterEdge> _characters;
+    private readonly PaginatedSection<StaffEdge> _staff;
+    private readonly PaginatedSection<MediaRecommendationNode> _recommendations;
+
+    // Relations is the complete set from the first-paint query; DisplayedRelations is the sorted view.
+    private IReadOnlyList<MediaRelationEdge> _allRelations = [];
+
+    // Main page state, the error-state properties and IsBusy live on DetailsPageModelBase.
     // Transitions:
     //   InitialLoading → Content (fetch succeeded) | Error (fetch failed / media unavailable)
     //   Content        → Content (refresh/same id) | InitialLoading (new id) | Error (refresh failed)
     //   Error          → InitialLoading (retry)
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(CurrentStateKey))]
-    private PageState _currentState = PageState.InitialLoading;
-
-    // StateContainer.CurrentState is typed as string; null/empty restores default
-    // children (the loaded content host). Non-Content states match a StateView key.
-    public string? CurrentStateKey => CurrentState == PageState.Content ? null : CurrentState.ToString();
-
-    [ObservableProperty]
-    private bool _isBusy;
-
     [ObservableProperty]
     private Media? _media;
 
@@ -71,24 +58,6 @@ namespace AniSprinkles.PageModels;
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanAddToList))]
     private bool _hasListEntry;
-
-    [ObservableProperty]
-    private string _errorDetails = string.Empty;
-
-    // ── Error state (full-page error view) ──────────────────────────
-    // Visibility is driven by CurrentState == PageState.Error; the following
-    // properties populate the error view template.
-    [ObservableProperty]
-    private string _errorTitle = string.Empty;
-
-    [ObservableProperty]
-    private string _errorSubtitle = string.Empty;
-
-    [ObservableProperty]
-    private string _errorIconGlyph = string.Empty;
-
-    [ObservableProperty]
-    private bool _canRetry = true;
 
     [ObservableProperty]
     private bool _isDescriptionExpanded;
@@ -102,18 +71,20 @@ namespace AniSprinkles.PageModels;
     [ObservableProperty]
     private double _sliderProgress;
 
-    public MediaDetailsPageModel(IAniListClient aniListClient, IAuthService authService, ErrorReportService errorReportService, INavigationService navigationService, IUserFeedback feedback, IDialogService dialogs, ListEntryStatusFlow statusFlow, ILogger<MediaDetailsPageModel> logger)
+    public MediaDetailsPageModel(
+        IAniListClient aniListClient,
+        IAuthService authService,
+        ErrorReportService errorReportService,
+        INavigationService navigationService,
+        IUserFeedback feedback,
+        IExternalBrowser browser,
+        IDialogService dialogs,
+        ListEntryStatusFlow statusFlow,
+        ILogger<MediaDetailsPageModel> logger)
+        : base(aniListClient, authService, navigationService, feedback, browser, errorReportService, logger)
     {
-        _aniListClient = aniListClient;
-        _authService = authService;
-        _errorReportService = errorReportService;
-        _navigationService = navigationService;
-        _feedback = feedback;
         _dialogs = dialogs;
         _statusFlow = statusFlow;
-        _logger = logger;
-        _listOps = new ListOperationRunner(logger, feedback);
-        _favouriteRunner = new FavouriteToggleRunner(aniListClient, feedback, logger);
 
         _characters = new PaginatedSection<CharacterEdge>(
             CharactersDefaultSort,
@@ -342,7 +313,8 @@ namespace AniSprinkles.PageModels;
 
     public string PopularityDisplay => Media?.Popularity is > 0 ? $"{Media.Popularity:N0}" : "--";
 
-    public string FavouritesDisplay => Media?.Favourites is > 0 ? $"{Media.Favourites:N0}" : "--";
+    // FavouritesDisplay lives on DetailsPageModelBase, rendering Media.FavouritesDisplay so all four
+    // details pages show one format.
 
     public string FormatDisplay => Media?.Format?.Replace("_", " ") ?? "--";
 
@@ -366,14 +338,8 @@ namespace AniSprinkles.PageModels;
 
     public bool HasStaff => _staff.Items.Count > 0;
 
-    public bool IsAuthenticated { get; private set; }
-
+    // IsAuthenticated, IsFavourite and CanToggleFavourite live on DetailsPageModelBase.
     public bool CanAddToList => IsAuthenticated && !HasListEntry;
-
-    /// <summary>Viewer's favorite state for this title; drives the heart fill on the favourites pill.</summary>
-    public bool IsFavourite => Media?.IsFavourite ?? false;
-
-    public bool CanToggleFavourite => IsAuthenticated && !_favouriteRunner.IsBusy && Media is not null;
 
     public string ListStatusDisplay => ListEntry?.Status switch
     {
@@ -499,188 +465,139 @@ namespace AniSprinkles.PageModels;
 
     public IReadOnlyList<StatusDistribution> StatusDistribution { get; private set; } = [];
 
-    public async Task LoadAsync(int mediaId, MediaListEntry? listEntry)
-    {
-        var loadRequestId = Interlocked.Increment(ref _loadRequestSequence);
-        var loadStopwatch = Stopwatch.StartNew();
+    // ---- Spine ------------------------------------------------------------------------------------
 
-        _logger.LogInformation(
+    protected override Media? Entity
+    {
+        get => Media;
+        set => Media = value;
+    }
+
+    protected override string EntityNoun => "media";
+
+    protected override string TracePrefix => "MediaDetails";
+
+    protected override FavouriteKind FavouriteKind => FavouriteKind.Anime;
+
+    protected override string? SiteUrl => Media?.SiteUrl;
+
+    // This page's copy is about the title rather than the entity kind.
+    protected override (string Title, string Subtitle) InvalidIdError
+        => ("Details Unavailable", "The requested title could not be loaded.");
+
+    // A null result here means the query came back empty rather than 404'd, which a retry can fix —
+    // unlike the other three details pages, where a missing entity is final.
+    protected override (string Title, string Subtitle) NotFoundError
+        => ("Details Unavailable", "The requested title could not be loaded.");
+
+    protected override bool NullResultIsRetryable => true;
+
+    protected override (string Title, string Subtitle) FallbackLoadError
+        => ("Something Went Wrong", "An unexpected error occurred. Try again or check back later.");
+
+    /// <param name="listEntry">The viewer's list entry as carried by the navigation, when there is one.
+    /// The fetched entry wins over it — it is always fresher.</param>
+    /// <remarks>
+    /// Unlike the other three details pages, a second load while one is in flight is dropped rather
+    /// than superseding it: this page's load is the heavy one and its list-entry merge is
+    /// order-sensitive. The guard lives here rather than in a <c>ShouldSkipLoad</c> override so that
+    /// nothing this load owns — the list entry, the trace id — is written until it has been accepted.
+    /// A dropped load that had already overwritten them would hand the wrong list context to the load
+    /// still running, and renumber its remaining trace lines.
+    /// </remarks>
+    public Task LoadAsync(int mediaId, MediaListEntry? listEntry)
+    {
+        var requestId = Interlocked.Increment(ref _loadRequestSequence);
+
+        Logger.LogInformation(
             "MediaDetails LoadAsync enter load#{LoadRequestId} (mediaId={MediaId}, isBusy={IsBusy}, currentState={CurrentState}, loadedMediaId={LoadedMediaId}, hasListEntry={HasListEntry})",
-            loadRequestId, mediaId, IsBusy, CurrentState, _loadedMediaId, listEntry is not null);
+            requestId, mediaId, IsBusy, CurrentState, LoadedId, listEntry is not null);
 
         if (IsBusy)
         {
-            _logger.LogInformation("NAVTRACE load#{LoadRequestId} skipped because details view model is already busy.", loadRequestId);
-            return;
+            Logger.LogInformation("NAVTRACE load#{LoadRequestId} skipped because details view model is already busy.", requestId);
+            return Task.CompletedTask;
         }
 
-        if (mediaId <= 0)
-        {
-            _lastRequestedMediaId = mediaId;
-            _lastRequestedListEntry = listEntry;
-            Media = null;
-            _loadedMediaId = null;
-            ErrorDetails = string.Empty;
-            ErrorTitle = "Details Unavailable";
-            ErrorSubtitle = "The requested title could not be loaded.";
-            ErrorIconGlyph = Glyphs.Regular.ErrorCircle24;
-            CanRetry = false;
-            CurrentState = PageState.Error;
-            _logger.LogInformation("NAVTRACE load#{LoadRequestId} aborted due to invalid media id {MediaId}.", loadRequestId, mediaId);
-            return;
-        }
-
-        if (_loadedMediaId == mediaId && Media is not null)
-        {
-            // Query attributes can be re-applied on resume/back transitions. Keep existing media and only
-            // refresh list-context/error state so we avoid a second network call and full layout pass.
-            // Don't overwrite ListEntry — our in-memory copy reflects any saves the user made.
-            // Only accept the navigation parameter if we have no entry yet.
-            if (ListEntry is null && listEntry is not null)
-            {
-                ListEntry = listEntry;
-            }
-
-            ErrorDetails = string.Empty;
-            CurrentState = PageState.Content;
-            _logger.LogInformation(
-                "NAVTRACE load#{LoadRequestId} reused already-loaded media {MediaId} in {ElapsedMs}ms.",
-                loadRequestId,
-                mediaId,
-                loadStopwatch.ElapsedMilliseconds);
-            return;
-        }
-
-        // Set IsBusy immediately — before any awaits — so concurrent callers
-        // are rejected by the guard above. All cleanup happens in finally.
-        IsBusy = true;
-        _lastRequestedMediaId = mediaId;
+        _loadRequestId = requestId;
         _lastRequestedListEntry = listEntry;
+        return LoadCoreAsync(mediaId);
+    }
 
-        // Fresh page scope for this load: cancels any in-flight fetch from a prior media and gives the
-        // main load + section ops a token that OnDisappearing cancels when the user navigates away.
-        var pageToken = _scope.Begin();
-
-        // Query updates can happen on the same page instance. Clear previous media for a different id
-        // so we display an intentional loading state instead of stale details during transition.
-        if (_loadedMediaId != mediaId)
+    // Query attributes can be re-applied on resume/back transitions. Keep the existing media and only
+    // refresh list-context/error state so we avoid a second network call and full layout pass. Don't
+    // overwrite ListEntry — our in-memory copy reflects any saves the user made. Only accept the
+    // navigation parameter if we have no entry yet.
+    protected override void OnEntityReused()
+    {
+        if (ListEntry is null && _lastRequestedListEntry is not null)
         {
-            Media = null;
+            ListEntry = _lastRequestedListEntry;
         }
 
-        try
+        ErrorDetails = string.Empty;
+        Logger.LogInformation("NAVTRACE load#{LoadRequestId} reused already-loaded media {MediaId}.", _loadRequestId, LoadedId);
+    }
+
+    protected override void OnLoadStarting(int id)
+    {
+        SentrySdk.AddBreadcrumb($"Load media details {id}", "navigation", "state");
+
+        Logger.LogInformation(
+            "DATATRACE load#{LoadRequestId} nav-param listEntry: Progress={Progress}, Score={Score}, EntryId={EntryId}",
+            _loadRequestId, _lastRequestedListEntry?.Progress, _lastRequestedListEntry?.Score, _lastRequestedListEntry?.Id);
+
+        ListEntry = _lastRequestedListEntry;
+        ErrorDetails = string.Empty;
+    }
+
+    protected override void OnAuthenticationResolved() => OnPropertyChanged(nameof(CanAddToList));
+
+    protected override async Task<Media?> FetchAsync(int id, CancellationToken cancellationToken)
+    {
+        var fetchStopwatch = Stopwatch.StartNew();
+        var result = await AniList.GetMediaAsync(id, cancellationToken);
+        fetchStopwatch.Stop();
+
+        Logger.LogInformation(
+            "NAVTRACE load#{LoadRequestId} media fetch completed in {FetchElapsedMs}ms for media {MediaId}.",
+            _loadRequestId, fetchStopwatch.ElapsedMilliseconds, id);
+
+        Logger.LogInformation(
+            "DATATRACE load#{LoadRequestId} API result.ListEntry: Progress={Progress}, Score={Score}, EntryId={EntryId}",
+            _loadRequestId, result.ListEntry?.Progress, result.ListEntry?.Score, result.ListEntry?.Id);
+
+        _fetchedListEntry = result.ListEntry;
+        return result.Media;
+    }
+
+    protected override void SeedSections(Media entity)
+    {
+        // Prefer the API-returned list entry over the navigation-passed one (it's always fresh).
+        var entry = _fetchedListEntry ?? _lastRequestedListEntry;
+        entry?.Media = entity;
+
+        Logger.LogInformation(
+            "DATATRACE load#{LoadRequestId} final entry (before set): Progress={Progress}, Score={Score}, EntryId={EntryId}, Source={Source}",
+            _loadRequestId, entry?.Progress, entry?.Score, entry?.Id,
+            _fetchedListEntry is not null ? "API" : "nav-param");
+
+        ListEntry = entry;
+    }
+
+    protected override void ResetForNewEntity() => _fetchedListEntry = null;
+
+    protected override string DescribeSeededSections()
+        => $"{_characters.Items.Count} characters, {_staff.Items.Count} staff, {_recommendations.Items.Count} recommendations";
+
+    protected override Task RetryLoadCore()
+    {
+        if (LastRequestedId <= 0 || IsBusy)
         {
-            var token = await _authService.GetAccessTokenAsync();
-            IsAuthenticated = !string.IsNullOrWhiteSpace(token);
-            OnPropertyChanged(nameof(CanAddToList));
-            ToggleFavouriteCommand.NotifyCanExecuteChanged();
-
-            CurrentState = PageState.InitialLoading;
-            _logger.LogInformation("NAVTRACE load#{LoadRequestId} starting details fetch for media {MediaId}.", loadRequestId, mediaId);
-            SentrySdk.AddBreadcrumb($"Load media details {mediaId}", "navigation", "state");
-
-            _logger.LogInformation(
-                "DATATRACE load#{LoadRequestId} nav-param listEntry: Progress={Progress}, Score={Score}, EntryId={EntryId}",
-                loadRequestId, listEntry?.Progress, listEntry?.Score, listEntry?.Id);
-            ListEntry = listEntry;
-            ErrorDetails = string.Empty;
-
-            var fetchStopwatch = Stopwatch.StartNew();
-            var result = await _aniListClient.GetMediaAsync(mediaId, pageToken);
-            fetchStopwatch.Stop();
-            _logger.LogInformation(
-                "NAVTRACE load#{LoadRequestId} media fetch completed in {FetchElapsedMs}ms for media {MediaId}.",
-                loadRequestId,
-                fetchStopwatch.ElapsedMilliseconds,
-                mediaId);
-
-            _logger.LogInformation(
-                "DATATRACE load#{LoadRequestId} API result.ListEntry: Progress={Progress}, Score={Score}, EntryId={EntryId}",
-                loadRequestId, result.ListEntry?.Progress, result.ListEntry?.Score, result.ListEntry?.Id);
-
-            if (result.Media is null)
-            {
-                ErrorTitle = "Details Unavailable";
-                ErrorSubtitle = "The requested title could not be loaded.";
-                ErrorIconGlyph = Glyphs.Regular.ErrorCircle24;
-                ErrorDetails = string.Empty;
-                CanRetry = true;
-                CurrentState = PageState.Error;
-                _loadedMediaId = null;
-                _logger.LogWarning("NAVTRACE load#{LoadRequestId} returned null media for media id {MediaId}.", loadRequestId, mediaId);
-                return;
-            }
-
-            // Prefer the API-returned list entry over the navigation-passed one (it's always fresh).
-            var entry = result.ListEntry ?? listEntry;
-            entry?.Media = result.Media;
-
-            _logger.LogInformation(
-                "DATATRACE load#{LoadRequestId} final entry (before set): Progress={Progress}, Score={Score}, EntryId={EntryId}, Source={Source}",
-                loadRequestId, entry?.Progress, entry?.Score, entry?.Id,
-                result.ListEntry is not null ? "API" : "nav-param");
-            ListEntry = entry;
-            Media = result.Media;
-            _loadedMediaId = mediaId;
-            CanRetry = true;
-            CurrentState = PageState.Content;
-            _logger.LogInformation(
-                "NAVTRACE load#{LoadRequestId} media bound in {ElapsedMs}ms for media {MediaId}.",
-                loadRequestId,
-                loadStopwatch.ElapsedMilliseconds,
-                mediaId);
+            return Task.CompletedTask;
         }
-        catch (OperationCanceledException)
-        {
-            // The user navigated away mid-load (OnDisappearing cancelled the page scope). Abandon quietly —
-            // no error UI and no Sentry report; OnAppearing will reload if they return.
-            _logger.LogInformation("NAVTRACE load#{LoadRequestId} cancelled (navigated away) for media {MediaId}.", loadRequestId, mediaId);
-        }
-        catch (Exception ex)
-        {
-            var apiEx = ex as AniListApiException;
-            var isNotFound = apiEx?.Kind == ApiErrorKind.NotFound;
-            ErrorTitle = apiEx?.UserTitle ?? "Something Went Wrong";
-            ErrorSubtitle = apiEx?.UserSubtitle ?? "An unexpected error occurred. Try again or check back later.";
-            ErrorIconGlyph = apiEx?.IconGlyph ?? Glyphs.Regular.ErrorCircle24;
-            // A NotFound result won't change on a retry, so hide Retry.
-            CanRetry = !isNotFound;
-            CurrentState = PageState.Error;
-            _loadedMediaId = null;
 
-            if (isNotFound)
-            {
-                // NotFound is non-retryable and intentionally not reported to Sentry; log at Warning
-                // so it stays a breadcrumb (below Sentry's Error event threshold).
-                ErrorDetails = string.Empty;
-                _logger.LogWarning(
-                    ex,
-                    "NAVTRACE load#{LoadRequestId} media {MediaId} not found on AniList after {ElapsedMs}ms.",
-                    loadRequestId,
-                    mediaId,
-                    loadStopwatch.ElapsedMilliseconds);
-            }
-            else
-            {
-                ErrorDetails = _errorReportService.Record(ex, "Load details");
-                _logger.LogError(
-                    ex,
-                    "NAVTRACE load#{LoadRequestId} failed in {ElapsedMs}ms for media {MediaId}.",
-                    loadRequestId,
-                    loadStopwatch.ElapsedMilliseconds,
-                    mediaId);
-            }
-        }
-        finally
-        {
-            IsBusy = false;
-            loadStopwatch.Stop();
-            _logger.LogInformation(
-                "NAVTRACE load#{LoadRequestId} finished in {ElapsedMs}ms for media {MediaId}.",
-                loadRequestId,
-                loadStopwatch.ElapsedMilliseconds,
-                mediaId);
-        }
+        return LoadAsync(LastRequestedId, _lastRequestedListEntry);
     }
 
     partial void OnMediaChanged(Media? value)
@@ -712,6 +629,7 @@ namespace AniSprinkles.PageModels;
         OnPropertyChanged(nameof(PopularityDisplay));
         OnPropertyChanged(nameof(FavouritesDisplay));
         OnPropertyChanged(nameof(IsFavourite));
+        OnPropertyChanged(nameof(HasFavourites));
         ToggleFavouriteCommand.NotifyCanExecuteChanged();
         OnPropertyChanged(nameof(FormatDisplay));
         OnPropertyChanged(nameof(StatusFormatted));
@@ -793,23 +711,21 @@ namespace AniSprinkles.PageModels;
     // hitting the API once the user navigates away (matches Character/Staff details). PaginatedSection's
     // generation guard stays as defense-in-depth (it drops stale responses when a new-media load re-seeds).
     // The sort dropdown is a CommunityToolkit popup that fires the host page's OnDisappearing, which would
-    // cancel the very sort it's about to request — so list ops go through EnsurePageScope(), which recreates
+    // cancel the very sort it's about to request — so list ops go through Scope.EnsureActive(), which recreates
     // a cancelled scope while still on the page; the same-id reuse guard in LoadAsync keeps the popup's
     // OnAppearing reload a no-op.
 
-    public void CancelInFlight() => _scope.Cancel();
-
     private Task<(IReadOnlyList<CharacterEdge> Items, PageInfo? PageInfo)> FetchCharactersPageAsync(
         int page, string sort, CancellationToken cancellationToken)
-        => _aniListClient.LoadMediaCharactersPageAsync(_loadedMediaId ?? 0, page, sort, PageSize, cancellationToken);
+        => AniList.LoadMediaCharactersPageAsync(LoadedId, page, sort, PageSize, cancellationToken);
 
     private Task<(IReadOnlyList<StaffEdge> Items, PageInfo? PageInfo)> FetchStaffPageAsync(
         int page, string sort, CancellationToken cancellationToken)
-        => _aniListClient.LoadMediaStaffPageAsync(_loadedMediaId ?? 0, page, sort, PageSize, cancellationToken);
+        => AniList.LoadMediaStaffPageAsync(LoadedId, page, sort, PageSize, cancellationToken);
 
     private Task<(IReadOnlyList<MediaRecommendationNode> Items, PageInfo? PageInfo)> FetchRecommendationsPageAsync(
         int page, string sort, CancellationToken cancellationToken)
-        => _aniListClient.LoadMediaRecommendationsPageAsync(_loadedMediaId ?? 0, page, sort, PageSize, cancellationToken);
+        => AniList.LoadMediaRecommendationsPageAsync(LoadedId, page, sort, PageSize, cancellationToken);
 
     // --- Characters ---
 
@@ -817,11 +733,11 @@ namespace AniSprinkles.PageModels;
     // while a fetch/sort is in flight or once fully paged (matches CharacterDetailsPageModel).
     [RelayCommand(CanExecute = nameof(CanLoadMoreCharacters))]
     private Task LoadMoreCharacters()
-        => _listOps.RunAsync(
+        => ListOps.RunAsync(
             "Characters · Load More",
             "media",
-            _loadedMediaId ?? 0,
-            () => _characters.LoadMoreAsync(_scope.EnsureActive()),
+            LoadedId,
+            () => _characters.LoadMoreAsync(Scope.EnsureActive()),
             () => _characters.Items.Count);
 
     private bool CanLoadMoreCharacters() => _characters.CanLoadMore;
@@ -834,11 +750,11 @@ namespace AniSprinkles.PageModels;
 
     [RelayCommand(CanExecute = nameof(CanLoadMoreStaff))]
     private Task LoadMoreStaff()
-        => _listOps.RunAsync(
+        => ListOps.RunAsync(
             "Staff · Load More",
             "media",
-            _loadedMediaId ?? 0,
-            () => _staff.LoadMoreAsync(_scope.EnsureActive()),
+            LoadedId,
+            () => _staff.LoadMoreAsync(Scope.EnsureActive()),
             () => _staff.Items.Count);
 
     private bool CanLoadMoreStaff() => _staff.CanLoadMore;
@@ -851,11 +767,11 @@ namespace AniSprinkles.PageModels;
 
     [RelayCommand(CanExecute = nameof(CanLoadMoreRecommendations))]
     private Task LoadMoreRecommendations()
-        => _listOps.RunAsync(
+        => ListOps.RunAsync(
             "Recommendations · Load More",
             "media",
-            _loadedMediaId ?? 0,
-            () => _recommendations.LoadMoreAsync(_scope.EnsureActive()),
+            LoadedId,
+            () => _recommendations.LoadMoreAsync(Scope.EnsureActive()),
             () => _recommendations.Items.Count);
 
     private bool CanLoadMoreRecommendations() => _recommendations.CanLoadMore;
@@ -870,11 +786,11 @@ namespace AniSprinkles.PageModels;
             return Task.CompletedTask;
         }
 
-        return _listOps.RunAsync(
+        return ListOps.RunAsync(
             $"{label} · sort→{code}",
             "media",
-            _loadedMediaId ?? 0,
-            () => section.ChangeSortAsync(code, _scope.EnsureActive()),
+            LoadedId,
+            () => section.ChangeSortAsync(code, Scope.EnsureActive()),
             () => section.Items.Count,
             onComplete: () => SyncSortSelection(options, section.Sort));
     }
@@ -1013,7 +929,7 @@ namespace AniSprinkles.PageModels;
 
     partial void OnListEntryChanged(MediaListEntry? value)
     {
-        _logger.LogInformation(
+        Logger.LogInformation(
             "DATATRACE OnListEntryChanged: Progress={Progress}, Score={Score}, EntryId={EntryId}, MediaId={MediaId}",
             value?.Progress, value?.Score, value?.Id, value?.MediaId);
 
@@ -1039,43 +955,16 @@ namespace AniSprinkles.PageModels;
     }
 
     [RelayCommand]
-    private async Task NavigateToMedia(RelatedMedia? media)
-    {
-        var mediaId = media?.Id ?? 0;
-        _logger.LogInformation("NAVTRACE NavigateToMedia called with mediaId={MediaId}", mediaId);
-        if (mediaId <= 0)
-        {
-            _logger.LogWarning("NAVTRACE NavigateToMedia aborted — invalid mediaId {MediaId}", mediaId);
-            return;
-        }
-
-        // The detail screen queries Media(id:, type: ANIME); a manga/novel id would 404. Relations,
-        // recommendations and staff/character media can all point at non-anime entries, so surface a
-        // toast instead of navigating into a doomed fetch.
-        if (media is { IsAnime: false })
-        {
-            _logger.LogInformation("NAVTRACE NavigateToMedia skipped non-anime media {MediaId} (type={Type}).", mediaId, media.Type);
-            await _feedback.ShowToastAsync("Manga & Novel details aren't supported yet.");
-            return;
-        }
-
-        await _navigationService.GoToAsync("media-details", animate: false, new Dictionary<string, object>
-        {
-            ["mediaId"] = mediaId,
-        });
-    }
-
-    [RelayCommand]
     private async Task NavigateToCharacter(int characterId)
     {
-        _logger.LogInformation("NAVTRACE NavigateToCharacter called with characterId={CharacterId}", characterId);
+        Logger.LogInformation("NAVTRACE NavigateToCharacter called with characterId={CharacterId}", characterId);
         if (characterId <= 0)
         {
-            _logger.LogWarning("NAVTRACE NavigateToCharacter aborted — invalid characterId {CharacterId}", characterId);
+            Logger.LogWarning("NAVTRACE NavigateToCharacter aborted — invalid characterId {CharacterId}", characterId);
             return;
         }
 
-        await _navigationService.GoToAsync("character-details", animate: false, new Dictionary<string, object>
+        await NavigationService.GoToAsync("character-details", animate: false, new Dictionary<string, object>
         {
             ["characterId"] = characterId,
         });
@@ -1084,14 +973,14 @@ namespace AniSprinkles.PageModels;
     [RelayCommand]
     private async Task NavigateToStaff(int staffId)
     {
-        _logger.LogInformation("NAVTRACE NavigateToStaff called with staffId={StaffId}", staffId);
+        Logger.LogInformation("NAVTRACE NavigateToStaff called with staffId={StaffId}", staffId);
         if (staffId <= 0)
         {
-            _logger.LogWarning("NAVTRACE NavigateToStaff aborted — invalid staffId {StaffId}", staffId);
+            Logger.LogWarning("NAVTRACE NavigateToStaff aborted — invalid staffId {StaffId}", staffId);
             return;
         }
 
-        await _navigationService.GoToAsync("staff-details", animate: false, new Dictionary<string, object>
+        await NavigationService.GoToAsync("staff-details", animate: false, new Dictionary<string, object>
         {
             ["staffId"] = staffId,
         });
@@ -1100,14 +989,14 @@ namespace AniSprinkles.PageModels;
     [RelayCommand]
     private async Task NavigateToStudio(int studioId)
     {
-        _logger.LogInformation("NAVTRACE NavigateToStudio called with studioId={StudioId}", studioId);
+        Logger.LogInformation("NAVTRACE NavigateToStudio called with studioId={StudioId}", studioId);
         if (studioId <= 0)
         {
-            _logger.LogWarning("NAVTRACE NavigateToStudio aborted — invalid studioId {StudioId}", studioId);
+            Logger.LogWarning("NAVTRACE NavigateToStudio aborted — invalid studioId {StudioId}", studioId);
             return;
         }
 
-        await _navigationService.GoToAsync("studio-details", animate: false, new Dictionary<string, object>
+        await NavigationService.GoToAsync("studio-details", animate: false, new Dictionary<string, object>
         {
             ["studioId"] = studioId,
         });
@@ -1172,48 +1061,24 @@ namespace AniSprinkles.PageModels;
 
         try
         {
-            var saved = await _aniListClient.SaveMediaListEntryAsync(entry);
+            var saved = await AniList.SaveMediaListEntryAsync(entry);
             if (saved is not null)
             {
                 saved.Media = Media;
                 ListEntry = saved;
                 IsStatusExpanded = false;
                 OnPropertyChanged(nameof(CanAddToList));
-                await _feedback.ShowToastAsync("Status updated");
+                await Feedback.ShowToastAsync("Status updated");
             }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to set status for media {MediaId}.", Media.Id);
-            await _feedback.ShowFailureSnackbarAsync(
+            Logger.LogError(ex, "Failed to set status for media {MediaId}.", Media.Id);
+            await Feedback.ShowFailureSnackbarAsync(
                 ex,
                 "Failed to update status. Please try again.",
                 retryAction: () => _ = QuickSetStatus(value));
         }
-    }
-
-    [RelayCommand(CanExecute = nameof(CanToggleFavourite))]
-    private async Task ToggleFavourite()
-    {
-        var media = Media;
-        // Re-check the gate here (not just via the command's CanExecute) so the failure-snackbar
-        // Retry can't run an optimistic flip if auth/busy state changed since the failure.
-        if (media is null || !CanToggleFavourite)
-        {
-            return;
-        }
-
-        if (await _favouriteRunner.ToggleAsync(media, FavouriteKind.Anime, NotifyFavouriteChanged, () => _ = ToggleFavourite()))
-        {
-            SentrySdk.AddBreadcrumb($"Favourite toggled (media {media.Id} → {(media.IsFavourite ? "on" : "off")})", "list", "user");
-        }
-    }
-
-    private void NotifyFavouriteChanged()
-    {
-        OnPropertyChanged(nameof(IsFavourite));
-        OnPropertyChanged(nameof(FavouritesDisplay));
-        ToggleFavouriteCommand.NotifyCanExecuteChanged();
     }
 
     [RelayCommand]
@@ -1252,7 +1117,7 @@ namespace AniSprinkles.PageModels;
     {
         try
         {
-            var deleted = await _aniListClient.DeleteMediaListEntryAsync(listEntryId);
+            var deleted = await AniList.DeleteMediaListEntryAsync(listEntryId);
             if (deleted)
             {
                 ListEntry = null;
@@ -1260,13 +1125,13 @@ namespace AniSprinkles.PageModels;
                 OnPropertyChanged(nameof(CanAddToList));
                 OnPropertyChanged(nameof(HasListEntry));
                 NotifyListEntryDisplayChanged();
-                await _feedback.ShowToastAsync($"{title} removed from list");
+                await Feedback.ShowToastAsync($"{title} removed from list");
             }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to remove media {MediaId} from list.", Media?.Id);
-            await _feedback.ShowFailureSnackbarAsync(
+            Logger.LogError(ex, "Failed to remove media {MediaId} from list.", Media?.Id);
+            await Feedback.ShowFailureSnackbarAsync(
                 ex,
                 "Failed to remove from list. Please try again.",
                 retryAction: () => _ = RemoveFromListConfirmedAsync(listEntryId, title));
@@ -1289,19 +1154,19 @@ namespace AniSprinkles.PageModels;
                 Status = MediaListStatus.Planning,
             };
 
-            var saved = await _aniListClient.SaveMediaListEntryAsync(entry);
+            var saved = await AniList.SaveMediaListEntryAsync(entry);
             if (saved is not null)
             {
                 saved.Media = Media;
                 ListEntry = saved;
                 OnPropertyChanged(nameof(CanAddToList));
-                await _feedback.ShowToastAsync("Added to list");
+                await Feedback.ShowToastAsync("Added to list");
             }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to add media {MediaId} to list.", Media.Id);
-            await _feedback.ShowFailureSnackbarAsync(
+            Logger.LogError(ex, "Failed to add media {MediaId} to list.", Media.Id);
+            await Feedback.ShowFailureSnackbarAsync(
                 ex,
                 "Failed to add to list. Please try again.",
                 retryAction: () => _ = AddToList());
@@ -1421,7 +1286,7 @@ namespace AniSprinkles.PageModels;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Completion flow failed for media {MediaId}; reverting optimistic progress change.", ListEntry.MediaId);
+                Logger.LogError(ex, "Completion flow failed for media {MediaId}; reverting optimistic progress change.", ListEntry.MediaId);
                 // Treat popup failure the same as user cancel — don't persist a
                 // completion the user never confirmed.
                 ListEntry.Progress = previousProgress;
@@ -1497,7 +1362,7 @@ namespace AniSprinkles.PageModels;
 
     partial void OnSliderProgressChanged(double value)
     {
-        _logger.LogInformation(
+        Logger.LogInformation(
             "DATATRACE OnSliderProgressChanged: value={Value}, ListEntry.Progress={CurrentProgress}",
             value, ListEntry?.Progress);
         if (ListEntry is null)
@@ -1567,36 +1432,22 @@ namespace AniSprinkles.PageModels;
 
         try
         {
-            var saved = await _aniListClient.SaveMediaListEntryAsync(ListEntry);
+            var saved = await AniList.SaveMediaListEntryAsync(ListEntry);
             if (saved is not null)
             {
                 saved.Media = Media;
                 ListEntry = saved;
-                await _feedback.ShowToastAsync("Changes saved");
+                await Feedback.ShowToastAsync("Changes saved");
             }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to save list entry for media {MediaId}.", Media.Id);
-            await _feedback.ShowFailureSnackbarAsync(
+            Logger.LogError(ex, "Failed to save list entry for media {MediaId}.", Media.Id);
+            await Feedback.ShowFailureSnackbarAsync(
                 ex,
                 "Failed to save changes. Please try again.",
                 retryAction: () => _ = SaveCurrentEntryAsync());
         }
-    }
-
-    [RelayCommand]
-    private async Task RetryLoad()
-    {
-        if (_lastRequestedMediaId <= 0 || IsBusy)
-        {
-            return;
-        }
-
-        // Flip to InitialLoading so the UI transitions to the loading spinner.
-        // LoadAsync fully owns the IsBusy lifecycle — we don't touch it here.
-        CurrentState = PageState.InitialLoading;
-        await LoadAsync(_lastRequestedMediaId, _lastRequestedListEntry);
     }
 
     [RelayCommand]

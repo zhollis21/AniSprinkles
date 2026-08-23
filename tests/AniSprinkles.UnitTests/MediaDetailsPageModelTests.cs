@@ -110,6 +110,115 @@ public class MediaDetailsPageModelTests
         Assert.Equal(12, harness.Model.ListEntry?.Progress);
     }
 
+    [Fact]
+    public async Task RetryLoad_ReInvokesWithTheLastRequestedIdAndItsNavigationListEntry()
+    {
+        var harness = new Harness();
+        harness.Throws(new InvalidOperationException("boom"));
+
+        await harness.Model.LoadAsync(42, new MediaListEntry { Id = 7, MediaId = 42, Progress = 3 });
+        Assert.Equal(PageState.Error, harness.Model.CurrentState);
+
+        harness.ReturnsMedia(new Media { Id = 42 });
+        await harness.Model.RetryLoadCommand.ExecuteAsync(null);
+
+        Assert.Equal(PageState.Content, harness.Model.CurrentState);
+        Assert.Equal(42, harness.Model.Media?.Id);
+        // The retry has to carry the navigation entry too, or the retried page loses the list context
+        // the user arrived with.
+        Assert.Equal(3, harness.Model.ListEntry?.Progress);
+    }
+
+    [Fact]
+    public async Task RetryLoad_BeforeAnythingHasBeenRequested_DoesNothing()
+    {
+        var harness = new Harness();
+        harness.ReturnsMedia(new Media { Id = 42 });
+
+        await harness.Model.RetryLoadCommand.ExecuteAsync(null);
+
+        await harness.Client.DidNotReceive().GetMediaAsync(Arg.Any<int>(), Arg.Any<CancellationToken>());
+    }
+
+    [Fact]
+    public async Task LoadAsync_WhileALoadIsAlreadyInFlight_IsDropped()
+    {
+        var harness = new Harness();
+        var gate = new TaskCompletionSource<(Media?, MediaListEntry?)>();
+        harness.Client.GetMediaAsync(Arg.Any<int>(), Arg.Any<CancellationToken>()).Returns(gate.Task);
+
+        var first = harness.Model.LoadAsync(42, listEntry: null);
+        // Unlike the other three details pages, a second load does not supersede the first: this load is
+        // the heavy one and its list-entry merge is order-sensitive.
+        await harness.Model.LoadAsync(43, listEntry: null);
+
+        gate.SetResult((new Media { Id = 42 }, null));
+        await first;
+
+        Assert.Equal(42, harness.Model.Media?.Id);
+        await harness.Client.Received(1).GetMediaAsync(Arg.Any<int>(), Arg.Any<CancellationToken>());
+    }
+
+    [Fact]
+    public async Task LoadAsync_WhenASecondLoadIsDropped_DoesNotHandItsListEntryToTheLoadStillRunning()
+    {
+        var harness = new Harness();
+        var gate = new TaskCompletionSource<(Media?, MediaListEntry?)>();
+        harness.Client.GetMediaAsync(Arg.Any<int>(), Arg.Any<CancellationToken>()).Returns(gate.Task);
+
+        var live = harness.Model.LoadAsync(42, new MediaListEntry { Id = 7, MediaId = 42, Progress = 3 });
+
+        // Dropped at the in-flight guard. It must not leave its list entry behind for the live load to
+        // pick up in SeedSections — that would show the wrong progress for the title being loaded.
+        await harness.Model.LoadAsync(99, new MediaListEntry { Id = 8, MediaId = 99, Progress = 99 });
+
+        gate.SetResult((new Media { Id = 42 }, null));
+        await live;
+
+        Assert.Equal(3, harness.Model.ListEntry?.Progress);
+        Assert.Equal(7, harness.Model.ListEntry?.Id);
+    }
+
+    [Fact]
+    public async Task RetryLoad_AfterASecondLoadWasDropped_ReusesTheLiveLoadsListEntry()
+    {
+        var harness = new Harness();
+        harness.Throws(new InvalidOperationException("boom"));
+        await harness.Model.LoadAsync(42, new MediaListEntry { Id = 7, MediaId = 42, Progress = 3 });
+
+        // Dropped: a load is not in flight, but the failed one already set the retry context.
+        await harness.Model.LoadAsync(99, new MediaListEntry { Id = 8, MediaId = 99, Progress = 99 });
+
+        harness.ReturnsMedia(new Media { Id = 99 });
+        await harness.Model.RetryLoadCommand.ExecuteAsync(null);
+
+        // The second load was accepted (nothing was in flight), so retry follows it, not the first.
+        Assert.Equal(99, harness.Model.Media?.Id);
+        Assert.Equal(99, harness.Model.ListEntry?.Progress);
+    }
+
+    [Fact]
+    public async Task LoadAsync_WhenASecondLoadIsDropped_DoesNotRenumberTheLiveLoadsTraceLines()
+    {
+        var harness = new Harness();
+        var gate = new TaskCompletionSource<(Media?, MediaListEntry?)>();
+        harness.Client.GetMediaAsync(Arg.Any<int>(), Arg.Any<CancellationToken>()).Returns(gate.Task);
+
+        var live = harness.Model.LoadAsync(42, listEntry: null);
+        await harness.Model.LoadAsync(99, listEntry: null);
+
+        gate.SetResult((new Media { Id = 42 }, null));
+        await live;
+
+        // load#1 is the live load; load#2 was dropped. Everything the live load emits after the drop
+        // must still say load#1, or the correlation id is worse than useless when reading a trace.
+        Assert.Contains(harness.Logger.Containing("skipped because"), m => m.Contains("load#2", StringComparison.Ordinal));
+        Assert.All(
+            harness.Logger.Containing("DATATRACE"),
+            m => Assert.Contains("load#1", m, StringComparison.Ordinal));
+        Assert.Contains(harness.Logger.Containing("media fetch completed"), m => m.Contains("load#1", StringComparison.Ordinal));
+    }
+
     private sealed class Harness
     {
         public Harness()
@@ -121,12 +230,15 @@ public class MediaDetailsPageModelTests
                 new ErrorReportService(NullLogger<ErrorReportService>.Instance),
                 Substitute.For<INavigationService>(),
                 new RecordingUserFeedback(),
+                new RecordingExternalBrowser(),
                 dialogs,
                 new ListEntryStatusFlow(dialogs),
-                NullLogger<MediaDetailsPageModel>.Instance);
+                Logger);
         }
 
         public IAniListClient Client { get; } = Substitute.For<IAniListClient>();
+
+        public RecordingLogger<MediaDetailsPageModel> Logger { get; } = new();
 
         public MediaDetailsPageModel Model { get; }
 

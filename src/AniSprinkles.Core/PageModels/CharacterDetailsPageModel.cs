@@ -1,25 +1,13 @@
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Globalization;
 using AniSprinkles.Utilities;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
-using Sentry;
 
 namespace AniSprinkles.PageModels;
 
-public partial class CharacterDetailsPageModel : ObservableObject
+public partial class CharacterDetailsPageModel : DetailsPageModelBase<Character>
 {
-    private readonly IAniListClient _aniListClient;
-    private readonly IAuthService _authService;
-    private readonly INavigationService _navigationService;
-    private readonly IUserFeedback _feedback;
-    private readonly IExternalBrowser _browser;
-    private readonly ILogger<CharacterDetailsPageModel> _logger;
-    private readonly ListOperationRunner _listOps;
-    private readonly FavouriteToggleRunner _favouriteRunner;
-
     private const int PageSize = 25;
     private const string AppearancesDefaultSort = "POPULARITY_DESC";
 
@@ -27,9 +15,7 @@ public partial class CharacterDetailsPageModel : ObservableObject
     // so changing that sort never disturbs the voice-actor list (a UX bug in the prior design).
     private const string VoiceActorMediaSort = "POPULARITY_DESC";
 
-    private int _loadedCharacterId;
     private ParsedDescription _parsedDescription = ParsedDescription.Empty;
-    private readonly PageLoadScope _scope = new();
 
     // The Appears In list and the deduped Voice Actors list are two fully independent views over
     // Character.media. Each owns its cursor; neither mutates the other.
@@ -37,17 +23,9 @@ public partial class CharacterDetailsPageModel : ObservableObject
     private readonly VoiceActorAggregator _voiceActors;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(CurrentStateKey))]
-    private PageState _currentState = PageState.InitialLoading;
-
-    public string? CurrentStateKey => CurrentState == PageState.Content ? null : CurrentState.ToString();
-
-    [ObservableProperty]
-    private bool _isBusy;
-
-    [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasCharacter))]
     [NotifyPropertyChangedFor(nameof(PageTitle))]
+    [NotifyPropertyChangedFor(nameof(IsFavourite))]
     [NotifyPropertyChangedFor(nameof(FavouritesDisplay))]
     [NotifyPropertyChangedFor(nameof(HasFavourites))]
     [NotifyPropertyChangedFor(nameof(IsBirthdayToday))]
@@ -79,21 +57,6 @@ public partial class CharacterDetailsPageModel : ObservableObject
     [NotifyPropertyChangedFor(nameof(DescriptionMaxLines))]
     private bool _isDescriptionExpanded;
 
-    [ObservableProperty]
-    private string _errorTitle = string.Empty;
-
-    [ObservableProperty]
-    private string _errorSubtitle = string.Empty;
-
-    [ObservableProperty]
-    private string _errorIconGlyph = string.Empty;
-
-    [ObservableProperty]
-    private string _errorDetails = string.Empty;
-
-    [ObservableProperty]
-    private bool _canRetry = true;
-
     public IReadOnlyList<SortOption> AppearancesSortOptions { get; } =
     [
         new SortOption { Code = "POPULARITY_DESC", Display = "Most Watched", IsSelected = true },
@@ -110,17 +73,10 @@ public partial class CharacterDetailsPageModel : ObservableObject
         INavigationService navigationService,
         IUserFeedback feedback,
         IExternalBrowser browser,
+        ErrorReportService errorReportService,
         ILogger<CharacterDetailsPageModel> logger)
+        : base(aniListClient, authService, navigationService, feedback, browser, errorReportService, logger)
     {
-        _aniListClient = aniListClient;
-        _authService = authService;
-        _navigationService = navigationService;
-        _feedback = feedback;
-        _browser = browser;
-        _logger = logger;
-        _listOps = new ListOperationRunner(logger, feedback);
-        _favouriteRunner = new FavouriteToggleRunner(aniListClient, feedback, logger);
-
         _appearances = new PaginatedSection<CharacterMediaEdge>(
             AppearancesDefaultSort,
             FetchAppearancesPageAsync,
@@ -173,10 +129,6 @@ public partial class CharacterDetailsPageModel : ObservableObject
 
     public string PageTitle => Character?.DisplayName ?? "Character";
 
-    public bool HasFavourites => Character?.Favourites is > 0;
-
-    public string FavouritesDisplay => FormatFavourites(Character?.Favourites);
-
     public bool IsBirthdayToday => BirthdayChecker.IsBirthdayToday(Character?.DateOfBirth, DateTime.Today);
 
     public IReadOnlyList<BioStatRow> BioStats =>
@@ -223,127 +175,62 @@ public partial class CharacterDetailsPageModel : ObservableObject
 
     public bool HasAlternativeNames => AlternativeNames.Count > 0;
 
-    public bool HasSiteUrl => !string.IsNullOrWhiteSpace(Character?.SiteUrl);
-
-    public bool IsAuthenticated { get; private set; }
-
-    /// <summary>Viewer's favorite state for this character; drives the heart fill on the favourites stat.</summary>
-    public bool IsFavourite => Character?.IsFavourite ?? false;
-
-    public bool CanToggleFavourite => IsAuthenticated && !_favouriteRunner.IsBusy && Character is not null;
-
     partial void OnCharacterChanged(Character? value)
     {
         _parsedDescription = DescriptionParser.Parse(value?.Description);
-        OnPropertyChanged(nameof(IsFavourite));
         ToggleFavouriteCommand.NotifyCanExecuteChanged();
     }
 
-    partial void OnCurrentStateChanged(PageState oldValue, PageState newValue)
-        => _logger.LogInformation("PageState: {OldState} → {NewState} (key={StateKey})", oldValue, newValue, CurrentStateKey ?? "(null)");
+    // ---- Spine ------------------------------------------------------------------------------------
 
-    // ---- Load -----------------------------------------------------------------------------------
-
-    public async Task LoadAsync(int characterId)
+    protected override Character? Entity
     {
-        if (characterId <= 0)
-        {
-            ShowError("Not Found", "Invalid character id.", canRetry: false);
-            return;
-        }
+        get => Character;
+        set => Character = value;
+    }
 
-        // Same character already loaded: keep its sections + sort and just restore Content state. This is
-        // hit when returning from a pushed sub-page (e.g. a voice actor's staff page) and — importantly —
-        // when a CommunityToolkit sort popup closes (it fires the host page's OnAppearing → reload). Without
-        // this guard the popup would reset the sort the user just picked. Mirrors MediaDetailsPageModel.
-        if (Character is not null && Character.Id == characterId)
-        {
-            CurrentState = PageState.Content;
-            return;
-        }
+    protected override string EntityNoun => "character";
 
-        _loadedCharacterId = characterId;
-        var token = _scope.Begin(); // fresh page scope; OnDisappearing cancels it on navigate-away
+    protected override string TracePrefix => "CharacterDetails";
 
+    protected override FavouriteKind FavouriteKind => FavouriteKind.Character;
 
+    protected override string? SiteUrl => Character?.SiteUrl;
 
-        IsBusy = true;
-        if (Character is null || Character.Id != characterId)
-        {
-            CurrentState = PageState.InitialLoading;
-            IsShowingSpoilers = false;
-            IsDescriptionExpanded = false;
-        }
+    public Task LoadAsync(int characterId) => LoadCoreAsync(characterId);
 
-        // Clear any state from a previously-loaded character before fetching the new one.
+    protected override Task<Character?> FetchAsync(int id, CancellationToken cancellationToken)
+        => AniList.GetCharacterAsync(id, cancellationToken: cancellationToken);
+
+    protected override void SeedSections(Character entity)
+    {
+        // Seed both independent sections from the single heavy first-page query.
+        var pageOne = entity.Media.ToList();
+        _appearances.Seed(pageOne, entity.MediaPageInfo);
+        _voiceActors.Seed(pageOne, entity.MediaPageInfo);
+    }
+
+    protected override void ResetForNewEntity()
+    {
+        IsShowingSpoilers = false;
+        IsDescriptionExpanded = false;
         _appearances.Reset();
         _voiceActors.Reset();
         ResetAppearancesSortSelection();
-
-        var stopwatch = Stopwatch.StartNew();
-        _logger.LogInformation("NAVTRACE CharacterDetails load start (character {CharacterId})", characterId);
-
-        try
-        {
-            IsAuthenticated = !string.IsNullOrWhiteSpace(await _authService.GetAccessTokenAsync(token).ConfigureAwait(true));
-            ToggleFavouriteCommand.NotifyCanExecuteChanged();
-
-            var character = await _aniListClient.GetCharacterAsync(characterId, cancellationToken: token).ConfigureAwait(true);
-            if (character is null)
-            {
-                _logger.LogInformation("NAVTRACE CharacterDetails not found in {ElapsedMs}ms (character {CharacterId})", stopwatch.ElapsedMilliseconds, characterId);
-                ShowError("Not Found", "We couldn't find this character.", canRetry: false);
-                return;
-            }
-
-            Character = character;
-
-            // Seed both independent sections from the single heavy first-page query.
-            var pageOne = character.Media.ToList();
-            _appearances.Seed(pageOne, character.MediaPageInfo);
-            _voiceActors.Seed(pageOne, character.MediaPageInfo);
-
-            CurrentState = PageState.Content;
-            _logger.LogInformation(
-                "NAVTRACE CharacterDetails fetch+seed in {ElapsedMs}ms (character {CharacterId}, {Appearances} appearances, {VoiceActors} VAs); UI render follows",
-                stopwatch.ElapsedMilliseconds, characterId, _appearances.Items.Count, _voiceActors.Items.Count);
-        }
-        catch (OperationCanceledException)
-        {
-            _logger.LogInformation("NAVTRACE CharacterDetails load cancelled after {ElapsedMs}ms (character {CharacterId})", stopwatch.ElapsedMilliseconds, characterId);
-        }
-        catch (Exception ex)
-        {
-            var apiEx = ex as AniListApiException;
-            var isNotFound = apiEx?.Kind == ApiErrorKind.NotFound;
-            if (isNotFound)
-            {
-                // NotFound is non-retryable and intentionally kept out of Sentry — log at Warning so it stays a breadcrumb.
-                _logger.LogWarning(ex, "NAVTRACE CharacterDetails not found on AniList in {ElapsedMs}ms (character {CharacterId})", stopwatch.ElapsedMilliseconds, characterId);
-            }
-            else
-            {
-                _logger.LogError(ex, "NAVTRACE CharacterDetails load failed in {ElapsedMs}ms (character {CharacterId})", stopwatch.ElapsedMilliseconds, characterId);
-            }
-
-            var (title, subtitle) = DescribeError(ex);
-            ShowError(title, subtitle, canRetry: !isNotFound, details: isNotFound ? string.Empty : ex.Message, iconGlyph: apiEx?.IconGlyph);
-        }
-        finally
-        {
-            IsBusy = false;
-        }
     }
 
-    public void CancelInFlight() => _scope.Cancel();
+    protected override string DescribeSeededSections()
+        => $"{_appearances.Items.Count} appearances, {_voiceActors.Items.Count} VAs";
+
+    // ---- Section fetches --------------------------------------------------------------------------
 
     private Task<(IReadOnlyList<CharacterMediaEdge> Items, PageInfo? PageInfo)> FetchAppearancesPageAsync(
         int page, string sort, CancellationToken cancellationToken)
-        => _aniListClient.LoadCharacterMediaPageAsync(_loadedCharacterId, page, sort, PageSize, cancellationToken);
+        => AniList.LoadCharacterMediaPageAsync(LoadedId, page, sort, PageSize, cancellationToken);
 
     private Task<(IReadOnlyList<CharacterMediaEdge> Items, PageInfo? PageInfo)> FetchVoiceActorMediaPageAsync(
         int page, CancellationToken cancellationToken)
-        => _aniListClient.LoadCharacterMediaPageAsync(_loadedCharacterId, page, VoiceActorMediaSort, PageSize, cancellationToken);
+        => AniList.LoadCharacterMediaPageAsync(LoadedId, page, VoiceActorMediaSort, PageSize, cancellationToken);
 
     // ---- Commands -------------------------------------------------------------------------------
 
@@ -352,11 +239,11 @@ public partial class CharacterDetailsPageModel : ObservableObject
     // otherwise log a no-op LISTTRACE pair on every scroll-to-end). LoadMoreAsync stays guarded too.
     [RelayCommand(CanExecute = nameof(CanLoadMoreAppearances))]
     private Task LoadMoreAppearances()
-        => _listOps.RunAsync(
+        => ListOps.RunAsync(
             "Appears In · Load More",
             "character",
-            _loadedCharacterId,
-            () => _appearances.LoadMoreAsync(_scope.EnsureActive()),
+            LoadedId,
+            () => _appearances.LoadMoreAsync(Scope.EnsureActive()),
             () => _appearances.Items.Count);
 
     private bool CanLoadMoreAppearances() => _appearances.CanLoadMore;
@@ -369,11 +256,11 @@ public partial class CharacterDetailsPageModel : ObservableObject
             return Task.CompletedTask;
         }
 
-        return _listOps.RunAsync(
+        return ListOps.RunAsync(
             $"Appears In · sort→{code}",
             "character",
-            _loadedCharacterId,
-            () => _appearances.ChangeSortAsync(code, _scope.EnsureActive()),
+            LoadedId,
+            () => _appearances.ChangeSortAsync(code, Scope.EnsureActive()),
             () => _appearances.Items.Count,
             // Keep the chip selection in sync with the sort that actually took effect.
             onComplete: () => SyncAppearancesSortSelection(_appearances.Sort));
@@ -381,11 +268,11 @@ public partial class CharacterDetailsPageModel : ObservableObject
 
     [RelayCommand]
     private Task CheckForMoreVoiceActors()
-        => _listOps.RunAsync(
+        => ListOps.RunAsync(
             "Voice Actors · check for more",
             "character",
-            _loadedCharacterId,
-            () => _voiceActors.CheckForMoreAsync(_scope.EnsureActive()),
+            LoadedId,
+            () => _voiceActors.CheckForMoreAsync(Scope.EnsureActive()),
             () => _voiceActors.Items.Count);
 
     [RelayCommand]
@@ -395,82 +282,17 @@ public partial class CharacterDetailsPageModel : ObservableObject
     private void ToggleDescription() => IsDescriptionExpanded = !IsDescriptionExpanded;
 
     [RelayCommand]
-    private async Task OpenSiteUrl()
-    {
-        if (string.IsNullOrWhiteSpace(Character?.SiteUrl))
-        {
-            return;
-        }
-
-        // IExternalBrowser swallows and logs its own failures.
-        await _browser.OpenAsync(new Uri(Character.SiteUrl));
-    }
-
-    [RelayCommand(CanExecute = nameof(CanToggleFavourite))]
-    private async Task ToggleFavourite()
-    {
-        var character = Character;
-        // Re-check the gate here (not just via the command's CanExecute) so the failure-snackbar
-        // Retry can't run an optimistic flip if auth/busy state changed since the failure.
-        if (character is null || !CanToggleFavourite)
-        {
-            return;
-        }
-
-        if (await _favouriteRunner.ToggleAsync(character, FavouriteKind.Character, NotifyFavouriteChanged, () => _ = ToggleFavourite()))
-        {
-            SentrySdk.AddBreadcrumb($"Favourite toggled (character {character.Id} → {(character.IsFavourite ? "on" : "off")})", "list", "user");
-        }
-    }
-
-    private void NotifyFavouriteChanged()
-    {
-        OnPropertyChanged(nameof(IsFavourite));
-        OnPropertyChanged(nameof(FavouritesDisplay));
-        OnPropertyChanged(nameof(HasFavourites));
-        ToggleFavouriteCommand.NotifyCanExecuteChanged();
-    }
-
-    [RelayCommand]
-    private Task RetryLoad() => LoadAsync(_loadedCharacterId);
-
-    [RelayCommand]
     private async Task NavigateToStaff(int staffId)
     {
-        _logger.LogInformation("NAVTRACE Character→Staff with id={StaffId}", staffId);
+        Logger.LogInformation("NAVTRACE Character→Staff with id={StaffId}", staffId);
         if (staffId <= 0)
         {
             return;
         }
 
-        await _navigationService.GoToAsync("staff-details", animate: false, new Dictionary<string, object>
+        await NavigationService.GoToAsync("staff-details", animate: false, new Dictionary<string, object>
         {
             ["staffId"] = staffId,
-        });
-    }
-
-    [RelayCommand]
-    private async Task NavigateToMedia(RelatedMedia? media)
-    {
-        var mediaId = media?.Id ?? 0;
-        _logger.LogInformation("NAVTRACE Character→Media with id={MediaId}", mediaId);
-        if (mediaId <= 0)
-        {
-            return;
-        }
-
-        // Detail screen is anime-only (Media(id:, type: ANIME)); a manga/novel id would 404.
-        // Character "Appears In" media can include manga, so toast instead of navigating.
-        if (media is { IsAnime: false })
-        {
-            _logger.LogInformation("NAVTRACE Character→Media skipped non-anime {MediaId} (type={Type}).", mediaId, media.Type);
-            await _feedback.ShowToastAsync("Manga & Novel details aren't supported yet.");
-            return;
-        }
-
-        await _navigationService.GoToAsync("media-details", animate: false, new Dictionary<string, object>
-        {
-            ["mediaId"] = mediaId,
         });
     }
 
@@ -512,11 +334,6 @@ public partial class CharacterDetailsPageModel : ObservableObject
         }
     }
 
-    private static (string Title, string Subtitle) DescribeError(Exception ex)
-        => ex is AniListApiException apiEx
-            ? (apiEx.UserTitle, apiEx.UserSubtitle)
-            : ("Something Went Wrong", "Failed to load character details.");
-
     private BioStatRow BuildBioStatRow(DescriptionStatRow row)
     {
         var labelHidden = row.IsRowSpoiler && !IsShowingSpoilers;
@@ -534,18 +351,6 @@ public partial class CharacterDetailsPageModel : ObservableObject
     private static string Bar(int sourceLength, int max)
         => new('█', Math.Clamp(sourceLength / 2, 4, max));
 
-    // iconGlyph lets the catch path surface a classified AniListApiException.IconGlyph (e.g. NotFound
-    // → DismissCircle24); the static "invalid id" / "couldn't find" callers fall back to ErrorCircle24.
-    private void ShowError(string title, string subtitle, bool canRetry, string details = "", string? iconGlyph = null)
-    {
-        ErrorTitle = title;
-        ErrorSubtitle = subtitle;
-        ErrorIconGlyph = iconGlyph ?? Glyphs.Regular.ErrorCircle24;
-        ErrorDetails = details;
-        CanRetry = canRetry;
-        CurrentState = PageState.Error;
-    }
-
     private List<string> BuildAlternativeNames()
     {
         var names = new List<string>();
@@ -562,20 +367,5 @@ public partial class CharacterDetailsPageModel : ObservableObject
         }
 
         return names;
-    }
-
-    private static string FormatFavourites(int? favourites)
-    {
-        if (favourites is null or <= 0)
-        {
-            return string.Empty;
-        }
-
-        if (favourites >= 1000)
-        {
-            return (favourites.Value / 1000.0).ToString("0.#k", CultureInfo.InvariantCulture);
-        }
-
-        return favourites.Value.ToString(CultureInfo.InvariantCulture);
     }
 }

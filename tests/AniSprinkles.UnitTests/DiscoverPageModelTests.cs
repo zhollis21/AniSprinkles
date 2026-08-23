@@ -82,7 +82,9 @@ public class DiscoverPageModelTests
 
         public void Release() => _release.TrySetResult();
 
-        public async Task<string> WaitAsync()
+        // Nullable to match IAuthService.GetAccessTokenAsync, so the responder below does not have to
+        // reconcile a Task<string> against a Task<string?> with a suppression.
+        public async Task<string?> WaitAsync()
         {
             _requested.TrySetResult();
             await _release.Task;
@@ -123,7 +125,7 @@ public class DiscoverPageModelTests
             auth.GetAccessTokenAsync(Arg.Any<CancellationToken>()).Returns(_ =>
             {
                 var gate = Interlocked.Exchange(ref _pendingAuthGate, null);
-                return gate is null ? Task.FromResult<string?>("token") : gate.WaitAsync()!;
+                return gate is null ? Task.FromResult<string?>("token") : gate.WaitAsync();
             });
 
             var dialogs = new ScriptedDialogService();

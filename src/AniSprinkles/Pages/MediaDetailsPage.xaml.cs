@@ -36,15 +36,12 @@ public partial class MediaDetailsPage : ContentPage, IQueryAttributable
             entityName: "media",
             shouldShowContent: () => ViewModel.HasMedia && !ViewModel.IsBusy && ViewModel.CurrentState == PageState.Content,
             createView: () => new Views.MediaDetailsLoadedContentView { BindingContext = ViewModel },
-            onRenderError: ex =>
-            {
-                ViewModel.ErrorTitle = "Something Went Wrong";
-                ViewModel.ErrorSubtitle = "Failed to render the details view.";
-                ViewModel.ErrorIconGlyph = FluentIconsRegular.ErrorCircle24;
-                ViewModel.ErrorDetails = $"{ex.GetType().Name}: {ex.Message}\n\n{ex.StackTrace}";
-                ViewModel.CanRetry = true;
-                ViewModel.CurrentState = PageState.Error;
-            });
+            onRenderError: ex => ViewModel.ShowError(
+                "Something Went Wrong",
+                "Failed to render the details view.",
+                canRetry: true,
+                details: $"{ex.GetType().Name}: {ex.Message}\n\n{ex.StackTrace}",
+                iconGlyph: FluentIconsRegular.ErrorCircle24));
 
         ViewModel.PropertyChanged += OnViewModelPropertyChanged;
     }

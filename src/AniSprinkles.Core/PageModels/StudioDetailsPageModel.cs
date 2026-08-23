@@ -1,59 +1,25 @@
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
-using Sentry;
 
 namespace AniSprinkles.PageModels;
 
-public partial class StudioDetailsPageModel : ObservableObject
+public partial class StudioDetailsPageModel : DetailsPageModelBase<Studio>
 {
-    private readonly IAniListClient _aniListClient;
-    private readonly IAuthService _authService;
-    private readonly INavigationService _navigationService;
-    private readonly IUserFeedback _feedback;
-    private readonly IExternalBrowser _browser;
-    private readonly ILogger<StudioDetailsPageModel> _logger;
-    private readonly ListOperationRunner _listOps;
-    private readonly FavouriteToggleRunner _favouriteRunner;
-
     private const int PageSize = 25;
     private const string ProductionsDefaultSort = "POPULARITY_DESC";
 
-    private int _loadedStudioId;
-    private readonly PageLoadScope _scope = new();
     private readonly PaginatedSection<StudioMediaEdge> _productions;
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(CurrentStateKey))]
-    private PageState _currentState = PageState.InitialLoading;
-
-    public string? CurrentStateKey => CurrentState == PageState.Content ? null : CurrentState.ToString();
-
-    [ObservableProperty]
-    private bool _isBusy;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasStudio))]
     [NotifyPropertyChangedFor(nameof(PageTitle))]
     [NotifyPropertyChangedFor(nameof(HasSiteUrl))]
+    [NotifyPropertyChangedFor(nameof(IsFavourite))]
+    [NotifyPropertyChangedFor(nameof(FavouritesDisplay))]
+    [NotifyPropertyChangedFor(nameof(HasFavourites))]
     private Studio? _studio;
-
-    [ObservableProperty]
-    private string _errorTitle = string.Empty;
-
-    [ObservableProperty]
-    private string _errorSubtitle = string.Empty;
-
-    [ObservableProperty]
-    private string _errorIconGlyph = string.Empty;
-
-    [ObservableProperty]
-    private string _errorDetails = string.Empty;
-
-    [ObservableProperty]
-    private bool _canRetry = true;
 
     public IReadOnlyList<SortOption> ProductionsSortOptions { get; } =
     [
@@ -71,17 +37,10 @@ public partial class StudioDetailsPageModel : ObservableObject
         INavigationService navigationService,
         IUserFeedback feedback,
         IExternalBrowser browser,
+        ErrorReportService errorReportService,
         ILogger<StudioDetailsPageModel> logger)
+        : base(aniListClient, authService, navigationService, feedback, browser, errorReportService, logger)
     {
-        _aniListClient = aniListClient;
-        _authService = authService;
-        _navigationService = navigationService;
-        _feedback = feedback;
-        _browser = browser;
-        _logger = logger;
-        _listOps = new ListOperationRunner(logger, feedback);
-        _favouriteRunner = new FavouriteToggleRunner(aniListClient, feedback, logger);
-
         _productions = new PaginatedSection<StudioMediaEdge>(
             ProductionsDefaultSort,
             FetchProductionsPageAsync,
@@ -110,111 +69,56 @@ public partial class StudioDetailsPageModel : ObservableObject
 
     public string PageTitle => Studio?.DisplayName ?? "Studio";
 
-    public bool HasSiteUrl => !string.IsNullOrWhiteSpace(Studio?.SiteUrl);
+    // ---- Spine ------------------------------------------------------------------------------------
 
-    public bool IsAuthenticated { get; private set; }
-
-    /// <summary>Viewer's favorite state for this studio; drives the heart fill on the favourites pill.</summary>
-    public bool IsFavourite => Studio?.IsFavourite ?? false;
-
-    public bool CanToggleFavourite => IsAuthenticated && !_favouriteRunner.IsBusy && Studio is not null;
-
-    partial void OnStudioChanged(Studio? value)
+    protected override Studio? Entity
     {
-        OnPropertyChanged(nameof(IsFavourite));
-        ToggleFavouriteCommand.NotifyCanExecuteChanged();
+        get => Studio;
+        set => Studio = value;
     }
 
-    partial void OnCurrentStateChanged(PageState oldValue, PageState newValue)
-        => _logger.LogInformation("PageState: {OldState} → {NewState} (key={StateKey})", oldValue, newValue, CurrentStateKey ?? "(null)");
+    protected override string EntityNoun => "studio";
 
-    public async Task LoadAsync(int studioId)
+    protected override string TracePrefix => "StudioDetails";
+
+    protected override FavouriteKind FavouriteKind => FavouriteKind.Studio;
+
+    protected override string? SiteUrl => Studio?.SiteUrl;
+
+    public Task LoadAsync(int studioId) => LoadCoreAsync(studioId);
+
+    protected override Task<Studio?> FetchAsync(int id, CancellationToken cancellationToken)
+        => AniList.GetStudioAsync(id, mediaPerPage: PageSize, cancellationToken: cancellationToken);
+
+    protected override void SeedSections(Studio entity)
+        => _productions.Seed(entity.Media, entity.MediaPageInfo);
+
+    protected override void ResetForNewEntity()
     {
-        if (studioId <= 0)
-        {
-            ShowError("Not Found", "Invalid studio id.", canRetry: false);
-            return;
-        }
-
-        if (Studio is not null && Studio.Id == studioId)
-        {
-            CurrentState = PageState.Content;
-            return;
-        }
-
-        _loadedStudioId = studioId;
-        var token = _scope.Begin();
-
-        IsBusy = true;
-        CurrentState = PageState.InitialLoading;
-
         _productions.Reset();
         ResetProductionsSortSelection();
-
-        var stopwatch = Stopwatch.StartNew();
-        _logger.LogInformation("NAVTRACE StudioDetails load start (studio {StudioId})", studioId);
-
-        try
-        {
-            IsAuthenticated = !string.IsNullOrWhiteSpace(await _authService.GetAccessTokenAsync(token).ConfigureAwait(true));
-            ToggleFavouriteCommand.NotifyCanExecuteChanged();
-
-            var studio = await _aniListClient.GetStudioAsync(studioId, mediaPerPage: PageSize, cancellationToken: token).ConfigureAwait(true);
-            if (studio is null)
-            {
-                _logger.LogInformation("NAVTRACE StudioDetails not found in {ElapsedMs}ms (studio {StudioId})", stopwatch.ElapsedMilliseconds, studioId);
-                ShowError("Not Found", "We couldn't find this studio.", canRetry: false);
-                return;
-            }
-
-            Studio = studio;
-            _productions.Seed(studio.Media, studio.MediaPageInfo);
-
-            CurrentState = PageState.Content;
-            _logger.LogInformation(
-                "NAVTRACE StudioDetails fetch+seed in {ElapsedMs}ms (studio {StudioId}, {Productions} productions); UI render follows",
-                stopwatch.ElapsedMilliseconds, studioId, _productions.Items.Count);
-        }
-        catch (OperationCanceledException)
-        {
-            _logger.LogInformation("NAVTRACE StudioDetails load cancelled after {ElapsedMs}ms (studio {StudioId})", stopwatch.ElapsedMilliseconds, studioId);
-        }
-        catch (Exception ex)
-        {
-            var apiEx = ex as AniListApiException;
-            var isNotFound = apiEx?.Kind == ApiErrorKind.NotFound;
-            if (isNotFound)
-            {
-                // NotFound is non-retryable and intentionally kept out of Sentry — log at Warning so it stays a breadcrumb.
-                _logger.LogWarning(ex, "NAVTRACE StudioDetails not found on AniList in {ElapsedMs}ms (studio {StudioId})", stopwatch.ElapsedMilliseconds, studioId);
-            }
-            else
-            {
-                _logger.LogError(ex, "NAVTRACE StudioDetails load failed in {ElapsedMs}ms (studio {StudioId})", stopwatch.ElapsedMilliseconds, studioId);
-            }
-
-            var (title, subtitle) = DescribeError(ex);
-            ShowError(title, subtitle, canRetry: !isNotFound, details: isNotFound ? string.Empty : ex.Message, iconGlyph: apiEx?.IconGlyph);
-        }
-        finally
-        {
-            IsBusy = false;
-        }
     }
 
-    public void CancelInFlight() => _scope.Cancel();
+    protected override string DescribeSeededSections() => $"{_productions.Items.Count} productions";
+
+    // The favourites display binds through Studio.*, so re-raise Studio to refresh those nested bindings.
+    protected override void OnFavouriteChanged() => OnPropertyChanged(nameof(Studio));
+
+    partial void OnStudioChanged(Studio? value) => ToggleFavouriteCommand.NotifyCanExecuteChanged();
+
+    // ---- Productions ------------------------------------------------------------------------------
 
     private Task<(IReadOnlyList<StudioMediaEdge> Items, PageInfo? PageInfo)> FetchProductionsPageAsync(
         int page, string sort, CancellationToken cancellationToken)
-        => _aniListClient.LoadStudioMediaPageAsync(_loadedStudioId, page, sort, PageSize, cancellationToken);
+        => AniList.LoadStudioMediaPageAsync(LoadedId, page, sort, PageSize, cancellationToken);
 
     [RelayCommand(CanExecute = nameof(CanLoadMoreProductions))]
     private Task LoadMoreProductions()
-        => _listOps.RunAsync(
+        => ListOps.RunAsync(
             "Studio Productions · Load More",
             "studio",
-            _loadedStudioId,
-            () => _productions.LoadMoreAsync(_scope.EnsureActive()),
+            LoadedId,
+            () => _productions.LoadMoreAsync(Scope.EnsureActive()),
             () => _productions.Items.Count);
 
     private bool CanLoadMoreProductions() => _productions.CanLoadMore;
@@ -227,76 +131,13 @@ public partial class StudioDetailsPageModel : ObservableObject
             return Task.CompletedTask;
         }
 
-        return _listOps.RunAsync(
+        return ListOps.RunAsync(
             $"Studio Productions · sort→{code}",
             "studio",
-            _loadedStudioId,
-            () => _productions.ChangeSortAsync(code, _scope.EnsureActive()),
+            LoadedId,
+            () => _productions.ChangeSortAsync(code, Scope.EnsureActive()),
             () => _productions.Items.Count,
             onComplete: () => SyncSortSelection(ProductionsSortOptions, _productions.Sort));
-    }
-
-    [RelayCommand]
-    private async Task OpenSiteUrl()
-    {
-        if (string.IsNullOrWhiteSpace(Studio?.SiteUrl))
-        {
-            return;
-        }
-
-        // IExternalBrowser swallows and logs its own failures.
-        await _browser.OpenAsync(new Uri(Studio.SiteUrl));
-    }
-
-    [RelayCommand(CanExecute = nameof(CanToggleFavourite))]
-    private async Task ToggleFavourite()
-    {
-        var studio = Studio;
-        // Re-check the gate here (not just via the command's CanExecute) so the failure-snackbar
-        // Retry can't run an optimistic flip if auth/busy state changed since the failure.
-        if (studio is null || !CanToggleFavourite)
-        {
-            return;
-        }
-
-        if (await _favouriteRunner.ToggleAsync(studio, FavouriteKind.Studio, NotifyFavouriteChanged, () => _ = ToggleFavourite()))
-        {
-            SentrySdk.AddBreadcrumb($"Favourite toggled (studio {studio.Id} → {(studio.IsFavourite ? "on" : "off")})", "list", "user");
-        }
-    }
-
-    // The favourites display binds through Studio.*, so re-raise Studio to refresh those nested bindings.
-    private void NotifyFavouriteChanged()
-    {
-        OnPropertyChanged(nameof(Studio));
-        OnPropertyChanged(nameof(IsFavourite));
-        ToggleFavouriteCommand.NotifyCanExecuteChanged();
-    }
-
-    [RelayCommand]
-    private Task RetryLoad() => LoadAsync(_loadedStudioId);
-
-    [RelayCommand]
-    private async Task NavigateToMedia(RelatedMedia? media)
-    {
-        var mediaId = media?.Id ?? 0;
-        _logger.LogInformation("NAVTRACE Studio→Media with id={MediaId}", mediaId);
-        if (mediaId <= 0)
-        {
-            return;
-        }
-
-        if (media is { IsAnime: false })
-        {
-            _logger.LogInformation("NAVTRACE Studio→Media skipped non-anime {MediaId} (type={Type}).", mediaId, media.Type);
-            await _feedback.ShowToastAsync("Manga & Novel details aren't supported yet.");
-            return;
-        }
-
-        await _navigationService.GoToAsync("media-details", animate: false, new Dictionary<string, object>
-        {
-            ["mediaId"] = mediaId,
-        });
     }
 
     private void OnProductionsChanged()
@@ -325,20 +166,5 @@ public partial class StudioDetailsPageModel : ObservableObject
         {
             opt.IsSelected = string.Equals(opt.Code, code, StringComparison.Ordinal);
         }
-    }
-
-    private static (string Title, string Subtitle) DescribeError(Exception ex)
-        => ex is AniListApiException apiEx
-            ? (apiEx.UserTitle, apiEx.UserSubtitle)
-            : ("Something Went Wrong", "Failed to load studio details.");
-
-    private void ShowError(string title, string subtitle, bool canRetry, string details = "", string? iconGlyph = null)
-    {
-        ErrorTitle = title;
-        ErrorSubtitle = subtitle;
-        ErrorIconGlyph = iconGlyph ?? Glyphs.Regular.ErrorCircle24;
-        ErrorDetails = details;
-        CanRetry = canRetry;
-        CurrentState = PageState.Error;
     }
 }

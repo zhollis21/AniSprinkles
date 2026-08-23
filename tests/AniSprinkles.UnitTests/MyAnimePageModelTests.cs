@@ -122,7 +122,7 @@ public class MyAnimePageModelTests
         // await would hang the suite rather than failing it.
         await harness.Model.IncrementProgressCommand
             .ExecuteAsync(entry)
-            .WaitAsync(TimeSpan.FromSeconds(5));
+            .WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
 
         Assert.Contains(nameof(IDialogService.ConfirmAsync), harness.Dialogs.Calls);
         Assert.Equal(MediaListStatus.Completed, entry.Status);
