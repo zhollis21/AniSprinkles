@@ -24,7 +24,8 @@ public class AniListClientCancellationTests
 
         var client = NewClient(handler);
 
-        var ex = await Assert.ThrowsAsync<AniListApiException>(() => client.GetCharacterAsync(1));
+        var ex = await Assert.ThrowsAsync<AniListApiException>(
+            () => client.GetCharacterAsync(1, cancellationToken: TestContext.Current.CancellationToken));
 
         Assert.Equal(ApiErrorKind.Network, ex.Kind);
         Assert.IsNotType<OperationCanceledException>(ex, exactMatch: false);
@@ -54,7 +55,8 @@ public class AniListClientCancellationTests
 
         var client = NewClient(handler);
 
-        var ex = await Assert.ThrowsAsync<AniListApiException>(() => client.GetCharacterAsync(1));
+        var ex = await Assert.ThrowsAsync<AniListApiException>(
+            () => client.GetCharacterAsync(1, cancellationToken: TestContext.Current.CancellationToken));
 
         Assert.Equal(ApiErrorKind.Network, ex.Kind);
     }
