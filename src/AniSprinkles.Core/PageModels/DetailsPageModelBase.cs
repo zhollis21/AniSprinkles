@@ -64,6 +64,10 @@ public abstract partial class DetailsPageModelBase<TEntity> : ObservableObject
     /// <summary>The id <c>RetryLoad</c> re-invokes with.</summary>
     protected int LastRequestedId { get; private set; }
 
+    /// <summary>Identifies the live load so a superseded one cannot clear <see cref="IsBusy"/> out from
+    /// under it. Mirrors the generation guard in <see cref="PaginatedSection{T}"/>.</summary>
+    private int _loadGeneration;
+
     // ---- State ------------------------------------------------------------------------------------
 
     [ObservableProperty]
@@ -201,6 +205,7 @@ public abstract partial class DetailsPageModelBase<TEntity> : ObservableObject
         }
 
         LoadedId = id;
+        var generation = ++_loadGeneration;
         var token = Scope.Begin(); // fresh page scope; OnDisappearing cancels it on navigate-away
 
         IsBusy = true;
@@ -277,7 +282,13 @@ public abstract partial class DetailsPageModelBase<TEntity> : ObservableObject
         }
         finally
         {
-            IsBusy = false;
+            // Only the live load clears this. A superseded load reaches here after its token is
+            // cancelled, and on device its continuation is posted rather than run inline — so without
+            // the guard it would clear IsBusy while its replacement is still fetching.
+            if (generation == _loadGeneration)
+            {
+                IsBusy = false;
+            }
         }
     }
 

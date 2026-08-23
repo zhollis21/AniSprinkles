@@ -51,6 +51,13 @@ public class CharacterDetailsSpineTests : DetailsSpineTests<Character>
             return Task.FromResult<Character?>(new Character { Id = 42 });
         };
 
+    protected override void ReturnsWhenSignalled(Harness harness, Task gate)
+        => _respond = async token =>
+        {
+            await gate.WaitAsync(token);
+            return new Character { Id = 42 };
+        };
+
     protected override Task LoadAsync(Harness harness, int id)
         => ((CharacterDetailsPageModel)harness.Model).LoadAsync(id);
 
@@ -100,6 +107,13 @@ public class StaffDetailsSpineTests : DetailsSpineTests<Staff>
             return Task.FromResult<Staff?>(new Staff { Id = 42 });
         };
 
+    protected override void ReturnsWhenSignalled(Harness harness, Task gate)
+        => _respond = async token =>
+        {
+            await gate.WaitAsync(token);
+            return new Staff { Id = 42 };
+        };
+
     protected override Task LoadAsync(Harness harness, int id)
         => ((StaffDetailsPageModel)harness.Model).LoadAsync(id);
 
@@ -147,6 +161,13 @@ public class StudioDetailsSpineTests : DetailsSpineTests<Studio>
             return Task.FromResult<Studio?>(new Studio { Id = 42 });
         };
 
+    protected override void ReturnsWhenSignalled(Harness harness, Task gate)
+        => _respond = async token =>
+        {
+            await gate.WaitAsync(token);
+            return new Studio { Id = 42 };
+        };
+
     protected override Task LoadAsync(Harness harness, int id)
         => ((StudioDetailsPageModel)harness.Model).LoadAsync(id);
 
@@ -165,6 +186,10 @@ public class MediaDetailsSpineTests : DetailsSpineTests<Media>
     // An empty result here means the query came back without a title rather than 404'd, which a retry
     // can fix — unlike the other three, where a missing entity is final.
     protected override bool NullResultIsRetryable => true;
+
+    // This page's load is the heavy one and its list-entry merge is order-sensitive, so a second load
+    // is dropped at the in-flight guard rather than superseding the first.
+    protected override bool SupersedesConcurrentLoads => false;
 
     protected override Harness CreateHarness()
     {
@@ -202,6 +227,13 @@ public class MediaDetailsSpineTests : DetailsSpineTests<Media>
         {
             capture(token);
             return Task.FromResult<(Media?, MediaListEntry?)>((new Media { Id = 42 }, null));
+        };
+
+    protected override void ReturnsWhenSignalled(Harness harness, Task gate)
+        => _respond = async token =>
+        {
+            await gate.WaitAsync(token);
+            return ((Media?)new Media { Id = 42 }, (MediaListEntry?)null);
         };
 
     protected override Task LoadAsync(Harness harness, int id)

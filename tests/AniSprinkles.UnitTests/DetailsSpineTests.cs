@@ -33,6 +33,10 @@ public abstract class DetailsSpineTests<TEntity>
     /// <summary>Stubs the page's fetch to hand back the cancellation token it was given.</summary>
     protected abstract void CapturesToken(Harness harness, Action<CancellationToken> capture);
 
+    /// <summary>Stubs the page's fetch to block until <paramref name="gate"/> completes, observing
+    /// cancellation while it waits.</summary>
+    protected abstract void ReturnsWhenSignalled(Harness harness, Task gate);
+
     /// <summary>Invokes the page's public load entry point.</summary>
     protected abstract Task LoadAsync(Harness harness, int id);
 
@@ -47,6 +51,10 @@ public abstract class DetailsSpineTests<TEntity>
 
     /// <summary>MediaDetails treats an empty result as retryable; the other three treat it as final.</summary>
     protected virtual bool NullResultIsRetryable => false;
+
+    /// <summary>Whether a second load supersedes an in-flight one (the three reference-data pages) or
+    /// is dropped at an in-flight guard (MediaDetails).</summary>
+    protected virtual bool SupersedesConcurrentLoads => true;
 
     // ---- Load -------------------------------------------------------------------------------------
 
@@ -180,6 +188,30 @@ public abstract class DetailsSpineTests<TEntity>
 
         Assert.Equal(PageState.Content, harness.Model.CurrentState);
         Assert.True(HasEntity(harness));
+    }
+
+    [Fact]
+    public async Task LoadAsync_WhileAnotherLoadIsStillInFlight_LeavesIsBusySetUntilTheLiveOneFinishes()
+    {
+        var harness = CreateHarness();
+        var gate = new TaskCompletionSource();
+        ReturnsWhenSignalled(harness, gate.Task);
+
+        var first = LoadAsync(harness, 1);
+        var second = LoadAsync(harness, 2);
+
+        // Which load survives differs by page, but the invariant does not: while one is still in
+        // flight, IsBusy must stay set. The loser finishes first in both shapes — a superseded load
+        // returns as soon as its token is cancelled, and a dropped one returns at the guard.
+        var (loser, winner) = SupersedesConcurrentLoads ? (first, second) : (second, first);
+        await loser;
+
+        Assert.True(harness.Model.IsBusy);
+
+        gate.SetResult();
+        await winner;
+
+        Assert.False(harness.Model.IsBusy);
     }
 
     [Fact]
