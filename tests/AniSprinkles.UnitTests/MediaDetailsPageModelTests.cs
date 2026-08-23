@@ -110,6 +110,55 @@ public class MediaDetailsPageModelTests
         Assert.Equal(12, harness.Model.ListEntry?.Progress);
     }
 
+    [Fact]
+    public async Task RetryLoad_ReInvokesWithTheLastRequestedIdAndItsNavigationListEntry()
+    {
+        var harness = new Harness();
+        harness.Throws(new InvalidOperationException("boom"));
+
+        await harness.Model.LoadAsync(42, new MediaListEntry { Id = 7, MediaId = 42, Progress = 3 });
+        Assert.Equal(PageState.Error, harness.Model.CurrentState);
+
+        harness.ReturnsMedia(new Media { Id = 42 });
+        await harness.Model.RetryLoadCommand.ExecuteAsync(null);
+
+        Assert.Equal(PageState.Content, harness.Model.CurrentState);
+        Assert.Equal(42, harness.Model.Media?.Id);
+        // The retry has to carry the navigation entry too, or the retried page loses the list context
+        // the user arrived with.
+        Assert.Equal(3, harness.Model.ListEntry?.Progress);
+    }
+
+    [Fact]
+    public async Task RetryLoad_BeforeAnythingHasBeenRequested_DoesNothing()
+    {
+        var harness = new Harness();
+        harness.ReturnsMedia(new Media { Id = 42 });
+
+        await harness.Model.RetryLoadCommand.ExecuteAsync(null);
+
+        await harness.Client.DidNotReceive().GetMediaAsync(Arg.Any<int>(), Arg.Any<CancellationToken>());
+    }
+
+    [Fact]
+    public async Task LoadAsync_WhileALoadIsAlreadyInFlight_IsDropped()
+    {
+        var harness = new Harness();
+        var gate = new TaskCompletionSource<(Media?, MediaListEntry?)>();
+        harness.Client.GetMediaAsync(Arg.Any<int>(), Arg.Any<CancellationToken>()).Returns(gate.Task);
+
+        var first = harness.Model.LoadAsync(42, listEntry: null);
+        // Unlike the other three details pages, a second load does not supersede the first: this load is
+        // the heavy one and its list-entry merge is order-sensitive.
+        await harness.Model.LoadAsync(43, listEntry: null);
+
+        gate.SetResult((new Media { Id = 42 }, null));
+        await first;
+
+        Assert.Equal(42, harness.Model.Media?.Id);
+        await harness.Client.Received(1).GetMediaAsync(Arg.Any<int>(), Arg.Any<CancellationToken>());
+    }
+
     private sealed class Harness
     {
         public Harness()
@@ -121,6 +170,7 @@ public class MediaDetailsPageModelTests
                 new ErrorReportService(NullLogger<ErrorReportService>.Instance),
                 Substitute.For<INavigationService>(),
                 new RecordingUserFeedback(),
+                new RecordingExternalBrowser(),
                 dialogs,
                 new ListEntryStatusFlow(dialogs),
                 NullLogger<MediaDetailsPageModel>.Instance);
