@@ -351,10 +351,10 @@ public class EntryActionCoordinatorTests
         // confirmation and blocks on a gate this test only releases afterwards, so an unbounded
         // await would deadlock the suite instead of failing it.
         await harness.Coordinator.RunCompletionFlowAsync(harness.Entry)
-            .WaitAsync(TimeSpan.FromSeconds(5));
+            .WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
 
         gate.SetResult();
-        await first.WaitAsync(TimeSpan.FromSeconds(5));
+        await first.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
 
         Assert.Equal(1, harness.Dialogs.Calls.Count(c => c == nameof(IDialogService.ConfirmAsync)));
         await harness.Client.Received(1).SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>());

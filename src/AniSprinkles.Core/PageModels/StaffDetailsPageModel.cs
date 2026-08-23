@@ -1,32 +1,19 @@
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Globalization;
 using AniSprinkles.Utilities;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
-using Sentry;
 
 namespace AniSprinkles.PageModels;
 
-public partial class StaffDetailsPageModel : ObservableObject
+public partial class StaffDetailsPageModel : DetailsPageModelBase<Staff>
 {
-    private readonly IAniListClient _aniListClient;
-    private readonly IAuthService _authService;
-    private readonly INavigationService _navigationService;
-    private readonly IUserFeedback _feedback;
-    private readonly IExternalBrowser _browser;
-    private readonly ILogger<StaffDetailsPageModel> _logger;
-    private readonly ListOperationRunner _listOps;
-    private readonly FavouriteToggleRunner _favouriteRunner;
-
     private const int PageSize = 25;
     private const string VoiceRolesDefaultSort = "FAVOURITES_DESC";
     private const string ProductionRolesDefaultSort = "POPULARITY_DESC";
 
-    private int _loadedStaffId;
     private ParsedDescription _parsedDescription = ParsedDescription.Empty;
-    private readonly PageLoadScope _scope = new();
 
     // Voice Roles (Staff.characters) and Production Roles (Staff.staffMedia) are two genuinely
     // separate AniList connections — each lazily paged and server-side sorted, fully independent.
@@ -34,17 +21,9 @@ public partial class StaffDetailsPageModel : ObservableObject
     private readonly PaginatedSection<StaffMediaEdge> _productionRoles;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(CurrentStateKey))]
-    private PageState _currentState = PageState.InitialLoading;
-
-    public string? CurrentStateKey => CurrentState == PageState.Content ? null : CurrentState.ToString();
-
-    [ObservableProperty]
-    private bool _isBusy;
-
-    [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasStaff))]
     [NotifyPropertyChangedFor(nameof(PageTitle))]
+    [NotifyPropertyChangedFor(nameof(IsFavourite))]
     [NotifyPropertyChangedFor(nameof(FavouritesDisplay))]
     [NotifyPropertyChangedFor(nameof(HasFavourites))]
     [NotifyPropertyChangedFor(nameof(IsBirthdayToday))]
@@ -70,21 +49,6 @@ public partial class StaffDetailsPageModel : ObservableObject
     [NotifyPropertyChangedFor(nameof(DescriptionMaxLines))]
     private bool _isDescriptionExpanded;
 
-    [ObservableProperty]
-    private string _errorTitle = string.Empty;
-
-    [ObservableProperty]
-    private string _errorSubtitle = string.Empty;
-
-    [ObservableProperty]
-    private string _errorIconGlyph = string.Empty;
-
-    [ObservableProperty]
-    private string _errorDetails = string.Empty;
-
-    [ObservableProperty]
-    private bool _canRetry = true;
-
     public IReadOnlyList<SortOption> VoiceRolesSortOptions { get; } =
     [
         new SortOption { Code = "FAVOURITES_DESC", Display = "Most Favorited", IsSelected = true },
@@ -107,17 +71,10 @@ public partial class StaffDetailsPageModel : ObservableObject
         INavigationService navigationService,
         IUserFeedback feedback,
         IExternalBrowser browser,
+        ErrorReportService errorReportService,
         ILogger<StaffDetailsPageModel> logger)
+        : base(aniListClient, authService, navigationService, feedback, browser, errorReportService, logger)
     {
-        _aniListClient = aniListClient;
-        _authService = authService;
-        _navigationService = navigationService;
-        _feedback = feedback;
-        _browser = browser;
-        _logger = logger;
-        _listOps = new ListOperationRunner(logger, feedback);
-        _favouriteRunner = new FavouriteToggleRunner(aniListClient, feedback, logger);
-
         _voiceRoles = new PaginatedSection<StaffCharacterEdge>(
             VoiceRolesDefaultSort,
             FetchVoiceRolesPageAsync,
@@ -154,10 +111,6 @@ public partial class StaffDetailsPageModel : ObservableObject
 
     public string PageTitle => Staff?.DisplayName ?? "Staff";
 
-    public bool HasFavourites => Staff?.Favourites is > 0;
-
-    public string FavouritesDisplay => FormatFavourites(Staff?.Favourites);
-
     public bool IsBirthdayToday => BirthdayChecker.IsBirthdayToday(Staff?.DateOfBirth, DateTime.Today);
 
     public IReadOnlyList<BioStatRow> BioStats =>
@@ -192,125 +145,65 @@ public partial class StaffDetailsPageModel : ObservableObject
 
     public bool HasQuickFactChips => QuickFactChips.Count > 0;
 
-    public bool HasSiteUrl => !string.IsNullOrWhiteSpace(Staff?.SiteUrl);
-
-    public bool IsAuthenticated { get; private set; }
-
-    /// <summary>Viewer's favorite state for this staff member; drives the heart fill on the favourites stat.</summary>
-    public bool IsFavourite => Staff?.IsFavourite ?? false;
-
-    public bool CanToggleFavourite => IsAuthenticated && !_favouriteRunner.IsBusy && Staff is not null;
-
     partial void OnStaffChanged(Staff? value)
     {
         _parsedDescription = DescriptionParser.Parse(value?.Description);
-        OnPropertyChanged(nameof(IsFavourite));
         ToggleFavouriteCommand.NotifyCanExecuteChanged();
     }
 
-    partial void OnCurrentStateChanged(PageState oldValue, PageState newValue)
-        => _logger.LogInformation("PageState: {OldState} → {NewState} (key={StateKey})", oldValue, newValue, CurrentStateKey ?? "(null)");
+    // ---- Spine ------------------------------------------------------------------------------------
 
-    // ---- Load -----------------------------------------------------------------------------------
-
-    public async Task LoadAsync(int staffId)
+    protected override Staff? Entity
     {
-        if (staffId <= 0)
-        {
-            ShowError("Not Found", "Invalid staff id.", canRetry: false);
-            return;
-        }
+        get => Staff;
+        set => Staff = value;
+    }
 
-        // Same staff already loaded: keep its sections + sort and just restore Content state. This is hit
-        // when returning from a pushed sub-page and — importantly — when a CommunityToolkit sort popup
-        // closes (it fires the host page's OnAppearing → reload). Without this guard the popup would reset
-        // the sort the user just picked. Mirrors MediaDetailsPageModel.
-        if (Staff is not null && Staff.Id == staffId)
-        {
-            CurrentState = PageState.Content;
-            return;
-        }
+    protected override string EntityNoun => "staff";
 
-        _loadedStaffId = staffId;
-        var token = _scope.Begin(); // fresh page scope; OnDisappearing cancels it on navigate-away
+    protected override string TracePrefix => "StaffDetails";
 
+    protected override FavouriteKind FavouriteKind => FavouriteKind.Staff;
 
+    protected override string? SiteUrl => Staff?.SiteUrl;
 
-        IsBusy = true;
-        if (Staff is null || Staff.Id != staffId)
-        {
-            CurrentState = PageState.InitialLoading;
-            IsShowingSpoilers = false;
-            IsDescriptionExpanded = false;
-        }
+    // "staff member" reads correctly here where the bare noun does not.
+    protected override (string Title, string Subtitle) NotFoundError
+        => ("Not Found", "We couldn't find this staff member.");
 
+    public Task LoadAsync(int staffId) => LoadCoreAsync(staffId);
+
+    protected override Task<Staff?> FetchAsync(int id, CancellationToken cancellationToken)
+        => AniList.GetStaffAsync(id, cancellationToken: cancellationToken);
+
+    protected override void SeedSections(Staff entity)
+    {
+        _voiceRoles.Seed(entity.Characters.ToList(), entity.CharactersPageInfo);
+        _productionRoles.Seed(entity.StaffMedia.ToList(), entity.StaffMediaPageInfo);
+    }
+
+    protected override void ResetForNewEntity()
+    {
+        IsShowingSpoilers = false;
+        IsDescriptionExpanded = false;
         _voiceRoles.Reset();
         _productionRoles.Reset();
         ResetVoiceRolesSortSelection();
         ResetProductionRolesSortSelection();
-
-        var stopwatch = Stopwatch.StartNew();
-        _logger.LogInformation("NAVTRACE StaffDetails load start (staff {StaffId})", staffId);
-
-        try
-        {
-            IsAuthenticated = !string.IsNullOrWhiteSpace(await _authService.GetAccessTokenAsync(token).ConfigureAwait(true));
-            ToggleFavouriteCommand.NotifyCanExecuteChanged();
-
-            var staff = await _aniListClient.GetStaffAsync(staffId, cancellationToken: token).ConfigureAwait(true);
-            if (staff is null)
-            {
-                _logger.LogInformation("NAVTRACE StaffDetails not found in {ElapsedMs}ms (staff {StaffId})", stopwatch.ElapsedMilliseconds, staffId);
-                ShowError("Not Found", "We couldn't find this staff member.", canRetry: false);
-                return;
-            }
-
-            Staff = staff;
-
-            _voiceRoles.Seed(staff.Characters.ToList(), staff.CharactersPageInfo);
-            _productionRoles.Seed(staff.StaffMedia.ToList(), staff.StaffMediaPageInfo);
-
-            CurrentState = PageState.Content;
-            _logger.LogInformation(
-                "NAVTRACE StaffDetails fetch+seed in {ElapsedMs}ms (staff {StaffId}, {VoiceRoles} voice roles, {ProductionRoles} production roles); UI render follows",
-                stopwatch.ElapsedMilliseconds, staffId, _voiceRoles.Items.Count, _productionRoles.Items.Count);
-        }
-        catch (OperationCanceledException)
-        {
-            _logger.LogInformation("NAVTRACE StaffDetails load cancelled after {ElapsedMs}ms (staff {StaffId})", stopwatch.ElapsedMilliseconds, staffId);
-        }
-        catch (Exception ex)
-        {
-            var apiEx = ex as AniListApiException;
-            var isNotFound = apiEx?.Kind == ApiErrorKind.NotFound;
-            if (isNotFound)
-            {
-                // NotFound is non-retryable and intentionally kept out of Sentry — log at Warning so it stays a breadcrumb.
-                _logger.LogWarning(ex, "NAVTRACE StaffDetails not found on AniList in {ElapsedMs}ms (staff {StaffId})", stopwatch.ElapsedMilliseconds, staffId);
-            }
-            else
-            {
-                _logger.LogError(ex, "NAVTRACE StaffDetails load failed in {ElapsedMs}ms (staff {StaffId})", stopwatch.ElapsedMilliseconds, staffId);
-            }
-
-            var (title, subtitle) = DescribeError(ex);
-            ShowError(title, subtitle, canRetry: !isNotFound, details: isNotFound ? string.Empty : ex.Message, iconGlyph: apiEx?.IconGlyph);
-        }
-        finally
-        {
-            IsBusy = false;
-        }
     }
 
-    public void CancelInFlight() => _scope.Cancel();
+    protected override string DescribeSeededSections()
+        => $"{_voiceRoles.Items.Count} voice roles, {_productionRoles.Items.Count} production roles";
+
+    // ---- Section fetches --------------------------------------------------------------------------
 
     private Task<(IReadOnlyList<StaffCharacterEdge> Items, PageInfo? PageInfo)> FetchVoiceRolesPageAsync(
         int page, string sort, CancellationToken cancellationToken)
-        => _aniListClient.LoadStaffCharactersPageAsync(_loadedStaffId, page, sort, PageSize, cancellationToken);
+        => AniList.LoadStaffCharactersPageAsync(LoadedId, page, sort, PageSize, cancellationToken);
 
     private Task<(IReadOnlyList<StaffMediaEdge> Items, PageInfo? PageInfo)> FetchProductionRolesPageAsync(
         int page, string sort, CancellationToken cancellationToken)
-        => _aniListClient.LoadStaffMediaPageAsync(_loadedStaffId, page, sort, PageSize, cancellationToken);
+        => AniList.LoadStaffMediaPageAsync(LoadedId, page, sort, PageSize, cancellationToken);
 
     // ---- Commands -------------------------------------------------------------------------------
 
@@ -319,22 +212,22 @@ public partial class StaffDetailsPageModel : ObservableObject
     // otherwise log a no-op LISTTRACE pair on every scroll-to-end). LoadMoreAsync stays guarded too.
     [RelayCommand(CanExecute = nameof(CanLoadMoreVoiceRoles))]
     private Task LoadMoreVoiceRoles()
-        => _listOps.RunAsync(
+        => ListOps.RunAsync(
             "Voice Roles · Load More",
             "staff",
-            _loadedStaffId,
-            () => _voiceRoles.LoadMoreAsync(_scope.EnsureActive()),
+            LoadedId,
+            () => _voiceRoles.LoadMoreAsync(Scope.EnsureActive()),
             () => _voiceRoles.Items.Count);
 
     private bool CanLoadMoreVoiceRoles() => _voiceRoles.CanLoadMore;
 
     [RelayCommand(CanExecute = nameof(CanLoadMoreProductionRoles))]
     private Task LoadMoreProductionRoles()
-        => _listOps.RunAsync(
+        => ListOps.RunAsync(
             "Production Roles · Load More",
             "staff",
-            _loadedStaffId,
-            () => _productionRoles.LoadMoreAsync(_scope.EnsureActive()),
+            LoadedId,
+            () => _productionRoles.LoadMoreAsync(Scope.EnsureActive()),
             () => _productionRoles.Items.Count);
 
     private bool CanLoadMoreProductionRoles() => _productionRoles.CanLoadMore;
@@ -347,11 +240,11 @@ public partial class StaffDetailsPageModel : ObservableObject
             return Task.CompletedTask;
         }
 
-        return _listOps.RunAsync(
+        return ListOps.RunAsync(
             $"Voice Roles · sort→{code}",
             "staff",
-            _loadedStaffId,
-            () => _voiceRoles.ChangeSortAsync(code, _scope.EnsureActive()),
+            LoadedId,
+            () => _voiceRoles.ChangeSortAsync(code, Scope.EnsureActive()),
             () => _voiceRoles.Items.Count,
             onComplete: () => SyncSortSelection(VoiceRolesSortOptions, _voiceRoles.Sort));
     }
@@ -364,11 +257,11 @@ public partial class StaffDetailsPageModel : ObservableObject
             return Task.CompletedTask;
         }
 
-        return _listOps.RunAsync(
+        return ListOps.RunAsync(
             $"Production Roles · sort→{code}",
             "staff",
-            _loadedStaffId,
-            () => _productionRoles.ChangeSortAsync(code, _scope.EnsureActive()),
+            LoadedId,
+            () => _productionRoles.ChangeSortAsync(code, Scope.EnsureActive()),
             () => _productionRoles.Items.Count,
             onComplete: () => SyncSortSelection(ProductionRolesSortOptions, _productionRoles.Sort));
     }
@@ -380,82 +273,17 @@ public partial class StaffDetailsPageModel : ObservableObject
     private void ToggleDescription() => IsDescriptionExpanded = !IsDescriptionExpanded;
 
     [RelayCommand]
-    private async Task OpenSiteUrl()
-    {
-        if (string.IsNullOrWhiteSpace(Staff?.SiteUrl))
-        {
-            return;
-        }
-
-        // IExternalBrowser swallows and logs its own failures.
-        await _browser.OpenAsync(new Uri(Staff.SiteUrl));
-    }
-
-    [RelayCommand(CanExecute = nameof(CanToggleFavourite))]
-    private async Task ToggleFavourite()
-    {
-        var staff = Staff;
-        // Re-check the gate here (not just via the command's CanExecute) so the failure-snackbar
-        // Retry can't run an optimistic flip if auth/busy state changed since the failure.
-        if (staff is null || !CanToggleFavourite)
-        {
-            return;
-        }
-
-        if (await _favouriteRunner.ToggleAsync(staff, FavouriteKind.Staff, NotifyFavouriteChanged, () => _ = ToggleFavourite()))
-        {
-            SentrySdk.AddBreadcrumb($"Favourite toggled (staff {staff.Id} → {(staff.IsFavourite ? "on" : "off")})", "list", "user");
-        }
-    }
-
-    private void NotifyFavouriteChanged()
-    {
-        OnPropertyChanged(nameof(IsFavourite));
-        OnPropertyChanged(nameof(FavouritesDisplay));
-        OnPropertyChanged(nameof(HasFavourites));
-        ToggleFavouriteCommand.NotifyCanExecuteChanged();
-    }
-
-    [RelayCommand]
-    private Task RetryLoad() => LoadAsync(_loadedStaffId);
-
-    [RelayCommand]
     private async Task NavigateToCharacter(int characterId)
     {
-        _logger.LogInformation("NAVTRACE Staff→Character with id={CharacterId}", characterId);
+        Logger.LogInformation("NAVTRACE Staff→Character with id={CharacterId}", characterId);
         if (characterId <= 0)
         {
             return;
         }
 
-        await _navigationService.GoToAsync("character-details", animate: false, new Dictionary<string, object>
+        await NavigationService.GoToAsync("character-details", animate: false, new Dictionary<string, object>
         {
             ["characterId"] = characterId,
-        });
-    }
-
-    [RelayCommand]
-    private async Task NavigateToMedia(RelatedMedia? media)
-    {
-        var mediaId = media?.Id ?? 0;
-        _logger.LogInformation("NAVTRACE Staff→Media with id={MediaId}", mediaId);
-        if (mediaId <= 0)
-        {
-            return;
-        }
-
-        // Detail screen is anime-only (Media(id:, type: ANIME)); a manga/novel id would 404.
-        // Staff production roles and voice-role media can include manga, so toast instead of navigating.
-        if (media is { IsAnime: false })
-        {
-            _logger.LogInformation("NAVTRACE Staff→Media skipped non-anime {MediaId} (type={Type}).", mediaId, media.Type);
-            await _feedback.ShowToastAsync("Manga & Novel details aren't supported yet.");
-            return;
-        }
-
-        await _navigationService.GoToAsync("media-details", animate: false, new Dictionary<string, object>
-        {
-            ["mediaId"] = mediaId,
         });
     }
 
@@ -496,11 +324,6 @@ public partial class StaffDetailsPageModel : ObservableObject
             opt.IsSelected = string.Equals(opt.Code, code, StringComparison.Ordinal);
         }
     }
-
-    private static (string Title, string Subtitle) DescribeError(Exception ex)
-        => ex is AniListApiException apiEx
-            ? (apiEx.UserTitle, apiEx.UserSubtitle)
-            : ("Something Went Wrong", "Failed to load staff details.");
 
     private BioStatRow BuildBioStatRow(DescriptionStatRow row)
     {
@@ -552,33 +375,6 @@ public partial class StaffDetailsPageModel : ObservableObject
         }
 
         return chips;
-    }
-
-    // iconGlyph lets the catch path surface a classified AniListApiException.IconGlyph (e.g. NotFound
-    // → DismissCircle24); the static "invalid id" / "couldn't find" callers fall back to ErrorCircle24.
-    private void ShowError(string title, string subtitle, bool canRetry, string details = "", string? iconGlyph = null)
-    {
-        ErrorTitle = title;
-        ErrorSubtitle = subtitle;
-        ErrorIconGlyph = iconGlyph ?? Glyphs.Regular.ErrorCircle24;
-        ErrorDetails = details;
-        CanRetry = canRetry;
-        CurrentState = PageState.Error;
-    }
-
-    private static string FormatFavourites(int? favourites)
-    {
-        if (favourites is null or <= 0)
-        {
-            return string.Empty;
-        }
-
-        if (favourites >= 1000)
-        {
-            return (favourites.Value / 1000.0).ToString("0.#k", CultureInfo.InvariantCulture);
-        }
-
-        return favourites.Value.ToString(CultureInfo.InvariantCulture);
     }
 }
 

@@ -14,4 +14,11 @@ public interface IFavouritable
 
     /// <summary>Global favourite count; bumped ±1 optimistically alongside <see cref="IsFavourite"/>.</summary>
     int? Favourites { get; set; }
+
+    /// <summary>
+    /// Compact display form of <see cref="Favourites"/> ("1.2k", "1.2M", blank for none), via
+    /// <c>MetricFormat.Compact</c>. On the interface so the details page models render one format —
+    /// they previously carried their own copies, one of which had no M tier.
+    /// </summary>
+    string FavouritesDisplay { get; }
 }

@@ -26,6 +26,8 @@ public class Media : IFavouritable
     public int? MeanScore { get; set; }
     public int? Popularity { get; set; }
     public int? Favourites { get; set; }
+    /// <summary>Compact favourites (k-format, blank when missing) — mirrors the other detail models.</summary>
+    public string FavouritesDisplay => MetricFormat.Compact(Favourites);
     /// <summary>Whether the signed-in viewer has favorited this entity (from <c>isFavourite</c>).</summary>
     public bool IsFavourite { get; set; }
     public int? Trending { get; set; }
