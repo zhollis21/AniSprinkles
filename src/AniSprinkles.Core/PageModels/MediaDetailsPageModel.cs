@@ -15,9 +15,8 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
     private readonly IDialogService _dialogs;
     private readonly ListEntryStatusFlow _statusFlow;
 
-    // Correlates this page's own trace lines within one load. The base's in-flight guard (see
-    // ShouldSkipLoad) means loads cannot interleave, so the base's NAVTRACE lines correlate to the
-    // current load by time.
+    // Correlates this page's own trace lines within one load. The in-flight guard in LoadAsync means
+    // loads cannot interleave, so the base's NAVTRACE lines correlate to the current load by time.
     private int _loadRequestSequence;
     private int _loadRequestId;
 
@@ -498,29 +497,31 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
 
     /// <param name="listEntry">The viewer's list entry as carried by the navigation, when there is one.
     /// The fetched entry wins over it — it is always fresher.</param>
+    /// <remarks>
+    /// Unlike the other three details pages, a second load while one is in flight is dropped rather
+    /// than superseding it: this page's load is the heavy one and its list-entry merge is
+    /// order-sensitive. The guard lives here rather than in a <c>ShouldSkipLoad</c> override so that
+    /// nothing this load owns — the list entry, the trace id — is written until it has been accepted.
+    /// A dropped load that had already overwritten them would hand the wrong list context to the load
+    /// still running, and renumber its remaining trace lines.
+    /// </remarks>
     public Task LoadAsync(int mediaId, MediaListEntry? listEntry)
     {
-        _lastRequestedListEntry = listEntry;
-        return LoadCoreAsync(mediaId);
-    }
-
-    // Unlike the other three details pages, a second load while one is in flight is dropped rather than
-    // superseding it: this page's load is the heavy one and its list-entry merge is order-sensitive.
-    protected override bool ShouldSkipLoad(int id)
-    {
-        _loadRequestId = Interlocked.Increment(ref _loadRequestSequence);
+        var requestId = Interlocked.Increment(ref _loadRequestSequence);
 
         Logger.LogInformation(
             "MediaDetails LoadAsync enter load#{LoadRequestId} (mediaId={MediaId}, isBusy={IsBusy}, currentState={CurrentState}, loadedMediaId={LoadedMediaId}, hasListEntry={HasListEntry})",
-            _loadRequestId, id, IsBusy, CurrentState, LoadedId, _lastRequestedListEntry is not null);
+            requestId, mediaId, IsBusy, CurrentState, LoadedId, listEntry is not null);
 
         if (IsBusy)
         {
-            Logger.LogInformation("NAVTRACE load#{LoadRequestId} skipped because details view model is already busy.", _loadRequestId);
-            return true;
+            Logger.LogInformation("NAVTRACE load#{LoadRequestId} skipped because details view model is already busy.", requestId);
+            return Task.CompletedTask;
         }
 
-        return false;
+        _loadRequestId = requestId;
+        _lastRequestedListEntry = listEntry;
+        return LoadCoreAsync(mediaId);
     }
 
     // Query attributes can be re-applied on resume/back transitions. Keep the existing media and only

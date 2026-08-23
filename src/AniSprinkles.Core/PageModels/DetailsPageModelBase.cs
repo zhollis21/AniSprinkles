@@ -153,9 +153,6 @@ public abstract partial class DetailsPageModelBase<TEntity> : ObservableObject
     /// <summary>Runs after <see cref="IsAuthenticated"/> is set, for anything else derived from it.</summary>
     protected virtual void OnAuthenticationResolved() { }
 
-    /// <summary>Lets a page reject a load outright — MediaDetails uses it for its in-flight guard.</summary>
-    protected virtual bool ShouldSkipLoad(int id) => false;
-
     /// <summary>Whether a null fetch result should still offer Retry.</summary>
     protected virtual bool NullResultIsRetryable => false;
 
@@ -176,11 +173,6 @@ public abstract partial class DetailsPageModelBase<TEntity> : ObservableObject
     /// </summary>
     protected async Task LoadCoreAsync(int id)
     {
-        if (ShouldSkipLoad(id))
-        {
-            return;
-        }
-
         LastRequestedId = id;
 
         if (id <= 0)
