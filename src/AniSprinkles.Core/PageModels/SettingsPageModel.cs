@@ -326,8 +326,13 @@ public partial class SettingsPageModel : ObservableObject
         SelectedStaffNameLanguage = user.Options.StaffNameLanguage;
         SelectedScoreFormat = user.ScoreFormat;
 
-        // Content & Privacy
-        DisplayAdultContent = user.Options.DisplayAdultContent;
+        // Content & Privacy.
+        //
+        // Resolved rather than taken straight from the viewer: this assignment runs the changed
+        // handler, which writes through to AppSettings. Returning to Settings before our own save
+        // landed — or after it failed — would otherwise stamp the server's stale value over the
+        // choice the user just made, before SyncFromViewer's guard below saw it at all.
+        DisplayAdultContent = AppSettings.ResolveDisplayAdultContent(user.Options.DisplayAdultContent);
         AiringNotifications = user.Options.AiringNotifications;
         RestrictMessagesToFollowing = user.Options.RestrictMessagesToFollowing;
 
@@ -346,7 +351,9 @@ public partial class SettingsPageModel : ObservableObject
         _loadedRestrictMessages = RestrictMessagesToFollowing;
         _loadedActivityMergeTime = ActivityMergeTime;
 
-        // Sync local app settings from user profile
+        // Sync local app settings from user profile. SyncFromViewer resolves the adult-content
+        // pending marker itself — it clears only when the server reports the value we are holding,
+        // so a save reply confirms it while a load against a server that has not caught up does not.
         AppSettings.SyncFromViewer(user);
 
         _suppressNotificationToggle = false;
@@ -440,7 +447,21 @@ public partial class SettingsPageModel : ObservableObject
     partial void OnSelectedTitleLanguageChanged(UserTitleLanguage value) => TriggerAutoSave();
     partial void OnSelectedStaffNameLanguageChanged(UserStaffNameLanguage value) => TriggerAutoSave();
     partial void OnSelectedScoreFormatChanged(ScoreFormat value) => TriggerAutoSave();
-    partial void OnDisplayAdultContentChanged(bool value) => TriggerAutoSave();
+    partial void OnDisplayAdultContentChanged(bool value)
+    {
+        // Commit locally first, ahead of the debounced AniList save (#118). Every browse surface
+        // filters on AppSettings.DisplayAdultContent and checks it when it appears, so waiting for
+        // the round-trip left a second-and-a-half window where the user believed 18+ was off and
+        // the app still thought it was on.
+        //
+        // This also runs while PopulateFromUser assigns the server's value, which is correct — that
+        // is the same value SyncFromViewer commits moments later. TriggerAutoSave is a no-op there
+        // in practice: it may queue a debounce, but PopulateFromUser updates the dirty-tracking
+        // snapshot before the delay elapses, so DebouncedSaveAsync re-checks HasUnsavedChanges and
+        // finds nothing to send.
+        AppSettings.SetDisplayAdultContent(value);
+        TriggerAutoSave();
+    }
     partial void OnAiringNotificationsChanged(bool value)
     {
         // Do not queue an auto-save here — the permission dialog may take >1500ms to answer,
@@ -464,6 +485,27 @@ public partial class SettingsPageModel : ObservableObject
         }
 
         _ = DebouncedSaveAsync();
+    }
+
+    /// <summary>
+    /// Sends a pending settings change immediately instead of waiting out the debounce. Called from
+    /// <c>SettingsPage.OnDisappearing</c>, so a change made and navigated away from within 1500 ms
+    /// is not left unsent — and is not lost outright if the app is killed before the delay elapses.
+    /// </summary>
+    /// <remarks>
+    /// A no-op when nothing is dirty, which is the common case: OnDisappearing fires on every tab
+    /// away, and flushing must not turn tab switching into an AniList write.
+    /// </remarks>
+    public async Task FlushPendingSaveAsync()
+    {
+        _saveDebounceCts?.Cancel();
+
+        if (_loadedUser is null || !HasUnsavedChanges)
+        {
+            return;
+        }
+
+        await SaveSettingsAsync();
     }
 
     private async Task DebouncedSaveAsync()

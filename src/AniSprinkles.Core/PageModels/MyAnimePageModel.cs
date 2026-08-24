@@ -31,6 +31,14 @@ public partial class MyAnimePageModel : ObservableObject
     private bool _hasLoaded;
     private DateTimeOffset _lastSuccessfulLoadUtc;
 
+    /// <summary>
+    /// The DisplayAdultContent value the current <see cref="Sections"/> were built under (#118).
+    /// The adult filter is applied while building, so a change only takes effect when a load
+    /// actually runs — which the freshness window below would otherwise suppress for five minutes.
+    /// Discover, Search and View All each keep the same comparison against their own results.
+    /// </summary>
+    private bool _loadedWithAdultContent;
+
     // +1 debounce state: rapid taps batch into a single API call.
     private CancellationTokenSource? _incrementDebounceCts;
     private MediaListEntry? _pendingIncrementEntry;
@@ -217,9 +225,16 @@ public partial class MyAnimePageModel : ObservableObject
             var isFresh = _lastSuccessfulLoadUtc != default &&
                 DateTimeOffset.UtcNow - _lastSuccessfulLoadUtc < ListRefreshInterval;
 
+            // An adult-toggle flip has to defeat that window (#118). The filter is applied while
+            // sections are built, so skipping the load leaves the 18+ entries in place — and unlike
+            // the other browse surfaces, whose staleness clears on the next appearance, this window
+            // is time-based, so tabbing away and back would not clear it either.
+            var adultChanged = _loadedWithAdultContent != AppSettings.DisplayAdultContent;
+
             if (_hasLoaded && !forceReload && isAuthenticated == IsAuthenticated)
             {
-                if (!isAuthenticated || isFresh)
+                // Signed out has no sections to filter, so that branch returns either way.
+                if (!isAuthenticated || (isFresh && !adultChanged))
                 {
                     return;
                 }
@@ -314,6 +329,10 @@ public partial class MyAnimePageModel : ObservableObject
             OnPropertyChanged(nameof(HasNoResults));
             _hasLoaded = true;
             _lastSuccessfulLoadUtc = DateTimeOffset.UtcNow;
+
+            // Read here rather than from the value captured at entry: SyncFromViewer above may have
+            // moved it, and this has to describe the sections that were actually just built.
+            _loadedWithAdultContent = AppSettings.DisplayAdultContent;
             CurrentState = PageState.Content;
 
             // Cache RELEASING media IDs for the background airing notification worker.

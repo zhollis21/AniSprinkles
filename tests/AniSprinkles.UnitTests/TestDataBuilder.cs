@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using AniSprinkles.UnitTests.Fakes;
 using AniSprinkles.Utilities;
 
 namespace AniSprinkles.UnitTests;
@@ -86,16 +87,27 @@ internal static class TestDataBuilder
 
     /// <summary>
     /// Resets AppSettings to known defaults before a test so shared static state doesn't bleed
-    /// across tests. The properties are set directly rather than through Load()/Clear(), which go
-    /// via the static Preferences.Default and throw NotImplementedInReferenceAssemblyException on
-    /// this TFM. Test classes that call this belong in the <see cref="AppSettingsCollection"/> so
-    /// they don't race each other.
+    /// across tests, and swaps in a fresh <see cref="FakePreferences"/> so the persistence paths
+    /// (Load/Save/Clear/SyncFromViewer) are reachable — the real <c>Preferences.Default</c> throws
+    /// NotImplementedInReferenceAssemblyException on this TFM (#121).
+    /// <para>
+    /// The properties are still set directly rather than through Clear(): the point is a known
+    /// starting state, and going through the storage path would make every test depend on Clear()
+    /// being correct. Test classes that call this belong in the <see cref="AppSettingsCollection"/>
+    /// so they don't race each other over these statics — including <c>AppSettings.Storage</c>.
+    /// </para>
     /// </summary>
-    public static void ResetAppSettings()
+    /// <returns>The fake now installed, for tests that want to assert on what was persisted.</returns>
+    public static FakePreferences ResetAppSettings()
     {
+        var preferences = new FakePreferences();
+        AppSettings.Storage = preferences;
+
         AppSettings.TitleLanguage = UserTitleLanguage.Romaji;
         AppSettings.ScoreFormat = ScoreFormat.Point100;
         AppSettings.DisplayAdultContent = true;
         AppSettings.AnimeSectionOrder = [];
+
+        return preferences;
     }
 }

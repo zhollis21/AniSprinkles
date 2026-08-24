@@ -34,6 +34,19 @@ public partial class MediaBrowsePageModel : ObservableObject
     private bool _loadedWithAdultContent;
     private bool _loadedAuthenticated;
 
+    /// <summary>
+    /// The DisplayAdultContent value this section's items were seeded under, pinned so every Load
+    /// More agrees with page 1 (#118).
+    /// <para>
+    /// A separate field from <see cref="_loadedWithAdultContent"/> only because of when it is
+    /// assigned: the page-1 fetch reads this, so it has to be set before that fetch, whereas
+    /// <see cref="_loadedWithAdultContent"/> is assigned after and is only meaningful once a load
+    /// has succeeded. <c>DiscoverPageModel</c> needs no equivalent — its rows are seeded from an
+    /// already-completed request, so the one field covers both jobs there.
+    /// </para>
+    /// </summary>
+    private bool _seededDisplayAdult;
+
     public MediaBrowsePageModel(
         IAniListClient aniListClient,
         IAuthService authService,
@@ -177,6 +190,11 @@ public partial class MediaBrowsePageModel : ObservableObject
         CurrentState = PageState.InitialLoading;
         _items.Reset();
 
+        // Pinned before the page-1 fetch below, which reads it too — the items it seeds and every
+        // Load More after it have to describe the same policy (#118). The reset above means there
+        // is nothing left to mix with if this load fails.
+        _seededDisplayAdult = displayAdult;
+
         _logger.LogInformation("NAVTRACE MediaBrowse load start (section {Section})", section);
 
         try
@@ -222,7 +240,7 @@ public partial class MediaBrowsePageModel : ObservableObject
         // Season math, adult-toggle resolution, and the format pin live in the shared helper —
         // the Discover rows page through the exact same code path.
         return DiscoverSectionFetch.PageAsync(
-            _aniListClient, _timeProvider, definition, page, PageSize, cancellationToken);
+            _aniListClient, _timeProvider, definition, _seededDisplayAdult, page, PageSize, cancellationToken);
     }
 
     private void StampItems(IReadOnlyList<BrowseMediaItem> added, string sort)

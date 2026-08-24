@@ -35,7 +35,9 @@ internal sealed class CIAniListClient : IAniListClient
     public Task<(IReadOnlyList<BrowseMediaItem> Items, PageInfo? PageInfo)> SearchAnimePageAsync(
         string search, bool? isAdult = false, int page = 1, int perPage = 20, CancellationToken cancellationToken = default)
     {
-        IReadOnlyList<BrowseMediaItem> items = StubData.BrowseItems
+        // Honours isAdult the way the real endpoint does — SearchPageModel pins it per result set,
+        // and the canary is what proves that pin still holds in CI.
+        IReadOnlyList<BrowseMediaItem> items = StubData.BrowseItemsFor(isAdult)
             .Where(i => i.Node?.DisplayTitle.Contains(search, StringComparison.OrdinalIgnoreCase) == true)
             .ToList();
         return Task.FromResult((items, (PageInfo?)new PageInfo { HasNextPage = false, CurrentPage = page }));
@@ -46,23 +48,34 @@ internal sealed class CIAniListClient : IAniListClient
         bool filterAdult, bool includeAdultSections, int perPage = 20, CancellationToken cancellationToken = default)
         => Task.FromResult(new DiscoverSections
         {
-            Airing = StubSectionPage(),
-            Trending = StubSectionPage(),
-            Top = StubSectionPage(),
-            TopMovies = StubSectionPage(),
-            AllTimePopular = StubSectionPage(),
-            Upcoming = StubSectionPage(),
-            PopularAdult = includeAdultSections ? StubSectionPage() : DiscoverSectionPage.Empty,
-            TopRatedAdult = includeAdultSections ? StubSectionPage() : DiscoverSectionPage.Empty,
+            // filterAdult was previously ignored here, which meant the SFW rows were never actually
+            // filtered in CI. Honouring it is what lets the canary detect a broken filter.
+            Airing = StubSectionPage(filterAdult),
+            Trending = StubSectionPage(filterAdult),
+            Top = StubSectionPage(filterAdult),
+            TopMovies = StubSectionPage(filterAdult),
+            AllTimePopular = StubSectionPage(filterAdult),
+            Upcoming = StubSectionPage(filterAdult),
+            // The 18+ pair is section-pinned rather than toggle-driven, so it serves the canary —
+            // and is only requested at all when the toggle is on, which CI never does.
+            PopularAdult = includeAdultSections ? AdultSectionPage() : DiscoverSectionPage.Empty,
+            TopRatedAdult = includeAdultSections ? AdultSectionPage() : DiscoverSectionPage.Empty,
         });
 
-    private static DiscoverSectionPage StubSectionPage()
-        => new(StubData.BrowseItems, new PageInfo { HasNextPage = false, CurrentPage = 1 });
+    // filterAdult true = SFW only; false = the toggle is on, so nothing is filtered out.
+    private static DiscoverSectionPage StubSectionPage(bool filterAdult)
+        => new(StubData.BrowseItemsFor(filterAdult ? false : null), new PageInfo { HasNextPage = false, CurrentPage = 1 });
+
+    private static DiscoverSectionPage AdultSectionPage()
+        => new(StubData.BrowseItemsFor(true), new PageInfo { HasNextPage = false, CurrentPage = 1 });
 
     public Task<(IReadOnlyList<BrowseMediaItem> Items, PageInfo? PageInfo)> BrowseAnimePageAsync(
         string sort, string? status = null, string? season = null, int? seasonYear = null, bool? isAdult = null,
         string? format = null, int page = 1, int perPage = 25, CancellationToken ct = default)
-        => Task.FromResult((StubData.BrowseItems, (PageInfo?)new PageInfo { HasNextPage = false, CurrentPage = page }));
+        // Discover row paging and View All both land here through DiscoverSectionFetch, which pins
+        // isAdult to the value its page 1 was seeded under (#118). Honouring the argument is what
+        // makes a Load More that fetched under the wrong policy show up as a canary in the capture.
+        => Task.FromResult((StubData.BrowseItemsFor(isAdult), (PageInfo?)new PageInfo { HasNextPage = false, CurrentPage = page }));
 
     public Task<MediaListEntry?> SaveMediaListEntryAsync(
         MediaListEntry entry, CancellationToken cancellationToken = default)
@@ -502,9 +515,38 @@ internal sealed class CIAniListClient : IAniListClient
             },
         };
 
+        // ── Adult-filter canary ─────────────────────────────────────────────────────────────────
+        //
+        // A fixture flagged IsAdult that must NEVER reach the screen in CI, because the stub viewer
+        // leaves DisplayAdultContent off. It carries no adult content of its own — the title is a
+        // shouted marker and the cover is deliberately unset so the app draws its own placeholder.
+        //
+        // The point is that the adult filter was previously unexercised end to end: with no flagged
+        // fixture anywhere, the filtering in DiscoverSectionFetch, the browse/search queries and
+        // MediaListSectionsMerger could all have broken without changing a single screenshot. If
+        // this title appears in a capture, or in the UI-dump gate the workflow runs against it, the
+        // filter is broken and the same defect would be exposing real 18+ content on a real account.
+        public const string AdultCanaryTitle = "18PLUS CANARY - FILTER FAILED";
+
+        private static readonly MediaListEntry AdultCanary = new()
+        {
+            Id = 1099, MediaId = 999_001, Status = MediaListStatus.Current, Progress = 1,
+            Media = new Media
+            {
+                Id = 999_001, Format = "TV", Episodes = 1, IsAdult = true,
+                Status = "FINISHED", Season = "WINTER", SeasonYear = 2020,
+                Title = new MediaTitle { Romaji = AdultCanaryTitle, English = AdultCanaryTitle },
+                // No CoverImage on purpose: ImageUrl.IsReal treats null as "no image", so the app
+                // renders its own placeholder rather than fetching anything.
+                Genres = ["Hentai"],
+            },
+        };
+
         public static readonly IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)> GroupedList =
         [
-            ("Watching",  [OnePiece, AttackOnTitan, JujutsuKaisen, HunterXHunter]),
+            // The canary rides the Watching group so Library's client-side filter
+            // (MediaListSectionsMerger.OrderAndFilterGroups) is exercised on every CI run.
+            ("Watching",  [OnePiece, AttackOnTitan, AdultCanary, JujutsuKaisen, HunterXHunter]),
             ("Planning",  [YourName, PromisedNeverland]),
             ("Completed", [FmaB, DeathNote, ASilentVoice, DemonSlayer]),
         ];
@@ -530,6 +572,33 @@ internal sealed class CIAniListClient : IAniListClient
             BrowseItem(HunterXHunter, status: null),          // not on list
             BrowseItem(ASilentVoice, MediaListStatus.Completed),
         ];
+
+        /// <summary>
+        /// The browse-side canary, kept out of <see cref="BrowseItems"/> so it can only ever be
+        /// served by <see cref="BrowseItemsFor"/> deciding the filter allows it.
+        /// <para>
+        /// It lives in its own list rather than carrying a flag because <c>RelatedMedia</c> has no
+        /// <c>IsAdult</c> — browse filtering is entirely server-side on AniList, so the client never
+        /// receives the field. That is exactly why the stub has to model the filter itself: nothing
+        /// on the client could re-derive it.
+        /// </para>
+        /// </summary>
+        public static readonly IReadOnlyList<BrowseMediaItem> AdultCanaryBrowseItems =
+        [
+            BrowseItem(AdultCanary, status: null),
+        ];
+
+        /// <summary>
+        /// Applies the adult filter the way AniList's <c>isAdult</c> argument does, so the CI stub
+        /// honours the same contract the real client relies on: <c>false</c> = SFW only,
+        /// <c>true</c> = 18+ only, <c>null</c> = argument omitted, both mix in.
+        /// </summary>
+        public static IReadOnlyList<BrowseMediaItem> BrowseItemsFor(bool? isAdult) => isAdult switch
+        {
+            false => BrowseItems,
+            true => AdultCanaryBrowseItems,
+            null => [.. BrowseItems, .. AdultCanaryBrowseItems],
+        };
 
         private static BrowseMediaItem BrowseItem(MediaListEntry entry, MediaListStatus? status)
         {

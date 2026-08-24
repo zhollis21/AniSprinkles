@@ -108,6 +108,12 @@ public partial class SettingsPage : ContentPage
         base.OnDisappearing();
         _hasAppeared = false;
         _loadVersion++;
+
+        // Send anything still sitting in the auto-save debounce. Not awaited: blocking here would
+        // stall the tab transition on a network call, and the page model is a singleton so the save
+        // survives this page going away. AppSettings' pending guard is what keeps another surface
+        // from syncing the server's stale copy back while this is in flight.
+        _ = _viewModel?.FlushPendingSaveAsync();
     }
 
     protected override void OnHandlerChanged()
