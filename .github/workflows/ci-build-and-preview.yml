@@ -77,6 +77,24 @@ jobs:
 
       - name: Run Tests
         run: |
+          # A skipped test is a test that stopped checking, and the summary table alone never caught
+          # one: #117's glyph suite skips gracefully when it cannot locate the icon package, so when
+          # #62 moved the app csproj out from under that lookup, all 190 cases turned into skips and
+          # the job still reported green. Both numbers below are gates, not decoration.
+          #
+          #   MAX_SKIPPED_TESTS - raise it, with a comment saying why, only for a skip that is
+          #     genuinely environment-dependent and that CI cannot satisfy.
+          #   MIN_TOTAL_TESTS   - a floor on the summed total, so tests that VANISH are caught as
+          #     well as tests that skip. The same incident also dropped the total by 231, and a
+          #     stale-assembly run reported 557 against a 644-test suite; neither shows up as a skip.
+          #     Ratchet it up as the suite grows. Lowering it needs a reason.
+          MAX_SKIPPED_TESTS=0
+          MIN_TOTAL_TESTS=830
+
+          # The parsed counts are strings and can be the literal "?" (see the new-runner branch
+          # below), so everything numeric is guarded through here before a -gt / -lt comparison.
+          is_count() { case "$1" in '' | *[!0-9]*) return 1 ;; *) return 0 ;; esac; }
+
           # Auto-detect test projects so future additions are picked up
           TEST_PROJECTS=$(find . -name "*.csproj" \( -path "*/tests/*" -o -path "*/test/*" -o -name "*Test*.csproj" -o -name "*Tests*.csproj" \) | grep -v node_modules || true)
           if [ -n "$TEST_PROJECTS" ]; then
@@ -91,6 +109,8 @@ jobs:
             } >> "$GITHUB_STEP_SUMMARY"
 
             OVERALL_EXIT=0
+            TOTAL_ALL=0
+            TOTAL_SEEN=0
             for proj in $TEST_PROJECTS; do
               PROJ_NAME=$(basename "$proj" .csproj)
               set +e
@@ -100,7 +120,7 @@ jobs:
               echo "$OUTPUT"
 
               # Support both output formats:
-              #   New runner:  "Passed!  - Failed: 0, Passed: 25, ..., Duration: 200 ms"
+              #   New runner:  "Passed!  - Failed: 0, Passed: 25, ..., Duration: 200 ms" (or "Duration: 2 s" on slower runs)
               #   VSTest/CI:   "Test Run Successful.\nTotal tests: 25\n     Passed: 25\n Total time: 0.71 Seconds"
               NEW_LINE=$(echo "$OUTPUT" | grep -E "^(Passed|Failed)!  - " | tail -1)
               VSTEST_LINE=$(echo "$OUTPUT" | grep -E "^Test Run (Successful|Failed)\." | tail -1)
@@ -109,12 +129,14 @@ jobs:
                 P=$(echo "$NEW_LINE" | grep -oP 'Passed:\s*\K\d+' | head -1);  P="${P:-?}"
                 F=$(echo "$NEW_LINE" | grep -oP 'Failed:\s*\K\d+' | head -1);  F="${F:-?}"
                 S=$(echo "$NEW_LINE" | grep -oP 'Skipped:\s*\K\d+' | head -1); S="${S:-?}"
-                D=$(echo "$NEW_LINE" | grep -oP 'Duration:\s*\K[\d.]+ ms' | head -1); D="${D:-?}"
+                T=$(echo "$NEW_LINE" | grep -oP 'Total:\s*\K\d+' | head -1);   T="${T:-?}"
+                D=$(echo "$NEW_LINE" | grep -oP 'Duration:\s*\K[\d.]+ m?s' | head -1); D="${D:-?}"
                 PARSED=1
               elif [ -n "$VSTEST_LINE" ]; then
                 P=$(echo "$OUTPUT" | grep -oP '^\s+Passed:\s*\K\d+'  | head -1); P="${P:-0}"
                 F=$(echo "$OUTPUT" | grep -oP '^\s+Failed:\s*\K\d+'  | head -1); F="${F:-0}"
                 S=$(echo "$OUTPUT" | grep -oP '^\s+Skipped:\s*\K\d+' | head -1); S="${S:-0}"
+                T=$(echo "$OUTPUT" | grep -oP 'Total tests:\s*\K\d+' | head -1); T="${T:-0}"
                 D_RAW=$(echo "$OUTPUT" | grep -oP 'Total time:\s*\K[\d.]+' | head -1)
                 D="${D_RAW:+${D_RAW}s}"; D="${D:-?}"
                 PARSED=1
@@ -125,6 +147,21 @@ jobs:
               # Pass/fail is keyed off the test runner's exit code, not our ability to parse
               # its output — a runner output format change should never fail CI on its own.
               if [ "$PROJ_EXIT" -eq 0 ]; then ICON="✅"; else ICON="❌"; OVERALL_EXIT=1; fi
+
+              # The counts are only ever acted on when the output parsed, which keeps that rule
+              # intact. S can be the literal "?" while PARSED is still 1 — the new-runner branch
+              # defaults it that way — so it goes through is_count rather than a bare -gt.
+              if [ "$PARSED" -eq 1 ] && is_count "$S" && [ "$S" -gt "$MAX_SKIPPED_TESTS" ]; then
+                echo "::error::$PROJ_NAME skipped $S test(s); the allowed maximum is $MAX_SKIPPED_TESTS. A skipped test is a test that stopped checking — fix it, or raise MAX_SKIPPED_TESTS in ci-build-and-preview.yml with a comment saying why."
+                ICON="❌"
+                OVERALL_EXIT=1
+              fi
+
+              if [ "$PARSED" -eq 1 ] && is_count "$T"; then
+                TOTAL_ALL=$((TOTAL_ALL + T))
+                TOTAL_SEEN=1
+              fi
+
               if [ "$PARSED" -eq 1 ]; then
                 echo "| \`$PROJ_NAME\` | $ICON | $P | $F | $S | $D |" >> "$GITHUB_STEP_SUMMARY"
               else
@@ -132,7 +169,22 @@ jobs:
               fi
             done
 
-            echo "" >> "$GITHUB_STEP_SUMMARY"
+            # A suite that shrinks is as invisible as one that skips. Gated on at least one project
+            # having parsed, so unparseable output still cannot fail the job on its own.
+            if [ "$TOTAL_SEEN" -eq 1 ] && [ "$TOTAL_ALL" -lt "$MIN_TOTAL_TESTS" ]; then
+              echo "::error::Only $TOTAL_ALL test(s) ran across all projects; the floor is $MIN_TOTAL_TESTS. Tests were removed or did not run — rule out a stale assembly before lowering MIN_TOTAL_TESTS in ci-build-and-preview.yml."
+              OVERALL_EXIT=1
+            fi
+
+            {
+              echo ""
+              if [ "$TOTAL_SEEN" -eq 1 ]; then
+                echo "_$TOTAL_ALL tests total (floor $MIN_TOTAL_TESTS) · $MAX_SKIPPED_TESTS skips allowed._"
+              else
+                echo "_Counts could not be parsed; the result above is the runner's exit code only._"
+              fi
+              echo ""
+            } >> "$GITHUB_STEP_SUMMARY"
             exit $OVERALL_EXIT
           else
             echo "::notice::No test projects found. Tests will run automatically when added."
@@ -350,6 +402,52 @@ jobs:
             sleep 2
           }
 
+          # ---- Adult-content filter gate --------------------------------------------------------
+          #
+          # CIAniListClient seeds one fixture flagged IsAdult, titled ADULT_CANARY, into the stub
+          # list and the browse/search results. The stub viewer leaves DisplayAdultContent off and
+          # nothing in this job turns it on, so every surface must filter it out. If it renders, the
+          # adult filter is broken — and the same defect on a real account would be putting real 18+
+          # content in front of a user who asked not to see it. That is worth a red build, not a
+          # screenshot somebody might scroll past.
+          #
+          # The canary carries no adult content itself: the title is a marker and it has no cover
+          # image, so a failure shows the app's own placeholder next to a shouted label.
+          #
+          # Deliberately a warning when the dump cannot be read: an unreadable dump is a flaky
+          # emulator, not evidence the filter is broken, and this must not fail CI on its own.
+          ADULT_CANARY="18PLUS CANARY"
+          ADULT_CANARY_HITS=0
+
+          # The gate greps for a literal, so renaming the fixture title would leave it matching
+          # nothing and quietly passing forever — the precise failure #122 exists to prevent. Assert
+          # the marker still appears in the stub that is supposed to emit it.
+          # ${VAR:-default} because this script runs under `set -u`; the runner exports
+          # GITHUB_WORKSPACE, but an unset one would abort the whole capture rather than skip a
+          # check. Every other path here is workspace-relative, so "." is the right fallback.
+          CANARY_SOURCE="${GITHUB_WORKSPACE:-.}/src/AniSprinkles/Services/CI/CIAniListClient.cs"
+          if [ ! -f "$CANARY_SOURCE" ]; then
+            echo "::error::Cannot verify the adult-canary marker: $CANARY_SOURCE not found."
+            exit 1
+          fi
+          if ! grep -qF "$ADULT_CANARY" "$CANARY_SOURCE"; then
+            echo "::error::The adult-canary marker '$ADULT_CANARY' no longer appears in CIAniListClient.cs. Either the fixture was renamed (update ADULT_CANARY here to match) or it was removed — until then this gate is checking for a string nothing emits."
+            exit 1
+          fi
+
+          assert_no_adult_canary() {
+            local where="$1"
+            if ! adb shell uiautomator dump /sdcard/ui_canary.xml >/dev/null 2>&1; then
+              echo "::warning::Could not dump UI to check the adult-content filter on $where"
+              return 0
+            fi
+
+            if adb shell cat /sdcard/ui_canary.xml 2>/dev/null | grep -qF "$ADULT_CANARY"; then
+              echo "::error::Adult-content filter FAILED on $where — the 18+ canary fixture rendered while DisplayAdultContent is off. Check DiscoverSectionFetch's pinned filter, the isAdult query argument, and MediaListSectionsMerger.OrderAndFilterGroups (#118)."
+              ADULT_CANARY_HITS=$((ADULT_CANARY_HITS + 1))
+            fi
+          }
+
           # Locate the APK
           APK_PATH=$(find /tmp/apk -name "*-Signed.apk" -type f | head -1 || true)
           if [ -z "$APK_PATH" ]; then
@@ -444,6 +542,7 @@ jobs:
           # Screenshot 1: Library tab, Anime sub-tab (the app's launch destination)
           adb shell screencap -p /sdcard/my_anime.png || echo "::warning::Failed to capture Library screenshot"
           adb pull /sdcard/my_anime.png screenshots/my_anime.png || echo "::warning::Failed to pull Library screenshot"
+          assert_no_adult_canary "Library"
           echo "Captured: my_anime.png (Library — $AUTH_MODE)"
 
           # Tap One Piece to open its details page
@@ -607,6 +706,7 @@ jobs:
             # Screenshot 7: Discover landing (section rows)
             adb shell screencap -p /sdcard/discover.png || echo "::warning::Failed to capture Discover screenshot"
             adb pull /sdcard/discover.png screenshots/discover.png || echo "::warning::Failed to pull Discover screenshot"
+            assert_no_adult_canary "Discover"
             echo "Captured: discover.png (Discover — $AUTH_MODE)"
 
             # Screenshot 8: View All (default Large grid). Tap the first "View All ›".
@@ -626,6 +726,7 @@ jobs:
               sleep 1
               adb shell screencap -p /sdcard/browse.png || echo "::warning::Failed to capture View All screenshot"
               adb pull /sdcard/browse.png screenshots/browse.png || echo "::warning::Failed to pull View All screenshot"
+              assert_no_adult_canary "View All"
               echo "Captured: browse.png (View All — $AUTH_MODE)"
               # Back to Discover (View All is a stacked route, so BACK is safe here).
               adb shell input keyevent KEYCODE_BACK
@@ -665,6 +766,7 @@ jobs:
             sleep 1
             adb shell screencap -p /sdcard/search.png || echo "::warning::Failed to capture Search screenshot"
             adb pull /sdcard/search.png screenshots/search.png || echo "::warning::Failed to pull Search screenshot"
+            assert_no_adult_canary "Search"
             echo "Captured: search.png (Search — $AUTH_MODE)"
           else
             echo "::warning::Could not reach the Search tab — skipping search screenshot"
@@ -697,6 +799,14 @@ jobs:
             > logs/logcat-tags.txt 2>&1 || echo "::warning::Failed to dump tag-filtered logcat"
           echo "Logcat sizes:"
           ls -la logs/
+
+          # Fail last, so the screenshots and logcat above are still captured and uploaded — they
+          # are what someone needs to diagnose a filter regression. Each surface already emitted its
+          # own ::error:: naming where the canary rendered.
+          if [ "$ADULT_CANARY_HITS" -gt 0 ]; then
+            echo "::error::Adult-content filter failed on $ADULT_CANARY_HITS surface(s). See the errors above and the uploaded screenshots."
+            exit 1
+          fi
           SCRIPT
           chmod +x /tmp/capture_screenshots.sh
 

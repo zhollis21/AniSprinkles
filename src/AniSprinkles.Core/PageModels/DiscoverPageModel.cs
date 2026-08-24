@@ -30,6 +30,13 @@ public partial class DiscoverPageModel : ObservableObject
 
     private bool _hasLoaded;
     private DateTimeOffset _lastSuccessfulLoadUtc;
+
+    /// <summary>
+    /// The DisplayAdultContent value the rows' current items were loaded under. Decides whether a
+    /// revisit has to refetch, and — since it describes exactly the policy the rows are holding —
+    /// is also what row paging is pinned to (#118). Assigned only on a successful load, so a failed
+    /// refresh deliberately leaves it describing the rows the user is still looking at.
+    /// </summary>
     private bool _loadedWithAdultContent;
     private bool _loadedAuthenticated;
 
@@ -64,8 +71,12 @@ public partial class DiscoverPageModel : ObservableObject
         Rows = DiscoverSectionDefinitions.All
             .Select(definition => new DiscoverRow(
                 definition,
+                // The seeded policy, not a live AppSettings read: page 2 must match the policy page
+                // 1 was seeded under, or a commit landing mid-session mixes 18+ and SFW items into
+                // one row (#118). Read from the field at call time, so a re-seed moves every row's
+                // paging onto the new policy together.
                 (page, _, ct) => DiscoverSectionFetch.PageAsync(
-                    _aniListClient, _timeProvider, definition, page, SectionPerPage, ct)))
+                    _aniListClient, _timeProvider, definition, _loadedWithAdultContent, page, SectionPerPage, ct)))
             .ToList();
 
         // Shared long-press flows. A successful mutation is written back onto EVERY item showing
@@ -246,6 +257,9 @@ public partial class DiscoverPageModel : ObservableObject
 
             _hasLoaded = true;
             _lastSuccessfulLoadUtc = _timeProvider.GetUtcNow();
+            // Also re-pins every row's paging onto the policy this seed used. Safe here rather than
+            // beside the Seed() calls above because nothing awaits in between, so no Load More can
+            // interleave.
             _loadedWithAdultContent = displayAdult;
             _loadedAuthenticated = isAuthenticated;
             CurrentState = PageState.Content;

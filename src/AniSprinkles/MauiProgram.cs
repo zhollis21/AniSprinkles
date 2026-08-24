@@ -23,6 +23,13 @@ public static class MauiProgram
                 options.TracesSampleRate = 0.0;
                 options.Debug = false;
                 options.DiagnosticLevel = SentryLevel.Warning;
+
+                // Defence in depth for #124. AniListClient already redacts server-derived text
+                // before it reaches an exception message, but Sentry captures unhandled exceptions
+                // by a path that goes through neither it nor ErrorReportService, so every outbound
+                // event gets one last pass. SendDefaultPii above governs IP/username, not message
+                // content — it would not have caught a token echoed in an error body.
+                options.SetBeforeSend((evt, _) => SentryScrubber.Scrub(evt));
 #if DEBUG
                 options.Environment = "Development";
 #else

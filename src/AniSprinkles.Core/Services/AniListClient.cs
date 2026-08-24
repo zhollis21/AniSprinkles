@@ -3,6 +3,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using AniSprinkles.Utilities;
 using Microsoft.Extensions.Logging;
 
 namespace AniSprinkles.Services;
@@ -860,11 +861,20 @@ public class AniListClient : IAniListClient
                     // Body wasn't valid GraphQL JSON — fall through to generic message.
                 }
 
+                // Classify on the RAW message, redact only what gets stored. The classifier matches
+                // on "Invalid token" / "Unauthorized" / the outage markers, none of which the bearer
+                // pattern touches today — but keeping the order explicit means a future redaction
+                // pattern cannot silently reclassify an error as Unknown.
                 var kind = ClassifyHttpError(response.StatusCode, apiMessage);
-                var fallback = content?.Length > 500 ? content[..500] + "..." : content;
+
+                // Both halves are server-controlled text and both end up in the exception message,
+                // which reaches the file log, logcat and Sentry. An auth-failure body that echoes
+                // the credential lands here, so redact before constructing (#124).
+                var safeApiMessage = SensitiveText.Redact(apiMessage);
+                var fallback = SensitiveText.Redact(content?.Length > 500 ? content[..500] + "..." : content);
                 throw new AniListApiException(
                     kind,
-                    apiMessage ?? $"AniList request failed ({(int)response.StatusCode}) for {operationName}. {fallback}");
+                    safeApiMessage ?? $"AniList request failed ({(int)response.StatusCode}) for {operationName}. {fallback}");
             }
 
             var graphQl = JsonSerializer.Deserialize<GraphQlResponse<T>>(content, JsonOptions);
@@ -875,9 +885,11 @@ public class AniListClient : IAniListClient
 
             if (graphQl.Errors is { Count: > 0 })
             {
+                // AniList returns GraphQL errors on HTTP 200 as well, so this is the same exposure
+                // as the failure branch above: classify raw, store redacted (#124).
                 var message = graphQl.Errors[0].Message ?? "AniList request returned an error.";
                 var errorKind = ClassifyGraphQlError(message);
-                throw new AniListApiException(errorKind, message);
+                throw new AniListApiException(errorKind, SensitiveText.Redact(message));
             }
 
             if (graphQl.Data is null)
