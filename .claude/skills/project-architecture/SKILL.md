@@ -93,7 +93,15 @@ Spinner-first for first loads; inline refresh for cached content. Details page h
 
 ## AppSettings
 
-Static class (`Utilities/`). Persists title language, score format, adult content toggle, and section order via `Preferences`. Loaded at app start, synced from AniList Viewer when authenticated.
+Static class (`Utilities/`). Persists title language, score format, adult content toggle, and section order. Loaded at app start, synced from AniList Viewer when authenticated, cleared on sign-out.
+
+Storage goes through `AppSettings.Storage`, an `internal static IPreferences` defaulting to `Preferences.Default` (#121). It exists so the persistence paths are reachable from `tests/` — the static `Preferences.Default` throws `NotImplementedInReferenceAssemblyException` on the plain `net10.0` TFM. `TestDataBuilder.ResetAppSettings()` installs a `FakePreferences` and returns it. Nothing reassigns it in production, so the field initializer *is* the shipping behaviour. It stays static rather than becoming an injected `IAppSettings` because `Media.DisplayTitle` and `MediaListEntry.ScoreDisplay` consult it and DI never constructs those POCOs; full injection is still open in #52.
+
+`DisplayAdultContent` has its own committing setter, `SetDisplayAdultContent`, called the moment the Settings toggle flips — ahead of the 1500 ms debounce that saves the profile to AniList (#118). Every browse surface filters on this value and only re-checks it when the page appears, so committing late left 18+ results on screen after the user turned them off. Paging must be pinned to the value its page 1 was seeded under (`_seededDisplayAdult` / `_loadedWithAdultContent`, passed into `DiscoverSectionFetch.PageAsync`) rather than re-reading the static per page, or one result set can hold two policies.
+
+**Four surfaces compare it, not three.** Discover, Search and View All each check it against the value their results were loaded under. Library does too (`MyAnimePageModel._loadedWithAdultContent`) and needs to: its refresh short-circuit is a five-minute *time* window, so without the comparison a change would not clear even by tabbing away and back.
+
+**A local change outranks the server's copy until confirmed.** `SetDisplayAdultContent` raises a pending flag that makes `SyncFromViewer` skip that one field; `ConfirmDisplayAdultContentSaved` (called from `SettingsPageModel.PopulateFromUser`, i.e. on any viewer response) clears it, as does `Clear` on sign-out. Without it, a Library refresh inside the debounce window reads the server's stale copy and reverts the toggle app-wide. `SettingsPage.OnDisappearing` also calls `SettingsPageModel.FlushPendingSaveAsync` to send a pending change on navigate-away — that narrows the window and stops a change being lost if the app is killed, but it cannot close it on its own: Shell does not guarantee OnDisappearing precedes the next page's OnAppearing, and a save can fail.
 
 ## AniSprinkles-Specific Defaults
 

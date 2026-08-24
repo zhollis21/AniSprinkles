@@ -402,6 +402,52 @@ jobs:
             sleep 2
           }
 
+          # ---- Adult-content filter gate --------------------------------------------------------
+          #
+          # CIAniListClient seeds one fixture flagged IsAdult, titled ADULT_CANARY, into the stub
+          # list and the browse/search results. The stub viewer leaves DisplayAdultContent off and
+          # nothing in this job turns it on, so every surface must filter it out. If it renders, the
+          # adult filter is broken — and the same defect on a real account would be putting real 18+
+          # content in front of a user who asked not to see it. That is worth a red build, not a
+          # screenshot somebody might scroll past.
+          #
+          # The canary carries no adult content itself: the title is a marker and it has no cover
+          # image, so a failure shows the app's own placeholder next to a shouted label.
+          #
+          # Deliberately a warning when the dump cannot be read: an unreadable dump is a flaky
+          # emulator, not evidence the filter is broken, and this must not fail CI on its own.
+          ADULT_CANARY="18PLUS CANARY"
+          ADULT_CANARY_HITS=0
+
+          # The gate greps for a literal, so renaming the fixture title would leave it matching
+          # nothing and quietly passing forever — the precise failure #122 exists to prevent. Assert
+          # the marker still appears in the stub that is supposed to emit it.
+          # ${VAR:-default} because this script runs under `set -u`; the runner exports
+          # GITHUB_WORKSPACE, but an unset one would abort the whole capture rather than skip a
+          # check. Every other path here is workspace-relative, so "." is the right fallback.
+          CANARY_SOURCE="${GITHUB_WORKSPACE:-.}/src/AniSprinkles/Services/CI/CIAniListClient.cs"
+          if [ ! -f "$CANARY_SOURCE" ]; then
+            echo "::error::Cannot verify the adult-canary marker: $CANARY_SOURCE not found."
+            exit 1
+          fi
+          if ! grep -qF "$ADULT_CANARY" "$CANARY_SOURCE"; then
+            echo "::error::The adult-canary marker '$ADULT_CANARY' no longer appears in CIAniListClient.cs. Either the fixture was renamed (update ADULT_CANARY here to match) or it was removed — until then this gate is checking for a string nothing emits."
+            exit 1
+          fi
+
+          assert_no_adult_canary() {
+            local where="$1"
+            if ! adb shell uiautomator dump /sdcard/ui_canary.xml >/dev/null 2>&1; then
+              echo "::warning::Could not dump UI to check the adult-content filter on $where"
+              return 0
+            fi
+
+            if adb shell cat /sdcard/ui_canary.xml 2>/dev/null | grep -qF "$ADULT_CANARY"; then
+              echo "::error::Adult-content filter FAILED on $where — the 18+ canary fixture rendered while DisplayAdultContent is off. Check DiscoverSectionFetch's pinned filter, the isAdult query argument, and MediaListSectionsMerger.OrderAndFilterGroups (#118)."
+              ADULT_CANARY_HITS=$((ADULT_CANARY_HITS + 1))
+            fi
+          }
+
           # Locate the APK
           APK_PATH=$(find /tmp/apk -name "*-Signed.apk" -type f | head -1 || true)
           if [ -z "$APK_PATH" ]; then
@@ -496,6 +542,7 @@ jobs:
           # Screenshot 1: Library tab, Anime sub-tab (the app's launch destination)
           adb shell screencap -p /sdcard/my_anime.png || echo "::warning::Failed to capture Library screenshot"
           adb pull /sdcard/my_anime.png screenshots/my_anime.png || echo "::warning::Failed to pull Library screenshot"
+          assert_no_adult_canary "Library"
           echo "Captured: my_anime.png (Library — $AUTH_MODE)"
 
           # Tap One Piece to open its details page
@@ -659,6 +706,7 @@ jobs:
             # Screenshot 7: Discover landing (section rows)
             adb shell screencap -p /sdcard/discover.png || echo "::warning::Failed to capture Discover screenshot"
             adb pull /sdcard/discover.png screenshots/discover.png || echo "::warning::Failed to pull Discover screenshot"
+            assert_no_adult_canary "Discover"
             echo "Captured: discover.png (Discover — $AUTH_MODE)"
 
             # Screenshot 8: View All (default Large grid). Tap the first "View All ›".
@@ -678,6 +726,7 @@ jobs:
               sleep 1
               adb shell screencap -p /sdcard/browse.png || echo "::warning::Failed to capture View All screenshot"
               adb pull /sdcard/browse.png screenshots/browse.png || echo "::warning::Failed to pull View All screenshot"
+              assert_no_adult_canary "View All"
               echo "Captured: browse.png (View All — $AUTH_MODE)"
               # Back to Discover (View All is a stacked route, so BACK is safe here).
               adb shell input keyevent KEYCODE_BACK
@@ -717,6 +766,7 @@ jobs:
             sleep 1
             adb shell screencap -p /sdcard/search.png || echo "::warning::Failed to capture Search screenshot"
             adb pull /sdcard/search.png screenshots/search.png || echo "::warning::Failed to pull Search screenshot"
+            assert_no_adult_canary "Search"
             echo "Captured: search.png (Search — $AUTH_MODE)"
           else
             echo "::warning::Could not reach the Search tab — skipping search screenshot"
@@ -749,6 +799,14 @@ jobs:
             > logs/logcat-tags.txt 2>&1 || echo "::warning::Failed to dump tag-filtered logcat"
           echo "Logcat sizes:"
           ls -la logs/
+
+          # Fail last, so the screenshots and logcat above are still captured and uploaded — they
+          # are what someone needs to diagnose a filter regression. Each surface already emitted its
+          # own ::error:: naming where the canary rendered.
+          if [ "$ADULT_CANARY_HITS" -gt 0 ]; then
+            echo "::error::Adult-content filter failed on $ADULT_CANARY_HITS surface(s). See the errors above and the uploaded screenshots."
+            exit 1
+          fi
           SCRIPT
           chmod +x /tmp/capture_screenshots.sh
 
