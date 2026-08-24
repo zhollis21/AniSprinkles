@@ -77,6 +77,24 @@ jobs:
 
       - name: Run Tests
         run: |
+          # A skipped test is a test that stopped checking, and the summary table alone never caught
+          # one: #117's glyph suite skips gracefully when it cannot locate the icon package, so when
+          # #62 moved the app csproj out from under that lookup, all 190 cases turned into skips and
+          # the job still reported green. Both numbers below are gates, not decoration.
+          #
+          #   MAX_SKIPPED_TESTS - raise it, with a comment saying why, only for a skip that is
+          #     genuinely environment-dependent and that CI cannot satisfy.
+          #   MIN_TOTAL_TESTS   - a floor on the summed total, so tests that VANISH are caught as
+          #     well as tests that skip. The same incident also dropped the total by 231, and a
+          #     stale-assembly run reported 557 against a 644-test suite; neither shows up as a skip.
+          #     Ratchet it up as the suite grows. Lowering it needs a reason.
+          MAX_SKIPPED_TESTS=0
+          MIN_TOTAL_TESTS=830
+
+          # The parsed counts are strings and can be the literal "?" (see the new-runner branch
+          # below), so everything numeric is guarded through here before a -gt / -lt comparison.
+          is_count() { case "$1" in '' | *[!0-9]*) return 1 ;; *) return 0 ;; esac; }
+
           # Auto-detect test projects so future additions are picked up
           TEST_PROJECTS=$(find . -name "*.csproj" \( -path "*/tests/*" -o -path "*/test/*" -o -name "*Test*.csproj" -o -name "*Tests*.csproj" \) | grep -v node_modules || true)
           if [ -n "$TEST_PROJECTS" ]; then
@@ -91,6 +109,8 @@ jobs:
             } >> "$GITHUB_STEP_SUMMARY"
 
             OVERALL_EXIT=0
+            TOTAL_ALL=0
+            TOTAL_SEEN=0
             for proj in $TEST_PROJECTS; do
               PROJ_NAME=$(basename "$proj" .csproj)
               set +e
@@ -100,7 +120,7 @@ jobs:
               echo "$OUTPUT"
 
               # Support both output formats:
-              #   New runner:  "Passed!  - Failed: 0, Passed: 25, ..., Duration: 200 ms"
+              #   New runner:  "Passed!  - Failed: 0, Passed: 25, ..., Duration: 200 ms" (or "Duration: 2 s" on slower runs)
               #   VSTest/CI:   "Test Run Successful.\nTotal tests: 25\n     Passed: 25\n Total time: 0.71 Seconds"
               NEW_LINE=$(echo "$OUTPUT" | grep -E "^(Passed|Failed)!  - " | tail -1)
               VSTEST_LINE=$(echo "$OUTPUT" | grep -E "^Test Run (Successful|Failed)\." | tail -1)
@@ -109,12 +129,14 @@ jobs:
                 P=$(echo "$NEW_LINE" | grep -oP 'Passed:\s*\K\d+' | head -1);  P="${P:-?}"
                 F=$(echo "$NEW_LINE" | grep -oP 'Failed:\s*\K\d+' | head -1);  F="${F:-?}"
                 S=$(echo "$NEW_LINE" | grep -oP 'Skipped:\s*\K\d+' | head -1); S="${S:-?}"
-                D=$(echo "$NEW_LINE" | grep -oP 'Duration:\s*\K[\d.]+ ms' | head -1); D="${D:-?}"
+                T=$(echo "$NEW_LINE" | grep -oP 'Total:\s*\K\d+' | head -1);   T="${T:-?}"
+                D=$(echo "$NEW_LINE" | grep -oP 'Duration:\s*\K[\d.]+ m?s' | head -1); D="${D:-?}"
                 PARSED=1
               elif [ -n "$VSTEST_LINE" ]; then
                 P=$(echo "$OUTPUT" | grep -oP '^\s+Passed:\s*\K\d+'  | head -1); P="${P:-0}"
                 F=$(echo "$OUTPUT" | grep -oP '^\s+Failed:\s*\K\d+'  | head -1); F="${F:-0}"
                 S=$(echo "$OUTPUT" | grep -oP '^\s+Skipped:\s*\K\d+' | head -1); S="${S:-0}"
+                T=$(echo "$OUTPUT" | grep -oP 'Total tests:\s*\K\d+' | head -1); T="${T:-0}"
                 D_RAW=$(echo "$OUTPUT" | grep -oP 'Total time:\s*\K[\d.]+' | head -1)
                 D="${D_RAW:+${D_RAW}s}"; D="${D:-?}"
                 PARSED=1
@@ -125,6 +147,21 @@ jobs:
               # Pass/fail is keyed off the test runner's exit code, not our ability to parse
               # its output — a runner output format change should never fail CI on its own.
               if [ "$PROJ_EXIT" -eq 0 ]; then ICON="✅"; else ICON="❌"; OVERALL_EXIT=1; fi
+
+              # The counts are only ever acted on when the output parsed, which keeps that rule
+              # intact. S can be the literal "?" while PARSED is still 1 — the new-runner branch
+              # defaults it that way — so it goes through is_count rather than a bare -gt.
+              if [ "$PARSED" -eq 1 ] && is_count "$S" && [ "$S" -gt "$MAX_SKIPPED_TESTS" ]; then
+                echo "::error::$PROJ_NAME skipped $S test(s); the allowed maximum is $MAX_SKIPPED_TESTS. A skipped test is a test that stopped checking — fix it, or raise MAX_SKIPPED_TESTS in ci-build-and-preview.yml with a comment saying why."
+                ICON="❌"
+                OVERALL_EXIT=1
+              fi
+
+              if [ "$PARSED" -eq 1 ] && is_count "$T"; then
+                TOTAL_ALL=$((TOTAL_ALL + T))
+                TOTAL_SEEN=1
+              fi
+
               if [ "$PARSED" -eq 1 ]; then
                 echo "| \`$PROJ_NAME\` | $ICON | $P | $F | $S | $D |" >> "$GITHUB_STEP_SUMMARY"
               else
@@ -132,7 +169,22 @@ jobs:
               fi
             done
 
-            echo "" >> "$GITHUB_STEP_SUMMARY"
+            # A suite that shrinks is as invisible as one that skips. Gated on at least one project
+            # having parsed, so unparseable output still cannot fail the job on its own.
+            if [ "$TOTAL_SEEN" -eq 1 ] && [ "$TOTAL_ALL" -lt "$MIN_TOTAL_TESTS" ]; then
+              echo "::error::Only $TOTAL_ALL test(s) ran across all projects; the floor is $MIN_TOTAL_TESTS. Tests were removed or did not run — rule out a stale assembly before lowering MIN_TOTAL_TESTS in ci-build-and-preview.yml."
+              OVERALL_EXIT=1
+            fi
+
+            {
+              echo ""
+              if [ "$TOTAL_SEEN" -eq 1 ]; then
+                echo "_$TOTAL_ALL tests total (floor $MIN_TOTAL_TESTS) · $MAX_SKIPPED_TESTS skips allowed._"
+              else
+                echo "_Counts could not be parsed; the result above is the runner's exit code only._"
+              fi
+              echo ""
+            } >> "$GITHUB_STEP_SUMMARY"
             exit $OVERALL_EXIT
           else
             echo "::notice::No test projects found. Tests will run automatically when added."
