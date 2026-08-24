@@ -52,6 +52,23 @@ public class SensitiveTextTests
         Assert.DoesNotContain(Jwt, SensitiveText.Redact(prefix + Jwt));
     }
 
+    [Theory]
+    // base64url — what a JWT actually uses ( - and _ , no padding).
+    [InlineData("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NSJ9.dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk")]
+    // standard base64 — + and / , with = padding.
+    [InlineData("YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXo+P0AjJCVeJiooKV8rfDo8Pg==")]
+    [InlineData("a+b/c+d/e==")]
+    public void Redact_CoversBothBase64Alphabets(string token)
+    {
+        // The character class carries -_ and +/ deliberately, so a token is scrubbed whichever
+        // encoding it arrives in. Narrowing it to one alphabet would leak the other into the log
+        // file and Sentry, which is the whole point of #124.
+        var result = SensitiveText.Redact("Rejected: Bearer " + token);
+
+        Assert.DoesNotContain(token, result);
+        Assert.Equal("Rejected: " + SensitiveText.RedactedBearer, result);
+    }
+
     [Fact]
     public void Redact_LeavesTextWithNoTokenAlone()
     {

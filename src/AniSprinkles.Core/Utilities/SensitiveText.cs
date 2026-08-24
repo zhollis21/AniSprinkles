@@ -22,8 +22,18 @@ public static class SensitiveText
 {
     /// <summary>
     /// Matches the token in free text, not in a header — the credential arrives inside a JSON error
-    /// body echoed back by AniList, so the surrounding characters are arbitrary. The character class
-    /// is the unreserved URL set plus the base64url padding a JWT can end on.
+    /// body echoed back by AniList, so the surrounding characters are arbitrary.
+    /// <para>
+    /// The character class spans BOTH base64 alphabets on purpose: <c>A-Za-z0-9</c> plus <c>-</c>
+    /// and <c>_</c> (base64url, which is what a JWT uses) and <c>+</c> and <c>/</c> (standard
+    /// base64), with <c>.</c> for the JWT's segment separators and <c>~</c> completing the RFC 3986
+    /// unreserved set. The trailing <c>=*</c> is outside the class and covers the padding either
+    /// alphabet can end on.
+    /// </para>
+    /// <para>
+    /// Do not narrow it to one alphabet. Over-matching here costs a few extra characters of an
+    /// error message; under-matching leaks a credential into the log file and Sentry (#124).
+    /// </para>
     /// </summary>
     private static readonly Regex BearerTokenRegex =
         new(@"Bearer\s+[A-Za-z0-9\-\._~\+\/]+=*", RegexOptions.IgnoreCase | RegexOptions.Compiled);
