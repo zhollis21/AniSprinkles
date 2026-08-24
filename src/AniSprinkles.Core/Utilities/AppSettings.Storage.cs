@@ -50,7 +50,8 @@ public static partial class AppSettings
     /// <para>
     /// Scoped to this one field deliberately. Cross-device changes to title language, score format
     /// and section order keep applying on every sync; only the setting with a pending local write is
-    /// shadowed, and only until <see cref="ConfirmDisplayAdultContentSaved"/> or <see cref="Clear"/>.
+    /// shadowed, and only until <see cref="SyncFromViewer"/> sees the server agree, or
+    /// <see cref="Clear"/> runs on sign-out.
     /// </para>
     /// </summary>
     private static bool _displayAdultContentAwaitingUpstream;
@@ -109,11 +110,20 @@ public static partial class AppSettings
     }
 
     /// <summary>
-    /// Marks the local adult-content change as confirmed upstream, so viewer syncs follow the server
-    /// again. Called when Settings receives a viewer response — the reply to our own save, or a
-    /// fresh load, either of which means the server's copy is no longer behind ours.
+    /// The value a caller should show for DisplayAdultContent given what the server just reported:
+    /// the server's, unless a local change is still awaiting confirmation and the server disagrees
+    /// with it — in which case the local choice wins and stays pending.
+    /// <para>
+    /// Exists so the Settings toggle and this static can never disagree. <c>PopulateFromUser</c>
+    /// assigns the bound property before <see cref="SyncFromViewer"/> runs, and that assignment
+    /// writes through to <see cref="SetDisplayAdultContent"/>, so without resolving first a stale
+    /// viewer would overwrite the pending value before the guard below was ever consulted.
+    /// </para>
     /// </summary>
-    public static void ConfirmDisplayAdultContentSaved() => _displayAdultContentAwaitingUpstream = false;
+    public static bool ResolveDisplayAdultContent(bool serverValue)
+        => _displayAdultContentAwaitingUpstream && serverValue != DisplayAdultContent
+            ? DisplayAdultContent
+            : serverValue;
 
     /// <summary>
     /// Syncs local app settings from an AniList Viewer response.
@@ -125,11 +135,24 @@ public static partial class AppSettings
         ScoreFormat = user.ScoreFormat;
         AnimeSectionOrder = user.AnimeSectionOrder;
 
-        // Skipped while a local change is still unconfirmed — see the field's remarks. Every other
-        // preference above follows the server unconditionally.
-        if (!_displayAdultContentAwaitingUpstream)
+        // The server's value wins unless a local change is still unconfirmed and the server
+        // disagrees with it — see the field's remarks. Every other preference above follows the
+        // server unconditionally.
+        //
+        // The marker clears exactly when the server reports the value we are holding, whichever
+        // response brought it: the reply to our own save, or a later load once it landed. It is
+        // deliberately NOT cleared on any viewer response — a fresh load is not a confirmation, it
+        // just asks a server that may still be behind us or may never have received the save at
+        // all. Clearing unconditionally reverted the user's choice on the next visit to Settings.
+        var serverAdult = user.Options.DisplayAdultContent;
+        if (_displayAdultContentAwaitingUpstream && serverAdult != DisplayAdultContent)
         {
-            DisplayAdultContent = user.Options.DisplayAdultContent;
+            // Still behind. Keep the local choice and stay pending.
+        }
+        else
+        {
+            DisplayAdultContent = serverAdult;
+            _displayAdultContentAwaitingUpstream = false;
         }
 
         Save();

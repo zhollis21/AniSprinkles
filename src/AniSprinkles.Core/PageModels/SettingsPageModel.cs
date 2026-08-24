@@ -326,8 +326,13 @@ public partial class SettingsPageModel : ObservableObject
         SelectedStaffNameLanguage = user.Options.StaffNameLanguage;
         SelectedScoreFormat = user.ScoreFormat;
 
-        // Content & Privacy
-        DisplayAdultContent = user.Options.DisplayAdultContent;
+        // Content & Privacy.
+        //
+        // Resolved rather than taken straight from the viewer: this assignment runs the changed
+        // handler, which writes through to AppSettings. Returning to Settings before our own save
+        // landed — or after it failed — would otherwise stamp the server's stale value over the
+        // choice the user just made, before SyncFromViewer's guard below saw it at all.
+        DisplayAdultContent = AppSettings.ResolveDisplayAdultContent(user.Options.DisplayAdultContent);
         AiringNotifications = user.Options.AiringNotifications;
         RestrictMessagesToFollowing = user.Options.RestrictMessagesToFollowing;
 
@@ -346,11 +351,9 @@ public partial class SettingsPageModel : ObservableObject
         _loadedRestrictMessages = RestrictMessagesToFollowing;
         _loadedActivityMergeTime = ActivityMergeTime;
 
-        // Sync local app settings from user profile. Confirming first is what lets the sync below
-        // apply the adult-content value: this method runs on a viewer response — the reply to our
-        // own save, or a fresh load — so at this point the server is no longer behind us, and the
-        // pending guard that protects the change in transit has done its job.
-        AppSettings.ConfirmDisplayAdultContentSaved();
+        // Sync local app settings from user profile. SyncFromViewer resolves the adult-content
+        // pending marker itself — it clears only when the server reports the value we are holding,
+        // so a save reply confirms it while a load against a server that has not caught up does not.
         AppSettings.SyncFromViewer(user);
 
         _suppressNotificationToggle = false;

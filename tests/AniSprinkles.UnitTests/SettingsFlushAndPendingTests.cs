@@ -67,6 +67,46 @@ public class SettingsFlushTests
     }
 
     [Fact]
+    public async Task ReturningToSettings_BeforeTheSaveLands_DoesNotRevertTheToggle()
+    {
+        // Copilot caught this on #129. PopulateFromUser confirmed the pending marker on ANY viewer
+        // response, but a fresh load is not a confirmation — it just asks the server, which is still
+        // behind while our save is in flight or after it failed. Worse, the toggle assignment in
+        // PopulateFromUser runs the changed-handler, writing the stale value straight into
+        // AppSettings before the guard in SyncFromViewer is ever consulted.
+        var harness = new Harness();
+        await harness.LoadAsync(displayAdultContent: true);
+        harness.Model.DisplayAdultContent = false;
+
+        // The user tabs back to Settings before the save has landed, so the viewer still says on.
+        await harness.Model.LoadAsync();
+
+        Assert.False(harness.Model.DisplayAdultContent);
+        Assert.False(AppSettings.DisplayAdultContent);
+    }
+
+    [Fact]
+    public async Task ReturningToSettings_OnceTheServerAgrees_ClearsThePendingMarker()
+    {
+        // The other half: the marker must not latch forever. Once the server reports the value the
+        // user chose, a later cross-device change has to be honoured again.
+        var harness = new Harness();
+        await harness.LoadAsync(displayAdultContent: true);
+        harness.Model.DisplayAdultContent = false;
+
+        // The save lands; a reload now sees the server agreeing with us.
+        harness.ViewerNowReports(displayAdultContent: false);
+        await harness.Model.LoadAsync();
+
+        // ...so a genuine change made on the AniList website applies.
+        harness.ViewerNowReports(displayAdultContent: true);
+        await harness.Model.LoadAsync();
+
+        Assert.True(AppSettings.DisplayAdultContent);
+        Assert.True(harness.Model.DisplayAdultContent);
+    }
+
+    [Fact]
     public async Task FlushPendingSave_AfterAPermissionDenialRevertedTheToggle_StillSendsTheRevert()
     {
         // The other side of the branch above. When notification permission is denied, the model
@@ -154,6 +194,10 @@ public class SettingsFlushTests
             await Model.LoadAsync();
         }
 
+        /// <summary>Repoints the viewer without re-running a load.</summary>
+        public void ViewerNowReports(bool displayAdultContent)
+            => Client.GetViewerAsync(Arg.Any<CancellationToken>()).Returns(Viewer(displayAdultContent));
+
         public async Task LoadAsync(bool displayAdultContent)
         {
             Auth.GetAccessTokenAsync(Arg.Any<CancellationToken>()).Returns("token");
@@ -211,12 +255,27 @@ public class AppSettingsPendingAdultContentTests
     public void SyncFromViewer_ResumesFollowingTheServerOnceTheChangeIsConfirmed()
     {
         AppSettings.SetDisplayAdultContent(false);
-        AppSettings.ConfirmDisplayAdultContentSaved();
+
+        // The save lands: the server now reports what we are holding, which is what confirms it.
+        AppSettings.SyncFromViewer(Viewer(displayAdultContent: false, titleLanguage: UserTitleLanguage.Romaji));
 
         // A genuine cross-device change — made on the AniList website — must now be honoured.
         AppSettings.SyncFromViewer(Viewer(displayAdultContent: true, titleLanguage: UserTitleLanguage.Romaji));
 
         Assert.True(AppSettings.DisplayAdultContent);
+    }
+
+    [Fact]
+    public void SyncFromViewer_DoesNotTreatAStaleLoadAsConfirmation()
+    {
+        // The marker must survive a viewer response that disagrees with us, or the next Settings
+        // visit inside the save window silently reverts the user's choice.
+        AppSettings.SetDisplayAdultContent(false);
+
+        AppSettings.SyncFromViewer(Viewer(displayAdultContent: true, titleLanguage: UserTitleLanguage.Romaji));
+        AppSettings.SyncFromViewer(Viewer(displayAdultContent: true, titleLanguage: UserTitleLanguage.Romaji));
+
+        Assert.False(AppSettings.DisplayAdultContent);
     }
 
     [Fact]
