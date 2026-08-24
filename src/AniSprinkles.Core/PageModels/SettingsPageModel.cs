@@ -346,7 +346,11 @@ public partial class SettingsPageModel : ObservableObject
         _loadedRestrictMessages = RestrictMessagesToFollowing;
         _loadedActivityMergeTime = ActivityMergeTime;
 
-        // Sync local app settings from user profile
+        // Sync local app settings from user profile. Confirming first is what lets the sync below
+        // apply the adult-content value: this method runs on a viewer response — the reply to our
+        // own save, or a fresh load — so at this point the server is no longer behind us, and the
+        // pending guard that protects the change in transit has done its job.
+        AppSettings.ConfirmDisplayAdultContentSaved();
         AppSettings.SyncFromViewer(user);
 
         _suppressNotificationToggle = false;
@@ -440,7 +444,21 @@ public partial class SettingsPageModel : ObservableObject
     partial void OnSelectedTitleLanguageChanged(UserTitleLanguage value) => TriggerAutoSave();
     partial void OnSelectedStaffNameLanguageChanged(UserStaffNameLanguage value) => TriggerAutoSave();
     partial void OnSelectedScoreFormatChanged(ScoreFormat value) => TriggerAutoSave();
-    partial void OnDisplayAdultContentChanged(bool value) => TriggerAutoSave();
+    partial void OnDisplayAdultContentChanged(bool value)
+    {
+        // Commit locally first, ahead of the debounced AniList save (#118). Every browse surface
+        // filters on AppSettings.DisplayAdultContent and checks it when it appears, so waiting for
+        // the round-trip left a second-and-a-half window where the user believed 18+ was off and
+        // the app still thought it was on.
+        //
+        // This also runs while PopulateFromUser assigns the server's value, which is correct — that
+        // is the same value SyncFromViewer commits moments later. TriggerAutoSave is a no-op there
+        // in practice: it may queue a debounce, but PopulateFromUser updates the dirty-tracking
+        // snapshot before the delay elapses, so DebouncedSaveAsync re-checks HasUnsavedChanges and
+        // finds nothing to send.
+        AppSettings.SetDisplayAdultContent(value);
+        TriggerAutoSave();
+    }
     partial void OnAiringNotificationsChanged(bool value)
     {
         // Do not queue an auto-save here — the permission dialog may take >1500ms to answer,
@@ -464,6 +482,27 @@ public partial class SettingsPageModel : ObservableObject
         }
 
         _ = DebouncedSaveAsync();
+    }
+
+    /// <summary>
+    /// Sends a pending settings change immediately instead of waiting out the debounce. Called from
+    /// <c>SettingsPage.OnDisappearing</c>, so a change made and navigated away from within 1500 ms
+    /// is not left unsent — and is not lost outright if the app is killed before the delay elapses.
+    /// </summary>
+    /// <remarks>
+    /// A no-op when nothing is dirty, which is the common case: OnDisappearing fires on every tab
+    /// away, and flushing must not turn tab switching into an AniList write.
+    /// </remarks>
+    public async Task FlushPendingSaveAsync()
+    {
+        _saveDebounceCts?.Cancel();
+
+        if (_loadedUser is null || !HasUnsavedChanges)
+        {
+            return;
+        }
+
+        await SaveSettingsAsync();
     }
 
     private async Task DebouncedSaveAsync()

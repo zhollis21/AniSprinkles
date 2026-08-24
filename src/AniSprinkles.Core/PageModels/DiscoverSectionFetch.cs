@@ -10,10 +10,19 @@ namespace AniSprinkles.PageModels;
 /// </summary>
 public static class DiscoverSectionFetch
 {
+    /// <param name="displayAdultContent">
+    /// The adult-content policy the caller's current result set was seeded under — NOT a fresh read
+    /// of <c>AppSettings</c> (#118). This used to resolve the static here, per page, so a commit
+    /// landing mid-session made the next Load More fetch under the new policy and append it onto
+    /// items fetched under the old one. Callers pin it at seed time, the way
+    /// <c>SearchPageModel</c> does with <c>_seededDisplayAdult</c>, so one result set can never
+    /// hold two policies.
+    /// </param>
     public static Task<(IReadOnlyList<BrowseMediaItem> Items, PageInfo? PageInfo)> PageAsync(
         IAniListClient client,
         TimeProvider timeProvider,
         DiscoverSectionDefinition definition,
+        bool displayAdultContent,
         int page,
         int perPage,
         CancellationToken cancellationToken)
@@ -28,9 +37,9 @@ public static class DiscoverSectionFetch
                 : AniListSeason.Next(localNow);
         }
 
-        // Section-pinned filter (the 18+ pair) wins; otherwise follow the adult-content toggle
-        // (false = SFW only, null = filter omitted so 18+ may mix in).
-        var isAdult = definition.AdultFilter ?? (AppSettings.DisplayAdultContent ? null : (bool?)false);
+        // Section-pinned filter (the 18+ pair) wins; otherwise follow the seeded adult-content
+        // policy (false = SFW only, null = filter omitted so 18+ may mix in).
+        var isAdult = definition.AdultFilter ?? (displayAdultContent ? null : (bool?)false);
 
         return client.BrowseAnimePageAsync(
             definition.Sort, definition.Status, season, seasonYear, isAdult, definition.Format,
