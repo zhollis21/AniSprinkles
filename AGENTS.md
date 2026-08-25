@@ -76,6 +76,18 @@ These stubs are **compiled out entirely** in standard Debug and Release builds.
 
 The project must build with **zero warnings**. Do not introduce new warnings; fix any that appear before committing. CA1822 ("member can be static") is suppressed project-wide in `.editorconfig` — MAUI `{Binding}` requires instance members even when they only read static state, so the analyzer produces false positives.
 
+**"Zero warnings" means every project, and the test project is the one that gets missed.** Building `src/AniSprinkles/AniSprinkles.csproj` does not compile `tests/`, and `dotnet test` output filtered for failures hides warnings entirely — which is how 15 `xUnit1051` warnings reached a PR while the app builds were reported clean. `xUnit1051` in particular fires on any `await` of a method taking a `CancellationToken`: pass `TestContext.Current.CancellationToken`. Check all five before pushing:
+
+```powershell
+dotnet build tests/AniSprinkles.UnitTests/AniSprinkles.UnitTests.csproj -c Debug
+dotnet build src/AniSprinkles.Core/AniSprinkles.Core.csproj -c Debug
+dotnet build src/AniSprinkles/AniSprinkles.csproj -c Debug -f net10.0-android
+dotnet build src/AniSprinkles/AniSprinkles.csproj -c Debug -f net10.0-android -p:EmbedAssembliesIntoApk=true -p:CiBuild=true
+dotnet build src/AniSprinkles/AniSprinkles.csproj -c Debug -f net10.0-android -p:ErrorSim=true
+```
+
+**A green local suite is not a green suite.** Test classes writing to the process-wide `AppSettings` statics share one collection, so failures that depend on *ordering within* it surface on CI and not here — #128's pending-upstream markers leaked between tests exactly that way, passing locally every run. `TestDataBuilder.ResetAppSettings()` goes through `AppSettings.Clear()` so those markers reset; **new process-wide state must be reset there too**, or it poisons whichever test happens to run next.
+
 ## Project Conventions
 
 - **MAUI-first guidance**: do not mix WPF/Xamarin.Forms/Blazor/React patterns unless explicitly requested. Verify MAUI APIs against official Microsoft docs and current project code before recommending.
