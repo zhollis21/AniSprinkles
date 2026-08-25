@@ -45,6 +45,9 @@ public partial class SearchPageModel : ObservableObject
     // Context the current results were fetched under, so a flip can invalidate them.
     private bool _hasSearchedThisSession;
     private bool _searchedWithAdultContent;
+
+    /// <summary>Re-renders the result cards when the title language moves under them (#127).</summary>
+    private readonly TitleProjectionWatcher _titleProjections = new();
     private bool _searchedAuthenticated;
 
     public SearchPageModel(
@@ -155,6 +158,10 @@ public partial class SearchPageModel : ObservableObject
     /// </summary>
     public async Task OnAppearingAsync()
     {
+        // Ahead of both early returns below: a title-language change re-renders the results already
+        // on screen without re-running the query (#127).
+        _titleProjections.RefreshIfTitleLanguageChanged(SearchSection.Items);
+
         var displayAdult = AppSettings.DisplayAdultContent;
         var isAuthenticated = !string.IsNullOrWhiteSpace(await _authService.GetAccessTokenAsync());
 
@@ -254,6 +261,10 @@ public partial class SearchPageModel : ObservableObject
         // normal path instead, which cancels this fetch and re-runs the query.
         _hasSearchedThisSession = true;
         _searchedWithAdultContent = AppSettings.DisplayAdultContent;
+
+        // This result set is being fetched under the settings as they stand now, so the next
+        // appearance has nothing to re-project.
+        _titleProjections.MarkRendered();
 
         // Pin the filter for this result set. Read once here so page 1 below and every Load More
         // afterwards agree, no matter what the setting does in between.

@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace AniSprinkles.Models;
 
-public partial class MediaListEntry : ObservableObject
+public partial class MediaListEntry : ObservableObject, IDisplayProjection
 {
     public int Id { get; set; }
     public int MediaId { get; set; }
@@ -73,6 +73,20 @@ public partial class MediaListEntry : ObservableObject
     /// <summary>True when the score format uses numeric values (not stars or smileys).</summary>
     public bool IsNumericScoreFormat => AppSettings.ScoreFormat is ScoreFormat.Point100
         or ScoreFormat.Point10Decimal or ScoreFormat.Point10;
+
+    /// <inheritdoc />
+    /// <remarks>
+    /// <c>Media</c> is re-raised rather than <c>DisplayTitle</c> directly: the templates bind the
+    /// nested path <c>Media.DisplayTitle</c>, and <c>Media</c> is a plain class that cannot notify
+    /// for itself. The score members read <c>AppSettings.ScoreFormat</c> on this type, so they are
+    /// raised by name.
+    /// </remarks>
+    public void RefreshDisplayProjections()
+    {
+        OnPropertyChanged(nameof(Media));
+        OnPropertyChanged(nameof(ScoreDisplay));
+        OnPropertyChanged(nameof(IsNumericScoreFormat));
+    }
 
     /// <summary>
     /// Cap for +1 / progress-slider logic. Uses the total episode count when known,

@@ -94,6 +94,9 @@ public partial class CharacterDetailsPageModel : DetailsPageModelBase<Character>
     // Bind XAML to these; the collection instances are stable for the page model's life.
     public ObservableCollection<CharacterMediaEdge> DisplayedAppearances => _appearances.Items;
 
+    /// <inheritdoc />
+    protected override IEnumerable<IDisplayProjection> DisplayProjections => DisplayedAppearances;
+
     public bool HasAppearances => _appearances.Items.Count > 0;
 
     public bool AppearancesBusy => _appearances.IsBusy;

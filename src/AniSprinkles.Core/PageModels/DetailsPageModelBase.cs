@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
 using Sentry;
+using AniSprinkles.Utilities;
 
 namespace AniSprinkles.PageModels;
 
@@ -147,11 +148,75 @@ public abstract partial class DetailsPageModelBase<TEntity> : ObservableObject
     /// <summary>Runs when a load is skipped because the same entity is already displayed.</summary>
     protected virtual void OnEntityReused() { }
 
+    /// <summary>
+    /// The carousel items on this page whose bound text is computed from a display setting (#127).
+    /// Empty by default; a page with no such items has nothing to re-project.
+    /// </summary>
+    protected virtual IEnumerable<IDisplayProjection> DisplayProjections => [];
+
+    /// <summary>
+    /// Runs when a display setting moved while this page was alive but off-screen. Re-raise anything
+    /// computed from one on the page model <em>itself</em> — the header title, the rating control —
+    /// as distinct from the carousel items, which <see cref="DisplayProjections"/> covers.
+    /// </summary>
+    protected virtual void OnDisplaySettingsChanged() { }
+
     /// <summary>Runs once a load has committed to fetching, before the request goes out.</summary>
     protected virtual void OnLoadStarting(int id) { }
 
     /// <summary>Runs after <see cref="IsAuthenticated"/> is set, for anything else derived from it.</summary>
     protected virtual void OnAuthenticationResolved() { }
+
+    /// <summary>
+    /// The display settings this page's current content was rendered under (#127). Seeded at
+    /// construction so a page model built after a change does not re-project content it never had.
+    /// </summary>
+    private DisplaySettingsSnapshot _renderedDisplaySettings = DisplaySettingsSnapshot.Current;
+
+    /// <summary>
+    /// Re-renders what is on screen when a display setting moved under it. No fetch, and no work at
+    /// all when nothing moved — this runs on every appearance, including every sort-popup dismissal.
+    /// </summary>
+    private void ReprojectIfDisplaySettingsChanged()
+    {
+        var current = DisplaySettingsSnapshot.Current;
+        if (!current.RenderingDiffersFrom(_renderedDisplaySettings))
+        {
+            return;
+        }
+
+        if (current.TitleLanguageDiffersFrom(_renderedDisplaySettings))
+        {
+            foreach (var item in DisplayProjections)
+            {
+                item.RefreshDisplayProjections();
+            }
+        }
+
+        OnDisplaySettingsChanged();
+        _renderedDisplaySettings = current;
+    }
+
+    /// <summary>Records that the content on screen matches the settings as they stand now.</summary>
+    private protected void MarkDisplaySettingsRendered()
+        => _renderedDisplaySettings = DisplaySettingsSnapshot.Current;
+
+    /// <summary>
+    /// Called from the page's <c>OnNavigatedTo</c>, which is what actually fires when this page's tab
+    /// becomes current again (#127).
+    /// <para>
+    /// <c>OnAppearing</c> does <em>not</em>: detail pages are pushed onto a tab's navigation stack,
+    /// and MAUI Shell gives a page in a backgrounded stack no appearing/disappearing when you switch
+    /// back to that tab. Verified on device — <c>OnAppearing</c> fired once at the initial
+    /// navigation and never again, while <c>OnNavigatedTo</c> fired on every return. Hanging the
+    /// re-projection off the load path meant it never ran, because the load never ran either.
+    /// </para>
+    /// <para>
+    /// Idempotent: it compares against the last rendered snapshot and does nothing when they match,
+    /// so the extra call on the initial navigation costs nothing.
+    /// </para>
+    /// </summary>
+    public void RefreshDisplaySettings() => ReprojectIfDisplaySettingsChanged();
 
     /// <summary>Whether a null fetch result should still offer Retry.</summary>
     protected virtual bool NullResultIsRetryable => false;
@@ -191,6 +256,11 @@ public abstract partial class DetailsPageModelBase<TEntity> : ObservableObject
         // the sort the user just picked.
         if (Entity is not null && Entity.Id == id)
         {
+            // This is the #127 path for all four details pages. They are registered transient but
+            // stay alive in their tab's navigation stack, so tabbing to Settings, changing a display
+            // setting and tabbing back lands here — on the same instance, holding sections built
+            // under the old setting, with no fetch to rebuild them.
+            ReprojectIfDisplaySettingsChanged();
             OnEntityReused();
             CurrentState = PageState.Content;
             return;
@@ -232,6 +302,10 @@ public abstract partial class DetailsPageModelBase<TEntity> : ObservableObject
 
             Entity = entity;
             SeedSections(entity);
+
+            // Seeded from the settings as they stand now, so the next appearance has nothing to
+            // re-project.
+            MarkDisplaySettingsRendered();
 
             CurrentState = PageState.Content;
             Logger.LogInformation(

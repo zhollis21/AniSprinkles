@@ -96,6 +96,11 @@ public partial class StaffDetailsPageModel : DetailsPageModelBase<Staff>
     public ObservableCollection<StaffCharacterEdge> DisplayedVoiceRoles => _voiceRoles.Items;
     public ObservableCollection<StaffMediaEdge> DisplayedProductionRoles => _productionRoles.Items;
 
+    /// <inheritdoc />
+    /// <remarks>Both sections put a media title on the card, under the role.</remarks>
+    protected override IEnumerable<IDisplayProjection> DisplayProjections =>
+        DisplayedVoiceRoles.Cast<IDisplayProjection>().Concat(DisplayedProductionRoles);
+
     public bool HasVoiceRoles => _voiceRoles.Items.Count > 0;
     public bool HasProductionRoles => _productionRoles.Items.Count > 0;
 

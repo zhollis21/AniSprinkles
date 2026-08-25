@@ -10,12 +10,18 @@ public static class UserFeedbackExtensions
     /// Was duplicated verbatim in four page models before #62 moved them into Core.
     /// </para>
     /// </summary>
+    /// <param name="duration">
+    /// Overrides the default dwell time. Settings' save-failure snackbar passes 20 seconds because
+    /// the Retry is the only recovery path and the user has to notice it (#128). Ignored on the
+    /// outage path, which has no action to miss.
+    /// </param>
     public static Task ShowFailureSnackbarAsync(
         this IUserFeedback feedback,
         Exception exception,
         string fallbackMessage,
         Action? retryAction = null,
-        string retryText = "Retry")
+        string retryText = "Retry",
+        TimeSpan? duration = null)
     {
         if (exception is AniListApiException { Kind: ApiErrorKind.ServiceOutage } apiEx)
         {
@@ -24,6 +30,6 @@ public static class UserFeedbackExtensions
 
         return retryAction is null
             ? feedback.ShowSnackbarAsync(fallbackMessage)
-            : feedback.ShowSnackbarAsync(fallbackMessage, retryText, retryAction);
+            : feedback.ShowSnackbarAsync(fallbackMessage, retryText, retryAction, duration);
     }
 }
