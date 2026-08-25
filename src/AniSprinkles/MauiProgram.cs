@@ -105,6 +105,7 @@ public static class MauiProgram
         // model needs that touches Shell, CommunityToolkit popups, or Essentials goes through one of
         // these, which is what lets the page models run on the plain net10.0 test TFM (issue #62).
         builder.Services.AddSingleton<INavigationService, MauiShellNavigationService>();
+        builder.Services.AddSingleton<ISecureTokenStorage, MauiSecureTokenStorage>();
         builder.Services.AddSingleton<IUserFeedback, MauiUserFeedback>();
         builder.Services.AddSingleton<IDialogService, MauiDialogService>();
         builder.Services.AddSingleton<IExternalBrowser, MauiExternalBrowser>();
@@ -132,6 +133,10 @@ public static class MauiProgram
         builder.Services.AddSingleton<IAniListClient, FailingAniListClient>();
         builder.Services.AddSingleton<IAiringNotificationService, AiringNotificationService>();
 #else
+        // Singleton alongside AuthService, which is the only thing that resolves it: TokenStore holds
+        // the process-wide token and the gate that single-flights its first read (#119). A transient
+        // one would give every caller its own gate and its own copy, which is the bug it fixes.
+        builder.Services.AddSingleton<TokenStore>();
         builder.Services.AddSingleton<IAuthService, AuthService>();
         builder.Services.AddSingleton<AniListClient>();
         builder.Services.AddSingleton<IAniListClient>(sp =>
