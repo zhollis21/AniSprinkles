@@ -39,6 +39,17 @@ public partial class MyAnimePageModel : ObservableObject
     /// </summary>
     private bool _loadedWithAdultContent;
 
+    /// <summary>
+    /// The display settings the current <see cref="Sections"/> were rendered under (#127).
+    /// <para>
+    /// Its counterpart above forces a <em>refetch</em>, because the adult filter decides which
+    /// entries exist. These decide how the entries already in hand render, so the answer is a
+    /// re-projection instead — spending an AniList request to change a title's language would be the
+    /// wrong trade under the rate-limit budget.
+    /// </para>
+    /// </summary>
+    private DisplaySettingsSnapshot _renderedDisplaySettings = DisplaySettingsSnapshot.Current;
+
     // +1 debounce state: rapid taps batch into a single API call.
     private CancellationTokenSource? _incrementDebounceCts;
     private MediaListEntry? _pendingIncrementEntry;
@@ -219,6 +230,11 @@ public partial class MyAnimePageModel : ObservableObject
         var hadExistingSections = Sections.Count > 0;
         try
         {
+            // Before the short-circuit below, not after: a display-setting change has to reach the
+            // sections already on screen even when the freshness window skips the load entirely,
+            // which is the case the user actually hits (#127). A full load re-snapshots at the end.
+            ReprojectIfDisplaySettingsChanged();
+
             var token = await _authService.GetAccessTokenAsync();
             var isAuthenticated = !string.IsNullOrWhiteSpace(token);
             // OnAppearing can fire often; keep list navigation snappy by skipping refreshes inside a short stale window.
@@ -333,6 +349,11 @@ public partial class MyAnimePageModel : ObservableObject
             // Read here rather than from the value captured at entry: SyncFromViewer above may have
             // moved it, and this has to describe the sections that were actually just built.
             _loadedWithAdultContent = AppSettings.DisplayAdultContent;
+
+            // Same reasoning: SyncFromViewer may have moved these, and the sections were just built
+            // from whatever they are now. Re-snapshotting here is what stops the next appearance
+            // from re-projecting work this load already did.
+            _renderedDisplaySettings = DisplaySettingsSnapshot.Current;
             CurrentState = PageState.Content;
 
             // Cache RELEASING media IDs for the background airing notification worker.
@@ -496,6 +517,42 @@ public partial class MyAnimePageModel : ObservableObject
         }
 
         ApplySortToAllSections();
+    }
+
+    /// <summary>
+    /// Re-renders the sections already on screen when a display setting moved under them (#127).
+    /// No fetch, and nothing at all when the settings are unchanged — this runs on every appearance,
+    /// and tab switching must stay free.
+    /// </summary>
+    private void ReprojectIfDisplaySettingsChanged()
+    {
+        var current = DisplaySettingsSnapshot.Current;
+        if (current == _renderedDisplaySettings)
+        {
+            return;
+        }
+
+        if (current.RenderingDiffersFrom(_renderedDisplaySettings))
+        {
+            foreach (var entry in Sections.SelectMany(s => s.AllItems))
+            {
+                entry.RefreshDisplayProjections();
+            }
+        }
+
+        // The Title sort orders by Media.DisplayTitle, so a language change moves rows as well as
+        // re-rendering their text. Only that sort is affected — the others read data, not settings.
+        if (CurrentSortField == SortField.Title && current.TitleLanguageDiffersFrom(_renderedDisplaySettings))
+        {
+            ApplySortToAllSections();
+        }
+
+        if (current.SectionOrderDiffersFrom(_renderedDisplaySettings))
+        {
+            MediaListSectionsMerger.ReorderSections(Sections, AppSettings.AnimeSectionOrder);
+        }
+
+        _renderedDisplaySettings = current;
     }
 
     private void ApplySortToAllSections()

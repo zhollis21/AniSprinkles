@@ -54,6 +54,39 @@ public static class MediaListSectionsMerger
         return result;
     }
 
+    /// <summary>
+    /// Reorders sections already on screen to match <paramref name="sectionOrder"/>, without
+    /// rebuilding them (#127).
+    /// <para>
+    /// The third caller of the ordering rule above, and here for the same reason the other two share
+    /// it: a section order that arrives from a viewer sync while Library is inside its five-minute
+    /// freshness window would otherwise not be applied until the window expired. Moves rather than
+    /// replaces, so the CollectionView keeps its realised cells.
+    /// </para>
+    /// </summary>
+    public static void ReorderSections(
+        ObservableCollection<MediaListSection> sections,
+        IReadOnlyList<string> sectionOrder)
+    {
+        if (sectionOrder.Count == 0 || sections.Count < 2)
+        {
+            return;
+        }
+
+        // OrderBy is stable, so sections absent from the preference list keep their relative order
+        // at the end rather than being shuffled among themselves.
+        var desired = sections.OrderBy(s => IndexOfOrMax(sectionOrder, s.Title)).ToList();
+
+        for (var target = 0; target < desired.Count; target++)
+        {
+            var current = sections.IndexOf(desired[target]);
+            if (current != target)
+            {
+                sections.Move(current, target);
+            }
+        }
+    }
+
     public static MergeResult Merge(
         ObservableCollection<MediaListSection> existing,
         IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)> newGroups,

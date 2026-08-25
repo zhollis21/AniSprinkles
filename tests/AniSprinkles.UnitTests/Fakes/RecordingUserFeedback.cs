@@ -25,10 +25,18 @@ public sealed class RecordingUserFeedback : IUserFeedback
     /// </summary>
     public Action? LastSnackbarAction { get; private set; }
 
+    /// <summary>
+    /// The dwell time of the most recent snackbar, or <c>null</c> for the default. Tracked because
+    /// Settings' save-failure snackbar deliberately holds for 20 seconds — the user has to notice it
+    /// to retry, and routing that call through a shared helper is an easy way to lose the override.
+    /// </summary>
+    public TimeSpan? LastSnackbarDuration { get; private set; }
+
     public Task ShowSnackbarAsync(string message)
     {
         _snackbars.Add(message);
         LastSnackbarAction = null;
+        LastSnackbarDuration = null;
         return Task.CompletedTask;
     }
 
@@ -36,6 +44,7 @@ public sealed class RecordingUserFeedback : IUserFeedback
     {
         _snackbars.Add(message);
         LastSnackbarAction = action;
+        LastSnackbarDuration = duration;
         return Task.CompletedTask;
     }
 

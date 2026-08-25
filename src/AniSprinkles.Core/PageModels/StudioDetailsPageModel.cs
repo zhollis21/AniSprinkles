@@ -52,6 +52,9 @@ public partial class StudioDetailsPageModel : DetailsPageModelBase<Studio>
 
     public ObservableCollection<StudioMediaEdge> DisplayedProductions => _productions.Items;
 
+    /// <inheritdoc />
+    protected override IEnumerable<IDisplayProjection> DisplayProjections => DisplayedProductions;
+
     public bool HasProductions => _productions.Items.Count > 0;
 
     public bool ProductionsBusy => _productions.IsBusy;

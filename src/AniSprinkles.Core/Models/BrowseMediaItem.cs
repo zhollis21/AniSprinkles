@@ -10,7 +10,7 @@ namespace AniSprinkles.Models;
 /// is deliberately not observable, so after a long-press mutation the page model rewrites the
 /// node's list fields and calls <see cref="NotifyListEntryChanged"/> to refresh the bound chip.
 /// </summary>
-public partial class BrowseMediaItem : ObservableObject
+public partial class BrowseMediaItem : ObservableObject, IDisplayProjection
 {
     public RelatedMedia? Node { get; set; }
 
@@ -97,4 +97,11 @@ public partial class BrowseMediaItem : ObservableObject
         Node.ListScore = null;
         NotifyListEntryChanged();
     }
+
+    /// <inheritdoc />
+    /// <remarks>
+    /// Re-raising <c>Node</c> is what makes the nested <c>Node.DisplayTitle</c> binding re-resolve;
+    /// <c>RelatedMedia</c> is a plain class and cannot notify for itself.
+    /// </remarks>
+    public void RefreshDisplayProjections() => OnPropertyChanged(nameof(Node));
 }

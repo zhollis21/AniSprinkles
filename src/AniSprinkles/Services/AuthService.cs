@@ -7,41 +7,42 @@ public class AuthService : IAuthService
 {
     private const string ClientId = "35674";
     private const string RedirectUri = "anisprinkles://auth";
-    private const string TokenKey = "anilist_access_token";
-    private const string TokenExpiryKey = "anilist_access_token_expires_at";
 
+    private readonly TokenStore _tokens;
     private readonly ILogger<AuthService> _logger;
-    private string? AccessToken { get; set; }
-    private DateTimeOffset? ExpiresAt { get; set; }
 
-    public AuthService(ILogger<AuthService> logger)
+    public AuthService(TokenStore tokens, ILogger<AuthService> logger)
     {
+        _tokens = tokens;
         _logger = logger;
     }
 
     public async Task<string?> GetAccessTokenAsync(CancellationToken cancellationToken = default)
     {
-        if (AccessToken is null)
-        {
-            await LoadAsync(cancellationToken);
-        }
+        // Token state, the single-flight first load and the expiry check all live in TokenStore
+        // (#119). What stays here is the platform half: the OAuth round trip and the WebView cookie
+        // store, neither of which the test project can reference.
+        var lookup = await _tokens.GetAsync(cancellationToken);
 
-        if (AccessToken is null)
+        if (lookup.State is TokenState.Absent)
         {
-            _logger.LogInformation("AUTH token-check: absent (no token in SecureStorage).");
+            // "No usable token" rather than "no token in SecureStorage": TokenStore reports Absent
+            // both when nothing is stored and when the read failed, and collapsing those is
+            // deliberate (#116) since callers act identically. A failed read logs its own Error line
+            // with the cause, so nothing is lost by not asserting which case this is here.
+            _logger.LogInformation("AUTH token-check: absent (no usable token).");
             return null;
         }
 
-        if (IsExpired())
+        if (lookup.State is TokenState.Expired)
         {
-            _logger.LogInformation("AUTH token-check: expired (expiresAt={ExpiresAt}), signing out.", ExpiresAt);
+            _logger.LogInformation("AUTH token-check: expired (expiresAt={ExpiresAt}), signing out.", lookup.ExpiresAt);
 
-            // Guarded for the same reason as LoadAsync: SignOutAsync clears SecureStorage and
-            // drives the Android CookieManager on the main thread, either of which can throw, and
-            // this runs inside the token check that every tab's async void OnAppearing awaits.
-            // The answer is "no valid token" either way, so a failed cleanup must not become a
-            // crash. Explicit sign-out (the Settings button) still calls SignOutAsync directly
-            // and keeps surfacing its failures.
+            // Guarded because SignOutAsync clears SecureStorage and drives the Android CookieManager
+            // on the main thread, either of which can throw, and this runs inside the token check
+            // that every tab's async void OnAppearing awaits. The answer is "no valid token" either
+            // way, so a failed cleanup must not become a crash. Explicit sign-out (the Settings
+            // button) still calls SignOutAsync directly and keeps surfacing its failures.
             try
             {
                 await SignOutAsync();
@@ -60,15 +61,14 @@ public class AuthService : IAuthService
             catch (Exception ex)
             {
                 _logger.LogError(ex, "AUTH sign-out after expiry failed; reporting no token anyway.");
-                AccessToken = null;
-                ExpiresAt = null;
+                _tokens.Forget();
             }
 
             return null;
         }
 
-        _logger.LogInformation("AUTH token-check: valid (expiresAt={ExpiresAt}).", ExpiresAt);
-        return AccessToken;
+        _logger.LogInformation("AUTH token-check: valid (expiresAt={ExpiresAt}).", lookup.ExpiresAt);
+        return lookup.AccessToken;
     }
 
     public async Task<bool> SignInAsync(CancellationToken cancellationToken = default)
@@ -95,20 +95,11 @@ public class AuthService : IAuthService
             return false;
         }
 
-        AccessToken = accessToken;
-        ExpiresAt = ParseExpiresAt(properties);
+        var expiresAt = ParseExpiresAt(properties);
 
-        _logger.LogInformation("AniList sign-in successful. Expires at {ExpiresAt}.", ExpiresAt);
+        _logger.LogInformation("AniList sign-in successful. Expires at {ExpiresAt}.", expiresAt);
 
-        await SecureStorage.Default.SetAsync(TokenKey, AccessToken);
-        if (ExpiresAt is not null)
-        {
-            await SecureStorage.Default.SetAsync(TokenExpiryKey, ExpiresAt.Value.ToString("O"));
-        }
-        else
-        {
-            SecureStorage.Default.Remove(TokenExpiryKey);
-        }
+        await _tokens.SetAsync(accessToken, expiresAt);
 
         return true;
     }
@@ -116,10 +107,7 @@ public class AuthService : IAuthService
     public async Task SignOutAsync()
     {
         _logger.LogInformation("AniList sign-out.");
-        AccessToken = null;
-        ExpiresAt = null;
-        SecureStorage.Default.Remove(TokenKey);
-        SecureStorage.Default.Remove(TokenExpiryKey);
+        _tokens.Clear();
 
         // Clear the in-app WebView cookie store so the next sign-in always prompts for credentials.
         // CookieManager manages the Android WebView cookie store (separate from Chrome's store),
@@ -158,47 +146,6 @@ public class AuthService : IAuthService
             ? DateTimeOffset.UtcNow.AddSeconds(seconds)
             : null;
     }
-
-    private async Task LoadAsync(CancellationToken cancellationToken)
-    {
-        // SecureStorage sits on the Android keystore, which can fail for reasons that have nothing
-        // to do with us (corrupted keystore, a restored backup, a device-credential change). Those
-        // surface as assorted platform exceptions, hence the broad catch. Letting one escape would
-        // take the app down: every tab page model calls GetAccessTokenAsync from an async void
-        // OnAppearing, where there is nothing to catch it. An unreadable token is functionally the
-        // same as an absent one, so fall back to signed-out and let the user sign in again.
-        try
-        {
-            AccessToken = await SecureStorage.Default.GetAsync(TokenKey);
-            var rawExpiry = await SecureStorage.Default.GetAsync(TokenExpiryKey);
-            if (DateTimeOffset.TryParse(rawExpiry, out var expiry))
-            {
-                ExpiresAt = expiry;
-            }
-        }
-        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
-        {
-            // Cancellation is the caller's business, not a storage failure. The detail page models
-            // pass a PageLoadScope token into GetAccessTokenAsync and expect navigating away to
-            // cancel rather than to quietly report "signed out" and wipe the shared auth state.
-            // Nothing below currently takes the token — MAUI's ISecureStorage.GetAsync has no
-            // overload for one — but this keeps the broad catch from swallowing a cancellation if
-            // that changes, which is exactly the kind of thing that would be silent for months.
-            //
-            // Filtered so only the CALLER'S cancellation escapes: most callers pass no token and
-            // await this from async void lifecycle paths, where an unfiltered rethrow is a crash.
-            throw;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "AUTH token-load failed; treating as signed out.");
-            AccessToken = null;
-            ExpiresAt = null;
-        }
-    }
-
-    private bool IsExpired()
-        => ExpiresAt is not null && ExpiresAt <= DateTimeOffset.UtcNow;
 
     private sealed class CookieRemovalCallback : Java.Lang.Object, IValueCallback
     {

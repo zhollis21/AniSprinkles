@@ -40,6 +40,9 @@ public partial class DiscoverPageModel : ObservableObject
     private bool _loadedWithAdultContent;
     private bool _loadedAuthenticated;
 
+    /// <summary>Re-renders the row cards when the title language moves under them (#127).</summary>
+    private readonly TitleProjectionWatcher _titleProjections = new();
+
     /// <summary>True from the moment <see cref="LoadAsync"/> is entered until it finishes, which
     /// includes the auth read that runs before <c>IsBusy</c> is set. Load More checks this so no
     /// page can be fetched under a context the in-progress refresh is about to replace.</summary>
@@ -201,6 +204,10 @@ public partial class DiscoverPageModel : ObservableObject
 
     private async Task LoadCoreAsync(bool forceReload)
     {
+        // Ahead of the cache short-circuit below: a title-language change has to reach the rows on
+        // screen even when the TTL means no fetch runs (#127).
+        _titleProjections.RefreshIfTitleLanguageChanged(Rows.SelectMany(r => r.Items));
+
         var displayAdult = AppSettings.DisplayAdultContent;
         var now = _timeProvider.GetUtcNow();
 
@@ -262,6 +269,10 @@ public partial class DiscoverPageModel : ObservableObject
             // interleave.
             _loadedWithAdultContent = displayAdult;
             _loadedAuthenticated = isAuthenticated;
+
+            // The rows were just rebuilt from the current settings; nothing for the next appearance
+            // to re-project.
+            _titleProjections.MarkRendered();
             CurrentState = PageState.Content;
         }
         catch (Exception ex)

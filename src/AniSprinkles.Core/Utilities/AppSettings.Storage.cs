@@ -35,12 +35,12 @@ public static partial class AppSettings
     internal static IPreferences Storage { get; set; } = Preferences.Default;
 
     /// <summary>
-    /// True between a local <see cref="SetDisplayAdultContent"/> and the AniList save that confirms
-    /// it. While set, <see cref="SyncFromViewer"/> leaves <see cref="DisplayAdultContent"/> alone.
+    /// True between a local change to the matching setting and the AniList save that confirms it.
+    /// While set, <see cref="SyncFromViewer"/> leaves that setting alone.
     /// <para>
     /// Without this, a Library refresh landing inside the Settings debounce window would read the
-    /// server's not-yet-updated copy and silently revert the toggle the user had just flipped —
-    /// re-enabling 18+ content app-wide. Flushing the debounce on navigate-away (see
+    /// server's not-yet-updated copy and silently revert the choice the user had just made — for the
+    /// adult toggle, re-enabling 18+ content app-wide. Flushing the debounce on navigate-away (see
     /// <c>SettingsPageModel.FlushPendingSaveAsync</c>) narrows that window but cannot close it: MAUI
     /// Shell does not guarantee the outgoing page's OnDisappearing runs before the incoming page's
     /// OnAppearing, and a save can fail outright, leaving the server genuinely stale. The invariant
@@ -48,13 +48,20 @@ public static partial class AppSettings
     /// in both cases.
     /// </para>
     /// <para>
-    /// Scoped to this one field deliberately. Cross-device changes to title language, score format
-    /// and section order keep applying on every sync; only the setting with a pending local write is
-    /// shadowed, and only until <see cref="SyncFromViewer"/> sees the server agree, or
-    /// <see cref="Clear"/> runs on sign-out.
+    /// Scoped to the adult toggle when it arrived in <c>c4a2830</c>, and widened to the other two
+    /// user-editable settings in #128: a failed title-language or score-format save was reverted the
+    /// next time Settings opened, with nothing said. <see cref="AnimeSectionOrder"/> is deliberately
+    /// left out — it is not editable in this app, so it can only ever come from the server.
+    /// </para>
+    /// <para>
+    /// Only a setting with a pending local write is shadowed, and only until
+    /// <see cref="SyncFromViewer"/> sees the server agree, or <see cref="Clear"/> runs on sign-out.
+    /// Cross-device changes to everything else keep applying on every sync.
     /// </para>
     /// </summary>
     private static bool _displayAdultContentAwaitingUpstream;
+    private static bool _titleLanguageAwaitingUpstream;
+    private static bool _scoreFormatAwaitingUpstream;
 
     public static void Load()
     {
@@ -110,6 +117,30 @@ public static partial class AppSettings
     }
 
     /// <summary>
+    /// Commits a title-language change and persists just that key (#128), the same shape as
+    /// <see cref="SetDisplayAdultContent"/>.
+    /// <para>
+    /// Before this the value reached here only via <see cref="SyncFromViewer"/>, i.e. once a save had
+    /// succeeded — so the choice took 1.5 s to appear anywhere else in the app, and never appeared at
+    /// all if the save failed.
+    /// </para>
+    /// </summary>
+    public static void SetTitleLanguage(UserTitleLanguage value)
+    {
+        TitleLanguage = value;
+        _titleLanguageAwaitingUpstream = true;
+        Storage.Set(TitleLanguageKey, value.ToString());
+    }
+
+    /// <summary>Commits a score-format change and persists just that key. See <see cref="SetTitleLanguage"/>.</summary>
+    public static void SetScoreFormat(ScoreFormat value)
+    {
+        ScoreFormat = value;
+        _scoreFormatAwaitingUpstream = true;
+        Storage.Set(ScoreFormatKey, value.ToString());
+    }
+
+    /// <summary>
     /// The value a caller should show for DisplayAdultContent given what the server just reported:
     /// the server's, unless a local change is still awaiting confirmation and the server disagrees
     /// with it — in which case the local choice wins and stays pending.
@@ -125,35 +156,65 @@ public static partial class AppSettings
             ? DisplayAdultContent
             : serverValue;
 
+    /// <summary>The value the Settings control should show for title language. See <see cref="ResolveDisplayAdultContent"/>.</summary>
+    public static UserTitleLanguage ResolveTitleLanguage(UserTitleLanguage serverValue)
+        => _titleLanguageAwaitingUpstream && serverValue != TitleLanguage ? TitleLanguage : serverValue;
+
+    /// <summary>The value the Settings control should show for score format. See <see cref="ResolveDisplayAdultContent"/>.</summary>
+    public static ScoreFormat ResolveScoreFormat(ScoreFormat serverValue)
+        => _scoreFormatAwaitingUpstream && serverValue != ScoreFormat ? ScoreFormat : serverValue;
+
+    /// <summary>
+    /// Clears the pending markers for the values an <c>UpdateUser</c> that succeeded actually carried
+    /// (#128).
+    /// <para>
+    /// The comparison in <see cref="SyncFromViewer"/> already clears a marker the response agrees
+    /// with, which covers the normal case. This covers the one it cannot: a server that accepted the
+    /// request but reported something else back. Leaving that pending would hold a value AniList has
+    /// declined and re-send it on every navigate-away, forever.
+    /// </para>
+    /// <para>
+    /// Each check is against what was <em>sent</em>, not blanket. A save is only a ruling on the
+    /// values it carried, and the user can change a setting while one is in flight — clearing that
+    /// setting's marker too would discard a change the server has never seen.
+    /// </para>
+    /// </summary>
+    public static void ConfirmSettingsSaved(
+        UserTitleLanguage sentTitleLanguage,
+        ScoreFormat sentScoreFormat,
+        bool sentDisplayAdultContent)
+    {
+        if (sentTitleLanguage == TitleLanguage)
+        {
+            _titleLanguageAwaitingUpstream = false;
+        }
+
+        if (sentScoreFormat == ScoreFormat)
+        {
+            _scoreFormatAwaitingUpstream = false;
+        }
+
+        if (sentDisplayAdultContent == DisplayAdultContent)
+        {
+            _displayAdultContentAwaitingUpstream = false;
+        }
+    }
+
     /// <summary>
     /// Syncs local app settings from an AniList Viewer response.
     /// Called on every My Anime load/refresh and when the Settings page loads.
     /// </summary>
     public static void SyncFromViewer(AniListUser user)
     {
-        TitleLanguage = user.Options.TitleLanguage;
-        ScoreFormat = user.ScoreFormat;
-        AnimeSectionOrder = user.AnimeSectionOrder;
-
         // The server's value wins unless a local change is still unconfirmed and the server
-        // disagrees with it — see the field's remarks. Every other preference above follows the
-        // server unconditionally.
+        // disagrees with it — see the markers' remarks, and PendingValue.Resolve for the rule.
         //
-        // The marker clears exactly when the server reports the value we are holding, whichever
-        // response brought it: the reply to our own save, or a later load once it landed. It is
-        // deliberately NOT cleared on any viewer response — a fresh load is not a confirmation, it
-        // just asks a server that may still be behind us or may never have received the save at
-        // all. Clearing unconditionally reverted the user's choice on the next visit to Settings.
-        var serverAdult = user.Options.DisplayAdultContent;
-        if (_displayAdultContentAwaitingUpstream && serverAdult != DisplayAdultContent)
-        {
-            // Still behind. Keep the local choice and stay pending.
-        }
-        else
-        {
-            DisplayAdultContent = serverAdult;
-            _displayAdultContentAwaitingUpstream = false;
-        }
+        // Section order is the exception and follows the server unconditionally: there is no control
+        // for it in this app, so a local value could only ever have come from the server anyway.
+        TitleLanguage = PendingValue.Resolve(ref _titleLanguageAwaitingUpstream, user.Options.TitleLanguage, TitleLanguage);
+        ScoreFormat = PendingValue.Resolve(ref _scoreFormatAwaitingUpstream, user.ScoreFormat, ScoreFormat);
+        DisplayAdultContent = PendingValue.Resolve(ref _displayAdultContentAwaitingUpstream, user.Options.DisplayAdultContent, DisplayAdultContent);
+        AnimeSectionOrder = user.AnimeSectionOrder;
 
         Save();
     }
@@ -167,6 +228,8 @@ public static partial class AppSettings
         // Sign-out must not leave the previous account's unconfirmed change shadowing the next
         // viewer's real preference.
         _displayAdultContentAwaitingUpstream = false;
+        _titleLanguageAwaitingUpstream = false;
+        _scoreFormatAwaitingUpstream = false;
         Storage.Remove(TitleLanguageKey);
         Storage.Remove(ScoreFormatKey);
         Storage.Remove(DisplayAdultContentKey);

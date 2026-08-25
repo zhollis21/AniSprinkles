@@ -34,6 +34,16 @@ public partial class MediaBrowsePageModel : ObservableObject
     private bool _loadedWithAdultContent;
     private bool _loadedAuthenticated;
 
+    /// <summary>Re-renders the cards when the title language moves under them (#127).</summary>
+    private readonly TitleProjectionWatcher _titleProjections = new();
+
+    /// <summary>
+    /// Called from the page's <c>OnNavigatedTo</c>. Like the detail pages, View All is pushed onto a
+    /// tab's navigation stack and so gets no <c>OnAppearing</c> when that tab becomes current again,
+    /// which is where the load — and with it the re-projection — used to be triggered from (#127).
+    /// </summary>
+    public void RefreshDisplaySettings() => _titleProjections.RefreshIfTitleLanguageChanged(Items);
+
     /// <summary>
     /// The DisplayAdultContent value this section's items were seeded under, pinned so every Load
     /// More agrees with page 1 (#118).
@@ -168,6 +178,10 @@ public partial class MediaBrowsePageModel : ObservableObject
             return;
         }
 
+        // Ahead of the revisit short-circuit below: a title-language change has to reach the cards
+        // on screen even when nothing viewer-relative moved and no fetch runs (#127).
+        _titleProjections.RefreshIfTitleLanguageChanged(Items);
+
         var displayAdult = AppSettings.DisplayAdultContent;
         var isAuthenticated = !string.IsNullOrWhiteSpace(await _authService.GetAccessTokenAsync());
 
@@ -203,6 +217,7 @@ public partial class MediaBrowsePageModel : ObservableObject
             _items.Seed(items, pageInfo);
             _loadedWithAdultContent = displayAdult;
             _loadedAuthenticated = isAuthenticated;
+            _titleProjections.MarkRendered();
             CurrentState = PageState.Content;
             _logger.LogInformation(
                 "NAVTRACE MediaBrowse seeded {Count} items (section {Section}, hasNext={HasNext})",

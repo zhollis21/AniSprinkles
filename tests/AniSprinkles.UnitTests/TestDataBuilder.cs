@@ -14,6 +14,7 @@ internal static class TestDataBuilder
     public static MediaListEntry Entry(
         int mediaId,
         string? title = null,
+        string? englishTitle = null,
         string? coverMedium = null,
         int? progress = null,
         double? score = null,
@@ -35,7 +36,11 @@ internal static class TestDataBuilder
             Media = new Media
             {
                 Id = mediaId,
-                Title = new MediaTitle { Romaji = title ?? $"Title-{mediaId}" },
+                Title = new MediaTitle
+                {
+                    Romaji = title ?? $"Title-{mediaId}",
+                    English = englishTitle,
+                },
                 CoverImage = new MediaCoverImage { Medium = coverMedium ?? $"https://img/{mediaId}" },
                 IsAdult = isAdult,
                 Episodes = episodes,
@@ -102,6 +107,14 @@ internal static class TestDataBuilder
     {
         var preferences = new FakePreferences();
         AppSettings.Storage = preferences;
+
+        // Clear() resets the pending-upstream markers as well as the values (#128). Those markers
+        // are process-wide statics that nothing else here can reach, so without this a test that
+        // changed a setting locally leaves one set, and the NEXT test's SyncFromViewer keeps the
+        // stale local value instead of taking the server's — a failure that depends entirely on
+        // ordering within the shared collection, so it reproduces on CI and not always locally.
+        // Assigned directly below rather than through the Set* methods, which would re-arm them.
+        AppSettings.Clear();
 
         AppSettings.TitleLanguage = UserTitleLanguage.Romaji;
         AppSettings.ScoreFormat = ScoreFormat.Point100;

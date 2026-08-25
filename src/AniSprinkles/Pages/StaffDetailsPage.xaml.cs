@@ -62,6 +62,15 @@ public partial class StaffDetailsPage : ContentPage, IQueryAttributable
         _loader.TrySchedule(version => RunDeferredLoadAsync(version, _pendingStaffId));
     }
 
+
+    // Display settings can change while this page sits in a backgrounded tab's stack. OnAppearing
+    // does not fire when that tab becomes current again — only OnNavigatedTo does — so the
+    // re-projection hangs off this rather than off the load path (#127; see AGENTS.md).
+    protected override void OnNavigatedTo(NavigatedToEventArgs args)
+    {
+        base.OnNavigatedTo(args);
+        ViewModel.RefreshDisplaySettings();
+    }
     protected override void OnAppearing()
     {
         base.OnAppearing();
