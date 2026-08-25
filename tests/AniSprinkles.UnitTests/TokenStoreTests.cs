@@ -61,8 +61,8 @@ public class TokenStoreTests
         var storage = new FakeSecureTokenStorage();
         var store = Build(storage);
 
-        Assert.Equal(TokenState.Absent, (await store.GetAsync()).State);
-        Assert.Equal(TokenState.Absent, (await store.GetAsync()).State);
+        Assert.Equal(TokenState.Absent, (await store.GetAsync(TestContext.Current.CancellationToken)).State);
+        Assert.Equal(TokenState.Absent, (await store.GetAsync(TestContext.Current.CancellationToken)).State);
 
         Assert.Equal(1, storage.ReadCountFor(TokenStore.TokenKey));
     }
@@ -96,7 +96,7 @@ public class TokenStoreTests
         // And it wiped the shared state on its way out. Fail any further read so a transparent
         // re-load cannot mask the wipe — after the fix there is no further read to fail.
         storage.FailRead(TokenStore.TokenKey, 3);
-        Assert.Equal("tok", (await store.GetAsync()).AccessToken);
+        Assert.Equal("tok", (await store.GetAsync(TestContext.Current.CancellationToken)).AccessToken);
     }
 
     [Fact]
@@ -114,7 +114,7 @@ public class TokenStoreTests
         // Unsynchronized, the second caller skips the load entirely and returns without reading, so
         // there is no read to wait on — wait for the call itself, or for the gate to hold it.
         var second = Task.Run(() => store.GetAsync());
-        await Task.WhenAny(second, Task.Delay(SettleTimeout));
+        await Task.WhenAny(second, Task.Delay(SettleTimeout, TestContext.Current.CancellationToken));
 
         storage.ReleaseRead(TokenStore.TokenExpiryKey);
         var results = await Task.WhenAll(first, second);
@@ -151,7 +151,7 @@ public class TokenStoreTests
         storage.FailRead(TokenStore.TokenKey);
         var store = Build(storage);
 
-        Assert.Equal(TokenState.Absent, (await store.GetAsync()).State);
+        Assert.Equal(TokenState.Absent, (await store.GetAsync(TestContext.Current.CancellationToken)).State);
     }
 
     [Fact]
@@ -163,8 +163,8 @@ public class TokenStoreTests
         storage.FailRead(TokenStore.TokenKey);
         var store = Build(storage);
 
-        await store.GetAsync();
-        await store.GetAsync();
+        await store.GetAsync(TestContext.Current.CancellationToken);
+        await store.GetAsync(TestContext.Current.CancellationToken);
 
         Assert.Equal(1, storage.ReadCountFor(TokenStore.TokenKey));
     }
@@ -174,7 +174,7 @@ public class TokenStoreTests
     {
         var store = Build(WithToken(expiresAt: Now.AddMinutes(-1)));
 
-        Assert.Equal(TokenState.Expired, (await store.GetAsync()).State);
+        Assert.Equal(TokenState.Expired, (await store.GetAsync(TestContext.Current.CancellationToken)).State);
     }
 
     [Fact]
@@ -182,7 +182,7 @@ public class TokenStoreTests
     {
         var store = Build(WithToken(expiresAt: Now.AddHours(1)));
 
-        var lookup = await store.GetAsync();
+        var lookup = await store.GetAsync(TestContext.Current.CancellationToken);
 
         Assert.Equal(TokenState.Valid, lookup.State);
         Assert.Equal("tok", lookup.AccessToken);
@@ -193,7 +193,7 @@ public class TokenStoreTests
     {
         var store = Build(WithToken());
 
-        Assert.Equal(TokenState.Valid, (await store.GetAsync()).State);
+        Assert.Equal(TokenState.Valid, (await store.GetAsync(TestContext.Current.CancellationToken)).State);
     }
 
     [Fact]
@@ -204,7 +204,7 @@ public class TokenStoreTests
 
         await store.SetAsync("fresh", Now.AddHours(1));
 
-        Assert.Equal("fresh", (await store.GetAsync()).AccessToken);
+        Assert.Equal("fresh", (await store.GetAsync(TestContext.Current.CancellationToken)).AccessToken);
         Assert.Empty(storage.Reads);
     }
 
@@ -219,7 +219,7 @@ public class TokenStoreTests
 
         store.Clear();
 
-        Assert.Equal(TokenState.Absent, (await store.GetAsync()).State);
+        Assert.Equal(TokenState.Absent, (await store.GetAsync(TestContext.Current.CancellationToken)).State);
         Assert.Empty(storage.Reads);
     }
 
@@ -241,7 +241,7 @@ public class TokenStoreTests
         storage.ReleaseRead(TokenStore.TokenKey);
         await inFlight;
 
-        Assert.Equal("fresh", (await store.GetAsync()).AccessToken);
+        Assert.Equal("fresh", (await store.GetAsync(TestContext.Current.CancellationToken)).AccessToken);
     }
 
     [Fact]
@@ -259,7 +259,7 @@ public class TokenStoreTests
         storage.ReleaseRead(TokenStore.TokenKey);
         await inFlight;
 
-        Assert.Equal(TokenState.Absent, (await store.GetAsync()).State);
+        Assert.Equal(TokenState.Absent, (await store.GetAsync(TestContext.Current.CancellationToken)).State);
     }
 
     [Fact]
@@ -274,6 +274,6 @@ public class TokenStoreTests
 
         await store.SetAsync("second-account", Now.AddHours(1));
 
-        Assert.Equal("second-account", (await store.GetAsync()).AccessToken);
+        Assert.Equal("second-account", (await store.GetAsync(TestContext.Current.CancellationToken)).AccessToken);
     }
 }

@@ -118,4 +118,33 @@ public class AppSettingsStorageTests
         Assert.False(_storage.ContainsKey("title_language"));
         Assert.False(_storage.ContainsKey("anime_section_order"));
     }
+
+    [Fact]
+    public void ResetAppSettings_ClearsThePendingMarkers()
+    {
+        // The markers #128 added are process-wide statics, and the test harness reset did not
+        // touch them. A test that changed a setting locally therefore left the marker set, and the
+        // next test's SyncFromViewer shadowed the server's value with the stale local one — which
+        // is exactly how SettingsPageModelTests failed on CI while passing locally, purely on
+        // ordering within the shared collection.
+        AppSettings.SetScoreFormat(ScoreFormat.Point5);
+        AppSettings.SetTitleLanguage(UserTitleLanguage.Native);
+        AppSettings.SetDisplayAdultContent(true);
+
+        TestDataBuilder.ResetAppSettings();
+
+        AppSettings.SyncFromViewer(new AniListUser
+        {
+            ScoreFormat = ScoreFormat.Point10Decimal,
+            Options = new UserOptions
+            {
+                TitleLanguage = UserTitleLanguage.English,
+                DisplayAdultContent = false,
+            },
+        });
+
+        Assert.Equal(ScoreFormat.Point10Decimal, AppSettings.ScoreFormat);
+        Assert.Equal(UserTitleLanguage.English, AppSettings.TitleLanguage);
+        Assert.False(AppSettings.DisplayAdultContent);
+    }
 }
