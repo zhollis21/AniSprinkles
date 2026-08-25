@@ -26,7 +26,11 @@ public class AuthService : IAuthService
 
         if (lookup.State is TokenState.Absent)
         {
-            _logger.LogInformation("AUTH token-check: absent (no token in SecureStorage).");
+            // "No usable token" rather than "no token in SecureStorage": TokenStore reports Absent
+            // both when nothing is stored and when the read failed, and collapsing those is
+            // deliberate (#116) since callers act identically. A failed read logs its own Error line
+            // with the cause, so nothing is lost by not asserting which case this is here.
+            _logger.LogInformation("AUTH token-check: absent (no usable token).");
             return null;
         }
 

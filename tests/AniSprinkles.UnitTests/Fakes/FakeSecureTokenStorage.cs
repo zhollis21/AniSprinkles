@@ -36,7 +36,20 @@ public sealed class FakeSecureTokenStorage : ISecureTokenStorage
 
     public int ReadCountFor(string key) => Reads.Count(k => k == key);
 
-    public void Seed(string key, string value) => _values[key] = value;
+    /// <summary>
+    /// Seeds a stored value. Locked like every other <c>_values</c> access even though seeding
+    /// happens during setup: sign-in and sign-out publish through <see cref="SetAsync"/> and
+    /// <see cref="Remove"/> while a reader is parked mid-<see cref="GetAsync"/>, so the dictionary is
+    /// reachable from more than one thread and one unguarded path would be enough to make a
+    /// concurrency test nondeterministic.
+    /// </summary>
+    public void Seed(string key, string value)
+    {
+        lock (_sync)
+        {
+            _values[key] = value;
+        }
+    }
 
     /// <summary>Parks the <paramref name="occurrence"/>-th read of <paramref name="key"/> until released.</summary>
     public void HoldRead(string key, int occurrence = 1)
@@ -121,14 +134,28 @@ public sealed class FakeSecureTokenStorage : ISecureTokenStorage
             throw new InvalidOperationException($"secure storage read of '{address.Item1}' #{address.Item2} failed");
         }
 
-        return _values.TryGetValue(key, out var value) ? value : null;
+        // Taken after the await, never across it, so a parked reader cannot block a writer.
+        lock (_sync)
+        {
+            return _values.TryGetValue(key, out var value) ? value : null;
+        }
     }
 
     public Task SetAsync(string key, string value)
     {
-        _values[key] = value;
+        lock (_sync)
+        {
+            _values[key] = value;
+        }
+
         return Task.CompletedTask;
     }
 
-    public void Remove(string key) => _values.Remove(key);
+    public void Remove(string key)
+    {
+        lock (_sync)
+        {
+            _values.Remove(key);
+        }
+    }
 }
