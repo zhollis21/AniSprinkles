@@ -129,6 +129,29 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
 
     // Relations: client-side sort only, no pagination — instant reorder, no busy/spinner.
     public ObservableCollection<MediaRelationEdge> DisplayedRelations { get; } = [];
+
+    /// <inheritdoc />
+    /// <remarks>
+    /// Relations and recommendations only. The Characters and Staff carousels show person names,
+    /// which no display setting affects — <c>Staff Name Language</c> is saved to AniList but is not
+    /// read anywhere in the app (#130).
+    /// </remarks>
+    protected override IEnumerable<IDisplayProjection> DisplayProjections =>
+        DisplayedRelations.Cast<IDisplayProjection>().Concat(DisplayedRecommendations);
+
+    /// <inheritdoc />
+    protected override void OnDisplaySettingsChanged()
+    {
+        // The header title, and the rating control that switches between stars, smileys and a
+        // numeric slider. None of these live on a carousel item, so DisplayProjections misses them.
+        OnPropertyChanged(nameof(Media));
+        OnPropertyChanged(nameof(PageTitle));
+        OnPropertyChanged(nameof(ScoreFormatIsStars));
+        OnPropertyChanged(nameof(ScoreFormatIsSmileys));
+        OnPropertyChanged(nameof(ScoreFormatIsNumeric));
+        OnPropertyChanged(nameof(NumericScoreMax));
+        OnPropertyChanged(nameof(NumericScoreLabel));
+    }
     public string RelationsSort { get; private set; } = RelationsDefaultSort;
 
     public IReadOnlyList<SortOption> CharactersSortOptions { get; } =

@@ -14,6 +14,7 @@ internal static class TestDataBuilder
     public static MediaListEntry Entry(
         int mediaId,
         string? title = null,
+        string? englishTitle = null,
         string? coverMedium = null,
         int? progress = null,
         double? score = null,
@@ -35,7 +36,11 @@ internal static class TestDataBuilder
             Media = new Media
             {
                 Id = mediaId,
-                Title = new MediaTitle { Romaji = title ?? $"Title-{mediaId}" },
+                Title = new MediaTitle
+                {
+                    Romaji = title ?? $"Title-{mediaId}",
+                    English = englishTitle,
+                },
                 CoverImage = new MediaCoverImage { Medium = coverMedium ?? $"https://img/{mediaId}" },
                 IsAdult = isAdult,
                 Episodes = episodes,
