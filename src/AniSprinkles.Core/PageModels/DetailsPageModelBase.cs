@@ -205,11 +205,34 @@ public abstract partial class DetailsPageModelBase<TEntity> : ObservableObject
     /// Called from the page's <c>OnNavigatedTo</c>, which is what actually fires when this page's tab
     /// becomes current again (#127).
     /// <para>
-    /// <c>OnAppearing</c> does <em>not</em>: detail pages are pushed onto a tab's navigation stack,
-    /// and MAUI Shell gives a page in a backgrounded stack no appearing/disappearing when you switch
-    /// back to that tab. Verified on device — <c>OnAppearing</c> fired once at the initial
-    /// navigation and never again, while <c>OnNavigatedTo</c> fired on every return. Hanging the
-    /// re-projection off the load path meant it never ran, because the load never ran either.
+    /// <b>The pushed-page lifecycle asymmetry, measured on device.</b> Detail pages and View All are
+    /// pushed onto a tab's navigation stack, and MAUI Shell gives a page in a backgrounded stack no
+    /// appearing/disappearing when the tab changes. The navigation hooks are a strict superset —
+    /// they fire everywhere the appearing hooks do, <em>plus</em> the two tab-switch cases where
+    /// those do not:
+    /// </para>
+    /// <code>
+    /// path                        OnAppearing  OnDisappearing  OnNavigatedTo  OnNavigatedFrom
+    /// initial navigation              yes            -              yes              -
+    /// tab away (pushed page)           -            NO               -              yes
+    /// tab back (pushed page)          NO             -              yes               -
+    /// forward nav to sub-page          -            yes              -              yes
+    /// back nav from sub-page          yes            -              yes               -
+    /// sort popup open                  -            yes              -              yes
+    /// sort popup close                yes            -              yes               -
+    /// tab-root page (Settings)        yes           yes             yes              yes
+    /// </code>
+    /// <para>
+    /// That is why the five pushed pages hang their <em>whole</em> lifecycle off
+    /// <c>OnNavigatedTo</c>/<c>OnNavigatedFrom</c> (#132), not just this re-projection (#127). The
+    /// two must stay paired: <c>DeferredContentLoader.OnDisappearing</c> clears <c>_hasAppeared</c>,
+    /// which gates both <c>IsCurrent</c> and <c>TrySchedule</c>, so a disarm with no matching re-arm
+    /// would latch the loader off after a single tab round-trip.
+    /// </para>
+    /// <para>
+    /// Tab-root pages (Library, Discover, Search, Settings) get the full set and are unaffected —
+    /// which is why <c>SettingsPage.OnDisappearing</c> still reliably flushes a pending save
+    /// (#118, #128).
     /// </para>
     /// <para>
     /// Idempotent: it compares against the last rendered snapshot and does nothing when they match,
@@ -252,7 +275,7 @@ public abstract partial class DetailsPageModelBase<TEntity> : ObservableObject
 
         // Same entity already loaded: keep its sections + sort and just restore Content state. This is hit
         // when returning from a pushed sub-page and — importantly — when a CommunityToolkit sort popup
-        // closes (it fires the host page's OnAppearing → reload). Without this guard the popup would reset
+        // closes (it fires the host page's OnNavigatedTo → reload). Without this guard the popup would reset
         // the sort the user just picked.
         if (Entity is not null && Entity.Id == id)
         {
@@ -268,7 +291,7 @@ public abstract partial class DetailsPageModelBase<TEntity> : ObservableObject
 
         LoadedId = id;
         var generation = ++_loadGeneration;
-        var token = Scope.Begin(); // fresh page scope; OnDisappearing cancels it on navigate-away
+        var token = Scope.Begin(); // fresh page scope; OnNavigatedFrom cancels it on navigate-away
 
         IsBusy = true;
 
@@ -358,7 +381,7 @@ public abstract partial class DetailsPageModelBase<TEntity> : ObservableObject
         }
     }
 
-    /// <summary>Aborts in-flight work — call from the page's <c>OnDisappearing</c>.</summary>
+    /// <summary>Aborts in-flight work — call from the page's <c>OnNavigatedFrom</c> (#132).</summary>
     public void CancelInFlight() => Scope.Cancel();
 
     protected virtual (string Title, string Subtitle) DescribeError(Exception ex)
