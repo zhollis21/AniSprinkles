@@ -31,7 +31,16 @@ public class Staff : IFavouritable
     public ObservableCollection<StaffMediaEdge> StaffMedia { get; } = [];
     public PageInfo? StaffMediaPageInfo { get; set; }
 
-    public string DisplayName => Name?.Full ?? Name?.UserPreferred ?? Name?.Native ?? "Unknown";
+    public string DisplayName => StaffNameFormat.Display(Name);
+
+    /// <summary>
+    /// Whether the native-script name still earns its place under the hero. Suppressed when the
+    /// display name already IS the native name — i.e. the viewer picked Native — so the page does not
+    /// print the same name twice (#130).
+    /// </summary>
+    public bool ShowNativeName
+        => !string.IsNullOrWhiteSpace(Name?.Native)
+        && !string.Equals(Name!.Native, DisplayName, StringComparison.Ordinal);
 
     public bool HasFavourites => Favourites is > 0;
     public string FavouritesDisplay => MetricFormat.Compact(Favourites);

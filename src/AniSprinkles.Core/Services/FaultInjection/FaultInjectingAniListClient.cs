@@ -138,6 +138,10 @@ public sealed class FaultInjectingAniListClient(
     // Operation names are the method names, and FaultProfile matches them by prefix, so
     // `--es op GetStudio` arms GetStudioAsync without anyone having to spell out the suffix.
 
+    /// <inheritdoc />
+    /// <remarks>Straight delegation — cache invalidation is not a call worth faulting.</remarks>
+    public void InvalidateEntityCache() => inner.InvalidateEntityCache();
+
     public Task<bool> ToggleFavouriteAsync(FavouriteKind kind, int id, CancellationToken cancellationToken = default)
         => GateAsync(nameof(ToggleFavouriteAsync), ct => inner.ToggleFavouriteAsync(kind, id, ct), cancellationToken);
 
