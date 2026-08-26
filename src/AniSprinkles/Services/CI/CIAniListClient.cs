@@ -8,6 +8,10 @@ namespace AniSprinkles.Services;
 /// </summary>
 internal sealed class CIAniListClient : IAniListClient
 {
+    /// <inheritdoc />
+    /// <remarks>No-op: the fixtures are static, so there is nothing to invalidate.</remarks>
+    public void InvalidateEntityCache() { }
+
     public Task<AniListUser> GetViewerAsync(CancellationToken cancellationToken = default)
         => Task.FromResult(StubData.Viewer);
 
@@ -91,7 +95,37 @@ internal sealed class CIAniListClient : IAniListClient
         => Task.FromResult(StubData.Viewer.Id);
 
     public Task<AniListUser> UpdateUserAsync(UpdateUserRequest request, CancellationToken cancellationToken = default)
-        => Task.FromResult(StubData.Viewer);
+    {
+        // Echo the update, the way AniList's real UpdateUser mutation returns the updated viewer.
+        //
+        // Returning the untouched static viewer made every Display Preferences change revert on the
+        // next Settings load, which made the whole section unverifiable in a CI build: the page model
+        // confirms the save — clearing the pending marker that protects a local change — and then
+        // syncs from this response, which still reported the pre-change value. Found while verifying
+        // #130, where picking a staff name language snapped straight back to Western.
+        var options = StubData.Viewer.Options;
+
+        if (request.TitleLanguage.HasValue) { options.TitleLanguage = request.TitleLanguage.Value; }
+        if (request.StaffNameLanguage.HasValue) { options.StaffNameLanguage = request.StaffNameLanguage.Value; }
+        if (request.AiringNotifications.HasValue) { options.AiringNotifications = request.AiringNotifications.Value; }
+        if (request.RestrictMessagesToFollowing.HasValue) { options.RestrictMessagesToFollowing = request.RestrictMessagesToFollowing.Value; }
+        if (request.ActivityMergeTime.HasValue) { options.ActivityMergeTime = request.ActivityMergeTime.Value; }
+        if (request.ScoreFormat.HasValue) { StubData.Viewer.ScoreFormat = request.ScoreFormat.Value; }
+
+        if (request.NotificationOptions is { Count: > 0 } notifications)
+        {
+            options.NotificationOptions =
+            [
+                .. notifications.Select(n => new NotificationOption { Type = n.Type, Enabled = n.Enabled }),
+            ];
+        }
+
+        // DisplayAdultContent is deliberately NOT echoed. The adult-content canary (see AGENTS.md)
+        // rests on the stub viewer reporting the toggle off so every surface must filter the flagged
+        // fixture out; making that reversible from inside the app would put the safety gate at the
+        // mercy of whatever a capture run happens to tap.
+        return Task.FromResult(StubData.Viewer);
+    }
 
     public Task<Staff?> GetStaffAsync(
         int id,
@@ -642,17 +676,25 @@ internal sealed class CIAniListClient : IAniListClient
 
         // ---- Fixture builders ---------------------------------------------------------------------
 
+        /// <summary>
+        /// A fixture name carrying userPreferred, which is what names now render from (#130). The
+        /// stubs cannot resolve it per-viewer the way AniList does, so it simply mirrors Full — enough
+        /// for the CI capture to exercise the accessor rather than the fallback.
+        /// </summary>
+        private static CharacterName PersonName(string full, string? native = null)
+            => new() { Full = full, Native = native, UserPreferred = full };
+
         private static CharacterEdge Cast(int id, string name, string image, int vaId, string vaName, string vaImage) => new()
         {
             Role = "MAIN",
-            Node = new Character { Id = id, Name = new CharacterName { Full = name }, Image = new CharacterImage { Large = image, Medium = image } },
+            Node = new Character { Id = id, Name = PersonName(name), Image = new CharacterImage { Large = image, Medium = image } },
             VoiceActors = [Va(vaId, vaName, vaImage, "Japanese", null)],
         };
 
         private static VoiceActor Va(int id, string name, string image, string language, int? favourites) => new()
         {
             Id = id,
-            Name = new CharacterName { Full = name },
+            Name = PersonName(name),
             Image = new CharacterImage { Large = image, Medium = image },
             Language = language,
             Favourites = favourites,
@@ -684,7 +726,7 @@ internal sealed class CIAniListClient : IAniListClient
             Node = new Character
             {
                 Id = charId, Favourites = favourites,
-                Name = new CharacterName { Full = charName },
+                Name = PersonName(charName),
                 Image = new CharacterImage { Large = charImage, Medium = charImage },
             },
             Media = new RelatedMedia
@@ -789,7 +831,7 @@ internal sealed class CIAniListClient : IAniListClient
             var staff = new Staff
             {
                 Id = 95075,
-                Name = new CharacterName { Full = "Mayumi Tanaka", Native = "田中真弓", UserPreferred = "Mayumi Tanaka" },
+                Name = PersonName("Mayumi Tanaka", "田中真弓"),
                 Image = new CharacterImage
                 {
                     Large = "https://s4.anilist.co/file/anilistcdn/staff/large/n95075-1qD4TeW1ON92.png",

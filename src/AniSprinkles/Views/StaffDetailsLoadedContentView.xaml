@@ -61,7 +61,7 @@
                             <Label Text="{Binding Staff.Name.Native}"
                                    Style="{StaticResource Caption1Strong}"
                                    TextColor="{StaticResource Gray300}"
-                                   IsVisible="{Binding Staff.Name.Native, Converter={StaticResource StringNotNullOrEmptyConverter}}" />
+                                   IsVisible="{Binding Staff.ShowNativeName}" />
 
                             <HorizontalStackLayout Spacing="10" Margin="0,4,0,0">
                                 <HorizontalStackLayout Spacing="4" IsVisible="{Binding HasFavourites}">
@@ -339,7 +339,7 @@
                                             </Border>
                                         </Grid>
                                         <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
-                                            <Label Text="{Binding Node.Name.Full}"
+                                            <Label Text="{Binding Node.DisplayName}"
                                                    Style="{StaticResource Caption1Strong}"
                                                    MaxLines="2"
                                                    LineBreakMode="TailTruncation" />

@@ -63,27 +63,25 @@ public partial class CharacterDetailsPage : ContentPage, IQueryAttributable
     }
 
 
-    // Display settings can change while this page sits in a backgrounded tab's stack. OnAppearing
-    // does not fire when that tab becomes current again — only OnNavigatedTo does — so the
-    // re-projection hangs off this rather than off the load path (#127; see AGENTS.md).
+    // This page's whole appear/disappear lifecycle hangs off the navigation hooks rather than
+    // OnAppearing/OnDisappearing: on a pushed page a tab switch fires only these two (#127, #132 —
+    // see DetailsPageModelBase.RefreshDisplaySettings for the measured hook table). They must stay
+    // paired; the re-arm here is what stops _loader latching off after one tab round-trip.
     protected override void OnNavigatedTo(NavigatedToEventArgs args)
     {
         base.OnNavigatedTo(args);
         ViewModel.RefreshDisplaySettings();
-    }
-    protected override void OnAppearing()
-    {
-        base.OnAppearing();
         _loader.OnAppearing();
         _loader.TrySchedule(version => RunDeferredLoadAsync(version, _pendingCharacterId));
     }
 
-    protected override void OnDisappearing()
+    protected override void OnNavigatedFrom(NavigatedFromEventArgs args)
     {
-        base.OnDisappearing();
+        base.OnNavigatedFrom(args);
         _loader.OnDisappearing();
         // Abandon any in-flight fetches so a half-loaded page doesn't keep hitting the API after
-        // the user has navigated away.
+        // the user has navigated away. List ops recreate the scope via EnsureActive, so the sort
+        // popup — which fires this too — stays harmless.
         ViewModel.CancelInFlight();
     }
 

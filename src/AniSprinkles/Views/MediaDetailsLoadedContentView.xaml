@@ -894,7 +894,7 @@
                                     <VerticalStackLayout>
                                         <views:CoverImage Source="{Binding Node.Image.Large}" />
                                         <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
-                                            <Label Text="{Binding Node.Name.Full}"
+                                            <Label Text="{Binding Node.DisplayName}"
                                                    Style="{StaticResource Caption1Strong}"
                                                    MaxLines="2"
                                                    LineBreakMode="TailTruncation" />
@@ -1157,7 +1157,7 @@
                                     <VerticalStackLayout>
                                         <views:CoverImage Source="{Binding Node.Image.Medium}" />
                                         <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
-                                            <Label Text="{Binding Node.Name.Full}"
+                                            <Label Text="{Binding Node.DisplayName}"
                                                    Style="{StaticResource Caption1Strong}"
                                                    MaxLines="2"
                                                    LineBreakMode="TailTruncation" />

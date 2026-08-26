@@ -1,5 +1,8 @@
 using AniSprinkles.Services.Maui;
 using CommunityToolkit.Maui;
+#if DEBUG
+using AniSprinkles.Services.FaultInjection;
+#endif
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Syncfusion.Maui.Toolkit.Hosting;
@@ -114,24 +117,40 @@ public static class MauiProgram
         builder.Services.AddSingleton<ErrorReportService>();
         builder.Services.AddTransient<LoggingHandler>();
         builder.Services.AddTransient<AniListRateLimitHandler>();
+#if DEBUG
+        // Fault injection (#125). One state shared by both seams — the IAniListClient decorator and
+        // the HTTP handler below — so a profile names which layer it fires at and only fires there.
+        // Disarmed until an adb broadcast arms it, which is what makes it safe to compile into every
+        // Debug build and is why -p:ErrorSim=true is gone.
+        builder.Services.AddSingleton<FaultState>();
+#endif
         builder.Services.AddSingleton(sp =>
         {
-            // Pipeline (outermost first): rate-limit gate → logging → network. The gate is outermost
-            // so each retried attempt still flows through LoggingHandler and gets logged individually.
+            // Pipeline (outermost first): rate-limit gate → logging → [fault] → network. The gate is
+            // outermost so each retried attempt still flows through LoggingHandler and gets logged
+            // individually.
+            HttpMessageHandler network = new HttpClientHandler();
+#if DEBUG
+            // Innermost, deliberately: everything above it then treats a synthetic answer exactly as
+            // if it had come off the wire, which is what lets AniListRateLimitHandler's Retry-After
+            // path and AniListErrorClassifier run for real against an injected 429 or 503 (#125).
+            network = new FaultInjectingHttpHandler(
+                sp.GetRequiredService<FaultState>(),
+                sp.GetRequiredService<ILogger<FaultInjectingHttpHandler>>())
+            {
+                InnerHandler = network,
+            };
+#endif
             var logging = sp.GetRequiredService<LoggingHandler>();
-            logging.InnerHandler = new HttpClientHandler();
+            logging.InnerHandler = network;
             var rateLimit = sp.GetRequiredService<AniListRateLimitHandler>();
             rateLimit.InnerHandler = logging;
             return new HttpClient(rateLimit);
         });
 #if CI
         builder.Services.AddSingleton<IAuthService, CIAuthService>();
-        builder.Services.AddSingleton<IAniListClient, CIAniListClient>();
+        builder.Services.AddSingleton<CIAniListClient>();
         builder.Services.AddSingleton<IAiringNotificationService, CIAiringNotificationService>();
-#elif ERROR_SIM
-        builder.Services.AddSingleton<IAuthService, SimAuthService>();
-        builder.Services.AddSingleton<IAniListClient, FailingAniListClient>();
-        builder.Services.AddSingleton<IAiringNotificationService, AiringNotificationService>();
 #else
         // Singleton alongside AuthService, which is the only thing that resolves it: TokenStore holds
         // the process-wide token and the gate that single-flights its first read (#119). A transient
@@ -139,12 +158,31 @@ public static class MauiProgram
         builder.Services.AddSingleton<TokenStore>();
         builder.Services.AddSingleton<IAuthService, AuthService>();
         builder.Services.AddSingleton<AniListClient>();
-        builder.Services.AddSingleton<IAniListClient>(sp =>
-            new CachingAniListClient(
-                sp.GetRequiredService<AniListClient>(),
-                sp.GetRequiredService<ILogger<CachingAniListClient>>()));
         builder.Services.AddSingleton<IAiringNotificationService, AiringNotificationService>();
 #endif
+        // The one IAniListClient everything resolves, built here rather than registered directly so
+        // the fault decorator can wrap whichever implementation this configuration selected (#125).
+        // Wrapping rather than replacing is the whole point: the CI fixtures still serve every call
+        // the profile does not target, so a real screen loads and then the next call breaks — which
+        // is what ErrorSim's all-methods-throw stub made impossible.
+        builder.Services.AddSingleton<IAniListClient>(sp =>
+        {
+#if CI
+            IAniListClient client = sp.GetRequiredService<CIAniListClient>();
+#else
+            IAniListClient client = new CachingAniListClient(
+                sp.GetRequiredService<AniListClient>(),
+                sp.GetRequiredService<ILogger<CachingAniListClient>>());
+#endif
+#if DEBUG
+            client = new FaultInjectingAniListClient(
+                client,
+                sp.GetRequiredService<FaultState>(),
+                sp.GetRequiredService<IOutageStateService>(),
+                sp.GetRequiredService<ILogger<FaultInjectingAniListClient>>());
+#endif
+            return client;
+        });
         builder.Services.AddSingleton<MyAnimePageModel>();
         builder.Services.AddTransient<MyAnimePage>();
         builder.Services.AddSingleton<DiscoverPageModel>();

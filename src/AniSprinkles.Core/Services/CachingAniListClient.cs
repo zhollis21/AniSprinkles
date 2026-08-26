@@ -20,6 +20,9 @@ namespace AniSprinkles.Services;
 /// </summary>
 public sealed class CachingAniListClient : IAniListClient
 {
+    /// <inheritdoc />
+    public void InvalidateEntityCache() => _cache.Clear();
+
     private readonly IAniListClient _inner;
     private readonly ILogger<CachingAniListClient>? _logger;
     private readonly ConcurrentDictionary<string, Lazy<Task<object?>>> _cache = new();
