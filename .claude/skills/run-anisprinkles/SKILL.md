@@ -102,8 +102,45 @@ Then drive it. Every command is `driver.ps1 <command> [args]`:
 | `goto <tab>` | switch tabs: `Library`\|`Discover`\|`Search`\|`Feed`\|`Settings` — a plain label tap, so it works from inside a pushed details stack too |
 | `search` | shortcut for `goto Search` |
 | `logcat [n]` / `applog` | app-PID logcat tail / the on-device rotating file log |
+| `fault <op> <kind> [scope]` | arm a fault on the **running** app — no rebuild (#125) |
+| `fault clear` | disarm |
 
 `driver.ps1 help` prints the same list.
+
+### Driving error states — `fault`
+
+Error and retry states used to be unreachable on device: the old `-p:ErrorSim=true` build failed
+*every* call, so My Anime and Discover died before you could navigate to the page you wanted to
+break. `fault` decorates the client instead of replacing it, so it composes with the CI fixtures —
+a real screen loads, then the next call fails.
+
+```powershell
+driver.ps1 fault GetMedia ServiceOutage next   # details page → error; Try Again then SUCCEEDS
+driver.ps1 fault GetStudio NotFound always     # studio page stays broken until cleared
+driver.ps1 fault any delay next -delay 4000    # 4s latency, no failure — opens timing windows
+driver.ps1 fault clear
+```
+
+- `op` — an `IAniListClient` method prefix (`GetStudio` matches `GetStudioAsync`), or `any`
+- `kind` — `ServiceOutage` | `Network` | `Authentication` | `RateLimited` | `NotFound` | `Unknown`,
+  or `delay` for latency without failure
+- `scope` — `next` (default) | `always` | `firstn:N` | `everynth:N`, all deterministic
+
+**`scope next` is the one that proves recovery**, because the fault is spent on the first call and
+**Try Again** genuinely succeeds. That path — on all four details pages, plus `FavouriteToggleRunner`
+and `ListOperationRunner`'s rollback snackbars — had never run on a device before this existed.
+
+**`-delay` with no kind is how you reproduce lifecycle and debounce bugs.** The CI stubs return
+instantly, so cancellation and `IsBusy`/`CanLoadMore` windows are zero-width on device; a delay is
+what opens them. Arm one, navigate away mid-load, and watch whether `LoggingHandler`'s `HTTP POST` /
+`HTTP 200` lines stop (#132).
+
+`-layer http` moves injection inside the `HttpClient` pipeline so `AniListRateLimitHandler`,
+`SendAsync`'s retry-once and `AniListErrorClassifier` run for real — but it needs a real signed-in
+session and does **not** work with a `-p:CiBuild=true` build. Add `-graphql` there to answer HTTP 200
+with a GraphQL `errors` array, which is how AniList reports many failures.
+
+Faults are disarmed at every app start, and none of this exists in a Release build.
 
 **The loop that works:** `dump` to see what is on screen → `tap`/`tap-desc` the
 text you saw → `wait-for` the text you expect next → `shot` → `dump` again.
@@ -289,6 +326,7 @@ works — that is what the driver above is for.
 | `'X' never appeared within Ns` right after typing a query | The keyboard is covering the tab bar — `driver.ps1 back`, then `goto`. |
 | `More than one device attached — set ANDROID_SERIAL to choose` | Two emulators/devices online. Pick one with `ANDROID_SERIAL=<serial>`, or shut the other down. `driver.ps1 env` lists them. |
 | `sys.boot_completed never reached 1 after 180s` | The emulator attached to adb but never finished booting. Check the emulator window; a wipe-data from Device Manager usually clears it. |
+| `AVD <name> never attached to adb`, and `emulator`/`qemu-system-x86_64` are running but idle (well under 1s CPU, no port in the 5554-5600 range listening) | A stale AVD lock. qemu starts, finds the AVD claimed, and hangs instead of exiting — so each retry silently adds another hung pair. Kill every `emulator`/`qemu*` process, then delete `~/.android/avd/<name>.avd/*.lock` (`hardware-qemu.ini.lock`, `multiinstance.lock`) and boot again. Run `emulator -verbose` to confirm: it prints `Running multiple emulators with the same AVD`. Check acceleration first with `emulator -accel-check` to rule out WHPX. |
 | `df 'C:/Program Files/Git/data': No such file` | Git Bash path mangling — `MSYS_NO_PATHCONV=1`. |
 | App runs but shows the signed-out screen | You built without `-p:CiBuild=true`. Rebuild with `driver.ps1 build`. |
 | App dies instantly, `SIGABRT`, no .NET stack | APK is ~19 MB not ~97 MB — a plain `dotnet build` overwrote it. `driver.ps1 build`. |
