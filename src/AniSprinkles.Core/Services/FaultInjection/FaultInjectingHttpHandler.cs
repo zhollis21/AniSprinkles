@@ -55,6 +55,25 @@ public sealed class FaultInjectingHttpHandler(
         var decision = state.Decide(operation, FaultLayer.Http);
         if (decision.IsPassThrough)
         {
+            // Say what the operation actually was when a targeted profile is armed and misses.
+            //
+            // This seam keys off the GraphQL operationName, while the client seam keys off the
+            // IAniListClient method name — and the two genuinely differ, beyond any mechanical
+            // stripping of Get/Load/Async: GetMyAnimeListAsync is "MediaListCollection" here, and
+            // SearchAnimePageAsync is "Search". So `fault GetStudio ... -layer http` matches nothing
+            // and, without this line, is indistinguishable from a seam that does not work.
+            //
+            // Only reachable with a targeted Http profile armed, which is deliberate and rare, so it
+            // cannot flood the log during ordinary use.
+            if (armed.OperationPrefix is { } prefix)
+            {
+                logger.LogInformation(
+                    "FAULT http no match: armed op={Prefix}, this request was {Operation}. "
+                    + "The http layer matches the GraphQL operationName, not the IAniListClient method name.",
+                    prefix,
+                    operation.Length == 0 ? "<unreadable>" : operation);
+            }
+
             return await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
         }
 

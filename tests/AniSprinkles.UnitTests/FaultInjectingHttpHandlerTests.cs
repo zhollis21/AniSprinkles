@@ -141,6 +141,39 @@ public class FaultInjectingHttpHandlerTests
     }
 
     [Fact]
+    public async Task AnIAniListClientMethodName_DoesNotMatchAtTheHttpLayer()
+    {
+        // The layers key off different names: this seam sees the GraphQL operationName, the decorator
+        // sees the C# method name. `fault GetStudio ... -layer http` therefore fires nothing, which is
+        // indistinguishable from a broken seam unless you know — hence the no-match log line and the
+        // documented rule. Pinned here so nobody "fixes" the mismatch by normalising one side.
+        var state = new FaultState();
+        state.Arm(Http(ApiErrorKind.NotFound, FaultScope.Always, op: "GetStudio"));
+        var inner = new QueuedHttpMessageHandler(_ => new HttpResponseMessage(HttpStatusCode.OK));
+        using var client = new HttpClient(Create(state, inner));
+
+        var response = await client.SendAsync(Request("Studio"), TestContext.Current.CancellationToken);
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equal(1, inner.CallCount);
+    }
+
+    [Fact]
+    public async Task TheWireNameMatchesWhereTheMethodNameDoesNot()
+    {
+        // The same operation, targeted the way the http layer actually spells it.
+        var state = new FaultState();
+        state.Arm(Http(ApiErrorKind.NotFound, FaultScope.Always, op: "Studio"));
+        var inner = new QueuedHttpMessageHandler(_ => new HttpResponseMessage(HttpStatusCode.OK));
+        using var client = new HttpClient(Create(state, inner));
+
+        var response = await client.SendAsync(Request("Studio"), TestContext.Current.CancellationToken);
+
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        Assert.Equal(0, inner.CallCount);
+    }
+
+    [Fact]
     public async Task InjectedRateLimit_IsAbsorbedAndRetriedByTheRealRateLimitHandler()
     {
         // The reason this seam exists. `scope next` spends the 429 on the first attempt, so the

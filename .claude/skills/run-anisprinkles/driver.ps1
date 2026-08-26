@@ -233,8 +233,15 @@ AniSprinkles driver — pwsh .claude/skills/run-anisprinkles/driver.ps1 <command
   applog                    Pull the on-device rotating file log
 
   fault <op> <kind> [scope] Arm fault injection on the RUNNING app — no rebuild (#125)
-                            op    : IAniListClient method prefix, or 'any'
-                                    e.g. GetStudio, GetMedia, LoadMediaCharactersPage
+                            op    : 'any', or a prefix whose meaning depends on -layer:
+                                      -layer client : IAniListClient method name
+                                                      e.g. GetStudio, LoadMediaCharactersPage
+                                      -layer http   : GraphQL operationName
+                                                      e.g. Studio, Media, MediaCharactersPage
+                                    These are NOT interchangeable — GetMyAnimeListAsync is
+                                    'MediaListCollection' over the wire, SearchAnimePageAsync
+                                    is 'Search'. A prefix that misses fires nothing; the http
+                                    handler logs the operation it saw so you can see why.
                             kind  : ServiceOutage|Network|Authentication|RateLimited|
                                     NotFound|Unknown, or 'delay' for latency without failure
                             scope : next (default) | always | firstn:N | everynth:N

@@ -121,7 +121,15 @@ driver.ps1 fault any delay next -delay 4000    # 4s latency, no failure — open
 driver.ps1 fault clear
 ```
 
-- `op` — an `IAniListClient` method prefix (`GetStudio` matches `GetStudioAsync`), or `any`
+- `op` — `any`, or a prefix whose meaning depends on the layer:
+  - `-layer client` (default) — an `IAniListClient` method name; `GetStudio` matches `GetStudioAsync`
+  - `-layer http` — the GraphQL `operationName`; use `Studio`, `Media`, `MediaCharactersPage`
+
+  **They are not interchangeable, and a miss is silent.** `fault GetStudio … -layer http` matches
+  nothing, because over the wire that operation is called `Studio`. Nor does stripping `Get`/`Async`
+  save you: `GetMyAnimeListAsync` is `MediaListCollection` and `SearchAnimePageAsync` is `Search`.
+  When a targeted http profile misses, the handler logs `FAULT http no match` naming the operation it
+  actually saw — grep for that if an armed fault seems to do nothing.
 - `kind` — `ServiceOutage` | `Network` | `Authentication` | `RateLimited` | `NotFound` | `Unknown`,
   or `delay` for latency without failure
 - `scope` — `next` (default) | `always` | `firstn:N` | `everynth:N`, all deterministic

@@ -24,10 +24,23 @@ pwsh .claude/skills/run-anisprinkles/driver.ps1 fault any delay next -delay 4000
 pwsh .claude/skills/run-anisprinkles/driver.ps1 fault clear
 ```
 
-`fault <op> <kind> [scope]`, where `op` is an `IAniListClient` method prefix (`GetStudio` matches
-`GetStudioAsync`) or `any`; `kind` is an `ApiErrorKind` or `delay`; and `scope` is
+`fault <op> <kind> [scope]`, where `kind` is an `ApiErrorKind` or `delay`, and `scope` is
 `next` (default), `always`, `firstn:N` or `everynth:N`. All scopes are deterministic — a fault you
 saw once can always be re-run.
+
+`op` is `any`, or a prefix whose meaning depends on the layer — **these are two different
+namespaces**:
+
+| Layer | `op` matches | Examples |
+| --- | --- | --- |
+| `client` (default) | the `IAniListClient` method name | `GetStudio`, `GetMedia`, `LoadMediaCharactersPage` |
+| `http` | the GraphQL `operationName` | `Studio`, `Media`, `MediaCharactersPage` |
+
+So `fault GetStudio … -layer http` matches **nothing** — over the wire that operation is `Studio`.
+And no mechanical fix-up would save you: stripping `Get`/`Load`/`Async` lines up `GetStudioAsync` with
+`Studio`, but `GetMyAnimeListAsync` is `MediaListCollection` and `SearchAnimePageAsync` is `Search`.
+When a targeted http profile misses, the handler logs `FAULT http no match` naming the operation it
+actually saw — check that first if an armed fault appears to do nothing.
 
 **It decorates the client rather than replacing it**, which is the important part: it composes with
 the CI stubs (`-p:CiBuild=true`), so a real screen loads from the fixtures and then the *next* call

@@ -68,8 +68,21 @@ public readonly record struct FaultScope(FaultScopeKind Kind, int N = 0)
 /// so a build carrying this machinery behaves exactly like a build without it until something arms it.
 /// </summary>
 /// <param name="OperationPrefix">
-/// Case-insensitive prefix match against the operation name, or null for any operation. Matching by
-/// prefix rather than exact name is what lets <c>--es op GetStudio</c> arm <c>GetStudioAsync</c>.
+/// Case-insensitive prefix match against the operation name, or null for any operation.
+/// <para>
+/// <b>What "the operation name" is depends on the layer.</b> At <see cref="FaultLayer.Client"/> it is
+/// the <c>IAniListClient</c> method name, so prefix matching lets <c>--es op GetStudio</c> arm
+/// <c>GetStudioAsync</c>. At <see cref="FaultLayer.Http"/> it is the GraphQL <c>operationName</c> from
+/// the request body — <c>Studio</c>, <c>Media</c>, <c>MediaCharactersPage</c> — because that is all
+/// the handler can see.
+/// </para>
+/// <para>
+/// The two do not reduce to one another. Stripping <c>Get</c>/<c>Load</c>/<c>Async</c> would line up
+/// <c>GetStudioAsync</c> with <c>Studio</c>, but not <c>GetMyAnimeListAsync</c> with
+/// <c>MediaListCollection</c> or <c>SearchAnimePageAsync</c> with <c>Search</c> — so no normalisation
+/// is attempted, and <c>FaultInjectingHttpHandler</c> logs the operation it actually saw when an
+/// armed prefix misses.
+/// </para>
 /// </param>
 /// <param name="Kind">
 /// The failure to throw, or null to delay without failing. <see cref="Delay"/> is the only way to

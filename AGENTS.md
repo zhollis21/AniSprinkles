@@ -81,7 +81,8 @@ running app, so changing what fails costs a broadcast rather than a ~3 minute re
 replaced the `-p:ErrorSim=true` flag, which no longer exists.
 
 ```powershell
-pwsh .claude/skills/run-anisprinkles/driver.ps1 fault GetStudio NotFound next
+pwsh .claude/skills/run-anisprinkles/driver.ps1 fault GetStudio NotFound next          # client layer
+pwsh .claude/skills/run-anisprinkles/driver.ps1 fault Studio NotFound next -layer http # same op, wire name
 pwsh .claude/skills/run-anisprinkles/driver.ps1 fault any delay next -delay 4000
 pwsh .claude/skills/run-anisprinkles/driver.ps1 fault clear
 ```
@@ -98,6 +99,12 @@ pwsh .claude/skills/run-anisprinkles/driver.ps1 fault clear
   `-layer http` injects into the `HttpClient` pipeline so `AniListRateLimitHandler`,
   `SendAsync`'s retry-once and `AniListErrorClassifier` all run for real — that one needs a real
   signed-in session and does **not** work with `-p:CiBuild=true`.
+- **`op` means a different thing per layer, and a miss is silent.** At `client` it is the
+  `IAniListClient` method name (`GetStudio`); at `http` it is the GraphQL `operationName`
+  (`Studio`) — that is all the handler can see in the request body. They do not reduce to one
+  another: `GetMyAnimeListAsync` is `MediaListCollection` over the wire and `SearchAnimePageAsync`
+  is `Search`, so no `Get`/`Load`/`Async` stripping would unify them and none is attempted. A
+  targeted http profile that misses logs `FAULT http no match` with the operation it actually saw.
 - **A profile fires at one layer only.** Both seams share one `FaultState`; without the layer tag a
   single armed profile would fire twice for one logical call.
 - Everything is behind `#if DEBUG`, including the exported `BroadcastReceiver`, so none of it can
