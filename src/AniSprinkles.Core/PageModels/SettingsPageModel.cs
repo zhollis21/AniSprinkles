@@ -24,6 +24,14 @@ public partial class SettingsPageModel : ObservableObject
     private AniListUser? _loadedUser;
     private UserTitleLanguage _loadedTitleLanguage;
     private UserStaffNameLanguage _loadedStaffNameLanguage;
+
+    /// <summary>
+    /// The staff name language the last viewer sync reported, or null before the first one. Distinct
+    /// from <see cref="_loadedStaffNameLanguage"/>, which is dirty-tracking and starts at the enum
+    /// default — this one has to be able to say "never synced" so an upstream change can be told
+    /// apart from a first populate (#130).
+    /// </summary>
+    private UserStaffNameLanguage? _lastSyncedStaffNameLanguage;
     private ScoreFormat _loadedScoreFormat;
     private bool _loadedDisplayAdultContent;
     private bool _loadedAiringNotifications;
@@ -449,6 +457,28 @@ public partial class SettingsPageModel : ObservableObject
         // instead leaves the page dirty, so the existing debounce and the navigate-away flush
         // re-send it. Identical to the old behaviour whenever nothing is pending.
         _loadedTitleLanguage = user.Options.TitleLanguage;
+
+        // A staff-name-language change made somewhere else — the website, another device — arrives
+        // here rather than through the changed handler, which is guarded on _populating and so does
+        // not invalidate (#130). Without this the control would update while every cached
+        // character/staff/studio page kept rendering names under the previous setting, until the app
+        // restarted.
+        //
+        // Tracked in its own nullable rather than compared against _loadedStaffNameLanguage: that one
+        // starts at default(RomajiWestern), and _loadedUser is already assigned before this method
+        // runs, so neither can tell a first populate from a genuine upstream change. Null here means
+        // "never synced", which is the only reliable way to avoid dropping the cache once per session
+        // for anyone whose setting is not the default.
+        if (_lastSyncedStaffNameLanguage is { } previous && user.Options.StaffNameLanguage != previous)
+        {
+            _logger.LogInformation(
+                "Staff name language changed upstream ({Old} → {New}) — dropping cached entity reads",
+                previous,
+                user.Options.StaffNameLanguage);
+            _aniListClient.InvalidateEntityCache();
+        }
+
+        _lastSyncedStaffNameLanguage = user.Options.StaffNameLanguage;
         _loadedStaffNameLanguage = user.Options.StaffNameLanguage;
         _loadedScoreFormat = user.ScoreFormat;
         _loadedDisplayAdultContent = user.Options.DisplayAdultContent;
@@ -565,6 +595,10 @@ public partial class SettingsPageModel : ObservableObject
         // Sign-out must not leave the previous account's unconfirmed changes shadowing the next
         // viewer's real preferences — the same reason AppSettings.Clear resets its own markers.
         _notificationTypesAwaitingUpstream.Clear();
+
+        // Forget the synced value too, so the next account is treated as a first populate rather
+        // than compared against the previous viewer's setting (#130).
+        _lastSyncedStaffNameLanguage = null;
         _staffNameLanguageAwaitingUpstream = false;
         _restrictMessagesAwaitingUpstream = false;
         _activityMergeTimeAwaitingUpstream = false;
@@ -620,6 +654,19 @@ public partial class SettingsPageModel : ObservableObject
     partial void OnSelectedStaffNameLanguageChanged(UserStaffNameLanguage value)
     {
         MarkPendingUnlessPopulating(ref _staffNameLanguageAwaitingUpstream);
+
+        // Drop the cached character/staff/studio reads (#130). Unlike title language, this setting
+        // cannot be re-projected: names render from AniList's `userPreferred`, which is resolved
+        // server-side against this setting at fetch time, so everything already in the session cache
+        // is stale the moment it moves. Nothing is refetched here — pages reload as the user
+        // navigates back to them, which spreads the cost over screens actually visited instead of
+        // firing a burst on a settings tap. Guarded on _populating so merely opening Settings, which
+        // assigns this from the server, does not throw the cache away.
+        if (!_populating)
+        {
+            _aniListClient.InvalidateEntityCache();
+        }
+
         TriggerAutoSave();
     }
 

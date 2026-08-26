@@ -12,6 +12,23 @@ public enum FavouriteKind
 public interface IAniListClient
 {
     /// <summary>
+    /// Drops any cached character/staff/studio reads so the next fetch comes from AniList (#130).
+    /// <para>
+    /// Needed because names render from <c>userPreferred</c>, which AniList resolves server-side
+    /// against the viewer's Staff Name Language and which is therefore fixed at fetch time. Without
+    /// this, changing the setting would appear to do nothing for the rest of the session:
+    /// <see cref="CachingAniListClient"/> holds those reads for the process lifetime, so even
+    /// navigating away and back would re-serve the old rendering.
+    /// </para>
+    /// <para>
+    /// Invalidate-only, deliberately — nothing is refetched here. Pages reload as the user navigates
+    /// to them, which spreads the cost over screens actually visited instead of firing a burst the
+    /// moment a setting flips.
+    /// </para>
+    /// </summary>
+    void InvalidateEntityCache();
+
+    /// <summary>
     /// Toggles the signed-in viewer's favorite state for the given entity via AniList's
     /// <c>ToggleFavourite</c> mutation. Requires authentication. Returns true when the mutation
     /// succeeds (callers drive the on/off state optimistically).

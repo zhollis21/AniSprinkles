@@ -65,6 +65,19 @@ MediaDetails additionally emits its own `load#N` lines (`LoadAsync enter`, `skip
 ### AUTH token-check (app log)
 `AUTH token-check: absent | expired, signing out | valid` fires at every `AuthService.GetAccessTokenAsync` call. The "expired, signing out" path wipes SecureStorage and flips `IsAuthenticated` to false — a routine token-refresh check becoming a full sign-out. On resume after background, this is the common trigger for `PageState: Content → Unauthenticated → InitialLoading → Content`.
 
+### FAULT (app log / logcat, Debug only)
+`FAULT armed op=… kind=… scope=…(N) delay=…ms layer=… graphql=…` on arming (logcat only — the
+receiver logs through `Android.Util.Log` because a broadcast can precede DI), then
+`FAULT delaying <Operation> by <ms>ms` and `FAULT failing <Operation> as <Kind>` per affected call.
+`FAULT http answering <Operation> with <status>` is the HTTP seam.
+
+**Read these before diagnosing anything else in a session where faults were armed** — an injected
+failure looks identical to a real one in every downstream trace (`PageState`, `LISTTRACE`, the outage
+banner), because that is precisely the point. A `FAULT cleared` line, or an app restart, disarms.
+
+Absence of `FAULT` lines in a Debug build is normal: injection ships disarmed. See `/run-anisprinkles`
+for the `driver.ps1 fault` verbs.
+
 ## Drill-in
 
 When the summary flags something, go deeper without re-running the collector:

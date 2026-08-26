@@ -8,8 +8,8 @@ namespace AniSprinkles.PageModels;
 /// <item><see cref="Begin"/> starts a fresh scope for a new page load, cancelling any prior one.</item>
 /// <item><see cref="EnsureActive"/> hands a follow-on op (Load More / sort) a live token, recreating the
 /// scope if it was cancelled while still on the page — e.g. by the CommunityToolkit sort popup's modal
-/// <c>OnDisappearing</c>, which would otherwise cancel the very sort it's about to request.</item>
-/// <item><see cref="Cancel"/> aborts in-flight work; call it from the page's <c>OnDisappearing</c>.</item>
+/// <c>OnNavigatedFrom</c>, which would otherwise cancel the very sort it's about to request.</item>
+/// <item><see cref="Cancel"/> aborts in-flight work; call it from the page's <c>OnNavigatedFrom</c>.</item>
 /// </list>
 /// </summary>
 public sealed class PageLoadScope : IDisposable
@@ -38,7 +38,7 @@ public sealed class PageLoadScope : IDisposable
         return _cts.Token;
     }
 
-    /// <summary>Cancels any in-flight work — call from the page's <c>OnDisappearing</c>.</summary>
+    /// <summary>Cancels any in-flight work — call from the page's <c>OnNavigatedFrom</c> (#132).</summary>
     public void Cancel() => _cts?.Cancel();
 
     public void Dispose() => _cts?.Dispose();

@@ -10,6 +10,10 @@ namespace AniSprinkles.Services;
 
 public class AniListClient : IAniListClient
 {
+    /// <inheritdoc />
+    /// <remarks>No-op: this layer caches only the viewer id, which no display setting affects.</remarks>
+    public void InvalidateEntityCache() { }
+
     private static readonly Uri GraphQlEndpoint = new("https://graphql.anilist.co");
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
@@ -2092,14 +2096,14 @@ query Media($id: Int!) {
       edges {
         node {
           id
-          name { full native }
+          name { full native userPreferred }
           image { medium large }
           favourites
         }
         role
         voiceActors(sort: [RELEVANCE, ID]) {
           id
-          name { full native }
+          name { full native userPreferred }
           image { medium }
           languageV2
         }
@@ -2129,7 +2133,7 @@ query Media($id: Int!) {
       edges {
         node {
           id
-          name { full native }
+          name { full native userPreferred }
           image { medium }
           favourites
         }
@@ -2273,7 +2277,7 @@ query Staff($id: Int!, $charactersPage: Int = 1, $mediaPage: Int = 1, $character
       edges {
         node {
           id
-          name { full native }
+          name { full native userPreferred }
           image { medium large }
           favourites
         }
@@ -2317,7 +2321,7 @@ query StaffCharactersPage($id: Int!, $page: Int!, $sort: [CharacterSort], $perPa
     characters(sort: $sort, page: $page, perPage: $perPage) {
       pageInfo { hasNextPage currentPage }
       edges {
-        node { id name { full native } image { medium large } favourites }
+        node { id name { full native userPreferred } image { medium large } favourites }
         role
         media {
           id
@@ -2380,7 +2384,7 @@ query CharacterMediaPage($id: Int!, $page: Int!, $sort: [MediaSort], $perPage: I
         characterRole
         voiceActors(sort: [LANGUAGE, RELEVANCE]) {
           id
-          name { full native }
+          name { full native userPreferred }
           image { medium large }
           languageV2
           favourites
@@ -2402,7 +2406,7 @@ query MediaCharactersPage($id: Int!, $page: Int!, $sort: [CharacterSort], $perPa
       edges {
         node {
           id
-          name { full native }
+          name { full native userPreferred }
           image { medium large }
           favourites
         }
@@ -2420,7 +2424,7 @@ query MediaStaffPage($id: Int!, $page: Int!, $sort: [StaffSort], $perPage: Int =
       edges {
         node {
           id
-          name { full native }
+          name { full native userPreferred }
           image { medium }
           favourites
         }
@@ -2534,7 +2538,7 @@ query Character($id: Int!, $mediaPage: Int = 1, $mediaSort: [MediaSort] = [POPUL
         characterRole
         voiceActors(sort: [LANGUAGE, RELEVANCE]) {
           id
-          name { full native }
+          name { full native userPreferred }
           image { medium large }
           languageV2
           favourites

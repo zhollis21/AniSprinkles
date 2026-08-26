@@ -10,6 +10,9 @@ public class VoiceActor
     public string? Language { get; set; }
     public int? Favourites { get; set; }
 
+    /// <summary>The voice-actor card's name, under the viewer's Staff Name Language (#130).</summary>
+    public string DisplayName => StaffNameFormat.Display(Name);
+
     public bool HasFavourites => Favourites is > 0;
     public string FavouritesDisplay => MetricFormat.Compact(Favourites);
 

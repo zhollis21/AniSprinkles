@@ -90,14 +90,10 @@
 		<Error Text="CiBuild=true is only supported with Debug configuration. Do not use it for Release builds." />
 	</Target>
 
-	<!-- Append ERROR_SIM preprocessor symbol to simulate API failures (-p:ErrorSim=true) -->
-	<!-- Restricted to Debug to prevent accidentally shipping stub services in a Release build -->
-	<PropertyGroup Condition="'$(ErrorSim)' == 'true' AND '$(Configuration)' == 'Debug'">
-		<DefineConstants>$(DefineConstants);ERROR_SIM</DefineConstants>
-	</PropertyGroup>
-	<Target Name="_BlockErrorSimInRelease" BeforeTargets="Build" Condition="'$(ErrorSim)' == 'true' AND '$(Configuration)' != 'Debug'">
-		<Error Text="ErrorSim=true is only supported with Debug configuration. Do not use it for Release builds." />
-	</Target>
+	<!-- There is no ErrorSim flag any more (#125). Fault injection is a decorator that ships
+	     disarmed in every Debug build, gated on plain #if DEBUG, so simulating a failure no longer
+	     needs its own build configuration — and no longer needs a Release guard, because the code
+	     cannot be compiled into one. Arm it at runtime; see /run-anisprinkles. -->
 
 	<ItemGroup>
 	  <MauiXaml Update="Views\ErrorStateView.xaml">
@@ -137,7 +133,4 @@
 	<!--<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net10.0-android|AnyCPU'">
 	  <DefineConstants>$(DefineConstants);CI</DefineConstants>
 	</PropertyGroup>-->
-	<!-- <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net10.0-android|AnyCPU'">
-	  <DefineConstants>$(DefineConstants);ERROR_SIM</DefineConstants>
-	</PropertyGroup> -->
 </Project>

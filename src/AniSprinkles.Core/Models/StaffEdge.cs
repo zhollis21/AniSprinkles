@@ -19,6 +19,9 @@ public class StaffNode
     public CharacterImage? Image { get; set; }
     public int? Favourites { get; set; }
 
+    /// <summary>The staff carousel card's name, under the viewer's Staff Name Language (#130).</summary>
+    public string DisplayName => StaffNameFormat.Display(Name);
+
     public bool HasFavourites => Favourites is > 0;
     public string FavouritesDisplay => MetricFormat.Compact(Favourites);
 }

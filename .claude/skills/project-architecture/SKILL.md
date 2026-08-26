@@ -16,7 +16,7 @@ tests/AniSprinkles.UnitTests/                project-references Core
 ```
 
 - **`src/AniSprinkles.Core/`** — `Models/`, `Utilities/`, non-platform `Services/`, `Services/Abstractions/`, `Converters/`, `Icons/`, and **all** `PageModels/`. Plain TFM so the unit tests can project-reference it. References neither `CommunityToolkit.Maui` nor `IconFont.Maui.FluentIcons`, on purpose.
-- **`src/AniSprinkles/`** — `Pages/`, `Views/`, `Behaviors/`, `Platforms/`, `MauiProgram.cs`, `AuthService`, `AiringNotificationService`, the CI/ErrorSim stubs, and the `Services/Maui/` adapters implementing Core's abstractions.
+- **`src/AniSprinkles/`** — `Pages/`, `Views/`, `Behaviors/`, `Platforms/`, `MauiProgram.cs`, `AuthService`, `AiringNotificationService`, the CI stubs, the Android fault-injection receiver, and the `Services/Maui/` adapters implementing Core's abstractions.
 
 **Keep them siblings — don't nest a project inside another project's folder.** Core briefly lived at `src/AniSprinkles.Core/` while the app was still `src/AniSprinkles.csproj`, and the app's default globs swept up 602 of Core's sources plus its `obj/` generated assembly attributes. It fails as `CS0579: Duplicate 'TargetFrameworkAttribute'`, which reads like a corrupt build rather than a layout problem. `<DefaultItemExcludes>` does suppress it (one property, honoured by `Compile`/`None`/`EmbeddedResource`/`MauiXaml` alike) if you ever need the trick elsewhere — but the sibling layout means nothing needs suppressing.
 

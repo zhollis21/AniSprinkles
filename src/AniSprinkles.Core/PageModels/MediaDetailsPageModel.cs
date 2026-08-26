@@ -132,9 +132,10 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
 
     /// <inheritdoc />
     /// <remarks>
-    /// Relations and recommendations only. The Characters and Staff carousels show person names,
-    /// which no display setting affects — <c>Staff Name Language</c> is saved to AniList but is not
-    /// read anywhere in the app (#130).
+    /// Relations and recommendations only. The Characters and Staff carousels do show person names,
+    /// and Staff Name Language does drive them since #130 — but through AniList's <c>userPreferred</c>,
+    /// resolved server-side at fetch time. There is nothing local to re-project: a change to that
+    /// setting invalidates the entity cache and the names arrive corrected on the next fetch.
     /// </remarks>
     protected override IEnumerable<IDisplayProjection> DisplayProjections =>
         DisplayedRelations.Cast<IDisplayProjection>().Concat(DisplayedRecommendations);

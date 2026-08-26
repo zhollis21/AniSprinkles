@@ -231,6 +231,31 @@ AniSprinkles driver — pwsh .claude/skills/run-anisprinkles/driver.ps1 <command
 
   logcat [lines]            App-PID logcat tail (default 200)
   applog                    Pull the on-device rotating file log
+
+  fault <op> <kind> [scope] Arm fault injection on the RUNNING app — no rebuild (#125)
+                            op    : 'any', or a prefix whose meaning depends on -layer:
+                                      -layer client : IAniListClient method name
+                                                      e.g. GetStudio, LoadMediaCharactersPage
+                                      -layer http   : GraphQL operationName
+                                                      e.g. Studio, Media, MediaCharactersPage
+                                    These are NOT interchangeable — GetMyAnimeListAsync is
+                                    'MediaListCollection' over the wire, SearchAnimePageAsync
+                                    is 'Search'. A prefix that misses fires nothing; the http
+                                    handler logs the operation it saw so you can see why.
+                            kind  : ServiceOutage|Network|Authentication|RateLimited|
+                                    NotFound|Unknown, or 'delay' for latency without failure
+                            scope : next (default) | always | firstn:N | everynth:N
+                            -delay <ms>     Latency before the call resolves. For RateLimited
+                                            at -layer http this becomes Retry-After instead.
+                            -layer client|http
+                                    client (default) decorates IAniListClient and composes
+                                    with the CI stubs — a real screen loads, the next call
+                                    breaks. http injects into the pipeline so the rate-limit
+                                    handler and error classifier actually run (needs a real
+                                    signed-in session; does NOT work with -p:CiBuild=true).
+                            -graphql        Answer HTTP 200 with a GraphQL errors array
+                                            instead of a status code (http layer only)
+  fault clear               Disarm. Faults are disarmed at every app start.
 "@ | Write-Host
 }
 
@@ -466,6 +491,60 @@ function Cmd-AppLog {
     AdbOut run-as $Package cat files/logs/anisprinkles.log
 }
 
+# Arms runtime fault injection on the already-running app (#125). Replaces the old
+# -p:ErrorSim=true build flag, which meant a ~3 minute rebuild per error kind and produced a
+# build where EVERY call failed, so the screen you wanted to break was unreachable.
+#
+# The receiver is targeted by explicit component rather than by action alone: an implicit
+# broadcast to a manifest-declared receiver is not delivered reliably on modern Android, and
+# the component name is pinned in C# precisely so it can be named here.
+function Cmd-Fault {
+    param([string[]]$Argv)
+
+    $component = "$Package/.FaultReceiver"
+    $action    = 'com.RainbowSprinkles.FAULT'
+
+    if ($Argv.Count -ge 1 -and $Argv[0].ToLowerInvariant() -eq 'clear') {
+        Adb shell am broadcast -n $component -a $action --ez clear true *> $null
+        Say 'fault cleared'
+        return
+    }
+
+    # Pull the optional flags out, leaving <op> <kind> <scope> as positionals.
+    $positional = @()
+    $delay = 0
+    $layer = 'client'
+    $graphql = $false
+    for ($i = 0; $i -lt $Argv.Count; $i++) {
+        $token = $Argv[$i]
+        if ($token -match '^-{1,2}delay$')        { $i++; $delay = [int]$Argv[$i] }
+        elseif ($token -match '^-{1,2}layer$')    { $i++; $layer = $Argv[$i] }
+        elseif ($token -match '^-{1,2}graphql$')  { $graphql = $true }
+        else                                     { $positional += $token }
+    }
+
+    if ($positional.Count -lt 1) {
+        throw 'fault needs an op, e.g. driver.ps1 fault GetStudio NotFound next (or: fault clear)'
+    }
+
+    $op    = $positional[0]
+    $kind  = if ($positional.Count -ge 2) { $positional[1] } else { 'delay' }
+    $scope = if ($positional.Count -ge 3) { $positional[2] } else { 'next' }
+
+    $cmd = @('shell', 'am', 'broadcast', '-n', $component, '-a', $action)
+    # 'any' and 'delay' are the driver's spelling for "omit this extra" — the receiver reads an
+    # absent op as "match everything" and an absent kind as "delay without failing".
+    if ($op -ne 'any')       { $cmd += @('--es', 'op', $op) }
+    if ($kind -ne 'delay')   { $cmd += @('--es', 'kind', $kind) }
+    $cmd += @('--es', 'scope', $scope)
+    $cmd += @('--es', 'layer', $layer)
+    if ($delay -gt 0)        { $cmd += @('--ei', 'delay', "$delay") }
+    if ($graphql)            { $cmd += @('--ez', 'graphql', 'true') }
+
+    Adb @cmd *> $null
+    Say "fault armed: op=$op kind=$kind scope=$scope delay=${delay}ms layer=$layer graphql=$graphql"
+}
+
 # --------------------------------------------------------------- dispatch
 
 $a = @($Args)
@@ -515,5 +594,6 @@ switch ($cmd) {
     'goto'       { Cmd-Goto ($a -join ' ') }
     'logcat'     { if ($a[0]) { Cmd-Logcat ([int]$a[0]) } else { Cmd-Logcat } }
     'applog'     { Cmd-AppLog }
+    'fault'      { Cmd-Fault $a }
     default      { Write-Host "Unknown command '$Command'`n"; Cmd-Help; exit 1 }
 }
