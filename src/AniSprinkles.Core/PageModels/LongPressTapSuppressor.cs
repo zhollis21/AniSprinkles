@@ -27,5 +27,19 @@ public static class LongPressTapSuppressor
 
     /// <summary>True when a long press fired within <see cref="SuppressionWindow"/>.</summary>
     public static bool ShouldSuppressTap()
-        => Environment.TickCount64 - Interlocked.Read(ref _lastLongPressTicks) < SuppressionWindow.TotalMilliseconds;
+        => IsWithinWindow(Environment.TickCount64, Interlocked.Read(ref _lastLongPressTicks));
+
+    /// <summary>
+    /// The window comparison itself, as a pure function of two tick counts.
+    /// </summary>
+    /// <remarks>
+    /// Split out so the boundary behaviour can be tested without stamping the shared static. The
+    /// stamp is process-wide and lives for <see cref="SuppressionWindow"/>, so a test that set it
+    /// could suppress a navigate command in any test class running in parallel.
+    /// </remarks>
+    internal static bool IsWithinWindow(long nowTicks, long lastLongPressTicks)
+        => nowTicks - lastLongPressTicks < SuppressionWindow.TotalMilliseconds;
+
+    /// <summary>Clears the stamp, so a test that sets it cannot leak into a parallel test class.</summary>
+    internal static void Reset() => Interlocked.Exchange(ref _lastLongPressTicks, 0);
 }
