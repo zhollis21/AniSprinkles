@@ -75,7 +75,7 @@ burn you, so internalize it before the specific checks below: an empty search
 result is not evidence of absence, it is usually evidence you guessed the wrong
 word. Real examples from this repo — grepping `IsExpanded` found nothing and
 nearly got shipped work reported as unbuilt, because the code says
-`IsDisplayPreferencesExpanded`; `gh issue list --search "unit test PageModel
+`IsDescriptionExpanded` and `IsStatusExpanded`; `gh issue list --search "unit test PageModel
 Services Converters"` returned one issue while `--search "unit test"` returned
 three, including the one that mattered.
 
@@ -145,11 +145,18 @@ Report the relationship you actually found rather than rounding it to
 different recommendations.
 
 **The premise moved.** The architecture may have changed underneath the issue.
-#64 proposes investigating `ItemSizingStrategy` for CollectionView perf, but
-those lists were since migrated from `BindableLayout` to virtualized
-`CollectionView`s, which is most of what that investigation was chasing. Read
-`/project-architecture` and the relevant source before accepting the issue's
-description of how things currently work.
+#12's checklist asked for a "My Manga flyout page (parallel to My Anime)" — but
+#43 replaced the hamburger flyout with a bottom tab bar, and the manga half now
+exists as a Shell sub-tab placeholder. The work is still live; the shape it
+described is not. Read `/project-architecture` and the relevant source before
+accepting the issue's description of how things currently work.
+
+Be careful not to over-apply this. #64 *looks* like the same case — an old perf
+investigation, and the lists have moved around — but `MyAnimeLoadedContentView`
+still forces `MeasureAllItems` at `xaml:395` and `xaml.cs:311`, so the
+investigation is entirely valid. Only its citations had drifted. Check the code
+before concluding a premise moved, exactly as you would before concluding an
+issue is stale.
 
 **The unstated assumption.** Most issues quietly assume some mechanism already
 behaves a certain way, and the assumption is worth checking directly — it is
