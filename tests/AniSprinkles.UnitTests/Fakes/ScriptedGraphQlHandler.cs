@@ -111,7 +111,7 @@ public sealed class ScriptedGraphQlHandler : HttpMessageHandler
 /// <summary>One recorded request, with the GraphQL envelope already parsed.</summary>
 public sealed class CapturedGraphQlRequest
 {
-    private readonly JsonDocument? _document;
+    private readonly JsonElement? _root;
 
     public CapturedGraphQlRequest(
         HttpMethod method, Uri? uri, string? authScheme, string? bearerToken, string body)
@@ -126,7 +126,13 @@ public sealed class CapturedGraphQlRequest
         {
             try
             {
-                _document = JsonDocument.Parse(body);
+                // Cloned so the element outlives the document, which is disposed here rather than
+                // held for the life of the handler: JsonDocument.Parse(string) rents from
+                // ArrayPool, and a captured request is read long after the request completed. The
+                // clone owns its own memory, so this type needs no disposal and no assertion can
+                // arrive after a document went away.
+                using var document = JsonDocument.Parse(body);
+                _root = document.RootElement.Clone();
             }
             catch (JsonException)
             {
@@ -157,7 +163,7 @@ public sealed class CapturedGraphQlRequest
             ? v
             : null;
 
-    private JsonElement? Root => _document?.RootElement;
+    private JsonElement? Root => _root;
 
     /// <summary>
     /// True when the variable was sent at all. Distinct from a <c>null</c> value on purpose: an
