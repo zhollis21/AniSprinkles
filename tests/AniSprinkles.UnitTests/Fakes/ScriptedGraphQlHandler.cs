@@ -28,6 +28,11 @@ public sealed class ScriptedGraphQlHandler : HttpMessageHandler
     public ScriptedGraphQlHandler(Func<CapturedGraphQlRequest, HttpResponseMessage> responder)
         => _responder = responder;
 
+    /// <summary>
+    /// A snapshot of what has been sent so far. Deliberately a copy: the caller is free to
+    /// enumerate it while the handler goes on appending. The single-value accessors below read the
+    /// live list under the lock instead, since cloning it to reach one element buys nothing.
+    /// </summary>
     public IReadOnlyList<CapturedGraphQlRequest> Requests
     {
         get
@@ -39,12 +44,35 @@ public sealed class ScriptedGraphQlHandler : HttpMessageHandler
         }
     }
 
-    public CapturedGraphQlRequest Last => Requests[^1];
+    public CapturedGraphQlRequest Last
+    {
+        get
+        {
+            lock (_gate)
+            {
+                return _requests[^1];
+            }
+        }
+    }
 
-    public int CallCount => Requests.Count;
+    public int CallCount
+    {
+        get
+        {
+            lock (_gate)
+            {
+                return _requests.Count;
+            }
+        }
+    }
 
     public int CallsTo(string operationName)
-        => Requests.Count(r => string.Equals(r.OperationName, operationName, StringComparison.Ordinal));
+    {
+        lock (_gate)
+        {
+            return _requests.Count(r => string.Equals(r.OperationName, operationName, StringComparison.Ordinal));
+        }
+    }
 
     /// <summary>A GraphQL success: <c>{"data": ...}</c>.</summary>
     public static HttpResponseMessage Data(string dataJson)
