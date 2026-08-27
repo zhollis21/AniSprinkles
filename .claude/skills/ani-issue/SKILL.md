@@ -2,7 +2,7 @@
 name: ani-issue
 description: "File a GitHub issue that survives contact with the future: interrogate the user for what only they know, verify every claim against the actual code before writing it down, state the problem rather than decree a fix, label it, and create it. Also audits existing issues against the same bar (`audit <N>` / `audit all`). Use whenever the user wants to file, open, raise, log, or write up an issue, ticket, bug report or piece of tech debt — and whenever a session turns up a problem that isn't going to get fixed right now, even if they didn't use the word 'issue'. Prefer this over calling `gh issue create` directly, always."
 argument-hint: "<what's wrong> | audit <issue number|all>"
-allowed-tools: Bash(gh *) Bash(git *) Read Grep Glob AskUserQuestion
+allowed-tools: Bash(gh *) Bash(git *) Bash(grep *) Bash(sed *) Bash(cp *) Bash(diff *) Bash(cat *) Bash(od *) Bash(head *) Read Grep Glob AskUserQuestion
 ---
 
 # Ani-issue

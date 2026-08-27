@@ -2,7 +2,7 @@
 name: ani-kickoff
 description: "Start work on a GitHub issue the right way: pull the issue, verify it isn't stale or already fixed, analyze solutions independently of whatever the issue proposes, surface tradeoffs, ask clarifying questions, and agree a plan before any code exists. Use whenever the user names issue numbers to work on — \"let's do #112\", \"start issue 63\", \"pick up 52 and 62\" — or asks to take something off the backlog. Prefer this over jumping straight into implementation, even when the issue looks obvious."
 argument-hint: "<issue number> [more issue numbers]"
-allowed-tools: Bash(gh *) Bash(git *) Read Grep Glob AskUserQuestion ExitPlanMode
+allowed-tools: Bash(gh *) Bash(git *) Bash(cp *) Bash(diff *) Read Grep Glob AskUserQuestion ExitPlanMode
 ---
 
 # Ani-kickoff
