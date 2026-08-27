@@ -81,14 +81,51 @@ public class MoveToListChoiceTests
 
 public class LongPressTapSuppressorTests
 {
+    // The window comparison is exercised through IsWithinWindow rather than by stamping: the stamp
+    // is process-wide and lives for 800ms, so setting it here suppressed navigate commands in any
+    // test class that happened to run alongside this one — DetailsSpineTests and
+    // MediaBrowsePageModelTests both drive those commands, and neither is serialised against this.
+
     [Fact]
-    public void ShouldSuppressTap_ImmediatelyAfterALongPress_IsTrue()
+    public void ATapAtTheInstantOfTheLongPress_IsSuppressed()
     {
         // MAUI's TapGestureRecognizer fires on finger-up after a long press, so the card's navigate
         // command would otherwise run underneath the action sheet the long press just opened.
-        LongPressTapSuppressor.Stamp();
+        Assert.True(LongPressTapSuppressor.IsWithinWindow(10_000, 10_000));
+    }
 
-        Assert.True(LongPressTapSuppressor.ShouldSuppressTap());
+    [Fact]
+    public void ATapJustInsideTheWindow_IsSuppressed()
+        => Assert.True(LongPressTapSuppressor.IsWithinWindow(10_799, 10_000));
+
+    [Fact]
+    public void ATapOnceTheWindowHasElapsed_IsLetThrough()
+        // The other half of the contract: suppression has to end, or a real tap on the same card
+        // never navigates.
+        => Assert.False(LongPressTapSuppressor.IsWithinWindow(10_800, 10_000));
+
+    [Fact]
+    public void WithNoLongPressEverRecorded_NothingIsSuppressed()
+    {
+        LongPressTapSuppressor.Reset();
+
+        Assert.False(LongPressTapSuppressor.ShouldSuppressTap());
+    }
+
+    [Fact]
+    public void Stamp_RecordsThePressSoTheFollowUpTapIsSuppressed()
+    {
+        // The one test that writes the shared static, so it clears it again immediately.
+        try
+        {
+            LongPressTapSuppressor.Stamp();
+
+            Assert.True(LongPressTapSuppressor.ShouldSuppressTap());
+        }
+        finally
+        {
+            LongPressTapSuppressor.Reset();
+        }
     }
 
     [Fact]

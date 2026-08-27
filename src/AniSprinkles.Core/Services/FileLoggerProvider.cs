@@ -70,6 +70,14 @@ public sealed class FileLoggerProvider : ILoggerProvider
 
     private sealed class FileLogWriter : IDisposable
     {
+        /// <summary>
+        /// How long <see cref="Dispose"/> waits for the queued backlog to reach disk. The channel
+        /// holds at most 2048 lines and each one is a small append, so a healthy drain finishes far
+        /// inside this; the bound exists for a writer wedged on IO, where blocking shutdown any
+        /// longer would be worse than losing the tail.
+        /// </summary>
+        private static readonly TimeSpan FlushTimeout = TimeSpan.FromSeconds(2);
+
         private readonly string _logDirectory;
         private readonly string _baseFileName;
         private readonly long _maxFileSizeBytes;
@@ -131,13 +139,16 @@ public sealed class FileLoggerProvider : ILoggerProvider
                 return;
             }
 
+            // Order matters here. Completing the writer lets the drain loop finish the backlog and
+            // exit on its own; cancelling the read token first threw the backlog away instead — and
+            // the backlog at shutdown is the tail of the log, which is the part a diagnostic report
+            // is being collected for in the first place.
             _disposed = true;
             _queue.Writer.TryComplete();
-            _disposeTokenSource.Cancel();
 
             try
             {
-                _backgroundWriterTask.Wait(TimeSpan.FromSeconds(1));
+                _backgroundWriterTask.Wait(FlushTimeout);
             }
             catch
             {
@@ -145,6 +156,9 @@ public sealed class FileLoggerProvider : ILoggerProvider
             }
             finally
             {
+                // Only after the drain has had its chance: this is the backstop for a writer wedged
+                // on disk IO, not the normal path.
+                _disposeTokenSource.Cancel();
                 _disposeTokenSource.Dispose();
             }
         }
@@ -155,7 +169,9 @@ public sealed class FileLoggerProvider : ILoggerProvider
             {
                 await foreach (var line in _queue.Reader.ReadAllAsync(_disposeTokenSource.Token))
                 {
-                    if (_disposed || _isFaulted)
+                    // Deliberately not checking _disposed: Dispose sets it before waiting for this
+                    // loop to drain, so bailing on it here would discard the queued tail.
+                    if (_isFaulted)
                     {
                         return;
                     }
