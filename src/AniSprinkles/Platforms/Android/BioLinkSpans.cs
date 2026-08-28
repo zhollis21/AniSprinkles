@@ -10,7 +10,6 @@ using AniSprinkles.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Platform;
-using Sentry;
 using AndroidColor = Android.Graphics.Color;
 using AndroidView = Android.Views.View;
 using MauiApplication = Microsoft.Maui.Controls.Application;
@@ -199,78 +198,26 @@ internal sealed class BioLinkSpan(string? url, AndroidColor color) : ClickableSp
     public override void OnClick(AndroidView widget)
     {
         var services = IPlatformApplication.Current?.Services;
-        if (services is null || string.IsNullOrWhiteSpace(url))
+        if (services is null)
         {
             return;
         }
 
-        // ILogger<T> is the canonical path per AGENTS.md; resolved from the container rather than
-        // injected because a span is constructed by the handler mapper, not by DI.
-        var logger = services.GetService<ILogger<BioLinkSpan>>();
+        // Resolved from the container rather than injected because a span is constructed by the
+        // handler mapper, not by DI. The decision itself lives in Core so it can be tested; this
+        // is only the lookup.
+        if (services.GetService<INavigationService>() is not { } navigation
+            || services.GetService<IExternalBrowser>() is not { } browser
+            || services.GetService<IUserFeedback>() is not { } feedback)
+        {
+            return;
+        }
 
         // Discarding a Task that swallows its own exceptions — the click arrives on the UI thread,
         // which is where both GoToAsync and the browser launch need to be, so there is nothing to
         // marshal and nothing for a caller to await.
-        _ = FollowAsync(services, logger);
-    }
-
-    private async Task FollowAsync(IServiceProvider services, ILogger? logger)
-    {
-        try
-        {
-            var target = AniListLinkTarget.Resolve(url);
-            if (target is not null)
-            {
-                var navigation = services.GetService<INavigationService>();
-                if (navigation is null)
-                {
-                    return;
-                }
-
-                // A bio link is a navigation entry point that exists nowhere else in the app, so
-                // it is worth tracing: "how did they reach this character page" is otherwise
-                // unanswerable from a crash report.
-                logger?.LogInformation(
-                    "NAVTRACE BioLink → {Route} with id={EntityId}", target.Route, target.Id);
-                SentrySdk.AddBreadcrumb(
-                    $"Follow bio link ({target.Route} {target.Id})", "navigation", "user");
-
-                await navigation.GoToAsync(
-                    target.Route,
-                    animate: false,
-                    new Dictionary<string, object> { [target.ParameterName] = target.Id });
-                return;
-            }
-
-            // Manga is ours, but the details page is anime-only. Say what the rest of the app says
-            // rather than sending it to the browser, so the answer to "can I open manga" doesn't
-            // depend on where the link was tapped (#12).
-            if (AniListLinkTarget.IsUnsupportedEntity(url))
-            {
-                logger?.LogInformation("NAVTRACE BioLink → skipped unsupported entity {Url}", url);
-
-                if (services.GetService<IUserFeedback>() is { } feedback)
-                {
-                    await feedback.ShowToastAsync("Manga & Novel details aren't supported yet.");
-                }
-
-                return;
-            }
-
-            // Staff bios link out to agency, social and personal sites; those are the browser's job.
-            if (services.GetService<IExternalBrowser>() is { } browser
-                && Uri.TryCreate(url, UriKind.Absolute, out var uri))
-            {
-                // Host only: enough to tell an AniList entry from a social link when reading a
-                // trace, without putting the full URL in the breadcrumb buffer.
-                SentrySdk.AddBreadcrumb($"Open bio link externally ({uri.Host})", "navigation", "user");
-                await browser.OpenAsync(uri);
-            }
-        }
-        catch (Exception ex)
-        {
-            logger?.LogWarning(ex, "Failed to follow bio link {Url}", url);
-        }
+        _ = BioLinkFollower.FollowAsync(
+            url, navigation, browser, feedback, services.GetService<ILogger<BioLinkSpan>>());
     }
 }
 
