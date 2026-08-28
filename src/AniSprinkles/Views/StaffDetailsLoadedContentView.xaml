@@ -205,6 +205,7 @@
                                 <Label Grid.Column="1" Text="{Binding ValueDisplay}"
                                        Style="{StaticResource Caption1}"
                                        TextColor="{StaticResource Gray100}"
+                                       TextType="Html"
                                        LineBreakMode="WordWrap" />
                             </Grid>
                         </DataTemplate>

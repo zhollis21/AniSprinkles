@@ -28,6 +28,23 @@ public class MediaDetailsPageModelTests
     }
 
     [Fact]
+    public async Task IsDescriptionTruncated_UsesTheSharedHeuristic()
+    {
+        // This page carried its own copy of the estimate, calibrated at 45 chars per line while the
+        // shared one moved to 40 for Body2's real 15sp size (#138) — and the label here is identical
+        // to the character and staff ones. 340 visible characters is the gap between the two: it
+        // fits under the old constant and overflows under the current one, so this fails if the
+        // duplicate ever comes back.
+        var harness = new Harness();
+        harness.ReturnsMedia(new Media { Id = 42, Description = new string('a', 340) });
+
+        await harness.Model.LoadAsync(42, listEntry: null);
+
+        Assert.True(harness.Model.IsDescriptionTruncated);
+        Assert.Equal(DescriptionTruncationHeuristic.CollapsedMaxLines, harness.Model.DescriptionMaxLines);
+    }
+
+    [Fact]
     public async Task LoadAsync_WithANonPositiveMediaId_ErrorsWithoutRetryAndWithoutCallingTheApi()
     {
         // A bad id will still be bad on retry, so the button must not be offered.
