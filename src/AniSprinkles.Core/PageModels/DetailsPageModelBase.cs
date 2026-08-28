@@ -467,7 +467,7 @@ public abstract partial class DetailsPageModelBase<TEntity> : ObservableObject
         if (media is { IsAnime: false })
         {
             Logger.LogInformation("NAVTRACE {TracePrefix} → Media skipped non-anime {MediaId} (type={Type}).", TracePrefix, mediaId, media.Type);
-            await Feedback.ShowToastAsync("Manga & Novel details aren't supported yet.");
+            await Feedback.ShowToastAsync(BioLinkFollower.UnsupportedMediaMessage);
             return;
         }
 

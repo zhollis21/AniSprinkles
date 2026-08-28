@@ -220,8 +220,42 @@ public static class MauiProgram
                     view.DefaultFocusHighlightEnabled = false;
                 }
             });
+
 #endif
 
-        return builder.Build();
+        var app = builder.Build();
+
+#if ANDROID
+        // Markdown links in character and staff bios rendered as invisible gaps (#137). Html.FromHtml
+        // turns each anchor into a URLSpan, which paints itself with the TextView's textColorLink
+        // rather than the label's TextColor — and that resolves through the theme to colorAccent,
+        // which colors.xml sets to transparent so the rainbow theming can show through. BioLinkSpans
+        // swaps in spans that paint themselves, which sidesteps the theme attribute instead of
+        // overriding it, and makes the links tappable while it is there.
+        //
+        // Registered under a custom key, not nameof(ILabel.Text). A key matching a MAUI property key
+        // gets shadowed here: Label.RemapForControls swaps LabelHandler.Mapper for a
+        // ControlsLabelMapper that defines Text and TextType itself, and that runs off Label's
+        // static init during the first page render — after this method returns either way. Both a
+        // pre-Build and a post-Build registration on those keys were silently dropped on device,
+        // links still invisible, no error anywhere. Nothing shadows a custom key, which is why the
+        // CollectionView customization above works.
+        //
+        // The tradeoff is that a custom key runs only when the handler is built, so it cannot catch
+        // the spoiler toggle rewriting BioProse. BioLinkSpans.Attach hangs a TextWatcher off the
+        // view for that.
+        Microsoft.Maui.Handlers.LabelHandler.Mapper.AppendToMapping(
+            "AniSprinkles.BioLinks",
+            static (handler, label) =>
+            {
+                if (label is Label { TextType: TextType.Html }
+                    && handler.PlatformView is Android.Widget.TextView textView)
+                {
+                    BioLinkSpans.Attach(textView);
+                }
+            });
+#endif
+
+        return app;
     }
 }

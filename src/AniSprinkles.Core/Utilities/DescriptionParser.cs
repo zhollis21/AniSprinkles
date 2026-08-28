@@ -15,8 +15,14 @@ public static class DescriptionParser
 {
     // Label has no colons (the colon ends the label) and no underscores (which would
     // collide with the bold markers). Everything between matching <code>__</code> bold pairs.
+    //
+    // Both spellings of the separator are accepted, because AniList editors write both:
+    // <c>__Height:__ 172 cm</c> and <c>__Height__: 145-180 cm</c>. Only the first used to parse,
+    // and since a miss on the opening line latches the parser into prose for the rest of the
+    // description, a bio starting with the second form lost its whole stat card — later rows in
+    // the valid spelling included.
     private static readonly Regex StatLineRegex = new(
-        @"^__(?<label>[^_:]+):__\s*(?<value>.+?)\s*$",
+        @"^__(?<label>[^_:]+)(?::__|__\s*:)\s*(?<value>.+?)\s*$",
         RegexOptions.Compiled);
 
     public static ParsedDescription Parse(string? description)
@@ -29,6 +35,7 @@ public static class DescriptionParser
         var stats = new List<DescriptionStatRow>();
         var proseBuilder = new StringBuilder();
         var foundProse = false;
+        var inSpoilerBlock = false;
 
         foreach (var rawLine in description.Split('\n'))
         {
@@ -45,7 +52,7 @@ public static class DescriptionParser
             DescriptionStatRow? stat = null;
             if (!foundProse)
             {
-                stat = TryParseStatLine(line);
+                stat = TryParseStatLine(line, ref inSpoilerBlock);
             }
 
             if (stat is not null)
@@ -66,13 +73,38 @@ public static class DescriptionParser
         };
     }
 
-    private static DescriptionStatRow? TryParseStatLine(string line)
+    /// <param name="inSpoilerBlock">
+    /// Carries "we are inside a <c>~!…!~</c> block that opened on an earlier line" across lines.
+    /// AniList wraps several consecutive stat rows in one block rather than marking each row, and
+    /// handling only the single-line form meant the opening line failed to parse — which ended the
+    /// stats section early and dropped every row after it, spoiler or not, into the prose card.
+    /// </param>
+    private static DescriptionStatRow? TryParseStatLine(string line, ref bool inSpoilerBlock)
     {
-        var isRowSpoiler = false;
-        if (line.StartsWith("~!", StringComparison.Ordinal) && line.EndsWith("!~", StringComparison.Ordinal))
+        var isRowSpoiler = inSpoilerBlock;
+
+        if (inSpoilerBlock)
+        {
+            if (line.EndsWith("!~", StringComparison.Ordinal))
+            {
+                inSpoilerBlock = false;
+                line = line[..^2].TrimEnd();
+            }
+        }
+        else if (line.StartsWith("~!", StringComparison.Ordinal))
         {
             isRowSpoiler = true;
-            line = line[2..^2].Trim();
+
+            // Length guard: "~!" on its own would make the range below throw.
+            if (line.Length >= 4 && line.EndsWith("!~", StringComparison.Ordinal))
+            {
+                line = line[2..^2].Trim();
+            }
+            else
+            {
+                inSpoilerBlock = true;
+                line = line[2..].TrimStart();
+            }
         }
 
         var match = StatLineRegex.Match(line);

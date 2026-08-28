@@ -14,6 +14,23 @@ public class RainbowAccentConverterTests
     private static readonly RainbowAccentConverter Converter = new();
 
     [Fact]
+    public void ResourceKeyFor_IsStableForTheSameName()
+    {
+        // The bio-link spans (#137) colour each link by running its own text through this, so a
+        // character's name has to land on the same palette entry every time — including across
+        // runs, which is why the hash is FNV-1a rather than string.GetHashCode.
+        Assert.Equal("RainbowOrange", RainbowAccentConverter.ResourceKeyFor("Shanks"));
+        Assert.Equal(
+            RainbowAccentConverter.ResourceKeyFor("Buggy the Clown"),
+            RainbowAccentConverter.ResourceKeyFor("Buggy the Clown"));
+    }
+
+    [Fact]
+    public void ResourceKeyFor_StillHonoursTheStatusColours()
+        // Sharing the helper with the spans must not cost the status sections their fixed colours.
+        => Assert.Equal("RainbowBlue", RainbowAccentConverter.ResourceKeyFor("Current"));
+
+    [Fact]
     public void Convert_ReturnsABrushWhenTheTargetIsABrush()
     {
         // MAUI's Background (Brush) always wins over BackgroundColor, and the app's implicit Border

@@ -104,6 +104,84 @@ public class DescriptionParserTests
         Assert.Empty(result.Stats);
         Assert.Contains("__Some bold text__", result.Prose);
     }
+
+    [Fact]
+    public void Parse_LabelWithTheColonOutsideTheUnderscores_IsStillAStatRow()
+    {
+        // Character 17's real shape. AniList editors write the label both ways, and only
+        // __Label:__ parsed — so __Height__: failed on the *first* line, which latches foundProse
+        // and stops stat parsing for the rest of the description. The valid __Family:__ row below
+        // it was lost too, and the whole stat card disappeared into the prose. 5 of 200 sampled
+        // characters and staff open this way, Naruto, Sasuke, Kurapika and Joseph Joestar included.
+        var input = "__Height__: 145-180 cm\n"
+            + "__Family:__ ~!Minato (father)!~\n"
+            + "\n"
+            + "Born in Konohagakure.";
+
+        var result = DescriptionParser.Parse(input);
+
+        Assert.Equal(2, result.Stats.Count);
+        Assert.Equal("Height", result.Stats[0].Label);
+        Assert.Equal("145-180 cm", result.Stats[0].Value);
+        Assert.Equal("Family", result.Stats[1].Label);
+        Assert.True(result.Stats[1].IsValueSpoiler);
+        Assert.Equal("Born in Konohagakure.", result.Prose);
+    }
+
+    [Fact]
+    public void Parse_BoldRunWithNoColonEitherSideOfTheUnderscores_IsStillProse()
+        // The guard on the above: widening the pattern must not start treating an ordinary bold
+        // run as a stat row.
+        => Assert.Empty(DescriptionParser.Parse("__Some bold text__\nNot a stat row.").Stats);
+
+    [Fact]
+    public void Parse_SpoilerBlockSpanningTwoLines_KeepsBothRowsInStats()
+    {
+        // Character 40's real shape: AniList wraps two consecutive stat rows in one ~!…!~ block,
+        // opening on one line and closing on the next. Handling only the single-line form made the
+        // opening line fail to parse, which ended the stats section early and dropped every row
+        // after it — including the un-spoilered Bounty — into the prose card.
+        var input = "__Height:__ 172 cm\n"
+            + "~!__True Devil Fruit:__ Hito Hito no Mi Model: Nika\n"
+            + "__True Devil Fruit Type:__ Mythical Zoan!~\n"
+            + "__Bounty:__ ~!3,000,000,000!~\n"
+            + "\n"
+            + "Luffy is the captain of the Straw Hat Pirates.";
+
+        var result = DescriptionParser.Parse(input);
+
+        Assert.Equal(4, result.Stats.Count);
+
+        Assert.Equal("True Devil Fruit", result.Stats[1].Label);
+        Assert.Equal("Hito Hito no Mi Model: Nika", result.Stats[1].Value);
+        Assert.True(result.Stats[1].IsRowSpoiler);
+
+        Assert.Equal("True Devil Fruit Type", result.Stats[2].Label);
+        Assert.Equal("Mythical Zoan", result.Stats[2].Value);
+        Assert.True(result.Stats[2].IsRowSpoiler);
+
+        // The block closed, so the row after it is read normally rather than as part of it.
+        Assert.Equal("Bounty", result.Stats[3].Label);
+        Assert.False(result.Stats[3].IsRowSpoiler);
+        Assert.True(result.Stats[3].IsValueSpoiler);
+
+        Assert.Equal("Luffy is the captain of the Straw Hat Pirates.", result.Prose);
+        Assert.DoesNotContain("True Devil Fruit", result.Prose);
+    }
+
+    [Fact]
+    public void Parse_SpoilerBlockThatNeverCloses_StillKeepsItsRowsAsSpoilers()
+    {
+        // Defensive: an unterminated block shouldn't spill the rest of the stats into prose either.
+        var input = "__A:__ one\n~!__B:__ two\n__C:__ three";
+
+        var result = DescriptionParser.Parse(input);
+
+        Assert.Equal(3, result.Stats.Count);
+        Assert.False(result.Stats[0].IsRowSpoiler);
+        Assert.True(result.Stats[1].IsRowSpoiler);
+        Assert.True(result.Stats[2].IsRowSpoiler);
+    }
 }
 
 public class DescriptionTruncationHeuristicTests
@@ -125,10 +203,27 @@ public class DescriptionTruncationHeuristicTests
     [Fact]
     public void IsTruncated_VisibleCharOverflow_True()
     {
-        // 8 lines * 45 chars = 360. Beyond that should trip the visible-char rule.
+        // 8 lines * 40 chars = 320. Beyond that should trip the visible-char rule.
         var text = new string('a', 500);
         Assert.True(DescriptionTruncationHeuristic.IsTruncated(text));
     }
+
+    [Fact]
+    public void IsTruncated_TextThatFitsAt45CharsPerLineButNotAt40_IsTruncated()
+    {
+        // The bio renders at Body2 (15sp), not the 14sp the old constant assumed, so fewer
+        // characters fit per line than 45. #138's rule: where the estimate has to be wrong, it
+        // should show a redundant "Read more" rather than silently tail-truncate the text away.
+        var text = new string('a', 340);
+
+        Assert.True(DescriptionTruncationHeuristic.IsTruncated(text));
+    }
+
+    [Fact]
+    public void IsTruncated_ManyLineBreaks_True()
+        // Once the markdown processor emits <br> for character and staff bios (#138), this is the
+        // branch that catches a short-but-tall bio.
+        => Assert.True(DescriptionTruncationHeuristic.IsTruncated("One.<br>Two.<br>Three.<br>Four."));
 
     [Fact]
     public void IsTruncated_HtmlTagsDontCountTowardLimit()
