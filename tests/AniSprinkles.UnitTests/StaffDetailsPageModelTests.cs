@@ -176,6 +176,116 @@ public class StaffDetailsPageModelTests
         return staff;
     }
 
+    // ── The bio surface (#137, #138) ─────────────────────────────────
+    //
+    // StaffDetailsPageModel carries the same bio pipeline as the character page — BioProse,
+    // BioStats and the truncation gate are duplicated on both — and both were changed together.
+    // Staff bios are the ones that exercise it hardest: they are where the Markdown lists and the
+    // links to agencies and other creators live.
+
+    [Fact]
+    public async Task BioProse_TurnsNewlinesIntoBreaks_SoAListKeepsItsShape()
+    {
+        // Staff 96881's __Trivia:__ list in miniature. Lone newlines are structural here, so
+        // collapsing them to spaces would run every bullet onto one line.
+        var harness = new Harness();
+        harness.Returns(new Staff { Id = 42, Description = "__Trivia:__\n- Married.\n- Loves Lupin III." });
+
+        await harness.Model.LoadAsync(42);
+
+        Assert.Equal(
+            "<b>Trivia:</b><br>- Married.<br>- Loves Lupin III.",
+            harness.Model.BioProse);
+    }
+
+    [Fact]
+    public async Task IsDescriptionTruncated_MeasuresTheRenderedBio_NotTheRawMarkdown()
+    {
+        var harness = new Harness();
+        harness.Returns(new Staff { Id = 42, Description = "One.\n\nTwo.\n\nThree.\n\nFour." });
+
+        await harness.Model.LoadAsync(42);
+
+        // Short on characters, but seven visual lines once the breaks become <br>. Measured against
+        // the raw markdown — which contains no <br> by construction — this reads as text that fits,
+        // so no "Read more" appears while the label clamps and tail-truncates anyway.
+        Assert.True(harness.Model.IsDescriptionTruncated);
+    }
+
+    [Fact]
+    public async Task TogglingSpoilers_RenotifiesTruncation()
+    {
+        var harness = new Harness();
+        harness.Returns(new Staff
+        {
+            Id = 42,
+            Description = "Prose.\n\n~!" + new string('a', 400) + "!~",
+        });
+        await harness.Model.LoadAsync(42);
+
+        Assert.False(harness.Model.IsDescriptionTruncated);
+
+        var raised = new List<string?>();
+        harness.Model.PropertyChanged += (_, e) => raised.Add(e.PropertyName);
+
+        harness.Model.ToggleSpoilersCommand.Execute(null);
+
+        Assert.Contains(nameof(StaffDetailsPageModel.IsDescriptionTruncated), raised);
+        Assert.True(harness.Model.IsDescriptionTruncated);
+    }
+
+    [Fact]
+    public async Task BioStats_RenderMarkdownInTheValue()
+    {
+        // Staff 96881's "Favorite Mangaka" is a link, and the stat path never ran the markdown
+        // processor — so the row showed a literal [name](url) beside prose that rendered correctly.
+        var harness = new Harness();
+        harness.Returns(new Staff
+        {
+            Id = 42,
+            Description = "__Favorite Mangaka:__ [Akira Toriyama](https://anilist.co/staff/96901)",
+        });
+
+        await harness.Model.LoadAsync(42);
+
+        Assert.Equal(
+            "<a href=\"https://anilist.co/staff/96901\">Akira Toriyama</a>",
+            harness.Model.BioStats[0].ValueDisplay);
+    }
+
+    [Fact]
+    public async Task BioStats_AreStillFoundWhenTheColonSitsOutsideTheUnderscores()
+    {
+        // A miss on the opening line latches the parser into prose, so this spelling used to cost
+        // the whole stat card — later rows in the accepted spelling included.
+        var harness = new Harness();
+        harness.Returns(new Staff { Id = 42, Description = "__Height__: 172 cm\n__Born:__ Kumamoto\n\nProse." });
+
+        await harness.Model.LoadAsync(42);
+
+        Assert.Equal(2, harness.Model.BioStats.Count);
+        Assert.Equal("Height", harness.Model.BioStats[0].LabelDisplay);
+        Assert.Equal("Born", harness.Model.BioStats[1].LabelDisplay);
+        Assert.Equal("Prose.", harness.Model.BioProse);
+    }
+
+    [Fact]
+    public async Task ASpoilerSpanningParagraphs_CollapsesToOneChipThenRestoresItsBreaks()
+    {
+        var harness = new Harness();
+        harness.Returns(new Staff { Id = 42, Description = "Before.\n\n~!Secret one.\n\nSecret two.!~" });
+        await harness.Model.LoadAsync(42);
+
+        Assert.DoesNotContain("Secret", harness.Model.BioProse, StringComparison.Ordinal);
+        Assert.Contains("[spoiler]", harness.Model.BioProse, StringComparison.Ordinal);
+
+        harness.Model.ToggleSpoilersCommand.Execute(null);
+
+        Assert.Equal(
+            "Before.<br><br>Secret one.<br><br>Secret two.",
+            harness.Model.BioProse);
+    }
+
     private sealed class Harness
     {
         public Harness()

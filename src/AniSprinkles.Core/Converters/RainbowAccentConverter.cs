@@ -65,21 +65,7 @@ public sealed class RainbowAccentConverter : IValueConverter
             return ToTarget(Colors.Transparent, targetType);
         }
 
-        // Apply key mapping if one exists (e.g., "Current" → "Watching", "Repeating" → "Rewatching")
-        if (_keyMappings.TryGetValue(key, out var mappedKey))
-        {
-            key = mappedKey;
-        }
-
-        // Use hardcoded color for known status sections; fall back to hash for everything else.
-        if (!_statusColors.TryGetValue(key, out var colorKey))
-        {
-            // Deterministic hash (stable across runs).
-            // Special-case int.MinValue: Math.Abs(int.MinValue) overflows and throws.
-            var hash = StableHash(key);
-            var idx = (hash == int.MinValue ? 0 : Math.Abs(hash)) % _rainbowKeys.Length;
-            colorKey = _rainbowKeys[idx];
-        }
+        var colorKey = ResourceKeyFor(key);
 
         if (Application.Current?.Resources.TryGetValue(colorKey, out var res) == true && res is Color c)
         {
@@ -97,6 +83,33 @@ public sealed class RainbowAccentConverter : IValueConverter
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         => throw new NotSupportedException();
+
+    /// <summary>
+    /// The palette resource key a given name maps to. Public because not every caller can go through
+    /// an <see cref="IValueConverter"/>: the bio-link spans (#137) are built on the Android side and
+    /// colour themselves per link, and they need this exact hash rather than a second one that would
+    /// drift — a character's name should paint the same colour wherever it appears.
+    /// </summary>
+    public static string ResourceKeyFor(string key)
+    {
+        // Apply key mapping if one exists (e.g., "Current" → "Watching", "Repeating" → "Rewatching")
+        if (_keyMappings.TryGetValue(key, out var mappedKey))
+        {
+            key = mappedKey;
+        }
+
+        // Use hardcoded color for known status sections; fall back to hash for everything else.
+        if (_statusColors.TryGetValue(key, out var colorKey))
+        {
+            return colorKey;
+        }
+
+        // Deterministic hash (stable across runs).
+        // Special-case int.MinValue: Math.Abs(int.MinValue) overflows and throws.
+        var hash = StableHash(key);
+        var idx = (hash == int.MinValue ? 0 : Math.Abs(hash)) % _rainbowKeys.Length;
+        return _rainbowKeys[idx];
+    }
 
     // Borders carry an implicit style that sets Background (a Brush), and MAUI's Background always
     // wins over BackgroundColor — so a Border accent must bind Background, not BackgroundColor. When

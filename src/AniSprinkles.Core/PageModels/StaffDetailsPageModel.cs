@@ -43,6 +43,9 @@ public partial class StaffDetailsPageModel : DetailsPageModelBase<Staff>
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(BioProse))]
     [NotifyPropertyChangedFor(nameof(BioStats))]
+    // Truncation is measured on BioProse, so revealing a spoiler changes how much there is to
+    // lay out and the "Read more" affordance has to be re-evaluated with it.
+    [NotifyPropertyChangedFor(nameof(IsDescriptionTruncated))]
     private bool _isShowingSpoilers;
 
     [ObservableProperty]
@@ -130,7 +133,10 @@ public partial class StaffDetailsPageModel : DetailsPageModelBase<Staff>
 
     public bool HasBioProse => !string.IsNullOrWhiteSpace(_parsedDescription.Prose);
 
-    public bool IsDescriptionTruncated => DescriptionTruncationHeuristic.IsTruncated(_parsedDescription.Prose);
+    // Measured on the rendered bio, not the raw markdown: the raw string counts link URLs as
+    // visible text and contains no <br> by construction, so the heuristic would be reading a
+    // string that looks nothing like what the label lays out.
+    public bool IsDescriptionTruncated => DescriptionTruncationHeuristic.IsTruncated(BioProse);
 
     public int DescriptionMaxLines => IsDescriptionExpanded
         ? int.MaxValue
@@ -338,7 +344,10 @@ public partial class StaffDetailsPageModel : DetailsPageModelBase<Staff>
         return new BioStatRow
         {
             LabelDisplay = labelHidden ? Bar(row.Label.Length, max: 12) : row.Label,
-            ValueDisplay = valueHidden ? Bar(row.Value.Length, max: 24) : row.Value,
+            // The value is Markdown like the prose is — AniList puts links in stat rows too, and
+            // Oda's "Favorite Mangaka" was rendering as a literal [name](url). The bar is the
+            // spoiler mask, which is plain text and must not be processed.
+            ValueDisplay = valueHidden ? Bar(row.Value.Length, max: 24) : AniListMarkdownProcessor.Process(row.Value),
             IsLabelSpoilerHidden = labelHidden,
             IsValueSpoilerHidden = valueHidden,
         };
