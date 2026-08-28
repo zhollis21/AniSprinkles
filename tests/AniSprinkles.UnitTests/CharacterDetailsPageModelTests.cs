@@ -134,7 +134,7 @@ public class CharacterDetailsPageModelTests
     // 7 whose spoilers sit only in stat rows, which is why the device pass never exercised this.
 
     [Fact]
-    public async Task ASpoilerSpanningPagagraphs_CollapsesToOneChipWhenHidden()
+    public async Task ASpoilerSpanningParagraphs_CollapsesToOneChipWhenHidden()
     {
         var harness = new Harness();
         harness.Returns(new Character
