@@ -147,17 +147,22 @@ public class MainActivity : MauiAppCompatActivity
 
             int nonce = intent!.GetIntExtra(NotificationHelper.NonceExtra, 0);
 
-            // Clear the extras so an activity recreation that reuses this same Intent object cannot
-            // re-navigate. That covers the in-memory case; a genuine process-death restore hands
-            // back the original extras from the task record, which is what the nonce is for.
-            intent.RemoveExtra(NotificationHelper.MediaIdExtra);
-            intent.RemoveExtra(NotificationHelper.NonceExtra);
-
+            // Queue before clearing the extras, not after. ServiceProviderHelper throws when DI is
+            // not yet wired — a path its own remarks call out — and clearing first would leave the
+            // catch below with nothing to recover: no other hook re-reads the Intent, so the link
+            // would be gone for good.
             var pending = ServiceProviderHelper.GetServiceProvider().GetRequiredService<PendingDeepLink>();
             if (pending.Set(AppShell.MediaDetailsRoute, new Dictionary<string, object> { ["mediaId"] = mediaId }, nonce))
             {
                 Log.Info(LifecycleTag, $"DEEPLINK {ActivityIdentity} queued media {mediaId} (nonce {nonce})");
             }
+
+            // Now that it is queued, clear the extras so an activity recreation reusing this same
+            // Intent object cannot re-navigate. That covers the in-memory case; a genuine
+            // process-death restore hands back the original extras from the task record, which is
+            // what the nonce is for.
+            intent.RemoveExtra(NotificationHelper.MediaIdExtra);
+            intent.RemoveExtra(NotificationHelper.NonceExtra);
 
             TryDrainDeepLink();
         }

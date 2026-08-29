@@ -25,8 +25,6 @@ public static class AiringScheduleFetcher
 {
     public static readonly Uri GraphQlEndpoint = new("https://graphql.anilist.co");
 
-    private const int PerPage = 50;
-
     /// <summary>Guards against a malformed <c>hasNextPage</c> spinning the worker forever.</summary>
     public const int MaxPages = 40;
 
@@ -87,8 +85,13 @@ public static class AiringScheduleFetcher
                 variables = new
                 {
                     mediaIds,
-                    airingAfter = (int)airingAfter,
-                    airingBefore = (int)airingBefore,
+                    // checked, because AniList's airingAt arguments are Int and unix seconds pass
+                    // int.MaxValue in January 2038. An unchecked cast would wrap negative, quietly
+                    // query a nonsense window, and let the caller advance the checkpoint past
+                    // episodes it never saw. Throwing keeps the window for the next run instead —
+                    // the same bargain every other failure in this method makes.
+                    airingAfter = checked((int)airingAfter),
+                    airingBefore = checked((int)airingBefore),
                     page,
                 },
                 operationName = "AiringSchedule"

@@ -225,6 +225,21 @@ public class AiringScheduleFetcherTests
     }
 
     [Fact]
+    public void AWindowPastTheInt32Limit_ThrowsRatherThanWrappingNegative()
+    {
+        // AniList's airingAt arguments are Int, and unix seconds pass int.MaxValue in January 2038.
+        // An unchecked cast would wrap negative and query a nonsense window, which looks like
+        // success — so the caller would advance the checkpoint past episodes it never saw.
+        var handler = new ScriptedGraphQlHandler(_ => ScriptedGraphQlHandler.Data(Page(false)));
+        using var client = ClientFor(handler);
+
+        Assert.Throws<OverflowException>(() => AiringScheduleFetcher.Fetch(
+            client, [21], (long)int.MaxValue + 1, (long)int.MaxValue + 3600, UserTitleLanguage.Romaji));
+
+        Assert.Equal(0, handler.CallCount);
+    }
+
+    [Fact]
     public void AFailureOnALaterPage_ThrowsRatherThanReturningWhatItHad()
     {
         // Returning page 1's entries would look like success to the runner, which would then advance
