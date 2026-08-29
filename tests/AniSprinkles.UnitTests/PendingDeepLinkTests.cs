@@ -220,7 +220,8 @@ public class PendingDeepLinkTests
     [Fact]
     public async Task WithoutANonce_ReplayProtectionIsOff()
     {
-        // 0 means "nothing to deduplicate on". Two such taps both navigate.
+        // null means "nothing to deduplicate on" — not 0, which the tests above cover as an ordinary
+        // nonce. Two such taps both navigate.
         var link = new PendingDeepLink(new FakePreferences());
         var navigation = Substitute.For<INavigationService>();
 

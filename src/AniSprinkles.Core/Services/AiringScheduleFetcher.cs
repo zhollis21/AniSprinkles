@@ -2,6 +2,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using AniSprinkles.Utilities;
+using Sentry;
 
 namespace AniSprinkles.Services;
 
@@ -66,7 +67,7 @@ public static class AiringScheduleFetcher
     /// <exception cref="InvalidOperationException">
     /// A GraphQL <c>errors</c> array, or a null <c>Page</c> — AniList returns both on HTTP 200.
     /// </exception>
-    public static IReadOnlyList<AiringEntry> Fetch(
+    public static AiringScheduleResult Fetch(
         HttpClient client,
         IReadOnlyList<int> mediaIds,
         long airingAfter,
@@ -123,6 +124,7 @@ public static class AiringScheduleFetcher
                 {
                     MediaId = dto.MediaId,
                     Episode = dto.Episode,
+                    AiringAt = dto.AiringAt,
                     MediaTitle = SelectTitle(dto.Media?.Title, titleLanguage),
                     CoverImageUrl = dto.Media?.CoverImage?.Medium,
                 });
@@ -133,7 +135,21 @@ public static class AiringScheduleFetcher
         }
         while (hasNextPage && page <= MaxPages);
 
-        return results;
+        // Still claiming another page at the bound means the window was not read to the end. The
+        // caller is told so it can hold the checkpoint back rather than skipping what we never saw.
+        bool truncated = hasNextPage;
+        if (truncated)
+        {
+            // Worth an event rather than just a log line: reaching 2000 entries in one window is not
+            // something a personal list does, so in practice this means a hasNextPage that never
+            // goes false — a server-side or parsing fault we would otherwise never hear about.
+            SentrySdk.CaptureMessage(
+                $"AiringSchedule paging hit the {MaxPages}-page bound with hasNextPage still true "
+                + $"({results.Count} entries, {mediaIds.Count} media ids, window {airingBefore - airingAfter}s)",
+                SentryLevel.Error);
+        }
+
+        return new AiringScheduleResult(results, truncated);
     }
 
     /// <summary>
@@ -179,6 +195,7 @@ public static class AiringScheduleFetcher
     {
         public int MediaId { get; set; }
         public int Episode { get; set; }
+        public int AiringAt { get; set; }
         public AiringMediaDto? Media { get; set; }
     }
 

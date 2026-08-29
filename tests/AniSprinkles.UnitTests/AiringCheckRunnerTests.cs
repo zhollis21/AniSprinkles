@@ -13,22 +13,23 @@ public class AiringCheckRunnerTests
     private static readonly DateTimeOffset Start = new(2026, 8, 28, 12, 0, 0, TimeSpan.Zero);
     private static long StartUnix => Start.ToUnixTimeSeconds();
 
-    private static AiringEntry Entry(int mediaId, int episode) => new()
+    private static AiringEntry Entry(int mediaId, int episode, long airingAt = 0) => new()
     {
         MediaId = mediaId,
         Episode = episode,
+        AiringAt = (int)airingAt,
         MediaTitle = $"Media {mediaId}",
     };
 
     /// <summary>Records what the runner asked for and hands back a scripted answer.</summary>
     private sealed class RecordingFetch
     {
-        private readonly IReadOnlyList<AiringEntry> _result;
+        private readonly AiringScheduleResult _result;
         private readonly Exception? _throws;
 
-        public RecordingFetch(IReadOnlyList<AiringEntry>? result = null, Exception? throws = null)
+        public RecordingFetch(IReadOnlyList<AiringEntry>? result = null, Exception? throws = null, bool truncated = false)
         {
-            _result = result ?? [];
+            _result = new AiringScheduleResult(result ?? [], truncated);
             _throws = throws;
         }
 
@@ -37,7 +38,7 @@ public class AiringCheckRunnerTests
         public long AiringAfter { get; private set; }
         public long AiringBefore { get; private set; }
 
-        public IReadOnlyList<AiringEntry> Invoke(IReadOnlyList<int> mediaIds, long after, long before)
+        public AiringScheduleResult Invoke(IReadOnlyList<int> mediaIds, long after, long before)
         {
             CallCount++;
             MediaIds = mediaIds;
@@ -138,6 +139,79 @@ public class AiringCheckRunnerTests
         AiringCheckRunner.Run(preferences, new ManualTimeProvider(Start), fetch.Invoke, _ => { }, () => false);
 
         Assert.Equal(30 * 86400, fetch.AiringBefore - fetch.AiringAfter);
+    }
+
+    // ── Truncated fetches ───────────────────────────────────────────
+
+    [Fact]
+    public void ATruncatedFetch_AdvancesOnlyAsFarAsTheNewestEntrySeen()
+    {
+        // Paging stopped at its bound, so episodes past it were never read. Advancing to the end of
+        // the window would skip them permanently — the same silent loss that makes a failed fetch
+        // throw rather than return empty. The next run re-reads from the last entry we did see.
+        var preferences = PreferencesWith(21);
+        AiringNotificationState.AdvanceCheckpoint(preferences, StartUnix - 7200);
+        var fetch = new RecordingFetch(
+            [Entry(21, 1050, StartUnix - 5400), Entry(16498, 25, StartUnix - 3600)],
+            truncated: true);
+
+        var outcome = AiringCheckRunner.Run(
+            preferences, new ManualTimeProvider(Start), fetch.Invoke, _ => { }, () => false);
+
+        Assert.Equal(AiringCheckStatus.Truncated, outcome.Status);
+        Assert.Equal(StartUnix - 3600, AiringNotificationState.ReadCheckpoint(preferences, StartUnix + 9999));
+    }
+
+    [Fact]
+    public void ATruncatedFetch_StillNotifiesWhatItRead()
+    {
+        var preferences = PreferencesWith(21);
+        var notified = new List<AiringEntry>();
+        var fetch = new RecordingFetch([Entry(21, 1050, StartUnix - 60)], truncated: true);
+
+        AiringCheckRunner.Run(preferences, new ManualTimeProvider(Start), fetch.Invoke, notified.Add, () => false);
+
+        Assert.Single(notified);
+    }
+
+    [Fact]
+    public void ATruncatedFetchWithNothingToShow_StillAdvancesToTheWindowEnd()
+    {
+        // The one case that must move on. There is no entry to anchor to, and holding the checkpoint
+        // would re-fetch the same oversized window every run forever, burning a full page budget
+        // each time and never recovering. Nothing was found, so nothing is lost.
+        var preferences = PreferencesWith(21);
+        AiringNotificationState.AdvanceCheckpoint(preferences, StartUnix - 7200);
+        var fetch = new RecordingFetch(truncated: true);
+
+        AiringCheckRunner.Run(preferences, new ManualTimeProvider(Start), fetch.Invoke, _ => { }, () => false);
+
+        Assert.Equal(StartUnix, AiringNotificationState.ReadCheckpoint(preferences, StartUnix + 9999));
+    }
+
+    [Fact]
+    public void ATruncatedFetch_NeverMovesTheCheckpointBackwards()
+    {
+        // A stale airingAt — clock skew, or an entry from before the window — must not rewind the
+        // checkpoint and cause everything since to be re-notified.
+        var preferences = PreferencesWith(21);
+        AiringNotificationState.AdvanceCheckpoint(preferences, StartUnix - 3600);
+        var fetch = new RecordingFetch([Entry(21, 1050, StartUnix - 99999)], truncated: true);
+
+        AiringCheckRunner.Run(preferences, new ManualTimeProvider(Start), fetch.Invoke, _ => { }, () => false);
+
+        Assert.Equal(StartUnix - 3600, AiringNotificationState.ReadCheckpoint(preferences, StartUnix + 9999));
+    }
+
+    [Fact]
+    public void ATruncatedFetch_NeverMovesTheCheckpointPastTheWindow()
+    {
+        var preferences = PreferencesWith(21);
+        var fetch = new RecordingFetch([Entry(21, 1050, StartUnix + 99999)], truncated: true);
+
+        AiringCheckRunner.Run(preferences, new ManualTimeProvider(Start), fetch.Invoke, _ => { }, () => false);
+
+        Assert.Equal(StartUnix, AiringNotificationState.ReadCheckpoint(preferences, StartUnix + 999999));
     }
 
     // ── No media IDs ────────────────────────────────────────────────

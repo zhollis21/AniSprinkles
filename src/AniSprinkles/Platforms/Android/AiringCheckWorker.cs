@@ -71,7 +71,7 @@ public class AiringCheckWorker : Worker
     /// run before the app has ever been launched, so <c>AppSettings.Load()</c> may not have happened
     /// and its storage seam is internal to Core.
     /// </summary>
-    private static IReadOnlyList<AiringEntry> FetchAiringSchedule(
+    private static AiringScheduleResult FetchAiringSchedule(
         IReadOnlyList<int> mediaIds, long airingAfter, long airingBefore)
     {
         string langPref = Preferences.Default.Get(

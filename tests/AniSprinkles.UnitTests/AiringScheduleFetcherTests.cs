@@ -17,10 +17,10 @@ public class AiringScheduleFetcherTests
     private static HttpClient ClientFor(ScriptedGraphQlHandler handler) => new(handler);
 
     private static string Schedule(int mediaId, int episode, string romaji = "Shingeki no Kyojin",
-        string? english = "Attack on Titan", string? cover = "https://img/cover.jpg")
+        string? english = "Attack on Titan", string? cover = "https://img/cover.jpg", long airingAt = 1_700_001_000)
         => $$"""
             {
-              "mediaId": {{mediaId}}, "episode": {{episode}},
+              "mediaId": {{mediaId}}, "episode": {{episode}}, "airingAt": {{airingAt}},
               "media": {
                 "title": { "romaji": "{{romaji}}", "english": {{(english is null ? "null" : $"\"{english}\"")}}, "native": "進撃の巨人" },
                 "coverImage": { "medium": {{(cover is null ? "null" : $"\"{cover}\"")}} }
@@ -32,6 +32,12 @@ public class AiringScheduleFetcherTests
         => $$"""{ "Page": { "pageInfo": { "hasNextPage": {{(hasNextPage ? "true" : "false")}} }, "airingSchedules": [{{string.Join(",", schedules)}}] } }""";
 
     private static IReadOnlyList<AiringEntry> Fetch(
+        ScriptedGraphQlHandler handler,
+        UserTitleLanguage language = UserTitleLanguage.Romaji,
+        params int[] mediaIds)
+        => FetchResult(handler, language, mediaIds).Entries;
+
+    private static AiringScheduleResult FetchResult(
         ScriptedGraphQlHandler handler,
         UserTitleLanguage language = UserTitleLanguage.Romaji,
         params int[] mediaIds)
@@ -180,14 +186,38 @@ public class AiringScheduleFetcherTests
     }
 
     [Fact]
-    public void AnAlwaysTruePageInfo_IsBounded()
+    public void AnAlwaysTruePageInfo_IsBounded_AndReportedAsTruncated()
     {
         // A server that always claims another page would otherwise spin the worker thread forever.
+        // Stopping is not enough on its own: the caller has to know the window was not read to the
+        // end, or it advances the checkpoint past episodes that were never fetched.
         var handler = new ScriptedGraphQlHandler(_ => ScriptedGraphQlHandler.Data(Page(true, Schedule(21, 1050))));
 
-        Fetch(handler);
+        var result = FetchResult(handler);
 
         Assert.Equal(AiringScheduleFetcher.MaxPages, handler.CallCount);
+        Assert.True(result.Truncated);
+        Assert.NotEmpty(result.Entries);
+    }
+
+    [Fact]
+    public void AFetchThatReachesTheEnd_IsNotTruncated()
+    {
+        var handler = new ScriptedGraphQlHandler(request => request.IntVariable("page") == 1
+            ? ScriptedGraphQlHandler.Data(Page(true, Schedule(21, 1050)))
+            : ScriptedGraphQlHandler.Data(Page(false, Schedule(16498, 25))));
+
+        Assert.False(FetchResult(handler).Truncated);
+    }
+
+    [Fact]
+    public void TheAiringTime_IsMapped()
+    {
+        // Carried so a truncated fetch can advance the checkpoint to what it actually read.
+        var handler = new ScriptedGraphQlHandler(_ => ScriptedGraphQlHandler.Data(
+            Page(false, Schedule(21, 1050, airingAt: 1_700_001_234))));
+
+        Assert.Equal(1_700_001_234, Fetch(handler)[0].AiringAt);
     }
 
     // ── Failure classification ──────────────────────────────────────

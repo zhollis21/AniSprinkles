@@ -6,8 +6,23 @@ public sealed record AiringEntry
     public required int MediaId { get; init; }
     public required int Episode { get; init; }
     public required string MediaTitle { get; init; }
+
+    /// <summary>
+    /// Unix seconds the episode aired. Carried so a truncated fetch can still advance the checkpoint
+    /// safely — see <see cref="AiringScheduleResult.Truncated"/>.
+    /// </summary>
+    public int AiringAt { get; init; }
+
     public string? CoverImageUrl { get; init; }
 }
+
+/// <summary>What one fetch returned, and whether it managed to read the whole window.</summary>
+/// <param name="Truncated">
+/// True when paging stopped at its safety bound rather than because the server said there was no
+/// next page. The entries are real, but the window was not read to the end — so the checkpoint must
+/// not jump past what was actually seen.
+/// </param>
+public readonly record struct AiringScheduleResult(IReadOnlyList<AiringEntry> Entries, bool Truncated);
 
 /// <summary>Why a run ended, for the caller's log line.</summary>
 public enum AiringCheckStatus
@@ -15,8 +30,14 @@ public enum AiringCheckStatus
     /// <summary>Nothing cached to check. No fetch was made and the checkpoint was left alone.</summary>
     NoMediaIds,
 
-    /// <summary>Ran to completion; the checkpoint advanced.</summary>
+    /// <summary>Ran to completion; the checkpoint advanced to the end of the window.</summary>
     Completed,
+
+    /// <summary>
+    /// Paging hit its safety bound, so the window was not read to the end. Notifications were still
+    /// posted for what was read, and the checkpoint advanced only as far as that.
+    /// </summary>
+    Truncated,
 
     /// <summary>Stopped partway. Nothing was persisted — see the cancellation remarks on <see cref="AiringCheckRunner"/>.</summary>
     Cancelled,
@@ -62,7 +83,7 @@ public static class AiringCheckRunner
     public static AiringCheckOutcome Run(
         IPreferences preferences,
         TimeProvider timeProvider,
-        Func<IReadOnlyList<int>, long, long, IReadOnlyList<AiringEntry>> fetch,
+        Func<IReadOnlyList<int>, long, long, AiringScheduleResult> fetch,
         Action<AiringEntry> notify,
         Func<bool> isCancelled)
     {
@@ -80,7 +101,8 @@ public static class AiringCheckRunner
 
         // Throws propagate: the caller's failure path must not advance the checkpoint. See #144 for
         // the flip side — nothing currently bounds how wide this window can grow.
-        var entries = fetch(mediaIds, lastCheck, nowUnix);
+        var result = fetch(mediaIds, lastCheck, nowUnix);
+        var entries = result.Entries;
 
         var notifiedSet = AiringNotificationState.ReadNotifiedSet(preferences);
         bool hasNewEntries = false;
@@ -113,9 +135,41 @@ public static class AiringCheckRunner
             return new AiringCheckOutcome(AiringCheckStatus.Cancelled, entries.Count, notified);
         }
 
-        AiringNotificationState.AdvanceCheckpoint(preferences, nowUnix);
+        AiringNotificationState.AdvanceCheckpoint(preferences, CheckpointFor(result, lastCheck, nowUnix));
         AiringNotificationState.PruneAndSave(preferences, notifiedSet, nowUnix, hasNewEntries);
 
-        return new AiringCheckOutcome(AiringCheckStatus.Completed, entries.Count, notified);
+        return new AiringCheckOutcome(
+            result.Truncated ? AiringCheckStatus.Truncated : AiringCheckStatus.Completed,
+            entries.Count,
+            notified);
+    }
+
+    /// <summary>
+    /// How far the checkpoint may move given what the fetch actually read.
+    /// <para>
+    /// A complete fetch read the whole window, so the checkpoint goes to its end. A truncated one
+    /// did not, and jumping to the end would permanently skip every episode past the page bound —
+    /// the same silent loss that makes a failed fetch throw instead of returning empty. So it
+    /// advances only as far as the newest entry actually seen. Anything at exactly that instant was
+    /// notified and is in the dedup set, so re-reading it next run is free.
+    /// </para>
+    /// <para>
+    /// Truncated with nothing to show is the one case that must still jump to the end: there is no
+    /// episode to anchor to, and holding the checkpoint would re-fetch the same oversized window
+    /// every run forever — a deadlock that costs a full page budget each time and never recovers.
+    /// Nothing was found, so nothing is lost by moving on.
+    /// </para>
+    /// </summary>
+    private static long CheckpointFor(AiringScheduleResult result, long lastCheck, long nowUnix)
+    {
+        if (!result.Truncated || result.Entries.Count == 0)
+        {
+            return nowUnix;
+        }
+
+        long newestSeen = result.Entries.Max(entry => (long)entry.AiringAt);
+
+        // Never go backwards, and never past the window we asked for.
+        return Math.Clamp(newestSeen, lastCheck, nowUnix);
     }
 }
