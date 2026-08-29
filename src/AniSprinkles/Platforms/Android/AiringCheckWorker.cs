@@ -1,8 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using Android.Content;
 using AndroidX.Work;
+using AniSprinkles.Utilities;
 using Bitmap = global::Android.Graphics.Bitmap;
 
 namespace AniSprinkles.Platforms.Android;
@@ -12,41 +11,19 @@ namespace AniSprinkles.Platforms.Android;
 /// episodes that have aired since the last check, and posts local notifications.
 /// Fully self-contained — makes its own HTTP requests without depending on MAUI DI,
 /// so it works even if the app hasn't been launched since a device reboot.
+/// <para>
+/// What is left here is only what needs Android: the WorkManager shell, the shared
+/// <see cref="HttpClient"/>, posting notifications, and reading the title-language preference. The
+/// check's logic lives in <see cref="AiringCheckRunner"/> and its query in
+/// <see cref="AiringScheduleFetcher"/>, both in Core where the test suite can reach them (#141).
+/// The delegate handoff is what preserves the no-DI property above.
+/// </para>
 /// </summary>
 public class AiringCheckWorker : Worker
 {
-    private const string MediaIdsPrefKey = "airing_media_ids";
-    private const string LastCheckPrefKey = "airing_last_check";
-    private const string NotifiedPrefKey = "airing_notified";
-    private const int StaleEntryDays = 7;
-
-    private static readonly Uri GraphQlEndpoint = new("https://graphql.anilist.co");
-
     // Shared across all worker runs in this process. HttpClient is thread-safe and designed
     // to be reused. Timeout guards against hung requests stalling the worker thread indefinitely.
     private static readonly HttpClient HttpClient = new() { Timeout = TimeSpan.FromSeconds(30) };
-    private static readonly JsonSerializerOptions JsonReadOptions = new()
-    {
-        PropertyNameCaseInsensitive = true,
-        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-    };
-    private static readonly JsonSerializerOptions JsonWriteOptions = new()
-    {
-        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
-    };
-
-    private const string AiringScheduleQuery = """
-        query AiringSchedule($mediaIds: [Int], $airingAfter: Int, $airingBefore: Int, $page: Int) {
-          Page(page: $page, perPage: 50) {
-            pageInfo { hasNextPage }
-            airingSchedules(mediaId_in: $mediaIds, airingAt_greater: $airingAfter, airingAt_lesser: $airingBefore, sort: TIME) {
-              id airingAt episode mediaId
-              media { id title { romaji english native } coverImage { medium } }
-            }
-          }
-        }
-        """;
 
     [DynamicDependency(DynamicallyAccessedMemberTypes.PublicConstructors, typeof(AiringCheckWorker))]
     public AiringCheckWorker(Context context, WorkerParameters workerParams)
@@ -58,52 +35,28 @@ public class AiringCheckWorker : Worker
     {
         try
         {
-            var mediaIds = ReadMediaIds();
-            if (mediaIds.Count == 0)
-            {
-                return Result.InvokeSuccess()!;
-            }
+            var outcome = AiringCheckRunner.Run(
+                Preferences.Default,
+                TimeProvider.System,
+                FetchAiringSchedule,
+                PostNotification,
+                // WorkManager cancellation (sign-out calls CancelUniqueWork) does not interrupt a
+                // run already under way — it only sets this flag — so the runner polls it to avoid
+                // posting the previous user's notifications and rewriting state that
+                // ClearNotificationState just removed.
+                () => IsStopped);
 
-            long nowUnix = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-            long lastCheck = Preferences.Default.Get(LastCheckPrefKey, nowUnix - 1800); // default: 30 min ago
-
-            // FetchAiringSchedule throws on any HTTP failure — if it throws, the catch below
-            // skips the LastCheckPrefKey update so the time window is retried on the next run.
-            var entries = FetchAiringSchedule(mediaIds, (int)lastCheck, (int)nowUnix);
-            var notifiedSet = ReadNotifiedSet();
-            bool changed = false;
-
-            foreach (var entry in entries)
-            {
-                string key = $"{entry.MediaId}:{entry.Episode}";
-                if (notifiedSet.ContainsKey(key))
-                {
-                    continue;
-                }
-
-                Bitmap? coverBitmap = null;
-                if (!string.IsNullOrEmpty(entry.CoverImageUrl))
-                {
-                    coverBitmap = NotificationHelper.DownloadBitmap(entry.CoverImageUrl);
-                }
-
-                NotificationHelper.Show(ApplicationContext!, entry.MediaId, entry.MediaTitle, entry.Episode, coverBitmap);
-                coverBitmap?.Dispose();
-
-                notifiedSet[key] = nowUnix;
-                changed = true;
-            }
-
-            // Only advance the checkpoint after a fully successful fetch — partial/failed
-            // fetches throw before reaching here so the time window is not silently skipped.
-            Preferences.Default.Set(LastCheckPrefKey, nowUnix);
-            PruneAndSaveNotifiedSet(notifiedSet, nowUnix, changed);
+            global::Android.Util.Log.Info(
+                "AiringCheckWorker",
+                $"DoWork {outcome.Status}: examined {outcome.Examined}, notified {outcome.Notified}");
 
             return Result.InvokeSuccess()!;
         }
         catch (Exception ex)
         {
-            // Don't retry on transient errors; the next periodic run will try again.
+            // Don't retry on transient errors; the next periodic run will try again. The runner
+            // leaves the checkpoint unadvanced when the fetch throws, so the window is retried
+            // rather than silently skipped.
             // Uses Android.Util.Log directly instead of ILogger because WorkManager can
             // instantiate this worker post-reboot before the MAUI DI container is built.
             // The AndroidLogcatLoggerProvider bridges the rest of the app's ILogger output
@@ -113,216 +66,34 @@ public class AiringCheckWorker : Worker
         }
     }
 
-    // ── Self-contained AniList query ────────────────────────────────
+    /// <summary>
+    /// Reads the title-language preference straight from <c>Preferences.Default</c> — this worker can
+    /// run before the app has ever been launched, so <c>AppSettings.Load()</c> may not have happened
+    /// and its storage seam is internal to Core.
+    /// </summary>
+    private static IReadOnlyList<AiringEntry> FetchAiringSchedule(
+        IReadOnlyList<int> mediaIds, long airingAfter, long airingBefore)
+    {
+        string langPref = Preferences.Default.Get(
+            AppSettings.TitleLanguageKey, nameof(UserTitleLanguage.Romaji));
+        _ = Enum.TryParse<UserTitleLanguage>(langPref, out var language);
+
+        return AiringScheduleFetcher.Fetch(HttpClient, mediaIds, airingAfter, airingBefore, language);
+    }
 
     /// <summary>
-    /// Queries AniList's public AiringSchedule API directly via HTTP.
-    /// No auth token needed — this is a public endpoint.
+    /// Downloads the cover art, if any, and posts one notification. The bitmap is disposed here
+    /// rather than held — a run can post many, and they are only needed for the Notify call.
     /// </summary>
-    private static List<AiringEntry> FetchAiringSchedule(List<int> mediaIds, int airingAfter, int airingBefore)
+    private void PostNotification(AiringEntry entry)
     {
-        var results = new List<AiringEntry>();
-        int page = 1;
-        bool hasNextPage;
-
-        do
+        Bitmap? coverBitmap = null;
+        if (!string.IsNullOrEmpty(entry.CoverImageUrl))
         {
-            var payload = new
-            {
-                query = AiringScheduleQuery,
-                variables = new { mediaIds, airingAfter, airingBefore, page },
-                operationName = "AiringSchedule"
-            };
-
-            using var content = new StringContent(
-                JsonSerializer.Serialize(payload, JsonWriteOptions),
-                System.Text.Encoding.UTF8,
-                "application/json");
-
-            using var response = HttpClient.PostAsync(GraphQlEndpoint, content).GetAwaiter().GetResult();
-
-            // Throw on non-success so DoWork's catch skips the LastCheckPrefKey update,
-            // keeping the failed time window available for retry on the next run.
-            response.EnsureSuccessStatusCode();
-
-            string json = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-            var graphQl = JsonSerializer.Deserialize<GraphQlResponse>(json, JsonReadOptions);
-
-            // AniList can return HTTP 200 with data=null and a populated errors array.
-            // Treat this as a failed query so the time window is not silently skipped.
-            if (graphQl?.Errors is { Count: > 0 } || graphQl?.Data?.Page is null)
-            {
-                throw new InvalidOperationException(
-                    graphQl?.Errors?.FirstOrDefault()?.Message ?? "AniList returned null data for AiringSchedule query");
-            }
-
-            if (graphQl.Data.Page.AiringSchedules is { } schedules)
-            {
-                foreach (var dto in schedules)
-                {
-                    results.Add(new AiringEntry
-                    {
-                        MediaId = dto.MediaId,
-                        Episode = dto.Episode,
-                        MediaTitle = SelectTitle(dto.Media?.Title),
-                        CoverImageUrl = dto.Media?.CoverImage?.Medium,
-                    });
-                }
-            }
-
-            hasNextPage = graphQl?.Data?.Page?.PageInfo?.HasNextPage == true;
-            page++;
-        }
-        while (hasNextPage);
-
-        return results;
-    }
-
-    // ── Title selection ──────────────────────────────────────────────
-
-    private const string TitleLanguagePrefKey = "title_language";
-
-    /// <summary>
-    /// Picks the title string from a <see cref="AiringTitleDto"/> according to the
-    /// title-language preference stored in <see cref="Preferences"/>. Uses the same
-    /// fallback chain as <c>Media.DisplayTitle</c> so notifications match the app UI.
-    /// </summary>
-    private static string SelectTitle(AiringTitleDto? title)
-    {
-        if (title is null)
-        {
-            return "Unknown Title";
+            coverBitmap = NotificationHelper.DownloadBitmap(entry.CoverImageUrl);
         }
 
-        string langPref = Preferences.Default.Get(TitleLanguagePrefKey, nameof(UserTitleLanguage.Romaji));
-        _ = Enum.TryParse<UserTitleLanguage>(langPref, out var lang);
-
-        return lang switch
-        {
-            UserTitleLanguage.English => title.English ?? title.Romaji ?? title.Native ?? "Unknown Title",
-            UserTitleLanguage.Native => title.Native ?? title.Romaji ?? title.English ?? "Unknown Title",
-            _ => title.Romaji ?? title.English ?? title.Native ?? "Unknown Title",
-        };
-    }
-
-    // ── Preferences helpers ─────────────────────────────────────────
-
-    private static List<int> ReadMediaIds()
-    {
-        string raw = Preferences.Default.Get(MediaIdsPrefKey, string.Empty);
-        if (string.IsNullOrWhiteSpace(raw))
-        {
-            return [];
-        }
-
-        var ids = new List<int>();
-        foreach (string part in raw.Split(',', StringSplitOptions.RemoveEmptyEntries))
-        {
-            if (int.TryParse(part.Trim(), out int id))
-            {
-                ids.Add(id);
-            }
-        }
-
-        return ids;
-    }
-
-    private static Dictionary<string, long> ReadNotifiedSet()
-    {
-        string raw = Preferences.Default.Get(NotifiedPrefKey, string.Empty);
-        if (string.IsNullOrWhiteSpace(raw))
-        {
-            return new Dictionary<string, long>();
-        }
-
-        try
-        {
-            return JsonSerializer.Deserialize<Dictionary<string, long>>(raw)
-                ?? new Dictionary<string, long>();
-        }
-        catch
-        {
-            return new Dictionary<string, long>();
-        }
-    }
-
-    private static void PruneAndSaveNotifiedSet(Dictionary<string, long> notifiedSet, long nowUnix, bool forceWrite)
-    {
-        long cutoff = nowUnix - (StaleEntryDays * 86400);
-        var staleKeys = notifiedSet.Where(kv => kv.Value < cutoff).Select(kv => kv.Key).ToList();
-        foreach (string key in staleKeys)
-        {
-            notifiedSet.Remove(key);
-        }
-
-        // Write if new entries were added or stale entries were pruned
-        if (forceWrite || staleKeys.Count > 0)
-        {
-            Preferences.Default.Set(NotifiedPrefKey, JsonSerializer.Serialize(notifiedSet));
-        }
-    }
-
-    // ── Lightweight DTOs for the worker's own GraphQL parsing ───────
-    // These are intentionally separate from the main app's AniListClient DTOs
-    // so the worker has zero dependency on MAUI DI or shared services.
-
-    private sealed class GraphQlResponse
-    {
-        public ResponseData? Data { get; set; }
-        public List<GraphQlError>? Errors { get; set; }
-    }
-
-    private sealed class GraphQlError
-    {
-        public string? Message { get; set; }
-    }
-
-    private sealed class ResponseData
-    {
-        public PageData? Page { get; set; }
-    }
-
-    private sealed class PageData
-    {
-        public PageInfoData? PageInfo { get; set; }
-        public List<AiringScheduleDto>? AiringSchedules { get; set; }
-    }
-
-    private sealed class PageInfoData
-    {
-        public bool? HasNextPage { get; set; }
-    }
-
-    private sealed class AiringScheduleDto
-    {
-        public int MediaId { get; set; }
-        public int Episode { get; set; }
-        public AiringMediaDto? Media { get; set; }
-    }
-
-    private sealed class AiringMediaDto
-    {
-        public AiringTitleDto? Title { get; set; }
-        public AiringCoverDto? CoverImage { get; set; }
-    }
-
-    private sealed class AiringTitleDto
-    {
-        public string? Romaji { get; set; }
-        public string? English { get; set; }
-        public string? Native { get; set; }
-    }
-
-    private sealed class AiringCoverDto
-    {
-        public string? Medium { get; set; }
-    }
-
-    private record struct AiringEntry
-    {
-        public int MediaId { get; init; }
-        public int Episode { get; init; }
-        public string MediaTitle { get; init; }
-        public string? CoverImageUrl { get; init; }
+        NotificationHelper.Show(ApplicationContext!, entry.MediaId, entry.MediaTitle, entry.Episode, coverBitmap);
+        coverBitmap?.Dispose();
     }
 }

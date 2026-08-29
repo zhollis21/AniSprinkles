@@ -1,10 +1,13 @@
+using AniSprinkles.Utilities;
 using IconFont.Maui.FluentIcons;
+using Microsoft.Extensions.Logging;
 
 namespace AniSprinkles;
 
 public partial class AppShell : Shell
 {
-    private const string MediaDetailsRoute = "media-details";
+    /// <summary>Public so the notification deep link routes to the same spelling registered here (#111).</summary>
+    public const string MediaDetailsRoute = "media-details";
     private const string StaffDetailsRoute = "staff-details";
     private const string CharacterDetailsRoute = "character-details";
     private const string StudioDetailsRoute = "studio-details";
@@ -46,7 +49,59 @@ public partial class AppShell : Shell
             new FontImageSource { Glyph = regularGlyph, FontFamily = FluentIconsRegular.FontFamily },
             new FontImageSource { Glyph = filledGlyph, FontFamily = FluentIconsFilled.FontFamily });
 
-    private void OnShellNavigated(object? sender, ShellNavigatedEventArgs e) => ApplySelectedTabIcons();
+    private void OnShellNavigated(object? sender, ShellNavigatedEventArgs e)
+    {
+        ApplySelectedTabIcons();
+
+        // The one reliable "Shell is ready" signal for a cold start: a notification tap that arrived
+        // in MainActivity.OnCreate was queued before this existed, and nothing else tells us when it
+        // becomes navigable (#111). Idempotent — the link is only cleared once it is followed.
+        TryDrainDeepLink();
+    }
+
+    private static void TryDrainDeepLink()
+    {
+        try
+        {
+            // Not ServiceProviderHelper: it throws when DI isn't up, and this runs on a Shell event
+            // during startup. A null provider here just means "too early" — OnResume tries again.
+            var services = IPlatformApplication.Current?.Services;
+            var pending = services?.GetService<PendingDeepLink>();
+            var navigation = services?.GetService<INavigationService>();
+
+            if (pending is null || navigation is null || !pending.HasPending)
+            {
+                return;
+            }
+
+            // Fire-and-forget deliberately: this is an event handler, and the navigation's own
+            // failure is logged inside. Awaiting here would mean an async void handler for no gain.
+            _ = DrainAsync(pending, navigation);
+        }
+        catch (Exception ex)
+        {
+            LogDrainFailure(ex, "Failed to drain pending deep link");
+        }
+    }
+
+    private static async Task DrainAsync(PendingDeepLink pending, INavigationService navigation)
+    {
+        try
+        {
+            await pending.TryNavigateAsync(navigation, Shell.Current is not null);
+        }
+        catch (Exception ex)
+        {
+            LogDrainFailure(ex, "Deep link navigation failed");
+        }
+    }
+
+    /// <summary>
+    /// Resolves the logger defensively — the failure being reported may itself be that DI is
+    /// unavailable, and throwing out of a catch on a Shell event would take the app down.
+    /// </summary>
+    private static void LogDrainFailure(Exception ex, string message)
+        => IPlatformApplication.Current?.Services?.GetService<ILogger<AppShell>>()?.LogWarning(ex, message);
 
     private void ApplySelectedTabIcons()
     {

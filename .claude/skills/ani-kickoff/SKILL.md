@@ -70,6 +70,45 @@ This is the step that earns the skill its keep. Issues in this repo go stale in
 recognizable ways, so work through these deliberately rather than trusting the
 issue's framing:
 
+**Fetch first — your local `main` is probably stale.** Do this before any other
+check in this step, because every `git log`, `git cat-file` and "does this file
+exist yet" below reads from local refs, and a stale `main` makes all of them lie
+in the same direction: work that has already merged looks unbuilt.
+
+This is not hypothetical. Kicking off #141 and #111, local `main` sat at `925d79f`
+while `origin/main` was at `377f9f9` — one merge ahead. The whole `AniListLinkTarget`
+/ `BioLinkFollower` layer from #137 was on `origin/main` and invisible locally, so
+an implementation option that reuses it was presented to the user as carrying a
+"depends on an unmerged branch" cost it did not have. The user caught it. They
+should not have had to.
+
+```bash
+git fetch origin --quiet
+git log --oneline -1 main
+git log --oneline -1 origin/main
+git rev-list --count main..origin/main   # 0 = up to date
+```
+
+If `main` is behind, fast-forward it before going further — a clean tree makes
+this free, and the branch you cut in Step 7 needs to come off the real tip anyway:
+
+```bash
+git merge-base --is-ancestor main origin/main   # confirm fast-forward is safe
+git branch -f main origin/main                  # when not checked out on main
+```
+
+Two things this protects beyond the obvious:
+
+- **Squash merges break `--contains`.** This repo squash-merges, so
+  `git branch -r --contains <branch-sha>` returns nothing even for work that
+  shipped. Don't conclude from an empty result that a branch is unmerged — check
+  whether the *files* are on `origin/main` (`git cat-file -e origin/main:<path>`),
+  or look for the squash commit by PR number.
+- **Say which ref you checked.** When you report "X isn't implemented yet" or
+  "Y doesn't exist on main", name the ref and SHA you verified against, so a stale
+  local can be spotted by the user in one glance rather than after the plan is
+  built on it.
+
 **Search broadly before concluding anything.** This is the failure mode that will
 burn you, so internalize it before the specific checks below: an empty search
 result is not evidence of absence, it is usually evidence you guessed the wrong
@@ -386,7 +425,8 @@ contradicts nothing the issue states, change nothing.
 
 ## Step 7 — Cut the branch
 
-Only after approval. Branch off `main`, named `feature/<issue#>-<short-slug>`
+Only after approval. Branch off `origin/main` — not local `main`, unless Step 2's
+fetch confirmed the two are level — named `feature/<issue#>-<short-slug>`
 (e.g. `feature/112-diagnostic-log-export`) — that convention is the most useful
 of the several in this repo's history because it ties the branch back to the
 issue. For a batch that is genuinely one unit of work, use the lowest issue

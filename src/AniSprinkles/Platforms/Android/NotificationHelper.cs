@@ -13,6 +13,15 @@ public static class NotificationHelper
     public const string ChannelId = "airing_alerts";
     private const string GroupKey = "airing_group";
 
+    /// <summary>Media id to open when the notification is tapped (#111). Absent or 0 means no deep link.</summary>
+    public const string MediaIdExtra = "anisprinkles.deeplink.mediaId";
+
+    /// <summary>
+    /// Identifies one tap, so a re-delivered intent isn't followed twice. The notification id serves:
+    /// it is per (media, episode) and, since #141, deterministic across processes.
+    /// </summary>
+    public const string NonceExtra = "anisprinkles.deeplink.nonce";
+
     /// <summary>
     /// Creates the airing alerts notification channel. Safe to call multiple times —
     /// <see cref="NotificationManager.CreateNotificationChannel"/> is idempotent and
@@ -34,10 +43,30 @@ public static class NotificationHelper
     /// </summary>
     public static void Show(Context context, int mediaId, string title, int episode, Bitmap? coverImage)
     {
-        var intent = context.PackageManager?.GetLaunchIntentForPackage(context.PackageName ?? string.Empty);
-        var pendingIntent = intent is not null
-            ? PendingIntent.GetActivity(context, mediaId, intent, PendingIntentFlags.UpdateCurrent | PendingIntentFlags.Immutable)
-            : null;
+        // Unique notification ID from mediaId + episode, computed up front because it doubles as the
+        // deep link's replay nonce.
+        int notificationId = AiringNotificationState.NotificationId(mediaId, episode);
+
+        // An explicit intent rather than the package's launcher intent (#111). The launcher intent
+        // is ACTION_MAIN/CATEGORY_LAUNCHER, which just brings the task forward without delivering
+        // anything — which is why a tap used to land wherever the user had left the app.
+        //
+        // ClearTop matters because auth runs in a Chrome Custom Tab, which sits in this task: with
+        // SingleTop alone the tab could stay on top. SingleTop (both here and as the activity's
+        // launchMode) is what routes this to OnNewIntent instead of recreating the activity.
+        var intent = new Intent(context, typeof(MainActivity));
+        intent.SetFlags(ActivityFlags.NewTask | ActivityFlags.ClearTop | ActivityFlags.SingleTop);
+        intent.PutExtra(MediaIdExtra, mediaId);
+        intent.PutExtra(NonceExtra, notificationId);
+
+        // Request code is the notification id, not the media id. Extras are not part of a
+        // PendingIntent's identity — only request code, action, data and component are — so a
+        // per-media request code would make two episodes of one show share a single PendingIntent,
+        // and UpdateCurrent would overwrite its nonce with whichever episode was posted last.
+        // Tapping the older notification would then consume that nonce and the newer one would be
+        // rejected as a replay, doing nothing. Per-notification request codes keep them distinct.
+        var pendingIntent = PendingIntent.GetActivity(
+            context, notificationId, intent, PendingIntentFlags.UpdateCurrent | PendingIntentFlags.Immutable);
 
         var builder = new NotificationCompat.Builder(context, ChannelId);
         builder.SetSmallIcon(_Microsoft.Android.Resource.Designer.ResourceConstant.Mipmap.appicon);
@@ -56,8 +85,6 @@ public static class NotificationHelper
             builder.SetContentIntent(pendingIntent);
         }
 
-        // Unique notification ID from mediaId + episode to prevent duplicates
-        int notificationId = HashCode.Combine(mediaId, episode);
         NotificationManagerCompat.From(context)?.Notify(notificationId, builder.Build());
     }
 

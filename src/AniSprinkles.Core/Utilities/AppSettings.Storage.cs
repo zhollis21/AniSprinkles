@@ -2,7 +2,13 @@ namespace AniSprinkles.Utilities;
 
 public static partial class AppSettings
 {
-    private const string TitleLanguageKey = "title_language";
+    /// <summary>
+    /// Public because the airing worker reads this preference directly (#141). It cannot come
+    /// through <see cref="Storage"/> — that is <c>internal</c>, and the worker lives in the app
+    /// project — nor through <see cref="TitleLanguage"/>, which is only populated once
+    /// <see cref="Load"/> has run, and the worker can execute before the app has ever launched.
+    /// </summary>
+    public const string TitleLanguageKey = "title_language";
     private const string ScoreFormatKey = "score_format";
     private const string DisplayAdultContentKey = "display_adult_content";
     private const string AnimeSectionOrderKey = "anime_section_order";

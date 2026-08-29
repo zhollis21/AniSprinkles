@@ -256,6 +256,14 @@ AniSprinkles driver — pwsh .claude/skills/run-anisprinkles/driver.ps1 <command
                             -graphql        Answer HTTP 200 with a GraphQL errors array
                                             instead of a status code (http layer only)
   fault clear               Disarm. Faults are disarmed at every app start.
+  notify [media] [ep] [title]
+                            Post a REAL airing notification via NotificationHelper.Show
+                            (default 21 1050 "ONE PIECE"). Debug-only receiver; the CI
+                            notification stub stays a no-op, so screenshots are unaffected.
+                            Tap it to exercise the production PendingIntent (#111).
+  deeplink <media> [nonce]  Fire the deep-link intent directly, no notification. Covers
+                            MainActivity/AppShell/PendingDeepLink. Repeat the same nonce to
+                            check replay rejection; omit it for a fresh random one.
 "@ | Write-Host
 }
 
@@ -545,6 +553,73 @@ function Cmd-Fault {
     Say "fault armed: op=$op kind=$kind scope=$scope delay=${delay}ms layer=$layer graphql=$graphql"
 }
 
+# Posts one real airing notification on the running app (#111). Goes through the actual
+# NotificationHelper.Show, so the PendingIntent a tap follows is the production one — that path has
+# no unit-test reach at all, and is where the per-media request-code bug lived.
+#
+# CIAiringNotificationService stays a no-op, so this changes nothing about the screenshot job: it
+# bypasses the service entirely and nothing broadcasts here during CI.
+function Cmd-Notify {
+    param([string[]]$Argv)
+
+    $mediaId = if ($Argv.Count -ge 1) { [int]$Argv[0] } else { 21 }
+    $episode = if ($Argv.Count -ge 2) { [int]$Argv[1] } else { 1050 }
+    $title   = if ($Argv.Count -ge 3) { ($Argv[2..($Argv.Count - 1)] -join ' ') } else { $null }
+
+    $cmd = @('shell', 'am', 'broadcast',
+             '-n', "$Package/.NotifyReceiver",
+             '-a', 'com.RainbowSprinkles.NOTIFY',
+             '--ei', 'mediaId', "$mediaId",
+             '--ei', 'episode', "$episode")
+    # Quoted for the *device* shell, not PowerShell: `am` runs through sh on the device, so an
+    # unquoted "Shingeki no Kyojin" arrives as three arguments and the title silently truncates.
+    if ($title) { $cmd += @('--es', 'title', "`"$title`"") }
+
+    Adb @cmd *> $null
+    Say "notification posted: media=$mediaId episode=$episode$(if ($title) { " title=$title" })"
+    Say "  open the shade with: driver.ps1 key KEYCODE_NOTIFICATION"
+}
+
+# Runs the REAL AiringCheckWorker once, so DoWork -> AiringCheckRunner -> AiringScheduleFetcher ->
+# notification executes end to end (#141). A CI build stubs the notification service, so the worker
+# is otherwise never scheduled and this whole path never runs on device.
+#
+# NOTE: this makes a real unauthenticated AniList request (one per page). Manual and deliberate —
+# nothing broadcasts here during CI.
+function Cmd-WorkerRun {
+    param([string[]]$Argv)
+
+    $mediaIds = if ($Argv.Count -ge 1) { $Argv[0] } else { '21,16498,101922' }
+    $hours    = if ($Argv.Count -ge 2) { [int]$Argv[1] } else { 168 }
+
+    Adb shell am broadcast -n "$Package/.NotifyReceiver" -a com.RainbowSprinkles.NOTIFY `
+        --ez run true --es mediaIds "`"$mediaIds`"" --ei lookbackHours $hours *> $null
+
+    Say "worker run enqueued: mediaIds=$mediaIds lookback=${hours}h"
+    Say "  watch it with: driver.ps1 logcat 200   (tag AiringCheckWorker)"
+}
+
+# Fires the deep-link intent directly, without a notification (#111). Covers MainActivity, AppShell
+# and PendingDeepLink; use 'notify' plus a real tap to also cover the PendingIntent construction.
+#
+# 0x34000000 = NEW_TASK | CLEAR_TOP | SINGLE_TOP, matching NotificationHelper.Show.
+function Cmd-DeepLink {
+    param([string[]]$Argv)
+
+    if ($Argv.Count -lt 1) {
+        throw 'deeplink needs a mediaId, e.g. driver.ps1 deeplink 21 [nonce]'
+    }
+
+    $mediaId = [int]$Argv[0]
+    # A distinct default nonce per run, so a repeat is not mistaken for a replay of the last one.
+    $nonce = if ($Argv.Count -ge 2) { [int]$Argv[1] } else { [int](Get-Random -Minimum 1 -Maximum 2147483647) }
+
+    Adb shell am start -W -n "$Package/crc6418a5ac36641a60eb.MainActivity" -f 0x34000000 `
+        --ei anisprinkles.deeplink.mediaId $mediaId `
+        --ei anisprinkles.deeplink.nonce $nonce *> $null
+    Say "deep link fired: media=$mediaId nonce=$nonce"
+}
+
 # --------------------------------------------------------------- dispatch
 
 $a = @($Args)
@@ -595,5 +670,8 @@ switch ($cmd) {
     'logcat'     { if ($a[0]) { Cmd-Logcat ([int]$a[0]) } else { Cmd-Logcat } }
     'applog'     { Cmd-AppLog }
     'fault'      { Cmd-Fault $a }
+    'notify'     { Cmd-Notify $a }
+    'worker-run' { Cmd-WorkerRun $a }
+    'deeplink'   { Cmd-DeepLink $a }
     default      { Write-Host "Unknown command '$Command'`n"; Cmd-Help; exit 1 }
 }

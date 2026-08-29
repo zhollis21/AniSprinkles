@@ -104,6 +104,8 @@ Then drive it. Every command is `driver.ps1 <command> [args]`:
 | `logcat [n]` / `applog` | app-PID logcat tail / the on-device rotating file log |
 | `fault <op> <kind> [scope]` | arm a fault on the **running** app — no rebuild (#125) |
 | `fault clear` | disarm |
+| `notify [media] [ep] [title]` | post a **real** airing notification (#111) — see below |
+| `deeplink <media> [nonce]` | fire the notification's deep-link intent without a notification |
 
 `driver.ps1 help` prints the same list.
 
@@ -176,6 +178,46 @@ pwsh -NoProfile -File .claude/skills/run-anisprinkles/driver.ps1 shot after
 ```
 
 Then `Read` the two PNGs: heart outline → filled, Favourites `90,457` → `90,458`.
+
+### Driving airing notifications — `notify` and `deeplink`
+
+`CIAiringNotificationService` is a no-op, so a CI build never schedules the worker and never posts
+anything. These two commands reach the notification path anyway, without changing that stub and
+without any AniList traffic:
+
+```powershell
+driver.ps1 notify 16498 25 "Shingeki no Kyojin"   # posts a real notification
+driver.ps1 deeplink 21                            # fires the tap's intent, no notification
+driver.ps1 deeplink 21 4242                       # same nonce twice = replay; expect it ignored
+```
+
+`notify` goes through the production `NotificationHelper.Show`, so tapping the result exercises the
+real `PendingIntent`. `deeplink` skips the notification and covers `MainActivity` / `AppShell` /
+`PendingDeepLink` only — use it for the state matrix, and `notify` + a real tap to cover the
+PendingIntent construction, which has no unit-test reach at all.
+
+**Grant POST_NOTIFICATIONS first, or `notify` silently does nothing.** The CI stub's
+`RequestPermissionAsync` returns true without ever asking, so on API 33+ the runtime permission is
+never granted and `NotificationManagerCompat.Notify` no-ops — the app logs `NOTIFY posted` and no
+notification appears:
+
+```bash
+adb shell pm grant com.RainbowSprinkles.AniSprinkles android.permission.POST_NOTIFICATIONS
+```
+
+**uiautomator cannot see the notification shade**, so `dump` and `tap` are useless there. Expand it
+with `adb shell cmd statusbar expand-notifications`, `shot` it, and tap by coordinate off the image.
+
+To force the four arrival states, and the replay case that needs a task restore rather than a plain
+relaunch:
+
+| State | Setup |
+|---|---|
+| Process dead | `adb shell am force-stop <pkg>` first |
+| Process alive, activity destroyed | `adb shell settings put global always_finish_activities 1`, HOME, then fire — **set it back to 0 afterwards** |
+| Backgrounded | `driver.ps1 key KEYCODE_HOME`, then fire |
+| Foreground | fire while it is on screen |
+| Task restore replay | `adb shell am kill <pkg>` — **not** `force-stop`, which drops the task — then reopen from recents |
 
 ### Fixture data you can drive against
 

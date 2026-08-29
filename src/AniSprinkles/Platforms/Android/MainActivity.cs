@@ -1,8 +1,11 @@
 ﻿using Android.App;
+using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Util;
 using AndroidX.Core.View;
+using AniSprinkles.Platforms.Android;
+using AniSprinkles.Utilities;
 using AndroidColors = Android.Graphics.Color;
 
 namespace AniSprinkles;
@@ -35,6 +38,11 @@ public class MainActivity : MauiAppCompatActivity
     {
         base.OnCreate(savedInstanceState);
         Log.Info(LifecycleTag, $"LIFECYCLE {ActivityIdentity} OnCreate (savedInstanceState={(savedInstanceState is null ? "null" : "present")})");
+
+        // A notification tap can arrive here with the process dead, or with the process alive and
+        // only the activity destroyed — in which case MAUI's statics may have survived and Shell can
+        // already exist. Queue either way and let the drain decide (#111).
+        HandleDeepLinkIntent(Intent);
 
         // Catch unhandled exceptions from Java/Android side
         Android.Runtime.AndroidEnvironment.UnhandledExceptionRaiser += (sender, args) =>
@@ -91,10 +99,109 @@ public class MainActivity : MauiAppCompatActivity
         Log.Info(LifecycleTag, $"LIFECYCLE {ActivityIdentity} OnStart");
     }
 
+    /// <summary>
+    /// Where a notification tap lands when this activity is already alive — backgrounded or in the
+    /// foreground — because of <see cref="LaunchMode.SingleTop"/>.
+    /// </summary>
+    protected override void OnNewIntent(Intent? intent)
+    {
+        base.OnNewIntent(intent);
+        Log.Info(LifecycleTag, $"LIFECYCLE {ActivityIdentity} OnNewIntent");
+
+        // Android keeps returning the *original* launch intent from the Intent property unless it is
+        // replaced, so without this any later read here would see stale extras. Assigned through the
+        // property rather than SetIntent, whose API 36 binding requires a second ComponentCaller.
+        if (intent is not null)
+        {
+            Intent = intent;
+        }
+
+        HandleDeepLinkIntent(intent);
+    }
+
     protected override void OnResume()
     {
         base.OnResume();
         Log.Info(LifecycleTag, $"LIFECYCLE {ActivityIdentity} OnResume");
+
+        // Backstop: covers a link queued before Shell existed, when AppShell's Navigated had already
+        // fired and won't fire again. Cheap and idempotent when there's nothing pending.
+        TryDrainDeepLink();
+    }
+
+    // ── Notification deep links (#111) ───────────────────────────────
+
+    /// <summary>
+    /// Reads a queued media id off the intent, if there is one, and asks for it to be followed.
+    /// Never throws — this runs on lifecycle callbacks where an exception takes the app down.
+    /// </summary>
+    private void HandleDeepLinkIntent(Intent? intent)
+    {
+        try
+        {
+            int mediaId = intent?.GetIntExtra(NotificationHelper.MediaIdExtra, 0) ?? 0;
+            if (mediaId <= 0)
+            {
+                return;
+            }
+
+            int nonce = intent!.GetIntExtra(NotificationHelper.NonceExtra, 0);
+
+            // Clear the extras so an activity recreation that reuses this same Intent object cannot
+            // re-navigate. That covers the in-memory case; a genuine process-death restore hands
+            // back the original extras from the task record, which is what the nonce is for.
+            intent.RemoveExtra(NotificationHelper.MediaIdExtra);
+            intent.RemoveExtra(NotificationHelper.NonceExtra);
+
+            var pending = ServiceProviderHelper.GetServiceProvider().GetRequiredService<PendingDeepLink>();
+            if (pending.Set(AppShell.MediaDetailsRoute, new Dictionary<string, object> { ["mediaId"] = mediaId }, nonce))
+            {
+                Log.Info(LifecycleTag, $"DEEPLINK {ActivityIdentity} queued media {mediaId} (nonce {nonce})");
+            }
+
+            TryDrainDeepLink();
+        }
+        catch (Exception ex)
+        {
+            Log.Error(nameof(MainActivity), $"Failed to read deep link intent: {ex}");
+        }
+    }
+
+    /// <summary>
+    /// Follows a queued link if Shell is up. Safe to call repeatedly — three hooks do — because
+    /// <see cref="PendingDeepLink"/> only clears once navigation is actually attempted.
+    /// </summary>
+    private void TryDrainDeepLink()
+    {
+        try
+        {
+            var services = ServiceProviderHelper.GetServiceProvider();
+            var pending = services.GetRequiredService<PendingDeepLink>();
+            if (!pending.HasPending)
+            {
+                return;
+            }
+
+            var navigation = services.GetRequiredService<INavigationService>();
+
+            // Shell navigation is UI-thread work, and OnNewIntent/OnResume are not guaranteed to be
+            // a safe place to start it synchronously.
+            MainThread.BeginInvokeOnMainThread(async () =>
+            {
+                try
+                {
+                    await pending.TryNavigateAsync(navigation, Shell.Current is not null);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(nameof(MainActivity), $"Deep link navigation failed: {ex}");
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+            Log.Error(nameof(MainActivity), $"Failed to drain deep link: {ex}");
+        }
     }
 
     protected override void OnPause()

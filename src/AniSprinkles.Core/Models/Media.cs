@@ -55,12 +55,6 @@ public class Media : IFavouritable
     public PageInfo? StaffPageInfo { get; set; }
     public PageInfo? RecommendationsPageInfo { get; set; }
 
-    public string DisplayTitle => AppSettings.TitleLanguage switch
-    {
-        UserTitleLanguage.English
-            => Title?.English ?? Title?.Romaji ?? Title?.Native ?? "Unknown Title",
-        UserTitleLanguage.Native
-            => Title?.Native ?? Title?.Romaji ?? Title?.English ?? "Unknown Title",
-        _ => Title?.Romaji ?? Title?.English ?? Title?.Native ?? "Unknown Title",
-    };
+    public string DisplayTitle
+        => TitleSelector.Select(AppSettings.TitleLanguage, Title?.Romaji, Title?.English, Title?.Native);
 }
