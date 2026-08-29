@@ -41,12 +41,22 @@ public sealed class PendingDeepLink(IPreferences preferences, ILogger<PendingDee
     private readonly object _gate = new();
     private string? _route;
     private IDictionary<string, object>? _parameters;
-    private int _pendingNonce;
+    private int? _pendingNonce;
 
-    private int ConsumedNonce
+    /// <summary>
+    /// <see langword="null"/> means nothing has been followed yet — distinguished from a stored 0 by
+    /// key presence rather than by a sentinel value, because 0 is a perfectly legal nonce.
+    /// </summary>
+    private int? ConsumedNonce
     {
-        get => preferences.Get(ConsumedNonceKey, 0);
-        set => preferences.Set(ConsumedNonceKey, value);
+        get => preferences.ContainsKey(ConsumedNonceKey) ? preferences.Get(ConsumedNonceKey, 0) : null;
+        set
+        {
+            if (value is int nonce)
+            {
+                preferences.Set(ConsumedNonceKey, nonce);
+            }
+        }
     }
 
     /// <summary>True while a link is waiting for a Shell that can take it.</summary>
@@ -70,15 +80,15 @@ public sealed class PendingDeepLink(IPreferences preferences, ILogger<PendingDee
     /// the original intent when it recreates an activity, which would otherwise re-navigate and pull
     /// the user off whatever they had browsed to since. Clearing the extra on the platform side
     /// covers the in-memory case; this covers a genuine process-death restore, where the intent
-    /// comes back from the task record with its extras intact. Pass 0 when there is nothing to
-    /// deduplicate on.
+    /// comes back from the task record with its extras intact. Pass <see langword="null"/> when
+    /// there is nothing to deduplicate on — not 0, which is a legal nonce like any other.
     /// </param>
     /// <returns>False when this tap has already been followed, so the caller can log the difference.</returns>
-    public bool Set(string route, IDictionary<string, object> parameters, int nonce)
+    public bool Set(string route, IDictionary<string, object> parameters, int? nonce)
     {
         lock (_gate)
         {
-            if (nonce != 0 && nonce == ConsumedNonce)
+            if (nonce is int candidate && candidate == ConsumedNonce)
             {
                 logger?.LogInformation("NAVTRACE DeepLink → ignoring replayed intent for {Route}", route);
                 return false;
@@ -121,12 +131,8 @@ public sealed class PendingDeepLink(IPreferences preferences, ILogger<PendingDee
             // navigate twice.
             _route = null;
             _parameters = null;
-            if (_pendingNonce != 0)
-            {
-                ConsumedNonce = _pendingNonce;
-            }
-
-            _pendingNonce = 0;
+            ConsumedNonce = _pendingNonce;
+            _pendingNonce = null;
         }
 
         // A notification tap is a navigation entry point that exists nowhere else in the app, so it

@@ -43,6 +43,7 @@ public class MainActivity : MauiAppCompatActivity
         // only the activity destroyed — in which case MAUI's statics may have survived and Shell can
         // already exist. Queue either way and let the drain decide (#111).
         HandleDeepLinkIntent(Intent);
+        TryDrainDeepLink();
 
         // Catch unhandled exceptions from Java/Android side
         Android.Runtime.AndroidEnvironment.UnhandledExceptionRaiser += (sender, args) =>
@@ -117,12 +118,19 @@ public class MainActivity : MauiAppCompatActivity
         }
 
         HandleDeepLinkIntent(intent);
+        TryDrainDeepLink();
     }
 
     protected override void OnResume()
     {
         base.OnResume();
         Log.Info(LifecycleTag, $"LIFECYCLE {ActivityIdentity} OnResume");
+
+        // Re-reads the intent as well as draining. If queuing failed earlier — DI not yet wired, so
+        // ServiceProviderHelper threw — the extras are still on it, and nothing else would ever look
+        // at them again within this activity instance. A no-op on the normal path, where the extras
+        // were cleared as soon as the link was queued.
+        HandleDeepLinkIntent(Intent);
 
         // Backstop: covers a link queued before Shell existed, when AppShell's Navigated had already
         // fired and won't fire again. Cheap and idempotent when there's nothing pending.
@@ -145,7 +153,10 @@ public class MainActivity : MauiAppCompatActivity
                 return;
             }
 
-            int nonce = intent!.GetIntExtra(NotificationHelper.NonceExtra, 0);
+            // Absent, not 0: the nonce comes from a hash, so 0 is a value it can legitimately take.
+            int? nonce = intent!.HasExtra(NotificationHelper.NonceExtra)
+                ? intent.GetIntExtra(NotificationHelper.NonceExtra, 0)
+                : null;
 
             // Queue before clearing the extras, not after. ServiceProviderHelper throws when DI is
             // not yet wired — a path its own remarks call out — and clearing first would leave the
@@ -163,11 +174,11 @@ public class MainActivity : MauiAppCompatActivity
             // what the nonce is for.
             intent.RemoveExtra(NotificationHelper.MediaIdExtra);
             intent.RemoveExtra(NotificationHelper.NonceExtra);
-
-            TryDrainDeepLink();
         }
         catch (Exception ex)
         {
+            // The extras are still on the intent if this threw before clearing them, so OnResume
+            // gets another go once services are up.
             Log.Error(nameof(MainActivity), $"Failed to read deep link intent: {ex}");
         }
     }

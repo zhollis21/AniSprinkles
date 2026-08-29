@@ -188,15 +188,45 @@ public class PendingDeepLinkTests
     }
 
     [Fact]
+    public async Task ANonceOfZero_IsARealNonce_NotAnAbsentOne()
+    {
+        // The nonce is a hash, so 0 is a value it can legitimately take — rare, but a notification
+        // that drew it must still get replay protection rather than silently losing it. "Absent" is
+        // null; the two are distinguished by key presence in storage, not by a sentinel value.
+        var link = WithPending(21, nonce: 0);
+        var navigation = Substitute.For<INavigationService>();
+        await link.TryNavigateAsync(navigation, shellReady: true);
+
+        Assert.False(link.Set(Route, Media(21), nonce: 0));
+
+        await navigation.Received(1).GoToAsync(Route, false, Arg.Any<IDictionary<string, object>>());
+    }
+
+    [Fact]
+    public async Task ANonceOfZero_SurvivesProcessDeathLikeAnyOther()
+    {
+        var store = new FakePreferences();
+        var navigation = Substitute.For<INavigationService>();
+
+        var beforeDeath = WithPending(21, nonce: 0, store);
+        await beforeDeath.TryNavigateAsync(navigation, shellReady: true);
+
+        var afterRestore = new PendingDeepLink(store);
+
+        Assert.False(afterRestore.Set(Route, Media(21), nonce: 0));
+        await navigation.Received(1).GoToAsync(Route, false, Arg.Any<IDictionary<string, object>>());
+    }
+
+    [Fact]
     public async Task WithoutANonce_ReplayProtectionIsOff()
     {
         // 0 means "nothing to deduplicate on". Two such taps both navigate.
         var link = new PendingDeepLink(new FakePreferences());
         var navigation = Substitute.For<INavigationService>();
 
-        link.Set(Route, Media(21), nonce: 0);
+        link.Set(Route, Media(21), nonce: null);
         await link.TryNavigateAsync(navigation, shellReady: true);
-        Assert.True(link.Set(Route, Media(21), nonce: 0));
+        Assert.True(link.Set(Route, Media(21), nonce: null));
         await link.TryNavigateAsync(navigation, shellReady: true);
 
         await navigation.Received(2).GoToAsync(Route, false, Arg.Any<IDictionary<string, object>>());
