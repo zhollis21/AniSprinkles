@@ -297,6 +297,7 @@ public class MediaDetailsPageModelTests
         Assert.Equal("Plan to Watch", harness.Model.StatusLabelPlanning);
         Assert.Equal("Rewatching", harness.Model.StatusLabelRepeating);
         Assert.Equal(MediaProgressUnit.Episode, harness.Model.CurrentProgressUnit);
+        Assert.Equal("Episodes watched", harness.Model.ProgressSectionLabel);
     }
 
     [Fact]
@@ -331,6 +332,9 @@ public class MediaDetailsPageModelTests
 
         Assert.Equal(MediaProgressUnit.Chapter, harness.Model.CurrentProgressUnit);
         Assert.Equal("Chapter", harness.Model.ProgressUnitNoun);
+        // The row heading is the only thing on the page that says WHICH counter the number and the
+        // slider refer to — the unit is decided per entry, so a bare "Progress" was ambiguous.
+        Assert.Equal("Chapters read", harness.Model.ProgressSectionLabel);
         Assert.Equal("100 / 141", harness.Model.ProgressLabel);
         Assert.Equal(141, harness.Model.ProgressSliderMax);
     }
@@ -349,6 +353,7 @@ public class MediaDetailsPageModelTests
 
         Assert.Equal(MediaProgressUnit.Volume, harness.Model.CurrentProgressUnit);
         Assert.Equal("Volume", harness.Model.ProgressUnitNoun);
+        Assert.Equal("Volumes read", harness.Model.ProgressSectionLabel);
         Assert.Equal("20 / 34", harness.Model.ProgressLabel);
         Assert.Equal(34, harness.Model.ProgressSliderMax);
     }

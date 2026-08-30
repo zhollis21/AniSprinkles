@@ -24,7 +24,7 @@ public partial class SearchPageModel : ObservableObject
     private const int SearchMinLength = 2;
 
     /// <summary>Device-scoped, not cleared on sign-out — mirrors the My Anime sort keys.</summary>
-    private const string SearchKindPreferenceKey = "search_media_kind";
+    private const string SearchFilterPreferenceKey = "search_type_filter";
 
     private readonly IAniListClient _aniListClient;
     private readonly IAuthService _authService;
@@ -46,9 +46,16 @@ public partial class SearchPageModel : ObservableObject
     /// policies. See <see cref="ActiveAdultFilter"/>.</summary>
     private bool? _seededDisplayAdult;
 
-    /// <summary>The media type page 1 of the current results was fetched under; null when nothing
-    /// is seeded. See <see cref="ActiveSearchKind"/>.</summary>
-    private MediaKind? _seededKind;
+    /// <summary>
+    /// The type filter page 1 of the current results was fetched under; null when nothing is seeded.
+    /// <para>
+    /// A <see cref="SearchTypeFilter"/>? rather than a MediaKind? on purpose: "both types" is a real
+    /// selection whose client-side value is null, so a MediaKind? here could not tell "searching
+    /// everything" apart from "nothing seeded yet" — the same collision the adult filter documents
+    /// above, where the filter’s own null means "18+ allowed".
+    /// </para>
+    /// </summary>
+    private SearchTypeFilter? _seededFilter;
 
     // Context the current results were fetched under, so a flip can invalidate them.
     private bool _hasSearchedThisSession;
@@ -101,16 +108,16 @@ public partial class SearchPageModel : ObservableObject
         // find nothing to invalidate, and then have the new value land — at which point a live read
         // here would page a different policy onto the results already on screen. Turning adult
         // content OFF is the bad direction: 18+ page-1 items stay visible with SFW pages beneath.
-        // The media type is pinned per result set for the same reason (#12): the user can flip the
-        // Anime/Manga toggle while a Load More is in flight, and a live read here would append
+        // The type filter is pinned per result set for the same reason (#12): the user can flip the
+        // All/Anime/Manga pills while a Load More is in flight, and a live read here would append
         // manga pages beneath anime results.
         SearchSection = new PaginatedSection<BrowseMediaItem>(
             "SEARCH_MATCH",
             (page, _, ct) => _aniListClient.SearchMediaPageAsync(
-                _activeSearchQuery, ActiveSearchKind, ActiveAdultFilter, page, SearchPerPage, ct),
+                _activeSearchQuery, ActiveSearchFilter.ToMediaKind(), ActiveAdultFilter, page, SearchPerPage, ct),
             item => item.Node?.Id ?? 0);
 
-        _searchKind = ReadPersistedSearchKind();
+        _searchFilter = ReadPersistedSearchFilter();
         SearchSection.Changed += () =>
         {
             OnPropertyChanged(nameof(SearchIsLoadingMore));
@@ -137,10 +144,10 @@ public partial class SearchPageModel : ObservableObject
         _seededDisplayAdult is bool seeded ? ToAdultFilter(seeded) : AdultFilter;
 
     /// <summary>
-    /// The media type every page of the CURRENT result set must use, pinned when page 1 was
-    /// seeded. <see cref="SearchKind"/> is what the toggle reads; this is what paging obeys.
+    /// The type filter every page of the CURRENT result set must use, pinned when page 1 was
+    /// seeded. <see cref="SearchFilter"/> is what the pills read; this is what paging obeys.
     /// </summary>
-    private MediaKind ActiveSearchKind => _seededKind ?? SearchKind;
+    private SearchTypeFilter ActiveSearchFilter => _seededFilter ?? SearchFilter;
 
     /// <summary>Search results with infinite scroll; re-seeded per query.</summary>
     public PaginatedSection<BrowseMediaItem> SearchSection { get; }
@@ -149,45 +156,56 @@ public partial class SearchPageModel : ObservableObject
     private string _searchText = string.Empty;
 
     /// <summary>
-    /// Which media type the Anime/Manga toggle is on. Device-scoped and persisted, like the sort
-    /// and view-mode preferences — searching manga twice in a row shouldn't need two taps.
+    /// Which type filter the pills are on. Device-scoped and persisted, like the sort and view-mode
+    /// preferences — searching manga twice in a row shouldn't need two taps. Defaults to
+    /// <see cref="SearchTypeFilter.All"/>: most searches are "find this title", not "find this
+    /// title but only if it's manga", and the result rows print the format either way.
     /// </summary>
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(SearchKindKey))]
-    [NotifyPropertyChangedFor(nameof(IsAnimeSearch))]
-    [NotifyPropertyChangedFor(nameof(IsMangaSearch))]
+    [NotifyPropertyChangedFor(nameof(SearchFilterKey))]
     [NotifyPropertyChangedFor(nameof(SearchPlaceholder))]
     [NotifyPropertyChangedFor(nameof(IdlePrompt))]
     [NotifyPropertyChangedFor(nameof(NoResultsMessage))]
-    private MediaKind _searchKind;
+    private SearchTypeFilter _searchFilter;
 
-    public bool IsAnimeSearch => SearchKind == MediaKind.Anime;
+    public string SearchPlaceholder => SearchFilter switch
+    {
+        SearchTypeFilter.Anime => "Search all anime...",
+        SearchTypeFilter.Manga => "Search all manga...",
+        _ => "Search anime and manga...",
+    };
 
-    public bool IsMangaSearch => SearchKind == MediaKind.Manga;
+    public string IdlePrompt => SearchFilter switch
+    {
+        SearchTypeFilter.Anime => "Search all anime",
+        SearchTypeFilter.Manga => "Search all manga",
+        _ => "Search anime and manga",
+    };
 
-    public string SearchPlaceholder => IsMangaSearch ? "Search all manga..." : "Search all anime...";
+    public string NoResultsMessage => SearchFilter switch
+    {
+        SearchTypeFilter.Anime => "No anime found",
+        SearchTypeFilter.Manga => "No manga found",
+        _ => "No results found",
+    };
 
-    public string IdlePrompt => IsMangaSearch ? "Search all manga" : "Search all anime";
-
-    public string NoResultsMessage => IsMangaSearch ? "No manga found" : "No anime found";
-
-    /// <summary>The selected type as a string, for the pill converters (which key off a string).</summary>
-    public string SearchKindKey => SearchKind.ToString();
+    /// <summary>The selected filter as a string, for the pill converters (which key off a string).</summary>
+    public string SearchFilterKey => SearchFilter.ToString();
 
     /// <summary>
-    /// Flips the toggle and re-runs whatever is already typed under the new type. Takes a string
-    /// because the XAML pills pass a literal CommandParameter, as the status rows do.
+    /// Flips the filter and re-runs whatever is already typed under it. Takes a string because the
+    /// XAML pills pass a literal CommandParameter, as the status rows do.
     /// </summary>
     [RelayCommand]
-    private void SelectSearchKind(string? value)
+    private void SelectSearchFilter(string? value)
     {
-        if (!Enum.TryParse<MediaKind>(value, out var kind) || SearchKind == kind)
+        if (!Enum.TryParse<SearchTypeFilter>(value, ignoreCase: true, out var filter) || SearchFilter == filter)
         {
             return;
         }
 
-        SearchKind = kind;
-        _preferences.Set(SearchKindPreferenceKey, kind.ToAniListType());
+        SearchFilter = filter;
+        _preferences.Set(SearchFilterPreferenceKey, filter.ToString());
 
         if (string.IsNullOrEmpty(SearchText))
         {
@@ -195,15 +213,16 @@ public partial class SearchPageModel : ObservableObject
         }
 
         // Same trick OnAppearingAsync uses to re-run under a changed context: clearing SearchText
-        // routes through OnSearchTextChanged, which resets the section (dropping the pinned kind
+        // routes through OnSearchTextChanged, which resets the section (dropping the pinned filter
         // with it) and cancels in-flight work, then restoring it starts a clean search.
         var query = SearchText;
         SearchText = string.Empty;
         SearchText = query;
     }
 
-    private MediaKind ReadPersistedSearchKind() =>
-        MediaKindExtensions.ParseMediaKind(_preferences.Get(SearchKindPreferenceKey, MediaKind.Anime.ToAniListType()));
+    private SearchTypeFilter ReadPersistedSearchFilter() =>
+        SearchTypeFilterExtensions.ParseSearchTypeFilter(
+            _preferences.Get(SearchFilterPreferenceKey, SearchTypeFilter.All.ToString()));
 
     /// <summary>True once a query of <see cref="SearchMinLength"/>+ characters is entered — swaps the
     /// idle prompt for the results list.</summary>
@@ -347,7 +366,7 @@ public partial class SearchPageModel : ObservableObject
         // Pin the filter for this result set. Read once here so page 1 below and every Load More
         // afterwards agree, no matter what the setting does in between.
         _seededDisplayAdult = AppSettings.DisplayAdultContent;
-        _seededKind = SearchKind;
+        _seededFilter = SearchFilter;
 
         // Auth is read here too, so both halves of the context describe the same moment rather than
         // the adult flag coming from issue time and auth from whenever the page last appeared.
@@ -383,7 +402,7 @@ public partial class SearchPageModel : ObservableObject
         try
         {
             var (items, pageInfo) = await _aniListClient.SearchMediaPageAsync(
-                query, ActiveSearchKind, ActiveAdultFilter, page: 1, perPage: SearchPerPage, cancellationToken: token);
+                query, ActiveSearchFilter.ToMediaKind(), ActiveAdultFilter, page: 1, perPage: SearchPerPage, cancellationToken: token);
             if (token.IsCancellationRequested || !string.Equals(_activeSearchQuery, query, StringComparison.Ordinal))
             {
                 return; // superseded while the fetch was in flight
@@ -501,7 +520,7 @@ public partial class SearchPageModel : ObservableObject
     {
         SearchSection.Reset();
         _seededDisplayAdult = null;
-        _seededKind = null;
+        _seededFilter = null;
     }
 
     private void ApplyEntryToItems(MediaListEntry entry)

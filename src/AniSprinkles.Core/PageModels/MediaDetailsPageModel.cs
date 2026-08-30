@@ -403,6 +403,17 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
     /// <summary>Singular noun for the current unit, e.g. the "Episode"/"Chapter" in the edit prompt.</summary>
     public string ProgressUnitNoun => MediaListVocabulary.UnitNoun(CurrentProgressUnit);
 
+    /// <summary>
+    /// Heading for the progress row: "Episodes watched" / "Chapters read" / "Volumes read".
+    /// <para>
+    /// It used to read a flat "Progress", which is fine for anime but ambiguous the moment manga
+    /// arrives — the unit is decided per entry, so "20" on a volume-tracked series looked exactly
+    /// like a chapter count. Shares <see cref="MediaListVocabulary.UnitProgressHeader"/> with the
+    /// edit-progress popup this row opens, so the two cannot disagree about what is being counted.
+    /// </para>
+    /// </summary>
+    public string ProgressSectionLabel => MediaListVocabulary.UnitProgressHeader(CurrentProgressUnit);
+
     private int CurrentProgressValue => ListEntry?.ActiveProgress ?? 0;
 
     public string ProgressLabel
@@ -672,6 +683,7 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
         OnPropertyChanged(nameof(CurrentMediaKind));
         OnPropertyChanged(nameof(CurrentProgressUnit));
         OnPropertyChanged(nameof(ProgressUnitNoun));
+        OnPropertyChanged(nameof(ProgressSectionLabel));
         OnPropertyChanged(nameof(ListStatusDisplay));
         OnPropertyChanged(nameof(StatusLabelCurrent));
         OnPropertyChanged(nameof(StatusLabelPlanning));
@@ -983,6 +995,7 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
         OnPropertyChanged(nameof(ProgressSliderMax));
         OnPropertyChanged(nameof(CurrentProgressUnit));
         OnPropertyChanged(nameof(ProgressUnitNoun));
+        OnPropertyChanged(nameof(ProgressSectionLabel));
         OnPropertyChanged(nameof(ListStatusDisplay));
         OnPropertyChanged(nameof(NumericScoreLabel));
         OnPropertyChanged(nameof(StarRating));

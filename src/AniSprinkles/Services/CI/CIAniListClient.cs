@@ -50,16 +50,21 @@ internal sealed class CIAniListClient : IAniListClient
     }
 
     public Task<(IReadOnlyList<BrowseMediaItem> Items, PageInfo? PageInfo)> SearchMediaPageAsync(
-        string search, MediaKind kind, bool? isAdult = false, int page = 1, int perPage = 20, CancellationToken cancellationToken = default)
+        string search, MediaKind? kind, bool? isAdult = false, int page = 1, int perPage = 20, CancellationToken cancellationToken = default)
     {
         // Honours isAdult the way the real endpoint does — SearchPageModel pins it per result set,
         // and the canary is what proves that pin still holds in CI. Both types apply the filter:
         // AniList takes the same isAdult argument either way, and modelling it on one side only
-        // would leave the pin unproven for half the app. The type itself is a hard filter on
-        // AniList's side, so the two sets never mix.
-        var source = kind == MediaKind.Manga
-            ? StubData.MangaBrowseItemsFor(isAdult)
-            : StubData.BrowseItemsFor(isAdult);
+        // would leave the pin unproven for half the app.
+        //
+        // A null kind is the All pill, and it has to mean "both" here exactly as it does over the
+        // wire, where the argument is omitted rather than sent as null (#12).
+        IReadOnlyList<BrowseMediaItem> source = kind switch
+        {
+            MediaKind.Manga => StubData.MangaBrowseItemsFor(isAdult),
+            MediaKind.Anime => StubData.BrowseItemsFor(isAdult),
+            _ => [.. StubData.BrowseItemsFor(isAdult), .. StubData.MangaBrowseItemsFor(isAdult)],
+        };
 
         IReadOnlyList<BrowseMediaItem> items = source
             .Where(i => i.Node?.DisplayTitle.Contains(search, StringComparison.OrdinalIgnoreCase) == true)

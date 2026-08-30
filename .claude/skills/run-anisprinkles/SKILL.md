@@ -231,7 +231,7 @@ relaunch:
 - **Discover**: `Currently Airing`, `Trending Now`, `Top Anime`, `View All ›`
 - **Search tab** filters that same fixture list client-side — `one` matches `ONE PIECE`;
   anything else (e.g. `cowboy bebop`) correctly renders `No anime found`. That is
-  the stub, not a bug. The Anime/Manga pills switch which fixture set is filtered.
+  the stub, not a bug. The All/Anime/Manga pills switch which fixture set is filtered; All (the default) returns both.
 - **Manga** (#12) — not in the Library list, which is still anime-only. Reach them from
   Attack on Titan's relations carousel, Luffy's character page, the Manga search pill, or
   `driver.ps1 deeplink <id>`, which is the fastest route to any of them:

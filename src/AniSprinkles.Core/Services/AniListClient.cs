@@ -134,7 +134,7 @@ public class AniListClient : IAniListClient
     }
 
     public async Task<(IReadOnlyList<BrowseMediaItem> Items, PageInfo? PageInfo)> SearchMediaPageAsync(
-        string search, MediaKind kind, bool? isAdult = false, int page = 1, int perPage = 20, CancellationToken cancellationToken = default)
+        string search, MediaKind? kind, bool? isAdult = false, int page = 1, int perPage = 20, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(search))
         {
@@ -146,7 +146,10 @@ public class AniListClient : IAniListClient
         var data = await SendAsync<BrowsePageData>(
             "Search",
             SearchQuery,
-            new { search, type = kind.ToAniListType(), page, perPage, isAdult }, // null isAdult serializes away → 18+ allowed
+            // Both nulls serialize AWAY rather than as JSON null (JsonIgnoreCondition.WhenWritingNull),
+            // which is load-bearing for each: an absent isAdult lets 18+ through, and an absent type
+            // searches anime and manga together. Sending type: null explicitly returns nothing at all.
+            new { search, type = kind?.ToAniListType(), page, perPage, isAdult },
             token,
             cancellationToken).ConfigureAwait(false);
 

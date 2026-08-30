@@ -39,7 +39,7 @@ public interface IAniListClient
     Task<IReadOnlyList<MediaListEntry>> GetMyAnimeListAsync(CancellationToken cancellationToken = default);
     Task<IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)>> GetMyAnimeListGroupedAsync(CancellationToken cancellationToken = default);
     Task<(IReadOnlyList<BrowseMediaItem> Items, PageInfo? PageInfo)> SearchMediaPageAsync(
-        string search, MediaKind kind, bool? isAdult = false, int page = 1, int perPage = 20, CancellationToken cancellationToken = default);
+        string search, MediaKind? kind, bool? isAdult = false, int page = 1, int perPage = 20, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// All Discover sections' first pages in one aliased request (rate-limit friendly). Seasons are

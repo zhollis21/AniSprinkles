@@ -171,7 +171,7 @@ public sealed class CachingAniListClient : IAniListClient
         => _inner.GetMyAnimeListGroupedAsync(cancellationToken);
 
     public Task<(IReadOnlyList<BrowseMediaItem> Items, PageInfo? PageInfo)> SearchMediaPageAsync(
-        string search, MediaKind kind, bool? isAdult = false, int page = 1, int perPage = 20, CancellationToken cancellationToken = default)
+        string search, MediaKind? kind, bool? isAdult = false, int page = 1, int perPage = 20, CancellationToken cancellationToken = default)
         => _inner.SearchMediaPageAsync(search, kind, isAdult, page, perPage, cancellationToken);
 
     // Discover/browse stay uncached here: they carry the viewer's mediaListEntry state (mutations

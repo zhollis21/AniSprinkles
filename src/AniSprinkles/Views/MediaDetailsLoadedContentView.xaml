@@ -402,7 +402,7 @@
                                                      Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Progress'}" Size="16" />
                                 </Image.Source>
                             </Image>
-                            <Label Grid.Column="1" Text="Progress" Style="{StaticResource Caption1Strong}"
+                            <Label Grid.Column="1" Text="{Binding ProgressSectionLabel}" Style="{StaticResource Caption1Strong}"
                                    TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Progress'}" VerticalTextAlignment="Center" />
                             <Border Grid.Column="2" StrokeShape="RoundRectangle 8" StrokeThickness="1"
                                     Stroke="{StaticResource Gray600}" Background="Transparent"
