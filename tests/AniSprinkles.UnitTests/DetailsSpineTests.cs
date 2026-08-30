@@ -378,16 +378,20 @@ public abstract class DetailsSpineTests<TEntity>
     }
 
     [Fact]
-    public async Task NavigateToMedia_ForAMangaEntry_ToastsInsteadOfNavigating()
+    public async Task NavigateToMedia_ForAMangaEntry_NavigatesLikeAnyOtherEntry()
     {
         var harness = CreateHarness();
 
         await harness.Model.NavigateToMediaCommand.ExecuteAsync(new RelatedMedia { Id = 7, Type = "MANGA" });
 
-        // The details screen queries Media(type: ANIME), so a manga id would 404.
-        Assert.Single(harness.Feedback.Toasts);
-        await harness.Navigation.DidNotReceive().GoToAsync(
-            Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<IDictionary<string, object>>());
+        // Toasted "not supported yet" until #12: the details screen pinned Media(id:, type: ANIME),
+        // so a manga id from a relations carousel would have 404'd. Ids are unique across both
+        // types, so dropping the pin made the same navigation work for either.
+        Assert.Empty(harness.Feedback.Toasts);
+        await harness.Navigation.Received(1).GoToAsync(
+            "media-details",
+            false,
+            Arg.Is<IDictionary<string, object>>(d => (int)d["mediaId"] == 7));
     }
 
     [Fact]

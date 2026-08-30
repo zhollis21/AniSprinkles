@@ -15,7 +15,7 @@
         UI thread during the tab transition. The four states (idle / searching / results / no
         matches) are plain visibility swaps.
     -->
-    <Grid RowDefinitions="Auto,Auto,*" Padding="{StaticResource LayoutPadding}">
+    <Grid RowDefinitions="Auto,Auto,Auto,*" Padding="{StaticResource LayoutPadding}">
         <views:OutageBanner Grid.Row="0" />
 
         <!-- Row 1: always-visible search bar. On a dedicated tab there is nothing to toggle. -->
@@ -35,7 +35,7 @@
                        AutomationProperties.IsInAccessibleTree="False" />
                 <Entry Grid.Column="1"
                        x:Name="SearchEntry"
-                       Placeholder="Search all anime..."
+                       Placeholder="{Binding SearchPlaceholder}"
                        Text="{Binding SearchText}"
                        ClearButtonVisibility="WhileEditing"
                        FontSize="15"
@@ -44,7 +44,38 @@
             </Grid>
         </Border>
 
-        <Grid Grid.Row="2">
+        <!--
+            Row 2: media-type toggle (#12). AniList's search takes one type at a time, so this is a
+            filter rather than a facet — flipping it re-runs whatever is typed.
+
+            Same shape as the Settings display chips: ChipBorderStyle for the pill, the stroke and
+            opacity converters keyed on SearchKindKey to mark the selection, and the label's own
+            rainbow accent so Manga picks up the colour its Library sub-tab already uses. The
+            explicit Style is load-bearing — the implicit Border style would otherwise fill each
+            pill with the card background.
+        -->
+        <HorizontalStackLayout Grid.Row="2" Spacing="8" Margin="0,0,0,8">
+            <Border Style="{StaticResource ChipBorderStyle}" Padding="14,6"
+                    Stroke="{Binding SearchKindKey, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Anime}"
+                    Opacity="{Binding SearchKindKey, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=Anime}">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SelectSearchKindCommand}" CommandParameter="Anime" />
+                </Border.GestureRecognizers>
+                <Label Text="Anime" Style="{StaticResource ChipLabelStyle}"
+                       TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Anime'}" />
+            </Border>
+            <Border Style="{StaticResource ChipBorderStyle}" Padding="14,6"
+                    Stroke="{Binding SearchKindKey, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Manga}"
+                    Opacity="{Binding SearchKindKey, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=Manga}">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SelectSearchKindCommand}" CommandParameter="Manga" />
+                </Border.GestureRecognizers>
+                <Label Text="Manga" Style="{StaticResource ChipLabelStyle}"
+                       TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Manga'}" />
+            </Border>
+        </HorizontalStackLayout>
+
+        <Grid Grid.Row="3">
             <!-- Results. Outside any ScrollView so virtualization and the scroll threshold work. -->
             <CollectionView x:Name="SearchResultsList"
                             IsVisible="{Binding IsSearchActive}"
@@ -79,7 +110,7 @@
                                          Size="40" />
                     </Image.Source>
                 </Image>
-                <Label Text="No anime found"
+                <Label Text="{Binding NoResultsMessage}"
                        Style="{StaticResource Body2Strong}"
                        TextColor="{StaticResource Gray400}"
                        HorizontalTextAlignment="Center" />
@@ -101,7 +132,7 @@
                                          Size="40" />
                     </Image.Source>
                 </Image>
-                <Label Text="Search all anime"
+                <Label Text="{Binding IdlePrompt}"
                        Style="{StaticResource Body2Strong}"
                        TextColor="{StaticResource Gray400}"
                        HorizontalTextAlignment="Center" />

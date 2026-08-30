@@ -326,17 +326,10 @@ public partial class MediaBrowsePageModel : ObservableObject
             return;
         }
 
-        var media = item?.Node;
-        var mediaId = media?.Id ?? 0;
+        var mediaId = item?.Node?.Id ?? 0;
         _logger.LogInformation("NAVTRACE MediaBrowse→Media with id={MediaId}", mediaId);
         if (mediaId <= 0)
         {
-            return;
-        }
-
-        if (media is { IsAnime: false })
-        {
-            await _feedback.ShowToastAsync("Manga & Novel details aren't supported yet.");
             return;
         }
 

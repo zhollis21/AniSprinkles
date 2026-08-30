@@ -169,6 +169,7 @@ public class AniListClientOperationsTests
                 MediaId = 42,
                 Status = MediaListStatus.Completed,
                 Progress = 12,
+                ProgressVolumes = 3,
                 Score = 8.5,
                 Repeat = 2,
                 Notes = "rewatch",
@@ -181,6 +182,9 @@ public class AniListClientOperationsTests
         Assert.Equal(42, request.IntVariable("mediaId"));
         Assert.Equal("COMPLETED", request.StringVariable("status"));
         Assert.Equal(12, request.IntVariable("progress"));
+        // Manga volumes are a second, independent counter (#12); omitting it silently discards
+        // whatever the reader had set on AniList.
+        Assert.Equal(3, request.IntVariable("progressVolumes"));
         Assert.Equal(8.5, request.Variable("score").GetDouble());
         Assert.Equal(2, request.IntVariable("repeat"));
         Assert.Equal("rewatch", request.StringVariable("notes"));
@@ -266,6 +270,7 @@ public class AniListClientOperationsTests
 
     [Theory]
     [InlineData(FavouriteKind.Anime, "animeId")]
+    [InlineData(FavouriteKind.Manga, "mangaId")]
     [InlineData(FavouriteKind.Character, "characterId")]
     [InlineData(FavouriteKind.Staff, "staffId")]
     [InlineData(FavouriteKind.Studio, "studioId")]
@@ -278,7 +283,7 @@ public class AniListClientOperationsTests
 
         var request = harness.Handler.Last;
         Assert.Equal(31, request.IntVariable(expectedVariable));
-        foreach (var other in new[] { "animeId", "characterId", "staffId", "studioId" }
+        foreach (var other in new[] { "animeId", "mangaId", "characterId", "staffId", "studioId" }
                      .Where(v => v != expectedVariable))
         {
             Assert.False(request.HasVariable(other));

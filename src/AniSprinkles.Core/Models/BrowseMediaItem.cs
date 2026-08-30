@@ -61,8 +61,14 @@ public partial class BrowseMediaItem : ObservableObject, IDisplayProjection
                 Id = node.Id,
                 Title = node.Title,
                 Format = node.Format,
+                // Type and the chapter/volume counts ride along so the long-press flows on a manga
+                // card read the right cap and the right unit; without Type this synthesised Media
+                // would look like anime and take the episode path (#12).
+                Type = node.Type,
                 Status = node.Status,
                 Episodes = node.Episodes,
+                Chapters = node.Chapters,
+                Volumes = node.Volumes,
                 CoverImage = node.CoverImage,
             },
         };

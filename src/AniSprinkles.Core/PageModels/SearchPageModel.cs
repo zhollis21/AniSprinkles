@@ -23,11 +23,15 @@ public partial class SearchPageModel : ObservableObject
     /// <summary>Below this many trimmed characters no search fires (rate-limit caution + junk-match avoidance).</summary>
     private const int SearchMinLength = 2;
 
+    /// <summary>Device-scoped, not cleared on sign-out — mirrors the My Anime sort keys.</summary>
+    private const string SearchKindPreferenceKey = "search_media_kind";
+
     private readonly IAniListClient _aniListClient;
     private readonly IAuthService _authService;
     private readonly INavigationService _navigationService;
     private readonly IUserFeedback _feedback;
     private readonly ErrorReportService _errorReportService;
+    private readonly IPreferences _preferences;
     private readonly TimeProvider _timeProvider;
     private readonly ILogger<SearchPageModel> _logger;
     private readonly EntryActionCoordinator _entryActions;
@@ -41,6 +45,10 @@ public partial class SearchPageModel : ObservableObject
     /// null when nothing is seeded. Every later page reuses it so one result set cannot mix
     /// policies. See <see cref="ActiveAdultFilter"/>.</summary>
     private bool? _seededDisplayAdult;
+
+    /// <summary>The media type page 1 of the current results was fetched under; null when nothing
+    /// is seeded. See <see cref="ActiveSearchKind"/>.</summary>
+    private MediaKind? _seededKind;
 
     // Context the current results were fetched under, so a flip can invalidate them.
     private bool _hasSearchedThisSession;
@@ -58,6 +66,7 @@ public partial class SearchPageModel : ObservableObject
         IDialogService dialogs,
         ListEntryStatusFlow statusFlow,
         ErrorReportService errorReportService,
+        IPreferences preferences,
         TimeProvider timeProvider,
         ILogger<SearchPageModel> logger)
     {
@@ -66,6 +75,7 @@ public partial class SearchPageModel : ObservableObject
         _navigationService = navigationService;
         _feedback = feedback;
         _errorReportService = errorReportService;
+        _preferences = preferences;
         _timeProvider = timeProvider;
         _logger = logger;
         _listOps = new ListOperationRunner(logger, feedback);
@@ -91,11 +101,16 @@ public partial class SearchPageModel : ObservableObject
         // find nothing to invalidate, and then have the new value land — at which point a live read
         // here would page a different policy onto the results already on screen. Turning adult
         // content OFF is the bad direction: 18+ page-1 items stay visible with SFW pages beneath.
+        // The media type is pinned per result set for the same reason (#12): the user can flip the
+        // Anime/Manga toggle while a Load More is in flight, and a live read here would append
+        // manga pages beneath anime results.
         SearchSection = new PaginatedSection<BrowseMediaItem>(
             "SEARCH_MATCH",
-            (page, _, ct) => _aniListClient.SearchAnimePageAsync(
-                _activeSearchQuery, ActiveAdultFilter, page, SearchPerPage, ct),
+            (page, _, ct) => _aniListClient.SearchMediaPageAsync(
+                _activeSearchQuery, ActiveSearchKind, ActiveAdultFilter, page, SearchPerPage, ct),
             item => item.Node?.Id ?? 0);
+
+        _searchKind = ReadPersistedSearchKind();
         SearchSection.Changed += () =>
         {
             OnPropertyChanged(nameof(SearchIsLoadingMore));
@@ -121,11 +136,74 @@ public partial class SearchPageModel : ObservableObject
     private bool? ActiveAdultFilter =>
         _seededDisplayAdult is bool seeded ? ToAdultFilter(seeded) : AdultFilter;
 
+    /// <summary>
+    /// The media type every page of the CURRENT result set must use, pinned when page 1 was
+    /// seeded. <see cref="SearchKind"/> is what the toggle reads; this is what paging obeys.
+    /// </summary>
+    private MediaKind ActiveSearchKind => _seededKind ?? SearchKind;
+
     /// <summary>Search results with infinite scroll; re-seeded per query.</summary>
     public PaginatedSection<BrowseMediaItem> SearchSection { get; }
 
     [ObservableProperty]
     private string _searchText = string.Empty;
+
+    /// <summary>
+    /// Which media type the Anime/Manga toggle is on. Device-scoped and persisted, like the sort
+    /// and view-mode preferences — searching manga twice in a row shouldn't need two taps.
+    /// </summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(SearchKindKey))]
+    [NotifyPropertyChangedFor(nameof(IsAnimeSearch))]
+    [NotifyPropertyChangedFor(nameof(IsMangaSearch))]
+    [NotifyPropertyChangedFor(nameof(SearchPlaceholder))]
+    [NotifyPropertyChangedFor(nameof(IdlePrompt))]
+    [NotifyPropertyChangedFor(nameof(NoResultsMessage))]
+    private MediaKind _searchKind;
+
+    public bool IsAnimeSearch => SearchKind == MediaKind.Anime;
+
+    public bool IsMangaSearch => SearchKind == MediaKind.Manga;
+
+    public string SearchPlaceholder => IsMangaSearch ? "Search all manga..." : "Search all anime...";
+
+    public string IdlePrompt => IsMangaSearch ? "Search all manga" : "Search all anime";
+
+    public string NoResultsMessage => IsMangaSearch ? "No manga found" : "No anime found";
+
+    /// <summary>The selected type as a string, for the pill converters (which key off a string).</summary>
+    public string SearchKindKey => SearchKind.ToString();
+
+    /// <summary>
+    /// Flips the toggle and re-runs whatever is already typed under the new type. Takes a string
+    /// because the XAML pills pass a literal CommandParameter, as the status rows do.
+    /// </summary>
+    [RelayCommand]
+    private void SelectSearchKind(string? value)
+    {
+        if (!Enum.TryParse<MediaKind>(value, out var kind) || SearchKind == kind)
+        {
+            return;
+        }
+
+        SearchKind = kind;
+        _preferences.Set(SearchKindPreferenceKey, kind.ToAniListType());
+
+        if (string.IsNullOrEmpty(SearchText))
+        {
+            return;
+        }
+
+        // Same trick OnAppearingAsync uses to re-run under a changed context: clearing SearchText
+        // routes through OnSearchTextChanged, which resets the section (dropping the pinned kind
+        // with it) and cancels in-flight work, then restoring it starts a clean search.
+        var query = SearchText;
+        SearchText = string.Empty;
+        SearchText = query;
+    }
+
+    private MediaKind ReadPersistedSearchKind() =>
+        MediaKindExtensions.ParseMediaKind(_preferences.Get(SearchKindPreferenceKey, MediaKind.Anime.ToAniListType()));
 
     /// <summary>True once a query of <see cref="SearchMinLength"/>+ characters is entered — swaps the
     /// idle prompt for the results list.</summary>
@@ -269,6 +347,7 @@ public partial class SearchPageModel : ObservableObject
         // Pin the filter for this result set. Read once here so page 1 below and every Load More
         // afterwards agree, no matter what the setting does in between.
         _seededDisplayAdult = AppSettings.DisplayAdultContent;
+        _seededKind = SearchKind;
 
         // Auth is read here too, so both halves of the context describe the same moment rather than
         // the adult flag coming from issue time and auth from whenever the page last appeared.
@@ -303,8 +382,8 @@ public partial class SearchPageModel : ObservableObject
 
         try
         {
-            var (items, pageInfo) = await _aniListClient.SearchAnimePageAsync(
-                query, ActiveAdultFilter, page: 1, perPage: SearchPerPage, cancellationToken: token);
+            var (items, pageInfo) = await _aniListClient.SearchMediaPageAsync(
+                query, ActiveSearchKind, ActiveAdultFilter, page: 1, perPage: SearchPerPage, cancellationToken: token);
             if (token.IsCancellationRequested || !string.Equals(_activeSearchQuery, query, StringComparison.Ordinal))
             {
                 return; // superseded while the fetch was in flight
@@ -370,19 +449,10 @@ public partial class SearchPageModel : ObservableObject
             return;
         }
 
-        var media = item?.Node;
-        var mediaId = media?.Id ?? 0;
+        var mediaId = item?.Node?.Id ?? 0;
         _logger.LogInformation("NAVTRACE Search NavigateToMedia called with mediaId={MediaId}", mediaId);
         if (mediaId <= 0)
         {
-            return;
-        }
-
-        // Media Details queries type: ANIME, so a non-anime id (search can return manga and
-        // novels) would 404.
-        if (media is { IsAnime: false })
-        {
-            await _feedback.ShowToastAsync("Manga & Novel details aren't supported yet.");
             return;
         }
 
@@ -431,6 +501,7 @@ public partial class SearchPageModel : ObservableObject
     {
         SearchSection.Reset();
         _seededDisplayAdult = null;
+        _seededKind = null;
     }
 
     private void ApplyEntryToItems(MediaListEntry entry)

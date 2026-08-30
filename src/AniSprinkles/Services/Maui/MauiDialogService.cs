@@ -49,12 +49,13 @@ public sealed class MauiDialogService(ILogger<MauiDialogService> logger) : IDial
     }
 
     public async Task<MoveToListChoice?> ShowMoveToListAsync(
-        string animeTitle,
+        string mediaTitle,
         MediaListStatus? currentStatus,
+        MediaKind kind = MediaKind.Anime,
         bool allowRemove = true,
         string? subtitle = null)
     {
-        var popup = new MoveToListPopup(animeTitle, currentStatus, allowRemove, subtitle);
+        var popup = new MoveToListPopup(mediaTitle, currentStatus, kind, allowRemove, subtitle);
         var result = await ShowAsync(popup, BottomSheetPopupOptions);
 
         return result switch
@@ -66,9 +67,9 @@ public sealed class MauiDialogService(ILogger<MauiDialogService> logger) : IDial
         };
     }
 
-    public async Task<int?> ShowEditProgressAsync(string animeTitle, int currentProgress, int? maxEpisodes)
+    public async Task<int?> ShowEditProgressAsync(string mediaTitle, int currentProgress, int? maxProgress, MediaProgressUnit unit)
     {
-        var popup = new EditProgressPopup(animeTitle, currentProgress, maxEpisodes);
+        var popup = new EditProgressPopup(mediaTitle, currentProgress, maxProgress, unit);
         var result = await ShowAsync(popup, TransparentPopupOptions);
         return result as int?;
     }

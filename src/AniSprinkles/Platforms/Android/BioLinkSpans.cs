@@ -207,8 +207,7 @@ internal sealed class BioLinkSpan(string? url, AndroidColor color) : ClickableSp
         // handler mapper, not by DI. The decision itself lives in Core so it can be tested; this
         // is only the lookup.
         if (services.GetService<INavigationService>() is not { } navigation
-            || services.GetService<IExternalBrowser>() is not { } browser
-            || services.GetService<IUserFeedback>() is not { } feedback)
+            || services.GetService<IExternalBrowser>() is not { } browser)
         {
             return;
         }
@@ -217,7 +216,7 @@ internal sealed class BioLinkSpan(string? url, AndroidColor color) : ClickableSp
         // which is where both GoToAsync and the browser launch need to be, so there is nothing to
         // marshal and nothing for a caller to await.
         _ = BioLinkFollower.FollowAsync(
-            url, navigation, browser, feedback, services.GetService<ILogger<BioLinkSpan>>());
+            url, navigation, browser, services.GetService<ILogger<BioLinkSpan>>());
     }
 }
 

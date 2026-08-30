@@ -16,20 +16,12 @@ namespace AniSprinkles.Utilities;
 public static class BioLinkFollower
 {
     /// <summary>
-    /// Mirrors the toast <c>DetailsPageModelBase.NavigateToMedia</c> shows for a manga id from a
-    /// relations carousel, so the answer to "can I open manga" doesn't depend on where the reader
-    /// tapped. Shared so the two can't drift apart (#12).
-    /// </summary>
-    public const string UnsupportedMediaMessage = "Manga & Novel details aren't supported yet.";
-
-    /// <summary>
     /// Never throws: the caller is a span click with nothing to catch for it.
     /// </summary>
     public static async Task FollowAsync(
         string? url,
         INavigationService navigation,
         IExternalBrowser browser,
-        IUserFeedback feedback,
         ILogger? logger = null)
     {
         if (string.IsNullOrWhiteSpace(url))
@@ -54,15 +46,6 @@ public static class BioLinkFollower
                     target.Route,
                     animate: false,
                     new Dictionary<string, object> { [target.ParameterName] = target.Id });
-                return;
-            }
-
-            // Manga is ours, but the details page queries Media(type: ANIME) so a manga id 404s
-            // there. Say what the rest of the app says rather than opening the browser.
-            if (AniListLinkTarget.IsUnsupportedEntity(url))
-            {
-                logger?.LogInformation("NAVTRACE BioLink → skipped unsupported entity {Url}", url);
-                await feedback.ShowToastAsync(UnsupportedMediaMessage);
                 return;
             }
 

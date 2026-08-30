@@ -115,4 +115,77 @@ public class ListEntryStatusMutationsTests
         Assert.Equal(MediaListStatus.Current, entry.Status);
         Assert.Equal(1087, entry.Progress);
     }
+
+    // ── Manga (#12) ──────────────────────────────────────────
+
+    [Fact]
+    public void ApplyStatusChange_Completed_MangaChapterReader_FillsChaptersNotEpisodes()
+    {
+        var entry = TestDataBuilder.Entry(
+            1, progress: 100, status: MediaListStatus.Current,
+            mediaType: "MANGA", chapters: 141, volumes: 34);
+
+        ListEntryStatusMutations.ApplyStatusChange(entry, MediaListStatus.Completed);
+
+        Assert.Equal(141, entry.Progress);
+        Assert.Null(entry.ProgressVolumes);
+    }
+
+    [Fact]
+    public void ApplyStatusChange_Completed_MangaVolumeReader_FillsVolumesNotChapters()
+    {
+        var entry = TestDataBuilder.Entry(
+            1, progress: 0, progressVolumes: 20, status: MediaListStatus.Current,
+            mediaType: "MANGA", chapters: 141, volumes: 34);
+
+        ListEntryStatusMutations.ApplyStatusChange(entry, MediaListStatus.Completed);
+
+        Assert.Equal(34, entry.ProgressVolumes);
+        Assert.Equal(0, entry.Progress);
+    }
+
+    [Fact]
+    public void ApplyStatusChange_Completed_OngoingManga_LeavesProgressAloneForWantOfATotal()
+    {
+        // AniList returns null chapters AND null volumes for every RELEASING series, and manga has
+        // no nextAiringEpisode to fall back on, so there is nothing to fill progress up to.
+        var entry = TestDataBuilder.Entry(
+            1, progress: 1100, status: MediaListStatus.Current, mediaType: "MANGA");
+
+        ListEntryStatusMutations.ApplyStatusChange(entry, MediaListStatus.Completed);
+
+        Assert.Equal(MediaListStatus.Completed, entry.Status);
+        Assert.Equal(1100, entry.Progress);
+    }
+
+    [Fact]
+    public void ApplyStatusChange_Repeating_ClearsBothCounters()
+    {
+        // Clearing only chapters would leave volumes above zero with chapters at zero — exactly the
+        // shape UsesVolumeProgress reads as “this reader tracks volumes”, so a freshly reset entry
+        // would flip to volume mode and show a full 24/24 volume count on a reread that just began.
+        var entry = TestDataBuilder.Entry(
+            1, progress: 232, progressVolumes: 24, status: MediaListStatus.Completed,
+            mediaType: "MANGA", chapters: 232, volumes: 24);
+
+        ListEntryStatusMutations.ApplyStatusChange(entry, MediaListStatus.Repeating);
+
+        Assert.Equal(0, entry.Progress);
+        Assert.Equal(0, entry.ProgressVolumes);
+        Assert.False(entry.UsesVolumeProgress);
+        Assert.Equal(1, entry.Repeat);
+    }
+
+    [Fact]
+    public void ApplyStatusChange_Current_MangaVolumeReaderAtCap_WalksTheVolumeCountBack()
+    {
+        var entry = TestDataBuilder.Entry(
+            1, progress: 0, progressVolumes: 34, status: MediaListStatus.Completed,
+            mediaType: "MANGA", chapters: 141, volumes: 34);
+
+        ListEntryStatusMutations.ApplyStatusChange(entry, MediaListStatus.Current);
+
+        Assert.Equal(33, entry.ProgressVolumes);
+        Assert.Equal(0, entry.Progress);
+    }
 }

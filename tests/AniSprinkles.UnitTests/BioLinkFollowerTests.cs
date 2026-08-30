@@ -32,18 +32,22 @@ public class BioLinkFollowerTests
     }
 
     [Fact]
-    public async Task AMangaLink_ToastsInsteadOfNavigatingOrOpeningTheBrowser()
+    public async Task AMangaLink_NavigatesToTheDetailsPage()
     {
-        // The details page queries Media(type: ANIME), so a manga id 404s there. The reader gets the
-        // same message DetailsPageModelBase already gives for a manga id from a relations carousel,
-        // so the answer doesn't depend on where they tapped (#12).
+        // Toasted "not supported yet" until #12, because the details page pinned
+        // Media(id:, type: ANIME) and a manga id 404'd there. 7 of the 235 bio links sampled across
+        // the most-favourited characters and staff point at anilist.co/manga, so this was a real
+        // dead end rather than a theoretical one.
         var h = new Harness();
 
         await h.FollowAsync("https://anilist.co/manga/30013");
 
-        Assert.Equal([BioLinkFollower.UnsupportedMediaMessage], h.Feedback.Toasts);
+        Assert.Empty(h.Feedback.Toasts);
         Assert.Empty(h.Browser.Opened);
-        await h.Navigation.DidNotReceiveWithAnyArgs().GoToAsync(default!, default, default);
+        await h.Navigation.Received(1).GoToAsync(
+            "media-details",
+            false,
+            Arg.Is<IDictionary<string, object>>(p => p.ContainsKey("mediaId") && (int)p["mediaId"] == 30013));
     }
 
     [Theory]
@@ -105,6 +109,6 @@ public class BioLinkFollowerTests
         public RecordingLogger<BioLinkFollowerTests> Logger { get; } = new();
 
         public Task FollowAsync(string? url)
-            => BioLinkFollower.FollowAsync(url, Navigation, Browser, Feedback, Logger);
+            => BioLinkFollower.FollowAsync(url, Navigation, Browser, Logger);
     }
 }

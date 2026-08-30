@@ -459,17 +459,21 @@ public class MediaBrowsePageModelTests
     }
 
     [Fact]
-    public async Task TappingAMangaCard_SaysSoInsteadOfNavigating()
+    public async Task TappingAMangaCard_NavigatesLikeAnyOtherCard()
     {
-        // Media details queries type: ANIME, so a manga id would 404 behind the transition.
+        // Toasted "not supported yet" until #12, when Media details still queried type: ANIME and a
+        // manga id would have 404'd behind the transition. View All is anime-only today, so this is
+        // a guard against the type ever mattering here again rather than a reachable path.
         var harness = new Harness();
         var item = Harness.Item(42, type: "MANGA");
 
         await harness.Model.NavigateToMediaCommand.ExecuteAsync(item);
 
-        Assert.Contains("supported yet", Assert.Single(harness.Feedback.Toasts));
-        await harness.Navigation.DidNotReceive().GoToAsync(
-            Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<IDictionary<string, object>>());
+        Assert.Empty(harness.Feedback.Toasts);
+        await harness.Navigation.Received(1).GoToAsync(
+            "media-details",
+            Arg.Any<bool>(),
+            Arg.Is<IDictionary<string, object>>(p => (int)p["mediaId"] == 42));
     }
 
     [Fact]

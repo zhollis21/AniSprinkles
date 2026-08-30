@@ -336,19 +336,10 @@ public partial class DiscoverPageModel : ObservableObject
             return;
         }
 
-        var media = item?.Node;
-        var mediaId = media?.Id ?? 0;
+        var mediaId = item?.Node?.Id ?? 0;
         _logger.LogInformation("NAVTRACE Discover NavigateToMedia called with mediaId={MediaId}", mediaId);
         if (mediaId <= 0)
         {
-            return;
-        }
-
-        // Same guard as the details-page carousels: Media Details queries type: ANIME, so a
-        // non-anime id would 404.
-        if (media is { IsAnime: false })
-        {
-            await _feedback.ShowToastAsync("Manga & Novel details aren't supported yet.");
             return;
         }
 
