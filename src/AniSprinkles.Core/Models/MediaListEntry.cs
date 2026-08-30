@@ -29,6 +29,8 @@ public partial class MediaListEntry : ObservableObject, IDisplayProjection
     [NotifyPropertyChangedFor(nameof(ActiveProgress))]
     [NotifyPropertyChangedFor(nameof(ActiveProgressUnit))]
     [NotifyPropertyChangedFor(nameof(IncrementLabel))]
+    [NotifyPropertyChangedFor(nameof(IncrementDescription))]
+    [NotifyPropertyChangedFor(nameof(IncrementHint))]
     [NotifyPropertyChangedFor(nameof(ActiveProgressTotal))]
     [NotifyPropertyChangedFor(nameof(HasKnownProgressTotal))]
     private int? _progress;
@@ -46,6 +48,8 @@ public partial class MediaListEntry : ObservableObject, IDisplayProjection
     [NotifyPropertyChangedFor(nameof(ActiveProgress))]
     [NotifyPropertyChangedFor(nameof(ActiveProgressUnit))]
     [NotifyPropertyChangedFor(nameof(IncrementLabel))]
+    [NotifyPropertyChangedFor(nameof(IncrementDescription))]
+    [NotifyPropertyChangedFor(nameof(IncrementHint))]
     [NotifyPropertyChangedFor(nameof(ActiveProgressTotal))]
     [NotifyPropertyChangedFor(nameof(HasKnownProgressTotal))]
     private int? _progressVolumes;
@@ -214,6 +218,30 @@ public partial class MediaListEntry : ObservableObject, IDisplayProjection
     /// different things.
     /// </summary>
     public string IncrementLabel => $"+1 {MediaListVocabulary.UnitAbbreviation(ActiveProgressUnit)}";
+
+    /// <summary>
+    /// Screen-reader text for the +1 pill, spelling out the same unit <see cref="IncrementLabel"/>
+    /// abbreviates — "Increment chapter progress" rather than "+1 CH", which TalkBack would read
+    /// letter by letter. Bound rather than hardcoded because the shared list view serves anime and
+    /// manga alike (#12); a fixed "episode" here announced the wrong unit over a +1 VOL button.
+    /// </summary>
+    /// <remarks>
+    /// <see cref="MediaListVocabulary.UnitNoun"/> is title-case because its other callers use it as
+    /// a standalone label, so it is lowered here to read as a sentence — the same thing
+    /// EditProgressPopup does with it.
+    /// </remarks>
+    public string IncrementDescription =>
+        $"Increment {MediaListVocabulary.UnitNoun(ActiveProgressUnit).ToLowerInvariant()} progress";
+
+    /// <summary>
+    /// Screen-reader hint for the +1 pill, saying what pressing it does: "Adds one to the watched
+    /// episode count", "…the read chapter count". Shares
+    /// <see cref="IncrementDescription"/>'s reason for existing — it sat hardcoded to the anime
+    /// wording beside it, and a manga entry announced the wrong verb as well as the wrong unit.
+    /// </summary>
+    public string IncrementHint =>
+        $"Adds one to the {MediaListVocabulary.ConsumedVerb(ActiveProgressUnit)} " +
+        $"{MediaListVocabulary.UnitNoun(ActiveProgressUnit).ToLowerInvariant()} count";
 
     /// <summary>
     /// Whether the +1 control should be *rendered* at all. True for Watching/Rewatching
