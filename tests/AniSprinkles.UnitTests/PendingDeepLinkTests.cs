@@ -176,6 +176,71 @@ public class PendingDeepLinkTests
     // ── Replay ──────────────────────────────────────────────────────
 
     [Fact]
+    public async Task ATapRedeliveredMidNavigation_IsNotQueuedAgain()
+    {
+        // The consumed nonce is only persisted once navigation succeeds, so during the await there
+        // is nothing on disk to match against. Two quick taps on one notification — before
+        // SetAutoCancel clears it — would otherwise queue the same tap twice and follow it twice.
+        var link = WithPending(21, nonce: 4242);
+        var navigation = Substitute.For<INavigationService>();
+        bool acceptedDuringFlight = true;
+        navigation.GoToAsync(Route, false, Arg.Any<IDictionary<string, object>>())
+            .Returns(_ =>
+            {
+                acceptedDuringFlight = link.Set(Route, Media(21), nonce: 4242);
+                return Task.CompletedTask;
+            });
+
+        await link.TryNavigateAsync(navigation, shellReady: true);
+
+        Assert.False(acceptedDuringFlight);
+        Assert.False(link.HasPending);
+        await navigation.Received(1).GoToAsync(Route, false, Arg.Any<IDictionary<string, object>>());
+    }
+
+    [Fact]
+    public async Task ADifferentTapArrivingMidNavigation_IsStillQueued()
+    {
+        // The in-flight guard is per-nonce, not a blanket lock: a genuinely different notification
+        // tapped while one is navigating must still be followed.
+        var link = WithPending(21, nonce: 1);
+        var navigation = Substitute.For<INavigationService>();
+        int calls = 0;
+        navigation.GoToAsync(Route, false, Arg.Any<IDictionary<string, object>>())
+            .Returns(_ =>
+            {
+                if (++calls == 1)
+                {
+                    link.Set(Route, Media(16498), nonce: 2);
+                }
+
+                return Task.CompletedTask;
+            });
+
+        await link.TryNavigateAsync(navigation, shellReady: true);
+        Assert.True(await link.TryNavigateAsync(navigation, shellReady: true));
+
+        await navigation.Received(1).GoToAsync(
+            Route, false, Arg.Is<IDictionary<string, object>>(p => (int)p["mediaId"] == 16498));
+    }
+
+    [Fact]
+    public async Task AfterAFailedNavigation_TheSameTapIsAcceptedAgain()
+    {
+        // The in-flight guard must not outlive the attempt: a tap that failed is still live, and a
+        // re-delivery of it should re-queue rather than be mistaken for a replay.
+        var link = WithPending(21, nonce: 4242);
+        var navigation = Substitute.For<INavigationService>();
+        navigation.GoToAsync(Route, false, Arg.Any<IDictionary<string, object>>())
+            .Returns(Task.FromException(new InvalidOperationException("boom")));
+
+        await Assert.ThrowsAsync<InvalidOperationException>(
+            () => link.TryNavigateAsync(navigation, shellReady: true));
+
+        Assert.True(link.Set(Route, Media(21), nonce: 4242));
+    }
+
+    [Fact]
     public async Task AReplayedTap_IsIgnored()
     {
         // Android re-delivers the original intent when it recreates an activity. Without this, a

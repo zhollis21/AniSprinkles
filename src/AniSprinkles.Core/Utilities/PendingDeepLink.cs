@@ -53,6 +53,14 @@ public sealed class PendingDeepLink(IPreferences preferences, ILogger<PendingDee
     private PendingLink? _pending;
 
     /// <summary>
+    /// The nonce of a link currently being navigated. <see cref="ConsumedNonce"/> is not written
+    /// until the navigation succeeds, so without this a re-delivery arriving during that await — two
+    /// quick taps on one notification, before <c>SetAutoCancel</c> clears it — would find nothing to
+    /// match against, queue the same tap again, and follow it a second time.
+    /// </summary>
+    private int? _inFlightNonce;
+
+    /// <summary>
     /// <see langword="null"/> means nothing has been followed yet — distinguished from a stored 0 by
     /// key presence rather than by a sentinel value, because 0 is a perfectly legal nonce.
     /// </summary>
@@ -101,14 +109,18 @@ public sealed class PendingDeepLink(IPreferences preferences, ILogger<PendingDee
     {
         // Read outside the lock: it hits the preferences store, and nothing here needs it to be
         // consistent with the assignment below — a nonce only ever moves from unconsumed to consumed.
-        if (nonce is int candidate && candidate == ConsumedNonce)
-        {
-            logger?.LogInformation("NAVTRACE DeepLink → ignoring replayed intent for {Route}", route);
-            return false;
-        }
+        int? consumed = ConsumedNonce;
 
         lock (_gate)
         {
+            // Already followed, or being followed right now. The second half matters because the
+            // consumed nonce is only persisted once navigation succeeds.
+            if (nonce is int candidate && (candidate == consumed || candidate == _inFlightNonce))
+            {
+                logger?.LogInformation("NAVTRACE DeepLink → ignoring replayed intent for {Route}", route);
+                return false;
+            }
+
             _pending = new PendingLink(route, parameters, nonce);
             return true;
         }
@@ -140,6 +152,7 @@ public sealed class PendingDeepLink(IPreferences preferences, ILogger<PendingDee
             // navigate twice. The nonce is only *consumed* once the navigation succeeds — see below.
             taken = _pending;
             _pending = null;
+            _inFlightNonce = taken.Nonce;
         }
 
         // A notification tap is a navigation entry point that exists nowhere else in the app, so it
@@ -159,6 +172,14 @@ public sealed class PendingDeepLink(IPreferences preferences, ILogger<PendingDee
             // so a re-delivered intent is not mistaken for a replay of a tap that never landed.
             lock (_gate)
             {
+                // Cleared before restoring, or the restored link would look like a replay of itself.
+                // Only if it is still ours, for the same reason as the success path below: a newer
+                // tap may already have started draining while this one was awaiting.
+                if (_inFlightNonce == taken.Nonce)
+                {
+                    _inFlightNonce = null;
+                }
+
                 // Only if nothing newer arrived while we were awaiting: the most recent tap is what
                 // the user last asked for, and restoring over it would resurrect a stale one.
                 _pending ??= taken;
@@ -168,6 +189,17 @@ public sealed class PendingDeepLink(IPreferences preferences, ILogger<PendingDee
         }
 
         MarkConsumed(taken.Nonce);
+
+        lock (_gate)
+        {
+            // Only if it is still ours: a failure-and-retry of a newer tap could already have taken
+            // over, and clearing that would reopen the window this closes.
+            if (_inFlightNonce == taken.Nonce)
+            {
+                _inFlightNonce = null;
+            }
+        }
+
         return true;
     }
 }
