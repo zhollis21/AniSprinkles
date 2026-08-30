@@ -8,6 +8,42 @@ namespace AniSprinkles.Services;
 /// </summary>
 internal sealed class CIAniListClient : IAniListClient
 {
+    /// <summary>
+    /// Entry ids removed by <see cref="DeleteMediaListEntryAsync"/> this process.
+    /// <para>
+    /// The fixtures stay declarative and read-only; deletion is layered over them as a filter
+    /// instead. Before this, delete returned <c>true</c> without changing anything, so a removal on
+    /// device optimistically dropped the row and the page model's forced reload
+    /// (<c>OnEntryRemovedAsync</c>) immediately put it back — the delete path had never actually
+    /// run end to end there. Filtering here makes it stick, which is also the only way to reach the
+    /// empty-list state on device without editing the fixture and rebuilding.
+    /// </para>
+    /// <para>
+    /// Process-lifetime and deliberately not persisted: relaunching restores the full fixture, so
+    /// the screenshot job always captures a populated list no matter what a previous session did.
+    /// </para>
+    /// </summary>
+    private static readonly HashSet<int> DeletedEntryIds = [];
+    private static readonly Lock DeletedEntriesGate = new();
+
+    private static bool IsDeleted(MediaListEntry entry)
+    {
+        lock (DeletedEntriesGate)
+        {
+            return DeletedEntryIds.Contains(entry.Id);
+        }
+    }
+
+    /// <summary>
+    /// The fixture for <paramref name="kind"/> with deleted entries filtered out, dropping any
+    /// section left empty — matching AniList, which returns no list for a status with no entries.
+    /// Emptying every section is what drives the page to <c>PageState.Empty</c>.
+    /// </summary>
+    private static IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)> LiveGrouped(MediaKind kind)
+        => [.. (kind == MediaKind.Manga ? StubData.MangaGroupedList : StubData.GroupedList)
+            .Select(g => (g.Name, Entries: (IReadOnlyList<MediaListEntry>)[.. g.Entries.Where(e => !IsDeleted(e))]))
+            .Where(g => g.Entries.Count > 0)];
+
     /// <inheritdoc />
     /// <remarks>No-op: the fixtures are static, so there is nothing to invalidate.</remarks>
     public void InvalidateEntityCache() { }
@@ -17,15 +53,12 @@ internal sealed class CIAniListClient : IAniListClient
 
     public Task<IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)>> GetMediaListGroupedAsync(
         MediaKind kind, CancellationToken cancellationToken = default)
-        => Task.FromResult(kind == MediaKind.Manga ? StubData.MangaGroupedList : StubData.GroupedList);
+        => Task.FromResult(LiveGrouped(kind));
 
     public Task<IReadOnlyList<MediaListEntry>> GetMediaListAsync(
         MediaKind kind, CancellationToken cancellationToken = default)
     {
-        IReadOnlyList<MediaListEntry> flat =
-            (kind == MediaKind.Manga ? StubData.MangaGroupedList : StubData.GroupedList)
-            .SelectMany(g => g.Entries)
-            .ToList();
+        IReadOnlyList<MediaListEntry> flat = [.. LiveGrouped(kind).SelectMany(g => g.Entries)];
         return Task.FromResult(flat);
     }
 
@@ -43,7 +76,10 @@ internal sealed class CIAniListClient : IAniListClient
             .FirstOrDefault(e => e.MediaId == id);
         if (entry is not null)
         {
-            return Task.FromResult<(Media?, MediaListEntry?)>((entry.Media, entry));
+            // A deleted entry keeps its media but loses the list entry, which is what the real API
+            // returns once the entry is gone: the details page drops back to "Add to List" rather
+            // than erroring. Returning null media here instead would 404 a title that still exists.
+            return Task.FromResult<(Media?, MediaListEntry?)>((entry.Media, IsDeleted(entry) ? null : entry));
         }
 
         // Media with no list entry, which is the only way to reach the details page's "Add to List".
@@ -113,7 +149,14 @@ internal sealed class CIAniListClient : IAniListClient
         => Task.FromResult<MediaListEntry?>(entry);
 
     public Task<bool> DeleteMediaListEntryAsync(int entryId, CancellationToken cancellationToken = default)
-        => Task.FromResult(true);
+    {
+        lock (DeletedEntriesGate)
+        {
+            DeletedEntryIds.Add(entryId);
+        }
+
+        return Task.FromResult(true);
+    }
 
     public Task<bool> ToggleFavouriteAsync(FavouriteKind kind, int id, CancellationToken cancellationToken = default)
         => Task.FromResult(true);
