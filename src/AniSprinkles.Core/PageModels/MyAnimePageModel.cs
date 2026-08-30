@@ -605,6 +605,10 @@ public partial class MyAnimePageModel : ObservableObject
 
         // Track the progress before the first tap in this debounce series
         // so we can revert all the way back on failure.
+        //
+        // Reads and writes Progress directly rather than going through the active-unit helpers
+        // (#12): Library is fed by MediaListCollection(type: ANIME), so every entry here counts
+        // episodes. The manga list arrives with the rest of #12 and generalises this alongside it.
         if (_pendingIncrementEntry != entry)
         {
             _preIncrementProgress = entry.Progress;
@@ -616,7 +620,7 @@ public partial class MyAnimePageModel : ObservableObject
         // Immediately tell the user they've caught up the moment the last available
         // +1 lands. This is instant (pre-debounce) so they see it before scrolling away.
         // Finite-total shows don't reach here — they go through the completion flow above.
-        if (!entry.HasKnownEpisodeCount && !entry.CanIncrementProgress)
+        if (!entry.HasKnownProgressTotal && !entry.CanIncrementProgress)
         {
             await _feedback.ShowToastAsync("You're caught up!");
         }

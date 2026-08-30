@@ -48,18 +48,34 @@ public sealed class ScriptedDialogService : IDialogService
         return Task.FromResult(EntryActionAnswer);
     }
 
+    /// <summary>The kind the last ShowMoveToListAsync call was made with, so tests can assert the
+    /// sheet is labelled for the right media type (#12).</summary>
+    public MediaKind? LastMoveToListKind { get; private set; }
+
     public Task<MoveToListChoice?> ShowMoveToListAsync(
-        string animeTitle,
+        string mediaTitle,
         MediaListStatus? currentStatus,
+        MediaKind kind = MediaKind.Anime,
         bool allowRemove = true,
         string? subtitle = null)
     {
+        LastMoveToListKind = kind;
         Record(nameof(ShowMoveToListAsync));
         return Task.FromResult(MoveToListAnswer);
     }
 
-    public Task<int?> ShowEditProgressAsync(string animeTitle, int currentProgress, int? maxEpisodes)
+    /// <summary>What the last ShowEditProgressAsync call was told to edit — unit and cap.</summary>
+    public MediaProgressUnit? LastEditProgressUnit { get; private set; }
+
+    public int? LastEditProgressMax { get; private set; }
+
+    public int? LastEditProgressCurrent { get; private set; }
+
+    public Task<int?> ShowEditProgressAsync(string mediaTitle, int currentProgress, int? maxProgress, MediaProgressUnit unit)
     {
+        LastEditProgressUnit = unit;
+        LastEditProgressMax = maxProgress;
+        LastEditProgressCurrent = currentProgress;
         Record(nameof(ShowEditProgressAsync));
         return Task.FromResult(EditProgressAnswer);
     }
@@ -70,6 +86,11 @@ public sealed class ScriptedDialogService : IDialogService
         return Task.FromResult(RatingAnswer);
     }
 
+    /// <summary>Copy from the last ConfirmAsync call, so tests can assert user-visible wording.</summary>
+    public string? LastConfirmTitle { get; private set; }
+
+    public string? LastConfirmMessage { get; private set; }
+
     public Task<bool> ConfirmAsync(
         string title,
         string message,
@@ -78,6 +99,8 @@ public sealed class ScriptedDialogService : IDialogService
         bool isDestructive = false,
         string? iconGlyph = null)
     {
+        LastConfirmTitle = title;
+        LastConfirmMessage = message;
         Record(nameof(ConfirmAsync));
         return BeforeConfirmAsync is null ? Task.FromResult(ConfirmAnswer) : AwaitThenAnswerAsync();
 

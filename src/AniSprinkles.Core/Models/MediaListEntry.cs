@@ -25,7 +25,28 @@ public partial class MediaListEntry : ObservableObject, IDisplayProjection
     [NotifyPropertyChangedFor(nameof(HasEpisodesBehindDisplay))]
     [NotifyPropertyChangedFor(nameof(AiringInfoDisplay))]
     [NotifyPropertyChangedFor(nameof(HasAiringInfo))]
+    [NotifyPropertyChangedFor(nameof(UsesVolumeProgress))]
+    [NotifyPropertyChangedFor(nameof(ActiveProgress))]
+    [NotifyPropertyChangedFor(nameof(ActiveProgressUnit))]
+    [NotifyPropertyChangedFor(nameof(ActiveProgressTotal))]
+    [NotifyPropertyChangedFor(nameof(HasKnownProgressTotal))]
     private int? _progress;
+
+    /// <summary>
+    /// Volumes read, for manga (AniList's <c>progressVolumes</c>). A counter fully independent of
+    /// <see cref="Progress"/> — AniList never derives one from the other — and meaningless for
+    /// anime. Which of the two drives the UI is decided by <see cref="UsesVolumeProgress"/>.
+    /// </summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ProgressDisplay))]
+    [NotifyPropertyChangedFor(nameof(CanIncrementProgress))]
+    [NotifyPropertyChangedFor(nameof(MetadataDisplay))]
+    [NotifyPropertyChangedFor(nameof(UsesVolumeProgress))]
+    [NotifyPropertyChangedFor(nameof(ActiveProgress))]
+    [NotifyPropertyChangedFor(nameof(ActiveProgressUnit))]
+    [NotifyPropertyChangedFor(nameof(ActiveProgressTotal))]
+    [NotifyPropertyChangedFor(nameof(HasKnownProgressTotal))]
+    private int? _progressVolumes;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(ScoreDisplay))]
@@ -45,15 +66,16 @@ public partial class MediaListEntry : ObservableObject, IDisplayProjection
     {
         get
         {
-            if (Progress is null)
+            var progress = ActiveProgress;
+            if (progress is null)
             {
                 return "-";
             }
 
-            // Use MaxEpisodes (which falls back to NextAiringEpisode.Episode - 1 for
+            // Use ActiveProgressTotal (which falls back to NextAiringEpisode.Episode - 1 for
             // long-running airing shows) so the list display matches the Details page.
-            var total = MaxEpisodes;
-            return total is null ? $"{Progress}" : $"{Progress}/{total}";
+            var total = ActiveProgressTotal;
+            return total is null ? $"{progress}" : $"{progress}/{total}";
         }
     }
 
@@ -89,22 +111,100 @@ public partial class MediaListEntry : ObservableObject, IDisplayProjection
     }
 
     /// <summary>
-    /// Cap for +1 / progress-slider logic. Uses the total episode count when known,
-    /// otherwise falls back to the most-recently-aired episode (<c>NextAiringEpisode.Episode - 1</c>)
-    /// so users of currently-airing shows stop at the latest episode they could have watched.
-    /// Null when neither is known.
+    /// True when this entry's progress is measured in volumes rather than chapters (#12).
+    /// <para>
+    /// AniList keeps <c>progress</c> (chapters) and <c>progressVolumes</c> as two independent
+    /// counters and relates neither to the other nor to status, so picking one to drive the UI is
+    /// a client decision. The rule here matches AniHyou's: chapters unless the entry has volume
+    /// progress and no chapter progress. That reads however the user already tracks the title,
+    /// and keeps exactly one counter, one total and one completion rule per entry.
+    /// </para>
+    /// <para>
+    /// Derived rather than stored, which has one visible consequence: emptying the volume counter
+    /// drops the entry back to chapters. Both read 0 at that point, so only the unit word changes.
+    /// </para>
     /// </summary>
-    public int? MaxEpisodes =>
-        Media?.Episodes is > 0 ? Media.Episodes :
-        Media?.NextAiringEpisode?.Episode is > 1 ? Media.NextAiringEpisode.Episode - 1 :
-        null;
+    public bool UsesVolumeProgress =>
+        Media?.IsManga is true && ProgressVolumes is > 0 && Progress is null or 0;
+
+    /// <summary>The unit <see cref="ActiveProgress"/> and <see cref="ActiveProgressTotal"/> are counted in.</summary>
+    public MediaProgressUnit ActiveProgressUnit =>
+        Media?.IsManga is not true ? MediaProgressUnit.Episode :
+        UsesVolumeProgress ? MediaProgressUnit.Volume :
+        MediaProgressUnit.Chapter;
+
+    /// <summary>The counter currently driving the UI: volumes in volume mode, otherwise chapters/episodes.</summary>
+    public int? ActiveProgress => UsesVolumeProgress ? ProgressVolumes : Progress;
 
     /// <summary>
-    /// True only when the total episode count is known (i.e. the show has a finite,
-    /// declared length). Used to gate the completion flow — long-running airing shows
-    /// without a known total should not trigger completion when the cap is reached.
+    /// Cap for +1 / progress-slider logic, in <see cref="ActiveProgressUnit"/>.
+    /// <para>
+    /// For anime: the total episode count when known, otherwise the most-recently-aired episode
+    /// (<c>NextAiringEpisode.Episode - 1</c>) so users of currently-airing shows stop at the latest
+    /// episode they could have watched.
+    /// </para>
+    /// <para>
+    /// For manga: the chapter or volume total, with no fallback — AniList publishes no
+    /// chapter-release schedule, so a still-publishing series has no cap at all. It also returns
+    /// null for both counts on every RELEASING series, which makes "no cap" the common manga case
+    /// rather than the edge one.
+    /// </para>
     /// </summary>
-    public bool HasKnownEpisodeCount => Media?.Episodes is > 0;
+    public int? ActiveProgressTotal
+    {
+        get
+        {
+            if (Media?.IsManga is true)
+            {
+                // Never borrow the other unit's total: "3/141" for volume 3 of a 34-volume series
+                // is worse than showing no total at all.
+                var total = UsesVolumeProgress ? Media.Volumes : Media.Chapters;
+                return total is > 0 ? total : null;
+            }
+
+            return Media?.Episodes is > 0 ? Media.Episodes :
+                Media?.NextAiringEpisode?.Episode is > 1 ? Media.NextAiringEpisode.Episode - 1 :
+                null;
+        }
+    }
+
+    /// <summary>
+    /// True only when a finite, declared total is known for the active unit. Used to gate the
+    /// completion flow — long-running airing shows and still-publishing manga should not trigger
+    /// completion when the cap is reached (they have no real cap to reach).
+    /// </summary>
+    public bool HasKnownProgressTotal =>
+        Media?.IsManga is true
+            ? (UsesVolumeProgress ? Media.Volumes : Media.Chapters) is > 0
+            : Media?.Episodes is > 0;
+
+    /// <summary>
+    /// Writes <paramref name="value"/> to whichever counter is active, leaving the other one alone.
+    /// Every progress surface goes through this rather than assigning <see cref="Progress"/>
+    /// directly, so a volume-tracked entry can't have its chapter count quietly rewritten.
+    /// </summary>
+    public void SetActiveProgress(int value) => SetProgressFor(ActiveProgressUnit, value);
+
+    /// <summary>Reads a specific counter, regardless of which one is currently active.</summary>
+    public int? ProgressFor(MediaProgressUnit unit) =>
+        unit == MediaProgressUnit.Volume ? ProgressVolumes : Progress;
+
+    /// <summary>
+    /// Writes a specific counter. Callers that need to undo their own change use this with the unit
+    /// they captured before writing: <see cref="ActiveProgressUnit"/> is derived, so a write can
+    /// move it, and a revert through <see cref="SetActiveProgress"/> could land on the other field.
+    /// </summary>
+    public void SetProgressFor(MediaProgressUnit unit, int? value)
+    {
+        if (unit == MediaProgressUnit.Volume)
+        {
+            ProgressVolumes = value;
+        }
+        else
+        {
+            Progress = value;
+        }
+    }
 
     /// <summary>
     /// Whether the +1 control should be *rendered* at all. True for Watching/Rewatching
@@ -251,7 +351,7 @@ public partial class MediaListEntry : ObservableObject, IDisplayProjection
     /// </summary>
     public bool CanIncrementProgress =>
         Status is MediaListStatus.Current or MediaListStatus.Repeating
-        && (MaxEpisodes is null || Progress < MaxEpisodes);
+        && (ActiveProgressTotal is null || ActiveProgress < ActiveProgressTotal);
 
     /// <summary>
     /// True when progress is meaningful to edit from the long-press action menu — anything but a
@@ -267,7 +367,7 @@ public partial class MediaListEntry : ObservableObject, IDisplayProjection
     /// Watching/Rewatching) — users forget to move a finished show out of Planning/Paused/etc.
     /// </summary>
     public bool CanMarkCompleted =>
-        HasKnownEpisodeCount && Status is not MediaListStatus.Completed;
+        HasKnownProgressTotal && Status is not MediaListStatus.Completed;
 
     /// <summary>
     /// True when setting progress to <paramref name="progress"/> means the show is complete: a finite
@@ -276,13 +376,13 @@ public partial class MediaListEntry : ObservableObject, IDisplayProjection
     /// defined in exactly one place.
     /// </summary>
     public bool IsCompletionAt(int progress) =>
-        HasKnownEpisodeCount && MaxEpisodes is { } max && progress >= max && Status is not MediaListStatus.Completed;
+        HasKnownProgressTotal && ActiveProgressTotal is { } max && progress >= max && Status is not MediaListStatus.Completed;
 
     /// <summary>
-    /// Clamps a candidate progress value to the valid range: <c>0</c> to <see cref="MaxEpisodes"/>
+    /// Clamps a candidate progress value to the valid range: <c>0</c> to <see cref="ActiveProgressTotal"/>
     /// (or unbounded above when the max is unknown). Shared by the progress-edit surfaces so the
     /// bounds are defined in one place.
     /// </summary>
     public int ClampProgress(int value) =>
-        Math.Clamp(value, 0, MaxEpisodes ?? int.MaxValue);
+        Math.Clamp(value, 0, ActiveProgressTotal ?? int.MaxValue);
 }

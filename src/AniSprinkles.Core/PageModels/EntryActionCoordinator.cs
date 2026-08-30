@@ -1,3 +1,4 @@
+using AniSprinkles.Utilities;
 using Microsoft.Extensions.Logging;
 
 namespace AniSprinkles.PageModels;
@@ -57,15 +58,13 @@ public sealed class EntryActionCoordinator(
 {
     private bool _isCompletionFlowActive;
 
-    private static readonly Dictionary<MediaListStatus, string> StatusDisplayNames = new()
-    {
-        [MediaListStatus.Current] = "Watching",
-        [MediaListStatus.Planning] = "Planning",
-        [MediaListStatus.Completed] = "Completed",
-        [MediaListStatus.Paused] = "Paused",
-        [MediaListStatus.Dropped] = "Dropped",
-        [MediaListStatus.Repeating] = "Rewatching",
-    };
+    /// <summary>Compact status name for the confirmation toasts, e.g. "moved to Watching" /
+    /// "moved to Reading". Type-aware since #12; the entry carries which type it is.</summary>
+    private static string StatusName(MediaListEntry entry, MediaListStatus status) =>
+        MediaListVocabulary.StatusChipLabel(status, KindOf(entry));
+
+    private static MediaKind KindOf(MediaListEntry entry) =>
+        entry.Media?.IsManga is true ? MediaKind.Manga : MediaKind.Anime;
 
     /// <summary>Full action menu for an entry that is already on the user's list.</summary>
     public async Task ShowEntryMenuAsync(MediaListEntry entry)
@@ -130,7 +129,7 @@ public sealed class EntryActionCoordinator(
         PerformLongPressHaptic();
 
         var choice = await dialogs.ShowMoveToListAsync(
-            candidate.Media.DisplayTitle, currentStatus: null, allowRemove: false, subtitle: "Add to...");
+            candidate.Media.DisplayTitle, currentStatus: null, kind: KindOf(candidate), allowRemove: false, subtitle: "Add to...");
         if (choice?.Status is not { } targetStatus)
         {
             return;
@@ -141,7 +140,7 @@ public sealed class EntryActionCoordinator(
         SentrySdk.AddBreadcrumb($"Add to list confirmed (media {candidate.MediaId} → {targetStatus})", "list", "user");
 
         var title = candidate.Media.DisplayTitle;
-        var targetName = StatusDisplayNames.GetValueOrDefault(targetStatus, targetStatus.ToString());
+        var targetName = StatusName(candidate, targetStatus);
 
         try
         {
@@ -216,7 +215,7 @@ public sealed class EntryActionCoordinator(
             return;
         }
 
-        if (await dialogs.ShowMoveToListAsync(entry.Media.DisplayTitle, entry.Status.Value) is not { } choice)
+        if (await dialogs.ShowMoveToListAsync(entry.Media.DisplayTitle, entry.Status.Value, KindOf(entry)) is not { } choice)
         {
             return;
         }
@@ -247,7 +246,11 @@ public sealed class EntryActionCoordinator(
             return;
         }
 
-        if (await dialogs.ShowEditProgressAsync(entry.Media.DisplayTitle, entry.Progress ?? 0, entry.MaxEpisodes) is not { } newProgress)
+        if (await dialogs.ShowEditProgressAsync(
+                entry.Media.DisplayTitle,
+                entry.ActiveProgress ?? 0,
+                entry.ActiveProgressTotal,
+                entry.ActiveProgressUnit) is not { } newProgress)
         {
             return;
         }
@@ -267,14 +270,17 @@ public sealed class EntryActionCoordinator(
             return;
         }
 
-        if (newProgress == (entry.Progress ?? 0))
+        if (newProgress == (entry.ActiveProgress ?? 0))
         {
             return;
         }
 
-        var originalProgress = entry.Progress;
-        entry.Progress = newProgress;
-        await SaveEntryInPlaceAsync(entry, () => entry.Progress = originalProgress, "Edit progress");
+        // Captured before the write: the unit is derived from the counters, so the revert has to
+        // name the field it actually changed (#12).
+        var unit = entry.ActiveProgressUnit;
+        var originalProgress = entry.ProgressFor(unit);
+        entry.SetProgressFor(unit, newProgress);
+        await SaveEntryInPlaceAsync(entry, () => entry.SetProgressFor(unit, originalProgress), "Edit progress");
     }
 
     private async Task HandleDeleteAsync(MediaListEntry entry)
@@ -324,6 +330,7 @@ public sealed class EntryActionCoordinator(
         // Snapshot original state for rollback.
         var originalStatus = entry.Status;
         var originalProgress = entry.Progress;
+        var originalProgressVolumes = entry.ProgressVolumes;
         var originalScore = entry.Score;
         var originalRepeat = entry.Repeat;
 
@@ -332,7 +339,7 @@ public sealed class EntryActionCoordinator(
         // Optimistic removal from source section.
         host.OnOptimisticRemove?.Invoke(entry);
 
-        var targetName = StatusDisplayNames.GetValueOrDefault(targetStatus, targetStatus.ToString());
+        var targetName = StatusName(entry, targetStatus);
 
         try
         {
@@ -345,6 +352,8 @@ public sealed class EntryActionCoordinator(
             // Revert entry state.
             entry.Status = originalStatus;
             entry.Progress = originalProgress;
+            // Restored alongside Progress: a Rereading move now zeroes both counters (#12).
+            entry.ProgressVolumes = originalProgressVolumes;
             entry.Score = originalScore;
             entry.Repeat = originalRepeat;
 

@@ -1,4 +1,5 @@
 using AniSprinkles.Converters;
+using AniSprinkles.Utilities;
 using CommunityToolkit.Maui.Views;
 using Microsoft.Maui.Controls.Shapes;
 
@@ -8,24 +9,30 @@ public partial class MoveToListPopup : Popup<object>
 {
     private static readonly RainbowAccentConverter RainbowConverter = new();
 
-    private static readonly (MediaListStatus Status, string Label, string Glyph)[] AllStatuses =
+    // Labels come from MediaListVocabulary rather than being written here, so a manga sheet reads
+    // "Reading" / "Plan to Read" / "Rereading" and the wording can't drift from the details page
+    // (#12). Glyphs are shared: the concepts are the same, only the verb differs.
+    private static readonly (MediaListStatus Status, string Glyph)[] AllStatuses =
     [
-        (MediaListStatus.Current,   "Watching",    FluentIconsRegular.Eye24),
-        (MediaListStatus.Planning,  "Planning",    FluentIconsRegular.Bookmark24),
-        (MediaListStatus.Completed, "Completed",   FluentIconsRegular.CheckmarkCircle24),
-        (MediaListStatus.Paused,    "Paused",      FluentIconsRegular.PauseCircle24),
-        (MediaListStatus.Dropped,   "Dropped",     FluentIconsRegular.DismissCircle24),
-        (MediaListStatus.Repeating, "Rewatching",  FluentIconsRegular.ArrowRepeatAll24),
+        (MediaListStatus.Current,   FluentIconsRegular.Eye24),
+        (MediaListStatus.Planning,  FluentIconsRegular.Bookmark24),
+        (MediaListStatus.Completed, FluentIconsRegular.CheckmarkCircle24),
+        (MediaListStatus.Paused,    FluentIconsRegular.PauseCircle24),
+        (MediaListStatus.Dropped,   FluentIconsRegular.DismissCircle24),
+        (MediaListStatus.Repeating, FluentIconsRegular.ArrowRepeatAll24),
     ];
+
+    private readonly MediaKind _kind;
 
     /// <summary>
     /// <paramref name="currentStatus"/> null shows every status (add-to-list: nothing to omit);
     /// <paramref name="allowRemove"/> false hides the Remove row (the media isn't on the list yet).
     /// </summary>
-    public MoveToListPopup(string animeTitle, MediaListStatus? currentStatus, bool allowRemove, string? subtitle)
+    public MoveToListPopup(string mediaTitle, MediaListStatus? currentStatus, MediaKind kind, bool allowRemove, string? subtitle)
     {
         InitializeComponent();
-        TitleLabel.Text = animeTitle;
+        _kind = kind;
+        TitleLabel.Text = mediaTitle;
         if (subtitle is not null)
         {
             SubtitleLabel.Text = subtitle;
@@ -109,14 +116,19 @@ public partial class MoveToListPopup : Popup<object>
 
     private void BuildStatusRows(MediaListStatus? currentStatus)
     {
-        foreach (var (status, label, glyph) in AllStatuses)
+        foreach (var (status, glyph) in AllStatuses)
         {
             if (status == currentStatus)
             {
                 continue;
             }
 
-            var accentColor = GetAccentColor(label);
+            var label = MediaListVocabulary.StatusLabel(status, _kind);
+            // Keyed on the enum name, not the label: RainbowAccentConverter maps Current → Watching
+            // and Repeating → Rewatching, so both types land on the same colour for the same status.
+            // Passing "Reading" would miss the table and fall through to the hash palette, giving a
+            // manga sheet a different colour scheme from the anime one (#12).
+            var accentColor = GetAccentColor(status.ToString());
 
             var icon = new Image
             {

@@ -34,8 +34,8 @@ public class MediaListEntryProgressTests
     [Fact]
     public void IsCompletionAt_WithoutKnownTotal_IsFalse()
     {
-        // Long-running airing show: a next-airing episode gives MaxEpisodes a value, but completion
-        // requires a finite total (HasKnownEpisodeCount), so reaching the latest aired episode is
+        // Long-running airing show: a next-airing episode gives ActiveProgressTotal a value, but
+        // completion requires a finite total (HasKnownProgressTotal), so reaching the latest aired episode is
         // never a completion.
         var entry = TestDataBuilder.Entry(
             1, status: MediaListStatus.Current, episodes: null, nextAiringEpisode: 1088);
@@ -63,7 +63,7 @@ public class MediaListEntryProgressTests
     public void ClampProgress_AiringShow_ClampsToLatestAiredEpisode()
     {
         // No finite total, but a next-airing episode caps progress at the latest aired episode
-        // (MaxEpisodes = NextAiringEpisode - 1), matching the Details page slider bound.
+        // (ActiveProgressTotal = NextAiringEpisode - 1), matching the Details page slider bound.
         var entry = TestDataBuilder.Entry(
             1, status: MediaListStatus.Current, episodes: null, nextAiringEpisode: 1088);
 

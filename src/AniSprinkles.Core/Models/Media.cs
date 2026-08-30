@@ -11,8 +11,17 @@ public class Media : IFavouritable
     public string? BannerImage { get; set; }
     public string? Description { get; set; }
     public string? Format { get; set; }
+    /// <summary>AniList's <c>MediaType</c> — "ANIME" or "MANGA". Null on the older queries that
+    /// never selected it; treated as anime, which is what those call sites always fetched.</summary>
+    public string? Type { get; set; }
     public string? Status { get; set; }
     public int? Episodes { get; set; }
+    /// <summary>Total chapters, for manga. Null for anime, and null for any still-publishing
+    /// series — AniList only fills this in once the series finishes.</summary>
+    public int? Chapters { get; set; }
+    /// <summary>Total volumes, for manga. Same null-until-finished caveat as <see cref="Chapters"/>,
+    /// and additionally null on plenty of finished one-shots that were never collected.</summary>
+    public int? Volumes { get; set; }
     public int? Duration { get; set; }
     public string? Season { get; set; }
     public int? SeasonYear { get; set; }
@@ -57,4 +66,11 @@ public class Media : IFavouritable
 
     public string DisplayTitle
         => TitleSelector.Select(AppSettings.TitleLanguage, Title?.Romaji, Title?.English, Title?.Native);
+
+    /// <summary>
+    /// True when this is manga (or a light novel / one-shot — AniList files all three under
+    /// <c>MANGA</c>). Null <see cref="Type"/> reads as anime, so queries that predate the field
+    /// keep their existing behaviour.
+    /// </summary>
+    public bool IsManga => string.Equals(Type, "MANGA", StringComparison.OrdinalIgnoreCase);
 }

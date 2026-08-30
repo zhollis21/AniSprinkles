@@ -170,9 +170,9 @@ public sealed class CachingAniListClient : IAniListClient
     public Task<IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)>> GetMyAnimeListGroupedAsync(CancellationToken cancellationToken = default)
         => _inner.GetMyAnimeListGroupedAsync(cancellationToken);
 
-    public Task<(IReadOnlyList<BrowseMediaItem> Items, PageInfo? PageInfo)> SearchAnimePageAsync(
-        string search, bool? isAdult = false, int page = 1, int perPage = 20, CancellationToken cancellationToken = default)
-        => _inner.SearchAnimePageAsync(search, isAdult, page, perPage, cancellationToken);
+    public Task<(IReadOnlyList<BrowseMediaItem> Items, PageInfo? PageInfo)> SearchMediaPageAsync(
+        string search, MediaKind? kind, bool? isAdult = false, int page = 1, int perPage = 20, CancellationToken cancellationToken = default)
+        => _inner.SearchMediaPageAsync(search, kind, isAdult, page, perPage, cancellationToken);
 
     // Discover/browse stay uncached here: they carry the viewer's mediaListEntry state (mutations
     // would stale it) and Discover already has its own TTL cache in DiscoverPageModel.

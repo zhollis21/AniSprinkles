@@ -19,6 +19,8 @@ public class RelatedMedia
     public int? Trending { get; set; }
     public MediaDate? StartDate { get; set; }
     public int? Episodes { get; set; }
+    public int? Chapters { get; set; }
+    public int? Volumes { get; set; }
 
     // Viewer's list-entry snapshot (Discover/browse/search queries request mediaListEntry when
     // authenticated). Null in every other query, which keeps existing carousels untouched.
@@ -36,11 +38,10 @@ public class RelatedMedia
     public string FormatDisplay => Format?.Replace("_", " ") ?? "";
 
     /// <summary>
-    /// True when this entry is an anime. The media detail screen queries
-    /// <c>Media(id:, type: ANIME)</c>, so navigating to a non-anime id (manga/novel) returns 404.
-    /// Tile navigation gates on this to show a "not supported" toast instead of a doomed fetch.
+    /// Which of AniList's two media types this node is. Anything unrecognised reads as anime —
+    /// most queries here never selected <c>type</c>, and every one of those only ever fetched anime.
     /// </summary>
-    public bool IsAnime => string.Equals(Type, "ANIME", StringComparison.OrdinalIgnoreCase);
+    public MediaKind Kind => MediaKindExtensions.ParseMediaKind(Type);
 
     public bool HasScore => AverageScore is > 0;
     public bool HasFavourites => Favourites is > 0;
@@ -106,14 +107,13 @@ public class RelatedMedia
 
     public bool HasListStatus => ListStatus is not null;
 
-    /// <summary>Friendly list-status label for chips ("Watching"/"Rewatching" instead of the raw enum names).</summary>
-    public string ListStatusDisplay => ListStatus switch
-    {
-        MediaListStatus.Current => "Watching",
-        MediaListStatus.Repeating => "Rewatching",
-        { } status => status.ToString(),
-        null => string.Empty,
-    };
+    /// <summary>
+    /// Friendly list-status label for chips ("Watching"/"Rewatching" instead of the raw enum names,
+    /// and "Reading"/"Rereading" on a manga card — carousels mix the two types freely).
+    /// </summary>
+    public string ListStatusDisplay => ListStatus is { } status
+        ? MediaListVocabulary.StatusChipLabel(status, Kind)
+        : string.Empty;
 
     public Color ListStatusColor => ListStatus switch
     {
