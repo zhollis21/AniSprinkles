@@ -1,10 +1,13 @@
+using AniSprinkles.Utilities;
 using IconFont.Maui.FluentIcons;
+using Microsoft.Extensions.Logging;
 
 namespace AniSprinkles;
 
 public partial class AppShell : Shell
 {
-    private const string MediaDetailsRoute = "media-details";
+    /// <summary>Public so the notification deep link routes to the same spelling registered here (#111).</summary>
+    public const string MediaDetailsRoute = "media-details";
     private const string StaffDetailsRoute = "staff-details";
     private const string CharacterDetailsRoute = "character-details";
     private const string StudioDetailsRoute = "studio-details";
@@ -46,7 +49,29 @@ public partial class AppShell : Shell
             new FontImageSource { Glyph = regularGlyph, FontFamily = FluentIconsRegular.FontFamily },
             new FontImageSource { Glyph = filledGlyph, FontFamily = FluentIconsFilled.FontFamily });
 
-    private void OnShellNavigated(object? sender, ShellNavigatedEventArgs e) => ApplySelectedTabIcons();
+    private void OnShellNavigated(object? sender, ShellNavigatedEventArgs e)
+    {
+        ApplySelectedTabIcons();
+
+        // The one reliable "Shell is ready" signal for a cold start: a notification tap that arrived
+        // in MainActivity.OnCreate was queued before this existed, and nothing else tells us when it
+        // becomes navigable (#111). Idempotent — the link is only cleared once it is followed.
+        TryDrainDeepLink();
+    }
+
+    private static void TryDrainDeepLink()
+    {
+        // Already on the UI thread — this is a Shell event. Not ServiceProviderHelper: it throws
+        // when DI isn't up, and a null provider here just means "too early", which AttemptAsync
+        // treats as nothing to do. Fire-and-forget is safe because AttemptAsync never throws.
+        var services = IPlatformApplication.Current?.Services;
+
+        _ = DeepLinkDrain.AttemptAsync(
+            services?.GetService<PendingDeepLink>(),
+            services?.GetService<INavigationService>(),
+            Shell.Current is not null,
+            services?.GetService<ILogger<PendingDeepLink>>());
+    }
 
     private void ApplySelectedTabIcons()
     {
