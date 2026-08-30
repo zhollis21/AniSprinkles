@@ -38,24 +38,37 @@ public sealed class PendingDeepLink(IPreferences preferences, ILogger<PendingDee
     /// </summary>
     public const string ConsumedNonceKey = "deeplink_consumed_nonce";
 
+    /// <summary>One queued tap. Held as a single value so its three parts cannot drift apart.</summary>
+    private sealed record PendingLink(string Route, IDictionary<string, object> Parameters, int? Nonce);
+
+    /// <summary>
+    /// Guards a background caller, of which there are none today — every entry point runs on the UI
+    /// thread. It is <b>not</b> what stops two drains navigating twice: <c>lock</c> is re-entrant, so
+    /// it would let a second drain straight through on the same thread. The synchronous take in
+    /// <see cref="TryNavigateAsync"/>, before any await, is what does that. Moving that clear to
+    /// after the await would break it while this still looked like protection.
+    /// </summary>
     private readonly object _gate = new();
-    private string? _route;
-    private IDictionary<string, object>? _parameters;
-    private int? _pendingNonce;
+
+    private PendingLink? _pending;
 
     /// <summary>
     /// <see langword="null"/> means nothing has been followed yet — distinguished from a stored 0 by
     /// key presence rather than by a sentinel value, because 0 is a perfectly legal nonce.
     /// </summary>
     private int? ConsumedNonce
+        => preferences.ContainsKey(ConsumedNonceKey) ? preferences.Get(ConsumedNonceKey, 0) : null;
+
+    /// <summary>
+    /// Records a tap as followed. A <see langword="null"/> nonce means the caller had nothing to
+    /// deduplicate on, so there is nothing to remember — spelled as a method rather than a setter
+    /// because "assign null" reads like "clear it" and means the opposite.
+    /// </summary>
+    private void MarkConsumed(int? nonce)
     {
-        get => preferences.ContainsKey(ConsumedNonceKey) ? preferences.Get(ConsumedNonceKey, 0) : null;
-        set
+        if (nonce is int value)
         {
-            if (value is int nonce)
-            {
-                preferences.Set(ConsumedNonceKey, nonce);
-            }
+            preferences.Set(ConsumedNonceKey, value);
         }
     }
 
@@ -66,7 +79,7 @@ public sealed class PendingDeepLink(IPreferences preferences, ILogger<PendingDee
         {
             lock (_gate)
             {
-                return _route is not null;
+                return _pending is not null;
             }
         }
     }
@@ -86,17 +99,17 @@ public sealed class PendingDeepLink(IPreferences preferences, ILogger<PendingDee
     /// <returns>False when this tap has already been followed, so the caller can log the difference.</returns>
     public bool Set(string route, IDictionary<string, object> parameters, int? nonce)
     {
+        // Read outside the lock: it hits the preferences store, and nothing here needs it to be
+        // consistent with the assignment below — a nonce only ever moves from unconsumed to consumed.
+        if (nonce is int candidate && candidate == ConsumedNonce)
+        {
+            logger?.LogInformation("NAVTRACE DeepLink → ignoring replayed intent for {Route}", route);
+            return false;
+        }
+
         lock (_gate)
         {
-            if (nonce is int candidate && candidate == ConsumedNonce)
-            {
-                logger?.LogInformation("NAVTRACE DeepLink → ignoring replayed intent for {Route}", route);
-                return false;
-            }
-
-            _route = route;
-            _parameters = parameters;
-            _pendingNonce = nonce;
+            _pending = new PendingLink(route, parameters, nonce);
             return true;
         }
     }
@@ -114,37 +127,30 @@ public sealed class PendingDeepLink(IPreferences preferences, ILogger<PendingDee
     /// <returns>True if navigation was actually attempted.</returns>
     public async Task<bool> TryNavigateAsync(INavigationService navigation, bool shellReady)
     {
-        string route;
-        IDictionary<string, object> parameters;
-        int? nonce;
+        PendingLink taken;
 
         lock (_gate)
         {
-            if (_route is null || !shellReady)
+            if (_pending is null || !shellReady)
             {
                 return false;
             }
 
-            route = _route;
-            parameters = _parameters!;
-            nonce = _pendingNonce;
-
             // Taken before awaiting, so a second drain racing this one finds nothing and cannot
             // navigate twice. The nonce is only *consumed* once the navigation succeeds — see below.
-            _route = null;
-            _parameters = null;
-            _pendingNonce = null;
+            taken = _pending;
+            _pending = null;
         }
 
         // A notification tap is a navigation entry point that exists nowhere else in the app, so it
         // is worth tracing: "how did they get to this page from a cold start" is otherwise
         // unanswerable from a crash report. Same shape as BioLinkFollower's.
-        logger?.LogInformation("NAVTRACE DeepLink → {Route}", route);
-        SentrySdk.AddBreadcrumb($"Follow notification deep link ({route})", "navigation", "user");
+        logger?.LogInformation("NAVTRACE DeepLink → {Route}", taken.Route);
+        SentrySdk.AddBreadcrumb($"Follow notification deep link ({taken.Route})", "navigation", "user");
 
         try
         {
-            await navigation.GoToAsync(route, animate: false, parameters);
+            await navigation.GoToAsync(taken.Route, animate: false, taken.Parameters);
         }
         catch
         {
@@ -155,22 +161,13 @@ public sealed class PendingDeepLink(IPreferences preferences, ILogger<PendingDee
             {
                 // Only if nothing newer arrived while we were awaiting: the most recent tap is what
                 // the user last asked for, and restoring over it would resurrect a stale one.
-                if (_route is null)
-                {
-                    _route = route;
-                    _parameters = parameters;
-                    _pendingNonce = nonce;
-                }
+                _pending ??= taken;
             }
 
             throw;
         }
 
-        lock (_gate)
-        {
-            ConsumedNonce = nonce;
-        }
-
+        MarkConsumed(taken.Nonce);
         return true;
     }
 }

@@ -61,47 +61,17 @@ public partial class AppShell : Shell
 
     private static void TryDrainDeepLink()
     {
-        try
-        {
-            // Not ServiceProviderHelper: it throws when DI isn't up, and this runs on a Shell event
-            // during startup. A null provider here just means "too early" — OnResume tries again.
-            var services = IPlatformApplication.Current?.Services;
-            var pending = services?.GetService<PendingDeepLink>();
-            var navigation = services?.GetService<INavigationService>();
+        // Already on the UI thread — this is a Shell event. Not ServiceProviderHelper: it throws
+        // when DI isn't up, and a null provider here just means "too early", which AttemptAsync
+        // treats as nothing to do. Fire-and-forget is safe because AttemptAsync never throws.
+        var services = IPlatformApplication.Current?.Services;
 
-            if (pending is null || navigation is null || !pending.HasPending)
-            {
-                return;
-            }
-
-            // Fire-and-forget deliberately: this is an event handler, and the navigation's own
-            // failure is logged inside. Awaiting here would mean an async void handler for no gain.
-            _ = DrainAsync(pending, navigation);
-        }
-        catch (Exception ex)
-        {
-            LogDrainFailure(ex, "Failed to drain pending deep link");
-        }
+        _ = DeepLinkDrain.AttemptAsync(
+            services?.GetService<PendingDeepLink>(),
+            services?.GetService<INavigationService>(),
+            Shell.Current is not null,
+            services?.GetService<ILogger<PendingDeepLink>>());
     }
-
-    private static async Task DrainAsync(PendingDeepLink pending, INavigationService navigation)
-    {
-        try
-        {
-            await pending.TryNavigateAsync(navigation, Shell.Current is not null);
-        }
-        catch (Exception ex)
-        {
-            LogDrainFailure(ex, "Deep link navigation failed");
-        }
-    }
-
-    /// <summary>
-    /// Resolves the logger defensively — the failure being reported may itself be that DI is
-    /// unavailable, and throwing out of a catch on a Shell event would take the app down.
-    /// </summary>
-    private static void LogDrainFailure(Exception ex, string message)
-        => IPlatformApplication.Current?.Services?.GetService<ILogger<AppShell>>()?.LogWarning(ex, message);
 
     private void ApplySelectedTabIcons()
     {

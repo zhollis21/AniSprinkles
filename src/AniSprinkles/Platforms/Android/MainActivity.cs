@@ -6,6 +6,7 @@ using Android.Util;
 using AndroidX.Core.View;
 using AniSprinkles.Platforms.Android;
 using AniSprinkles.Utilities;
+using Microsoft.Extensions.Logging;
 using AndroidColors = Android.Graphics.Color;
 
 namespace AniSprinkles;
@@ -187,37 +188,23 @@ public class MainActivity : MauiAppCompatActivity
     /// Follows a queued link if Shell is up. Safe to call repeatedly — three hooks do — because
     /// <see cref="PendingDeepLink"/> only clears once navigation is actually attempted.
     /// </summary>
-    private void TryDrainDeepLink()
+    private static void TryDrainDeepLink()
     {
-        try
+        // Dispatched rather than run inline: MAUI navigates on whichever thread calls it, and off the
+        // main thread on Android that corrupts the navigation stack instead of throwing
+        // (dotnet/maui#13538). Shell.Current is read inside the lambda for the same reason.
+        MainThread.BeginInvokeOnMainThread(() =>
         {
-            var services = ServiceProviderHelper.GetServiceProvider();
-            var pending = services.GetRequiredService<PendingDeepLink>();
-            if (!pending.HasPending)
-            {
-                return;
-            }
+            var services = IPlatformApplication.Current?.Services;
 
-            var navigation = services.GetRequiredService<INavigationService>();
-
-            // Shell navigation is UI-thread work, and OnNewIntent/OnResume are not guaranteed to be
-            // a safe place to start it synchronously.
-            MainThread.BeginInvokeOnMainThread(async () =>
-            {
-                try
-                {
-                    await pending.TryNavigateAsync(navigation, Shell.Current is not null);
-                }
-                catch (Exception ex)
-                {
-                    Log.Error(nameof(MainActivity), $"Deep link navigation failed: {ex}");
-                }
-            });
-        }
-        catch (Exception ex)
-        {
-            Log.Error(nameof(MainActivity), $"Failed to drain deep link: {ex}");
-        }
+            // AttemptAsync never throws and treats missing services as "too early", so there is
+            // nothing to guard here — a null provider just means the next hook will try again.
+            _ = DeepLinkDrain.AttemptAsync(
+                services?.GetService<PendingDeepLink>(),
+                services?.GetService<INavigationService>(),
+                Shell.Current is not null,
+                services?.GetService<ILogger<PendingDeepLink>>());
+        });
     }
 
     protected override void OnPause()
