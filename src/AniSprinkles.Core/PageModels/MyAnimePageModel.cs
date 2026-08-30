@@ -847,9 +847,11 @@ public partial class MyAnimePageModel : ObservableObject
 
     // ── Notification permission prompt ──────────────────────────────────
 
-    // Tracks whether we've already shown the My Anime permission prompt so we don't re-prompt
-    // on every list load after a denial. Cleared on sign-out so a fresh session gets the prompt.
-    private const string PermissionPromptedPrefKey = "airing_permission_prompted";
+    // Whether the My Anime permission prompt has already been shown — so a denial doesn't re-prompt
+    // on every list load — is one of the keys AiringNotificationState owns (#141). It used to be a
+    // private const here and a separate raw literal in the app project, on the far side of the test
+    // boundary, where a rename to either would have gone unnoticed. Cleared on sign-out so a fresh
+    // session gets the prompt.
 
     /// <summary>
     /// Called after the first successful authenticated list load. On API 33+ (where
@@ -862,7 +864,7 @@ public partial class MyAnimePageModel : ObservableObject
         try
         {
             // Only prompt once from My Anime. Settings can re-prompt via the explicit toggle.
-            if (_preferences.Get(PermissionPromptedPrefKey, false))
+            if (AiringNotificationState.HasPromptedForPermission(_preferences))
             {
                 return;
             }
@@ -887,14 +889,14 @@ public partial class MyAnimePageModel : ObservableObject
                     return;
                 }
 
-                _preferences.Set(PermissionPromptedPrefKey, true);
+                AiringNotificationState.MarkPromptedForPermission(_preferences);
                 return;
             }
 
             // Mark as prompted before awaiting the system dialog so concurrent/rapid loads
             // don't double-prompt. The permission dialog itself is a one-shot system UI —
             // even if the AniList sync afterward fails, the prompt already happened.
-            _preferences.Set(PermissionPromptedPrefKey, true);
+            AiringNotificationState.MarkPromptedForPermission(_preferences);
 
             bool granted = await _airingNotificationService.RequestPermissionAsync();
 
@@ -958,7 +960,7 @@ public partial class MyAnimePageModel : ObservableObject
             .Distinct()
             .ToList();
 
-        _preferences.Set("airing_media_ids", string.Join(",", releasingIds));
+        AiringNotificationState.WriteMediaIds(_preferences, releasingIds);
     }
 
     // ── Section building ─────────────────────────────────────────────

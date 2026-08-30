@@ -68,6 +68,25 @@ Logging" (#112 — two sentences, and `/ani-kickoff` had to discover on its own 
 Release logging drops everything that makes a report useful) and #125, which names
 the file, the line, and the `#if` that causes the problem.
 
+**Fetch before you dig.** Every command below reads local refs, and a stale local
+`main` biases all of them the same way: it hides work that has already merged, so
+the dig "confirms" a problem that is fixed and you file it anyway. That lands a
+wrong issue in the backlog, which is the one outcome this skill is supposed to
+prevent — and Step 3 cannot catch it, because Step 3 is running the same stale
+commands.
+
+```bash
+git fetch origin --quiet
+git rev-list --count main..origin/main   # 0 = up to date; anything else, fast-forward first
+```
+
+Because this repo squash-merges, `git branch --contains` returns nothing for work
+that shipped — so never conclude "unmerged" from it. Check whether the files
+themselves are on the remote tip (`git cat-file -e origin/main:<path>`). And when
+the body ends up asserting that something does not exist yet, name the ref and SHA
+you checked against, so a stale local is visible to the reader instead of baked
+into the issue.
+
 **An empty search result is not evidence of absence.** It is usually evidence you
 guessed the wrong word — grepping `IsExpanded` in this repo finds nothing, because
 the code says `IsDescriptionExpanded` and `IsStatusExpanded`. Try at least two phrasings before

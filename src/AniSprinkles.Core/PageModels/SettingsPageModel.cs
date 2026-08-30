@@ -1021,7 +1021,7 @@ public partial class SettingsPageModel : ObservableObject
 
                 // Reset the checkpoint so re-enabling starts fresh — only new episodes
                 // going forward, no backlog spam for everything that aired while disabled.
-                _preferences.Remove("airing_last_check");
+                AiringNotificationState.ResetCheckpoint(_preferences);
             }
 
             // Save the final value — granted+scheduled, or cancelled.

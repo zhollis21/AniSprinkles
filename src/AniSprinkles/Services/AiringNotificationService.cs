@@ -8,7 +8,9 @@ namespace AniSprinkles.Services;
 /// Android implementation of <see cref="IAiringNotificationService"/> that uses WorkManager
 /// to schedule periodic airing checks and MAUI Permissions for the POST_NOTIFICATIONS runtime request.
 /// </summary>
-public class AiringNotificationService(ILogger<AiringNotificationService> logger) : IAiringNotificationService
+public class AiringNotificationService(
+    IPreferences preferences,
+    ILogger<AiringNotificationService> logger) : IAiringNotificationService
 {
     private const string UniqueWorkName = "airing_check";
     private static readonly TimeSpan PollInterval = TimeSpan.FromMinutes(15);
@@ -56,10 +58,9 @@ public class AiringNotificationService(ILogger<AiringNotificationService> logger
 
     public void ClearNotificationState()
     {
-        Preferences.Default.Remove("airing_media_ids");
-        Preferences.Default.Remove("airing_last_check");
-        Preferences.Default.Remove("airing_notified");
-        Preferences.Default.Remove("airing_permission_prompted");
+        // Through the injected store and the shared key constants (#141): these were four raw
+        // literals that had to stay in step with consts on the other side of the test boundary.
+        AiringNotificationState.ClearAll(preferences);
         NotificationHelper.CancelAll(Platform.AppContext);
         logger.LogInformation("Airing notification state cleared");
     }

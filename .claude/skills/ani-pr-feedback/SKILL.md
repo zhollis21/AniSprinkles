@@ -10,6 +10,35 @@ allowed-tools: Bash(pwsh tools/Get-OpenPrComments.ps1) Bash(gh pr edit:*) Bash(g
 
 !`pwsh tools/Get-OpenPrComments.ps1 && cat tools/pr-comments.md`
 
+## Sync before you evaluate anything
+
+The comments above came from GitHub. Your working tree did not. Evaluating remote
+feedback against a stale local checkout is the fastest way to reach a confident
+wrong answer — you tell the user a reviewer is mistaken, when the code they are
+describing is real and simply isn't on your disk.
+
+```bash
+git fetch origin --quiet
+gh pr view <pr> --json headRefName,headRefOid,baseRefName
+git log --oneline -1 HEAD                  # compare against headRefOid above
+git rev-list --count HEAD..origin/<headRefName>   # 0 = you have every pushed commit
+```
+
+Three ways this bites here specifically:
+
+- **Suggestions committed in the GitHub UI.** Accepting a reviewer's suggested
+  change creates a commit directly on the PR branch. It exists on the remote and
+  nowhere locally, so the fix looks unapplied and you "fix" it a second time.
+- **A comment that is already addressed.** A later push can resolve feedback that
+  the thread list still shows as open. Check whether the cited line still says what
+  the comment quotes before deciding the concern is live.
+- **A moved base.** Reasoning like "this conflicts with how `main` does it" is only
+  as good as your `origin/main`. Fetch before making that argument.
+
+If local is behind the PR branch, pull before evaluating. If you cannot — dirty
+tree, mid-rebase — say so explicitly and treat every code claim as provisional
+rather than quietly reasoning from the stale copy.
+
 ## Step 2: Evaluate Each Comment
 
 For each comment:

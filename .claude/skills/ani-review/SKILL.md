@@ -88,6 +88,19 @@ Review all code written in this session against the checklist below. Fix every i
 - New behavior has new tests; changed behavior has updated tests
 - Bug fixes include a regression test that fails without the fix
 - Tests cover failure paths, not just the happy path
+- **Ask what is untested that could have been testable, not just whether what you wrote is tested.**
+  `tests/` references `src/AniSprinkles.Core/` only, so anything left in the MAUI app project is
+  unreachable — and that is where bugs hide, because nothing is watching. For each piece of new or
+  moved logic sitting on the app side, ask whether it is genuinely platform-bound (WorkManager, a
+  `PendingIntent`, an Activity callback) or merely *next to* something that is. Parsing, windowing,
+  branching and failure classification are almost never platform-bound, and pulling them into Core
+  behind a delegate or an `HttpMessageHandler` seam is usually a few lines. Existing fakes —
+  `ScriptedGraphQlHandler`, `FakePreferences`, `ManualTimeProvider` — mean the seam is normally the
+  only work.
+- **Check the Core-side call sites of anything you changed, not only the code you wrote.** A page
+  model that writes a preference, or a service wired through DI, is testable even when the thing
+  consuming it is not — and those wiring tests are what stop a rename passing green while the
+  feature is dead.
 
 **Build & test health**
 

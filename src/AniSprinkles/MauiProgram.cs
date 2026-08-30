@@ -1,4 +1,5 @@
 using AniSprinkles.Services.Maui;
+using AniSprinkles.Utilities;
 using CommunityToolkit.Maui;
 #if DEBUG
 using AniSprinkles.Services.FaultInjection;
@@ -108,6 +109,9 @@ public static class MauiProgram
         // model needs that touches Shell, CommunityToolkit popups, or Essentials goes through one of
         // these, which is what lets the page models run on the plain net10.0 test TFM (issue #62).
         builder.Services.AddSingleton<INavigationService, MauiShellNavigationService>();
+        // Singleton because it is one process-wide slot: a notification tap queued in MainActivity
+        // is followed later by AppShell or OnResume, and all three must see the same instance (#111).
+        builder.Services.AddSingleton<PendingDeepLink>();
         builder.Services.AddSingleton<ISecureTokenStorage, MauiSecureTokenStorage>();
         builder.Services.AddSingleton<IUserFeedback, MauiUserFeedback>();
         builder.Services.AddSingleton<IDialogService, MauiDialogService>();

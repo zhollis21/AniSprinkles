@@ -27,12 +27,10 @@ public class RelatedMedia
     public int? ListProgress { get; set; }
     public double? ListScore { get; set; }
 
-    public string DisplayTitle => AppSettings.TitleLanguage switch
-    {
-        UserTitleLanguage.English => Title?.English ?? Title?.Romaji ?? Title?.Native ?? "Unknown",
-        UserTitleLanguage.Native => Title?.Native ?? Title?.Romaji ?? Title?.English ?? "Unknown",
-        _ => Title?.Romaji ?? Title?.English ?? Title?.Native ?? "Unknown",
-    };
+    // Was its own copy of the chain, falling back to "Unknown" where Media said "Unknown Title" —
+    // the drift that motivated consolidating this (#141).
+    public string DisplayTitle
+        => TitleSelector.Select(AppSettings.TitleLanguage, Title?.Romaji, Title?.English, Title?.Native);
 
     /// <summary>Human-readable format for list cards: AniList's <c>TV_SHORT</c> → "TV SHORT". Blank when absent.</summary>
     public string FormatDisplay => Format?.Replace("_", " ") ?? "";
