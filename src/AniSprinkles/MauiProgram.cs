@@ -187,16 +187,18 @@ public static class MauiProgram
 #endif
             return client;
         });
+        // Both halves of the Library tab, registered as a pair: same lifetimes, same shape,
+        // one MediaListPageModel behind them (#12).
         builder.Services.AddSingleton<AnimeLibraryPageModel>();
         builder.Services.AddTransient<AnimeLibraryPage>();
+        builder.Services.AddSingleton<MangaLibraryPageModel>();
+        builder.Services.AddTransient<MangaLibraryPage>();
         builder.Services.AddSingleton<DiscoverPageModel>();
         builder.Services.AddTransient<DiscoverPage>();
         builder.Services.AddSingleton<SearchPageModel>();
         builder.Services.AddTransient<SearchPage>();
-        // Placeholder pages: no PageModel until their features land (manga #12, feed #14).
+        // Placeholder page: no PageModel until the feature lands (feed #14).
         builder.Services.AddTransient<FeedPage>();
-        builder.Services.AddSingleton<MangaLibraryPageModel>();
-        builder.Services.AddTransient<MangaLibraryPage>();
         builder.Services.AddSingleton<SettingsPageModel>();
         builder.Services.AddTransient<SettingsPage>();
         builder.Services.AddTransient<MediaDetailsPageModel>();

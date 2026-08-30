@@ -569,6 +569,9 @@ jobs:
               sleep 1
               MANGA_WAIT=$((MANGA_WAIT + 1))
             done
+            if [ $MANGA_WAIT -ge 15 ]; then
+              echo "::warning::Timed out waiting for the manga list after 15s — capturing anyway"
+            fi
             adb shell screencap -p /sdcard/manga_library.png || echo "::warning::Failed to capture Manga Library screenshot"
             adb pull /sdcard/manga_library.png screenshots/manga_library.png || echo "::warning::Failed to pull Manga Library screenshot"
             assert_no_adult_canary "Manga Library"
