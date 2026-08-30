@@ -151,6 +151,188 @@ public class SearchPageModelTests
         Assert.False(harness.Model.IsSearching);
     }
 
+    // ── Media-type filter (#12) ──────────────────────────────────────
+
+    [Fact]
+    public async Task ByDefault_NoTypeIsSentAtAll()
+    {
+        // The All pill is the default, and "both types" reaches AniList as an ABSENT argument.
+        // Verified against the live API: media(type: null, search: "berserk") returns an empty list,
+        // while omitting the argument returns anime and manga together. A null here is what the
+        // client's serializer drops, so this assertion is the client-side half of that contract.
+        var harness = new Harness();
+        harness.RespondToQuery("berserk", Page(mediaId: 1, hasNextPage: false));
+
+        await harness.SearchAsync("berserk");
+
+        Assert.Equal(SearchTypeFilter.All, harness.Model.SearchFilter);
+        Assert.Null(harness.Calls[^1].Kind);
+    }
+
+    [Theory]
+    [InlineData("Anime", MediaKind.Anime)]
+    [InlineData("Manga", MediaKind.Manga)]
+    public async Task PickingAType_SendsIt(string pill, MediaKind expected)
+    {
+        var harness = new Harness();
+        harness.RespondToQuery("berserk", Page(mediaId: 1, hasNextPage: false));
+
+        await harness.SearchAsync("berserk");
+        Assert.Null(harness.Calls[^1].Kind);
+
+        harness.Model.SelectSearchFilterCommand.Execute(pill);
+        await harness.WaitForRerunAsync();
+
+        Assert.Equal(expected, harness.Calls[^1].Kind);
+    }
+
+    [Fact]
+    public async Task GoingBackToAll_DropsTheTypeAgain()
+    {
+        var harness = new Harness();
+        harness.RespondToQuery("berserk", Page(mediaId: 1, hasNextPage: false));
+        harness.Model.SelectSearchFilterCommand.Execute("Manga");
+
+        await harness.SearchAsync("berserk");
+        Assert.Equal(MediaKind.Manga, harness.Calls[^1].Kind);
+
+        harness.Model.SelectSearchFilterCommand.Execute("All");
+        await harness.WaitForRerunAsync();
+
+        Assert.Null(harness.Calls[^1].Kind);
+    }
+
+    [Fact]
+    public async Task FlippingTheFilter_ReRunsWhateverIsAlreadyTyped()
+    {
+        // Otherwise the user retypes their query to see it under the other type, or worse, sits
+        // looking at anime results with the Manga pill lit.
+        var harness = new Harness();
+        harness.RespondToQuery("berserk", Page(mediaId: 1, hasNextPage: false));
+
+        await harness.SearchAsync("berserk");
+        var before = harness.Calls.Count;
+
+        harness.Model.SelectSearchFilterCommand.Execute("Manga");
+        await harness.WaitForRerunAsync();
+
+        Assert.True(harness.Calls.Count > before);
+        Assert.Equal("berserk", harness.Calls[^1].Query);
+    }
+
+    [Fact]
+    public void FlippingToTheFilterAlreadySelected_DoesNothing()
+    {
+        var harness = new Harness();
+
+        harness.Model.SelectSearchFilterCommand.Execute("All");
+
+        Assert.Empty(harness.Calls);
+        Assert.Equal(SearchTypeFilter.All, harness.Model.SearchFilter);
+    }
+
+    [Fact]
+    public async Task LaterPages_UseTheFilterPageOneWasSeededUnder()
+    {
+        // The same pin the adult filter needs, for the same reason: flipping the pills while a Load
+        // More is in flight would otherwise append manga pages beneath anime results.
+        var harness = new Harness();
+        harness.RespondToQuery("berserk", Page(mediaId: 1, hasNextPage: true));
+        harness.Model.SelectSearchFilterCommand.Execute("Anime");
+
+        await harness.SearchAsync("berserk");
+        Assert.Equal(MediaKind.Anime, harness.Calls[^1].Kind);
+
+        // Reach into the property directly rather than the command, which would re-run the query
+        // and re-seed the pin — the race being modelled is a change that lands mid-page.
+        harness.Model.SearchFilter = SearchTypeFilter.Manga;
+        await harness.Model.LoadMoreSearchResultsCommand.ExecuteAsync(null);
+
+        Assert.Equal(MediaKind.Anime, harness.Calls[^1].Kind);
+        Assert.Equal(2, harness.Calls[^1].Page);
+    }
+
+    [Fact]
+    public async Task LaterPagesUnderAll_StayOnAllRatherThanReadingTheLiveValue()
+    {
+        // All's client-side value is null, which is also what "nothing seeded yet" looks like on a
+        // nullable MediaKind — the exact collision the adult filter documents. The pin is a
+        // SearchTypeFilter? so the two stay distinguishable; this is what would break if it weren't.
+        var harness = new Harness();
+        harness.RespondToQuery("berserk", Page(mediaId: 1, hasNextPage: true));
+
+        await harness.SearchAsync("berserk");
+        Assert.Null(harness.Calls[^1].Kind);
+
+        harness.Model.SearchFilter = SearchTypeFilter.Manga;
+        await harness.Model.LoadMoreSearchResultsCommand.ExecuteAsync(null);
+
+        Assert.Null(harness.Calls[^1].Kind);
+        Assert.Equal(2, harness.Calls[^1].Page);
+    }
+
+    [Fact]
+    public async Task AFilterFlipMidFetch_DiscardsTheInFlightResultsForTheOtherType()
+    {
+        // The interleaving the query-string guard alone cannot catch: flipping All → Manga keeps
+        // the SAME query text, so `_activeSearchQuery == query` still holds when the stale fetch
+        // resumes. Only the cancellation token separates them, and #116 is a standing lesson in
+        // what happens when a superseded continuation is allowed to seed.
+        var harness = new Harness();
+        var firstFetch = harness.GateQuery("berserk");
+
+        await harness.SearchAsync("berserk", waitForFetch: false);
+        await firstFetch.Requested;
+        Assert.Null(harness.Calls[^1].Kind);
+
+        // The flip re-runs the same text; point the responder at a distinguishable manga page.
+        harness.Model.SelectSearchFilterCommand.Execute("Manga");
+        harness.RespondToQuery("berserk", Page(mediaId: 99, hasNextPage: false));
+        await harness.WaitForRerunAsync();
+
+        // Now the stale request finally completes. It must not touch the section.
+        firstFetch.Release();
+        await harness.WaitUntilAsync(() => firstFetch.Completed);
+
+        Assert.Equal(MediaKind.Manga, harness.Calls[^1].Kind);
+        Assert.Equal(99, Assert.Single(harness.Model.SearchSection.Items).Node?.Id);
+    }
+
+    [Fact]
+    public void TheSelectedFilter_IsPersistedAndRestored()
+    {
+        var harness = new Harness();
+
+        harness.Model.SelectSearchFilterCommand.Execute("Manga");
+        Assert.Equal("Manga", harness.Preferences.Get("search_type_filter", string.Empty));
+
+        // A second page model over the same preferences — what happens on the next app launch.
+        var restored = new Harness(harness.Preferences);
+        Assert.Equal(SearchTypeFilter.Manga, restored.Model.SearchFilter);
+    }
+
+    [Fact]
+    public void WithNothingPersisted_ItStartsOnAll()
+    {
+        Assert.Equal(SearchTypeFilter.All, new Harness().Model.SearchFilter);
+    }
+
+    [Theory]
+    [InlineData(SearchTypeFilter.All, "Search anime and manga...", "Search anime and manga", "No results found")]
+    [InlineData(SearchTypeFilter.Anime, "Search all anime...", "Search all anime", "No anime found")]
+    [InlineData(SearchTypeFilter.Manga, "Search all manga...", "Search all manga", "No manga found")]
+    public void TheCopy_FollowsTheSelectedFilter(
+        SearchTypeFilter filter, string placeholder, string idle, string noResults)
+    {
+        var harness = new Harness();
+        harness.Model.SearchFilter = filter;
+
+        Assert.Equal(placeholder, harness.Model.SearchPlaceholder);
+        Assert.Equal(idle, harness.Model.IdlePrompt);
+        Assert.Equal(noResults, harness.Model.NoResultsMessage);
+        Assert.Equal(filter.ToString(), harness.Model.SearchFilterKey);
+    }
+
     private static (IReadOnlyList<BrowseMediaItem> Items, PageInfo? PageInfo) Page(int mediaId, bool hasNextPage)
         => ([new BrowseMediaItem { Node = new RelatedMedia { Id = mediaId } }],
             new PageInfo { HasNextPage = hasNextPage, CurrentPage = 1 });
@@ -187,24 +369,26 @@ public class SearchPageModelTests
     {
         private readonly Dictionary<string, Func<CancellationToken, Task<(IReadOnlyList<BrowseMediaItem>, PageInfo?)>>> _responses = new(StringComparer.Ordinal);
         private readonly ManualTimeProvider _time = new(DateTimeOffset.UnixEpoch);
-        private readonly List<(string Query, bool? Adult, int Page)> _calls = [];
+        private readonly List<(string Query, MediaKind? Kind, bool? Adult, int Page)> _calls = [];
 
-        public Harness()
+        public Harness(FakePreferences? preferences = null)
         {
+            Preferences = preferences ?? new FakePreferences();
+
             var client = Substitute.For<IAniListClient>();
             client
-                .SearchAnimePageAsync(
-                    Arg.Any<string>(), Arg.Any<bool?>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<CancellationToken>())
+                .SearchMediaPageAsync(
+                    Arg.Any<string>(), Arg.Any<MediaKind?>(), Arg.Any<bool?>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<CancellationToken>())
                 .Returns(call =>
                 {
                     var query = call.Arg<string>();
                     lock (_calls)
                     {
-                        _calls.Add((query, call.ArgAt<bool?>(1), call.ArgAt<int>(2)));
+                        _calls.Add((query, call.ArgAt<MediaKind?>(1), call.ArgAt<bool?>(2), call.ArgAt<int>(3)));
                     }
 
                     return _responses.TryGetValue(query, out var responder)
-                        ? responder(call.ArgAt<CancellationToken>(4))
+                        ? responder(call.ArgAt<CancellationToken>(5))
                         : Task.FromResult<(IReadOnlyList<BrowseMediaItem>, PageInfo?)>(([], new PageInfo()));
                 });
 
@@ -220,6 +404,7 @@ public class SearchPageModelTests
                 Dialogs,
                 new ListEntryStatusFlow(Dialogs),
                 new ErrorReportService(NullLogger<ErrorReportService>.Instance),
+                Preferences,
                 _time,
                 NullLogger<SearchPageModel>.Instance);
         }
@@ -230,7 +415,9 @@ public class SearchPageModelTests
 
         public ScriptedDialogService Dialogs { get; }
 
-        public IReadOnlyList<(string Query, bool? Adult, int Page)> Calls
+        public FakePreferences Preferences { get; }
+
+        public IReadOnlyList<(string Query, MediaKind? Kind, bool? Adult, int Page)> Calls
         {
             get
             {
@@ -259,6 +446,17 @@ public class SearchPageModelTests
             };
 
             return gate;
+        }
+
+        /// <summary>
+        /// Waits out the re-run a filter flip triggers (#12). SelectSearchFilter clears and restores
+        /// SearchText, which routes through the same debounce a keystroke does.
+        /// </summary>
+        public async Task WaitForRerunAsync()
+        {
+            var before = Calls.Count;
+            await AdvancePastDebounceAsync();
+            await WaitUntilAsync(() => Calls.Count > before && !Model.IsSearching);
         }
 
         public async Task SearchAsync(string query, bool waitForFetch = true)

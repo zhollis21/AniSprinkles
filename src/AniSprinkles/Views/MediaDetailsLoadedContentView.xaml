@@ -180,6 +180,23 @@
                     <Label Text="{Binding SeasonYearDisplay}" Style="{StaticResource ChipLabelStyle}"
                            TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Season'}" />
                 </Border>
+                <!--
+                    The manga counterparts (#12). No type check is needed on either set: AniList
+                    fills in episodes/duration/season only for anime and chapters/volumes only for
+                    manga, so each chip's own empty-string check already hides it for the other
+                    type. Both stay blank for a still-publishing manga, which AniList leaves with
+                    null counts until the series finishes.
+                -->
+                <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
+                        IsVisible="{Binding ChaptersDisplay, Converter={StaticResource StringNotNullOrEmptyConverter}}">
+                    <Label Text="{Binding ChaptersDisplay}" Style="{StaticResource ChipLabelStyle}"
+                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Chapters'}" />
+                </Border>
+                <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
+                        IsVisible="{Binding VolumesDisplay, Converter={StaticResource StringNotNullOrEmptyConverter}}">
+                    <Label Text="{Binding VolumesDisplay}" Style="{StaticResource ChipLabelStyle}"
+                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Volumes'}" />
+                </Border>
             </FlexLayout>
 
             <!-- ============================================ -->
@@ -286,7 +303,7 @@
                                 Padding="4,4" Margin="0,10,0,0"
                                 IsVisible="{Binding IsStatusExpanded}">
                         <VerticalStackLayout Spacing="0">
-                            <!-- Watching -->
+                            <!-- Watching / Reading (label follows the media type, #12) -->
                             <Border StrokeShape="RoundRectangle 8" StrokeThickness="0" Padding="10,10"
                                     Background="{Binding CurrentStatusKey, Converter={StaticResource SortFieldBackgroundConverter}, ConverterParameter=Current}">
                                 <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding QuickSetStatusCommand}" CommandParameter="Current" /></Border.GestureRecognizers>
@@ -294,11 +311,11 @@
                                     <Image Grid.Column="0" WidthRequest="18" HeightRequest="18" VerticalOptions="Center">
                                         <Image.Source><FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Eye24}" FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}" Color="{Binding CurrentStatusKey, Converter={StaticResource SortFieldSelectedTextConverter}, ConverterParameter='Current'}" Size="18" /></Image.Source>
                                     </Image>
-                                    <Label Grid.Column="1" Text="Watching" Style="{StaticResource Body2}" TextColor="{Binding CurrentStatusKey, Converter={StaticResource SortFieldSelectedTextConverter}, ConverterParameter='Current'}" VerticalTextAlignment="Center" />
+                                    <Label Grid.Column="1" Text="{Binding StatusLabelCurrent}" Style="{StaticResource Body2}" TextColor="{Binding CurrentStatusKey, Converter={StaticResource SortFieldSelectedTextConverter}, ConverterParameter='Current'}" VerticalTextAlignment="Center" />
                                 </Grid>
                             </Border>
                             <BoxView HeightRequest="1" Color="{StaticResource Gray600}" Opacity="0.3" />
-                            <!-- Plan to Watch -->
+                            <!-- Plan to Watch / Plan to Read -->
                             <Border StrokeShape="RoundRectangle 8" StrokeThickness="0" Padding="10,10"
                                     Background="{Binding CurrentStatusKey, Converter={StaticResource SortFieldBackgroundConverter}, ConverterParameter=Planning}">
                                 <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding QuickSetStatusCommand}" CommandParameter="Planning" /></Border.GestureRecognizers>
@@ -306,7 +323,7 @@
                                     <Image Grid.Column="0" WidthRequest="18" HeightRequest="18" VerticalOptions="Center">
                                         <Image.Source><FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Bookmark24}" FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}" Color="{Binding CurrentStatusKey, Converter={StaticResource SortFieldSelectedTextConverter}, ConverterParameter='Planning'}" Size="18" /></Image.Source>
                                     </Image>
-                                    <Label Grid.Column="1" Text="Plan to Watch" Style="{StaticResource Body2}" TextColor="{Binding CurrentStatusKey, Converter={StaticResource SortFieldSelectedTextConverter}, ConverterParameter='Planning'}" VerticalTextAlignment="Center" />
+                                    <Label Grid.Column="1" Text="{Binding StatusLabelPlanning}" Style="{StaticResource Body2}" TextColor="{Binding CurrentStatusKey, Converter={StaticResource SortFieldSelectedTextConverter}, ConverterParameter='Planning'}" VerticalTextAlignment="Center" />
                                 </Grid>
                             </Border>
                             <BoxView HeightRequest="1" Color="{StaticResource Gray600}" Opacity="0.3" />
@@ -346,7 +363,7 @@
                                 </Grid>
                             </Border>
                             <BoxView HeightRequest="1" Color="{StaticResource Gray600}" Opacity="0.3" />
-                            <!-- Rewatching -->
+                            <!-- Rewatching / Rereading -->
                             <Border StrokeShape="RoundRectangle 8" StrokeThickness="0" Padding="10,10"
                                     Background="{Binding CurrentStatusKey, Converter={StaticResource SortFieldBackgroundConverter}, ConverterParameter=Repeating}">
                                 <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding QuickSetStatusCommand}" CommandParameter="Repeating" /></Border.GestureRecognizers>
@@ -354,7 +371,7 @@
                                     <Image Grid.Column="0" WidthRequest="18" HeightRequest="18" VerticalOptions="Center">
                                         <Image.Source><FontImageSource Glyph="{x:Static icons:FluentIconsRegular.ArrowRepeatAll24}" FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}" Color="{Binding CurrentStatusKey, Converter={StaticResource SortFieldSelectedTextConverter}, ConverterParameter='Repeating'}" Size="18" /></Image.Source>
                                     </Image>
-                                    <Label Grid.Column="1" Text="Rewatching" Style="{StaticResource Body2}" TextColor="{Binding CurrentStatusKey, Converter={StaticResource SortFieldSelectedTextConverter}, ConverterParameter='Repeating'}" VerticalTextAlignment="Center" />
+                                    <Label Grid.Column="1" Text="{Binding StatusLabelRepeating}" Style="{StaticResource Body2}" TextColor="{Binding CurrentStatusKey, Converter={StaticResource SortFieldSelectedTextConverter}, ConverterParameter='Repeating'}" VerticalTextAlignment="Center" />
                                 </Grid>
                             </Border>
                             <!-- Remove from List -->
@@ -385,7 +402,7 @@
                                                      Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Progress'}" Size="16" />
                                 </Image.Source>
                             </Image>
-                            <Label Grid.Column="1" Text="Progress" Style="{StaticResource Caption1Strong}"
+                            <Label Grid.Column="1" Text="{Binding ProgressSectionLabel}" Style="{StaticResource Caption1Strong}"
                                    TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Progress'}" VerticalTextAlignment="Center" />
                             <Border Grid.Column="2" StrokeShape="RoundRectangle 8" StrokeThickness="1"
                                     Stroke="{StaticResource Gray600}" Background="Transparent"

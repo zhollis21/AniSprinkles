@@ -133,8 +133,8 @@ public class AniListClient : IAniListClient
         return viewerId;
     }
 
-    public async Task<(IReadOnlyList<BrowseMediaItem> Items, PageInfo? PageInfo)> SearchAnimePageAsync(
-        string search, bool? isAdult = false, int page = 1, int perPage = 20, CancellationToken cancellationToken = default)
+    public async Task<(IReadOnlyList<BrowseMediaItem> Items, PageInfo? PageInfo)> SearchMediaPageAsync(
+        string search, MediaKind? kind, bool? isAdult = false, int page = 1, int perPage = 20, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(search))
         {
@@ -146,7 +146,10 @@ public class AniListClient : IAniListClient
         var data = await SendAsync<BrowsePageData>(
             "Search",
             SearchQuery,
-            new { search, page, perPage, isAdult }, // null isAdult serializes away → 18+ allowed
+            // Both nulls serialize AWAY rather than as JSON null (JsonIgnoreCondition.WhenWritingNull),
+            // which is load-bearing for each: an absent isAdult lets 18+ through, and an absent type
+            // searches anime and manga together. Sending type: null explicitly returns nothing at all.
+            new { search, type = kind?.ToAniListType(), page, perPage, isAdult },
             token,
             cancellationToken).ConfigureAwait(false);
 
@@ -261,6 +264,7 @@ public class AniListClient : IAniListClient
             mediaId = entry.MediaId,
             status = ToStatusString(entry.Status),
             progress = entry.Progress,
+            progressVolumes = entry.ProgressVolumes,
             score = entry.Score,
             repeat = entry.Repeat,
             notes = entry.Notes,
@@ -297,6 +301,7 @@ public class AniListClient : IAniListClient
         var variables = new
         {
             animeId = kind == FavouriteKind.Anime ? id : (int?)null,
+            mangaId = kind == FavouriteKind.Manga ? id : (int?)null,
             characterId = kind == FavouriteKind.Character ? id : (int?)null,
             staffId = kind == FavouriteKind.Staff ? id : (int?)null,
             studioId = kind == FavouriteKind.Studio ? id : (int?)null,
@@ -930,6 +935,7 @@ public class AniListClient : IAniListClient
             Media = media,
             Status = ParseStatus(dto.Status),
             Progress = dto.Progress,
+            ProgressVolumes = dto.ProgressVolumes,
             Score = dto.Score,
             Repeat = dto.Repeat,
             Notes = dto.Notes,
@@ -951,8 +957,11 @@ public class AniListClient : IAniListClient
             BannerImage = dto.BannerImage,
             Description = dto.Description,
             Format = dto.Format,
+            Type = dto.Type,
             Status = dto.Status,
             Episodes = dto.Episodes,
+            Chapters = dto.Chapters,
+            Volumes = dto.Volumes,
             Duration = dto.Duration,
             Season = dto.Season,
             SeasonYear = dto.SeasonYear,
@@ -1063,6 +1072,8 @@ public class AniListClient : IAniListClient
         StartDate = dto.StartDate,
         // Only the browseMedia fragment (Discover/browse/search) requests these; null elsewhere.
         Episodes = dto.Episodes,
+        Chapters = dto.Chapters,
+        Volumes = dto.Volumes,
         Trending = dto.Trending,
         ListEntryId = dto.MediaListEntry?.Id,
         ListStatus = ParseStatus(dto.MediaListEntry?.Status),
@@ -1454,6 +1465,7 @@ public class AniListClient : IAniListClient
         public int? MediaId { get; set; }
         public string? Status { get; set; }
         public int? Progress { get; set; }
+        public int? ProgressVolumes { get; set; }
         public double? Score { get; set; }
         public int? Repeat { get; set; }
         public string? Notes { get; set; }
@@ -1646,8 +1658,11 @@ public class AniListClient : IAniListClient
         public string? BannerImage { get; set; }
         public string? Description { get; set; }
         public string? Format { get; set; }
+        public string? Type { get; set; }
         public string? Status { get; set; }
         public int? Episodes { get; set; }
+        public int? Chapters { get; set; }
+        public int? Volumes { get; set; }
         public int? Duration { get; set; }
         public string? Season { get; set; }
         public int? SeasonYear { get; set; }
@@ -1725,6 +1740,8 @@ public class AniListClient : IAniListClient
         public MediaDate? StartDate { get; set; }
         // browseMedia fragment only (Discover/browse/search).
         public int? Episodes { get; set; }
+        public int? Chapters { get; set; }
+        public int? Volumes { get; set; }
         public int? Trending { get; set; }
         public MediaListEntryDto? MediaListEntry { get; set; }
     }
@@ -1964,6 +1981,8 @@ fragment browseMedia on Media {
   type
   status
   episodes
+  chapters
+  volumes
   averageScore
   favourites
   popularity
@@ -1973,10 +1992,10 @@ fragment browseMedia on Media {
 }";
 
     private const string SearchQuery = @"
-query Search($search: String!, $page: Int, $perPage: Int, $isAdult: Boolean) {
+query Search($search: String!, $type: MediaType, $page: Int, $perPage: Int, $isAdult: Boolean) {
   Page(page: $page, perPage: $perPage) {
     pageInfo { hasNextPage currentPage }
-    media(type: ANIME, search: $search, isAdult: $isAdult, sort: [SEARCH_MATCH, ID]) { ...browseMedia }
+    media(type: $type, search: $search, isAdult: $isAdult, sort: [SEARCH_MATCH, ID]) { ...browseMedia }
   }
 }" + BrowseMediaFragment;
 
@@ -2036,7 +2055,7 @@ query BrowseAnime($page: Int!, $perPage: Int!, $sort: [MediaSort], $status: Medi
 
     private const string MediaQuery = @"
 query Media($id: Int!) {
-  Media(id: $id, type: ANIME) {
+  Media(id: $id) {
     id
     idMal
     title { romaji english native }
@@ -2044,8 +2063,11 @@ query Media($id: Int!) {
     bannerImage
     description
     format
+    type
     status
     episodes
+    chapters
+    volumes
     duration
     season
     seasonYear
@@ -2156,12 +2178,13 @@ query Media($id: Int!) {
 }";
 
     private const string SaveEntryMutation = @"
-mutation SaveMediaListEntry($mediaId: Int, $status: MediaListStatus, $progress: Int, $score: Float, $repeat: Int, $notes: String, $private: Boolean, $hiddenFromStatusLists: Boolean) {
-  SaveMediaListEntry(mediaId: $mediaId, status: $status, progress: $progress, score: $score, repeat: $repeat, notes: $notes, private: $private, hiddenFromStatusLists: $hiddenFromStatusLists) {
+mutation SaveMediaListEntry($mediaId: Int, $status: MediaListStatus, $progress: Int, $progressVolumes: Int, $score: Float, $repeat: Int, $notes: String, $private: Boolean, $hiddenFromStatusLists: Boolean) {
+  SaveMediaListEntry(mediaId: $mediaId, status: $status, progress: $progress, progressVolumes: $progressVolumes, score: $score, repeat: $repeat, notes: $notes, private: $private, hiddenFromStatusLists: $hiddenFromStatusLists) {
     id
     mediaId
     status
     progress
+    progressVolumes
     score
     repeat
     updatedAt
@@ -2173,8 +2196,11 @@ mutation SaveMediaListEntry($mediaId: Int, $status: MediaListStatus, $progress: 
       title { romaji english native }
       coverImage { medium large }
       format
+      type
       status
       episodes
+      chapters
+      volumes
       season
       seasonYear
       averageScore
@@ -2191,9 +2217,10 @@ mutation DeleteMediaListEntry($id: Int!) {
 }";
 
     private const string ToggleFavouriteMutation = @"
-mutation ToggleFavourite($animeId: Int, $characterId: Int, $staffId: Int, $studioId: Int) {
-  ToggleFavourite(animeId: $animeId, characterId: $characterId, staffId: $staffId, studioId: $studioId) {
+mutation ToggleFavourite($animeId: Int, $mangaId: Int, $characterId: Int, $staffId: Int, $studioId: Int) {
+  ToggleFavourite(animeId: $animeId, mangaId: $mangaId, characterId: $characterId, staffId: $staffId, studioId: $studioId) {
     anime(page: 1, perPage: 1) { pageInfo { total } }
+    manga(page: 1, perPage: 1) { pageInfo { total } }
   }
 }";
 
@@ -2394,13 +2421,13 @@ query CharacterMediaPage($id: Int!, $page: Int!, $sort: [MediaSort], $perPage: I
   }
 }";
 
-    // Per-section page queries for Media Details. Each fetches a single connection of Media(id, type: ANIME)
+    // Per-section page queries for Media Details. Each fetches a single connection of Media(id)
     // with the section's sort + page, mirroring the corresponding sub-block of the heavy MediaQuery so
     // Load-More items render identically to the seeded first page. Characters omits voiceActors (unused on
     // the Media character card).
     private const string MediaCharactersPageQuery = @"
 query MediaCharactersPage($id: Int!, $page: Int!, $sort: [CharacterSort], $perPage: Int = 25) {
-  Media(id: $id, type: ANIME) {
+  Media(id: $id) {
     characters(sort: $sort, page: $page, perPage: $perPage) {
       pageInfo { hasNextPage currentPage }
       edges {
@@ -2418,7 +2445,7 @@ query MediaCharactersPage($id: Int!, $page: Int!, $sort: [CharacterSort], $perPa
 
     private const string MediaStaffPageQuery = @"
 query MediaStaffPage($id: Int!, $page: Int!, $sort: [StaffSort], $perPage: Int = 25) {
-  Media(id: $id, type: ANIME) {
+  Media(id: $id) {
     staff(sort: $sort, page: $page, perPage: $perPage) {
       pageInfo { hasNextPage currentPage }
       edges {
@@ -2436,7 +2463,7 @@ query MediaStaffPage($id: Int!, $page: Int!, $sort: [StaffSort], $perPage: Int =
 
     private const string MediaRecommendationsPageQuery = @"
 query MediaRecommendationsPage($id: Int!, $page: Int!, $sort: [RecommendationSort], $perPage: Int = 25) {
-  Media(id: $id, type: ANIME) {
+  Media(id: $id) {
     recommendations(sort: $sort, page: $page, perPage: $perPage) {
       pageInfo { hasNextPage currentPage }
       nodes {

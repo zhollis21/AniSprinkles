@@ -61,40 +61,31 @@ public class AniListLinkTargetTests
     [InlineData("https://anilist.co/character")]
     [InlineData("https://anilist.co/character/not-a-number")]
     [InlineData("https://anilist.co/user/someone")]
-    // Manga is ours in principle but the details page is anime-only, so it deliberately doesn't
-    // resolve to a route — IsUnsupportedEntity picks it up instead. See RouteFor.
-    [InlineData("https://anilist.co/manga/30013")]
+    [InlineData("https://anilist.co/manga")]
+    [InlineData("https://anilist.co/manga/not-a-number")]
     [InlineData("https://anilist.co/character/-5")]
     [InlineData("https://notanilist.co/character/725")]
+    [InlineData("https://notanilist.co/manga/30013")]
     [InlineData("https://anilist.co.evil.example/character/725")]
     public void AnythingElse_DoesNotResolve(string? url)
         // Everything that returns null goes to the external browser instead — 66 of the 235 sampled
         // links are staff social and agency pages, which is a perfectly good outcome for them.
-        // Manga is the one exception: it lands here too, but IsUnsupportedEntity catches it before
-        // the browser does.
         => Assert.Null(AniListLinkTarget.Resolve(url));
 
     [Theory]
     [InlineData("https://anilist.co/manga/30013")]
     [InlineData("https://anilist.co/manga/30013/Berserk")]
     [InlineData("https://www.anilist.co/Manga/30013")]
-    public void AMangaUrl_IsRecognisedAsUnsupported(string url)
-        // The details page queries Media(type: ANIME), so a manga id 404s there. Callers say
-        // "not supported yet" — the same answer NavigateToMedia already gives — rather than
-        // opening the browser, so manga behaves the same wherever it is tapped (#12).
-        => Assert.True(AniListLinkTarget.IsUnsupportedEntity(url));
+    public void AMangaUrl_ResolvesToTheDetailsPage(string url)
+    {
+        // Was deliberately unresolvable until #12: the details page pinned Media(id:, type: ANIME),
+        // so a manga id 404'd and callers toasted "not supported yet" instead. The type pin is gone
+        // — media ids are unique across both types — so manga routes exactly like anime now.
+        var target = AniListLinkTarget.Resolve(url);
 
-    [Theory]
-    [InlineData(null)]
-    [InlineData("")]
-    [InlineData("https://anilist.co/anime/21")]
-    [InlineData("https://anilist.co/character/725")]
-    [InlineData("https://anilist.co/manga")]
-    [InlineData("https://anilist.co/manga/not-a-number")]
-    [InlineData("https://twitter.com/tsuda_ken")]
-    [InlineData("https://notanilist.co/manga/30013")]
-    public void AnythingThatIsNotAMangaEntity_IsNotUnsupported(string? url)
-        // Notably a resolvable link is not "unsupported" — otherwise every anime link would toast
-        // instead of navigating.
-        => Assert.False(AniListLinkTarget.IsUnsupportedEntity(url));
+        Assert.NotNull(target);
+        Assert.Equal("media-details", target.Route);
+        Assert.Equal("mediaId", target.ParameterName);
+        Assert.Equal(30013, target.Id);
+    }
 }

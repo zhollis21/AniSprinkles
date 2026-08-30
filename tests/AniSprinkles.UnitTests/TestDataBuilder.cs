@@ -23,7 +23,11 @@ internal static class TestDataBuilder
         DateTimeOffset? updatedAt = null,
         int? episodes = null,
         int? nextAiringEpisode = null,
-        int? nextAiringAt = null)
+        int? nextAiringAt = null,
+        string? mediaType = null,
+        int? chapters = null,
+        int? volumes = null,
+        int? progressVolumes = null)
     {
         return new MediaListEntry
         {
@@ -31,6 +35,7 @@ internal static class TestDataBuilder
             MediaId = mediaId,
             Status = status,
             Progress = progress,
+            ProgressVolumes = progressVolumes,
             Score = score,
             UpdatedAt = updatedAt,
             Media = new Media
@@ -43,7 +48,10 @@ internal static class TestDataBuilder
                 },
                 CoverImage = new MediaCoverImage { Medium = coverMedium ?? $"https://img/{mediaId}" },
                 IsAdult = isAdult,
+                Type = mediaType,
                 Episodes = episodes,
+                Chapters = chapters,
+                Volumes = volumes,
                 NextAiringEpisode = nextAiringEpisode is null
                     ? null
                     : new MediaAiringEpisode { Episode = nextAiringEpisode, AiringAt = nextAiringAt },

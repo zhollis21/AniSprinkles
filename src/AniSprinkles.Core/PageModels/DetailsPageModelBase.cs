@@ -462,15 +462,6 @@ public abstract partial class DetailsPageModelBase<TEntity> : ObservableObject
             return;
         }
 
-        // The details screen is anime-only (Media(id:, type: ANIME)); a manga/novel id would 404, and the
-        // media lists these pages show can include manga. Toast instead of navigating.
-        if (media is { IsAnime: false })
-        {
-            Logger.LogInformation("NAVTRACE {TracePrefix} → Media skipped non-anime {MediaId} (type={Type}).", TracePrefix, mediaId, media.Type);
-            await Feedback.ShowToastAsync(BioLinkFollower.UnsupportedMediaMessage);
-            return;
-        }
-
         await NavigationService.GoToAsync("media-details", animate: false, new Dictionary<string, object>
         {
             ["mediaId"] = mediaId,

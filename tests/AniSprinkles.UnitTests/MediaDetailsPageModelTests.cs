@@ -267,4 +267,138 @@ public class MediaDetailsPageModelTests
             => Client.GetMediaAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromException<(Media?, MediaListEntry?)>(exception));
     }
+
+    // ── Manga (#12) ──────────────────────────────────────────────────
+
+    [Fact]
+    public async Task AMangaPage_LabelsEveryStatusInTheReadingVocabulary()
+    {
+        var harness = new Harness();
+        harness.ReturnsMedia(MangaMedia(chapters: 141, volumes: 34));
+
+        await harness.Model.LoadAsync(53390, listEntry: null);
+
+        Assert.Equal(MediaKind.Manga, harness.Model.CurrentMediaKind);
+        Assert.Equal("Reading", harness.Model.StatusLabelCurrent);
+        Assert.Equal("Plan to Read", harness.Model.StatusLabelPlanning);
+        Assert.Equal("Rereading", harness.Model.StatusLabelRepeating);
+    }
+
+    [Fact]
+    public async Task AnAnimePage_KeepsTheWatchingVocabulary()
+    {
+        var harness = new Harness();
+        harness.ReturnsMedia(new Media { Id = 42, Type = "ANIME", Episodes = 12 });
+
+        await harness.Model.LoadAsync(42, listEntry: null);
+
+        Assert.Equal(MediaKind.Anime, harness.Model.CurrentMediaKind);
+        Assert.Equal("Watching", harness.Model.StatusLabelCurrent);
+        Assert.Equal("Plan to Watch", harness.Model.StatusLabelPlanning);
+        Assert.Equal("Rewatching", harness.Model.StatusLabelRepeating);
+        Assert.Equal(MediaProgressUnit.Episode, harness.Model.CurrentProgressUnit);
+        Assert.Equal("Episodes watched", harness.Model.ProgressSectionLabel);
+    }
+
+    [Fact]
+    public async Task AMangaChipRow_ShowsChaptersAndVolumesInsteadOfEpisodesAndSeason()
+    {
+        var harness = new Harness();
+        harness.ReturnsMedia(MangaMedia(chapters: 141, volumes: 34));
+
+        await harness.Model.LoadAsync(53390, listEntry: null);
+
+        Assert.Equal("141 Chapters", harness.Model.ChaptersDisplay);
+        Assert.Equal("34 Volumes", harness.Model.VolumesDisplay);
+
+        // One-shots make the singular a visible chip rather than a theoretical one.
+        harness.Model.Media = MangaMedia(chapters: 1, volumes: null);
+        Assert.Equal("1 Chapter", harness.Model.ChaptersDisplay);
+        Assert.Equal(string.Empty, harness.Model.VolumesDisplay);
+        // The anime chips gate on their own emptiness, so they hide themselves for manga.
+        Assert.Equal(string.Empty, harness.Model.EpisodesDisplay);
+        Assert.Equal(string.Empty, harness.Model.DurationPillDisplay);
+        Assert.Equal(string.Empty, harness.Model.SeasonYearDisplay);
+    }
+
+    [Fact]
+    public async Task AMangaChapterReader_GetsAChapterProgressControl()
+    {
+        var harness = new Harness();
+        var entry = new MediaListEntry { Id = 1, MediaId = 53390, Progress = 100, Status = MediaListStatus.Current };
+        harness.ReturnsMedia(MangaMedia(chapters: 141, volumes: 34), entry);
+
+        await harness.Model.LoadAsync(53390, entry);
+
+        Assert.Equal(MediaProgressUnit.Chapter, harness.Model.CurrentProgressUnit);
+        Assert.Equal("Chapter", harness.Model.ProgressUnitNoun);
+        // The row heading is the only thing on the page that says WHICH counter the number and the
+        // slider refer to — the unit is decided per entry, so a bare "Progress" was ambiguous.
+        Assert.Equal("Chapters read", harness.Model.ProgressSectionLabel);
+        Assert.Equal("100 / 141", harness.Model.ProgressLabel);
+        Assert.Equal(141, harness.Model.ProgressSliderMax);
+    }
+
+    [Fact]
+    public async Task AMangaVolumeReader_GetsAVolumeProgressControl()
+    {
+        var harness = new Harness();
+        var entry = new MediaListEntry
+        {
+            Id = 1, MediaId = 53390, Progress = 0, ProgressVolumes = 20, Status = MediaListStatus.Current,
+        };
+        harness.ReturnsMedia(MangaMedia(chapters: 141, volumes: 34), entry);
+
+        await harness.Model.LoadAsync(53390, entry);
+
+        Assert.Equal(MediaProgressUnit.Volume, harness.Model.CurrentProgressUnit);
+        Assert.Equal("Volume", harness.Model.ProgressUnitNoun);
+        Assert.Equal("Volumes read", harness.Model.ProgressSectionLabel);
+        Assert.Equal("20 / 34", harness.Model.ProgressLabel);
+        Assert.Equal(34, harness.Model.ProgressSliderMax);
+    }
+
+    [Fact]
+    public async Task AnOngoingManga_HasNoProgressBarBecauseAniListPublishesNoTotal()
+    {
+        // Not an edge case: AniList returns null chapters and null volumes for every RELEASING
+        // series, and manga has no nextAiringEpisode to stand in for a cap the way an airing anime
+        // does. So the bar is hidden and the label is a bare count.
+        var harness = new Harness();
+        var entry = new MediaListEntry { Id = 1, MediaId = 30013, Progress = 1100, Status = MediaListStatus.Current };
+        harness.ReturnsMedia(MangaMedia(chapters: null, volumes: null), entry);
+
+        await harness.Model.LoadAsync(30013, entry);
+
+        Assert.False(harness.Model.HasProgressSliderMax);
+        Assert.Equal("1100", harness.Model.ProgressLabel);
+        Assert.Equal(0, harness.Model.ProgressFraction);
+    }
+
+    [Fact]
+    public async Task IncrementingAVolumeReader_MovesVolumesAndLeavesChaptersAlone()
+    {
+        var harness = new Harness();
+        var entry = new MediaListEntry
+        {
+            Id = 1, MediaId = 53390, Progress = 0, ProgressVolumes = 20, Status = MediaListStatus.Current,
+        };
+        harness.ReturnsMedia(MangaMedia(chapters: 141, volumes: 34), entry);
+        await harness.Model.LoadAsync(53390, entry);
+
+        await harness.Model.IncrementProgressCommand.ExecuteAsync(null);
+
+        Assert.Equal(21, entry.ProgressVolumes);
+        Assert.Equal(0, entry.Progress);
+    }
+
+    private static Media MangaMedia(int? chapters, int? volumes) => new()
+    {
+        Id = 53390,
+        Type = "MANGA",
+        Format = "MANGA",
+        Chapters = chapters,
+        Volumes = volumes,
+        Title = new MediaTitle { Romaji = "Shingeki no Kyojin" },
+    };
 }

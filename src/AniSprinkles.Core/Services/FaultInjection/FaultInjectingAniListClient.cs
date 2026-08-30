@@ -152,11 +152,11 @@ public sealed class FaultInjectingAniListClient(
         CancellationToken cancellationToken = default)
         => GateAsync(nameof(GetMyAnimeListGroupedAsync), inner.GetMyAnimeListGroupedAsync, cancellationToken);
 
-    public Task<(IReadOnlyList<BrowseMediaItem> Items, PageInfo? PageInfo)> SearchAnimePageAsync(
-        string search, bool? isAdult = false, int page = 1, int perPage = 20, CancellationToken cancellationToken = default)
+    public Task<(IReadOnlyList<BrowseMediaItem> Items, PageInfo? PageInfo)> SearchMediaPageAsync(
+        string search, MediaKind? kind, bool? isAdult = false, int page = 1, int perPage = 20, CancellationToken cancellationToken = default)
         => GateAsync(
-            nameof(SearchAnimePageAsync),
-            ct => inner.SearchAnimePageAsync(search, isAdult, page, perPage, ct),
+            nameof(SearchMediaPageAsync),
+            ct => inner.SearchMediaPageAsync(search, kind, isAdult, page, perPage, ct),
             cancellationToken);
 
     public Task<DiscoverSections> GetDiscoverSectionsAsync(

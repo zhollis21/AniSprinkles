@@ -1,3 +1,5 @@
+using AniSprinkles.Utilities;
+
 namespace AniSprinkles.Services;
 
 /// <summary>
@@ -39,26 +41,34 @@ public sealed class ListEntryStatusFlow(IDialogService dialogs)
     }
 
     /// <summary>
-    /// Invoked when the user has just incremented progress to the known total episode
-    /// count. Shows the confirmation popup and — if confirmed — sets progress to max,
-    /// status to Completed, and prompts for a score (pre-populated from the entry's
-    /// existing score). Returns <c>true</c> when the caller should save.
+    /// Invoked when the user has just incremented progress to the known total for the entry's
+    /// active unit — episodes, chapters or volumes. Shows the confirmation popup and — if
+    /// confirmed — sets progress to max, status to Completed, and prompts for a score
+    /// (pre-populated from the entry's existing score). Returns <c>true</c> when the caller
+    /// should save.
     ///
-    /// Must only be called for entries with <see cref="MediaListEntry.HasKnownEpisodeCount"/>.
-    /// Long-running airing shows without a finite total should not route through here.
+    /// Must only be called for entries with <see cref="MediaListEntry.HasKnownProgressTotal"/>.
+    /// Long-running airing shows and still-publishing manga have no finite total and should not
+    /// route through here.
     /// </summary>
     public async Task<bool> ApplyCompletionAsync(MediaListEntry entry)
     {
         ArgumentNullException.ThrowIfNull(entry);
 
-        if (!entry.HasKnownEpisodeCount || entry.MaxEpisodes is not { } total || entry.Media is null)
+        if (!entry.HasKnownProgressTotal || entry.ActiveProgressTotal is not { } total || entry.Media is null)
         {
             return false;
         }
 
+        // Wording follows the entry's active unit: episodes for anime, chapters or volumes for
+        // manga depending on which counter the reader actually uses (#12).
+        var unit = entry.ActiveProgressUnit;
+        var plural = MediaListVocabulary.UnitNounPlural(unit);
+        var verb = MediaListVocabulary.ConsumedVerb(unit);
+
         var confirmed = await dialogs.ConfirmAsync(
-            title: "All episodes watched!",
-            message: $"You've watched all {total} episodes of {entry.Media.DisplayTitle}. Mark as Completed?",
+            title: $"All {plural} {verb}!",
+            message: $"You've {verb} all {total} {plural} of {entry.Media.DisplayTitle}. Mark as Completed?",
             confirmText: "Yes",
             cancelText: "No",
             iconGlyph: Glyphs.Regular.CheckmarkCircle24);
@@ -70,7 +80,7 @@ public sealed class ListEntryStatusFlow(IDialogService dialogs)
 
         SentrySdk.AddBreadcrumb($"Completion confirmed (entry {entry.Id})", "list", "user");
 
-        entry.Progress = total;
+        entry.SetActiveProgress(total);
         entry.Status = MediaListStatus.Completed;
 
         var score = await dialogs.ShowRatingAsync(entry.Media.DisplayTitle, entry.Score);

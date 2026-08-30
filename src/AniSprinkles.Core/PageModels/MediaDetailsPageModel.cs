@@ -312,11 +312,27 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
         ? CultureInfo.InvariantCulture.TextInfo.ToTitleCase(s.ToLowerInvariant())
         : "--";
 
-    public string EpisodesDisplay => Media?.Episodes is > 0 ? $"{Media.Episodes} Episodes" : "";
+    public string EpisodesDisplay => CountChip(Media?.Episodes, "Episode");
 
     public string DurationPillDisplay => Media?.Duration is > 0 ? $"{Media.Duration} min/ep" : "";
 
     public string SeasonYearDisplay => SeasonDisplay != "-" ? SeasonDisplay : "";
+
+    // The manga counterparts of the Episodes / Duration / Season chips. All three of those are
+    // empty for manga (AniList returns no duration, season or episode count), and these are empty
+    // for anime, so the row simply carries whichever set applies. Blank for an ongoing series,
+    // which AniList leaves null until publication finishes.
+    public string ChaptersDisplay => CountChip(Media?.Chapters, "Chapter");
+
+    public string VolumesDisplay => CountChip(Media?.Volumes, "Volume");
+
+    /// <summary>
+    /// "12 Episodes" / "1 Chapter" / "" when the count is absent. Pluralised because one-shots make
+    /// "1 Chapters" a visible chip rather than a theoretical one — and a single-episode anime had
+    /// always read "1 Episodes" for the same reason.
+    /// </summary>
+    private static string CountChip(int? count, string noun) =>
+        count is > 0 ? $"{count} {noun}{(count == 1 ? "" : "s")}" : "";
 
     public bool HasRelations => DisplayedRelations.Count > 0;
 
@@ -331,16 +347,21 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
     // IsAuthenticated, IsFavourite and CanToggleFavourite live on DetailsPageModelBase.
     public bool CanAddToList => IsAuthenticated && !HasListEntry;
 
-    public string ListStatusDisplay => ListEntry?.Status switch
-    {
-        MediaListStatus.Current => "Watching",
-        MediaListStatus.Planning => "Plan to Watch",
-        MediaListStatus.Completed => "Completed",
-        MediaListStatus.Dropped => "Dropped",
-        MediaListStatus.Paused => "Paused",
-        MediaListStatus.Repeating => "Rewatching",
-        _ => "Add to List",
-    };
+    /// <summary>Which type this page is showing; drives every label that differs between the two.</summary>
+    public MediaKind CurrentMediaKind => Media?.IsManga is true ? MediaKind.Manga : MediaKind.Anime;
+
+    public string ListStatusDisplay => ListEntry?.Status is { } status
+        ? MediaListVocabulary.StatusLabel(status, CurrentMediaKind)
+        : "Add to List";
+
+    // The three status-picker rows whose wording differs by type. Bound rather than hardcoded in
+    // XAML so a manga page reads "Reading" / "Plan to Read" / "Rereading" (#12); the other three
+    // (Completed, Paused, Dropped) are the same word for both and stay literal in the view.
+    public string StatusLabelCurrent => MediaListVocabulary.StatusLabel(MediaListStatus.Current, CurrentMediaKind);
+
+    public string StatusLabelPlanning => MediaListVocabulary.StatusLabel(MediaListStatus.Planning, CurrentMediaKind);
+
+    public string StatusLabelRepeating => MediaListVocabulary.StatusLabel(MediaListStatus.Repeating, CurrentMediaKind);
 
     public string CurrentStatusKey => ListEntry?.Status?.ToString() ?? "";
 
@@ -358,21 +379,49 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
     // --- Progress properties ---
 
     /// <summary>
-    /// Effective episode cap for UI: total episodes when known, next-airing episode otherwise.
-    /// Sourced from the list-entry helper so My Anime and Details stay in sync.
+    /// Effective progress cap for UI, in <see cref="CurrentProgressUnit"/>: the list entry's own
+    /// total when there is an entry, so My Anime and Details stay in sync, and otherwise the same
+    /// rule derived from the media alone (needed before the media is on the user's list at all).
+    /// <para>
+    /// For manga the fallback is the chapter or volume count, with no airing-schedule backstop —
+    /// AniList publishes none — so a still-publishing series simply has no cap.
+    /// </para>
     /// </summary>
-    private int? CurrentMaxEpisodes =>
-        ListEntry?.MaxEpisodes ??
-        (Media?.Episodes is > 0 ? Media.Episodes :
-         Media?.NextAiringEpisode?.Episode is > 0 ? Media.NextAiringEpisode.Episode :
-         null);
+    private int? CurrentMaxProgress =>
+        ListEntry?.ActiveProgressTotal ??
+        (Media?.IsManga is true
+            ? (Media.Chapters is > 0 ? Media.Chapters : null)
+            : Media?.Episodes is > 0 ? Media.Episodes :
+              Media?.NextAiringEpisode?.Episode is > 0 ? Media.NextAiringEpisode.Episode :
+              null);
+
+    /// <summary>The unit the progress control counts in — episodes, chapters, or volumes (#12).</summary>
+    public MediaProgressUnit CurrentProgressUnit =>
+        ListEntry?.ActiveProgressUnit
+        ?? (Media?.IsManga is true ? MediaProgressUnit.Chapter : MediaProgressUnit.Episode);
+
+    /// <summary>Singular noun for the current unit, e.g. the "Episode"/"Chapter" in the edit prompt.</summary>
+    public string ProgressUnitNoun => MediaListVocabulary.UnitNoun(CurrentProgressUnit);
+
+    /// <summary>
+    /// Heading for the progress row: "Episodes watched" / "Chapters read" / "Volumes read".
+    /// <para>
+    /// It used to read a flat "Progress", which is fine for anime but ambiguous the moment manga
+    /// arrives — the unit is decided per entry, so "20" on a volume-tracked series looked exactly
+    /// like a chapter count. Shares <see cref="MediaListVocabulary.UnitProgressHeader"/> with the
+    /// edit-progress popup this row opens, so the two cannot disagree about what is being counted.
+    /// </para>
+    /// </summary>
+    public string ProgressSectionLabel => MediaListVocabulary.UnitProgressHeader(CurrentProgressUnit);
+
+    private int CurrentProgressValue => ListEntry?.ActiveProgress ?? 0;
 
     public string ProgressLabel
     {
         get
         {
-            var progress = ListEntry?.Progress ?? 0;
-            var max = CurrentMaxEpisodes;
+            var progress = CurrentProgressValue;
+            var max = CurrentMaxProgress;
             return max is > 0 ? $"{progress} / {max}" : $"{progress}";
         }
     }
@@ -381,19 +430,19 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
     {
         get
         {
-            var max = CurrentMaxEpisodes;
+            var max = CurrentMaxProgress;
             if (max is not > 0)
             {
                 return 0;
             }
 
-            return Math.Clamp((ListEntry?.Progress ?? 0) / (double)max, 0, 1);
+            return Math.Clamp(CurrentProgressValue / (double)max, 0, 1);
         }
     }
 
-    public bool HasProgressSliderMax => CurrentMaxEpisodes is > 0;
+    public bool HasProgressSliderMax => CurrentMaxProgress is > 0;
 
-    public double ProgressSliderMax => CurrentMaxEpisodes is > 0 ? CurrentMaxEpisodes.Value : 100;
+    public double ProgressSliderMax => CurrentMaxProgress is > 0 ? CurrentMaxProgress.Value : 100;
 
     // --- Score format properties ---
     public bool ScoreFormatIsStars => AppSettings.ScoreFormat == ScoreFormat.Point5;
@@ -467,7 +516,10 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
 
     protected override string TracePrefix => "MediaDetails";
 
-    protected override FavouriteKind FavouriteKind => FavouriteKind.Anime;
+    // Type-dependent, not a constant: ToggleFavourite takes mangaId for manga, and sending a manga
+    // id as animeId succeeds while favouriting nothing (#12).
+    protected override FavouriteKind FavouriteKind =>
+        Media?.IsManga is true ? FavouriteKind.Manga : FavouriteKind.Anime;
 
     protected override string? SiteUrl => Media?.SiteUrl;
 
@@ -626,6 +678,16 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
         OnPropertyChanged(nameof(EpisodesDisplay));
         OnPropertyChanged(nameof(DurationPillDisplay));
         OnPropertyChanged(nameof(SeasonYearDisplay));
+        OnPropertyChanged(nameof(ChaptersDisplay));
+        OnPropertyChanged(nameof(VolumesDisplay));
+        OnPropertyChanged(nameof(CurrentMediaKind));
+        OnPropertyChanged(nameof(CurrentProgressUnit));
+        OnPropertyChanged(nameof(ProgressUnitNoun));
+        OnPropertyChanged(nameof(ProgressSectionLabel));
+        OnPropertyChanged(nameof(ListStatusDisplay));
+        OnPropertyChanged(nameof(StatusLabelCurrent));
+        OnPropertyChanged(nameof(StatusLabelPlanning));
+        OnPropertyChanged(nameof(StatusLabelRepeating));
         OnPropertyChanged(nameof(CanAddToList));
         OnPropertyChanged(nameof(HasProgressSliderMax));
         OnPropertyChanged(nameof(ProgressSliderMax));
@@ -929,6 +991,12 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
         OnPropertyChanged(nameof(StatusIconGlyph));
         OnPropertyChanged(nameof(ProgressLabel));
         OnPropertyChanged(nameof(ProgressFraction));
+        OnPropertyChanged(nameof(HasProgressSliderMax));
+        OnPropertyChanged(nameof(ProgressSliderMax));
+        OnPropertyChanged(nameof(CurrentProgressUnit));
+        OnPropertyChanged(nameof(ProgressUnitNoun));
+        OnPropertyChanged(nameof(ProgressSectionLabel));
+        OnPropertyChanged(nameof(ListStatusDisplay));
         OnPropertyChanged(nameof(NumericScoreLabel));
         OnPropertyChanged(nameof(StarRating));
         OnPropertyChanged(nameof(Star1Filled));
@@ -1008,7 +1076,7 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
         }
 
         var entry = ListEntry ?? new MediaListEntry { MediaId = Media.Id, Media = Media };
-        // Ensure Media is attached so the helper can read MaxEpisodes / HasKnownEpisodeCount.
+        // Ensure Media is attached so the helper can read ActiveProgressTotal / HasKnownProgressTotal.
         entry.Media ??= Media;
 
         await _statusFlow.ApplyStatusChangeAsync(entry, status);
@@ -1138,9 +1206,10 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
             return;
         }
 
-        var max = CurrentMaxEpisodes;
-        var prompt = max is > 0 ? $"Enter episode (0–{max})" : "Enter episode";
-        var current = (ListEntry.Progress ?? 0).ToString();
+        var max = CurrentMaxProgress;
+        var noun = ProgressUnitNoun.ToLowerInvariant();
+        var prompt = max is > 0 ? $"Enter {noun} (0–{max})" : $"Enter {noun}";
+        var current = CurrentProgressValue.ToString();
 
         var input = await _dialogs.PromptAsync(
             "Progress", prompt, initialValue: current, maxLength: 5, numericKeyboard: true);
@@ -1162,10 +1231,10 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
             return;
         }
 
-        var max = CurrentMaxEpisodes ?? int.MaxValue;
-        if ((ListEntry.Progress ?? 0) < max)
+        var max = CurrentMaxProgress ?? int.MaxValue;
+        if (CurrentProgressValue < max)
         {
-            await ApplyProgressChangeAsync((ListEntry.Progress ?? 0) + 1);
+            await ApplyProgressChangeAsync(CurrentProgressValue + 1);
         }
     }
 
@@ -1177,9 +1246,9 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
             return;
         }
 
-        if ((ListEntry.Progress ?? 0) > 0)
+        if (CurrentProgressValue > 0)
         {
-            await ApplyProgressChangeAsync((ListEntry.Progress ?? 0) - 1);
+            await ApplyProgressChangeAsync(CurrentProgressValue - 1);
         }
     }
 
@@ -1196,13 +1265,17 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
             return;
         }
 
-        if ((ListEntry.Progress ?? 0) == newProgress)
+        if (CurrentProgressValue == newProgress)
         {
             return;
         }
 
-        var previousProgress = ListEntry.Progress;
-        ListEntry.Progress = newProgress;
+        // Capture the unit before writing. It is derived from the counters (#12), so setting a
+        // volume count to 0 flips the entry back to chapters — and a revert below that went through
+        // the *new* unit would rewrite the wrong field.
+        var unit = CurrentProgressUnit;
+        var previousProgress = ListEntry.ProgressFor(unit);
+        ListEntry.SetProgressFor(unit, newProgress);
         if (Math.Abs(SliderProgress - newProgress) > 0.01)
         {
             SliderProgress = newProgress;
@@ -1233,7 +1306,7 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
                 {
                     // User dismissed — revert the progress bump so the UI matches
                     // My Anime's behaviour (cancel leaves entry unchanged).
-                    ListEntry.Progress = previousProgress;
+                    ListEntry.SetProgressFor(unit, previousProgress);
                     SliderProgress = previousProgress ?? 0;
                     NotifyListEntryDisplayChanged();
                 }
@@ -1243,7 +1316,7 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
                 Logger.LogError(ex, "Completion flow failed for media {MediaId}; reverting optimistic progress change.", ListEntry.MediaId);
                 // Treat popup failure the same as user cancel — don't persist a
                 // completion the user never confirmed.
-                ListEntry.Progress = previousProgress;
+                ListEntry.SetProgressFor(unit, previousProgress);
                 SliderProgress = previousProgress ?? 0;
                 NotifyListEntryDisplayChanged();
             }
@@ -1259,7 +1332,7 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
     }
 
     private bool ShouldTriggerCompletion() =>
-        ListEntry?.IsCompletionAt(ListEntry.Progress ?? 0) ?? false;
+        ListEntry?.IsCompletionAt(ListEntry.ActiveProgress ?? 0) ?? false;
 
     [RelayCommand]
     private void SetStarRating(string value)
@@ -1317,8 +1390,8 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
     partial void OnSliderProgressChanged(double value)
     {
         Logger.LogInformation(
-            "DATATRACE OnSliderProgressChanged: value={Value}, ListEntry.Progress={CurrentProgress}",
-            value, ListEntry?.Progress);
+            "DATATRACE OnSliderProgressChanged: value={Value}, active={CurrentProgress} {Unit}",
+            value, ListEntry?.ActiveProgress, CurrentProgressUnit);
         if (ListEntry is null)
         {
             return;
@@ -1332,7 +1405,7 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
             return; // will re-enter with snapped value
         }
 
-        if ((ListEntry.Progress ?? 0) == rounded)
+        if (CurrentProgressValue == rounded)
         {
             return;
         }

@@ -381,6 +381,19 @@ public class EntryActionCoordinatorTests
     {
         private int _mutationFailures;
 
+        /// <summary>
+        /// Retypes the harness entry as manga with the given counts (#12). The coordinator is shared
+        /// by Library, Discover, Search and View All, and Search can now hand it a manga entry.
+        /// </summary>
+        public void MakeManga(int? chapters, int? volumes)
+        {
+            Entry.Media!.Type = "MANGA";
+            Entry.Media.Format = "MANGA";
+            Entry.Media.Episodes = null;
+            Entry.Media.Chapters = chapters;
+            Entry.Media.Volumes = volumes;
+        }
+
         public Harness(int? episodes = null, Func<Task>? onBeforeFlow = null)
         {
             Entry = TestDataBuilder.Entry(mediaId: 1, episodes: episodes);
@@ -450,5 +463,82 @@ public class EntryActionCoordinatorTests
 
             Assert.True(condition(), "Timed out waiting for the retry to settle.");
         }
+    }
+
+    // ── Manga (#12) ──────────────────────────────────────────────────
+
+    [Fact]
+    public async Task EditProgress_OnAMangaChapterReader_AsksForChaptersAgainstTheChapterTotal()
+    {
+        var harness = new Harness();
+        harness.MakeManga(chapters: 141, volumes: 34);
+        harness.Entry.Progress = 100;
+        harness.Dialogs.EntryActionAnswer = MyAnimeEntryAction.EditProgress;
+        harness.Dialogs.EditProgressAnswer = 110;
+        harness.SaveEchoesBack();
+
+        await harness.Coordinator.ShowEntryMenuAsync(harness.Entry);
+
+        Assert.Equal(MediaProgressUnit.Chapter, harness.Dialogs.LastEditProgressUnit);
+        Assert.Equal(141, harness.Dialogs.LastEditProgressMax);
+        Assert.Equal(100, harness.Dialogs.LastEditProgressCurrent);
+        Assert.Equal(110, harness.Entry.Progress);
+    }
+
+    [Fact]
+    public async Task EditProgress_OnAMangaVolumeReader_AsksForVolumesAndWritesVolumes()
+    {
+        // The chapter counter must come back untouched: the two are independent on AniList, and
+        // rewriting the one the reader doesn't use would quietly corrupt their entry.
+        var harness = new Harness();
+        harness.MakeManga(chapters: 141, volumes: 34);
+        harness.Entry.Progress = 0;
+        harness.Entry.ProgressVolumes = 20;
+        harness.Dialogs.EntryActionAnswer = MyAnimeEntryAction.EditProgress;
+        harness.Dialogs.EditProgressAnswer = 25;
+        harness.SaveEchoesBack();
+
+        await harness.Coordinator.ShowEntryMenuAsync(harness.Entry);
+
+        Assert.Equal(MediaProgressUnit.Volume, harness.Dialogs.LastEditProgressUnit);
+        Assert.Equal(34, harness.Dialogs.LastEditProgressMax);
+        Assert.Equal(20, harness.Dialogs.LastEditProgressCurrent);
+        Assert.Equal(25, harness.Entry.ProgressVolumes);
+        Assert.Equal(0, harness.Entry.Progress);
+    }
+
+    [Fact]
+    public async Task EditProgress_OnAVolumeReader_WhenTheSaveFails_RestoresTheVolumeCount()
+    {
+        // The revert has to name the field it changed. ActiveProgressUnit is derived, so a revert
+        // that re-read it could land on chapters instead.
+        var harness = new Harness();
+        harness.MakeManga(chapters: 141, volumes: 34);
+        harness.Entry.Progress = 0;
+        harness.Entry.ProgressVolumes = 20;
+        harness.Dialogs.EntryActionAnswer = MyAnimeEntryAction.EditProgress;
+        harness.Dialogs.EditProgressAnswer = 25;
+        harness.Client.SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromException<MediaListEntry?>(new InvalidOperationException("boom")));
+
+        await harness.Coordinator.ShowEntryMenuAsync(harness.Entry);
+
+        Assert.Equal(20, harness.Entry.ProgressVolumes);
+        Assert.Equal(0, harness.Entry.Progress);
+    }
+
+    [Fact]
+    public async Task MoveToList_OnAManga_LabelsTheSheetForReadingNotWatching()
+    {
+        var harness = new Harness();
+        harness.MakeManga(chapters: 141, volumes: 34);
+        harness.Dialogs.EntryActionAnswer = MyAnimeEntryAction.MoveToList;
+        harness.Dialogs.MoveToListAnswer = MoveToListChoice.To(MediaListStatus.Paused);
+        harness.SaveEchoesBack();
+
+        await harness.Coordinator.ShowEntryMenuAsync(harness.Entry);
+
+        Assert.Equal(MediaKind.Manga, harness.Dialogs.LastMoveToListKind);
+        Assert.Contains(harness.Feedback.Toasts, t => t.Contains("moved to Paused"));
     }
 }

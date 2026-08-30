@@ -23,16 +23,22 @@ public static class ListEntryStatusMutations
         {
             case MediaListStatus.Completed:
                 entry.Status = MediaListStatus.Completed;
-                if (entry.HasKnownEpisodeCount && entry.MaxEpisodes is { } max)
+                if (entry.HasKnownProgressTotal && entry.ActiveProgressTotal is { } max)
                 {
-                    entry.Progress = max;
+                    entry.SetActiveProgress(max);
                 }
 
                 return true;
 
             case MediaListStatus.Repeating:
                 entry.Status = MediaListStatus.Repeating;
+                // BOTH counters, not just the active one. A reread starts from zero either way, and
+                // clearing only chapters on an entry that tracks both would leave volumes above zero
+                // with chapters at zero — which is exactly the shape MediaListEntry.UsesVolumeProgress
+                // reads as "this reader tracks volumes", flipping a freshly reset entry to show a
+                // full volume count (#12).
                 entry.Progress = 0;
+                entry.ProgressVolumes = 0;
                 entry.Repeat = (entry.Repeat ?? 0) + 1;
                 return false;
 
@@ -42,15 +48,16 @@ public static class ListEntryStatusMutations
                 // Watching with progress already at the maximum would leave the +1
                 // button dead and violate the "Watching never sits at max" invariant
                 // enforced by the +1 → Complete prompt. Walk progress back by one so
-                // there's at least one episode left to watch. HasKnownEpisodeCount
+                // there's at least one episode left to watch. HasKnownProgressTotal
                 // gates this on a declared total — currently-airing shows whose cap
                 // is the last-aired episode are left untouched (the user is just
-                // caught up, not finished).
-                if (entry.HasKnownEpisodeCount
-                    && entry.MaxEpisodes is { } currentMax
-                    && entry.Progress == currentMax)
+                // caught up, not finished), as are still-publishing manga, which have
+                // no declared total at all.
+                if (entry.HasKnownProgressTotal
+                    && entry.ActiveProgressTotal is { } currentMax
+                    && entry.ActiveProgress == currentMax)
                 {
-                    entry.Progress = currentMax - 1;
+                    entry.SetActiveProgress(currentMax - 1);
                 }
                 return false;
 

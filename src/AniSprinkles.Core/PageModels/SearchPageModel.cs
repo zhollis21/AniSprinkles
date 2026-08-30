@@ -23,11 +23,15 @@ public partial class SearchPageModel : ObservableObject
     /// <summary>Below this many trimmed characters no search fires (rate-limit caution + junk-match avoidance).</summary>
     private const int SearchMinLength = 2;
 
+    /// <summary>Device-scoped, not cleared on sign-out — mirrors the My Anime sort keys.</summary>
+    private const string SearchFilterPreferenceKey = "search_type_filter";
+
     private readonly IAniListClient _aniListClient;
     private readonly IAuthService _authService;
     private readonly INavigationService _navigationService;
     private readonly IUserFeedback _feedback;
     private readonly ErrorReportService _errorReportService;
+    private readonly IPreferences _preferences;
     private readonly TimeProvider _timeProvider;
     private readonly ILogger<SearchPageModel> _logger;
     private readonly EntryActionCoordinator _entryActions;
@@ -41,6 +45,17 @@ public partial class SearchPageModel : ObservableObject
     /// null when nothing is seeded. Every later page reuses it so one result set cannot mix
     /// policies. See <see cref="ActiveAdultFilter"/>.</summary>
     private bool? _seededDisplayAdult;
+
+    /// <summary>
+    /// The type filter page 1 of the current results was fetched under; null when nothing is seeded.
+    /// <para>
+    /// A <see cref="SearchTypeFilter"/>? rather than a MediaKind? on purpose: "both types" is a real
+    /// selection whose client-side value is null, so a MediaKind? here could not tell "searching
+    /// everything" apart from "nothing seeded yet" — the same collision the adult filter documents
+    /// above, where the filter’s own null means "18+ allowed".
+    /// </para>
+    /// </summary>
+    private SearchTypeFilter? _seededFilter;
 
     // Context the current results were fetched under, so a flip can invalidate them.
     private bool _hasSearchedThisSession;
@@ -58,6 +73,7 @@ public partial class SearchPageModel : ObservableObject
         IDialogService dialogs,
         ListEntryStatusFlow statusFlow,
         ErrorReportService errorReportService,
+        IPreferences preferences,
         TimeProvider timeProvider,
         ILogger<SearchPageModel> logger)
     {
@@ -66,6 +82,7 @@ public partial class SearchPageModel : ObservableObject
         _navigationService = navigationService;
         _feedback = feedback;
         _errorReportService = errorReportService;
+        _preferences = preferences;
         _timeProvider = timeProvider;
         _logger = logger;
         _listOps = new ListOperationRunner(logger, feedback);
@@ -91,11 +108,16 @@ public partial class SearchPageModel : ObservableObject
         // find nothing to invalidate, and then have the new value land — at which point a live read
         // here would page a different policy onto the results already on screen. Turning adult
         // content OFF is the bad direction: 18+ page-1 items stay visible with SFW pages beneath.
+        // The type filter is pinned per result set for the same reason (#12): the user can flip the
+        // All/Anime/Manga pills while a Load More is in flight, and a live read here would append
+        // manga pages beneath anime results.
         SearchSection = new PaginatedSection<BrowseMediaItem>(
             "SEARCH_MATCH",
-            (page, _, ct) => _aniListClient.SearchAnimePageAsync(
-                _activeSearchQuery, ActiveAdultFilter, page, SearchPerPage, ct),
+            (page, _, ct) => _aniListClient.SearchMediaPageAsync(
+                _activeSearchQuery, ActiveSearchFilter.ToMediaKind(), ActiveAdultFilter, page, SearchPerPage, ct),
             item => item.Node?.Id ?? 0);
+
+        _searchFilter = ReadPersistedSearchFilter();
         SearchSection.Changed += () =>
         {
             OnPropertyChanged(nameof(SearchIsLoadingMore));
@@ -121,11 +143,86 @@ public partial class SearchPageModel : ObservableObject
     private bool? ActiveAdultFilter =>
         _seededDisplayAdult is bool seeded ? ToAdultFilter(seeded) : AdultFilter;
 
+    /// <summary>
+    /// The type filter every page of the CURRENT result set must use, pinned when page 1 was
+    /// seeded. <see cref="SearchFilter"/> is what the pills read; this is what paging obeys.
+    /// </summary>
+    private SearchTypeFilter ActiveSearchFilter => _seededFilter ?? SearchFilter;
+
     /// <summary>Search results with infinite scroll; re-seeded per query.</summary>
     public PaginatedSection<BrowseMediaItem> SearchSection { get; }
 
     [ObservableProperty]
     private string _searchText = string.Empty;
+
+    /// <summary>
+    /// Which type filter the pills are on. Device-scoped and persisted, like the sort and view-mode
+    /// preferences — searching manga twice in a row shouldn't need two taps. Defaults to
+    /// <see cref="SearchTypeFilter.All"/>: most searches are "find this title", not "find this
+    /// title but only if it's manga", and the result rows print the format either way.
+    /// </summary>
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(SearchFilterKey))]
+    [NotifyPropertyChangedFor(nameof(SearchPlaceholder))]
+    [NotifyPropertyChangedFor(nameof(IdlePrompt))]
+    [NotifyPropertyChangedFor(nameof(NoResultsMessage))]
+    private SearchTypeFilter _searchFilter;
+
+    public string SearchPlaceholder => SearchFilter switch
+    {
+        SearchTypeFilter.Anime => "Search all anime...",
+        SearchTypeFilter.Manga => "Search all manga...",
+        _ => "Search anime and manga...",
+    };
+
+    public string IdlePrompt => SearchFilter switch
+    {
+        SearchTypeFilter.Anime => "Search all anime",
+        SearchTypeFilter.Manga => "Search all manga",
+        _ => "Search anime and manga",
+    };
+
+    public string NoResultsMessage => SearchFilter switch
+    {
+        SearchTypeFilter.Anime => "No anime found",
+        SearchTypeFilter.Manga => "No manga found",
+        _ => "No results found",
+    };
+
+    /// <summary>The selected filter as a string, for the pill converters (which key off a string).</summary>
+    public string SearchFilterKey => SearchFilter.ToString();
+
+    /// <summary>
+    /// Flips the filter and re-runs whatever is already typed under it. Takes a string because the
+    /// XAML pills pass a literal CommandParameter, as the status rows do.
+    /// </summary>
+    [RelayCommand]
+    private void SelectSearchFilter(string? value)
+    {
+        if (!Enum.TryParse<SearchTypeFilter>(value, ignoreCase: true, out var filter) || SearchFilter == filter)
+        {
+            return;
+        }
+
+        SearchFilter = filter;
+        _preferences.Set(SearchFilterPreferenceKey, filter.ToString());
+
+        if (string.IsNullOrEmpty(SearchText))
+        {
+            return;
+        }
+
+        // Same trick OnAppearingAsync uses to re-run under a changed context: clearing SearchText
+        // routes through OnSearchTextChanged, which resets the section (dropping the pinned filter
+        // with it) and cancels in-flight work, then restoring it starts a clean search.
+        var query = SearchText;
+        SearchText = string.Empty;
+        SearchText = query;
+    }
+
+    private SearchTypeFilter ReadPersistedSearchFilter() =>
+        SearchTypeFilterExtensions.ParseSearchTypeFilter(
+            _preferences.Get(SearchFilterPreferenceKey, SearchTypeFilter.All.ToString()));
 
     /// <summary>True once a query of <see cref="SearchMinLength"/>+ characters is entered — swaps the
     /// idle prompt for the results list.</summary>
@@ -269,6 +366,7 @@ public partial class SearchPageModel : ObservableObject
         // Pin the filter for this result set. Read once here so page 1 below and every Load More
         // afterwards agree, no matter what the setting does in between.
         _seededDisplayAdult = AppSettings.DisplayAdultContent;
+        _seededFilter = SearchFilter;
 
         // Auth is read here too, so both halves of the context describe the same moment rather than
         // the adult flag coming from issue time and auth from whenever the page last appeared.
@@ -303,8 +401,8 @@ public partial class SearchPageModel : ObservableObject
 
         try
         {
-            var (items, pageInfo) = await _aniListClient.SearchAnimePageAsync(
-                query, ActiveAdultFilter, page: 1, perPage: SearchPerPage, cancellationToken: token);
+            var (items, pageInfo) = await _aniListClient.SearchMediaPageAsync(
+                query, ActiveSearchFilter.ToMediaKind(), ActiveAdultFilter, page: 1, perPage: SearchPerPage, cancellationToken: token);
             if (token.IsCancellationRequested || !string.Equals(_activeSearchQuery, query, StringComparison.Ordinal))
             {
                 return; // superseded while the fetch was in flight
@@ -370,19 +468,10 @@ public partial class SearchPageModel : ObservableObject
             return;
         }
 
-        var media = item?.Node;
-        var mediaId = media?.Id ?? 0;
+        var mediaId = item?.Node?.Id ?? 0;
         _logger.LogInformation("NAVTRACE Search NavigateToMedia called with mediaId={MediaId}", mediaId);
         if (mediaId <= 0)
         {
-            return;
-        }
-
-        // Media Details queries type: ANIME, so a non-anime id (search can return manga and
-        // novels) would 404.
-        if (media is { IsAnime: false })
-        {
-            await _feedback.ShowToastAsync("Manga & Novel details aren't supported yet.");
             return;
         }
 
@@ -431,6 +520,7 @@ public partial class SearchPageModel : ObservableObject
     {
         SearchSection.Reset();
         _seededDisplayAdult = null;
+        _seededFilter = null;
     }
 
     private void ApplyEntryToItems(MediaListEntry entry)

@@ -1,12 +1,18 @@
+using AniSprinkles.Utilities;
 using CommunityToolkit.Maui.Views;
 
 namespace AniSprinkles.Views;
 
 /// <summary>
-/// Centered card for editing an entry's episode progress from the long-press action menu. Offers
+/// Centered card for editing an entry's progress from the long-press action menu. Offers
 /// −/+ steppers, direct numeric entry, and (when the total is known) a slider — all kept in sync.
 /// Closes with the chosen progress as a boxed <see cref="int"/>, or <c>null</c> on Cancel/dismiss.
 /// The caller decides whether reaching the total triggers the completion flow.
+/// <para>
+/// The unit is passed in rather than assumed: a manga entry counts chapters, or volumes when that
+/// is what the reader tracks (#12). Only the wording changes — the numbers are whatever the caller
+/// says they are.
+/// </para>
 /// </summary>
 public partial class EditProgressPopup : Popup<object>
 {
@@ -14,16 +20,18 @@ public partial class EditProgressPopup : Popup<object>
     private int _value;
     private bool _suppress;
 
-    public EditProgressPopup(string animeTitle, int currentProgress, int? maxEpisodes)
+    public EditProgressPopup(string mediaTitle, int currentProgress, int? maxProgress, MediaProgressUnit unit)
     {
         InitializeComponent();
 
-        if (!string.IsNullOrWhiteSpace(animeTitle))
+        if (!string.IsNullOrWhiteSpace(mediaTitle))
         {
-            TitleLabel.Text = animeTitle;
+            TitleLabel.Text = mediaTitle;
         }
 
-        _max = maxEpisodes is > 0 ? maxEpisodes : null;
+        UnitHeaderLabel.Text = MediaListVocabulary.UnitProgressHeader(unit);
+
+        _max = maxProgress is > 0 ? maxProgress : null;
         _value = Clamp(currentProgress);
 
         _suppress = true;
@@ -33,7 +41,10 @@ public partial class EditProgressPopup : Popup<object>
             ProgressSlider.Maximum = max;
             ProgressSlider.Value = _value;
             ProgressSlider.IsVisible = true;
-            MaxCaption.Text = $"of {max} episode{(max == 1 ? string.Empty : "s")}";
+            var noun = max == 1
+                ? MediaListVocabulary.UnitNoun(unit).ToLowerInvariant()
+                : MediaListVocabulary.UnitNounPlural(unit);
+            MaxCaption.Text = $"of {max} {noun}";
             MaxCaption.IsVisible = true;
         }
         _suppress = false;

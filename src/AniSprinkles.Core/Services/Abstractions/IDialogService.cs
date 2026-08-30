@@ -48,16 +48,18 @@ public interface IDialogService
     /// Returns <c>null</c> if the user dismissed the sheet.
     /// </summary>
     Task<MoveToListChoice?> ShowMoveToListAsync(
-        string animeTitle,
+        string mediaTitle,
         MediaListStatus? currentStatus,
+        MediaKind kind = MediaKind.Anime,
         bool allowRemove = true,
         string? subtitle = null);
 
     /// <summary>
-    /// Episode-progress editor. Returns the requested progress, or <c>null</c> if dismissed. The
-    /// value is the user's raw request — the caller still owns clamping to the entry's bounds.
+    /// Progress editor. Returns the requested progress, or <c>null</c> if dismissed. The value is
+    /// the user's raw request — the caller still owns clamping to the entry's bounds.
+    /// <paramref name="unit"/> only labels the control; the numbers mean whatever the caller says.
     /// </summary>
-    Task<int?> ShowEditProgressAsync(string animeTitle, int currentProgress, int? maxEpisodes);
+    Task<int?> ShowEditProgressAsync(string mediaTitle, int currentProgress, int? maxProgress, MediaProgressUnit unit);
 
     /// <summary>
     /// Score picker, pre-populated from <paramref name="initialScore"/>. Returns <c>null</c> when the

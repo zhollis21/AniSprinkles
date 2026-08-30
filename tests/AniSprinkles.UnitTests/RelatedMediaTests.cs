@@ -4,21 +4,38 @@ namespace AniSprinkles.UnitTests;
 
 public class RelatedMediaTests
 {
-    // IsAnime gates detail-page navigation: the Media query is anime-only, so tapping a
-    // non-anime tile (manga/novel) must short-circuit to a toast instead of a 404'ing fetch.
+    // Kind drives the type-dependent wording on a card (the list-status chip) now that carousels
+    // can navigate to either type. Anything unrecognised reads as anime, which is what every query
+    // that never selected `type` was fetching anyway.
     [Theory]
-    [InlineData("ANIME", true)]
-    [InlineData("anime", true)]   // AniList sends upper-case, but guard is case-insensitive by design.
-    [InlineData("MANGA", false)]
-    [InlineData("NOVEL", false)]
-    [InlineData("ONE_SHOT", false)]
-    [InlineData("", false)]
-    [InlineData(null, false)]
-    public void IsAnime_ReflectsType(string? type, bool expected)
+    [InlineData("ANIME", MediaKind.Anime)]
+    [InlineData("MANGA", MediaKind.Manga)]
+    [InlineData("manga", MediaKind.Manga)]  // AniList sends upper-case; the parse is case-insensitive by design.
+    [InlineData("NOVEL", MediaKind.Anime)]  // Not a MediaType — NOVEL is a *format* under type MANGA.
+    [InlineData("", MediaKind.Anime)]
+    [InlineData(null, MediaKind.Anime)]
+    public void Kind_ReflectsType(string? type, MediaKind expected)
     {
         var media = new RelatedMedia { Id = 1, Type = type };
 
-        Assert.Equal(expected, media.IsAnime);
+        Assert.Equal(expected, media.Kind);
+    }
+
+    [Theory]
+    [InlineData("ANIME", MediaListStatus.Current, "Watching")]
+    [InlineData("MANGA", MediaListStatus.Current, "Reading")]
+    [InlineData("ANIME", MediaListStatus.Repeating, "Rewatching")]
+    [InlineData("MANGA", MediaListStatus.Repeating, "Rereading")]
+    // Planning stays the short enum name on a chip for both types: the cover-art pill has room for
+    // one word, and "Plan to Watch" is the picker's wording, not the chip's.
+    [InlineData("ANIME", MediaListStatus.Planning, "Planning")]
+    [InlineData("MANGA", MediaListStatus.Planning, "Planning")]
+    [InlineData("MANGA", MediaListStatus.Completed, "Completed")]
+    public void ListStatusDisplay_UsesTheTypesVocabulary(string type, MediaListStatus status, string expected)
+    {
+        var media = new RelatedMedia { Id = 1, Type = type, ListStatus = status };
+
+        Assert.Equal(expected, media.ListStatusDisplay);
     }
 
     [Theory]

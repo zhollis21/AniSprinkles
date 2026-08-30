@@ -30,18 +30,43 @@ internal sealed class CIAniListClient : IAniListClient
     public Task<(Media? Media, MediaListEntry? ListEntry)> GetMediaAsync(
         int id, CancellationToken cancellationToken = default)
     {
+        // Manga is searched alongside the anime list, not folded into it: the real Media(id:) query
+        // is type-agnostic, so any id the app can reach must resolve here too (#12). Before this,
+        // the three manga ids already sitting in the anime fixtures — Attack on Titan's relations
+        // and One Piece's manga on Luffy's character page — resolved to nothing, which turned every
+        // manga tap into an error page the moment those taps started navigating.
         var entry = StubData.GroupedList
             .SelectMany(g => g.Entries)
+            .Concat(StubData.MangaEntries)
             .FirstOrDefault(e => e.MediaId == id);
-        return Task.FromResult((entry?.Media, entry));
+        if (entry is not null)
+        {
+            return Task.FromResult<(Media?, MediaListEntry?)>((entry.Media, entry));
+        }
+
+        // Media with no list entry, which is the only way to reach the details page's "Add to List".
+        var offList = StubData.OffListMedia.FirstOrDefault(m => m.Id == id);
+        return Task.FromResult<(Media?, MediaListEntry?)>((offList, null));
     }
 
-    public Task<(IReadOnlyList<BrowseMediaItem> Items, PageInfo? PageInfo)> SearchAnimePageAsync(
-        string search, bool? isAdult = false, int page = 1, int perPage = 20, CancellationToken cancellationToken = default)
+    public Task<(IReadOnlyList<BrowseMediaItem> Items, PageInfo? PageInfo)> SearchMediaPageAsync(
+        string search, MediaKind? kind, bool? isAdult = false, int page = 1, int perPage = 20, CancellationToken cancellationToken = default)
     {
         // Honours isAdult the way the real endpoint does — SearchPageModel pins it per result set,
-        // and the canary is what proves that pin still holds in CI.
-        IReadOnlyList<BrowseMediaItem> items = StubData.BrowseItemsFor(isAdult)
+        // and the canary is what proves that pin still holds in CI. Both types apply the filter:
+        // AniList takes the same isAdult argument either way, and modelling it on one side only
+        // would leave the pin unproven for half the app.
+        //
+        // A null kind is the All pill, and it has to mean "both" here exactly as it does over the
+        // wire, where the argument is omitted rather than sent as null (#12).
+        IReadOnlyList<BrowseMediaItem> source = kind switch
+        {
+            MediaKind.Manga => StubData.MangaBrowseItemsFor(isAdult),
+            MediaKind.Anime => StubData.BrowseItemsFor(isAdult),
+            _ => [.. StubData.BrowseItemsFor(isAdult), .. StubData.MangaBrowseItemsFor(isAdult)],
+        };
+
+        IReadOnlyList<BrowseMediaItem> items = source
             .Where(i => i.Node?.DisplayTitle.Contains(search, StringComparison.OrdinalIgnoreCase) == true)
             .ToList();
         return Task.FromResult((items, (PageInfo?)new PageInfo { HasNextPage = false, CurrentPage = page }));
@@ -362,8 +387,8 @@ internal sealed class CIAniListClient : IAniListClient
                             Title = new MediaTitle { Romaji = "Shingeki no Kyojin", English = "Attack on Titan" },
                             CoverImage = new MediaCoverImage
                             {
-                                Medium = "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx53390-1RsuABC34P9D.jpg",
-                                Large = "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx53390-1RsuABC34P9D.jpg",
+                                Medium = "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx53390-1RsuABC34P9D.jpg",
+                                Large = "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx53390-1RsuABC34P9D.jpg",
                             },
                         },
                     },
@@ -386,12 +411,12 @@ internal sealed class CIAniListClient : IAniListClient
                         RelationType = "SPIN_OFF",
                         Node = new RelatedMedia
                         {
-                            Id = 87459, Format = "NOVEL", Type = "MANGA",
-                            Title = new MediaTitle { Romaji = "Shingeki no Kyojin: Kuinaki Sentaku", English = "Attack on Titan: No Regrets" },
+                            Id = 85199, Format = "MANGA", Type = "MANGA",
+                            Title = new MediaTitle { Romaji = "Shingeki no Kyojin Gaiden: Kuinaki Sentaku", English = "Attack on Titan: No Regrets" },
                             CoverImage = new MediaCoverImage
                             {
-                                Medium = "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/87459-GlbVHMPqVkHG.jpg",
-                                Large = "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/87459-GlbVHMPqVkHG.jpg",
+                                Medium = "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx85199-IzuYa59zXTBN.jpg",
+                                Large = "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx85199-IzuYa59zXTBN.jpg",
                             },
                         },
                     },
@@ -576,6 +601,337 @@ internal sealed class CIAniListClient : IAniListClient
             },
         };
 
+        // ── Manga (#12) ──────────────────────────────────────────────────────────
+        // Deliberately NOT in GroupedList: the Library tab is still anime-only until the manga list
+        // lands, so these are reached through Search, a relations carousel, or a character page.
+        //
+        // The ids are not arbitrary. Three of them were already referenced by existing fixtures and
+        // resolved to nothing, so every manga tap in CI landed on the error page the moment #12 made
+        // those taps navigate instead of toast: 53390 and 85199 sit in Attack on Titan’s relations,
+        // and 30013 is One Piece's manga on Luffy's character page.
+        //
+        // Between them the set covers each shape the progress layer has to tell apart: a finished
+        // chapter-tracked series, a still-publishing volume-tracked one with no cap at all, an entry
+        // with BOTH counters set, two off-list entries (one NOVEL, one ONE_SHOT), and an 18+ canary.
+
+        /// <summary>
+        /// The flagship manga fixture — reached from Attack on Titan's relations carousel, which is
+        /// the shortest path to a manga details page in the app. Finished and chapter-tracked, so it
+        /// has a real cap and can drive the completion flow. Carries the sections One Piece carries
+        /// plus the ones no fixture had before (tags, rankings, external links, stats), because the
+        /// manga details page is what this change actually has to be looked at on.
+        /// </summary>
+        private static readonly MediaListEntry AttackOnTitanManga = new()
+        {
+            Id = 2001, MediaId = 53390, Status = MediaListStatus.Current, Progress = 100, Score = 9.0,
+            Media = new Media
+            {
+                Id = 53390, Type = "MANGA", Format = "MANGA", Chapters = 141, Volumes = 34,
+                AverageScore = 84, MeanScore = 85, Popularity = 213_000, Favourites = 32_400,
+                IsFavourite = true, Trending = 42,
+                Status = "FINISHED", Source = "ORIGINAL", CountryOfOrigin = "JP", IsLicensed = true,
+                Title = new MediaTitle { Romaji = "Shingeki no Kyojin", English = "Attack on Titan", Native = "進撃の巨人" },
+                CoverImage = new MediaCoverImage
+                {
+                    Medium = "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx53390-1RsuABC34P9D.jpg",
+                    Large = "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx53390-1RsuABC34P9D.jpg",
+                    Color = "#e4a15d",
+                },
+                BannerImage = "https://s4.anilist.co/file/anilistcdn/media/manga/banner/53390-6Uru5rrjh8zv.jpg",
+                Description = "Hundreds of years ago, horrifying creatures which resembled humans appeared. These mindless, towering giants, called Titans, proved to be an existential threat, as they preyed on whatever humans they could find in order to satisfy a seemingly unending appetite.<br><br>The final remnants of humanity retreated behind the safety of enormous walls, and for a century, mankind lived in relative peace.",
+                StartDate = new MediaDate { Year = 2009, Month = 9, Day = 9 },
+                EndDate = new MediaDate { Year = 2021, Month = 4, Day = 9 },
+                Synonyms = ["AoT", "SnK"],
+                Genres = ["Action", "Drama", "Fantasy", "Mystery"],
+                Tags =
+                [
+                    new MediaTag { Id = 1, Name = "Survival", Rank = 92, Category = "Theme-Other" },
+                    new MediaTag { Id = 2, Name = "Military", Rank = 88, Category = "Theme-Other" },
+                    new MediaTag { Id = 3, Name = "Tragedy", Rank = 85, Category = "Theme-Drama" },
+                    new MediaTag { Id = 4, Name = "Male Protagonist", Rank = 80, Category = "Cast-Main Cast" },
+                    // A spoiler tag so the details page's spoiler-reveal path is exercised too.
+                    new MediaTag { Id = 5, Name = "Time Manipulation", Rank = 60, Category = "Theme-Sci Fi", IsMediaSpoiler = true },
+                ],
+                Rankings =
+                [
+                    new MediaRanking { Rank = 1, Type = "POPULAR", Format = "MANGA", AllTime = true, Context = "most popular all time" },
+                    new MediaRanking { Rank = 12, Type = "RATED", Format = "MANGA", AllTime = true, Context = "highest rated all time" },
+                    new MediaRanking { Rank = 3, Type = "RATED", Format = "MANGA", Year = 2021, AllTime = false, Context = "highest rated" },
+                ],
+                ExternalLinks =
+                [
+                    new MediaExternalLink { Id = 1, Site = "Official Site", Url = "https://shingeki.net/", Type = "INFO", Language = "Japanese", Color = "#3b3b3b" },
+                    new MediaExternalLink { Id = 2, Site = "Kodansha", Url = "https://kodansha.us/series/attack-on-titan/", Type = "STREAMING", Language = "English", Color = "#c62828" },
+                ],
+                ScoreDistribution =
+                [
+                    new ScoreDistributionItem { Score = 10, Amount = 400 },
+                    new ScoreDistributionItem { Score = 30, Amount = 900 },
+                    new ScoreDistributionItem { Score = 50, Amount = 4_100 },
+                    new ScoreDistributionItem { Score = 70, Amount = 15_800 },
+                    new ScoreDistributionItem { Score = 90, Amount = 28_600 },
+                    new ScoreDistributionItem { Score = 100, Amount = 11_200 },
+                ],
+                StatusDistribution =
+                [
+                    new StatusDistribution { Status = "CURRENT", Amount = 18_400 },
+                    new StatusDistribution { Status = "PLANNING", Amount = 31_200 },
+                    new StatusDistribution { Status = "COMPLETED", Amount = 74_900 },
+                    new StatusDistribution { Status = "DROPPED", Amount = 3_100 },
+                    new StatusDistribution { Status = "PAUSED", Amount = 6_700 },
+                ],
+                // Manga has no studios — AniList returns an empty edge list — so the Studios section
+                // hiding itself on a manga page is part of what the screenshot should show.
+                Characters =
+                [
+                    Cast(46494, "Eren Yeager", "https://s4.anilist.co/file/anilistcdn/character/large/b46494-tjjE4Si7CDbg.png", 118829, "Yuuki Kaji", "https://s4.anilist.co/file/anilistcdn/staff/medium/n118829-DUfRGFn0FfBM.jpg"),
+                    Cast(40881, "Mikasa Ackerman", "https://s4.anilist.co/file/anilistcdn/character/large/b40881-lPAqbUuKLBjm.png", 109994, "Yui Ishikawa", "https://s4.anilist.co/file/anilistcdn/staff/medium/n109994-1UMBIJfvJhqM.png"),
+                    Cast(46496, "Armin Arlert", "https://s4.anilist.co/file/anilistcdn/character/large/b46496-Ku6r7yYkTUnc.png", 95220, "Marina Inoue", "https://s4.anilist.co/file/anilistcdn/staff/medium/n95220-vsCFhZ4WvBIH.png"),
+                    Cast(45882, "Levi Ackerman", "https://s4.anilist.co/file/anilistcdn/character/large/b45882-cPvNhHJnjZ5t.png", 95016, "Hiroshi Kamiya", "https://s4.anilist.co/file/anilistcdn/staff/medium/n95016-9NRGDDbUAdBM.png"),
+                ],
+                // Manga staff roles read very differently from anime ones ("Story & Art" rather than
+                // "Director"), which is worth seeing rendered.
+                Staff =
+                [
+                    new StaffEdge
+                    {
+                        Role = "Story & Art",
+                        Node = new StaffNode
+                        {
+                            Id = 97114,
+                            Name = PersonName("Hajime Isayama", "諫山創"),
+                            Image = new CharacterImage { Medium = "https://s4.anilist.co/file/anilistcdn/staff/medium/n97114-9nS9SdmXNFhH.png" },
+                            Favourites = 6_800,
+                        },
+                    },
+                ],
+                // The round trip back to the anime: #12's whole point is that this now navigates in
+                // both directions instead of toasting in one of them.
+                Relations =
+                [
+                    new MediaRelationEdge
+                    {
+                        RelationType = "ADAPTATION",
+                        Node = new RelatedMedia
+                        {
+                            Id = 16498, Format = "TV", Type = "ANIME", Status = "FINISHED",
+                            Episodes = 25, AverageScore = 85,
+                            Title = new MediaTitle { Romaji = "Shingeki no Kyojin", English = "Attack on Titan" },
+                            CoverImage = new MediaCoverImage
+                            {
+                                Medium = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx16498-buvcRTBx4NSm.jpg",
+                                Large = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx16498-buvcRTBx4NSm.jpg",
+                            },
+                        },
+                    },
+                    new MediaRelationEdge
+                    {
+                        RelationType = "SPIN_OFF",
+                        Node = new RelatedMedia
+                        {
+                            Id = 85199, Format = "MANGA", Type = "MANGA", Status = "FINISHED",
+                            Chapters = 11, Volumes = 2,
+                            Title = new MediaTitle { Romaji = "Shingeki no Kyojin Gaiden: Kuinaki Sentaku", English = "Attack on Titan: No Regrets" },
+                            CoverImage = new MediaCoverImage
+                            {
+                                Medium = "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx85199-IzuYa59zXTBN.jpg",
+                                Large = "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx85199-IzuYa59zXTBN.jpg",
+                            },
+                        },
+                    },
+                    // The one-shot is only reachable from here, and it is the only fixture that shows
+                    // a Chapters chip with no Volumes chip beside it.
+                    new MediaRelationEdge
+                    {
+                        RelationType = "SIDE_STORY",
+                        Node = new RelatedMedia
+                        {
+                            Id = 85476, Format = "ONE_SHOT", Type = "MANGA", Status = "FINISHED",
+                            Chapters = 1, Volumes = null, AverageScore = 72,
+                            Title = new MediaTitle { Romaji = "Shingeki no Kyojin Gaiden: Kuinaki Sentaku - Prologue", English = "Attack on Titan: No Regrets - Prologue" },
+                            CoverImage = new MediaCoverImage
+                            {
+                                Medium = "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx85476-6DSMtBxcixMl.png",
+                                Large = "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx85476-6DSMtBxcixMl.png",
+                            },
+                        },
+                    },
+                ],
+            },
+        };
+
+        /// <summary>
+        /// Still-publishing manga, volume-tracked, reached from Luffy's character page. Chapters and
+        /// volumes are both null — the shape AniList returns for EVERY releasing series — so there is
+        /// no cap, no progress bar and no completion prompt, and the +1 button runs unbounded.
+        /// Progress 0 with ProgressVolumes set is exactly the condition
+        /// <see cref="MediaListEntry.UsesVolumeProgress"/> reads as "this reader tracks volumes".
+        /// </summary>
+        private static readonly MediaListEntry OnePieceManga = new()
+        {
+            Id = 2002, MediaId = 30013, Status = MediaListStatus.Current, Progress = 0, ProgressVolumes = 20, Score = 9.5,
+            Media = new Media
+            {
+                Id = 30013, Type = "MANGA", Format = "MANGA", Chapters = null, Volumes = null,
+                AverageScore = 91, MeanScore = 91, Popularity = 224_960, Favourites = 44_955,
+                Status = "RELEASING", Source = "ORIGINAL", CountryOfOrigin = "JP",
+                Title = new MediaTitle { Romaji = "ONE PIECE", English = "One Piece", Native = "ONE PIECE" },
+                CoverImage = new MediaCoverImage
+                {
+                    Medium = "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30013-BeslEMqiPhlk.jpg",
+                    Large = "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30013-BeslEMqiPhlk.jpg",
+                    Color = "#f1935d",
+                },
+                Description = "Gol D. Roger, a man referred to as the King of the Pirates, is set to be executed by the World Government. But just before his demise, he confirms the existence of a great treasure, One Piece, located somewhere within the vast ocean known as the Grand Line.",
+                StartDate = new MediaDate { Year = 1997, Month = 7, Day = 22 },
+                Genres = ["Action", "Adventure", "Comedy", "Fantasy"],
+                Relations =
+                [
+                    new MediaRelationEdge
+                    {
+                        RelationType = "ADAPTATION",
+                        Node = new RelatedMedia
+                        {
+                            Id = 21, Format = "TV", Type = "ANIME", Status = "RELEASING", AverageScore = 87,
+                            Title = new MediaTitle { Romaji = "ONE PIECE", English = "ONE PIECE" },
+                            CoverImage = new MediaCoverImage
+                            {
+                                Medium = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21-ELSYx3yMPcKM.jpg",
+                                Large = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx21-ELSYx3yMPcKM.jpg",
+                            },
+                        },
+                    },
+                ],
+            },
+        };
+
+        /// <summary>
+        /// Both counters set at once. Chapters win — the volume field is populated but not driving —
+        /// which is the case that proves <see cref="MediaListEntry.UsesVolumeProgress"/> is not just
+        /// "has volumes". Completed, so the details status picker shows a non-default selection.
+        /// </summary>
+        private static readonly MediaListEntry ChainsawManManga = new()
+        {
+            Id = 2003, MediaId = 105778, Status = MediaListStatus.Completed, Progress = 232, ProgressVolumes = 24, Score = 8.5,
+            Media = new Media
+            {
+                Id = 105778, Type = "MANGA", Format = "MANGA", Chapters = 232, Volumes = 24,
+                AverageScore = 85, MeanScore = 86, Popularity = 180_000, Favourites = 30_000,
+                Status = "FINISHED", Source = "ORIGINAL", CountryOfOrigin = "JP",
+                Title = new MediaTitle { Romaji = "Chainsaw Man", English = "Chainsaw Man", Native = "チェンソーマン" },
+                CoverImage = new MediaCoverImage
+                {
+                    Medium = "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx105778-euxXZEIfDY2u.png",
+                    Large = "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx105778-euxXZEIfDY2u.png",
+                    Color = "#e4a15d",
+                },
+                Description = "Denji is robbed of a normal teenage life, left with nothing but his deadbeat father's debt. His only companion is his pet, the chainsaw devil Pochita, with whom he slays devils for money that inevitably ends up in the yakuza's pockets.",
+                StartDate = new MediaDate { Year = 2018, Month = 12, Day = 3 },
+                EndDate = new MediaDate { Year = 2020, Month = 12, Day = 14 },
+                Genres = ["Action", "Comedy", "Horror", "Supernatural"],
+            },
+        };
+
+        // ── Off-list manga ───────────────────────────────────────────────────────
+        // No MediaListEntry at all, so GetMediaAsync returns media with a null entry — the shape the
+        // details page needs for its "Add to List" affordance, which no other CI fixture produces.
+
+        /// <summary>
+        /// Attack on Titan's side story, and the second manga id sitting in the anime's relations
+        /// carousel. Real id, title, counts and artwork — the fixture this replaced paired the No
+        /// Regrets title with id 87459, which is a different series entirely, so its cover 404'd.
+        /// </summary>
+        private static readonly Media NoRegretsManga = new()
+        {
+            Id = 85199, Type = "MANGA", Format = "MANGA", Chapters = 11, Volumes = 2,
+            AverageScore = 79, MeanScore = 79, Popularity = 16_202, Favourites = 482,
+            Status = "FINISHED", Source = "VISUAL_NOVEL", CountryOfOrigin = "JP",
+            Title = new MediaTitle { Romaji = "Shingeki no Kyojin Gaiden: Kuinaki Sentaku", English = "Attack on Titan: No Regrets", Native = "進撃の巨人 外伝 悔いなき選択" },
+            CoverImage = new MediaCoverImage
+            {
+                Medium = "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx85199-IzuYa59zXTBN.jpg",
+                Large = "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx85199-IzuYa59zXTBN.jpg",
+                Color = "#f16b5d",
+            },
+            Description = "A side story following Levi's life in the Underground City before he joined the Survey Corps.",
+            StartDate = new MediaDate { Year = 2013, Month = 9, Day = 28 },
+            EndDate = new MediaDate { Year = 2014, Month = 6, Day = 28 },
+            Genres = ["Action", "Drama", "Fantasy"],
+        };
+
+        /// <summary>
+        /// A one-shot: one chapter, no volume count. Two things only this shape shows — the progress
+        /// popup's singular caption ("of 1 chapter"), and a manga whose Volumes chip is hidden while
+        /// its Chapters chip is not. It is the prologue to <see cref="NoRegretsManga"/>, so it earns
+        /// its place in the same relations carousel rather than arriving from nowhere.
+        /// </summary>
+        private static readonly Media NoRegretsPrologueOneShot = new()
+        {
+            Id = 85476, Type = "MANGA", Format = "ONE_SHOT", Chapters = 1, Volumes = null,
+            AverageScore = 72, MeanScore = 74, Popularity = 2_940, Favourites = 38,
+            Status = "FINISHED", CountryOfOrigin = "JP",
+            Title = new MediaTitle { Romaji = "Shingeki no Kyojin Gaiden: Kuinaki Sentaku - Prologue", English = "Attack on Titan: No Regrets - Prologue", Native = "進撃の巨人 外伝 悔いなき選択 -プロローグ-" },
+            CoverImage = new MediaCoverImage
+            {
+                Medium = "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx85476-6DSMtBxcixMl.png",
+                Large = "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx85476-6DSMtBxcixMl.png",
+                Color = "#f19343",
+            },
+            Description = "A single-chapter prologue to the No Regrets side story.",
+            StartDate = new MediaDate { Year = 2013, Month = 9, Day = 28 },
+            EndDate = new MediaDate { Year = 2013, Month = 9, Day = 28 },
+            Genres = ["Action", "Fantasy"],
+        };
+
+        /// <summary>
+        /// A light novel. AniList files novels under type MANGA and separates them only by format, so
+        /// this is what proves the details page keys off type rather than format — a NOVEL has to get
+        /// the chapter/volume treatment, not the episode one.
+        /// </summary>
+        private static readonly Media MushokuTenseiNovel = new()
+        {
+            Id = 85470, Type = "MANGA", Format = "NOVEL", Chapters = 334, Volumes = 26,
+            AverageScore = 85, MeanScore = 85, Popularity = 38_203, Favourites = 5_259,
+            Status = "FINISHED", Source = "ORIGINAL", CountryOfOrigin = "JP",
+            Title = new MediaTitle { Romaji = "Mushoku Tensei: Isekai Ittara Honki Dasu", English = "Mushoku Tensei: Jobless Reincarnation", Native = "無職転生 ～異世界行ったら本気だす～" },
+            CoverImage = new MediaCoverImage
+            {
+                Medium = "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx85470-jt6BF9tDWB2X.jpg",
+                Large = "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx85470-jt6BF9tDWB2X.jpg",
+                Color = "#f1bb1a",
+            },
+            Description = "A 34-year-old shut-in is hit by a truck and reincarnated into a world of swords and sorcery, determined not to waste a second life.",
+            StartDate = new MediaDate { Year = 2014, Month = 1, Day = 23 },
+            EndDate = new MediaDate { Year = 2022, Month = 11, Day = 25 },
+            Genres = ["Adventure", "Drama", "Ecchi", "Fantasy"],
+        };
+
+        /// <summary>
+        /// The manga-side 18+ canary, mirroring <see cref="AdultCanary"/> on the anime side. Manga
+        /// search takes the same isAdult argument the anime search does, so without this the pin
+        /// SearchPageModel keeps per result set would be unproven for half the app.
+        /// </summary>
+        private static readonly Media AdultMangaCanary = new()
+        {
+            Id = 999_002, Type = "MANGA", Format = "MANGA", Chapters = 12, Volumes = 1, IsAdult = true,
+            Status = "FINISHED", CountryOfOrigin = "JP",
+            Title = new MediaTitle { Romaji = AdultCanaryTitle, English = AdultCanaryTitle },
+            // No CoverImage on purpose, as on the anime canary: ImageUrl.IsReal treats null as "no
+            // image", so the app renders its own placeholder rather than fetching anything.
+            Genres = ["Hentai"],
+        };
+
+        /// <summary>Manga the viewer has on their list, looked up by <c>GetMediaAsync</c>.</summary>
+        public static readonly IReadOnlyList<MediaListEntry> MangaEntries =
+            [AttackOnTitanManga, OnePieceManga, ChainsawManManga];
+
+        /// <summary>
+        /// Manga the viewer does NOT have on their list. <c>GetMediaAsync</c> falls back to these, so
+        /// they resolve to a details page with no list entry.
+        /// </summary>
+        public static readonly IReadOnlyList<Media> OffListMedia =
+            [NoRegretsManga, NoRegretsPrologueOneShot, MushokuTenseiNovel, AdultMangaCanary];
+
         public static readonly IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)> GroupedList =
         [
             // The canary rides the Watching group so Library's client-side filter
@@ -623,6 +979,44 @@ internal sealed class CIAniListClient : IAniListClient
         ];
 
         /// <summary>
+        /// Manga search results (#12). Separate from <see cref="BrowseItems"/> because Discover and
+        /// View All are still anime-only — the real client pins <c>type: ANIME</c> in those queries,
+        /// so a stub that mixed manga in would be modelling an endpoint that doesn't exist.
+        /// <para>
+        /// The mix of list statuses is deliberate, as on the anime side: two on-list entries in
+        /// different states, two off-list, so the result rows show a realistic spread of status pills
+        /// rather than a run of identical ones.
+        /// </para>
+        /// </summary>
+        public static readonly IReadOnlyList<BrowseMediaItem> MangaBrowseItems =
+        [
+            BrowseItem(AttackOnTitanManga, MediaListStatus.Current),
+            BrowseItem(OnePieceManga, MediaListStatus.Current),
+            BrowseItem(ChainsawManManga, MediaListStatus.Completed),
+            BrowseItem(NoRegretsManga, status: null),
+            BrowseItem(NoRegretsPrologueOneShot, status: null),
+            BrowseItem(MushokuTenseiNovel, status: null),
+        ];
+
+        /// <summary>The manga counterpart of <see cref="AdultCanaryBrowseItems"/>.</summary>
+        public static readonly IReadOnlyList<BrowseMediaItem> AdultMangaCanaryBrowseItems =
+        [
+            BrowseItem(AdultMangaCanary, status: null),
+        ];
+
+        /// <summary>
+        /// The manga half of <see cref="BrowseItemsFor"/>. Manga search takes the same
+        /// <c>isAdult</c> argument the anime search does — modelling it only on one side would leave
+        /// the per-result-set pin in <c>SearchPageModel</c> unproven for half the app.
+        /// </summary>
+        public static IReadOnlyList<BrowseMediaItem> MangaBrowseItemsFor(bool? isAdult) => isAdult switch
+        {
+            false => MangaBrowseItems,
+            true => AdultMangaCanaryBrowseItems,
+            null => [.. MangaBrowseItems, .. AdultMangaCanaryBrowseItems],
+        };
+
+        /// <summary>
         /// Applies the adult filter the way AniList's <c>isAdult</c> argument does, so the CI stub
         /// honours the same contract the real client relies on: <c>false</c> = SFW only,
         /// <c>true</c> = 18+ only, <c>null</c> = argument omitted, both mix in.
@@ -635,8 +1029,19 @@ internal sealed class CIAniListClient : IAniListClient
         };
 
         private static BrowseMediaItem BrowseItem(MediaListEntry entry, MediaListStatus? status)
+            => BrowseItem(entry.Media!, status, entry.Id, entry.Progress, entry.Score);
+
+        /// <summary>
+        /// Overload for media with no list entry at all (#12) — the off-list manga fixtures. Passing
+        /// a synthesised entry with Id 0 would work, but this makes "not on the user's list" the
+        /// shape of the call rather than something the reader has to infer from the arguments.
+        /// </summary>
+        private static BrowseMediaItem BrowseItem(Media media, MediaListStatus? status)
+            => BrowseItem(media, status, entryId: 0, progress: null, score: null);
+
+        private static BrowseMediaItem BrowseItem(
+            Media media, MediaListStatus? status, int entryId, int? progress, double? score)
         {
-            var media = entry.Media!;
             var onList = status is not null;
             return new BrowseMediaItem
             {
@@ -645,7 +1050,9 @@ internal sealed class CIAniListClient : IAniListClient
                     Id = media.Id,
                     Title = media.Title,
                     Format = media.Format,
-                    Type = "ANIME",
+                    // Follows the fixture rather than being pinned to anime, so a manga search
+                    // result opens as manga and its long-press flows read chapters (#12).
+                    Type = media.Type ?? "ANIME",
                     Status = media.Status,
                     CoverImage = media.CoverImage,
                     AverageScore = media.AverageScore,
@@ -655,13 +1062,15 @@ internal sealed class CIAniListClient : IAniListClient
                     Trending = (media.Popularity ?? 0) / 250,
                     StartDate = media.StartDate,
                     Episodes = media.Episodes,
+                    Chapters = media.Chapters,
+                    Volumes = media.Volumes,
                     // Off-list items carry no entry id/status/progress/score — null everything, so
                     // the stub matches the real API (mediaListEntry absent → these are null) and no
                     // phantom score leaks into ToListEntry() if an add-to-list flow runs under stubs.
-                    ListEntryId = onList ? entry.Id : null,
+                    ListEntryId = onList ? entryId : null,
                     ListStatus = status,
-                    ListProgress = onList ? entry.Progress : null,
-                    ListScore = onList ? entry.Score : null,
+                    ListProgress = onList ? progress : null,
+                    ListScore = onList ? score : null,
                 },
             };
         }
@@ -811,7 +1220,7 @@ internal sealed class CIAniListClient : IAniListClient
             foreach (var edge in new[]
             {
                 Appearance("MAIN", 21, "TV", "ANIME", "RELEASING", 87, 708_195, 103_507, 1999, "ONE PIECE", "ONE PIECE", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21-ELSYx3yMPcKM.jpg", "#e49335", onePieceVoiceActors, MediaListStatus.Current),
-                Appearance("MAIN", 30013, "MANGA", "MANGA", "RELEASING", 91, 224_960, 44_955, 1997, "ONE PIECE", "One Piece", "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30013-BeslEMqiPhlk.jpg", "#f1935d"),
+                Appearance("MAIN", 30013, "MANGA", "MANGA", "RELEASING", 91, 224_960, 44_955, 1997, "ONE PIECE", "One Piece", "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30013-BeslEMqiPhlk.jpg", "#f1935d"),
                 Appearance("MAIN", 141902, "MOVIE", "ANIME", "FINISHED", 78, 74_600, 2_048, 2022, "ONE PIECE FILM: RED", "One Piece Film: Red", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx141902-fTyoTk8F8qOl.jpg", "#f1c950", tanakaOnly, MediaListStatus.Completed),
                 Appearance("MAIN", 12859, "MOVIE", "ANIME", "FINISHED", 79, 62_142, 867, 2012, "ONE PIECE FILM: Z", "One Piece Film: Z", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx12859-uQFENDPzMWz6.jpg", "#f1ae5d", tanakaOnly, MediaListStatus.Completed),
                 Appearance("MAIN", 105143, "MOVIE", "ANIME", "FINISHED", 80, 59_768, 1_228, 2019, "ONE PIECE STAMPEDE", "One Piece: Stampede", "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx105143-5uBDmhvMr6At.png", "#e4e450", tanakaOnly, MediaListStatus.Planning),

@@ -15,7 +15,7 @@
             Background="{StaticResource SecondaryBackground}">
         <VerticalStackLayout Spacing="16">
 
-            <!-- Anime title -->
+            <!-- Media title -->
             <Label x:Name="TitleLabel"
                    Text="Edit progress"
                    Style="{StaticResource Title3}"
@@ -26,7 +26,7 @@
             <!-- Divider -->
             <BoxView HeightRequest="1" Color="{StaticResource Gray600}" Opacity="0.3" />
 
-            <!-- Header (episodes icon + label) -->
+            <!-- Header (unit icon + label; the text is set in code, per media type) -->
             <HorizontalStackLayout Spacing="6">
                 <Image WidthRequest="16" HeightRequest="16" VerticalOptions="Center">
                     <Image.Source>
@@ -36,7 +36,7 @@
                                          Size="16" />
                     </Image.Source>
                 </Image>
-                <Label Text="Episodes watched" Style="{StaticResource Caption1Strong}"
+                <Label x:Name="UnitHeaderLabel" Text="Episodes watched" Style="{StaticResource Caption1Strong}"
                        FontAttributes="Bold"
                        FontSize="16"
                        TextColor="{StaticResource RainbowCyan}" />

@@ -46,16 +46,6 @@ public sealed record AniListLinkTarget
     }
 
     /// <summary>
-    /// True for an AniList entity this app recognises but has no page for — currently only manga.
-    /// Callers show the same "not supported yet" message the rest of the app uses rather than
-    /// handing the link to the browser, so manga behaves the same wherever it is tapped. Remove
-    /// this once #12 lands and manga can route like anything else.
-    /// </summary>
-    public static bool IsUnsupportedEntity(string? url)
-        => TryParseEntity(url, out var kind, out _)
-            && string.Equals(kind, "manga", StringComparison.Ordinal);
-
-    /// <summary>
     /// Parses an <c>anilist.co/{kind}/{id}</c> URL. <paramref name="kind"/> comes back lower-cased;
     /// whether the app can show it is the callers' business.
     /// </summary>
@@ -112,11 +102,8 @@ public sealed record AniListLinkTarget
             "character" => ("character-details", "characterId"),
             "staff" => ("staff-details", "staffId"),
             "anime" => ("media-details", "mediaId"),
+            "manga" => ("media-details", "mediaId"),
             "studio" => ("studio-details", "studioId"),
-            // Deliberately not manga. The details page queries Media(id:, type: ANIME), so a manga
-            // id 404s there — which is why DetailsPageModelBase.NavigateToMedia toasts "Manga &
-            // Novel details aren't supported yet" instead of navigating. Bio links say the same,
-            // via IsUnsupportedEntity, so manga answers identically wherever it is tapped (#12).
             _ => (null, null),
         };
 }

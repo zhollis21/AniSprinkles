@@ -79,7 +79,7 @@ public readonly record struct FaultScope(FaultScopeKind Kind, int N = 0)
 /// <para>
 /// The two do not reduce to one another. Stripping <c>Get</c>/<c>Load</c>/<c>Async</c> would line up
 /// <c>GetStudioAsync</c> with <c>Studio</c>, but not <c>GetMyAnimeListAsync</c> with
-/// <c>MediaListCollection</c> or <c>SearchAnimePageAsync</c> with <c>Search</c> — so no normalisation
+/// <c>MediaListCollection</c> or <c>SearchMediaPageAsync</c> with <c>Search</c> — so no normalisation
 /// is attempted, and <c>FaultInjectingHttpHandler</c> logs the operation it actually saw when an
 /// armed prefix misses.
 /// </para>

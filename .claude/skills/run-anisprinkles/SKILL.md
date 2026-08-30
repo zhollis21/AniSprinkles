@@ -129,7 +129,7 @@ driver.ps1 fault clear
 
   **They are not interchangeable, and a miss is silent.** `fault GetStudio … -layer http` matches
   nothing, because over the wire that operation is called `Studio`. Nor does stripping `Get`/`Async`
-  save you: `GetMyAnimeListAsync` is `MediaListCollection` and `SearchAnimePageAsync` is `Search`.
+  save you: `GetMyAnimeListAsync` is `MediaListCollection` and `SearchMediaPageAsync` is `Search`.
   When a targeted http profile misses, the handler logs `FAULT http no match` naming the operation it
   actually saw — grep for that if an armed fault seems to do nothing.
 - `kind` — `ServiceOutage` | `Network` | `Authentication` | `RateLimited` | `NotFound` | `Unknown`,
@@ -231,7 +231,21 @@ relaunch:
 - **Discover**: `Currently Airing`, `Trending Now`, `Top Anime`, `View All ›`
 - **Search tab** filters that same fixture list client-side — `one` matches `ONE PIECE`;
   anything else (e.g. `cowboy bebop`) correctly renders `No anime found`. That is
-  the stub, not a bug.
+  the stub, not a bug. The All/Anime/Manga pills switch which fixture set is filtered; All (the default) returns both.
+- **Manga** (#12) — not in the Library list, which is still anime-only. Reach them from
+  Attack on Titan's relations carousel, Luffy's character page, the Manga search pill, or
+  `driver.ps1 deeplink <id>`, which is the fastest route to any of them:
+
+  | id | What it is | Why it exists |
+  |---|---|---|
+  | `53390` | Shingeki no Kyojin manga, 141ch / 34vol, chapter-tracked | The rich one — tags, rankings, external links, stats, characters, staff, and a relation back to the anime. Drives the completion flow. |
+  | `30013` | ONE PIECE manga, RELEASING, volume-tracked | Chapters and volumes both null, which is what AniList returns for *every* publishing series: no cap, no progress bar, unbounded +1, prompt reads "Enter volume". |
+  | `105778` | Chainsaw Man, Completed, both counters set | Chapters win over volumes — the case that proves the unit is inferred, not just "has volumes". |
+  | `85199` | AoT: No Regrets, off-list | No list entry, so this is the only way to reach the details page's **Add to List**. |
+  | `85476` | No Regrets Prologue, ONE_SHOT, 1ch / no volumes | The singular chip (`1 Chapter`) and a Chapters chip with no Volumes chip beside it. |
+  | `85470` | Mushoku Tensei, NOVEL, 334ch / 26vol | AniList files novels under type MANGA; proves the page keys off type, not format. |
+
+  Manga search honours `isAdult` exactly as anime search does, with its own 18+ canary.
 
 ---
 
