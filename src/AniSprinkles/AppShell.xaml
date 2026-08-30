@@ -12,24 +12,25 @@
     <!--
         Bottom tab bar (issue #43), replacing the hamburger flyout. Tab titles drive the tab
         label; each page keeps its own Title for the nav bar. Routes are unchanged from the
-        old FlyoutItems so existing GoToAsync calls and AGENTS.md stay accurate — the first
-        tab reads "Library" but stays on route `my-anime` until #12 renames it for real.
+        old FlyoutItems so existing GoToAsync calls and AGENTS.md stay accurate. The Library tab is
+        the one exception: #12 renamed its route from `my-anime` to `library` once both halves
+        became real lists. Safe because nothing navigates to a tab root — there is not one absolute
+        `GoToAsync("//…")` in the app, and the airing deep link targets `media-details`.
         TabBar colors come from the Shell style in Styles.xaml.
     -->
     <TabBar>
-        <Tab x:Name="LibraryTab" Title="Library" Route="my-anime">
+        <Tab x:Name="LibraryTab" Title="Library" Route="library">
             <Tab.Icon>
                 <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Library24}"
                                  FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}" />
             </Tab.Icon>
             <!--
                 Two ShellContents under one Tab render as a swipeable top tab strip on
-                Android — Shell's native sub-tab support, no custom control. Manga is a
-                placeholder until #12; the Tab keeps Route="my-anime" so existing
-                navigation is unaffected.
+                Android — Shell's native sub-tab support, no custom control. Both halves are
+                real lists since #12.
             -->
-            <ShellContent Title="Anime" Route="anime" ContentTemplate="{DataTemplate pages:MyAnimePage}" />
-            <ShellContent Title="Manga" Route="manga" ContentTemplate="{DataTemplate pages:MyMangaPage}" />
+            <ShellContent Title="Anime" Route="anime" ContentTemplate="{DataTemplate pages:AnimeLibraryPage}" />
+            <ShellContent Title="Manga" Route="manga" ContentTemplate="{DataTemplate pages:MangaLibraryPage}" />
         </Tab>
 
         <Tab x:Name="DiscoverTab" Title="Discover" Route="discover">

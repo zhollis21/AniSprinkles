@@ -106,7 +106,7 @@ Review all code written in this session against the checklist below. Fix every i
 
 - `dotnet build` passes with zero warnings
 - `dotnet test` green locally before presenting
-- No `#pragma warning disable` or `!` null-suppressions added without a comment explaining why
+- **No `#pragma warning disable`, `#nullable disable` or `!` null-suppressions — at all, without explicit approval.** A justifying comment is not enough; ask first. Restructure instead: an early return, an `is not X y` pattern, or a guard clause almost always removes the need.
 
 **Dead code**
 

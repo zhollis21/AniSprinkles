@@ -11,7 +11,7 @@ namespace AniSprinkles.UnitTests;
 /// <para>
 /// A settings change lives only in a 1500 ms debounce until it is sent. Navigating away inside that
 /// window meant the change was still unsent — and if the app was killed there, lost outright. Worse,
-/// <c>MyAnimePageModel.LoadAsync</c> syncs display preferences from the viewer, so a Library refresh
+/// <c>AnimeLibraryPageModel.LoadAsync</c> syncs display preferences from the viewer, so a Library refresh
 /// inside the window read the server's stale copy and reverted the toggle the user had just flipped.
 /// </para>
 /// </summary>

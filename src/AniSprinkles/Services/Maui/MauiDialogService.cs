@@ -40,12 +40,12 @@ public sealed class MauiDialogService(ILogger<MauiDialogService> logger) : IDial
         CanBeDismissedByTappingOutsideOfPopup = true,
     };
 
-    public async Task<MyAnimeEntryAction?> ShowEntryActionsAsync(
+    public async Task<MediaListEntryAction?> ShowEntryActionsAsync(
         string animeTitle,
-        IReadOnlyList<MyAnimeEntryAction> actions)
+        IReadOnlyList<MediaListEntryAction> actions)
     {
         var result = await ShowAsync(new ActionMenuPopup(animeTitle, actions), BottomSheetPopupOptions);
-        return result as MyAnimeEntryAction?;
+        return result as MediaListEntryAction?;
     }
 
     public async Task<MoveToListChoice?> ShowMoveToListAsync(

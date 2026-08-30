@@ -4,24 +4,24 @@ using Microsoft.Maui.Controls.Shapes;
 namespace AniSprinkles.Views;
 
 /// <summary>
-/// Bottom-sheet menu shown on long-press of a My Anime entry. Renders one row per supplied
-/// <see cref="MyAnimeEntryAction"/> (the caller pre-filters by entry status) and closes with the
+/// Bottom-sheet menu shown on long-press of a Library entry. Renders one row per supplied
+/// <see cref="MediaListEntryAction"/> (the caller pre-filters by entry status) and closes with the
 /// chosen action. Mirrors <see cref="MoveToListPopup"/>'s sheet styling and Android edge-to-edge
 /// handling.
 /// </summary>
 public partial class ActionMenuPopup : Popup<object>
 {
-    private static readonly Dictionary<MyAnimeEntryAction, (string Label, string Glyph, string ColorKey, bool IsDestructive)> ActionMeta = new()
+    private static readonly Dictionary<MediaListEntryAction, (string Label, string Glyph, string ColorKey, bool IsDestructive)> ActionMeta = new()
     {
-        [MyAnimeEntryAction.OpenDetails]   = ("Open details",     FluentIconsRegular.Info24,            "RainbowBlue",   false),
-        [MyAnimeEntryAction.EditProgress]  = ("Edit progress",    FluentIconsRegular.Edit24,            "RainbowCyan",   false),
-        [MyAnimeEntryAction.MarkCompleted] = ("Mark as completed", FluentIconsRegular.CheckmarkCircle24, "RainbowGreen",  false),
-        [MyAnimeEntryAction.Rate]          = ("Rate",             FluentIconsRegular.Star24,            "RainbowYellow", false),
-        [MyAnimeEntryAction.MoveToList]    = ("Move to list",     FluentIconsRegular.FolderArrowRight24, "RainbowPurple", false),
-        [MyAnimeEntryAction.Remove]        = ("Remove from list", FluentIconsRegular.Delete24,          "RainbowRed",    true),
+        [MediaListEntryAction.OpenDetails]   = ("Open details",     FluentIconsRegular.Info24,            "RainbowBlue",   false),
+        [MediaListEntryAction.EditProgress]  = ("Edit progress",    FluentIconsRegular.Edit24,            "RainbowCyan",   false),
+        [MediaListEntryAction.MarkCompleted] = ("Mark as completed", FluentIconsRegular.CheckmarkCircle24, "RainbowGreen",  false),
+        [MediaListEntryAction.Rate]          = ("Rate",             FluentIconsRegular.Star24,            "RainbowYellow", false),
+        [MediaListEntryAction.MoveToList]    = ("Move to list",     FluentIconsRegular.FolderArrowRight24, "RainbowPurple", false),
+        [MediaListEntryAction.Remove]        = ("Remove from list", FluentIconsRegular.Delete24,          "RainbowRed",    true),
     };
 
-    public ActionMenuPopup(string animeTitle, IReadOnlyList<MyAnimeEntryAction> actions)
+    public ActionMenuPopup(string animeTitle, IReadOnlyList<MediaListEntryAction> actions)
     {
         InitializeComponent();
         TitleLabel.Text = animeTitle;
@@ -91,7 +91,7 @@ public partial class ActionMenuPopup : Popup<object>
         return 0;
     }
 
-    private void BuildActionRows(IReadOnlyList<MyAnimeEntryAction> actions)
+    private void BuildActionRows(IReadOnlyList<MediaListEntryAction> actions)
     {
         foreach (var action in actions)
         {
@@ -152,7 +152,7 @@ public partial class ActionMenuPopup : Popup<object>
         }
     }
 
-    private async void OnActionTapped(MyAnimeEntryAction action)
+    private async void OnActionTapped(MediaListEntryAction action)
     {
         await CloseAsync(action);
     }

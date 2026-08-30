@@ -5,7 +5,7 @@ namespace AniSprinkles.Services;
 /// <summary>
 /// Shared helper that applies the side effects of a list-entry status change and,
 /// where appropriate, prompts the user for confirmation or a rating. Used by both
-/// the My Anime and Details pages so the two pages behave identically when
+/// the Library and Details pages so the two pages behave identically when
 /// completing, rewatching, or switching status.
 ///
 /// All methods mutate the passed <see cref="MediaListEntry"/> in place. Callers

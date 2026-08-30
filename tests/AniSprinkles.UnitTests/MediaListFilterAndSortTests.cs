@@ -6,10 +6,10 @@ using NSubstitute;
 namespace AniSprinkles.UnitTests;
 
 /// <summary>
-/// #52 Phase 1, the last uncovered slice of <see cref="MyAnimePageModel"/>: the search filter and the
+/// #52 Phase 1, the last uncovered slice of <see cref="AnimeLibraryPageModel"/>: the search filter and the
 /// sort picker. List loading, section ordering and the +1 debounce are covered elsewhere
-/// (<see cref="MyAnimeAdultFilterReloadTests"/>, <see cref="MyAnimeSortDefinitionsTests"/>,
-/// <see cref="MediaListSectionsMergerTests"/>, <see cref="MyAnimePageModelTests"/>).
+/// (<see cref="MediaListAdultFilterReloadTests"/>, <see cref="MediaListSortDefinitionsTests"/>,
+/// <see cref="MediaListSectionsMergerTests"/>, <see cref="MediaListPageModelTests"/>).
 /// <para>
 /// The sort path is the interesting half. <c>SelectSort</c> writes field and direction as two
 /// separate observable properties, each with a handler that persists and re-sorts — so it suppresses
@@ -18,9 +18,9 @@ namespace AniSprinkles.UnitTests;
 /// </para>
 /// </summary>
 [Collection(AppSettingsCollection.Name)]
-public class MyAnimeFilterAndSortTests
+public class MediaListFilterAndSortTests
 {
-    public MyAnimeFilterAndSortTests() => TestDataBuilder.ResetAppSettings();
+    public MediaListFilterAndSortTests() => TestDataBuilder.ResetAppSettings();
 
     // ── The search filter ────────────────────────────────────────────
 
@@ -148,7 +148,7 @@ public class MyAnimeFilterAndSortTests
         var notified = false;
         harness.Model.PropertyChanged += (_, e) =>
         {
-            if (e.PropertyName == nameof(MyAnimePageModel.HasNoResults))
+            if (e.PropertyName == nameof(AnimeLibraryPageModel.HasNoResults))
             {
                 notified = true;
             }
@@ -293,7 +293,7 @@ public class MyAnimeFilterAndSortTests
     [Fact]
     public async Task EveryCodeThePickerOffers_IsAccepted()
     {
-        // The build-time guard in MyAnimeSortDefinitionsTests says the codes parse; this says the
+        // The build-time guard in MediaListSortDefinitionsTests says the codes parse; this says the
         // command actually applies each one, so the two cannot drift.
         var harness = new Harness();
         await harness.LoadAsync();
@@ -347,7 +347,7 @@ public class MyAnimeFilterAndSortTests
 
             // One group, so it is the first section and therefore expanded — the visible collection
             // is what the ordering assertions read.
-            Client.GetMyAnimeListGroupedAsync(Arg.Any<CancellationToken>()).Returns(
+            Client.GetMediaListGroupedAsync(Arg.Any<MediaKind>(), Arg.Any<CancellationToken>()).Returns(
                 Task.FromResult<IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)>>(
                 [
                     ("Watching", new List<MediaListEntry>
@@ -359,7 +359,7 @@ public class MyAnimeFilterAndSortTests
                 ]));
 
             var dialogs = new ScriptedDialogService();
-            Model = new MyAnimePageModel(
+            Model = new AnimeLibraryPageModel(
                 Client,
                 auth,
                 Substitute.For<IAiringNotificationService>(),
@@ -370,14 +370,14 @@ public class MyAnimeFilterAndSortTests
                 new RecordingUserFeedback(),
                 new ListEntryStatusFlow(dialogs),
                 new ManualTimeProvider(DateTimeOffset.UnixEpoch),
-                NullLogger<MyAnimePageModel>.Instance);
+                NullLogger<AnimeLibraryPageModel>.Instance);
         }
 
         public IAniListClient Client { get; } = Substitute.For<IAniListClient>();
 
         public FakePreferences Preferences { get; } = new();
 
-        public MyAnimePageModel Model { get; }
+        public AnimeLibraryPageModel Model { get; }
 
         public Task LoadAsync() => Model.LoadAsync();
     }

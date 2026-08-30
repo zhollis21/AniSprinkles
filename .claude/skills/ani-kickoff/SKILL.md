@@ -191,7 +191,7 @@ described is not. Read `/project-architecture` and the relevant source before
 accepting the issue's description of how things currently work.
 
 Be careful not to over-apply this. #64 *looks* like the same case — an old perf
-investigation, and the lists have moved around — but `MyAnimeLoadedContentView`
+investigation, and the lists have moved around — but `MediaListLoadedContentView`
 still forces `MeasureAllItems` at `xaml:395` and `xaml.cs:311`, so the
 investigation is entirely valid. Only its citations had drifted. Check the code
 before concluding a premise moved, exactly as you would before concluding an

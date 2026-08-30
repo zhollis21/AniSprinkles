@@ -28,6 +28,7 @@ public partial class MediaListEntry : ObservableObject, IDisplayProjection
     [NotifyPropertyChangedFor(nameof(UsesVolumeProgress))]
     [NotifyPropertyChangedFor(nameof(ActiveProgress))]
     [NotifyPropertyChangedFor(nameof(ActiveProgressUnit))]
+    [NotifyPropertyChangedFor(nameof(IncrementLabel))]
     [NotifyPropertyChangedFor(nameof(ActiveProgressTotal))]
     [NotifyPropertyChangedFor(nameof(HasKnownProgressTotal))]
     private int? _progress;
@@ -44,6 +45,7 @@ public partial class MediaListEntry : ObservableObject, IDisplayProjection
     [NotifyPropertyChangedFor(nameof(UsesVolumeProgress))]
     [NotifyPropertyChangedFor(nameof(ActiveProgress))]
     [NotifyPropertyChangedFor(nameof(ActiveProgressUnit))]
+    [NotifyPropertyChangedFor(nameof(IncrementLabel))]
     [NotifyPropertyChangedFor(nameof(ActiveProgressTotal))]
     [NotifyPropertyChangedFor(nameof(HasKnownProgressTotal))]
     private int? _progressVolumes;
@@ -205,6 +207,13 @@ public partial class MediaListEntry : ObservableObject, IDisplayProjection
             Progress = value;
         }
     }
+
+    /// <summary>
+    /// Label for the +1 pill — "+1 EP", "+1 CH" or "+1 VOL" (#12). Per entry rather than per page,
+    /// because the unit is decided per entry: two manga sitting in the same section can count
+    /// different things.
+    /// </summary>
+    public string IncrementLabel => $"+1 {MediaListVocabulary.UnitAbbreviation(ActiveProgressUnit)}";
 
     /// <summary>
     /// Whether the +1 control should be *rendered* at all. True for Watching/Rewatching
@@ -372,7 +381,7 @@ public partial class MediaListEntry : ObservableObject, IDisplayProjection
     /// <summary>
     /// True when setting progress to <paramref name="progress"/> means the show is complete: a finite
     /// total is known, the value reaches it, and the entry isn't already Completed. Shared by the
-    /// Details page and My Anime (+1 and Edit-progress) so "reaching the cap completes the show" is
+    /// Details page and Library (+1 and Edit-progress) so "reaching the cap completes the show" is
     /// defined in exactly one place.
     /// </summary>
     public bool IsCompletionAt(int progress) =>

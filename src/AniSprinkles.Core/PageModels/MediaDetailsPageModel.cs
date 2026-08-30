@@ -380,7 +380,7 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
 
     /// <summary>
     /// Effective progress cap for UI, in <see cref="CurrentProgressUnit"/>: the list entry's own
-    /// total when there is an entry, so My Anime and Details stay in sync, and otherwise the same
+    /// total when there is an entry, so Library and Details stay in sync, and otherwise the same
     /// rule derived from the media alone (needed before the media is on the user's list at all).
     /// <para>
     /// For manga the fallback is the chapter or volume count, with no airing-schedule backstop —
@@ -1305,7 +1305,7 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
                 else
                 {
                     // User dismissed — revert the progress bump so the UI matches
-                    // My Anime's behaviour (cancel leaves entry unchanged).
+                    // Library’s behaviour (cancel leaves entry unchanged).
                     ListEntry.SetProgressFor(unit, previousProgress);
                     SliderProgress = previousProgress ?? 0;
                     NotifyListEntryDisplayChanged();

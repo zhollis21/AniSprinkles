@@ -12,6 +12,7 @@ public static partial class AppSettings
     private const string ScoreFormatKey = "score_format";
     private const string DisplayAdultContentKey = "display_adult_content";
     private const string AnimeSectionOrderKey = "anime_section_order";
+    private const string MangaSectionOrderKey = "manga_section_order";
 
     /// <summary>
     /// The preferences store these methods read and write through (#121).
@@ -85,10 +86,17 @@ public static partial class AppSettings
 
         DisplayAdultContent = Storage.Get(DisplayAdultContentKey, false);
 
-        var sectionOrderCsv = Storage.Get(AnimeSectionOrderKey, string.Empty);
-        AnimeSectionOrder = string.IsNullOrEmpty(sectionOrderCsv)
+        AnimeSectionOrder = ReadSectionOrder(AnimeSectionOrderKey);
+        MangaSectionOrder = ReadSectionOrder(MangaSectionOrderKey);
+    }
+
+    /// <summary>Section orders persist as a CSV of the server’s own list names.</summary>
+    private static List<string> ReadSectionOrder(string key)
+    {
+        var csv = Storage.Get(key, string.Empty);
+        return string.IsNullOrEmpty(csv)
             ? []
-            : sectionOrderCsv.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList();
+            : csv.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList();
     }
 
     public static void Save()
@@ -97,6 +105,7 @@ public static partial class AppSettings
         Storage.Set(ScoreFormatKey, ScoreFormat.ToString());
         Storage.Set(DisplayAdultContentKey, DisplayAdultContent);
         Storage.Set(AnimeSectionOrderKey, string.Join(",", AnimeSectionOrder));
+        Storage.Set(MangaSectionOrderKey, string.Join(",", MangaSectionOrder));
     }
 
     /// <summary>
@@ -208,7 +217,7 @@ public static partial class AppSettings
 
     /// <summary>
     /// Syncs local app settings from an AniList Viewer response.
-    /// Called on every My Anime load/refresh and when the Settings page loads.
+    /// Called on every Library load/refresh and when the Settings page loads.
     /// </summary>
     public static void SyncFromViewer(AniListUser user)
     {
@@ -221,6 +230,7 @@ public static partial class AppSettings
         ScoreFormat = PendingValue.Resolve(ref _scoreFormatAwaitingUpstream, user.ScoreFormat, ScoreFormat);
         DisplayAdultContent = PendingValue.Resolve(ref _displayAdultContentAwaitingUpstream, user.Options.DisplayAdultContent, DisplayAdultContent);
         AnimeSectionOrder = user.AnimeSectionOrder;
+        MangaSectionOrder = user.MangaSectionOrder;
 
         Save();
     }
@@ -240,6 +250,8 @@ public static partial class AppSettings
         Storage.Remove(ScoreFormatKey);
         Storage.Remove(DisplayAdultContentKey);
         AnimeSectionOrder = [];
+        MangaSectionOrder = [];
         Storage.Remove(AnimeSectionOrderKey);
+        Storage.Remove(MangaSectionOrderKey);
     }
 }

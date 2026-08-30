@@ -40,7 +40,7 @@ public interface IDialogService
     /// Long-press action menu for a list entry. Returns the chosen action, or <c>null</c> if the
     /// user dismissed the sheet.
     /// </summary>
-    Task<MyAnimeEntryAction?> ShowEntryActionsAsync(string animeTitle, IReadOnlyList<MyAnimeEntryAction> actions);
+    Task<MediaListEntryAction?> ShowEntryActionsAsync(string animeTitle, IReadOnlyList<MediaListEntryAction> actions);
 
     /// <summary>
     /// Status picker used for both "move to list" (<paramref name="allowRemove"/> true, current

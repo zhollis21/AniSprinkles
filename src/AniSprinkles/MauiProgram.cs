@@ -187,15 +187,16 @@ public static class MauiProgram
 #endif
             return client;
         });
-        builder.Services.AddSingleton<MyAnimePageModel>();
-        builder.Services.AddTransient<MyAnimePage>();
+        builder.Services.AddSingleton<AnimeLibraryPageModel>();
+        builder.Services.AddTransient<AnimeLibraryPage>();
         builder.Services.AddSingleton<DiscoverPageModel>();
         builder.Services.AddTransient<DiscoverPage>();
         builder.Services.AddSingleton<SearchPageModel>();
         builder.Services.AddTransient<SearchPage>();
         // Placeholder pages: no PageModel until their features land (manga #12, feed #14).
         builder.Services.AddTransient<FeedPage>();
-        builder.Services.AddTransient<MyMangaPage>();
+        builder.Services.AddSingleton<MangaLibraryPageModel>();
+        builder.Services.AddTransient<MangaLibraryPage>();
         builder.Services.AddSingleton<SettingsPageModel>();
         builder.Services.AddTransient<SettingsPage>();
         builder.Services.AddTransient<MediaDetailsPageModel>();

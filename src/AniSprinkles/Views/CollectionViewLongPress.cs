@@ -4,7 +4,7 @@ namespace AniSprinkles.Views;
 
 /// <summary>
 /// Reusable Android long-press detection for a flat (ungrouped) CollectionView — the generalized
-/// form of MyAnimeLoadedContentView's RecyclerView listener. Resolves the pressed item by adapter
+/// form of MediaListLoadedContentView's RecyclerView listener. Resolves the pressed item by adapter
 /// position from the CollectionView's ItemsSource (valid because these lists have no headers;
 /// a Footer sits past the last item index and resolves to null).
 ///

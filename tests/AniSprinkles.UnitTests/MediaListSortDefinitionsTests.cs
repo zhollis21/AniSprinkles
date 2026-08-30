@@ -2,15 +2,15 @@ using AniSprinkles.PageModels;
 
 namespace AniSprinkles.UnitTests;
 
-// Build-time guard for the My Anime sort picker: the picker only ever emits these codes, and SelectSort
+// Build-time guard for the Library sort picker: the picker only ever emits these codes, and SelectSort
 // treats any malformed code as a logged no-op. These tests assert every definition's Code parses by the
 // exact same rules SelectSort applies, so a typo'd entry (or a renamed SortField) fails CI before it ships.
-public class MyAnimeSortDefinitionsTests
+public class MediaListSortDefinitionsTests
 {
     public static TheoryData<string> AllCodes()
     {
         var data = new TheoryData<string>();
-        foreach (var (code, _) in MyAnimeSortDefinitions.All)
+        foreach (var (code, _) in MediaListSortDefinitions.All)
         {
             data.Add(code);
         }
@@ -32,12 +32,12 @@ public class MyAnimeSortDefinitionsTests
     [Fact]
     public void Codes_AreUnique()
     {
-        var codes = MyAnimeSortDefinitions.All.Select(d => d.Code).ToList();
+        var codes = MediaListSortDefinitions.All.Select(d => d.Code).ToList();
 
         Assert.Equal(codes.Count, codes.Distinct(StringComparer.Ordinal).Count());
     }
 
     [Fact]
     public void Definitions_AllHaveDisplayText()
-        => Assert.All(MyAnimeSortDefinitions.All, d => Assert.False(string.IsNullOrWhiteSpace(d.Display)));
+        => Assert.All(MediaListSortDefinitions.All, d => Assert.False(string.IsNullOrWhiteSpace(d.Display)));
 }

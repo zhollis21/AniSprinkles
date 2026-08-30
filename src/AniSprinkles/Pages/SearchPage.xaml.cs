@@ -5,7 +5,7 @@ using AniSprinkles.Views;
 namespace AniSprinkles.Pages;
 
 /// <summary>
-/// Search tab (issues #16/#43). Unlike Discover and My Anime there is no deferred content host:
+/// Search tab (issues #16/#43). Unlike Discover and Library there is no deferred content host:
 /// the page is an Entry plus one CollectionView, light enough to build inline during the tab
 /// transition.
 /// </summary>

@@ -7,7 +7,7 @@ namespace AniSprinkles.Services;
 /// spelled (#141).
 /// <para>
 /// The keys used to be independent literals and private consts across three files spanning both
-/// projects — written in <c>MyAnimePageModel</c>, read in <c>AiringCheckWorker</c>, removed in
+/// projects — written in <c>AnimeLibraryPageModel</c>, read in <c>AiringCheckWorker</c>, removed in
 /// <c>AiringNotificationService</c> and <c>SettingsPageModel</c>. Renaming one left the code
 /// compiling, the tests green, and airing notifications silently dead, because no test could reach
 /// both halves: <c>tests/</c> references Core only, and the worker lives in the MAUI app project.
@@ -21,7 +21,7 @@ namespace AniSprinkles.Services;
 /// </summary>
 public static class AiringNotificationState
 {
-    /// <summary>Comma-separated RELEASING media IDs, cached by <c>MyAnimePageModel</c> after a list load.</summary>
+    /// <summary>Comma-separated RELEASING media IDs, cached by <c>AnimeLibraryPageModel</c> after a list load.</summary>
     public const string MediaIdsKey = "airing_media_ids";
 
     /// <summary>Unix seconds of the last fully successful check. See <c>AiringCheckRunner</c> for why it only advances on success.</summary>
@@ -30,7 +30,7 @@ public static class AiringNotificationState
     /// <summary>JSON dictionary of <c>"mediaId:episode"</c> → unix seconds, the dedup set.</summary>
     public const string NotifiedKey = "airing_notified";
 
-    /// <summary>Set once the My Anime permission prompt has been shown, so a denial isn't re-prompted on every load.</summary>
+    /// <summary>Set once the Library permission prompt has been shown, so a denial isn't re-prompted on every load.</summary>
     public const string PermissionPromptedKey = "airing_permission_prompted";
 
     /// <summary>

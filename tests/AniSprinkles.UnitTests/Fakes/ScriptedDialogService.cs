@@ -28,7 +28,7 @@ public sealed class ScriptedDialogService : IDialogService
     /// </summary>
     public Func<Task>? BeforeConfirmAsync { get; set; }
 
-    public MyAnimeEntryAction? EntryActionAnswer { get; set; }
+    public MediaListEntryAction? EntryActionAnswer { get; set; }
 
     public MoveToListChoice? MoveToListAnswer { get; set; }
 
@@ -40,9 +40,9 @@ public sealed class ScriptedDialogService : IDialogService
 
     public string? PromptAnswer { get; set; }
 
-    public Task<MyAnimeEntryAction?> ShowEntryActionsAsync(
+    public Task<MediaListEntryAction?> ShowEntryActionsAsync(
         string animeTitle,
-        IReadOnlyList<MyAnimeEntryAction> actions)
+        IReadOnlyList<MediaListEntryAction> actions)
     {
         Record(nameof(ShowEntryActionsAsync));
         return Task.FromResult(EntryActionAnswer);

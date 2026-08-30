@@ -164,11 +164,11 @@ public sealed class CachingAniListClient : IAniListClient
 
     // ---- Pass-throughs (uncached) -------------------------------------------------------------
 
-    public Task<IReadOnlyList<MediaListEntry>> GetMyAnimeListAsync(CancellationToken cancellationToken = default)
-        => _inner.GetMyAnimeListAsync(cancellationToken);
+    public Task<IReadOnlyList<MediaListEntry>> GetMediaListAsync(MediaKind kind, CancellationToken cancellationToken = default)
+        => _inner.GetMediaListAsync(kind, cancellationToken);
 
-    public Task<IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)>> GetMyAnimeListGroupedAsync(CancellationToken cancellationToken = default)
-        => _inner.GetMyAnimeListGroupedAsync(cancellationToken);
+    public Task<IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)>> GetMediaListGroupedAsync(MediaKind kind, CancellationToken cancellationToken = default)
+        => _inner.GetMediaListGroupedAsync(kind, cancellationToken);
 
     public Task<(IReadOnlyList<BrowseMediaItem> Items, PageInfo? PageInfo)> SearchMediaPageAsync(
         string search, MediaKind? kind, bool? isAdult = false, int page = 1, int perPage = 20, CancellationToken cancellationToken = default)
