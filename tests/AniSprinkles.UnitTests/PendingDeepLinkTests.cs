@@ -103,6 +103,76 @@ public class PendingDeepLinkTests
             Route, false, Arg.Is<IDictionary<string, object>>(p => (int)p["mediaId"] == 21));
     }
 
+    // ── Navigation failure ──────────────────────────────────────────
+
+    [Fact]
+    public async Task WhenNavigationThrows_TheLinkSurvivesAndIsRetried()
+    {
+        // The user tapped a notification and never arrived. Losing the link here would be the same
+        // silent nothing-happens as every other failure on this path.
+        var store = new FakePreferences();
+        var link = WithPending(21, nonce: 4242, store);
+        var navigation = Substitute.For<INavigationService>();
+        navigation.GoToAsync(Route, false, Arg.Any<IDictionary<string, object>>())
+            .Returns(Task.FromException(new InvalidOperationException("route not registered")));
+
+        await Assert.ThrowsAsync<InvalidOperationException>(
+            () => link.TryNavigateAsync(navigation, shellReady: true));
+
+        Assert.True(link.HasPending);
+
+        // And the nonce was not burned, so a re-delivered intent still counts as the same live tap.
+        Assert.True(link.Set(Route, Media(21), nonce: 4242));
+    }
+
+    [Fact]
+    public async Task AfterAFailedNavigation_TheNextAttemptSucceeds()
+    {
+        var link = WithPending(21, nonce: 4242);
+        var navigation = Substitute.For<INavigationService>();
+        navigation.GoToAsync(Route, false, Arg.Any<IDictionary<string, object>>())
+            .Returns(
+                _ => Task.FromException(new InvalidOperationException("transient")),
+                _ => Task.CompletedTask);
+
+        await Assert.ThrowsAsync<InvalidOperationException>(
+            () => link.TryNavigateAsync(navigation, shellReady: true));
+        Assert.True(await link.TryNavigateAsync(navigation, shellReady: true));
+
+        // Now it is consumed, so the replayed intent is ignored.
+        Assert.False(link.Set(Route, Media(21), nonce: 4242));
+    }
+
+    [Fact]
+    public async Task WhenNavigationThrowsAfterANewerTapArrived_TheNewerTapWins()
+    {
+        // Restoring unconditionally would resurrect the stale link over the one the user most
+        // recently asked for.
+        var link = WithPending(21, nonce: 1);
+        var navigation = Substitute.For<INavigationService>();
+        int calls = 0;
+        navigation.GoToAsync(Route, false, Arg.Any<IDictionary<string, object>>())
+            .Returns(_ =>
+            {
+                if (++calls > 1)
+                {
+                    return Task.CompletedTask;
+                }
+
+                // Arrives while the first navigation is in flight — past the lock, so Set can take it.
+                link.Set(Route, Media(16498), nonce: 2);
+                return Task.FromException(new InvalidOperationException("boom"));
+            });
+
+        await Assert.ThrowsAsync<InvalidOperationException>(
+            () => link.TryNavigateAsync(navigation, shellReady: true));
+
+        await link.TryNavigateAsync(navigation, shellReady: true);
+
+        await navigation.Received(1).GoToAsync(
+            Route, false, Arg.Is<IDictionary<string, object>>(p => (int)p["mediaId"] == 16498));
+    }
+
     // ── Replay ──────────────────────────────────────────────────────
 
     [Fact]

@@ -116,6 +116,7 @@ public sealed class PendingDeepLink(IPreferences preferences, ILogger<PendingDee
     {
         string route;
         IDictionary<string, object> parameters;
+        int? nonce;
 
         lock (_gate)
         {
@@ -126,12 +127,12 @@ public sealed class PendingDeepLink(IPreferences preferences, ILogger<PendingDee
 
             route = _route;
             parameters = _parameters!;
+            nonce = _pendingNonce;
 
             // Taken before awaiting, so a second drain racing this one finds nothing and cannot
-            // navigate twice.
+            // navigate twice. The nonce is only *consumed* once the navigation succeeds — see below.
             _route = null;
             _parameters = null;
-            ConsumedNonce = _pendingNonce;
             _pendingNonce = null;
         }
 
@@ -141,7 +142,35 @@ public sealed class PendingDeepLink(IPreferences preferences, ILogger<PendingDee
         logger?.LogInformation("NAVTRACE DeepLink → {Route}", route);
         SentrySdk.AddBreadcrumb($"Follow notification deep link ({route})", "navigation", "user");
 
-        await navigation.GoToAsync(route, animate: false, parameters);
+        try
+        {
+            await navigation.GoToAsync(route, animate: false, parameters);
+        }
+        catch
+        {
+            // The user tapped a notification and never arrived. Put the link back so a later drain
+            // — OnResume, or Shell's next Navigated — can try again, and leave the nonce unconsumed
+            // so a re-delivered intent is not mistaken for a replay of a tap that never landed.
+            lock (_gate)
+            {
+                // Only if nothing newer arrived while we were awaiting: the most recent tap is what
+                // the user last asked for, and restoring over it would resurrect a stale one.
+                if (_route is null)
+                {
+                    _route = route;
+                    _parameters = parameters;
+                    _pendingNonce = nonce;
+                }
+            }
+
+            throw;
+        }
+
+        lock (_gate)
+        {
+            ConsumedNonce = nonce;
+        }
+
         return true;
     }
 }
