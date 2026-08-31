@@ -21,10 +21,10 @@ public partial class ActionMenuPopup : Popup<object>
         [MediaListEntryAction.Remove]        = ("Remove from list", FluentIconsRegular.Delete24,          "RainbowRed",    true),
     };
 
-    public ActionMenuPopup(string animeTitle, IReadOnlyList<MediaListEntryAction> actions)
+    public ActionMenuPopup(string mediaTitle, IReadOnlyList<MediaListEntryAction> actions)
     {
         InitializeComponent();
-        TitleLabel.Text = animeTitle;
+        TitleLabel.Text = mediaTitle;
         BuildActionRows(actions);
 
         // Anchor as a bottom sheet. CommunityToolkit Popup V2 re-declares these as `new` BindableProperties,

@@ -9,13 +9,13 @@ public partial class RatingPopup : Popup<object>
     private readonly double _maxScore;
     private double _selectedScore;
 
-    public RatingPopup(string? animeTitle = null, double? initialScore = null)
+    public RatingPopup(string? mediaTitle = null, double? initialScore = null)
     {
         InitializeComponent();
 
-        if (!string.IsNullOrWhiteSpace(animeTitle))
+        if (!string.IsNullOrWhiteSpace(mediaTitle))
         {
-            TitleLabel.Text = animeTitle;
+            TitleLabel.Text = mediaTitle;
         }
 
         _scoreFormat = AppSettings.ScoreFormat;

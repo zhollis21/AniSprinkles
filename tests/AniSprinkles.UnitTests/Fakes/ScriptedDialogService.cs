@@ -41,7 +41,7 @@ public sealed class ScriptedDialogService : IDialogService
     public string? PromptAnswer { get; set; }
 
     public Task<MediaListEntryAction?> ShowEntryActionsAsync(
-        string animeTitle,
+        string mediaTitle,
         IReadOnlyList<MediaListEntryAction> actions)
     {
         Record(nameof(ShowEntryActionsAsync));
@@ -80,7 +80,7 @@ public sealed class ScriptedDialogService : IDialogService
         return Task.FromResult(EditProgressAnswer);
     }
 
-    public Task<double?> ShowRatingAsync(string? animeTitle, double? initialScore)
+    public Task<double?> ShowRatingAsync(string? mediaTitle, double? initialScore)
     {
         Record(nameof(ShowRatingAsync));
         return Task.FromResult(RatingAnswer);
