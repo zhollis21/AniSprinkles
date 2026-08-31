@@ -4,7 +4,7 @@ namespace AniSprinkles.PageModels;
 
 /// <summary>
 /// Pure in-place merge for <see cref="MediaListSection"/> collections.
-/// Used by the MyAnime pull-to-refresh warm path so that unchanged data causes
+/// Used by the Library pull-to-refresh warm path so that unchanged data causes
 /// zero CollectionView resets (and therefore zero cell re-binds / Glide decodes).
 /// All inputs are passed explicitly — the merger has no dependency on AppSettings
 /// so it can be exercised from pure unit tests without MAUI plumbing.
@@ -413,7 +413,14 @@ public static class MediaListSectionsMerger
             return true;
         }
 
-        if (old.Episodes != @new.Episodes)
+        // Episodes for anime, chapters and volumes for manga (#12). All three matter for the same
+        // reason: the total is what the progress display and the +1 cap are drawn from, and for
+        // manga it arrives late — AniList leaves both null until a series finishes publishing, so
+        // the change from "no total" to "141 chapters" lands on a warm refresh rather than a cold
+        // load and would otherwise go unnoticed.
+        if (old.Episodes != @new.Episodes
+            || old.Chapters != @new.Chapters
+            || old.Volumes != @new.Volumes)
         {
             return true;
         }

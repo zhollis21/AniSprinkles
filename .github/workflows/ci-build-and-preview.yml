@@ -540,10 +540,49 @@ jobs:
           mkdir -p screenshots
 
           # Screenshot 1: Library tab, Anime sub-tab (the app's launch destination)
-          adb shell screencap -p /sdcard/my_anime.png || echo "::warning::Failed to capture Library screenshot"
-          adb pull /sdcard/my_anime.png screenshots/my_anime.png || echo "::warning::Failed to pull Library screenshot"
-          assert_no_adult_canary "Library"
-          echo "Captured: my_anime.png (Library — $AUTH_MODE)"
+          adb shell screencap -p /sdcard/anime_library.png || echo "::warning::Failed to capture Anime Library screenshot"
+          adb pull /sdcard/anime_library.png screenshots/anime_library.png || echo "::warning::Failed to pull Anime Library screenshot"
+          assert_no_adult_canary "Anime Library"
+          echo "Captured: anime_library.png (Anime Library — $AUTH_MODE)"
+
+          # Screenshot 2: Library tab, Manga sub-tab.
+          #
+          # The sub-tab strip renders its labels uppercase, so the dump text is "MANGA" even
+          # though AppShell.xaml says Title="Manga". Tapping the XAML casing matches nothing,
+          # and because a failed tap only warns, the capture below would silently re-shoot the
+          # anime page and publish it as the manga one. Verified against a uiautomator dump on
+          # the API 36 emulator.
+          if tap_element_by_text "MANGA"; then
+            # The manga list is not fetched until the tab is first shown — the Android pager
+            # does not pre-warm the adjacent page — so this genuinely loads here rather than
+            # being ready already.
+            MANGA_WAIT=0
+            while [ $MANGA_WAIT -lt 15 ]; do
+              adb shell uiautomator dump /sdcard/ui_manga.xml >/dev/null 2>&1 || true
+              if adb shell cat /sdcard/ui_manga.xml 2>/dev/null | grep -qi "Loading manga list"; then
+                echo "  Still loading manga list... (${MANGA_WAIT}s)"
+              else
+                echo "  Manga list ready after ${MANGA_WAIT}s"
+                sleep 1
+                break
+              fi
+              sleep 1
+              MANGA_WAIT=$((MANGA_WAIT + 1))
+            done
+            if [ $MANGA_WAIT -ge 15 ]; then
+              echo "::warning::Timed out waiting for the manga list after 15s — capturing anyway"
+            fi
+            adb shell screencap -p /sdcard/manga_library.png || echo "::warning::Failed to capture Manga Library screenshot"
+            adb pull /sdcard/manga_library.png screenshots/manga_library.png || echo "::warning::Failed to pull Manga Library screenshot"
+            assert_no_adult_canary "Manga Library"
+            echo "Captured: manga_library.png (Manga Library — $AUTH_MODE)"
+
+            # Return to the anime half — every step below navigates from the anime list.
+            tap_element_by_text "ANIME" || echo "::warning::Could not return to the Anime sub-tab"
+            sleep 2
+          else
+            echo "::warning::Could not find the MANGA sub-tab — skipping the Manga Library screenshot"
+          fi
 
           # Tap One Piece to open its details page
           tap_element_by_text "ONE PIECE" || echo "::warning::Could not find ONE PIECE in list"
@@ -892,7 +931,8 @@ jobs:
             const screenshotsPublished = process.env.SCREENSHOTS_PUBLISHED === 'true';
 
             const screenshots = [
-              { file: 'screenshots/my_anime.png', label: 'Library' },
+              { file: 'screenshots/anime_library.png', label: 'Anime Library' },
+              { file: 'screenshots/manga_library.png', label: 'Manga Library' },
               { file: 'screenshots/discover.png', label: 'Discover' },
               { file: 'screenshots/browse.png', label: 'View All (Browse)' },
               { file: 'screenshots/search.png', label: 'Search' },
@@ -989,7 +1029,8 @@ jobs:
             echo "| Screenshot | Page |" >> $GITHUB_STEP_SUMMARY
             echo "|---|---|" >> $GITHUB_STEP_SUMMARY
             for shot in \
-              "my_anime.png|Library" \
+              "anime_library.png|Anime Library" \
+              "manga_library.png|Manga Library" \
               "discover.png|Discover" \
               "browse.png|View All (Browse)" \
               "search.png|Search" \

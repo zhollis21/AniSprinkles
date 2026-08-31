@@ -59,7 +59,7 @@ public class RelatedMediaTests
         Assert.Equal(string.Empty, new RelatedMedia().BrowseMetaDisplay);
     }
 
-    // Chip labels use the friendly names ("Watching"/"Rewatching"), matching the My Anime sections.
+    // Chip labels use the friendly names ("Watching"/"Rewatching"), matching the Library sections.
     [Theory]
     [InlineData(MediaListStatus.Current, "Watching")]
     [InlineData(MediaListStatus.Repeating, "Rewatching")]

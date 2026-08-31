@@ -15,5 +15,12 @@ public class AniListUser
     public ScoreFormat ScoreFormat { get; set; }
     public string? RowOrder { get; set; }
     public List<string> AnimeSectionOrder { get; set; } = [];
+
+    /// <summary>
+    /// The manga list’s own section order (#12). Separate from the anime one because the names
+    /// differ — AniList returns Reading/Rereading where the anime list says Watching/Rewatching —
+    /// so ordering the manga tab by the anime list would sort against names it never contains.
+    /// </summary>
+    public List<string> MangaSectionOrder { get; set; } = [];
     public UserAnimeStatistics AnimeStatistics { get; set; } = new();
 }

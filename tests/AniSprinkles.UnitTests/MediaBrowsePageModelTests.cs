@@ -388,7 +388,7 @@ public class MediaBrowsePageModelTests
     [Fact]
     public void TheViewMode_OpensInWhateverWasLastPickedAnywhere()
     {
-        // Shared with My Anime through one preference key, so switching the look on either page
+        // Shared with Library through one preference key, so switching the look on either page
         // carries to the other.
         var preferences = new FakePreferences();
         ListViewModePreference.Save(preferences, ListViewMode.Compact);

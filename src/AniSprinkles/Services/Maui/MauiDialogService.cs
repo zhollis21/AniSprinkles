@@ -40,12 +40,12 @@ public sealed class MauiDialogService(ILogger<MauiDialogService> logger) : IDial
         CanBeDismissedByTappingOutsideOfPopup = true,
     };
 
-    public async Task<MyAnimeEntryAction?> ShowEntryActionsAsync(
-        string animeTitle,
-        IReadOnlyList<MyAnimeEntryAction> actions)
+    public async Task<MediaListEntryAction?> ShowEntryActionsAsync(
+        string mediaTitle,
+        IReadOnlyList<MediaListEntryAction> actions)
     {
-        var result = await ShowAsync(new ActionMenuPopup(animeTitle, actions), BottomSheetPopupOptions);
-        return result as MyAnimeEntryAction?;
+        var result = await ShowAsync(new ActionMenuPopup(mediaTitle, actions), BottomSheetPopupOptions);
+        return result as MediaListEntryAction?;
     }
 
     public async Task<MoveToListChoice?> ShowMoveToListAsync(
@@ -74,9 +74,9 @@ public sealed class MauiDialogService(ILogger<MauiDialogService> logger) : IDial
         return result as int?;
     }
 
-    public async Task<double?> ShowRatingAsync(string? animeTitle, double? initialScore)
+    public async Task<double?> ShowRatingAsync(string? mediaTitle, double? initialScore)
     {
-        var result = await ShowAsync(new RatingPopup(animeTitle, initialScore), TransparentPopupOptions);
+        var result = await ShowAsync(new RatingPopup(mediaTitle, initialScore), TransparentPopupOptions);
         return result as double?;
     }
 

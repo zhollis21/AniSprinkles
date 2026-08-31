@@ -3,44 +3,74 @@ using Microsoft.Extensions.Logging;
 
 namespace AniSprinkles.Pages;
 
-public partial class MyAnimePage : ContentPage
+/// <summary>
+/// The lifecycle both halves of the Library tab share (#12): deferred content creation so the
+/// Shell transition finishes before the heavy view is built, toolbar items that come and go with
+/// auth, the sort-popup anchor, and the handler teardown that stops a singleton page model pinning
+/// an orphaned page.
+/// <para>
+/// A base class rather than two copies because this is the code that has needed the careful fixes —
+/// #60’s colour flash, #64’s measure strategy, the OnNavigatedTo-vs-OnAppearing lesson in
+/// AGENTS.md — and it sits on the MAUI side of the test boundary, where a divergence between two
+/// copies would have nothing watching it.
+/// </para>
+/// </summary>
+public abstract partial class MediaListPageBase : ContentPage
 {
     private static readonly TimeSpan DeferredLoadDelay = TimeSpan.FromMilliseconds(120);
 
-    private MyAnimePageModel? _viewModel;
+    private MediaListPageModel? _viewModel;
+
+    /// <summary>Resolves this half’s page model. The only thing the subclasses supply.</summary>
+    protected abstract MediaListPageModel? ResolveViewModel(IServiceProvider services);
     private bool _hasAppeared;
     private bool _hasCreatedLoadedContent;
     private int _loadVersion;
-    private readonly ToolbarItem? _sortToolbarItem;
-    private readonly ToolbarItem? _searchToolbarItem;
-    private readonly ToolbarItem? _viewModeToolbarItem;
-    private readonly ILogger<MyAnimePage>? _logger;
+    private ToolbarItem? _sortToolbarItem;
+    private ToolbarItem? _searchToolbarItem;
+    private ToolbarItem? _viewModeToolbarItem;
+    private ContentView? _loadedContentHost;
+    private FontImageSource? _sortIcon;
+    private FontImageSource? _viewModeIcon;
+    private readonly ILogger<MediaListPageBase>? _logger;
 
     // Re-entrancy guard: a second tap while the picker is up would stack popups (mirrors SortDropdown).
     private bool _sortPopupOpen;
 
-    public MyAnimePage()
+    /// <summary>
+    /// Hands the base the elements XAML generated into the SUBCLASS partial. They cannot be reached
+    /// from here directly — the generated fields belong to whichever concrete page compiled the
+    /// .xaml — so each page calls this straight after InitializeComponent. Explicit rather than
+    /// FindByName so a renamed x:Name breaks the build instead of quietly nulling a field on a page
+    /// whose lifecycle has already needed careful fixes.
+    /// </summary>
+    protected void AttachXamlElements(
+        ContentView loadedContentHost,
+        ToolbarItem sortToolbarItem,
+        ToolbarItem searchToolbarItem,
+        ToolbarItem viewModeToolbarItem,
+        FontImageSource sortIcon,
+        FontImageSource viewModeIcon)
     {
-        InitializeComponent();
-        // Stash toolbar items so we can add/remove them based on auth state.
-        _sortToolbarItem = SortToolbarItem;
-        _searchToolbarItem = SearchToolbarItem;
-        _viewModeToolbarItem = ViewModeToolbarItem;
+        _loadedContentHost = loadedContentHost;
+        // Stashed so we can add/remove them based on auth state.
+        _sortToolbarItem = sortToolbarItem;
+        _searchToolbarItem = searchToolbarItem;
+        _viewModeToolbarItem = viewModeToolbarItem;
+        _sortIcon = sortIcon;
+        _viewModeIcon = viewModeIcon;
+    }
 
+    protected MediaListPageBase()
+    {
         try
         {
             _logger = ServiceProviderHelper.GetServiceProvider()
-                .GetService<ILoggerFactory>()?.CreateLogger<MyAnimePage>();
+                .GetService<ILoggerFactory>()?.CreateLogger<MediaListPageBase>();
         }
         catch (InvalidOperationException)
         {
         }
-    }
-
-    public MyAnimePage(MyAnimePageModel viewModel)
-        : this()
-    {
-        SetViewModel(viewModel);
     }
 
     protected override async void OnAppearing()
@@ -61,7 +91,7 @@ public partial class MyAnimePage : ContentPage
         UpdateToolbarItems();
 
         // Content survived the tab switch — just refresh data in background.
-        if (LoadedContentHost.Content is not null)
+        if (_loadedContentHost?.Content is not null)
         {
             await _viewModel.LoadAsync();
             // Tear down loaded content if the user signed out while away.
@@ -157,29 +187,36 @@ public partial class MyAnimePage : ContentPage
 
     private void UpdateLoadedContentHost()
     {
+        // Null only if a subclass forgot AttachXamlElements; bail rather than suppress, so a page
+        // that skipped it renders empty instead of throwing on a lifecycle callback.
+        if (_loadedContentHost is not ContentView host)
+        {
+            return;
+        }
+
         var isError = _viewModel?.CurrentState == PageState.Error;
         var isAuth = _viewModel?.IsAuthenticated == true;
 
         if (isAuth && !isError && !_hasCreatedLoadedContent)
         {
-            var view = new Views.MyAnimeLoadedContentView
+            var view = new Views.MediaListLoadedContentView
             {
                 BindingContext = _viewModel
             };
 
             _logger?.LogInformation(
-                "LOADEDHOST MyAnime attach (isAuth={IsAuth}, isError={IsError}, currentState={CurrentState})",
+                "LOADEDHOST MediaList attach (isAuth={IsAuth}, isError={IsError}, currentState={CurrentState})",
                 isAuth, isError, _viewModel?.CurrentState);
-            LoadedContentHost.Content = view;
+            host.Content = view;
             _hasCreatedLoadedContent = true;
         }
         else if ((!isAuth || isError) && _hasCreatedLoadedContent)
         {
             _logger?.LogInformation(
-                "LOADEDHOST MyAnime detach (isAuth={IsAuth}, isError={IsError}, currentState={CurrentState})",
+                "LOADEDHOST MediaList detach (isAuth={IsAuth}, isError={IsError}, currentState={CurrentState})",
                 isAuth, isError, _viewModel?.CurrentState);
-            HandlerHelper.DisconnectAll(LoadedContentHost.Content);
-            LoadedContentHost.Content = null;
+            HandlerHelper.DisconnectAll(host.Content);
+            host.Content = null;
             _hasCreatedLoadedContent = false;
         }
     }
@@ -194,7 +231,7 @@ public partial class MyAnimePage : ContentPage
         try
         {
             var services = ServiceProviderHelper.GetServiceProvider();
-            var viewModel = services?.GetService<MyAnimePageModel>();
+            var viewModel = services is null ? null : ResolveViewModel(services);
             if (viewModel is null)
             {
                 return;
@@ -215,9 +252,9 @@ public partial class MyAnimePage : ContentPage
         // off the UI thread while CurrentState == InitialLoading — OnAppearing flips
         // to InitialLoading during the defer delay, and we don't want the view
         // materialized until the Shell transition animation has finished.
-        if ((e.PropertyName is nameof(MyAnimePageModel.IsAuthenticated)
-                or nameof(MyAnimePageModel.Sections)
-                or nameof(MyAnimePageModel.CurrentState))
+        if ((e.PropertyName is nameof(MediaListPageModel.IsAuthenticated)
+                or nameof(MediaListPageModel.Sections)
+                or nameof(MediaListPageModel.CurrentState))
             && _hasAppeared
             && _viewModel?.IsAuthenticated == true
             && _viewModel.CurrentState == PageState.Content
@@ -226,14 +263,14 @@ public partial class MyAnimePage : ContentPage
             UpdateLoadedContentHost();
             UpdateToolbarItems();
         }
-        else if (e.PropertyName == nameof(MyAnimePageModel.CurrentState)
+        else if (e.PropertyName == nameof(MediaListPageModel.CurrentState)
             && _hasAppeared
             && _viewModel?.CurrentState == PageState.Error)
         {
             // Tear down loaded content so the error view is visible.
             UpdateLoadedContentHost();
         }
-        else if (e.PropertyName == nameof(MyAnimePageModel.IsAuthenticated)
+        else if (e.PropertyName == nameof(MediaListPageModel.IsAuthenticated)
             && _hasAppeared
             && _viewModel?.IsAuthenticated != true)
         {
@@ -241,11 +278,11 @@ public partial class MyAnimePage : ContentPage
             UpdateLoadedContentHost();
             UpdateToolbarItems();
         }
-        else if (e.PropertyName == nameof(MyAnimePageModel.ViewModeIconGlyph) && _viewModel is not null)
+        else if (e.PropertyName == nameof(MediaListPageModel.ViewModeIconGlyph) && _viewModel is not null)
         {
             UpdateViewModeIcon(_viewModel.CurrentViewMode);
         }
-        else if (e.PropertyName == nameof(MyAnimePageModel.SortIconGlyph) && _viewModel is not null)
+        else if (e.PropertyName == nameof(MediaListPageModel.SortIconGlyph) && _viewModel is not null)
         {
             UpdateSortIcon();
         }
@@ -367,18 +404,24 @@ public partial class MyAnimePage : ContentPage
             _ => FluentIconsRegular.List24,
         };
 
-        ViewModeIcon.Glyph = glyph;
+        if (_viewModeIcon is not null)
+        {
+            _viewModeIcon.Glyph = glyph;
+        }
     }
 
     private void UpdateSortIcon()
     {
         if (_viewModel is not null)
         {
-            SortIcon.Glyph = _viewModel.SortIconGlyph;
+            if (_sortIcon is not null)
+            {
+                _sortIcon.Glyph = _viewModel.SortIconGlyph;
+            }
         }
     }
 
-    private void SetViewModel(MyAnimePageModel viewModel)
+    private void SetViewModel(MediaListPageModel viewModel)
     {
         _viewModel?.PropertyChanged -= OnViewModelPropertyChanged;
 

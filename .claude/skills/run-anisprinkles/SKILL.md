@@ -112,7 +112,7 @@ Then drive it. Every command is `driver.ps1 <command> [args]`:
 ### Driving error states — `fault`
 
 Error and retry states used to be unreachable on device: the old `-p:ErrorSim=true` build failed
-*every* call, so My Anime and Discover died before you could navigate to the page you wanted to
+*every* call, so Library and Discover died before you could navigate to the page you wanted to
 break. `fault` decorates the client instead of replacing it, so it composes with the CI fixtures —
 a real screen loads, then the next call fails.
 
@@ -129,7 +129,7 @@ driver.ps1 fault clear
 
   **They are not interchangeable, and a miss is silent.** `fault GetStudio … -layer http` matches
   nothing, because over the wire that operation is called `Studio`. Nor does stripping `Get`/`Async`
-  save you: `GetMyAnimeListAsync` is `MediaListCollection` and `SearchMediaPageAsync` is `Search`.
+  save you: `GetMediaListAsync` is `MediaListCollection` and `SearchMediaPageAsync` is `Search`.
   When a targeted http profile misses, the handler logs `FAULT http no match` naming the operation it
   actually saw — grep for that if an armed fault seems to do nothing.
 - `kind` — `ServiceOutage` | `Network` | `Authentication` | `RateLimited` | `NotFound` | `Unknown`,
@@ -314,7 +314,7 @@ works — that is what the driver above is for.
   all. This used to be worked around by mirroring the hamburger's x across the
   screen width, but the bottom tab bar (issue #43) removed the hamburger, so that
   trick has no anchor left. Tab **labels** are real nodes, so navigation is fine —
-  it is only the in-page toolbar icons (My Anime's sort / search / layout) that now
+  it is only the in-page toolbar icons (the Library list’s sort / search / layout) that now
   need hand-computed coordinates: they sit in the nav-bar row, right-aligned, about
   `74px` in from each edge at 1080 wide.
 

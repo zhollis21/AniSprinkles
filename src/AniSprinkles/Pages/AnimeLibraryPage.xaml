@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<pages:MediaListPageBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pages="clr-namespace:AniSprinkles.Pages"
+             xmlns:pageModels="clr-namespace:AniSprinkles.PageModels;assembly=AniSprinkles.Core"
+             xmlns:views="clr-namespace:AniSprinkles.Views"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:icons="clr-namespace:IconFont.Maui.FluentIcons;assembly=IconFont.Maui.FluentIcons"
+             x:Class="AniSprinkles.Pages.AnimeLibraryPage"
+             x:DataType="pageModels:MediaListPageModel"
+             Title="{Binding Title}"
+             Shell.TitleColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Anime'}">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="SortToolbarItem"
+                     Clicked="OnSortClicked"
+                     Order="Primary">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource x:Name="SortIcon"
+                                 Glyph="{x:Static icons:FluentIconsRegular.ArrowSortUpLines24}"
+                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                 Color="{StaticResource OnBackground}"
+                                 Size="20" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem x:Name="SearchToolbarItem"
+                     Command="{Binding ToggleSearchCommand}"
+                     Order="Primary">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Search24}"
+                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                 Color="{StaticResource OnBackground}"
+                                 Size="20" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem x:Name="ViewModeToolbarItem"
+                     Command="{Binding CycleViewModeCommand}"
+                     Order="Primary">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource x:Name="ViewModeIcon"
+                                 Glyph="{x:Static icons:FluentIconsRegular.List24}"
+                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                 Color="{StaticResource OnBackground}"
+                                 Size="20" />
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
+    <!--
+        The StateContainer swaps templates based on CurrentStateKey. Non-Content
+        states return their enum name (matching a StateView); Content returns null,
+        which tells the StateContainer to restore the default children.
+        Overlays that cut across states (e.g. IsNavigatingToDetails spinner, status banner)
+        live inside the LoadedContentHost's content view, not here.
+
+        The outer Grid reserves a row for the global outage banner so it can appear
+        above ANY page state (loading, error, content) when AniList is down.
+    -->
+    <Grid RowDefinitions="Auto,*">
+        <views:OutageBanner Grid.Row="0" Margin="{StaticResource LayoutPadding}" />
+        <Grid Grid.Row="1"
+              Padding="{StaticResource LayoutPadding}"
+              toolkit:StateContainer.CurrentState="{Binding CurrentStateKey}">
+        <toolkit:StateContainer.StateViews>
+            <!-- Unauthenticated: sign-in prompt -->
+            <VerticalStackLayout toolkit:StateView.StateKey="Unauthenticated"
+                                 Spacing="16"
+                                 VerticalOptions="Center">
+                <Border Style="{StaticResource CardStyle}" Padding="20">
+                    <VerticalStackLayout Spacing="12" HorizontalOptions="Center">
+                        <Image HorizontalOptions="Center" WidthRequest="48" HeightRequest="48">
+                            <Image.Source>
+                                <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.AppsList24}"
+                                                 FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                                 Color="{StaticResource Gray400}"
+                                                 Size="48" />
+                            </Image.Source>
+                        </Image>
+                        <Label Text="Sign in to AniList"
+                               Style="{StaticResource Title3}"
+                               HorizontalTextAlignment="Center" />
+                        <Label Text="Connect your account to view and update your lists."
+                               Style="{StaticResource Caption1}"
+                               TextColor="{StaticResource Gray400}"
+                               HorizontalTextAlignment="Center" />
+                        <views:AuthActionsView HorizontalOptions="Center" Margin="0,4,0,0" />
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+
+            <!-- AuthenticationPending: auth check in flight -->
+            <VerticalStackLayout toolkit:StateView.StateKey="AuthenticationPending"
+                                 Spacing="8"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center">
+                <ActivityIndicator IsRunning="True" IsVisible="True" />
+                <Label Text="Checking authentication..."
+                       Style="{StaticResource Caption1}"
+                       TextColor="{StaticResource Gray400}" />
+            </VerticalStackLayout>
+
+            <!-- InitialLoading: first data fetch spinner -->
+            <VerticalStackLayout toolkit:StateView.StateKey="InitialLoading"
+                                 Spacing="8"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center">
+                <ActivityIndicator IsRunning="True" IsVisible="True" />
+                <Label Text="Loading anime list..."
+                       Style="{StaticResource Caption1}"
+                       TextColor="{StaticResource Gray400}" />
+            </VerticalStackLayout>
+
+            <!--
+                Empty: signed in, loaded fine, nothing on this list (#12). Its own state rather
+                than a variant of Content, which would render as a blank page, and rather than a
+                variant of Error, which would offer a Try Again for a load that worked.
+            -->
+            <VerticalStackLayout toolkit:StateView.StateKey="Empty"
+                                 Spacing="12"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center">
+                <Label Text="{x:Static icons:FluentIconsRegular.Library24}"
+                       FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                       FontSize="48"
+                       TextColor="{StaticResource Gray400}"
+                       HorizontalOptions="Center"
+                       AutomationProperties.IsInAccessibleTree="False" />
+                <Label Text="{Binding EmptyTitle}"
+                       Style="{StaticResource Title3}"
+                       TextColor="{StaticResource OnBackground}"
+                       HorizontalTextAlignment="Center"
+                       HorizontalOptions="Center" />
+                <Label Text="{Binding EmptySubtitle}"
+                       Style="{StaticResource Caption1}"
+                       TextColor="{StaticResource Gray400}"
+                       HorizontalTextAlignment="Center"
+                       HorizontalOptions="Center" />
+            </VerticalStackLayout>
+
+            <!-- Error: full-page error view (no cached data fallback) -->
+            <ScrollView toolkit:StateView.StateKey="Error"
+                        VerticalOptions="Center">
+                <views:ErrorStateView ErrorTitle="{Binding ErrorTitle}"
+                                      ErrorSubtitle="{Binding ErrorSubtitle}"
+                                      ErrorIconGlyph="{Binding ErrorIconGlyph}"
+                                      ErrorAccentColor="{StaticResource RainbowOrange}"
+                                      RetryCommand="{Binding RetryLoadCommand}"
+                                      ErrorDetails="{Binding ErrorDetails}"
+                                      Margin="0,24" />
+            </ScrollView>
+        </toolkit:StateContainer.StateViews>
+
+            <!-- Default content (CurrentState = Content): loaded content host -->
+            <ContentView x:Name="LoadedContentHost" />
+        </Grid>
+    </Grid>
+</pages:MediaListPageBase>

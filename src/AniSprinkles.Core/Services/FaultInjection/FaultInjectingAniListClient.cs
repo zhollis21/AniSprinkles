@@ -145,12 +145,12 @@ public sealed class FaultInjectingAniListClient(
     public Task<bool> ToggleFavouriteAsync(FavouriteKind kind, int id, CancellationToken cancellationToken = default)
         => GateAsync(nameof(ToggleFavouriteAsync), ct => inner.ToggleFavouriteAsync(kind, id, ct), cancellationToken);
 
-    public Task<IReadOnlyList<MediaListEntry>> GetMyAnimeListAsync(CancellationToken cancellationToken = default)
-        => GateAsync(nameof(GetMyAnimeListAsync), inner.GetMyAnimeListAsync, cancellationToken);
+    public Task<IReadOnlyList<MediaListEntry>> GetMediaListAsync(MediaKind kind, CancellationToken cancellationToken = default)
+        => GateAsync(nameof(GetMediaListAsync), ct => inner.GetMediaListAsync(kind, ct), cancellationToken);
 
-    public Task<IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)>> GetMyAnimeListGroupedAsync(
-        CancellationToken cancellationToken = default)
-        => GateAsync(nameof(GetMyAnimeListGroupedAsync), inner.GetMyAnimeListGroupedAsync, cancellationToken);
+    public Task<IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)>> GetMediaListGroupedAsync(
+        MediaKind kind, CancellationToken cancellationToken = default)
+        => GateAsync(nameof(GetMediaListGroupedAsync), ct => inner.GetMediaListGroupedAsync(kind, ct), cancellationToken);
 
     public Task<(IReadOnlyList<BrowseMediaItem> Items, PageInfo? PageInfo)> SearchMediaPageAsync(
         string search, MediaKind? kind, bool? isAdult = false, int page = 1, int perPage = 20, CancellationToken cancellationToken = default)

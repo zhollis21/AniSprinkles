@@ -162,7 +162,7 @@ public class DisplaySettingsReprojectionTests
         await harness.Model.LoadAsync(); // tab back, well inside the five-minute freshness window
 
         Assert.Contains(nameof(MediaListEntry.Media), raised);
-        await harness.Client.Received(1).GetMyAnimeListGroupedAsync(Arg.Any<CancellationToken>());
+        await harness.Client.Received(1).GetMediaListGroupedAsync(Arg.Any<MediaKind>(), Arg.Any<CancellationToken>());
     }
 
     [Fact]
@@ -176,7 +176,7 @@ public class DisplaySettingsReprojectionTests
         await harness.Model.LoadAsync();
 
         Assert.Contains(nameof(MediaListEntry.ScoreDisplay), raised);
-        await harness.Client.Received(1).GetMyAnimeListGroupedAsync(Arg.Any<CancellationToken>());
+        await harness.Client.Received(1).GetMediaListGroupedAsync(Arg.Any<MediaKind>(), Arg.Any<CancellationToken>());
     }
 
     [Fact]
@@ -210,7 +210,7 @@ public class DisplaySettingsReprojectionTests
         await harness.Model.LoadAsync();
 
         Assert.Equal([2, 1], harness.VisibleMediaIds());
-        await harness.Client.Received(1).GetMyAnimeListGroupedAsync(Arg.Any<CancellationToken>());
+        await harness.Client.Received(1).GetMediaListGroupedAsync(Arg.Any<MediaKind>(), Arg.Any<CancellationToken>());
     }
 
     [Fact]
@@ -229,7 +229,7 @@ public class DisplaySettingsReprojectionTests
         await harness.Model.LoadAsync();
 
         Assert.Equal(["Completed", "Watching"], harness.SectionTitles());
-        await harness.Client.Received(1).GetMyAnimeListGroupedAsync(Arg.Any<CancellationToken>());
+        await harness.Client.Received(1).GetMediaListGroupedAsync(Arg.Any<MediaKind>(), Arg.Any<CancellationToken>());
     }
 
     // ── Media Details, the page that needs both halves ───────────────
@@ -417,7 +417,7 @@ public class DisplaySettingsReprojectionTests
                     : [TestDataBuilder.Entry(1, title: "Romaji-1", englishTitle: "English-1", score: 7)]),
             ];
 
-            Client.GetMyAnimeListGroupedAsync(Arg.Any<CancellationToken>())
+            Client.GetMediaListGroupedAsync(Arg.Any<MediaKind>(), Arg.Any<CancellationToken>())
                 .Returns(_ => Task.FromResult<IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)>>(_groups));
 
             Client.GetViewerAsync(Arg.Any<CancellationToken>()).Returns(new AniListUser
@@ -436,7 +436,7 @@ public class DisplaySettingsReprojectionTests
             auth.GetAccessTokenAsync(Arg.Any<CancellationToken>()).Returns("token");
 
             var dialogs = new ScriptedDialogService();
-            Model = new MyAnimePageModel(
+            Model = new AnimeLibraryPageModel(
                 Client,
                 auth,
                 Substitute.For<IAiringNotificationService>(),
@@ -447,12 +447,12 @@ public class DisplaySettingsReprojectionTests
                 new RecordingUserFeedback(),
                 new ListEntryStatusFlow(dialogs),
                 new ManualTimeProvider(DateTimeOffset.UnixEpoch),
-                NullLogger<MyAnimePageModel>.Instance);
+                NullLogger<AnimeLibraryPageModel>.Instance);
         }
 
         public IAniListClient Client { get; } = Substitute.For<IAniListClient>();
 
-        public MyAnimePageModel Model { get; }
+        public AnimeLibraryPageModel Model { get; }
 
         public void GroupsAre(params (string Name, IReadOnlyList<MediaListEntry> Entries)[] groups)
             => _groups = [.. groups];

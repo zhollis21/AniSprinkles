@@ -10,7 +10,7 @@
              Shell.TitleColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Search'}">
 
     <!--
-        No StateContainer / deferred content host here, unlike Discover and My Anime: this page is
+        No StateContainer / deferred content host here, unlike Discover and Library: this page is
         an Entry plus one CollectionView, so there is no heavy InitializeComponent to keep off the
         UI thread during the tab transition. The four states (idle / searching / results / no
         matches) are plain visibility swaps.

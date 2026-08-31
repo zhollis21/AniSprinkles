@@ -12,11 +12,11 @@ namespace AniSprinkles.UnitTests;
 /// decisions with no visible artifact until they go wrong.
 /// </summary>
 [Collection(AppSettingsCollection.Name)]
-public class MyAnimePageModelTests
+public class MediaListPageModelTests
 {
     private static readonly TimeSpan PastTheDebounce = TimeSpan.FromMilliseconds(1600);
 
-    public MyAnimePageModelTests() => TestDataBuilder.ResetAppSettings();
+    public MediaListPageModelTests() => TestDataBuilder.ResetAppSettings();
 
     [Fact]
     public async Task IncrementProgress_UpdatesTheUiBeforeTheSaveLands()
@@ -155,7 +155,7 @@ public class MyAnimePageModelTests
             preferences.Get(Arg.Any<string>(), Arg.Any<bool>()).Returns(c => c.ArgAt<bool>(1));
             preferences.Get(Arg.Any<string>(), Arg.Any<int>()).Returns(c => c.ArgAt<int>(1));
 
-            Model = new MyAnimePageModel(
+            Model = new AnimeLibraryPageModel(
                 Client,
                 Substitute.For<IAuthService>(),
                 Substitute.For<IAiringNotificationService>(),
@@ -166,7 +166,7 @@ public class MyAnimePageModelTests
                 Feedback,
                 new ListEntryStatusFlow(Dialogs),
                 _time,
-                NullLogger<MyAnimePageModel>.Instance);
+                NullLogger<AnimeLibraryPageModel>.Instance);
         }
 
         public IAniListClient Client { get; } = Substitute.For<IAniListClient>();
@@ -175,7 +175,7 @@ public class MyAnimePageModelTests
 
         public RecordingUserFeedback Feedback { get; } = new();
 
-        public MyAnimePageModel Model { get; }
+        public AnimeLibraryPageModel Model { get; }
 
         public MediaListEntry Watching(int progress, int mediaId = 1, int? episodes = null, int? nextAiringEpisode = null)
             => TestDataBuilder.Entry(

@@ -23,7 +23,7 @@ public partial class SearchPageModel : ObservableObject
     /// <summary>Below this many trimmed characters no search fires (rate-limit caution + junk-match avoidance).</summary>
     private const int SearchMinLength = 2;
 
-    /// <summary>Device-scoped, not cleared on sign-out — mirrors the My Anime sort keys.</summary>
+    /// <summary>Device-scoped, not cleared on sign-out — mirrors the Library sort keys.</summary>
     private const string SearchFilterPreferenceKey = "search_type_filter";
 
     private readonly IAniListClient _aniListClient;

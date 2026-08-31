@@ -10,7 +10,7 @@
              Shell.TitleColor="{Binding Title, Converter={StaticResource RainbowAccentConverter}}">
 
     <!--
-        Same StateContainer pattern as MyAnimePage, minus the auth states — Discover is public.
+        Same StateContainer pattern as AnimeLibraryPage, minus the auth states — Discover is public.
         The default children (LoadedContentHost) show when CurrentStateKey is null (Content).
     -->
     <Grid RowDefinitions="Auto,*">

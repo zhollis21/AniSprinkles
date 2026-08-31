@@ -28,7 +28,7 @@ public sealed class ScriptedDialogService : IDialogService
     /// </summary>
     public Func<Task>? BeforeConfirmAsync { get; set; }
 
-    public MyAnimeEntryAction? EntryActionAnswer { get; set; }
+    public MediaListEntryAction? EntryActionAnswer { get; set; }
 
     public MoveToListChoice? MoveToListAnswer { get; set; }
 
@@ -40,9 +40,9 @@ public sealed class ScriptedDialogService : IDialogService
 
     public string? PromptAnswer { get; set; }
 
-    public Task<MyAnimeEntryAction?> ShowEntryActionsAsync(
-        string animeTitle,
-        IReadOnlyList<MyAnimeEntryAction> actions)
+    public Task<MediaListEntryAction?> ShowEntryActionsAsync(
+        string mediaTitle,
+        IReadOnlyList<MediaListEntryAction> actions)
     {
         Record(nameof(ShowEntryActionsAsync));
         return Task.FromResult(EntryActionAnswer);
@@ -80,7 +80,7 @@ public sealed class ScriptedDialogService : IDialogService
         return Task.FromResult(EditProgressAnswer);
     }
 
-    public Task<double?> ShowRatingAsync(string? animeTitle, double? initialScore)
+    public Task<double?> ShowRatingAsync(string? mediaTitle, double? initialScore)
     {
         Record(nameof(ShowRatingAsync));
         return Task.FromResult(RatingAnswer);

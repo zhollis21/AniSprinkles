@@ -12,4 +12,5 @@ public static partial class AppSettings
     public static ScoreFormat ScoreFormat { get; set; } = ScoreFormat.Point100;
     public static bool DisplayAdultContent { get; set; }
     public static List<string> AnimeSectionOrder { get; set; } = [];
+    public static List<string> MangaSectionOrder { get; set; } = [];
 }

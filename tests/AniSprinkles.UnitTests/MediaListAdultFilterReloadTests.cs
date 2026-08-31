@@ -14,9 +14,9 @@ namespace AniSprinkles.UnitTests;
 /// other three, tabbing away and back again did not clear it either.
 /// </summary>
 [Collection(AppSettingsCollection.Name)]
-public class MyAnimeAdultFilterReloadTests
+public class MediaListAdultFilterReloadTests
 {
-    public MyAnimeAdultFilterReloadTests() => TestDataBuilder.ResetAppSettings();
+    public MediaListAdultFilterReloadTests() => TestDataBuilder.ResetAppSettings();
 
     [Fact]
     public async Task ReturningToLibrary_AfterAdultContentIsTurnedOff_DropsTheAdultEntries()
@@ -81,7 +81,7 @@ public class MyAnimeAdultFilterReloadTests
 
         await harness.Model.LoadAsync();
 
-        await harness.Client.Received(1).GetMyAnimeListGroupedAsync(Arg.Any<CancellationToken>());
+        await harness.Client.Received(1).GetMediaListGroupedAsync(Arg.Any<MediaKind>(), Arg.Any<CancellationToken>());
     }
 
     private sealed class Harness
@@ -96,7 +96,7 @@ public class MyAnimeAdultFilterReloadTests
             var auth = Substitute.For<IAuthService>();
             auth.GetAccessTokenAsync(Arg.Any<CancellationToken>()).Returns("token");
 
-            Client.GetMyAnimeListGroupedAsync(Arg.Any<CancellationToken>()).Returns(
+            Client.GetMediaListGroupedAsync(Arg.Any<MediaKind>(), Arg.Any<CancellationToken>()).Returns(
                 Task.FromResult<IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)>>(
                 [
                     ("Watching", new List<MediaListEntry>
@@ -107,7 +107,7 @@ public class MyAnimeAdultFilterReloadTests
                 ]));
 
             var dialogs = new ScriptedDialogService();
-            Model = new MyAnimePageModel(
+            Model = new AnimeLibraryPageModel(
                 Client,
                 auth,
                 Substitute.For<IAiringNotificationService>(),
@@ -118,12 +118,12 @@ public class MyAnimeAdultFilterReloadTests
                 new RecordingUserFeedback(),
                 new ListEntryStatusFlow(dialogs),
                 new ManualTimeProvider(DateTimeOffset.UnixEpoch),
-                NullLogger<MyAnimePageModel>.Instance);
+                NullLogger<AnimeLibraryPageModel>.Instance);
         }
 
         public IAniListClient Client { get; } = Substitute.For<IAniListClient>();
 
-        public MyAnimePageModel Model { get; }
+        public AnimeLibraryPageModel Model { get; }
 
         /// <summary>
         /// Points both the viewer response and <c>AppSettings</c> at the same value. LoadAsync syncs

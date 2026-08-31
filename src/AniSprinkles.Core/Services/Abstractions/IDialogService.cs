@@ -40,7 +40,7 @@ public interface IDialogService
     /// Long-press action menu for a list entry. Returns the chosen action, or <c>null</c> if the
     /// user dismissed the sheet.
     /// </summary>
-    Task<MyAnimeEntryAction?> ShowEntryActionsAsync(string animeTitle, IReadOnlyList<MyAnimeEntryAction> actions);
+    Task<MediaListEntryAction?> ShowEntryActionsAsync(string mediaTitle, IReadOnlyList<MediaListEntryAction> actions);
 
     /// <summary>
     /// Status picker used for both "move to list" (<paramref name="allowRemove"/> true, current
@@ -65,7 +65,7 @@ public interface IDialogService
     /// Score picker, pre-populated from <paramref name="initialScore"/>. Returns <c>null</c> when the
     /// user skips or dismisses it, which means "leave the score alone" rather than "clear it".
     /// </summary>
-    Task<double?> ShowRatingAsync(string? animeTitle, double? initialScore);
+    Task<double?> ShowRatingAsync(string? mediaTitle, double? initialScore);
 
     /// <summary>Two-button confirmation. Returns <c>false</c> on cancel or dismissal.</summary>
     Task<bool> ConfirmAsync(

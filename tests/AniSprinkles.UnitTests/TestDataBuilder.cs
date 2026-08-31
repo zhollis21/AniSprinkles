@@ -27,7 +27,8 @@ internal static class TestDataBuilder
         string? mediaType = null,
         int? chapters = null,
         int? volumes = null,
-        int? progressVolumes = null)
+        int? progressVolumes = null,
+        string? mediaStatus = null)
     {
         return new MediaListEntry
         {
@@ -49,6 +50,7 @@ internal static class TestDataBuilder
                 CoverImage = new MediaCoverImage { Medium = coverMedium ?? $"https://img/{mediaId}" },
                 IsAdult = isAdult,
                 Type = mediaType,
+                Status = mediaStatus,
                 Episodes = episodes,
                 Chapters = chapters,
                 Volumes = volumes,

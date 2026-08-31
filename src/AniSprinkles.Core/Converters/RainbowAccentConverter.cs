@@ -32,7 +32,7 @@ public sealed class RainbowAccentConverter : IValueConverter
     };
 
     /// <summary>
-    /// Hardcoded colors for the six standard anime list status sections.
+    /// Hardcoded colors for the standard list status sections, anime and manga alike.
     /// Checked after <see cref="_keyMappings"/> are applied, before the hash fallback,
     /// so each status section always renders with a distinct, consistent color.
     /// </summary>
@@ -40,6 +40,11 @@ public sealed class RainbowAccentConverter : IValueConverter
     {
         ["Watching"]   = "RainbowBlue",
         ["Rewatching"] = "RainbowCyan",
+        // The manga list’s own section names (#12). Same colours as their anime counterparts on
+        // purpose — without these they would miss the table and fall through to the hash palette,
+        // so the two halves of the Library tab would not agree on what "currently reading" looks like.
+        ["Reading"]    = "RainbowBlue",
+        ["Rereading"]  = "RainbowCyan",
         ["Planning"]   = "RainbowPurple",
         ["Completed"]  = "RainbowGreen",
         ["Paused"]     = "RainbowYellow",

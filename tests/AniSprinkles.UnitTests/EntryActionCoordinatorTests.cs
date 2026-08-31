@@ -7,7 +7,7 @@ namespace AniSprinkles.UnitTests;
 
 /// <summary>
 /// The shared long-press flows — action menu, move/add/rate/edit-progress/remove, persistence,
-/// optimistic UI and rollback. One instance per page model, and every list surface (My Anime,
+/// optimistic UI and rollback. One instance per page model, and every list surface (Library,
 /// Discover, Search, View All) routes through it, so a defect here shows up in four places at once.
 ///
 /// Untestable before #62: every entry point opened a CommunityToolkit popup through
@@ -36,7 +36,7 @@ public class EntryActionCoordinatorTests
     [Fact]
     public async Task ShowEntryMenu_FlushesPendingWorkBeforeOpening()
     {
-        // My Anime hangs its debounced +1 flush off OnBeforeFlowAsync. If the menu opened first, the
+        // Library hangs its debounced +1 flush off OnBeforeFlowAsync. If the menu opened first, the
         // pending increment would land underneath whatever the user picked.
         var order = new List<string>();
         var harness = new Harness(onBeforeFlow: () => { order.Add("flush"); return Task.CompletedTask; });
@@ -51,7 +51,7 @@ public class EntryActionCoordinatorTests
     public async Task ShowEntryMenu_OpenDetails_DelegatesToTheHostWithoutSaving()
     {
         var harness = new Harness();
-        harness.Dialogs.EntryActionAnswer = MyAnimeEntryAction.OpenDetails;
+        harness.Dialogs.EntryActionAnswer = MediaListEntryAction.OpenDetails;
 
         await harness.Coordinator.ShowEntryMenuAsync(harness.Entry);
 
@@ -67,7 +67,7 @@ public class EntryActionCoordinatorTests
         // The sheet's remove row and its status rows come back through one result. Routing the
         // remove branch into HandleMove would "move" the entry to a status it never picked.
         var harness = new Harness();
-        harness.Dialogs.EntryActionAnswer = MyAnimeEntryAction.MoveToList;
+        harness.Dialogs.EntryActionAnswer = MediaListEntryAction.MoveToList;
         harness.Dialogs.MoveToListAnswer = MoveToListChoice.Remove;
         harness.Dialogs.ConfirmAnswer = true;
         harness.Client.DeleteMediaListEntryAsync(Arg.Any<int>(), Arg.Any<CancellationToken>()).Returns(true);
@@ -83,7 +83,7 @@ public class EntryActionCoordinatorTests
     public async Task MoveToList_ChoosingAStatus_SavesUnderThatStatus()
     {
         var harness = new Harness();
-        harness.Dialogs.EntryActionAnswer = MyAnimeEntryAction.MoveToList;
+        harness.Dialogs.EntryActionAnswer = MediaListEntryAction.MoveToList;
         harness.Dialogs.MoveToListAnswer = MoveToListChoice.To(MediaListStatus.Paused);
         harness.SaveEchoesBack();
 
@@ -105,7 +105,7 @@ public class EntryActionCoordinatorTests
         entry.Score = 7;
         entry.Repeat = 2;
 
-        harness.Dialogs.EntryActionAnswer = MyAnimeEntryAction.MoveToList;
+        harness.Dialogs.EntryActionAnswer = MediaListEntryAction.MoveToList;
         harness.Dialogs.MoveToListAnswer = MoveToListChoice.To(MediaListStatus.Completed);
         harness.Client.SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromException<MediaListEntry?>(new AniListApiException(ApiErrorKind.Network, "offline")));
@@ -130,7 +130,7 @@ public class EntryActionCoordinatorTests
     public async Task Remove_WhenTheUserCancelsTheConfirmation_DeletesNothing()
     {
         var harness = new Harness();
-        harness.Dialogs.EntryActionAnswer = MyAnimeEntryAction.Remove;
+        harness.Dialogs.EntryActionAnswer = MediaListEntryAction.Remove;
         harness.Dialogs.ConfirmAnswer = false;
 
         await harness.Coordinator.ShowEntryMenuAsync(harness.Entry);
@@ -143,7 +143,7 @@ public class EntryActionCoordinatorTests
     public async Task Remove_WhenTheDeleteFails_OffersRetryThatReissuesTheSameDelete()
     {
         var harness = new Harness();
-        harness.Dialogs.EntryActionAnswer = MyAnimeEntryAction.Remove;
+        harness.Dialogs.EntryActionAnswer = MediaListEntryAction.Remove;
         harness.Dialogs.ConfirmAnswer = true;
         harness.Client.DeleteMediaListEntryAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromException<bool>(new AniListApiException(ApiErrorKind.Network, "offline")));
@@ -169,7 +169,7 @@ public class EntryActionCoordinatorTests
         // becomes an outage the chain has to stop offering a button that cannot work — otherwise the
         // user is invited to hammer a dead API indefinitely.
         var harness = new Harness();
-        harness.Dialogs.EntryActionAnswer = MyAnimeEntryAction.Remove;
+        harness.Dialogs.EntryActionAnswer = MediaListEntryAction.Remove;
         harness.Dialogs.ConfirmAnswer = true;
         harness.Client.DeleteMediaListEntryAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromException<bool>(new AniListApiException(ApiErrorKind.Network, "offline")));
@@ -193,7 +193,7 @@ public class EntryActionCoordinatorTests
         // The outage banner is already up and a retry cannot succeed for minutes; offering Retry
         // invites the user to hammer a dead API.
         var harness = new Harness();
-        harness.Dialogs.EntryActionAnswer = MyAnimeEntryAction.Remove;
+        harness.Dialogs.EntryActionAnswer = MediaListEntryAction.Remove;
         harness.Dialogs.ConfirmAnswer = true;
         harness.Client.DeleteMediaListEntryAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromException<bool>(new AniListApiException(ApiErrorKind.ServiceOutage, "down")));
@@ -252,7 +252,7 @@ public class EntryActionCoordinatorTests
     {
         var harness = new Harness(episodes: 12);
         harness.Entry.Progress = 3;
-        harness.Dialogs.EntryActionAnswer = MyAnimeEntryAction.EditProgress;
+        harness.Dialogs.EntryActionAnswer = MediaListEntryAction.EditProgress;
         harness.Dialogs.EditProgressAnswer = 9999;
         harness.Dialogs.ConfirmAnswer = false; // reaching the cap opens the completion confirm
         harness.SaveEchoesBack();
@@ -270,7 +270,7 @@ public class EntryActionCoordinatorTests
     {
         var harness = new Harness(episodes: 12);
         harness.Entry.Progress = 4;
-        harness.Dialogs.EntryActionAnswer = MyAnimeEntryAction.EditProgress;
+        harness.Dialogs.EntryActionAnswer = MediaListEntryAction.EditProgress;
         harness.Dialogs.EditProgressAnswer = 4;
 
         await harness.Coordinator.ShowEntryMenuAsync(harness.Entry);
@@ -283,7 +283,7 @@ public class EntryActionCoordinatorTests
     {
         var harness = new Harness(episodes: 12);
         harness.Entry.Progress = 4;
-        harness.Dialogs.EntryActionAnswer = MyAnimeEntryAction.EditProgress;
+        harness.Dialogs.EntryActionAnswer = MediaListEntryAction.EditProgress;
         harness.Dialogs.EditProgressAnswer = 6;
         harness.Client.SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromException<MediaListEntry?>(new InvalidOperationException("boom")));
@@ -473,7 +473,7 @@ public class EntryActionCoordinatorTests
         var harness = new Harness();
         harness.MakeManga(chapters: 141, volumes: 34);
         harness.Entry.Progress = 100;
-        harness.Dialogs.EntryActionAnswer = MyAnimeEntryAction.EditProgress;
+        harness.Dialogs.EntryActionAnswer = MediaListEntryAction.EditProgress;
         harness.Dialogs.EditProgressAnswer = 110;
         harness.SaveEchoesBack();
 
@@ -494,7 +494,7 @@ public class EntryActionCoordinatorTests
         harness.MakeManga(chapters: 141, volumes: 34);
         harness.Entry.Progress = 0;
         harness.Entry.ProgressVolumes = 20;
-        harness.Dialogs.EntryActionAnswer = MyAnimeEntryAction.EditProgress;
+        harness.Dialogs.EntryActionAnswer = MediaListEntryAction.EditProgress;
         harness.Dialogs.EditProgressAnswer = 25;
         harness.SaveEchoesBack();
 
@@ -516,7 +516,7 @@ public class EntryActionCoordinatorTests
         harness.MakeManga(chapters: 141, volumes: 34);
         harness.Entry.Progress = 0;
         harness.Entry.ProgressVolumes = 20;
-        harness.Dialogs.EntryActionAnswer = MyAnimeEntryAction.EditProgress;
+        harness.Dialogs.EntryActionAnswer = MediaListEntryAction.EditProgress;
         harness.Dialogs.EditProgressAnswer = 25;
         harness.Client.SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromException<MediaListEntry?>(new InvalidOperationException("boom")));
@@ -532,7 +532,7 @@ public class EntryActionCoordinatorTests
     {
         var harness = new Harness();
         harness.MakeManga(chapters: 141, volumes: 34);
-        harness.Dialogs.EntryActionAnswer = MyAnimeEntryAction.MoveToList;
+        harness.Dialogs.EntryActionAnswer = MediaListEntryAction.MoveToList;
         harness.Dialogs.MoveToListAnswer = MoveToListChoice.To(MediaListStatus.Paused);
         harness.SaveEchoesBack();
 

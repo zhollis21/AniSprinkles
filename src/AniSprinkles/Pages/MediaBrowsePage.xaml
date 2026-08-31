@@ -10,7 +10,7 @@
              Title="{Binding PageTitle}"
              Shell.TitleColor="{Binding PageTitle, Converter={StaticResource RainbowAccentConverter}}">
 
-    <!-- Same view-mode switcher as MyAnimePage; the mode is a shared preference between the two. -->
+    <!-- Same view-mode switcher as AnimeLibraryPage; the mode is a shared preference between the two. -->
     <ContentPage.ToolbarItems>
         <ToolbarItem x:Name="ViewModeToolbarItem"
                      Command="{Binding CycleViewModeCommand}"

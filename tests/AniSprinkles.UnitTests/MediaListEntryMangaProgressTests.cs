@@ -225,4 +225,65 @@ public class MediaListEntryMangaProgressTests
         Assert.False(airing.HasKnownProgressTotal);
         Assert.False(airing.IsCompletionAt(1087));
     }
+
+    // ── The +1 control's labels ──────────────────────────────────────
+
+    [Fact]
+    public void IncrementLabel_UsesTheActiveUnitsAbbreviation()
+    {
+        Assert.Equal("+1 EP", TestDataBuilder.Entry(1, progress: 5, episodes: 12).IncrementLabel);
+        Assert.Equal("+1 CH", Manga(progress: 100, chapters: 141).IncrementLabel);
+        Assert.Equal("+1 VOL", Manga(progressVolumes: 20).IncrementLabel);
+    }
+
+    [Fact]
+    public void IncrementDescription_TracksTheActiveUnitRatherThanSayingEpisode()
+    {
+        // The screen-reader text sat hardcoded as "Increment episode progress" in
+        // MediaListLoadedContentView while the visible label beside it was already bound to
+        // IncrementLabel. Harmless while the view was anime-only; once #12 shared it with manga,
+        // TalkBack announced "episode" over a +1 VOL button.
+        Assert.Equal(
+            "Increment episode progress",
+            TestDataBuilder.Entry(1, progress: 5, episodes: 12).IncrementDescription);
+        Assert.Equal(
+            "Increment chapter progress",
+            Manga(progress: 100, chapters: 141).IncrementDescription);
+        Assert.Equal(
+            "Increment volume progress",
+            Manga(progressVolumes: 20).IncrementDescription);
+    }
+
+    [Fact]
+    public void IncrementHint_UsesTheUnitsOwnVerbAndNoun()
+    {
+        // The hint sat hardcoded beside the description with the same anime-only wording. The
+        // anime string is unchanged on purpose — only the manga cases are new.
+        Assert.Equal(
+            "Adds one to the watched episode count",
+            TestDataBuilder.Entry(1, progress: 5, episodes: 12).IncrementHint);
+        Assert.Equal(
+            "Adds one to the read chapter count",
+            Manga(progress: 100, chapters: 141).IncrementHint);
+        Assert.Equal(
+            "Adds one to the read volume count",
+            Manga(progressVolumes: 20).IncrementHint);
+    }
+
+    [Fact]
+    public void IncrementLabels_RaiseChangeNotificationsWhenEitherCounterMoves()
+    {
+        // Both labels are computed, so the +1 button keeps stale text unless each counter
+        // notifies them — and switching a manga between chapter and volume mode is exactly a
+        // write to one of these two fields.
+        var entry = Manga(progressVolumes: 3);
+        var changed = new List<string?>();
+        entry.PropertyChanged += (_, e) => changed.Add(e.PropertyName);
+
+        entry.Progress = 7;
+        entry.ProgressVolumes = 4;
+
+        Assert.Equal(2, changed.Count(n => n == nameof(MediaListEntry.IncrementLabel)));
+        Assert.Equal(2, changed.Count(n => n == nameof(MediaListEntry.IncrementDescription)));
+    }
 }

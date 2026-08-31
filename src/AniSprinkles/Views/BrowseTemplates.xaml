@@ -22,7 +22,7 @@
         CollectionView's BindingContext, so any page model exposing NavigateToMediaCommand
         (DiscoverPageModel, MediaBrowsePageModel) can host these templates.
 
-        Standard/Large/Compact mirror My Anime's three view modes (MyAnimeLoadedContentView);
+        Standard/Large/Compact mirror the Library list’s three view modes (MediaListLoadedContentView);
         media-browse switches between them with the shared view-mode preference.
     -->
     <DataTemplate x:Key="BrowseMediaRowTemplate" x:DataType="models:BrowseMediaItem">
@@ -89,7 +89,7 @@
         </Border>
     </DataTemplate>
 
-    <!-- Large: 2-column grid cards, modeled on My Anime's LargeItemTemplate. Rank rides the
+    <!-- Large: 2-column grid cards, modeled on the Library list’s LargeItemTemplate. Rank rides the
          cover as a dark corner badge (no rank column in a grid). -->
     <DataTemplate x:Key="BrowseMediaLargeTemplate" x:DataType="models:BrowseMediaItem">
         <Border Style="{StaticResource CardStyle}" Padding="0" Margin="4">
@@ -100,7 +100,7 @@
             </Border.GestureRecognizers>
             <Grid RowDefinitions="180,*">
                 <!-- MaximumWidthRequest caps Glide's bitmap allocation when the Image has no
-                     explicit WidthRequest (see My Anime's LargeItemTemplate). -->
+                     explicit WidthRequest (see the Library list’s LargeItemTemplate). -->
                 <Image Grid.Row="0"
                        Source="{Binding Node.CoverImage.Large}"
                        Aspect="AspectFill"
@@ -167,7 +167,7 @@
         </Border>
     </DataTemplate>
 
-    <!-- Compact: text-only rows, modeled on My Anime's CompactItemTemplate.
+    <!-- Compact: text-only rows, modeled on the Library list’s CompactItemTemplate.
          Column order is Title → List → Metric, and the metric is the list's sort-metric badge
          (always renders, 0/— fallback) so the right edge stays aligned on every row — a score
          star would go blank on unaired entries. -->

@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<pages:MediaListPageBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pages="clr-namespace:AniSprinkles.Pages"
              xmlns:pageModels="clr-namespace:AniSprinkles.PageModels;assembly=AniSprinkles.Core"
              xmlns:views="clr-namespace:AniSprinkles.Views"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:icons="clr-namespace:IconFont.Maui.FluentIcons;assembly=IconFont.Maui.FluentIcons"
-             x:Class="AniSprinkles.Pages.MyAnimePage"
-             x:DataType="pageModels:MyAnimePageModel"
+             x:Class="AniSprinkles.Pages.MangaLibraryPage"
+             x:DataType="pageModels:MediaListPageModel"
              Title="{Binding Title}"
-             Shell.TitleColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='My Anime'}">
+             Shell.TitleColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Manga'}">
 
     <ContentPage.ToolbarItems>
         <ToolbarItem x:Name="SortToolbarItem"
@@ -78,7 +79,7 @@
                         <Label Text="Sign in to AniList"
                                Style="{StaticResource Title3}"
                                HorizontalTextAlignment="Center" />
-                        <Label Text="Connect your account to view and update your anime lists."
+                        <Label Text="Connect your account to view and update your lists."
                                Style="{StaticResource Caption1}"
                                TextColor="{StaticResource Gray400}"
                                HorizontalTextAlignment="Center" />
@@ -104,9 +105,36 @@
                                  HorizontalOptions="Center"
                                  VerticalOptions="Center">
                 <ActivityIndicator IsRunning="True" IsVisible="True" />
-                <Label Text="Loading anime list..."
+                <Label Text="Loading manga list..."
                        Style="{StaticResource Caption1}"
                        TextColor="{StaticResource Gray400}" />
+            </VerticalStackLayout>
+
+            <!--
+                Empty: signed in, loaded fine, nothing on this list (#12). Its own state rather
+                than a variant of Content, which would render as a blank page, and rather than a
+                variant of Error, which would offer a Try Again for a load that worked.
+            -->
+            <VerticalStackLayout toolkit:StateView.StateKey="Empty"
+                                 Spacing="12"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center">
+                <Label Text="{x:Static icons:FluentIconsRegular.Library24}"
+                       FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                       FontSize="48"
+                       TextColor="{StaticResource Gray400}"
+                       HorizontalOptions="Center"
+                       AutomationProperties.IsInAccessibleTree="False" />
+                <Label Text="{Binding EmptyTitle}"
+                       Style="{StaticResource Title3}"
+                       TextColor="{StaticResource OnBackground}"
+                       HorizontalTextAlignment="Center"
+                       HorizontalOptions="Center" />
+                <Label Text="{Binding EmptySubtitle}"
+                       Style="{StaticResource Caption1}"
+                       TextColor="{StaticResource Gray400}"
+                       HorizontalTextAlignment="Center"
+                       HorizontalOptions="Center" />
             </VerticalStackLayout>
 
             <!-- Error: full-page error view (no cached data fallback) -->
@@ -126,4 +154,4 @@
             <ContentView x:Name="LoadedContentHost" />
         </Grid>
     </Grid>
-</ContentPage>
+</pages:MediaListPageBase>

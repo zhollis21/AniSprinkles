@@ -4,7 +4,7 @@ namespace AniSprinkles.UnitTests;
 
 /// <summary>
 /// #52 small-helpers pass for <see cref="ListViewModePreference"/>, the one device-wide list look
-/// shared by My Anime and the media-browse (View All) lists. Both page models read and write it, so
+/// shared by Library and the media-browse (View All) lists. Both page models read and write it, so
 /// the storage key and the round trip are a contract between them rather than an implementation
 /// detail of either.
 /// </summary>

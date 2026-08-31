@@ -6,17 +6,17 @@ namespace AniSprinkles.PageModels;
 /// <summary>
 /// Page-specific hooks for <see cref="EntryActionCoordinator"/>. Only <see cref="OpenDetailsAsync"/>
 /// is required; everything else defaults to a no-op so list-free hosts (Discover/browse) and the
-/// section-based My Anime page can each supply just what they need.
+/// section-based Library pages can each supply just what they need.
 /// </summary>
 public sealed class EntryActionHost
 {
     /// <summary>Navigate to Media Details for the entry's media.</summary>
     public required Func<MediaListEntry, Task> OpenDetailsAsync { get; init; }
 
-    /// <summary>Runs before any menu/flow opens (My Anime: flush the pending debounced +1 save).</summary>
+    /// <summary>Runs before any menu/flow opens (Library: flush the pending debounced +1 save).</summary>
     public Func<Task>? OnBeforeFlowAsync { get; init; }
 
-    /// <summary>Optimistic UI removal before a move/delete round-trip (My Anime: drop from its section).</summary>
+    /// <summary>Optimistic UI removal before a move/delete round-trip (Library: drop from its section).</summary>
     public Action<MediaListEntry>? OnOptimisticRemove { get; init; }
 
     /// <summary>A save that did NOT change status succeeded (rate, progress edit). The entry's
@@ -31,7 +31,7 @@ public sealed class EntryActionHost
     public Func<MediaListEntry, Task>? OnEntryRemovedAsync { get; init; }
 
     /// <summary>A move/delete failed after <see cref="OnOptimisticRemove"/> ran — restore the UI
-    /// (My Anime: forced reload).</summary>
+    /// (Library: forced reload).</summary>
     public Func<Task>? OnMutationFailedAsync { get; init; }
 
     /// <summary>Receives the <c>ErrorReportService.Record</c> reference string for the page's error details.</summary>
@@ -40,7 +40,7 @@ public sealed class EntryActionHost
 
 /// <summary>
 /// Shared long-press entry-action flows — the action menu, the move/add/rate/edit-progress/remove
-/// popups, persistence, and toast/snackbar feedback — extracted from MyAnimePageModel so Discover,
+/// popups, persistence, and toast/snackbar feedback — extracted from AnimeLibraryPageModel so Discover,
 /// View All, and search rows offer the same menu. The popups themselves are behind
 /// <see cref="IDialogService"/> and the side-effect rules stay in
 /// <see cref="ListEntryStatusFlow"/>; this class owns orchestration + saving, and the
@@ -88,22 +88,22 @@ public sealed class EntryActionCoordinator(
 
         switch (action)
         {
-            case MyAnimeEntryAction.OpenDetails:
+            case MediaListEntryAction.OpenDetails:
                 await host.OpenDetailsAsync(entry);
                 break;
-            case MyAnimeEntryAction.EditProgress:
+            case MediaListEntryAction.EditProgress:
                 await HandleEditProgressAsync(entry);
                 break;
-            case MyAnimeEntryAction.MarkCompleted:
+            case MediaListEntryAction.MarkCompleted:
                 await RunCompletionFlowAsync(entry);
                 break;
-            case MyAnimeEntryAction.Rate:
+            case MediaListEntryAction.Rate:
                 await HandleRateAsync(entry);
                 break;
-            case MyAnimeEntryAction.MoveToList:
+            case MediaListEntryAction.MoveToList:
                 await HandleMoveToListAsync(entry);
                 break;
-            case MyAnimeEntryAction.Remove:
+            case MediaListEntryAction.Remove:
                 await HandleDeleteAsync(entry);
                 break;
         }
@@ -157,7 +157,7 @@ public sealed class EntryActionCoordinator(
     }
 
     /// <summary>
-    /// Shared completion flow (confirm + rating popups, save on confirm). Public because My Anime's
+    /// Shared completion flow (confirm + rating popups, save on confirm). Public because Library’s
     /// +1-reaches-total path routes through it directly; guarded so overlapping triggers don't double-run.
     /// </summary>
     public async Task RunCompletionFlowAsync(MediaListEntry entry)
@@ -188,23 +188,23 @@ public sealed class EntryActionCoordinator(
         }
     }
 
-    private static IReadOnlyList<MyAnimeEntryAction> BuildEntryActions(MediaListEntry entry)
+    private static IReadOnlyList<MediaListEntryAction> BuildEntryActions(MediaListEntry entry)
     {
-        var actions = new List<MyAnimeEntryAction> { MyAnimeEntryAction.OpenDetails };
+        var actions = new List<MediaListEntryAction> { MediaListEntryAction.OpenDetails };
 
         if (entry.CanEditProgress)
         {
-            actions.Add(MyAnimeEntryAction.EditProgress);
+            actions.Add(MediaListEntryAction.EditProgress);
         }
 
         if (entry.CanMarkCompleted)
         {
-            actions.Add(MyAnimeEntryAction.MarkCompleted);
+            actions.Add(MediaListEntryAction.MarkCompleted);
         }
 
-        actions.Add(MyAnimeEntryAction.Rate);
-        actions.Add(MyAnimeEntryAction.MoveToList);
-        actions.Add(MyAnimeEntryAction.Remove);
+        actions.Add(MediaListEntryAction.Rate);
+        actions.Add(MediaListEntryAction.MoveToList);
+        actions.Add(MediaListEntryAction.Remove);
         return actions;
     }
 

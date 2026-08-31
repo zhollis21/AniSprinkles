@@ -36,8 +36,8 @@ public interface IAniListClient
     /// </summary>
     Task<bool> ToggleFavouriteAsync(FavouriteKind kind, int id, CancellationToken cancellationToken = default);
 
-    Task<IReadOnlyList<MediaListEntry>> GetMyAnimeListAsync(CancellationToken cancellationToken = default);
-    Task<IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)>> GetMyAnimeListGroupedAsync(CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<MediaListEntry>> GetMediaListAsync(MediaKind kind, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)>> GetMediaListGroupedAsync(MediaKind kind, CancellationToken cancellationToken = default);
     Task<(IReadOnlyList<BrowseMediaItem> Items, PageInfo? PageInfo)> SearchMediaPageAsync(
         string search, MediaKind? kind, bool? isAdult = false, int page = 1, int perPage = 20, CancellationToken cancellationToken = default);
 

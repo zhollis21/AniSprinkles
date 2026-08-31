@@ -7,26 +7,36 @@ using AniSprinkles.Utilities;
 
 namespace AniSprinkles.PageModels;
 
-public partial class MyAnimePageModel : ObservableObject
+public partial class MediaListPageModel : ObservableObject
 {
+    /// <summary>Which half of the Library tab this instance serves (#12).</summary>
+    public MediaKind Kind { get; }
+
     private static readonly TimeSpan ListRefreshInterval = TimeSpan.FromMinutes(5);
     private static readonly TimeSpan IncrementDebounceDelay = TimeSpan.FromMilliseconds(1500);
     private const string DetailsRoute = "media-details";
 
     // ── Persisted UI preferences (device-scoped, not cleared on sign-out) ──
     // View mode lives in ListViewModePreference — shared with the media-browse (View All) lists.
-    private const string SortFieldPreferenceKey = "anime_sort_field";
-    private const string SortAscendingPreferenceKey = "anime_sort_ascending";
+    // Prefixed per type so sorting your manga by title does not reorder your anime. View mode is
+    // deliberately NOT prefixed — ListViewModePreference is app-wide and shared with the
+    // media-browse lists, so carving out an exception here would make Library the odd one out.
+    private string SortFieldPreferenceKey => Kind == MediaKind.Manga ? "manga_sort_field" : "anime_sort_field";
+    private string SortAscendingPreferenceKey => Kind == MediaKind.Manga ? "manga_sort_ascending" : "anime_sort_ascending";
+
+    /// <summary>The section order for this type, as the viewer set it on AniList.</summary>
+    private IReadOnlyList<string> SectionOrder =>
+        Kind == MediaKind.Manga ? AppSettings.MangaSectionOrder : AppSettings.AnimeSectionOrder;
 
     private readonly IAniListClient _aniListClient;
     private readonly IAuthService _authService;
-    private readonly IAiringNotificationService _airingNotificationService;
+    protected readonly IAiringNotificationService AiringNotifications;
     private readonly ErrorReportService _errorReportService;
     private readonly IPreferences _preferences;
     private readonly INavigationService _navigationService;
     private readonly IUserFeedback _feedback;
     private readonly TimeProvider _timeProvider;
-    private readonly ILogger<MyAnimePageModel> _logger;
+    private readonly ILogger<MediaListPageModel> _logger;
     private readonly EntryActionCoordinator _entryActions;
     private bool _hasLoaded;
     private DateTimeOffset _lastSuccessfulLoadUtc;
@@ -127,19 +137,32 @@ public partial class MyAnimePageModel : ObservableObject
         : Glyphs.Regular.ArrowSortUpLines24;
 
     /// <summary>
-    /// Rows for the shared sort picker, which the My Anime page opens from its top-bar sort icon.
+    /// Rows for the shared sort picker, which either half of the Library tab opens from its
+    /// top-bar sort icon.
     /// Each <see cref="SortOption.Code"/> encodes field + direction as "Field:dir" so one tap fully
     /// specifies the sort; <see cref="SelectSort"/> parses it back into <see cref="CurrentSortField"/> +
-    /// <see cref="SortAscending"/>. Built from <see cref="MyAnimeSortDefinitions"/> (pure, unit-tested data)
+    /// <see cref="SortAscending"/>. Built from <see cref="MediaListSortDefinitions"/> (pure, unit-tested data)
     /// so the codes are validated at build time and each instance gets its own mutable IsSelected state.
     /// </summary>
     public IReadOnlyList<SortOption> SortOptions { get; } =
-        MyAnimeSortDefinitions.All
+        MediaListSortDefinitions.All
             .Select(d => new SortOption { Code = d.Code, Display = d.Display })
             .ToList();
 
     /// <summary>The active sort as a "Field:dir" code, matching one <see cref="SortOptions"/> entry.</summary>
     public string SelectedSortCode => $"{CurrentSortField}:{(SortAscending ? "asc" : "desc")}";
+
+    // ── Empty state (#12) ───────────────────────────────
+    // Worded per type. The manga half meets this far more often than the anime one, since plenty
+    // of AniList accounts track anime only and arrive here the first time they swipe across.
+
+    public string EmptyTitle => Kind == MediaKind.Manga
+        ? "No manga yet"
+        : "No anime yet";
+
+    public string EmptySubtitle => Kind == MediaKind.Manga
+        ? "Manga you add on AniList will show up here. Try the Search tab to find something."
+        : "Anime you add on AniList will show up here. Try the Discover or Search tabs.";
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(ViewModeIconGlyph))]
@@ -169,11 +192,12 @@ public partial class MyAnimePageModel : ObservableObject
         _ => Glyphs.Regular.List24,
     };
 
-    public MyAnimePageModel(IAniListClient aniListClient, IAuthService authService, IAiringNotificationService airingNotificationService, ErrorReportService errorReportService, IPreferences preferences, INavigationService navigationService, IDialogService dialogs, IUserFeedback feedback, ListEntryStatusFlow statusFlow, TimeProvider timeProvider, ILogger<MyAnimePageModel> logger)
+    protected MediaListPageModel(MediaKind kind, IAniListClient aniListClient, IAuthService authService, IAiringNotificationService airingNotificationService, ErrorReportService errorReportService, IPreferences preferences, INavigationService navigationService, IDialogService dialogs, IUserFeedback feedback, ListEntryStatusFlow statusFlow, TimeProvider timeProvider, ILogger<MediaListPageModel> logger)
     {
+        Kind = kind;
         _aniListClient = aniListClient;
         _authService = authService;
-        _airingNotificationService = airingNotificationService;
+        AiringNotifications = airingNotificationService;
         _errorReportService = errorReportService;
         _preferences = preferences;
         _navigationService = navigationService;
@@ -215,12 +239,12 @@ public partial class MyAnimePageModel : ObservableObject
     public async Task LoadAsync(bool forceReload = false)
     {
         _logger.LogInformation(
-            "MyAnime LoadAsync enter (forceReload={ForceReload}, isBusy={IsBusy}, hasLoaded={HasLoaded}, currentState={CurrentState}, hadSections={HadSections})",
-            forceReload, IsBusy, _hasLoaded, CurrentState, Sections.Count);
+            "MediaList[{Kind}] LoadAsync enter (forceReload={ForceReload}, isBusy={IsBusy}, hasLoaded={HasLoaded}, currentState={CurrentState}, hadSections={HadSections})",
+            Kind, forceReload, IsBusy, _hasLoaded, CurrentState, Sections.Count);
 
         if (IsBusy)
         {
-            _logger.LogInformation("MyAnime LoadAsync skipped: already busy.");
+            _logger.LogInformation("MediaList[{Kind}] LoadAsync skipped: already busy.", Kind);
             return;
         }
 
@@ -261,8 +285,8 @@ public partial class MyAnimePageModel : ObservableObject
                 _lastSuccessfulLoadUtc = default;
             }
 
-            _logger.LogInformation("Loading My Anime list.");
-            SentrySdk.AddBreadcrumb("Load My Anime list", "navigation", "state");
+            _logger.LogInformation("Loading {Kind} list.", Kind);
+            SentrySdk.AddBreadcrumb($"Load {Kind} list", "navigation", "state");
 
             IsAuthenticated = isAuthenticated;
 
@@ -301,7 +325,7 @@ public partial class MyAnimePageModel : ObservableObject
             }
 
             SentrySdk.AddBreadcrumb("Fetching AniList list", "http", "state");
-            var groups = await _aniListClient.GetMyAnimeListGroupedAsync();
+            var groups = await _aniListClient.GetMediaListGroupedAsync(Kind);
             // Capture current sort/filter state for section building.
             var sortField = CurrentSortField;
             var sortAsc = SortAscending;
@@ -312,7 +336,8 @@ public partial class MyAnimePageModel : ObservableObject
                 // Cold path — no existing sections to diff against. Build off-thread because grouping
                 // can be heavy on large lists, then publish in one assignment.
                 var expandedStates = new Dictionary<string, bool>(StringComparer.Ordinal);
-                var sections = await Task.Run(() => BuildSections(groups, expandedStates, sortField, sortAsc, filterText));
+                var sectionOrder = SectionOrder;
+                var sections = await Task.Run(() => BuildSections(groups, expandedStates, sectionOrder, sortField, sortAsc, filterText));
                 Sections = sections;
             }
             else
@@ -324,14 +349,15 @@ public partial class MyAnimePageModel : ObservableObject
                 var result = MediaListSectionsMerger.Merge(
                     Sections,
                     groups,
-                    AppSettings.AnimeSectionOrder,
+                    SectionOrder,
                     AppSettings.DisplayAdultContent,
                     sortField,
                     sortAsc,
                     filterText);
                 var mergeMs = Stopwatch.GetElapsedTime(mergeStart).TotalMilliseconds;
                 _logger.LogDebug(
-                    "MyAnime merge in {ElapsedMs:F1}ms: {SectionsAdded} sec+, {SectionsRemoved} sec-, {EntriesAdded} ent+, {EntriesRemoved} ent-, {EntriesMoved} moved, {EntriesUpdated} updated, {SectionsNeedingReset} reset",
+                    "MediaList[{Kind}] merge in {ElapsedMs:F1}ms: {SectionsAdded} sec+, {SectionsRemoved} sec-, {EntriesAdded} ent+, {EntriesRemoved} ent-, {EntriesMoved} moved, {EntriesUpdated} updated, {SectionsNeedingReset} reset",
+                    Kind,
                     mergeMs,
                     result.SectionsAdded,
                     result.SectionsRemoved,
@@ -354,14 +380,17 @@ public partial class MyAnimePageModel : ObservableObject
             // from whatever they are now. Re-snapshotting here is what stops the next appearance
             // from re-projecting work this load already did.
             _renderedDisplaySettings = DisplaySettingsSnapshot.Current;
-            CurrentState = PageState.Content;
 
-            // Cache RELEASING media IDs for the background airing notification worker.
-            CacheReleasingMediaIds(groups);
+            // Zero sections after a SUCCESSFUL load is an empty list, not a failure — and it is a
+            // real case rather than a defensive one, since plenty of AniList accounts track anime
+            // only and would otherwise meet the manga tab as a blank page (#12). Note this reads
+            // the built sections rather than the raw groups: the adult filter can empty a list that
+            // came back non-empty, and that should land here too.
+            CurrentState = Sections.Count == 0 ? PageState.Empty : PageState.Content;
 
-            // On first authenticated load, prompt for notification permission if not yet decided.
-            // Status Unknown → shows dialog once. Granted/Denied → returns immediately on future loads.
-            _ = RequestNotificationPermissionIfNeededAsync();
+            // Anime only: manga does not air, so the manga half overrides this to nothing rather
+            // than caching ids a worker would poll an airing schedule for (#12).
+            OnListLoaded(groups);
         }
         catch (Exception ex)
         {
@@ -386,7 +415,7 @@ public partial class MyAnimePageModel : ObservableObject
                 _hasLoaded = false;
             }
 
-            _errorReportService.Record(ex, "Load My Anime");
+            _errorReportService.Record(ex, $"Load {Kind} list");
             ErrorDetails = ex.Message;
         }
         finally
@@ -549,7 +578,7 @@ public partial class MyAnimePageModel : ObservableObject
 
         if (current.SectionOrderDiffersFrom(_renderedDisplaySettings))
         {
-            MediaListSectionsMerger.ReorderSections(Sections, AppSettings.AnimeSectionOrder);
+            MediaListSectionsMerger.ReorderSections(Sections, SectionOrder);
         }
 
         _renderedDisplaySettings = current;
@@ -787,8 +816,7 @@ public partial class MyAnimePageModel : ObservableObject
     {
         _logger.LogInformation("Sign-out requested.");
         SentrySdk.AddBreadcrumb("Sign-out requested", "auth", "user");
-        _airingNotificationService.CancelPeriodicCheck();
-        _airingNotificationService.ClearNotificationState();
+        OnSignedOut();
         await _authService.SignOutAsync();
         AppSettings.Clear();
         await LoadAsync(forceReload: true);
@@ -851,7 +879,7 @@ public partial class MyAnimePageModel : ObservableObject
 
     // ── Notification permission prompt ──────────────────────────────────
 
-    // Whether the My Anime permission prompt has already been shown — so a denial doesn't re-prompt
+    // Whether the Library permission prompt has already been shown — so a denial doesn't re-prompt
     // on every list load — is one of the keys AiringNotificationState owns (#141). It used to be a
     // private const here and a separate raw literal in the app project, on the far side of the test
     // boundary, where a rename to either would have gone unnoticed. Cleared on sign-out so a fresh
@@ -863,11 +891,11 @@ public partial class MyAnimePageModel : ObservableObject
     /// syncs the result to AniList. On API &lt;33 (no runtime permission needed), respects the
     /// existing AniList value — schedules WorkManager if already enabled, does nothing otherwise.
     /// </summary>
-    private async Task RequestNotificationPermissionIfNeededAsync()
+    protected async Task RequestNotificationPermissionIfNeededAsync()
     {
         try
         {
-            // Only prompt once from My Anime. Settings can re-prompt via the explicit toggle.
+            // Only prompt once from the Library tab. Settings can re-prompt via the explicit toggle.
             if (AiringNotificationState.HasPromptedForPermission(_preferences))
             {
                 return;
@@ -883,7 +911,7 @@ public partial class MyAnimePageModel : ObservableObject
                     var viewer = await _aniListClient.GetViewerAsync();
                     if (viewer.Options.AiringNotifications)
                     {
-                        _airingNotificationService.SchedulePeriodicCheck();
+                        AiringNotifications.SchedulePeriodicCheck();
                     }
                 }
                 catch (Exception ex)
@@ -902,7 +930,7 @@ public partial class MyAnimePageModel : ObservableObject
             // even if the AniList sync afterward fails, the prompt already happened.
             AiringNotificationState.MarkPromptedForPermission(_preferences);
 
-            bool granted = await _airingNotificationService.RequestPermissionAsync();
+            bool granted = await AiringNotifications.RequestPermissionAsync();
 
             // Sync the result to AniList so the Settings toggle stays in sync with device reality.
             // Fetch current viewer settings first so we don't overwrite any other preferences.
@@ -937,7 +965,7 @@ public partial class MyAnimePageModel : ObservableObject
                 return;
             }
 
-            _airingNotificationService.SchedulePeriodicCheck();
+            AiringNotifications.SchedulePeriodicCheck();
         }
         catch (Exception ex)
         {
@@ -953,7 +981,22 @@ public partial class MyAnimePageModel : ObservableObject
     /// can poll AniList's AiringSchedule API without fetching the full list.
     /// Planning is included so users are notified when a show they intend to watch airs.
     /// </summary>
-    private void CacheReleasingMediaIds(
+    /// <summary>
+    /// Post-load side effects that belong to one type only. The anime half caches RELEASING media
+    /// ids for the background airing worker and asks for notification permission on first load;
+    /// the manga half has nothing to do here, because AniList publishes no chapter schedule.
+    /// </summary>
+    protected virtual void OnListLoaded(
+        IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)> groups)
+    {
+    }
+
+    /// <summary>Airing-notification teardown on sign-out. Anime-only, for the same reason.</summary>
+    protected virtual void OnSignedOut()
+    {
+    }
+
+    protected void CacheReleasingMediaIds(
         IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)> groups)
     {
         var releasingIds = groups
@@ -972,6 +1015,7 @@ public partial class MyAnimePageModel : ObservableObject
     private static ObservableCollection<MediaListSection> BuildSections(
         IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)> groups,
         IReadOnlyDictionary<string, bool> expandedStates,
+        IReadOnlyList<string> sectionOrder,
         SortField sortField,
         bool sortAscending,
         string filterText)
@@ -980,13 +1024,15 @@ public partial class MyAnimePageModel : ObservableObject
 
         var orderedGroups = MediaListSectionsMerger.OrderAndFilterGroups(
             groups,
-            AppSettings.AnimeSectionOrder,
+            sectionOrder,
             AppSettings.DisplayAdultContent);
 
         foreach (var group in orderedGroups)
         {
-            // First section and Rewatching default to expanded; all others default to collapsed.
-            var defaultExpanded = sections.Count == 0 || group.Name == "Rewatching";
+            // First section defaults to expanded, as does the re-consuming one — "Rewatching" for
+            // anime, "Rereading" for manga. All others default to collapsed.
+            var defaultExpanded = sections.Count == 0
+                || group.Name is "Rewatching" or "Rereading";
             var section = CreateSection(group.Name, defaultExpanded, expandedStates);
             section.AddItems(group.Entries);
             section.ApplySort(sortField, sortAscending);
