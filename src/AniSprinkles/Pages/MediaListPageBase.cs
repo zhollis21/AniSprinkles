@@ -316,7 +316,15 @@ public abstract partial class MediaListPageBase : ContentPage
     // carousel SortDropdown (a pill that measures itself), there's no anchor view in the toolbar, so we
     // compute a fixed top-right "open-down" anchor from the display metrics. The picked code is handed to
     // the page model's SelectSort command, which applies + persists the sort.
-    private async void OnSortClicked(object? sender, EventArgs e)
+    //
+    // Protected, not private, and that is load-bearing: AnimeLibraryPage.xaml and MangaLibraryPage.xaml
+    // wire this with Clicked="OnSortClicked", so the generated InitializeComponent in each *subclass*
+    // has to be able to reach it. XAML resolves handlers by name, so a private base member still
+    // compiles — it fails at runtime with MethodAccessException, and only in Release: Debug builds run
+    // with UseInterpreter=true and AndroidLinkMode=None, which never enforce the check. Because the
+    // Library tab is the launch destination, that took AppShell down with it and shipped a blank app
+    // in v0.13.0. Any handler this base adds for a subclass's XAML needs the same treatment.
+    protected async void OnSortClicked(object? sender, EventArgs e)
     {
         if (_sortPopupOpen || _viewModel?.SortOptions is not { Count: > 0 } options)
         {
