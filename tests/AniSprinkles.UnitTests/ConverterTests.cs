@@ -31,6 +31,34 @@ public class RainbowAccentConverterTests
         => Assert.Equal("RainbowBlue", RainbowAccentConverter.ResourceKeyFor("Current"));
 
     [Fact]
+    public void ResourceKeyFor_GivesEachMangaStatTheColourOfItsAnimeCounterpart()
+    {
+        // Settings shows the two stat cards in the same 2x2 shape, so the tile in a given position
+        // should be the same colour on both (#12). Left to the hash, Manga/Chapters/Volumes all
+        // landed on RainbowBlue — the same as Mean Score — so the manga card rendered as four
+        // identical blues beside a four-colour anime card.
+        Assert.Equal(
+            RainbowAccentConverter.ResourceKeyFor("Anime"),
+            RainbowAccentConverter.ResourceKeyFor("Manga"));
+        Assert.Equal(
+            RainbowAccentConverter.ResourceKeyFor("Episodes"),
+            RainbowAccentConverter.ResourceKeyFor("Chapters"));
+        Assert.Equal(
+            RainbowAccentConverter.ResourceKeyFor("Days"),
+            RainbowAccentConverter.ResourceKeyFor("Volumes"));
+
+        // And the four are actually distinct from each other, which is the property that broke.
+        string[] keys =
+        [
+            RainbowAccentConverter.ResourceKeyFor("Manga"),
+            RainbowAccentConverter.ResourceKeyFor("Chapters"),
+            RainbowAccentConverter.ResourceKeyFor("Volumes"),
+            RainbowAccentConverter.ResourceKeyFor("Score"),
+        ];
+        Assert.Equal(4, keys.Distinct().Count());
+    }
+
+    [Fact]
     public void Convert_ReturnsABrushWhenTheTargetIsABrush()
     {
         // MAUI's Background (Brush) always wins over BackgroundColor, and the app's implicit Border

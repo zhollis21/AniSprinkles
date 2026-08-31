@@ -27,6 +27,14 @@ public sealed class RainbowAccentConverter : IValueConverter
         ["Current"] = "Watching",
         ["Repeating"] = "Rewatching",
         ["LastUpdated"] = "Updated",
+        // Settings' Manga Stats tiles, each pointing at the anime tile in the same grid position
+        // (#12). Two reasons: the cards then read as one shape shown twice rather than two unrelated
+        // panels, and left to the hash these three landed on the same colour as each other and as
+        // Mean Score, so all four manga figures rendered identically blue next to a four-colour
+        // anime card.
+        ["Manga"] = "Anime",
+        ["Chapters"] = "Episodes",
+        ["Volumes"] = "Days",
         // Add more mappings as needed:
         // ["AliasKey"] = "CanonicalKey",
     };
