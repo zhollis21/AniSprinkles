@@ -50,15 +50,34 @@ public class LoggingHandler : DelegatingHandler
         catch (Exception ex)
         {
             stopwatch.Stop();
-            _logger.LogError(ex, "HTTP failed {Method} {Uri} after {Elapsed}ms",
-                request.Method,
-                request.RequestUri,
-                stopwatch.ElapsedMilliseconds);
+
+            // A request the app itself abandoned is not an error worth a Sentry event. It rarely
+            // arrives as an OperationCanceledException: on Android, cancelling closes the socket
+            // under the in-flight read and the failure surfaces as WebException("Socket closed"),
+            // so the token — not the exception type — is what tells the two apart. Without this,
+            // every debounced search the user typed straight through and every page left mid-load
+            // reported an HTTP failure.
+            var cancelled = cancellationToken.IsCancellationRequested;
+            if (cancelled)
+            {
+                _logger.LogInformation("HTTP cancelled {Method} {Uri} after {Elapsed}ms",
+                    request.Method,
+                    request.RequestUri,
+                    stopwatch.ElapsedMilliseconds);
+            }
+            else
+            {
+                _logger.LogError(ex, "HTTP failed {Method} {Uri} after {Elapsed}ms",
+                    request.Method,
+                    request.RequestUri,
+                    stopwatch.ElapsedMilliseconds);
+            }
+
             SentrySdk.AddBreadcrumb(
-                message: $"HTTP failed {request.Method} {breadcrumbsUri}",
+                message: $"HTTP {(cancelled ? "cancelled" : "failed")} {request.Method} {breadcrumbsUri}",
                 category: "http",
                 type: "http",
-                level: BreadcrumbLevel.Error,
+                level: cancelled ? BreadcrumbLevel.Info : BreadcrumbLevel.Error,
                 data: new Dictionary<string, string>
                 {
                     ["elapsed_ms"] = stopwatch.ElapsedMilliseconds.ToString()

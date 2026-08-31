@@ -143,7 +143,8 @@ and `ListOperationRunner`'s rollback snackbars — had never run on a device bef
 **`-delay` with no kind is how you reproduce lifecycle and debounce bugs.** The CI stubs return
 instantly, so cancellation and `IsBusy`/`CanLoadMore` windows are zero-width on device; a delay is
 what opens them. Arm one, navigate away mid-load, and watch whether `LoggingHandler`'s `HTTP POST` /
-`HTTP 200` lines stop (#132).
+`HTTP 200` lines stop (#132). An abandoned request logs `HTTP cancelled` rather than `HTTP failed` —
+on Android it surfaces as `WebException("Socket closed")`, so the token is what tells them apart.
 
 `-layer http` moves injection inside the `HttpClient` pipeline so `AniListRateLimitHandler`,
 `SendAsync`'s retry-once and `AniListErrorClassifier` run for real — but it needs a real signed-in
