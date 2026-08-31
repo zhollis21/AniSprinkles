@@ -90,41 +90,41 @@
                                         <Image.Source>
                                             <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.DataBarVertical24}"
                                                  FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                 Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Stats'}"
+                                                 Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='StatsAnimeHeader'}"
                                                  Size="20" />
                                         </Image.Source>
                                     </Image>
                                     <Label Text="Anime Stats"
                                Style="{StaticResource Title3}"
-                               TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Stats'}" />
+                               TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='StatsAnimeHeader'}" />
                                 </HorizontalStackLayout>
                                 <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto"
                           ColumnSpacing="12" RowSpacing="12">
                                     <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource CardStyle}" Padding="12">
                                         <VerticalStackLayout Spacing="2" HorizontalOptions="Center">
                                             <Label Text="{Binding TotalAnime}" Style="{StaticResource Title2}" HorizontalTextAlignment="Center"
-                                       TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Anime'}" />
+                                       TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='StatsTotalAnime'}" />
                                             <Label Text="Total Anime" Style="{StaticResource Caption1}" TextColor="{StaticResource Gray400}" HorizontalTextAlignment="Center" />
                                         </VerticalStackLayout>
                                     </Border>
                                     <Border Grid.Row="0" Grid.Column="1" Style="{StaticResource CardStyle}" Padding="12">
                                         <VerticalStackLayout Spacing="2" HorizontalOptions="Center">
                                             <Label Text="{Binding EpisodesWatched}" Style="{StaticResource Title2}" HorizontalTextAlignment="Center"
-                                       TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Episodes'}" />
+                                       TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='StatsEpisodes'}" />
                                             <Label Text="Episodes" Style="{StaticResource Caption1}" TextColor="{StaticResource Gray400}" HorizontalTextAlignment="Center" />
                                         </VerticalStackLayout>
                                     </Border>
                                     <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource CardStyle}" Padding="12">
                                         <VerticalStackLayout Spacing="2" HorizontalOptions="Center">
                                             <Label Text="{Binding DaysWatched}" Style="{StaticResource Title2}" HorizontalTextAlignment="Center"
-                                       TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Days'}" />
+                                       TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='StatsDaysWatched'}" />
                                             <Label Text="Days Watched" Style="{StaticResource Caption1}" TextColor="{StaticResource Gray400}" HorizontalTextAlignment="Center" />
                                         </VerticalStackLayout>
                                     </Border>
                                     <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource CardStyle}" Padding="12">
                                         <VerticalStackLayout Spacing="2" HorizontalOptions="Center">
                                             <Label Text="{Binding MeanScore}" Style="{StaticResource Title2}" HorizontalTextAlignment="Center"
-                                       TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Score'}" />
+                                       TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='StatsAnimeScore'}" />
                                             <Label Text="Mean Score" Style="{StaticResource Caption1}" TextColor="{StaticResource Gray400}" HorizontalTextAlignment="Center" />
                                         </VerticalStackLayout>
                                     </Border>
@@ -139,41 +139,41 @@
                                         <Image.Source>
                                             <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.DataBarVertical24}"
                                                  FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                                                 Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Stats'}"
+                                                 Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='StatsMangaHeader'}"
                                                  Size="20" />
                                         </Image.Source>
                                     </Image>
                                     <Label Text="Manga Stats"
                                Style="{StaticResource Title3}"
-                               TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Stats'}" />
+                               TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='StatsMangaHeader'}" />
                                 </HorizontalStackLayout>
                                 <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto"
                           ColumnSpacing="12" RowSpacing="12">
                                     <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource CardStyle}" Padding="12">
                                         <VerticalStackLayout Spacing="2" HorizontalOptions="Center">
                                             <Label Text="{Binding TotalManga}" Style="{StaticResource Title2}" HorizontalTextAlignment="Center"
-                                       TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Manga'}" />
+                                       TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='StatsTotalManga'}" />
                                             <Label Text="Total Manga" Style="{StaticResource Caption1}" TextColor="{StaticResource Gray400}" HorizontalTextAlignment="Center" />
                                         </VerticalStackLayout>
                                     </Border>
                                     <Border Grid.Row="0" Grid.Column="1" Style="{StaticResource CardStyle}" Padding="12">
                                         <VerticalStackLayout Spacing="2" HorizontalOptions="Center">
                                             <Label Text="{Binding ChaptersRead}" Style="{StaticResource Title2}" HorizontalTextAlignment="Center"
-                                       TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Chapters'}" />
+                                       TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='StatsChapters'}" />
                                             <Label Text="Chapters" Style="{StaticResource Caption1}" TextColor="{StaticResource Gray400}" HorizontalTextAlignment="Center" />
                                         </VerticalStackLayout>
                                     </Border>
                                     <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource CardStyle}" Padding="12">
                                         <VerticalStackLayout Spacing="2" HorizontalOptions="Center">
                                             <Label Text="{Binding VolumesRead}" Style="{StaticResource Title2}" HorizontalTextAlignment="Center"
-                                       TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Volumes'}" />
+                                       TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='StatsVolumes'}" />
                                             <Label Text="Volumes" Style="{StaticResource Caption1}" TextColor="{StaticResource Gray400}" HorizontalTextAlignment="Center" />
                                         </VerticalStackLayout>
                                     </Border>
                                     <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource CardStyle}" Padding="12">
                                         <VerticalStackLayout Spacing="2" HorizontalOptions="Center">
                                             <Label Text="{Binding MangaMeanScore}" Style="{StaticResource Title2}" HorizontalTextAlignment="Center"
-                                       TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Score'}" />
+                                       TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='StatsMangaScore'}" />
                                             <Label Text="Mean Score" Style="{StaticResource Caption1}" TextColor="{StaticResource Gray400}" HorizontalTextAlignment="Center" />
                                         </VerticalStackLayout>
                                     </Border>
