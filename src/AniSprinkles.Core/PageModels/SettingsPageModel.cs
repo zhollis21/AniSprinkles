@@ -153,6 +153,20 @@ public partial class SettingsPageModel : ObservableObject
     [ObservableProperty]
     private string _meanScore = "0";
 
+    // Manga totals (#12). Shown even for an account with no manga, matching the anime card, which
+    // has always rendered zeros for a fresh account rather than hiding itself.
+    [ObservableProperty]
+    private string _totalManga = "0";
+
+    [ObservableProperty]
+    private string _chaptersRead = "0";
+
+    [ObservableProperty]
+    private string _volumesRead = "0";
+
+    [ObservableProperty]
+    private string _mangaMeanScore = "0";
+
     // --- Display preferences ---
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasUnsavedChanges))]
@@ -420,6 +434,11 @@ public partial class SettingsPageModel : ObservableObject
         DaysWatched = days.ToString("N1");
         MeanScore = user.AnimeStatistics.MeanScore.ToString("N1");
 
+        TotalManga = user.MangaStatistics.Count.ToString("N0");
+        ChaptersRead = user.MangaStatistics.ChaptersRead.ToString("N0");
+        VolumesRead = user.MangaStatistics.VolumesRead.ToString("N0");
+        MangaMeanScore = user.MangaStatistics.MeanScore.ToString("N1");
+
         // Display preferences.
         //
         // Every one of these is resolved rather than taken straight from the viewer (#128). A save
@@ -590,6 +609,10 @@ public partial class SettingsPageModel : ObservableObject
         EpisodesWatched = "0";
         DaysWatched = "0";
         MeanScore = "0";
+        TotalManga = "0";
+        ChaptersRead = "0";
+        VolumesRead = "0";
+        MangaMeanScore = "0";
         NotificationItems.Clear();
 
         // Sign-out must not leave the previous account's unconfirmed changes shadowing the next

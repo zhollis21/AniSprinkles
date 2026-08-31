@@ -333,6 +333,15 @@ internal sealed class CIAniListClient : IAniListClient
                 MinutesWatched = 24912,
                 MeanScore = 8.75,
             },
+            // Deliberately not a round multiple of the anime figures, and a different mean, so the
+            // screenshot would show it if the Manga Stats card were ever wired to the anime numbers.
+            MangaStatistics = new UserMangaStatistics
+            {
+                Count = 3,
+                ChaptersRead = 373,
+                VolumesRead = 42,
+                MeanScore = 9.0,
+            },
         };
 
         // ── Currently Watching ───────────────────────────────────────────────────

@@ -31,6 +31,64 @@ public class RainbowAccentConverterTests
         => Assert.Equal("RainbowBlue", RainbowAccentConverter.ResourceKeyFor("Current"));
 
     [Fact]
+    public void ResourceKeyFor_KeepsTheTwoStatCardsVisuallyApart()
+    {
+        // Settings shows an anime card and a manga card together, and they have to read as two
+        // things rather than one (#12). Left to the hash the manga side collapsed: Manga, Chapters
+        // and Volumes all landed on RainbowBlue, the same as Mean Score, so every manga figure
+        // rendered identically blue beside a four-colour anime card.
+        string[] anime =
+        [
+            RainbowAccentConverter.ResourceKeyFor("StatsAnimeHeader"),
+            RainbowAccentConverter.ResourceKeyFor("StatsTotalAnime"),
+            RainbowAccentConverter.ResourceKeyFor("StatsEpisodes"),
+            RainbowAccentConverter.ResourceKeyFor("StatsDaysWatched"),
+            RainbowAccentConverter.ResourceKeyFor("StatsAnimeScore"),
+        ];
+        string[] manga =
+        [
+            RainbowAccentConverter.ResourceKeyFor("StatsMangaHeader"),
+            RainbowAccentConverter.ResourceKeyFor("StatsTotalManga"),
+            RainbowAccentConverter.ResourceKeyFor("StatsChapters"),
+            RainbowAccentConverter.ResourceKeyFor("StatsVolumes"),
+            RainbowAccentConverter.ResourceKeyFor("StatsMangaScore"),
+        ];
+
+        // Within a card, every slot is its own colour.
+        Assert.Equal(5, anime.Distinct().Count());
+        Assert.Equal(5, manga.Distinct().Count());
+
+        // Across the cards, the palette has eight stops for ten slots, so exactly two must recur —
+        // and which two is a decision, not an accident. Mean Score is blue on both because it is
+        // the same metric; cyan is the anime header and the manga Volumes tile, never the same
+        // role. Nothing else may collide.
+        Assert.Equal("RainbowBlue", RainbowAccentConverter.ResourceKeyFor("StatsAnimeScore"));
+        Assert.Equal("RainbowBlue", RainbowAccentConverter.ResourceKeyFor("StatsMangaScore"));
+        Assert.Equal(8, anime.Concat(manga).Distinct().Count());
+
+        // The headers in particular must differ, or the two cards announce themselves the same way.
+        Assert.NotEqual(
+            RainbowAccentConverter.ResourceKeyFor("StatsAnimeHeader"),
+            RainbowAccentConverter.ResourceKeyFor("StatsMangaHeader"));
+    }
+
+    [Fact]
+    public void ResourceKeyFor_LeavesTheSharedKeysTheStatCardsUsedToBorrowAlone()
+    {
+        // The stat tiles are keyed StatsTotalManga etc. rather than the obvious Manga/Chapters/
+        // Volumes precisely because those three are already spoken for: Search's type pills, the
+        // Library nav titles, and the details-page chips. Pinning them to suit a stat tile
+        // recoloured four other screens — Manga briefly rendered the same colour as Anime, so the
+        // two Library titles and the two search pills became indistinguishable.
+        Assert.NotEqual(
+            RainbowAccentConverter.ResourceKeyFor("Anime"),
+            RainbowAccentConverter.ResourceKeyFor("Manga"));
+        Assert.NotEqual(
+            RainbowAccentConverter.ResourceKeyFor("Episodes"),
+            RainbowAccentConverter.ResourceKeyFor("Chapters"));
+    }
+
+    [Fact]
     public void Convert_ReturnsABrushWhenTheTargetIsABrush()
     {
         // MAUI's Background (Brush) always wins over BackgroundColor, and the app's implicit Border
