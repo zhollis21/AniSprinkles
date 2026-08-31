@@ -3,7 +3,7 @@
 
 # AniSprinkles
 
-A colourful .NET MAUI Android app for tracking your anime with [AniList](https://anilist.co).
+A colourful .NET MAUI Android app for tracking your anime and manga with [AniList](https://anilist.co).
 
 [![CI Build & UI Preview](https://github.com/zhollis21/AniSprinkles/actions/workflows/ci-build-and-preview.yml/badge.svg)](https://github.com/zhollis21/AniSprinkles/actions/workflows/ci-build-and-preview.yml)
 [![Android Release](https://github.com/zhollis21/AniSprinkles/actions/workflows/android-release.yml/badge.svg)](https://github.com/zhollis21/AniSprinkles/actions/workflows/android-release.yml)
@@ -29,7 +29,7 @@ A colourful .NET MAUI Android app for tracking your anime with [AniList](https:/
 - **Library** — your anime and manga lists grouped by status (Watching/Reading, Rewatching/Rereading, Planning, Completed, Paused, Dropped) with collapsible sections, sort controls, and pull-to-refresh; an Anime/Manga sub-tab strip switches between them, and each half keeps its own sort
 - **Discover** — Currently Airing, Trending Now, Top Anime, Top Movies, All Time Popular, and Upcoming Next Season rows (plus optional 18+ rows) with infinite scrolling and "View All" browse lists; works signed-out, and shows your list status on every card when signed in
 - **Search** — debounced search across all of AniList on its own tab, with All/Anime/Manga type pills and infinite scrolling; works signed-out, and shows your list status on every result when signed in
-- **Quick list actions** — long-press any anime (in your list, Discover, browse, or search) to add it to a list or edit progress, rating, and status without leaving the page
+- **Quick list actions** — long-press any title (in your list, Discover, browse, or search) to add it to a list or edit progress, rating, and status without leaving the page
 - **Media details** — full AniList metadata for anime and manga alike: synopsis with Read more/Show less, scores, airing schedule or chapter/volume counts, genres, tags, rankings, studios, staff, related media, external links, and trailer
 - **List entry editing** — update progress, score, and status directly from the details page; manga counts chapters, or volumes when that is what you track. Changes sync back to AniList
 - **AniList sign-in** — OAuth implicit grant via the system browser; token stored in Android SecureStorage
