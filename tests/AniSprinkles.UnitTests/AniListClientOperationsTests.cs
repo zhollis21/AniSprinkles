@@ -311,7 +311,11 @@ public class AniListClientOperationsTests
                 "id":11,"name":"zhollis","siteUrl":"https://anilist.co/user/zhollis",
                 "avatar":{"large":"https://img/large.png"},
                 "options":{"titleLanguage":"ENGLISH","displayAdultContent":true,"staffNameLanguage":"NATIVE"},
-                "mediaListOptions":{"scoreFormat":"POINT_10_DECIMAL","animeList":{"sectionOrder":["Watching","Completed"]},"mangaList":{"sectionOrder":["Reading","Completed"]}}
+                "mediaListOptions":{"scoreFormat":"POINT_10_DECIMAL","animeList":{"sectionOrder":["Watching","Completed"]},"mangaList":{"sectionOrder":["Reading","Completed"]}},
+                "statistics":{
+                    "anime":{"count":412,"meanScore":8.4,"minutesWatched":144000,"episodesWatched":6031},
+                    "manga":{"count":57,"meanScore":7.9,"chaptersRead":4218,"volumesRead":313}
+                }
             }}
             """);
 
@@ -327,6 +331,38 @@ public class AniListClientOperationsTests
         // The manga list has its own order and its own names (#12); grouping the manga tab by the
         // anime order would put a "Watching" section it never has ahead of the ones it does.
         Assert.Equal(["Reading", "Completed"], viewer.MangaSectionOrder);
+
+        Assert.Equal(412, viewer.AnimeStatistics.Count);
+        Assert.Equal(6031, viewer.AnimeStatistics.EpisodesWatched);
+
+        // AniList serves one UserStatistics type for both branches, so the manga totals arrive in
+        // fields the anime branch never populates — and vice versa. Asserted together so a mapping
+        // that read the wrong branch would show up as anime numbers on the manga card (#12).
+        Assert.Equal(57, viewer.MangaStatistics.Count);
+        Assert.Equal(7.9, viewer.MangaStatistics.MeanScore);
+        Assert.Equal(4218, viewer.MangaStatistics.ChaptersRead);
+        Assert.Equal(313, viewer.MangaStatistics.VolumesRead);
+    }
+
+    [Fact]
+    public async Task GetViewer_WithNoMangaStatistics_LeavesTheMangaTotalsAtZero()
+    {
+        // An account that has never touched manga: AniList omits the branch rather than sending
+        // zeros, and the Settings card renders these directly.
+        var harness = new Harness().Returns("ViewerFull", """
+            {"Viewer":{
+                "id":11,"name":"zhollis",
+                "statistics":{"anime":{"count":412,"meanScore":8.4,"minutesWatched":144000,"episodesWatched":6031}}
+            }}
+            """);
+
+        var viewer = await harness.Client.GetViewerAsync(TestContext.Current.CancellationToken);
+
+        Assert.Equal(412, viewer.AnimeStatistics.Count);
+        Assert.Equal(0, viewer.MangaStatistics.Count);
+        Assert.Equal(0, viewer.MangaStatistics.ChaptersRead);
+        Assert.Equal(0, viewer.MangaStatistics.VolumesRead);
+        Assert.Equal(0, viewer.MangaStatistics.MeanScore);
     }
 
     [Fact]

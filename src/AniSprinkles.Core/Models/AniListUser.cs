@@ -23,4 +23,5 @@ public class AniListUser
     /// </summary>
     public List<string> MangaSectionOrder { get; set; } = [];
     public UserAnimeStatistics AnimeStatistics { get; set; } = new();
+    public UserMangaStatistics MangaStatistics { get; set; } = new();
 }
