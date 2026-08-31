@@ -101,6 +101,12 @@ public class SettingsPageModelTests
         Assert.Equal("8.4", harness.Model.MeanScore);
         Assert.Empty(harness.Model.ErrorDetails);
 
+        // Manga totals are their own counters, not a reprojection of the anime ones (#12).
+        Assert.Equal("57", harness.Model.TotalManga);
+        Assert.Equal("4,218", harness.Model.ChaptersRead);
+        Assert.Equal("313", harness.Model.VolumesRead);
+        Assert.Equal("7.9", harness.Model.MangaMeanScore);
+
         // The display preferences the rest of the app reads off the statics.
         Assert.Equal(UserTitleLanguage.English, AppSettings.TitleLanguage);
         Assert.Equal(ScoreFormat.Point10Decimal, AppSettings.ScoreFormat);
@@ -160,6 +166,13 @@ public class SettingsPageModelTests
             MeanScore = 8.4,
             EpisodesWatched = 6031,
             MinutesWatched = 144_000,
+        },
+        MangaStatistics = new UserMangaStatistics
+        {
+            Count = 57,
+            MeanScore = 7.9,
+            ChaptersRead = 4218,
+            VolumesRead = 313,
         },
     };
 

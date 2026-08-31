@@ -1349,6 +1349,13 @@ public class AniListClient : IAniListClient
                 MeanScore = dto.Statistics?.Anime?.MeanScore ?? 0,
                 MinutesWatched = dto.Statistics?.Anime?.MinutesWatched ?? 0,
                 EpisodesWatched = dto.Statistics?.Anime?.EpisodesWatched ?? 0
+            },
+            MangaStatistics = new UserMangaStatistics
+            {
+                Count = dto.Statistics?.Manga?.Count ?? 0,
+                MeanScore = dto.Statistics?.Manga?.MeanScore ?? 0,
+                ChaptersRead = dto.Statistics?.Manga?.ChaptersRead ?? 0,
+                VolumesRead = dto.Statistics?.Manga?.VolumesRead ?? 0
             }
         };
     }
@@ -1641,14 +1648,19 @@ public class AniListClient : IAniListClient
     private sealed class UserStatisticTypesDto
     {
         public UserStatisticsDto? Anime { get; set; }
+        public UserStatisticsDto? Manga { get; set; }
     }
 
+    // One DTO for both, because AniList's UserStatistics type is one type for both: it carries
+    // every counter, and which ones mean anything depends on which branch you read it from.
     private sealed class UserStatisticsDto
     {
         public int? Count { get; set; }
         public double? MeanScore { get; set; }
         public int? MinutesWatched { get; set; }
         public int? EpisodesWatched { get; set; }
+        public int? ChaptersRead { get; set; }
+        public int? VolumesRead { get; set; }
     }
 
     private sealed class MediaDto
@@ -2265,6 +2277,12 @@ query ViewerFull {
         minutesWatched
         episodesWatched
       }
+      manga {
+        count
+        meanScore
+        chaptersRead
+        volumesRead
+      }
     }
   }
 }";
@@ -2614,6 +2632,12 @@ mutation UpdateUser($titleLanguage: UserTitleLanguage, $displayAdultContent: Boo
         meanScore
         minutesWatched
         episodesWatched
+      }
+      manga {
+        count
+        meanScore
+        chaptersRead
+        volumesRead
       }
     }
   }

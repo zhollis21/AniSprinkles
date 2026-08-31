@@ -32,11 +32,12 @@ public sealed class RainbowAccentConverter : IValueConverter
     };
 
     /// <summary>
-    /// Hardcoded colors for the standard list status sections, anime and manga alike.
-    /// Checked after <see cref="_keyMappings"/> are applied, before the hash fallback,
-    /// so each status section always renders with a distinct, consistent color.
+    /// Hardcoded colors for the keys that must not be left to the hash: the standard list status
+    /// sections (anime and manga alike), and Settings' two stat cards. Checked after
+    /// <see cref="_keyMappings"/> are applied, before the hash fallback, so each of these always
+    /// renders with a distinct, consistent color rather than whatever its name happens to hash to.
     /// </summary>
-    private static readonly Dictionary<string, string> _statusColors = new(StringComparer.OrdinalIgnoreCase)
+    private static readonly Dictionary<string, string> _fixedColors = new(StringComparer.OrdinalIgnoreCase)
     {
         ["Watching"]   = "RainbowBlue",
         ["Rewatching"] = "RainbowCyan",
@@ -49,6 +50,33 @@ public sealed class RainbowAccentConverter : IValueConverter
         ["Completed"]  = "RainbowGreen",
         ["Paused"]     = "RainbowYellow",
         ["Dropped"]    = "RainbowRed",
+
+        // Settings' two stat cards (#12). These keys exist only there, deliberately: the obvious
+        // parameters — "Manga", "Chapters", "Volumes" — are already spoken for by Search's type
+        // pills, the Library nav titles and the details-page chips, so pinning those to suit a
+        // stat tile would silently recolour four other screens.
+        //
+        // Pinned rather than hashed because the two cards have to stay visually apart, and the
+        // hash does not care: left to it, Manga, Chapters and Volumes all landed on RainbowBlue,
+        // the same colour as Mean Score, so every manga figure rendered identically blue beside a
+        // four-colour anime card.
+        //
+        // The palette has eight stops and the two cards have ten slots, so exactly two colours
+        // recur. Both are deliberate: RainbowBlue on each Mean Score, which is the same metric on
+        // both cards, and RainbowCyan on the anime header and the manga Volumes tile, which never
+        // sit in the same role. The anime entries pin the colours that card already rendered, so
+        // it does not change.
+        ["StatsAnimeHeader"] = "RainbowCyan",
+        ["StatsTotalAnime"]  = "RainbowPink",
+        ["StatsEpisodes"]    = "RainbowGreen",
+        ["StatsDaysWatched"] = "RainbowYellow",
+        ["StatsAnimeScore"]  = "RainbowBlue",
+
+        ["StatsMangaHeader"] = "RainbowPurple",
+        ["StatsTotalManga"]  = "RainbowRed",
+        ["StatsChapters"]    = "RainbowOrange",
+        ["StatsVolumes"]     = "RainbowCyan",
+        ["StatsMangaScore"]  = "RainbowBlue",
     };
 
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
@@ -103,8 +131,8 @@ public sealed class RainbowAccentConverter : IValueConverter
             key = mappedKey;
         }
 
-        // Use hardcoded color for known status sections; fall back to hash for everything else.
-        if (_statusColors.TryGetValue(key, out var colorKey))
+        // Use hardcoded color for known status sections and the stat cards; fall back to hash for everything else.
+        if (_fixedColors.TryGetValue(key, out var colorKey))
         {
             return colorKey;
         }
