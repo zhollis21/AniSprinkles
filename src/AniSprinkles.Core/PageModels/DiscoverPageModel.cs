@@ -96,7 +96,7 @@ public partial class DiscoverPageModel : ObservableObject
     }
 
     // ── Main page state ──────────────────────────────────────────────
-    // Discover is public, so unlike My Anime there are no auth states:
+    // Discover is public, so unlike Library there are no auth states:
     //   InitialLoading → Content | Error
     //   Content        → Content (refresh keeps state) | Error (never: refresh failures keep Content)
     //   Error          → InitialLoading (retry)

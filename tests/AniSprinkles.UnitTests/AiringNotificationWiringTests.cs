@@ -19,14 +19,14 @@ namespace AniSprinkles.UnitTests;
 [Collection(AppSettingsCollection.Name)]
 public class AiringNotificationWiringTests
 {
-    // ── MyAnimePageModel caches the IDs the worker polls ────────────
+    // ── AnimeLibraryPageModel caches the IDs the worker polls ────────────
 
     [Fact]
     public async Task AfterAListLoad_TheReleasingMediaIdsAreCachedForTheWorker()
     {
         var preferences = new FakePreferences();
         var client = Substitute.For<IAniListClient>();
-        client.GetMyAnimeListGroupedAsync(Arg.Any<CancellationToken>()).Returns(
+        client.GetMediaListGroupedAsync(Arg.Any<MediaKind>(), Arg.Any<CancellationToken>()).Returns(
         [
             ("Watching", (IReadOnlyList<MediaListEntry>)[Releasing(21), Finished(16498)]),
             ("Rewatching", [Releasing(101922)]),
@@ -34,7 +34,7 @@ public class AiringNotificationWiringTests
             ("Completed", [Releasing(999)]),
         ]);
 
-        await BuildMyAnime(client, preferences).LoadAsync();
+        await BuildAnimeLibrary(client, preferences).LoadAsync();
 
         // Watching + Rewatching + Planning, RELEASING only. Completed is excluded even when the
         // show is still airing — the user is not waiting on those episodes.
@@ -51,12 +51,12 @@ public class AiringNotificationWiringTests
         AiringNotificationState.WriteMediaIds(preferences, [21, 16498]);
 
         var client = Substitute.For<IAniListClient>();
-        client.GetMyAnimeListGroupedAsync(Arg.Any<CancellationToken>()).Returns(
+        client.GetMediaListGroupedAsync(Arg.Any<MediaKind>(), Arg.Any<CancellationToken>()).Returns(
         [
             ("Watching", (IReadOnlyList<MediaListEntry>)[Finished(21)]),
         ]);
 
-        await BuildMyAnime(client, preferences).LoadAsync();
+        await BuildAnimeLibrary(client, preferences).LoadAsync();
 
         Assert.Empty(AiringNotificationState.ReadMediaIds(preferences));
     }
@@ -66,13 +66,13 @@ public class AiringNotificationWiringTests
     {
         var preferences = new FakePreferences();
         var client = Substitute.For<IAniListClient>();
-        client.GetMyAnimeListGroupedAsync(Arg.Any<CancellationToken>()).Returns(
+        client.GetMediaListGroupedAsync(Arg.Any<MediaKind>(), Arg.Any<CancellationToken>()).Returns(
         [
             ("Watching", (IReadOnlyList<MediaListEntry>)[Releasing(21)]),
             ("Planning", [Releasing(21)]),
         ]);
 
-        await BuildMyAnime(client, preferences).LoadAsync();
+        await BuildAnimeLibrary(client, preferences).LoadAsync();
 
         Assert.Equal([21], AiringNotificationState.ReadMediaIds(preferences));
     }
@@ -132,12 +132,12 @@ public class AiringNotificationWiringTests
         return entry;
     }
 
-    private static MyAnimePageModel BuildMyAnime(IAniListClient client, IPreferences preferences)
+    private static AnimeLibraryPageModel BuildAnimeLibrary(IAniListClient client, IPreferences preferences)
     {
         var auth = Substitute.For<IAuthService>();
         auth.GetAccessTokenAsync(Arg.Any<CancellationToken>()).Returns("token");
 
-        return new MyAnimePageModel(
+        return new AnimeLibraryPageModel(
             client,
             auth,
             Substitute.For<IAiringNotificationService>(),
@@ -148,7 +148,7 @@ public class AiringNotificationWiringTests
             new RecordingUserFeedback(),
             new ListEntryStatusFlow(new ScriptedDialogService()),
             new ManualTimeProvider(DateTimeOffset.UnixEpoch),
-            NullLogger<MyAnimePageModel>.Instance);
+            NullLogger<AnimeLibraryPageModel>.Instance);
     }
 
     private sealed record SettingsHarness(SettingsPageModel Model, IAniListClient Client);

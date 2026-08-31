@@ -47,7 +47,7 @@ public partial class SettingsPageModel : ObservableObject
     /// <summary>
     /// Locally changed but not yet confirmed by AniList (#128), for the settings this page model
     /// holds on its own. Their <c>AppSettings</c>-backed counterparts keep their markers there,
-    /// because <c>MyAnimePageModel</c> calls <c>SyncFromViewer</c> directly and has to honour them
+    /// because <c>AnimeLibraryPageModel</c> calls <c>SyncFromViewer</c> directly and has to honour them
     /// without going through this page model at all.
     /// </summary>
     private bool _staffNameLanguageAwaitingUpstream;

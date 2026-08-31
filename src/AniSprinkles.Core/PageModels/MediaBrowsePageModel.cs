@@ -78,7 +78,7 @@ public partial class MediaBrowsePageModel : ObservableObject
         _logger = logger;
         _listOps = new ListOperationRunner(logger, feedback);
 
-        // Shared with My Anime: the page opens in whatever look the user last picked anywhere.
+        // Shared with Library: the page opens in whatever look the user last picked anywhere.
         _currentViewMode = ListViewModePreference.Load(preferences);
 
         // Shared long-press flows; successful mutations are written back onto every row showing
@@ -140,7 +140,7 @@ public partial class MediaBrowsePageModel : ObservableObject
     [ObservableProperty]
     private bool _canRetry = true;
 
-    // ── View mode (mirrors MyAnimePageModel's switcher, persisted to the shared key) ──
+    // ── View mode (mirrors AnimeLibraryPageModel's switcher, persisted to the shared key) ──
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(ViewModeIconGlyph))]

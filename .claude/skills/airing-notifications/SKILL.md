@@ -1,6 +1,6 @@
 ---
 name: airing-notifications
-description: "Airing notification subsystem for AniSprinkles: WorkManager worker, Preferences keys, key files, and design decisions. Use when working on airing notifications, AiringCheckWorker, AiringNotificationService, SettingsPageModel notification toggle, or MyAnimePageModel media ID caching."
+description: "Airing notification subsystem for AniSprinkles: WorkManager worker, Preferences keys, key files, and design decisions. Use when working on airing notifications, AiringCheckWorker, AiringNotificationService, SettingsPageModel notification toggle, or AnimeLibraryPageModel media ID caching."
 ---
 
 # Airing Notifications
@@ -50,10 +50,10 @@ green, and notifications silently dead (#141).
 
 | Key                          | Const                                    | Type     | Purpose                                                             |
 | ---------------------------- | ---------------------------------------- | -------- | ------------------------------------------------------------------- |
-| `airing_media_ids`           | `AiringNotificationState.MediaIdsKey`    | `string` | Comma-separated RELEASING media IDs (written by `MyAnimePageModel`) |
+| `airing_media_ids`           | `AiringNotificationState.MediaIdsKey`    | `string` | Comma-separated RELEASING media IDs (written by `AnimeLibraryPageModel`) |
 | `airing_last_check`          | `AiringNotificationState.LastCheckKey`   | `long`   | Unix timestamp of last successful Worker run                        |
 | `airing_notified`            | `AiringNotificationState.NotifiedKey`    | `string` | JSON dict of `"mediaId:episode": timestamp` pairs                   |
-| `airing_permission_prompted` | `AiringNotificationState.PermissionPromptedKey` | `bool` | Whether the My Anime permission prompt has been shown         |
+| `airing_permission_prompted` | `AiringNotificationState.PermissionPromptedKey` | `bool` | Whether the Library permission prompt has been shown         |
 | `title_language`             | `AppSettings.TitleLanguageKey`           | `string` | Read by the Worker for notification titles; owned by `AppSettings`  |
 
 ## Design Decisions
@@ -61,7 +61,7 @@ green, and notifications silently dead (#141).
 - Worker is **fully self-contained** (own HttpClient, own DTOs) so it works after device reboot without app launch.
 - `[DynamicDependency]` on Worker constructor (not class) for Release trimming/AOT safety.
 - `_suppressNotificationToggle` flag in `SettingsPageModel` prevents side effects when populating toggle from server state. Code that reverts the toggle under this flag **must** call `TriggerAutoSave()` explicitly afterward — the flag bypasses `OnAiringNotificationsChanged` and its normal autosave path, so without it the reverted value is never persisted to AniList.
-- `MyAnimePageModel` caches RELEASING media IDs (Watching + Rewatching + Planning) to Preferences after list load.
+- `AnimeLibraryPageModel` caches RELEASING media IDs (Watching + Rewatching + Planning) to Preferences after list load. The manga half overrides that hook to nothing — manga does not air.
 - Notified-set entries pruned after 7 days; the prune runs unconditionally (only the *write* is gated, on new entries or a non-empty prune). The cutoff is inclusive — an entry exactly at it survives.
 - **The checkpoint advances only after a fetch that returned.** `fetch` must throw on any failure, including an HTTP 200 carrying a GraphQL `errors` array; returning empty would silently mark a failed window as checked. The window's end is captured *before* the fetch and reused as the new checkpoint, so the request's own duration can't fall outside every window.
 - Nothing bounds how wide that window can grow — three paths leave the checkpoint unadvanced indefinitely. Tracked as #144; `AiringCheckRunner` deliberately preserves the current arithmetic.

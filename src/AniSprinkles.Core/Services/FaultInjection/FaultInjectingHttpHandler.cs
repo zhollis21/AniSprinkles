@@ -59,7 +59,7 @@ public sealed class FaultInjectingHttpHandler(
             //
             // This seam keys off the GraphQL operationName, while the client seam keys off the
             // IAniListClient method name — and the two genuinely differ, beyond any mechanical
-            // stripping of Get/Load/Async: GetMyAnimeListAsync is "MediaListCollection" here, and
+            // stripping of Get/Load/Async: GetMediaListAsync is "MediaListCollection" here, and
             // SearchMediaPageAsync is "Search". So `fault GetStudio ... -layer http` matches nothing
             // and, without this line, is indistinguishable from a seam that does not work.
             //

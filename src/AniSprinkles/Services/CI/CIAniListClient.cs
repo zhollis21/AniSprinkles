@@ -8,6 +8,42 @@ namespace AniSprinkles.Services;
 /// </summary>
 internal sealed class CIAniListClient : IAniListClient
 {
+    /// <summary>
+    /// Entry ids removed by <see cref="DeleteMediaListEntryAsync"/> this process.
+    /// <para>
+    /// The fixtures stay declarative and read-only; deletion is layered over them as a filter
+    /// instead. Before this, delete returned <c>true</c> without changing anything, so a removal on
+    /// device optimistically dropped the row and the page model's forced reload
+    /// (<c>OnEntryRemovedAsync</c>) immediately put it back — the delete path had never actually
+    /// run end to end there. Filtering here makes it stick, which is also the only way to reach the
+    /// empty-list state on device without editing the fixture and rebuilding.
+    /// </para>
+    /// <para>
+    /// Process-lifetime and deliberately not persisted: relaunching restores the full fixture, so
+    /// the screenshot job always captures a populated list no matter what a previous session did.
+    /// </para>
+    /// </summary>
+    private static readonly HashSet<int> DeletedEntryIds = [];
+    private static readonly Lock DeletedEntriesGate = new();
+
+    private static bool IsDeleted(MediaListEntry entry)
+    {
+        lock (DeletedEntriesGate)
+        {
+            return DeletedEntryIds.Contains(entry.Id);
+        }
+    }
+
+    /// <summary>
+    /// The fixture for <paramref name="kind"/> with deleted entries filtered out, dropping any
+    /// section left empty — matching AniList, which returns no list for a status with no entries.
+    /// Emptying every section is what drives the page to <c>PageState.Empty</c>.
+    /// </summary>
+    private static IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)> LiveGrouped(MediaKind kind)
+        => [.. (kind == MediaKind.Manga ? StubData.MangaGroupedList : StubData.GroupedList)
+            .Select(g => (g.Name, Entries: (IReadOnlyList<MediaListEntry>)[.. g.Entries.Where(e => !IsDeleted(e))]))
+            .Where(g => g.Entries.Count > 0)];
+
     /// <inheritdoc />
     /// <remarks>No-op: the fixtures are static, so there is nothing to invalidate.</remarks>
     public void InvalidateEntityCache() { }
@@ -15,15 +51,14 @@ internal sealed class CIAniListClient : IAniListClient
     public Task<AniListUser> GetViewerAsync(CancellationToken cancellationToken = default)
         => Task.FromResult(StubData.Viewer);
 
-    public Task<IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)>> GetMyAnimeListGroupedAsync(
-        CancellationToken cancellationToken = default)
-        => Task.FromResult(StubData.GroupedList);
+    public Task<IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)>> GetMediaListGroupedAsync(
+        MediaKind kind, CancellationToken cancellationToken = default)
+        => Task.FromResult(LiveGrouped(kind));
 
-    public Task<IReadOnlyList<MediaListEntry>> GetMyAnimeListAsync(CancellationToken cancellationToken = default)
+    public Task<IReadOnlyList<MediaListEntry>> GetMediaListAsync(
+        MediaKind kind, CancellationToken cancellationToken = default)
     {
-        IReadOnlyList<MediaListEntry> flat = StubData.GroupedList
-            .SelectMany(g => g.Entries)
-            .ToList();
+        IReadOnlyList<MediaListEntry> flat = [.. LiveGrouped(kind).SelectMany(g => g.Entries)];
         return Task.FromResult(flat);
     }
 
@@ -41,7 +76,10 @@ internal sealed class CIAniListClient : IAniListClient
             .FirstOrDefault(e => e.MediaId == id);
         if (entry is not null)
         {
-            return Task.FromResult<(Media?, MediaListEntry?)>((entry.Media, entry));
+            // A deleted entry keeps its media but loses the list entry, which is what the real API
+            // returns once the entry is gone: the details page drops back to "Add to List" rather
+            // than erroring. Returning null media here instead would 404 a title that still exists.
+            return Task.FromResult<(Media?, MediaListEntry?)>((entry.Media, IsDeleted(entry) ? null : entry));
         }
 
         // Media with no list entry, which is the only way to reach the details page's "Add to List".
@@ -111,7 +149,14 @@ internal sealed class CIAniListClient : IAniListClient
         => Task.FromResult<MediaListEntry?>(entry);
 
     public Task<bool> DeleteMediaListEntryAsync(int entryId, CancellationToken cancellationToken = default)
-        => Task.FromResult(true);
+    {
+        lock (DeletedEntriesGate)
+        {
+            DeletedEntryIds.Add(entryId);
+        }
+
+        return Task.FromResult(true);
+    }
 
     public Task<bool> ToggleFavouriteAsync(FavouriteKind kind, int id, CancellationToken cancellationToken = default)
         => Task.FromResult(true);
@@ -271,6 +316,10 @@ internal sealed class CIAniListClient : IAniListClient
             BannerImage = "https://s4.anilist.co/file/anilistcdn/user/banner/b7720462-imnzaFvIFTem.jpg",
             ScoreFormat = ScoreFormat.Point10Decimal,
             AnimeSectionOrder = ["Watching", "Planning", "Completed", "Dropped", "Paused", "Repeating"],
+            // The manga list has its own names (#12): Reading/Rereading where anime says
+            // Watching/Rewatching. Ordering the manga tab by the anime list would sort every
+            // section against a name it never contains.
+            MangaSectionOrder = ["Reading", "Rereading", "Completed", "Paused", "Dropped", "Planning"],
             Options = new UserOptions
             {
                 TitleLanguage = UserTitleLanguage.Romaji,
@@ -684,10 +733,10 @@ internal sealed class CIAniListClient : IAniListClient
                 // hiding itself on a manga page is part of what the screenshot should show.
                 Characters =
                 [
-                    Cast(46494, "Eren Yeager", "https://s4.anilist.co/file/anilistcdn/character/large/b46494-tjjE4Si7CDbg.png", 118829, "Yuuki Kaji", "https://s4.anilist.co/file/anilistcdn/staff/medium/n118829-DUfRGFn0FfBM.jpg"),
-                    Cast(40881, "Mikasa Ackerman", "https://s4.anilist.co/file/anilistcdn/character/large/b40881-lPAqbUuKLBjm.png", 109994, "Yui Ishikawa", "https://s4.anilist.co/file/anilistcdn/staff/medium/n109994-1UMBIJfvJhqM.png"),
-                    Cast(46496, "Armin Arlert", "https://s4.anilist.co/file/anilistcdn/character/large/b46496-Ku6r7yYkTUnc.png", 95220, "Marina Inoue", "https://s4.anilist.co/file/anilistcdn/staff/medium/n95220-vsCFhZ4WvBIH.png"),
-                    Cast(45882, "Levi Ackerman", "https://s4.anilist.co/file/anilistcdn/character/large/b45882-cPvNhHJnjZ5t.png", 95016, "Hiroshi Kamiya", "https://s4.anilist.co/file/anilistcdn/staff/medium/n95016-9NRGDDbUAdBM.png"),
+                    MangaCast(40882, "Eren Yeager", "https://s4.anilist.co/file/anilistcdn/character/large/b40882-dsj7IP943WFF.jpg"),
+                    MangaCast(40881, "Mikasa Ackerman", "https://s4.anilist.co/file/anilistcdn/character/large/b40881-F3gr1PkreDvj.png"),
+                    MangaCast(46494, "Armin Arlert", "https://s4.anilist.co/file/anilistcdn/character/large/b46494-g7xYYuBtYPnO.png"),
+                    MangaCast(45627, "Levi", "https://s4.anilist.co/file/anilistcdn/character/large/b45627-CR68RyZmddGG.png"),
                 ],
                 // Manga staff roles read very differently from anime ones ("Story & Art" rather than
                 // "Director"), which is worth seeing rendered.
@@ -698,10 +747,10 @@ internal sealed class CIAniListClient : IAniListClient
                         Role = "Story & Art",
                         Node = new StaffNode
                         {
-                            Id = 97114,
+                            Id = 106705,
                             Name = PersonName("Hajime Isayama", "諫山創"),
-                            Image = new CharacterImage { Medium = "https://s4.anilist.co/file/anilistcdn/staff/medium/n97114-9nS9SdmXNFhH.png" },
-                            Favourites = 6_800,
+                            Image = new CharacterImage { Medium = "https://s4.anilist.co/file/anilistcdn/staff/medium/n106705-ttS2qZpF2FTZ.jpg" },
+                            Favourites = 6_826,
                         },
                     },
                 ],
@@ -926,6 +975,17 @@ internal sealed class CIAniListClient : IAniListClient
             [AttackOnTitanManga, OnePieceManga, ChainsawManManga];
 
         /// <summary>
+        /// The Library tab’s manga half (#12). Grouped under AniList’s own manga list names, which
+        /// are Reading/Rereading rather than Watching/Rewatching — the whole point of giving the
+        /// manga list its own section order.
+        /// </summary>
+        public static readonly IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)> MangaGroupedList =
+        [
+            ("Reading",   [AttackOnTitanManga, OnePieceManga]),
+            ("Completed", [ChainsawManManga]),
+        ];
+
+        /// <summary>
         /// Manga the viewer does NOT have on their list. <c>GetMediaAsync</c> falls back to these, so
         /// they resolve to a details page with no list entry.
         /// </summary>
@@ -1098,6 +1158,18 @@ internal sealed class CIAniListClient : IAniListClient
             Role = "MAIN",
             Node = new Character { Id = id, Name = PersonName(name), Image = new CharacterImage { Large = image, Medium = image } },
             VoiceActors = [Va(vaId, vaName, vaImage, "Japanese", null)],
+        };
+
+        /// <summary>
+        /// A cast entry with no voice actor — manga characters have none, and AniList returns an
+        /// empty voiceActors list for them (#12). Inventing one here would have put an anime VA on
+        /// a manga page and, in the fixture that prompted this, four image URLs that 404.
+        /// </summary>
+        private static CharacterEdge MangaCast(int id, string name, string image) => new()
+        {
+            Role = "MAIN",
+            Node = new Character { Id = id, Name = PersonName(name), Image = new CharacterImage { Large = image, Medium = image } },
+            VoiceActors = [],
         };
 
         private static VoiceActor Va(int id, string name, string image, string language, int? favourites) => new()

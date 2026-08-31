@@ -8,7 +8,7 @@ public enum ListViewMode
 }
 
 /// <summary>
-/// One device-wide list view mode, shared by My Anime and the media-browse (View All) lists so
+/// One device-wide list view mode, shared by Library and the media-browse (View All) lists so
 /// switching the look on either page carries to the other. Signed-out users simply get the
 /// default (Large) until they change it.
 /// </summary>

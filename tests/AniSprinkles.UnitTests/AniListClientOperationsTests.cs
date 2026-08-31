@@ -311,7 +311,7 @@ public class AniListClientOperationsTests
                 "id":11,"name":"zhollis","siteUrl":"https://anilist.co/user/zhollis",
                 "avatar":{"large":"https://img/large.png"},
                 "options":{"titleLanguage":"ENGLISH","displayAdultContent":true,"staffNameLanguage":"NATIVE"},
-                "mediaListOptions":{"scoreFormat":"POINT_10_DECIMAL","animeList":{"sectionOrder":["Watching","Completed"]}}
+                "mediaListOptions":{"scoreFormat":"POINT_10_DECIMAL","animeList":{"sectionOrder":["Watching","Completed"]},"mangaList":{"sectionOrder":["Reading","Completed"]}}
             }}
             """);
 
@@ -324,6 +324,9 @@ public class AniListClientOperationsTests
         Assert.True(viewer.Options.DisplayAdultContent);
         Assert.Equal(ScoreFormat.Point10Decimal, viewer.ScoreFormat);
         Assert.Equal(["Watching", "Completed"], viewer.AnimeSectionOrder);
+        // The manga list has its own order and its own names (#12); grouping the manga tab by the
+        // anime order would put a "Watching" section it never has ahead of the ones it does.
+        Assert.Equal(["Reading", "Completed"], viewer.MangaSectionOrder);
     }
 
     [Fact]
@@ -347,7 +350,7 @@ public class AniListClientOperationsTests
             .Returns("MediaListCollection", """{"MediaListCollection":{"lists":[]}}""");
 
         await harness.Client.GetViewerAsync(TestContext.Current.CancellationToken);
-        await harness.Client.GetMyAnimeListGroupedAsync(TestContext.Current.CancellationToken);
+        await harness.Client.GetMediaListGroupedAsync(MediaKind.Anime, TestContext.Current.CancellationToken);
 
         Assert.Equal(0, harness.Handler.CallsTo("Viewer"));
         Assert.Equal(11, harness.Handler.Last.IntVariable("userId"));
@@ -425,14 +428,31 @@ public class AniListClientOperationsTests
 
     // ── The library ──────────────────────────────────────────────────
 
+    [Theory]
+    [InlineData(MediaKind.Anime, "ANIME")]
+    [InlineData(MediaKind.Manga, "MANGA")]
+    public async Task GetMediaListGrouped_SendsTheTypeItWasAskedFor(MediaKind kind, string expected)
+    {
+        // Unlike Search, MediaListCollection REJECTS a missing type outright — verified live, it
+        // answers 400 "User ID/Name & Type arguments required" — so there is no absent-vs-null
+        // subtlety here, only a type that must always be sent and must be the right one.
+        var harness = new Harness()
+            .Returns("Viewer", """{"Viewer":{"id":11}}""")
+            .Returns("MediaListCollection", """{"MediaListCollection":{"lists":[]}}""");
+
+        await harness.Client.GetMediaListGroupedAsync(kind, TestContext.Current.CancellationToken);
+
+        Assert.Equal(expected, harness.Handler.Requests[1].StringVariable("type"));
+    }
+
     [Fact]
-    public async Task GetMyAnimeListGrouped_ResolvesTheViewerBeforeAskingForTheCollection()
+    public async Task GetMediaListGrouped_ResolvesTheViewerBeforeAskingForTheCollection()
     {
         var harness = new Harness()
             .Returns("Viewer", """{"Viewer":{"id":11}}""")
             .Returns("MediaListCollection", """{"MediaListCollection":{"lists":[]}}""");
 
-        await harness.Client.GetMyAnimeListGroupedAsync(TestContext.Current.CancellationToken);
+        await harness.Client.GetMediaListGroupedAsync(MediaKind.Anime, TestContext.Current.CancellationToken);
 
         Assert.Equal("Viewer", harness.Handler.Requests[0].OperationName);
         Assert.Equal("MediaListCollection", harness.Handler.Requests[1].OperationName);
@@ -440,7 +460,7 @@ public class AniListClientOperationsTests
     }
 
     [Fact]
-    public async Task GetMyAnimeListGrouped_KeepsTheServersListNamesAndGrouping()
+    public async Task GetMediaListGrouped_KeepsTheServersListNamesAndGrouping()
     {
         // Section order and custom list names are the user's own; regrouping them here would
         // silently reorder their library.
@@ -455,7 +475,7 @@ public class AniListClientOperationsTests
                 ]}}
                 """);
 
-        var groups = await harness.Client.GetMyAnimeListGroupedAsync(TestContext.Current.CancellationToken);
+        var groups = await harness.Client.GetMediaListGroupedAsync(MediaKind.Anime, TestContext.Current.CancellationToken);
 
         Assert.Equal(["Watching", "Completed"], groups.Select(g => g.Name));
         Assert.Equal([10, 11], groups[0].Entries.Select(e => e.MediaId));
@@ -463,7 +483,7 @@ public class AniListClientOperationsTests
     }
 
     [Fact]
-    public async Task GetMyAnimeListGrouped_DropsListsThatHaveNoEntries()
+    public async Task GetMediaListGrouped_DropsListsThatHaveNoEntries()
     {
         // An empty custom list would otherwise render as a section header with nothing under it.
         var harness = new Harness()
@@ -475,19 +495,19 @@ public class AniListClientOperationsTests
                 ]}}
                 """);
 
-        var groups = await harness.Client.GetMyAnimeListGroupedAsync(TestContext.Current.CancellationToken);
+        var groups = await harness.Client.GetMediaListGroupedAsync(MediaKind.Anime, TestContext.Current.CancellationToken);
 
         Assert.Equal("Watching", Assert.Single(groups).Name);
     }
 
     [Fact]
-    public async Task GetMyAnimeListGrouped_WithAnEmptyLibrary_ReturnsNoGroups()
+    public async Task GetMediaListGrouped_WithAnEmptyLibrary_ReturnsNoGroups()
     {
         var harness = new Harness()
             .Returns("Viewer", """{"Viewer":{"id":11}}""")
             .Returns("MediaListCollection", """{"MediaListCollection":null}""");
 
-        Assert.Empty(await harness.Client.GetMyAnimeListGroupedAsync(TestContext.Current.CancellationToken));
+        Assert.Empty(await harness.Client.GetMediaListGroupedAsync(MediaKind.Anime, TestContext.Current.CancellationToken));
     }
 
     private const string EmptyPage =

@@ -47,7 +47,7 @@ public class AniListClient : IAniListClient
         }
     }
 
-    public async Task<IReadOnlyList<MediaListEntry>> GetMyAnimeListAsync(CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyList<MediaListEntry>> GetMediaListAsync(MediaKind kind, CancellationToken cancellationToken = default)
     {
         var token = await RequireAccessTokenAsync(cancellationToken).ConfigureAwait(false);
         var viewerId = await GetViewerIdAsync(token, cancellationToken).ConfigureAwait(false);
@@ -55,7 +55,7 @@ public class AniListClient : IAniListClient
         var data = await SendAsync<MediaListCollectionData>(
             "MediaListCollection",
             MediaListQuery,
-            new { userId = viewerId },
+            new { userId = viewerId, type = kind.ToAniListType() },
             token,
             cancellationToken).ConfigureAwait(false);
 
@@ -75,7 +75,7 @@ public class AniListClient : IAniListClient
         return results;
     }
 
-    public async Task<IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)>> GetMyAnimeListGroupedAsync(CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)>> GetMediaListGroupedAsync(MediaKind kind, CancellationToken cancellationToken = default)
     {
         var token = await RequireAccessTokenAsync(cancellationToken).ConfigureAwait(false);
         var viewerId = await GetViewerIdAsync(token, cancellationToken).ConfigureAwait(false);
@@ -83,7 +83,7 @@ public class AniListClient : IAniListClient
         var data = await SendAsync<MediaListCollectionData>(
             "MediaListCollection",
             MediaListQuery,
-            new { userId = viewerId },
+            new { userId = viewerId, type = kind.ToAniListType() },
             token,
             cancellationToken).ConfigureAwait(false);
 
@@ -1328,6 +1328,7 @@ public class AniListClient : IAniListClient
             ScoreFormat = ParseScoreFormat(dto.MediaListOptions?.ScoreFormat),
             RowOrder = dto.MediaListOptions?.RowOrder,
             AnimeSectionOrder = dto.MediaListOptions?.AnimeList?.SectionOrder ?? [],
+            MangaSectionOrder = dto.MediaListOptions?.MangaList?.SectionOrder ?? [],
             Options = new UserOptions
             {
                 TitleLanguage = ParseTitleLanguage(dto.Options?.TitleLanguage),
@@ -1629,6 +1630,7 @@ public class AniListClient : IAniListClient
         public string? ScoreFormat { get; set; }
         public string? RowOrder { get; set; }
         public MediaListTypeOptionsDto? AnimeList { get; set; }
+        public MediaListTypeOptionsDto? MangaList { get; set; }
     }
 
     private sealed class MediaListTypeOptionsDto
@@ -1936,8 +1938,8 @@ query Viewer {
 }";
 
     private const string MediaListQuery = @"
-query MediaListCollection($userId: Int) {
-  MediaListCollection(userId: $userId, type: ANIME) {
+query MediaListCollection($userId: Int, $type: MediaType) {
+  MediaListCollection(userId: $userId, type: $type) {
     lists {
       name
       entries {
@@ -1945,6 +1947,7 @@ query MediaListCollection($userId: Int) {
         mediaId
         status
         progress
+        progressVolumes
         score
         repeat
         updatedAt
@@ -1956,8 +1959,11 @@ query MediaListCollection($userId: Int) {
           title { romaji english native }
           coverImage { medium large }
           format
+          type
           status
           episodes
+          chapters
+          volumes
           season
           seasonYear
           averageScore
@@ -2250,6 +2256,7 @@ query ViewerFull {
       scoreFormat
       rowOrder
       animeList { sectionOrder }
+      mangaList { sectionOrder }
     }
     statistics {
       anime {

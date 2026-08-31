@@ -57,7 +57,7 @@ public partial class MediaBrowseLoadedContentView : ContentView
         }
     }
 
-    // Mirrors MyAnimeLoadedContentView.ApplyViewMode; the templates live app-wide in
+    // Mirrors MediaListLoadedContentView.ApplyViewMode; the templates live app-wide in
     // BrowseTemplates.xaml (merged via App.xaml) because the search results list shares them.
     private void ApplyViewMode(ListViewMode mode)
     {

@@ -5,21 +5,21 @@ using Microsoft.Extensions.Logging;
 
 namespace AniSprinkles.Views;
 
-public partial class MyAnimeLoadedContentView : ContentView
+public partial class MediaListLoadedContentView : ContentView
 {
     private readonly DataTemplate? _standardTemplate;
     private readonly DataTemplate? _largeTemplate;
     private readonly DataTemplate? _compactTemplate;
-    private readonly ILogger<MyAnimeLoadedContentView>? _logger;
+    private readonly ILogger<MediaListLoadedContentView>? _logger;
     private readonly int _viewId;
     private bool _longPressFired;
-    private MyAnimePageModel? _subscribedViewModel;
+    private MediaListPageModel? _subscribedViewModel;
 #if ANDROID
     private AndroidX.RecyclerView.Widget.RecyclerView? _attachedRecyclerView;
     private RecyclerTouchListener? _attachedTouchListener;
 #endif
 
-    public MyAnimeLoadedContentView()
+    public MediaListLoadedContentView()
     {
         InitializeComponent();
         _standardTemplate = (DataTemplate)Resources["StandardItemTemplate"];
@@ -30,14 +30,14 @@ public partial class MyAnimeLoadedContentView : ContentView
         try
         {
             _logger = ServiceProviderHelper.GetServiceProvider()
-                .GetService<ILoggerFactory>()?.CreateLogger<MyAnimeLoadedContentView>();
+                .GetService<ILoggerFactory>()?.CreateLogger<MediaListLoadedContentView>();
         }
         catch (InvalidOperationException)
         {
             // DI not ready; logging is optional instrumentation.
         }
 
-        _logger?.LogInformation("LOADEDVIEW MyAnime[#{ViewId:X}] constructed", _viewId);
+        _logger?.LogInformation("LOADEDVIEW MediaList[#{ViewId:X}] constructed", _viewId);
 
         AnimeCollectionView.HandlerChanged += OnCollectionViewHandlerChanged;
     }
@@ -46,11 +46,11 @@ public partial class MyAnimeLoadedContentView : ContentView
     {
         base.OnHandlerChanged();
         _logger?.LogInformation(
-            "LOADEDVIEW MyAnime[#{ViewId:X}] OnHandlerChanged (handler={HasHandler})",
+            "LOADEDVIEW MediaList[#{ViewId:X}] OnHandlerChanged (handler={HasHandler})",
             _viewId, Handler is not null);
 
         // When the view is detached, release the PropertyChanged subscription so the singleton
-        // MyAnimePageModel stops pinning this (now-orphan) view. Also detach the Android touch
+        // MediaListPageModel stops pinning this (now-orphan) view. Also detach the Android touch
         // listener so its GestureDetector references don't outlive the view.
         if (Handler is null)
         {
@@ -79,7 +79,7 @@ public partial class MyAnimeLoadedContentView : ContentView
         }
 
         var entry = (sender as VisualElement)?.BindingContext as MediaListEntry;
-        if (entry is null || BindingContext is not MyAnimePageModel vm)
+        if (entry is null || BindingContext is not MediaListPageModel vm)
         {
             return;
         }
@@ -96,7 +96,7 @@ public partial class MyAnimeLoadedContentView : ContentView
         // lifetime of the singleton VM.
         UnsubscribeFromViewModel();
 
-        if (BindingContext is MyAnimePageModel vm)
+        if (BindingContext is MediaListPageModel vm)
         {
             vm.PropertyChanged += OnViewModelPropertyChanged;
             _subscribedViewModel = vm;
@@ -106,7 +106,7 @@ public partial class MyAnimeLoadedContentView : ContentView
 
     private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(MyAnimePageModel.CurrentViewMode) && sender is MyAnimePageModel vm)
+        if (e.PropertyName == nameof(MediaListPageModel.CurrentViewMode) && sender is MediaListPageModel vm)
         {
             ApplyViewMode(vm.CurrentViewMode);
         }
@@ -129,7 +129,7 @@ public partial class MyAnimeLoadedContentView : ContentView
         if (recyclerView is null)
         {
             _logger?.LogInformation(
-                "LOADEDVIEW MyAnime[#{ViewId:X}] RecyclerView handler change (platformView=null).",
+                "LOADEDVIEW MediaList[#{ViewId:X}] RecyclerView handler change (platformView=null).",
                 _viewId);
             DetachAndroidLongPress();
             return;
@@ -145,7 +145,7 @@ public partial class MyAnimeLoadedContentView : ContentView
         // the current MainActivity hash (see LIFECYCLE logs), we've captured a destroyed activity.
         var ctx = recyclerView.Context;
         _logger?.LogInformation(
-            "LOADEDVIEW MyAnime[#{ViewId:X}] RecyclerView handler attached (contextType={ContextType}, contextHash=#{ContextHash:X})",
+            "LOADEDVIEW MediaList[#{ViewId:X}] RecyclerView handler attached (contextType={ContextType}, contextHash=#{ContextHash:X})",
             _viewId,
             ctx?.GetType().Name ?? "null",
             ctx is null ? 0 : ctx.GetHashCode());
@@ -174,7 +174,7 @@ public partial class MyAnimeLoadedContentView : ContentView
 
     private MediaListEntry? GetEntryAtAdapterPosition(int adapterPosition)
     {
-        if (BindingContext is not MyAnimePageModel vm)
+        if (BindingContext is not MediaListPageModel vm)
         {
             return null;
         }
@@ -239,11 +239,11 @@ public partial class MyAnimeLoadedContentView : ContentView
     private sealed class LongPressGestureListener : Android.Views.GestureDetector.SimpleOnGestureListener
     {
         private readonly AndroidX.RecyclerView.Widget.RecyclerView _recyclerView;
-        private readonly MyAnimeLoadedContentView _owner;
+        private readonly MediaListLoadedContentView _owner;
 
         public LongPressGestureListener(
             AndroidX.RecyclerView.Widget.RecyclerView recyclerView,
-            MyAnimeLoadedContentView owner)
+            MediaListLoadedContentView owner)
         {
             _recyclerView = recyclerView;
             _owner = owner;
@@ -269,7 +269,7 @@ public partial class MyAnimeLoadedContentView : ContentView
             }
 
             var entry = _owner.GetEntryAtAdapterPosition(adapterPosition);
-            if (entry is null || _owner.BindingContext is not MyAnimePageModel vm)
+            if (entry is null || _owner.BindingContext is not MediaListPageModel vm)
             {
                 return;
             }

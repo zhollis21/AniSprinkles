@@ -238,7 +238,7 @@ AniSprinkles driver — pwsh .claude/skills/run-anisprinkles/driver.ps1 <command
                                                       e.g. GetStudio, LoadMediaCharactersPage
                                       -layer http   : GraphQL operationName
                                                       e.g. Studio, Media, MediaCharactersPage
-                                    These are NOT interchangeable — GetMyAnimeListAsync is
+                                    These are NOT interchangeable — GetMediaListAsync is
                                     'MediaListCollection' over the wire, SearchMediaPageAsync
                                     is 'Search'. A prefix that misses fires nothing; the http
                                     handler logs the operation it saw so you can see why.
