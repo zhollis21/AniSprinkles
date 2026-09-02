@@ -5,6 +5,22 @@ namespace AniSprinkles.Services;
 
 public class LoggingHandler : DelegatingHandler
 {
+    /// <summary>
+    /// The caller's own <see cref="CancellationToken"/>, recorded on the request so this handler can
+    /// tell "the app abandoned this" from "this failed".
+    /// <para>
+    /// Neither of the two things a handler can normally read is sufficient. The token passed down
+    /// the pipeline is HttpClient's *linked* token, cancelled both by the caller and by
+    /// <see cref="HttpClient.Timeout"/> — and the exception is no better, because on Android both
+    /// paths tear the socket down and surface as <c>WebException("Socket closed")</c> rather than
+    /// as an <see cref="OperationCanceledException"/>. Only the caller knows which happened, so it
+    /// says so here. <c>AniListRateLimitHandler</c>'s retry template copies Options across for the
+    /// same reason.
+    /// </para>
+    /// </summary>
+    public static readonly HttpRequestOptionsKey<CancellationToken> CallerCancellationToken =
+        new("AniSprinkles.CallerCancellationToken");
+
     private readonly ILogger<LoggingHandler> _logger;
 
     public LoggingHandler(ILogger<LoggingHandler> logger)
@@ -51,13 +67,18 @@ public class LoggingHandler : DelegatingHandler
         {
             stopwatch.Stop();
 
-            // A request the app itself abandoned is not an error worth a Sentry event. It rarely
-            // arrives as an OperationCanceledException: on Android, cancelling closes the socket
-            // under the in-flight read and the failure surfaces as WebException("Socket closed"),
-            // so the token — not the exception type — is what tells the two apart. Without this,
+            // A request the app itself abandoned is not an error worth a Sentry event. Without this,
             // every debounced search the user typed straight through and every page left mid-load
             // reported an HTTP failure.
-            var cancelled = cancellationToken.IsCancellationRequested;
+            //
+            // Read the CALLER's token, not the one passed down the pipeline: that one is HttpClient's
+            // linked token, so HttpClient.Timeout cancels it too, and a 100-second timeout would be
+            // filed away as a cancellation — hiding exactly the failure this handler exists to
+            // report. When no caller recorded a token we log Error, because missing a cancellation
+            // costs one redundant Sentry event while missing a real failure costs the report that
+            // would have explained an outage.
+            var cancelled = request.Options.TryGetValue(CallerCancellationToken, out var callerToken)
+                && callerToken.IsCancellationRequested;
             if (cancelled)
             {
                 _logger.LogInformation("HTTP cancelled {Method} {Uri} after {Elapsed}ms",

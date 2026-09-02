@@ -824,6 +824,11 @@ public class AniListClient : IAniListClient
 
         using var request = new HttpRequestMessage(HttpMethod.Post, GraphQlEndpoint);
 
+        // Hand LoggingHandler the token this call was made with. Inside the pipeline it would
+        // otherwise only see HttpClient's linked token, which HttpClient.Timeout cancels too — and
+        // a timeout logged as a cancellation is a network failure that never reaches Sentry.
+        request.Options.Set(LoggingHandler.CallerCancellationToken, cancellationToken);
+
         if (!string.IsNullOrWhiteSpace(token))
         {
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);

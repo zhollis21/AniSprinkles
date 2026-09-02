@@ -19,8 +19,16 @@ public sealed class QueuedHttpMessageHandler : HttpMessageHandler
 
     public int CallCount => Volatile.Read(ref _callCount);
 
+    /// <summary>
+    /// The last request that actually reached the wire. Handlers above may rebuild the message
+    /// rather than forward it (<c>AniListRateLimitHandler</c> does, so a 429 can be retried), so
+    /// "what the caller constructed" and "what the inner handler received" are not the same object.
+    /// </summary>
+    public HttpRequestMessage? LastRequest { get; private set; }
+
     protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
+        LastRequest = request;
         var index = Interlocked.Increment(ref _callCount) - 1;
         return _responder(index);
     }

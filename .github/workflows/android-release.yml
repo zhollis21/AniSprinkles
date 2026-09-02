@@ -165,7 +165,14 @@ jobs:
           echo "::notice::Checking for ProGuard mapping..."
           find output -type f -name "mapping.txt" | head -5
           echo "::notice::Checking for native debug symbols in obj folder..."
-          find "$SYMBOLS_DIR" -type f -name "*.so" 2>/dev/null | head -20 || echo "No native symbols found"
+          # Guard on the directory rather than trusting `find ... | head || echo`: in a pipeline the
+          # exit status is head's, which is 0 even when find failed, so the fallback never printed
+          # and a bad path looked identical to a directory full of symbols.
+          if [ -d "$SYMBOLS_DIR" ]; then
+            find "$SYMBOLS_DIR" -type f -name "*.so" | head -20
+          else
+            echo "No native symbols found at $SYMBOLS_DIR"
+          fi
 
       - name: Package Native Debug Symbols
         run: |
