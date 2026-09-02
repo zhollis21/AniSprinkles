@@ -1,3 +1,4 @@
+using System.Net;
 using AniSprinkles.Services.Abstractions;
 using AniSprinkles.UnitTests.Fakes;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -45,6 +46,43 @@ public class AniListClientCancellationTests
         // type so the page models' catch (OperationCanceledException) can abandon quietly.
         await Assert.ThrowsAnyAsync<OperationCanceledException>(
             () => client.GetCharacterAsync(1, cancellationToken: cts.Token));
+    }
+
+    [Fact]
+    public async Task SendAsync_WhenAndroidReportsTheCancellationAsAClosedSocket_StaysACancellation()
+    {
+        using var cts = new CancellationTokenSource();
+
+        // Android does not report a cancelled request as a cancellation. AndroidMessageHandler
+        // disconnects the underlying HttpURLConnection, so the read already in flight fails with
+        // Java.Net.SocketException("Socket closed") wrapped in a WebException. Observed in
+        // production off a debounced search the user typed straight through.
+        var handler = new QueuedHttpMessageHandler(
+            _ => Task.FromException<HttpResponseMessage>(
+                new WebException("Socket closed", new IOException("Socket closed"))));
+
+        var client = NewClient(handler);
+        await cts.CancelAsync();
+
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(
+            () => client.GetCharacterAsync(1, cancellationToken: cts.Token));
+    }
+
+    [Fact]
+    public async Task SendAsync_WhenTheSocketDropsWithNoCancellation_SurfacesAsANetworkError()
+    {
+        // Same exception type, nobody cancelled: a genuinely dropped connection, which the caller
+        // must see as a retryable network failure rather than as a raw WebException.
+        var handler = new QueuedHttpMessageHandler(
+            _ => Task.FromException<HttpResponseMessage>(
+                new WebException("Socket closed", new IOException("Socket closed"))));
+
+        var client = NewClient(handler);
+
+        var ex = await Assert.ThrowsAsync<AniListApiException>(
+            () => client.GetCharacterAsync(1, cancellationToken: TestContext.Current.CancellationToken));
+
+        Assert.Equal(ApiErrorKind.Network, ex.Kind);
     }
 
     [Fact]

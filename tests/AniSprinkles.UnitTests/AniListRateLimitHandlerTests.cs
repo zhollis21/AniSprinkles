@@ -45,6 +45,29 @@ public class AniListRateLimitHandlerTests
     }
 
     [Fact]
+    public async Task SendAsync_CarriesRequestOptionsThroughTheRetryTemplate()
+    {
+        var time = new ManualTimeProvider(Start);
+        var inner = new QueuedHttpMessageHandler(_ => Ok());
+        using var invoker = new HttpMessageInvoker(CreateHandler(inner, time));
+
+        using var callerCts = new CancellationTokenSource();
+        var request = Request();
+        request.Options.Set(LoggingHandler.CallerCancellationToken, callerCts.Token);
+
+        await invoker.SendAsync(request, TestContext.Current.CancellationToken);
+
+        // Every send goes out as a rebuilt RequestTemplate, not the caller's message — that is what
+        // lets a 429 be retried, since a request and its content stream can only be sent once. So
+        // anything recorded on Options has to be copied across, or it silently never reaches the
+        // handlers below. LoggingHandler's caller-token lookup is the first thing that depends on it.
+        var sent = inner.LastRequest;
+        Assert.NotNull(sent);
+        Assert.True(sent.Options.TryGetValue(LoggingHandler.CallerCancellationToken, out var carried));
+        Assert.Equal(callerCts.Token, carried);
+    }
+
+    [Fact]
     public async Task SendAsync_SuccessfulResponse_PassesThroughUnchanged()
     {
         var time = new ManualTimeProvider(Start);

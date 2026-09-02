@@ -221,8 +221,14 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-and-test
     timeout-minutes: 30
-    # Screenshots are informational — emulator flakiness should not block the CI gate
-    continue-on-error: true
+    # Deliberately NOT continue-on-error. This job carries the adult-content canary, and a job that
+    # cannot fail cannot gate: with continue-on-error the canary's exit 1 failed the job while the
+    # run still concluded success, so a filter regression would have merged clean.
+    #
+    # Flaky captures do not fail the run either way — every "could not find / timed out capturing"
+    # path already degrades to ::warning:: and carries on. The seven exit 1 sites are all real
+    # gates: canary marker missing from CIAniListClient.cs, no signed APK, install failed, launcher
+    # activity unresolvable, app window never appeared, and the canary itself.
 
     steps:
       - name: Checkout Code

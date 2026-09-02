@@ -183,6 +183,7 @@ public sealed class AniListRateLimitHandler : DelegatingHandler
         private byte[]? _content;
         private List<KeyValuePair<string, IEnumerable<string>>> _requestHeaders = [];
         private List<KeyValuePair<string, IEnumerable<string>>> _contentHeaders = [];
+        private List<KeyValuePair<string, object?>> _options = [];
 
         public static async Task<RequestTemplate> CaptureAsync(
             HttpRequestMessage request, CancellationToken cancellationToken)
@@ -193,6 +194,10 @@ public sealed class AniListRateLimitHandler : DelegatingHandler
                 _requestUri = request.RequestUri,
                 _version = request.Version,
                 _requestHeaders = request.Headers.ToList(),
+                // Every send below goes out as a rebuilt message, including the first one, so an
+                // Option the caller recorded reaches the inner handlers only if it is copied here.
+                // LoggingHandler.CallerCancellationToken is the first thing that depends on it.
+                _options = ((IDictionary<string, object?>)request.Options).ToList(),
             };
 
             if (request.Content is not null)
@@ -211,6 +216,11 @@ public sealed class AniListRateLimitHandler : DelegatingHandler
             foreach (var header in _requestHeaders)
             {
                 request.Headers.TryAddWithoutValidation(header.Key, header.Value);
+            }
+
+            foreach (var option in _options)
+            {
+                ((IDictionary<string, object?>)request.Options)[option.Key] = option.Value;
             }
 
             if (_content is not null)

@@ -23,6 +23,11 @@ jobs:
     name: Build Signed AAB
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    env:
+      # Where AndroidGenerateNativeDebugSymbols writes libxamarin-app.dbg.so, relative to the repo
+      # root. This is the *project* obj dir, not src/obj — the missing "AniSprinkles" segment is
+      # what silently emptied the Play Console symbol upload from v0.10.0 through v0.13.1.
+      SYMBOLS_DIR: src/AniSprinkles/obj/Release/net10.0-android/app_shared_libraries
     outputs:
       version_name: ${{ steps.version.outputs.VERSION_NAME }}
       version_code: ${{ steps.version.outputs.VERSION_CODE }}
@@ -160,18 +165,27 @@ jobs:
           echo "::notice::Checking for ProGuard mapping..."
           find output -type f -name "mapping.txt" | head -5
           echo "::notice::Checking for native debug symbols in obj folder..."
-          find src/obj/Release/net10.0-android/app_shared_libraries -type f -name "*.so" 2>/dev/null | head -20 || echo "No native symbols found"
+          # Guard on the directory rather than trusting `find ... | head || echo`: in a pipeline the
+          # exit status is head's, which is 0 even when find failed, so the fallback never printed
+          # and a bad path looked identical to a directory full of symbols.
+          if [ -d "$SYMBOLS_DIR" ]; then
+            find "$SYMBOLS_DIR" -type f -name "*.so" | head -20
+          else
+            echo "No native symbols found at $SYMBOLS_DIR"
+          fi
 
       - name: Package Native Debug Symbols
         run: |
-          SYMBOLS_DIR="src/obj/Release/net10.0-android/app_shared_libraries"
           if [ -d "$SYMBOLS_DIR" ]; then
             cd "$SYMBOLS_DIR"
             # Zip all ABI folders (arm64-v8a, x86_64, etc.) for Play Console upload
             zip -r ${{ github.workspace }}/output/native-symbols.zip . -i "*.so"
             echo "::notice::Native symbols packaged: $(stat -c%s ${{ github.workspace }}/output/native-symbols.zip 2>/dev/null || stat -f%z ${{ github.workspace }}/output/native-symbols.zip) bytes"
           else
-            echo "::warning::Native symbols directory not found at $SYMBOLS_DIR"
+            # Not a warning: nothing downstream can symbolicate a native crash without these, and a
+            # warning is exactly what let v0.10.0 through v0.13.1 ship with no Play Console symbols.
+            echo "::error::Native symbols directory not found at $SYMBOLS_DIR"
+            exit 1
           fi
 
       - name: Generate AAB Checksum
