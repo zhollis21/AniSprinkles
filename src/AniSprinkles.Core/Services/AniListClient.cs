@@ -824,6 +824,11 @@ public class AniListClient : IAniListClient
 
         using var request = new HttpRequestMessage(HttpMethod.Post, GraphQlEndpoint);
 
+        // Hand LoggingHandler the token this call was made with. Inside the pipeline it would
+        // otherwise only see HttpClient's linked token, which HttpClient.Timeout cancels too — and
+        // a timeout logged as a cancellation is a network failure that never reaches Sentry.
+        request.Options.Set(LoggingHandler.CallerCancellationToken, cancellationToken);
+
         if (!string.IsNullOrWhiteSpace(token))
         {
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
@@ -848,8 +853,20 @@ public class AniListClient : IAniListClient
             response = await _httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
             content = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
         }
-        catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException { InnerException: TimeoutException })
+        catch (Exception ex) when (ex is HttpRequestException
+                                      or System.Net.WebException
+                                      or TaskCanceledException { InnerException: TimeoutException })
         {
+            // Android does not report a cancelled request as a cancellation. AndroidMessageHandler
+            // disconnects the underlying HttpURLConnection, so the read already in flight fails with
+            // Java.Net.SocketException("Socket closed") and surfaces here as a System.Net.WebException.
+            // Nothing downstream recognises that type: it slips past every
+            // catch (OperationCanceledException) in the page models, so a debounced search the user
+            // typed straight through raised a "Search failed" snackbar and a Sentry error for a
+            // request the app itself had abandoned. Ask the token before classifying — if the caller
+            // cancelled, this is that cancellation wearing a socket error's clothes. If nobody
+            // cancelled, the socket really did drop, and Network is the right (retryable) kind.
+            cancellationToken.ThrowIfCancellationRequested();
             throw new AniListApiException(ApiErrorKind.Network, $"Network error during {operationName}.", ex);
         }
 
