@@ -34,6 +34,13 @@ public sealed class DiagnosticsReportCoordinator
     /// believes they filed and did not is worse than a visible failure.</summary>
     public const string FailedMessage = "Couldn't send diagnostics. Check your connection and try again.";
 
+    /// <summary>
+    /// Shown by an entry point that could not even reach this coordinator — i.e. the DI container
+    /// was unavailable. Lives here with the other two so all three read as one voice, even though
+    /// nothing in this class can show it: by definition that path never got this far.
+    /// </summary>
+    public const string UnavailableMessage = "Diagnostics aren't available right now.";
+
     private readonly DiagnosticsLogBuffer _buffer;
     private readonly DiagnosticsSessionLog _sessionLog;
     private readonly IDiagnosticsSink _sink;

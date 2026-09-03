@@ -186,9 +186,19 @@ public partial class ErrorStateView : ContentView
         }
         catch (Exception)
         {
-            // The coordinator tells the user about its own failures and does not throw; reaching here
-            // means DI itself was unavailable. Throwing out of a gesture handler would take the app
-            // down on top of whatever error this view is already displaying.
+            // The coordinator tells the user about its own failures itself and does not throw, so
+            // reaching here means DI was unavailable. Say so rather than swallowing: this view is
+            // already showing the user one thing that went wrong, and a Report button that does
+            // nothing when tapped would be the second. Toast rather than IUserFeedback deliberately —
+            // that seam comes from the container that just failed to resolve.
+            try
+            {
+                await Toast.Make(DiagnosticsReportCoordinator.UnavailableMessage, ToastDuration.Short).Show();
+            }
+            catch
+            {
+                // Best-effort. This is the failure handler; a failing toast has nowhere to report to.
+            }
         }
         finally
         {

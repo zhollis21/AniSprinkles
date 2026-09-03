@@ -1,5 +1,7 @@
 using AniSprinkles.PageModels;
 using AniSprinkles.Utilities;
+using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AniSprinkles.Views;
@@ -34,13 +36,32 @@ public partial class DiagnosticsReportView : ContentView
         }
         catch (Exception)
         {
-            // The coordinator reports its own failures to the user and does not throw; reaching here
-            // means DI itself was unavailable. Nothing useful to say, and throwing out of a Clicked
-            // handler would take the app down.
+            // The coordinator reports its own failures itself and does not throw, so reaching here
+            // means DI was unavailable — which should not happen from a rendered Settings page. Say
+            // so anyway: a feature whose entire promise is "you will know what happened" must not
+            // have a tap that does nothing. Toast rather than IUserFeedback deliberately — the seam
+            // comes from the container that just failed to resolve.
+            await ShowUnavailableToastAsync();
         }
         finally
         {
             ReportButton.IsEnabled = true;
+        }
+    }
+
+    /// <summary>
+    /// Best-effort, and swallowing on purpose: this is the failure handler, so a toast that itself
+    /// fails has nowhere left to report to.
+    /// </summary>
+    private static async Task ShowUnavailableToastAsync()
+    {
+        try
+        {
+            await Toast.Make(DiagnosticsReportCoordinator.UnavailableMessage, ToastDuration.Short).Show();
+        }
+        catch
+        {
+            // Nothing above this to tell.
         }
     }
 }

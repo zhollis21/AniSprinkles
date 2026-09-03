@@ -274,17 +274,6 @@ public class DiagnosticsLogBufferTests
     }
 
     [Fact]
-    public void ClearEmptiesTheRing()
-    {
-        var (buffer, _) = NewBuffer();
-        buffer.CreateLogger("Any").LogInformation("something");
-
-        buffer.Clear();
-
-        Assert.Empty(buffer.Snapshot());
-    }
-
-    [Fact]
     public void AnEmptyBufferSnapshotsToNothingRatherThanThrowing()
     {
         var (buffer, _) = NewBuffer();

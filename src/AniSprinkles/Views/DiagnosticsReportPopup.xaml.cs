@@ -6,9 +6,12 @@ namespace AniSprinkles.Views;
 /// The send-diagnostics sheet (#112): what is about to be collected, and an optional box for what the
 /// user was doing.
 /// <para>
-/// Closes with <c>null</c> for cancel and a (possibly empty) string for send, which is what lets the
-/// caller tell "the user backed out" from "the user sent it without a note". Those are different
-/// answers and only one of them may put anything on the wire.
+/// Closes with a (possibly empty) <see cref="string"/> for send, and with the non-string
+/// <see cref="Cancelled"/> sentinel for cancel — a dismiss by tapping outside surfaces as
+/// <c>null</c>, which the caller treats identically. So the contract is "a string means send";
+/// anything else means don't. That distinction is what lets the caller tell "the user backed out"
+/// from "the user sent it without a note", which are different answers where only one may put
+/// anything on the wire.
 /// </para>
 /// </summary>
 public partial class DiagnosticsReportPopup : Popup<object>

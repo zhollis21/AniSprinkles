@@ -72,16 +72,6 @@ public sealed class DiagnosticsLogBuffer : ILoggerProvider
         }
     }
 
-    /// <summary>Drops everything. Used after a snapshot has been persisted, so the next flush cannot
-    /// write the same lines a second time.</summary>
-    public void Clear()
-    {
-        lock (_lock)
-        {
-            _entries.Clear();
-        }
-    }
-
     public void Dispose()
     {
         // Nothing to release — the ring is plain memory, and callers may still hold loggers.
