@@ -86,9 +86,16 @@ public sealed class DiagnosticsLogBuffer : ILoggerProvider
         var exceptionText = exception is null ? string.Empty : $" | {exception}";
 
         // Same shape as the file log's lines, so a reader moving between the two isn't re-learning a
-        // format. Note the newline normalization is on literal \r and \n rather than
-        // Environment.NewLine: a report built on one platform can carry text produced on another,
-        // and one stray newline breaks the one-record-per-line contract for every reader downstream.
+        // format. Note the message normalization is on literal \r and \n rather than
+        // Environment.NewLine: a report built on one platform can carry text produced on another, and
+        // a message that smuggles a newline through would be indistinguishable from a new record.
+        //
+        // A record therefore starts on its own line, but does not necessarily end on one: an appended
+        // exception keeps its stack trace's line breaks, deliberately and like FileLoggerProvider.
+        // The only thing that reads a report is a person, and a 20-frame trace folded onto one line is
+        // far worse for them than a wrapped one — .NET already indents continuation frames, so a
+        // continuation is still distinguishable from the next record at a glance. Don't tighten this
+        // into "one physical line per record" without a machine consumer that actually needs it.
         var line = $"{timestamp:O} [{level}] {category} ({eventId}) {normalizedMessage}{exceptionText}";
 
         lock (_lock)

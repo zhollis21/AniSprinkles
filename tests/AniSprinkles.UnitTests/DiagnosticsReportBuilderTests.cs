@@ -198,6 +198,17 @@ public class DiagnosticsReportBuilderTests
     }
 
     [Fact]
+    public void ATokenWrappedAcrossALineBreakIsStillRedacted()
+    {
+        // Records are not strictly one line each — an appended stack trace keeps its breaks — so the
+        // redaction must not depend on line structure. It doesn't: the pass runs over the whole
+        // assembled string, and `Bearer\s+…` matches `\s` including a newline.
+        var report = Build(current: ["exception text ending in Bearer\n  eyJwrappedacrossabreak and more"]);
+
+        Assert.DoesNotContain("eyJwrappedacrossabreak", report);
+    }
+
+    [Fact]
     public void RedactionRunsOverTheWholeReportIncludingSectionsAddedLater()
     {
         // A single pass over the finished text rather than per-section, so a section someone adds

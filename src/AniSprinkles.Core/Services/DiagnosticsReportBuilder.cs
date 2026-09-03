@@ -95,9 +95,11 @@ public static class DiagnosticsReportBuilder
             }
         }
 
-        // One pass over the finished text rather than per-line. A bearer token split across a line
-        // boundary is not a shape this log produces — every line is written whole — and a single
-        // pass cannot be skipped for a section someone adds later.
+        // One pass over the finished text rather than per-line, which is what makes line structure
+        // irrelevant to redaction. That matters because records are not strictly one line each —
+        // an appended stack trace keeps its breaks — but the token pattern is `Bearer\s+…`, and `\s`
+        // spans newlines, so a credential wrapped across a break is still matched. Scanning the whole
+        // string also means a section someone adds later cannot quietly skip the pass.
         return SensitiveText.Redact(builder.ToString());
     }
 }

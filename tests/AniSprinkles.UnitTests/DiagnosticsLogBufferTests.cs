@@ -55,6 +55,31 @@ public class DiagnosticsLogBufferTests
         Assert.Contains("boom", line);
     }
 
+    [Fact]
+    public void AnExceptionKeepsItsStackTracesLineBreaks()
+    {
+        // Deliberate, and the counterpart to the message-flattening test below: a record starts on
+        // its own line but need not end on one. The only thing that reads a report is a person, and
+        // a 20-frame trace folded onto a single line is far worse for them. .NET already indents
+        // continuation frames, so this stays distinguishable from the next record.
+        var (buffer, _) = NewBuffer();
+        Exception thrown;
+        try
+        {
+            throw new InvalidOperationException("boom");
+        }
+        catch (Exception ex)
+        {
+            thrown = ex;
+        }
+
+        buffer.CreateLogger("Api").LogError(thrown, "call failed");
+
+        var line = Assert.Single(buffer.Snapshot());
+        Assert.Contains('\n', line);
+        Assert.StartsWith(Start.ToString("O"), line, StringComparison.Ordinal);
+    }
+
     [Theory]
     [InlineData("first\nsecond")]
     [InlineData("first\r\nsecond")]
