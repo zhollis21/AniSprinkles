@@ -50,6 +50,13 @@ public class MainActivity : MauiAppCompatActivity
         Android.Runtime.AndroidEnvironment.UnhandledExceptionRaiser += (sender, args) =>
         {
             Log.Error(nameof(MainActivity), $"Unhandled Android exception: {args.Exception}");
+
+            // Handled = true keeps the process — and so the in-memory ring — alive, so this flush is
+            // belt and braces rather than the only chance. It is here because the app carrying on
+            // after an unhandled exception is precisely the state a user ends up reporting, and it
+            // costs one small write on a path that has already gone wrong (#112).
+            DiagnosticsFlush.Flush();
+
             args.Handled = true;
         };
 
@@ -126,6 +133,12 @@ public class MainActivity : MauiAppCompatActivity
     {
         base.OnResume();
         Log.Info(LifecycleTag, $"LIFECYCLE {ActivityIdentity} OnResume");
+
+        // We are still here, so the flush OnPause wrote was not needed — and keeping it would put
+        // every one of those lines into the next report twice, since the live ring still holds them.
+        // Only clears a file this process wrote: one left by a process that actually died is the
+        // thing worth sending, and must survive this.
+        DiagnosticsFlush.ClearIfOwnedByThisProcess();
 
         // Re-reads the intent as well as draining. If queuing failed earlier — DI not yet wired, so
         // ServiceProviderHelper threw — the extras are still on it, and nothing else would ever look
@@ -210,6 +223,13 @@ public class MainActivity : MauiAppCompatActivity
     protected override void OnPause()
     {
         Log.Info(LifecycleTag, $"LIFECYCLE {ActivityIdentity} OnPause");
+
+        // The last guaranteed callback before Android may kill the process. Everything after this —
+        // an OOM kill, a force-close, a native crash — takes the in-memory diagnostics ring with it,
+        // so this is where it gets written down (#112). Cleared again on resume when the process
+        // turns out to have survived.
+        DiagnosticsFlush.Flush();
+
         base.OnPause();
     }
 

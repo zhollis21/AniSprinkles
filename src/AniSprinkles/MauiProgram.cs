@@ -97,6 +97,34 @@ public static class MauiProgram
         builder.Logging.AddFilter<AndroidLogcatLoggerProvider>("Sentry", LogLevel.Warning);
 #endif
 
+        // The in-memory ring behind Settings' "Report a problem" and the error cards' Report action
+        // (#112). Registered in every build config and kept at Information deliberately: the file
+        // logger above drops Information in Release, which filters out every trace worth sending —
+        // no NAVTRACE, no PageState, no HTTP — and this is the sink that exists to keep them.
+        //
+        // Nothing here touches disk. Entries age out after five minutes or fall off the entry cap,
+        // whichever comes first, so an install that never reports anything pays only the memory.
+        // DiagnosticsSessionLog is what writes a snapshot down, and only when the process is about
+        // to be torn away.
+        const LogLevel diagnosticsMinimumLevel = LogLevel.Information;
+        var diagnosticsLogBuffer = new DiagnosticsLogBuffer(minimumLevel: diagnosticsMinimumLevel);
+        builder.Logging.AddProvider(diagnosticsLogBuffer);
+        builder.Logging.AddFilter<DiagnosticsLogBuffer>(string.Empty, diagnosticsMinimumLevel);
+        builder.Logging.AddFilter<DiagnosticsLogBuffer>("Microsoft", LogLevel.Warning);
+        builder.Logging.AddFilter<DiagnosticsLogBuffer>("System", LogLevel.Warning);
+        builder.Logging.AddFilter<DiagnosticsLogBuffer>("Sentry", LogLevel.Warning);
+
+        // The instance itself, not a factory: the logging pipeline already holds this one, and a
+        // second would collect nothing while looking like it worked.
+        builder.Services.AddSingleton(diagnosticsLogBuffer);
+        builder.Services.AddSingleton(sp => new DiagnosticsSessionLog(
+            Path.Combine(logDirectory, "previous-session.log"),
+            sp.GetRequiredService<ILogger<DiagnosticsSessionLog>>()));
+        builder.Services.AddSingleton<DiagnosticsSessionFlusher>();
+        builder.Services.AddSingleton<IAppEnvironment, MauiAppEnvironment>();
+        builder.Services.AddSingleton<IDiagnosticsSink, SentryDiagnosticsSink>();
+        builder.Services.AddSingleton<DiagnosticsReportCoordinator>();
+
         // MAUI auto-registers IDispatcher via UseMauiApp, but IPreferences and IAppInfo are only
         // exposed as the statics Preferences.Default / AppInfo.Current — DI has no default, so
         // resolving a PageModel that takes either throws InvalidOperationException at startup.

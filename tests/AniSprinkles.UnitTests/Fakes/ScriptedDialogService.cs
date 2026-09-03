@@ -122,6 +122,35 @@ public sealed class ScriptedDialogService : IDialogService
         return Task.FromResult(PromptAnswer);
     }
 
+    /// <summary>
+    /// What the send-diagnostics sheet returns. Left null — "the user cancelled" — so a test has to
+    /// opt in to sending, and no test accidentally ships a report it never meant to.
+    /// </summary>
+    public DiagnosticsReportChoice? DiagnosticsReportAnswer { get; set; }
+
+    /// <summary>The disclosure text the sheet was last shown with, so a test can assert the user was
+    /// actually told what would be collected.</summary>
+    public string? LastDiagnosticsSummary { get; private set; }
+
+    /// <summary>Runs before the sheet returns, letting a test observe state while the flow is
+    /// genuinely mid-disclosure — used to prove nothing is collected until the user consents.</summary>
+    public Func<Task>? BeforeDiagnosticsReportAsync { get; set; }
+
+    public Task<DiagnosticsReportChoice?> ShowDiagnosticsReportAsync(string summary)
+    {
+        LastDiagnosticsSummary = summary;
+        Record(nameof(ShowDiagnosticsReportAsync));
+        return BeforeDiagnosticsReportAsync is null
+            ? Task.FromResult(DiagnosticsReportAnswer)
+            : AwaitThenAnswerAsync();
+
+        async Task<DiagnosticsReportChoice?> AwaitThenAnswerAsync()
+        {
+            await BeforeDiagnosticsReportAsync();
+            return DiagnosticsReportAnswer;
+        }
+    }
+
     private void Record(string call)
     {
         _calls.Add(call);
