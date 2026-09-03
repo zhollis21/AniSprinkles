@@ -347,7 +347,8 @@ public abstract partial class DetailsPageModelBase<TEntity> : ObservableObject
             var isNotFound = apiEx?.Kind == ApiErrorKind.NotFound;
             if (isNotFound)
             {
-                // NotFound is non-retryable and intentionally kept out of Sentry — log at Warning so it stays a breadcrumb.
+                // Still logged at Warning rather than Error — a missing entry is an expected outcome,
+                // not a fault in this app. What changed in #158 is everything after this line.
                 Logger.LogWarning(
                     ex,
                     "NAVTRACE {TracePrefix} not found on AniList in {ElapsedMs}ms ({EntityNoun} {Id})",
@@ -361,12 +362,22 @@ public abstract partial class DetailsPageModelBase<TEntity> : ObservableObject
                     TracePrefix, stopwatch.ElapsedMilliseconds, EntityNoun, id);
             }
 
+            // NotFound is treated exactly like every other failure from here on (#158). It used to
+            // get neither a retry nor a details string, and ErrorStateView gates its Copy/Share/Report
+            // actions on that string — so the error a user is least able to explain was the only one
+            // they could neither retry nor send. The asymmetry decides it: a genuine 404 costs one
+            // user-initiated request when they tap Retry, while a misclassified transient used to
+            // cost them the entire page with no recourse.
+            //
+            // Routing it through Record also means NotFound now reaches Sentry. That is deliberate —
+            // the frequency data is the thing we were missing — and can be fingerprinted down later
+            // if it proves noisy.
             var (title, subtitle) = DescribeError(ex);
             ShowError(
                 title,
                 subtitle,
-                canRetry: !isNotFound,
-                details: isNotFound ? string.Empty : _errorReportService.Record(ex, $"Load {EntityNoun} details"),
+                canRetry: true,
+                details: _errorReportService.Record(ex, $"Load {EntityNoun} details"),
                 iconGlyph: apiEx?.IconGlyph);
         }
         finally

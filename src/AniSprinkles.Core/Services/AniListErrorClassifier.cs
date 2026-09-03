@@ -52,13 +52,30 @@ public static class AniListErrorClassifier
             return ApiErrorKind.Authentication;
         }
 
-        // AniList also surfaces missing ids as a GraphQL-level "Not Found." error in some responses.
-        if (message.Contains("Not Found", StringComparison.OrdinalIgnoreCase))
+        // AniList also surfaces missing ids as a GraphQL-level "Not Found." error in some responses,
+        // where those words are the entire message.
+        //
+        // Matched exactly rather than as a substring (#158). NotFound is the most consequential
+        // classification we make — it is the only kind that is non-retryable AND suppressed from
+        // Sentry — so a substring hit anywhere in server-supplied text turned any transient failure
+        // that happened to contain the words into a permanent, silent dead end. Unknown is the
+        // honest answer for text we don't recognise, and it stays retryable and reported.
+        if (IsNotFoundMessage(message))
         {
             return ApiErrorKind.NotFound;
         }
 
         return ApiErrorKind.Unknown;
+    }
+
+    /// <summary>
+    /// Whether the whole message is AniList's not-found response, allowing for the trailing period
+    /// it usually carries and whatever whitespace survived transport.
+    /// </summary>
+    private static bool IsNotFoundMessage(string message)
+    {
+        var trimmed = message.Trim().TrimEnd('.').Trim();
+        return trimmed.Equals("Not Found", StringComparison.OrdinalIgnoreCase);
     }
 
     private static bool ContainsOutageMarker(string message) =>
