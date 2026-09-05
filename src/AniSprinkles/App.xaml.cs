@@ -13,6 +13,11 @@ public partial class App : Application
 
         AppDomain.CurrentDomain.UnhandledException += (_, e) =>
         {
+            // Flushed first, before anything that could itself fail. This is the one handler that
+            // cannot keep the process alive — there is no Handled flag to set — so whatever the ring
+            // holds reaches disk here or not at all (#112).
+            DiagnosticsFlush.Flush();
+
             if (e.ExceptionObject is Exception ex)
             {
                 ShowCrashAlert(ex);
@@ -21,6 +26,7 @@ public partial class App : Application
 
         TaskScheduler.UnobservedTaskException += (_, e) =>
         {
+            DiagnosticsFlush.Flush();
             e.SetObserved();
             ShowCrashAlert(e.Exception);
         };

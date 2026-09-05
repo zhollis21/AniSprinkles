@@ -501,7 +501,10 @@
                             </VerticalStackLayout>
                         </Border>
 
-                        <!-- 7. ABOUT APP -->
+                        <!-- 7. REPORT A PROBLEM (#112) -->
+                        <views:DiagnosticsReportView Margin="0,8,0,0" />
+
+                        <!-- 8. ABOUT APP -->
                         <Border Style="{StaticResource CardStyle}" Padding="16" Margin="0,8,0,24">
                             <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
                                 <HorizontalStackLayout Spacing="8" HorizontalOptions="Center">

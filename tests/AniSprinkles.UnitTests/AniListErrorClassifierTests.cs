@@ -61,6 +61,44 @@ public class AniListErrorClassifierTests
         Assert.Equal(expected, AniListErrorClassifier.ClassifyGraphQlError(message));
     }
 
+    // ── The NotFound match is exact, not a substring (#158) ──────────
+
+    [Theory]
+    [InlineData("Not Found.")]
+    [InlineData("Not Found")]
+    [InlineData("not found.")]
+    [InlineData("NOT FOUND")]
+    [InlineData("  Not Found.  ")]
+    public void ClassifyGraphQlError_AniListsOwnNotFoundMessage_IsNotFound(string message)
+    {
+        // These are the shapes AniList actually sends for a missing id — the whole message is the
+        // words, optionally with the trailing period and whatever whitespace survived transport.
+        Assert.Equal(ApiErrorKind.NotFound, AniListErrorClassifier.ClassifyGraphQlError(message));
+    }
+
+    [Theory]
+    [InlineData("Internal server error: upstream Not Found while resolving media")]
+    [InlineData("Not Found in cache, falling back")]
+    [InlineData("Studio Not Found for this relation, skipping")]
+    [InlineData("Timed out: Not Found after 3 attempts")]
+    public void ClassifyGraphQlError_NotFoundBuriedInALongerMessage_IsNotTreatedAsNotFound(string message)
+    {
+        // #158. A substring match anywhere in server-supplied text used to be enough, which turned a
+        // transient failure into a permanent, non-retryable, unreportable dead end. Unknown is the
+        // honest answer for text we don't recognise — it stays retryable and it reaches Sentry.
+        Assert.Equal(ApiErrorKind.Unknown, AniListErrorClassifier.ClassifyGraphQlError(message));
+    }
+
+    [Fact]
+    public void ClassifyGraphQlError_AnOutageMessageMentioningNotFound_IsStillAnOutage()
+    {
+        // Ordering guard: the outage check runs first and must keep winning, or a maintenance
+        // notice that happens to contain the words would be misfiled.
+        Assert.Equal(
+            ApiErrorKind.ServiceOutage,
+            AniListErrorClassifier.ClassifyGraphQlError("AniList is under maintenance; Not Found errors are expected"));
+    }
+
     [Theory]
     [InlineData(ApiErrorKind.ServiceOutage, "AniList is Down")]
     [InlineData(ApiErrorKind.Network, "No Internet Connection")]

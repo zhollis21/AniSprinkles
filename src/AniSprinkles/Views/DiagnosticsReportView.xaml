@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:icons="clr-namespace:IconFont.Maui.FluentIcons;assembly=IconFont.Maui.FluentIcons"
+             x:Class="AniSprinkles.Views.DiagnosticsReportView"
+             x:DataType="{x:Null}">
+
+    <!--
+        Placed in both Settings states rather than once, because SettingsLoadedContentView is only
+        attached when IsAuthenticated (SettingsPage.xaml.cs) — and a sign-in failure is exactly when
+        someone needs to report something. Binding-free for the same reason: it must work in the
+        signed-out state, which has no page model behind it.
+    -->
+    <Border Style="{StaticResource CardStyle}" Padding="16">
+        <VerticalStackLayout Spacing="10">
+
+            <HorizontalStackLayout Spacing="8">
+                <Image WidthRequest="20" HeightRequest="20" VerticalOptions="Center">
+                    <Image.Source>
+                        <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Bug24}"
+                                         FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                         Color="{StaticResource RainbowCyan}"
+                                         Size="20" />
+                    </Image.Source>
+                </Image>
+                <Label Text="Something wrong?"
+                       Style="{StaticResource Body1Strong}"
+                       VerticalTextAlignment="Center" />
+            </HorizontalStackLayout>
+
+            <!--
+                Says "what's included", deliberately. The popup lists the categories it collects; it
+                does not show the report itself, which runs to several thousand lines. An earlier
+                draft promised a preview of the payload, which we do not give — and an overclaim in
+                the one sentence whose whole value is being trustworthy is the worst place for one.
+                DiagnosticsDisclosureTests pins this wording so it cannot drift back.
+            -->
+            <Label Text="Send the last few minutes of app activity so the problem can be looked into. You'll see what's included before anything is sent."
+                   Style="{StaticResource Caption1}"
+                   TextColor="{StaticResource Gray400}" />
+
+            <Button x:Name="ReportButton"
+                    Text="Report a problem"
+                    BackgroundColor="Transparent"
+                    TextColor="{StaticResource RainbowCyan}"
+                    BorderColor="{StaticResource RainbowCyan}"
+                    BorderWidth="1"
+                    CornerRadius="8"
+                    HeightRequest="40"
+                    FontSize="15"
+                    FontAttributes="Bold"
+                    HorizontalOptions="Start"
+                    Padding="16,0"
+                    Clicked="OnReportClicked" />
+
+        </VerticalStackLayout>
+    </Border>
+
+</ContentView>

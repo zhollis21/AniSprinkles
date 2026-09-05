@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               xmlns:icons="clr-namespace:IconFont.Maui.FluentIcons;assembly=IconFont.Maui.FluentIcons"
+               x:Class="AniSprinkles.Views.DiagnosticsReportPopup"
+               x:TypeArguments="x:Object"
+               BackgroundColor="Transparent">
+
+    <!--
+        Disclosure and description in one sheet rather than a confirm followed by a prompt. Sentry is
+        silent to the sender, so this is the only moment the user is told what leaves their device —
+        and splitting it in two would put the question before the answer to "what am I agreeing to".
+    -->
+    <Border StrokeShape="RoundRectangle 20"
+            StrokeThickness="0"
+            Padding="24,20,24,20"
+            WidthRequest="340"
+            Background="{StaticResource SecondaryBackground}">
+        <VerticalStackLayout Spacing="14">
+
+            <Image WidthRequest="40" HeightRequest="40" HorizontalOptions="Center">
+                <Image.Source>
+                    <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Bug24}"
+                                     FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                     Color="{StaticResource RainbowCyan}"
+                                     Size="40" />
+                </Image.Source>
+            </Image>
+
+            <Label Text="Send diagnostics"
+                   Style="{StaticResource Title3}"
+                   HorizontalTextAlignment="Center" />
+
+            <!-- Text comes from DiagnosticsReportCoordinator.DisclosureSummary, so the promise and
+                 the code that fulfils it stay in one file and are asserted together. -->
+            <Label x:Name="SummaryLabel"
+                   Style="{StaticResource Caption1}"
+                   TextColor="{StaticResource Gray400}"
+                   HorizontalTextAlignment="Center" />
+
+            <!-- Colours, font and transparent background come from the implicit Editor style. -->
+            <Editor x:Name="DescriptionEditor"
+                    Placeholder="What were you doing when it went wrong? (optional)"
+                    AutoSize="Disabled"
+                    HeightRequest="96"
+                    MaxLength="1000" />
+
+            <Grid ColumnDefinitions="*,10,*">
+                <Button x:Name="CancelButton" Grid.Column="0"
+                        Text="Cancel"
+                        BackgroundColor="Transparent"
+                        TextColor="{StaticResource Gray400}"
+                        BorderColor="{StaticResource Gray500}"
+                        BorderWidth="1"
+                        CornerRadius="8"
+                        HeightRequest="24"
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        Padding="0"
+                        Margin="10,10,10,4"
+                        Clicked="OnCancelClicked" />
+                <Button x:Name="SendButton" Grid.Column="2"
+                        Text="Send"
+                        BackgroundColor="Transparent"
+                        TextColor="{StaticResource RainbowCyan}"
+                        BorderColor="{StaticResource RainbowCyan}"
+                        BorderWidth="1"
+                        CornerRadius="8"
+                        HeightRequest="24"
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        Padding="0"
+                        Margin="10,10,10,4"
+                        Clicked="OnSendClicked" />
+            </Grid>
+
+        </VerticalStackLayout>
+    </Border>
+
+</toolkit:Popup>

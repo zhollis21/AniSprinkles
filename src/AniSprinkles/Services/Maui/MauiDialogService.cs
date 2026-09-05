@@ -89,6 +89,21 @@ public sealed class MauiDialogService(ILogger<MauiDialogService> logger) : IDial
         string? iconGlyph = null)
         => ConfirmPopup.ShowAsync(title, message, confirmText, cancelText, isDestructive, iconGlyph);
 
+    public async Task<DiagnosticsReportChoice?> ShowDiagnosticsReportAsync(string summary)
+    {
+        var result = await ShowAsync(new DiagnosticsReportPopup(summary), TransparentPopupOptions);
+
+        // Null covers both Cancel and a dismiss by tapping outside — neither may send anything. Only
+        // a string means Send was pressed, and an empty one still counts: the note is optional.
+        if (result is not string description)
+        {
+            return null;
+        }
+
+        return new DiagnosticsReportChoice(
+            string.IsNullOrWhiteSpace(description) ? null : description.Trim());
+    }
+
     public async Task<string?> PromptAsync(
         string title,
         string message,

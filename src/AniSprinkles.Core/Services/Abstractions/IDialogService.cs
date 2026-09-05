@@ -24,6 +24,13 @@ public readonly record struct MoveToListChoice
 }
 
 /// <summary>
+/// What the user chose in the send-diagnostics sheet (#112). Reaching this at all means they pressed
+/// Send; <see cref="Description"/> is what they typed, which is optional — requiring text would be
+/// friction for someone who only wants the log attached.
+/// </summary>
+public readonly record struct DiagnosticsReportChoice(string? Description);
+
+/// <summary>
 /// Modal user interaction — confirmations, prompts, and the bottom-sheet pickers. Abstracted for the
 /// same reason as <see cref="INavigationService"/> and <see cref="IUserFeedback"/>: the concrete
 /// popups are XAML-backed <c>CommunityToolkit.Maui</c> types that only exist in the MAUI app project,
@@ -75,6 +82,18 @@ public interface IDialogService
         string cancelText = "Cancel",
         bool isDestructive = false,
         string? iconGlyph = null);
+
+    /// <summary>
+    /// The send-diagnostics sheet (#112): states what <paramref name="summary"/> says is about to be
+    /// collected, and offers an optional box for what the user was doing. Returns <c>null</c> if they
+    /// cancelled or dismissed it.
+    /// <para>
+    /// A choice rather than a nullable string because "cancelled" and "sent without a note" are
+    /// different answers that a <c>string?</c> would flatten into the same <c>null</c> — and one of
+    /// them must not send anything.
+    /// </para>
+    /// </summary>
+    Task<DiagnosticsReportChoice?> ShowDiagnosticsReportAsync(string summary);
 
     /// <summary>
     /// Single-line text prompt. Returns <c>null</c> if the user cancelled.

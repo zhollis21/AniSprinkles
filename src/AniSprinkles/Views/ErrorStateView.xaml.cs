@@ -1,16 +1,23 @@
 using System.Windows.Input;
+using AniSprinkles.Utilities;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AniSprinkles.Views;
 
 public partial class ErrorStateView : ContentView
 {
+    // Both reset the report state, not just ErrorDetails. A NotFound that arrives without an
+    // exception leaves ErrorDetails empty and unchanged, so keying the reset on that alone would
+    // leave the button reading "Report sent" for the next, different failure.
     public static readonly BindableProperty ErrorTitleProperty =
-        BindableProperty.Create(nameof(ErrorTitle), typeof(string), typeof(ErrorStateView), "Something Went Wrong");
+        BindableProperty.Create(nameof(ErrorTitle), typeof(string), typeof(ErrorStateView), "Something Went Wrong",
+            propertyChanged: (b, _, _) => ((ErrorStateView)b).ResetReportState());
 
     public static readonly BindableProperty ErrorSubtitleProperty =
-        BindableProperty.Create(nameof(ErrorSubtitle), typeof(string), typeof(ErrorStateView), "An unexpected error occurred. Try again or check back later.");
+        BindableProperty.Create(nameof(ErrorSubtitle), typeof(string), typeof(ErrorStateView), "An unexpected error occurred. Try again or check back later.",
+            propertyChanged: (b, _, _) => ((ErrorStateView)b).ResetReportState());
 
     public static readonly BindableProperty ErrorIconGlyphProperty =
         BindableProperty.Create(nameof(ErrorIconGlyph), typeof(string), typeof(ErrorStateView), FluentIconsRegular.ErrorCircle24);
@@ -31,6 +38,7 @@ public partial class ErrorStateView : ContentView
                 var view = (ErrorStateView)b;
                 view.IsDetailsExpanded = false;
                 view.OnPropertyChanged(nameof(HasErrorDetails));
+                view.ResetReportState();
             });
 
     public static readonly BindableProperty IsDetailsExpandedProperty =
@@ -137,6 +145,81 @@ public partial class ErrorStateView : ContentView
                 Text = ErrorDetails,
                 Title = "AniSprinkles Error Details"
             });
+        }
+    }
+
+    /// <summary>
+    /// One report per error shown (#112). The coordinator has its own re-entrancy guard, but that
+    /// only stops a double tap while a send is running — without this, three taps a minute apart
+    /// would file three events for one fault. Reset whenever the error changes, so the next failure
+    /// starts reportable again.
+    /// </summary>
+    private bool _reportSent;
+
+    /// <summary>Guards the window between the tap and the send completing, during which the button is
+    /// still on screen and pressable.</summary>
+    private bool _isReporting;
+
+    private async void OnReportTapped(object? sender, EventArgs e)
+    {
+        if (_reportSent || _isReporting)
+        {
+            return;
+        }
+
+        _isReporting = true;
+        try
+        {
+            await AnimatePressAsync(ReportButton);
+
+            var coordinator = ServiceProviderHelper.GetServiceProvider()
+                .GetRequiredService<DiagnosticsReportCoordinator>();
+
+            if (await coordinator.ReportAsync())
+            {
+                // Only on a confirmed send. Marking it sent after a cancel would leave the user
+                // unable to change their mind, and after a failure would strand the report entirely.
+                _reportSent = true;
+                ReportLabel.Text = "Report sent";
+                ReportIconSource.Glyph = FluentIconsRegular.CheckmarkCircle24;
+            }
+        }
+        catch (Exception)
+        {
+            // The coordinator tells the user about its own failures itself and does not throw, so
+            // reaching here means DI was unavailable. Say so rather than swallowing: this view is
+            // already showing the user one thing that went wrong, and a Report button that does
+            // nothing when tapped would be the second. Toast rather than IUserFeedback deliberately —
+            // that seam comes from the container that just failed to resolve.
+            try
+            {
+                await Toast.Make(DiagnosticsReportCoordinator.UnavailableMessage, ToastDuration.Short).Show();
+            }
+            catch
+            {
+                // Best-effort. This is the failure handler; a failing toast has nowhere to report to.
+            }
+        }
+        finally
+        {
+            _isReporting = false;
+        }
+    }
+
+    private void ResetReportState()
+    {
+        _reportSent = false;
+
+        // Null-guarded because the bindable properties can change before InitializeComponent has run
+        // — a page model assigning an error during construction would otherwise NRE here.
+        if (ReportLabel is not null)
+        {
+            ReportLabel.Text = "Report a problem";
+        }
+
+        if (ReportIconSource is not null)
+        {
+            ReportIconSource.Glyph = FluentIconsRegular.Bug24;
         }
     }
 
