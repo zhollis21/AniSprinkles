@@ -55,11 +55,17 @@ public static class AniListErrorClassifier
         // AniList also surfaces missing ids as a GraphQL-level "Not Found." error in some responses,
         // where those words are the entire message.
         //
-        // Matched exactly rather than as a substring (#158). NotFound is the most consequential
-        // classification we make — it is the only kind that is non-retryable AND suppressed from
-        // Sentry — so a substring hit anywhere in server-supplied text turned any transient failure
-        // that happened to contain the words into a permanent, silent dead end. Unknown is the
-        // honest answer for text we don't recognise, and it stays retryable and reported.
+        // Matched exactly rather than as a substring (#158). What forced that was the state NotFound
+        // used to be in: it was then the only kind that was both non-retryable and suppressed from
+        // Sentry, so a substring hit anywhere in server-supplied text turned any transient failure
+        // containing those two words into a permanent, silent dead end. #158 removed both of those
+        // properties in the same change — NotFound now retries and reports like everything else — so
+        // the stakes here are lower than they were.
+        //
+        // The exact match still stands on its own terms, though: calling arbitrary server text a
+        // missing id is simply wrong, it suppresses the automatic retry in AniListClient.SendAsync,
+        // and it shows the user "this may have been removed from AniList" about something that was
+        // never missing. Unknown is the honest answer for text we don't recognise.
         if (IsNotFoundMessage(message))
         {
             return ApiErrorKind.NotFound;
