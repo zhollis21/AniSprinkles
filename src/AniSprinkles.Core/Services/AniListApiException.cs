@@ -13,11 +13,17 @@ public enum ApiErrorKind
     RateLimited,
 
     /// <summary>
-    /// AniList returned 404 (or a "Not Found" GraphQL error) for a media/character/staff id we
+    /// AniList returned 404, or a GraphQL error whose entire message is "Not Found", for an id we
     /// requested — the id did not resolve. This can be an AniList-side dangling reference (an id from
     /// a relation, recommendation, or list entry that no longer exists) or a type-constrained lookup
-    /// (e.g. a non-anime id passed to <c>Media(id:, type: ANIME)</c>). Either way the result won't
-    /// change on a retry, so it is treated as non-retryable and is not reported to Sentry.
+    /// (e.g. a non-anime id passed to <c>Media(id:, type: ANIME)</c>).
+    /// <para>
+    /// Usually the result won't change on a retry — but it is still offered, and still reported
+    /// (#158). We could not previously tell a genuine 404 from a transient failure misfiled as one,
+    /// because this was the single kind that produced neither a Sentry event nor a shareable report,
+    /// so there was nothing to tell them apart with. See <see cref="AniListErrorClassifier"/> for the
+    /// matching rule that stopped arbitrary server text landing here.
+    /// </para>
     /// </summary>
     NotFound,
 }

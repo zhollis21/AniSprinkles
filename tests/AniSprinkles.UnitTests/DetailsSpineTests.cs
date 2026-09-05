@@ -98,17 +98,53 @@ public abstract class DetailsSpineTests<TEntity>
     }
 
     [Fact]
-    public async Task LoadAsync_WhenTheEntityIsNotFound_HidesRetryAndKeepsErrorDetailsEmpty()
+    public async Task LoadAsync_WhenTheEntityIsNotFound_StillOffersRetryAndAReport()
     {
+        // #158. This used to assert the opposite, and the opposite was the bug: a NotFound produced
+        // no retry and an empty details string, and ErrorStateView gates its Copy/Share/Report
+        // actions on that string being non-empty — so the one error a user can least explain was the
+        // one they could neither retry nor report. A genuine 404 now costs one wasted request if
+        // they tap Retry; a misclassified transient used to cost them the whole page.
         var harness = CreateHarness();
         Throws(harness, new AniListApiException(ApiErrorKind.NotFound, "gone"));
 
         await LoadAsync(harness, 42);
 
         Assert.Equal(PageState.Error, harness.Model.CurrentState);
-        Assert.False(harness.Model.CanRetry);
-        // NotFound is deliberately kept out of Sentry, so there is no report id to show.
-        Assert.Equal(string.Empty, harness.Model.ErrorDetails);
+        Assert.True(harness.Model.CanRetry);
+        Assert.Contains(ErrorContext, harness.Model.ErrorDetails, StringComparison.Ordinal);
+        Assert.Contains("gone", harness.Model.ErrorDetails, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task LoadAsync_WhenTheEntityIsNotFound_KeepsTheNotFoundWordingAndIcon()
+    {
+        // Retry and reportability are what changed; what the user reads must not. "Entry Unavailable"
+        // is still the right thing to say about a removed or merged AniList entry.
+        var harness = CreateHarness();
+        Throws(harness, new AniListApiException(ApiErrorKind.NotFound, "gone"));
+
+        await LoadAsync(harness, 42);
+
+        Assert.Equal("Entry Unavailable", harness.Model.ErrorTitle);
+        Assert.Equal(Glyphs.Regular.DismissCircle24, harness.Model.ErrorIconGlyph);
+    }
+
+    [Fact]
+    public async Task LoadAsync_WhenTheEntityIsNotFound_RetryActuallyRefetches()
+    {
+        // CanRetry is only half of it — the button has to reach the fetch. Guards against the retry
+        // appearing but doing nothing, which would be worse than not offering it.
+        var harness = CreateHarness();
+        Throws(harness, new AniListApiException(ApiErrorKind.NotFound, "gone"));
+        await LoadAsync(harness, 42);
+        var afterFirstLoad = FetchCount(harness);
+
+        Returns(harness, NewEntity(42));
+        await harness.Model.RetryLoadCommand.ExecuteAsync(null);
+
+        Assert.True(FetchCount(harness) > afterFirstLoad);
+        Assert.Equal(PageState.Content, harness.Model.CurrentState);
     }
 
     [Fact]

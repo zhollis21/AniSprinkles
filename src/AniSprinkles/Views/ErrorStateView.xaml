@@ -119,6 +119,35 @@
                     </VerticalStackLayout>
                 </Border>
             </VerticalStackLayout>
+
+            <!--
+                Report (#112/#158). Deliberately outside the HasErrorDetails block above, unlike Copy
+                and Share: those need a details string to act on, this one does not. Gating it the
+                same way is what left the NotFound card — the error a user can least explain — with
+                nothing to press at all, and it does the same for any error raised without an
+                exception behind it.
+            -->
+            <Border x:Name="ReportButton" StrokeShape="RoundRectangle 8" StrokeThickness="1"
+                    Stroke="{StaticResource Gray600}" Background="Transparent"
+                    Padding="10,6" Margin="0,12,0,0" HorizontalOptions="Center">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnReportTapped" />
+                </Border.GestureRecognizers>
+                <HorizontalStackLayout Spacing="6">
+                    <Image WidthRequest="14" HeightRequest="14" VerticalOptions="Center">
+                        <Image.Source>
+                            <FontImageSource x:Name="ReportIconSource"
+                                             Glyph="{x:Static icons:FluentIconsRegular.Bug24}"
+                                             FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                             Color="{StaticResource Gray400}" Size="14" />
+                        </Image.Source>
+                    </Image>
+                    <Label x:Name="ReportLabel" Text="Report a problem"
+                           Style="{StaticResource Caption1}"
+                           TextColor="{StaticResource Gray400}"
+                           VerticalTextAlignment="Center" />
+                </HorizontalStackLayout>
+            </Border>
         </VerticalStackLayout>
     </Border>
 </ContentView>

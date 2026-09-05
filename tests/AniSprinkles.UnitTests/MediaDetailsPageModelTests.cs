@@ -70,10 +70,12 @@ public class MediaDetailsPageModelTests
     }
 
     [Fact]
-    public async Task LoadAsync_WhenTheMediaIsNotFound_HidesRetry()
+    public async Task LoadAsync_WhenTheMediaIsNotFound_KeepsTheWordingButStillOffersRetry()
     {
-        // NotFound is AniList telling us the id does not resolve — a dangling relation or a
-        // type-constrained lookup. Retrying cannot change that.
+        // NotFound is usually AniList telling us the id does not resolve — a dangling relation or a
+        // type-constrained lookup — and retrying usually cannot change that. It is offered anyway
+        // (#158), because we could not previously distinguish that case from a transient failure
+        // misfiled as one, and the user paid for the ambiguity with a dead page.
         var harness = new Harness();
         harness.Throws(new AniListApiException(ApiErrorKind.NotFound, "no such media"));
 
@@ -81,7 +83,8 @@ public class MediaDetailsPageModelTests
 
         Assert.Equal(PageState.Error, harness.Model.CurrentState);
         Assert.Equal("Entry Unavailable", harness.Model.ErrorTitle);
-        Assert.False(harness.Model.CanRetry);
+        Assert.True(harness.Model.CanRetry);
+        Assert.NotEqual(string.Empty, harness.Model.ErrorDetails);
     }
 
     [Fact]
