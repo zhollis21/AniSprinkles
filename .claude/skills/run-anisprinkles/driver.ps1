@@ -240,6 +240,12 @@ AniSprinkles driver — pwsh .claude/skills/run-anisprinkles/driver.ps1 <command
                             -var <NAME> reads any other environment variable instead.
                             Does nothing on a -p:CiBuild=true build, where sign-in is stubbed.
 
+  dump-token                Read the signed-in token back OUT of a real-auth build (#160).
+                            Sign in on the emulator normally, then run this — the app has
+                            already done the OAuth flow that is awkward to do by hand.
+                            Writes to tmp/dev-token.txt (gitignored) and prints only the
+                            length; the on-device copy is deleted immediately after.
+
   fault <op> <kind> [scope] Arm fault injection on the RUNNING app — no rebuild (#125)
                             op    : 'any', or a prefix whose meaning depends on -layer:
                                       -layer client : IAniListClient method name
@@ -626,6 +632,60 @@ function Cmd-SeedToken {
     Say "token seeded from $varName ($($token.Length) chars) — pull to refresh or relaunch to pick it up"
 }
 
+# Reads the signed-in token back off the device, so the app's own OAuth flow can be the way you
+# obtain a token for the fixture tooling — sign in on the emulator normally, then pull it.
+#
+# AniList's implicit grant returns the token in the fragment of a redirect to anisprinkles://auth,
+# which a desktop browser cannot follow, so getting one by hand is awkward. The app already does
+# that flow correctly; this just hands the result over.
+#
+# The value is never printed. It goes to a gitignored file and only its length is reported, so a
+# live credential does not end up in terminal scrollback or in any transcript of this session.
+function Cmd-DumpToken {
+    $component = "$Package/.TokenReceiver"
+    $action    = 'com.RainbowSprinkles.TOKEN'
+    $remote    = "files/dev-token.txt"
+    $localDir  = Join-Path $RepoRoot 'tmp'
+    $local     = Join-Path $localDir 'dev-token.txt'
+
+    # Clear any stale copy first, or a failed dump silently returns the previous run's token.
+    Adb shell run-as $Package rm -f $remote *> $null
+    Adb shell am broadcast -n $component -a $action --ez dump true *> $null
+
+    # The receiver writes asynchronously, so poll rather than assume it has landed.
+    $content = $null
+    for ($i = 0; $i -lt 20; $i++) {
+        Start-Sleep -Milliseconds 250
+        # AdbOut already prepends exec-out, which runs the command on the device directly — adding
+        # 'shell' here nests it wrongly and returns a truncated, mangled result rather than failing.
+        # (Cmd-AppLog is the reference form.) exec-out is also required rather than incidental: plain
+        # adb shell rewrites LF to CRLF, which would corrupt the token on its way out.
+        $content = (AdbOut run-as $Package cat $remote) -join ''
+        if (-not [string]::IsNullOrWhiteSpace($content)) { break }
+    }
+
+    # Always remove the on-device copy, whatever happened — it holds a live credential.
+    Adb shell run-as $Package rm -f $remote *> $null
+
+    if ([string]::IsNullOrWhiteSpace($content)) {
+        throw 'No token was written. Is this a CI-stub build, or is the app not running? Check driver.ps1 logcat.'
+    }
+
+    $content = $content.Trim()
+    if ($content.StartsWith('<')) {
+        throw "The app has no usable token to dump (state: $content). Sign in on the emulator first."
+    }
+
+    New-Item -ItemType Directory -Force $localDir | Out-Null
+    Set-Content -Path $local -Value $content -NoNewline -Encoding ascii
+
+    Say "token written to tmp/dev-token.txt ($($content.Length) chars) — gitignored, not printed"
+    Write-Host ''
+    Write-Host '  Load it into this shell:'
+    Write-Host '      $env:ANILIST_RECORDER_TOKEN = (Get-Content tmp/dev-token.txt -Raw).Trim()'
+    Write-Host ''
+}
+
 function Cmd-Notify {
     param([string[]]$Argv)
 
@@ -738,6 +798,7 @@ switch ($cmd) {
     'applog'     { Cmd-AppLog }
     'fault'      { Cmd-Fault $a }
     'seed-token' { Cmd-SeedToken $a }
+    'dump-token' { Cmd-DumpToken }
     'notify'     { Cmd-Notify $a }
     'worker-run' { Cmd-WorkerRun $a }
     'deeplink'   { Cmd-DeepLink $a }
