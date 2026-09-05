@@ -48,6 +48,84 @@ public class AniListClientTests
         Assert.Equal(77, request.IntVariable("id"));
     }
 
+    // ── #160: AniList rejects requests that carry neither a Referer nor a token ──
+
+    [Fact]
+    public async Task EveryRequest_CarriesTheAniListReferer()
+    {
+        // AniList answers a request with no Referer and no bearer token with HTTP 403 and a body
+        // claiming the API is "temporarily disabled" — which AniListErrorClassifier then reads as a
+        // service outage. Confirmed on device 2026-09-05: the whole app is dead signed out, and
+        // details-page sorts fail signed in, both behind a false "AniList is Down" banner (#160).
+        var harness = new Harness(SomeMedia);
+
+        await harness.Client.GetMediaAsync(1, TestContext.Current.CancellationToken);
+
+        Assert.Equal("https://anilist.co/", harness.Handler.Last.Referrer?.ToString());
+    }
+
+    [Fact]
+    public async Task ASignedOutRequest_StillCarriesTheReferer()
+    {
+        // The case that matters most: signed out there is no token to fall back on, so the Referer
+        // is the only thing keeping Discover, Search and the details pages reachable at all.
+        var harness = new Harness(SomeMedia);
+        harness.SignOut();
+
+        await harness.Client.GetMediaAsync(1, TestContext.Current.CancellationToken);
+
+        Assert.Null(harness.Handler.Last.BearerToken);
+        Assert.Equal("https://anilist.co/", harness.Handler.Last.Referrer?.ToString());
+    }
+
+    [Theory]
+    [InlineData("MediaCharactersPage")]
+    [InlineData("MediaStaffPage")]
+    [InlineData("StaffCharactersPage")]
+    public async Task PublicPagingOperations_SendTheTokenWhenThereIsOne(string operationName)
+    {
+        // These three used to pass token: null on the grounds that the query is public. It is, but
+        // withholding a token we already hold bought nothing and cost the only other thing that
+        // satisfies AniList's filter. Signed in, they should look like every other request.
+        var harness = new Harness("""
+            {"Media":{"characters":{"pageInfo":{"currentPage":1,"hasNextPage":false},"edges":[]},
+             "staff":{"pageInfo":{"currentPage":1,"hasNextPage":false},"edges":[]}},
+             "Staff":{"characters":{"pageInfo":{"currentPage":1,"hasNextPage":false},"edges":[]}}}
+            """);
+
+        var ct = TestContext.Current.CancellationToken;
+        switch (operationName)
+        {
+            case "MediaCharactersPage":
+                await harness.Client.LoadMediaCharactersPageAsync(1, 1, "ROLE", cancellationToken: ct);
+                break;
+            case "MediaStaffPage":
+                await harness.Client.LoadMediaStaffPageAsync(1, 1, "RELEVANCE", cancellationToken: ct);
+                break;
+            default:
+                await harness.Client.LoadStaffCharactersPageAsync(1, 1, "FAVOURITES_DESC", cancellationToken: ct);
+                break;
+        }
+
+        var request = harness.Handler.Last;
+        Assert.Equal(operationName, request.OperationName);
+        Assert.Equal("token-abc", request.BearerToken);
+    }
+
+    [Fact]
+    public async Task TheAiringSchedule_SendsTheTokenWhenThereIsOne()
+    {
+        // The airing worker can run with no token at all after a reboot (#149), which is why the
+        // Referer above is the load-bearing half of the fix — but when a token exists, send it.
+        var harness = new Harness("""
+            {"Page":{"pageInfo":{"currentPage":1,"hasNextPage":false},"airingSchedules":[]}}
+            """);
+
+        await harness.Client.GetAiringScheduleAsync([1], 0, 1, TestContext.Current.CancellationToken);
+
+        Assert.Equal("token-abc", harness.Handler.Last.BearerToken);
+    }
+
     [Fact]
     public async Task AnOperationWithNoVariables_SendsNone()
     {

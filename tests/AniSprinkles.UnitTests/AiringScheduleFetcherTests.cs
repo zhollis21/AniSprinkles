@@ -64,6 +64,20 @@ public class AiringScheduleFetcherTests
     }
 
     [Fact]
+    public void TheAniListReferer_IsSent()
+    {
+        // With no token by design (see below), the Referer is the *only* thing that gets this
+        // request past AniList, which 403s anything carrying neither — behind a body claiming the
+        // API is temporarily disabled (#160). This fetcher deliberately bypasses AniListClient, so
+        // it does not inherit the header set there and has to send its own.
+        var handler = new ScriptedGraphQlHandler(_ => ScriptedGraphQlHandler.Data(Page(false)));
+
+        Fetch(handler);
+
+        Assert.Equal("https://anilist.co/", handler.Last.Referrer?.ToString());
+    }
+
+    [Fact]
     public void NoAuthorizationHeader_IsSent()
     {
         // The AiringSchedule endpoint is public. The worker has no access to the token store, and
