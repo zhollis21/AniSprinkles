@@ -232,6 +232,14 @@ AniSprinkles driver — pwsh .claude/skills/run-anisprinkles/driver.ps1 <command
   logcat [lines]            App-PID logcat tail (default 200)
   applog                    Pull the on-device rotating file log
 
+  seed-token [test|real]    Sign a REAL-AUTH Debug build in over adb, no OAuth tapping (#160)
+                            test  : ANILIST_RECORDER_TOKEN (CI test account; same var the
+                                    fixture recorder uses) — the default
+                            real  : ANISPRINKLES_DEV_TOKEN (your own account)
+                            clear : sign out
+                            -var <NAME> reads any other environment variable instead.
+                            Does nothing on a -p:CiBuild=true build, where sign-in is stubbed.
+
   fault <op> <kind> [scope] Arm fault injection on the RUNNING app — no rebuild (#125)
                             op    : 'any', or a prefix whose meaning depends on -layer:
                                       -layer client : IAniListClient method name
@@ -559,6 +567,65 @@ function Cmd-Fault {
 #
 # CIAiringNotificationService stays a no-op, so this changes nothing about the screenshot job: it
 # bypasses the service entirely and nothing broadcasts here during CI.
+# Signs a real-auth Debug build in over adb, so a device pass against real AniList data does not
+# start with tapping through WebAuthenticator (#160 was found needing exactly that). The CI stubs
+# are the only scriptable way past sign-in, which is what made real-auth passes manual until now.
+#
+# The token is read from the environment and never echoed: it is passed straight to adb and only
+# its length is reported back. Note that it does travel on an adb command line, where `am` may
+# echo it into logcat — fine for a throwaway account on a local emulator, not a pattern to reuse.
+function Cmd-SeedToken {
+    param([string[]]$Argv)
+
+    # 'seed-token' with no arguments is the common case, and the dispatch above builds $a as
+    # @($Args) — which for no arguments is an array holding a single $null, not an empty array. So
+    # Count is 1 and $Argv[0] is null, and the first .ToLowerInvariant() below would throw. Strip
+    # the nulls rather than testing for them at each use.
+    $Argv = @($Argv | Where-Object { $null -ne $_ })
+
+    $component = "$Package/.TokenReceiver"
+    $action    = 'com.RainbowSprinkles.TOKEN'
+
+    if ($Argv.Count -ge 1 -and $Argv[0].ToLowerInvariant() -eq 'clear') {
+        Adb shell am broadcast -n $component -a $action --ez clear true *> $null
+        Say 'token cleared — the app is now signed out'
+        return
+    }
+
+    # Which account to sign in as. 'test' reuses the variable the fixture recorder already needs
+    # (tools/record-anilist-fixtures.cs), so the common case manages one credential rather than two.
+    $which = if ($Argv.Count -ge 1) { $Argv[0].ToLowerInvariant() } else { 'test' }
+    $varName = $null
+    for ($i = 0; $i -lt $Argv.Count; $i++) {
+        if ($Argv[$i] -match '^-{1,2}var$') { $i++; $varName = $Argv[$i] }
+    }
+
+    if (-not $varName) {
+        $varName = switch ($which) {
+            'test'  { 'ANILIST_RECORDER_TOKEN' }
+            'real'  { 'ANISPRINKLES_DEV_TOKEN' }
+            default { throw "seed-token takes 'test', 'real', 'clear', or -var <NAME> — got '$which'" }
+        }
+    }
+
+    $token = [Environment]::GetEnvironmentVariable($varName)
+    if ([string]::IsNullOrWhiteSpace($token)) {
+        # Guidance to the host, then a one-line throw: PowerShell renders a multi-line throw as one
+        # unreadable blob, and every other error in this script is a single sentence.
+        Write-Host ''
+        Write-Host "  test  -> ANILIST_RECORDER_TOKEN   the CI test account, shared with tools/record-anilist-fixtures.cs"
+        Write-Host "  real  -> ANISPRINKLES_DEV_TOKEN   your own account, for reproducing real-world data bugs"
+        Write-Host ''
+        Write-Host "  Set it in the shell, not as an argument, so it stays out of shell history:"
+        Write-Host "      `$env:$varName = `"<access-token>`""
+        Write-Host ''
+        throw "$varName is not set, so there is no token to seed."
+    }
+
+    Adb shell am broadcast -n $component -a $action --es token "$token" *> $null
+    Say "token seeded from $varName ($($token.Length) chars) — pull to refresh or relaunch to pick it up"
+}
+
 function Cmd-Notify {
     param([string[]]$Argv)
 
@@ -670,6 +737,7 @@ switch ($cmd) {
     'logcat'     { if ($a[0]) { Cmd-Logcat ([int]$a[0]) } else { Cmd-Logcat } }
     'applog'     { Cmd-AppLog }
     'fault'      { Cmd-Fault $a }
+    'seed-token' { Cmd-SeedToken $a }
     'notify'     { Cmd-Notify $a }
     'worker-run' { Cmd-WorkerRun $a }
     'deeplink'   { Cmd-DeepLink $a }
