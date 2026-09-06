@@ -1,0 +1,582 @@
+﻿{
+  "operationName": "Search",
+  "variables": {
+    "search": "ka",
+    "page": 3,
+    "perPage": 20
+  },
+  "queryFingerprint": "2c2dc0b2b28d",
+  "recordedAt": "2026-09-06T05:17:53.7940605+00:00",
+  "response": {
+    "data": {
+      "Page": {
+        "pageInfo": {
+          "hasNextPage": true,
+          "currentPage": 3
+        },
+        "media": [
+          {
+            "id": 51399,
+            "title": {
+              "romaji": "Binbou Hime desu ga, Nani ka?",
+              "english": null,
+              "native": "\u8CA7\u4E4F\u59EB\u3067\u3059\u304C\u3001\u4F55\u304B\uFF1F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/21399.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/21399.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 25,
+            "volumes": 4,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 30,
+            "trending": 0,
+            "startDate": {
+              "year": 2010,
+              "month": 1,
+              "day": 13
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 122234,
+            "title": {
+              "romaji": "Dare ka ii Hito imasen ka?",
+              "english": null,
+              "native": "\u8AB0\u304B\u3044\u3044\u4EBA\u3044\u307E\u305B\u3093\u304B\uFF1F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx122234-75OKMDGoUc5G.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx122234-75OKMDGoUc5G.png"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": 3,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 35,
+            "trending": 0,
+            "startDate": {
+              "year": 2020,
+              "month": 4,
+              "day": 15
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 117436,
+            "title": {
+              "romaji": "Konna Ore wo Suki to ka Maji ka",
+              "english": null,
+              "native": "\u3053\u3093\u306A\u30AA\u30EC\u3092\u30B9\u30AD\u3068\u304B\u30DE\u30B7\u3099\u304B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx117436-FZ8hAMFsDPcz.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx117436-FZ8hAMFsDPcz.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 5,
+            "volumes": 1,
+            "averageScore": 60,
+            "favourites": 8,
+            "popularity": 853,
+            "trending": 0,
+            "startDate": {
+              "year": 2018,
+              "month": 7,
+              "day": 6
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 201895,
+            "title": {
+              "romaji": "Zero-ka Hyaku-ka no Igarashi-kun",
+              "english": null,
+              "native": "\u30BC\u30ED\u304B\u30D2\u30E3\u30AF\u304B\u306E\u4E94\u5341\u5D50\u304F\u3093"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx201895-vxCjFLXL4YEN.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx201895-vxCjFLXL4YEN.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 1,
+            "popularity": 32,
+            "trending": 0,
+            "startDate": {
+              "year": 2025,
+              "month": 7,
+              "day": 23
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 179827,
+            "title": {
+              "romaji": "Jitensha Show-ka Nande Show ka?",
+              "english": null,
+              "native": "\u81EA\u8EE2\u8ECA\u30B7\u30E7\u30FC\u6B4C\u306A\u3093\u3067\u30B7\u30E7\u30FC\u304B\uFF1F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b179827-Wd4nBsISArLD.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b179827-Wd4nBsISArLD.png"
+            },
+            "format": "MUSIC",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 36,
+            "trending": 0,
+            "startDate": {
+              "year": 2003,
+              "month": 12,
+              "day": 21
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 166762,
+            "title": {
+              "romaji": "Ikitsuku Saki wa Yuusha ka Maou ka",
+              "english": null,
+              "native": "\u884C\u304D\u7740\u304F\u5148\u306F\u52C7\u8005\u304B\u9B54\u738B\u304B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx166762-gd7IFt74xPCj.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx166762-gd7IFt74xPCj.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 62,
+            "favourites": 10,
+            "popularity": 1784,
+            "trending": 0,
+            "startDate": {
+              "year": 2022,
+              "month": 12,
+              "day": 12
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 160636,
+            "title": {
+              "romaji": "Kyou mo Doko ka no Dare ka no Ie de",
+              "english": null,
+              "native": "\u4ECA\u65E5\u3082\u3069\u3053\u304B\u306E\u3060\u308C\u304B\u306E\u5BB6\u3067"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx160636-Jr0UHV3yonT1.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx160636-Jr0UHV3yonT1.jpg"
+            },
+            "format": "ONE_SHOT",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 1,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 15,
+            "trending": 0,
+            "startDate": {
+              "year": 2023,
+              "month": 1,
+              "day": 12
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 186354,
+            "title": {
+              "romaji": "Ai da to ka Fukushuu da to ka",
+              "english": null,
+              "native": "\u611B\u3060\u3068\u304B\u5FA9\u8B90\u3060\u3068\u304B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx186354-sBXLxNLPuaCZ.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx186354-sBXLxNLPuaCZ.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 20,
+            "volumes": 4,
+            "averageScore": null,
+            "favourites": 2,
+            "popularity": 172,
+            "trending": 0,
+            "startDate": {
+              "year": 2024,
+              "month": 9,
+              "day": 18
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 105638,
+            "title": {
+              "romaji": "Datenhime: Iku ga Shinu ka Koisuru ka",
+              "english": "Fallen Princess from Heaven -Find Pleasure, Die, or Fall in Love-",
+              "native": "\u5815\u5929\u59EB\uFF5E\u30A4\u30AF\u304B\u6B7B\u306C\u304B\u604B\u3059\u308B\u304B\uFF5E"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx105638-zor8DaJdbw41.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx105638-zor8DaJdbw41.png"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 7,
+            "volumes": 1,
+            "averageScore": null,
+            "favourites": 3,
+            "popularity": 99,
+            "trending": 0,
+            "startDate": {
+              "year": 2013,
+              "month": 12,
+              "day": 5
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 95977,
+            "title": {
+              "romaji": "Oni ga Deru ka Ja ga Deru ka",
+              "english": null,
+              "native": "\u9B3C\u304C\u51FA\u308B\u304B\u86C7\u304C\u51FA\u308B\u304B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx95977-51KVLrdDJfKO.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx95977-51KVLrdDJfKO.png"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 33,
+            "volumes": 5,
+            "averageScore": 56,
+            "favourites": 7,
+            "popularity": 1445,
+            "trending": 0,
+            "startDate": {
+              "year": 2014,
+              "month": 6,
+              "day": 24
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 98057,
+            "title": {
+              "romaji": "Dokoka de Dareka mo Tabeteiru",
+              "english": null,
+              "native": "\u3069\u3053\u304B\u3067\u3060\u308C\u304B\u3082\u98DF\u3079\u3066\u3044\u308B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx98057-yeP2mvH03NL2.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx98057-yeP2mvH03NL2.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 21,
+            "volumes": 1,
+            "averageScore": null,
+            "favourites": 1,
+            "popularity": 85,
+            "trending": 0,
+            "startDate": {
+              "year": 2016,
+              "month": 10,
+              "day": 6
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 176685,
+            "title": {
+              "romaji": "Dokuzetsu Momohei Tsuyoi ka Yowai ka!?",
+              "english": null,
+              "native": "\u6BD2\u820C\u6843\u5E73\u5F37\u3044\u304B\u5F31\u3044\u304B!?"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/b176685-nyMS82rHOoRm.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/b176685-nyMS82rHOoRm.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": 7,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 10,
+            "trending": 0,
+            "startDate": {
+              "year": 1982,
+              "month": null,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 135859,
+            "title": {
+              "romaji": "Gohan ni Shimasu ka? Ofuro ni Shimasu ka? Soretomo Tsukumogami ni Shimasu ka?",
+              "english": null,
+              "native": "\u3054\u98EF\u306B\u3057\u307E\u3059\u304B\uFF1F\u304A\u98A8\u5442\u306B\u3057\u307E\u3059\u304B\uFF1F\u305D\u308C\u3068\u3082\u4ED8\u55AA\u795E\u306B\u3057\u307E\u3059\u304B\uFF1F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx135859-5ek8Nvf1FAyc.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx135859-5ek8Nvf1FAyc.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 12,
+            "volumes": 2,
+            "averageScore": null,
+            "favourites": 1,
+            "popularity": 47,
+            "trending": 0,
+            "startDate": {
+              "year": 2018,
+              "month": 10,
+              "day": 5
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 154049,
+            "title": {
+              "romaji": "Name da ka Shitagaki da ka Teki na Nani ka",
+              "english": null,
+              "native": "\u30CD\u30FC\u30E0\u3060\u304B\u4E0B\u63CF\u304D\u3060\u304B\u7684\u306A\u4F55\u304B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx154049-SNZuxkYKbiD0.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx154049-SNZuxkYKbiD0.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 2,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 11,
+            "trending": 0,
+            "startDate": {
+              "year": 2021,
+              "month": 9,
+              "day": 25
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 114990,
+            "title": {
+              "romaji": "Ijin desu ka? Eiyuu desu ka? Shinde Moratte Ii desu ka?",
+              "english": null,
+              "native": "\u5049\u4EBA\u3067\u3059\u304B\uFF1F \u82F1\u96C4\u3067\u3059\u304B\uFF1F \u6B7B\u3093\u3067\u3082\u3089\u3063\u3066\u3044\u3044\u3067\u3059\u304B\uFF1F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx114990-LvWyIa1JtNxE.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx114990-LvWyIa1JtNxE.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 17,
+            "volumes": 3,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 16,
+            "trending": 0,
+            "startDate": {
+              "year": 2017,
+              "month": 11,
+              "day": 15
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 204563,
+            "title": {
+              "romaji": "Dare ka Ookami-san no Shitsukekata Shirimasen ka!?",
+              "english": null,
+              "native": "\u8AB0\u304B\u30AA\u30AA\u30AB\u30DF\u3055\u3093\u306E\u3057\u3064\u3051\u65B9\u77E5\u308A\u307E\u305B\u3093\u304B\uFF01\uFF1F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx204563-Fo6USDebontw.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx204563-Fo6USDebontw.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 3,
+            "popularity": 297,
+            "trending": 0,
+            "startDate": {
+              "year": 2026,
+              "month": 1,
+              "day": 17
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 102631,
+            "title": {
+              "romaji": "Yuu\u2606Yuu\u2606Hakusho: TWO SHOTS / Noru ka Soru ka",
+              "english": "Yu Yu Hakusho OVA: \u0022Two Shots\u0022 and \u0022All or Nothing\u0022",
+              "native": "\u5E7D\u2606\u904A\u2606\u767D\u66F8 \u300CTWO SHOTS\u300D\u300C\u306E\u308B\u304B\u305D\u308B\u304B\u300D"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b102631-9VAe1wl7pIGc.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b102631-9VAe1wl7pIGc.png"
+            },
+            "format": "SPECIAL",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 72,
+            "favourites": 61,
+            "popularity": 7900,
+            "trending": 0,
+            "startDate": {
+              "year": 2018,
+              "month": 10,
+              "day": 26
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 106668,
+            "title": {
+              "romaji": "Momonoki-ke no Yonshimai",
+              "english": null,
+              "native": "\u6843\u30CE\u6728\u5BB6\u306E\u56DB\u59C9\u59B9"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx106668-OQWwMLH4lAAf.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx106668-OQWwMLH4lAAf.png"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 21,
+            "volumes": 3,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 65,
+            "trending": 0,
+            "startDate": {
+              "year": 2018,
+              "month": 12,
+              "day": 22
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 30260,
+            "title": {
+              "romaji": "Ka Shin Fuu",
+              "english": "Ka Shin Fu",
+              "native": "\u82B1\u4FE1\u98A8"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30260-7ias5yJu8uh8.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30260-7ias5yJu8uh8.png"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 4,
+            "volumes": 1,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 98,
+            "trending": 0,
+            "startDate": {
+              "year": 2006,
+              "month": 7,
+              "day": 12
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 32025,
+            "title": {
+              "romaji": "Suki Kamoshirenai",
+              "english": "Maybe I Like You",
+              "native": "\u597D\u304D\u304B\u3082\u3057\u308C\u306A\u3044"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/2025.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/2025.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 8,
+            "volumes": 2,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 72,
+            "trending": 0,
+            "startDate": {
+              "year": 2006,
+              "month": null,
+              "day": null
+            },
+            "mediaListEntry": null
+          }
+        ]
+      }
+    }
+  }
+}

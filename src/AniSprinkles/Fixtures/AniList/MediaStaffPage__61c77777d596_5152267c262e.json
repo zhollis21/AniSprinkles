@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 182255,
+    "page": 2,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:19:04.275452+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 2
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 156867,
+                "name": {
+                  "full": "Yuuichirou Fukushi",
+                  "native": "\u798F\u58EB\u88D5\u4E00\u90CE",
+                  "userPreferred": "Yuuichirou Fukushi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n156867-KnyVPSHCLp9U.png"
+                },
+                "favourites": 46
+              },
+              "role": "Animation Producer"
+            },
+            {
+              "node": {
+                "id": 132198,
+                "name": {
+                  "full": "Takafumi Hori",
+                  "native": "\u5800\u525B\u53F2",
+                  "userPreferred": "Takafumi Hori"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n132198-l7EVHr6Eh7k6.png"
+                },
+                "favourites": 44
+              },
+              "role": "Key Animation (ep 4)"
+            },
+            {
+              "node": {
+                "id": 138785,
+                "name": {
+                  "full": "Macy Anne Johnson",
+                  "native": null,
+                  "userPreferred": "Macy Anne Johnson"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n138785-8eEJxk4QsT0e.png"
+                },
+                "favourites": 43
+              },
+              "role": "ADR Script (English)"
+            },
+            {
+              "node": {
+                "id": 120066,
+                "name": {
+                  "full": "Shouji Hata",
+                  "native": "\u306F\u305F\u3057\u3087\u3046\u3058 ",
+                  "userPreferred": "Shouji Hata"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n120066-2VOeki0B1ygY.jpg"
+                },
+                "favourites": 35
+              },
+              "role": "Sound Director"
+            },
+            {
+              "node": {
+                "id": 127377,
+                "name": {
+                  "full": "Seiko Yoshioka",
+                  "native": "\u5409\u5CA1\u8AA0\u5B50",
+                  "userPreferred": "Seiko Yoshioka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n127377-rXdGO7Rzm3RE.png"
+                },
+                "favourites": 32
+              },
+              "role": "Color Script (OP)"
+            },
+            {
+              "node": {
+                "id": 127377,
+                "name": {
+                  "full": "Seiko Yoshioka",
+                  "native": "\u5409\u5CA1\u8AA0\u5B50",
+                  "userPreferred": "Seiko Yoshioka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n127377-rXdGO7Rzm3RE.png"
+                },
+                "favourites": 32
+              },
+              "role": "Art Director (OP)"
+            },
+            {
+              "node": {
+                "id": 127377,
+                "name": {
+                  "full": "Seiko Yoshioka",
+                  "native": "\u5409\u5CA1\u8AA0\u5B50",
+                  "userPreferred": "Seiko Yoshioka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n127377-rXdGO7Rzm3RE.png"
+                },
+                "favourites": 32
+              },
+              "role": "Layout Design (eps 1-6)"
+            },
+            {
+              "node": {
+                "id": 127377,
+                "name": {
+                  "full": "Seiko Yoshioka",
+                  "native": "\u5409\u5CA1\u8AA0\u5B50",
+                  "userPreferred": "Seiko Yoshioka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n127377-rXdGO7Rzm3RE.png"
+                },
+                "favourites": 32
+              },
+              "role": "World Illustration (ep 5)"
+            },
+            {
+              "node": {
+                "id": 127377,
+                "name": {
+                  "full": "Seiko Yoshioka",
+                  "native": "\u5409\u5CA1\u8AA0\u5B50",
+                  "userPreferred": "Seiko Yoshioka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n127377-rXdGO7Rzm3RE.png"
+                },
+                "favourites": 32
+              },
+              "role": "Concept Art"
+            },
+            {
+              "node": {
+                "id": 127377,
+                "name": {
+                  "full": "Seiko Yoshioka",
+                  "native": "\u5409\u5CA1\u8AA0\u5B50",
+                  "userPreferred": "Seiko Yoshioka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n127377-rXdGO7Rzm3RE.png"
+                },
+                "favourites": 32
+              },
+              "role": "Background Art (OP)"
+            },
+            {
+              "node": {
+                "id": 135989,
+                "name": {
+                  "full": "Akane Fushihara",
+                  "native": "\u4F0F\u539F\u3042\u304B\u306D",
+                  "userPreferred": "Akane Fushihara"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n135989-t3fUPUxOO3aa.png"
+                },
+                "favourites": 32
+              },
+              "role": "Photography (OP, eps 1-6)"
+            },
+            {
+              "node": {
+                "id": 135989,
+                "name": {
+                  "full": "Akane Fushihara",
+                  "native": "\u4F0F\u539F\u3042\u304B\u306D",
+                  "userPreferred": "Akane Fushihara"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n135989-t3fUPUxOO3aa.png"
+                },
+                "favourites": 32
+              },
+              "role": "Special Effects (eps 1, 2, 5)"
+            },
+            {
+              "node": {
+                "id": 135989,
+                "name": {
+                  "full": "Akane Fushihara",
+                  "native": "\u4F0F\u539F\u3042\u304B\u306D",
+                  "userPreferred": "Akane Fushihara"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n135989-t3fUPUxOO3aa.png"
+                },
+                "favourites": 32
+              },
+              "role": "Director of Photography"
+            },
+            {
+              "node": {
+                "id": 103251,
+                "name": {
+                  "full": "Kyouko Yufu",
+                  "native": "\u6CB9\u5E03\u4EAC\u5B50",
+                  "userPreferred": "Kyouko Yufu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n103251-NtyK9PjWSfJg.jpg"
+                },
+                "favourites": 23
+              },
+              "role": "Key Animation (ep 1)"
+            },
+            {
+              "node": {
+                "id": 119119,
+                "name": {
+                  "full": "Tomohiro Suzuki",
+                  "native": "\u9234\u6728\u667A\u5C0B",
+                  "userPreferred": "Tomohiro Suzuki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n119119-VrfR5lH1CdYC.png"
+                },
+                "favourites": 20
+              },
+              "role": "Script (eps 1-7)"
+            },
+            {
+              "node": {
+                "id": 119119,
+                "name": {
+                  "full": "Tomohiro Suzuki",
+                  "native": "\u9234\u6728\u667A\u5C0B",
+                  "userPreferred": "Tomohiro Suzuki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n119119-VrfR5lH1CdYC.png"
+                },
+                "favourites": 20
+              },
+              "role": "Series Composition"
+            },
+            {
+              "node": {
+                "id": 131509,
+                "name": {
+                  "full": "Saori Hosoda",
+                  "native": "\u7D30\u7530\u6C99\u7E54",
+                  "userPreferred": "Saori Hosoda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n131509-W91CpOV6p0Np.jpg"
+                },
+                "favourites": 20
+              },
+              "role": "Key Animation (ep 3)"
+            },
+            {
+              "node": {
+                "id": 134263,
+                "name": {
+                  "full": "Keisuke Kojima",
+                  "native": "\u5C0F\u5D8B\u6176\u7950",
+                  "userPreferred": "Keisuke Kojima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n134263-u6hdg3uh0O5n.png"
+                },
+                "favourites": 20
+              },
+              "role": "Character Design"
+            },
+            {
+              "node": {
+                "id": 134263,
+                "name": {
+                  "full": "Keisuke Kojima",
+                  "native": "\u5C0F\u5D8B\u6176\u7950",
+                  "userPreferred": "Keisuke Kojima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n134263-u6hdg3uh0O5n.png"
+                },
+                "favourites": 20
+              },
+              "role": "Chief Animation Director (eps 6, 7)"
+            },
+            {
+              "node": {
+                "id": 134263,
+                "name": {
+                  "full": "Keisuke Kojima",
+                  "native": "\u5C0F\u5D8B\u6176\u7950",
+                  "userPreferred": "Keisuke Kojima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n134263-u6hdg3uh0O5n.png"
+                },
+                "favourites": 20
+              },
+              "role": "Animation Director (ep 2)"
+            },
+            {
+              "node": {
+                "id": 134263,
+                "name": {
+                  "full": "Keisuke Kojima",
+                  "native": "\u5C0F\u5D8B\u6176\u7950",
+                  "userPreferred": "Keisuke Kojima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n134263-u6hdg3uh0O5n.png"
+                },
+                "favourites": 20
+              },
+              "role": "Key Animation (OP)"
+            },
+            {
+              "node": {
+                "id": 315682,
+                "name": {
+                  "full": "Mimei Aoume",
+                  "native": "\u9752\u6885\u7F8E\u82BD",
+                  "userPreferred": "Mimei Aoume"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n315682-yz62MTRVPYXM.jpg"
+                },
+                "favourites": 18
+              },
+              "role": "Animation (ED)"
+            },
+            {
+              "node": {
+                "id": 315682,
+                "name": {
+                  "full": "Mimei Aoume",
+                  "native": "\u9752\u6885\u7F8E\u82BD",
+                  "userPreferred": "Mimei Aoume"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n315682-yz62MTRVPYXM.jpg"
+                },
+                "favourites": 18
+              },
+              "role": "Director (ED)"
+            },
+            {
+              "node": {
+                "id": 111163,
+                "name": {
+                  "full": "Asako Nishida",
+                  "native": "\u897F\u7530\u4E9C\u6C99\u5B50",
+                  "userPreferred": "Asako Nishida"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n111163-bWDj3pJN0qGD.png"
+                },
+                "favourites": 16
+              },
+              "role": "Key Animation (OP, ep 6)"
+            },
+            {
+              "node": {
+                "id": 142140,
+                "name": {
+                  "full": "Yuuki Kawashita",
+                  "native": "\u5DDD\u4E0B\u88D5\u6A39",
+                  "userPreferred": "Yuuki Kawashita"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n142140-WimsyCOAcoYv.png"
+                },
+                "favourites": 15
+              },
+              "role": "Photography Manager (eps 1-6)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

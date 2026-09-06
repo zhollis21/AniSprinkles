@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 189323,
+    "page": 1,
+    "sort": [
+      "RELEVANCE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:24:53.4258718+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 182732,
+                "name": {
+                  "full": "Katarina",
+                  "native": "\u786C\u68A8\u83DC",
+                  "userPreferred": "Katarina"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n182732-AsVfsUPnjhHS.png"
+                },
+                "favourites": 30
+              },
+              "role": "Original Creator"
+            },
+            {
+              "node": {
+                "id": 123352,
+                "name": {
+                  "full": "Ryousuke Fuji",
+                  "native": "\u4E0D\u4E8C\u6DBC\u4ECB",
+                  "userPreferred": "Ryousuke Fuji"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n123352-7ZCfErFRGKPF.png"
+                },
+                "favourites": 28
+              },
+              "role": "Original Creator"
+            },
+            {
+              "node": {
+                "id": 107701,
+                "name": {
+                  "full": "Toshiyuki Kubooka",
+                  "native": "\u7AAA\u5CA1\u4FCA\u4E4B",
+                  "userPreferred": "Toshiyuki Kubooka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n107701-R92Wfc1in7fw.png"
+                },
+                "favourites": 22
+              },
+              "role": "Chief Director"
+            },
+            {
+              "node": {
+                "id": 149170,
+                "name": {
+                  "full": "Hiro Ooki",
+                  "native": "\u5927\u6728\u6BD4\u5442",
+                  "userPreferred": "Hiro Ooki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Director"
+            },
+            {
+              "node": {
+                "id": 169368,
+                "name": {
+                  "full": "Naoki Kotani",
+                  "native": "\u5150\u8C37\u76F4\u6A39",
+                  "userPreferred": "Naoki Kotani"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Assistant Director"
+            },
+            {
+              "node": {
+                "id": 110641,
+                "name": {
+                  "full": "Kazuyuki Fudeyasu",
+                  "native": "\u7B46\u5B89\u4E00\u5E78",
+                  "userPreferred": "Kazuyuki Fudeyasu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n110641-Nz4spuHNx4P5.png"
+                },
+                "favourites": 36
+              },
+              "role": "Series Composition"
+            },
+            {
+              "node": {
+                "id": 110641,
+                "name": {
+                  "full": "Kazuyuki Fudeyasu",
+                  "native": "\u7B46\u5B89\u4E00\u5E78",
+                  "userPreferred": "Kazuyuki Fudeyasu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n110641-Nz4spuHNx4P5.png"
+                },
+                "favourites": 36
+              },
+              "role": "Script"
+            },
+            {
+              "node": {
+                "id": 119322,
+                "name": {
+                  "full": "Ayumi Kurashima",
+                  "native": "\u5009\u5CF6\u4E9C\u7531\u7F8E",
+                  "userPreferred": "Ayumi Kurashima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n119322-1Wvcee9hd35i.png"
+                },
+                "favourites": 12
+              },
+              "role": "Character Design"
+            },
+            {
+              "node": {
+                "id": 119322,
+                "name": {
+                  "full": "Ayumi Kurashima",
+                  "native": "\u5009\u5CF6\u4E9C\u7531\u7F8E",
+                  "userPreferred": "Ayumi Kurashima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n119322-1Wvcee9hd35i.png"
+                },
+                "favourites": 12
+              },
+              "role": "Chief Animation Director"
+            },
+            {
+              "node": {
+                "id": 180869,
+                "name": {
+                  "full": "Riku Takizawa",
+                  "native": "\u6EDD\u6FA4\u9678",
+                  "userPreferred": "Riku Takizawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n180869-Aa3jL60gUnEW.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Sub Character Design"
+            },
+            {
+              "node": {
+                "id": 166849,
+                "name": {
+                  "full": "Chiho Wada",
+                  "native": "\u548C\u7530\u5343\u5E06",
+                  "userPreferred": "Chiho Wada"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Art Director"
+            },
+            {
+              "node": {
+                "id": 186864,
+                "name": {
+                  "full": "Yuuki Shigekawa",
+                  "native": "\u91CD\u5DDD\u512A\u8F1D",
+                  "userPreferred": "Yuuki Shigekawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Art Design"
+            },
+            {
+              "node": {
+                "id": 165816,
+                "name": {
+                  "full": "Masato Takagi",
+                  "native": "\u9AD8\u6728\u96C5\u4EBA",
+                  "userPreferred": "Masato Takagi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Color Design"
+            },
+            {
+              "node": {
+                "id": 187696,
+                "name": {
+                  "full": "Sakiko Tekuramori",
+                  "native": "\u624B\u5009\u68EE\u54B2\u5B50",
+                  "userPreferred": "Sakiko Tekuramori"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Color Design"
+            },
+            {
+              "node": {
+                "id": 147520,
+                "name": {
+                  "full": "Yoshihiro Nagamori",
+                  "native": "\u9577\u68EE\u4F73\u5BB9",
+                  "userPreferred": "Yoshihiro Nagamori"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n147520-8sNLo6vsCbY9.png"
+                },
+                "favourites": 16
+              },
+              "role": "Monster Design"
+            },
+            {
+              "node": {
+                "id": 165819,
+                "name": {
+                  "full": "Hiroshi Arisawa",
+                  "native": "\u6709\u6FA4\u5BDB",
+                  "userPreferred": "Hiroshi Arisawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n165819-CV5mcyxukBQD.png"
+                },
+                "favourites": 3
+              },
+              "role": "Monster Design"
+            },
+            {
+              "node": {
+                "id": 169720,
+                "name": {
+                  "full": "Naoya Sonoda",
+                  "native": "\u5712\u7530\u5C1A\u4E5F",
+                  "userPreferred": "Naoya Sonoda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n169720-YctMA0e4jbb2.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Monster Design"
+            },
+            {
+              "node": {
+                "id": 191535,
+                "name": {
+                  "full": "Yuki Yokoyama",
+                  "native": "\u6A2A\u5C71\u53CB\u7D00",
+                  "userPreferred": "Yuki Yokoyama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Prop Design"
+            },
+            {
+              "node": {
+                "id": 131330,
+                "name": {
+                  "full": "Satoshi Sakai",
+                  "native": "\u9152\u4E95\u667A\u53F2",
+                  "userPreferred": "Satoshi Sakai"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n131330-3gkmJMDQsO68.jpg"
+                },
+                "favourites": 54
+              },
+              "role": "Action Director"
+            },
+            {
+              "node": {
+                "id": 131330,
+                "name": {
+                  "full": "Satoshi Sakai",
+                  "native": "\u9152\u4E95\u667A\u53F2",
+                  "userPreferred": "Satoshi Sakai"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n131330-3gkmJMDQsO68.jpg"
+                },
+                "favourites": 54
+              },
+              "role": "Effects Director"
+            },
+            {
+              "node": {
+                "id": 131189,
+                "name": {
+                  "full": "Kazunori Ozawa",
+                  "native": "\u5C0F\u6FA4\u548C\u5247",
+                  "userPreferred": "Kazunori Ozawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n131189-zT4iokxFkxD8.png"
+                },
+                "favourites": 36
+              },
+              "role": "Action Animation Director"
+            },
+            {
+              "node": {
+                "id": 143520,
+                "name": {
+                  "full": "Takeshi Nishino",
+                  "native": "\u897F\u91CE\u6B66\u5FD7",
+                  "userPreferred": "Takeshi Nishino"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n143520-y7f6qCmcO4B1.png"
+                },
+                "favourites": 3
+              },
+              "role": "Action Animation Director"
+            },
+            {
+              "node": {
+                "id": 253889,
+                "name": {
+                  "full": "Rino Isago",
+                  "native": "\u7802\u91D1\u68A8\u4E43",
+                  "userPreferred": "Rino Isago"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Action Animation Director"
+            },
+            {
+              "node": {
+                "id": 339978,
+                "name": {
+                  "full": "Mizuki Watanabe",
+                  "native": "\u6E21\u9089\u5149\u7A00",
+                  "userPreferred": "Mizuki Watanabe"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Action Animation Director"
+            },
+            {
+              "node": {
+                "id": 128970,
+                "name": {
+                  "full": "Gou Sadamatsu",
+                  "native": "\u5B9A\u677E\u525B",
+                  "userPreferred": "Gou Sadamatsu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n128970-BzVqqH6buYlg.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Editing"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

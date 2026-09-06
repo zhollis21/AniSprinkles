@@ -1,0 +1,131 @@
+﻿{
+  "operationName": "ViewerFull",
+  "variables": null,
+  "queryFingerprint": "f90e0607ee7e",
+  "recordedAt": "2026-09-06T05:14:43.5578097+00:00",
+  "response": {
+    "data": {
+      "Viewer": {
+        "id": 7720462,
+        "name": "AniSprinkles",
+        "about": null,
+        "avatar": {
+          "large": "https://s4.anilist.co/file/anilistcdn/user/avatar/large/b7720462-zNg9PalTCPjL.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/user/avatar/medium/b7720462-zNg9PalTCPjL.jpg"
+        },
+        "bannerImage": "https://s4.anilist.co/file/anilistcdn/user/banner/b7720462-imnzaFvIFTem.jpg",
+        "siteUrl": "https://anilist.co/user/7720462",
+        "donatorTier": 0,
+        "donatorBadge": "Donator",
+        "options": {
+          "titleLanguage": "ENGLISH",
+          "displayAdultContent": false,
+          "airingNotifications": true,
+          "profileColor": "blue",
+          "timezone": null,
+          "activityMergeTime": 720,
+          "staffNameLanguage": "ROMAJI_WESTERN",
+          "restrictMessagesToFollowing": false,
+          "notificationOptions": [
+            {
+              "type": "ACTIVITY_MESSAGE",
+              "enabled": true
+            },
+            {
+              "type": "ACTIVITY_REPLY",
+              "enabled": true
+            },
+            {
+              "type": "ACTIVITY_MENTION",
+              "enabled": true
+            },
+            {
+              "type": "ACTIVITY_LIKE",
+              "enabled": true
+            },
+            {
+              "type": "ACTIVITY_REPLY_LIKE",
+              "enabled": true
+            },
+            {
+              "type": "ACTIVITY_REPLY_SUBSCRIBED",
+              "enabled": true
+            },
+            {
+              "type": "AIRING",
+              "enabled": true
+            },
+            {
+              "type": "RELATED_MEDIA_ADDITION",
+              "enabled": true
+            },
+            {
+              "type": "MEDIA_DATA_CHANGE",
+              "enabled": true
+            },
+            {
+              "type": "MEDIA_MERGE",
+              "enabled": true
+            },
+            {
+              "type": "MEDIA_DELETION",
+              "enabled": true
+            },
+            {
+              "type": "FOLLOWING",
+              "enabled": true
+            }
+          ]
+        },
+        "mediaListOptions": {
+          "scoreFormat": "POINT_10",
+          "rowOrder": "score",
+          "animeList": {
+            "sectionOrder": [
+              "Watching",
+              "Rewatching",
+              "Completed",
+              "Completed TV",
+              "Completed Movie",
+              "Completed OVA",
+              "Completed ONA",
+              "Completed TV Short",
+              "Completed Special",
+              "Completed Music",
+              "Paused",
+              "Dropped",
+              "Planning"
+            ]
+          },
+          "mangaList": {
+            "sectionOrder": [
+              "Reading",
+              "Rereading",
+              "Completed",
+              "Completed Manga",
+              "Completed Novel",
+              "Completed One-Shot",
+              "Paused",
+              "Dropped",
+              "Planning"
+            ]
+          }
+        },
+        "statistics": {
+          "anime": {
+            "count": 7,
+            "meanScore": 68,
+            "minutesWatched": 2184,
+            "episodesWatched": 92
+          },
+          "manga": {
+            "count": 0,
+            "meanScore": 0,
+            "chaptersRead": 0,
+            "volumesRead": 0
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+﻿{
+  "operationName": "Search",
+  "variables": {
+    "search": "one",
+    "type": "MANGA",
+    "page": 1,
+    "perPage": 20,
+    "isAdult": true
+  },
+  "queryFingerprint": "2c2dc0b2b28d",
+  "recordedAt": "2026-09-06T05:17:30.317003+00:00",
+  "response": {
+    "data": {
+      "Page": {
+        "pageInfo": {
+          "hasNextPage": false,
+          "currentPage": 1
+        },
+        "media": []
+      }
+    }
+  }
+}

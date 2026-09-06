@@ -1,0 +1,328 @@
+{
+  "operationName": "MediaListCollection",
+  "variables": {
+    "userId": 7720462,
+    "type": "MANGA"
+  },
+  "queryFingerprint": "affb060d641d",
+  "recordedAt": "2026-09-06T01:14:48.4782551-04:00",
+  "response": {
+    "data": {
+      "MediaListCollection": {
+        "lists": [
+          {
+            "name": "Planning",
+            "entries": [
+              {
+                "id": 593351184,
+                "mediaId": 141127,
+                "status": "PLANNING",
+                "progress": 0,
+                "progressVolumes": 0,
+                "score": 0,
+                "repeat": 0,
+                "updatedAt": 1788671651,
+                "private": false,
+                "hiddenFromStatusLists": false,
+                "notes": null,
+                "media": {
+                  "id": 141127,
+                  "title": {
+                    "romaji": "Golden Boy",
+                    "english": null,
+                    "native": "ゴールデンボーイ"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx141127-MJrvungcbkfQ.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx141127-MJrvungcbkfQ.jpg"
+                  },
+                  "format": "MANGA",
+                  "type": "MANGA",
+                  "status": "FINISHED",
+                  "episodes": null,
+                  "chapters": null,
+                  "volumes": 2,
+                  "season": null,
+                  "seasonYear": null,
+                  "averageScore": null,
+                  "popularity": 467,
+                  "isAdult": false,
+                  "nextAiringEpisode": null
+                }
+              },
+              {
+                "id": 593351189,
+                "mediaId": 101175,
+                "status": "PLANNING",
+                "progress": 0,
+                "progressVolumes": 0,
+                "score": 0,
+                "repeat": 0,
+                "updatedAt": 1788671653,
+                "private": false,
+                "hiddenFromStatusLists": false,
+                "notes": null,
+                "media": {
+                  "id": 101175,
+                  "title": {
+                    "romaji": "Ishuzoku Reviewers",
+                    "english": "Interspecies Reviewers",
+                    "native": "異種族レビュアーズ"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+                  },
+                  "format": "MANGA",
+                  "type": "MANGA",
+                  "status": "RELEASING",
+                  "episodes": null,
+                  "chapters": null,
+                  "volumes": null,
+                  "season": null,
+                  "seasonYear": null,
+                  "averageScore": 71,
+                  "popularity": 8453,
+                  "isAdult": true,
+                  "nextAiringEpisode": null
+                }
+              },
+              {
+                "id": 593351195,
+                "mediaId": 99462,
+                "status": "PLANNING",
+                "progress": 0,
+                "progressVolumes": 0,
+                "score": 0,
+                "repeat": 0,
+                "updatedAt": 1788671656,
+                "private": false,
+                "hiddenFromStatusLists": false,
+                "notes": null,
+                "media": {
+                  "id": 99462,
+                  "title": {
+                    "romaji": "Isekai Meikyuu de Harem wo",
+                    "english": null,
+                    "native": "異世界迷宮でハーレムを"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+                  },
+                  "format": "MANGA",
+                  "type": "MANGA",
+                  "status": "RELEASING",
+                  "episodes": null,
+                  "chapters": null,
+                  "volumes": null,
+                  "season": null,
+                  "seasonYear": null,
+                  "averageScore": 67,
+                  "popularity": 17939,
+                  "isAdult": true,
+                  "nextAiringEpisode": null
+                }
+              },
+              {
+                "id": 593351221,
+                "mediaId": 85470,
+                "status": "PLANNING",
+                "progress": 0,
+                "progressVolumes": 0,
+                "score": 0,
+                "repeat": 0,
+                "updatedAt": 1788665245,
+                "private": false,
+                "hiddenFromStatusLists": false,
+                "notes": null,
+                "media": {
+                  "id": 85470,
+                  "title": {
+                    "romaji": "Mushoku Tensei: Isekai Ittara Honki Dasu",
+                    "english": "Mushoku Tensei: Jobless Reincarnation",
+                    "native": "無職転生 ～異世界行ったら本気だす～"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx85470-jt6BF9tDWB2X.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx85470-jt6BF9tDWB2X.jpg"
+                  },
+                  "format": "NOVEL",
+                  "type": "MANGA",
+                  "status": "FINISHED",
+                  "episodes": null,
+                  "chapters": 334,
+                  "volumes": 26,
+                  "season": null,
+                  "seasonYear": null,
+                  "averageScore": 85,
+                  "popularity": 38287,
+                  "isAdult": false,
+                  "nextAiringEpisode": null
+                }
+              }
+            ]
+          },
+          {
+            "name": "Reading",
+            "entries": [
+              {
+                "id": 593351201,
+                "mediaId": 53390,
+                "status": "CURRENT",
+                "progress": 100,
+                "progressVolumes": 0,
+                "score": 9,
+                "repeat": 0,
+                "updatedAt": 1788665238,
+                "private": false,
+                "hiddenFromStatusLists": false,
+                "notes": null,
+                "media": {
+                  "id": 53390,
+                  "title": {
+                    "romaji": "Shingeki no Kyojin",
+                    "english": "Attack on Titan",
+                    "native": "進撃の巨人"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx53390-1RsuABC34P9D.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx53390-1RsuABC34P9D.jpg"
+                  },
+                  "format": "MANGA",
+                  "type": "MANGA",
+                  "status": "FINISHED",
+                  "episodes": null,
+                  "chapters": 141,
+                  "volumes": 34,
+                  "season": null,
+                  "seasonYear": null,
+                  "averageScore": 84,
+                  "popularity": 226505,
+                  "isAdult": false,
+                  "nextAiringEpisode": null
+                }
+              },
+              {
+                "id": 593351205,
+                "mediaId": 30013,
+                "status": "CURRENT",
+                "progress": 1100,
+                "progressVolumes": 105,
+                "score": 9,
+                "repeat": 1,
+                "updatedAt": 1788665241,
+                "private": false,
+                "hiddenFromStatusLists": false,
+                "notes": null,
+                "media": {
+                  "id": 30013,
+                  "title": {
+                    "romaji": "ONE PIECE",
+                    "english": "One Piece",
+                    "native": "ONE PIECE"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30013-BeslEMqiPhlk.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30013-BeslEMqiPhlk.jpg"
+                  },
+                  "format": "MANGA",
+                  "type": "MANGA",
+                  "status": "RELEASING",
+                  "episodes": null,
+                  "chapters": null,
+                  "volumes": null,
+                  "season": null,
+                  "seasonYear": null,
+                  "averageScore": 91,
+                  "popularity": 232169,
+                  "isAdult": false,
+                  "nextAiringEpisode": null
+                }
+              }
+            ]
+          },
+          {
+            "name": "Completed",
+            "entries": [
+              {
+                "id": 593351213,
+                "mediaId": 105778,
+                "status": "COMPLETED",
+                "progress": 232,
+                "progressVolumes": 24,
+                "score": 8,
+                "repeat": 0,
+                "updatedAt": 1788665243,
+                "private": false,
+                "hiddenFromStatusLists": false,
+                "notes": null,
+                "media": {
+                  "id": 105778,
+                  "title": {
+                    "romaji": "Chainsaw Man",
+                    "english": "Chainsaw Man",
+                    "native": "チェンソーマン"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx105778-euxXZEIfDY2u.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx105778-euxXZEIfDY2u.png"
+                  },
+                  "format": "MANGA",
+                  "type": "MANGA",
+                  "status": "FINISHED",
+                  "episodes": null,
+                  "chapters": 232,
+                  "volumes": 24,
+                  "season": null,
+                  "seasonYear": null,
+                  "averageScore": 85,
+                  "popularity": 331261,
+                  "isAdult": false,
+                  "nextAiringEpisode": null
+                }
+              },
+              {
+                "id": 593351227,
+                "mediaId": 85476,
+                "status": "COMPLETED",
+                "progress": 1,
+                "progressVolumes": 0,
+                "score": 7,
+                "repeat": 0,
+                "updatedAt": 1788665248,
+                "private": false,
+                "hiddenFromStatusLists": false,
+                "notes": null,
+                "media": {
+                  "id": 85476,
+                  "title": {
+                    "romaji": "Shingeki no Kyojin Gaiden: Kuinaki Sentaku - Prologue",
+                    "english": "Attack on Titan: No Regrets - Prologue",
+                    "native": "進撃の巨人 外伝 悔いなき選択 -プロローグ-"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx85476-6DSMtBxcixMl.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx85476-6DSMtBxcixMl.png"
+                  },
+                  "format": "ONE_SHOT",
+                  "type": "MANGA",
+                  "status": "FINISHED",
+                  "episodes": null,
+                  "chapters": 1,
+                  "volumes": null,
+                  "season": null,
+                  "seasonYear": null,
+                  "averageScore": 72,
+                  "popularity": 2944,
+                  "isAdult": false,
+                  "nextAiringEpisode": null
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

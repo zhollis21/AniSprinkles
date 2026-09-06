@@ -1,0 +1,589 @@
+﻿{
+  "operationName": "Search",
+  "variables": {
+    "search": "one",
+    "type": "ANIME",
+    "page": 2,
+    "perPage": 20,
+    "isAdult": false
+  },
+  "queryFingerprint": "2c2dc0b2b28d",
+  "recordedAt": "2026-09-06T05:17:09.0269429+00:00",
+  "response": {
+    "data": {
+      "Page": {
+        "pageInfo": {
+          "hasNextPage": true,
+          "currentPage": 2
+        },
+        "media": [
+          {
+            "id": 4419,
+            "title": {
+              "romaji": "Catman",
+              "english": null,
+              "native": "\u30AD\u30E3\u30C3\u30C8\u30DE\u30F3"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/4419.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/4419.jpg"
+            },
+            "format": "ONA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 7,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 55,
+            "favourites": 9,
+            "popularity": 1241,
+            "trending": 0,
+            "startDate": {
+              "year": 2002,
+              "month": null,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 675,
+            "title": {
+              "romaji": "ONE: Kagayaku Kisetsu e",
+              "english": "One: Kagayaku Kisetsu e",
+              "native": "ONE \uFF5E\u8F1D\u304F\u5B63\u7BC0\u3078\uFF5E"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx675-ddsywfey1lbT.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx675-ddsywfey1lbT.png"
+            },
+            "format": "OVA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 4,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 45,
+            "favourites": 12,
+            "popularity": 1625,
+            "trending": 0,
+            "startDate": {
+              "year": 2001,
+              "month": 8,
+              "day": 10
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 99646,
+            "title": {
+              "romaji": "One More Time, One More Chance",
+              "english": null,
+              "native": "One More Time, One More Chance"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx99646-7BJsXEz05VBK.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx99646-7BJsXEz05VBK.png"
+            },
+            "format": "MUSIC",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 72,
+            "favourites": 56,
+            "popularity": 2685,
+            "trending": 0,
+            "startDate": {
+              "year": 2007,
+              "month": 7,
+              "day": 19
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 116147,
+            "title": {
+              "romaji": "One Room: Third Season",
+              "english": "One Room 3rd",
+              "native": "One Room \u30B5\u30FC\u30C9\u30B7\u30FC\u30BA\u30F3"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx116147-ihwpyRJMuFKx.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx116147-ihwpyRJMuFKx.png"
+            },
+            "format": "TV_SHORT",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 61,
+            "favourites": 115,
+            "popularity": 12161,
+            "trending": 0,
+            "startDate": {
+              "year": 2020,
+              "month": 10,
+              "day": 6
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 21087,
+            "title": {
+              "romaji": "One Punch Man",
+              "english": "One-Punch Man",
+              "native": "\u30EF\u30F3\u30D1\u30F3\u30DE\u30F3"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21087-B5DHjqZ3kW4b.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21087-B5DHjqZ3kW4b.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 83,
+            "favourites": 33408,
+            "popularity": 765263,
+            "trending": 14,
+            "startDate": {
+              "year": 2015,
+              "month": 10,
+              "day": 5
+            },
+            "mediaListEntry": {
+              "id": 593363945,
+              "status": "COMPLETED",
+              "progress": 12,
+              "score": 10
+            }
+          },
+          {
+            "id": 120515,
+            "title": {
+              "romaji": "One Step Ahead",
+              "english": "One Step Ahead",
+              "native": "One Step Ahead"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx120515-En4ZLN9P9ZKb.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx120515-En4ZLN9P9ZKb.png"
+            },
+            "format": "MUSIC",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 73,
+            "trending": 0,
+            "startDate": {
+              "year": 2014,
+              "month": 1,
+              "day": 22
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 128371,
+            "title": {
+              "romaji": "Hitotsu dake Kaeta",
+              "english": null,
+              "native": "\u3072\u3068\u3064\u3060\u3051\u5909\u3048\u305F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx128371-s0bqcCcvTasE.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx128371-s0bqcCcvTasE.jpg"
+            },
+            "format": "MUSIC",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 96,
+            "trending": 0,
+            "startDate": {
+              "year": 2018,
+              "month": 2,
+              "day": 6
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 459,
+            "title": {
+              "romaji": "ONE PIECE (Movie)",
+              "english": "ONE PIECE: The Movie",
+              "native": "ONE PIECE (Movie)"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx459-Ivw65mUXackh.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx459-Ivw65mUXackh.png"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 68,
+            "favourites": 286,
+            "popularity": 35283,
+            "trending": 0,
+            "startDate": {
+              "year": 2000,
+              "month": 3,
+              "day": 4
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 156084,
+            "title": {
+              "romaji": "Da Dao Chao Tian",
+              "english": "One Way or Another",
+              "native": "\u5927\u9053\u671D\u5929"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx156084-vQYir17FxUMl.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx156084-vQYir17FxUMl.jpg"
+            },
+            "format": "ONA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 16,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 63,
+            "favourites": 17,
+            "popularity": 443,
+            "trending": 0,
+            "startDate": {
+              "year": 2024,
+              "month": 10,
+              "day": 10
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 115269,
+            "title": {
+              "romaji": "Eto Sanbun no ichi",
+              "english": "Zodiac One Third",
+              "native": "\u5E72\u652F1/3"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx115269-QRSx2OKO4ntd.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx115269-QRSx2OKO4ntd.png"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 86,
+            "trending": 0,
+            "startDate": {
+              "year": 2016,
+              "month": 11,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 19123,
+            "title": {
+              "romaji": "ONE PIECE: Episode of Merry - Mou Hitori no Nakama no Monogatari",
+              "english": "One Piece: Episode of Merry - The Tale of One More Friend",
+              "native": "ONE PIECE \u30A8\u30D4\u30BD\u30FC\u30C9\u30AA\u30D6\u30E1\u30EA\u30FC \u301C\u3082\u3046\u3072\u3068\u308A\u306E\u4EF2\u9593\u306E\u7269\u8A9E\u301C"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx19123-leET1CrSJknT.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx19123-leET1CrSJknT.jpg"
+            },
+            "format": "SPECIAL",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 78,
+            "favourites": 168,
+            "popularity": 15277,
+            "trending": 0,
+            "startDate": {
+              "year": 2013,
+              "month": 8,
+              "day": 24
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 188668,
+            "title": {
+              "romaji": "Koisuru ONE PIECE",
+              "english": null,
+              "native": "\u604B\u3059\u308B\u30EF\u30F3\u30D4\u30FC\u30B9"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx188668-rOB7rkgOz89w.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx188668-rOB7rkgOz89w.jpg"
+            },
+            "format": "ONA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 5,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 66,
+            "favourites": 39,
+            "popularity": 4763,
+            "trending": 0,
+            "startDate": {
+              "year": 2025,
+              "month": 4,
+              "day": 1
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 100133,
+            "title": {
+              "romaji": "One Room: Second Season",
+              "english": "One Room SECOND SEASON",
+              "native": "One Room \u30BB\u30AB\u30F3\u30C9\u30B7\u30FC\u30BA\u30F3"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx100133-ON96W9oFFvZL.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx100133-ON96W9oFFvZL.jpg"
+            },
+            "format": "TV_SHORT",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 58,
+            "favourites": 123,
+            "popularity": 17349,
+            "trending": 0,
+            "startDate": {
+              "year": 2018,
+              "month": 7,
+              "day": 3
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 105143,
+            "title": {
+              "romaji": "ONE PIECE STAMPEDE",
+              "english": "One Piece: Stampede",
+              "native": "ONE PIECE STAMPEDE"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx105143-5uBDmhvMr6At.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx105143-5uBDmhvMr6At.png"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 80,
+            "favourites": 1267,
+            "popularity": 61877,
+            "trending": 0,
+            "startDate": {
+              "year": 2019,
+              "month": 8,
+              "day": 9
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 116054,
+            "title": {
+              "romaji": "Noroi no One Piece",
+              "english": null,
+              "native": "\u546A\u3044\u306E\u30EF\u30F3\u30D4\u30FC\u30B9"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx116054-FD9QZRypg2Ot.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx116054-FD9QZRypg2Ot.jpg"
+            },
+            "format": "SPECIAL",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 3,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 57,
+            "favourites": 24,
+            "popularity": 2125,
+            "trending": 0,
+            "startDate": {
+              "year": 1992,
+              "month": 8,
+              "day": 25
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 197178,
+            "title": {
+              "romaji": "ONE PIECE HEROINES",
+              "english": "ONE PIECE HEROINES",
+              "native": "ONE PIECE HEROINES"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx197178-Ui8PY9HQbNgu.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx197178-Ui8PY9HQbNgu.jpg"
+            },
+            "format": "SPECIAL",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 77,
+            "favourites": 216,
+            "popularity": 15444,
+            "trending": 0,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 5
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 21831,
+            "title": {
+              "romaji": "ONE PIECE: Heart of Gold",
+              "english": "One Piece: Heart of Gold",
+              "native": "ONE PIECE \u301C\u30CF\u30FC\u30C8\u30AA\u30D6\u30B4\u30FC\u30EB\u30C9\u301C"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21831-qj5IKYiPOupF.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21831-qj5IKYiPOupF.jpg"
+            },
+            "format": "SPECIAL",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 72,
+            "favourites": 210,
+            "popularity": 23434,
+            "trending": 0,
+            "startDate": {
+              "year": 2016,
+              "month": 7,
+              "day": 16
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 145323,
+            "title": {
+              "romaji": "123",
+              "english": null,
+              "native": "\uFF11\uFF12\uFF13\uFF08\u30EF\u30F3 \u30C4\u30FC \u30B9\u30EA\u30FC\uFF09"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b145323-Zw8LG56pXLW4.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b145323-Zw8LG56pXLW4.jpg"
+            },
+            "format": "MUSIC",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 38,
+            "favourites": 0,
+            "popularity": 168,
+            "trending": 0,
+            "startDate": {
+              "year": 2004,
+              "month": 12,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 206362,
+            "title": {
+              "romaji": "One Last Wish",
+              "english": "One Last Wish",
+              "native": "One Last Wish"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx206362-4YVRzOqKGbSK.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206362-4YVRzOqKGbSK.png"
+            },
+            "format": "MUSIC",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 1,
+            "popularity": 62,
+            "trending": 0,
+            "startDate": {
+              "year": 2025,
+              "month": 7,
+              "day": 12
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 21461,
+            "title": {
+              "romaji": "THE REFLECTION WAVE ONE",
+              "english": "The Reflection",
+              "native": "THE REFLECTION WAVE ONE"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx21461-uMKVoLchuwUK.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx21461-uMKVoLchuwUK.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 42,
+            "favourites": 26,
+            "popularity": 8151,
+            "trending": 0,
+            "startDate": {
+              "year": 2017,
+              "month": 7,
+              "day": 22
+            },
+            "mediaListEntry": null
+          }
+        ]
+      }
+    }
+  }
+}

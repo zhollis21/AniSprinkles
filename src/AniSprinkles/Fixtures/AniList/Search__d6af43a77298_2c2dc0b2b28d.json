@@ -1,0 +1,359 @@
+﻿{
+  "operationName": "Search",
+  "variables": {
+    "search": "one",
+    "type": "MANGA",
+    "page": 3,
+    "perPage": 20
+  },
+  "queryFingerprint": "2c2dc0b2b28d",
+  "recordedAt": "2026-09-06T05:17:37.3132146+00:00",
+  "response": {
+    "data": {
+      "Page": {
+        "pageInfo": {
+          "hasNextPage": false,
+          "currentPage": 3
+        },
+        "media": [
+          {
+            "id": 106947,
+            "title": {
+              "romaji": "Zhenshang Emo Zongcai",
+              "english": "Tow in One",
+              "native": "\u6795\u4E0A\u6076\u9B54\u603B\u88C1"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/n106947-SjoLia3qLKqz.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/n106947-SjoLia3qLKqz.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 104,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 2,
+            "popularity": 99,
+            "trending": 0,
+            "startDate": {
+              "year": 2017,
+              "month": 11,
+              "day": 15
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 102061,
+            "title": {
+              "romaji": "Kaiten-One",
+              "english": null,
+              "native": "\u30AB\u30A4\u30C6\u30F3\u30EF\u30F3"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx102061-snH5O5rHkMDe.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx102061-snH5O5rHkMDe.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 38,
+            "volumes": 5,
+            "averageScore": null,
+            "favourites": 1,
+            "popularity": 191,
+            "trending": 0,
+            "startDate": {
+              "year": 2017,
+              "month": 5,
+              "day": 9
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 139382,
+            "title": {
+              "romaji": "Animal 1",
+              "english": null,
+              "native": "\u30A2\u30CB\u30DE\u30EB1"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx139382-X0dGwV3s6sFJ.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx139382-X0dGwV3s6sFJ.png"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 24,
+            "volumes": 5,
+            "averageScore": null,
+            "favourites": 1,
+            "popularity": 43,
+            "trending": 0,
+            "startDate": {
+              "year": 1967,
+              "month": 3,
+              "day": 12
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 179817,
+            "title": {
+              "romaji": "ONE FOR ALL",
+              "english": null,
+              "native": "\uFF2F\uFF2E\uFF25\u3000\uFF26\uFF2F\uFF32\u3000\uFF21\uFF2C\uFF2C"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx179817-LyTUnS7UrNFl.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx179817-LyTUnS7UrNFl.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 62,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 126,
+            "trending": 0,
+            "startDate": {
+              "year": 2023,
+              "month": 12,
+              "day": 11
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 93181,
+            "title": {
+              "romaji": "Watashi to Kare to Mou Hitori\u2661",
+              "english": null,
+              "native": "\u79C1\u3068\u5F7C\u3068\u3082\u3046\u3072\u3068\u308A\u2661"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx93181-NtbytniNbNAf.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx93181-NtbytniNbNAf.jpg"
+            },
+            "format": "ONE_SHOT",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 1,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 64,
+            "trending": 0,
+            "startDate": {
+              "year": 2014,
+              "month": 4,
+              "day": 16
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 191681,
+            "title": {
+              "romaji": "One and Only",
+              "english": "One and Only",
+              "native": "\uC6D0 \uC564 \uC628\uB9AC"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx191681-p9K079UVBn73.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx191681-p9K079UVBn73.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 4,
+            "popularity": 299,
+            "trending": 0,
+            "startDate": {
+              "year": 2025,
+              "month": 4,
+              "day": 26
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 187729,
+            "title": {
+              "romaji": "Saminbun",
+              "english": "One of Three",
+              "native": "3\uC778\uBD84"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx187729-yB3TZiE9QWAN.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx187729-yB3TZiE9QWAN.png"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 60,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 68,
+            "trending": 0,
+            "startDate": {
+              "year": 2025,
+              "month": 2,
+              "day": 25
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 65795,
+            "title": {
+              "romaji": "1 or W",
+              "english": "One or Double",
+              "native": "1 or W"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx65795-8cQGCms3zgQe.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx65795-8cQGCms3zgQe.png"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 9,
+            "volumes": 1,
+            "averageScore": 58,
+            "favourites": 0,
+            "popularity": 335,
+            "trending": 0,
+            "startDate": {
+              "year": 1995,
+              "month": 5,
+              "day": 1
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 191156,
+            "title": {
+              "romaji": "ONEx3",
+              "english": null,
+              "native": "ONE\u00D73"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/b191156-ZrA4wq0Joz4U.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/b191156-ZrA4wq0Joz4U.jpg"
+            },
+            "format": null,
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 16,
+            "volumes": 2,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 2,
+            "trending": 0,
+            "startDate": {
+              "year": 2003,
+              "month": 9,
+              "day": 24
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 72543,
+            "title": {
+              "romaji": "one off",
+              "english": null,
+              "native": "\u308F\u3093\u304A\u3075 -one off-"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/42543.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/42543.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 8,
+            "volumes": 2,
+            "averageScore": null,
+            "favourites": 4,
+            "popularity": 195,
+            "trending": 0,
+            "startDate": {
+              "year": 2012,
+              "month": 9,
+              "day": 5
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 32577,
+            "title": {
+              "romaji": "Aru Hi, Knight ni Atta Nara",
+              "english": null,
+              "native": "\u3042\u308B\u65E5\u3001\u30CA\u30A4\u30C8\u306B\u4F1A\u3063\u305F\u306A\u3089"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/2577.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/2577.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 4,
+            "volumes": 1,
+            "averageScore": 51,
+            "favourites": 0,
+            "popularity": 160,
+            "trending": 0,
+            "startDate": {
+              "year": 1989,
+              "month": 6,
+              "day": 26
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 95225,
+            "title": {
+              "romaji": "OneImo: Onee to Imouto Touhoku Shimai Slow Life",
+              "english": null,
+              "native": "\u304A\u306D\u3044\u3082 \u304A\u306D\u3048\u3068\u3044\u3082\u3046\u3068 \u6771\u5317\u59C9\u59B9\u30B9\u30ED\u30FC\u30E9\u30A4\u30D5"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/n95225-7Tt1m3i8MNf6.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/n95225-7Tt1m3i8MNf6.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 26,
+            "volumes": 2,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 44,
+            "trending": 0,
+            "startDate": {
+              "year": 2014,
+              "month": 2,
+              "day": 22
+            },
+            "mediaListEntry": null
+          }
+        ]
+      }
+    }
+  }
+}

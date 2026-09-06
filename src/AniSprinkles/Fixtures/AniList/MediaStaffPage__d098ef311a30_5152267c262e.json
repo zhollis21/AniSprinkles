@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 21,
+    "page": 1,
+    "sort": [
+      "ROLE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:24:20.4738523+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 170138,
+                "name": {
+                  "full": "Azusa Tamura",
+                  "native": "\u7530\u6751\u3042\u305A\u7D17",
+                  "userPreferred": "Azusa Tamura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2D Works (eps 1123-)"
+            },
+            {
+              "node": {
+                "id": 302908,
+                "name": {
+                  "full": "Rintarou Takahashi",
+                  "native": "\u9AD8\u6A4B\u502B\u592A\u90CE",
+                  "userPreferred": "Rintarou Takahashi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2D Works (eps 1123-)"
+            },
+            {
+              "node": {
+                "id": 306144,
+                "name": {
+                  "full": "Ihabo Azzamo",
+                  "native": null,
+                  "userPreferred": "Ihabo Azzamo"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n306144-xoebcezc8qoD.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "2nd Key Animation (ep 1062)"
+            },
+            {
+              "node": {
+                "id": 306156,
+                "name": {
+                  "full": "Reference Sazi",
+                  "native": "\u30EA\u30D5\u30A1\u30EC\u30F3\u30B9\u30B5\u30B8",
+                  "userPreferred": "Reference Sazi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n306156-ZQZqyH9ZS39N.png"
+                },
+                "favourites": 1
+              },
+              "role": "2nd Key Animation (ep 1062)"
+            },
+            {
+              "node": {
+                "id": 164720,
+                "name": {
+                  "full": "Hirotaka Itou",
+                  "native": "\u4F0A\u85E4\u516C\u5D07",
+                  "userPreferred": "Hirotaka Itou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n164720-bOJejvvYunyc.png"
+                },
+                "favourites": 2
+              },
+              "role": "2nd Key Animation (ep 1066)"
+            },
+            {
+              "node": {
+                "id": 253637,
+                "name": {
+                  "full": "Ziwei He",
+                  "native": "\u4F55\u7D2B\u8587",
+                  "userPreferred": "Ziwei He"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n253637-vJ7zhe7FSUbm.png"
+                },
+                "favourites": 1
+              },
+              "role": "2nd Key Animation (ep 1066)"
+            },
+            {
+              "node": {
+                "id": 308609,
+                "name": {
+                  "full": "Hazien Lyles-Saunders",
+                  "native": null,
+                  "userPreferred": "Hazien Lyles-Saunders"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n308609-hJqqO0YkMy2l.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 1066)"
+            },
+            {
+              "node": {
+                "id": 308610,
+                "name": {
+                  "full": "Jeremy Jusay",
+                  "native": null,
+                  "userPreferred": "Jeremy Jusay"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n308610-xs5m0pNcRO2R.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 1066)"
+            },
+            {
+              "node": {
+                "id": 303062,
+                "name": {
+                  "full": "Mio Takano",
+                  "native": "\u9AD8\u91CE\u73E0\u7DD2",
+                  "userPreferred": "Mio Takano"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 1069)"
+            },
+            {
+              "node": {
+                "id": 184700,
+                "name": {
+                  "full": "Kazuki Takenaga",
+                  "native": "\u6B66\u6C38\u4E00\u8F1D",
+                  "userPreferred": "Kazuki Takenaga"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n184700-bnAStXzpE8gJ.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "2nd Key Animation (ep 1071)"
+            },
+            {
+              "node": {
+                "id": 190436,
+                "name": {
+                  "full": "Misa Takada",
+                  "native": "\u9AD8\u7530\u5B9F\u6C99",
+                  "userPreferred": "Misa Takada"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 1071)"
+            },
+            {
+              "node": {
+                "id": 239542,
+                "name": {
+                  "full": "Miyuu Ookubo",
+                  "native": "\u5927\u4E45\u4FDD\u6D77\u7950",
+                  "userPreferred": "Miyuu Ookubo"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n239542-MK68TFw9mtQx.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 1074)"
+            },
+            {
+              "node": {
+                "id": 306023,
+                "name": {
+                  "full": "Hajime Inubu",
+                  "native": "\u72AC\u90E8\u30CF\u30B8\u30E1",
+                  "userPreferred": "Hajime Inubu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 1074)"
+            },
+            {
+              "node": {
+                "id": 313556,
+                "name": {
+                  "full": "Kou Ojima",
+                  "native": "\u5C3E\u5D8B \u5016",
+                  "userPreferred": "Kou Ojima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 1074)"
+            },
+            {
+              "node": {
+                "id": 209772,
+                "name": {
+                  "full": "Henry Thurlow",
+                  "native": "Henry David Thurlow",
+                  "userPreferred": "Henry Thurlow"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n209772-3tkzrh4xy4YR.png"
+                },
+                "favourites": 24
+              },
+              "role": "2nd Key Animation (ep 1075)"
+            },
+            {
+              "node": {
+                "id": 275459,
+                "name": {
+                  "full": "Jiarui Sun",
+                  "native": "\u5B6B\u4F73\u745E",
+                  "userPreferred": "Jiarui Sun"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 1075)"
+            },
+            {
+              "node": {
+                "id": 221036,
+                "name": {
+                  "full": "Aar\u00F3n Rodr\u00EDguez",
+                  "native": null,
+                  "userPreferred": "Aar\u00F3n Rodr\u00EDguez"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n221036-1kNRAx8v9zuJ.png"
+                },
+                "favourites": 30
+              },
+              "role": "2nd Key Animation (ep 1076)"
+            },
+            {
+              "node": {
+                "id": 315939,
+                "name": {
+                  "full": "sailor yon",
+                  "native": null,
+                  "userPreferred": "sailor yon"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n315939-21ZGiDedIsVc.png"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 1076)"
+            },
+            {
+              "node": {
+                "id": 322995,
+                "name": {
+                  "full": "Anikari",
+                  "native": "\u3042\u306B\u304B\u308A",
+                  "userPreferred": "Anikari"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n322995-pAi7W3KMqht2.jpg"
+                },
+                "favourites": 11
+              },
+              "role": "2nd Key Animation (ep 1086)"
+            },
+            {
+              "node": {
+                "id": 198712,
+                "name": {
+                  "full": "Shinnosuke Tanaka",
+                  "native": "\u7530\u4E2D\u614E\u4E4B\u4ECB",
+                  "userPreferred": "Shinnosuke Tanaka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n198712-sYJzxrroMsMa.png"
+                },
+                "favourites": 16
+              },
+              "role": "2nd Key Animation (ep 1089)"
+            },
+            {
+              "node": {
+                "id": 252944,
+                "name": {
+                  "full": "Kofi Fiagome",
+                  "native": null,
+                  "userPreferred": "Kofi Fiagome"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n252944-N1ariO6FPUqC.png"
+                },
+                "favourites": 1
+              },
+              "role": "2nd Key Animation (ep 1093)"
+            },
+            {
+              "node": {
+                "id": 326661,
+                "name": {
+                  "full": "Tommaso Tamburini",
+                  "native": null,
+                  "userPreferred": "Tommaso Tamburini"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n326661-CwGdosdmeaZB.png"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 1093)"
+            },
+            {
+              "node": {
+                "id": 311792,
+                "name": {
+                  "full": "Jayu",
+                  "native": "\u30B8\u30A7\u30E6",
+                  "userPreferred": "Jayu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n311792-1AmRIckDlHbZ.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "2nd Key Animation (ep 1103)"
+            },
+            {
+              "node": {
+                "id": 337163,
+                "name": {
+                  "full": "Paji",
+                  "native": null,
+                  "userPreferred": "Paji"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n337163-306SN7T6ktip.jpg"
+                },
+                "favourites": 5
+              },
+              "role": "2nd Key Animation (ep 1107)"
+            },
+            {
+              "node": {
+                "id": 337234,
+                "name": {
+                  "full": "Ronan",
+                  "native": null,
+                  "userPreferred": "Ronan"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n337234-N8517mYb24O7.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "2nd Key Animation (ep 1113)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

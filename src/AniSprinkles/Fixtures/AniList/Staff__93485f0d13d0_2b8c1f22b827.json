@@ -1,0 +1,1303 @@
+﻿{
+  "operationName": "Staff",
+  "variables": {
+    "id": 133507,
+    "charactersPage": 1,
+    "mediaPage": 1,
+    "charactersSort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "mediaSort": [
+      "POPULARITY_DESC",
+      "ID"
+    ]
+  },
+  "queryFingerprint": "2b8c1f22b827",
+  "recordedAt": "2026-09-06T05:30:24.8681862+00:00",
+  "response": {
+    "data": {
+      "Staff": {
+        "id": 133507,
+        "name": {
+          "full": "Chiaki Kobayashi",
+          "native": "\u5C0F\u6797\u5343\u6643",
+          "userPreferred": "Chiaki Kobayashi"
+        },
+        "image": {
+          "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n133507-oT1bd4Gax1Qg.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n133507-oT1bd4Gax1Qg.jpg"
+        },
+        "description": "**Agency:** Office Osawa\n\n[Twitter](https://twitter.com/Chichichiakik)\n\nNon-anime roles:\n- Durin - Genshin Impact (VG)\n- Xiangli Yao - Wuthering Waves (VG)",
+        "languageV2": "Japanese",
+        "primaryOccupations": [
+          "Voice Actor"
+        ],
+        "gender": "Male",
+        "dateOfBirth": {
+          "year": 1994,
+          "month": 6,
+          "day": 4
+        },
+        "dateOfDeath": {
+          "year": null,
+          "month": null,
+          "day": null
+        },
+        "age": 32,
+        "yearsActive": [],
+        "homeTown": "Kanagawa Prefecture, Japan",
+        "bloodType": null,
+        "favourites": 1798,
+        "isFavourite": false,
+        "siteUrl": "https://anilist.co/staff/133507",
+        "characters": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 13020,
+                "name": {
+                  "full": "Askeladd",
+                  "native": "\u30A2\u30B7\u30A7\u30E9\u30C3\u30C9",
+                  "userPreferred": "Askeladd"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b13020-ZdiYlNmpRUNS.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b13020-ZdiYlNmpRUNS.png"
+                },
+                "favourites": 16993
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 101348,
+                  "title": {
+                    "romaji": "VINLAND SAGA",
+                    "english": "Vinland Saga",
+                    "native": "\u30F4\u30A3\u30F3\u30E9\u30F3\u30C9\u30FB\u30B5\u30AC"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx101348-2fhDFPCuMNiz.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101348-2fhDFPCuMNiz.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 87
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 184313,
+                "name": {
+                  "full": "Stark",
+                  "native": "\u30B7\u30E5\u30BF\u30EB\u30AF",
+                  "userPreferred": "Stark"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b184313-CQl6GSt4RSny.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b184313-CQl6GSt4RSny.jpg"
+                },
+                "favourites": 5949
+              },
+              "role": "MAIN",
+              "media": [
+                {
+                  "id": 154587,
+                  "title": {
+                    "romaji": "Sousou no Frieren",
+                    "english": "Frieren: Beyond Journey\u2019s End",
+                    "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx154587-qQTzQnEJJ3oB.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx154587-qQTzQnEJJ3oB.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 91
+                },
+                {
+                  "id": 170068,
+                  "title": {
+                    "romaji": "Sousou no Frieren: \u25CF\u25CF no Mahou",
+                    "english": null,
+                    "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \uFF5E\u25CF\u25CF\u306E\u9B54\u6CD5\uFF5E"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx170068-ijY3tCP8KoWP.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx170068-ijY3tCP8KoWP.jpg"
+                  },
+                  "format": "ONA",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 73
+                },
+                {
+                  "id": 182255,
+                  "title": {
+                    "romaji": "Sousou no Frieren 2nd Season",
+                    "english": "Frieren: Beyond Journey\u2019s End Season 2",
+                    "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \u7B2C2\u671F"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx182255-butzrqd4I0aC.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx182255-butzrqd4I0aC.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 88
+                },
+                {
+                  "id": 189513,
+                  "title": {
+                    "romaji": "Sousou no Frieren: \u25CF\u25CF no Mahou Part 2",
+                    "english": null,
+                    "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \uFF5E\u25CF\u25CF\u306E\u9B54\u6CD5\uFF5E 2\u30AF\u30FC\u30EB"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx189513-1R9Sryve0K53.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx189513-1R9Sryve0K53.png"
+                  },
+                  "format": "ONA",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 71
+                },
+                {
+                  "id": 206425,
+                  "title": {
+                    "romaji": "Sousou no Frieren: \u25CF\u25CF no Mahou Part 3",
+                    "english": null,
+                    "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \uFF5E\u25CF\u25CF\u306E\u9B54\u6CD5\uFF5E 3\u30AF\u30FC\u30EB"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b206425-WOwXsfDbHZwb.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b206425-WOwXsfDbHZwb.jpg"
+                  },
+                  "format": "ONA",
+                  "type": "ANIME",
+                  "status": "RELEASING",
+                  "averageScore": 69
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 195116,
+                "name": {
+                  "full": "Langa Hasegawa",
+                  "native": "\u99B3\u6CB3\u30E9\u30F3\u30AC",
+                  "userPreferred": "Langa Hasegawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b195116-C2Y5jRPiTSng.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b195116-C2Y5jRPiTSng.png"
+                },
+                "favourites": 5648
+              },
+              "role": "MAIN",
+              "media": [
+                {
+                  "id": 124153,
+                  "title": {
+                    "romaji": "SK\u221E",
+                    "english": "SK8 the Infinity",
+                    "native": "SK\u221E \u30A8\u30B9\u30B1\u30FC\u30A8\u30A4\u30C8"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx124153-uEBI764OSavB.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx124153-uEBI764OSavB.png"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 80
+                },
+                {
+                  "id": 136381,
+                  "title": {
+                    "romaji": "SK\u221E Extra Part",
+                    "english": "SK8 the Infinity EXTRA PART",
+                    "native": "SK\u221E \u30A8\u30B9\u30B1\u30FC\u30A8\u30A4\u30C8 EXTRA PART"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx136381-t6c5rfKjnqqd.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx136381-t6c5rfKjnqqd.jpg"
+                  },
+                  "format": "OVA",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 79
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 137260,
+                "name": {
+                  "full": "Gabimaru",
+                  "native": "\u753B\u7709\u4E38",
+                  "userPreferred": "Gabimaru"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b137260-xmSis8FmwhEE.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b137260-xmSis8FmwhEE.png"
+                },
+                "favourites": 5534
+              },
+              "role": "MAIN",
+              "media": [
+                {
+                  "id": 128893,
+                  "title": {
+                    "romaji": "Jigokuraku",
+                    "english": "Hell\u2019s Paradise",
+                    "native": "\u5730\u7344\u697D"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx128893-Gc2t8b8M0mVu.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx128893-Gc2t8b8M0mVu.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 80
+                },
+                {
+                  "id": 166613,
+                  "title": {
+                    "romaji": "Jigokuraku 2nd Season",
+                    "english": "Hell\u2019s Paradise Season 2",
+                    "native": "\u5730\u7344\u697D \u7B2C\u4E8C\u671F"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx166613-uHB8q3D4qbon.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx166613-uHB8q3D4qbon.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 82
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 122064,
+                "name": {
+                  "full": "Yuuichi Katagiri",
+                  "native": "\u7247\u5207\u53CB\u4E00",
+                  "userPreferred": "Yuuichi Katagiri"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b122064-p5x9pgsdjj4W.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b122064-p5x9pgsdjj4W.jpg"
+                },
+                "favourites": 4382
+              },
+              "role": "MAIN",
+              "media": [
+                {
+                  "id": 141014,
+                  "title": {
+                    "romaji": "Tomodachi Game",
+                    "english": "Tomodachi Game",
+                    "native": "\u30C8\u30E2\u30C0\u30C1\u30B2\u30FC\u30E0"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx141014-bTWr7TtS0wt9.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx141014-bTWr7TtS0wt9.jpg"
+                  },
+                  "format": "ONA",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 76
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 158734,
+                "name": {
+                  "full": "Mash Burnedead",
+                  "native": "\u30DE\u30C3\u30B7\u30E5\u30FB\u30D0\u30FC\u30F3\u30C7\u30C3\u30C9",
+                  "userPreferred": "Mash Burnedead"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b158734-k8FAVIyXKdW1.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b158734-k8FAVIyXKdW1.jpg"
+                },
+                "favourites": 3560
+              },
+              "role": "MAIN",
+              "media": [
+                {
+                  "id": 151801,
+                  "title": {
+                    "romaji": "MASHLE",
+                    "english": "MASHLE: MAGIC AND MUSCLES",
+                    "native": "\u30DE\u30C3\u30B7\u30E5\u30EB-MASHLE-"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx151801-XxVf22Le6C8o.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx151801-XxVf22Le6C8o.png"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 76
+                },
+                {
+                  "id": 166610,
+                  "title": {
+                    "romaji": "MASHLE: Kami Shinkakusha Kouho Senbatsu Shiken-hen",
+                    "english": "MASHLE: MAGIC AND MUSCLES Season 2",
+                    "native": "\u30DE\u30C3\u30B7\u30E5\u30EB-MASHLE- \u795E\u899A\u8005\u5019\u88DC\u9078\u629C\u8A66\u9A13\u7DE8"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx166610-S5q7V2v5zdDK.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx166610-S5q7V2v5zdDK.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 78
+                },
+                {
+                  "id": 177704,
+                  "title": {
+                    "romaji": "MASHLE: Sanma Taisou Shinkakusha Saishuu Shiken-hen",
+                    "english": null,
+                    "native": "\u30DE\u30C3\u30B7\u30E5\u30EB-MASHLE- \u4E09\u9B54\u5BFE\u4E89\u795E\u899A\u8005\u6700\u7D42\u8A66\u9A13\u7DE8"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx177704-y10Nw7MUXCHD.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx177704-y10Nw7MUXCHD.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "NOT_YET_RELEASED",
+                  "averageScore": null
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 281109,
+                "name": {
+                  "full": "Yoshiki Tsujinaka",
+                  "native": "\u8FBB\u4E2D\u4F73\u7D00",
+                  "userPreferred": "Yoshiki Tsujinaka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b281109-SRUQVkT7DYyg.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b281109-SRUQVkT7DYyg.jpg"
+                },
+                "favourites": 1581
+              },
+              "role": "MAIN",
+              "media": [
+                {
+                  "id": 177689,
+                  "title": {
+                    "romaji": "Hikaru ga Shinda Natsu",
+                    "english": "The Summer Hikaru Died",
+                    "native": "\u5149\u304C\u6B7B\u3093\u3060\u590F"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx177689-d0mB5nYgdnhi.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx177689-d0mB5nYgdnhi.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 81
+                },
+                {
+                  "id": 199342,
+                  "title": {
+                    "romaji": "Hikaru ga Shinda Natsu 2nd Season",
+                    "english": null,
+                    "native": "\u5149\u304C\u6B7B\u3093\u3060\u590F \u7B2C\u4E8C\u671F"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx199342-T4ESffzfVCB5.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx199342-T4ESffzfVCB5.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "NOT_YET_RELEASED",
+                  "averageScore": null
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 158447,
+                "name": {
+                  "full": "Makoto Edamura",
+                  "native": "\u679D\u6751\u771F\u4EBA",
+                  "userPreferred": "Makoto Edamura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b158447-ZFkig12JOEWg.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b158447-ZFkig12JOEWg.png"
+                },
+                "favourites": 1575
+              },
+              "role": "MAIN",
+              "media": [
+                {
+                  "id": 110349,
+                  "title": {
+                    "romaji": "GREAT PRETENDER",
+                    "english": "Great Pretender",
+                    "native": "GREAT PRETENDER"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx110349-59hhZ9CNHVdk.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx110349-59hhZ9CNHVdk.png"
+                  },
+                  "format": "ONA",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 81
+                },
+                {
+                  "id": 170935,
+                  "title": {
+                    "romaji": "GREAT PRETENDER: razbliuto",
+                    "english": "GREAT PRETENDER razbliuto",
+                    "native": "GREAT PRETENDER razbliuto"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx170935-XkUrGgv0gsL4.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx170935-XkUrGgv0gsL4.jpg"
+                  },
+                  "format": "ONA",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 69
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 151488,
+                "name": {
+                  "full": "Louis Moriarty",
+                  "native": "\u30EB\u30A4\u30B9\u30FB\u30B8\u30A7\u30FC\u30E0\u30BA\u30FB\u30E2\u30EA\u30A2\u30FC\u30C6\u30A3",
+                  "userPreferred": "Louis James Moriarty"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b151488-73KDsEi7BJGl.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b151488-73KDsEi7BJGl.png"
+                },
+                "favourites": 781
+              },
+              "role": "MAIN",
+              "media": [
+                {
+                  "id": 114124,
+                  "title": {
+                    "romaji": "Yuukoku no Moriarty",
+                    "english": "Moriarty the Patriot",
+                    "native": "\u6182\u56FD\u306E\u30E2\u30EA\u30A2\u30FC\u30C6\u30A3"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx114124-def92qPuIVeK.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx114124-def92qPuIVeK.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 80
+                },
+                {
+                  "id": 124858,
+                  "title": {
+                    "romaji": "Yuukoku no Moriarty Part 2",
+                    "english": "Moriarty the Patriot Part 2",
+                    "native": "\u6182\u56FD\u306E\u30E2\u30EA\u30A2\u30FC\u30C6\u30A32\u30AF\u30FC\u30EB"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx124858-96RtyVSgUYnm.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx124858-96RtyVSgUYnm.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 82
+                },
+                {
+                  "id": 138700,
+                  "title": {
+                    "romaji": "Yuukoku no Moriarty OVA",
+                    "english": "Moriarty the Patriot OVA",
+                    "native": "\u6182\u56FD\u306E\u30E2\u30EA\u30A2\u30FC\u30C6\u30A3 OVA"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx138700-fQTEeNFjiCgp.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx138700-fQTEeNFjiCgp.jpg"
+                  },
+                  "format": "OVA",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 77
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 133626,
+                "name": {
+                  "full": "Okuto Nakamura",
+                  "native": "\u4E2D\u6751\u7537\u4E45\u6597",
+                  "userPreferred": "Okuto Nakamura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/n133626-aKeTuqosmaxi.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/n133626-aKeTuqosmaxi.jpg"
+                },
+                "favourites": 711
+              },
+              "role": "MAIN",
+              "media": [
+                {
+                  "id": 180228,
+                  "title": {
+                    "romaji": "Ganbare! Nakamura-kun!!",
+                    "english": "Go For It, Nakamura-kun!!",
+                    "native": "\u30AC\u30F3\u30D0\u30EC\uFF01\u4E2D\u6751\u304F\u3093\uFF01\uFF01"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx180228-MuZ7adbGiYVj.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx180228-MuZ7adbGiYVj.jpg"
+                  },
+                  "format": "ONA",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 81
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 151351,
+                "name": {
+                  "full": "Yukiya Himuro",
+                  "native": "\u6C37\u5BA4\u96EA\u5F25",
+                  "userPreferred": "Yukiya Himuro"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b151351-sCRrYyBxuuRa.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b151351-sCRrYyBxuuRa.png"
+                },
+                "favourites": 624
+              },
+              "role": "MAIN",
+              "media": [
+                {
+                  "id": 151252,
+                  "title": {
+                    "romaji": "Koori Zokusei Danshi to Cool na Douryou Joshi",
+                    "english": "The Ice Guy and His Cool Female Colleague",
+                    "native": "\u6C37\u5C5E\u6027\u7537\u5B50\u3068\u30AF\u30FC\u30EB\u306A\u540C\u50DA\u5973\u5B50"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx151252-ywrMmJG1Loc3.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx151252-ywrMmJG1Loc3.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 72
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 204860,
+                "name": {
+                  "full": "Ragna",
+                  "native": "\u30E9\u30B0\u30CA",
+                  "userPreferred": "Ragna"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b204860-aX4343KdLZBr.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b204860-aX4343KdLZBr.jpg"
+                },
+                "favourites": 497
+              },
+              "role": "MAIN",
+              "media": [
+                {
+                  "id": 146493,
+                  "title": {
+                    "romaji": "Ragna Crimson",
+                    "english": "Ragna Crimson",
+                    "native": "\u30E9\u30B0\u30CA\u30AF\u30EA\u30E0\u30BE\u30F3"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx146493-bThyDJ4ZmbfV.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx146493-bThyDJ4ZmbfV.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 74
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 218647,
+                "name": {
+                  "full": "Kyou Kasahara",
+                  "native": "\u7B20\u539F\u5321",
+                  "userPreferred": "Kyou Kasahara"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b218647-A2ngPlh7Yucn.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b218647-A2ngPlh7Yucn.png"
+                },
+                "favourites": 474
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 170942,
+                  "title": {
+                    "romaji": "Ao no Hako",
+                    "english": "Blue Box",
+                    "native": "\u30A2\u30AA\u306E\u30CF\u30B3"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx170942-KKcLfQzV57nG.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx170942-KKcLfQzV57nG.jpg"
+                  },
+                  "format": "ONA",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 81
+                },
+                {
+                  "id": 189123,
+                  "title": {
+                    "romaji": "Ao no Hako Season 2",
+                    "english": "Blue Box Season 2",
+                    "native": "\u30A2\u30AA\u306E\u30CF\u30B3 Season\uFF12"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx189123-0secXELIhkIW.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx189123-0secXELIhkIW.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "NOT_YET_RELEASED",
+                  "averageScore": null
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 166979,
+                "name": {
+                  "full": "Qing Mu",
+                  "native": "\u6155\u60C5",
+                  "userPreferred": "Qing Mu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b166979-faflbMBhHDyc.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b166979-faflbMBhHDyc.png"
+                },
+                "favourites": 329
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 113260,
+                  "title": {
+                    "romaji": "Tian Guan Ci Fu",
+                    "english": "Heaven Official\u0027s Blessing",
+                    "native": "\u5929\u5B98\u8D50\u798F"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx113260-4LPAAKCSJe8f.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx113260-4LPAAKCSJe8f.jpg"
+                  },
+                  "format": "ONA",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 83
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 172523,
+                "name": {
+                  "full": "Saki Hananoi",
+                  "native": "\u82B1\u91CE\u4E95",
+                  "userPreferred": "Saki Hananoi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b172523-pV7Ji4HsVEnd.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b172523-pV7Ji4HsVEnd.png"
+                },
+                "favourites": 315
+              },
+              "role": "MAIN",
+              "media": [
+                {
+                  "id": 165855,
+                  "title": {
+                    "romaji": "Hananoi-kun to Koi no Yamai",
+                    "english": "A Condition Called Love",
+                    "native": "\u82B1\u91CE\u4E95\u304F\u3093\u3068\u604B\u306E\u75C5"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx165855-uJ0Hq5EFUlz8.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx165855-uJ0Hq5EFUlz8.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 66
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 290887,
+                "name": {
+                  "full": "Ranze Kurona",
+                  "native": "\u9ED2\u540D\u862D\u4E16",
+                  "userPreferred": "Ranze Kurona"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b290887-0J5y1MgB21PX.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b290887-0J5y1MgB21PX.png"
+                },
+                "favourites": 299
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 176317,
+                  "title": {
+                    "romaji": "Blue Lock: EPISODE Nagi - Additional Time!",
+                    "english": null,
+                    "native": "\u30D6\u30EB\u30FC\u30ED\u30C3\u30AF -EPISODE \u51EA- \u3042\u3067\u3043\u3057\u3087\u306A\u308B\u30FB\u305F\u3044\u3080\uFF01"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx176317-abBCvCWILpiv.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx176317-abBCvCWILpiv.png"
+                  },
+                  "format": "SPECIAL",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 68
+                },
+                {
+                  "id": 163147,
+                  "title": {
+                    "romaji": "Blue Lock: EPISODE Nagi",
+                    "english": "BLUE LOCK THE MOVIE -EPISODE NAGI-",
+                    "native": "\u30D6\u30EB\u30FC\u30ED\u30C3\u30AF -EPISODE \u51EA-"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx163147-yyu5aEoO96Jg.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx163147-yyu5aEoO96Jg.jpg"
+                  },
+                  "format": "MOVIE",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 73
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 157294,
+                "name": {
+                  "full": "Hayate Ichikura",
+                  "native": "\u4E00\u5009\u98AF",
+                  "userPreferred": "Hayate Ichikura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b157294-M5AuAhu5i7w3.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b157294-M5AuAhu5i7w3.png"
+                },
+                "favourites": 233
+              },
+              "role": "MAIN",
+              "media": [
+                {
+                  "id": 147885,
+                  "title": {
+                    "romaji": "Cool Doji Danshi",
+                    "english": "Play It Cool, Guys",
+                    "native": "\u30AF\u30FC\u30EB\u30C9\u30B8\u7537\u5B50"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx147885-RuqC9lZH9ao6.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx147885-RuqC9lZH9ao6.jpg"
+                  },
+                  "format": "TV_SHORT",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 78
+                },
+                {
+                  "id": 162716,
+                  "title": {
+                    "romaji": "Puchi Cool Doji Danshi no Hito Koma",
+                    "english": null,
+                    "native": "\u3077\u3061\u30AF\u30FC\u30EB\u30C9\u30B8\u7537\u5B50\u306E\u3072\u3068\u30B3\u30DE"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx162716-jWcZNvmkdSzn.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx162716-jWcZNvmkdSzn.jpg"
+                  },
+                  "format": "ONA",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 53
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 195304,
+                "name": {
+                  "full": "Deuce Spade",
+                  "native": "\u30C7\u30E5\u30FC\u30B9\u30FB\u30B9\u30DA\u30FC\u30C9",
+                  "userPreferred": "Deuce Spade"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b195304-NsJRmpypc7Im.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b195304-NsJRmpypc7Im.png"
+                },
+                "favourites": 168
+              },
+              "role": "MAIN",
+              "media": [
+                {
+                  "id": 140291,
+                  "title": {
+                    "romaji": "Disney Twisted-Wonderland: THE ANIMATION - Season 1: EPISODE of HEARTSLABYUL",
+                    "english": "Disney Twisted-Wonderland: The Animation",
+                    "native": "\u30C7\u30A3\u30BA\u30CB\u30FC \u30C4\u30A4\u30B9\u30C6\u30C3\u30C9\u30EF\u30F3\u30C0\u30FC\u30E9\u30F3\u30C9 \u30B6 \u30A2\u30CB\u30E1\u30FC\u30B7\u30E7\u30F3 \u30B7\u30FC\u30BA\u30F31\u300C\u30A8\u30D4\u30BD\u30FC\u30C9 \u30AA\u30D6 \u30CF\u30FC\u30C4\u30E9\u30D3\u30E5\u30EB\u300D"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx140291-RAwYjwC9vWDR.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx140291-RAwYjwC9vWDR.png"
+                  },
+                  "format": "ONA",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 68
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 72097,
+                "name": {
+                  "full": "Bazz-B",
+                  "native": "\u30D0\u30BA\u30D3\u30FC",
+                  "userPreferred": "Bazz-B"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b72097-JfuCqBWH3eHG.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b72097-JfuCqBWH3eHG.png"
+                },
+                "favourites": 161
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 169755,
+                  "title": {
+                    "romaji": "BLEACH: Sennen Kessen-hen - Soukoku-tan",
+                    "english": "BLEACH: Thousand-Year Blood War - The Conflict",
+                    "native": "BLEACH \u5343\u5E74\u8840\u6226\u7BC7-\u76F8\u524B\u8B5A-"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx169755-Rqb7MjnzdTc6.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx169755-Rqb7MjnzdTc6.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 86
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 211472,
+                "name": {
+                  "full": "Kiyoshi Adachi",
+                  "native": "\u5B89\u9054\u6E05",
+                  "userPreferred": "Kiyoshi Adachi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b211472-CjXtCjSbYi7d.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b211472-CjXtCjSbYi7d.png"
+                },
+                "favourites": 160
+              },
+              "role": "MAIN",
+              "media": [
+                {
+                  "id": 167087,
+                  "title": {
+                    "romaji": "30-sai made Doutei da to Mahou Tsukai ni Nareru Rashii",
+                    "english": "Cherry Magic! Thirty Years of Virginity Can Make You a Wizard?!",
+                    "native": "30\u6B73\u307E\u3067\u7AE5\u8C9E\u3060\u3068\u9B54\u6CD5\u4F7F\u3044\u306B\u306A\u308C\u308B\u3089\u3057\u3044"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx167087-Hf3MjsSVIerP.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx167087-Hf3MjsSVIerP.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 76
+                },
+                {
+                  "id": 176470,
+                  "title": {
+                    "romaji": "30-sai made Doutei da to Mahou Tsukai ni Nareru Rashii: Tokubetsu-hen",
+                    "english": null,
+                    "native": "30\u6B73\u307E\u3067\u7AE5\u8C9E\u3060\u3068\u9B54\u6CD5\u4F7F\u3044\u306B\u306A\u308C\u308B\u3089\u3057\u3044 \u7279\u5225\u7DE8"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx176470-PAF5APQWvjfK.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx176470-PAF5APQWvjfK.png"
+                  },
+                  "format": "MOVIE",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 68
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 225131,
+                "name": {
+                  "full": "Asakaze",
+                  "native": "\u671D\u98A8",
+                  "userPreferred": "Asakaze"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b225131-qDAWwhXpYicX.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b225131-qDAWwhXpYicX.png"
+                },
+                "favourites": 86
+              },
+              "role": "MAIN",
+              "media": [
+                {
+                  "id": 132126,
+                  "title": {
+                    "romaji": "Sonny Boy",
+                    "english": "Sonny Boy",
+                    "native": "Sonny Boy"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx132126-4ugVjXMQLAps.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx132126-4ugVjXMQLAps.png"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 78
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 258200,
+                "name": {
+                  "full": "Yuuji",
+                  "native": "\u30E6\u30FC\u30B8",
+                  "userPreferred": "Yuuji"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b258200-ZwWIaTMx5m1O.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b258200-ZwWIaTMx5m1O.png"
+                },
+                "favourites": 86
+              },
+              "role": "MAIN",
+              "media": [
+                {
+                  "id": 129192,
+                  "title": {
+                    "romaji": "Tensei Kenja no Isekai Life: Daini no Shokugyou wo Ete, Sekai Saikyou ni Narimashita",
+                    "english": "My Isekai Life: I Gained a Second Character Class and Became the Strongest Sage in the World!",
+                    "native": "\u8EE2\u751F\u8CE2\u8005\u306E\u7570\u4E16\u754C\u30E9\u30A4\u30D5 \uFF5E\u7B2C\u4E8C\u306E\u8077\u696D\u3092\u5F97\u3066\u3001\u4E16\u754C\u6700\u5F37\u306B\u306A\u308A\u307E\u3057\u305F\uFF5E"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx129192-p9qQ3GNgoqnS.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx129192-p9qQ3GNgoqnS.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 61
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 241554,
+                "name": {
+                  "full": "Tomoya Sugisaki",
+                  "native": "\u6749\u5D0E\u53CB\u4E5F",
+                  "userPreferred": "Tomoya Sugisaki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b241554-gOsyLoteT5Q8.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b241554-gOsyLoteT5Q8.png"
+                },
+                "favourites": 76
+              },
+              "role": "MAIN",
+              "media": [
+                {
+                  "id": 130050,
+                  "title": {
+                    "romaji": "Summer Ghost",
+                    "english": "Summer Ghost",
+                    "native": "\u30B5\u30DE\u30FC\u30B4\u30FC\u30B9\u30C8"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx130050-rXTPVJ9UGN8Y.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx130050-rXTPVJ9UGN8Y.jpg"
+                  },
+                  "format": "MOVIE",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 78
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 288221,
+                "name": {
+                  "full": "Apart",
+                  "native": "\u30A2\u30D1\u30FC\u30C8",
+                  "userPreferred": "Apart"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b288221-esQQ0LlGrS0D.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b288221-esQQ0LlGrS0D.jpg"
+                },
+                "favourites": 52
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 177709,
+                  "title": {
+                    "romaji": "SAKAMOTO DAYS",
+                    "english": "SAKAMOTO DAYS",
+                    "native": "SAKAMOTO DAYS"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx177709-e5Qx6RlsBgD5.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx177709-e5Qx6RlsBgD5.png"
+                  },
+                  "format": "ONA",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 76
+                },
+                {
+                  "id": 184237,
+                  "title": {
+                    "romaji": "SAKAMOTO DAYS Part 2",
+                    "english": "SAKAMOTO DAYS Part 2",
+                    "native": "SAKAMOTO DAYS \u7B2C\uFF12\u30AF\u30FC\u30EB"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx184237-OJAksU2fsIPx.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx184237-OJAksU2fsIPx.jpg"
+                  },
+                  "format": "ONA",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 79
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 2954,
+                "name": {
+                  "full": "Yuu Ominae",
+                  "native": "\u5FA1\u795E\u82D7\u512A",
+                  "userPreferred": "Yuu Ominae"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b2954-hkK0tB0VXKCL.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b2954-hkK0tB0VXKCL.png"
+                },
+                "favourites": 50
+              },
+              "role": "MAIN",
+              "media": [
+                {
+                  "id": 108353,
+                  "title": {
+                    "romaji": "SPRIGGAN (ONA)",
+                    "english": "SPRIGGAN (ONA)",
+                    "native": "\u30B9\u30D7\u30EA\u30AC\u30F3 (ONA)"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx108353-f43dOeHJ84r4.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx108353-f43dOeHJ84r4.jpg"
+                  },
+                  "format": "ONA",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 67
+                }
+              ]
+            }
+          ]
+        },
+        "staffMedia": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 147885,
+                "title": {
+                  "romaji": "Cool Doji Danshi",
+                  "english": "Play It Cool, Guys",
+                  "native": "\u30AF\u30FC\u30EB\u30C9\u30B8\u7537\u5B50"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx147885-RuqC9lZH9ao6.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx147885-RuqC9lZH9ao6.jpg"
+                },
+                "format": "TV_SHORT",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 78,
+                "favourites": 1242,
+                "popularity": 40164,
+                "startDate": {
+                  "year": 2022,
+                  "month": 10,
+                  "day": 11
+                },
+                "mediaListEntry": null
+              },
+              "staffRole": "Theme Song Performance (ED1, ED2)"
+            },
+            {
+              "node": {
+                "id": 167087,
+                "title": {
+                  "romaji": "30-sai made Doutei da to Mahou Tsukai ni Nareru Rashii",
+                  "english": "Cherry Magic! Thirty Years of Virginity Can Make You a Wizard?!",
+                  "native": "30\u6B73\u307E\u3067\u7AE5\u8C9E\u3060\u3068\u9B54\u6CD5\u4F7F\u3044\u306B\u306A\u308C\u308B\u3089\u3057\u3044"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx167087-Hf3MjsSVIerP.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx167087-Hf3MjsSVIerP.jpg"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 76,
+                "favourites": 1218,
+                "popularity": 36498,
+                "startDate": {
+                  "year": 2024,
+                  "month": 1,
+                  "day": 11
+                },
+                "mediaListEntry": null
+              },
+              "staffRole": "Theme Song Performance (ED)"
+            },
+            {
+              "node": {
+                "id": 178052,
+                "title": {
+                  "romaji": "Princess-Session Orchestra",
+                  "english": null,
+                  "native": "\u30D5\u309A\u30EA\u30F3\u30BB\u30C3\u30B7\u30E7\u30F3\u30FB\u30AA\u30FC\u30B1\u30B9\u30C8\u30E9"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx178052-igWygf0ZG1gl.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx178052-igWygf0ZG1gl.jpg"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 68,
+                "favourites": 100,
+                "popularity": 5333,
+                "startDate": {
+                  "year": 2025,
+                  "month": 4,
+                  "day": 6
+                },
+                "mediaListEntry": null
+              },
+              "staffRole": "Insert Song Performance (\u0022Shimei wa Akaki Serenade -Ver. First Blood-\u0022; ep 12)"
+            },
+            {
+              "node": {
+                "id": 178052,
+                "title": {
+                  "romaji": "Princess-Session Orchestra",
+                  "english": null,
+                  "native": "\u30D5\u309A\u30EA\u30F3\u30BB\u30C3\u30B7\u30E7\u30F3\u30FB\u30AA\u30FC\u30B1\u30B9\u30C8\u30E9"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx178052-igWygf0ZG1gl.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx178052-igWygf0ZG1gl.jpg"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 68,
+                "favourites": 100,
+                "popularity": 5333,
+                "startDate": {
+                  "year": 2025,
+                  "month": 4,
+                  "day": 6
+                },
+                "mediaListEntry": null
+              },
+              "staffRole": "Insert Song Performance (\u0022Escort Diamond\u0022; ep 13)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

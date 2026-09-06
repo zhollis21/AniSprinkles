@@ -1,0 +1,501 @@
+﻿{
+  "operationName": "MediaRecommendationsPage",
+  "variables": {
+    "id": 189046,
+    "page": 1,
+    "sort": [
+      "RATING_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "4c3bbb02d06d",
+  "recordedAt": "2026-09-06T05:25:19.2471738+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "recommendations": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "nodes": [
+            {
+              "rating": 148,
+              "mediaRecommendation": {
+                "id": 9253,
+                "title": {
+                  "romaji": "Steins;Gate",
+                  "english": "Steins;Gate",
+                  "native": "\u30B7\u30E5\u30BF\u30A4\u30F3\u30BA\u30FB\u30B2\u30FC\u30C8"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx9253-tIUXF2gfU8Sg.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx9253-tIUXF2gfU8Sg.jpg"
+                },
+                "averageScore": 89,
+                "mediaListEntry": {
+                  "id": 593364478,
+                  "status": "COMPLETED",
+                  "progress": 24,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 94,
+              "mediaRecommendation": {
+                "id": 129201,
+                "title": {
+                  "romaji": "Summer Time Render",
+                  "english": "Summer Time Rendering",
+                  "native": "\u30B5\u30DE\u30FC\u30BF\u30A4\u30E0\u30EC\u30F3\u30C0"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx129201-HJBauga2be8I.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx129201-HJBauga2be8I.png"
+                },
+                "averageScore": 83,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 60,
+              "mediaRecommendation": {
+                "id": 21127,
+                "title": {
+                  "romaji": "Steins;Gate 0",
+                  "english": "Steins;Gate 0",
+                  "native": "\u30B7\u30E5\u30BF\u30A4\u30F3\u30BA\u30FB\u30B2\u30FC\u30C8 \u30BC\u30ED"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21127-7ARWZkDXKiiD.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21127-7ARWZkDXKiiD.jpg"
+                },
+                "averageScore": 84,
+                "mediaListEntry": {
+                  "id": 593351107,
+                  "status": "DROPPED",
+                  "progress": 0,
+                  "score": 0
+                }
+              }
+            },
+            {
+              "rating": 48,
+              "mediaRecommendation": {
+                "id": 21234,
+                "title": {
+                  "romaji": "Boku dake ga Inai Machi",
+                  "english": "ERASED",
+                  "native": "\u50D5\u3060\u3051\u304C\u3044\u306A\u3044\u8857"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21234-XmqW39aQ9o7O.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21234-XmqW39aQ9o7O.jpg"
+                },
+                "averageScore": 81,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 37,
+              "mediaRecommendation": {
+                "id": 146065,
+                "title": {
+                  "romaji": "Mushoku Tensei II: Isekai Ittara Honki Dasu",
+                  "english": "Mushoku Tensei: Jobless Reincarnation Season 2",
+                  "native": "\u7121\u8077\u8EE2\u751F\u2161 \uFF5E\u7570\u4E16\u754C\u884C\u3063\u305F\u3089\u672C\u6C17\u3060\u3059\uFF5E"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx146065-IjirxRK26O03.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx146065-IjirxRK26O03.png"
+                },
+                "averageScore": 81,
+                "mediaListEntry": {
+                  "id": 593234680,
+                  "status": "COMPLETED",
+                  "progress": 13,
+                  "score": 10
+                }
+              }
+            },
+            {
+              "rating": 36,
+              "mediaRecommendation": {
+                "id": 178789,
+                "title": {
+                  "romaji": "Mushoku Tensei III: Isekai Ittara Honki Dasu",
+                  "english": "Mushoku Tensei: Jobless Reincarnation Season 3",
+                  "native": "\u7121\u8077\u8EE2\u751F\u2162 \uFF5E\u7570\u4E16\u754C\u884C\u3063\u305F\u3089\u672C\u6C17\u3060\u3059\uFF5E"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx178789-hNXjKFzUq7mk.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx178789-hNXjKFzUq7mk.jpg"
+                },
+                "averageScore": 84,
+                "mediaListEntry": {
+                  "id": 593234122,
+                  "status": "CURRENT",
+                  "progress": 9,
+                  "score": 0
+                }
+              }
+            },
+            {
+              "rating": 21,
+              "mediaRecommendation": {
+                "id": 11577,
+                "title": {
+                  "romaji": "Steins;Gate: Fuka Ryouiki no D\u00E9j\u00E0 vu",
+                  "english": "Steins;Gate The Movie \u2013 Load Region of D\u00E9j\u00E0 Vu",
+                  "native": "\u5287\u5834\u7248 \u30B7\u30E5\u30BF\u30A4\u30F3\u30BA\u30B2\u30FC\u30C8 \u8CA0\u8377\u9818\u57DF\u306E\u30C7\u30B8\u30E3\u30F4"
+                },
+                "format": "MOVIE",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx11577-rhqsxLOAge4f.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx11577-rhqsxLOAge4f.png"
+                },
+                "averageScore": 82,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 17,
+              "mediaRecommendation": {
+                "id": 108632,
+                "title": {
+                  "romaji": "Re:Zero kara Hajimeru Isekai Seikatsu 2nd Season",
+                  "english": "Re:ZERO -Starting Life in Another World- Season 2",
+                  "native": "Re:\u30BC\u30ED\u304B\u3089\u59CB\u3081\u308B\u7570\u4E16\u754C\u751F\u6D3B 2nd Season"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx108632-lQWnmw7XaNOK.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx108632-lQWnmw7XaNOK.jpg"
+                },
+                "averageScore": 83,
+                "mediaListEntry": {
+                  "id": 593363869,
+                  "status": "COMPLETED",
+                  "progress": 13,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 8,
+              "mediaRecommendation": {
+                "id": 101280,
+                "title": {
+                  "romaji": "Tensei Shitara Slime Datta Ken",
+                  "english": "That Time I Got Reincarnated as a Slime",
+                  "native": "\u8EE2\u751F\u3057\u305F\u3089\u30B9\u30E9\u30A4\u30E0\u3060\u3063\u305F\u4EF6"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx101280-tDxCVJm714nt.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101280-tDxCVJm714nt.jpg"
+                },
+                "averageScore": 80,
+                "mediaListEntry": {
+                  "id": 593364344,
+                  "status": "COMPLETED",
+                  "progress": 24,
+                  "score": 9
+                }
+              }
+            },
+            {
+              "rating": 8,
+              "mediaRecommendation": {
+                "id": 185116,
+                "title": {
+                  "romaji": "Gnosia",
+                  "english": "GNOSIA",
+                  "native": "\u30B0\u30CE\u30FC\u30B7\u30A2"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx185116-DIFRjiMgz1IS.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx185116-DIFRjiMgz1IS.jpg"
+                },
+                "averageScore": 77,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 8,
+              "mediaRecommendation": {
+                "id": 21355,
+                "title": {
+                  "romaji": "Re:Zero kara Hajimeru Isekai Seikatsu",
+                  "english": "Re:ZERO -Starting Life in Another World-",
+                  "native": "Re:\u30BC\u30ED\u304B\u3089\u59CB\u3081\u308B\u7570\u4E16\u754C\u751F\u6D3B"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21355-wRVUrGxpvIQQ.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21355-wRVUrGxpvIQQ.jpg"
+                },
+                "averageScore": 81,
+                "mediaListEntry": {
+                  "id": 593363865,
+                  "status": "COMPLETED",
+                  "progress": 25,
+                  "score": 10
+                }
+              }
+            },
+            {
+              "rating": 7,
+              "mediaRecommendation": {
+                "id": 30,
+                "title": {
+                  "romaji": "Shin Seiki Evangelion",
+                  "english": "Neon Genesis Evangelion",
+                  "native": "\u65B0\u4E16\u7D00\u30A8\u30F4\u30A1\u30F3\u30B2\u30EA\u30AA\u30F3"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx30-AI1zr74Dh4ye.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx30-AI1zr74Dh4ye.jpg"
+                },
+                "averageScore": 83,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 2,
+              "mediaRecommendation": {
+                "id": 21202,
+                "title": {
+                  "romaji": "Kono Subarashii Sekai ni Shukufuku wo!",
+                  "english": "KONOSUBA -God\u0027s blessing on this wonderful world!",
+                  "native": "\u3053\u306E\u7D20\u6674\u3089\u3057\u3044\u4E16\u754C\u306B\u795D\u798F\u3092\uFF01"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21202-mPOr80AEjUcZ.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21202-mPOr80AEjUcZ.png"
+                },
+                "averageScore": 79,
+                "mediaListEntry": {
+                  "id": 593363892,
+                  "status": "COMPLETED",
+                  "progress": 10,
+                  "score": 10
+                }
+              }
+            },
+            {
+              "rating": 2,
+              "mediaRecommendation": {
+                "id": 182205,
+                "title": {
+                  "romaji": "Tensei Shitara Slime Datta Ken 4th Season",
+                  "english": "That Time I Got Reincarnated as a Slime Season 4",
+                  "native": "\u8EE2\u751F\u3057\u305F\u3089\u30B9\u30E9\u30A4\u30E0\u3060\u3063\u305F\u4EF6 \u7B2C4\u671F"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx182205-q2AeO1owuQbO.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx182205-q2AeO1owuQbO.jpg"
+                },
+                "averageScore": 83,
+                "mediaListEntry": {
+                  "id": 593351121,
+                  "status": "CURRENT",
+                  "progress": 14,
+                  "score": 0
+                }
+              }
+            },
+            {
+              "rating": 1,
+              "mediaRecommendation": {
+                "id": 114745,
+                "title": {
+                  "romaji": "Made in Abyss: Retsujitsu no Ougonkyou",
+                  "english": "Made in Abyss: The Golden City of the Scorching Sun",
+                  "native": "\u30E1\u30A4\u30C9\u30A4\u30F3\u30A2\u30D3\u30B9 \u70C8\u65E5\u306E\u9EC4\u91D1\u90F7"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx114745-fBgTC12T7IAy.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx114745-fBgTC12T7IAy.jpg"
+                },
+                "averageScore": 85,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 1,
+              "mediaRecommendation": {
+                "id": 128546,
+                "title": {
+                  "romaji": "Vivy: Fluorite Eye\u2019s Song",
+                  "english": "Vivy -Fluorite Eye\u0027s Song-",
+                  "native": "Vivy -Fluorite Eye\u2019s Song-"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx128546-UIwyhuhjxmL0.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx128546-UIwyhuhjxmL0.jpg"
+                },
+                "averageScore": 82,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 1,
+              "mediaRecommendation": {
+                "id": 13357,
+                "title": {
+                  "romaji": "High School DxD Specials",
+                  "english": "High School DxD: Fantasy Jiggles Unleashed",
+                  "native": "\u30CF\u30A4\u30B9\u30AF\u30FC\u30EBD\u00D7D\u30B9\u30DA\u30B7\u30E3\u30EB"
+                },
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/13357.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/13357.jpg"
+                },
+                "averageScore": 68,
+                "mediaListEntry": {
+                  "id": 593365680,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "score": 0
+                }
+              }
+            },
+            {
+              "rating": 0,
+              "mediaRecommendation": {
+                "id": 9756,
+                "title": {
+                  "romaji": "Mahou Shoujo Madoka\u2606Magica",
+                  "english": "Puella Magi Madoka Magica",
+                  "native": "\u9B54\u6CD5\u5C11\u5973\u307E\u3069\u304B\u2606\u30DE\u30AE\u30AB"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx9756-QnUGwlwwnsuN.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx9756-QnUGwlwwnsuN.jpg"
+                },
+                "averageScore": 83,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 0,
+              "mediaRecommendation": {
+                "id": 173172,
+                "title": {
+                  "romaji": "Dorohedoro Season 2",
+                  "english": "Dorohedoro Season 2",
+                  "native": "\u30C9\u30ED\u30D8\u30C9\u30ED Season 2"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx173172-404XnuOS0DhR.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx173172-404XnuOS0DhR.jpg"
+                },
+                "averageScore": 83,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": -1,
+              "mediaRecommendation": {
+                "id": 104578,
+                "title": {
+                  "romaji": "Shingeki no Kyojin Season 3 Part 2",
+                  "english": "Attack on Titan Season 3 Part 2",
+                  "native": "\u9032\u6483\u306E\u5DE8\u4EBA Season\uFF13 Part.2"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx104578-k61nx3LPjvgd.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx104578-k61nx3LPjvgd.jpg"
+                },
+                "averageScore": 90,
+                "mediaListEntry": {
+                  "id": 593364173,
+                  "status": "COMPLETED",
+                  "progress": 10,
+                  "score": 10
+                }
+              }
+            },
+            {
+              "rating": -1,
+              "mediaRecommendation": {
+                "id": 114446,
+                "title": {
+                  "romaji": "Higurashi no Naku Koro ni Gou",
+                  "english": "Higurashi: When They Cry - GOU",
+                  "native": "\u3072\u3050\u3089\u3057\u306E\u306A\u304F\u9803\u306B\u696D"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx114446-H6uxjVi8wBoo.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx114446-H6uxjVi8wBoo.jpg"
+                },
+                "averageScore": 69,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": -1,
+              "mediaRecommendation": {
+                "id": 131149,
+                "title": {
+                  "romaji": "Higurashi no Naku Koro ni Sotsu",
+                  "english": "Higurashi: When They Cry - SOTSU",
+                  "native": "\u3072\u3050\u3089\u3057\u306E\u306A\u304F\u9803\u306B\u5352"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx131149-Yx4j5dfb3494.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx131149-Yx4j5dfb3494.jpg"
+                },
+                "averageScore": 64,
+                "mediaListEntry": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

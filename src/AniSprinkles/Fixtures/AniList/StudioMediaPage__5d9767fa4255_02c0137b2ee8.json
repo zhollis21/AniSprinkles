@@ -1,0 +1,628 @@
+﻿{
+  "operationName": "StudioMediaPage",
+  "variables": {
+    "id": 11,
+    "page": 2,
+    "sort": [
+      "START_DATE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "02c0137b2ee8",
+  "recordedAt": "2026-09-06T05:32:37.183341+00:00",
+  "response": {
+    "data": {
+      "Studio": {
+        "media": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 2
+          },
+          "nodes": [
+            {
+              "id": 10509,
+              "title": {
+                "romaji": "Hoero Bunbun (Movie)",
+                "english": null,
+                "native": "\u307B\u3048\u308D\u30D6\u30F3\u30D6\u30F3 (Movie)"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b10509-nbUXWoOjnl14.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b10509-nbUXWoOjnl14.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 51,
+              "favourites": 4,
+              "popularity": 310,
+              "startDate": {
+                "year": 1987,
+                "month": 4,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1107,
+              "title": {
+                "romaji": "Youjuu Toshi",
+                "english": "Wicked City",
+                "native": "\u5996\u7363\u90FD\u5E02"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx1107-YRi1VB2Y80g3.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx1107-YRi1VB2Y80g3.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 61,
+              "favourites": 301,
+              "popularity": 20009,
+              "startDate": {
+                "year": 1987,
+                "month": 4,
+                "day": 25
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 113656,
+              "title": {
+                "romaji": "Takarajima (Movie)",
+                "english": "Treasure Island: The Movie",
+                "native": "\u5B9D\u5CF6\u3000\u5287\u5834\u7248"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b113656-BIYQSph8n6Ra.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b113656-BIYQSph8n6Ra.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 59,
+              "favourites": 1,
+              "popularity": 463,
+              "startDate": {
+                "year": 1987,
+                "month": 5,
+                "day": 9
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2999,
+              "title": {
+                "romaji": "Hi no Tori: Yamato-hen",
+                "english": "The Phoenix: Chapter of Yamato",
+                "native": "\u706B\u306E\u9CE5\u30FB\u30E4\u30DE\u30C8\u7DE8"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/2999.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/2999.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 65,
+              "favourites": 13,
+              "popularity": 1264,
+              "startDate": {
+                "year": 1987,
+                "month": 8,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1951,
+              "title": {
+                "romaji": "Meikyuu Monogatari",
+                "english": "Manie Manie: Neo Tokyo",
+                "native": "\u8FF7\u5BAE\u7269\u8A9E"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1951-88OR0FQqiYiL.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1951-88OR0FQqiYiL.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 68,
+              "favourites": 204,
+              "popularity": 14157,
+              "startDate": {
+                "year": 1987,
+                "month": 9,
+                "day": 25
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1973,
+              "title": {
+                "romaji": "X Densha de Ikou",
+                "english": null,
+                "native": "X\u96FB\u8ECA\u3067\u884C\u3053\u3046"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1973-EsznsB6Vrb7Y.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1973-EsznsB6Vrb7Y.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 58,
+              "favourites": 31,
+              "popularity": 2477,
+              "startDate": {
+                "year": 1987,
+                "month": 11,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 4210,
+              "title": {
+                "romaji": "Gokiburi-tachi no Tasogare",
+                "english": "Twilight of the Cockroaches",
+                "native": "\u30B4\u30AD\u30D6\u30EA\u305F\u3061\u306E\u9EC4\u660F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/4210.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/4210.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 51,
+              "favourites": 6,
+              "popularity": 1071,
+              "startDate": {
+                "year": 1987,
+                "month": 11,
+                "day": 21
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 3889,
+              "title": {
+                "romaji": "Junk Boy",
+                "english": "Junk Boy",
+                "native": "\u30B8\u30E3\u30F3\u30AF\u30DC\u30FC\u30A4"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/3889.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/3889.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 54,
+              "favourites": 45,
+              "popularity": 3772,
+              "startDate": {
+                "year": 1987,
+                "month": 12,
+                "day": 16
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2998,
+              "title": {
+                "romaji": "Hi no Tori: Uchuu-hen",
+                "english": "The Phoenix -Space-",
+                "native": "\u706B\u306E\u9CE5\u3000\u5B87\u5B99\u7DE8"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/2998.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/2998.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 66,
+              "favourites": 11,
+              "popularity": 1467,
+              "startDate": {
+                "year": 1987,
+                "month": 12,
+                "day": 21
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 3014,
+              "title": {
+                "romaji": "Ginga Eiyuu Densetsu: Waga Yuku wa Hoshi no Taikai",
+                "english": "Legend of the Galactic Heroes: My Conquest Is the Sea of Stars",
+                "native": "\u9280\u6CB3\u82F1\u96C4\u4F1D\u8AAC: \u308F\u304C\u5F81\u304F\u306F\u661F\u306E\u5927\u6D77"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx3014-HcjYHAbi1bnd.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx3014-HcjYHAbi1bnd.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 76,
+              "favourites": 123,
+              "popularity": 15760,
+              "startDate": {
+                "year": 1988,
+                "month": 2,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 8896,
+              "title": {
+                "romaji": "Natsufuku No Shoujotachi",
+                "english": null,
+                "native": "\u590F\u670D\u306E\u5C11\u5973\u305F\u3061"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/8896.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/8896.jpg"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 54,
+              "favourites": 2,
+              "popularity": 632,
+              "startDate": {
+                "year": 1988,
+                "month": 8,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 12141,
+              "title": {
+                "romaji": "Kaze no Matasaburou",
+                "english": null,
+                "native": "\u98A8\u306E\u53C8\u4E09\u90CE"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b12141-UanTZfXrtAIv.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b12141-UanTZfXrtAIv.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 58,
+              "favourites": 12,
+              "popularity": 909,
+              "startDate": {
+                "year": 1988,
+                "month": 8,
+                "day": 20
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 5918,
+              "title": {
+                "romaji": "Deimos no Hanayome: Ran no Kumikyoku",
+                "english": null,
+                "native": "\u60AA\u9B54\u306E\u82B1\u5AC1 \u862D\u306E\u7D44\u66F2"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/5918.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/5918.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 54,
+              "favourites": 31,
+              "popularity": 2950,
+              "startDate": {
+                "year": 1988,
+                "month": 8,
+                "day": 31
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 8451,
+              "title": {
+                "romaji": "Donguri to Yamaneko",
+                "english": null,
+                "native": "\u3069\u3093\u3050\u308A\u3068\u5C71\u732B"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx8451-4dfrC6UIs9tD.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx8451-4dfrC6UIs9tD.png"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 53,
+              "favourites": 12,
+              "popularity": 638,
+              "startDate": {
+                "year": 1988,
+                "month": 9,
+                "day": 30
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 499,
+              "title": {
+                "romaji": "Makai Toshi Shinjuku",
+                "english": "Demon City Shinjuku",
+                "native": "\u9B54\u754C\u90FD\u5E02\u3008\u65B0\u5BBF\u3009"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx499-nFjM5tWsfVje.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx499-nFjM5tWsfVje.png"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 58,
+              "favourites": 115,
+              "popularity": 9402,
+              "startDate": {
+                "year": 1988,
+                "month": 10,
+                "day": 25
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 9748,
+              "title": {
+                "romaji": "Kaze wo Nuke!",
+                "english": null,
+                "native": "\u98A8\u3092\u629C\u3051!"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx9748-ZL61bwF6tkLD.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx9748-ZL61bwF6tkLD.png"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 53,
+              "favourites": 5,
+              "popularity": 612,
+              "startDate": {
+                "year": 1988,
+                "month": 12,
+                "day": 16
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 7818,
+              "title": {
+                "romaji": "Yousei Ou",
+                "english": "Fairy King",
+                "native": "\u5996\u7CBE\u738B"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/7818.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/7818.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 50,
+              "favourites": 8,
+              "popularity": 1348,
+              "startDate": {
+                "year": 1988,
+                "month": 12,
+                "day": 21
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1879,
+              "title": {
+                "romaji": "MIDNIGHT EYE: Gokuu",
+                "english": "Midnight Eye Goku",
+                "native": "MIDNIGHT EYE \u30B4\u30AF\u30A6"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1879-aXajB1HumIY4.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1879-aXajB1HumIY4.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 62,
+              "favourites": 59,
+              "popularity": 5415,
+              "startDate": {
+                "year": 1989,
+                "month": 1,
+                "day": 27
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 20201,
+              "title": {
+                "romaji": "EASY COOKING ANIMATION: Seishun no Shokutaku",
+                "english": null,
+                "native": "EASY COOKING ANIMATION \u30BB\u30A4\u30B7\u30E5\u30F3\u306E\u98DF\u5353"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/20201.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/20201.jpg"
+              },
+              "format": "TV_SHORT",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": null,
+              "favourites": 1,
+              "popularity": 164,
+              "startDate": {
+                "year": 1989,
+                "month": 7,
+                "day": 5
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 9531,
+              "title": {
+                "romaji": "Tezuka Osamu Monogatari: Boku wa Son Gokuu",
+                "english": "Tezuka Osamu Story: I Am Son-Goku",
+                "native": "\u624B\u585A\u6CBB\u866B\u7269\u8A9E \u307C\u304F\u306F\u5B6B\u609F\u7A7A"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx9531-7hTAAQFKnOSF.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx9531-7hTAAQFKnOSF.jpg"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 58,
+              "favourites": 4,
+              "popularity": 594,
+              "startDate": {
+                "year": 1989,
+                "month": 8,
+                "day": 27
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 691,
+              "title": {
+                "romaji": "YAWARA! a fashionable judo girl!",
+                "english": null,
+                "native": "YAWARA! a fashionable judo girl!"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx691-lRvyZe0jETOt.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx691-lRvyZe0jETOt.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 71,
+              "favourites": 109,
+              "popularity": 8309,
+              "startDate": {
+                "year": 1989,
+                "month": 10,
+                "day": 16
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1880,
+              "title": {
+                "romaji": "MIDNIGHT EYE: Gokuu II",
+                "english": "Midnight Eye Goku II",
+                "native": "MIDNIGHT EYE \u30B4\u30AF\u30A6II"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/1880.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/1880.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 59,
+              "favourites": 25,
+              "popularity": 2778,
+              "startDate": {
+                "year": 1989,
+                "month": 12,
+                "day": 22
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2679,
+              "title": {
+                "romaji": "Teki wa Kaizoku: Neko-tachi no Kyouen",
+                "english": "Galactic Pirates",
+                "native": "\u6575\u306F\u6D77\u8CCA\u3000\uFF5E\u732B\u305F\u3061\u306E\u9957\u5BB4\uFF5E"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx2679-zuoq0TZ7taof.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2679-zuoq0TZ7taof.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 60,
+              "favourites": 10,
+              "popularity": 1189,
+              "startDate": {
+                "year": 1989,
+                "month": 12,
+                "day": 26
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 5554,
+              "title": {
+                "romaji": "Eguchi Hisashi no NANTOKA NARUDESHO!",
+                "english": null,
+                "native": "\u6C5F\u53E3\u5BFF\u53F2\u306ENANTOKA NARUDESHO!"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b5554-G18t8njcL2iC.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b5554-G18t8njcL2iC.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 41,
+              "favourites": 4,
+              "popularity": 1339,
+              "startDate": {
+                "year": 1990,
+                "month": 1,
+                "day": 5
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 9175,
+              "title": {
+                "romaji": "Tsuruhime Ja!",
+                "english": null,
+                "native": "\u3064\u308B\u59EB\u3058\u3083\uFF5E\u3063\uFF01"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/9175.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/9175.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": null,
+              "favourites": 0,
+              "popularity": 172,
+              "startDate": {
+                "year": 1990,
+                "month": 1,
+                "day": 9
+              },
+              "mediaListEntry": null
+            }
+          ]
+        }
+      }
+    }
+  }
+}

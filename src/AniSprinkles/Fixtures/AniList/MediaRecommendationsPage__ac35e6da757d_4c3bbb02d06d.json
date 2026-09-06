@@ -1,0 +1,367 @@
+﻿{
+  "operationName": "MediaRecommendationsPage",
+  "variables": {
+    "id": 178788,
+    "page": 1,
+    "sort": [
+      "RATING_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "4c3bbb02d06d",
+  "recordedAt": "2026-09-06T05:24:03.6378094+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "recommendations": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "nodes": [
+            {
+              "rating": 47,
+              "mediaRecommendation": {
+                "id": 112151,
+                "title": {
+                  "romaji": "Kimetsu no Yaiba: Mugen Ressha-hen",
+                  "english": "Demon Slayer -Kimetsu no Yaiba- The Movie: Mugen Train",
+                  "native": "\u9B3C\u6EC5\u306E\u5203 \u7121\u9650\u5217\u8ECA\u7DE8"
+                },
+                "format": "MOVIE",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx112151-1qlQwPB1RrJe.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx112151-1qlQwPB1RrJe.png"
+                },
+                "averageScore": 84,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 39,
+              "mediaRecommendation": {
+                "id": 128893,
+                "title": {
+                  "romaji": "Jigokuraku",
+                  "english": "Hell\u2019s Paradise",
+                  "native": "\u5730\u7344\u697D"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx128893-Gc2t8b8M0mVu.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx128893-Gc2t8b8M0mVu.jpg"
+                },
+                "averageScore": 80,
+                "mediaListEntry": {
+                  "id": 593364158,
+                  "status": "COMPLETED",
+                  "progress": 13,
+                  "score": 10
+                }
+              }
+            },
+            {
+              "rating": 30,
+              "mediaRecommendation": {
+                "id": 145064,
+                "title": {
+                  "romaji": "Jujutsu Kaisen 2nd Season",
+                  "english": "JUJUTSU KAISEN Season 2",
+                  "native": "\u546A\u8853\u5EFB\u6226 \u7B2C2\u671F"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx145064-hSNRJM03pvv1.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx145064-hSNRJM03pvv1.jpg"
+                },
+                "averageScore": 86,
+                "mediaListEntry": {
+                  "id": 593364143,
+                  "status": "COMPLETED",
+                  "progress": 23,
+                  "score": 10
+                }
+              }
+            },
+            {
+              "rating": 28,
+              "mediaRecommendation": {
+                "id": 171637,
+                "title": {
+                  "romaji": "Rurouni Kenshin: Meiji Kenkaku Romantan - Kyoto Douran",
+                  "english": "Rurouni Kenshin -Kyoto Disturbance-",
+                  "native": "\u308B\u308D\u3046\u306B\u5263\u5FC3 \uFF0D\u660E\u6CBB\u5263\u5BA2\u6D6A\u6F2B\u8B5A\uFF0D\u4EAC\u90FD\u52D5\u4E71"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b171637-h17RbEFtR0rQ.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b171637-h17RbEFtR0rQ.png"
+                },
+                "averageScore": 77,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 23,
+              "mediaRecommendation": {
+                "id": 101347,
+                "title": {
+                  "romaji": "Dororo",
+                  "english": "Dororo",
+                  "native": "\u3069\u308D\u308D"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx101347-TGaDwEYqLfm1.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101347-TGaDwEYqLfm1.jpg"
+                },
+                "averageScore": 81,
+                "mediaListEntry": {
+                  "id": 593365598,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "score": 0
+                }
+              }
+            },
+            {
+              "rating": 7,
+              "mediaRecommendation": {
+                "id": 139630,
+                "title": {
+                  "romaji": "Boku no Hero Academia 6",
+                  "english": "My Hero Academia Season 6",
+                  "native": "\u50D5\u306E\u30D2\u30FC\u30ED\u30FC\u30A2\u30AB\u30C7\u30DF\u30A2\uFF16"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx139630-3v4gxWtNZxLV.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx139630-3v4gxWtNZxLV.jpg"
+                },
+                "averageScore": 82,
+                "mediaListEntry": {
+                  "id": 593364218,
+                  "status": "COMPLETED",
+                  "progress": 25,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 7,
+              "mediaRecommendation": {
+                "id": 185874,
+                "title": {
+                  "romaji": "BLEACH: Sennen Kessen-hen - Kashin-tan",
+                  "english": "BLEACH: Thousand-Year Blood War - The Calamity",
+                  "native": "BLEACH \u5343\u5E74\u8840\u6226\u7BC7-\u798D\u9032\u8B5A-"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx185874-aU3e6tBT6wwA.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx185874-aU3e6tBT6wwA.jpg"
+                },
+                "averageScore": 90,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 6,
+              "mediaRecommendation": {
+                "id": 116674,
+                "title": {
+                  "romaji": "BLEACH: Sennen Kessen-hen",
+                  "english": "BLEACH: Thousand-Year Blood War",
+                  "native": "BLEACH \u5343\u5E74\u8840\u6226\u7BC7"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx116674-p3zK4PUX2Aag.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx116674-p3zK4PUX2Aag.jpg"
+                },
+                "averageScore": 88,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 5,
+              "mediaRecommendation": {
+                "id": 145139,
+                "title": {
+                  "romaji": "Kimetsu no Yaiba: Katanakaji no Sato-hen",
+                  "english": "Demon Slayer: Kimetsu no Yaiba Swordsmith Village Arc",
+                  "native": "\u9B3C\u6EC5\u306E\u5203 \u5200\u935B\u51B6\u306E\u91CC\u7DE8"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx145139-rRimpHGWLhym.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx145139-rRimpHGWLhym.png"
+                },
+                "averageScore": 81,
+                "mediaListEntry": {
+                  "id": 593364106,
+                  "status": "COMPLETED",
+                  "progress": 11,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 4,
+              "mediaRecommendation": {
+                "id": 142329,
+                "title": {
+                  "romaji": "Kimetsu no Yaiba: Yuukaku-hen",
+                  "english": "Demon Slayer: Kimetsu no Yaiba Entertainment District Arc",
+                  "native": "\u9B3C\u6EC5\u306E\u5203 \u904A\u90ED\u7DE8"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx142329-kET1PIXJv2eW.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx142329-kET1PIXJv2eW.jpg"
+                },
+                "averageScore": 86,
+                "mediaListEntry": {
+                  "id": 593364102,
+                  "status": "COMPLETED",
+                  "progress": 11,
+                  "score": 9
+                }
+              }
+            },
+            {
+              "rating": 3,
+              "mediaRecommendation": {
+                "id": 179930,
+                "title": {
+                  "romaji": "Undead Unluck: Winter-hen",
+                  "english": "Undead Unluck: Winter Arc",
+                  "native": "\u30A2\u30F3\u30C7\u30C3\u30C9\u30A2\u30F3\u30E9\u30C3\u30AF Winter\u7DE8"
+                },
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx179930-xUYfykPhQmGm.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx179930-xUYfykPhQmGm.jpg"
+                },
+                "averageScore": 76,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 1,
+              "mediaRecommendation": {
+                "id": 21719,
+                "title": {
+                  "romaji": "Fate/stay night [Heaven\u0027s Feel] III. spring song",
+                  "english": "Fate/stay night [Heaven\u2019s Feel] III. spring song",
+                  "native": "Fate/stay night[Heaven\u0027s Feel] \u2160\u2160\u2160.spring song"
+                },
+                "format": "MOVIE",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21719-MSdTlkno0Z0u.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21719-MSdTlkno0Z0u.jpg"
+                },
+                "averageScore": 85,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 1,
+              "mediaRecommendation": {
+                "id": 196012,
+                "title": {
+                  "romaji": "MAO",
+                  "english": "MAO",
+                  "native": "MAO"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx196012-R3YNjunufpYh.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx196012-R3YNjunufpYh.jpg"
+                },
+                "averageScore": 65,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 1,
+              "mediaRecommendation": {
+                "id": 197474,
+                "title": {
+                  "romaji": "Shin Gintama Movie: Yoshiwara Daienjou",
+                  "english": "Gintama the Movie 2026: Yoshiwara in Flames",
+                  "native": "\u65B0\u5287\u5834\u7248 \u9280\u9B42 -\u5409\u539F\u5927\u708E\u4E0A-"
+                },
+                "format": "MOVIE",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx197474-jTeY1G9gtD8i.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx197474-jTeY1G9gtD8i.jpg"
+                },
+                "averageScore": 87,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 0,
+              "mediaRecommendation": {
+                "id": 21742,
+                "title": {
+                  "romaji": "Katsugeki Touken Ranbu",
+                  "english": "Katsugeki TOUKEN RANBU",
+                  "native": "\u6D3B\u6483\u3000\u5200\u5263\u4E71\u821E"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21742-T7UH2A8EKRv4.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21742-T7UH2A8EKRv4.jpg"
+                },
+                "averageScore": 63,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": -2,
+              "mediaRecommendation": {
+                "id": 171627,
+                "title": {
+                  "romaji": "Chainsaw Man: Reze-hen",
+                  "english": "Chainsaw Man \u2013 The Movie: Reze Arc",
+                  "native": "\u30C1\u30A7\u30F3\u30BD\u30FC\u30DE\u30F3 \u30EC\u30BC\u7BC7"
+                },
+                "format": "MOVIE",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx171627-ZN9D7P46yHnw.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx171627-ZN9D7P46yHnw.png"
+                },
+                "averageScore": 90,
+                "mediaListEntry": {
+                  "id": 593364127,
+                  "status": "COMPLETED",
+                  "progress": 1,
+                  "score": 9
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

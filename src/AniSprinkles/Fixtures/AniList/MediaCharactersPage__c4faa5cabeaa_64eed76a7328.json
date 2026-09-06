@@ -1,0 +1,429 @@
+﻿{
+  "operationName": "MediaCharactersPage",
+  "variables": {
+    "id": 30013,
+    "page": 1,
+    "sort": [
+      "ROLE",
+      "RELEVANCE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "64eed76a7328",
+  "recordedAt": "2026-09-06T05:26:44.3754001+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "characters": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 40,
+                "name": {
+                  "full": "Luffy Monkey",
+                  "native": "\u30E2\u30F3\u30AD\u30FC\u30FBD\u30FB\u30EB\u30D5\u30A3",
+                  "userPreferred": "Luffy D. Monkey"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b40-MNypXsxSRb1R.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b40-MNypXsxSRb1R.png"
+                },
+                "favourites": 36461
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 62,
+                "name": {
+                  "full": "Zoro Roronoa",
+                  "native": "\u30ED\u30ED\u30CE\u30A2\u30FB\u30BE\u30ED",
+                  "userPreferred": "Zoro Roronoa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b62-S7oAeA9WInjV.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b62-S7oAeA9WInjV.png"
+                },
+                "favourites": 29042
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 723,
+                "name": {
+                  "full": "Nami",
+                  "native": "\u30CA\u30DF",
+                  "userPreferred": "Nami"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b723-vp5hPptgnNEC.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b723-vp5hPptgnNEC.png"
+                },
+                "favourites": 10344
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 724,
+                "name": {
+                  "full": "Usopp",
+                  "native": "\u30A6\u30BD\u30C3\u30D7",
+                  "userPreferred": "Usopp"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b724-GFGgI9AJQkfy.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b724-GFGgI9AJQkfy.jpg"
+                },
+                "favourites": 6812
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 305,
+                "name": {
+                  "full": "Sanji",
+                  "native": "\u30B5\u30F3\u30B8",
+                  "userPreferred": "Sanji"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b305-6lisPmHtCnLT.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b305-6lisPmHtCnLT.png"
+                },
+                "favourites": 15422
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 61,
+                "name": {
+                  "full": "Robin Nico",
+                  "native": "\u30CB\u30B3\u30ED\u30D3\u30F3",
+                  "userPreferred": "Robin Nico"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b61-ywXUyyocEEqt.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b61-ywXUyyocEEqt.png"
+                },
+                "favourites": 14940
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 309,
+                "name": {
+                  "full": "Chopper Tony Tony",
+                  "native": "\u30C8\u30CB\u30FC\u30C8\u30CB\u30FC\u30FB\u30C1\u30E7\u30C3\u30D1\u30FC",
+                  "userPreferred": "Chopper Tony Tony"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b309-H64NhbJ2ywIQ.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b309-H64NhbJ2ywIQ.jpg"
+                },
+                "favourites": 8830
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 64,
+                "name": {
+                  "full": "Franky",
+                  "native": "\u30D5\u30E9\u30F3\u30AD\u30FC",
+                  "userPreferred": "Franky"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/n64-ChX6ZzHHjXqA.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/n64-ChX6ZzHHjXqA.png"
+                },
+                "favourites": 4093
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 5627,
+                "name": {
+                  "full": "Brook",
+                  "native": "\u30D6\u30EB\u30C3\u30AF",
+                  "userPreferred": "Brook"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b5627-av8oD3zhKvDl.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b5627-av8oD3zhKvDl.png"
+                },
+                "favourites": 5126
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 18938,
+                "name": {
+                  "full": "Jinbe",
+                  "native": "\u30B8\u30F3\u30D9\u30A8",
+                  "userPreferred": "Jinbe"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b18938-yZANEfjsVhW4.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b18938-yZANEfjsVhW4.png"
+                },
+                "favourites": 2903
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 725,
+                "name": {
+                  "full": "Buggy",
+                  "native": "\u30D0\u30AE\u30FC",
+                  "userPreferred": "Buggy"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/n725-g04AaiaK5f9B.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/n725-g04AaiaK5f9B.png"
+                },
+                "favourites": 2150
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 726,
+                "name": {
+                  "full": "Vivi Nefertari",
+                  "native": "\u30CD\u30D5\u30A7\u30EB\u30BF\u30EA\u30FB\u30D3\u30D3",
+                  "userPreferred": "Vivi Nefertari"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b726-DqAIpscMuYYx.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b726-DqAIpscMuYYx.png"
+                },
+                "favourites": 2010
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 727,
+                "name": {
+                  "full": "Shanks",
+                  "native": "\u30B7\u30E3\u30F3\u30AF\u30B9",
+                  "userPreferred": "Shanks"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b727-wUJx7M1z5xON.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b727-wUJx7M1z5xON.png"
+                },
+                "favourites": 5883
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 1541,
+                "name": {
+                  "full": "Enel",
+                  "native": "\u30A8\u30CD\u30EB",
+                  "userPreferred": "Enel"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b1541-6c8RouunoL88.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b1541-6c8RouunoL88.jpg"
+                },
+                "favourites": 861
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 2064,
+                "name": {
+                  "full": "Dracule Mihawk",
+                  "native": "\u30B8\u30E5\u30E9\u30AD\u30E5\u30FC\u30EB\u30FB\u30DF\u30DB\u30FC\u30AF",
+                  "userPreferred": "Dracule Mihawk"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/n2064-OpnF4nLi6bvL.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/n2064-OpnF4nLi6bvL.png"
+                },
+                "favourites": 2411
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 2072,
+                "name": {
+                  "full": "Ace Portgas",
+                  "native": "\u30DD\u30FC\u30C8\u30AC\u30B9\u30FBD\u30FB\u30A8\u30FC\u30B9",
+                  "userPreferred": "Ace D. Portgas"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b2072-Lc6jEdsueJUK.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b2072-Lc6jEdsueJUK.jpg"
+                },
+                "favourites": 9181
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 2519,
+                "name": {
+                  "full": "Kuro",
+                  "native": "\u30AF\u30ED",
+                  "userPreferred": "Kuro"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b2519-OfgRt6mP6Ae8.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b2519-OfgRt6mP6Ae8.jpg"
+                },
+                "favourites": 88
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 2748,
+                "name": {
+                  "full": "Bellamy",
+                  "native": "\u30D9\u30E9\u30DF\u30FC",
+                  "userPreferred": "Bellamy"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b2748-vnCKira7yjrp.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b2748-vnCKira7yjrp.jpg"
+                },
+                "favourites": 108
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 2749,
+                "name": {
+                  "full": "Crocodile",
+                  "native": "\u30AF\u30ED\u30B3\u30C0\u30A4\u30EB",
+                  "userPreferred": "Crocodile"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b2749-e8ebEBN1SlS2.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b2749-e8ebEBN1SlS2.png"
+                },
+                "favourites": 2023
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 2750,
+                "name": {
+                  "full": "Tashigi",
+                  "native": "\u305F\u3057\u304E",
+                  "userPreferred": "Tashigi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b2750-j3Rf9SC37ehT.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b2750-j3Rf9SC37ehT.jpg"
+                },
+                "favourites": 437
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 2751,
+                "name": {
+                  "full": "Newgate Edward",
+                  "native": "\u30A8\u30C9\u30EF\u30FC\u30C9\u30FB\u4E8C\u30E5\u30FC\u30B2\u30FC\u30C8",
+                  "userPreferred": "Newgate Edward"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b2751-NnzW0N2vCTjX.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b2751-NnzW0N2vCTjX.jpg"
+                },
+                "favourites": 4142
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 2752,
+                "name": {
+                  "full": "Kuzan",
+                  "native": "\u30AF\u30B6\u30F3",
+                  "userPreferred": "Kuzan"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b2752-0ENS2a39muDz.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b2752-0ENS2a39muDz.png"
+                },
+                "favourites": 1848
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 2753,
+                "name": {
+                  "full": "Smoker",
+                  "native": "\u30B9\u30E2\u30FC\u30AB\u30FC",
+                  "userPreferred": "Smoker"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b2753-Y2ja8Pl6PRs0.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b2753-Y2ja8Pl6PRs0.jpg"
+                },
+                "favourites": 1396
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 2754,
+                "name": {
+                  "full": "Doflamingo Donquixote",
+                  "native": "\u30C9\u30D5\u30E9\u30DF\u30F3\u30B4\u30FB\u30C9\u30F3\u30AD\u30DB\u30FC\u30C6",
+                  "userPreferred": "Doflamingo Donquixote"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b2754-B4gGSlNYgsyh.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b2754-B4gGSlNYgsyh.jpg"
+                },
+                "favourites": 4379
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 3331,
+                "name": {
+                  "full": "Teach Marshall",
+                  "native": "\u30DE\u30FC\u30B7\u30E3\u30EB\u30FBD\u30FB\u30C6\u30A3\u30FC\u30C1",
+                  "userPreferred": "Teach D. Marshall"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b3331-7ZJDc4BNv9Yp.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b3331-7ZJDc4BNv9Yp.jpg"
+                },
+                "favourites": 1041
+              },
+              "role": "SUPPORTING"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

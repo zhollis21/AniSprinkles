@@ -1,0 +1,92 @@
+﻿{
+  "operationName": "MediaCharactersPage",
+  "variables": {
+    "id": 156067,
+    "page": 3,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "64eed76a7328",
+  "recordedAt": "2026-09-06T05:37:56.4796543+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "characters": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 3
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 299255,
+                "name": {
+                  "full": "Touzoku A",
+                  "native": "\u76DC\u8CCAA",
+                  "userPreferred": "Touzoku A"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/default.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 299256,
+                "name": {
+                  "full": "Orthros A",
+                  "native": "\u30AA\u30EB\u30C8\u30ED\u30B9",
+                  "userPreferred": "Orthros A"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/default.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 299257,
+                "name": {
+                  "full": "Orthros C",
+                  "native": "\u30AA\u30EB\u30C8\u30ED\u30B9",
+                  "userPreferred": "Orthros C"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/default.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 299258,
+                "name": {
+                  "full": "Orthros B",
+                  "native": "\u30AA\u30EB\u30C8\u30ED\u30B9",
+                  "userPreferred": "Orthros B"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/default.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

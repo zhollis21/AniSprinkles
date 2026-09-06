@@ -1,0 +1,547 @@
+﻿{
+  "operationName": "CharacterMediaPage",
+  "variables": {
+    "id": 176754,
+    "page": 1,
+    "sort": [
+      "POPULARITY_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "2ff9193259a9",
+  "recordedAt": "2026-09-06T05:27:56.0109459+00:00",
+  "response": {
+    "data": {
+      "Character": {
+        "media": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 154587,
+                "title": {
+                  "romaji": "Sousou no Frieren",
+                  "english": "Frieren: Beyond Journey\u2019s End",
+                  "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx154587-qQTzQnEJJ3oB.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx154587-qQTzQnEJJ3oB.jpg"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 91,
+                "favourites": 55905,
+                "popularity": 477293,
+                "startDate": {
+                  "year": 2023,
+                  "month": 9,
+                  "day": 29
+                },
+                "mediaListEntry": {
+                  "id": 540974122,
+                  "status": "COMPLETED",
+                  "progress": 28,
+                  "score": 10
+                }
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 112215,
+                  "name": {
+                    "full": "Atsumi Tanezaki",
+                    "native": "\u7A2E\uFA11\u6566\u7F8E",
+                    "userPreferred": "Atsumi Tanezaki"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n112215-kfABGD8W2YSJ.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n112215-kfABGD8W2YSJ.jpg"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 3981
+                },
+                {
+                  "id": 119697,
+                  "name": {
+                    "full": "Mallorie Rodak",
+                    "native": null,
+                    "userPreferred": "Mallorie Rodak"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/24697-qQBZowFoHEye.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/24697-qQBZowFoHEye.jpg"
+                  },
+                  "languageV2": "English",
+                  "favourites": 229
+                },
+                {
+                  "id": 165900,
+                  "name": {
+                    "full": "Ji-Hyun Lee",
+                    "native": "\uC774\uC9C0\uD604",
+                    "userPreferred": "Ji-Hyun Lee"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n165900-9ErlCQyqTe21.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n165900-9ErlCQyqTe21.png"
+                  },
+                  "languageV2": "Korean",
+                  "favourites": 0
+                },
+                {
+                  "id": 153465,
+                  "name": {
+                    "full": "Martina Felli",
+                    "native": null,
+                    "userPreferred": "Martina Felli"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n153465-ObheXDGsjhst.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n153465-ObheXDGsjhst.jpg"
+                  },
+                  "languageV2": "Italian",
+                  "favourites": 15
+                },
+                {
+                  "id": 182231,
+                  "name": {
+                    "full": "Erika Ugalde",
+                    "native": "Erika Ugalde Cervantes",
+                    "userPreferred": "Erika Ugalde"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n182231-AXClncMZZahT.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n182231-AXClncMZZahT.png"
+                  },
+                  "languageV2": "Spanish",
+                  "favourites": 10
+                },
+                {
+                  "id": 185758,
+                  "name": {
+                    "full": "Jacque Souza",
+                    "native": null,
+                    "userPreferred": "Jacque Souza"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n185758-3ADD3k36LRIp.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n185758-3ADD3k36LRIp.jpg"
+                  },
+                  "languageV2": "Portuguese",
+                  "favourites": 8
+                },
+                {
+                  "id": 116893,
+                  "name": {
+                    "full": "Marie Nonnenmacher",
+                    "native": null,
+                    "userPreferred": "Marie Nonnenmacher"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/21893.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/21893.jpg"
+                  },
+                  "languageV2": "French",
+                  "favourites": 8
+                },
+                {
+                  "id": 140688,
+                  "name": {
+                    "full": "Julia Casper",
+                    "native": null,
+                    "userPreferred": "Julia Casper"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/default.jpg"
+                  },
+                  "languageV2": "German",
+                  "favourites": 8
+                },
+                {
+                  "id": 324686,
+                  "name": {
+                    "full": "Sansanee Tinkeeradit",
+                    "native": "\u0E28\u0E31\u0E19\u0E2A\u0E19\u0E35\u0E22\u0E4C \u0E15\u0E34\u0E13\u0E2B\u0E4C\u0E01\u0E35\u0E23\u0E14\u0E34\u0E28",
+                    "userPreferred": "Sansanee Tinkeeradit"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n324686-Qf65n7MqUruL.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n324686-Qf65n7MqUruL.jpg"
+                  },
+                  "languageV2": "Thai",
+                  "favourites": 3
+                },
+                {
+                  "id": 335253,
+                  "name": {
+                    "full": "Haniya Raisha",
+                    "native": null,
+                    "userPreferred": "Haniya Raisha"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n335253-Exi4W1GKwfhv.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n335253-Exi4W1GKwfhv.jpg"
+                  },
+                  "languageV2": "Indonesian",
+                  "favourites": 1
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 182255,
+                "title": {
+                  "romaji": "Sousou no Frieren 2nd Season",
+                  "english": "Frieren: Beyond Journey\u2019s End Season 2",
+                  "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \u7B2C2\u671F"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx182255-butzrqd4I0aC.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx182255-butzrqd4I0aC.jpg"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 88,
+                "favourites": 8779,
+                "popularity": 222753,
+                "startDate": {
+                  "year": 2026,
+                  "month": 1,
+                  "day": 16
+                },
+                "mediaListEntry": {
+                  "id": 540973986,
+                  "status": "COMPLETED",
+                  "progress": 10,
+                  "score": 9
+                }
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 112215,
+                  "name": {
+                    "full": "Atsumi Tanezaki",
+                    "native": "\u7A2E\uFA11\u6566\u7F8E",
+                    "userPreferred": "Atsumi Tanezaki"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n112215-kfABGD8W2YSJ.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n112215-kfABGD8W2YSJ.jpg"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 3981
+                },
+                {
+                  "id": 119697,
+                  "name": {
+                    "full": "Mallorie Rodak",
+                    "native": null,
+                    "userPreferred": "Mallorie Rodak"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/24697-qQBZowFoHEye.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/24697-qQBZowFoHEye.jpg"
+                  },
+                  "languageV2": "English",
+                  "favourites": 229
+                },
+                {
+                  "id": 165900,
+                  "name": {
+                    "full": "Ji-Hyun Lee",
+                    "native": "\uC774\uC9C0\uD604",
+                    "userPreferred": "Ji-Hyun Lee"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n165900-9ErlCQyqTe21.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n165900-9ErlCQyqTe21.png"
+                  },
+                  "languageV2": "Korean",
+                  "favourites": 0
+                },
+                {
+                  "id": 153465,
+                  "name": {
+                    "full": "Martina Felli",
+                    "native": null,
+                    "userPreferred": "Martina Felli"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n153465-ObheXDGsjhst.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n153465-ObheXDGsjhst.jpg"
+                  },
+                  "languageV2": "Italian",
+                  "favourites": 15
+                },
+                {
+                  "id": 185758,
+                  "name": {
+                    "full": "Jacque Souza",
+                    "native": null,
+                    "userPreferred": "Jacque Souza"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n185758-3ADD3k36LRIp.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n185758-3ADD3k36LRIp.jpg"
+                  },
+                  "languageV2": "Portuguese",
+                  "favourites": 8
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 118586,
+                "title": {
+                  "romaji": "Sousou no Frieren",
+                  "english": "Frieren: Beyond Journey\u2019s End",
+                  "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx118586-CXKgWikBFQgS.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx118586-CXKgWikBFQgS.jpg"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "RELEASING",
+                "averageScore": 87,
+                "favourites": 8121,
+                "popularity": 85007,
+                "startDate": {
+                  "year": 2020,
+                  "month": 4,
+                  "day": 28
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 170068,
+                "title": {
+                  "romaji": "Sousou no Frieren: \u25CF\u25CF no Mahou",
+                  "english": null,
+                  "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \uFF5E\u25CF\u25CF\u306E\u9B54\u6CD5\uFF5E"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx170068-ijY3tCP8KoWP.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx170068-ijY3tCP8KoWP.jpg"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 73,
+                "favourites": 111,
+                "popularity": 10838,
+                "startDate": {
+                  "year": 2023,
+                  "month": 10,
+                  "day": 11
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 112215,
+                  "name": {
+                    "full": "Atsumi Tanezaki",
+                    "native": "\u7A2E\uFA11\u6566\u7F8E",
+                    "userPreferred": "Atsumi Tanezaki"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n112215-kfABGD8W2YSJ.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n112215-kfABGD8W2YSJ.jpg"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 3981
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 169811,
+                "title": {
+                  "romaji": "Yuusha",
+                  "english": "The Brave",
+                  "native": "\u52C7\u8005"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx169811-tsuH0SJVJy40.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx169811-tsuH0SJVJy40.jpg"
+                },
+                "format": "MUSIC",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 79,
+                "favourites": 93,
+                "popularity": 5140,
+                "startDate": {
+                  "year": 2023,
+                  "month": 9,
+                  "day": 29
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 189513,
+                "title": {
+                  "romaji": "Sousou no Frieren: \u25CF\u25CF no Mahou Part 2",
+                  "english": null,
+                  "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \uFF5E\u25CF\u25CF\u306E\u9B54\u6CD5\uFF5E 2\u30AF\u30FC\u30EB"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx189513-1R9Sryve0K53.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx189513-1R9Sryve0K53.png"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 71,
+                "favourites": 68,
+                "popularity": 4494,
+                "startDate": {
+                  "year": 2025,
+                  "month": 4,
+                  "day": 2
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 112215,
+                  "name": {
+                    "full": "Atsumi Tanezaki",
+                    "native": "\u7A2E\uFA11\u6566\u7F8E",
+                    "userPreferred": "Atsumi Tanezaki"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n112215-kfABGD8W2YSJ.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n112215-kfABGD8W2YSJ.jpg"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 3981
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 206425,
+                "title": {
+                  "romaji": "Sousou no Frieren: \u25CF\u25CF no Mahou Part 3",
+                  "english": null,
+                  "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \uFF5E\u25CF\u25CF\u306E\u9B54\u6CD5\uFF5E 3\u30AF\u30FC\u30EB"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b206425-WOwXsfDbHZwb.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b206425-WOwXsfDbHZwb.jpg"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "status": "RELEASING",
+                "averageScore": 69,
+                "favourites": 26,
+                "popularity": 2216,
+                "startDate": {
+                  "year": 2026,
+                  "month": 1,
+                  "day": 19
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 112215,
+                  "name": {
+                    "full": "Atsumi Tanezaki",
+                    "native": "\u7A2E\uFA11\u6566\u7F8E",
+                    "userPreferred": "Atsumi Tanezaki"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n112215-kfABGD8W2YSJ.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n112215-kfABGD8W2YSJ.jpg"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 3981
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 173310,
+                "title": {
+                  "romaji": "Sousou no Frieren Anthology",
+                  "english": null,
+                  "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \u30A2\u30F3\u30BD\u30ED\u30B8"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx173310-IWXoTriCztvp.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx173310-IWXoTriCztvp.jpg"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "averageScore": 67,
+                "favourites": 22,
+                "popularity": 1594,
+                "startDate": {
+                  "year": 2023,
+                  "month": 12,
+                  "day": 18
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 179850,
+                "title": {
+                  "romaji": "Shousetsu Sousou no Frieren ~Zensou\uFF5E",
+                  "english": "Frieren: Beyond Journey\u2019s End ~Prelude~",
+                  "native": "\u5C0F\u8AAC \u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3\u3000\uFF5E\u524D\u594F\uFF5E"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx179850-zraVuNgk4XCI.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx179850-zraVuNgk4XCI.jpg"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "averageScore": 62,
+                "favourites": 19,
+                "popularity": 647,
+                "startDate": {
+                  "year": 2024,
+                  "month": 4,
+                  "day": 17
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": []
+            }
+          ]
+        }
+      }
+    }
+  }
+}

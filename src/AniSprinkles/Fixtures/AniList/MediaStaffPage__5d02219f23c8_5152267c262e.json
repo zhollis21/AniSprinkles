@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 154587,
+    "page": 3,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:37:37.7663685+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 3
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 121205,
+                "name": {
+                  "full": "Kazuhiro Miwa",
+                  "native": "\u4E09\u8F2A\u548C\u5B8F",
+                  "userPreferred": "Kazuhiro Miwa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n121205-47lcLjXc4tad.png"
+                },
+                "favourites": 93
+              },
+              "role": "Key Animation (eps 5, 9)"
+            },
+            {
+              "node": {
+                "id": 157363,
+                "name": {
+                  "full": "Chris",
+                  "native": "Christoph Th\u00F6nes",
+                  "userPreferred": "Chris"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n157363-PKgW2VaBlSoi.png"
+                },
+                "favourites": 92
+              },
+              "role": "Key Animation (ep 6)"
+            },
+            {
+              "node": {
+                "id": 131341,
+                "name": {
+                  "full": "Moaang",
+                  "native": "\u3082\u3042\u3042\u3093",
+                  "userPreferred": "Moaang"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n131341-FmB6geZiJF4U.jpg"
+                },
+                "favourites": 84
+              },
+              "role": "Key Animation (OP1, ep 10)"
+            },
+            {
+              "node": {
+                "id": 131945,
+                "name": {
+                  "full": "Takahito Sakazume",
+                  "native": "\u5742\u8A70\u5D69\u4EC1",
+                  "userPreferred": "Takahito Sakazume"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n131945-c5Yms5pPMrBe.png"
+                },
+                "favourites": 72
+              },
+              "role": "Key Animation (eps 2, 6)"
+            },
+            {
+              "node": {
+                "id": 141855,
+                "name": {
+                  "full": "Yuu Yoshiyama",
+                  "native": "\u82B3\u5C71\u512A",
+                  "userPreferred": "Yuu Yoshiyama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n141855-zKQKXPURPWS0.png"
+                },
+                "favourites": 67
+              },
+              "role": "Key Animation (ep 26)"
+            },
+            {
+              "node": {
+                "id": 144208,
+                "name": {
+                  "full": "Hirotaka Mori",
+                  "native": "\u68EE\u5927\u8CB4",
+                  "userPreferred": "Hirotaka Mori"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n144208-TdajgkpasrRP.png"
+                },
+                "favourites": 63
+              },
+              "role": "Episode Director (ep 26)"
+            },
+            {
+              "node": {
+                "id": 96613,
+                "name": {
+                  "full": "Brigitte Lecordier",
+                  "native": null,
+                  "userPreferred": "Brigitte Lecordier"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n96613-IaW0mZBRchVu.png"
+                },
+                "favourites": 56
+              },
+              "role": "ADR Director (French)"
+            },
+            {
+              "node": {
+                "id": 131949,
+                "name": {
+                  "full": "Tooru Iwazawa",
+                  "native": "\u5CA9\u6FA4\u4EA8",
+                  "userPreferred": "Tooru Iwazawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n131949-cxKnoMZWKriL.png"
+                },
+                "favourites": 53
+              },
+              "role": "Key Animation (OP1, OP2, eps 3, 9, 21, 28)"
+            },
+            {
+              "node": {
+                "id": 131949,
+                "name": {
+                  "full": "Tooru Iwazawa",
+                  "native": "\u5CA9\u6FA4\u4EA8",
+                  "userPreferred": "Tooru Iwazawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n131949-cxKnoMZWKriL.png"
+                },
+                "favourites": 53
+              },
+              "role": "Storyboard (eps 6, 26)"
+            },
+            {
+              "node": {
+                "id": 131949,
+                "name": {
+                  "full": "Tooru Iwazawa",
+                  "native": "\u5CA9\u6FA4\u4EA8",
+                  "userPreferred": "Tooru Iwazawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n131949-cxKnoMZWKriL.png"
+                },
+                "favourites": 53
+              },
+              "role": "Action Director"
+            },
+            {
+              "node": {
+                "id": 131949,
+                "name": {
+                  "full": "Tooru Iwazawa",
+                  "native": "\u5CA9\u6FA4\u4EA8",
+                  "userPreferred": "Tooru Iwazawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n131949-cxKnoMZWKriL.png"
+                },
+                "favourites": 53
+              },
+              "role": "Episode Director (ep 6)"
+            },
+            {
+              "node": {
+                "id": 131949,
+                "name": {
+                  "full": "Tooru Iwazawa",
+                  "native": "\u5CA9\u6FA4\u4EA8",
+                  "userPreferred": "Tooru Iwazawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n131949-cxKnoMZWKriL.png"
+                },
+                "favourites": 53
+              },
+              "role": "2nd Key Animation (ep 6)"
+            },
+            {
+              "node": {
+                "id": 131949,
+                "name": {
+                  "full": "Tooru Iwazawa",
+                  "native": "\u5CA9\u6FA4\u4EA8",
+                  "userPreferred": "Tooru Iwazawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n131949-cxKnoMZWKriL.png"
+                },
+                "favourites": 53
+              },
+              "role": "Effects Animation Director (ep 10)"
+            },
+            {
+              "node": {
+                "id": 131949,
+                "name": {
+                  "full": "Tooru Iwazawa",
+                  "native": "\u5CA9\u6FA4\u4EA8",
+                  "userPreferred": "Tooru Iwazawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n131949-cxKnoMZWKriL.png"
+                },
+                "favourites": 53
+              },
+              "role": "Action Animation Director (eps 8, 9, 12, 15, 18-21, 23-26)"
+            },
+            {
+              "node": {
+                "id": 120333,
+                "name": {
+                  "full": "Norifumi Kugai",
+                  "native": "\u4E45\u8C9D\u5178\u53F2",
+                  "userPreferred": "Norifumi Kugai"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n120333-ONSCqsNAHAIi.png"
+                },
+                "favourites": 50
+              },
+              "role": "2nd Key Animation (ep 12)"
+            },
+            {
+              "node": {
+                "id": 120333,
+                "name": {
+                  "full": "Norifumi Kugai",
+                  "native": "\u4E45\u8C9D\u5178\u53F2",
+                  "userPreferred": "Norifumi Kugai"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n120333-ONSCqsNAHAIi.png"
+                },
+                "favourites": 50
+              },
+              "role": "Key Animation (eps 4, 9)"
+            },
+            {
+              "node": {
+                "id": 192612,
+                "name": {
+                  "full": "Yuusuke Yamamoto",
+                  "native": "\u5C71\u672C\u3086\u3046\u3059\u3051",
+                  "userPreferred": "Yuusuke Yamamoto"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n192612-vbKy8mryF2qW.jpg"
+                },
+                "favourites": 50
+              },
+              "role": "Key Animation (OP1)"
+            },
+            {
+              "node": {
+                "id": 156867,
+                "name": {
+                  "full": "Yuuichirou Fukushi",
+                  "native": "\u798F\u58EB\u88D5\u4E00\u90CE",
+                  "userPreferred": "Yuuichirou Fukushi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n156867-KnyVPSHCLp9U.png"
+                },
+                "favourites": 46
+              },
+              "role": "Animation Producer"
+            },
+            {
+              "node": {
+                "id": 162559,
+                "name": {
+                  "full": "Kaito Tomioka",
+                  "native": "\u5BCC\u5CA1\u6D77\u4EFB",
+                  "userPreferred": "Kaito Tomioka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n162559-87hfTi9rXAl9.jpg"
+                },
+                "favourites": 44
+              },
+              "role": "Key Animation (ep 9)"
+            },
+            {
+              "node": {
+                "id": 213389,
+                "name": {
+                  "full": "Saucelot",
+                  "native": null,
+                  "userPreferred": "Saucelot"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n213389-eZH2FiMuXnmY.jpg"
+                },
+                "favourites": 44
+              },
+              "role": "Key Animation (ep 26)"
+            },
+            {
+              "node": {
+                "id": 121793,
+                "name": {
+                  "full": "Shinya Iino",
+                  "native": "\u98EF\u91CE\u614E\u4E5F",
+                  "userPreferred": "Shinya Iino"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n121793-gwGgKgKUSHbF.jpg"
+                },
+                "favourites": 43
+              },
+              "role": "Episode Director (ep 14)"
+            },
+            {
+              "node": {
+                "id": 121793,
+                "name": {
+                  "full": "Shinya Iino",
+                  "native": "\u98EF\u91CE\u614E\u4E5F",
+                  "userPreferred": "Shinya Iino"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n121793-gwGgKgKUSHbF.jpg"
+                },
+                "favourites": 43
+              },
+              "role": "Storyboard (ep 14)"
+            },
+            {
+              "node": {
+                "id": 138785,
+                "name": {
+                  "full": "Macy Anne Johnson",
+                  "native": null,
+                  "userPreferred": "Macy Anne Johnson"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n138785-8eEJxk4QsT0e.png"
+                },
+                "favourites": 43
+              },
+              "role": "ADR Script (English)"
+            },
+            {
+              "node": {
+                "id": 124192,
+                "name": {
+                  "full": "Shinji Ootsuka",
+                  "native": "\u5927\u585A\u4F38\u6CBB",
+                  "userPreferred": "Shinji Ootsuka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n124192-TaqkqXGC9y4t.jpg"
+                },
+                "favourites": 38
+              },
+              "role": "Key Animation (OP1, OP2, eps 1, 8, 12, 15, 28)"
+            },
+            {
+              "node": {
+                "id": 133756,
+                "name": {
+                  "full": "Isuta",
+                  "native": "\u6905\u5B50\u6C70",
+                  "userPreferred": "Isuta"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n133756-0n4DWSD00zIV.png"
+                },
+                "favourites": 37
+              },
+              "role": "Key Animation (eps 9, 20)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -295,9 +295,12 @@ Check candidate approaches against the conventions that actually bite here:
 - **Rate-limit budget** — new AniList reads are expensive. Batch with GraphQL
   aliases where you can, and be honest in the plan about how many requests an
   approach adds. See the AniList section of `AGENTS.md`.
-- **CI stub counterpart** — any new `IAniListClient` operation needs its
-  `CIAniListClient` twin, or the CI screenshot job breaks. Easy to forget, and it
-  fails well after the fact.
+- **CI fixture counterpart** — any new `IAniListClient` operation, new sort, or
+  deeper page needs a recording, or the CI screenshot job fails with
+  `FIXTURE MISS` (#134). Re-record with `tools/record-anilist-fixtures.cs`. Better
+  than the old hand-written stub, which answered anything it did not model with an
+  empty list and failed silently — but still a step that is easy to forget until
+  the run goes red.
 - **Zero warnings** — the build must stay clean.
 - **Testability** — `tests/` project-references `src/AniSprinkles.Core/`, so
   anything in Core is testable and anything in the MAUI app project is not. If an

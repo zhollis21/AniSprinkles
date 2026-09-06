@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 178788,
+    "page": 1,
+    "sort": [
+      "RELEVANCE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:23:56.5621426+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 119973,
+                "name": {
+                  "full": "Koyoharu Gotouge",
+                  "native": "\u543E\u5CE0\u547C\u4E16\u6674 ",
+                  "userPreferred": "Koyoharu Gotouge"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n119973-pzMtyCVGBWNt.jpg"
+                },
+                "favourites": 1352
+              },
+              "role": "Original Creator"
+            },
+            {
+              "node": {
+                "id": 103076,
+                "name": {
+                  "full": "Hikaru Kondou",
+                  "native": "\u8FD1\u85E4\u5149",
+                  "userPreferred": "Hikaru Kondou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n103076-2DE794RafWLy.png"
+                },
+                "favourites": 20
+              },
+              "role": "Chief Director"
+            },
+            {
+              "node": {
+                "id": 99006,
+                "name": {
+                  "full": "Haruo Sotozaki",
+                  "native": "\u5916\u5D0E\u6625\u96C4",
+                  "userPreferred": "Haruo Sotozaki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n99006-NuAjczMqcL3W.jpg"
+                },
+                "favourites": 67
+              },
+              "role": "Director"
+            },
+            {
+              "node": {
+                "id": 119808,
+                "name": {
+                  "full": "Akira Matsushima",
+                  "native": "\u677E\u5CF6\u6643",
+                  "userPreferred": "Akira Matsushima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n119808-61yB4qZ8gvPf.png"
+                },
+                "favourites": 87
+              },
+              "role": "Character Design"
+            },
+            {
+              "node": {
+                "id": 146728,
+                "name": {
+                  "full": "Youko Kajiyama",
+                  "native": "\u68B6\u5C71\u5EB8\u5B50",
+                  "userPreferred": "Youko Kajiyama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n146728-SCLHr6f0n4Tz.png"
+                },
+                "favourites": 7
+              },
+              "role": "Sub Character Design"
+            },
+            {
+              "node": {
+                "id": 183357,
+                "name": {
+                  "full": "Miyuki Satou",
+                  "native": "\u4F50\u85E4\u7F8E\u5E78",
+                  "userPreferred": "Miyuki Satou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n183357-thpik7UhcKcM.png"
+                },
+                "favourites": 1
+              },
+              "role": "Sub Character Design"
+            },
+            {
+              "node": {
+                "id": 183407,
+                "name": {
+                  "full": "Mika Kikuchi",
+                  "native": "\u83CA\u6C60\u7F8E\u82B1",
+                  "userPreferred": "Mika Kikuchi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n183407-7u161oaNx8aq.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Sub Character Design"
+            },
+            {
+              "node": {
+                "id": 146709,
+                "name": {
+                  "full": "Masaharu Koyama",
+                  "native": "\u5C0F\u5C71\u5C06\u6CBB",
+                  "userPreferred": "Masaharu Koyama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n146709-mDkNNAHI6crh.jpg"
+                },
+                "favourites": 3
+              },
+              "role": "Prop Design"
+            },
+            {
+              "node": {
+                "id": 142692,
+                "name": {
+                  "full": "Kouji Etou",
+                  "native": "\u885B\u85E4\u529F\u4E8C",
+                  "userPreferred": "Kouji Etou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n142692-I0Hb1leizdUW.png"
+                },
+                "favourites": 16
+              },
+              "role": "Art Director"
+            },
+            {
+              "node": {
+                "id": 146720,
+                "name": {
+                  "full": "Yuuko Oomae",
+                  "native": "\u5927\u524D\u7950\u5B50",
+                  "userPreferred": "Yuuko Oomae"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 3
+              },
+              "role": "Color Design"
+            },
+            {
+              "node": {
+                "id": 130063,
+                "name": {
+                  "full": "Yuuichi Terao",
+                  "native": "\u5BFA\u5C3E\u512A\u4E00",
+                  "userPreferred": "Yuuichi Terao"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n130063-BhxRFJllYuI7.jpg"
+                },
+                "favourites": 66
+              },
+              "role": "Director of Photography"
+            },
+            {
+              "node": {
+                "id": 146725,
+                "name": {
+                  "full": "Manabu Kamino",
+                  "native": "\u795E\u91CE\u5B66",
+                  "userPreferred": "Manabu Kamino"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n146725-CWyH4UzQgt5E.png"
+                },
+                "favourites": 3
+              },
+              "role": "Editing"
+            },
+            {
+              "node": {
+                "id": 146691,
+                "name": {
+                  "full": "Kazuki Nishiwaki",
+                  "native": "\u897F\u8107\u4E00\u6A39",
+                  "userPreferred": "Kazuki Nishiwaki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n146691-HzKavdGHnNZh.jpg"
+                },
+                "favourites": 9
+              },
+              "role": "CG Director"
+            },
+            {
+              "node": {
+                "id": 100077,
+                "name": {
+                  "full": "Yuki Kajiura",
+                  "native": "\u68B6\u6D66\u7531\u8A18",
+                  "userPreferred": "Yuki Kajiura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100077-EQO5m2lkmUQk.jpg"
+                },
+                "favourites": 4430
+              },
+              "role": "Music"
+            },
+            {
+              "node": {
+                "id": 109341,
+                "name": {
+                  "full": "Gou Shiina",
+                  "native": "\u690E\u540D\u8C6A",
+                  "userPreferred": "Gou Shiina"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n109341-q5Wmz53sbNsO.png"
+                },
+                "favourites": 145
+              },
+              "role": "Music"
+            },
+            {
+              "node": {
+                "id": 105561,
+                "name": {
+                  "full": "LiSA",
+                  "native": "LiSA",
+                  "userPreferred": "LiSA"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n105561-bluE1C2NqCrV.png"
+                },
+                "favourites": 6421
+              },
+              "role": "Theme Song Performance"
+            },
+            {
+              "node": {
+                "id": 107859,
+                "name": {
+                  "full": "Aimer",
+                  "native": "\u30A8\u30E1 ",
+                  "userPreferred": "Aimer"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n107859-4IHiVcDLatYG.jpg"
+                },
+                "favourites": 4318
+              },
+              "role": "Theme Song Performance"
+            },
+            {
+              "node": {
+                "id": 99006,
+                "name": {
+                  "full": "Haruo Sotozaki",
+                  "native": "\u5916\u5D0E\u6625\u96C4",
+                  "userPreferred": "Haruo Sotozaki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n99006-NuAjczMqcL3W.jpg"
+                },
+                "favourites": 67
+              },
+              "role": "Storyboard"
+            },
+            {
+              "node": {
+                "id": 103076,
+                "name": {
+                  "full": "Hikaru Kondou",
+                  "native": "\u8FD1\u85E4\u5149",
+                  "userPreferred": "Hikaru Kondou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n103076-2DE794RafWLy.png"
+                },
+                "favourites": 20
+              },
+              "role": "Storyboard"
+            },
+            {
+              "node": {
+                "id": 107167,
+                "name": {
+                  "full": "Takahiro Miura",
+                  "native": "\u4E09\u6D66\u8CB4\u535A",
+                  "userPreferred": "Takahiro Miura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n107167-G5TT8DAqPiVl.png"
+                },
+                "favourites": 23
+              },
+              "role": "Storyboard"
+            },
+            {
+              "node": {
+                "id": 146678,
+                "name": {
+                  "full": "Takashi Suhara",
+                  "native": "\u6816\u539F\u9686\u53F2",
+                  "userPreferred": "Takashi Suhara"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n146678-n7YEtwczgjPn.png"
+                },
+                "favourites": 12
+              },
+              "role": "Storyboard"
+            },
+            {
+              "node": {
+                "id": 119808,
+                "name": {
+                  "full": "Akira Matsushima",
+                  "native": "\u677E\u5CF6\u6643",
+                  "userPreferred": "Akira Matsushima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n119808-61yB4qZ8gvPf.png"
+                },
+                "favourites": 87
+              },
+              "role": "Chief Animation Director"
+            },
+            {
+              "node": {
+                "id": 99006,
+                "name": {
+                  "full": "Haruo Sotozaki",
+                  "native": "\u5916\u5D0E\u6625\u96C4",
+                  "userPreferred": "Haruo Sotozaki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n99006-NuAjczMqcL3W.jpg"
+                },
+                "favourites": 67
+              },
+              "role": "Assistant Chief Animation Director"
+            },
+            {
+              "node": {
+                "id": 183357,
+                "name": {
+                  "full": "Miyuki Satou",
+                  "native": "\u4F50\u85E4\u7F8E\u5E78",
+                  "userPreferred": "Miyuki Satou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n183357-thpik7UhcKcM.png"
+                },
+                "favourites": 1
+              },
+              "role": "Assistant Chief Animation Director"
+            },
+            {
+              "node": {
+                "id": 183407,
+                "name": {
+                  "full": "Mika Kikuchi",
+                  "native": "\u83CA\u6C60\u7F8E\u82B1",
+                  "userPreferred": "Mika Kikuchi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n183407-7u161oaNx8aq.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Assistant Chief Animation Director"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

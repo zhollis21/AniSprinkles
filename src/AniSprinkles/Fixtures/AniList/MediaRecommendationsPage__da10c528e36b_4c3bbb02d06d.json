@@ -1,0 +1,503 @@
+﻿{
+  "operationName": "MediaRecommendationsPage",
+  "variables": {
+    "id": 53390,
+    "page": 1,
+    "sort": [
+      "RATING_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "4c3bbb02d06d",
+  "recordedAt": "2026-09-06T05:26:39.578756+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "recommendations": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "nodes": [
+            {
+              "rating": 268,
+              "mediaRecommendation": {
+                "id": 87423,
+                "title": {
+                  "romaji": "Yakusoku no Neverland",
+                  "english": "The Promised Neverland",
+                  "native": "\u7D04\u675F\u306E\u30CD\u30D0\u30FC\u30E9\u30F3\u30C9"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx87423-gPNtu8QbGped.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx87423-gPNtu8QbGped.jpg"
+                },
+                "averageScore": 79,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 177,
+              "mediaRecommendation": {
+                "id": 120760,
+                "title": {
+                  "romaji": "Kaijuu 8-gou",
+                  "english": "Kaiju No.8",
+                  "native": "\u602A\u7363\uFF18\u53F7"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx120760-MtXvMgujLBpe.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx120760-MtXvMgujLBpe.jpg"
+                },
+                "averageScore": 75,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 129,
+              "mediaRecommendation": {
+                "id": 30002,
+                "title": {
+                  "romaji": "Berserk",
+                  "english": "Berserk",
+                  "native": "\u30D9\u30EB\u30BB\u30EB\u30AF"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30002-Cul4OeN7bYtn.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30002-Cul4OeN7bYtn.jpg"
+                },
+                "averageScore": 92,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 123,
+              "mediaRecommendation": {
+                "id": 30583,
+                "title": {
+                  "romaji": "CLAYMORE",
+                  "english": "Claymore",
+                  "native": "CLAYMORE"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30583-Ysqwu8uryIUX.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30583-Ysqwu8uryIUX.png"
+                },
+                "averageScore": 81,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 106,
+              "mediaRecommendation": {
+                "id": 74489,
+                "title": {
+                  "romaji": "Houseki no Kuni",
+                  "english": "Land of the Lustrous",
+                  "native": "\u5B9D\u77F3\u306E\u56FD"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx74489-5HtDCFfut8Be.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx74489-5HtDCFfut8Be.jpg"
+                },
+                "averageScore": 89,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 55,
+              "mediaRecommendation": {
+                "id": 30642,
+                "title": {
+                  "romaji": "Vinland Saga",
+                  "english": "Vinland Saga",
+                  "native": "\u30F4\u30A3\u30F3\u30E9\u30F3\u30C9\u30FB\u30B5\u30AC"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30642-0mjRDkf4THpo.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30642-0mjRDkf4THpo.jpg"
+                },
+                "averageScore": 90,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 40,
+              "mediaRecommendation": {
+                "id": 30698,
+                "title": {
+                  "romaji": "Shin Seiki Evangelion",
+                  "english": "Neon Genesis Evangelion",
+                  "native": "\u65B0\u4E16\u7D00\u30A8\u30F4\u30A1\u30F3\u30B2\u30EA\u30AA\u30F3"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30698-0niTa3yn2rNK.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30698-0niTa3yn2rNK.png"
+                },
+                "averageScore": 84,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 36,
+              "mediaRecommendation": {
+                "id": 30025,
+                "title": {
+                  "romaji": "Hagane no Renkinjutsushi",
+                  "english": "Fullmetal Alchemist",
+                  "native": "\u92FC\u306E\u932C\u91D1\u8853\u5E2B"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30025-mpPVpCKFTowt.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30025-mpPVpCKFTowt.png"
+                },
+                "averageScore": 89,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 29,
+              "mediaRecommendation": {
+                "id": 85312,
+                "title": {
+                  "romaji": "Shingeki no Kyojin: Before the fall",
+                  "english": "Attack on Titan: Before the Fall",
+                  "native": "\u9032\u6483\u306E\u5DE8\u4EBA Before the fall"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx85312-q88Zhgf7W9fh.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx85312-q88Zhgf7W9fh.jpg"
+                },
+                "averageScore": 71,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 25,
+              "mediaRecommendation": {
+                "id": 73661,
+                "title": {
+                  "romaji": "Owari no Seraph",
+                  "english": "Seraph of the End: Vampire Reign",
+                  "native": "\u7D42\u308F\u308A\u306E\u30BB\u30E9\u30D5"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx73661-PJX2JcBAUYCx.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx73661-PJX2JcBAUYCx.png"
+                },
+                "averageScore": 75,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 23,
+              "mediaRecommendation": {
+                "id": 30564,
+                "title": {
+                  "romaji": "GANTZ",
+                  "english": "Gantz",
+                  "native": "GANTZ"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30564-RbyFbLzbnKea.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30564-RbyFbLzbnKea.jpg"
+                },
+                "averageScore": 77,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 21,
+              "mediaRecommendation": {
+                "id": 47365,
+                "title": {
+                  "romaji": "Muv-Luv Alternative",
+                  "english": "Muv-Luv Alternative",
+                  "native": "\u30DE\u30D6\u30E9\u30F4 \u30AA\u30EB\u30BF\u30CD\u30A4\u30C6\u30A3\u30F4"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx47365-KImfOjjhC1fP.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx47365-KImfOjjhC1fP.jpg"
+                },
+                "averageScore": 74,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 20,
+              "mediaRecommendation": {
+                "id": 31474,
+                "title": {
+                  "romaji": "Devilman",
+                  "english": "Devilman",
+                  "native": "\u30C7\u30D3\u30EB\u30DE\u30F3"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx31474-R4x7qkjUfBw6.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx31474-R4x7qkjUfBw6.jpg"
+                },
+                "averageScore": 80,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 19,
+              "mediaRecommendation": {
+                "id": 63327,
+                "title": {
+                  "romaji": "Tokyo Ghoul",
+                  "english": "Tokyo Ghoul",
+                  "native": "\u6771\u4EAC\u55B0\u7A2E \u30C8\u30FC\u30AD\u30E7\u30FC\u30B0\u30FC\u30EB"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx63327-glC9cDxYBja9.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx63327-glC9cDxYBja9.png"
+                },
+                "averageScore": 84,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 14,
+              "mediaRecommendation": {
+                "id": 67563,
+                "title": {
+                  "romaji": "Terra Formars",
+                  "english": "Terra Formars",
+                  "native": "\u30C6\u30E9\u30D5\u30A9\u30FC\u30DE\u30FC\u30BA"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx67563-AJqT7kcdBZqT.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx67563-AJqT7kcdBZqT.png"
+                },
+                "averageScore": 69,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 14,
+              "mediaRecommendation": {
+                "id": 31075,
+                "title": {
+                  "romaji": "7SEEDS",
+                  "english": null,
+                  "native": "\uFF17\uFF33\uFF25\uFF25\uFF24\uFF33"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx31075-0sTogC04TmSi.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx31075-0sTogC04TmSi.jpg"
+                },
+                "averageScore": 82,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 13,
+              "mediaRecommendation": {
+                "id": 31528,
+                "title": {
+                  "romaji": "Code Geass: Hangyaku no Lelouch",
+                  "english": "Code Geass: Lelouch of the Rebellion",
+                  "native": "\u30B3\u30FC\u30C9\u30AE\u30A2\u30B9 \u53CD\u9006\u306E\u30EB\u30EB\u30FC\u30B7\u30E5"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx31528-4Wsl8ogn0iyu.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx31528-4Wsl8ogn0iyu.jpg"
+                },
+                "averageScore": 73,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 13,
+              "mediaRecommendation": {
+                "id": 79865,
+                "title": {
+                  "romaji": "Ajin",
+                  "english": "Ajin: Demi-Human",
+                  "native": "\u4E9C\u4EBA"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/b79865-rwKmISrhJJyP.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/b79865-rwKmISrhJJyP.jpg"
+                },
+                "averageScore": 80,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 13,
+              "mediaRecommendation": {
+                "id": 55132,
+                "title": {
+                  "romaji": "Akame ga Kill!",
+                  "english": "Akame ga KILL!",
+                  "native": "\u30A2\u30AB\u30E1\u304C\u65AC\u308B\uFF01"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx55132-bhKk5JoXcvdA.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx55132-bhKk5JoXcvdA.jpg"
+                },
+                "averageScore": 74,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 13,
+              "mediaRecommendation": {
+                "id": 153007,
+                "title": {
+                  "romaji": "Sensou Kyoushitsu",
+                  "english": "The Bugle Call: Song of War",
+                  "native": "\u6226\u594F\u6559\u5BA4"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx153007-OvXOv4nRDmtL.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx153007-OvXOv4nRDmtL.jpg"
+                },
+                "averageScore": 82,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 12,
+              "mediaRecommendation": {
+                "id": 30651,
+                "title": {
+                  "romaji": "Kaze no Tani no Nausica\u00E4",
+                  "english": "Nausica\u00E4 of the Valley of the Wind",
+                  "native": "\u98A8\u306E\u8C37\u306E\u30CA\u30A6\u30B7\u30AB"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30651-xLufeLnDPqpn.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30651-xLufeLnDPqpn.jpg"
+                },
+                "averageScore": 85,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 12,
+              "mediaRecommendation": {
+                "id": 86742,
+                "title": {
+                  "romaji": "Kujira no Kora wa Sajou ni Utau",
+                  "english": "Children of the Whales",
+                  "native": "\u30AF\u30B8\u30E9\u306E\u5B50\u3089\u306F\u7802\u4E0A\u306B\u6B4C\u3046"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx86742-ITZDBhrgeL0O.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx86742-ITZDBhrgeL0O.png"
+                },
+                "averageScore": 77,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 11,
+              "mediaRecommendation": {
+                "id": 100765,
+                "title": {
+                  "romaji": "GIGANT",
+                  "english": "GIGANT",
+                  "native": "GIGANT"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx100765-sD0dKVQO5xVf.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx100765-sD0dKVQO5xVf.jpg"
+                },
+                "averageScore": 57,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 11,
+              "mediaRecommendation": {
+                "id": 30026,
+                "title": {
+                  "romaji": "HUNTER\u00D7HUNTER",
+                  "english": "Hunter x Hunter",
+                  "native": "HUNTER\u00D7HUNTER"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30026-uCvXMudMzmwI.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30026-uCvXMudMzmwI.jpg"
+                },
+                "averageScore": 88,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 10,
+              "mediaRecommendation": {
+                "id": 86720,
+                "title": {
+                  "romaji": "Helck",
+                  "english": "Helck",
+                  "native": "\u30D8\u30EB\u30AF"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx86720-hMyIB05OrKRC.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx86720-hMyIB05OrKRC.jpg"
+                },
+                "averageScore": 80,
+                "mediaListEntry": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

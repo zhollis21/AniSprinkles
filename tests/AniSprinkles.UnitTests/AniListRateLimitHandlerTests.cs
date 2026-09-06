@@ -68,6 +68,29 @@ public class AniListRateLimitHandlerTests
     }
 
     [Fact]
+    public async Task SendAsync_CarriesRequestHeadersThroughTheRetryTemplate()
+    {
+        var time = new ManualTimeProvider(Start);
+        var inner = new QueuedHttpMessageHandler(_ => Ok());
+        using var invoker = new HttpMessageInvoker(CreateHandler(inner, time));
+
+        var request = Request();
+        request.Headers.Referrer = new Uri("https://anilist.co/");
+        request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", "token-abc");
+
+        await invoker.SendAsync(request, TestContext.Current.CancellationToken);
+
+        // Same rebuild hazard as the Options test above, but the cost of losing these is remote
+        // rather than local: AniList answers a request carrying neither header with a 403 whose body
+        // claims the API is down (#160). A template that dropped them would turn every retry into a
+        // fake outage, and the retry path is exactly where nobody looks.
+        var sent = inner.LastRequest;
+        Assert.NotNull(sent);
+        Assert.Equal("https://anilist.co/", sent.Headers.Referrer?.ToString());
+        Assert.Equal("token-abc", sent.Headers.Authorization?.Parameter);
+    }
+
+    [Fact]
     public async Task SendAsync_SuccessfulResponse_PassesThroughUnchanged()
     {
         var time = new ManualTimeProvider(Start);

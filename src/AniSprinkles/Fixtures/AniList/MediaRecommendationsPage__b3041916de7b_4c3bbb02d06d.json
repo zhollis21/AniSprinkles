@@ -1,0 +1,518 @@
+﻿{
+  "operationName": "MediaRecommendationsPage",
+  "variables": {
+    "id": 180367,
+    "page": 1,
+    "sort": [
+      "RATING_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "4c3bbb02d06d",
+  "recordedAt": "2026-09-06T05:20:36.3651782+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "recommendations": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "nodes": [
+            {
+              "rating": 97,
+              "mediaRecommendation": {
+                "id": 21804,
+                "title": {
+                  "romaji": "Saiki Kusuo no \u03A8-nan",
+                  "english": "The Disastrous Life of Saiki K.",
+                  "native": "\u6589\u6728\u6960\u96C4\u306E\u03A8\u96E3"
+                },
+                "format": "TV_SHORT",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21804-As6tDLAvEvNY.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21804-As6tDLAvEvNY.jpg"
+                },
+                "averageScore": 83,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 72,
+              "mediaRecommendation": {
+                "id": 918,
+                "title": {
+                  "romaji": "Gintama",
+                  "english": "Gintama",
+                  "native": "\u9280\u9B42"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx918-iOaeBVUn4uK7.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx918-iOaeBVUn4uK7.jpg"
+                },
+                "averageScore": 85,
+                "mediaListEntry": {
+                  "id": 593363934,
+                  "status": "COMPLETED",
+                  "progress": 201,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 60,
+              "mediaRecommendation": {
+                "id": 9863,
+                "title": {
+                  "romaji": "SKET DANCE",
+                  "english": "SKET Dance",
+                  "native": "SKET DANCE"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx9863-G6dAvTVsfLRO.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx9863-G6dAvTVsfLRO.png"
+                },
+                "averageScore": 78,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 51,
+              "mediaRecommendation": {
+                "id": 20668,
+                "title": {
+                  "romaji": "Gekkan Shoujo Nozaki-kun",
+                  "english": "Monthly Girls\u0027 Nozaki-kun",
+                  "native": "\u6708\u520A\u5C11\u5973\u91CE\u5D0E\u304F\u3093"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20668-6UslJY5NDYNh.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20668-6UslJY5NDYNh.png"
+                },
+                "averageScore": 77,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 24,
+              "mediaRecommendation": {
+                "id": 178533,
+                "title": {
+                  "romaji": "Ranma 1/2 (2024)",
+                  "english": "Ranma1/2 (2024)",
+                  "native": "\u3089\u3093\u307E1/2 (2024)"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx178533-b88OLxm50jcH.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx178533-b88OLxm50jcH.jpg"
+                },
+                "averageScore": 79,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 23,
+              "mediaRecommendation": {
+                "id": 21858,
+                "title": {
+                  "romaji": "Little Witch Academia (TV)",
+                  "english": "Little Witch Academia (TV)",
+                  "native": "\u30EA\u30C8\u30EB\u30A6\u30A3\u30C3\u30C1\u30A2\u30AB\u30C7\u30DF\u30A2 (TV)"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21858-huBrbIOGMYXv.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21858-huBrbIOGMYXv.jpg"
+                },
+                "averageScore": 77,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 16,
+              "mediaRecommendation": {
+                "id": 21284,
+                "title": {
+                  "romaji": "Flying Witch",
+                  "english": "Flying Witch",
+                  "native": "\u3075\u3089\u3044\u3093\u3050\u3046\u3043\u3063\u3061"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21284-vQcCLIWt1o5O.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21284-vQcCLIWt1o5O.png"
+                },
+                "averageScore": 74,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 12,
+              "mediaRecommendation": {
+                "id": 98251,
+                "title": {
+                  "romaji": "Aho-Girl",
+                  "english": "AHO-GIRL",
+                  "native": "\u30A2\u30DB\u30AC\u30FC\u30EB"
+                },
+                "format": "TV_SHORT",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b98251-6miVBNYEXzaF.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b98251-6miVBNYEXzaF.jpg"
+                },
+                "averageScore": 64,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 11,
+              "mediaRecommendation": {
+                "id": 196974,
+                "title": {
+                  "romaji": "Kuroneko to Majo no Kyoushitsu",
+                  "english": "The Classroom of the Black Cat and a Witch",
+                  "native": "\u9ED2\u732B\u3068\u9B54\u5973\u306E\u6559\u5BA4"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx196974-mZk1uyrx0XNx.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx196974-mZk1uyrx0XNx.png"
+                },
+                "averageScore": 63,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 10,
+              "mediaRecommendation": {
+                "id": 107693,
+                "title": {
+                  "romaji": "Mairimashita! Iruma-kun",
+                  "english": "Welcome to Demon School! Iruma-kun",
+                  "native": "\u9B54\u5165\u308A\u307E\u3057\u305F\uFF01\u5165\u9593\u304F\u3093"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx107693-A9bSSFAMxA6j.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx107693-A9bSSFAMxA6j.jpg"
+                },
+                "averageScore": 77,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 9,
+              "mediaRecommendation": {
+                "id": 101921,
+                "title": {
+                  "romaji": "Kaguya-sama wa Kokurasetai: Tensaitachi no Renai Zunousen",
+                  "english": "Kaguya-sama: Love is War",
+                  "native": "\u304B\u3050\u3084\u69D8\u306F\u544A\u3089\u305B\u305F\u3044\uFF5E\u5929\u624D\u305F\u3061\u306E\u604B\u611B\u982D\u8133\u6226\uFF5E"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx101921-ufrjLzhSz7L1.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101921-ufrjLzhSz7L1.jpg"
+                },
+                "averageScore": 83,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 8,
+              "mediaRecommendation": {
+                "id": 147105,
+                "title": {
+                  "romaji": "Tongari Boushi no Atelier",
+                  "english": "Witch Hat Atelier",
+                  "native": "\u3068\u3093\u304C\u308A\u5E3D\u5B50\u306E\u30A2\u30C8\u30EA\u30A8"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx147105-rwOX8qyUy8gV.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx147105-rwOX8qyUy8gV.jpg"
+                },
+                "averageScore": 85,
+                "mediaListEntry": {
+                  "id": 593365663,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "score": 0
+                }
+              }
+            },
+            {
+              "rating": 7,
+              "mediaRecommendation": {
+                "id": 153930,
+                "title": {
+                  "romaji": "Romantic Killer",
+                  "english": "Romantic Killer",
+                  "native": "\u30ED\u30DE\u30F3\u30C6\u30A3\u30C3\u30AF\u30FB\u30AD\u30E9\u30FC"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx153930-uTRxaIcNa26E.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx153930-uTRxaIcNa26E.jpg"
+                },
+                "averageScore": 78,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 7,
+              "mediaRecommendation": {
+                "id": 199066,
+                "title": {
+                  "romaji": "Hanaori-san wa Tensei Shite mo Kenka ga Shitai",
+                  "english": "Hanaori-san Still Wants to Fight in the Next Life",
+                  "native": "\u82B1\u7E54\u3055\u3093\u306F\u8EE2\u751F\u3057\u3066\u3082\u55A7\u5629\u304C\u3057\u305F\u3044"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx199066-YXDVsguvFZMm.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx199066-YXDVsguvFZMm.jpg"
+                },
+                "averageScore": 69,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 6,
+              "mediaRecommendation": {
+                "id": 512,
+                "title": {
+                  "romaji": "Majo no Takkyuubin",
+                  "english": "Kiki\u0027s Delivery Service",
+                  "native": "\u9B54\u5973\u306E\u5B85\u6025\u4FBF"
+                },
+                "format": "MOVIE",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx512-UwP8X4BR8YoM.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx512-UwP8X4BR8YoM.png"
+                },
+                "averageScore": 81,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 6,
+              "mediaRecommendation": {
+                "id": 350,
+                "title": {
+                  "romaji": "Ojamajo Doremi",
+                  "english": "Magical DoReMi",
+                  "native": "\u304A\u30B8\u30E3\u9B54\u5973\u3069\u308C\u307F"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx350-iRi1NOntsTnG.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx350-iRi1NOntsTnG.jpg"
+                },
+                "averageScore": 74,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 6,
+              "mediaRecommendation": {
+                "id": 1293,
+                "title": {
+                  "romaji": "Urusei Yatsura",
+                  "english": "Urusei Yatsura",
+                  "native": "\u3046\u308B\u661F\u3084\u3064\u3089"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1293-xohJFutZXimo.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1293-xohJFutZXimo.jpg"
+                },
+                "averageScore": 74,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 6,
+              "mediaRecommendation": {
+                "id": 157965,
+                "title": {
+                  "romaji": "Acro Trip",
+                  "english": "Acro Trip",
+                  "native": "\u30A2\u30AF\u30ED\u30C8\u30EA\u30C3\u30D7"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx157965-YhogaZGde6tv.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx157965-YhogaZGde6tv.jpg"
+                },
+                "averageScore": 67,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 6,
+              "mediaRecommendation": {
+                "id": 10165,
+                "title": {
+                  "romaji": "Nichijou",
+                  "english": "Nichijou - My Ordinary Life",
+                  "native": "\u65E5\u5E38"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx10165-tw8Cz7K9tfVJ.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx10165-tw8Cz7K9tfVJ.png"
+                },
+                "averageScore": 83,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 6,
+              "mediaRecommendation": {
+                "id": 143277,
+                "title": {
+                  "romaji": "Urusei Yatsura (2022)",
+                  "english": "Urusei Yatsura (2022) Seasons 1 \u0026 2",
+                  "native": "\u3046\u308B\u661F\u3084\u3064\u3089 (2022)"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx143277-snjd4UzsUl8M.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx143277-snjd4UzsUl8M.jpg"
+                },
+                "averageScore": 72,
+                "mediaListEntry": {
+                  "id": 593365360,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "score": 0
+                }
+              }
+            },
+            {
+              "rating": 6,
+              "mediaRecommendation": {
+                "id": 861,
+                "title": {
+                  "romaji": "xxxHOLiC",
+                  "english": "xxxHOLiC",
+                  "native": "XXX \u30DB\u30EA\u30C3\u30AF"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx861-rbZNhIXwS4JE.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx861-rbZNhIXwS4JE.png"
+                },
+                "averageScore": 76,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 6,
+              "mediaRecommendation": {
+                "id": 162890,
+                "title": {
+                  "romaji": "3-nen Z-gumi Ginpachi-sensei",
+                  "english": "GINTAMA - Mr. Ginpachi\u0027s Zany Class",
+                  "native": "3\u5E74Z\u7D44\u9280\u516B\u5148\u751F"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx162890-vDRlo1KuRM6W.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx162890-vDRlo1KuRM6W.jpg"
+                },
+                "averageScore": 75,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 5,
+              "mediaRecommendation": {
+                "id": 20503,
+                "title": {
+                  "romaji": "Witch Craft Works",
+                  "english": "Witch Craft Works",
+                  "native": "\u30A6\u30A3\u30C3\u30C1\u30AF\u30E9\u30D5\u30C8\u30EF\u30FC\u30AF\u30B9"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20503-liSpvCiFljGr.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20503-liSpvCiFljGr.jpg"
+                },
+                "averageScore": 67,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 5,
+              "mediaRecommendation": {
+                "id": 112608,
+                "title": {
+                  "romaji": "Slime Taoshite 300-nen, Shiranai Uchi ni Level MAX ni Nattemashita",
+                  "english": "I\u0027ve Been Killing Slimes for 300 Years and Maxed Out My Level",
+                  "native": "\u30B9\u30E9\u30A4\u30E0\u5012\u3057\u3066300\u5E74\u3001\u77E5\u3089\u306A\u3044\u3046\u3061\u306B\u30EC\u30D9\u30EBMAX\u306B\u306A\u3063\u3066\u307E\u3057\u305F"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx112608-T3OKdLhxYUfe.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx112608-T3OKdLhxYUfe.png"
+                },
+                "averageScore": 68,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 4,
+              "mediaRecommendation": {
+                "id": 20966,
+                "title": {
+                  "romaji": "Yamada-kun to 7-nin no Majo",
+                  "english": "Yamada and the Seven Witches",
+                  "native": "\u5C71\u7530\u304F\u3093\u30687\u4EBA\u306E\u9B54\u5973"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20966-HboUtUzEKWl6.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20966-HboUtUzEKWl6.jpg"
+                },
+                "averageScore": 73,
+                "mediaListEntry": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

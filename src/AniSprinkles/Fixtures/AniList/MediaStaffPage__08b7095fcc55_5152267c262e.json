@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 2993,
+    "page": 1,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:23:21.3316401+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 95008,
+                "name": {
+                  "full": "Rie Kugimiya",
+                  "native": "\u91D8\u5BAE\u7406\u6075",
+                  "userPreferred": "Rie Kugimiya"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95008-2y0EeuSTHIri.png"
+                },
+                "favourites": 5427
+              },
+              "role": "Insert Song Performance  (eps 7, 13)"
+            },
+            {
+              "node": {
+                "id": 95081,
+                "name": {
+                  "full": "Nana Mizuki",
+                  "native": "\u6C34\u6A39\u5948\u3005",
+                  "userPreferred": "Nana Mizuki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95081-qto4UanYkpQT.png"
+                },
+                "favourites": 2354
+              },
+              "role": "Insert Song Performance (eps 5, 8, 13)"
+            },
+            {
+              "node": {
+                "id": 95081,
+                "name": {
+                  "full": "Nana Mizuki",
+                  "native": "\u6C34\u6A39\u5948\u3005",
+                  "userPreferred": "Nana Mizuki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95081-qto4UanYkpQT.png"
+                },
+                "favourites": 2354
+              },
+              "role": "Theme Song Lyrics (ED2)"
+            },
+            {
+              "node": {
+                "id": 95081,
+                "name": {
+                  "full": "Nana Mizuki",
+                  "native": "\u6C34\u6A39\u5948\u3005",
+                  "userPreferred": "Nana Mizuki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95081-qto4UanYkpQT.png"
+                },
+                "favourites": 2354
+              },
+              "role": "Theme Song Performance (OP, ED)"
+            },
+            {
+              "node": {
+                "id": 95159,
+                "name": {
+                  "full": "Monica Rial",
+                  "native": null,
+                  "userPreferred": "Monica Rial"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95159-iTd65o5LhA62.png"
+                },
+                "favourites": 1034
+              },
+              "role": "Insert Song Performance (English; ep 5)"
+            },
+            {
+              "node": {
+                "id": 95207,
+                "name": {
+                  "full": "Misato Fukuen",
+                  "native": "\u798F\u5713\u7F8E\u91CC",
+                  "userPreferred": "Misato Fukuen"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95207-TYPMa0JKUDAf.jpg"
+                },
+                "favourites": 828
+              },
+              "role": "Insert Song Performance (eps 5, 13)"
+            },
+            {
+              "node": {
+                "id": 104091,
+                "name": {
+                  "full": "Alexis Tipton",
+                  "native": null,
+                  "userPreferred": "Alexis Tipton"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n104091-AOshzC1ae225.png"
+                },
+                "favourites": 596
+              },
+              "role": "Insert Song Performance (English; ep 8)"
+            },
+            {
+              "node": {
+                "id": 95659,
+                "name": {
+                  "full": "Brina Palencia",
+                  "native": null,
+                  "userPreferred": "Brina Palencia"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/659.jpg"
+                },
+                "favourites": 557
+              },
+              "role": "Insert Song Performance (English; ep 5)"
+            },
+            {
+              "node": {
+                "id": 103979,
+                "name": {
+                  "full": "Hironori Tanaka",
+                  "native": "\u7530\u4E2D\u5B8F\u7D00",
+                  "userPreferred": "Hironori Tanaka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n103979-iNgo68ikjKgx.jpg"
+                },
+                "favourites": 454
+              },
+              "role": "Key Animation (ep 1)"
+            },
+            {
+              "node": {
+                "id": 95203,
+                "name": {
+                  "full": "Justin Cook",
+                  "native": null,
+                  "userPreferred": "Justin Ryan Cook"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95203-S3aCVxUoYwJl.jpg"
+                },
+                "favourites": 292
+              },
+              "role": "Producer (English)"
+            },
+            {
+              "node": {
+                "id": 101055,
+                "name": {
+                  "full": "Kouhei Tanaka",
+                  "native": "\u7530\u4E2D\u516C\u5E73",
+                  "userPreferred": "Kouhei Tanaka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101055-3QNbr0raaApy.jpg"
+                },
+                "favourites": 201
+              },
+              "role": "Music"
+            },
+            {
+              "node": {
+                "id": 106299,
+                "name": {
+                  "full": "Takaomi Kanasaki",
+                  "native": "\u91D1\u5D0E\u8CB4\u81E3",
+                  "userPreferred": "Takaomi Kanasaki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n106299-eLu7O6DwwQRT.png"
+                },
+                "favourites": 129
+              },
+              "role": "Storyboard (ep. 12)"
+            },
+            {
+              "node": {
+                "id": 121205,
+                "name": {
+                  "full": "Kazuhiro Miwa",
+                  "native": "\u4E09\u8F2A\u548C\u5B8F",
+                  "userPreferred": "Kazuhiro Miwa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n121205-47lcLjXc4tad.png"
+                },
+                "favourites": 93
+              },
+              "role": "Key Animation (ep 1)"
+            },
+            {
+              "node": {
+                "id": 103633,
+                "name": {
+                  "full": "Noriyasu Agematsu",
+                  "native": "\u4E0A\u677E\u7BC4\u5EB7",
+                  "userPreferred": "Noriyasu Agematsu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n103633-NL0huIsk2r1E.jpg"
+                },
+                "favourites": 62
+              },
+              "role": "Insert Song Composition (eps. 5, 7)"
+            },
+            {
+              "node": {
+                "id": 103633,
+                "name": {
+                  "full": "Noriyasu Agematsu",
+                  "native": "\u4E0A\u677E\u7BC4\u5EB7",
+                  "userPreferred": "Noriyasu Agematsu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n103633-NL0huIsk2r1E.jpg"
+                },
+                "favourites": 62
+              },
+              "role": "Insert Song Arrangement (ep. 7)"
+            },
+            {
+              "node": {
+                "id": 103633,
+                "name": {
+                  "full": "Noriyasu Agematsu",
+                  "native": "\u4E0A\u677E\u7BC4\u5EB7",
+                  "userPreferred": "Noriyasu Agematsu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n103633-NL0huIsk2r1E.jpg"
+                },
+                "favourites": 62
+              },
+              "role": "Theme Song Arrangement (ED2)"
+            },
+            {
+              "node": {
+                "id": 103633,
+                "name": {
+                  "full": "Noriyasu Agematsu",
+                  "native": "\u4E0A\u677E\u7BC4\u5EB7",
+                  "userPreferred": "Noriyasu Agematsu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n103633-NL0huIsk2r1E.jpg"
+                },
+                "favourites": 62
+              },
+              "role": "Theme Song Composition (ED2)"
+            },
+            {
+              "node": {
+                "id": 98636,
+                "name": {
+                  "full": "Akihisa Ikeda",
+                  "native": "\u6C60\u7530\u6643\u4E45",
+                  "userPreferred": "Akihisa Ikeda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n98636-qO59w76Y8l5q.jpg"
+                },
+                "favourites": 60
+              },
+              "role": "Original Creator"
+            },
+            {
+              "node": {
+                "id": 121962,
+                "name": {
+                  "full": "Manabu Akita",
+                  "native": "\u79CB\u7530\u5B66",
+                  "userPreferred": "Manabu Akita"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/121962-qgFN2E0FB1SA.jpg"
+                },
+                "favourites": 51
+              },
+              "role": "Key Animation (OP)"
+            },
+            {
+              "node": {
+                "id": 95135,
+                "name": {
+                  "full": "Saeko Chiba",
+                  "native": "\u5343\u8449\u7D17\u5B50",
+                  "userPreferred": "Saeko Chiba"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95135-zptQ6sZjTSU9.png"
+                },
+                "favourites": 48
+              },
+              "role": "Insert Song Performance  (ep 10, 13)"
+            },
+            {
+              "node": {
+                "id": 102689,
+                "name": {
+                  "full": "Shirou Hamaguchi",
+                  "native": "\u6D5C\u53E3\u53F2\u90CE",
+                  "userPreferred": "Shirou Hamaguchi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/7689.jpg"
+                },
+                "favourites": 42
+              },
+              "role": "Music"
+            },
+            {
+              "node": {
+                "id": 106449,
+                "name": {
+                  "full": "Shinpei Nagai",
+                  "native": "\u6C38\u5C45\u614E\u5E73",
+                  "userPreferred": "Shinpei Nagai"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n106449-4TW5xlrwmIGb.jpg"
+                },
+                "favourites": 37
+              },
+              "role": "Key Animation (ep 6)"
+            },
+            {
+              "node": {
+                "id": 100652,
+                "name": {
+                  "full": "Shin Itagaki",
+                  "native": "\u677F\u57A3\u4F38",
+                  "userPreferred": "Shin Itagaki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100652-RRre8aSZhdF6.png"
+                },
+                "favourites": 33
+              },
+              "role": "Eyecatch (ep 10)"
+            },
+            {
+              "node": {
+                "id": 100652,
+                "name": {
+                  "full": "Shin Itagaki",
+                  "native": "\u677F\u57A3\u4F38",
+                  "userPreferred": "Shin Itagaki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100652-RRre8aSZhdF6.png"
+                },
+                "favourites": 33
+              },
+              "role": "Storyboard (ep. 10)"
+            },
+            {
+              "node": {
+                "id": 100652,
+                "name": {
+                  "full": "Shin Itagaki",
+                  "native": "\u677F\u57A3\u4F38",
+                  "userPreferred": "Shin Itagaki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100652-RRre8aSZhdF6.png"
+                },
+                "favourites": 33
+              },
+              "role": "Episode Director  (ep 10)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

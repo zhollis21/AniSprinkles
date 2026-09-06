@@ -26,6 +26,14 @@ public static class AiringScheduleFetcher
 {
     public static readonly Uri GraphQlEndpoint = new("https://graphql.anilist.co");
 
+    /// <summary>
+    /// AniList rejects any request carrying neither a <c>Referer</c> nor an <c>Authorization</c>
+    /// header with HTTP 403 (#160). This fetcher has no token by design — that independence is the
+    /// whole reason it exists — so the Referer is the only thing keeping the worker able to reach
+    /// AniList at all. Duplicated from <c>AniListClient</c> for the same reason the query is.
+    /// </summary>
+    public static readonly Uri GraphQlReferer = new("https://anilist.co/");
+
     /// <summary>Guards against a malformed <c>hasNextPage</c> spinning the worker forever.</summary>
     public const int MaxPages = 40;
 
@@ -98,10 +106,17 @@ public static class AiringScheduleFetcher
                 operationName = "AiringSchedule"
             };
 
-            using var content = new StringContent(
-                JsonSerializer.Serialize(payload, WriteOptions), Encoding.UTF8, "application/json");
+            using var request = new HttpRequestMessage(HttpMethod.Post, GraphQlEndpoint)
+            {
+                Content = new StringContent(
+                    JsonSerializer.Serialize(payload, WriteOptions), Encoding.UTF8, "application/json"),
+            };
+            request.Headers.Referrer = GraphQlReferer;
 
-            using var response = client.PostAsync(GraphQlEndpoint, content).GetAwaiter().GetResult();
+            // Blocking-async rather than the synchronous HttpClient.Send: the sync path bottoms out
+            // in HttpMessageHandler.Send, which handlers are not obliged to implement, and neither
+            // the test fake nor the platform handler does.
+            using var response = client.SendAsync(request).GetAwaiter().GetResult();
 
             // Throw rather than return partial results, so the caller keeps the window for retry.
             response.EnsureSuccessStatusCode();

@@ -97,6 +97,7 @@ public sealed class ScriptedGraphQlHandler : HttpMessageHandler
             request.RequestUri,
             request.Headers.Authorization?.Scheme,
             request.Headers.Authorization?.Parameter,
+            request.Headers.Referrer,
             body);
 
         lock (_gate)
@@ -114,12 +115,13 @@ public sealed class CapturedGraphQlRequest
     private readonly JsonElement? _root;
 
     public CapturedGraphQlRequest(
-        HttpMethod method, Uri? uri, string? authScheme, string? bearerToken, string body)
+        HttpMethod method, Uri? uri, string? authScheme, string? bearerToken, Uri? referrer, string body)
     {
         Method = method;
         Uri = uri;
         AuthScheme = authScheme;
         BearerToken = bearerToken;
+        Referrer = referrer;
         Body = body;
 
         if (!string.IsNullOrEmpty(body))
@@ -149,6 +151,13 @@ public sealed class CapturedGraphQlRequest
     public string? AuthScheme { get; }
 
     public string? BearerToken { get; }
+
+    /// <summary>
+    /// The <c>Referer</c> header. AniList rejects requests without one — or without a bearer token —
+    /// with an HTTP 403 whose body claims the API is "temporarily disabled" (#160), so its presence
+    /// is part of the client's contract rather than a detail.
+    /// </summary>
+    public Uri? Referrer { get; }
 
     public string Body { get; }
 

@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 180367,
+    "page": 1,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:20:31.5868397+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 194287,
+                "name": {
+                  "full": "YOASOBI",
+                  "native": null,
+                  "userPreferred": "YOASOBI"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n194287-qQjdXaBhaIOA.png"
+                },
+                "favourites": 3575
+              },
+              "role": "Theme Song Performance (OP1)"
+            },
+            {
+              "node": {
+                "id": 141539,
+                "name": {
+                  "full": "Megumi Ishitani",
+                  "native": "\u77F3\u8C37\u6075",
+                  "userPreferred": "Megumi Ishitani"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n141539-cmuyHHlaB49F.png"
+                },
+                "favourites": 1807
+              },
+              "role": "Episode Director (OP1)"
+            },
+            {
+              "node": {
+                "id": 141539,
+                "name": {
+                  "full": "Megumi Ishitani",
+                  "native": "\u77F3\u8C37\u6075",
+                  "userPreferred": "Megumi Ishitani"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n141539-cmuyHHlaB49F.png"
+                },
+                "favourites": 1807
+              },
+              "role": "Storyboard (OP1)"
+            },
+            {
+              "node": {
+                "id": 199392,
+                "name": {
+                  "full": "Lilas Ikuta",
+                  "native": "\u5E7E\u7530\u308A\u3089",
+                  "userPreferred": "Lilas Ikuta"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n199392-g0Apmeiiraz6.png"
+                },
+                "favourites": 505
+              },
+              "role": "Theme Song Vocal Performance (OP1)"
+            },
+            {
+              "node": {
+                "id": 107357,
+                "name": {
+                  "full": "Toshiyuki Satou",
+                  "native": "\u4F50\u85E4\u5229\u5E78",
+                  "userPreferred": "Toshiyuki Satou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n107357-96PgjYcdwBFt.png"
+                },
+                "favourites": 279
+              },
+              "role": "Key Animation (OP1)"
+            },
+            {
+              "node": {
+                "id": 145951,
+                "name": {
+                  "full": "ALI",
+                  "native": "ALI",
+                  "userPreferred": "ALI"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n145951-ScYq0yYFiGLy.png"
+                },
+                "favourites": 263
+              },
+              "role": "Theme Song Performance (ED3)"
+            },
+            {
+              "node": {
+                "id": 145951,
+                "name": {
+                  "full": "ALI",
+                  "native": "ALI",
+                  "userPreferred": "ALI"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n145951-ScYq0yYFiGLy.png"
+                },
+                "favourites": 263
+              },
+              "role": "Theme Song Arrangement (ED3)"
+            },
+            {
+              "node": {
+                "id": 104878,
+                "name": {
+                  "full": "Fryderyk Chopin",
+                  "native": "\u30D5\u30EC\u30C7\u30EA\u30C3\u30AF\u30FB\u30D5\u30E9\u30F3\u30BD\u30EF\u30FB\u30B7\u30E7\u30D1\u30F3",
+                  "userPreferred": "Fryderyk Chopin"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/9878.jpg"
+                },
+                "favourites": 260
+              },
+              "role": "Insert Song Composition (ep 5)"
+            },
+            {
+              "node": {
+                "id": 105082,
+                "name": {
+                  "full": "Yukari Hashimoto",
+                  "native": "\u6A4B\u672C\u7531\u9999\u5229",
+                  "userPreferred": "Yukari Hashimoto"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n105082-eV6eweMiR1FM.png"
+                },
+                "favourites": 203
+              },
+              "role": "Music"
+            },
+            {
+              "node": {
+                "id": 198948,
+                "name": {
+                  "full": "Ayase",
+                  "native": "\u3042\u3084\u305B",
+                  "userPreferred": "Ayase"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n198948-sldqbvJvz0i1.png"
+                },
+                "favourites": 200
+              },
+              "role": "Theme Song Arrangement (OP1)"
+            },
+            {
+              "node": {
+                "id": 198948,
+                "name": {
+                  "full": "Ayase",
+                  "native": "\u3042\u3084\u305B",
+                  "userPreferred": "Ayase"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n198948-sldqbvJvz0i1.png"
+                },
+                "favourites": 200
+              },
+              "role": "Theme Song Lyrics (OP1)"
+            },
+            {
+              "node": {
+                "id": 198948,
+                "name": {
+                  "full": "Ayase",
+                  "native": "\u3042\u3084\u305B",
+                  "userPreferred": "Ayase"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n198948-sldqbvJvz0i1.png"
+                },
+                "favourites": 200
+              },
+              "role": "Theme Song Composition (OP1)"
+            },
+            {
+              "node": {
+                "id": 97994,
+                "name": {
+                  "full": "Kenta Shinohara",
+                  "native": "\u7BE0\u539F\u5065\u592A",
+                  "userPreferred": "Kenta Shinohara"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n97994-ltGfdqWx7EWt.jpg"
+                },
+                "favourites": 173
+              },
+              "role": "Original Creator"
+            },
+            {
+              "node": {
+                "id": 101404,
+                "name": {
+                  "full": "Tetsuya Takeuchi",
+                  "native": "\u7AF9\u5185\u54F2\u4E5F",
+                  "userPreferred": "Tetsuya Takeuchi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101404-uNh6cRTHPQ46.jpg"
+                },
+                "favourites": 123
+              },
+              "role": "Key Animation (OP1, OP1v2)"
+            },
+            {
+              "node": {
+                "id": 131341,
+                "name": {
+                  "full": "Moaang",
+                  "native": "\u3082\u3042\u3042\u3093",
+                  "userPreferred": "Moaang"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n131341-FmB6geZiJF4U.jpg"
+                },
+                "favourites": 84
+              },
+              "role": "Key Animation (OP1)"
+            },
+            {
+              "node": {
+                "id": 146419,
+                "name": {
+                  "full": "Who-ya Extended",
+                  "native": "\u30D5\u30FC\u30E4\u30A8\u30AF\u30B9\u30C6\u30F3\u30C7\u30C3\u30C9",
+                  "userPreferred": "Who-ya Extended"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n146419-FuJFqbzW7n0H.png"
+                },
+                "favourites": 64
+              },
+              "role": "Theme Song Arrangement (OP3)"
+            },
+            {
+              "node": {
+                "id": 146419,
+                "name": {
+                  "full": "Who-ya Extended",
+                  "native": "\u30D5\u30FC\u30E4\u30A8\u30AF\u30B9\u30C6\u30F3\u30C7\u30C3\u30C9",
+                  "userPreferred": "Who-ya Extended"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n146419-FuJFqbzW7n0H.png"
+                },
+                "favourites": 64
+              },
+              "role": "Theme Song Performance (OP3)"
+            },
+            {
+              "node": {
+                "id": 146419,
+                "name": {
+                  "full": "Who-ya Extended",
+                  "native": "\u30D5\u30FC\u30E4\u30A8\u30AF\u30B9\u30C6\u30F3\u30C7\u30C3\u30C9",
+                  "userPreferred": "Who-ya Extended"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n146419-FuJFqbzW7n0H.png"
+                },
+                "favourites": 64
+              },
+              "role": "Theme Song Lyrics (OP3)"
+            },
+            {
+              "node": {
+                "id": 146419,
+                "name": {
+                  "full": "Who-ya Extended",
+                  "native": "\u30D5\u30FC\u30E4\u30A8\u30AF\u30B9\u30C6\u30F3\u30C7\u30C3\u30C9",
+                  "userPreferred": "Who-ya Extended"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n146419-FuJFqbzW7n0H.png"
+                },
+                "favourites": 64
+              },
+              "role": "Theme Song Composition (OP3)"
+            },
+            {
+              "node": {
+                "id": 105678,
+                "name": {
+                  "full": "Haruko Iizuka",
+                  "native": "\u98EF\u585A\u6674\u5B50",
+                  "userPreferred": "Haruko Iizuka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n105678-FG6UXFs4o2CF.png"
+                },
+                "favourites": 56
+              },
+              "role": "Character Design"
+            },
+            {
+              "node": {
+                "id": 104540,
+                "name": {
+                  "full": "Hitomi Mieno",
+                  "native": "\u4E09\u91CD\u91CE\u77B3",
+                  "userPreferred": "Hitomi Mieno"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n104540-JMpYb6fdq2kT.png"
+                },
+                "favourites": 52
+              },
+              "role": "Script (eps 1, 2, 5, 10, 12, 15, 17, 24)"
+            },
+            {
+              "node": {
+                "id": 104540,
+                "name": {
+                  "full": "Hitomi Mieno",
+                  "native": "\u4E09\u91CD\u91CE\u77B3",
+                  "userPreferred": "Hitomi Mieno"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n104540-JMpYb6fdq2kT.png"
+                },
+                "favourites": 52
+              },
+              "role": "Series Composition"
+            },
+            {
+              "node": {
+                "id": 116007,
+                "name": {
+                  "full": "Kenichi Kutsuna",
+                  "native": "\u6C93\u540D\u5065\u4E00",
+                  "userPreferred": "Kenichi Kutsuna"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n116007-C2IDhFfUhc9j.png"
+                },
+                "favourites": 48
+              },
+              "role": "Key Animation (OP1)"
+            },
+            {
+              "node": {
+                "id": 131189,
+                "name": {
+                  "full": "Kazunori Ozawa",
+                  "native": "\u5C0F\u6FA4\u548C\u5247",
+                  "userPreferred": "Kazunori Ozawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n131189-zT4iokxFkxD8.png"
+                },
+                "favourites": 36
+              },
+              "role": "Key Animation (ep 10)"
+            },
+            {
+              "node": {
+                "id": 105140,
+                "name": {
+                  "full": "Kei Oikawa",
+                  "native": "\u53CA\u5DDD\u5553",
+                  "userPreferred": "Kei Oikawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 34
+              },
+              "role": "Key Animation (ep 3)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

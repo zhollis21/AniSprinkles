@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 178788,
+    "page": 1,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:23:58.887659+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 105561,
+                "name": {
+                  "full": "LiSA",
+                  "native": "LiSA",
+                  "userPreferred": "LiSA"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n105561-bluE1C2NqCrV.png"
+                },
+                "favourites": 6421
+              },
+              "role": "Theme Song Performance"
+            },
+            {
+              "node": {
+                "id": 100077,
+                "name": {
+                  "full": "Yuki Kajiura",
+                  "native": "\u68B6\u6D66\u7531\u8A18",
+                  "userPreferred": "Yuki Kajiura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100077-EQO5m2lkmUQk.jpg"
+                },
+                "favourites": 4430
+              },
+              "role": "Theme Song Lyrics"
+            },
+            {
+              "node": {
+                "id": 100077,
+                "name": {
+                  "full": "Yuki Kajiura",
+                  "native": "\u68B6\u6D66\u7531\u8A18",
+                  "userPreferred": "Yuki Kajiura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100077-EQO5m2lkmUQk.jpg"
+                },
+                "favourites": 4430
+              },
+              "role": "Music"
+            },
+            {
+              "node": {
+                "id": 100077,
+                "name": {
+                  "full": "Yuki Kajiura",
+                  "native": "\u68B6\u6D66\u7531\u8A18",
+                  "userPreferred": "Yuki Kajiura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100077-EQO5m2lkmUQk.jpg"
+                },
+                "favourites": 4430
+              },
+              "role": "Theme Song Composition"
+            },
+            {
+              "node": {
+                "id": 100077,
+                "name": {
+                  "full": "Yuki Kajiura",
+                  "native": "\u68B6\u6D66\u7531\u8A18",
+                  "userPreferred": "Yuki Kajiura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100077-EQO5m2lkmUQk.jpg"
+                },
+                "favourites": 4430
+              },
+              "role": "Theme Song Arrangement"
+            },
+            {
+              "node": {
+                "id": 107859,
+                "name": {
+                  "full": "Aimer",
+                  "native": "\u30A8\u30E1 ",
+                  "userPreferred": "Aimer"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n107859-4IHiVcDLatYG.jpg"
+                },
+                "favourites": 4318
+              },
+              "role": "Theme Song Performance"
+            },
+            {
+              "node": {
+                "id": 119973,
+                "name": {
+                  "full": "Koyoharu Gotouge",
+                  "native": "\u543E\u5CE0\u547C\u4E16\u6674 ",
+                  "userPreferred": "Koyoharu Gotouge"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n119973-pzMtyCVGBWNt.jpg"
+                },
+                "favourites": 1352
+              },
+              "role": "Original Creator"
+            },
+            {
+              "node": {
+                "id": 116271,
+                "name": {
+                  "full": "Nozomu Abe",
+                  "native": "\u963F\u90E8\u671B",
+                  "userPreferred": "Nozomu Abe"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n116271-TfkGf3gX6JWu.jpg"
+                },
+                "favourites": 487
+              },
+              "role": "Key Animation"
+            },
+            {
+              "node": {
+                "id": 103893,
+                "name": {
+                  "full": "Shinya Oohira",
+                  "native": "\u5927\u5E73\u664B\u4E5F",
+                  "userPreferred": "Shinya Oohira"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n103893-QwcOIQ3mbO2a.png"
+                },
+                "favourites": 314
+              },
+              "role": "Key Animation"
+            },
+            {
+              "node": {
+                "id": 109341,
+                "name": {
+                  "full": "Gou Shiina",
+                  "native": "\u690E\u540D\u8C6A",
+                  "userPreferred": "Gou Shiina"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n109341-q5Wmz53sbNsO.png"
+                },
+                "favourites": 145
+              },
+              "role": "Theme Song Composition"
+            },
+            {
+              "node": {
+                "id": 109341,
+                "name": {
+                  "full": "Gou Shiina",
+                  "native": "\u690E\u540D\u8C6A",
+                  "userPreferred": "Gou Shiina"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n109341-q5Wmz53sbNsO.png"
+                },
+                "favourites": 145
+              },
+              "role": "Music"
+            },
+            {
+              "node": {
+                "id": 109341,
+                "name": {
+                  "full": "Gou Shiina",
+                  "native": "\u690E\u540D\u8C6A",
+                  "userPreferred": "Gou Shiina"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n109341-q5Wmz53sbNsO.png"
+                },
+                "favourites": 145
+              },
+              "role": "Theme Song Arrangement"
+            },
+            {
+              "node": {
+                "id": 121205,
+                "name": {
+                  "full": "Kazuhiro Miwa",
+                  "native": "\u4E09\u8F2A\u548C\u5B8F",
+                  "userPreferred": "Kazuhiro Miwa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n121205-47lcLjXc4tad.png"
+                },
+                "favourites": 93
+              },
+              "role": "Key Animation"
+            },
+            {
+              "node": {
+                "id": 119808,
+                "name": {
+                  "full": "Akira Matsushima",
+                  "native": "\u677E\u5CF6\u6643",
+                  "userPreferred": "Akira Matsushima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n119808-61yB4qZ8gvPf.png"
+                },
+                "favourites": 87
+              },
+              "role": "Character Design"
+            },
+            {
+              "node": {
+                "id": 119808,
+                "name": {
+                  "full": "Akira Matsushima",
+                  "native": "\u677E\u5CF6\u6643",
+                  "userPreferred": "Akira Matsushima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n119808-61yB4qZ8gvPf.png"
+                },
+                "favourites": 87
+              },
+              "role": "Animation Director"
+            },
+            {
+              "node": {
+                "id": 119808,
+                "name": {
+                  "full": "Akira Matsushima",
+                  "native": "\u677E\u5CF6\u6643",
+                  "userPreferred": "Akira Matsushima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n119808-61yB4qZ8gvPf.png"
+                },
+                "favourites": 87
+              },
+              "role": "Chief Animation Director"
+            },
+            {
+              "node": {
+                "id": 146702,
+                "name": {
+                  "full": "Masayuki Kunihiro",
+                  "native": "\u570B\u5F18\u660C\u4E4B",
+                  "userPreferred": "Masayuki Kunihiro"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n146702-24ktqjqVZIKw.png"
+                },
+                "favourites": 81
+              },
+              "role": "Key Animation"
+            },
+            {
+              "node": {
+                "id": 99006,
+                "name": {
+                  "full": "Haruo Sotozaki",
+                  "native": "\u5916\u5D0E\u6625\u96C4",
+                  "userPreferred": "Haruo Sotozaki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n99006-NuAjczMqcL3W.jpg"
+                },
+                "favourites": 67
+              },
+              "role": "Animation Director"
+            },
+            {
+              "node": {
+                "id": 99006,
+                "name": {
+                  "full": "Haruo Sotozaki",
+                  "native": "\u5916\u5D0E\u6625\u96C4",
+                  "userPreferred": "Haruo Sotozaki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n99006-NuAjczMqcL3W.jpg"
+                },
+                "favourites": 67
+              },
+              "role": "Director"
+            },
+            {
+              "node": {
+                "id": 99006,
+                "name": {
+                  "full": "Haruo Sotozaki",
+                  "native": "\u5916\u5D0E\u6625\u96C4",
+                  "userPreferred": "Haruo Sotozaki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n99006-NuAjczMqcL3W.jpg"
+                },
+                "favourites": 67
+              },
+              "role": "Assistant Chief Animation Director"
+            },
+            {
+              "node": {
+                "id": 99006,
+                "name": {
+                  "full": "Haruo Sotozaki",
+                  "native": "\u5916\u5D0E\u6625\u96C4",
+                  "userPreferred": "Haruo Sotozaki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n99006-NuAjczMqcL3W.jpg"
+                },
+                "favourites": 67
+              },
+              "role": "Storyboard"
+            },
+            {
+              "node": {
+                "id": 130063,
+                "name": {
+                  "full": "Yuuichi Terao",
+                  "native": "\u5BFA\u5C3E\u512A\u4E00",
+                  "userPreferred": "Yuuichi Terao"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n130063-BhxRFJllYuI7.jpg"
+                },
+                "favourites": 66
+              },
+              "role": "Director of Photography"
+            },
+            {
+              "node": {
+                "id": 130063,
+                "name": {
+                  "full": "Yuuichi Terao",
+                  "native": "\u5BFA\u5C3E\u512A\u4E00",
+                  "userPreferred": "Yuuichi Terao"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n130063-BhxRFJllYuI7.jpg"
+                },
+                "favourites": 66
+              },
+              "role": " Finishing Unit Direction Director"
+            },
+            {
+              "node": {
+                "id": 120896,
+                "name": {
+                  "full": "Toshiyuki Shirai",
+                  "native": "\u767D\u4E95\u4FCA\u884C",
+                  "userPreferred": "Toshiyuki Shirai"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n120896-LgjPVWmyJPaO.png"
+                },
+                "favourites": 59
+              },
+              "role": "Animation Director"
+            },
+            {
+              "node": {
+                "id": 120896,
+                "name": {
+                  "full": "Toshiyuki Shirai",
+                  "native": "\u767D\u4E95\u4FCA\u884C",
+                  "userPreferred": "Toshiyuki Shirai"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n120896-LgjPVWmyJPaO.png"
+                },
+                "favourites": 59
+              },
+              "role": "Key Animation"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

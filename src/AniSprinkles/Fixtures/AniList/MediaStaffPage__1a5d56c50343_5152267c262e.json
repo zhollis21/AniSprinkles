@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 144092,
+    "page": 1,
+    "sort": [
+      "ROLE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:24:39.3887942+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 348692,
+                "name": {
+                  "full": "Aporiz",
+                  "native": null,
+                  "userPreferred": "Aporiz"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "ADR Coordinator (Thai)"
+            },
+            {
+              "node": {
+                "id": 95202,
+                "name": {
+                  "full": "Mike McFarland",
+                  "native": null,
+                  "userPreferred": "Mike McFarland"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/202.jpg"
+                },
+                "favourites": 95
+              },
+              "role": "ADR Director (English)"
+            },
+            {
+              "node": {
+                "id": 331474,
+                "name": {
+                  "full": "Pattaeshin Sasipattanatada",
+                  "native": "\u0E1E\u0E31\u0E12\u0E19\u0E4C\u0E40\u0E15\u0E0A\u0E34\u0E19\u0E17\u0E4C \u0E28\u0E28\u0E34\u0E1E\u0E31\u0E12\u0E19\u0E18\u0E32\u0E14\u0E32",
+                  "userPreferred": "Pattaeshin Sasipattanatada"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n331474-seowMZyqMvxl.png"
+                },
+                "favourites": 0
+              },
+              "role": "ADR Director (Thai)"
+            },
+            {
+              "node": {
+                "id": 206620,
+                "name": {
+                  "full": "Manuel Aragon",
+                  "native": null,
+                  "userPreferred": "Manuel Aragon"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "ADR Engineer (English)"
+            },
+            {
+              "node": {
+                "id": 348690,
+                "name": {
+                  "full": "Nitipon Lerkpattanaporn",
+                  "native": "\u0E19\u0E34\u0E18\u0E34\u0E1E\u0E25 \u0E24\u0E01\u0E29\u0E4C\u0E1E\u0E31\u0E12\u0E19\u0E32\u0E1E\u0E23",
+                  "userPreferred": "Nitipon Lerkpattanaporn"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n348690-kJdAKEhMpFq1.png"
+                },
+                "favourites": 0
+              },
+              "role": "ADR Mixer (Thai)"
+            },
+            {
+              "node": {
+                "id": 146774,
+                "name": {
+                  "full": "William Dewell",
+                  "native": null,
+                  "userPreferred": "William Dewell"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "ADR Mixing (English)"
+            },
+            {
+              "node": {
+                "id": 208049,
+                "name": {
+                  "full": "Jared Smith",
+                  "native": null,
+                  "userPreferred": "Jared Smith"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n208049-lOwJLVDSNffy.png"
+                },
+                "favourites": 3
+              },
+              "role": "ADR Script (English)"
+            },
+            {
+              "node": {
+                "id": 340560,
+                "name": {
+                  "full": "Ampika Prachantasen",
+                  "native": "\u0E2D\u0E31\u0E21\u0E1E\u0E34\u0E01\u0E32 \u0E1B\u0E23\u0E30\u0E08\u0E31\u0E19\u0E15\u0E30\u0E40\u0E2A\u0E19",
+                  "userPreferred": "Ampika Prachantasen"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "ADR Script Adapter (Thai)"
+            },
+            {
+              "node": {
+                "id": 348693,
+                "name": {
+                  "full": "Ferokun",
+                  "native": null,
+                  "userPreferred": "Ferokun"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "ADR Translation Quality Control (Thai)"
+            },
+            {
+              "node": {
+                "id": 156247,
+                "name": {
+                  "full": "Youko Tanabe",
+                  "native": "\u305F\u306A\u3079\u3088\u3046\u3053",
+                  "userPreferred": "Youko Tanabe"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Character Design"
+            },
+            {
+              "node": {
+                "id": 107701,
+                "name": {
+                  "full": "Toshiyuki Kubooka",
+                  "native": "\u7AAA\u5CA1\u4FCA\u4E4B",
+                  "userPreferred": "Toshiyuki Kubooka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n107701-R92Wfc1in7fw.png"
+                },
+                "favourites": 22
+              },
+              "role": "Director"
+            },
+            {
+              "node": {
+                "id": 297013,
+                "name": {
+                  "full": "Kouichirou Ishikawa",
+                  "native": "\u30A4\u30B7\u30AB\u30EF\u30B3\u30A6\u30A4\u30C1\u30ED\u30A6",
+                  "userPreferred": "Kouichirou Ishikawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n297013-PAWs6VirTXHv.png"
+                },
+                "favourites": 0
+              },
+              "role": "Doll Production (ED)"
+            },
+            {
+              "node": {
+                "id": 256856,
+                "name": {
+                  "full": "Pinchiao Tseng",
+                  "native": "\u66FD\u54C1\u55AC",
+                  "userPreferred": "Pinchiao Tseng"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n256856-z5IwCq7sQCIS.png"
+                },
+                "favourites": 4
+              },
+              "role": "Key Animation (OP)"
+            },
+            {
+              "node": {
+                "id": 120027,
+                "name": {
+                  "full": "Tomotaka Oosumi",
+                  "native": "\u5927\u9685\u77E5\u5B87",
+                  "userPreferred": "Tomotaka Oosumi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n120027-oN8ebB3sbCsQ.png"
+                },
+                "favourites": 1
+              },
+              "role": "Music"
+            },
+            {
+              "node": {
+                "id": 121947,
+                "name": {
+                  "full": "Kazutomo Ichitomo",
+                  "native": "\u4E00\u667A\u548C\u667A",
+                  "userPreferred": "Kazutomo Ichitomo"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n121947-xg6QEo2hJYYh.jpg"
+                },
+                "favourites": 20
+              },
+              "role": "Original Creator"
+            },
+            {
+              "node": {
+                "id": 121054,
+                "name": {
+                  "full": "Kenta Ihara",
+                  "native": "\u732A\u539F\u5065\u592A",
+                  "userPreferred": "Kenta Ihara"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n121054-BuB93AisYNhZ.png"
+                },
+                "favourites": 14
+              },
+              "role": "Script"
+            },
+            {
+              "node": {
+                "id": 121054,
+                "name": {
+                  "full": "Kenta Ihara",
+                  "native": "\u732A\u539F\u5065\u592A",
+                  "userPreferred": "Kenta Ihara"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n121054-BuB93AisYNhZ.png"
+                },
+                "favourites": 14
+              },
+              "role": "Series Composition"
+            },
+            {
+              "node": {
+                "id": 128918,
+                "name": {
+                  "full": "Yuuichi Imaizumi",
+                  "native": "\u4ECA\u6CC9\u96C4\u4E00",
+                  "userPreferred": "Yuuichi Imaizumi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n128918-CJRwQatzsruX.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "Sound Director"
+            },
+            {
+              "node": {
+                "id": 106449,
+                "name": {
+                  "full": "Shinpei Nagai",
+                  "native": "\u6C38\u5C45\u614E\u5E73",
+                  "userPreferred": "Shinpei Nagai"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n106449-4TW5xlrwmIGb.jpg"
+                },
+                "favourites": 37
+              },
+              "role": "Storyboard (eps 5, 10)"
+            },
+            {
+              "node": {
+                "id": 191995,
+                "name": {
+                  "full": "Shouji Masuda",
+                  "native": "\u685D\u7530\u7701\u6CBB",
+                  "userPreferred": "Shouji Masuda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Supervisor"
+            },
+            {
+              "node": {
+                "id": 296979,
+                "name": {
+                  "full": "MIMI",
+                  "native": null,
+                  "userPreferred": "MIMI"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n296979-nzo01pp5kH3e.jpg"
+                },
+                "favourites": 25
+              },
+              "role": "Theme Song Arrangement (ED)"
+            },
+            {
+              "node": {
+                "id": 272963,
+                "name": {
+                  "full": "Nanao",
+                  "native": null,
+                  "userPreferred": "Nanao"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n272963-7I0Figj9YFx4.png"
+                },
+                "favourites": 0
+              },
+              "role": "Theme Song Arrangement (OP)"
+            },
+            {
+              "node": {
+                "id": 296979,
+                "name": {
+                  "full": "MIMI",
+                  "native": null,
+                  "userPreferred": "MIMI"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n296979-nzo01pp5kH3e.jpg"
+                },
+                "favourites": 25
+              },
+              "role": "Theme Song Composition (ED)"
+            },
+            {
+              "node": {
+                "id": 272963,
+                "name": {
+                  "full": "Nanao",
+                  "native": null,
+                  "userPreferred": "Nanao"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n272963-7I0Figj9YFx4.png"
+                },
+                "favourites": 0
+              },
+              "role": "Theme Song Composition (OP)"
+            },
+            {
+              "node": {
+                "id": 296979,
+                "name": {
+                  "full": "MIMI",
+                  "native": null,
+                  "userPreferred": "MIMI"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n296979-nzo01pp5kH3e.jpg"
+                },
+                "favourites": 25
+              },
+              "role": "Theme Song Lyrics (ED)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

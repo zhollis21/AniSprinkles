@@ -1,0 +1,528 @@
+﻿{
+  "operationName": "MediaRecommendationsPage",
+  "variables": {
+    "id": 156067,
+    "page": 2,
+    "sort": [
+      "RATING_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "4c3bbb02d06d",
+  "recordedAt": "2026-09-06T05:38:17.7011211+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "recommendations": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 2
+          },
+          "nodes": [
+            {
+              "rating": 11,
+              "mediaRecommendation": {
+                "id": 152765,
+                "title": {
+                  "romaji": "Rougo ni Sonaete Isekai de 8-manmai no Kinka wo Tamemasu",
+                  "english": "Saving 80,000 Gold in Another World for My Retirement",
+                  "native": "\u8001\u5F8C\u306B\u5099\u3048\u3066\u7570\u4E16\u754C\u3067\uFF18\u4E07\u679A\u306E\u91D1\u8CA8\u3092\u8CAF\u3081\u307E\u3059"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx152765-X6VRli3GPkVs.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx152765-X6VRli3GPkVs.jpg"
+                },
+                "averageScore": 68,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 11,
+              "mediaRecommendation": {
+                "id": 176053,
+                "title": {
+                  "romaji": "Sayonara Ryuusei Konnichiwa Jinsei",
+                  "english": "Good Bye, Dragon Life",
+                  "native": "\u3055\u3088\u3046\u306A\u3089\u7ADC\u751F\u3001\u3053\u3093\u306B\u3061\u306F\u4EBA\u751F"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx176053-HfPo4pUm6Ktg.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx176053-HfPo4pUm6Ktg.jpg"
+                },
+                "averageScore": 62,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 10,
+              "mediaRecommendation": {
+                "id": 101280,
+                "title": {
+                  "romaji": "Tensei Shitara Slime Datta Ken",
+                  "english": "That Time I Got Reincarnated as a Slime",
+                  "native": "\u8EE2\u751F\u3057\u305F\u3089\u30B9\u30E9\u30A4\u30E0\u3060\u3063\u305F\u4EF6"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx101280-tDxCVJm714nt.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101280-tDxCVJm714nt.jpg"
+                },
+                "averageScore": 80,
+                "mediaListEntry": {
+                  "id": 593364344,
+                  "status": "COMPLETED",
+                  "progress": 24,
+                  "score": 9
+                }
+              }
+            },
+            {
+              "rating": 10,
+              "mediaRecommendation": {
+                "id": 115740,
+                "title": {
+                  "romaji": "Kamitachi ni Hirowareta Otoko",
+                  "english": "By the Grace of the Gods",
+                  "native": "\u795E\u9054\u306B\u62FE\u308F\u308C\u305F\u7537"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx115740-IRwSQo96Qs2Q.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx115740-IRwSQo96Qs2Q.jpg"
+                },
+                "averageScore": 68,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 10,
+              "mediaRecommendation": {
+                "id": 158704,
+                "title": {
+                  "romaji": "Watashi no Oshi wa Akuyaku Reijou.",
+                  "english": "I\u0027m in Love with the Villainess",
+                  "native": "\u79C1\u306E\u63A8\u3057\u306F\u60AA\u5F79\u4EE4\u5B22\u3002"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx158704-sPOrTckSKzKO.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx158704-sPOrTckSKzKO.jpg"
+                },
+                "averageScore": 73,
+                "mediaListEntry": {
+                  "id": 593365327,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "score": 0
+                }
+              }
+            },
+            {
+              "rating": 9,
+              "mediaRecommendation": {
+                "id": 100855,
+                "title": {
+                  "romaji": "Emiya-san Chi no Kyou no Gohan",
+                  "english": "Today\u0027s Menu for the Emiya Family",
+                  "native": "\u885B\u5BAE\u3055\u3093\u3061\u306E\u4ECA\u65E5\u306E\u3054\u306F\u3093"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx100855-r8cXwdCschnX.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx100855-r8cXwdCschnX.jpg"
+                },
+                "averageScore": 77,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 9,
+              "mediaRecommendation": {
+                "id": 166522,
+                "title": {
+                  "romaji": "Hime-sama, \u0022Goumon\u0022 no Jikan desu",
+                  "english": "\u0027Tis Time for \u0022Torture,\u0022 Princess",
+                  "native": "\u59EB\u69D8\u201C\u62F7\u554F\u201D\u306E\u6642\u9593\u3067\u3059"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx166522-pUnBSDFzs9DD.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx166522-pUnBSDFzs9DD.jpg"
+                },
+                "averageScore": 71,
+                "mediaListEntry": {
+                  "id": 593365453,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "score": 0
+                }
+              }
+            },
+            {
+              "rating": 9,
+              "mediaRecommendation": {
+                "id": 186003,
+                "title": {
+                  "romaji": "Fermat no Ryouri",
+                  "english": "Fermat Kitchen",
+                  "native": "\u30D5\u30A7\u30EB\u30DE\u30FC\u306E\u6599\u7406"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx186003-scKw8JoTtnMT.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx186003-scKw8JoTtnMT.jpg"
+                },
+                "averageScore": 68,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 8,
+              "mediaRecommendation": {
+                "id": 146206,
+                "title": {
+                  "romaji": "Seijo no Maryoku wa Bannou desu Season 2",
+                  "english": "The Saint\u0027s Magic Power is Omnipotent II",
+                  "native": "\u8056\u5973\u306E\u9B54\u529B\u306F\u4E07\u80FD\u3067\u3059 Season2"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx146206-76MkUJBXlq4v.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx146206-76MkUJBXlq4v.jpg"
+                },
+                "averageScore": 74,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 7,
+              "mediaRecommendation": {
+                "id": 122808,
+                "title": {
+                  "romaji": "Princess Connect! Re:Dive Season 2",
+                  "english": "Princess Connect! Re:Dive Season 2",
+                  "native": "\u30D7\u30EA\u30F3\u30BB\u30B9\u30B3\u30CD\u30AF\u30C8\uFF01Re:Dive Season 2"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx122808-mOspflVwrnGJ.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx122808-mOspflVwrnGJ.png"
+                },
+                "averageScore": 76,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 7,
+              "mediaRecommendation": {
+                "id": 173693,
+                "title": {
+                  "romaji": "Hitoribocchi no Isekai Kouryaku",
+                  "english": "Loner Life in Another World",
+                  "native": "\u3072\u3068\u308A\u307C\u3063\u3061\u306E\u7570\u4E16\u754C\u653B\u7565"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx173693-tRLdDE1BieXe.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx173693-tRLdDE1BieXe.png"
+                },
+                "averageScore": 65,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 6,
+              "mediaRecommendation": {
+                "id": 172439,
+                "title": {
+                  "romaji": "Nihon e Youkoso Elf-san.",
+                  "english": "Welcome to Japan, Ms. Elf!",
+                  "native": "\u65E5\u672C\u3078\u3088\u3046\u3053\u305D\u30A8\u30EB\u30D5\u3055\u3093\u3002"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx172439-sTda7baXB0Fh.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx172439-sTda7baXB0Fh.jpg"
+                },
+                "averageScore": 72,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 6,
+              "mediaRecommendation": {
+                "id": 186052,
+                "title": {
+                  "romaji": "Mizu Zokusei no Mahou Tsukai",
+                  "english": "The Water Magician",
+                  "native": "\u6C34\u5C5E\u6027\u306E\u9B54\u6CD5\u4F7F\u3044"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx186052-zq8h0Qo0O0sP.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx186052-zq8h0Qo0O0sP.jpg"
+                },
+                "averageScore": 70,
+                "mediaListEntry": {
+                  "id": 593364569,
+                  "status": "COMPLETED",
+                  "progress": 12,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 5,
+              "mediaRecommendation": {
+                "id": 16918,
+                "title": {
+                  "romaji": "Gin no Saji",
+                  "english": "Silver Spoon",
+                  "native": "\u9280\u306E\u5319"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx16918-0biAxYFR29mw.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx16918-0biAxYFR29mw.png"
+                },
+                "averageScore": 79,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 5,
+              "mediaRecommendation": {
+                "id": 117067,
+                "title": {
+                  "romaji": "Maiko-san Chi no Makanai-san",
+                  "english": "Kiyo in Kyoto: From the Maiko House",
+                  "native": "\u821E\u5993\u3055\u3093\u3061\u306E\u307E\u304B\u306A\u3044\u3055\u3093"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx117067-ez4mvOwk5PSn.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx117067-ez4mvOwk5PSn.jpg"
+                },
+                "averageScore": 67,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 5,
+              "mediaRecommendation": {
+                "id": 10033,
+                "title": {
+                  "romaji": "Toriko",
+                  "english": null,
+                  "native": "\u30C8\u30EA\u30B3"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx10033-V7xnlgAVtaVR.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx10033-V7xnlgAVtaVR.jpg"
+                },
+                "averageScore": 69,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 5,
+              "mediaRecommendation": {
+                "id": 129192,
+                "title": {
+                  "romaji": "Tensei Kenja no Isekai Life: Daini no Shokugyou wo Ete, Sekai Saikyou ni Narimashita",
+                  "english": "My Isekai Life: I Gained a Second Character Class and Became the Strongest Sage in the World!",
+                  "native": "\u8EE2\u751F\u8CE2\u8005\u306E\u7570\u4E16\u754C\u30E9\u30A4\u30D5 \uFF5E\u7B2C\u4E8C\u306E\u8077\u696D\u3092\u5F97\u3066\u3001\u4E16\u754C\u6700\u5F37\u306B\u306A\u308A\u307E\u3057\u305F\uFF5E"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx129192-p9qQ3GNgoqnS.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx129192-p9qQ3GNgoqnS.jpg"
+                },
+                "averageScore": 61,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 5,
+              "mediaRecommendation": {
+                "id": 170695,
+                "title": {
+                  "romaji": "Ore wa Subete wo [Parry] Suru: Gyaku Kanchigai no Sekai Saikyou wa Boukensha ni Naritai",
+                  "english": "I Parry Everything",
+                  "native": "\u4FFA\u306F\u5168\u3066\u3092\u3010\u30D1\u30EA\u30A4\u3011\u3059\u308B \uFF5E\u9006\u52D8\u9055\u3044\u306E\u4E16\u754C\u6700\u5F37\u306F\u5192\u967A\u8005\u306B\u306A\u308A\u305F\u3044\uFF5E"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx170695-Nb1DIg7gIHCF.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx170695-Nb1DIg7gIHCF.jpg"
+                },
+                "averageScore": 68,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 4,
+              "mediaRecommendation": {
+                "id": 185939,
+                "title": {
+                  "romaji": "Hibi wa Sugiredo Meshi Umashi",
+                  "english": "Food for the Soul",
+                  "native": "\u65E5\u3005\u306F\u904E\u304E\u308C\u3069\u98EF\u3046\u307E\u3057"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx185939-hqt1He153el8.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx185939-hqt1He153el8.jpg"
+                },
+                "averageScore": 77,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 4,
+              "mediaRecommendation": {
+                "id": 199221,
+                "title": {
+                  "romaji": "Dr. STONE: SCIENCE FUTURE Part 3",
+                  "english": "Dr. STONE SCIENCE FUTURE Cour 3",
+                  "native": "Dr.STONE SCIENCE FUTURE 3\u30AF\u30FC\u30EB"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx199221-TReDQMNhslHu.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx199221-TReDQMNhslHu.jpg"
+                },
+                "averageScore": 83,
+                "mediaListEntry": {
+                  "id": 593365498,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "score": 0
+                }
+              }
+            },
+            {
+              "rating": 3,
+              "mediaRecommendation": {
+                "id": 114340,
+                "title": {
+                  "romaji": "Kuma Kuma Kuma Bear",
+                  "english": "Kuma Kuma Kuma Bear",
+                  "native": "\u304F\u307E\u30AF\u30DE\u718A\u30D9\u30A2\u30FC"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx114340-9KovjbYWlNGa.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx114340-9KovjbYWlNGa.jpg"
+                },
+                "averageScore": 70,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 3,
+              "mediaRecommendation": {
+                "id": 123802,
+                "title": {
+                  "romaji": "Seijo no Maryoku wa Bannou desu",
+                  "english": "The Saint\u0027s Magic Power is Omnipotent",
+                  "native": "\u8056\u5973\u306E\u9B54\u529B\u306F\u4E07\u80FD\u3067\u3059"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx123802-FpGzlfjebl0z.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx123802-FpGzlfjebl0z.jpg"
+                },
+                "averageScore": 71,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 3,
+              "mediaRecommendation": {
+                "id": 152523,
+                "title": {
+                  "romaji": "Kaiko sareta Ankoku Heishi (30-dai) no Slow na Second Life",
+                  "english": "Chillin\u2019 in My 30s after Getting Fired from the Demon King\u2019s Army",
+                  "native": "\u89E3\u96C7\u3055\u308C\u305F\u6697\u9ED2\u5175\u58EB\uFF0830\u4EE3\uFF09\u306E\u30B9\u30ED\u30FC\u306A\u30BB\u30AB\u30F3\u30C9\u30E9\u30A4\u30D5"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx152523-1I1KPnKyOwhe.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx152523-1I1KPnKyOwhe.jpg"
+                },
+                "averageScore": 68,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 3,
+              "mediaRecommendation": {
+                "id": 165070,
+                "title": {
+                  "romaji": "Atarashii Joushi wa Dotennen",
+                  "english": "My New Boss is Goofy",
+                  "native": "\u65B0\u3057\u3044\u4E0A\u53F8\u306F\u3069\u5929\u7136"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx165070-0OlcD1TA6pe4.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx165070-0OlcD1TA6pe4.jpg"
+                },
+                "averageScore": 78,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 3,
+              "mediaRecommendation": {
+                "id": 108450,
+                "title": {
+                  "romaji": "Kuutei Dragons",
+                  "english": "Drifting Dragons",
+                  "native": "\u7A7A\u633A\u30C9\u30E9\u30B4\u30F3\u30BA"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx108450-egUEb5lOpGxS.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx108450-egUEb5lOpGxS.jpg"
+                },
+                "averageScore": 67,
+                "mediaListEntry": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -3,10 +3,11 @@
 # Screenshots are committed to the screenshots/ folder on the branch and
 # embedded in PR comments using commit-SHA-based URLs for reliable rendering
 #
-# Auth note: The CI build uses compile-time stub services (CIAuthService, CIAniListClient)
-# activated by -p:CiBuild=true. These stubs make the app appear fully authenticated
-# with hardcoded data, so screenshots show the real UI without any OAuth token or
-# GitHub secret. No ANILIST_CI_TOKEN secret is needed.
+# Auth note: The CI build stubs auth (CIAuthService) and answers AniList from responses recorded
+# against a dedicated test account, replayed at the HTTP layer (#134). Both are activated by
+# -p:CiBuild=true. The app is fully authenticated against real data without any OAuth token or
+# GitHub secret, so no ANILIST_CI_TOKEN is needed — and because replay sits below the client, the
+# real AniListClient, its caching decorator and the rate-limit handler all run during a CI capture.
 name: CI Build & UI Preview
 
 on:
@@ -227,7 +228,7 @@ jobs:
     #
     # Flaky captures do not fail the run either way — every "could not find / timed out capturing"
     # path already degrades to ::warning:: and carries on. The seven exit 1 sites are all real
-    # gates: canary marker missing from CIAniListClient.cs, no signed APK, install failed, launcher
+    # gates: canary marker missing from AdultCanary.cs, a FIXTURE MISS in logcat, no signed APK, install failed, launcher
     # activity unresolvable, app window never appeared, and the canary itself.
 
     steps:
@@ -410,11 +411,12 @@ jobs:
 
           # ---- Adult-content filter gate --------------------------------------------------------
           #
-          # CIAniListClient seeds one fixture flagged IsAdult, titled ADULT_CANARY, into the stub
-          # list and the browse/search results. The stub viewer leaves DisplayAdultContent off and
-          # nothing in this job turns it on, so every surface must filter it out. If it renders, the
-          # adult filter is broken — and the same defect on a real account would be putting real 18+
-          # content in front of a user who asked not to see it. That is worth a red build, not a
+          # AdultCanary splices one synthetic entry flagged isAdult, titled ADULT_CANARY, into the
+          # replayed fixtures (#134) — always into the list, and into browse/search/Discover whenever
+          # the request does not pin isAdult:false. The stub viewer leaves DisplayAdultContent off
+          # and nothing in this job turns it on, so every surface must filter it out. If it renders,
+          # the adult filter is broken — and the same defect on a real account would be putting real
+          # 18+ content in front of a user who asked not to see it. That is worth a red build, not a
           # screenshot somebody might scroll past.
           #
           # The canary carries no adult content itself: the title is a marker and it has no cover
@@ -431,15 +433,20 @@ jobs:
           # ${VAR:-default} because this script runs under `set -u`; the runner exports
           # GITHUB_WORKSPACE, but an unset one would abort the whole capture rather than skip a
           # check. Every other path here is workspace-relative, so "." is the right fallback.
-          CANARY_SOURCE="${GITHUB_WORKSPACE:-.}/src/AniSprinkles/Services/CI/CIAniListClient.cs"
+          CANARY_SOURCE="${GITHUB_WORKSPACE:-.}/src/AniSprinkles.Core/Services/Fixtures/AdultCanary.cs"
           if [ ! -f "$CANARY_SOURCE" ]; then
             echo "::error::Cannot verify the adult-canary marker: $CANARY_SOURCE not found."
             exit 1
           fi
           if ! grep -qF "$ADULT_CANARY" "$CANARY_SOURCE"; then
-            echo "::error::The adult-canary marker '$ADULT_CANARY' no longer appears in CIAniListClient.cs. Either the fixture was renamed (update ADULT_CANARY here to match) or it was removed — until then this gate is checking for a string nothing emits."
+            echo "::error::The adult-canary marker '$ADULT_CANARY' no longer appears in AdultCanary.cs. Either the fixture was renamed (update ADULT_CANARY here to match) or it was removed — until then this gate is checking for a string nothing emits."
             exit 1
           fi
+
+          # A second gate, new with #134: the replay handler answers an unrecorded request with a
+          # loud FIXTURE MISS rather than the empty list the old stubs returned. An empty list is
+          # invisible in a screenshot — a section simply vanishes — which is the whole reason #134
+          # exists. Checked against logcat after the captures, below.
 
           assert_no_adult_canary() {
             local where="$1"
@@ -850,6 +857,18 @@ jobs:
           # own ::error:: naming where the canary rendered.
           if [ "$ADULT_CANARY_HITS" -gt 0 ]; then
             echo "::error::Adult-content filter failed on $ADULT_CANARY_HITS surface(s). See the errors above and the uploaded screenshots."
+            exit 1
+          fi
+
+          # Fixture-miss gate (#134). The replay handler logs FIXTURE MISS when the app asks for
+          # something the recordings do not cover — a sort that was added without re-recording, a
+          # page deeper than was captured, or a query whose fields changed. Blocking rather than
+          # warning, because the alternative is what this work removed: a section that silently
+          # renders empty and a screenshot nobody can tell is wrong.
+          MISS_LOG=$(adb logcat -d -s AniSprinkles 2>/dev/null | grep -F "FIXTURE MISS" || true)
+          if [ -n "$MISS_LOG" ]; then
+            echo "::error::The app requested data the fixtures do not contain. Re-record with tools/record-anilist-fixtures.cs."
+            echo "$MISS_LOG"
             exit 1
           fi
           SCRIPT

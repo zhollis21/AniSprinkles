@@ -1,0 +1,429 @@
+﻿{
+  "operationName": "MediaCharactersPage",
+  "variables": {
+    "id": 177709,
+    "page": 1,
+    "sort": [
+      "ROLE",
+      "RELEVANCE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "64eed76a7328",
+  "recordedAt": "2026-09-06T05:20:41.0933923+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "characters": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 196522,
+                "name": {
+                  "full": "Tarou Sakamoto",
+                  "native": "\u5742\u672C\u592A\u90CE",
+                  "userPreferred": "Tarou Sakamoto"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b196522-phOzXgufOs7R.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b196522-phOzXgufOs7R.png"
+                },
+                "favourites": 1856
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 196521,
+                "name": {
+                  "full": "Shin Asakura",
+                  "native": "\u671D\u5009\u30B7\u30F3",
+                  "userPreferred": "Shin Asakura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b196521-bedknWj9u7s2.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b196521-bedknWj9u7s2.png"
+                },
+                "favourites": 1434
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 207272,
+                "name": {
+                  "full": "Shaotang Lu",
+                  "native": "\u30EB\u30FC\u30FB\u30B7\u30E3\u30AA\u30BF\u30F3",
+                  "userPreferred": "Shaotang Lu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b207272-qQ7YZOKtbzzZ.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b207272-qQ7YZOKtbzzZ.png"
+                },
+                "favourites": 701
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 212302,
+                "name": {
+                  "full": "Aoi Sakamoto",
+                  "native": "\u5742\u672C\u8475",
+                  "userPreferred": "Aoi Sakamoto"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b212302-OG58WeogzshB.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b212302-OG58WeogzshB.png"
+                },
+                "favourites": 216
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 252687,
+                "name": {
+                  "full": "Heisuke Mashimo",
+                  "native": "\u771E\u971C\u5E73\u52A9",
+                  "userPreferred": "Heisuke Mashimo"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b252687-nLmp7FlEkm5d.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b252687-nLmp7FlEkm5d.jpg"
+                },
+                "favourites": 586
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 264336,
+                "name": {
+                  "full": "Yoichi Nagumo",
+                  "native": "\u5357\u96F2",
+                  "userPreferred": "Yoichi Nagumo"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b264336-W5eQn2SL4P7N.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b264336-W5eQn2SL4P7N.png"
+                },
+                "favourites": 2197
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 266969,
+                "name": {
+                  "full": "Osaragi",
+                  "native": "\u5927\u4F5B",
+                  "userPreferred": "Osaragi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b266969-AKjl1965ubol.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b266969-AKjl1965ubol.png"
+                },
+                "favourites": 1670
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 272873,
+                "name": {
+                  "full": "Boiled",
+                  "native": "\u30DC\u30A4\u30EB",
+                  "userPreferred": "Boiled"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b272873-LO2tO5H9U61f.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b272873-LO2tO5H9U61f.jpg"
+                },
+                "favourites": 52
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 272877,
+                "name": {
+                  "full": "Hana Sakamoto",
+                  "native": "\u5742\u672C\u82B1",
+                  "userPreferred": "Hana Sakamoto"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b272877-VD68TkHudSZX.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b272877-VD68TkHudSZX.png"
+                },
+                "favourites": 71
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 272878,
+                "name": {
+                  "full": "Kei Uzuki",
+                  "native": "\u6709\u6708\u61AC",
+                  "userPreferred": "Kei Uzuki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b272878-A9l4Cu4rI7Y3.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b272878-A9l4Cu4rI7Y3.jpg"
+                },
+                "favourites": 388
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 272879,
+                "name": {
+                  "full": "Shishiba",
+                  "native": "\u795E\u3005\u5EFB",
+                  "userPreferred": "Shishiba"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b272879-pNkWPepupu3X.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b272879-pNkWPepupu3X.png"
+                },
+                "favourites": 365
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 288280,
+                "name": {
+                  "full": "Bachou",
+                  "native": "\u30D0\u30C1\u30E7\u30A6",
+                  "userPreferred": "Bachou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b288280-kF3gb1tr2DON.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b288280-kF3gb1tr2DON.png"
+                },
+                "favourites": 2
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 288288,
+                "name": {
+                  "full": "Hyou",
+                  "native": "\u8C79",
+                  "userPreferred": "Hyou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b288288-iQHKIJo3BUDE.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b288288-iQHKIJo3BUDE.png"
+                },
+                "favourites": 55
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 339486,
+                "name": {
+                  "full": "Piisuke",
+                  "native": "\u30D4\u30FC\u30B9\u30B1",
+                  "userPreferred": "Piisuke"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b339486-WiyGqxHUhilx.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b339486-WiyGqxHUhilx.png"
+                },
+                "favourites": 53
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 348935,
+                "name": {
+                  "full": "Obiguro",
+                  "native": "\u5E2F\u9ED2",
+                  "userPreferred": "Obiguro"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b348935-bjZVD3xjgzRz.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b348935-bjZVD3xjgzRz.png"
+                },
+                "favourites": 33
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 353237,
+                "name": {
+                  "full": "Son Hee",
+                  "native": "\u30BD\u30F3\u30D2",
+                  "userPreferred": "Son Hee"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b353237-ESQTAu0qMGms.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b353237-ESQTAu0qMGms.png"
+                },
+                "favourites": 2
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 288223,
+                "name": {
+                  "full": "Natsuki Seba",
+                  "native": "\u52E2\u7FBD\u590F\u751F",
+                  "userPreferred": "Natsuki Seba"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b288223-WzVqsLrhoS4Z.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b288223-WzVqsLrhoS4Z.jpg"
+                },
+                "favourites": 333
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 353307,
+                "name": {
+                  "full": "Wang",
+                  "native": "\u738B",
+                  "userPreferred": "Wang"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b353307-MCe2KqhPcu2B.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b353307-MCe2KqhPcu2B.png"
+                },
+                "favourites": 1
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 299507,
+                "name": {
+                  "full": "Pizza Nakajima",
+                  "native": "\u30D4\u30C3\u30C4\u30A1\u4E2D\u5CF6",
+                  "userPreferred": "Pizza Nakajima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b299507-DEvadh3Rn2DR.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b299507-DEvadh3Rn2DR.png"
+                },
+                "favourites": 5
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 348936,
+                "name": {
+                  "full": "Tatsu",
+                  "native": "\u30BF\u30C4",
+                  "userPreferred": "Tatsu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b348936-Izhvyly0f5qs.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b348936-Izhvyly0f5qs.png"
+                },
+                "favourites": 11
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 353669,
+                "name": {
+                  "full": "Kurii Ningu",
+                  "native": "\u6817\u4E95\u30CB\u30F3\u30B0",
+                  "userPreferred": "Kurii Ningu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b353669-CDbyVc9oJ6cp.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b353669-CDbyVc9oJ6cp.png"
+                },
+                "favourites": 1
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 288283,
+                "name": {
+                  "full": "Asakura",
+                  "native": "\u671D\u5009",
+                  "userPreferred": "Asakura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b288283-pACMo02SUmkm.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b288283-pACMo02SUmkm.png"
+                },
+                "favourites": 11
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 288349,
+                "name": {
+                  "full": "Kashima",
+                  "native": "\u9E7F\u5CF6",
+                  "userPreferred": "Kashima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b288349-lm1NI3KMxO1G.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b288349-lm1NI3KMxO1G.jpg"
+                },
+                "favourites": 39
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 354462,
+                "name": {
+                  "full": "Iriya",
+                  "native": "\u5165\u8C37",
+                  "userPreferred": "Iriya"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b354462-o9PJhCmVi5Uv.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b354462-o9PJhCmVi5Uv.png"
+                },
+                "favourites": 1
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 355295,
+                "name": {
+                  "full": "Mad Horiguchi",
+                  "native": "\u30DE\u30C3\u30C9\u5800\u53E3",
+                  "userPreferred": "Mad Horiguchi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b355295-VDja95PSaT94.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b355295-VDja95PSaT94.png"
+                },
+                "favourites": 2
+              },
+              "role": "SUPPORTING"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

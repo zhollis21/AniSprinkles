@@ -1,0 +1,28 @@
+﻿{
+  "operationName": "MediaCharactersPage",
+  "variables": {
+    "id": 141127,
+    "page": 1,
+    "sort": [
+      "ROLE",
+      "RELEVANCE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "64eed76a7328",
+  "recordedAt": "2026-09-06T05:25:42.7626884+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "characters": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "edges": []
+        }
+      }
+    }
+  }
+}

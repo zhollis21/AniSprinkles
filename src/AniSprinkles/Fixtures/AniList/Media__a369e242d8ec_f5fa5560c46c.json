@@ -1,0 +1,916 @@
+﻿{
+  "operationName": "Media",
+  "variables": {
+    "id": 189323
+  },
+  "queryFingerprint": "f5fa5560c46c",
+  "recordedAt": "2026-09-06T05:24:44.1321554+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "id": 189323,
+        "idMal": 61338,
+        "title": {
+          "romaji": "Shangri-La Frontier 3rd Season",
+          "english": "Shangri-La Frontier Season 3",
+          "native": "\u30B7\u30E3\u30F3\u30B0\u30EA\u30E9\u30FB\u30D5\u30ED\u30F3\u30C6\u30A3\u30A2 3rd season"
+        },
+        "coverImage": {
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx189323-IhAaW5hGdGGT.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx189323-IhAaW5hGdGGT.jpg",
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx189323-IhAaW5hGdGGT.jpg",
+          "color": "#e4c950"
+        },
+        "bannerImage": null,
+        "description": "The third season of \u003Ci\u003EShangri-La Frontier\u003C/i\u003E.",
+        "format": "TV",
+        "type": "ANIME",
+        "status": "NOT_YET_RELEASED",
+        "episodes": null,
+        "chapters": null,
+        "volumes": null,
+        "duration": null,
+        "season": "WINTER",
+        "seasonYear": 2027,
+        "source": "MANGA",
+        "countryOfOrigin": "JP",
+        "isAdult": false,
+        "isLicensed": true,
+        "siteUrl": "https://anilist.co/anime/189323",
+        "hashtag": "#\u30B7\u30E3\u30F3\u30D5\u30ED",
+        "startDate": {
+          "year": 2027,
+          "month": 1,
+          "day": null
+        },
+        "endDate": {
+          "year": null,
+          "month": null,
+          "day": null
+        },
+        "nextAiringEpisode": null,
+        "trailer": {
+          "id": "84JvYWUOOaU",
+          "site": "youtube"
+        },
+        "synonyms": [
+          "\u30B7\u30E3\u30F3\u30D5\u30ED\uFF13",
+          "\u30B7\u30E3\u30F3\u30B0\u30EA\u30E9\u30FB\u30D5\u30ED\u30F3\u30C6\u30A3\u30A2\u301C\u30AF\u30BD\u30B2\u30FC\u30CF\u30F3\u30BF\u30FC, \u795E\u30B2\u30FC\u306B\u6311\u307E\u3093\u3068\u3059\u301C 3rd season",
+          "Shangri-La Frontier: Kusoge Hunter, Kamige ni Idoman to su 3rd Season",
+          "Th\u1EE3 s\u0103n Game r\u00E1c th\u00E1ch th\u1EE9c Game c\u1EA5p th\u00E1nh, M\u00F9a 3"
+        ],
+        "genres": [
+          "Action",
+          "Adventure",
+          "Comedy",
+          "Fantasy",
+          "Sci-Fi"
+        ],
+        "averageScore": null,
+        "meanScore": null,
+        "popularity": 31749,
+        "favourites": 493,
+        "isFavourite": false,
+        "trending": 2,
+        "tags": [
+          {
+            "id": 112,
+            "name": "Virtual World",
+            "rank": 100,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Partly or completely set in the world inside a video game.",
+            "category": "Setting-Universe"
+          },
+          {
+            "id": 308,
+            "name": "Video Games",
+            "rank": 80,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Centers around characters playing video games.",
+            "category": "Theme-Game"
+          },
+          {
+            "id": 82,
+            "name": "Male Protagonist",
+            "rank": 80,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Main character is male.",
+            "category": "Cast-Main Cast"
+          },
+          {
+            "id": 792,
+            "name": "E-Sports",
+            "rank": 70,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features professional video game competitions, tournaments, players, etc.",
+            "category": "Theme-Game"
+          },
+          {
+            "id": 56,
+            "name": "Shounen",
+            "rank": 66,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Target demographic is teenage and young adult males.",
+            "category": "Demographic"
+          },
+          {
+            "id": 433,
+            "name": "Animals",
+            "rank": 50,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features animal characters in a leading role.",
+            "category": "Theme-Other"
+          },
+          {
+            "id": 604,
+            "name": "Dungeon",
+            "rank": 30,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features a dungeon environment.",
+            "category": "Setting-Scene"
+          }
+        ],
+        "studios": {
+          "edges": [
+            {
+              "isMain": true,
+              "node": {
+                "id": 6052,
+                "name": "C2C",
+                "isAnimationStudio": true,
+                "favourites": 316
+              }
+            }
+          ]
+        },
+        "rankings": [
+          {
+            "rank": 4,
+            "type": "POPULAR",
+            "format": "TV",
+            "year": 2027,
+            "season": null,
+            "allTime": false,
+            "context": "most popular"
+          },
+          {
+            "rank": 1,
+            "type": "POPULAR",
+            "format": "TV",
+            "year": 2027,
+            "season": "WINTER",
+            "allTime": false,
+            "context": "most popular"
+          }
+        ],
+        "externalLinks": [
+          {
+            "id": 111781,
+            "url": "https://x.com/ShanFro_Comic",
+            "site": "Twitter",
+            "type": "SOCIAL",
+            "language": "Japanese",
+            "color": "#000000",
+            "isDisabled": false
+          },
+          {
+            "id": 111782,
+            "url": "https://anime.shangrilafrontier.com/",
+            "site": "Official Site",
+            "type": "INFO",
+            "language": "Japanese",
+            "color": null,
+            "isDisabled": false
+          },
+          {
+            "id": 111783,
+            "url": "https://www.tiktok.com/@shanfro.official",
+            "site": "TikTok",
+            "type": "SOCIAL",
+            "language": "Japanese",
+            "color": "#010101",
+            "isDisabled": false
+          },
+          {
+            "id": 111784,
+            "url": "https://www.youtube.com/@TV-kt7jx",
+            "site": "YouTube",
+            "type": "STREAMING",
+            "language": null,
+            "color": "#FF0000",
+            "isDisabled": false
+          },
+          {
+            "id": 164597,
+            "url": "https://www.crunchyroll.com/series/G79H23Z8P/shangri-la-frontier",
+            "site": "Crunchyroll",
+            "type": "STREAMING",
+            "language": null,
+            "color": "#F88B24",
+            "isDisabled": true
+          }
+        ],
+        "relations": {
+          "edges": [
+            {
+              "relationType": "SOURCE",
+              "node": {
+                "id": 122063,
+                "title": {
+                  "romaji": "Shangri-La Frontier: Kusoge Hunter, Kami ge ni Idoman to su",
+                  "english": "Shangri-La Frontier",
+                  "native": "\u30B7\u30E3\u30F3\u30B0\u30EA\u30E9\u30FB\u30D5\u30ED\u30F3\u30C6\u30A3\u30A2\u301C\u30AF\u30BD\u30B2\u30FC\u30CF\u30F3\u30BF\u30FC, \u795E\u30B2\u30FC\u306B\u6311\u307E\u3093\u3068\u3059\u301C"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "RELEASING",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx122063-j2wIvwb6yzPM.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx122063-j2wIvwb6yzPM.jpg"
+                },
+                "startDate": {
+                  "year": 2020,
+                  "month": 7,
+                  "day": 15
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "PREQUEL",
+              "node": {
+                "id": 176508,
+                "title": {
+                  "romaji": "Shangri-La Frontier 2nd Season",
+                  "english": "Shangri-La Frontier Season 2",
+                  "native": "\u30B7\u30E3\u30F3\u30B0\u30EA\u30E9\u30FB\u30D5\u30ED\u30F3\u30C6\u30A3\u30A2 2nd season"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx176508-eFad4szofm8d.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx176508-eFad4szofm8d.png"
+                },
+                "startDate": {
+                  "year": 2024,
+                  "month": 10,
+                  "day": 13
+                },
+                "mediaListEntry": {
+                  "id": 593351114,
+                  "status": "COMPLETED",
+                  "progress": 25,
+                  "score": 8
+                }
+              }
+            }
+          ]
+        },
+        "characters": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 271367,
+                "name": {
+                  "full": "Rakurou Hizutome",
+                  "native": "\u967D\u52D9\u697D\u90CE",
+                  "userPreferred": "Rakurou Hizutome"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b271367-RM6DwXf1D0gu.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b271367-RM6DwXf1D0gu.png"
+                },
+                "favourites": 1321
+              },
+              "role": "MAIN",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 281519,
+                "name": {
+                  "full": "Rei Saiga",
+                  "native": "\u658E\u8CC0\u73B2",
+                  "userPreferred": "Rei Saiga"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b281519-reQ83dGVLifA.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b281519-reQ83dGVLifA.png"
+                },
+                "favourites": 250
+              },
+              "role": "SUPPORTING",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 281520,
+                "name": {
+                  "full": "Towa Amane",
+                  "native": "\u5929\u97F3\u6C38\u9060",
+                  "userPreferred": "Towa Amane"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b281520-2l1wxzAuz9zM.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b281520-2l1wxzAuz9zM.png"
+                },
+                "favourites": 667
+              },
+              "role": "SUPPORTING",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 281521,
+                "name": {
+                  "full": "Kei Uomi",
+                  "native": "\u9B5A\u81E3\u6167",
+                  "userPreferred": "Kei Uomi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b281521-3ozszEEc9Y8s.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b281521-3ozszEEc9Y8s.png"
+                },
+                "favourites": 257
+              },
+              "role": "SUPPORTING",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 281522,
+                "name": {
+                  "full": "Emul",
+                  "native": "\u30A8\u30E0\u30EB",
+                  "userPreferred": "Emul"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b281522-AuvXcHPoq0tX.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b281522-AuvXcHPoq0tX.jpg"
+                },
+                "favourites": 625
+              },
+              "role": "SUPPORTING",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 313426,
+                "name": {
+                  "full": "Akane Akitsu",
+                  "native": "\u79CB\u6D25\u831C",
+                  "userPreferred": "Akane Akitsu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b313426-oHFcRxxSrpwD.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b313426-oHFcRxxSrpwD.png"
+                },
+                "favourites": 116
+              },
+              "role": "SUPPORTING",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 313428,
+                "name": {
+                  "full": "Ceecrue",
+                  "native": "\u30B7\u30FC\u30AF\u30EB\u30A5",
+                  "userPreferred": "Ceecrue"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b313428-e3qnE8E796o7.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b313428-e3qnE8E796o7.jpg"
+                },
+                "favourites": 12
+              },
+              "role": "SUPPORTING",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 313440,
+                "name": {
+                  "full": "Mordo",
+                  "native": "\u30E2\u30EB\u30C9",
+                  "userPreferred": "Mordo"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b313440-rqR5kuvVylh8.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b313440-rqR5kuvVylh8.jpg"
+                },
+                "favourites": 8
+              },
+              "role": "SUPPORTING",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 313441,
+                "name": {
+                  "full": "Rust",
+                  "native": "\u30EB\u30B9\u30C8",
+                  "userPreferred": "Rust"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b313441-CvMz7KGOUs0U.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b313441-CvMz7KGOUs0U.png"
+                },
+                "favourites": 57
+              },
+              "role": "SUPPORTING",
+              "voiceActors": []
+            }
+          ]
+        },
+        "recommendations": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "nodes": []
+        },
+        "stats": {
+          "scoreDistribution": [
+            {
+              "score": 10,
+              "amount": 2
+            },
+            {
+              "score": 20,
+              "amount": 1
+            },
+            {
+              "score": 30,
+              "amount": 1
+            },
+            {
+              "score": 40,
+              "amount": 1
+            },
+            {
+              "score": 50,
+              "amount": 7
+            },
+            {
+              "score": 60,
+              "amount": 9
+            },
+            {
+              "score": 70,
+              "amount": 30
+            },
+            {
+              "score": 80,
+              "amount": 63
+            },
+            {
+              "score": 90,
+              "amount": 107
+            },
+            {
+              "score": 100,
+              "amount": 99
+            }
+          ],
+          "statusDistribution": [
+            {
+              "status": "CURRENT",
+              "amount": 1237
+            },
+            {
+              "status": "PLANNING",
+              "amount": 29842
+            },
+            {
+              "status": "COMPLETED",
+              "amount": 300
+            },
+            {
+              "status": "DROPPED",
+              "amount": 58
+            },
+            {
+              "status": "PAUSED",
+              "amount": 312
+            }
+          ]
+        },
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 182732,
+                "name": {
+                  "full": "Katarina",
+                  "native": "\u786C\u68A8\u83DC",
+                  "userPreferred": "Katarina"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n182732-AsVfsUPnjhHS.png"
+                },
+                "favourites": 30
+              },
+              "role": "Original Creator"
+            },
+            {
+              "node": {
+                "id": 123352,
+                "name": {
+                  "full": "Ryousuke Fuji",
+                  "native": "\u4E0D\u4E8C\u6DBC\u4ECB",
+                  "userPreferred": "Ryousuke Fuji"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n123352-7ZCfErFRGKPF.png"
+                },
+                "favourites": 28
+              },
+              "role": "Original Creator"
+            },
+            {
+              "node": {
+                "id": 107701,
+                "name": {
+                  "full": "Toshiyuki Kubooka",
+                  "native": "\u7AAA\u5CA1\u4FCA\u4E4B",
+                  "userPreferred": "Toshiyuki Kubooka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n107701-R92Wfc1in7fw.png"
+                },
+                "favourites": 22
+              },
+              "role": "Chief Director"
+            },
+            {
+              "node": {
+                "id": 149170,
+                "name": {
+                  "full": "Hiro Ooki",
+                  "native": "\u5927\u6728\u6BD4\u5442",
+                  "userPreferred": "Hiro Ooki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Director"
+            },
+            {
+              "node": {
+                "id": 169368,
+                "name": {
+                  "full": "Naoki Kotani",
+                  "native": "\u5150\u8C37\u76F4\u6A39",
+                  "userPreferred": "Naoki Kotani"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Assistant Director"
+            },
+            {
+              "node": {
+                "id": 110641,
+                "name": {
+                  "full": "Kazuyuki Fudeyasu",
+                  "native": "\u7B46\u5B89\u4E00\u5E78",
+                  "userPreferred": "Kazuyuki Fudeyasu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n110641-Nz4spuHNx4P5.png"
+                },
+                "favourites": 36
+              },
+              "role": "Series Composition"
+            },
+            {
+              "node": {
+                "id": 110641,
+                "name": {
+                  "full": "Kazuyuki Fudeyasu",
+                  "native": "\u7B46\u5B89\u4E00\u5E78",
+                  "userPreferred": "Kazuyuki Fudeyasu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n110641-Nz4spuHNx4P5.png"
+                },
+                "favourites": 36
+              },
+              "role": "Script"
+            },
+            {
+              "node": {
+                "id": 119322,
+                "name": {
+                  "full": "Ayumi Kurashima",
+                  "native": "\u5009\u5CF6\u4E9C\u7531\u7F8E",
+                  "userPreferred": "Ayumi Kurashima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n119322-1Wvcee9hd35i.png"
+                },
+                "favourites": 12
+              },
+              "role": "Character Design"
+            },
+            {
+              "node": {
+                "id": 119322,
+                "name": {
+                  "full": "Ayumi Kurashima",
+                  "native": "\u5009\u5CF6\u4E9C\u7531\u7F8E",
+                  "userPreferred": "Ayumi Kurashima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n119322-1Wvcee9hd35i.png"
+                },
+                "favourites": 12
+              },
+              "role": "Chief Animation Director"
+            },
+            {
+              "node": {
+                "id": 180869,
+                "name": {
+                  "full": "Riku Takizawa",
+                  "native": "\u6EDD\u6FA4\u9678",
+                  "userPreferred": "Riku Takizawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n180869-Aa3jL60gUnEW.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Sub Character Design"
+            },
+            {
+              "node": {
+                "id": 166849,
+                "name": {
+                  "full": "Chiho Wada",
+                  "native": "\u548C\u7530\u5343\u5E06",
+                  "userPreferred": "Chiho Wada"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Art Director"
+            },
+            {
+              "node": {
+                "id": 186864,
+                "name": {
+                  "full": "Yuuki Shigekawa",
+                  "native": "\u91CD\u5DDD\u512A\u8F1D",
+                  "userPreferred": "Yuuki Shigekawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Art Design"
+            },
+            {
+              "node": {
+                "id": 165816,
+                "name": {
+                  "full": "Masato Takagi",
+                  "native": "\u9AD8\u6728\u96C5\u4EBA",
+                  "userPreferred": "Masato Takagi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Color Design"
+            },
+            {
+              "node": {
+                "id": 187696,
+                "name": {
+                  "full": "Sakiko Tekuramori",
+                  "native": "\u624B\u5009\u68EE\u54B2\u5B50",
+                  "userPreferred": "Sakiko Tekuramori"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Color Design"
+            },
+            {
+              "node": {
+                "id": 147520,
+                "name": {
+                  "full": "Yoshihiro Nagamori",
+                  "native": "\u9577\u68EE\u4F73\u5BB9",
+                  "userPreferred": "Yoshihiro Nagamori"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n147520-8sNLo6vsCbY9.png"
+                },
+                "favourites": 16
+              },
+              "role": "Monster Design"
+            },
+            {
+              "node": {
+                "id": 165819,
+                "name": {
+                  "full": "Hiroshi Arisawa",
+                  "native": "\u6709\u6FA4\u5BDB",
+                  "userPreferred": "Hiroshi Arisawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n165819-CV5mcyxukBQD.png"
+                },
+                "favourites": 3
+              },
+              "role": "Monster Design"
+            },
+            {
+              "node": {
+                "id": 169720,
+                "name": {
+                  "full": "Naoya Sonoda",
+                  "native": "\u5712\u7530\u5C1A\u4E5F",
+                  "userPreferred": "Naoya Sonoda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n169720-YctMA0e4jbb2.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Monster Design"
+            },
+            {
+              "node": {
+                "id": 191535,
+                "name": {
+                  "full": "Yuki Yokoyama",
+                  "native": "\u6A2A\u5C71\u53CB\u7D00",
+                  "userPreferred": "Yuki Yokoyama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Prop Design"
+            },
+            {
+              "node": {
+                "id": 131330,
+                "name": {
+                  "full": "Satoshi Sakai",
+                  "native": "\u9152\u4E95\u667A\u53F2",
+                  "userPreferred": "Satoshi Sakai"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n131330-3gkmJMDQsO68.jpg"
+                },
+                "favourites": 54
+              },
+              "role": "Action Director"
+            },
+            {
+              "node": {
+                "id": 131330,
+                "name": {
+                  "full": "Satoshi Sakai",
+                  "native": "\u9152\u4E95\u667A\u53F2",
+                  "userPreferred": "Satoshi Sakai"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n131330-3gkmJMDQsO68.jpg"
+                },
+                "favourites": 54
+              },
+              "role": "Effects Director"
+            },
+            {
+              "node": {
+                "id": 131189,
+                "name": {
+                  "full": "Kazunori Ozawa",
+                  "native": "\u5C0F\u6FA4\u548C\u5247",
+                  "userPreferred": "Kazunori Ozawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n131189-zT4iokxFkxD8.png"
+                },
+                "favourites": 36
+              },
+              "role": "Action Animation Director"
+            },
+            {
+              "node": {
+                "id": 143520,
+                "name": {
+                  "full": "Takeshi Nishino",
+                  "native": "\u897F\u91CE\u6B66\u5FD7",
+                  "userPreferred": "Takeshi Nishino"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n143520-y7f6qCmcO4B1.png"
+                },
+                "favourites": 3
+              },
+              "role": "Action Animation Director"
+            },
+            {
+              "node": {
+                "id": 253889,
+                "name": {
+                  "full": "Rino Isago",
+                  "native": "\u7802\u91D1\u68A8\u4E43",
+                  "userPreferred": "Rino Isago"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Action Animation Director"
+            },
+            {
+              "node": {
+                "id": 339978,
+                "name": {
+                  "full": "Mizuki Watanabe",
+                  "native": "\u6E21\u9089\u5149\u7A00",
+                  "userPreferred": "Mizuki Watanabe"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Action Animation Director"
+            },
+            {
+              "node": {
+                "id": 128970,
+                "name": {
+                  "full": "Gou Sadamatsu",
+                  "native": "\u5B9A\u677E\u525B",
+                  "userPreferred": "Gou Sadamatsu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n128970-BzVqqH6buYlg.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Editing"
+            }
+          ]
+        },
+        "mediaListEntry": {
+          "id": 593351151,
+          "mediaId": 189323,
+          "status": "PLANNING",
+          "progress": 0,
+          "score": 0,
+          "repeat": 0,
+          "notes": null,
+          "private": false,
+          "hiddenFromStatusLists": false,
+          "updatedAt": 1788671300
+        }
+      }
+    }
+  }
+}
