@@ -1,0 +1,583 @@
+﻿{
+  "operationName": "Search",
+  "variables": {
+    "search": "ka",
+    "page": 1,
+    "perPage": 20,
+    "isAdult": false
+  },
+  "queryFingerprint": "2c2dc0b2b28d",
+  "recordedAt": "2026-09-06T05:17:39.7086018+00:00",
+  "response": {
+    "data": {
+      "Page": {
+        "pageInfo": {
+          "hasNextPage": true,
+          "currentPage": 1
+        },
+        "media": [
+          {
+            "id": 71361,
+            "title": {
+              "romaji": "K",
+              "english": "K",
+              "native": "\u30B1\u30A4"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx71361-bg7JuIFv5iIx.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx71361-bg7JuIFv5iIx.png"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 5,
+            "volumes": 1,
+            "averageScore": 63,
+            "favourites": 5,
+            "popularity": 825,
+            "trending": 0,
+            "startDate": {
+              "year": 1988,
+              "month": 5,
+              "day": 1
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 180134,
+            "title": {
+              "romaji": "Series: Dareka Ni Nita Hito",
+              "english": null,
+              "native": "\u30B7\u30EA\u30FC\u30BA\u30FB\u8AB0\u304B\u306B\u4F3C\u305F\u4EBA"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx180134-GvoryhBZ2Hlg.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx180134-GvoryhBZ2Hlg.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 36,
+            "volumes": 2,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 17,
+            "trending": 0,
+            "startDate": {
+              "year": 1989,
+              "month": 7,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 112930,
+            "title": {
+              "romaji": "Yes ka No ka Hanbun ka",
+              "english": "Yes, No, or Maybe?",
+              "native": "\u30A4\u30A8\u30B9\u304B\u30CE\u30FC\u304B\u534A\u5206\u304B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx112930-G15f7gmpXPs3.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx112930-G15f7gmpXPs3.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 69,
+            "favourites": 401,
+            "popularity": 21233,
+            "trending": 0,
+            "startDate": {
+              "year": 2020,
+              "month": 12,
+              "day": 11
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 112949,
+            "title": {
+              "romaji": "Yes ka No ka Hanbun ka",
+              "english": "Yes, No, or Maybe?",
+              "native": "\u30A4\u30A8\u30B9\u304B\u30CE\u30FC\u304B\u534A\u5206\u304B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx112949-DZyrLFzH4rbM.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx112949-DZyrLFzH4rbM.jpg"
+            },
+            "format": "NOVEL",
+            "type": "MANGA",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 65,
+            "favourites": 20,
+            "popularity": 958,
+            "trending": 0,
+            "startDate": {
+              "year": 2014,
+              "month": 11,
+              "day": 8
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 183639,
+            "title": {
+              "romaji": "Yes ka No ka Hanbun ka",
+              "english": "Yes, No, or Maybe?",
+              "native": "\u30A4\u30A8\u30B9\u304B\u30CE\u30FC\u304B\u534A\u5206\u304B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx183639-NurKsxMohfof.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx183639-NurKsxMohfof.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 61,
+            "favourites": 9,
+            "popularity": 385,
+            "trending": 0,
+            "startDate": {
+              "year": 2021,
+              "month": 11,
+              "day": 30
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 88319,
+            "title": {
+              "romaji": "Tsumetaku, Amai.",
+              "english": null,
+              "native": "\u3064\u3081\u305F\u304F\u3001\u3042\u307E\u3044\u3002"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx88319-UCfvrcUoHrkH.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx88319-UCfvrcUoHrkH.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 12,
+            "volumes": 1,
+            "averageScore": null,
+            "favourites": 1,
+            "popularity": 187,
+            "trending": 0,
+            "startDate": {
+              "year": 2010,
+              "month": 3,
+              "day": 26
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 44443,
+            "title": {
+              "romaji": "Kuu ka Kuwareru ka",
+              "english": "Eat or Be Eaten",
+              "native": "\u98DF\u3046\u304B\u98DF\u308F\u308C\u308B\u304B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/b44443-fvYmqxSj2rrD.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/b44443-fvYmqxSj2rrD.jpg"
+            },
+            "format": "NOVEL",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 11,
+            "volumes": 1,
+            "averageScore": null,
+            "favourites": 1,
+            "popularity": 41,
+            "trending": 0,
+            "startDate": {
+              "year": 2004,
+              "month": 2,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 53526,
+            "title": {
+              "romaji": "Kami ka Akuma ka",
+              "english": null,
+              "native": "\u795E\u304B\u60AA\u9B54\u304B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx53526-iIMJ7T4tmERB.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx53526-iIMJ7T4tmERB.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 8,
+            "volumes": 2,
+            "averageScore": 54,
+            "favourites": 3,
+            "popularity": 194,
+            "trending": 0,
+            "startDate": {
+              "year": 2010,
+              "month": 4,
+              "day": 30
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 115489,
+            "title": {
+              "romaji": "Chouka-han ka: Gokudou-sama Afurete Afurete Naka Setai",
+              "english": null,
+              "native": "\u8776\u304B\u72AF\u304B \uFF5E\u6975\u9053\u69D8 \u6EA2\u308C\u3066\u6EA2\u308C\u3066\u6CE3\u304B\u305B\u305F\u3044\uFF5E"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx115489-ihXy0EhuzZ91.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx115489-ihXy0EhuzZ91.png"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 49,
+            "volumes": 12,
+            "averageScore": null,
+            "favourites": 9,
+            "popularity": 414,
+            "trending": 0,
+            "startDate": {
+              "year": 2019,
+              "month": 8,
+              "day": 3
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 180303,
+            "title": {
+              "romaji": "Koi ka Yamai ka",
+              "english": null,
+              "native": "\u604B\u304B\u75C5\u304B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx180303-T8KbbyMieCPp.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx180303-T8KbbyMieCPp.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 13,
+            "volumes": 3,
+            "averageScore": null,
+            "favourites": 2,
+            "popularity": 41,
+            "trending": 0,
+            "startDate": {
+              "year": 2023,
+              "month": 11,
+              "day": 5
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 107574,
+            "title": {
+              "romaji": "Futari no Netsuryou",
+              "english": null,
+              "native": "\u3075\u305F\u308A\u306E\u71B1\u91CF"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx107574-xftM6J7bcPTI.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx107574-xftM6J7bcPTI.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 8,
+            "volumes": 1,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 27,
+            "trending": 0,
+            "startDate": {
+              "year": 2013,
+              "month": 12,
+              "day": 28
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 204305,
+            "title": {
+              "romaji": "Kouha ka Nanpa ka !?",
+              "english": null,
+              "native": "\u786C\u6D3E\u304B\u8EDF\u6D3E\u304B\uFF01\uFF1F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/b204305-rHw24dZcY6BG.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/b204305-rHw24dZcY6BG.jpg"
+            },
+            "format": "ONE_SHOT",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 1,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 2,
+            "trending": 0,
+            "startDate": {
+              "year": 1976,
+              "month": 10,
+              "day": 20
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 178128,
+            "title": {
+              "romaji": "Yume ka Utsutsu ka",
+              "english": "Daydream Darling",
+              "native": "\u30E6\u30E1\u304B\u30A6\u30C4\u30C4\u304B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx178128-vqPR40osioGl.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx178128-vqPR40osioGl.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 62,
+            "favourites": 25,
+            "popularity": 1424,
+            "trending": 0,
+            "startDate": {
+              "year": 2024,
+              "month": 6,
+              "day": 13
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 41625,
+            "title": {
+              "romaji": "Guuzen ka Unmei ka",
+              "english": null,
+              "native": "\u5076\u7136\u304B\u904B\u547D\u304B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx41625-JAr1hgnytkAG.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx41625-JAr1hgnytkAG.png"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 5,
+            "volumes": 1,
+            "averageScore": 58,
+            "favourites": 2,
+            "popularity": 223,
+            "trending": 0,
+            "startDate": {
+              "year": 2007,
+              "month": 7,
+              "day": 25
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 100550,
+            "title": {
+              "romaji": "Kuro ka Shiro ka",
+              "english": "Black or White",
+              "native": "\u9ED2\u304B\u767D\u304B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx100550-u6NnSPbFGu61.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx100550-u6NnSPbFGu61.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 56,
+            "volumes": 14,
+            "averageScore": 71,
+            "favourites": 27,
+            "popularity": 1373,
+            "trending": 0,
+            "startDate": {
+              "year": 2017,
+              "month": 4,
+              "day": 27
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 170633,
+            "title": {
+              "romaji": "Uso to ka, Koi to ka",
+              "english": null,
+              "native": "\u5618\u3068\u304B\u604B\u3068\u304B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx170633-HAODk6qM112R.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx170633-HAODk6qM112R.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 12,
+            "volumes": 3,
+            "averageScore": null,
+            "favourites": 1,
+            "popularity": 143,
+            "trending": 0,
+            "startDate": {
+              "year": 2023,
+              "month": 10,
+              "day": 25
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 134253,
+            "title": {
+              "romaji": "Pin ka Pon ka",
+              "english": null,
+              "native": "\u30D4\u30F3\u30AB\u30DD\u30F3\u30AB"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx134253-sdelAALLjgQZ.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx134253-sdelAALLjgQZ.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 39,
+            "volumes": 4,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 38,
+            "trending": 0,
+            "startDate": {
+              "year": 2021,
+              "month": 5,
+              "day": 12
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 158811,
+            "title": {
+              "romaji": "Uso ka Makoto ka Yume ka Koi",
+              "english": null,
+              "native": "\u5618\u304B\u8AA0\u304B\u5922\u304B\u604B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx158811-SsAoijoQ0bGj.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx158811-SsAoijoQ0bGj.png"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 2,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 88,
+            "trending": 0,
+            "startDate": {
+              "year": 2022,
+              "month": 10,
+              "day": 28
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 143239,
+            "title": {
+              "romaji": "Off Air: Yes ka No ka Hanbun ka",
+              "english": null,
+              "native": "OFF AIR~\u30A4\u30A8\u30B9\u304B\u30CE\u30FC\u304B\u534A\u5206\u304B~"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx143239-rMPNeMMy3iBU.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx143239-rMPNeMMy3iBU.jpg"
+            },
+            "format": "NOVEL",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 16,
+            "volumes": 3,
+            "averageScore": null,
+            "favourites": 1,
+            "popularity": 75,
+            "trending": 0,
+            "startDate": {
+              "year": 2017,
+              "month": 8,
+              "day": 29
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 98671,
+            "title": {
+              "romaji": "Sekai ka Kanojo ka Erabenai",
+              "english": "Will It Be the World or Her?",
+              "native": "\u4E16\u754C\u304B\u5F7C\u5973\u304B\u9078\u3079\u306A\u3044"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx98671-aqx8kq8h4nOa.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx98671-aqx8kq8h4nOa.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 45,
+            "volumes": 9,
+            "averageScore": 69,
+            "favourites": 139,
+            "popularity": 7185,
+            "trending": 1,
+            "startDate": {
+              "year": 2017,
+              "month": 4,
+              "day": 8
+            },
+            "mediaListEntry": null
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,285 @@
+﻿{
+  "operationName": "MediaCharactersPage",
+  "variables": {
+    "id": 178789,
+    "page": 2,
+    "sort": [
+      "ROLE",
+      "RELEVANCE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "64eed76a7328",
+  "recordedAt": "2026-09-06T05:19:44.1434564+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "characters": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 2
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 255894,
+                "name": {
+                  "full": "Cliff Grimoire",
+                  "native": "\u30AF\u30EA\u30D5\u30FB\u30B0\u30EA\u30E2\u30EB",
+                  "userPreferred": "Cliff Grimoire"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b255894-m8YzAbnDgsIh.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b255894-m8YzAbnDgsIh.jpg"
+                },
+                "favourites": 171
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 261304,
+                "name": {
+                  "full": "Suzanne",
+                  "native": "\u30B9\u30B6\u30F3\u30CC",
+                  "userPreferred": "Suzanne"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b261304-PcUBGEZakYcy.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b261304-PcUBGEZakYcy.jpg"
+                },
+                "favourites": 20
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 261305,
+                "name": {
+                  "full": "Timothy",
+                  "native": "\u30C6\u30A3\u30E2\u30B7\u30FC",
+                  "userPreferred": "Timothy"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b261305-Cypy5SjKccEs.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b261305-Cypy5SjKccEs.jpg"
+                },
+                "favourites": 10
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 262619,
+                "name": {
+                  "full": "Sylvaril",
+                  "native": "\u7A7A\u865A\u306E\u30B7\u30EB\u30F4\u30A1\u30EA\u30EB",
+                  "userPreferred": "Sylvaril"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b262619-WmAzWwKBqDlw.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b262619-WmAzWwKBqDlw.jpg"
+                },
+                "favourites": 9
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 262620,
+                "name": {
+                  "full": "Badigadi",
+                  "native": "\u30D0\u30FC\u30C7\u30A3\u30AC\u30FC\u30C7\u30A3",
+                  "userPreferred": "Badigadi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b262620-IYlLexJptsA4.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b262620-IYlLexJptsA4.png"
+                },
+                "favourites": 96
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 262623,
+                "name": {
+                  "full": "Gal Farion",
+                  "native": "\u30AC\u30EB\u30FB\u30D5\u30A1\u30EA\u30AA\u30F3",
+                  "userPreferred": "Gal Farion"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b262623-oVXYm7e8CDvg.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b262623-oVXYm7e8CDvg.jpg"
+                },
+                "favourites": 12
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 262624,
+                "name": {
+                  "full": "Nina Farion",
+                  "native": "\u30CB\u30CA\u30FB\u30D5\u30A1\u30EA\u30AA\u30F3",
+                  "userPreferred": "Nina Farion"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b262624-kxNL7t0RRQqY.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b262624-kxNL7t0RRQqY.png"
+                },
+                "favourites": 37
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 262707,
+                "name": {
+                  "full": "Reida Reia",
+                  "native": "\u30EC\u30A4\u30C0\u30FB\u30EA\u30A3\u30A2",
+                  "userPreferred": "Reida Reia"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b262707-qWzhHR46lavz.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b262707-qWzhHR46lavz.png"
+                },
+                "favourites": 4
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 262709,
+                "name": {
+                  "full": "Isolte Cruel",
+                  "native": "\u30A4\u30BE\u30EB\u30C6\u30FB\u30AF\u30EB\u30FC\u30A8\u30EB",
+                  "userPreferred": "Isolte Cruel"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b262709-gLw6XGn5iN1V.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b262709-gLw6XGn5iN1V.jpg"
+                },
+                "favourites": 19
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 262712,
+                "name": {
+                  "full": "Auber Corvette",
+                  "native": "\u30AA\u30FC\u30D9\u30FC\u30EB\u30FB\u30B3\u30EB\u30D9\u30C3\u30C8",
+                  "userPreferred": "Auber Corvette"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b262712-WYBChHzaB46T.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b262712-WYBChHzaB46T.png"
+                },
+                "favourites": 10
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 271219,
+                "name": {
+                  "full": "Jino Britts",
+                  "native": "\u30B8\u30CE\u30FB\u30D6\u30EA\u30C3\u30C4",
+                  "userPreferred": "Jino Britts"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b271219-ocHoBHGInf6l.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b271219-ocHoBHGInf6l.png"
+                },
+                "favourites": 3
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 311809,
+                "name": {
+                  "full": "Jenius Halfas",
+                  "native": "\u30B8\u30FC\u30CA\u30B9\u30FB\u30CF\u30EB\u30D5\u30A1\u30B9",
+                  "userPreferred": "Jenius Halfas"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b311809-EL0gvAhNykgx.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b311809-EL0gvAhNykgx.png"
+                },
+                "favourites": 0
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 407670,
+                "name": {
+                  "full": "Moore",
+                  "native": "\u30E0\u30FC\u30A2",
+                  "userPreferred": "Moore"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b407670-tG6Q7DtPGfpQ.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b407670-tG6Q7DtPGfpQ.png"
+                },
+                "favourites": 0
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 407662,
+                "name": {
+                  "full": "Shokuzai no Yuruzu",
+                  "native": "\u8D16\u7F6A\u306E\u30E6\u30EB\u30BA",
+                  "userPreferred": "Shokuzai no Yuruzu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b407662-hQRQhM5kfJAt.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b407662-hQRQhM5kfJAt.png"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 407664,
+                "name": {
+                  "full": "Monban A",
+                  "native": "\u9580\u756AA",
+                  "userPreferred": "Monban A"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/default.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 407665,
+                "name": {
+                  "full": "Monban B",
+                  "native": "\u9580\u756AB",
+                  "userPreferred": "Monban B"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/default.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

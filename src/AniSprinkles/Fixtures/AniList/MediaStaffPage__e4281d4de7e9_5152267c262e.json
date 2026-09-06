@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 2993,
+    "page": 1,
+    "sort": [
+      "ROLE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:23:23.6522013+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 106185,
+                "name": {
+                  "full": "Hiroyuki Kanbe",
+                  "native": "\u795E\u6238\u6D0B\u884C",
+                  "userPreferred": "Hiroyuki Kanbe"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n106185-L8tWMwBXyAcP.png"
+                },
+                "favourites": 14
+              },
+              "role": "2D Design"
+            },
+            {
+              "node": {
+                "id": 151780,
+                "name": {
+                  "full": "Noriko Masuko",
+                  "native": "\u76CA\u5B50\u5178\u5B50",
+                  "userPreferred": "Noriko Masuko"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2D Design"
+            },
+            {
+              "node": {
+                "id": 166749,
+                "name": {
+                  "full": "Yousuke Nanjou",
+                  "native": "\u5357\u689D\u694A\u8F14",
+                  "userPreferred": "Yousuke Nanjou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2D Graphics"
+            },
+            {
+              "node": {
+                "id": 117199,
+                "name": {
+                  "full": "Jason Grundy",
+                  "native": null,
+                  "userPreferred": "Jason Grundy"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "ADR Director (English)"
+            },
+            {
+              "node": {
+                "id": 128973,
+                "name": {
+                  "full": "Bonny Clinkenbeard",
+                  "native": null,
+                  "userPreferred": "Bonny Clinkenbeard"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n128973-Sil6PJmdRHLX.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "ADR Script (English; eps. 1, 2)"
+            },
+            {
+              "node": {
+                "id": 112997,
+                "name": {
+                  "full": "Katsuzou Hirata",
+                  "native": "\u5E73\u7530\u96C4\u4E09",
+                  "userPreferred": "Katsuzou Hirata"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/112997-SrqvigXDmCVO.jpg"
+                },
+                "favourites": 8
+              },
+              "role": "Animation Director  (ep 10)"
+            },
+            {
+              "node": {
+                "id": 110647,
+                "name": {
+                  "full": "Shigemi Ikeda",
+                  "native": "\u6C60\u7530\u7E41\u7F8E",
+                  "userPreferred": "Shigemi Ikeda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n110647-oGP3Qn0HItjN.png"
+                },
+                "favourites": 28
+              },
+              "role": "Art Director"
+            },
+            {
+              "node": {
+                "id": 150595,
+                "name": {
+                  "full": "Michael Harcourt",
+                  "native": null,
+                  "userPreferred": "Michael Harcourt"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Assistant Producer (English)"
+            },
+            {
+              "node": {
+                "id": 188005,
+                "name": {
+                  "full": "Masaki Katou",
+                  "native": "\u52A0\u85E4\u6B63\u6A39",
+                  "userPreferred": "Masaki Katou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Background Art (ep 1)"
+            },
+            {
+              "node": {
+                "id": 193332,
+                "name": {
+                  "full": "Yuuko Doi",
+                  "native": "\u571F\u4E95\u88D5\u5B50",
+                  "userPreferred": "Yuuko Doi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Background Art (ep 1)"
+            },
+            {
+              "node": {
+                "id": 236220,
+                "name": {
+                  "full": "Miki Oomori",
+                  "native": "\u5927\u68EE\u7F8E\u7D00",
+                  "userPreferred": "Miki Oomori"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Background Art (ep 1)"
+            },
+            {
+              "node": {
+                "id": 236223,
+                "name": {
+                  "full": "Chiharu Kouno",
+                  "native": "\u6CB3\u91CE\u5343\u6625",
+                  "userPreferred": "Chiharu Kouno"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Background Art (ep 1)"
+            },
+            {
+              "node": {
+                "id": 236225,
+                "name": {
+                  "full": "Shouhei Katou",
+                  "native": "\u52A0\u85E4\u5C06\u5E73",
+                  "userPreferred": "Shouhei Katou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Background Art (ep 1)"
+            },
+            {
+              "node": {
+                "id": 197883,
+                "name": {
+                  "full": "Taichirou Miwa",
+                  "native": "\u4E09\u8F2A\u6CF0\u5730\u6717",
+                  "userPreferred": "Taichirou Miwa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "CG Production Assistant"
+            },
+            {
+              "node": {
+                "id": 146076,
+                "name": {
+                  "full": "Hiroshi Shirai",
+                  "native": "\u767D\u4E95\u5B8F\u65E8",
+                  "userPreferred": "Hiroshi Shirai"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n146076-Y1TTiZ4AlBSg.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "CG Supervisor"
+            },
+            {
+              "node": {
+                "id": 112095,
+                "name": {
+                  "full": "Mariko Fujita",
+                  "native": "\u85E4\u7530\u307E\u308A\u5B50",
+                  "userPreferred": "Mariko Fujita"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n112095-0lRGVP6ARyAI.jpg"
+                },
+                "favourites": 10
+              },
+              "role": "Character Design"
+            },
+            {
+              "node": {
+                "id": 106185,
+                "name": {
+                  "full": "Hiroyuki Kanbe",
+                  "native": "\u795E\u6238\u6D0B\u884C",
+                  "userPreferred": "Hiroyuki Kanbe"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n106185-L8tWMwBXyAcP.png"
+                },
+                "favourites": 14
+              },
+              "role": "Creature Design"
+            },
+            {
+              "node": {
+                "id": 101186,
+                "name": {
+                  "full": "Takayuki Inagaki",
+                  "native": "\u7A32\u57A3\u9686\u884C",
+                  "userPreferred": "Takayuki Inagaki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101186-eWLnv0UjmEde.png"
+                },
+                "favourites": 1
+              },
+              "role": "Director"
+            },
+            {
+              "node": {
+                "id": 147356,
+                "name": {
+                  "full": "Ayumi Ushijima",
+                  "native": "\u725B\u5CF6\u3042\u3086\u307F",
+                  "userPreferred": "Ayumi Ushijima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Director of Photography"
+            },
+            {
+              "node": {
+                "id": 100652,
+                "name": {
+                  "full": "Shin Itagaki",
+                  "native": "\u677F\u57A3\u4F38",
+                  "userPreferred": "Shin Itagaki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100652-RRre8aSZhdF6.png"
+                },
+                "favourites": 33
+              },
+              "role": "Episode Director  (ep 10)"
+            },
+            {
+              "node": {
+                "id": 100316,
+                "name": {
+                  "full": "Gen Fukunaga",
+                  "native": "\u798F\u6C38\u5143",
+                  "userPreferred": "Gen Fukunaga"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100316-tG6FdGzqgxli.png"
+                },
+                "favourites": 26
+              },
+              "role": "Executive Producer (English)"
+            },
+            {
+              "node": {
+                "id": 100652,
+                "name": {
+                  "full": "Shin Itagaki",
+                  "native": "\u677F\u57A3\u4F38",
+                  "userPreferred": "Shin Itagaki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100652-RRre8aSZhdF6.png"
+                },
+                "favourites": 33
+              },
+              "role": "Eyecatch (ep 10)"
+            },
+            {
+              "node": {
+                "id": 161934,
+                "name": {
+                  "full": "Nozomi Gotou",
+                  "native": "\u5F8C\u85E4\u671B",
+                  "userPreferred": "Nozomi Gotou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Eyecatch (ep 10)"
+            },
+            {
+              "node": {
+                "id": 158345,
+                "name": {
+                  "full": "Tatsuya Abe",
+                  "native": "\u963F\u90E8\u9054\u4E5F",
+                  "userPreferred": "Tatsuya Abe"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n158345-4Z84T7UFgvYV.png"
+                },
+                "favourites": 0
+              },
+              "role": "Eyecatch (eps 2, 4-9, 11-13)"
+            },
+            {
+              "node": {
+                "id": 148896,
+                "name": {
+                  "full": "Eun-Yeong Kim",
+                  "native": "\uAE40\uC740\uC601",
+                  "userPreferred": "Eun-Yeong Kim"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "In-Between Animation (ep 1)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

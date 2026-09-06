@@ -1,0 +1,553 @@
+﻿{
+  "operationName": "MediaRecommendationsPage",
+  "variables": {
+    "id": 177709,
+    "page": 1,
+    "sort": [
+      "RATING_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "4c3bbb02d06d",
+  "recordedAt": "2026-09-06T05:20:55.2998167+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "recommendations": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "nodes": [
+            {
+              "rating": 161,
+              "mediaRecommendation": {
+                "id": 140960,
+                "title": {
+                  "romaji": "SPY\u00D7FAMILY",
+                  "english": "SPY x FAMILY",
+                  "native": "SPY\u00D7FAMILY"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx140960-Kb6R5nYQfjmP.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx140960-Kb6R5nYQfjmP.jpg"
+                },
+                "averageScore": 83,
+                "mediaListEntry": {
+                  "id": 593364701,
+                  "status": "COMPLETED",
+                  "progress": 12,
+                  "score": 10
+                }
+              }
+            },
+            {
+              "rating": 121,
+              "mediaRecommendation": {
+                "id": 125426,
+                "title": {
+                  "romaji": "Gokushufudou",
+                  "english": "The Way of the Househusband",
+                  "native": "\u6975\u4E3B\u592B\u9053"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx125426-WeKnIVjCRNIC.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx125426-WeKnIVjCRNIC.png"
+                },
+                "averageScore": 71,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 74,
+              "mediaRecommendation": {
+                "id": 918,
+                "title": {
+                  "romaji": "Gintama",
+                  "english": "Gintama",
+                  "native": "\u9280\u9B42"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx918-iOaeBVUn4uK7.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx918-iOaeBVUn4uK7.jpg"
+                },
+                "averageScore": 85,
+                "mediaListEntry": {
+                  "id": 593363934,
+                  "status": "COMPLETED",
+                  "progress": 201,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 65,
+              "mediaRecommendation": {
+                "id": 199547,
+                "title": {
+                  "romaji": "MARRIAGETOXIN",
+                  "english": "MARRIAGETOXIN",
+                  "native": "\u30DE\u30EA\u30C3\u30B8\u30C8\u30AD\u30B7\u30F3"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx199547-LAaG3cmKCGhr.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx199547-LAaG3cmKCGhr.jpg"
+                },
+                "averageScore": 76,
+                "mediaListEntry": {
+                  "id": 593365702,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "score": 0
+                }
+              }
+            },
+            {
+              "rating": 56,
+              "mediaRecommendation": {
+                "id": 155907,
+                "title": {
+                  "romaji": "Buddy Daddies",
+                  "english": "Buddy Daddies",
+                  "native": "Buddy Daddies"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx155907-wY1RqFUHvZ60.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx155907-wY1RqFUHvZ60.jpg"
+                },
+                "averageScore": 80,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 47,
+              "mediaRecommendation": {
+                "id": 198113,
+                "title": {
+                  "romaji": "Kill Ao",
+                  "english": "KILL BLUE",
+                  "native": "\u30AD\u30EB\u30A2\u30AA"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx198113-NRa47idWSlnx.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx198113-NRa47idWSlnx.jpg"
+                },
+                "averageScore": 74,
+                "mediaListEntry": {
+                  "id": 593365695,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "score": 0
+                }
+              }
+            },
+            {
+              "rating": 40,
+              "mediaRecommendation": {
+                "id": 142877,
+                "title": {
+                  "romaji": "Rurouni Kenshin: Meiji Kenkaku Romantan (2023)",
+                  "english": "Rurouni Kenshin (2023)",
+                  "native": "\u308B\u308D\u3046\u306B\u5263\u5FC3 \uFF0D\u660E\u6CBB\u5263\u5BA2\u6D6A\u6F2B\u8B5A\uFF0D(2023)"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx142877-FrXXLsgXYQAp.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx142877-FrXXLsgXYQAp.jpg"
+                },
+                "averageScore": 74,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 36,
+              "mediaRecommendation": {
+                "id": 21087,
+                "title": {
+                  "romaji": "One Punch Man",
+                  "english": "One-Punch Man",
+                  "native": "\u30EF\u30F3\u30D1\u30F3\u30DE\u30F3"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21087-B5DHjqZ3kW4b.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21087-B5DHjqZ3kW4b.jpg"
+                },
+                "averageScore": 83,
+                "mediaListEntry": {
+                  "id": 593363945,
+                  "status": "COMPLETED",
+                  "progress": 12,
+                  "score": 10
+                }
+              }
+            },
+            {
+              "rating": 29,
+              "mediaRecommendation": {
+                "id": 138882,
+                "title": {
+                  "romaji": "Kumichou Musume to Sewagakari",
+                  "english": "The Yakuza\u0027s Guide to Babysitting",
+                  "native": "\u7D44\u9577\u5A18\u3068\u4E16\u8A71\u4FC2"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx138882-Ich6OQJxB9P8.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx138882-Ich6OQJxB9P8.jpg"
+                },
+                "averageScore": 77,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 22,
+              "mediaRecommendation": {
+                "id": 158898,
+                "title": {
+                  "romaji": "Yozakura-san Chi no Daisakusen",
+                  "english": "Mission: Yozakura Family",
+                  "native": "\u591C\u685C\u3055\u3093\u3061\u306E\u5927\u4F5C\u6226"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx158898-O3egiBNkxLQO.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx158898-O3egiBNkxLQO.png"
+                },
+                "averageScore": 74,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 18,
+              "mediaRecommendation": {
+                "id": 166910,
+                "title": {
+                  "romaji": "The Fable",
+                  "english": "The Fable",
+                  "native": "\u30B6\u30FB\u30D5\u30A1\u30D6\u30EB"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx166910-wI4LacRXICtI.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx166910-wI4LacRXICtI.png"
+                },
+                "averageScore": 78,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 18,
+              "mediaRecommendation": {
+                "id": 143270,
+                "title": {
+                  "romaji": "Lycoris Recoil",
+                  "english": "Lycoris Recoil",
+                  "native": "\u30EA\u30B3\u30EA\u30B9\u30FB\u30EA\u30B3\u30A4\u30EB"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx143270-rfkyiYXhek5w.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx143270-rfkyiYXhek5w.jpg"
+                },
+                "averageScore": 81,
+                "mediaListEntry": {
+                  "id": 593365217,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "score": 0
+                }
+              }
+            },
+            {
+              "rating": 16,
+              "mediaRecommendation": {
+                "id": 177937,
+                "title": {
+                  "romaji": "SPY\u00D7FAMILY Season 3",
+                  "english": "SPY x FAMILY Season 3",
+                  "native": "SPY\u00D7FAMILY Season 3"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx177937-Tzgg6rAdhCoH.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx177937-Tzgg6rAdhCoH.jpg"
+                },
+                "averageScore": 82,
+                "mediaListEntry": {
+                  "id": 593364728,
+                  "status": "COMPLETED",
+                  "progress": 13,
+                  "score": 9
+                }
+              }
+            },
+            {
+              "rating": 14,
+              "mediaRecommendation": {
+                "id": 151801,
+                "title": {
+                  "romaji": "MASHLE",
+                  "english": "MASHLE: MAGIC AND MUSCLES",
+                  "native": "\u30DE\u30C3\u30B7\u30E5\u30EB-MASHLE-"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx151801-XxVf22Le6C8o.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx151801-XxVf22Le6C8o.png"
+                },
+                "averageScore": 76,
+                "mediaListEntry": {
+                  "id": 593364906,
+                  "status": "COMPLETED",
+                  "progress": 12,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 14,
+              "mediaRecommendation": {
+                "id": 20755,
+                "title": {
+                  "romaji": "Ansatsu Kyoushitsu",
+                  "english": "Assassination Classroom",
+                  "native": "\u6697\u6BBA\u6559\u5BA4"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20755-dWrhs569YGUO.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20755-dWrhs569YGUO.jpg"
+                },
+                "averageScore": 79,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 12,
+              "mediaRecommendation": {
+                "id": 100077,
+                "title": {
+                  "romaji": "Hinamatsuri",
+                  "english": "HINAMATSURI",
+                  "native": "\u30D2\u30CA\u307E\u3064\u308A"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx100077-FgGYIt8gGyrn.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx100077-FgGYIt8gGyrn.jpg"
+                },
+                "averageScore": 80,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 12,
+              "mediaRecommendation": {
+                "id": 21804,
+                "title": {
+                  "romaji": "Saiki Kusuo no \u03A8-nan",
+                  "english": "The Disastrous Life of Saiki K.",
+                  "native": "\u6589\u6728\u6960\u96C4\u306E\u03A8\u96E3"
+                },
+                "format": "TV_SHORT",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21804-As6tDLAvEvNY.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21804-As6tDLAvEvNY.jpg"
+                },
+                "averageScore": 83,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 7,
+              "mediaRecommendation": {
+                "id": 154982,
+                "title": {
+                  "romaji": "Gokushufudou Season 2",
+                  "english": "The Way of the Househusband: Season 2",
+                  "native": "\u6975\u4E3B\u592B\u9053 \u30B7\u30FC\u30BA\u30F32"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx154982-7HV064pRbQdB.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx154982-7HV064pRbQdB.png"
+                },
+                "averageScore": 75,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 7,
+              "mediaRecommendation": {
+                "id": 159831,
+                "title": {
+                  "romaji": "Zom 100: Zombie ni Naru Made ni Shitai 100 no Koto",
+                  "english": "Zom 100: Bucket List of the Dead",
+                  "native": "\u30BE\u30F3100\uFF5E\u30BE\u30F3\u30D3\u306B\u306A\u308B\u307E\u3067\u306B\u3057\u305F\u3044100\u306E\u3053\u3068\uFF5E"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx159831-cJUNqCqzuApc.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx159831-cJUNqCqzuApc.png"
+                },
+                "averageScore": 76,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 6,
+              "mediaRecommendation": {
+                "id": 162002,
+                "title": {
+                  "romaji": "Kyuujitsu no Warumono-san",
+                  "english": "Mr. Villain\u0027s Day Off",
+                  "native": "\u4F11\u65E5\u306E\u308F\u308B\u3082\u306E\u3055\u3093"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx162002-tlKT0PVbwluv.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx162002-tlKT0PVbwluv.jpg"
+                },
+                "averageScore": 71,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 6,
+              "mediaRecommendation": {
+                "id": 20996,
+                "title": {
+                  "romaji": "Gintama\u00B0",
+                  "english": "Gintama Season 3",
+                  "native": "\u9280\u9B42\u309C"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20996-kBEGEGdeK1r7.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20996-kBEGEGdeK1r7.jpg"
+                },
+                "averageScore": 90,
+                "mediaListEntry": {
+                  "id": 593364854,
+                  "status": "COMPLETED",
+                  "progress": 51,
+                  "score": 10
+                }
+              }
+            },
+            {
+              "rating": 6,
+              "mediaRecommendation": {
+                "id": 184034,
+                "title": {
+                  "romaji": "Hotel Inhumans",
+                  "english": "Hotel Inhumans",
+                  "native": "\u30DB\u30C6\u30EB\u30FB\u30A4\u30F3\u30D2\u30E5\u30FC\u30DE\u30F3\u30BA"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx184034-gjIi5TIHJpZv.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx184034-gjIi5TIHJpZv.jpg"
+                },
+                "averageScore": 64,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 6,
+              "mediaRecommendation": {
+                "id": 186914,
+                "title": {
+                  "romaji": "Ninja to Gokudou",
+                  "english": "Ninja Vs. Gokudo",
+                  "native": "\u5FCD\u8005\u3068\u6975\u9053"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx186914-8fVK9eu1ZOKa.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx186914-8fVK9eu1ZOKa.jpg"
+                },
+                "averageScore": 61,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 6,
+              "mediaRecommendation": {
+                "id": 182896,
+                "title": {
+                  "romaji": "Boku no Hero Academia FINAL SEASON",
+                  "english": "My Hero Academia FINAL SEASON",
+                  "native": "\u50D5\u306E\u30D2\u30FC\u30ED\u30FC\u30A2\u30AB\u30C7\u30DF\u30A2 FINAL SEASON"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx182896-mvxTVHGdDB4q.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx182896-mvxTVHGdDB4q.jpg"
+                },
+                "averageScore": 87,
+                "mediaListEntry": {
+                  "id": 593351172,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "score": 0
+                }
+              }
+            },
+            {
+              "rating": 5,
+              "mediaRecommendation": {
+                "id": 20773,
+                "title": {
+                  "romaji": "GANGSTA.",
+                  "english": "GANGSTA.",
+                  "native": "GANGSTA."
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20773-yfJQMyHqZyJr.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20773-yfJQMyHqZyJr.jpg"
+                },
+                "averageScore": 72,
+                "mediaListEntry": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

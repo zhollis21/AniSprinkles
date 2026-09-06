@@ -1,0 +1,364 @@
+﻿{
+  "operationName": "Search",
+  "variables": {
+    "search": "one",
+    "page": 3,
+    "perPage": 20,
+    "isAdult": false
+  },
+  "queryFingerprint": "2c2dc0b2b28d",
+  "recordedAt": "2026-09-06T05:16:54.9296101+00:00",
+  "response": {
+    "data": {
+      "Page": {
+        "pageInfo": {
+          "hasNextPage": false,
+          "currentPage": 3
+        },
+        "media": [
+          {
+            "id": 145999,
+            "title": {
+              "romaji": "OMEGA ONE",
+              "english": null,
+              "native": "OMEGA ONE"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx145999-WCbVjrYmhZdu.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx145999-WCbVjrYmhZdu.png"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 24,
+            "trending": 0,
+            "startDate": {
+              "year": 2021,
+              "month": 11,
+              "day": 22
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 65835,
+            "title": {
+              "romaji": "Barom 1",
+              "english": "Barom One",
+              "native": "\u30D0\u30ED\u30E0\u30FB\uFF11"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx65835-cZhZTvtw1IqZ.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx65835-cZhZTvtw1IqZ.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 9,
+            "volumes": 5,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 126,
+            "trending": 0,
+            "startDate": {
+              "year": 1970,
+              "month": null,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 79629,
+            "title": {
+              "romaji": "Ougon no Senshi ICZER-ONE",
+              "english": "Golden Warrior Iczer-One",
+              "native": "\u9EC4\u91D1\u306E\u6226\u58EB ICZER-ONE"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/b79629-u6kcexWBT5Z2.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/b79629-u6kcexWBT5Z2.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "CANCELLED",
+            "episodes": null,
+            "chapters": 5,
+            "volumes": 1,
+            "averageScore": 47,
+            "favourites": 2,
+            "popularity": 237,
+            "trending": 0,
+            "startDate": {
+              "year": 1988,
+              "month": 10,
+              "day": 1
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 30013,
+            "title": {
+              "romaji": "ONE PIECE",
+              "english": "One Piece",
+              "native": "ONE PIECE"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30013-BeslEMqiPhlk.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30013-BeslEMqiPhlk.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 91,
+            "favourites": 46530,
+            "popularity": 232169,
+            "trending": 37,
+            "startDate": {
+              "year": 1997,
+              "month": 7,
+              "day": 22
+            },
+            "mediaListEntry": {
+              "id": 593351205,
+              "status": "CURRENT",
+              "progress": 1100,
+              "score": 9
+            }
+          },
+          {
+            "id": 106947,
+            "title": {
+              "romaji": "Zhenshang Emo Zongcai",
+              "english": "Tow in One",
+              "native": "\u6795\u4E0A\u6076\u9B54\u603B\u88C1"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/n106947-SjoLia3qLKqz.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/n106947-SjoLia3qLKqz.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 104,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 2,
+            "popularity": 99,
+            "trending": 0,
+            "startDate": {
+              "year": 2017,
+              "month": 11,
+              "day": 15
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 102061,
+            "title": {
+              "romaji": "Kaiten-One",
+              "english": null,
+              "native": "\u30AB\u30A4\u30C6\u30F3\u30EF\u30F3"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx102061-snH5O5rHkMDe.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx102061-snH5O5rHkMDe.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 38,
+            "volumes": 5,
+            "averageScore": null,
+            "favourites": 1,
+            "popularity": 191,
+            "trending": 0,
+            "startDate": {
+              "year": 2017,
+              "month": 5,
+              "day": 9
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 1667,
+            "title": {
+              "romaji": "Barom One",
+              "english": "Barom One",
+              "native": "\u30D0\u30ED\u30E0\u30EF\u30F3"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/1667.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/1667.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 13,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 47,
+            "favourites": 4,
+            "popularity": 1070,
+            "trending": 0,
+            "startDate": {
+              "year": 2002,
+              "month": 12,
+              "day": 7
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 139382,
+            "title": {
+              "romaji": "Animal 1",
+              "english": null,
+              "native": "\u30A2\u30CB\u30DE\u30EB1"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx139382-X0dGwV3s6sFJ.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx139382-X0dGwV3s6sFJ.png"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 24,
+            "volumes": 5,
+            "averageScore": null,
+            "favourites": 1,
+            "popularity": 43,
+            "trending": 0,
+            "startDate": {
+              "year": 1967,
+              "month": 3,
+              "day": 12
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 179817,
+            "title": {
+              "romaji": "ONE FOR ALL",
+              "english": null,
+              "native": "\uFF2F\uFF2E\uFF25\u3000\uFF26\uFF2F\uFF32\u3000\uFF21\uFF2C\uFF2C"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx179817-LyTUnS7UrNFl.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx179817-LyTUnS7UrNFl.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 62,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 126,
+            "trending": 0,
+            "startDate": {
+              "year": 2023,
+              "month": 12,
+              "day": 11
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 93181,
+            "title": {
+              "romaji": "Watashi to Kare to Mou Hitori\u2661",
+              "english": null,
+              "native": "\u79C1\u3068\u5F7C\u3068\u3082\u3046\u3072\u3068\u308A\u2661"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx93181-NtbytniNbNAf.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx93181-NtbytniNbNAf.jpg"
+            },
+            "format": "ONE_SHOT",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 1,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 64,
+            "trending": 0,
+            "startDate": {
+              "year": 2014,
+              "month": 4,
+              "day": 16
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 191681,
+            "title": {
+              "romaji": "One and Only",
+              "english": "One and Only",
+              "native": "\uC6D0 \uC564 \uC628\uB9AC"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx191681-p9K079UVBn73.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx191681-p9K079UVBn73.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 4,
+            "popularity": 299,
+            "trending": 0,
+            "startDate": {
+              "year": 2025,
+              "month": 4,
+              "day": 26
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 187729,
+            "title": {
+              "romaji": "Saminbun",
+              "english": "One of Three",
+              "native": "3\uC778\uBD84"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx187729-yB3TZiE9QWAN.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx187729-yB3TZiE9QWAN.png"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 60,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 68,
+            "trending": 0,
+            "startDate": {
+              "year": 2025,
+              "month": 2,
+              "day": 25
+            },
+            "mediaListEntry": null
+          }
+        ]
+      }
+    }
+  }
+}

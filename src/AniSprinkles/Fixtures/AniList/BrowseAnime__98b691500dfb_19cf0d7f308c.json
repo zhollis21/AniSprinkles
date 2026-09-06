@@ -1,0 +1,820 @@
+﻿{
+  "operationName": "BrowseAnime",
+  "variables": {
+    "page": 1,
+    "perPage": 25,
+    "sort": [
+      "POPULARITY_DESC",
+      "ID"
+    ]
+  },
+  "queryFingerprint": "19cf0d7f308c",
+  "recordedAt": "2026-09-06T05:16:02.8415557+00:00",
+  "response": {
+    "data": {
+      "Page": {
+        "pageInfo": {
+          "hasNextPage": true,
+          "currentPage": 1
+        },
+        "media": [
+          {
+            "id": 16498,
+            "title": {
+              "romaji": "Shingeki no Kyojin",
+              "english": "Attack on Titan",
+              "native": "\u9032\u6483\u306E\u5DE8\u4EBA"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx16498-buvcRTBx4NSm.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx16498-buvcRTBx4NSm.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 25,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 85,
+            "favourites": 87264,
+            "popularity": 1051019,
+            "trending": 23,
+            "startDate": {
+              "year": 2013,
+              "month": 4,
+              "day": 7
+            },
+            "mediaListEntry": {
+              "id": 593364161,
+              "status": "COMPLETED",
+              "progress": 25,
+              "score": 10
+            }
+          },
+          {
+            "id": 101922,
+            "title": {
+              "romaji": "Kimetsu no Yaiba",
+              "english": "Demon Slayer: Kimetsu no Yaiba",
+              "native": "\u9B3C\u6EC5\u306E\u5203"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx101922-WBsBl0ClmgYL.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101922-WBsBl0ClmgYL.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 26,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 83,
+            "favourites": 60949,
+            "popularity": 991252,
+            "trending": 17,
+            "startDate": {
+              "year": 2019,
+              "month": 4,
+              "day": 6
+            },
+            "mediaListEntry": {
+              "id": 593364095,
+              "status": "COMPLETED",
+              "progress": 26,
+              "score": 9
+            }
+          },
+          {
+            "id": 113415,
+            "title": {
+              "romaji": "Jujutsu Kaisen",
+              "english": "JUJUTSU KAISEN",
+              "native": "\u546A\u8853\u5EFB\u6226"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx113415-LHBAeoZDIsnF.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx113415-LHBAeoZDIsnF.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 24,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 84,
+            "favourites": 70557,
+            "popularity": 968990,
+            "trending": 24,
+            "startDate": {
+              "year": 2020,
+              "month": 10,
+              "day": 3
+            },
+            "mediaListEntry": {
+              "id": 593364132,
+              "status": "COMPLETED",
+              "progress": 24,
+              "score": 10
+            }
+          },
+          {
+            "id": 1535,
+            "title": {
+              "romaji": "DEATH NOTE",
+              "english": "Death Note",
+              "native": "DEATH NOTE"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1535-kUgkcrfOrkUM.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1535-kUgkcrfOrkUM.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 37,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 84,
+            "favourites": 67145,
+            "popularity": 958510,
+            "trending": 16,
+            "startDate": {
+              "year": 2006,
+              "month": 10,
+              "day": 4
+            },
+            "mediaListEntry": {
+              "id": 593365272,
+              "status": "PLANNING",
+              "progress": 0,
+              "score": 0
+            }
+          },
+          {
+            "id": 21459,
+            "title": {
+              "romaji": "Boku no Hero Academia",
+              "english": "My Hero Academia",
+              "native": "\u50D5\u306E\u30D2\u30FC\u30ED\u30FC\u30A2\u30AB\u30C7\u30DF\u30A2"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21459-nYh85uj2Fuwr.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21459-nYh85uj2Fuwr.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 13,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 77,
+            "favourites": 35032,
+            "popularity": 871660,
+            "trending": 10,
+            "startDate": {
+              "year": 2016,
+              "month": 4,
+              "day": 3
+            },
+            "mediaListEntry": {
+              "id": 593364207,
+              "status": "COMPLETED",
+              "progress": 13,
+              "score": 9
+            }
+          },
+          {
+            "id": 11061,
+            "title": {
+              "romaji": "HUNTER\u00D7HUNTER (2011)",
+              "english": "Hunter x Hunter (2011)",
+              "native": "HUNTER\u00D7HUNTER (2011)"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx11061-y5gsT1hoHuHw.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx11061-y5gsT1hoHuHw.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 148,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 89,
+            "favourites": 98316,
+            "popularity": 838394,
+            "trending": 41,
+            "startDate": {
+              "year": 2011,
+              "month": 10,
+              "day": 2
+            },
+            "mediaListEntry": {
+              "id": 593364053,
+              "status": "COMPLETED",
+              "progress": 148,
+              "score": 7
+            }
+          },
+          {
+            "id": 21087,
+            "title": {
+              "romaji": "One Punch Man",
+              "english": "One-Punch Man",
+              "native": "\u30EF\u30F3\u30D1\u30F3\u30DE\u30F3"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21087-B5DHjqZ3kW4b.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21087-B5DHjqZ3kW4b.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 83,
+            "favourites": 33408,
+            "popularity": 765263,
+            "trending": 14,
+            "startDate": {
+              "year": 2015,
+              "month": 10,
+              "day": 5
+            },
+            "mediaListEntry": {
+              "id": 593363945,
+              "status": "COMPLETED",
+              "progress": 12,
+              "score": 10
+            }
+          },
+          {
+            "id": 21,
+            "title": {
+              "romaji": "ONE PIECE",
+              "english": "ONE PIECE",
+              "native": "ONE PIECE"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21-ELSYx3yMPcKM.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21-ELSYx3yMPcKM.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 87,
+            "favourites": 110708,
+            "popularity": 748080,
+            "trending": 131,
+            "startDate": {
+              "year": 1999,
+              "month": 10,
+              "day": 20
+            },
+            "mediaListEntry": {
+              "id": 593351146,
+              "status": "CURRENT",
+              "progress": 1163,
+              "score": 8
+            }
+          },
+          {
+            "id": 20605,
+            "title": {
+              "romaji": "Tokyo Ghoul",
+              "english": "Tokyo Ghoul",
+              "native": "\u6771\u4EAC\u55B0\u7A2E \u30C8\u30FC\u30AD\u30E7\u30FC\u30B0\u30FC\u30EB"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b20605-k665mVkSug8D.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b20605-k665mVkSug8D.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 76,
+            "favourites": 27693,
+            "popularity": 737995,
+            "trending": 13,
+            "startDate": {
+              "year": 2014,
+              "month": 7,
+              "day": 4
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 20958,
+            "title": {
+              "romaji": "Shingeki no Kyojin Season 2",
+              "english": "Attack on Titan Season 2",
+              "native": "\u9032\u6483\u306E\u5DE8\u4EBA Season\uFF12"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20958-HuFJyr54Mmir.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20958-HuFJyr54Mmir.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 85,
+            "favourites": 22254,
+            "popularity": 731688,
+            "trending": 14,
+            "startDate": {
+              "year": 2017,
+              "month": 4,
+              "day": 1
+            },
+            "mediaListEntry": {
+              "id": 593364164,
+              "status": "COMPLETED",
+              "progress": 12,
+              "score": 10
+            }
+          },
+          {
+            "id": 5114,
+            "title": {
+              "romaji": "Hagane no Renkinjutsushi: FULLMETAL ALCHEMIST",
+              "english": "Fullmetal Alchemist: Brotherhood",
+              "native": "\u92FC\u306E\u932C\u91D1\u8853\u5E2B FULLMETAL ALCHEMIST"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx5114-nSWCgQlmOMtj.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx5114-nSWCgQlmOMtj.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 64,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 90,
+            "favourites": 72839,
+            "popularity": 726555,
+            "trending": 26,
+            "startDate": {
+              "year": 2009,
+              "month": 4,
+              "day": 5
+            },
+            "mediaListEntry": {
+              "id": 593364037,
+              "status": "COMPLETED",
+              "progress": 64,
+              "score": 7
+            }
+          },
+          {
+            "id": 20,
+            "title": {
+              "romaji": "NARUTO",
+              "english": "Naruto",
+              "native": "NARUTO -\u30CA\u30EB\u30C8-"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20-dE6UHbFFg1A5.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20-dE6UHbFFg1A5.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 220,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 80,
+            "favourites": 43421,
+            "popularity": 723376,
+            "trending": 30,
+            "startDate": {
+              "year": 2002,
+              "month": 10,
+              "day": 3
+            },
+            "mediaListEntry": {
+              "id": 593364026,
+              "status": "COMPLETED",
+              "progress": 220,
+              "score": 7
+            }
+          },
+          {
+            "id": 11757,
+            "title": {
+              "romaji": "Sword Art Online",
+              "english": "Sword Art Online",
+              "native": "\u30BD\u30FC\u30C9\u30A2\u30FC\u30C8\u30FB\u30AA\u30F3\u30E9\u30A4\u30F3"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx11757-SxYDUzdr9rh2.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx11757-SxYDUzdr9rh2.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 25,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 70,
+            "favourites": 27007,
+            "popularity": 717254,
+            "trending": 11,
+            "startDate": {
+              "year": 2012,
+              "month": 7,
+              "day": 8
+            },
+            "mediaListEntry": {
+              "id": 593364933,
+              "status": "CURRENT",
+              "progress": 0,
+              "score": 0
+            }
+          },
+          {
+            "id": 20954,
+            "title": {
+              "romaji": "Koe no Katachi",
+              "english": "A Silent Voice",
+              "native": "\u8072\u306E\u5F62"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20954-sYRfE5jQRtSB.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20954-sYRfE5jQRtSB.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 88,
+            "favourites": 60464,
+            "popularity": 713996,
+            "trending": 8,
+            "startDate": {
+              "year": 2016,
+              "month": 9,
+              "day": 17
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 21519,
+            "title": {
+              "romaji": "Kimi no Na wa.",
+              "english": "Your Name.",
+              "native": "\u541B\u306E\u540D\u306F\u3002"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21519-SUo3ZQuCbYhJ.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21519-SUo3ZQuCbYhJ.png"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 86,
+            "favourites": 46565,
+            "popularity": 712180,
+            "trending": 9,
+            "startDate": {
+              "year": 2016,
+              "month": 8,
+              "day": 26
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 99147,
+            "title": {
+              "romaji": "Shingeki no Kyojin Season 3",
+              "english": "Attack on Titan Season 3",
+              "native": "\u9032\u6483\u306E\u5DE8\u4EBA Season\uFF13"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx99147-AiPDD8cwlCfi.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx99147-AiPDD8cwlCfi.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 86,
+            "favourites": 22239,
+            "popularity": 684548,
+            "trending": 12,
+            "startDate": {
+              "year": 2018,
+              "month": 7,
+              "day": 23
+            },
+            "mediaListEntry": {
+              "id": 593364169,
+              "status": "COMPLETED",
+              "progress": 12,
+              "score": 10
+            }
+          },
+          {
+            "id": 21856,
+            "title": {
+              "romaji": "Boku no Hero Academia 2",
+              "english": "My Hero Academia Season 2",
+              "native": "\u50D5\u306E\u30D2\u30FC\u30ED\u30FC\u30A2\u30AB\u30C7\u30DF\u30A2\uFF12"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21856-gutauxhWAwn6.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21856-gutauxhWAwn6.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 25,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 79,
+            "favourites": 13567,
+            "popularity": 653963,
+            "trending": 2,
+            "startDate": {
+              "year": 2017,
+              "month": 4,
+              "day": 1
+            },
+            "mediaListEntry": {
+              "id": 593364202,
+              "status": "COMPLETED",
+              "progress": 25,
+              "score": 9
+            }
+          },
+          {
+            "id": 110277,
+            "title": {
+              "romaji": "Shingeki no Kyojin: The Final Season",
+              "english": "Attack on Titan Final Season",
+              "native": "\u9032\u6483\u306E\u5DE8\u4EBA The Final Season"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx110277-sKUNXAsWMNFw.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx110277-sKUNXAsWMNFw.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 16,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 87,
+            "favourites": 31026,
+            "popularity": 640954,
+            "trending": 13,
+            "startDate": {
+              "year": 2020,
+              "month": 12,
+              "day": 7
+            },
+            "mediaListEntry": {
+              "id": 593364175,
+              "status": "COMPLETED",
+              "progress": 16,
+              "score": 8
+            }
+          },
+          {
+            "id": 101759,
+            "title": {
+              "romaji": "Yakusoku no Neverland",
+              "english": "The Promised Neverland",
+              "native": "\u7D04\u675F\u306E\u30CD\u30D0\u30FC\u30E9\u30F3\u30C9"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx101759-8UR7r9MNVpz2.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101759-8UR7r9MNVpz2.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 83,
+            "favourites": 27137,
+            "popularity": 631829,
+            "trending": 4,
+            "startDate": {
+              "year": 2019,
+              "month": 1,
+              "day": 10
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 127230,
+            "title": {
+              "romaji": "Chainsaw Man",
+              "english": "Chainsaw Man",
+              "native": "\u30C1\u30A7\u30F3\u30BD\u30FC\u30DE\u30F3"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx127230-DdP4vAdssLoz.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx127230-DdP4vAdssLoz.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 83,
+            "favourites": 36202,
+            "popularity": 629859,
+            "trending": 8,
+            "startDate": {
+              "year": 2022,
+              "month": 10,
+              "day": 12
+            },
+            "mediaListEntry": {
+              "id": 593364126,
+              "status": "COMPLETED",
+              "progress": 12,
+              "score": 10
+            }
+          },
+          {
+            "id": 20755,
+            "title": {
+              "romaji": "Ansatsu Kyoushitsu",
+              "english": "Assassination Classroom",
+              "native": "\u6697\u6BBA\u6559\u5BA4"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20755-dWrhs569YGUO.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20755-dWrhs569YGUO.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 22,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 79,
+            "favourites": 22924,
+            "popularity": 626801,
+            "trending": 8,
+            "startDate": {
+              "year": 2015,
+              "month": 1,
+              "day": 10
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 21507,
+            "title": {
+              "romaji": "Mob Psycho 100",
+              "english": "Mob Psycho 100",
+              "native": "\u30E2\u30D6\u30B5\u30A4\u30B3100"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21507-6YUSbh2m0N1p.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21507-6YUSbh2m0N1p.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 84,
+            "favourites": 38058,
+            "popularity": 624590,
+            "trending": 9,
+            "startDate": {
+              "year": 2016,
+              "month": 7,
+              "day": 12
+            },
+            "mediaListEntry": {
+              "id": 593364016,
+              "status": "COMPLETED",
+              "progress": 12,
+              "score": 10
+            }
+          },
+          {
+            "id": 21355,
+            "title": {
+              "romaji": "Re:Zero kara Hajimeru Isekai Seikatsu",
+              "english": "Re:ZERO -Starting Life in Another World-",
+              "native": "Re:\u30BC\u30ED\u304B\u3089\u59CB\u3081\u308B\u7570\u4E16\u754C\u751F\u6D3B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21355-wRVUrGxpvIQQ.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21355-wRVUrGxpvIQQ.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 25,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 81,
+            "favourites": 37047,
+            "popularity": 619664,
+            "trending": 27,
+            "startDate": {
+              "year": 2016,
+              "month": 4,
+              "day": 4
+            },
+            "mediaListEntry": {
+              "id": 593363865,
+              "status": "COMPLETED",
+              "progress": 25,
+              "score": 10
+            }
+          },
+          {
+            "id": 20665,
+            "title": {
+              "romaji": "Shigatsu wa Kimi no Uso",
+              "english": "Your lie in April",
+              "native": "\u56DB\u6708\u306F\u541B\u306E\u5618"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20665-TLgkL8T8IRFd.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20665-TLgkL8T8IRFd.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 22,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 84,
+            "favourites": 36811,
+            "popularity": 611912,
+            "trending": 7,
+            "startDate": {
+              "year": 2014,
+              "month": 10,
+              "day": 10
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 104578,
+            "title": {
+              "romaji": "Shingeki no Kyojin Season 3 Part 2",
+              "english": "Attack on Titan Season 3 Part 2",
+              "native": "\u9032\u6483\u306E\u5DE8\u4EBA Season\uFF13 Part.2"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx104578-k61nx3LPjvgd.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx104578-k61nx3LPjvgd.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 10,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 90,
+            "favourites": 32222,
+            "popularity": 609314,
+            "trending": 12,
+            "startDate": {
+              "year": 2019,
+              "month": 4,
+              "day": 29
+            },
+            "mediaListEntry": {
+              "id": 593364173,
+              "status": "COMPLETED",
+              "progress": 10,
+              "score": 10
+            }
+          }
+        ]
+      }
+    }
+  }
+}

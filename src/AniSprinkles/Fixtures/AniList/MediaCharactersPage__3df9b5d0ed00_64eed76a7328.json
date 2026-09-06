@@ -1,0 +1,428 @@
+﻿{
+  "operationName": "MediaCharactersPage",
+  "variables": {
+    "id": 180367,
+    "page": 1,
+    "sort": [
+      "RELEVANCE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "64eed76a7328",
+  "recordedAt": "2026-09-06T05:20:26.7824328+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "characters": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 207345,
+                "name": {
+                  "full": "Nico Wakatsuki",
+                  "native": "\u82E5\u6708\u30CB\u30B3",
+                  "userPreferred": "Nico Wakatsuki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b207345-iXoH3SVekrw6.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b207345-iXoH3SVekrw6.png"
+                },
+                "favourites": 495
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 207344,
+                "name": {
+                  "full": "Morihito Otogi",
+                  "native": "\u4E59\u6728\u5B88\u4EC1",
+                  "userPreferred": "Morihito Otogi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b207344-2LFtu73GjZsg.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b207344-2LFtu73GjZsg.png"
+                },
+                "favourites": 259
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 233739,
+                "name": {
+                  "full": "Kanshi Kazamatsuri",
+                  "native": "\u98A8\u796D\u76E3\u5FD7",
+                  "userPreferred": "Kanshi Kazamatsuri"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b233739-KNQGNMvqGZfI.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b233739-KNQGNMvqGZfI.png"
+                },
+                "favourites": 152
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 265162,
+                "name": {
+                  "full": "Keigo Magami",
+                  "native": "\u771F\u795E\u572D\u8B77",
+                  "userPreferred": "Keigo Magami"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b265162-BkRabXvjfzWj.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b265162-BkRabXvjfzWj.png"
+                },
+                "favourites": 228
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 266627,
+                "name": {
+                  "full": "Miharu Kiryuu",
+                  "native": "\u9727\u751F\u898B\u6674",
+                  "userPreferred": "Miharu Kiryuu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b266627-d9AX0oJkxMLV.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b266627-d9AX0oJkxMLV.png"
+                },
+                "favourites": 52
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 253737,
+                "name": {
+                  "full": "Nemu Miyao",
+                  "native": "\u5BAE\u5C3E\u97F3\u5922",
+                  "userPreferred": "Nemu Miyao"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b253737-WsHYPntyvdFf.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b253737-WsHYPntyvdFf.png"
+                },
+                "favourites": 384
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 301197,
+                "name": {
+                  "full": "Wolf",
+                  "native": "\u30A6\u30EB\u30D5",
+                  "userPreferred": "Wolf"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b301197-5Hb6Hdl7I28q.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b301197-5Hb6Hdl7I28q.png"
+                },
+                "favourites": 27
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 296515,
+                "name": {
+                  "full": "Rui Fujiki",
+                  "native": "\u85E4\u6728\u7D2F",
+                  "userPreferred": "Rui Fujiki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b296515-M0qpjedJETUJ.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b296515-M0qpjedJETUJ.png"
+                },
+                "favourites": 6
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 266623,
+                "name": {
+                  "full": "Kara Minami",
+                  "native": "\u5357\u52A0\u7F85",
+                  "userPreferred": "Kara Minami"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b266623-rCPO0BRR1G2H.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b266623-rCPO0BRR1G2H.png"
+                },
+                "favourites": 43
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 296513,
+                "name": {
+                  "full": "Shiki",
+                  "native": "\u30B7\u30AD",
+                  "userPreferred": "Shiki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b296513-cegSmqkVUxp5.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b296513-cegSmqkVUxp5.png"
+                },
+                "favourites": 4
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 266624,
+                "name": {
+                  "full": "Kukumi Ureshino",
+                  "native": "\u5B09\u91CE\u4E45\u3005\u5B9F",
+                  "userPreferred": "Kukumi Ureshino"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b266624-VlAYFU9Q3DP8.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b266624-VlAYFU9Q3DP8.png"
+                },
+                "favourites": 29
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 266640,
+                "name": {
+                  "full": "Yuuri Makuwa",
+                  "native": "\u771F\u6851\u60A0\u91CC",
+                  "userPreferred": "Yuuri Makuwa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b266640-mWX66EqFKQBB.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b266640-mWX66EqFKQBB.png"
+                },
+                "favourites": 22
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 266641,
+                "name": {
+                  "full": "Tenryuu Kiyomiya",
+                  "native": "\u6E05\u5BAE\u5929\u6D41",
+                  "userPreferred": "Tenryuu Kiyomiya"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b266641-CxaHB71iNAq4.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b266641-CxaHB71iNAq4.png"
+                },
+                "favourites": 13
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 266642,
+                "name": {
+                  "full": "Ibara Ibu",
+                  "native": "\u4F0A\u6B66\u834A",
+                  "userPreferred": "Ibara Ibu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b266642-erJ3Trwa31HV.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b266642-erJ3Trwa31HV.png"
+                },
+                "favourites": 6
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 266643,
+                "name": {
+                  "full": "Yuzuru Kenmochi",
+                  "native": "\u5263\u6301\u5F13\u5F26",
+                  "userPreferred": "Yuzuru Kenmochi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b266643-H1a34tN2SWlV.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b266643-H1a34tN2SWlV.png"
+                },
+                "favourites": 1
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 266644,
+                "name": {
+                  "full": "Syrup Amai",
+                  "native": "\u5929\u4E95\u30B7\u30ED\u30C3\u30D7",
+                  "userPreferred": "Syrup Amai"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b266644-gHM739uS2kd2.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b266644-gHM739uS2kd2.png"
+                },
+                "favourites": 6
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 266645,
+                "name": {
+                  "full": "Kuromitsu Amai",
+                  "native": "\u7518\u4E95\u9ED2\u871C",
+                  "userPreferred": "Kuromitsu Amai"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b266645-OodsNPR0Ofd6.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b266645-OodsNPR0Ofd6.png"
+                },
+                "favourites": 4
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 266646,
+                "name": {
+                  "full": "Riro Takumi",
+                  "native": "\u5DE5\u7406\u8DEF",
+                  "userPreferred": "Riro Takumi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b266646-4jsWui8w8jRe.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b266646-4jsWui8w8jRe.png"
+                },
+                "favourites": 1
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 266648,
+                "name": {
+                  "full": "Burst",
+                  "native": "\u30D0\u30FC\u30B9\u30C8",
+                  "userPreferred": "Burst"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b266648-ddklujKBhYSb.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b266648-ddklujKBhYSb.png"
+                },
+                "favourites": 2
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 266649,
+                "name": {
+                  "full": "Kyouki Saiko",
+                  "native": "\u897F\u53E4\u51F6\u5947",
+                  "userPreferred": "Kyouki Saiko"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b266649-WM8UaZCdhHT0.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b266649-WM8UaZCdhHT0.png"
+                },
+                "favourites": 1
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 266650,
+                "name": {
+                  "full": "Sakai Daiki Mk. II",
+                  "native": "\u9152\u4E95\u5927\u6A39\u30DE\u30FC\u30AF\u2161",
+                  "userPreferred": "Sakai Daiki Mk. II"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b266650-u3SKzEJ2oVA2.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b266650-u3SKzEJ2oVA2.png"
+                },
+                "favourites": 0
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 266651,
+                "name": {
+                  "full": "Ibuki Wakatsuki",
+                  "native": "\u82E5\u6708\u4F0A\u5439",
+                  "userPreferred": "Ibuki Wakatsuki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b266651-5aQ12dJohPjz.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b266651-5aQ12dJohPjz.png"
+                },
+                "favourites": 3
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 266630,
+                "name": {
+                  "full": "Reiji Otogi",
+                  "native": "\u4E59\u6728\u5DBA\u4EC1",
+                  "userPreferred": "Reiji Otogi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b266630-IBY5VsWphKRE.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b266630-IBY5VsWphKRE.png"
+                },
+                "favourites": 3
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 301218,
+                "name": {
+                  "full": "Arimoto Mugen Shishuu",
+                  "native": "\u6709\u5143\u5922\u73FE\u8A69\u96C6",
+                  "userPreferred": "Arimoto Mugen Shishuu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b301218-pzBpp6fF5Kcd.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b301218-pzBpp6fF5Kcd.png"
+                },
+                "favourites": 0
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 266652,
+                "name": {
+                  "full": "Kowashi Hara",
+                  "native": "\u539F\u6BC5",
+                  "userPreferred": "Kowashi Hara"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b266652-kiE62FhQcrHS.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b266652-kiE62FhQcrHS.png"
+                },
+                "favourites": 0
+              },
+              "role": "SUPPORTING"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

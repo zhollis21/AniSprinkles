@@ -1,0 +1,466 @@
+﻿{
+  "operationName": "Media",
+  "variables": {
+    "id": 209939
+  },
+  "queryFingerprint": "f5fa5560c46c",
+  "recordedAt": "2026-09-06T05:19:20.7677776+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "id": 209939,
+        "idMal": 63816,
+        "title": {
+          "romaji": "Sousou no Frieren 3rd Season",
+          "english": null,
+          "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \u7B2C3\u671F"
+        },
+        "coverImage": {
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx209939-g2Njkml1rheG.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209939-g2Njkml1rheG.jpg",
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx209939-g2Njkml1rheG.jpg",
+          "color": "#f1e4c9"
+        },
+        "bannerImage": null,
+        "description": "The third season of \u003Ci\u003ESousou no Frieren\u003C/i\u003E.",
+        "format": "TV",
+        "type": "ANIME",
+        "status": "NOT_YET_RELEASED",
+        "episodes": null,
+        "chapters": null,
+        "volumes": null,
+        "duration": null,
+        "season": "FALL",
+        "seasonYear": 2027,
+        "source": "MANGA",
+        "countryOfOrigin": "JP",
+        "isAdult": false,
+        "isLicensed": true,
+        "siteUrl": "https://anilist.co/anime/209939",
+        "hashtag": "#\u30D5\u30EA\u30FC\u30EC\u30F3 #frieren",
+        "startDate": {
+          "year": 2027,
+          "month": 10,
+          "day": null
+        },
+        "endDate": {
+          "year": null,
+          "month": null,
+          "day": null
+        },
+        "nextAiringEpisode": null,
+        "trailer": null,
+        "synonyms": [
+          "Frieren: Beyond Journey\u2019s End Season 3 Golden Land Arc",
+          "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \u7B2C3\u671F\u3010\u9EC4\u91D1\u90F7\u7DE8\u3011",
+          "Sousou no Frieren 3rd Season [Ougonkyou-hen]"
+        ],
+        "genres": [
+          "Adventure",
+          "Drama",
+          "Fantasy"
+        ],
+        "averageScore": null,
+        "meanScore": null,
+        "popularity": 42207,
+        "favourites": 458,
+        "isFavourite": false,
+        "trending": 2,
+        "tags": [
+          {
+            "id": 29,
+            "name": "Magic",
+            "rank": 100,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features magical elements or the use of magic.",
+            "category": "Theme-Fantasy"
+          },
+          {
+            "id": 98,
+            "name": "Female Protagonist",
+            "rank": 96,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Main character is female.",
+            "category": "Cast-Main Cast"
+          },
+          {
+            "id": 1310,
+            "name": "Travel",
+            "rank": 79,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Centers around character(s) moving between places a significant distance apart.",
+            "category": "Theme-Other"
+          },
+          {
+            "id": 598,
+            "name": "Elf",
+            "rank": 79,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features a character who is an elf.",
+            "category": "Cast-Traits"
+          },
+          {
+            "id": 15,
+            "name": "Demons",
+            "rank": 73,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features malevolent otherworldly creatures.",
+            "category": "Cast-Traits"
+          },
+          {
+            "id": 1752,
+            "name": "Medieval",
+            "rank": 66,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Partially or completely set in the Middle Ages or a Middle Ages-inspired setting. Commonly features elements such as European castles and knights.",
+            "category": "Setting-Time"
+          },
+          {
+            "id": 391,
+            "name": "Philosophy",
+            "rank": 60,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Relating or devoted to the study of the fundamental nature of knowledge, reality, and existence.",
+            "category": "Theme-Other"
+          },
+          {
+            "id": 56,
+            "name": "Shounen",
+            "rank": 60,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Target demographic is teenage and young adult males.",
+            "category": "Demographic"
+          },
+          {
+            "id": 43,
+            "name": "Swordplay",
+            "rank": 60,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features the use of swords in combat.",
+            "category": "Theme-Action"
+          },
+          {
+            "id": 1045,
+            "name": "Heterosexual",
+            "rank": 36,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features a romance between a man and a woman, not inherently sexual.",
+            "category": "Theme-Romance"
+          },
+          {
+            "id": 153,
+            "name": "Time Skip",
+            "rank": 33,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": true,
+            "isAdult": false,
+            "description": "Features a gap in time used to advance the story.",
+            "category": "Setting-Time"
+          },
+          {
+            "id": 1277,
+            "name": "Found Family",
+            "rank": 20,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Features a group of characters with no biological relations that are united in a group providing social support.",
+            "category": "Theme-Other"
+          }
+        ],
+        "studios": {
+          "edges": [
+            {
+              "isMain": false,
+              "node": {
+                "id": 245,
+                "name": "Toho",
+                "isAnimationStudio": false,
+                "favourites": 483
+              }
+            },
+            {
+              "isMain": true,
+              "node": {
+                "id": 11,
+                "name": "MADHOUSE",
+                "isAnimationStudio": true,
+                "favourites": 20425
+              }
+            }
+          ]
+        },
+        "rankings": [
+          {
+            "rank": 3,
+            "type": "POPULAR",
+            "format": "TV",
+            "year": 2027,
+            "season": null,
+            "allTime": false,
+            "context": "most popular"
+          },
+          {
+            "rank": 1,
+            "type": "POPULAR",
+            "format": "TV",
+            "year": 2027,
+            "season": "FALL",
+            "allTime": false,
+            "context": "most popular"
+          }
+        ],
+        "externalLinks": [
+          {
+            "id": 153631,
+            "url": "https://frieren-anime.jp/",
+            "site": "Official Site",
+            "type": "INFO",
+            "language": "Japanese",
+            "color": null,
+            "isDisabled": false
+          },
+          {
+            "id": 153632,
+            "url": "https://x.com/Anime_Frieren",
+            "site": "Twitter",
+            "type": "SOCIAL",
+            "language": "Japanese",
+            "color": "#000000",
+            "isDisabled": false
+          },
+          {
+            "id": 153639,
+            "url": "https://www.tiktok.com/@anime_frieren",
+            "site": "TikTok",
+            "type": "SOCIAL",
+            "language": "Japanese",
+            "color": "#010101",
+            "isDisabled": false
+          }
+        ],
+        "relations": {
+          "edges": [
+            {
+              "relationType": "PREQUEL",
+              "node": {
+                "id": 182255,
+                "title": {
+                  "romaji": "Sousou no Frieren 2nd Season",
+                  "english": "Frieren: Beyond Journey\u2019s End Season 2",
+                  "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \u7B2C2\u671F"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx182255-butzrqd4I0aC.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx182255-butzrqd4I0aC.jpg"
+                },
+                "startDate": {
+                  "year": 2026,
+                  "month": 1,
+                  "day": 16
+                },
+                "mediaListEntry": {
+                  "id": 540973986,
+                  "status": "COMPLETED",
+                  "progress": 10,
+                  "score": 9
+                }
+              }
+            },
+            {
+              "relationType": "SOURCE",
+              "node": {
+                "id": 118586,
+                "title": {
+                  "romaji": "Sousou no Frieren",
+                  "english": "Frieren: Beyond Journey\u2019s End",
+                  "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "RELEASING",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx118586-CXKgWikBFQgS.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx118586-CXKgWikBFQgS.jpg"
+                },
+                "startDate": {
+                  "year": 2020,
+                  "month": 4,
+                  "day": 28
+                },
+                "mediaListEntry": null
+              }
+            }
+          ]
+        },
+        "characters": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 300778,
+                "name": {
+                  "full": "Macht",
+                  "native": "\u30DE\u30CF\u30C8",
+                  "userPreferred": "Macht"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b300778-kvoUHowLjexj.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b300778-kvoUHowLjexj.png"
+                },
+                "favourites": 283
+              },
+              "role": "SUPPORTING",
+              "voiceActors": []
+            }
+          ]
+        },
+        "recommendations": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "nodes": []
+        },
+        "stats": {
+          "scoreDistribution": [
+            {
+              "score": 10,
+              "amount": 5
+            },
+            {
+              "score": 30,
+              "amount": 1
+            },
+            {
+              "score": 40,
+              "amount": 1
+            },
+            {
+              "score": 50,
+              "amount": 2
+            },
+            {
+              "score": 60,
+              "amount": 7
+            },
+            {
+              "score": 70,
+              "amount": 5
+            },
+            {
+              "score": 80,
+              "amount": 18
+            },
+            {
+              "score": 90,
+              "amount": 97
+            },
+            {
+              "score": 100,
+              "amount": 159
+            }
+          ],
+          "statusDistribution": [
+            {
+              "status": "CURRENT",
+              "amount": 1131
+            },
+            {
+              "status": "PLANNING",
+              "amount": 40596
+            },
+            {
+              "status": "COMPLETED",
+              "amount": 135
+            },
+            {
+              "status": "DROPPED",
+              "amount": 40
+            },
+            {
+              "status": "PAUSED",
+              "amount": 305
+            }
+          ]
+        },
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 122202,
+                "name": {
+                  "full": "Kanehito Yamada",
+                  "native": "\u5C71\u7530\u9418\u4EBA",
+                  "userPreferred": "Kanehito Yamada"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n122202-lxoDudr9vaul.jpg"
+                },
+                "favourites": 315
+              },
+              "role": "Original Story"
+            },
+            {
+              "node": {
+                "id": 170189,
+                "name": {
+                  "full": "Tsukasa Abe",
+                  "native": "\u30A2\u30D9\u30C4\u30AB\u30B5",
+                  "userPreferred": "Tsukasa Abe"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n170189-HOqnSDEYpFKZ.jpg"
+                },
+                "favourites": 162
+              },
+              "role": "Original Character Design"
+            }
+          ]
+        },
+        "mediaListEntry": {
+          "id": 548900753,
+          "mediaId": 209939,
+          "status": "PLANNING",
+          "progress": 0,
+          "score": 0,
+          "repeat": 0,
+          "notes": null,
+          "private": false,
+          "hiddenFromStatusLists": false,
+          "updatedAt": 1788671589
+        }
+      }
+    }
+  }
+}

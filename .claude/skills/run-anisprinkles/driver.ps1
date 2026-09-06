@@ -337,7 +337,8 @@ function Cmd-Boot {
 }
 
 function Cmd-Build {
-    # CiBuild=true swaps in CIAuthService / CIAniListClient / CIAiringNotificationService,
+    # CiBuild=true swaps in CIAuthService / CIAiringNotificationService and replays recorded
+    # AniList responses at the HTTP layer (#134),
     # so the app launches already "signed in" with fixture data. No OAuth, no AniList calls,
     # no rate-limit budget spent. EmbedAssembliesIntoApk makes the APK self-contained.
     Say 'dotnet build (Debug, CI stubs)'

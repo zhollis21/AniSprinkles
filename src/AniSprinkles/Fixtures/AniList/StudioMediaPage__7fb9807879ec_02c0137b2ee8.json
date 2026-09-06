@@ -1,0 +1,628 @@
+﻿{
+  "operationName": "StudioMediaPage",
+  "variables": {
+    "id": 6161,
+    "page": 3,
+    "sort": [
+      "POPULARITY_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "02c0137b2ee8",
+  "recordedAt": "2026-09-06T05:32:58.3018614+00:00",
+  "response": {
+    "data": {
+      "Studio": {
+        "media": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 3
+          },
+          "nodes": [
+            {
+              "id": 131264,
+              "title": {
+                "romaji": "Hanyou no Yashahime: Ni no Shou",
+                "english": "Yashahime: Princess Half-Demon - The Second Act",
+                "native": "\u534A\u5996\u306E\u591C\u53C9\u59EB \u5F10\u306E\u7AE0"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx131264-rN2hTY0vEGOa.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx131264-rN2hTY0vEGOa.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 69,
+              "favourites": 245,
+              "popularity": 13773,
+              "startDate": {
+                "year": 2021,
+                "month": 10,
+                "day": 2
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 184989,
+              "title": {
+                "romaji": "Nazotoki wa Dinner no Ato de",
+                "english": "The Dinner Table Detective",
+                "native": "\u8B0E\u89E3\u304D\u306F\u30C7\u30A3\u30CA\u30FC\u306E\u3042\u3068\u3067"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx184989-UaWWbrRn2vWV.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx184989-UaWWbrRn2vWV.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 61,
+              "favourites": 114,
+              "popularity": 13723,
+              "startDate": {
+                "year": 2025,
+                "month": 4,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 238,
+              "title": {
+                "romaji": "Rekka no Honoo",
+                "english": "Flame of Recca",
+                "native": "\u70C8\u706B\u306E\u708E"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx238-2PeuP9kvnHVe.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx238-2PeuP9kvnHVe.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 69,
+              "favourites": 189,
+              "popularity": 13382,
+              "startDate": {
+                "year": 1997,
+                "month": 7,
+                "day": 19
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1367,
+              "title": {
+                "romaji": "Meitantei Conan: Ginyoku no Magician",
+                "english": "Detective Conan: Magician of the Silver Sky",
+                "native": "\u540D\u63A2\u5075\u30B3\u30CA\u30F3 \u9280\u7FFC\u306E\u5947\u8853\u5E2B[\u30DE\u30B8\u30B7\u30E3\u30F3]"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1367-cJLBjSfqBmRY.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1367-cJLBjSfqBmRY.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 132,
+              "popularity": 12904,
+              "startDate": {
+                "year": 2004,
+                "month": 4,
+                "day": 17
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 213457,
+              "title": {
+                "romaji": "Fool Night",
+                "english": "Fool Night",
+                "native": "\u30D5\u30FC\u30EB\u30CA\u30A4\u30C8"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx213457-gN5p1GZjK3zi.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213457-gN5p1GZjK3zi.jpg"
+              },
+              "format": "ONA",
+              "type": "ANIME",
+              "status": "NOT_YET_RELEASED",
+              "averageScore": null,
+              "favourites": 82,
+              "popularity": 12373,
+              "startDate": {
+                "year": 2026,
+                "month": 11,
+                "day": 26
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 12117,
+              "title": {
+                "romaji": "Meitantei Conan: 11 Nin-me no Striker",
+                "english": "Detective Conan: The Eleventh Striker",
+                "native": "\u5287\u5834\u7248\u3000\u540D\u63A2\u5075\u30B3\u30CA\u30F3\u300011\u4EBA\u76EE\u306E\u30B9\u30C8\u30E9\u30A4\u30AB\u30FC"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx12117-wCtSIeqrMhTZ.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx12117-wCtSIeqrMhTZ.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 75,
+              "favourites": 108,
+              "popularity": 11261,
+              "startDate": {
+                "year": 2012,
+                "month": 4,
+                "day": 14
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 184034,
+              "title": {
+                "romaji": "Hotel Inhumans",
+                "english": "Hotel Inhumans",
+                "native": "\u30DB\u30C6\u30EB\u30FB\u30A4\u30F3\u30D2\u30E5\u30FC\u30DE\u30F3\u30BA"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx184034-gjIi5TIHJpZv.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx184034-gjIi5TIHJpZv.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 64,
+              "favourites": 105,
+              "popularity": 11187,
+              "startDate": {
+                "year": 2025,
+                "month": 7,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 21470,
+              "title": {
+                "romaji": "Meitantei Conan: Junkoku no Nightmare",
+                "english": "Detective Conan: The Darkest Nightmare",
+                "native": "\u540D\u63A2\u5075\u30B3\u30CA\u30F3 \u7D14\u9ED2\u306E\u60AA\u5922(\u30CA\u30A4\u30C8\u30E1\u30A2)"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21470-huY2vyX3Ej2z.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21470-huY2vyX3Ej2z.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 79,
+              "favourites": 165,
+              "popularity": 10792,
+              "startDate": {
+                "year": 2016,
+                "month": 4,
+                "day": 16
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 188525,
+              "title": {
+                "romaji": "Kore Kaite Shine",
+                "english": "Draw This, Then Die!",
+                "native": "\u3053\u308C\u63CF\u3044\u3066\u6B7B\u306D"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx188525-uWhw4rQcqOyF.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx188525-uWhw4rQcqOyF.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "RELEASING",
+              "averageScore": 77,
+              "favourites": 137,
+              "popularity": 10725,
+              "startDate": {
+                "year": 2026,
+                "month": 7,
+                "day": 3
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 21646,
+              "title": {
+                "romaji": "Meitantei Conan: Gouka no Himawari",
+                "english": "Detective Conan: Sunflowers of Inferno",
+                "native": "\u6620\u753B \u540D\u63A2\u5075\u30B3\u30CA\u30F3 \u696D\u706B\u306E\u5411\u65E5\u8475"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21646-N6cVkCIx9KsP.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21646-N6cVkCIx9KsP.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 75,
+              "favourites": 126,
+              "popularity": 10713,
+              "startDate": {
+                "year": 2015,
+                "month": 4,
+                "day": 18
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 16982,
+              "title": {
+                "romaji": "Hayate no Gotoku!: Cuties",
+                "english": "Hayate the Combat Butler: Cuties",
+                "native": "\u30CF\u30E4\u30C6\u306E\u3054\u3068\u304F\uFF01 Cuties"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx16982-ZCoj55IoGd6Q.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx16982-ZCoj55IoGd6Q.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 67,
+              "favourites": 56,
+              "popularity": 10284,
+              "startDate": {
+                "year": 2013,
+                "month": 4,
+                "day": 9
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 106206,
+              "title": {
+                "romaji": "Meitantei Conan: Konjou no Fist",
+                "english": "Detective Conan: The Fist of Blue Sapphire",
+                "native": "\u540D\u63A2\u5075\u30B3\u30CA\u30F3 \u7D3A\u9752\u306E\u62F3\uFF08\u30D5\u30A3\u30B9\u30C8\uFF09"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx106206-OPpExaXYKUAD.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx106206-OPpExaXYKUAD.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 77,
+              "favourites": 183,
+              "popularity": 9888,
+              "startDate": {
+                "year": 2019,
+                "month": 4,
+                "day": 12
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 100653,
+              "title": {
+                "romaji": "Meitantei Conan: Zero no Shikkounin",
+                "english": "Detective Conan: Zero the Enforcer",
+                "native": "\u540D\u63A2\u5075\u30B3\u30CA\u30F3 \u30BC\u30ED\u306E\u57F7\u884C\u4EBA"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx100653-keuPmvVKDkhx.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx100653-keuPmvVKDkhx.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 77,
+              "favourites": 130,
+              "popularity": 9714,
+              "startDate": {
+                "year": 2018,
+                "month": 4,
+                "day": 14
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 6115,
+              "title": {
+                "romaji": "Lupin III vs Meitantei Conan",
+                "english": "Lupin the 3rd Vs Detective Conan",
+                "native": "\u30EB\u30D1\u30F3\u4E09\u4E16 vs \u540D\u63A2\u5075\u30B3\u30CA\u30F3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/6115.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/6115.jpg"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 75,
+              "favourites": 111,
+              "popularity": 9561,
+              "startDate": {
+                "year": 2009,
+                "month": 3,
+                "day": 27
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 209872,
+              "title": {
+                "romaji": "Ranma 1/2 (2024) 3rd Season",
+                "english": "Ranma1/2 (2024) Season 3",
+                "native": "\u3089\u3093\u307E1/2 (2024) \u7B2C3\u671F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx209872-RBeVPqwejHFp.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209872-RBeVPqwejHFp.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "NOT_YET_RELEASED",
+              "averageScore": null,
+              "favourites": 69,
+              "popularity": 9322,
+              "startDate": {
+                "year": 2026,
+                "month": 10,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 18429,
+              "title": {
+                "romaji": "Lupin III vs. Meitantei Conan: THE MOVIE",
+                "english": "Lupin the 3rd Vs Detective Conan: The Movie",
+                "native": "\u30EB\u30D1\u30F3\u4E09\u4E16vs.\u540D\u63A2\u5075\u30B3\u30CA\u30F3 THE MOVIE"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx18429-vJz2zjLRRve8.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx18429-vJz2zjLRRve8.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 76,
+              "favourites": 109,
+              "popularity": 8744,
+              "startDate": {
+                "year": 2013,
+                "month": 12,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 113653,
+              "title": {
+                "romaji": "Meitantei Conan: Hiiro no Dangan",
+                "english": "Detective Conan: The Scarlet Bullet",
+                "native": "\u540D\u63A2\u5075\u30B3\u30CA\u30F3 \u7DCB\u8272\u306E\u5F3E\u4E38"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx113653-HY0suLnhIlA6.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx113653-HY0suLnhIlA6.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 77,
+              "favourites": 161,
+              "popularity": 8290,
+              "startDate": {
+                "year": 2021,
+                "month": 4,
+                "day": 16
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1760,
+              "title": {
+                "romaji": "Golgo 13",
+                "english": "Golgo 13: The Professional",
+                "native": "\u30B4\u30EB\u30B413"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b1760-PmH18u0MQNPB.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b1760-PmH18u0MQNPB.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 66,
+              "favourites": 119,
+              "popularity": 7537,
+              "startDate": {
+                "year": 1983,
+                "month": 5,
+                "day": 28
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 151300,
+              "title": {
+                "romaji": "Kin no Kuni Mizu no Kuni",
+                "english": "Gold Kingdom and Water Kingdom",
+                "native": "\u91D1\u306E\u56FD\u6C34\u306E\u56FD"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx151300-wC5RkQoMYJ1e.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx151300-wC5RkQoMYJ1e.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 72,
+              "favourites": 69,
+              "popularity": 7134,
+              "startDate": {
+                "year": 2023,
+                "month": 1,
+                "day": 27
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 98604,
+              "title": {
+                "romaji": "Meitantei Conan: Episode \u0022ONE\u0022 - Chiisakunatta Meitantei",
+                "english": "Detective Conan: Episode \u0022ONE\u0022",
+                "native": "\u540D\u63A2\u5075\u30B3\u30CA\u30F3 \u30A8\u30D4\u30BD\u30FC\u30C9\u0022ONE\u0022 \u5C0F\u3055\u304F\u306A\u3063\u305F\u540D\u63A2\u5075"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx98604-rf0L8MoJ8FJB.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx98604-rf0L8MoJ8FJB.jpg"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 81,
+              "favourites": 120,
+              "popularity": 7106,
+              "startDate": {
+                "year": 2016,
+                "month": 12,
+                "day": 9
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 156841,
+              "title": {
+                "romaji": "Meitantei Conan: Kurogane no Submarine",
+                "english": "Detective Conan: Black Iron Submarine",
+                "native": "\u540D\u63A2\u5075\u30B3\u30CA\u30F3 \u9ED2\u9244\u306E\u9B5A\u5F71"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx156841-eCdzTqfaqNb7.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx156841-eCdzTqfaqNb7.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 82,
+              "favourites": 239,
+              "popularity": 7075,
+              "startDate": {
+                "year": 2023,
+                "month": 4,
+                "day": 14
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 142219,
+              "title": {
+                "romaji": "Meitantei Conan: Halloween no Hanayome",
+                "english": "Detective Conan: The Bride of Halloween",
+                "native": "\u540D\u63A2\u5075\u30B3\u30CA\u30F3 \u30CF\u30ED\u30A6\u30A3\u30F3\u306E\u82B1\u5AC1"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx142219-Nu9bWFhIKn0q.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx142219-Nu9bWFhIKn0q.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 80,
+              "favourites": 142,
+              "popularity": 6844,
+              "startDate": {
+                "year": 2022,
+                "month": 4,
+                "day": 15
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 164440,
+              "title": {
+                "romaji": "Ooi! Tonbo",
+                "english": "Tonbo!",
+                "native": "\u30AA\u30FC\u30A4! \u3068\u3093\u307C"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx164440-VXOPw3qxGzdz.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx164440-VXOPw3qxGzdz.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 67,
+              "favourites": 65,
+              "popularity": 6157,
+              "startDate": {
+                "year": 2024,
+                "month": 4,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 140005,
+              "title": {
+                "romaji": "Meitantei Conan: Hannin no Hanzawa-san",
+                "english": "Detective Conan: The Culprit Hanzawa",
+                "native": "\u540D\u63A2\u5075\u30B3\u30CA\u30F3 \u72AF\u4EBA\u306E\u72AF\u6CA2\u3055\u3093"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx140005-BMmsl94sUPsw.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx140005-BMmsl94sUPsw.jpg"
+              },
+              "format": "TV_SHORT",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 69,
+              "favourites": 72,
+              "popularity": 5765,
+              "startDate": {
+                "year": 2022,
+                "month": 10,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 140002,
+              "title": {
+                "romaji": "Meitantei Conan: Zero no Tea Time",
+                "english": "Detective Conan: Zero\u0027s Tea Time",
+                "native": "\u540D\u63A2\u5075\u30B3\u30CA\u30F3 \u30BC\u30ED\u306E\u65E5\u5E38\uFF08\u30C6\u30A3\u30FC\u30BF\u30A4\u30E0\uFF09"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx140002-zbEoTkcXifOa.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx140002-zbEoTkcXifOa.jpg"
+              },
+              "format": "ONA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 69,
+              "favourites": 84,
+              "popularity": 5554,
+              "startDate": {
+                "year": 2022,
+                "month": 4,
+                "day": 5
+              },
+              "mediaListEntry": null
+            }
+          ]
+        }
+      }
+    }
+  }
+}

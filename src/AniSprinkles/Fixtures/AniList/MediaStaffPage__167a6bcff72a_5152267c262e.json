@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 154587,
+    "page": 1,
+    "sort": [
+      "RELEVANCE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:21:07.1080436+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 122202,
+                "name": {
+                  "full": "Kanehito Yamada",
+                  "native": "\u5C71\u7530\u9418\u4EBA",
+                  "userPreferred": "Kanehito Yamada"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n122202-lxoDudr9vaul.jpg"
+                },
+                "favourites": 315
+              },
+              "role": "Original Story"
+            },
+            {
+              "node": {
+                "id": 170189,
+                "name": {
+                  "full": "Tsukasa Abe",
+                  "native": "\u30A2\u30D9\u30C4\u30AB\u30B5",
+                  "userPreferred": "Tsukasa Abe"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n170189-HOqnSDEYpFKZ.jpg"
+                },
+                "favourites": 162
+              },
+              "role": "Original Character Design"
+            },
+            {
+              "node": {
+                "id": 134254,
+                "name": {
+                  "full": "Keiichirou Saitou",
+                  "native": "\u658E\u85E4\u572D\u4E00\u90CE",
+                  "userPreferred": "Keiichirou Saitou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n134254-bqcsuWzJr87n.png"
+                },
+                "favourites": 1326
+              },
+              "role": "Director"
+            },
+            {
+              "node": {
+                "id": 119119,
+                "name": {
+                  "full": "Tomohiro Suzuki",
+                  "native": "\u9234\u6728\u667A\u5C0B",
+                  "userPreferred": "Tomohiro Suzuki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n119119-VrfR5lH1CdYC.png"
+                },
+                "favourites": 20
+              },
+              "role": "Series Composition"
+            },
+            {
+              "node": {
+                "id": 131949,
+                "name": {
+                  "full": "Tooru Iwazawa",
+                  "native": "\u5CA9\u6FA4\u4EA8",
+                  "userPreferred": "Tooru Iwazawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n131949-cxKnoMZWKriL.png"
+                },
+                "favourites": 53
+              },
+              "role": "Action Director"
+            },
+            {
+              "node": {
+                "id": 140343,
+                "name": {
+                  "full": "Reiko Nagasawa",
+                  "native": "\u9577\u6FA4\u793C\u5B50",
+                  "userPreferred": "Reiko Nagasawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n140343-fJeQWHEGGWBw.png"
+                },
+                "favourites": 35
+              },
+              "role": "Character Design"
+            },
+            {
+              "node": {
+                "id": 301998,
+                "name": {
+                  "full": "Hironobu Yoshinaka",
+                  "native": "\u82B3\u4EF2\u5B8F\u66A2",
+                  "userPreferred": "Hironobu Yoshinaka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n301998-3229lHv9WaOD.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Original Work Assistance"
+            },
+            {
+              "node": {
+                "id": 251859,
+                "name": {
+                  "full": "Katsumasa Ogura",
+                  "native": "\u5C0F\u5009\u529F\u96C5",
+                  "userPreferred": "Katsumasa Ogura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n251859-mHnJTN94buyV.png"
+                },
+                "favourites": 4
+              },
+              "role": "Original Work Assistance"
+            },
+            {
+              "node": {
+                "id": 225507,
+                "name": {
+                  "full": "Kazunori Ooshima",
+                  "native": "\u5927\u5D8B\u4E00\u7BC4",
+                  "userPreferred": "Kazunori Ooshima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n225507-GuvkyspimbKw.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Original Work Assistance"
+            },
+            {
+              "node": {
+                "id": 315812,
+                "name": {
+                  "full": "Masato Ishizawa",
+                  "native": "\u77F3\u6CA2\u5C06\u4EBA",
+                  "userPreferred": "Masato Ishizawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Title Logo Design"
+            },
+            {
+              "node": {
+                "id": 122660,
+                "name": {
+                  "full": "Akiko Takase",
+                  "native": "\u9AD8\u702C\u4E9C\u8CB4\u5B50",
+                  "userPreferred": "Akiko Takase"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n122660-pf3cXCTfaAyi.jpg"
+                },
+                "favourites": 112
+              },
+              "role": "Design Works"
+            },
+            {
+              "node": {
+                "id": 132969,
+                "name": {
+                  "full": "Ran Kamezawa",
+                  "native": "\u4E80\u6FA4\u862D",
+                  "userPreferred": "Ran Kamezawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "Design Works"
+            },
+            {
+              "node": {
+                "id": 133157,
+                "name": {
+                  "full": "Keita Nagasaka",
+                  "native": "\u9577\u5742\u6176\u592A",
+                  "userPreferred": "Keita Nagasaka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 5
+              },
+              "role": "Design Works"
+            },
+            {
+              "node": {
+                "id": 157067,
+                "name": {
+                  "full": "Emi Yamazaki",
+                  "native": "\u5C71\u5D0E\u7D75\u7F8E",
+                  "userPreferred": "Emi Yamazaki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Design Works"
+            },
+            {
+              "node": {
+                "id": 157367,
+                "name": {
+                  "full": "Ayaka Minoshima",
+                  "native": "\u84D1\u5CF6\u611B\u9999",
+                  "userPreferred": "Ayaka Minoshima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n157367-73V429nOJsJ2.png"
+                },
+                "favourites": 6
+              },
+              "role": "Design Works"
+            },
+            {
+              "node": {
+                "id": 192251,
+                "name": {
+                  "full": "Yoshiko Matsumura",
+                  "native": "\u677E\u6751\u4F73\u5B50",
+                  "userPreferred": "Yoshiko Matsumura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Design Works"
+            },
+            {
+              "node": {
+                "id": 118415,
+                "name": {
+                  "full": "Mai Toda",
+                  "native": "\u6238\u7530\u9EBB\u8863",
+                  "userPreferred": "Mai Toda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n118415-iHxJPiVPsAez.jpg"
+                },
+                "favourites": 13
+              },
+              "role": "Design Works"
+            },
+            {
+              "node": {
+                "id": 112991,
+                "name": {
+                  "full": "Sawako Takagi",
+                  "native": "\u9AD8\u6728\u4F50\u548C\u5B50",
+                  "userPreferred": "Sawako Takagi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 4
+              },
+              "role": "Art Director"
+            },
+            {
+              "node": {
+                "id": 131244,
+                "name": {
+                  "full": "Shinji Sugiyama",
+                  "native": "\u6749\u5C71\u664B\u53F2",
+                  "userPreferred": "Shinji Sugiyama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "Art Design"
+            },
+            {
+              "node": {
+                "id": 127377,
+                "name": {
+                  "full": "Seiko Yoshioka",
+                  "native": "\u5409\u5CA1\u8AA0\u5B50",
+                  "userPreferred": "Seiko Yoshioka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n127377-rXdGO7Rzm3RE.png"
+                },
+                "favourites": 32
+              },
+              "role": "Concept Art"
+            },
+            {
+              "node": {
+                "id": 142139,
+                "name": {
+                  "full": "Harue Oono",
+                  "native": "\u5927\u91CE\u6625\u6075",
+                  "userPreferred": "Harue Oono"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n142139-KGUe9JrPocMU.jpg"
+                },
+                "favourites": 4
+              },
+              "role": "Color Design"
+            },
+            {
+              "node": {
+                "id": 135989,
+                "name": {
+                  "full": "Akane Fushihara",
+                  "native": "\u4F0F\u539F\u3042\u304B\u306D",
+                  "userPreferred": "Akane Fushihara"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n135989-t3fUPUxOO3aa.png"
+                },
+                "favourites": 32
+              },
+              "role": "Director of Photography"
+            },
+            {
+              "node": {
+                "id": 189204,
+                "name": {
+                  "full": "Mutsuki Tsugioka",
+                  "native": "\u7D99\u5CA1\u5922\u6708",
+                  "userPreferred": "Mutsuki Tsugioka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "Assistant Director of Photography"
+            },
+            {
+              "node": {
+                "id": 134282,
+                "name": {
+                  "full": "Kashiko Kimura",
+                  "native": "\u6728\u6751\u4F73\u53F2\u5B50",
+                  "userPreferred": "Kashiko Kimura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n134282-Fz4etuxqYA9e.png"
+                },
+                "favourites": 13
+              },
+              "role": "Editing"
+            },
+            {
+              "node": {
+                "id": 147840,
+                "name": {
+                  "full": "Shigenori Hirozumi",
+                  "native": "\u5EE3\u4F4F\u8302\u5FB3",
+                  "userPreferred": "Shigenori Hirozumi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n147840-tqqGGiuPn3t7.png"
+                },
+                "favourites": 1
+              },
+              "role": "CG Director"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

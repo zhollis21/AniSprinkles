@@ -1,0 +1,253 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 53390,
+    "page": 1,
+    "sort": [
+      "RELEVANCE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:26:32.4607885+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 106705,
+                "name": {
+                  "full": "Hajime Isayama",
+                  "native": "\u8AEB\u5C71\u5275",
+                  "userPreferred": "Hajime Isayama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n106705-ttS2qZpF2FTZ.jpg"
+                },
+                "favourites": 6839
+              },
+              "role": "Story \u0026 Art"
+            },
+            {
+              "node": {
+                "id": 98543,
+                "name": {
+                  "full": "Tatsuya Endou",
+                  "native": "\u9060\u85E4\u9054\u54C9",
+                  "userPreferred": "Tatsuya Endou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n98543-PbFshjbz7YpJ.png"
+                },
+                "favourites": 690
+              },
+              "role": "Assistant"
+            },
+            {
+              "node": {
+                "id": 118764,
+                "name": {
+                  "full": "Yuusuke Nomura",
+                  "native": "\u30CE\u6751\u512A\u4ECB",
+                  "userPreferred": "Yuusuke Nomura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n118764-I3fXa2QzPyYp.jpg"
+                },
+                "favourites": 290
+              },
+              "role": "Assistant"
+            },
+            {
+              "node": {
+                "id": 119679,
+                "name": {
+                  "full": "Kouhei Nagashii",
+                  "native": "\u6C38\u690E\u6643\u5E73",
+                  "userPreferred": "Kouhei Nagashii"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n119679-xRCr0bQ7CScl.jpg"
+                },
+                "favourites": 9
+              },
+              "role": "Assistant"
+            },
+            {
+              "node": {
+                "id": 129713,
+                "name": {
+                  "full": "Kouta Sannomiya",
+                  "native": "\u4E09\u5BAE\u5B8F\u592A",
+                  "userPreferred": "Kouta Sannomiya"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n129713-aKRnfluYas3s.jpg"
+                },
+                "favourites": 17
+              },
+              "role": "Assistant"
+            },
+            {
+              "node": {
+                "id": 140211,
+                "name": {
+                  "full": "Kyuu Takahata",
+                  "native": "\u9AD8\u7551\u5F13",
+                  "userPreferred": "Kyuu Takahata"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n140211-0U8H07Saepj5.jpg"
+                },
+                "favourites": 8
+              },
+              "role": "Assistant"
+            },
+            {
+              "node": {
+                "id": 196414,
+                "name": {
+                  "full": "Shintarou Kawakubo",
+                  "native": "\u5DDD\u7AAA\u614E\u592A\u90CE",
+                  "userPreferred": "Shintarou Kawakubo"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n196414-1thAQs6MoMuE.png"
+                },
+                "favourites": 2
+              },
+              "role": "Editing"
+            },
+            {
+              "node": {
+                "id": 199272,
+                "name": {
+                  "full": "Yuuji Kaba",
+                  "native": "\u84B2\u5915\u4E8C",
+                  "userPreferred": "Yuuji Kaba"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n199272-RbL1FJStSZ2S.jpg"
+                },
+                "favourites": 34
+              },
+              "role": "Assistant"
+            },
+            {
+              "node": {
+                "id": 219478,
+                "name": {
+                  "full": "Pawe\u0142 Dyba\u0142a",
+                  "native": null,
+                  "userPreferred": "Pawe\u0142 Dyba\u0142a"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n219478-jHAPka9Ld6Nu.jpg"
+                },
+                "favourites": 33
+              },
+              "role": "Translator (Polish)"
+            },
+            {
+              "node": {
+                "id": 219580,
+                "name": {
+                  "full": "Ko Ransom",
+                  "native": null,
+                  "userPreferred": "Ko Ransom"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n219580-yQUP1oanetPa.jpg"
+                },
+                "favourites": 16
+              },
+              "role": "Translator (English)"
+            },
+            {
+              "node": {
+                "id": 221086,
+                "name": {
+                  "full": "Claudia Peter",
+                  "native": null,
+                  "userPreferred": "Claudia Peter"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n221086-OMizTXsrhXPd.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Translator (German)"
+            },
+            {
+              "node": {
+                "id": 221189,
+                "name": {
+                  "full": "Sylvain Chollet",
+                  "native": null,
+                  "userPreferred": "Sylvain Chollet"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Translator (French)"
+            },
+            {
+              "node": {
+                "id": 225420,
+                "name": {
+                  "full": "Erika Abreu",
+                  "native": null,
+                  "userPreferred": "Erika Abreu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Translator (Portuguese)"
+            },
+            {
+              "node": {
+                "id": 320179,
+                "name": {
+                  "full": "Yifeng Zhang",
+                  "native": "\u5F35\u76CA\u8C50",
+                  "userPreferred": "Yifeng Zhang"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Translator (Chinese)"
+            },
+            {
+              "node": {
+                "id": 331323,
+                "name": {
+                  "full": "Di\u00F3genes Dih",
+                  "native": null,
+                  "userPreferred": "Di\u00F3genes Diogo Dih"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n331323-YjwnH1Ps7914.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "Lettering (Portuguese:vol 15)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

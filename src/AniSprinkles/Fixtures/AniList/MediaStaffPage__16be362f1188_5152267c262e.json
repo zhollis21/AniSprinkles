@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 178789,
+    "page": 2,
+    "sort": [
+      "ROLE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:20:12.5478602+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 2
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 184529,
+                "name": {
+                  "full": "Ryou Ishimaru",
+                  "native": "\u77F3\u4E38\u8AD2",
+                  "userPreferred": "Ryou Ishimaru"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Episode Director (ep 3)"
+            },
+            {
+              "node": {
+                "id": 116505,
+                "name": {
+                  "full": "Yoshiaki Fujisawa",
+                  "native": "\u85E4\u6FA4\u6176\u660C",
+                  "userPreferred": "Yoshiaki Fujisawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n116505-d34rjaEgpFPH.png"
+                },
+                "favourites": 316
+              },
+              "role": "Insert Song Arrangement (eps 5, 9)"
+            },
+            {
+              "node": {
+                "id": 116505,
+                "name": {
+                  "full": "Yoshiaki Fujisawa",
+                  "native": "\u85E4\u6FA4\u6176\u660C",
+                  "userPreferred": "Yoshiaki Fujisawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n116505-d34rjaEgpFPH.png"
+                },
+                "favourites": 316
+              },
+              "role": "Insert Song Composition (eps 5, 9)"
+            },
+            {
+              "node": {
+                "id": 126550,
+                "name": {
+                  "full": "Yuiko Oohara",
+                  "native": "\u5927\u539F\u3086\u3044\u5B50",
+                  "userPreferred": "Yuiko Oohara"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n126550-xSC4qhM6aNjZ.jpg"
+                },
+                "favourites": 213
+              },
+              "role": "Insert Song Lyrics (eps 5, 9)"
+            },
+            {
+              "node": {
+                "id": 408005,
+                "name": {
+                  "full": "Kokona Anbo",
+                  "native": "\u5B89\u4FDD\u5FC3\u7D50",
+                  "userPreferred": "Kokona Anbo"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n408005-MLK2bzr6MA1d.png"
+                },
+                "favourites": 0
+              },
+              "role": "Insert Song Performance (ep 5)"
+            },
+            {
+              "node": {
+                "id": 148220,
+                "name": {
+                  "full": "Shion Wakayama",
+                  "native": "\u82E5\u5C71\u8A69\u97F3",
+                  "userPreferred": "Shion Wakayama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n148220-Tj3U7jdXZehG.png"
+                },
+                "favourites": 1620
+              },
+              "role": "Insert Song Performance (ep 9)"
+            },
+            {
+              "node": {
+                "id": 214408,
+                "name": {
+                  "full": "Kay Yu",
+                  "native": "\u30B1\u30A4\u30E6\u30A6",
+                  "userPreferred": "Kay Yu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n214408-D02XFoHbBhnP.jpg"
+                },
+                "favourites": 128
+              },
+              "role": "Key Animation (eps 1, 2)"
+            },
+            {
+              "node": {
+                "id": 116505,
+                "name": {
+                  "full": "Yoshiaki Fujisawa",
+                  "native": "\u85E4\u6FA4\u6176\u660C",
+                  "userPreferred": "Yoshiaki Fujisawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n116505-d34rjaEgpFPH.png"
+                },
+                "favourites": 316
+              },
+              "role": "Music"
+            },
+            {
+              "node": {
+                "id": 118744,
+                "name": {
+                  "full": "Sirotaka",
+                  "native": "\u30B7\u30ED\u30BF\u304B",
+                  "userPreferred": "Sirotaka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n118744-kluwxjQCK9JQ.jpg"
+                },
+                "favourites": 253
+              },
+              "role": "Original Character Design"
+            },
+            {
+              "node": {
+                "id": 118743,
+                "name": {
+                  "full": "Rifujin na Magonote",
+                  "native": "\u7406\u4E0D\u5C3D\u306A\u5B6B\u306E\u624B",
+                  "userPreferred": "Rifujin na Magonote"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n118743-ikzTCd1mLvgn.png"
+                },
+                "favourites": 1039
+              },
+              "role": "Original Story"
+            },
+            {
+              "node": {
+                "id": 118743,
+                "name": {
+                  "full": "Rifujin na Magonote",
+                  "native": "\u7406\u4E0D\u5C3D\u306A\u5B6B\u306E\u624B",
+                  "userPreferred": "Rifujin na Magonote"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n118743-ikzTCd1mLvgn.png"
+                },
+                "favourites": 1039
+              },
+              "role": "Script (ep 2)"
+            },
+            {
+              "node": {
+                "id": 179846,
+                "name": {
+                  "full": "Kouhei Urushibara",
+                  "native": "\u6F06\u539F\u8679\u5E73",
+                  "userPreferred": "Kouhei Urushibara"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Script (ep 3)"
+            },
+            {
+              "node": {
+                "id": 251585,
+                "name": {
+                  "full": "Atsushi Takayama",
+                  "native": "\u9AD8\u5C71\u6DF3\u53F2",
+                  "userPreferred": "Atsushi Takayama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Script (eps 1, 2)"
+            },
+            {
+              "node": {
+                "id": 134727,
+                "name": {
+                  "full": "Ryousuke Shibuya",
+                  "native": "\u6E0B\u8C37\u4EAE\u4ECB",
+                  "userPreferred": "Ryousuke Shibuya"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n134727-vJAwtuIwXVf1.jpg"
+                },
+                "favourites": 8
+              },
+              "role": "Series Composition"
+            },
+            {
+              "node": {
+                "id": 256030,
+                "name": {
+                  "full": "Naoto Taniuchi",
+                  "native": "\u8C37\u5185\u76F4\u4EBA",
+                  "userPreferred": "Naoto Taniuchi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Series Composition"
+            },
+            {
+              "node": {
+                "id": 103074,
+                "name": {
+                  "full": "Jin Aketagawa",
+                  "native": "\u660E\u7530\u5DDD\u4EC1",
+                  "userPreferred": "Jin Aketagawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n103074-36TfkytWdRzi.png"
+                },
+                "favourites": 666
+              },
+              "role": "Sound Director"
+            },
+            {
+              "node": {
+                "id": 145489,
+                "name": {
+                  "full": "Rei Ueno",
+                  "native": "\u4E0A\u91CE\u52B1",
+                  "userPreferred": "Rei Ueno"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n145489-W4TkDkq2xlex.jpg"
+                },
+                "favourites": 29
+              },
+              "role": "Sound Effects"
+            },
+            {
+              "node": {
+                "id": 164360,
+                "name": {
+                  "full": "Akari Ranzaki",
+                  "native": "\u85CD\u5D0E\u706F",
+                  "userPreferred": "Akari Ranzaki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n164360-2MFqAwojIXuE.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "Storyboard (ep 2)"
+            },
+            {
+              "node": {
+                "id": 147502,
+                "name": {
+                  "full": "Yasuhiko Akiyama",
+                  "native": "\u79CB\u5C71\u6CF0\u5F66",
+                  "userPreferred": "Yasuhiko Akiyama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n147502-ET8uEjD2vG8W.png"
+                },
+                "favourites": 2
+              },
+              "role": "Storyboard (ep 3)"
+            },
+            {
+              "node": {
+                "id": 134727,
+                "name": {
+                  "full": "Ryousuke Shibuya",
+                  "native": "\u6E0B\u8C37\u4EAE\u4ECB",
+                  "userPreferred": "Ryousuke Shibuya"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n134727-vJAwtuIwXVf1.jpg"
+                },
+                "favourites": 8
+              },
+              "role": "Storyboard (eps 1, 2)"
+            },
+            {
+              "node": {
+                "id": 174062,
+                "name": {
+                  "full": "HITORIE",
+                  "native": "\u30D2\u30C8\u30EA\u30A8",
+                  "userPreferred": "HITORIE"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n174062-p6agMAHkcTWN.png"
+                },
+                "favourites": 75
+              },
+              "role": "Theme Song Arrangement (ED)"
+            },
+            {
+              "node": {
+                "id": 270922,
+                "name": {
+                  "full": "Shinoda",
+                  "native": "\u30B7\u30CE\u30C0",
+                  "userPreferred": "Shinoda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n270922-HTRGiJZioxGJ.jpg"
+                },
+                "favourites": 5
+              },
+              "role": "Theme Song Composition (ED)"
+            },
+            {
+              "node": {
+                "id": 270922,
+                "name": {
+                  "full": "Shinoda",
+                  "native": "\u30B7\u30CE\u30C0",
+                  "userPreferred": "Shinoda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n270922-HTRGiJZioxGJ.jpg"
+                },
+                "favourites": 5
+              },
+              "role": "Theme Song Lyrics (ED)"
+            },
+            {
+              "node": {
+                "id": 101331,
+                "name": {
+                  "full": "Mika Nakashima",
+                  "native": "\u4E2D\u5CF6\u7F8E\u5609",
+                  "userPreferred": "Mika Nakashima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101331-rmdYRmfzNbNm.jpg"
+                },
+                "favourites": 72
+              },
+              "role": "Theme Song Performance (ED)"
+            },
+            {
+              "node": {
+                "id": 126550,
+                "name": {
+                  "full": "Yuiko Oohara",
+                  "native": "\u5927\u539F\u3086\u3044\u5B50",
+                  "userPreferred": "Yuiko Oohara"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n126550-xSC4qhM6aNjZ.jpg"
+                },
+                "favourites": 213
+              },
+              "role": "Theme Song Performance (OP)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

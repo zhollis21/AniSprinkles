@@ -86,6 +86,15 @@
 	<PropertyGroup Condition="'$(CiBuild)' == 'true' AND '$(Configuration)' == 'Debug'">
 		<DefineConstants>$(DefineConstants);CI</DefineConstants>
 	</PropertyGroup>
+
+	<!-- Recorded AniList responses (#134), embedded ONLY in a CI build.
+	     EmbeddedResource rather than MauiAsset because the replay handler has to enumerate what it
+	     has: MAUI can open a packaged file by name but cannot list the package, whereas
+	     Assembly.GetManifestResourceNames() gives the whole set without a generated index to keep in
+	     sync. The condition is what keeps ~7 MB of JSON out of every Debug and Release APK. -->
+	<ItemGroup Condition="'$(CiBuild)' == 'true' AND '$(Configuration)' == 'Debug'">
+		<EmbeddedResource Include="Fixtures\AniList\*.json" LogicalName="AniListFixtures.%(Filename)%(Extension)" />
+	</ItemGroup>
 	<Target Name="_BlockCiBuildInRelease" BeforeTargets="Build" Condition="'$(CiBuild)' == 'true' AND '$(Configuration)' != 'Debug'">
 		<Error Text="CiBuild=true is only supported with Debug configuration. Do not use it for Release builds." />
 	</Target>

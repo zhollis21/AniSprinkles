@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 189046,
+    "page": 1,
+    "sort": [
+      "ROLE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:25:16.8460009+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 245429,
+                "name": {
+                  "full": "Eri Katou",
+                  "native": "\u52A0\u85E4\u7D75\u68A8",
+                  "userPreferred": "Eri Katou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2D Works (eps 2-4)"
+            },
+            {
+              "node": {
+                "id": 142307,
+                "name": {
+                  "full": "Mai Sasaki",
+                  "native": "\u4F50\u3005\u6728\u821E",
+                  "userPreferred": "Mai Sasaki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ED)"
+            },
+            {
+              "node": {
+                "id": 169055,
+                "name": {
+                  "full": "Kouko Torinoumi",
+                  "native": "\u9CE5\u4E4B\u6D77\u604B\u5B50",
+                  "userPreferred": "Kouko Torinoumi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n169055-euNiSMN00go9.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 1)"
+            },
+            {
+              "node": {
+                "id": 169064,
+                "name": {
+                  "full": "Rintarou Hayashi",
+                  "native": "\u6797\u9E9F\u592A\u90CE",
+                  "userPreferred": "Rintarou Hayashi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n169064-1jswrmqKSC2O.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 1)"
+            },
+            {
+              "node": {
+                "id": 325904,
+                "name": {
+                  "full": "Yan Ting Wei",
+                  "native": "\u30A6\u30A7\u30A4\u30E4\u30F3\u30C6\u30A3\u30F3",
+                  "userPreferred": "Yan Ting Wei"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 1)"
+            },
+            {
+              "node": {
+                "id": 350640,
+                "name": {
+                  "full": "Sadamomo",
+                  "native": "\u3055\u3060\u3082\u3082",
+                  "userPreferred": "Sadamomo"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n350640-aBI4dBaswzJk.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 14)"
+            },
+            {
+              "node": {
+                "id": 371596,
+                "name": {
+                  "full": "Momoka Kajihata",
+                  "native": "\u696E\u7551\u767E\u9999",
+                  "userPreferred": "Momoka Kajihata"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 14)"
+            },
+            {
+              "node": {
+                "id": 371607,
+                "name": {
+                  "full": "Maaya Tamako",
+                  "native": null,
+                  "userPreferred": "Maaya Tamako"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n371607-4q4IBOU5o4v8.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 14)"
+            },
+            {
+              "node": {
+                "id": 401860,
+                "name": {
+                  "full": "Airi Inoue",
+                  "native": "\u4E95\u4E0A\u611B\u4EE5\u5229",
+                  "userPreferred": "Airi Inoue"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 14)"
+            },
+            {
+              "node": {
+                "id": 401862,
+                "name": {
+                  "full": "Ooishi",
+                  "native": "\u304A\u304A\u3044\u3057",
+                  "userPreferred": "Ooishi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 14)"
+            },
+            {
+              "node": {
+                "id": 270904,
+                "name": {
+                  "full": "Shinichi Kinoshita",
+                  "native": "\u6728\u4E4B\u4E0B\u614E\u58F1",
+                  "userPreferred": "Shinichi Kinoshita"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 2)"
+            },
+            {
+              "node": {
+                "id": 272905,
+                "name": {
+                  "full": "Yun Liao",
+                  "native": "\u5ED6\u82B8",
+                  "userPreferred": "Yun Liao"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 2)"
+            },
+            {
+              "node": {
+                "id": 324482,
+                "name": {
+                  "full": "Aifan Zhang",
+                  "native": "\u5F35\u611B\u5E06",
+                  "userPreferred": "Aifan Zhang"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 2)"
+            },
+            {
+              "node": {
+                "id": 339176,
+                "name": {
+                  "full": "Leheng Wang",
+                  "native": "\u738B\u697D\u6052",
+                  "userPreferred": "Leheng Wang"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 2)"
+            },
+            {
+              "node": {
+                "id": 341302,
+                "name": {
+                  "full": "Jenyu Chang",
+                  "native": "\u5F35\u4EFB\u4F51",
+                  "userPreferred": "Jenyu Chang"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n341302-a7ZjVhDr4RPh.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 2)"
+            },
+            {
+              "node": {
+                "id": 372908,
+                "name": {
+                  "full": "Yue Zhui",
+                  "native": "\u690E\u6708",
+                  "userPreferred": "Yue Zhui"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 2)"
+            },
+            {
+              "node": {
+                "id": 397522,
+                "name": {
+                  "full": "Kashi Akiba",
+                  "native": "\u79CB\u8449\u83D3\u5B50",
+                  "userPreferred": "Kashi Akiba"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 2)"
+            },
+            {
+              "node": {
+                "id": 397523,
+                "name": {
+                  "full": "Ryou Inui",
+                  "native": "\u4E7E\u826F",
+                  "userPreferred": "Ryou Inui"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 2)"
+            },
+            {
+              "node": {
+                "id": 397526,
+                "name": {
+                  "full": "Jiahao Pan",
+                  "native": "\u6F58\u5BB6\u8C6A",
+                  "userPreferred": "Jiahao Pan"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 2)"
+            },
+            {
+              "node": {
+                "id": 216362,
+                "name": {
+                  "full": "Tushar Pandey",
+                  "native": null,
+                  "userPreferred": "Tushar Pandey"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n216362-QCruzWzZ0oCY.jpg"
+                },
+                "favourites": 3
+              },
+              "role": "2nd Key Animation (ep 3)"
+            },
+            {
+              "node": {
+                "id": 216611,
+                "name": {
+                  "full": "Ji-Eun Park",
+                  "native": "\u6734\u667A\u9280",
+                  "userPreferred": "Ji-Eun Park"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 3)"
+            },
+            {
+              "node": {
+                "id": 246260,
+                "name": {
+                  "full": "Christian Quaranta",
+                  "native": null,
+                  "userPreferred": "Christian Quaranta"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n246260-sq3rKflyv31Z.jpg"
+                },
+                "favourites": 5
+              },
+              "role": "2nd Key Animation (ep 3)"
+            },
+            {
+              "node": {
+                "id": 270051,
+                "name": {
+                  "full": "Ayaka Takahashi",
+                  "native": "\u9AD9\u6A4B\u5F69\u52A0",
+                  "userPreferred": "Ayaka Takahashi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 3)"
+            },
+            {
+              "node": {
+                "id": 287341,
+                "name": {
+                  "full": "Kartik Sharma",
+                  "native": "\u30AB\u30EB\u30C6\u30A3\u30C3\u30AF\u30FB\u30B7\u30E3\u30EB\u30DE",
+                  "userPreferred": "Kartik Sharma"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n287341-JnWfz29DSBFc.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "2nd Key Animation (ep 3)"
+            },
+            {
+              "node": {
+                "id": 329689,
+                "name": {
+                  "full": "Taiki Fukumitsu",
+                  "native": "\u798F\u5149\u6CF0\u57FA",
+                  "userPreferred": "Taiki Fukumitsu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 3)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

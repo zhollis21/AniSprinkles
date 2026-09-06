@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 156067,
+    "page": 3,
+    "sort": [
+      "ROLE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:38:15.2734704+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 3
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 380640,
+                "name": {
+                  "full": "Chihiro Hayashi",
+                  "native": "\u6797\u5343\u5C0B",
+                  "userPreferred": "Chihiro Hayashi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n380640-eZS13jdSjwzE.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (OP, eps 1, 2)"
+            },
+            {
+              "node": {
+                "id": 141981,
+                "name": {
+                  "full": "Hisao Muramatsu",
+                  "native": "\u6751\u677E\u5C1A\u96C4",
+                  "userPreferred": "Hisao Muramatsu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Accessory Design"
+            },
+            {
+              "node": {
+                "id": 296959,
+                "name": {
+                  "full": "En Arakawa",
+                  "native": "\u65B0\u5DDD\u7E01",
+                  "userPreferred": "En Arakawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Accessory Design"
+            },
+            {
+              "node": {
+                "id": 197594,
+                "name": {
+                  "full": "Andr\u00E9 Rinaldi",
+                  "native": "Andr\u00E9 Augusto Rinaldi",
+                  "userPreferred": "Andr\u00E9 Rinaldi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n197594-quPJBMCFExv6.jpg"
+                },
+                "favourites": 7
+              },
+              "role": "ADR Director (Brazilian Portuguese)"
+            },
+            {
+              "node": {
+                "id": 102450,
+                "name": {
+                  "full": "Anthony Bowling",
+                  "native": null,
+                  "userPreferred": "Anthony Bowling"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/7450.jpg"
+                },
+                "favourites": 36
+              },
+              "role": "ADR Director (English)"
+            },
+            {
+              "node": {
+                "id": 129030,
+                "name": {
+                  "full": "Dani Chambers",
+                  "native": null,
+                  "userPreferred": "Dani Chambers"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n129030-JpDHbjigIejb.jpg"
+                },
+                "favourites": 131
+              },
+              "role": "ADR Director (English) "
+            },
+            {
+              "node": {
+                "id": 198590,
+                "name": {
+                  "full": "Filipe Te\u00F3filo",
+                  "native": null,
+                  "userPreferred": "Filipe Te\u00F3filo"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n198590-OkepUtWmRyxt.png"
+                },
+                "favourites": 2
+              },
+              "role": "ADR Director Assistant (Brazilian Portuguese)"
+            },
+            {
+              "node": {
+                "id": 206620,
+                "name": {
+                  "full": "Manuel Aragon",
+                  "native": null,
+                  "userPreferred": "Manuel Aragon"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "ADR Engineer (English)"
+            },
+            {
+              "node": {
+                "id": 104093,
+                "name": {
+                  "full": "Gino Palencia",
+                  "native": null,
+                  "userPreferred": "Gino Palencia"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "ADR Mixing (English)"
+            },
+            {
+              "node": {
+                "id": 103970,
+                "name": {
+                  "full": "Zachary Bolton",
+                  "native": null,
+                  "userPreferred": "Zachary Charles Bolton"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/8970.jpg"
+                },
+                "favourites": 5
+              },
+              "role": "ADR Producer (English)"
+            },
+            {
+              "node": {
+                "id": 127810,
+                "name": {
+                  "full": "Ben Phillips",
+                  "native": null,
+                  "userPreferred": "Ben Phillips"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n127810-VtxRixMyEgee.png"
+                },
+                "favourites": 55
+              },
+              "role": "ADR Script (English)"
+            },
+            {
+              "node": {
+                "id": 144313,
+                "name": {
+                  "full": "Alex Mai",
+                  "native": null,
+                  "userPreferred": "Alex Mai"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n144313-Q5bYOCT7DjBb.jpg"
+                },
+                "favourites": 5
+              },
+              "role": "ADR Script (English)"
+            },
+            {
+              "node": {
+                "id": 240955,
+                "name": {
+                  "full": "Yuusuke Oonuki",
+                  "native": "\u5927\u8CAB\u4F51\u4ECB",
+                  "userPreferred": "Yuusuke Oonuki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n240955-VvMpTJzeYHKK.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Advertising Producer"
+            },
+            {
+              "node": {
+                "id": 296825,
+                "name": {
+                  "full": "Emi Miyamoto",
+                  "native": "\u5BAE\u5143\u6075\u7F8E",
+                  "userPreferred": "Emi Miyamoto"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n296825-9mKZTrg0jYGl.png"
+                },
+                "favourites": 0
+              },
+              "role": "Advertising Producer"
+            },
+            {
+              "node": {
+                "id": 296827,
+                "name": {
+                  "full": "Takumi Furuya",
+                  "native": "\u53E4\u5C4B\u6CA2\u5F4C",
+                  "userPreferred": "Takumi Furuya"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n296827-Qv5Z0CwG2z7h.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Advertising Producer"
+            },
+            {
+              "node": {
+                "id": 161941,
+                "name": {
+                  "full": "Mariko Kawamoto",
+                  "native": "\u5DDD\u5143\u307E\u308A\u3053",
+                  "userPreferred": "Mariko Kawamoto"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n161941-pnepHcEcFhXX.jpg"
+                },
+                "favourites": 7
+              },
+              "role": "Animation Director (ep 10)"
+            },
+            {
+              "node": {
+                "id": 207379,
+                "name": {
+                  "full": "Weiqing Wang",
+                  "native": "\u738B\u7DAD\u6176",
+                  "userPreferred": "Weiqing Wang"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Animation Director (ep 10)"
+            },
+            {
+              "node": {
+                "id": 280932,
+                "name": {
+                  "full": "Weining Chen",
+                  "native": "\u9673\u97CB\u5BE7",
+                  "userPreferred": "Weining Chen"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n280932-blDSlw9lmd4K.png"
+                },
+                "favourites": 0
+              },
+              "role": "Animation Director (ep 10)"
+            },
+            {
+              "node": {
+                "id": 259445,
+                "name": {
+                  "full": "Fuyuhiko Yoshimura",
+                  "native": "\u5409\u6751\u51AC\u5F66",
+                  "userPreferred": "Fuyuhiko Yoshimura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Animation Director (ep 12)"
+            },
+            {
+              "node": {
+                "id": 139180,
+                "name": {
+                  "full": "Takako Oonishi",
+                  "native": "\u5927\u897F\u8CB4\u5B50",
+                  "userPreferred": "Takako Oonishi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Animation Director (ep 3)"
+            },
+            {
+              "node": {
+                "id": 270892,
+                "name": {
+                  "full": "Shirokuma",
+                  "native": "\u3057\u308D\u304F\u307E",
+                  "userPreferred": "Shirokuma"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Animation Director (ep 3)"
+            },
+            {
+              "node": {
+                "id": 123908,
+                "name": {
+                  "full": "Masaki Hinata",
+                  "native": "\u65E5\u5411\u6B63\u6A39",
+                  "userPreferred": "Masaki Hinata"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n123908-ipoj11PYRFAg.png"
+                },
+                "favourites": 3
+              },
+              "role": "Animation Director (ep 4)"
+            },
+            {
+              "node": {
+                "id": 144114,
+                "name": {
+                  "full": "Yuuji Hakamata",
+                  "native": "\u88B4\u7530\u88D5\u4E8C",
+                  "userPreferred": "Yuuji Hakamata"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n144114-ruYG7hjXjutf.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Animation Director (ep 8)"
+            },
+            {
+              "node": {
+                "id": 139182,
+                "name": {
+                  "full": "Eri Kojima",
+                  "native": "\u5C0F\u5CF6\u3048\u308A",
+                  "userPreferred": "Eri Kojima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n139182-kS6igC5FdJJI.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "Animation Director (ep 9)"
+            },
+            {
+              "node": {
+                "id": 154081,
+                "name": {
+                  "full": "Nobuko Sugino",
+                  "native": "\u6749\u91CE\u4FE1\u5B50",
+                  "userPreferred": "Nobuko Sugino"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Animation Director (ep 9)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

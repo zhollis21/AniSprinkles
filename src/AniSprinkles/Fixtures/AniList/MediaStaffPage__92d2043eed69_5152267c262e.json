@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 178789,
+    "page": 2,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:20:05.4262051+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 2
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 270922,
+                "name": {
+                  "full": "Shinoda",
+                  "native": "\u30B7\u30CE\u30C0",
+                  "userPreferred": "Shinoda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n270922-HTRGiJZioxGJ.jpg"
+                },
+                "favourites": 5
+              },
+              "role": "Theme Song Lyrics (ED)"
+            },
+            {
+              "node": {
+                "id": 129576,
+                "name": {
+                  "full": "Makiko Doi",
+                  "native": "\u571F\u5C45\u771F\u7D00\u5B50",
+                  "userPreferred": "Makiko Doi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 4
+              },
+              "role": "Color Design"
+            },
+            {
+              "node": {
+                "id": 106630,
+                "name": {
+                  "full": "Tyler Walker",
+                  "native": null,
+                  "userPreferred": "Tyler Walker"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n106630-2fGxgxHVMNgk.png"
+                },
+                "favourites": 3
+              },
+              "role": "ADR Script Supervisor (English)"
+            },
+            {
+              "node": {
+                "id": 119953,
+                "name": {
+                  "full": "Keiya Nakano",
+                  "native": "\u4E2D\u91CE\u572D\u54C9",
+                  "userPreferred": "Keiya Nakano"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n119953-4cl9FDZaI7jf.png"
+                },
+                "favourites": 3
+              },
+              "role": "Chief Animation Director"
+            },
+            {
+              "node": {
+                "id": 142580,
+                "name": {
+                  "full": "Akinori  Mishima",
+                  "native": "\u4E09\u5D8B\u7AE0\u7D00",
+                  "userPreferred": "Akinori  Mishima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 3
+              },
+              "role": "Editing"
+            },
+            {
+              "node": {
+                "id": 208049,
+                "name": {
+                  "full": "Jared Smith",
+                  "native": null,
+                  "userPreferred": "Jared Smith"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n208049-lOwJLVDSNffy.png"
+                },
+                "favourites": 3
+              },
+              "role": "ADR Script (English)"
+            },
+            {
+              "node": {
+                "id": 147502,
+                "name": {
+                  "full": "Yasuhiko Akiyama",
+                  "native": "\u79CB\u5C71\u6CF0\u5F66",
+                  "userPreferred": "Yasuhiko Akiyama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n147502-ET8uEjD2vG8W.png"
+                },
+                "favourites": 2
+              },
+              "role": "Storyboard (ep 3)"
+            },
+            {
+              "node": {
+                "id": 162750,
+                "name": {
+                  "full": "Shou Hirano",
+                  "native": "\u5E73\u91CE\u7FD4",
+                  "userPreferred": "Shou Hirano"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n162750-tXDI37J1LVKw.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "Animation (ED)"
+            },
+            {
+              "node": {
+                "id": 164360,
+                "name": {
+                  "full": "Akari Ranzaki",
+                  "native": "\u85CD\u5D0E\u706F",
+                  "userPreferred": "Akari Ranzaki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n164360-2MFqAwojIXuE.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "Episode Director (ep 2)"
+            },
+            {
+              "node": {
+                "id": 164360,
+                "name": {
+                  "full": "Akari Ranzaki",
+                  "native": "\u85CD\u5D0E\u706F",
+                  "userPreferred": "Akari Ranzaki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n164360-2MFqAwojIXuE.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "Storyboard (ep 2)"
+            },
+            {
+              "node": {
+                "id": 191730,
+                "name": {
+                  "full": "Sanae Shimada",
+                  "native": "\u5D8B\u7530\u771F\u6075",
+                  "userPreferred": "Sanae Shimada"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Character Design"
+            },
+            {
+              "node": {
+                "id": 387991,
+                "name": {
+                  "full": "Hiroe Mutsumi",
+                  "native": "\u3080\u3064\u307F\u5F18\u82F1",
+                  "userPreferred": "Hiroe Mutsumi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n387991-LlmWRWKSdZIG.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Animation (ED)"
+            },
+            {
+              "node": {
+                "id": 131142,
+                "name": {
+                  "full": "Satoshi Shimada",
+                  "native": "\u5D8B\u7530\u8061\u53F2",
+                  "userPreferred": "Satoshi Shimada"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Chief Animation Director"
+            },
+            {
+              "node": {
+                "id": 146771,
+                "name": {
+                  "full": "Paul Cline",
+                  "native": null,
+                  "userPreferred": "Paul Cline"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n146771-mwG7iEXLBYXU.png"
+                },
+                "favourites": 0
+              },
+              "role": "ADR Assistant Director (English)"
+            },
+            {
+              "node": {
+                "id": 146774,
+                "name": {
+                  "full": "William Dewell",
+                  "native": null,
+                  "userPreferred": "William Dewell"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "ADR Mixer (English)"
+            },
+            {
+              "node": {
+                "id": 148687,
+                "name": {
+                  "full": "Samantha Herek",
+                  "native": null,
+                  "userPreferred": "Samantha Herek"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n148687-Ktxu6PWnOLsH.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "ADR Producer (English)"
+            },
+            {
+              "node": {
+                "id": 179846,
+                "name": {
+                  "full": "Kouhei Urushibara",
+                  "native": "\u6F06\u539F\u8679\u5E73",
+                  "userPreferred": "Kouhei Urushibara"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Script (ep 3)"
+            },
+            {
+              "node": {
+                "id": 184529,
+                "name": {
+                  "full": "Ryou Ishimaru",
+                  "native": "\u77F3\u4E38\u8AD2",
+                  "userPreferred": "Ryou Ishimaru"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Episode Director (ep 3)"
+            },
+            {
+              "node": {
+                "id": 207743,
+                "name": {
+                  "full": "James Baker",
+                  "native": null,
+                  "userPreferred": "James Baker"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "ADR Mixer (English; ep 1)"
+            },
+            {
+              "node": {
+                "id": 251585,
+                "name": {
+                  "full": "Atsushi Takayama",
+                  "native": "\u9AD8\u5C71\u6DF3\u53F2",
+                  "userPreferred": "Atsushi Takayama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Script (eps 1, 2)"
+            },
+            {
+              "node": {
+                "id": 256030,
+                "name": {
+                  "full": "Naoto Taniuchi",
+                  "native": "\u8C37\u5185\u76F4\u4EBA",
+                  "userPreferred": "Naoto Taniuchi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Series Composition"
+            },
+            {
+              "node": {
+                "id": 289426,
+                "name": {
+                  "full": "Michael Stimac",
+                  "native": null,
+                  "userPreferred": "Michael Stimac"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n289426-nry6BGRKpPPo.png"
+                },
+                "favourites": 0
+              },
+              "role": "ADR Assistant Director (English)"
+            },
+            {
+              "node": {
+                "id": 297079,
+                "name": {
+                  "full": "Seth Aulds",
+                  "native": null,
+                  "userPreferred": "Seth Aulds"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "ADR Engineer (English)"
+            },
+            {
+              "node": {
+                "id": 332194,
+                "name": {
+                  "full": "Shougo Katou",
+                  "native": "\u52A0\u85E4\u5320\u609F",
+                  "userPreferred": "Shougo Katou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Episode Director (ep 1)"
+            },
+            {
+              "node": {
+                "id": 408005,
+                "name": {
+                  "full": "Kokona Anbo",
+                  "native": "\u5B89\u4FDD\u5FC3\u7D50",
+                  "userPreferred": "Kokona Anbo"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n408005-MLK2bzr6MA1d.png"
+                },
+                "favourites": 0
+              },
+              "role": "Insert Song Performance (ep 5)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

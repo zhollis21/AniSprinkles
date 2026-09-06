@@ -1,0 +1,628 @@
+﻿{
+  "operationName": "StudioMediaPage",
+  "variables": {
+    "id": 245,
+    "page": 3,
+    "sort": [
+      "START_DATE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "02c0137b2ee8",
+  "recordedAt": "2026-09-06T05:31:42.4867742+00:00",
+  "response": {
+    "data": {
+      "Studio": {
+        "media": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 3
+          },
+          "nodes": [
+            {
+              "id": 4522,
+              "title": {
+                "romaji": "The Hard: BOUNTY HUNTER",
+                "english": "Bounty Hunter: the Hard",
+                "native": "\u30B6\u30FB\u30CF\u30FC\u30C9 BOUNTY HUNTER"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b4522-CvCrtd13bl5L.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b4522-CvCrtd13bl5L.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 54,
+              "favourites": 8,
+              "popularity": 1016,
+              "startDate": {
+                "year": 1996,
+                "month": 5,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2592,
+              "title": {
+                "romaji": "Kimera",
+                "english": null,
+                "native": "\u7948\u660E\u7F85"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/2592.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/2592.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 44,
+              "favourites": 17,
+              "popularity": 2516,
+              "startDate": {
+                "year": 1996,
+                "month": 7,
+                "day": 31
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2098,
+              "title": {
+                "romaji": "Shin Kimagure Orange\u2606Road: Soshite, Ano Natsu no Hajimari",
+                "english": "Kimagure Orange Road: Summer\u0027s Beginning",
+                "native": "\u65B0\u304D\u307E\u3050\u308C\u30AA\u30EC\u30F3\u30B8\u2606\u30ED\u30FC\u30C9 \uFF5E \u305D\u3057\u3066\u3001\u3042\u306E\u590F\u306E\u306F\u3058\u307E\u308A"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/n2098-z4jLnsJkXuD1.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/n2098-z4jLnsJkXuD1.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 70,
+              "favourites": 30,
+              "popularity": 3188,
+              "startDate": {
+                "year": 1996,
+                "month": 11,
+                "day": 2
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2474,
+              "title": {
+                "romaji": "Ginga Ojousama Densetsu Yuna: Shin\u0060en no Fairy",
+                "english": "Galaxy Fraulein Yuna Returns",
+                "native": "\u9280\u6CB3\u304A\u5B22\u69D8\u4F1D\u8AAC\u30E6\u30CA\u3000\uFF5E\u6DF1\u95C7\u306E\u30D5\u30A7\u30A2\u30EA\u30A3\uFF5E"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b2474-KNIYE0N2GqDI.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b2474-KNIYE0N2GqDI.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 61,
+              "favourites": 26,
+              "popularity": 1560,
+              "startDate": {
+                "year": 1996,
+                "month": 12,
+                "day": 21
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 9878,
+              "title": {
+                "romaji": "Licca the movie: Licca-chan to Yamaneko Hoshi no Tabi",
+                "english": null,
+                "native": "Licca the movie \u30EA\u30AB\u3061\u3083\u3093 \u30EA\u30AB\u3061\u3083\u3093\u3068\u30E4\u30DE\u30CD\u30B3\u661F\u306E\u65C5"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b9878-Ar3mr8QaPpWf.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b9878-Ar3mr8QaPpWf.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 50,
+              "favourites": 0,
+              "popularity": 381,
+              "startDate": {
+                "year": 1997,
+                "month": 9,
+                "day": 12
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 780,
+              "title": {
+                "romaji": "Meitantei Conan: Juuyonbanme no Target",
+                "english": "Detective Conan: The Fourteenth Target",
+                "native": "\u540D\u63A2\u5075\u30B3\u30CA\u30F3 \uFF11\uFF14\u756A\u76EE\u306E\u6A19\u7684"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b780-hxqAnXzg8DX4.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b780-hxqAnXzg8DX4.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 77,
+              "favourites": 152,
+              "popularity": 15214,
+              "startDate": {
+                "year": 1998,
+                "month": 4,
+                "day": 18
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 783,
+              "title": {
+                "romaji": "Miami\u2606Guns",
+                "english": "Miami\u2606Guns",
+                "native": "\u30DE\u30A4\u30A2\u30DF\u2606\u30AC\u30F3\u30BA"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx783-EJN9ccuETmJL.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx783-EJN9ccuETmJL.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 62,
+              "favourites": 35,
+              "popularity": 2769,
+              "startDate": {
+                "year": 2000,
+                "month": 2,
+                "day": 5
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1658,
+              "title": {
+                "romaji": "Karakuri no Kimi",
+                "english": "Puppet Princess",
+                "native": "\u304B\u3089\u304F\u308A\u306E\u541B"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b1658-mfRME8ACAPM7.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b1658-mfRME8ACAPM7.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 64,
+              "favourites": 50,
+              "popularity": 4235,
+              "startDate": {
+                "year": 2000,
+                "month": 3,
+                "day": 24
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2526,
+              "title": {
+                "romaji": "KIRARA",
+                "english": null,
+                "native": "KIRARA"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/2526.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/2526.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 56,
+              "favourites": 25,
+              "popularity": 3168,
+              "startDate": {
+                "year": 2000,
+                "month": 9,
+                "day": 21
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2036,
+              "title": {
+                "romaji": "Cosmic Baton Girl Comet-san",
+                "english": null,
+                "native": "Cosmic Baton Girl \u30B3\u30E1\u30C3\u30C8\u3055\u3093"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx2036-75UrWW8wbyTR.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2036-75UrWW8wbyTR.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 70,
+              "favourites": 70,
+              "popularity": 2598,
+              "startDate": {
+                "year": 2001,
+                "month": 4,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1141,
+              "title": {
+                "romaji": "Palme no Ki",
+                "english": "A Tree of Palme",
+                "native": "\u30D1\u30EB\u30E0\u306E\u6A39"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/1141-vhjeoRdDlJG1.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/1141-vhjeoRdDlJG1.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 63,
+              "favourites": 57,
+              "popularity": 4043,
+              "startDate": {
+                "year": 2002,
+                "month": 3,
+                "day": 16
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1670,
+              "title": {
+                "romaji": "Bakuten Shoot Beyblade THE MOVIE: Gekitou!! Takao VS Daichi",
+                "english": "Beyblade the Movie: Decisive Battle! Takao VS Daichi",
+                "native": "\u7206\u8EE2\u30B7\u30E5\u30FC\u30C8\u3000\u30D9\u30A4\u30D6\u30EC\u30FC\u30C9\u3000THE MOVIE\u3000\u6FC0\u95D8\uFF01\uFF01\u30BF\u30AB\u30AA\uFF36\uFF33\u5927\u5730"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1670-D76DiH1UwcMF.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1670-D76DiH1UwcMF.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 64,
+              "favourites": 30,
+              "popularity": 3644,
+              "startDate": {
+                "year": 2002,
+                "month": 8,
+                "day": 17
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 330,
+              "title": {
+                "romaji": "Midori no Hibi",
+                "english": "Midori Days",
+                "native": "\u7F8E\u9CE5\u306E\u65E5\u3005"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx330-iGtLhouVrApP.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx330-iGtLhouVrApP.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 69,
+              "favourites": 434,
+              "popularity": 35036,
+              "startDate": {
+                "year": 2004,
+                "month": 4,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 5096,
+              "title": {
+                "romaji": "Doraemon: Nobita to Midori no Kyojin Den",
+                "english": null,
+                "native": "\u30C9\u30E9\u3048\u3082\u3093 \u306E\u3073\u592A\u3068\u7DD1\u306E\u5DE8\u4EBA\u4F1D"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx5096-VJtbKOmgfavH.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx5096-VJtbKOmgfavH.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 72,
+              "favourites": 40,
+              "popularity": 4414,
+              "startDate": {
+                "year": 2008,
+                "month": 3,
+                "day": 8
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2890,
+              "title": {
+                "romaji": "Gake no Ue no Ponyo",
+                "english": "Ponyo",
+                "native": "\u5D16\u306E\u4E0A\u306E\u30DD\u30CB\u30E7"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx2890-wcNtFr6aUYOR.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2890-wcNtFr6aUYOR.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 79,
+              "favourites": 6945,
+              "popularity": 187526,
+              "startDate": {
+                "year": 2008,
+                "month": 7,
+                "day": 19
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 4437,
+              "title": {
+                "romaji": "NARUTO: Shippuuden - Kizuna",
+                "english": "Naruto Shippuden the Movie: Bonds",
+                "native": "\u5287\u5834\u7248 NARUTO -\u30CA\u30EB\u30C8- \u75BE\u98A8\u4F1D \u7D46"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx4437-8LQbBZo4N6yi.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx4437-8LQbBZo4N6yi.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 69,
+              "favourites": 381,
+              "popularity": 51268,
+              "startDate": {
+                "year": 2008,
+                "month": 8,
+                "day": 2
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 5460,
+              "title": {
+                "romaji": "Meitantei Conan: Shikkoku no Chaser",
+                "english": "Detective Conan: The Raven Chaser",
+                "native": "\u540D\u63A2\u5075\u30B3\u30CA\u30F3\u6F06\u9ED2\u306E\u8FFD\u8DE1\u8005(\u30C1\u30A7\u30A4\u30B5\u30FC)"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx5460-z2qeEVBe01dW.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx5460-z2qeEVBe01dW.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 79,
+              "favourites": 139,
+              "popularity": 12869,
+              "startDate": {
+                "year": 2009,
+                "month": 4,
+                "day": 18
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 6211,
+              "title": {
+                "romaji": "Tokyo Magnitude 8.0",
+                "english": "Tokyo Magnitude 8.0",
+                "native": "\u6771\u4EAC\u30DE\u30B0\u30CB\u30C1\u30E5\u30FC\u30C98.0"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx6211-2MCqBUXvmBdB.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx6211-2MCqBUXvmBdB.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 77,
+              "favourites": 931,
+              "popularity": 70901,
+              "startDate": {
+                "year": 2009,
+                "month": 7,
+                "day": 10
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 6325,
+              "title": {
+                "romaji": "NARUTO: Shippuuden - Hi no Ishi wo Tsugu Mono",
+                "english": "Naruto Shippuden the Movie: The Will of Fire",
+                "native": "\u5287\u5834\u7248 NARUTO -\u30CA\u30EB\u30C8- \u75BE\u98A8\u4F1D \u706B\u306E\u610F\u5FD7\u3092\u7D99\u3050\u8005"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx6325-WaJPWmdnzgiI.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx6325-WaJPWmdnzgiI.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 71,
+              "favourites": 384,
+              "popularity": 48236,
+              "startDate": {
+                "year": 2009,
+                "month": 8,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 5998,
+              "title": {
+                "romaji": "Hottarake no Shima: Haruka to Mahou no Kagami",
+                "english": "Oblivion Island: Haruka and the Magic Mirror",
+                "native": "\u30DB\u30C3\u30BF\u30E9\u30B1\u306E\u5CF6\u3000\uFF5E\u9065\u3068\u9B54\u6CD5\u306E\u93E1\uFF5E"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx5998-Ivtm7ENLXRKR.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx5998-Ivtm7ENLXRKR.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 69,
+              "favourites": 12,
+              "popularity": 2248,
+              "startDate": {
+                "year": 2009,
+                "month": 8,
+                "day": 22
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 7144,
+              "title": {
+                "romaji": "Uchuu Senkan Yamato: Fukkatsu-hen",
+                "english": "Space Battleship Yamato Resurrection",
+                "native": "\u5B87\u5B99\u6226\u8266\u30E4\u30DE\u30C8 \u5FA9\u6D3B\u7BC7"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b7144-7R8gYim1XPaC.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b7144-7R8gYim1XPaC.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 65,
+              "favourites": 12,
+              "popularity": 1624,
+              "startDate": {
+                "year": 2009,
+                "month": 12,
+                "day": 12
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 6467,
+              "title": {
+                "romaji": "Meitantei Conan: Tenkuu no Lost Ship",
+                "english": "Detective Conan: The Lost Ship in the Sky",
+                "native": "\u540D\u63A2\u5075\u30B3\u30CA\u30F3 \u5929\u7A7A\u306E\u96E3\u7834\u8239"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx6467-P24FJYtNRpyE.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx6467-P24FJYtNRpyE.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 133,
+              "popularity": 12321,
+              "startDate": {
+                "year": 2010,
+                "month": 4,
+                "day": 17
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 8246,
+              "title": {
+                "romaji": "NARUTO: Shippuuden - The Lost Tower",
+                "english": "Naruto Shippuden the Movie: The Lost Tower",
+                "native": "\u5287\u5834\u7248 NARUTO -\u30CA\u30EB\u30C8- \u75BE\u98A8\u4F1D \u30B6\u30FB\u30ED\u30B9\u30C8\u30BF\u30EF\u30FC"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx8246-KAi3bLLdJ4OI.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx8246-KAi3bLLdJ4OI.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 71,
+              "favourites": 501,
+              "popularity": 55372,
+              "startDate": {
+                "year": 2010,
+                "month": 7,
+                "day": 31
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 9339,
+              "title": {
+                "romaji": "Kuma no Gakkou: Jackie to Katie",
+                "english": null,
+                "native": "\u304F\u307E\u306E\u304C\u3063\u3053\u3046 \uFF5E\u30B8\u30E3\u30C3\u30AD\u30FC\u3068\u30B1\u30A4\u30C6\u30A3\uFF5E"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/9339.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/9339.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 50,
+              "favourites": 1,
+              "popularity": 233,
+              "startDate": {
+                "year": 2010,
+                "month": 12,
+                "day": 18
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 9963,
+              "title": {
+                "romaji": "Meitantei Conan: Chinmoku no Quarter",
+                "english": "Detective Conan: Quarter of Silence",
+                "native": "\u540D\u63A2\u5075\u30B3\u30CA\u30F3 \u6C88\u9ED9\u306E15\u5206"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx9963-U5oy6aGrpTch.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx9963-U5oy6aGrpTch.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 77,
+              "favourites": 131,
+              "popularity": 11318,
+              "startDate": {
+                "year": 2011,
+                "month": 4,
+                "day": 16
+              },
+              "mediaListEntry": null
+            }
+          ]
+        }
+      }
+    }
+  }
+}

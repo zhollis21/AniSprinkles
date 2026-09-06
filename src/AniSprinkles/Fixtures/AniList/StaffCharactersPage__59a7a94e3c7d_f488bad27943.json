@@ -1,0 +1,894 @@
+﻿{
+  "operationName": "StaffCharactersPage",
+  "variables": {
+    "id": 124390,
+    "page": 3,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "f488bad27943",
+  "recordedAt": "2026-09-06T05:29:58.5204404+00:00",
+  "response": {
+    "data": {
+      "Staff": {
+        "characters": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 3
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 334762,
+                "name": {
+                  "full": "Charlotte",
+                  "native": "\u30B7\u30E3\u30EB\u30ED\u30C3\u30C8",
+                  "userPreferred": "Charlotte"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b334762-M4sLDmDFXhNZ.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b334762-M4sLDmDFXhNZ.png"
+                },
+                "favourites": 10
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 213929,
+                  "title": {
+                    "romaji": "7-nin no Nemuri Hime",
+                    "english": null,
+                    "native": "7\u4EBA\u306E\u7720\u308A\u59EB"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx213929-Bdnd6nUcLlFU.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213929-Bdnd6nUcLlFU.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "NOT_YET_RELEASED",
+                  "averageScore": null
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 342669,
+                "name": {
+                  "full": "Mari Aieda",
+                  "native": "\u611B\u6C5F\u7530\u6BEC",
+                  "userPreferred": "Mari Aieda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b342669-L7RpCXGZi0GU.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b342669-L7RpCXGZi0GU.png"
+                },
+                "favourites": 8
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 170891,
+                  "title": {
+                    "romaji": "Na-Nare Hana-Nare",
+                    "english": "Narenare -Cheer for you!-",
+                    "native": "\u83DC\u306A\u308C\u82B1\u306A\u308C"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx170891-Bhxn5y4a86Q0.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx170891-Bhxn5y4a86Q0.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 61
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 141613,
+                "name": {
+                  "full": "Miglieglia",
+                  "native": "\u30DF\u30EA\u30A8\u30EA\u30A2",
+                  "userPreferred": "Miglieglia"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b141613-GsO919cCTQei.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b141613-GsO919cCTQei.png"
+                },
+                "favourites": 7
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 107672,
+                  "title": {
+                    "romaji": "Katsute Kami Datta Kemono-tachi e",
+                    "english": "To the Abandoned Sacred Beasts",
+                    "native": "\u304B\u3064\u3066\u795E\u3060\u3063\u305F\u7363\u305F\u3061\u3078"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx107672-HBpAeSGSTFlt.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx107672-HBpAeSGSTFlt.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 61
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 306487,
+                "name": {
+                  "full": "Isuzu Koimari",
+                  "native": "\u5C0F\u4F0A\u4E07\u91CC\u3044\u3059\u305A",
+                  "userPreferred": "Isuzu Koimari"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b306487-uOqgs9ymdZTv.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b306487-uOqgs9ymdZTv.jpg"
+                },
+                "favourites": 7
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 150957,
+                  "title": {
+                    "romaji": "Edomae Elf",
+                    "english": "Otaku Elf",
+                    "native": "\u6C5F\u6238\u524D\u30A8\u30EB\u30D5"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx150957-VFsWSLJgW9Bu.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx150957-VFsWSLJgW9Bu.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 70
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 312116,
+                "name": {
+                  "full": "Seren Bordeaux",
+                  "native": "\u30BB\u30EC\u30F3\u30FB\u30DC\u30EB\u30C9\u30FC",
+                  "userPreferred": "Seren Bordeaux"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b312116-yqiko1gth7KS.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b312116-yqiko1gth7KS.png"
+                },
+                "favourites": 5
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 156184,
+                  "title": {
+                    "romaji": "Boukensha ni Naritai to Miyako ni Deteitta Musume ga S Rank ni Natteta",
+                    "english": "My Daughter Left the Nest and Returned an S-Rank Adventurer",
+                    "native": "\u5192\u967A\u8005\u306B\u306A\u308A\u305F\u3044\u3068\u90FD\u306B\u51FA\u3066\u884C\u3063\u305F\u5A18\u304C\uFF33\u30E9\u30F3\u30AF\u306B\u306A\u3063\u3066\u305F"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx156184-mrU1zLqpnMSK.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx156184-mrU1zLqpnMSK.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 66
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 358197,
+                "name": {
+                  "full": "Misaki Kumori",
+                  "native": "\u66C7\u7F8E\u54B2",
+                  "userPreferred": "Misaki Kumori"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b358197-RNe72X7YkPFR.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b358197-RNe72X7YkPFR.jpg"
+                },
+                "favourites": 4
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 178022,
+                  "title": {
+                    "romaji": "Hana wa Saku, Shura no Gotoku",
+                    "english": "Flower and Asura",
+                    "native": "\u82B1\u306F\u54B2\u304F\u3001\u4FEE\u7F85\u306E\u5982\u304F"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx178022-gB3zAfazGBJ6.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx178022-gB3zAfazGBJ6.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 69
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 392503,
+                "name": {
+                  "full": "Sara Takanashi",
+                  "native": "\u5C0F\u9CE5\u904A\u7D17\u7F85",
+                  "userPreferred": "Sara Takanashi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b392503-JI5Qs1k2my5z.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b392503-JI5Qs1k2my5z.png"
+                },
+                "favourites": 4
+              },
+              "role": "MAIN",
+              "media": [
+                {
+                  "id": 177501,
+                  "title": {
+                    "romaji": "Awajima Hyakkei",
+                    "english": "A Hundred Scenes of AWAJIMA",
+                    "native": "\u6DE1\u5CF6\u767E\u666F"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx177501-BwdlSMEXGZWz.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx177501-BwdlSMEXGZWz.png"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 72
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 277400,
+                "name": {
+                  "full": "Drone Rabbit",
+                  "native": "\u30C9\u30ED\u30FC\u30F3\u30E9\u30D3\u30C3\u30C8",
+                  "userPreferred": "Drone Rabbit"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b277400-BsIIQ0Lxp1rg.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b277400-BsIIQ0Lxp1rg.jpg"
+                },
+                "favourites": 3
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 132010,
+                  "title": {
+                    "romaji": "Koi wa Sekai Seifuku no Ato de",
+                    "english": "Love After World Domination",
+                    "native": "\u604B\u306F\u4E16\u754C\u5F81\u670D\u306E\u3042\u3068\u3067"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx132010-s0o3Rg0XvDXl.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx132010-s0o3Rg0XvDXl.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 73
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 298666,
+                "name": {
+                  "full": "Marumi Oki",
+                  "native": "\u6C96\u4E38\u7F8E",
+                  "userPreferred": "Marumi Oki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b298666-DswM8IU319nu.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b298666-DswM8IU319nu.png"
+                },
+                "favourites": 3
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 126529,
+                  "title": {
+                    "romaji": "Kyokou Suiri Season 2",
+                    "english": "In/Spectre 2",
+                    "native": "\u865A\u69CB\u63A8\u7406 Season2"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx126529-AwE5AAdhuls1.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx126529-AwE5AAdhuls1.png"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 73
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 174614,
+                "name": {
+                  "full": "Sasaki Junsa",
+                  "native": "\u4F50\u3005\u6728\u5DE1\u67FB",
+                  "userPreferred": "Sasaki Junsa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b174614-mVbMRgtGwIez.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b174614-mVbMRgtGwIez.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 106286,
+                  "title": {
+                    "romaji": "Tenki no Ko",
+                    "english": "Weathering With You",
+                    "native": "\u5929\u6C17\u306E\u5B50"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx106286-5COcpd0J9VbL.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx106286-5COcpd0J9VbL.png"
+                  },
+                  "format": "MOVIE",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 81
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 301219,
+                "name": {
+                  "full": "Pan",
+                  "native": "\u30D1\u30F3",
+                  "userPreferred": "Pan"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b301219-90drRKKALyAc.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b301219-90drRKKALyAc.png"
+                },
+                "favourites": 2
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 180367,
+                  "title": {
+                    "romaji": "Witch Watch",
+                    "english": "WITCH WATCH",
+                    "native": "\u30A6\u30A3\u30C3\u30C1\u30A6\u30A9\u30C3\u30C1"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx180367-GlRuB2lG7Kaa.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx180367-GlRuB2lG7Kaa.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 72
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 327754,
+                "name": {
+                  "full": "Mao Kamimae",
+                  "native": "\u795E\u524D\u771F\u592E",
+                  "userPreferred": "Mao Kamimae"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b327754-eHwYUKl28PvZ.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b327754-eHwYUKl28PvZ.png"
+                },
+                "favourites": 2
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 112443,
+                  "title": {
+                    "romaji": "Jaku-Chara Tomozaki-kun",
+                    "english": "Bottom-Tier Character Tomozaki",
+                    "native": "\u5F31\u30AD\u30E3\u30E9\u53CB\u5D0E\u304F\u3093"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx112443-UVB1oKdblsIx.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx112443-UVB1oKdblsIx.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 70
+                },
+                {
+                  "id": 143866,
+                  "title": {
+                    "romaji": "Jaku-Chara Tomozaki-kun 2nd STAGE",
+                    "english": "Bottom-Tier Character Tomozaki 2nd Stage",
+                    "native": "\u5F31\u30AD\u30E3\u30E9\u53CB\u5D0E\u304F\u3093 2nd STAGE"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx143866-75E3G6nYEUVr.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx143866-75E3G6nYEUVr.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 70
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 331414,
+                "name": {
+                  "full": "Leila Mirah",
+                  "native": "\u30E9\u30A4\u30E9\uFF1D\u30DF\u30E9\u30FC",
+                  "userPreferred": "Leila Mirah"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b331414-nS5Wv6uLcH0A.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b331414-nS5Wv6uLcH0A.png"
+                },
+                "favourites": 2
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 154116,
+                  "title": {
+                    "romaji": "Undead Unluck",
+                    "english": "Undead Unluck",
+                    "native": "\u30A2\u30F3\u30C7\u30C3\u30C9\u30A2\u30F3\u30E9\u30C3\u30AF"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx154116-3ydDI9hhvPgw.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx154116-3ydDI9hhvPgw.png"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 76
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 338214,
+                "name": {
+                  "full": "Callis al Britannia",
+                  "native": "\u30AB\u30EA\u30B9\u30FB\u30A2\u30EB\u30FB\u30D6\u30EA\u30BF\u30CB\u30A2",
+                  "userPreferred": "Callis al Britannia"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b338214-PBxkRxgJF8AG.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b338214-PBxkRxgJF8AG.png"
+                },
+                "favourites": 2
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 126830,
+                  "title": {
+                    "romaji": "Code Geass: Dakkan no Roz\u00E9",
+                    "english": "Code Geass: Roz\u00E9 of the Recapture",
+                    "native": "\u30B3\u30FC\u30C9\u30AE\u30A2\u30B9 \u596A\u9084\u306E\u30ED\u30BC"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx126830-Mx56p5DMIjiq.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx126830-Mx56p5DMIjiq.png"
+                  },
+                  "format": "ONA",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 64
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 361257,
+                "name": {
+                  "full": "Namako Otoko",
+                  "native": "\u30CA\u30DE\u30B3\u7537",
+                  "userPreferred": "Namako Otoko"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b361257-LD7Uvq9QWesT.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b361257-LD7Uvq9QWesT.png"
+                },
+                "favourites": 2
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 177476,
+                  "title": {
+                    "romaji": "Shin Samurai-den YAIBA",
+                    "english": "YAIBA: Samurai Legend",
+                    "native": "\u771F\uFF65\u4F8D\u4F1D YAIBA"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx177476-kduwwEfxcZtU.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx177476-kduwwEfxcZtU.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 70
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 364580,
+                "name": {
+                  "full": "Sora",
+                  "native": "\u30BD\u30E9",
+                  "userPreferred": "Sora"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b364580-T3w6j67eOLbd.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b364580-T3w6j67eOLbd.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "MAIN",
+              "media": [
+                {
+                  "id": 192928,
+                  "title": {
+                    "romaji": "Nomo no Kuni",
+                    "english": "The Land of NOMO",
+                    "native": "\u30CE\u30E2\u306E\u56FD"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx192928-akbttQVo3Mdi.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx192928-akbttQVo3Mdi.png"
+                  },
+                  "format": "ONA",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 61
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 403373,
+                "name": {
+                  "full": "Elie",
+                  "native": "\u30A8\u30EA\u30FC",
+                  "userPreferred": "Elie"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b403373-JJqRqq8CDbMa.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b403373-JJqRqq8CDbMa.png"
+                },
+                "favourites": 2
+              },
+              "role": "MAIN",
+              "media": [
+                {
+                  "id": 178972,
+                  "title": {
+                    "romaji": "GROTESQQQUE",
+                    "english": null,
+                    "native": "GROTESQQQUE -\u30B0\u30ED\u30C6\u30B9\u30AF-"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx178972-wk88qoyg9HvZ.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx178972-wk88qoyg9HvZ.jpg"
+                  },
+                  "format": "MOVIE",
+                  "type": "ANIME",
+                  "status": "NOT_YET_RELEASED",
+                  "averageScore": null
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 161662,
+                "name": {
+                  "full": "Yuri Sawamura",
+                  "native": "\u6CA2\u6751\u767E\u5408",
+                  "userPreferred": "Yuri Sawamura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b161662-5VLJCDj3oCpZ.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b161662-5VLJCDj3oCpZ.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 111310,
+                  "title": {
+                    "romaji": "Mewkledreamy",
+                    "english": null,
+                    "native": "\u30DF\u30E5\u30FC\u30AF\u30EB\u30C9\u30EA\u30FC\u30DF\u30FC"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx111310-KTLldElz3BSp.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx111310-KTLldElz3BSp.png"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 68
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 289623,
+                "name": {
+                  "full": "Chia",
+                  "native": "\u3061\u3042",
+                  "userPreferred": "Chia"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b289623-QpTD46sA68a3.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b289623-QpTD46sA68a3.png"
+                },
+                "favourites": 1
+              },
+              "role": "MAIN",
+              "media": [
+                {
+                  "id": 130777,
+                  "title": {
+                    "romaji": "Mewkledreamy Mix!",
+                    "english": null,
+                    "native": "\u30DF\u30E5\u30FC\u30AF\u30EB\u30C9\u30EA\u30FC\u30DF\u30FC \u307F\u3063\u304F\u3059!"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx130777-r1qyVIexHrpy.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx130777-r1qyVIexHrpy.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 62
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 298551,
+                "name": {
+                  "full": "Okaa-san",
+                  "native": "\u304A\u6BCD\u3055\u3093",
+                  "userPreferred": "Okaa-san"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b298551-vdwlaJhHoWRL.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b298551-vdwlaJhHoWRL.png"
+                },
+                "favourites": 1
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 161505,
+                  "title": {
+                    "romaji": "Fuyu no Okurimono",
+                    "english": null,
+                    "native": "\u51AC\u306E\u304A\u304F\u308A\u3082\u306E"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx161505-YeKXQA77d0he.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx161505-YeKXQA77d0he.png"
+                  },
+                  "format": "ONA",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 63
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 303359,
+                "name": {
+                  "full": "Maria",
+                  "native": "\u30DE\u30EA\u30A2",
+                  "userPreferred": "Maria"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b303359-4U3GblUWfVw0.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b303359-4U3GblUWfVw0.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "BACKGROUND",
+              "media": [
+                {
+                  "id": 128715,
+                  "title": {
+                    "romaji": "Niehime to Kemono no Ou",
+                    "english": "Sacrificial Princess and the King of Beasts",
+                    "native": "\u8D04\u59EB\u3068\u7363\u306E\u738B"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx128715-T4Tne2TcqfVx.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx128715-T4Tne2TcqfVx.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 77
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 266661,
+                "name": {
+                  "full": "Komugi Kurowa",
+                  "native": "\u9ED2\u548C\u5C0F\u9EA6",
+                  "userPreferred": "Komugi Kurowa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b266661-jFdC577F9dAY.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b266661-jFdC577F9dAY.png"
+                },
+                "favourites": 0
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 180367,
+                  "title": {
+                    "romaji": "Witch Watch",
+                    "english": "WITCH WATCH",
+                    "native": "\u30A6\u30A3\u30C3\u30C1\u30A6\u30A9\u30C3\u30C1"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx180367-GlRuB2lG7Kaa.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx180367-GlRuB2lG7Kaa.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 72
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 293874,
+                "name": {
+                  "full": "Live no Kankyaku",
+                  "native": "\u30E9\u30A4\u30D6\u306E\u89B3\u5BA2",
+                  "userPreferred": "Live no Kankyaku"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/default.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND",
+              "media": [
+                {
+                  "id": 130003,
+                  "title": {
+                    "romaji": "Bocchi the Rock!",
+                    "english": "BOCCHI THE ROCK!",
+                    "native": "\u307C\u3063\u3061\u30FB\u3056\u30FB\u308D\u3063\u304F\uFF01"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx130003-HTDmeL4RGeJ4.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx130003-HTDmeL4RGeJ4.png"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 87
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 337535,
+                "name": {
+                  "full": "Kamiyama",
+                  "native": "\u795E\u5C71",
+                  "userPreferred": "Kamiyama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b337535-nuzGFNBhTduw.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b337535-nuzGFNBhTduw.png"
+                },
+                "favourites": 0
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 159559,
+                  "title": {
+                    "romaji": "16bit Sensation: ANOTHER LAYER",
+                    "english": "16bit Sensation: Another Layer",
+                    "native": "16bit\u30BB\u30F3\u30BB\u30FC\u30B7\u30E7\u30F3 ANOTHER LAYER"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx159559-4JzfnLGIelRC.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx159559-4JzfnLGIelRC.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 68
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 350490,
+                "name": {
+                  "full": "Yuki no Imouto",
+                  "native": "\u96EA\u306E\u59B9",
+                  "userPreferred": "Yuki no Imouto"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b350490-29bK2eoYfycz.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b350490-29bK2eoYfycz.png"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND",
+              "media": [
+                {
+                  "id": 172190,
+                  "title": {
+                    "romaji": "Kimi wa Meido-sama.",
+                    "english": "You are Ms. Servant",
+                    "native": "\u541B\u306F\u51A5\u571F\u69D8\u3002"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx172190-i1IqizIUcKkN.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx172190-i1IqizIUcKkN.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 69
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}

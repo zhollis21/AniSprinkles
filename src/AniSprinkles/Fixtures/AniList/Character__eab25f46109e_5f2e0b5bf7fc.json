@@ -1,0 +1,542 @@
+﻿{
+  "operationName": "Character",
+  "variables": {
+    "id": 183965,
+    "mediaPage": 1,
+    "mediaSort": [
+      "POPULARITY_DESC",
+      "ID"
+    ]
+  },
+  "queryFingerprint": "5f2e0b5bf7fc",
+  "recordedAt": "2026-09-06T05:28:21.9888837+00:00",
+  "response": {
+    "data": {
+      "Character": {
+        "id": 183965,
+        "name": {
+          "full": "Fern",
+          "native": "\u30D5\u30A7\u30EB\u30F3",
+          "userPreferred": "Fern",
+          "alternative": [],
+          "alternativeSpoiler": []
+        },
+        "image": {
+          "large": "https://s4.anilist.co/file/anilistcdn/character/large/b183965-uGFohBjlFoTp.png",
+          "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b183965-uGFohBjlFoTp.png"
+        },
+        "description": "Fern is the young mage apprentice of [Frieren](https://anilist.co/character/176754/Frieren) and accompanies her as a member of her party. She is an orphaned war refugee originally from the Southern Lands, later adopted by  [Heiter](https://anilist.co/character/184310/Heiter) and placed under Frieren\u0027s care.",
+        "gender": "Female",
+        "age": null,
+        "bloodType": null,
+        "dateOfBirth": {
+          "year": null,
+          "month": null,
+          "day": null
+        },
+        "favourites": 8634,
+        "isFavourite": false,
+        "siteUrl": "https://anilist.co/character/183965",
+        "media": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 154587,
+                "title": {
+                  "romaji": "Sousou no Frieren",
+                  "english": "Frieren: Beyond Journey\u2019s End",
+                  "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx154587-qQTzQnEJJ3oB.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx154587-qQTzQnEJJ3oB.jpg"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 91,
+                "favourites": 55905,
+                "popularity": 477293,
+                "startDate": {
+                  "year": 2023,
+                  "month": 9,
+                  "day": 29
+                },
+                "mediaListEntry": {
+                  "id": 540974122,
+                  "status": "COMPLETED",
+                  "progress": 28,
+                  "score": 10
+                }
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 124390,
+                  "name": {
+                    "full": "Kana Ichinose",
+                    "native": "\u5E02\u30CE\u702C\u52A0\u90A3",
+                    "userPreferred": "Kana Ichinose"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n124390-03LHel2XSFel.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n124390-03LHel2XSFel.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 1534
+                },
+                {
+                  "id": 120733,
+                  "name": {
+                    "full": "Jill Harris",
+                    "native": null,
+                    "userPreferred": "Jill Harris"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/120733-oXxfxrusFmps.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/120733-oXxfxrusFmps.jpg"
+                  },
+                  "languageV2": "English",
+                  "favourites": 205
+                },
+                {
+                  "id": 350481,
+                  "name": {
+                    "full": "Yeong Yu",
+                    "native": "\uC720\uC601",
+                    "userPreferred": "Yeong Yu"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n350481-DoQemdwLRToD.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n350481-DoQemdwLRToD.png"
+                  },
+                  "languageV2": "Korean",
+                  "favourites": 0
+                },
+                {
+                  "id": 172670,
+                  "name": {
+                    "full": "Agnese Marteddu",
+                    "native": null,
+                    "userPreferred": "Agnese Marteddu"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n172670-tePMCHl99gTw.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n172670-tePMCHl99gTw.png"
+                  },
+                  "languageV2": "Italian",
+                  "favourites": 9
+                },
+                {
+                  "id": 234058,
+                  "name": {
+                    "full": "Azucena Estrada",
+                    "native": "Lourdes Azucena Estrada Vicencio",
+                    "userPreferred": "Azucena Estrada"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n234058-lau91n3I3ksS.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n234058-lau91n3I3ksS.png"
+                  },
+                  "languageV2": "Spanish",
+                  "favourites": 4
+                },
+                {
+                  "id": 251138,
+                  "name": {
+                    "full": "Maria Clara Rosis",
+                    "native": null,
+                    "userPreferred": "Maria Clara Rosis"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n251138-TWLgbuRWhWFv.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n251138-TWLgbuRWhWFv.jpg"
+                  },
+                  "languageV2": "Portuguese",
+                  "favourites": 12
+                },
+                {
+                  "id": 317908,
+                  "name": {
+                    "full": "Jehanne Thellier",
+                    "native": null,
+                    "userPreferred": "Jehanne Thellier"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n317908-wXOW1nI2xONo.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n317908-wXOW1nI2xONo.jpg"
+                  },
+                  "languageV2": "French",
+                  "favourites": 2
+                },
+                {
+                  "id": 136572,
+                  "name": {
+                    "full": "Linda F\u00F6lster",
+                    "native": null,
+                    "userPreferred": "Linda F\u00F6lster"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n136572-Ih8Pi8K7z4jT.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n136572-Ih8Pi8K7z4jT.png"
+                  },
+                  "languageV2": "German",
+                  "favourites": 11
+                },
+                {
+                  "id": 324682,
+                  "name": {
+                    "full": "Chutikan Bangdaeng",
+                    "native": "\u0E0A\u0E38\u0E15\u0E34\u0E01\u0E32\u0E0D\u0E08\u0E19\u0E4C \u0E1A\u0E32\u0E07\u0E41\u0E14\u0E07",
+                    "userPreferred": "Chutikan Bangdaeng"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n324682-lz05LwA8a660.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n324682-lz05LwA8a660.jpg"
+                  },
+                  "languageV2": "Thai",
+                  "favourites": 1
+                },
+                {
+                  "id": 334181,
+                  "name": {
+                    "full": "Hana Triana",
+                    "native": null,
+                    "userPreferred": "Hana Triana"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n334181-VW0ccp2Pmdav.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n334181-VW0ccp2Pmdav.jpg"
+                  },
+                  "languageV2": "Indonesian",
+                  "favourites": 0
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 182255,
+                "title": {
+                  "romaji": "Sousou no Frieren 2nd Season",
+                  "english": "Frieren: Beyond Journey\u2019s End Season 2",
+                  "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \u7B2C2\u671F"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx182255-butzrqd4I0aC.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx182255-butzrqd4I0aC.jpg"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 88,
+                "favourites": 8779,
+                "popularity": 222753,
+                "startDate": {
+                  "year": 2026,
+                  "month": 1,
+                  "day": 16
+                },
+                "mediaListEntry": {
+                  "id": 540973986,
+                  "status": "COMPLETED",
+                  "progress": 10,
+                  "score": 9
+                }
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 124390,
+                  "name": {
+                    "full": "Kana Ichinose",
+                    "native": "\u5E02\u30CE\u702C\u52A0\u90A3",
+                    "userPreferred": "Kana Ichinose"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n124390-03LHel2XSFel.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n124390-03LHel2XSFel.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 1534
+                },
+                {
+                  "id": 120733,
+                  "name": {
+                    "full": "Jill Harris",
+                    "native": null,
+                    "userPreferred": "Jill Harris"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/120733-oXxfxrusFmps.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/120733-oXxfxrusFmps.jpg"
+                  },
+                  "languageV2": "English",
+                  "favourites": 205
+                },
+                {
+                  "id": 350481,
+                  "name": {
+                    "full": "Yeong Yu",
+                    "native": "\uC720\uC601",
+                    "userPreferred": "Yeong Yu"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n350481-DoQemdwLRToD.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n350481-DoQemdwLRToD.png"
+                  },
+                  "languageV2": "Korean",
+                  "favourites": 0
+                },
+                {
+                  "id": 172670,
+                  "name": {
+                    "full": "Agnese Marteddu",
+                    "native": null,
+                    "userPreferred": "Agnese Marteddu"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n172670-tePMCHl99gTw.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n172670-tePMCHl99gTw.png"
+                  },
+                  "languageV2": "Italian",
+                  "favourites": 9
+                },
+                {
+                  "id": 251138,
+                  "name": {
+                    "full": "Maria Clara Rosis",
+                    "native": null,
+                    "userPreferred": "Maria Clara Rosis"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n251138-TWLgbuRWhWFv.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n251138-TWLgbuRWhWFv.jpg"
+                  },
+                  "languageV2": "Portuguese",
+                  "favourites": 12
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 118586,
+                "title": {
+                  "romaji": "Sousou no Frieren",
+                  "english": "Frieren: Beyond Journey\u2019s End",
+                  "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx118586-CXKgWikBFQgS.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx118586-CXKgWikBFQgS.jpg"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "RELEASING",
+                "averageScore": 87,
+                "favourites": 8121,
+                "popularity": 85007,
+                "startDate": {
+                  "year": 2020,
+                  "month": 4,
+                  "day": 28
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 170068,
+                "title": {
+                  "romaji": "Sousou no Frieren: \u25CF\u25CF no Mahou",
+                  "english": null,
+                  "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \uFF5E\u25CF\u25CF\u306E\u9B54\u6CD5\uFF5E"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx170068-ijY3tCP8KoWP.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx170068-ijY3tCP8KoWP.jpg"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 73,
+                "favourites": 111,
+                "popularity": 10838,
+                "startDate": {
+                  "year": 2023,
+                  "month": 10,
+                  "day": 11
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 124390,
+                  "name": {
+                    "full": "Kana Ichinose",
+                    "native": "\u5E02\u30CE\u702C\u52A0\u90A3",
+                    "userPreferred": "Kana Ichinose"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n124390-03LHel2XSFel.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n124390-03LHel2XSFel.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 1534
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 189513,
+                "title": {
+                  "romaji": "Sousou no Frieren: \u25CF\u25CF no Mahou Part 2",
+                  "english": null,
+                  "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \uFF5E\u25CF\u25CF\u306E\u9B54\u6CD5\uFF5E 2\u30AF\u30FC\u30EB"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx189513-1R9Sryve0K53.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx189513-1R9Sryve0K53.png"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 71,
+                "favourites": 68,
+                "popularity": 4494,
+                "startDate": {
+                  "year": 2025,
+                  "month": 4,
+                  "day": 2
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "SUPPORTING",
+              "voiceActors": [
+                {
+                  "id": 124390,
+                  "name": {
+                    "full": "Kana Ichinose",
+                    "native": "\u5E02\u30CE\u702C\u52A0\u90A3",
+                    "userPreferred": "Kana Ichinose"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n124390-03LHel2XSFel.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n124390-03LHel2XSFel.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 1534
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 206425,
+                "title": {
+                  "romaji": "Sousou no Frieren: \u25CF\u25CF no Mahou Part 3",
+                  "english": null,
+                  "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \uFF5E\u25CF\u25CF\u306E\u9B54\u6CD5\uFF5E 3\u30AF\u30FC\u30EB"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b206425-WOwXsfDbHZwb.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b206425-WOwXsfDbHZwb.jpg"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "status": "RELEASING",
+                "averageScore": 69,
+                "favourites": 26,
+                "popularity": 2216,
+                "startDate": {
+                  "year": 2026,
+                  "month": 1,
+                  "day": 19
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 124390,
+                  "name": {
+                    "full": "Kana Ichinose",
+                    "native": "\u5E02\u30CE\u702C\u52A0\u90A3",
+                    "userPreferred": "Kana Ichinose"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n124390-03LHel2XSFel.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n124390-03LHel2XSFel.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 1534
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 173310,
+                "title": {
+                  "romaji": "Sousou no Frieren Anthology",
+                  "english": null,
+                  "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \u30A2\u30F3\u30BD\u30ED\u30B8"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx173310-IWXoTriCztvp.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx173310-IWXoTriCztvp.jpg"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "averageScore": 67,
+                "favourites": 22,
+                "popularity": 1594,
+                "startDate": {
+                  "year": 2023,
+                  "month": 12,
+                  "day": 18
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "SUPPORTING",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 179850,
+                "title": {
+                  "romaji": "Shousetsu Sousou no Frieren ~Zensou\uFF5E",
+                  "english": "Frieren: Beyond Journey\u2019s End ~Prelude~",
+                  "native": "\u5C0F\u8AAC \u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3\u3000\uFF5E\u524D\u594F\uFF5E"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx179850-zraVuNgk4XCI.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx179850-zraVuNgk4XCI.jpg"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "averageScore": 62,
+                "favourites": 19,
+                "popularity": 647,
+                "startDate": {
+                  "year": 2024,
+                  "month": 4,
+                  "day": 17
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": []
+            }
+          ]
+        }
+      }
+    }
+  }
+}

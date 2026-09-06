@@ -1,0 +1,533 @@
+﻿{
+  "operationName": "MediaRecommendationsPage",
+  "variables": {
+    "id": 154587,
+    "page": 2,
+    "sort": [
+      "RATING_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "4c3bbb02d06d",
+  "recordedAt": "2026-09-06T05:37:44.8140084+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "recommendations": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 2
+          },
+          "nodes": [
+            {
+              "rating": 44,
+              "mediaRecommendation": {
+                "id": 113717,
+                "title": {
+                  "romaji": "Ousama Ranking",
+                  "english": "Ranking of Kings",
+                  "native": "\u738B\u69D8\u30E9\u30F3\u30AD\u30F3\u30B0"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx113717-9sNnN8WRgK15.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx113717-9sNnN8WRgK15.jpg"
+                },
+                "averageScore": 83,
+                "mediaListEntry": {
+                  "id": 593364435,
+                  "status": "COMPLETED",
+                  "progress": 23,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 43,
+              "mediaRecommendation": {
+                "id": 186052,
+                "title": {
+                  "romaji": "Mizu Zokusei no Mahou Tsukai",
+                  "english": "The Water Magician",
+                  "native": "\u6C34\u5C5E\u6027\u306E\u9B54\u6CD5\u4F7F\u3044"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx186052-zq8h0Qo0O0sP.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx186052-zq8h0Qo0O0sP.jpg"
+                },
+                "averageScore": 70,
+                "mediaListEntry": {
+                  "id": 593364569,
+                  "status": "COMPLETED",
+                  "progress": 12,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 42,
+              "mediaRecommendation": {
+                "id": 207,
+                "title": {
+                  "romaji": "Lodoss-tou Senki",
+                  "english": "Record of Lodoss War",
+                  "native": "\u30ED\u30FC\u30C9\u30B9\u5CF6\u6226\u8A18"
+                },
+                "format": "OVA",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx207-B2lxEFGigYgd.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx207-B2lxEFGigYgd.png"
+                },
+                "averageScore": 70,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 41,
+              "mediaRecommendation": {
+                "id": 387,
+                "title": {
+                  "romaji": "Haibane Renmei",
+                  "english": "Haibane Renmei",
+                  "native": "\u7070\u7FBD\u9023\u76DF"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx387-dS4aJivu0zPB.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx387-dS4aJivu0zPB.png"
+                },
+                "averageScore": 80,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 41,
+              "mediaRecommendation": {
+                "id": 151514,
+                "title": {
+                  "romaji": "Chi. Chikyuu no Undou ni Tsuite",
+                  "english": "Orb: On the Movements of the Earth",
+                  "native": "\u30C1\u3002-\u5730\u7403\u306E\u904B\u52D5\u306B\u3064\u3044\u3066-"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx151514-Y0d82Ah2ZOHX.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx151514-Y0d82Ah2ZOHX.jpg"
+                },
+                "averageScore": 86,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 38,
+              "mediaRecommendation": {
+                "id": 190143,
+                "title": {
+                  "romaji": "Shunkashuutou Daikousha: Haru no Mai",
+                  "english": "Agents of the Four Seasons: Dance of Spring",
+                  "native": "\u6625\u590F\u79CB\u51AC\u4EE3\u884C\u8005 \u6625\u306E\u821E"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx190143-IqqbkMAF0GOo.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx190143-IqqbkMAF0GOo.jpg"
+                },
+                "averageScore": 76,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 33,
+              "mediaRecommendation": {
+                "id": 21428,
+                "title": {
+                  "romaji": "Hai to Gensou no Grimgar",
+                  "english": "Grimgar of Fantasy and Ash",
+                  "native": "\u7070\u3068\u5E7B\u60F3\u306E\u30B0\u30EA\u30E0\u30AC\u30EB"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21428-dFVIHeZ8McBe.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21428-dFVIHeZ8McBe.jpg"
+                },
+                "averageScore": 74,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 31,
+              "mediaRecommendation": {
+                "id": 108268,
+                "title": {
+                  "romaji": "Honzuki no Gekokujou: Shisho ni Naru Tame ni wa Shudan wo Erandeiraremasen",
+                  "english": "Ascendance of a Bookworm",
+                  "native": "\u672C\u597D\u304D\u306E\u4E0B\u524B\u4E0A \u53F8\u66F8\u306B\u306A\u308B\u305F\u3081\u306B\u306F\u624B\u6BB5\u3092\u9078\u3093\u3067\u3044\u3089\u308C\u307E\u305B\u3093"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx108268-Dtt82uOi3vq5.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx108268-Dtt82uOi3vq5.jpg"
+                },
+                "averageScore": 78,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 30,
+              "mediaRecommendation": {
+                "id": 98707,
+                "title": {
+                  "romaji": "Houseki no Kuni",
+                  "english": "Land of the Lustrous",
+                  "native": "\u5B9D\u77F3\u306E\u56FD"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx98707-25nUKb4XUFgY.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx98707-25nUKb4XUFgY.png"
+                },
+                "averageScore": 83,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 28,
+              "mediaRecommendation": {
+                "id": 143085,
+                "title": {
+                  "romaji": "Saihate no Paladin: Tetsusabi no Yama no Ou",
+                  "english": "The Faraway Paladin: The Lord of Rust Mountains",
+                  "native": "\u6700\u679C\u3066\u306E\u30D1\u30E9\u30C7\u30A3\u30F3 \u9244\u9306\u306E\u5C71\u306E\u738B"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx143085-caK1SekQLfss.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx143085-caK1SekQLfss.jpg"
+                },
+                "averageScore": 73,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 28,
+              "mediaRecommendation": {
+                "id": 178869,
+                "title": {
+                  "romaji": "Clevatess: Majuu no Ou to Akago to Kabane no Yuusha",
+                  "english": "Clevatess",
+                  "native": "\u30AF\u30EC\u30D0\u30C6\u30B9-\u9B54\u7363\u306E\u738B\u3068\u8D64\u5B50\u3068\u5C4D\u306E\u52C7\u8005-"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx178869-qiEz0gQD8H5N.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx178869-qiEz0gQD8H5N.png"
+                },
+                "averageScore": 77,
+                "mediaListEntry": {
+                  "id": 593364574,
+                  "status": "COMPLETED",
+                  "progress": 12,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 26,
+              "mediaRecommendation": {
+                "id": 20770,
+                "title": {
+                  "romaji": "Akatsuki no Yona",
+                  "english": "Yona of the Dawn",
+                  "native": "\u6681\u306E\u30E8\u30CA"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20770-brCDvhTXlums.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20770-brCDvhTXlums.png"
+                },
+                "averageScore": 79,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 25,
+              "mediaRecommendation": {
+                "id": 146065,
+                "title": {
+                  "romaji": "Mushoku Tensei II: Isekai Ittara Honki Dasu",
+                  "english": "Mushoku Tensei: Jobless Reincarnation Season 2",
+                  "native": "\u7121\u8077\u8EE2\u751F\u2161 \uFF5E\u7570\u4E16\u754C\u884C\u3063\u305F\u3089\u672C\u6C17\u3060\u3059\uFF5E"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx146065-IjirxRK26O03.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx146065-IjirxRK26O03.png"
+                },
+                "averageScore": 81,
+                "mediaListEntry": {
+                  "id": 593234680,
+                  "status": "COMPLETED",
+                  "progress": 13,
+                  "score": 10
+                }
+              }
+            },
+            {
+              "rating": 25,
+              "mediaRecommendation": {
+                "id": 11061,
+                "title": {
+                  "romaji": "HUNTER\u00D7HUNTER (2011)",
+                  "english": "Hunter x Hunter (2011)",
+                  "native": "HUNTER\u00D7HUNTER (2011)"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx11061-y5gsT1hoHuHw.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx11061-y5gsT1hoHuHw.png"
+                },
+                "averageScore": 89,
+                "mediaListEntry": {
+                  "id": 593364053,
+                  "status": "COMPLETED",
+                  "progress": 148,
+                  "score": 7
+                }
+              }
+            },
+            {
+              "rating": 24,
+              "mediaRecommendation": {
+                "id": 185514,
+                "title": {
+                  "romaji": "Champignon no Majo",
+                  "english": "Champignon Witch",
+                  "native": "\u30B7\u30E3\u30F3\u30D4\u30CB\u30AA\u30F3\u306E\u9B54\u5973"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx185514-mfJqhtz22l1Z.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx185514-mfJqhtz22l1Z.jpg"
+                },
+                "averageScore": 66,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 22,
+              "mediaRecommendation": {
+                "id": 98448,
+                "title": {
+                  "romaji": "Kino no Tabi -the Beautiful World- the Animated Series",
+                  "english": "Kino\u0027s Journey -the Beautiful World- the Animated Series",
+                  "native": "\u30AD\u30CE\u306E\u65C5 -the Beautiful World- the Animated Series"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx98448-OdfxrjAhkYvp.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx98448-OdfxrjAhkYvp.jpg"
+                },
+                "averageScore": 73,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 22,
+              "mediaRecommendation": {
+                "id": 5341,
+                "title": {
+                  "romaji": "Ookami to Koushinryou II",
+                  "english": "Spice and Wolf II",
+                  "native": "\u72FC\u3068\u9999\u8F9B\u6599II"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx5341-gyp5OZ1NYPxi.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx5341-gyp5OZ1NYPxi.jpg"
+                },
+                "averageScore": 81,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 21,
+              "mediaRecommendation": {
+                "id": 136430,
+                "title": {
+                  "romaji": "VINLAND SAGA SEASON 2",
+                  "english": "Vinland Saga Season 2",
+                  "native": "\u30F4\u30A3\u30F3\u30E9\u30F3\u30C9\u30FB\u30B5\u30AC SEASON2"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx136430-gsBsJjA7hGh9.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx136430-gsBsJjA7hGh9.jpg"
+                },
+                "averageScore": 88,
+                "mediaListEntry": {
+                  "id": 593364536,
+                  "status": "COMPLETED",
+                  "progress": 24,
+                  "score": 9
+                }
+              }
+            },
+            {
+              "rating": 19,
+              "mediaRecommendation": {
+                "id": 128546,
+                "title": {
+                  "romaji": "Vivy: Fluorite Eye\u2019s Song",
+                  "english": "Vivy -Fluorite Eye\u0027s Song-",
+                  "native": "Vivy -Fluorite Eye\u2019s Song-"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx128546-UIwyhuhjxmL0.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx128546-UIwyhuhjxmL0.jpg"
+                },
+                "averageScore": 82,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 19,
+              "mediaRecommendation": {
+                "id": 138565,
+                "title": {
+                  "romaji": "Fumetsu no Anata e Season 2",
+                  "english": "To Your Eternity Season 2",
+                  "native": "\u4E0D\u6EC5\u306E\u3042\u306A\u305F\u3078 Season 2"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx138565-JzvDqH84ILzi.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx138565-JzvDqH84ILzi.png"
+                },
+                "averageScore": 80,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 18,
+              "mediaRecommendation": {
+                "id": 130550,
+                "title": {
+                  "romaji": "Totsukuni no Shoujo (2022)",
+                  "english": "The Girl from the Other Side",
+                  "native": "\u3068\u3064\u304F\u306B\u306E\u5C11\u5973 (2022)"
+                },
+                "format": "OVA",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx130550-TNuuHlL1BIMZ.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx130550-TNuuHlL1BIMZ.jpg"
+                },
+                "averageScore": 75,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 18,
+              "mediaRecommendation": {
+                "id": 534,
+                "title": {
+                  "romaji": "Slayers",
+                  "english": "The Slayers",
+                  "native": "\u30B9\u30EC\u30A4\u30E4\u30FC\u30BA"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx534-BPGH9zsSFPm3.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx534-BPGH9zsSFPm3.png"
+                },
+                "averageScore": 74,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 18,
+              "mediaRecommendation": {
+                "id": 157371,
+                "title": {
+                  "romaji": "Bye Bye, Earth",
+                  "english": "Bye Bye, Earth",
+                  "native": "\u3070\u3044\u3070\u3044\u3001\u30A2\u30FC\u30B9"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx157371-PisPkeSNP9HL.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx157371-PisPkeSNP9HL.jpg"
+                },
+                "averageScore": 59,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 18,
+              "mediaRecommendation": {
+                "id": 180675,
+                "title": {
+                  "romaji": "Apocalypse Hotel",
+                  "english": "Apocalypse Hotel",
+                  "native": "\u30A2\u30DD\u30AB\u30EA\u30D7\u30B9\u30DB\u30C6\u30EB"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx180675-YEwsxiMsnyvL.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx180675-YEwsxiMsnyvL.png"
+                },
+                "averageScore": 80,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 17,
+              "mediaRecommendation": {
+                "id": 162669,
+                "title": {
+                  "romaji": "Fumetsu no Anata e Season 3",
+                  "english": "To Your Eternity Season 3",
+                  "native": "\u4E0D\u6EC5\u306E\u3042\u306A\u305F\u3078 Season 3"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx162669-FLYUTftoXgMh.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx162669-FLYUTftoXgMh.jpg"
+                },
+                "averageScore": 74,
+                "mediaListEntry": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

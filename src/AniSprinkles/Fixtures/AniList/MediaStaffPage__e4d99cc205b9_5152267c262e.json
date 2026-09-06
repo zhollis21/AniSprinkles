@@ -1,0 +1,73 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 85476,
+    "page": 1,
+    "sort": [
+      "ROLE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:27:33.9802759+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 118548,
+                "name": {
+                  "full": "Hikaru Suruga",
+                  "native": "\u99FF\u6CB3\u30D2\u30AB\u30EB",
+                  "userPreferred": "Hikaru Suruga"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Art"
+            },
+            {
+              "node": {
+                "id": 106705,
+                "name": {
+                  "full": "Hajime Isayama",
+                  "native": "\u8AEB\u5C71\u5275",
+                  "userPreferred": "Hajime Isayama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n106705-ttS2qZpF2FTZ.jpg"
+                },
+                "favourites": 6839
+              },
+              "role": "Original Creator"
+            },
+            {
+              "node": {
+                "id": 118549,
+                "name": {
+                  "full": "Gan Sunaaku",
+                  "native": "\u7802\u963F\u4E45\u96C1",
+                  "userPreferred": "Gan Sunaaku"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Story"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

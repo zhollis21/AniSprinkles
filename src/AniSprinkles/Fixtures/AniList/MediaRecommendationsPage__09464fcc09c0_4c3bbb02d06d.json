@@ -1,0 +1,503 @@
+﻿{
+  "operationName": "MediaRecommendationsPage",
+  "variables": {
+    "id": 85470,
+    "page": 1,
+    "sort": [
+      "RATING_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "4c3bbb02d06d",
+  "recordedAt": "2026-09-06T05:26:20.6137582+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "recommendations": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "nodes": [
+            {
+              "rating": 125,
+              "mediaRecommendation": {
+                "id": 85737,
+                "title": {
+                  "romaji": "Re:Zero kara Hajimeru Isekai Seikatsu",
+                  "english": "Re:ZERO -Starting Life in Another World-",
+                  "native": "Re:\u30BC\u30ED\u304B\u3089\u59CB\u3081\u308B\u7570\u4E16\u754C\u751F\u6D3B"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx85737-WkWOr5EgwPyo.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx85737-WkWOr5EgwPyo.jpg"
+                },
+                "averageScore": 88,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 38,
+              "mediaRecommendation": {
+                "id": 86238,
+                "title": {
+                  "romaji": "Kono Subarashii Sekai ni Shukufuku wo!",
+                  "english": "Konosuba: God\u0027s Blessing on This Wonderful World!",
+                  "native": "\u3053\u306E\u7D20\u6674\u3089\u3057\u3044\u4E16\u754C\u306B\u795D\u798F\u3092!"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx86238-PvTZXUWWg2gd.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx86238-PvTZXUWWg2gd.jpg"
+                },
+                "averageScore": 84,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 31,
+              "mediaRecommendation": {
+                "id": 97450,
+                "title": {
+                  "romaji": "Saihate no Paladin",
+                  "english": "The Faraway Paladin",
+                  "native": "\u6700\u679C\u3066\u306E\u30D1\u30E9\u30C7\u30A3\u30F3"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx97450-hEDlw0INs6lY.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx97450-hEDlw0INs6lY.jpg"
+                },
+                "averageScore": 75,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 22,
+              "mediaRecommendation": {
+                "id": 86406,
+                "title": {
+                  "romaji": "Kumo desu ga, Nani ka?",
+                  "english": "So I\u0027m a Spider, So What?",
+                  "native": "\u8718\u86DB\u3067\u3059\u304C\u3001\u306A\u306B\u304B\uFF1F"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx86406-S22SQO8s6OOY.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx86406-S22SQO8s6OOY.jpg"
+                },
+                "averageScore": 83,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 18,
+              "mediaRecommendation": {
+                "id": 119987,
+                "title": {
+                  "romaji": "Orc Eiyuu Monogatari: Sontaku Retsuden",
+                  "english": "Orc Eroica: Conjecture Chronicles",
+                  "native": "\u30AA\u30FC\u30AF\u82F1\u96C4\u7269\u8A9E \u5FD6\u5EA6\u5217\u4F1D"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx119987-okCzARyBL17C.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx119987-okCzARyBL17C.jpg"
+                },
+                "averageScore": 63,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 14,
+              "mediaRecommendation": {
+                "id": 107604,
+                "title": {
+                  "romaji": "Sekai Saikou no Ansatsusha, Isekai Kizoku ni Tensei suru",
+                  "english": "The World\u0027s Finest Assassin Gets Reincarnated in Another World as an Aristocrat",
+                  "native": "\u4E16\u754C\u6700\u9AD8\u306E\u6697\u6BBA\u8005\u3001\u7570\u4E16\u754C\u8CB4\u65CF\u306B\u8EE2\u751F\u3059\u308B"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx107604-6b2J0cDgoTVg.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx107604-6b2J0cDgoTVg.jpg"
+                },
+                "averageScore": 73,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 11,
+              "mediaRecommendation": {
+                "id": 86365,
+                "title": {
+                  "romaji": "Hai to Gensou no Grimgar",
+                  "english": "Grimgar of Fantasy and Ash",
+                  "native": "\u7070\u3068\u5E7B\u60F3\u306E\u30B0\u30EA\u30E0\u30AC\u30EB"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx86365-1H3Lp87JUnxr.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx86365-1H3Lp87JUnxr.jpg"
+                },
+                "averageScore": 80,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 9,
+              "mediaRecommendation": {
+                "id": 86355,
+                "title": {
+                  "romaji": "Tensei Shitara Slime Datta Ken",
+                  "english": "That Time I Got Reincarnated as a Slime",
+                  "native": "\u8EE2\u751F\u3057\u305F\u3089\u30B9\u30E9\u30A4\u30E0\u3060\u3063\u305F\u4EF6"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx86355-pGwmLqVTwwE4.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx86355-pGwmLqVTwwE4.jpg"
+                },
+                "averageScore": 84,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 8,
+              "mediaRecommendation": {
+                "id": 85743,
+                "title": {
+                  "romaji": "Tate no Yuusha no Nariagari",
+                  "english": "The Rising of the Shield Hero",
+                  "native": "\u76FE\u306E\u52C7\u8005\u306E\u6210\u308A\u4E0A\u304C\u308A"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx85743-CoWEORg0SS0B.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx85743-CoWEORg0SS0B.png"
+                },
+                "averageScore": 74,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 8,
+              "mediaRecommendation": {
+                "id": 110800,
+                "title": {
+                  "romaji": "Honzuki no Gekokujou: Shisho ni Naru Tame ni wa Shudan wo Erandeiraremasen Dai 2-bu - Shinden no Miko Minarai",
+                  "english": "Ascendance of a Bookworm: Part 2",
+                  "native": "\u672C\u597D\u304D\u306E\u4E0B\u524B\u4E0A~\u53F8\u66F8\u306B\u306A\u308B\u305F\u3081\u306B\u306F\u624B\u6BB5\u3092\u9078\u3093\u3067\u3044\u3089\u308C\u307E\u305B\u3093~ \u7B2C\u4E8C\u90E8\u300C\u795E\u6BBF\u306E\u5DEB\u5973\u898B\u7FD2\u3044\u300D"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx110800-buaDMQpwzfds.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx110800-buaDMQpwzfds.jpg"
+                },
+                "averageScore": 86,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 8,
+              "mediaRecommendation": {
+                "id": 113869,
+                "title": {
+                  "romaji": "Honzuki no Gekokujou: Shisho ni Naru Tame ni wa Shudan wo Erandeiraremasen Dai 5-bu - Megami no Keshin",
+                  "english": "Ascendance of a Bookworm: Part 5",
+                  "native": "\u672C\u597D\u304D\u306E\u4E0B\u524B\u4E0A\uFF5E\u53F8\u66F8\u306B\u306A\u308B\u305F\u3081\u306B\u306F\u624B\u6BB5\u3092\u9078\u3093\u3067\u3044\u3089\u308C\u307E\u305B\u3093\uFF5E\u7B2C\u4E94\u90E8\u300C\u5973\u795E\u306E\u5316\u8EAB\u300D"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx113869-S4RyCDWsc0n9.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx113869-S4RyCDWsc0n9.jpg"
+                },
+                "averageScore": 89,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 7,
+              "mediaRecommendation": {
+                "id": 119352,
+                "title": {
+                  "romaji": "Leadale no Daichi nite",
+                  "english": "In the Land of Leadale",
+                  "native": "\u30EA\u30A2\u30C7\u30A4\u30EB\u306E\u5927\u5730\u306B\u3066"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx119352-B1GSoRVrFAA3.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx119352-B1GSoRVrFAA3.jpg"
+                },
+                "averageScore": 74,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 5,
+              "mediaRecommendation": {
+                "id": 94846,
+                "title": {
+                  "romaji": "Youjo Senki",
+                  "english": "The Saga of Tanya the Evil",
+                  "native": "\u5E7C\u5973\u6226\u8A18"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx94846-qN2CTFtRRo4h.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx94846-qN2CTFtRRo4h.jpg"
+                },
+                "averageScore": 82,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 4,
+              "mediaRecommendation": {
+                "id": 87383,
+                "title": {
+                  "romaji": "Honzuki no Gekokujou: Shisho ni Naru Tame ni wa Shudan wo Erandeiraremasen Dai 1-bu - Heishi no Musume",
+                  "english": "Ascendance of a Bookworm: Part 1",
+                  "native": "\u672C\u597D\u304D\u306E\u4E0B\u524B\u4E0A ~\u53F8\u66F8\u306B\u306A\u308B\u305F\u3081\u306B\u306F\u624B\u6BB5\u3092\u9078\u3093\u3067\u3044\u3089\u308C\u307E\u305B\u3093~ \u7B2C\u4E00\u90E8\u300C\u5175\u58EB\u306E\u5A18\u300D"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx87383-0pZpv5P19QsX.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx87383-0pZpv5P19QsX.jpg"
+                },
+                "averageScore": 85,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 4,
+              "mediaRecommendation": {
+                "id": 129883,
+                "title": {
+                  "romaji": "Hell Mode: Yarikomi-zuki no Gamer wa Haisettei no Isekai de Musou Suru",
+                  "english": "Hell Mode: The Hardcore Gamer Dominates in Another World with Garbage Balancing",
+                  "native": "\u30D8\u30EB\u30E2\u30FC\u30C9 \uFF5E\u3084\u308A\u8FBC\u307F\u597D\u304D\u306E\u30B2\u30FC\u30DE\u30FC\u306F\u5EC3\u8A2D\u5B9A\u306E\u7570\u4E16\u754C\u3067\u7121\u53CC\u3059\u308B\uFF5E"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx129883-59lIhEZFQGrj.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx129883-59lIhEZFQGrj.jpg"
+                },
+                "averageScore": 67,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 4,
+              "mediaRecommendation": {
+                "id": 100461,
+                "title": {
+                  "romaji": "Isekai Nonbiri Nouka",
+                  "english": null,
+                  "native": "\u7570\u4E16\u754C\u306E\u3093\u3073\u308A\u8FB2\u5BB6"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx100461-M6ibvIsJbZeD.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx100461-M6ibvIsJbZeD.jpg"
+                },
+                "averageScore": 64,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 4,
+              "mediaRecommendation": {
+                "id": 137910,
+                "title": {
+                  "romaji": "Ningen Fushin no Boukensha-tachi ga Sekai wo Sukuu you desu",
+                  "english": "Apparently, Disillusioned Adventurers Will Save the World",
+                  "native": "\u4EBA\u9593\u4E0D\u4FE1\u306E\u5192\u967A\u8005\u305F\u3061\u304C\u4E16\u754C\u3092\u6551\u3046\u3088\u3046\u3067\u3059"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx137910-1uw7LV9oBTIC.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx137910-1uw7LV9oBTIC.png"
+                },
+                "averageScore": null,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 4,
+              "mediaRecommendation": {
+                "id": 85162,
+                "title": {
+                  "romaji": "Dungeon ni Deai wo Motomeru no wa Machigatteiru Darou ka",
+                  "english": "Is It Wrong to Try to Pick Up Girls in a Dungeon?",
+                  "native": "\u30C0\u30F3\u30B8\u30E7\u30F3\u306B\u51FA\u4F1A\u3044\u3092\u6C42\u3081\u308B\u306E\u306F\u9593\u9055\u3063\u3066\u3044\u308B\u3060\u308D\u3046\u304B"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx85162-Fpd3ejAlFWP8.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx85162-Fpd3ejAlFWP8.jpg"
+                },
+                "averageScore": 81,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 3,
+              "mediaRecommendation": {
+                "id": 110802,
+                "title": {
+                  "romaji": "Honzuki no Gekokujou: Shisho ni Naru Tame ni wa Shudan wo Erandeiraremasen Dai 4-bu - Kizoku-in no Jishou Tosho Iin",
+                  "english": "Ascendance of a Bookworm: Part 4",
+                  "native": "\u672C\u597D\u304D\u306E\u4E0B\u524B\u4E0A~\u53F8\u66F8\u306B\u306A\u308B\u305F\u3081\u306B\u306F\u624B\u6BB5\u3092\u9078\u3093\u3067\u3044\u3089\u308C\u307E\u305B\u3093~\u7B2C\u56DB\u90E8\u300C\u8CB4\u65CF\u9662\u306E\u81EA\u79F0\u56F3\u66F8\u59D4\u54E1\u300D"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx110802-fWMPC3swaE7w.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx110802-fWMPC3swaE7w.jpg"
+                },
+                "averageScore": 88,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 3,
+              "mediaRecommendation": {
+                "id": 138762,
+                "title": {
+                  "romaji": "Ryuu Kusari No Ori: Kokoro No Uchi No \u0022Kokoro\u0022",
+                  "english": null,
+                  "native": "\u9F8D\u9396\u306E\u30AA\u30EA-\u5FC3\u306E\u4E2D\u306E\u201C\u3053\u3053\u308D\u0022-"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx138762-uRh8u6Drwz1n.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx138762-uRh8u6Drwz1n.jpg"
+                },
+                "averageScore": 68,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 3,
+              "mediaRecommendation": {
+                "id": 113784,
+                "title": {
+                  "romaji": "Murazukuri Game no NPC ga Namami no Ningen to shika Omoenai",
+                  "english": "The NPCs in this Village Sim Game Must Be Real!",
+                  "native": "\u6751\u3065\u304F\u308A\u30B2\u30FC\u30E0\u306ENPC\u304C\u751F\u8EAB\u306E\u4EBA\u9593\u3068\u3057\u304B\u601D\u3048\u306A\u3044"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx113784-qkFJTMYenW1f.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx113784-qkFJTMYenW1f.jpg"
+                },
+                "averageScore": 62,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 3,
+              "mediaRecommendation": {
+                "id": 87320,
+                "title": {
+                  "romaji": "Goblin Slayer",
+                  "english": "Goblin Slayer!",
+                  "native": "\u30B4\u30D6\u30EA\u30F3\u30B9\u30EC\u30A4\u30E4\u30FC"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx87320-Q7A3KfMPykcm.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx87320-Q7A3KfMPykcm.jpg"
+                },
+                "averageScore": 75,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 3,
+              "mediaRecommendation": {
+                "id": 85494,
+                "title": {
+                  "romaji": "Re:Monster",
+                  "english": null,
+                  "native": "Re:Monster"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx85494-yDzxO2JZhXiE.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx85494-yDzxO2JZhXiE.jpg"
+                },
+                "averageScore": 66,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 3,
+              "mediaRecommendation": {
+                "id": 142687,
+                "title": {
+                  "romaji": "Yuusha Kei ni Shosu: Choubatsu Yuusha 9004-tai Keimu Kiroku",
+                  "english": "Sentenced to Be a Hero",
+                  "native": "\u52C7\u8005\u5211\u306B\u51E6\u3059 \u61F2\u7F70\u52C7\u80059004\u968A\u5211\u52D9\u8A18\u9332"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx142687-BFy2lofGgPKx.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx142687-BFy2lofGgPKx.jpg"
+                },
+                "averageScore": 63,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 2,
+              "mediaRecommendation": {
+                "id": 115947,
+                "title": {
+                  "romaji": "Rebuild World",
+                  "english": "Rebuild World",
+                  "native": "\u30EA\u30D3\u30EB\u30C9\u30EF\u30FC\u30EB\u30C9"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx115947-WT1nCpMzaEF7.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx115947-WT1nCpMzaEF7.png"
+                },
+                "averageScore": 78,
+                "mediaListEntry": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,428 @@
+﻿{
+  "operationName": "MediaCharactersPage",
+  "variables": {
+    "id": 101165,
+    "page": 1,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "64eed76a7328",
+  "recordedAt": "2026-09-06T05:25:26.345961+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "characters": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 126458,
+                "name": {
+                  "full": "Goblin Slayer",
+                  "native": "\u30B4\u30D6\u30EA\u30F3\u30B9\u30EC\u30A4\u30E4\u30FC",
+                  "userPreferred": "Goblin Slayer"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b126458-wCulCEFEPZSK.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b126458-wCulCEFEPZSK.png"
+                },
+                "favourites": 3662
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 36309,
+                "name": {
+                  "full": "Narrator",
+                  "native": "\u30CA\u30EC\u30FC\u30BF\u30FC",
+                  "userPreferred": "Narrator"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b36309-6KM0riV4lqfN.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b36309-6KM0riV4lqfN.jpg"
+                },
+                "favourites": 2336
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 126484,
+                "name": {
+                  "full": "Ushikai Musume",
+                  "native": "\u725B\u98FC\u5A18",
+                  "userPreferred": "Ushikai Musume"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/126484-izE4ON548jnn.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/126484-izE4ON548jnn.jpg"
+                },
+                "favourites": 1718
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 126457,
+                "name": {
+                  "full": "Yousei Yunde",
+                  "native": "\u5996\u7CBE\u5F13\u624B",
+                  "userPreferred": "Yousei Yunde"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b126457-leHoOLIOZy2a.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b126457-leHoOLIOZy2a.png"
+                },
+                "favourites": 1300
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 126483,
+                "name": {
+                  "full": "Onna Shinkan",
+                  "native": "\u5973\u795E\u5B98",
+                  "userPreferred": "Onna Shinkan"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b126483-NQuBqaXHUJO2.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b126483-NQuBqaXHUJO2.jpg"
+                },
+                "favourites": 1108
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 126485,
+                "name": {
+                  "full": "Uketsuke-jou",
+                  "native": "\u53D7\u4ED8\u5B22",
+                  "userPreferred": "Uketsuke-jou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/126485-2zo57ux4EMeC.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/126485-2zo57ux4EMeC.jpg"
+                },
+                "favourites": 556
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 129080,
+                "name": {
+                  "full": "Tsurugi no Otome",
+                  "native": "\u5263\u306E\u4E59\u5973",
+                  "userPreferred": "Tsurugi no Otome"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b129080-zTT3T3jUnBya.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b129080-zTT3T3jUnBya.png"
+                },
+                "favourites": 541
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 126486,
+                "name": {
+                  "full": "Majo",
+                  "native": "\u9B54\u5973",
+                  "userPreferred": "Majo"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/n126486-e0DjNT3rBOT7.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/n126486-e0DjNT3rBOT7.png"
+                },
+                "favourites": 463
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 126487,
+                "name": {
+                  "full": "Tokage Souryo",
+                  "native": "\u8725\u8734\u50E7\u4FB6",
+                  "userPreferred": "Tokage Souryo"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/n126487-TErPQ7ADCryW.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/n126487-TErPQ7ADCryW.jpg"
+                },
+                "favourites": 213
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 128254,
+                "name": {
+                  "full": "Kouhito Doushi",
+                  "native": "\u9271\u4EBA\u9053\u58EB",
+                  "userPreferred": "Kouhito Doushi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/n128254-6x8qS52q9Q0n.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/n128254-6x8qS52q9Q0n.jpg"
+                },
+                "favourites": 133
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 126488,
+                "name": {
+                  "full": "Yaritsukai",
+                  "native": "\u69CD\u4F7F\u3044",
+                  "userPreferred": "Yaritsukai"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/n126488-fW2f7wryREzj.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/n126488-fW2f7wryREzj.jpg"
+                },
+                "favourites": 46
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 131819,
+                "name": {
+                  "full": "Onna Kishi",
+                  "native": "\u5973\u9A0E\u58EB",
+                  "userPreferred": "Onna Kishi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b131819-ciC7jlbevxx4.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b131819-ciC7jlbevxx4.png"
+                },
+                "favourites": 46
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 131821,
+                "name": {
+                  "full": "Goblin Slayer no Ane",
+                  "native": "\u30B4\u30D6\u30EA\u30F3\u30B9\u30EC\u30A4\u30E4\u30FC\u306E\u59C9",
+                  "userPreferred": "Goblin Slayer no Ane"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b131821-sN5YazHPcWE6.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b131821-sN5YazHPcWE6.png"
+                },
+                "favourites": 26
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 131808,
+                "name": {
+                  "full": "Minarai Seishokusha",
+                  "native": "\u898B\u7FD2\u3044\u8056\u8077\u8005",
+                  "userPreferred": "Minarai Seishokusha"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/n131808-oZTRwGOy7pqt.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/n131808-oZTRwGOy7pqt.jpg"
+                },
+                "favourites": 24
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 132632,
+                "name": {
+                  "full": "Goblins",
+                  "native": "\u30B4\u30D6\u30EA\u30F3",
+                  "userPreferred": "Goblins"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/n132632-rHa6hK46MzYb.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/n132632-rHa6hK46MzYb.jpg"
+                },
+                "favourites": 24
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 131810,
+                "name": {
+                  "full": "Yuusha",
+                  "native": "\u52C7\u8005",
+                  "userPreferred": "Yuusha"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/n131810-15s8G2ZXn6nj.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/n131810-15s8G2ZXn6nj.png"
+                },
+                "favourites": 22
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 131812,
+                "name": {
+                  "full": "Omoi Kenshi",
+                  "native": "\u91CD\u3044\u5263\u58EB",
+                  "userPreferred": "Omoi Kenshi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/n131812-4mY1CxbvGqka.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/n131812-4mY1CxbvGqka.jpg"
+                },
+                "favourites": 21
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 134323,
+                "name": {
+                  "full": "Kantoku-kan",
+                  "native": "\u76E3\u7763\u5B98",
+                  "userPreferred": "Kantoku-kan"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/n134323-cgKSmSGZbJvj.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/n134323-cgKSmSGZbJvj.png"
+                },
+                "favourites": 20
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 131815,
+                "name": {
+                  "full": "Butouka",
+                  "native": "\u6B66\u95D8\u5BB6",
+                  "userPreferred": "Butouka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b131815-ePm4XKSq9b2U.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b131815-ePm4XKSq9b2U.png"
+                },
+                "favourites": 19
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 131817,
+                "name": {
+                  "full": "Mahoutsukai",
+                  "native": "\u9B54\u6CD5\u4F7F\u3044",
+                  "userPreferred": "Mahoutsukai"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b131817-OPZc4EBqu9LH.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b131817-OPZc4EBqu9LH.png"
+                },
+                "favourites": 17
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 132710,
+                "name": {
+                  "full": "Shoujo Fujutsushi",
+                  "native": "\u5C11\u5973\u5DEB\u8853\u5E2B",
+                  "userPreferred": "Shoujo Fujutsushi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/n132710-bZNp9XpbHaML.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/n132710-bZNp9XpbHaML.jpg"
+                },
+                "favourites": 17
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 131816,
+                "name": {
+                  "full": "Hitojichi Yousei Teisatsu",
+                  "native": "\u4EBA\u8CEA\u5996\u7CBE\u5075\u5BDF",
+                  "userPreferred": "Hitojichi Yousei Teisatsu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/n131816-4rnnnkJl6w6r.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/n131816-4rnnnkJl6w6r.jpg"
+                },
+                "favourites": 11
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 131820,
+                "name": {
+                  "full": "Shoshinsha Senshi",
+                  "native": "\u521D\u5FC3\u8005\u6226\u58EB",
+                  "userPreferred": "Shoshinsha Senshi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/n131820-pPZHnlbfNsam.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/n131820-pPZHnlbfNsam.jpg"
+                },
+                "favourites": 7
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 132708,
+                "name": {
+                  "full": "Goblin Lord",
+                  "native": "\u30B4\u30D6\u30EA\u30F3\u30ED\u30FC\u30C9",
+                  "userPreferred": "Goblin Lord"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/n132708-dMkPZ6c81ESI.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/n132708-dMkPZ6c81ESI.jpg"
+                },
+                "favourites": 5
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 131809,
+                "name": {
+                  "full": "Kajiya",
+                  "native": "\u935B\u51B6\u5C4B",
+                  "userPreferred": "Kajiya"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/n131809-ItViBoLkdOMd.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/n131809-ItViBoLkdOMd.jpg"
+                },
+                "favourites": 4
+              },
+              "role": "SUPPORTING"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

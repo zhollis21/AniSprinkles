@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 178788,
+    "page": 1,
+    "sort": [
+      "ROLE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:24:01.2692445+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 130063,
+                "name": {
+                  "full": "Yuuichi Terao",
+                  "native": "\u5BFA\u5C3E\u512A\u4E00",
+                  "userPreferred": "Yuuichi Terao"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n130063-BhxRFJllYuI7.jpg"
+                },
+                "favourites": 66
+              },
+              "role": " Finishing Unit Direction Director"
+            },
+            {
+              "node": {
+                "id": 121212,
+                "name": {
+                  "full": "Mayu Fujimoto",
+                  "native": "\u85E4\u672C\u771F\u7531",
+                  "userPreferred": "Mayu Fujimoto"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/121212-KAeAYv8iSKT5.jpg"
+                },
+                "favourites": 7
+              },
+              "role": "1st Key Assistant Animation Director"
+            },
+            {
+              "node": {
+                "id": 146728,
+                "name": {
+                  "full": "Youko Kajiyama",
+                  "native": "\u68B6\u5C71\u5EB8\u5B50",
+                  "userPreferred": "Youko Kajiyama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n146728-SCLHr6f0n4Tz.png"
+                },
+                "favourites": 7
+              },
+              "role": "1st Key Assistant Animation Director"
+            },
+            {
+              "node": {
+                "id": 149168,
+                "name": {
+                  "full": "Minami Takemura",
+                  "native": "\u7AF9\u6751\u5357",
+                  "userPreferred": "Minami Takemura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "1st Key Assistant Animation Director"
+            },
+            {
+              "node": {
+                "id": 183350,
+                "name": {
+                  "full": "Aya Hanzawa",
+                  "native": "\u534A\u6FA4\u5F69",
+                  "userPreferred": "Aya Hanzawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "1st Key Assistant Animation Director"
+            },
+            {
+              "node": {
+                "id": 183352,
+                "name": {
+                  "full": "Akane Okabe",
+                  "native": "\u5CA1\u90E8\u831C",
+                  "userPreferred": "Akane Okabe"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n183352-LVQlkQcWYMCR.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "1st Key Assistant Animation Director"
+            },
+            {
+              "node": {
+                "id": 183363,
+                "name": {
+                  "full": "Yukiko Saijou",
+                  "native": "\u897F\u689D\u7531\u5E0C\u5B50",
+                  "userPreferred": "Yukiko Saijou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n183363-hMprX5tgy4jL.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "1st Key Assistant Animation Director"
+            },
+            {
+              "node": {
+                "id": 183469,
+                "name": {
+                  "full": "Yuuka Kawashima",
+                  "native": "\u5DDD\u5D8B\u512A\u9999",
+                  "userPreferred": "Yuuka Kawashima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n183469-30do3KjhzN1O.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "1st Key Assistant Animation Director"
+            },
+            {
+              "node": {
+                "id": 186263,
+                "name": {
+                  "full": "Ikumi Fukumoto",
+                  "native": "\u798F\u672C\u90C1\u672A",
+                  "userPreferred": "Ikumi Fukumoto"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "1st Key Assistant Animation Director"
+            },
+            {
+              "node": {
+                "id": 226214,
+                "name": {
+                  "full": "Madoka Kumagai",
+                  "native": "\u718A\u8C37\u307E\u3069\u304B",
+                  "userPreferred": "Madoka Kumagai"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "1st Key Assistant Animation Director"
+            },
+            {
+              "node": {
+                "id": 216362,
+                "name": {
+                  "full": "Tushar Pandey",
+                  "native": null,
+                  "userPreferred": "Tushar Pandey"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n216362-QCruzWzZ0oCY.jpg"
+                },
+                "favourites": 3
+              },
+              "role": "2nd Key Animation"
+            },
+            {
+              "node": {
+                "id": 183553,
+                "name": {
+                  "full": "Gouchuu Satou",
+                  "native": "\u4F50\u85E4\u53F7\u5B99",
+                  "userPreferred": "Gouchuu Satou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n183553-ZLWfzPzomc2i.png"
+                },
+                "favourites": 0
+              },
+              "role": "3DCG"
+            },
+            {
+              "node": {
+                "id": 176921,
+                "name": {
+                  "full": "Jo\u00E3o Victor Granja",
+                  "native": "Jo\u00E3o Victor Granja do Nascimento",
+                  "userPreferred": "Jo\u00E3o Victor Granja"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n176921-mmoCQhhaW0kT.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "ADR Director (Brazilian Portuguese)"
+            },
+            {
+              "node": {
+                "id": 157943,
+                "name": {
+                  "full": "Luca Semeraro",
+                  "native": null,
+                  "userPreferred": "Luca Semeraro"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n157943-aFBeDOdrA36Y.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "ADR Director (Italian)"
+            },
+            {
+              "node": {
+                "id": 234666,
+                "name": {
+                  "full": "Attilio Casati",
+                  "native": null,
+                  "userPreferred": "Attilio Casati"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "ADR Mixing Engineer (Italian)"
+            },
+            {
+              "node": {
+                "id": 322651,
+                "name": {
+                  "full": "Paolo Ceriani",
+                  "native": null,
+                  "userPreferred": "Paolo Ceriani"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "ADR Recording Engineer (Italian)"
+            },
+            {
+              "node": {
+                "id": 167596,
+                "name": {
+                  "full": "Simone Lupinacci",
+                  "native": null,
+                  "userPreferred": "Simone Lupinacci"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n167596-xNNQ9uP2qmlg.png"
+                },
+                "favourites": 15
+              },
+              "role": "ADR Script (Italian)"
+            },
+            {
+              "node": {
+                "id": 99006,
+                "name": {
+                  "full": "Haruo Sotozaki",
+                  "native": "\u5916\u5D0E\u6625\u96C4",
+                  "userPreferred": "Haruo Sotozaki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n99006-NuAjczMqcL3W.jpg"
+                },
+                "favourites": 67
+              },
+              "role": "Animation Director"
+            },
+            {
+              "node": {
+                "id": 103115,
+                "name": {
+                  "full": "Chiyoko Ueno",
+                  "native": "\u690D\u91CE\u5343\u4E16\u5B50",
+                  "userPreferred": "Chiyoko Ueno"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n103115-KnVjh6ggSlog.jpg"
+                },
+                "favourites": 17
+              },
+              "role": "Animation Director"
+            },
+            {
+              "node": {
+                "id": 105933,
+                "name": {
+                  "full": "Yukiko Ishibashi",
+                  "native": "\u77F3\u6A4B\u6709\u5E0C\u5B50",
+                  "userPreferred": "Yukiko Ishibashi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n105933-ZZQmdSmseINV.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Animation Director"
+            },
+            {
+              "node": {
+                "id": 107166,
+                "name": {
+                  "full": "Teiichi Takiguchi",
+                  "native": "\u6EDD\u53E3\u798E\u4E00",
+                  "userPreferred": "Teiichi Takiguchi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n107166-tSE16SC8umqT.png"
+                },
+                "favourites": 10
+              },
+              "role": "Animation Director"
+            },
+            {
+              "node": {
+                "id": 118383,
+                "name": {
+                  "full": "Tomonori Sudou",
+                  "native": "\u9808\u85E4\u53CB\u5FB3",
+                  "userPreferred": "Tomonori Sudou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n118383-O5GDTkryYuJm.png"
+                },
+                "favourites": 52
+              },
+              "role": "Animation Director"
+            },
+            {
+              "node": {
+                "id": 119808,
+                "name": {
+                  "full": "Akira Matsushima",
+                  "native": "\u677E\u5CF6\u6643",
+                  "userPreferred": "Akira Matsushima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n119808-61yB4qZ8gvPf.png"
+                },
+                "favourites": 87
+              },
+              "role": "Animation Director"
+            },
+            {
+              "node": {
+                "id": 120896,
+                "name": {
+                  "full": "Toshiyuki Shirai",
+                  "native": "\u767D\u4E95\u4FCA\u884C",
+                  "userPreferred": "Toshiyuki Shirai"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n120896-LgjPVWmyJPaO.png"
+                },
+                "favourites": 59
+              },
+              "role": "Animation Director"
+            },
+            {
+              "node": {
+                "id": 124353,
+                "name": {
+                  "full": "Masato Nagamori",
+                  "native": "\u6C38\u68EE\u96C5\u4EBA",
+                  "userPreferred": "Masato Nagamori"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n124353-uF2ifddYuhyc.png"
+                },
+                "favourites": 2
+              },
+              "role": "Animation Director"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 21,
+    "page": 1,
+    "sort": [
+      "RELEVANCE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:24:15.7974469+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 96881,
+                "name": {
+                  "full": "Eiichirou Oda",
+                  "native": "\u5C3E\u7530\u6804\u4E00\u90CE",
+                  "userPreferred": "Eiichirou Oda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n96881-Cyv6wFJxpDw7.png"
+                },
+                "favourites": 13111
+              },
+              "role": "Original Creator"
+            },
+            {
+              "node": {
+                "id": 100162,
+                "name": {
+                  "full": "Kounosuke Uda",
+                  "native": "\u5B87\u7530\u92FC\u4E4B\u4ECB",
+                  "userPreferred": "Kounosuke Uda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100162-JuVs6OqdYknv.png"
+                },
+                "favourites": 41
+              },
+              "role": "Director (eps 1-278)"
+            },
+            {
+              "node": {
+                "id": 103798,
+                "name": {
+                  "full": "Kazuya Hisada",
+                  "native": "\u4E45\u7530\u548C\u4E5F",
+                  "userPreferred": "Kazuya Hisada"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n103798-LdEfvPnDnoWo.png"
+                },
+                "favourites": 22
+              },
+              "role": "Character Design (eps 385-891)"
+            },
+            {
+              "node": {
+                "id": 102679,
+                "name": {
+                  "full": "Noboru Koizumi",
+                  "native": "\u5C0F\u6CC9\u6607",
+                  "userPreferred": "Noboru Koizumi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n102679-vtVFFvIUzvsy.png"
+                },
+                "favourites": 11
+              },
+              "role": "Character Design (eps 1-425)"
+            },
+            {
+              "node": {
+                "id": 101596,
+                "name": {
+                  "full": "Masahiro Gotou",
+                  "native": "\u5F8C\u85E4\u6B63\u6D69",
+                  "userPreferred": "Masahiro Gotou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101596-2Lr3xZ2xBnGU.png"
+                },
+                "favourites": 6
+              },
+              "role": "Editing (eps 204-345)"
+            },
+            {
+              "node": {
+                "id": 101055,
+                "name": {
+                  "full": "Kouhei Tanaka",
+                  "native": "\u7530\u4E2D\u516C\u5E73",
+                  "userPreferred": "Kouhei Tanaka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101055-3QNbr0raaApy.jpg"
+                },
+                "favourites": 201
+              },
+              "role": "Music"
+            },
+            {
+              "node": {
+                "id": 102689,
+                "name": {
+                  "full": "Shirou Hamaguchi",
+                  "native": "\u6D5C\u53E3\u53F2\u90CE",
+                  "userPreferred": "Shirou Hamaguchi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/7689.jpg"
+                },
+                "favourites": 42
+              },
+              "role": "Music"
+            },
+            {
+              "node": {
+                "id": 111779,
+                "name": {
+                  "full": "Hiroshi Kitadani",
+                  "native": "\u304D\u305F\u3060\u306B\u3072\u308D\u3057",
+                  "userPreferred": "Hiroshi Kitadani"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n111779-AOuFPUXTcETb.jpg"
+                },
+                "favourites": 87
+              },
+              "role": "Theme Song Performance (OP1, OP15, OP22, OP26)"
+            },
+            {
+              "node": {
+                "id": 104523,
+                "name": {
+                  "full": "Bon Bon Blanco",
+                  "native": "\u30DC\u30F3\u30DC\u30F3\u30D6\u30E9\u30F3\u30B3",
+                  "userPreferred": "Bon Bon Blanco"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n104523-nAbKXEXcU5Ds.png"
+                },
+                "favourites": 1
+              },
+              "role": "Theme Song Performance (OP4)"
+            },
+            {
+              "node": {
+                "id": 122478,
+                "name": {
+                  "full": "Tomohiro Nakayama",
+                  "native": "\u4E2D\u5C71\u667A\u5F18",
+                  "userPreferred": "Tomohiro Nakayama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Script"
+            },
+            {
+              "node": {
+                "id": 100163,
+                "name": {
+                  "full": "Junki Takegami",
+                  "native": "\u6B66\u4E0A\u7D14\u5E0C",
+                  "userPreferred": "Junki Takegami"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100163-gyQMbVmrXDsY.png"
+                },
+                "favourites": 6
+              },
+              "role": "Script"
+            },
+            {
+              "node": {
+                "id": 122441,
+                "name": {
+                  "full": "Jin Tanaka",
+                  "native": "\u7530\u4E2D\u4EC1",
+                  "userPreferred": "Jin Tanaka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 7
+              },
+              "role": "Script"
+            },
+            {
+              "node": {
+                "id": 100165,
+                "name": {
+                  "full": "Ryouta Yamaguchi",
+                  "native": "\u5C71\u53E3\u4EAE\u592A",
+                  "userPreferred": "Ryouta Yamaguchi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100165-fjyEWHG6kzmn.png"
+                },
+                "favourites": 8
+              },
+              "role": "Script"
+            },
+            {
+              "node": {
+                "id": 100170,
+                "name": {
+                  "full": "Yoshiyuki Suga",
+                  "native": "\u83C5\u826F\u5E78",
+                  "userPreferred": "Yoshiyuki Suga"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100170-znhdDCa8kmcd.png"
+                },
+                "favourites": 6
+              },
+              "role": "Script"
+            },
+            {
+              "node": {
+                "id": 101823,
+                "name": {
+                  "full": "Daisuke Nishio",
+                  "native": "\u897F\u5C3E\u5927\u4ECB",
+                  "userPreferred": "Daisuke Nishio"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101823-qvTzxofo7G48.png"
+                },
+                "favourites": 11
+              },
+              "role": "Episode Director"
+            },
+            {
+              "node": {
+                "id": 101934,
+                "name": {
+                  "full": "Katsumi Tokoro",
+                  "native": "\u6240\u52DD\u7F8E",
+                  "userPreferred": "Katsumi Tokoro"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101934-HqWGfix59vCz.jpg"
+                },
+                "favourites": 3
+              },
+              "role": "Episode Director (eps 50, 161, 171, 179, 189, 204, 212, 221, 226, 235, 242, 249, 269, 297, 305, 312, 323, 332, 340, 346, 355, 389, 396, 400, 409, 416, 421, 428, 434, 441, 450, 456, 464, 475, 485, 494, 502, 508, 516, 525, 535, 574, 586, 632, 637, 645, 652)"
+            },
+            {
+              "node": {
+                "id": 115058,
+                "name": {
+                  "full": "Junji Shimizu",
+                  "native": "\u5FD7\u6C34\u6DF3\u5150",
+                  "userPreferred": "Junji Shimizu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n115058-nyYPKXvuQ3XF.png"
+                },
+                "favourites": 3
+              },
+              "role": "Episode Director"
+            },
+            {
+              "node": {
+                "id": 103698,
+                "name": {
+                  "full": "Yukio Kaizawa",
+                  "native": "\u8C9D\u6FA4\u5E78\u7537",
+                  "userPreferred": "Yukio Kaizawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n103698-JikZfa4IVWNN.png"
+                },
+                "favourites": 10
+              },
+              "role": "Episode Director"
+            },
+            {
+              "node": {
+                "id": 105377,
+                "name": {
+                  "full": "Harume Kosaka",
+                  "native": "\u5C0F\u5742\u6625\u5973",
+                  "userPreferred": "Harume Kosaka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n105377-v3nbBWRcFIu6.png"
+                },
+                "favourites": 5
+              },
+              "role": "Episode Director"
+            },
+            {
+              "node": {
+                "id": 100162,
+                "name": {
+                  "full": "Kounosuke Uda",
+                  "native": "\u5B87\u7530\u92FC\u4E4B\u4ECB",
+                  "userPreferred": "Kounosuke Uda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100162-JuVs6OqdYknv.png"
+                },
+                "favourites": 41
+              },
+              "role": "Episode Director"
+            },
+            {
+              "node": {
+                "id": 132478,
+                "name": {
+                  "full": "Hiroaki Miyamoto",
+                  "native": "\u5BAE\u5143\u5B8F\u5F70",
+                  "userPreferred": "Hiroaki Miyamoto"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n132478-PaxxL5ijiFYz.jpg"
+                },
+                "favourites": 5
+              },
+              "role": "Episode Director"
+            },
+            {
+              "node": {
+                "id": 104171,
+                "name": {
+                  "full": "Atsuko Kawamura",
+                  "native": "\u5DDD\u6751\u6566\u5B50",
+                  "userPreferred": "Atsuko Kawamura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Animation Director"
+            },
+            {
+              "node": {
+                "id": 103815,
+                "name": {
+                  "full": "Katsumi Ishizuka",
+                  "native": "\u77F3\u585A\u52DD\u6D77",
+                  "userPreferred": "Katsumi Ishizuka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n103815-8NrEBoEBJvFr.jpg"
+                },
+                "favourites": 65
+              },
+              "role": "Animation Director (eps 290, 298, 309, 317, 342, 353, 401, 419, 437, 447, 457, 464, 476, 486, 497, 511, 525, 538, 551, 561, 572, 583, 594, 1062, 1093, 1122, 1125, 1129, 1144)"
+            },
+            {
+              "node": {
+                "id": 102679,
+                "name": {
+                  "full": "Noboru Koizumi",
+                  "native": "\u5C0F\u6CC9\u6607",
+                  "userPreferred": "Noboru Koizumi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n102679-vtVFFvIUzvsy.png"
+                },
+                "favourites": 11
+              },
+              "role": "Animation Director"
+            },
+            {
+              "node": {
+                "id": 103802,
+                "name": {
+                  "full": "Masayuki Takagi",
+                  "native": "\u9AD8\u6728\u96C5\u4E4B",
+                  "userPreferred": "Masayuki Takagi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "Animation Director (eps 118, 133, 139, 145, 151, 173, 180, 186, 191, 198, 204, 287, 294, 301, 308, 316, 324, 332, 389, 397, 405, 415, 423, 432, 441, 449, 458, 469, 480, 531, 546, 556, 564, 574)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

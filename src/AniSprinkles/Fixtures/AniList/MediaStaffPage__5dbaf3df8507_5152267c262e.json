@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 156067,
+    "page": 2,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:38:08.2891749+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 2
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 121293,
+                "name": {
+                  "full": "Yuuki Itou",
+                  "native": "\u4F0A\u85E4\u7950\u6BC5",
+                  "userPreferred": "Yuuki Itou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n121293-Q5NMkmJ3I6FP.jpg"
+                },
+                "favourites": 8
+              },
+              "role": "Episode Director (ep 11)"
+            },
+            {
+              "node": {
+                "id": 121293,
+                "name": {
+                  "full": "Yuuki Itou",
+                  "native": "\u4F0A\u85E4\u7950\u6BC5",
+                  "userPreferred": "Yuuki Itou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n121293-Q5NMkmJ3I6FP.jpg"
+                },
+                "favourites": 8
+              },
+              "role": "Storyboard (ep 11)"
+            },
+            {
+              "node": {
+                "id": 128852,
+                "name": {
+                  "full": "Shigeru Murakoshi",
+                  "native": "\u6751\u8D8A\u7E41",
+                  "userPreferred": "Shigeru Murakoshi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n128852-HOvBVc0XSMM5.png"
+                },
+                "favourites": 8
+              },
+              "role": "Script (eps 6, 7, 11, 12)"
+            },
+            {
+              "node": {
+                "id": 140550,
+                "name": {
+                  "full": "Nao Ootsu",
+                  "native": "\u5927\u6D25\u76F4",
+                  "userPreferred": "Nao Ootsu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n140550-RuLKNMRWHDo4.png"
+                },
+                "favourites": 7
+              },
+              "role": "Assistant Chief Animation Director (eps 6, 9, 10)"
+            },
+            {
+              "node": {
+                "id": 140550,
+                "name": {
+                  "full": "Nao Ootsu",
+                  "native": "\u5927\u6D25\u76F4",
+                  "userPreferred": "Nao Ootsu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n140550-RuLKNMRWHDo4.png"
+                },
+                "favourites": 7
+              },
+              "role": "Chief Animation Director (OP, eps 1-5, 8, 11, 12)"
+            },
+            {
+              "node": {
+                "id": 140550,
+                "name": {
+                  "full": "Nao Ootsu",
+                  "native": "\u5927\u6D25\u76F4",
+                  "userPreferred": "Nao Ootsu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n140550-RuLKNMRWHDo4.png"
+                },
+                "favourites": 7
+              },
+              "role": "Character Design"
+            },
+            {
+              "node": {
+                "id": 161941,
+                "name": {
+                  "full": "Mariko Kawamoto",
+                  "native": "\u5DDD\u5143\u307E\u308A\u3053",
+                  "userPreferred": "Mariko Kawamoto"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n161941-pnepHcEcFhXX.jpg"
+                },
+                "favourites": 7
+              },
+              "role": "Assistant Animation Director (ep 12)"
+            },
+            {
+              "node": {
+                "id": 161941,
+                "name": {
+                  "full": "Mariko Kawamoto",
+                  "native": "\u5DDD\u5143\u307E\u308A\u3053",
+                  "userPreferred": "Mariko Kawamoto"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n161941-pnepHcEcFhXX.jpg"
+                },
+                "favourites": 7
+              },
+              "role": "Cooking Animation Director (eps 8, 10)"
+            },
+            {
+              "node": {
+                "id": 161941,
+                "name": {
+                  "full": "Mariko Kawamoto",
+                  "native": "\u5DDD\u5143\u307E\u308A\u3053",
+                  "userPreferred": "Mariko Kawamoto"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n161941-pnepHcEcFhXX.jpg"
+                },
+                "favourites": 7
+              },
+              "role": "Animation Director (ep 10)"
+            },
+            {
+              "node": {
+                "id": 169274,
+                "name": {
+                  "full": "Takayuki Sano",
+                  "native": "\u4F50\u91CE\u8A89\u5E78",
+                  "userPreferred": "Takayuki Sano"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n169274-J1UKH9NagibP.png"
+                },
+                "favourites": 7
+              },
+              "role": "Storyboard (OP)"
+            },
+            {
+              "node": {
+                "id": 169274,
+                "name": {
+                  "full": "Takayuki Sano",
+                  "native": "\u4F50\u91CE\u8A89\u5E78",
+                  "userPreferred": "Takayuki Sano"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n169274-J1UKH9NagibP.png"
+                },
+                "favourites": 7
+              },
+              "role": "Episode Director (OP)"
+            },
+            {
+              "node": {
+                "id": 169274,
+                "name": {
+                  "full": "Takayuki Sano",
+                  "native": "\u4F50\u91CE\u8A89\u5E78",
+                  "userPreferred": "Takayuki Sano"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n169274-J1UKH9NagibP.png"
+                },
+                "favourites": 7
+              },
+              "role": "Key Animation (OP)"
+            },
+            {
+              "node": {
+                "id": 197594,
+                "name": {
+                  "full": "Andr\u00E9 Rinaldi",
+                  "native": "Andr\u00E9 Augusto Rinaldi",
+                  "userPreferred": "Andr\u00E9 Rinaldi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n197594-quPJBMCFExv6.jpg"
+                },
+                "favourites": 7
+              },
+              "role": "ADR Director (Brazilian Portuguese)"
+            },
+            {
+              "node": {
+                "id": 120544,
+                "name": {
+                  "full": "Tetsuo Hirakawa",
+                  "native": "\u5E73\u5DDD\u54F2\u751F",
+                  "userPreferred": "Tetsuo Hirakawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n120544-zpwCs6psAHcp.png"
+                },
+                "favourites": 6
+              },
+              "role": "Storyboard (ep 9)"
+            },
+            {
+              "node": {
+                "id": 103123,
+                "name": {
+                  "full": "Ryouhei Muta",
+                  "native": "\u725F\u7530\u4EAE\u5E73",
+                  "userPreferred": "Ryouhei Muta"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n103123-DIiw4Q43H75Q.jpg"
+                },
+                "favourites": 5
+              },
+              "role": "Cooking Animation Director (ep 7)"
+            },
+            {
+              "node": {
+                "id": 103123,
+                "name": {
+                  "full": "Ryouhei Muta",
+                  "native": "\u725F\u7530\u4EAE\u5E73",
+                  "userPreferred": "Ryouhei Muta"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n103123-DIiw4Q43H75Q.jpg"
+                },
+                "favourites": 5
+              },
+              "role": "Key Animation (ep 7)"
+            },
+            {
+              "node": {
+                "id": 103970,
+                "name": {
+                  "full": "Zachary Bolton",
+                  "native": null,
+                  "userPreferred": "Zachary Charles Bolton"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/8970.jpg"
+                },
+                "favourites": 5
+              },
+              "role": "ADR Producer (English)"
+            },
+            {
+              "node": {
+                "id": 110747,
+                "name": {
+                  "full": "Kuricorder Quartet",
+                  "native": "\u6817\u30B3\u30FC\u30C0\u30FC\u30AB\u30EB\u30C6\u30C3\u30C8 ",
+                  "userPreferred": "Kuricorder Quartet"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n110747-3eC30GQbQMj1.jpg"
+                },
+                "favourites": 5
+              },
+              "role": "Music"
+            },
+            {
+              "node": {
+                "id": 120742,
+                "name": {
+                  "full": "Kiyoshi Matsuda",
+                  "native": "\u677E\u7530\u6E05",
+                  "userPreferred": "Kiyoshi Matsuda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n120742-FpfRtv10BrAJ.png"
+                },
+                "favourites": 5
+              },
+              "role": "Director"
+            },
+            {
+              "node": {
+                "id": 120742,
+                "name": {
+                  "full": "Kiyoshi Matsuda",
+                  "native": "\u677E\u7530\u6E05",
+                  "userPreferred": "Kiyoshi Matsuda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n120742-FpfRtv10BrAJ.png"
+                },
+                "favourites": 5
+              },
+              "role": "Assistant Animation Director (ep 1)"
+            },
+            {
+              "node": {
+                "id": 120742,
+                "name": {
+                  "full": "Kiyoshi Matsuda",
+                  "native": "\u677E\u7530\u6E05",
+                  "userPreferred": "Kiyoshi Matsuda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n120742-FpfRtv10BrAJ.png"
+                },
+                "favourites": 5
+              },
+              "role": "Episode Director (eps 1, 2, 12)"
+            },
+            {
+              "node": {
+                "id": 120742,
+                "name": {
+                  "full": "Kiyoshi Matsuda",
+                  "native": "\u677E\u7530\u6E05",
+                  "userPreferred": "Kiyoshi Matsuda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n120742-FpfRtv10BrAJ.png"
+                },
+                "favourites": 5
+              },
+              "role": "Storyboard (eps 1, 5, 12)"
+            },
+            {
+              "node": {
+                "id": 140198,
+                "name": {
+                  "full": "Hibiki Yamaguchi",
+                  "native": "\u5C71\u53E3\u3072\u3073\u304D",
+                  "userPreferred": "Hibiki Yamaguchi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n140198-xsBtlIHEXyTW.jpg"
+                },
+                "favourites": 5
+              },
+              "role": "Key Animation (ep 6)"
+            },
+            {
+              "node": {
+                "id": 144313,
+                "name": {
+                  "full": "Alex Mai",
+                  "native": null,
+                  "userPreferred": "Alex Mai"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n144313-Q5bYOCT7DjBb.jpg"
+                },
+                "favourites": 5
+              },
+              "role": "ADR Script (English)"
+            },
+            {
+              "node": {
+                "id": 157006,
+                "name": {
+                  "full": "Takahiro Ogawa",
+                  "native": "\u5C0F\u5DDD\u5D07\u535A",
+                  "userPreferred": "Takahiro Ogawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n157006-LvBrkUdhKNPb.png"
+                },
+                "favourites": 5
+              },
+              "role": "Animation Producer"
+            }
+          ]
+        }
+      }
+    }
+  }
+}
