@@ -313,8 +313,15 @@ jobs:
           # semantic description because it is tied to the tappable chip container;
           # fall back to visible text for platform differences.
           # Usage: tap_studio_chip "Toei Animation" [max_swipes]
+          # The default was 6 and the studio chip fell just past it once the CI build started
+          # replaying real recorded data (#134): the old hand-written fixture gave ONE PIECE three
+          # studios and a short page, the real one has eleven plus real tags, rankings, relations
+          # and links, so the Studios section sits much further down. Five swipes reach it on a
+          # Pixel 9, but this job runs a pixel_7_pro at a different density, where six was marginal
+          # enough to lose the screenshot entirely. Swipes are cheap; a silently missing capture is
+          # not, so the budget is generous rather than exact.
           tap_studio_chip() {
-            local studio="$1" max="${2:-6}" i
+            local studio="$1" max="${2:-14}" i
             for i in $(seq 1 "$max"); do
               adb shell rm -f /sdcard/ui_studio_chip.xml >/dev/null 2>&1 || true
               if adb shell uiautomator dump /sdcard/ui_studio_chip.xml >/dev/null 2>&1 \

@@ -1,6 +1,7 @@
 #if CI
 using System.Net;
 using System.Text;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using AniSprinkles.Services.Fixtures;
 using Microsoft.Extensions.Logging;
@@ -43,7 +44,25 @@ internal sealed class FixtureReplayHandler : HttpMessageHandler
             ? null
             : await request.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
 
-        var parsed = body is null ? null : JsonNode.Parse(body)?.AsObject();
+        // Unreachable in practice — AniListClient serialises this body itself, so it is always valid
+        // JSON and always an object. Guarded anyway because the alternative failure is the wrong
+        // shape entirely: JsonNode.Parse throws JsonException on malformed input and AsObject throws
+        // InvalidOperationException on a non-object, neither of which AniListClient catches. That
+        // would take the capture down with an unhandled exception, when the whole contract of this
+        // handler is that an answer it cannot give is loud and diagnosable rather than fatal.
+        JsonObject? parsed = null;
+        if (body is not null)
+        {
+            try
+            {
+                parsed = JsonNode.Parse(body) as JsonObject;
+            }
+            catch (JsonException ex)
+            {
+                return Miss("<unparseable>", $"the request body was not valid JSON: {ex.Message}");
+            }
+        }
+
         var operationName = parsed?["operationName"]?.GetValue<string>();
 
         if (operationName is null)
