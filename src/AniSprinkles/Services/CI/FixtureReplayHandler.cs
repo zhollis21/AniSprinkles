@@ -130,12 +130,21 @@ internal sealed class FixtureReplayHandler : HttpMessageHandler
     {
         _logger.LogError("FIXTURE MISS {Key} — {Why}", key, why);
 
+        // Serialized rather than interpolated into a JSON template. `why` can carry a
+        // JsonException message, and those embed the offending character in quotes — a body of
+        // `{"a" "b"}` yields `'"' is invalid after a property name`, which pasted raw into a JSON
+        // string literal produces invalid JSON. A diagnostic that can be malformed is the wrong
+        // shape for the one method whose whole job is to stay readable when everything else failed,
+        // so this builds the body the same way Ok() does instead of escaping by hand.
+        var body = new JsonObject
+        {
+            ["errors"] = new JsonArray(
+                new JsonObject { ["message"] = $"FIXTURE MISS {key} - {why}" }),
+        };
+
         return new HttpResponseMessage(HttpStatusCode.InternalServerError)
         {
-            Content = new StringContent(
-                $$"""{"errors":[{"message":"FIXTURE MISS {{key}} - {{why}}"}]}""",
-                Encoding.UTF8,
-                "application/json"),
+            Content = new StringContent(body.ToJsonString(), Encoding.UTF8, "application/json"),
         };
     }
 }
