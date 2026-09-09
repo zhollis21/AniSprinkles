@@ -44,6 +44,18 @@ public sealed class MutationState
     /// </summary>
     private readonly Dictionary<int, int> _mediaIdByEntryId = [];
 
+    /// <summary>
+    /// Media id → the entry <c>SaveMediaListEntry</c> answered with, replayed into later list reads.
+    /// <para>
+    /// Deletes alone are not enough. A save that is not remembered means an added title reports
+    /// success and then vanishes from the next <c>MediaListCollection</c>, and a title moved between
+    /// statuses stays in its old section after the list reloads — the app looks broken for a reason
+    /// that has nothing to do with the app, which is the whole thing <see cref="Apply"/> exists to
+    /// prevent.
+    /// </para>
+    /// </summary>
+    private readonly Dictionary<int, JsonObject> _savedEntriesByMediaId = [];
+
     private readonly JsonObject _viewerOverrides = [];
     private readonly Lock _gate = new();
 
@@ -139,6 +151,7 @@ public sealed class MutationState
         lock (_gate)
         {
             _deletedMediaIds.Remove(mediaId);
+            _savedEntriesByMediaId[mediaId] = (JsonObject)entry.DeepClone();
         }
 
         return Data("SaveMediaListEntry", entry);
@@ -237,11 +250,85 @@ public sealed class MutationState
                         _mediaIdByEntryId[entryId] = mediaId;
                     }
 
-                    if (_deletedMediaIds.Contains(mediaId))
+                    // A saved entry is removed here and re-inserted below, into whichever list its
+                    // new status belongs to. Removing first is what makes a status change a *move*
+                    // rather than a duplicate in two sections.
+                    if (_deletedMediaIds.Contains(mediaId) || _savedEntriesByMediaId.ContainsKey(mediaId))
                     {
                         entries.RemoveAt(i);
                     }
                 }
+            }
+
+            ReinsertSavedEntries(data);
+        }
+    }
+
+    /// <summary>
+    /// Puts each saved entry back into the list its status belongs to — adding it if the recording
+    /// never had it.
+    /// <para>
+    /// The target list is found by looking at what the other entries in each list say their status
+    /// is, rather than by matching list names. Names are the user's, not the API's: the anime list
+    /// is "Watching" where the manga one is "Reading", and either can be renamed or replaced by
+    /// custom lists. The statuses are a fixed enum, so they are the reliable half.
+    /// </para>
+    /// <para>
+    /// An entry whose status has no corresponding list is left out rather than dropped somewhere
+    /// arbitrary — moving a title to Rewatching when the recording has no Rewatching section has no
+    /// right answer, and inventing one would put it under a heading it does not belong to.
+    /// </para>
+    /// </summary>
+    private void ReinsertSavedEntries(JsonNode data)
+    {
+        if (_savedEntriesByMediaId.Count == 0)
+        {
+            return;
+        }
+
+        var lists = data["MediaListCollection"]?["lists"]?.AsArray();
+        if (lists is null)
+        {
+            return;
+        }
+
+        foreach (var (mediaId, saved) in _savedEntriesByMediaId)
+        {
+            if (_deletedMediaIds.Contains(mediaId))
+            {
+                continue;
+            }
+
+            var status = saved["status"]?.GetValue<string>();
+            if (status is null)
+            {
+                continue;
+            }
+
+            foreach (var list in lists)
+            {
+                if (list?["entries"] is not JsonArray entries || entries.Count == 0)
+                {
+                    continue;
+                }
+
+                // Any entry, not just the first: the list's status is a property of the list, but
+                // reading it off one arbitrary element makes the match hostage to whatever happens
+                // to be at index 0 — including an entry that was itself just moved.
+                var listStatus = entries
+                    .Select(e => e?["status"]?.GetValue<string>())
+                    .FirstOrDefault(s => s is not null);
+
+                if (!string.Equals(listStatus, status, StringComparison.Ordinal))
+                {
+                    continue;
+                }
+
+                // Front of the list: the entry was just touched, and a freshly changed title
+                // appearing at the top is both easier to see in a screenshot and closer to what
+                // AniList's own default ordering does with recently updated entries.
+                entries.Insert(0, saved.DeepClone());
+                break;
             }
         }
     }

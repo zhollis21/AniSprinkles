@@ -69,6 +69,87 @@ public class MutationStateTests
         Assert.Contains("\"mediaId\":21", list.ToJsonString(), StringComparison.Ordinal);
     }
 
+    // ── Saves, and what a read shows afterwards ──────────────────────
+
+    [Fact]
+    public void AStatusChange_MovesTheEntryToTheMatchingSection()
+    {
+        // Caught by review, not by the tests above: those only covered delete-then-save for a title
+        // already in the list, which passes without saves being recorded at all. A move needs the
+        // save itself folded into the read, or the title sits in its old section after the reload
+        // and the app looks broken for a reason that is not the app.
+        var state = new MutationState();
+        state.Apply("MediaListCollection", TwoSectionList());
+
+        state.TryAnswer(
+            "SaveMediaListEntry",
+            Vars("""{"mediaId":21,"status":"COMPLETED","progress":1100}"""),
+            NoFixtures,
+            out _);
+
+        var reread = TwoSectionList();
+        state.Apply("MediaListCollection", reread);
+
+        var lists = reread["data"]!["MediaListCollection"]!["lists"]!.AsArray();
+        Assert.DoesNotContain("\"mediaId\":21", lists[0]!.ToJsonString(), StringComparison.Ordinal);
+        Assert.Contains("\"mediaId\":21", lists[1]!.ToJsonString(), StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void ATitleAbsentFromTheRecording_AppearsAfterBeingSaved()
+    {
+        // "Add to List" on an off-list media. Without the save being remembered this reported
+        // success and then the title was simply gone from the next read.
+        var state = new MutationState();
+        state.Apply("MediaListCollection", TwoSectionList());
+
+        state.TryAnswer(
+            "SaveMediaListEntry",
+            Vars("""{"mediaId":99999,"status":"CURRENT","progress":0}"""),
+            NoFixtures,
+            out _);
+
+        var reread = TwoSectionList();
+        state.Apply("MediaListCollection", reread);
+
+        Assert.Contains("\"mediaId\":99999", reread.ToJsonString(), StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void ASavedEntry_IsNotDuplicatedAcrossSections()
+    {
+        // The move is a remove-then-insert, so a bug here shows up as the same title under two
+        // headings rather than as a missing one.
+        var state = new MutationState();
+        state.Apply("MediaListCollection", TwoSectionList());
+
+        state.TryAnswer(
+            "SaveMediaListEntry", Vars("""{"mediaId":21,"status":"COMPLETED"}"""), NoFixtures, out _);
+
+        var reread = TwoSectionList();
+        state.Apply("MediaListCollection", reread);
+
+        var occurrences = reread.ToJsonString().Split("\"mediaId\":21").Length - 1;
+        Assert.Equal(1, occurrences);
+    }
+
+    [Fact]
+    public void ASavedEntryWithNoMatchingSection_IsLeftOutRatherThanMisfiled()
+    {
+        // Nowhere right to put it: the recording has no Rewatching list. Filing it under an
+        // unrelated heading would be worse than its absence, which is at least visible.
+        var state = new MutationState();
+        state.Apply("MediaListCollection", TwoSectionList());
+
+        state.TryAnswer(
+            "SaveMediaListEntry", Vars("""{"mediaId":21,"status":"REPEATING"}"""), NoFixtures, out _);
+
+        var reread = TwoSectionList();
+        state.Apply("MediaListCollection", reread);
+
+        Assert.DoesNotContain("\"mediaId\":21", reread.ToJsonString(), StringComparison.Ordinal);
+    }
+
     // ── Settings round-trip ──────────────────────────────────────────
 
     [Fact]
@@ -144,10 +225,28 @@ public class MutationStateTests
 
     private static JsonNode? Vars(string json) => JsonNode.Parse(json);
 
+    /// <summary>Two sections with distinct statuses, so a move between them is observable.</summary>
+    private static JsonNode TwoSectionList() => JsonNode.Parse("""
+        {"data":{"MediaListCollection":{"lists":[
+          {"name":"Watching","entries":[
+            {"id":1001,"mediaId":21,"status":"CURRENT"},
+            {"id":1002,"mediaId":16498,"status":"CURRENT"}
+          ]},
+          {"name":"Completed","entries":[
+            {"id":1003,"mediaId":5114,"status":"COMPLETED"}
+          ]}
+        ]}}}
+        """)!;
+
+    /// <summary>
+    /// Entries carry <c>status</c> because real <c>MediaListCollection</c> responses do —
+    /// <c>MediaListQuery</c> selects it. Omitting it here made a save look unreplayable when the
+    /// only thing missing was the field the fixture should have had.
+    /// </summary>
     private static JsonNode ListResponse() => JsonNode.Parse("""
         {"data":{"MediaListCollection":{"lists":[{"name":"Watching","entries":[
-          {"id":1001,"mediaId":21},
-          {"id":1002,"mediaId":16498}
+          {"id":1001,"mediaId":21,"status":"CURRENT"},
+          {"id":1002,"mediaId":16498,"status":"CURRENT"}
         ]}]}}}
         """)!;
 
