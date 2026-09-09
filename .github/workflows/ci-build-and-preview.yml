@@ -686,7 +686,15 @@ jobs:
           CHAR_READY=0
           while [ $CHAR_WAIT -lt 15 ]; do
             adb shell uiautomator dump /sdcard/ui_char.xml 2>/dev/null || true
-            if adb shell cat /sdcard/ui_char.xml 2>/dev/null | grep -qi "Voice Actors\|Appears In"; then
+            # "Birthday", not "Voice Actors"/"Appears In". Those sections sit below the fold, and a
+            # uiautomator dump only contains realised nodes — so the marker was never present even
+            # on a perfectly loaded page. Harmless while the capture shot regardless; fatal once the
+            # guard started skipping on it, because a missing screenshot now fails the run.
+            #
+            # Birthday is above the fold on a character page and absent from media details, so it
+            # also distinguishes "arrived" from "the tap missed and we are still on ONE PIECE" —
+            # which is the collision that made the staff marker useless.
+            if adb shell cat /sdcard/ui_char.xml 2>/dev/null | grep -qi "Birthday"; then
               echo "  Character page ready after ${CHAR_WAIT}s"
               CHAR_READY=1
               break
@@ -755,14 +763,17 @@ jobs:
           # leaves the screenshot absent, which is visible; publishing the wrong page is not.
           if goto_tab "Settings"; then
             # Poll for Settings page to finish loading (up to 15s)
-            # "Display Preferences" is a static label always visible once loaded.
+            # "Anime Stats", not "Display Preferences": the latter is real but sits below the fold,
+            # and a uiautomator dump only holds realised nodes — so this timed out on every run and
+            # printed "did not finish loading" for a page that had loaded perfectly well. Anime
+            # Stats renders in the first screenful once the viewer resolves.
             SETTINGS_LOAD_WAIT=0
             while [ $SETTINGS_LOAD_WAIT -lt 15 ]; do
               adb shell uiautomator dump /sdcard/ui_settings_loaded.xml 2>/dev/null || true
               SETTINGS_DUMP=$(adb shell cat /sdcard/ui_settings_loaded.xml 2>/dev/null || echo "")
               if echo "$SETTINGS_DUMP" | grep -q "Loading settings"; then
                 echo "  Still loading settings... (${SETTINGS_LOAD_WAIT}s)"
-              elif echo "$SETTINGS_DUMP" | grep -q "Display Preferences"; then
+              elif echo "$SETTINGS_DUMP" | grep -q "Anime Stats"; then
                 echo "  Settings loaded after ${SETTINGS_LOAD_WAIT}s"
                 sleep 1
                 break
@@ -851,18 +862,25 @@ jobs:
           # details stack, so there is nothing to unwind first.
           if open_search_tab; then
             sleep 1
-            # Tap the field by its hint to guarantee focus before typing. The page focuses it
-            # on appear when empty, but a tap is a cheap belt-and-suspenders for CI.
-            tap_element_by_text "Search all anime..." || true
+            # Tap the field by its hint to guarantee focus before typing. The page focuses it on
+            # appear when empty, so this is belt-and-braces and the tap legitimately fails once
+            # focused (the hint is replaced) — hence `|| true`. The string is the current hint;
+            # it said "Search all anime..." since before manga search existed (#12).
+            tap_element_by_text "Search anime and manga..." || true
             sleep 1
-            # "no" matches five romaji stub titles (Shingeki no Kyojin, Kimi no Na wa, Yakusoku
-            # no Neverland, Hagane no Renkinjutsushi, Kimetsu no Yaiba) so the results list is
-            # full and shows a mix of status pills (and some off-list rows).
-            adb shell input text "no"
+            # "one", not "no". The old stub filtered its fixture list client-side, so "no" matched
+            # five romaji titles; real AniList returns ZERO results for it, and this captured an
+            # empty search every run while the wait below timed out looking for a title that was
+            # never coming. Recorded search terms are "no", "one" and "ka" — of those, "one" and
+            # "ka" actually return results.
+            adb shell input text "one"
             SEARCH_WAIT=0
             while [ $SEARCH_WAIT -lt 12 ]; do
               adb shell uiautomator dump /sdcard/ui_search.xml 2>/dev/null || true
-              if adb shell cat /sdcard/ui_search.xml 2>/dev/null | grep -qi "Shingeki no Kyojin"; then
+              # Waits for the empty-state prompt to GO, rather than for a particular title to
+              # arrive. That is a UI-state signal instead of a fixture-content one, so re-recording
+              # cannot silently invalidate it — which is exactly how the previous marker rotted.
+              if ! adb shell cat /sdcard/ui_search.xml 2>/dev/null | grep -qi "Type at least two characters"; then
                 echo "  Search results ready after ${SEARCH_WAIT}s"
                 break
               fi
