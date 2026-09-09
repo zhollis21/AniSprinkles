@@ -1,0 +1,27 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 178789,
+    "page": 3,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:20:07.7971426+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 3
+          },
+          "edges": []
+        }
+      }
+    }
+  }
+}

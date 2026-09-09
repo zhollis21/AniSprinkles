@@ -1,3 +1,4 @@
+using AniSprinkles.Services.Fixtures;
 using AniSprinkles.Services.Maui;
 using AniSprinkles.Utilities;
 using CommunityToolkit.Maui;
@@ -161,7 +162,19 @@ public static class MauiProgram
             // Pipeline (outermost first): rate-limit gate → logging → [fault] → network. The gate is
             // outermost so each retried attempt still flows through LoggingHandler and gets logged
             // individually.
+#if CI
+            // Recorded AniList responses instead of the network (#134). Innermost, so everything
+            // above it — the rate-limit gate, LoggingHandler, and the whole real AniListClient plus
+            // its caching decorator — runs for real against bytes AniList actually sent. The
+            // CIAniListClient this replaces sat above all of that, which is why a mapping or paging
+            // regression could not fail a CI run.
+            HttpMessageHandler network = new FixtureReplayHandler(
+                sp.GetRequiredService<FixtureStore>(),
+                sp.GetRequiredService<MutationState>(),
+                sp.GetRequiredService<ILogger<FixtureReplayHandler>>());
+#else
             HttpMessageHandler network = new HttpClientHandler();
+#endif
 #if DEBUG
             // Innermost, deliberately: everything above it then treats a synthetic answer exactly as
             // if it had come off the wire, which is what lets AniListRateLimitHandler's Retry-After
@@ -181,8 +194,17 @@ public static class MauiProgram
         });
 #if CI
         builder.Services.AddSingleton<IAuthService, CIAuthService>();
-        builder.Services.AddSingleton<CIAniListClient>();
         builder.Services.AddSingleton<IAiringNotificationService, CIAiringNotificationService>();
+
+        // The fixture replay stack (#134). FixtureStore reads the embedded recordings once;
+        // MutationState is a singleton because it has to remember writes across calls — a deleted
+        // entry must stay gone when the Library is read again.
+        builder.Services.AddSingleton<FixtureStore>();
+        builder.Services.AddSingleton<MutationState>();
+
+        // The real client, in CI too. This is the point of the change: nothing about the app's own
+        // request-building, deserialization, paging or error classification is stubbed any more.
+        builder.Services.AddSingleton<AniListClient>();
 #else
         // Singleton alongside AuthService, which is the only thing that resolves it: TokenStore holds
         // the process-wide token and the gate that single-flights its first read (#119). A transient
@@ -199,13 +221,11 @@ public static class MauiProgram
         // is what ErrorSim's all-methods-throw stub made impossible.
         builder.Services.AddSingleton<IAniListClient>(sp =>
         {
-#if CI
-            IAniListClient client = sp.GetRequiredService<CIAniListClient>();
-#else
+            // One shape for every configuration now (#134): CI differs only in what answers the
+            // HTTP request, which means the caching decorator is exercised in CI rather than skipped.
             IAniListClient client = new CachingAniListClient(
                 sp.GetRequiredService<AniListClient>(),
                 sp.GetRequiredService<ILogger<CachingAniListClient>>());
-#endif
 #if DEBUG
             client = new FaultInjectingAniListClient(
                 client,

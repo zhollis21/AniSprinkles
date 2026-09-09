@@ -3,10 +3,11 @@
 # Screenshots are committed to the screenshots/ folder on the branch and
 # embedded in PR comments using commit-SHA-based URLs for reliable rendering
 #
-# Auth note: The CI build uses compile-time stub services (CIAuthService, CIAniListClient)
-# activated by -p:CiBuild=true. These stubs make the app appear fully authenticated
-# with hardcoded data, so screenshots show the real UI without any OAuth token or
-# GitHub secret. No ANILIST_CI_TOKEN secret is needed.
+# Auth note: The CI build stubs auth (CIAuthService) and answers AniList from responses recorded
+# against a dedicated test account, replayed at the HTTP layer (#134). Both are activated by
+# -p:CiBuild=true. The app is fully authenticated against real data without any OAuth token or
+# GitHub secret, so no ANILIST_CI_TOKEN is needed — and because replay sits below the client, the
+# real AniListClient, its caching decorator and the rate-limit handler all run during a CI capture.
 name: CI Build & UI Preview
 
 on:
@@ -227,7 +228,7 @@ jobs:
     #
     # Flaky captures do not fail the run either way — every "could not find / timed out capturing"
     # path already degrades to ::warning:: and carries on. The seven exit 1 sites are all real
-    # gates: canary marker missing from CIAniListClient.cs, no signed APK, install failed, launcher
+    # gates: canary marker missing from AdultCanary.cs, a FIXTURE MISS in logcat, no signed APK, install failed, launcher
     # activity unresolvable, app window never appeared, and the canary itself.
 
     steps:
@@ -312,8 +313,15 @@ jobs:
           # semantic description because it is tied to the tappable chip container;
           # fall back to visible text for platform differences.
           # Usage: tap_studio_chip "Toei Animation" [max_swipes]
+          # The default was 6 and the studio chip fell just past it once the CI build started
+          # replaying real recorded data (#134): the old hand-written fixture gave ONE PIECE three
+          # studios and a short page, the real one has eleven plus real tags, rankings, relations
+          # and links, so the Studios section sits much further down. Five swipes reach it on a
+          # Pixel 9, but this job runs a pixel_7_pro at a different density, where six was marginal
+          # enough to lose the screenshot entirely. Swipes are cheap; a silently missing capture is
+          # not, so the budget is generous rather than exact.
           tap_studio_chip() {
-            local studio="$1" max="${2:-6}" i
+            local studio="$1" max="${2:-14}" i
             for i in $(seq 1 "$max"); do
               adb shell rm -f /sdcard/ui_studio_chip.xml >/dev/null 2>&1 || true
               if adb shell uiautomator dump /sdcard/ui_studio_chip.xml >/dev/null 2>&1 \
@@ -410,11 +418,12 @@ jobs:
 
           # ---- Adult-content filter gate --------------------------------------------------------
           #
-          # CIAniListClient seeds one fixture flagged IsAdult, titled ADULT_CANARY, into the stub
-          # list and the browse/search results. The stub viewer leaves DisplayAdultContent off and
-          # nothing in this job turns it on, so every surface must filter it out. If it renders, the
-          # adult filter is broken — and the same defect on a real account would be putting real 18+
-          # content in front of a user who asked not to see it. That is worth a red build, not a
+          # AdultCanary splices one synthetic entry flagged isAdult, titled ADULT_CANARY, into the
+          # replayed fixtures (#134) — always into the list, and into browse/search/Discover whenever
+          # the request does not pin isAdult:false. The stub viewer leaves DisplayAdultContent off
+          # and nothing in this job turns it on, so every surface must filter it out. If it renders,
+          # the adult filter is broken — and the same defect on a real account would be putting real
+          # 18+ content in front of a user who asked not to see it. That is worth a red build, not a
           # screenshot somebody might scroll past.
           #
           # The canary carries no adult content itself: the title is a marker and it has no cover
@@ -431,15 +440,20 @@ jobs:
           # ${VAR:-default} because this script runs under `set -u`; the runner exports
           # GITHUB_WORKSPACE, but an unset one would abort the whole capture rather than skip a
           # check. Every other path here is workspace-relative, so "." is the right fallback.
-          CANARY_SOURCE="${GITHUB_WORKSPACE:-.}/src/AniSprinkles/Services/CI/CIAniListClient.cs"
+          CANARY_SOURCE="${GITHUB_WORKSPACE:-.}/src/AniSprinkles.Core/Services/Fixtures/AdultCanary.cs"
           if [ ! -f "$CANARY_SOURCE" ]; then
             echo "::error::Cannot verify the adult-canary marker: $CANARY_SOURCE not found."
             exit 1
           fi
           if ! grep -qF "$ADULT_CANARY" "$CANARY_SOURCE"; then
-            echo "::error::The adult-canary marker '$ADULT_CANARY' no longer appears in CIAniListClient.cs. Either the fixture was renamed (update ADULT_CANARY here to match) or it was removed — until then this gate is checking for a string nothing emits."
+            echo "::error::The adult-canary marker '$ADULT_CANARY' no longer appears in AdultCanary.cs. Either the fixture was renamed (update ADULT_CANARY here to match) or it was removed — until then this gate is checking for a string nothing emits."
             exit 1
           fi
+
+          # A second gate, new with #134: the replay handler answers an unrecorded request with a
+          # loud FIXTURE MISS rather than the empty list the old stubs returned. An empty list is
+          # invisible in a screenshot — a section simply vanishes — which is the whole reason #134
+          # exists. Checked against logcat after the captures, below.
 
           assert_no_adult_canary() {
             local where="$1"
@@ -613,7 +627,10 @@ jobs:
 
           # Screenshot 3: Studio details (Toei Animation). Tap the studio chip in the One Piece
           # quick-info row, capture the Studio Details page, then return to One Piece details.
-          if tap_studio_chip "Toei Animation" 6; then
+          # No explicit swipe count — the default in tap_studio_chip is the single place that
+          # decides, so raising it there actually takes effect. Passing 6 here is what made the
+          # previous attempt at this a no-op.
+          if tap_studio_chip "Toei Animation"; then
             STUDIO_WAIT=0
             STUDIO_READY=0
             while [ $STUDIO_WAIT -lt 15 ]; do
@@ -642,27 +659,65 @@ jobs:
             echo "::warning::Could not tap Toei Animation studio chip — skipping studio screenshot"
           fi
 
-          # Screenshot 4: Character details (Monkey D. Luffy). Scroll the One Piece details page
-          # down to the Characters section and tap Luffy, then capture his page at the TOP so the
-          # hero (portrait, name, stat cards) represents the page.
-          scroll_until_text "Monkey D. Luffy" && tap_element_by_text "Monkey D. Luffy" || echo "::warning::Could not reach Luffy from the details page"
+          # Back to the top of the details page before the next capture goes looking.
+          #
+          # Coming back from the studio page leaves the scroll position down at Studios, and
+          # scroll_until_text only swipes DOWNWARDS — while Characters sits ABOVE Studios. So the
+          # character search could never succeed once the studio capture had run, whatever name it
+          # looked for. That is why fixing the name alone did not bring the screenshot back.
+          for _ in 1 2 3 4 5 6 7 8 9 10; do
+            adb shell input swipe 540 700 540 1900 120 >/dev/null 2>&1 || true
+          done
+          sleep 1
+
+          # Screenshot 4: Character details (Luffy). Scroll the One Piece details page down to the
+          # Characters section and tap Luffy, then capture his page at the TOP so the hero
+          # (portrait, name, stat cards) represents the page.
+          #
+          # The name is "Luffy D. Monkey", not "Monkey D. Luffy": names render from userPreferred,
+          # which AniList resolves against the account's Staff Name Language and returns
+          # family-name-first for Japanese names (#130). The old hand-written fixture mirrored
+          # `full` into `userPreferred` and so read the other way round — this string is coupled to
+          # the recorded data and needs rechecking whenever fixtures are re-recorded.
+          CHARACTER_NAME="Luffy D. Monkey"
+          scroll_until_text "$CHARACTER_NAME" && tap_element_by_text "$CHARACTER_NAME" || echo "::warning::Could not reach $CHARACTER_NAME from the details page"
 
           CHAR_WAIT=0
+          CHAR_READY=0
           while [ $CHAR_WAIT -lt 15 ]; do
             adb shell uiautomator dump /sdcard/ui_char.xml 2>/dev/null || true
-            if adb shell cat /sdcard/ui_char.xml 2>/dev/null | grep -qi "Voice Actors\|Appears In"; then
+            # "Birthday", not "Voice Actors"/"Appears In". Those sections sit below the fold, and a
+            # uiautomator dump only contains realised nodes — so the marker was never present even
+            # on a perfectly loaded page. Harmless while the capture shot regardless; fatal once the
+            # guard started skipping on it, because a missing screenshot now fails the run.
+            #
+            # Birthday is above the fold on a character page and absent from media details, so it
+            # also distinguishes "arrived" from "the tap missed and we are still on ONE PIECE" —
+            # which is the collision that made the staff marker useless.
+            if adb shell cat /sdcard/ui_char.xml 2>/dev/null | grep -qi "Birthday"; then
               echo "  Character page ready after ${CHAR_WAIT}s"
+              CHAR_READY=1
               break
             fi
             sleep 1
             CHAR_WAIT=$((CHAR_WAIT + 1))
           done
-          # Slightly longer settle: the hero portrait is a large remote image captured early in
-          # the page's life, so give Glide a moment to paint it before the screenshot.
-          sleep 2
-          adb shell screencap -p /sdcard/character_details.png || echo "::warning::Failed to capture character screenshot"
-          adb pull /sdcard/character_details.png screenshots/character_details.png || echo "::warning::Failed to pull character screenshot"
-          echo "Captured: character_details.png (Luffy — $AUTH_MODE)"
+
+          # Capture only if we actually got there. This poll already knew the page had not opened
+          # and shot the screen anyway, so a failed tap produced a screenshot of whatever happened
+          # to be showing — the bottom of the media details page — published under the label
+          # "Luffy (Character)". A missing screenshot is honest; a wrong one labelled correctly is
+          # the same silently-wrong signal this whole change set out to remove.
+          if [ "$CHAR_READY" -eq 1 ]; then
+            # Slightly longer settle: the hero portrait is a large remote image captured early in
+            # the page's life, so give Glide a moment to paint it before the screenshot.
+            sleep 2
+            adb shell screencap -p /sdcard/character_details.png || echo "::warning::Failed to capture character screenshot"
+            adb pull /sdcard/character_details.png screenshots/character_details.png || echo "::warning::Failed to pull character screenshot"
+            echo "Captured: character_details.png (Luffy — $AUTH_MODE)"
+          else
+            echo "::warning::Character page never opened — skipping rather than capturing the wrong screen"
+          fi
           # Now scroll the voice-actor strip into view to locate the staff-page tap target below.
           scroll_until_text "Mayumi Tanaka" || echo "::warning::Voice Actors list did not appear"
 
@@ -671,20 +726,34 @@ jobs:
           tap_element_by_text "Mayumi Tanaka" || echo "::warning::Could not tap Mayumi Tanaka"
 
           STAFF_WAIT=0
+          STAFF_READY=0
           while [ $STAFF_WAIT -lt 15 ]; do
             adb shell uiautomator dump /sdcard/ui_staff.xml 2>/dev/null || true
-            if adb shell cat /sdcard/ui_staff.xml 2>/dev/null | grep -qi "Voice Roles\|Production"; then
+            # "Voice Roles" only. The bare word "Production" was meant to catch the Production Roles
+            # section, but it also matches studio names — the media details page lists "Mushi
+            # Production" and "Asahi Production" — so the guard passed while still sitting on the
+            # wrong page and captured it anyway, which is the failure the guard exists to stop.
+            if adb shell cat /sdcard/ui_staff.xml 2>/dev/null | grep -qi "Voice Roles"; then
               echo "  Staff page ready after ${STAFF_WAIT}s"
+              STAFF_READY=1
               break
             fi
             sleep 1
             STAFF_WAIT=$((STAFF_WAIT + 1))
           done
-          # Slightly longer settle so the hero portrait paints before capture (see above).
-          sleep 2
-          adb shell screencap -p /sdcard/staff_details.png || echo "::warning::Failed to capture staff screenshot"
-          adb pull /sdcard/staff_details.png screenshots/staff_details.png || echo "::warning::Failed to pull staff screenshot"
-          echo "Captured: staff_details.png (Mayumi Tanaka — $AUTH_MODE)"
+
+          # Same guard as the character capture above, and the same reason: this failure cascades
+          # from that one — a tap that never reached the character page leaves the voice-actor
+          # strip unreachable too, so both screenshots were the same wrong screen under two labels.
+          if [ "$STAFF_READY" -eq 1 ]; then
+            # Slightly longer settle so the hero portrait paints before capture (see above).
+            sleep 2
+            adb shell screencap -p /sdcard/staff_details.png || echo "::warning::Failed to capture staff screenshot"
+            adb pull /sdcard/staff_details.png screenshots/staff_details.png || echo "::warning::Failed to pull staff screenshot"
+            echo "Captured: staff_details.png (Mayumi Tanaka — $AUTH_MODE)"
+          else
+            echo "::warning::Staff page never opened — skipping rather than capturing the wrong screen"
+          fi
 
           # Straight to the Settings tab. The details stack this leaves behind on the Library tab
           # does not matter — the next section taps its own tab too. Guarded because `set -e`
@@ -694,14 +763,17 @@ jobs:
           # leaves the screenshot absent, which is visible; publishing the wrong page is not.
           if goto_tab "Settings"; then
             # Poll for Settings page to finish loading (up to 15s)
-            # "Display Preferences" is a static label always visible once loaded.
+            # "Anime Stats", not "Display Preferences": the latter is real but sits below the fold,
+            # and a uiautomator dump only holds realised nodes — so this timed out on every run and
+            # printed "did not finish loading" for a page that had loaded perfectly well. Anime
+            # Stats renders in the first screenful once the viewer resolves.
             SETTINGS_LOAD_WAIT=0
             while [ $SETTINGS_LOAD_WAIT -lt 15 ]; do
               adb shell uiautomator dump /sdcard/ui_settings_loaded.xml 2>/dev/null || true
               SETTINGS_DUMP=$(adb shell cat /sdcard/ui_settings_loaded.xml 2>/dev/null || echo "")
               if echo "$SETTINGS_DUMP" | grep -q "Loading settings"; then
                 echo "  Still loading settings... (${SETTINGS_LOAD_WAIT}s)"
-              elif echo "$SETTINGS_DUMP" | grep -q "Display Preferences"; then
+              elif echo "$SETTINGS_DUMP" | grep -q "Anime Stats"; then
                 echo "  Settings loaded after ${SETTINGS_LOAD_WAIT}s"
                 sleep 1
                 break
@@ -790,18 +862,25 @@ jobs:
           # details stack, so there is nothing to unwind first.
           if open_search_tab; then
             sleep 1
-            # Tap the field by its hint to guarantee focus before typing. The page focuses it
-            # on appear when empty, but a tap is a cheap belt-and-suspenders for CI.
-            tap_element_by_text "Search all anime..." || true
+            # Tap the field by its hint to guarantee focus before typing. The page focuses it on
+            # appear when empty, so this is belt-and-braces and the tap legitimately fails once
+            # focused (the hint is replaced) — hence `|| true`. The string is the current hint;
+            # it said "Search all anime..." since before manga search existed (#12).
+            tap_element_by_text "Search anime and manga..." || true
             sleep 1
-            # "no" matches five romaji stub titles (Shingeki no Kyojin, Kimi no Na wa, Yakusoku
-            # no Neverland, Hagane no Renkinjutsushi, Kimetsu no Yaiba) so the results list is
-            # full and shows a mix of status pills (and some off-list rows).
-            adb shell input text "no"
+            # "one", not "no". The old stub filtered its fixture list client-side, so "no" matched
+            # five romaji titles; real AniList returns ZERO results for it, and this captured an
+            # empty search every run while the wait below timed out looking for a title that was
+            # never coming. Recorded search terms are "no", "one" and "ka" — of those, "one" and
+            # "ka" actually return results.
+            adb shell input text "one"
             SEARCH_WAIT=0
             while [ $SEARCH_WAIT -lt 12 ]; do
               adb shell uiautomator dump /sdcard/ui_search.xml 2>/dev/null || true
-              if adb shell cat /sdcard/ui_search.xml 2>/dev/null | grep -qi "Shingeki no Kyojin"; then
+              # Waits for the empty-state prompt to GO, rather than for a particular title to
+              # arrive. That is a UI-state signal instead of a fixture-content one, so re-recording
+              # cannot silently invalidate it — which is exactly how the previous marker rotted.
+              if ! adb shell cat /sdcard/ui_search.xml 2>/dev/null | grep -qi "Type at least two characters"; then
                 echo "  Search results ready after ${SEARCH_WAIT}s"
                 break
               fi
@@ -850,6 +929,27 @@ jobs:
           # own ::error:: naming where the canary rendered.
           if [ "$ADULT_CANARY_HITS" -gt 0 ]; then
             echo "::error::Adult-content filter failed on $ADULT_CANARY_HITS surface(s). See the errors above and the uploaded screenshots."
+            exit 1
+          fi
+
+          # Fixture-miss gate (#134). The replay handler logs FIXTURE MISS when the app asks for
+          # something the recordings do not cover — a sort that was added without re-recording, a
+          # page deeper than was captured, or a query whose fields changed. Blocking rather than
+          # warning, because the alternative is what this work removed: a section that silently
+          # renders empty and a screenshot nobody can tell is wrong.
+          # Greps the full dump written above rather than filtering by tag. The tag filter this
+          # replaced could never have matched: AndroidLogcatLoggerProvider.TrimTag takes the LAST 23
+          # characters of the ILogger category, so FixtureReplayHandler logs under
+          # "es.FixtureReplayHandler", not "AniSprinkles" — only the Android.Util.Log calls in the
+          # broadcast receivers use that literal tag. The gate looked blocking and could not fire.
+          #
+          # No tag, no PID, no conditional step to depend on: logcat-full.txt is written
+          # unconditionally above, and "FIXTURE MISS" is distinctive enough that scanning the whole
+          # buffer cannot false-positive. A gate whose input can go missing is the same bug again.
+          MISS_LOG=$(grep -F "FIXTURE MISS" logs/logcat-full.txt 2>/dev/null || true)
+          if [ -n "$MISS_LOG" ]; then
+            echo "::error::The app requested data the fixtures do not contain. Re-record with tools/record-anilist-fixtures.cs."
+            echo "$MISS_LOG"
             exit 1
           fi
           SCRIPT
@@ -963,7 +1063,7 @@ jobs:
             }
 
             // --- Build PR comment body ---
-            const authNote = '> ✅ **Authenticated UI** — screenshots rendered via compile-time CI stub services with hardcoded data. No OAuth token required.';
+            const authNote = '> ✅ **Authenticated UI** — stubbed auth plus real AniList responses recorded against a test account and replayed at the HTTP layer (#134). No OAuth token required.';
             const pageDesc = '';
 
             const bodyParts = [
@@ -1025,12 +1125,13 @@ jobs:
       - name: Generate Screenshot Summary
         if: always()
         run: |
+          MISSING_SHOTS=""
           echo "## 📱 UI Screenshots" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           if [ -d "screenshots" ] && [ "$(ls -A screenshots/ 2>/dev/null)" ]; then
             echo "Screenshots captured and uploaded as artifacts." >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
-            echo "> ✅ **Authenticated UI** — rendered via compile-time CI stub services with hardcoded data." >> $GITHUB_STEP_SUMMARY
+            echo "> ✅ **Authenticated UI** — stubbed auth plus recorded AniList responses replayed at the HTTP layer (#134)." >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "| Screenshot | Page |" >> $GITHUB_STEP_SUMMARY
             echo "|---|---|" >> $GITHUB_STEP_SUMMARY
@@ -1050,9 +1151,24 @@ jobs:
               if [ -f "screenshots/$file" ]; then
                 echo "| \`$file\` | $label |" >> $GITHUB_STEP_SUMMARY
               else
-                echo "::warning::Expected screenshot missing: $file"
+                echo "::error::Expected screenshot missing: $file"
+                MISSING_SHOTS="${MISSING_SHOTS}${file} "
               fi
             done
           else
             echo "⚠️ No screenshots were captured. Check the emulator step logs." >> $GITHUB_STEP_SUMMARY
+            MISSING_SHOTS="<all>"
+          fi
+
+          # Blocking, not a warning. studio_details.png disappeared for two runs without anyone
+          # noticing, because a warning in a 2000-line log and a quietly shorter table are not a
+          # signal. The captures that navigate now skip rather than shoot the wrong screen, which
+          # turns "wrong screenshot" into "absent screenshot" — and that trade only pays if absent
+          # is loud. Same argument that made this job blocking for the adult canary: a gate that
+          # detects and does not block is a gate that gets scrolled past.
+          if [ -n "$MISSING_SHOTS" ]; then
+            echo "::error::UI screenshot capture incomplete — missing: $MISSING_SHOTS"
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "> ❌ **Missing screenshots:** \`$MISSING_SHOTS\`" >> $GITHUB_STEP_SUMMARY
+            exit 1
           fi

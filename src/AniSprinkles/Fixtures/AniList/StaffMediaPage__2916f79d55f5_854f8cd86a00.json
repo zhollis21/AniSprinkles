@@ -1,0 +1,217 @@
+﻿{
+  "operationName": "StaffMediaPage",
+  "variables": {
+    "id": 124390,
+    "page": 1,
+    "sort": [
+      "SCORE_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "854f8cd86a00",
+  "recordedAt": "2026-09-06T05:30:12.9284279+00:00",
+  "response": {
+    "data": {
+      "Staff": {
+        "staffMedia": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 131516,
+                "title": {
+                  "romaji": "Do It Yourself!!",
+                  "english": "Do It Yourself!!",
+                  "native": "Do It Yourself!! -\u3069\u3045\u30FC\u30FB\u3044\u3063\u3068\u30FB\u3086\u3042\u305B\u308B\u3075-"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx131516-kLB37ISBeOX0.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx131516-kLB37ISBeOX0.jpg"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 74,
+                "favourites": 961,
+                "popularity": 48896,
+                "startDate": {
+                  "year": 2022,
+                  "month": 10,
+                  "day": 6
+                },
+                "mediaListEntry": null
+              },
+              "staffRole": "Theme Song Performance (ED)"
+            },
+            {
+              "node": {
+                "id": 174802,
+                "title": {
+                  "romaji": "Shiunji-ke no Kodomotachi",
+                  "english": "The Shiunji Family Children",
+                  "native": "\u7D2B\u96F2\u5BFA\u5BB6\u306E\u5B50\u4F9B\u305F\u3061"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx174802-ILahIZlNWN3R.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx174802-ILahIZlNWN3R.jpg"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 70,
+                "favourites": 1077,
+                "popularity": 55266,
+                "startDate": {
+                  "year": 2025,
+                  "month": 4,
+                  "day": 8
+                },
+                "mediaListEntry": null
+              },
+              "staffRole": "Theme Song Performance (ED)"
+            },
+            {
+              "node": {
+                "id": 145001,
+                "title": {
+                  "romaji": "Extreme Hearts",
+                  "english": "Extreme Hearts",
+                  "native": "Extreme Hearts"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx145001-x653s1CPLogA.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx145001-x653s1CPLogA.png"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 62,
+                "favourites": 63,
+                "popularity": 6092,
+                "startDate": {
+                  "year": 2022,
+                  "month": 7,
+                  "day": 10
+                },
+                "mediaListEntry": null
+              },
+              "staffRole": "Insert Song Performance (\u0022Hydrangea\u0022; eps 9, 12)"
+            },
+            {
+              "node": {
+                "id": 145001,
+                "title": {
+                  "romaji": "Extreme Hearts",
+                  "english": "Extreme Hearts",
+                  "native": "Extreme Hearts"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx145001-x653s1CPLogA.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx145001-x653s1CPLogA.png"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 62,
+                "favourites": 63,
+                "popularity": 6092,
+                "startDate": {
+                  "year": 2022,
+                  "month": 7,
+                  "day": 10
+                },
+                "mediaListEntry": null
+              },
+              "staffRole": "Insert Song Performance (\u0022Aozora ni Aeru yo (feat.Michelle)\u0022; ep 9)"
+            },
+            {
+              "node": {
+                "id": 145001,
+                "title": {
+                  "romaji": "Extreme Hearts",
+                  "english": "Extreme Hearts",
+                  "native": "Extreme Hearts"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx145001-x653s1CPLogA.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx145001-x653s1CPLogA.png"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 62,
+                "favourites": 63,
+                "popularity": 6092,
+                "startDate": {
+                  "year": 2022,
+                  "month": 7,
+                  "day": 10
+                },
+                "mediaListEntry": null
+              },
+              "staffRole": "Insert Song Performance (ep 10)"
+            },
+            {
+              "node": {
+                "id": 142849,
+                "title": {
+                  "romaji": "Ayakashi Triangle",
+                  "english": "Ayakashi Triangle",
+                  "native": "\u3042\u3084\u304B\u3057\u30C8\u30E9\u30A4\u30A2\u30F3\u30B0\u30EB"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx142849-TXRh2tW2fu08.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx142849-TXRh2tW2fu08.png"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 61,
+                "favourites": 440,
+                "popularity": 33062,
+                "startDate": {
+                  "year": 2023,
+                  "month": 1,
+                  "day": 10
+                },
+                "mediaListEntry": null
+              },
+              "staffRole": "Theme Song Performance (ED)"
+            },
+            {
+              "node": {
+                "id": 113570,
+                "title": {
+                  "romaji": "Shachou, Battle no Jikan desu!",
+                  "english": "Shachibato! President, It\u0027s Time for Battle!",
+                  "native": "\u793E\u9577\u3001\u30D0\u30C8\u30EB\u306E\u6642\u9593\u3067\u3059\uFF01"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx113570-c0YmZUj7f5eH.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx113570-c0YmZUj7f5eH.jpg"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 53,
+                "favourites": 80,
+                "popularity": 12783,
+                "startDate": {
+                  "year": 2020,
+                  "month": 4,
+                  "day": 5
+                },
+                "mediaListEntry": null
+              },
+              "staffRole": "Theme Song Performance (ED)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,628 @@
+﻿{
+  "operationName": "StudioMediaPage",
+  "variables": {
+    "id": 18,
+    "page": 2,
+    "sort": [
+      "START_DATE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "02c0137b2ee8",
+  "recordedAt": "2026-09-09T16:00:17.7044703+00:00",
+  "response": {
+    "data": {
+      "Studio": {
+        "media": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 2
+          },
+          "nodes": [
+            {
+              "id": 13307,
+              "title": {
+                "romaji": "Shounen Ninja Kaze no Fujimaru",
+                "english": null,
+                "native": "\u5C11\u5E74\u5FCD\u8005\u98A8\u306E\u30D5\u30B8\u4E38"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/13307-LahAsvEwVqMy.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/13307-LahAsvEwVqMy.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 56,
+              "favourites": 9,
+              "popularity": 529,
+              "startDate": {
+                "year": 1964,
+                "month": 6,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 12897,
+              "title": {
+                "romaji": "Uchuu Patrol Hopper",
+                "english": null,
+                "native": "\u5B87\u5B99\u30D1\u30C8\u30ED\u30FC\u30EB\u30DB\u30C3\u30D1"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx12897-uZXF5WmBGUjR.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx12897-uZXF5WmBGUjR.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 42,
+              "favourites": 1,
+              "popularity": 322,
+              "startDate": {
+                "year": 1965,
+                "month": 2,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2833,
+              "title": {
+                "romaji": "Gulliver no Uchuu Ryokou",
+                "english": "Gulliver\u0027s Travels: Beyond the Moon",
+                "native": "\u30AC\u30EA\u30D0\u30FC\u306E\u5B87\u5B99\u65C5\u884C"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/2833.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/2833.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 54,
+              "favourites": 6,
+              "popularity": 868,
+              "startDate": {
+                "year": 1965,
+                "month": 3,
+                "day": 20
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 9438,
+              "title": {
+                "romaji": "Rainbow Sentai Robin",
+                "english": null,
+                "native": "\u30EC\u30A4\u30F3\u30DC\u30FC\u6226\u968A\u30ED\u30D3\u30F3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/9438.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/9438.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 45,
+              "favourites": 2,
+              "popularity": 469,
+              "startDate": {
+                "year": 1966,
+                "month": 4,
+                "day": 23
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 3356,
+              "title": {
+                "romaji": "Mahoutsukai Sally",
+                "english": null,
+                "native": "\u9B54\u6CD5\u4F7F\u3044\u30B5\u30EA\u30FC"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx3356-trl1vv3OYjw5.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx3356-trl1vv3OYjw5.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 64,
+              "favourites": 34,
+              "popularity": 2002,
+              "startDate": {
+                "year": 1966,
+                "month": 12,
+                "day": 5
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 208836,
+              "title": {
+                "romaji": "Sekai no Ouja: King Kong Taikai",
+                "english": null,
+                "native": "\u4E16\u754C\u306E\u738B\u8005 \u30AD\u30F3\u30B0\u30B3\u30F3\u30B0\u5927\u4F1A"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b208836-mQFIloR7mSkK.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b208836-mQFIloR7mSkK.png"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": null,
+              "favourites": 0,
+              "popularity": 35,
+              "startDate": {
+                "year": 1966,
+                "month": 12,
+                "day": 31
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 9392,
+              "title": {
+                "romaji": "Shounen Jack to Mahou Tsukai",
+                "english": "Young Jack and the Witch",
+                "native": "\u5C11\u5E74\u30B8\u30E3\u30C3\u30AF\u3068\u9B54\u6CD5\u4F7F\u3044"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx9392-aqzQ4hELNv2A.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx9392-aqzQ4hELNv2A.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 49,
+              "favourites": 1,
+              "popularity": 465,
+              "startDate": {
+                "year": 1967,
+                "month": 3,
+                "day": 19
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 15873,
+              "title": {
+                "romaji": "Pyun Pyun Maru",
+                "english": null,
+                "native": "\u30D4\u30E5\u30F3\u30D4\u30E5\u30F3\u4E38"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/15873.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/15873.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 53,
+              "favourites": 4,
+              "popularity": 278,
+              "startDate": {
+                "year": 1967,
+                "month": 7,
+                "day": 3
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 148933,
+              "title": {
+                "romaji": "Hyokkori Hyoutanjima",
+                "english": null,
+                "native": "\u3072\u3087\u3063\u3053\u308A\u3072\u3087\u3046\u305F\u3093\u5CF6"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b148933-zNDcdOXMaWQC.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b148933-zNDcdOXMaWQC.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": null,
+              "favourites": 1,
+              "popularity": 110,
+              "startDate": {
+                "year": 1967,
+                "month": 7,
+                "day": 21
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 186859,
+              "title": {
+                "romaji": "Okashi na Okashi na Hoshi no Kuni",
+                "english": null,
+                "native": "\u304A\u304B\u3057\u306A\u304A\u304B\u3057\u306A\u661F\u306E\u56FD"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/default.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/default.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": null,
+              "favourites": 0,
+              "popularity": 25,
+              "startDate": {
+                "year": 1968,
+                "month": null,
+                "day": null
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 5688,
+              "title": {
+                "romaji": "Gegege no Kitarou (1968)",
+                "english": null,
+                "native": "\u30B2\u30B2\u30B2\u306E\u9B3C\u592A\u90CE"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/5688.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/5688.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 64,
+              "favourites": 29,
+              "popularity": 1884,
+              "startDate": {
+                "year": 1968,
+                "month": 1,
+                "day": 3
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 5098,
+              "title": {
+                "romaji": "Andersen Monogatari",
+                "english": "The World of Hans Christian Andersen",
+                "native": "\u30A2\u30F3\u30C7\u30EB\u30BB\u30F3\u7269\u8A9E"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b5098-QLeMCe13hMKC.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b5098-QLeMCe13hMKC.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 52,
+              "favourites": 8,
+              "popularity": 525,
+              "startDate": {
+                "year": 1968,
+                "month": 3,
+                "day": 19
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 8394,
+              "title": {
+                "romaji": "Cyborg 009",
+                "english": "Cyborg 009",
+                "native": "\u30B5\u30A4\u30DC\u30FC\u30B0009"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx8394-nO1PASsb5Tkj.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx8394-nO1PASsb5Tkj.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 59,
+              "favourites": 16,
+              "popularity": 1941,
+              "startDate": {
+                "year": 1968,
+                "month": 4,
+                "day": 5
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 18635,
+              "title": {
+                "romaji": "Akane-chan",
+                "english": null,
+                "native": "\u3042\u304B\u306D\u3061\u3083\u3093"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/18635.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/18635.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": null,
+              "favourites": 3,
+              "popularity": 336,
+              "startDate": {
+                "year": 1968,
+                "month": 4,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1044,
+              "title": {
+                "romaji": "Taiyou no Ouji: Horus no Daibouken",
+                "english": "The Little Norse Prince",
+                "native": "\u592A\u967D\u306E\u738B\u5B50 \u30DB\u30EB\u30B9\u306E\u5927\u5192\u967A"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1044-Z3nShiFF7x5p.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1044-Z3nShiFF7x5p.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 63,
+              "favourites": 36,
+              "popularity": 3919,
+              "startDate": {
+                "year": 1968,
+                "month": 7,
+                "day": 21
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 8149,
+              "title": {
+                "romaji": "Gegege no Kitarou (1968 Movie)",
+                "english": "Spooky Kitaro",
+                "native": "\u30B2\u30B2\u30B2\u306E\u9B3C\u592A\u90CE"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/8149.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/8149.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 53,
+              "favourites": 2,
+              "popularity": 475,
+              "startDate": {
+                "year": 1968,
+                "month": 7,
+                "day": 21
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 5997,
+              "title": {
+                "romaji": "Sabu to Ichi Torimono Hikae",
+                "english": "Sabu \u0026 Ichi\u0027s Arrest Warrant",
+                "native": "\u4F50\u6B66\u3068\u5E02\u6355\u7269\u63A7"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx5997-MiaOOIfCYak2.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx5997-MiaOOIfCYak2.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 66,
+              "favourites": 25,
+              "popularity": 1389,
+              "startDate": {
+                "year": 1968,
+                "month": 10,
+                "day": 3
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 186856,
+              "title": {
+                "romaji": "Hito no Kurashi no Hyakumannen: Mani Mani March",
+                "english": null,
+                "native": "\u4EBA\u306E\u304F\u3089\u3057\u306E\u767E\u4E07\u5E74 \u30DE\u30CB\u30FB\u30DE\u30CB\u30FB\u30DE\u30FC\u30C1"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b186856-UVtuIfqZNojS.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b186856-UVtuIfqZNojS.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": null,
+              "favourites": 0,
+              "popularity": 26,
+              "startDate": {
+                "year": 1968,
+                "month": 12,
+                "day": 19
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 148001,
+              "title": {
+                "romaji": "Tiger Mask Pilot Film",
+                "english": null,
+                "native": "\u30BF\u30A4\u30AC\u30FC\u30DE\u30B9\u30AF \u30D1\u30A4\u30ED\u30C3\u30C8\u30D5\u30A3\u30EB\u30E0"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b148001-3FCWE0uM5Jz3.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b148001-3FCWE0uM5Jz3.jpg"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": null,
+              "favourites": 1,
+              "popularity": 176,
+              "startDate": {
+                "year": 1969,
+                "month": null,
+                "day": null
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 3285,
+              "title": {
+                "romaji": "Himitsu no Akko-chan",
+                "english": null,
+                "native": "\u3072\u307F\u3064\u306E\u30A2\u30C3\u30B3\u3061\u3083\u3093"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/3285.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/3285.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 65,
+              "favourites": 25,
+              "popularity": 1645,
+              "startDate": {
+                "year": 1969,
+                "month": 1,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2279,
+              "title": {
+                "romaji": "Nagagutsu wo Haita Neko",
+                "english": "The Wonderful World of Puss \u0027n Boots",
+                "native": "\u9577\u9774\u3092\u306F\u3044\u305F\u732B"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx2279-Ruw2GfDQJI21.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2279-Ruw2GfDQJI21.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 66,
+              "favourites": 19,
+              "popularity": 1896,
+              "startDate": {
+                "year": 1969,
+                "month": 3,
+                "day": 18
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 166056,
+              "title": {
+                "romaji": "Hitoribocchi",
+                "english": null,
+                "native": "\u3072\u3068\u308A\u307C\u3063\u3061"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b166056-jKc87gyf3V3L.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b166056-jKc87gyf3V3L.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": null,
+              "favourites": 0,
+              "popularity": 140,
+              "startDate": {
+                "year": 1969,
+                "month": 3,
+                "day": 18
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2811,
+              "title": {
+                "romaji": "Sora Tobu Yuurei Sen",
+                "english": "The Flying Ghost Ship",
+                "native": "\u7A7A\u98DB\u3076\u3086\u3046\u308C\u3044\u8239"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/2811.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/2811.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 59,
+              "favourites": 14,
+              "popularity": 1996,
+              "startDate": {
+                "year": 1969,
+                "month": 7,
+                "day": 20
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 3009,
+              "title": {
+                "romaji": "Tiger Mask",
+                "english": "Tiger Mask",
+                "native": "\u30BF\u30A4\u30AC\u30FC\u30DE\u30B9\u30AF"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b3009-7bHBgwMpl7TL.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b3009-7bHBgwMpl7TL.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 68,
+              "favourites": 56,
+              "popularity": 3156,
+              "startDate": {
+                "year": 1969,
+                "month": 10,
+                "day": 2
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2830,
+              "title": {
+                "romaji": "Chibikko Remi to Meiken Kapi",
+                "english": null,
+                "native": "\u3061\u3073\u3063\u5B50\u30EC\u30DF\u3068\u540D\u72AC\u30AB\u30D4"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b2830-liUdwHvMbwb9.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b2830-liUdwHvMbwb9.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 49,
+              "favourites": 2,
+              "popularity": 490,
+              "startDate": {
+                "year": 1970,
+                "month": 3,
+                "day": 17
+              },
+              "mediaListEntry": null
+            }
+          ]
+        }
+      }
+    }
+  }
+}

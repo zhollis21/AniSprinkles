@@ -143,10 +143,12 @@ the ones that most often turn out to *be* the mechanism:
   level and size, CI stub services, `AddDebug()` wiring. A bug that only reproduces
   in one configuration is a fact about the issue, not a detail. Always record which
   configuration the observation came from.
-- **CI stubs** — `CIAniListClient` fakes a lot, and what it fakes badly is
-  invisible to the screenshot job (that is the entire subject of #134). If the
-  problem touches an `IAniListClient` call, check whether the stub can even
-  express it.
+- **CI fixtures** — AniList is answered from recorded responses replayed below the
+  client (#134), so the data is real and the whole client stack runs. What the CI
+  build *cannot* see is anything below that seam: the transport itself makes no
+  network call, which is how #160 shipped a 403 nothing caught. If the problem
+  touches an `IAniListClient` call, check whether a fixture covers it — an
+  unrecorded request fails the run with `FIXTURE MISS` rather than going quiet.
 - **The test boundary** — `tests/` project-references `src/AniSprinkles.Core/`
   only. Anything in the MAUI app project is untestable off-device. If the problem
   lives on the wrong side of that line, that is part of the problem.

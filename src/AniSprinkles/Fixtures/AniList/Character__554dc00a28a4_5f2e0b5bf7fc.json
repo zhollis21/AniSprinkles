@@ -1,0 +1,612 @@
+﻿{
+  "operationName": "Character",
+  "variables": {
+    "id": 184313,
+    "mediaPage": 1,
+    "mediaSort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ]
+  },
+  "queryFingerprint": "5f2e0b5bf7fc",
+  "recordedAt": "2026-09-06T05:28:59.4985039+00:00",
+  "response": {
+    "data": {
+      "Character": {
+        "id": 184313,
+        "name": {
+          "full": "Stark",
+          "native": "\u30B7\u30E5\u30BF\u30EB\u30AF",
+          "userPreferred": "Stark",
+          "alternative": [],
+          "alternativeSpoiler": []
+        },
+        "image": {
+          "large": "https://s4.anilist.co/file/anilistcdn/character/large/b184313-CQl6GSt4RSny.jpg",
+          "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b184313-CQl6GSt4RSny.jpg"
+        },
+        "description": "Stark is a warrior who fights alongside [Frieren](https://anilist.co/character/176754/Frieren) and [Fern](https://anilist.co/character/183965/Fern). After his village was attacked by demons, he fled and became [Eisen](https://anilist.co/character/184312/Eisen)\u0027s apprentice. At Eisen\u0027s instruction, he joined Frieren\u0027s party as their vanguard.",
+        "gender": "Male",
+        "age": "17-18",
+        "bloodType": null,
+        "dateOfBirth": {
+          "year": null,
+          "month": null,
+          "day": null
+        },
+        "favourites": 5949,
+        "isFavourite": false,
+        "siteUrl": "https://anilist.co/character/184313",
+        "media": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 154587,
+                "title": {
+                  "romaji": "Sousou no Frieren",
+                  "english": "Frieren: Beyond Journey\u2019s End",
+                  "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx154587-qQTzQnEJJ3oB.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx154587-qQTzQnEJJ3oB.jpg"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 91,
+                "favourites": 55905,
+                "popularity": 477293,
+                "startDate": {
+                  "year": 2023,
+                  "month": 9,
+                  "day": 29
+                },
+                "mediaListEntry": {
+                  "id": 540974122,
+                  "status": "COMPLETED",
+                  "progress": 28,
+                  "score": 10
+                }
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 133507,
+                  "name": {
+                    "full": "Chiaki Kobayashi",
+                    "native": "\u5C0F\u6797\u5343\u6643",
+                    "userPreferred": "Chiaki Kobayashi"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n133507-oT1bd4Gax1Qg.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n133507-oT1bd4Gax1Qg.jpg"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 1798
+                },
+                {
+                  "id": 115100,
+                  "name": {
+                    "full": "Arisa Kiyoto",
+                    "native": "\u6E05\u90FD\u3042\u308A\u3055",
+                    "userPreferred": "Arisa Kiyoto"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/20100.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/20100.jpg"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 11
+                },
+                {
+                  "id": 148764,
+                  "name": {
+                    "full": "Jordan Dash Cruz",
+                    "native": null,
+                    "userPreferred": "Jordan Dash Cruz"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n148764-jKjUXzYlCikt.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n148764-jKjUXzYlCikt.jpg"
+                  },
+                  "languageV2": "English",
+                  "favourites": 57
+                },
+                {
+                  "id": 95414,
+                  "name": {
+                    "full": "Brittney Karbowski",
+                    "native": null,
+                    "userPreferred": "Brittney Karbowski"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/414.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/414.jpg"
+                  },
+                  "languageV2": "English",
+                  "favourites": 1199
+                },
+                {
+                  "id": 391018,
+                  "name": {
+                    "full": "Sin-U Kim",
+                    "native": "\uAE40\uC2E0\uC6B0",
+                    "userPreferred": "Sin-U Kim"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n391018-ZZ2Bzv8UT2ZU.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n391018-ZZ2Bzv8UT2ZU.png"
+                  },
+                  "languageV2": "Korean",
+                  "favourites": 0
+                },
+                {
+                  "id": 139151,
+                  "name": {
+                    "full": "Sae-Byeok Lee",
+                    "native": "\uC774\uC0C8\uBCBD",
+                    "userPreferred": "Sae-Byeok Lee"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n139151-TO9P79Q2Vgnl.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n139151-TO9P79Q2Vgnl.png"
+                  },
+                  "languageV2": "Korean",
+                  "favourites": 0
+                },
+                {
+                  "id": 259702,
+                  "name": {
+                    "full": "Tito Marteddu",
+                    "native": null,
+                    "userPreferred": "Tito Marteddu"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/default.jpg"
+                  },
+                  "languageV2": "Italian",
+                  "favourites": 0
+                },
+                {
+                  "id": 184117,
+                  "name": {
+                    "full": "Eduardo Mart\u00EDnez",
+                    "native": null,
+                    "userPreferred": "Eduardo Mart\u00EDnez"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n184117-Tvl1I1VGQeVz.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n184117-Tvl1I1VGQeVz.png"
+                  },
+                  "languageV2": "Spanish",
+                  "favourites": 2
+                },
+                {
+                  "id": 284906,
+                  "name": {
+                    "full": "Lucas Miagusuku",
+                    "native": null,
+                    "userPreferred": "Lucas Miagusuku"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n284906-vG35rAl8u06I.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n284906-vG35rAl8u06I.jpg"
+                  },
+                  "languageV2": "Portuguese",
+                  "favourites": 0
+                },
+                {
+                  "id": 186719,
+                  "name": {
+                    "full": "Kelyan Blanc",
+                    "native": null,
+                    "userPreferred": "Kelyan Blanc"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/default.jpg"
+                  },
+                  "languageV2": "French",
+                  "favourites": 0
+                },
+                {
+                  "id": 139165,
+                  "name": {
+                    "full": "Janek Sch\u00E4chter",
+                    "native": null,
+                    "userPreferred": "Janek David Sch\u00E4chter"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n139165-ZPITMAY8KLo6.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n139165-ZPITMAY8KLo6.png"
+                  },
+                  "languageV2": "German",
+                  "favourites": 3
+                },
+                {
+                  "id": 320413,
+                  "name": {
+                    "full": "Pipat Boonsittilers",
+                    "native": "\u0E1E\u0E34\u0E1E\u0E31\u0E12\u0E19\u0E4C \u0E1A\u0E38\u0E0D\u0E2A\u0E34\u0E17\u0E18\u0E34\u0E40\u0E25\u0E34\u0E28",
+                    "userPreferred": "Pipat Boonsittilers"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n320413-iw3NhXs1ndO6.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n320413-iw3NhXs1ndO6.jpg"
+                  },
+                  "languageV2": "Thai",
+                  "favourites": 3
+                },
+                {
+                  "id": 335254,
+                  "name": {
+                    "full": "Emir Bayhaqi",
+                    "native": null,
+                    "userPreferred": "Emir Bayhaqi"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n335254-sL97D9HPKsmS.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n335254-sL97D9HPKsmS.png"
+                  },
+                  "languageV2": "Indonesian",
+                  "favourites": 1
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 182255,
+                "title": {
+                  "romaji": "Sousou no Frieren 2nd Season",
+                  "english": "Frieren: Beyond Journey\u2019s End Season 2",
+                  "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \u7B2C2\u671F"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx182255-butzrqd4I0aC.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx182255-butzrqd4I0aC.jpg"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 88,
+                "favourites": 8779,
+                "popularity": 222753,
+                "startDate": {
+                  "year": 2026,
+                  "month": 1,
+                  "day": 16
+                },
+                "mediaListEntry": {
+                  "id": 540973986,
+                  "status": "COMPLETED",
+                  "progress": 10,
+                  "score": 9
+                }
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 133507,
+                  "name": {
+                    "full": "Chiaki Kobayashi",
+                    "native": "\u5C0F\u6797\u5343\u6643",
+                    "userPreferred": "Chiaki Kobayashi"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n133507-oT1bd4Gax1Qg.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n133507-oT1bd4Gax1Qg.jpg"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 1798
+                },
+                {
+                  "id": 115100,
+                  "name": {
+                    "full": "Arisa Kiyoto",
+                    "native": "\u6E05\u90FD\u3042\u308A\u3055",
+                    "userPreferred": "Arisa Kiyoto"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/20100.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/20100.jpg"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 11
+                },
+                {
+                  "id": 148764,
+                  "name": {
+                    "full": "Jordan Dash Cruz",
+                    "native": null,
+                    "userPreferred": "Jordan Dash Cruz"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n148764-jKjUXzYlCikt.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n148764-jKjUXzYlCikt.jpg"
+                  },
+                  "languageV2": "English",
+                  "favourites": 57
+                },
+                {
+                  "id": 391018,
+                  "name": {
+                    "full": "Sin-U Kim",
+                    "native": "\uAE40\uC2E0\uC6B0",
+                    "userPreferred": "Sin-U Kim"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n391018-ZZ2Bzv8UT2ZU.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n391018-ZZ2Bzv8UT2ZU.png"
+                  },
+                  "languageV2": "Korean",
+                  "favourites": 0
+                },
+                {
+                  "id": 259702,
+                  "name": {
+                    "full": "Tito Marteddu",
+                    "native": null,
+                    "userPreferred": "Tito Marteddu"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/default.jpg"
+                  },
+                  "languageV2": "Italian",
+                  "favourites": 0
+                },
+                {
+                  "id": 396828,
+                  "name": {
+                    "full": "Alexander Gusev",
+                    "native": null,
+                    "userPreferred": "Alexander Gusev"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/default.jpg"
+                  },
+                  "languageV2": "Italian",
+                  "favourites": 0
+                },
+                {
+                  "id": 284906,
+                  "name": {
+                    "full": "Lucas Miagusuku",
+                    "native": null,
+                    "userPreferred": "Lucas Miagusuku"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n284906-vG35rAl8u06I.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n284906-vG35rAl8u06I.jpg"
+                  },
+                  "languageV2": "Portuguese",
+                  "favourites": 0
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 118586,
+                "title": {
+                  "romaji": "Sousou no Frieren",
+                  "english": "Frieren: Beyond Journey\u2019s End",
+                  "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx118586-CXKgWikBFQgS.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx118586-CXKgWikBFQgS.jpg"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "RELEASING",
+                "averageScore": 87,
+                "favourites": 8121,
+                "popularity": 85007,
+                "startDate": {
+                  "year": 2020,
+                  "month": 4,
+                  "day": 28
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 170068,
+                "title": {
+                  "romaji": "Sousou no Frieren: \u25CF\u25CF no Mahou",
+                  "english": null,
+                  "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \uFF5E\u25CF\u25CF\u306E\u9B54\u6CD5\uFF5E"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx170068-ijY3tCP8KoWP.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx170068-ijY3tCP8KoWP.jpg"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 73,
+                "favourites": 111,
+                "popularity": 10838,
+                "startDate": {
+                  "year": 2023,
+                  "month": 10,
+                  "day": 11
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 133507,
+                  "name": {
+                    "full": "Chiaki Kobayashi",
+                    "native": "\u5C0F\u6797\u5343\u6643",
+                    "userPreferred": "Chiaki Kobayashi"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n133507-oT1bd4Gax1Qg.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n133507-oT1bd4Gax1Qg.jpg"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 1798
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 189513,
+                "title": {
+                  "romaji": "Sousou no Frieren: \u25CF\u25CF no Mahou Part 2",
+                  "english": null,
+                  "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \uFF5E\u25CF\u25CF\u306E\u9B54\u6CD5\uFF5E 2\u30AF\u30FC\u30EB"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx189513-1R9Sryve0K53.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx189513-1R9Sryve0K53.png"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 71,
+                "favourites": 68,
+                "popularity": 4494,
+                "startDate": {
+                  "year": 2025,
+                  "month": 4,
+                  "day": 2
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "SUPPORTING",
+              "voiceActors": [
+                {
+                  "id": 133507,
+                  "name": {
+                    "full": "Chiaki Kobayashi",
+                    "native": "\u5C0F\u6797\u5343\u6643",
+                    "userPreferred": "Chiaki Kobayashi"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n133507-oT1bd4Gax1Qg.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n133507-oT1bd4Gax1Qg.jpg"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 1798
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 206425,
+                "title": {
+                  "romaji": "Sousou no Frieren: \u25CF\u25CF no Mahou Part 3",
+                  "english": null,
+                  "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \uFF5E\u25CF\u25CF\u306E\u9B54\u6CD5\uFF5E 3\u30AF\u30FC\u30EB"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b206425-WOwXsfDbHZwb.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b206425-WOwXsfDbHZwb.jpg"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "status": "RELEASING",
+                "averageScore": 69,
+                "favourites": 26,
+                "popularity": 2216,
+                "startDate": {
+                  "year": 2026,
+                  "month": 1,
+                  "day": 19
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 133507,
+                  "name": {
+                    "full": "Chiaki Kobayashi",
+                    "native": "\u5C0F\u6797\u5343\u6643",
+                    "userPreferred": "Chiaki Kobayashi"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n133507-oT1bd4Gax1Qg.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n133507-oT1bd4Gax1Qg.jpg"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 1798
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 173310,
+                "title": {
+                  "romaji": "Sousou no Frieren Anthology",
+                  "english": null,
+                  "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \u30A2\u30F3\u30BD\u30ED\u30B8"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx173310-IWXoTriCztvp.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx173310-IWXoTriCztvp.jpg"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "averageScore": 67,
+                "favourites": 22,
+                "popularity": 1594,
+                "startDate": {
+                  "year": 2023,
+                  "month": 12,
+                  "day": 18
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "SUPPORTING",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 179850,
+                "title": {
+                  "romaji": "Shousetsu Sousou no Frieren ~Zensou\uFF5E",
+                  "english": "Frieren: Beyond Journey\u2019s End ~Prelude~",
+                  "native": "\u5C0F\u8AAC \u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3\u3000\uFF5E\u524D\u594F\uFF5E"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx179850-zraVuNgk4XCI.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx179850-zraVuNgk4XCI.jpg"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "averageScore": 62,
+                "favourites": 19,
+                "popularity": 647,
+                "startDate": {
+                  "year": 2024,
+                  "month": 4,
+                  "day": 17
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": []
+            }
+          ]
+        }
+      }
+    }
+  }
+}

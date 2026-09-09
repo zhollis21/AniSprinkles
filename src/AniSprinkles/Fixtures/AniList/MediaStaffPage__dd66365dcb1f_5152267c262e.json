@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 170577,
+    "page": 1,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:23:40.0642876+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 95302,
+                "name": {
+                  "full": "Jerry Jewell",
+                  "native": null,
+                  "userPreferred": "Jerry Jewell"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/302.jpg"
+                },
+                "favourites": 778
+              },
+              "role": "ADR Director (English)"
+            },
+            {
+              "node": {
+                "id": 97762,
+                "name": {
+                  "full": "Tensai Okamura",
+                  "native": "\u5CA1\u6751\u5929\u658E",
+                  "userPreferred": "Tensai Okamura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n97762-v2ZiOuaBQuMZ.png"
+                },
+                "favourites": 88
+              },
+              "role": "Storyboard (ep 6)"
+            },
+            {
+              "node": {
+                "id": 97096,
+                "name": {
+                  "full": "Michiko Yokote",
+                  "native": "\u6A2A\u624B\u7F8E\u667A\u5B50",
+                  "userPreferred": "Michiko Yokote"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n97096-j44QglsuY3kx.png"
+                },
+                "favourites": 71
+              },
+              "role": "Series Composition"
+            },
+            {
+              "node": {
+                "id": 138785,
+                "name": {
+                  "full": "Macy Anne Johnson",
+                  "native": null,
+                  "userPreferred": "Macy Anne Johnson"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n138785-8eEJxk4QsT0e.png"
+                },
+                "favourites": 43
+              },
+              "role": "ADR Script (English)"
+            },
+            {
+              "node": {
+                "id": 152304,
+                "name": {
+                  "full": "chelmico",
+                  "native": "\u30C1\u30A7\u30EB\u30DF\u30B3",
+                  "userPreferred": "chelmico"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n152304-cKfTshXRfEX7.png"
+                },
+                "favourites": 43
+              },
+              "role": "Theme Song Performance (ED)"
+            },
+            {
+              "node": {
+                "id": 210793,
+                "name": {
+                  "full": "Kana Utatane",
+                  "native": "\u3046\u305F\u305F\u306D\u6B4C\u83DC",
+                  "userPreferred": "Kana Utatane"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n210793-th5rFAEyssBH.jpg"
+                },
+                "favourites": 25
+              },
+              "role": "Music"
+            },
+            {
+              "node": {
+                "id": 144217,
+                "name": {
+                  "full": "Manabu Ootsuka",
+                  "native": "\u5927\u585A\u5B66",
+                  "userPreferred": "Manabu Ootsuka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n144217-mQDAy4w7LETM.png"
+                },
+                "favourites": 18
+              },
+              "role": "Planning"
+            },
+            {
+              "node": {
+                "id": 117377,
+                "name": {
+                  "full": "Masato Kouda",
+                  "native": "\u7532\u7530\u96C5\u4EBA",
+                  "userPreferred": "Masato Kouda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n117377-xnxL7ds5aGWp.png"
+                },
+                "favourites": 14
+              },
+              "role": "Music"
+            },
+            {
+              "node": {
+                "id": 134516,
+                "name": {
+                  "full": "Hisako Akagi",
+                  "native": "\u8D64\u6728\u5BFF\u5B50",
+                  "userPreferred": "Hisako Akagi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n134516-EzACdL4mIDBd.jpg"
+                },
+                "favourites": 10
+              },
+              "role": "Art Supervisor"
+            },
+            {
+              "node": {
+                "id": 140550,
+                "name": {
+                  "full": "Nao Ootsu",
+                  "native": "\u5927\u6D25\u76F4",
+                  "userPreferred": "Nao Ootsu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n140550-RuLKNMRWHDo4.png"
+                },
+                "favourites": 7
+              },
+              "role": "Character Design"
+            },
+            {
+              "node": {
+                "id": 197594,
+                "name": {
+                  "full": "Andr\u00E9 Rinaldi",
+                  "native": "Andr\u00E9 Augusto Rinaldi",
+                  "userPreferred": "Andr\u00E9 Rinaldi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n197594-quPJBMCFExv6.jpg"
+                },
+                "favourites": 7
+              },
+              "role": "ADR Director (Brazilian Portuguese)"
+            },
+            {
+              "node": {
+                "id": 110747,
+                "name": {
+                  "full": "Kuricorder Quartet",
+                  "native": "\u6817\u30B3\u30FC\u30C0\u30FC\u30AB\u30EB\u30C6\u30C3\u30C8 ",
+                  "userPreferred": "Kuricorder Quartet"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n110747-3eC30GQbQMj1.jpg"
+                },
+                "favourites": 5
+              },
+              "role": "Music"
+            },
+            {
+              "node": {
+                "id": 120742,
+                "name": {
+                  "full": "Kiyoshi Matsuda",
+                  "native": "\u677E\u7530\u6E05",
+                  "userPreferred": "Kiyoshi Matsuda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n120742-FpfRtv10BrAJ.png"
+                },
+                "favourites": 5
+              },
+              "role": "Director"
+            },
+            {
+              "node": {
+                "id": 120742,
+                "name": {
+                  "full": "Kiyoshi Matsuda",
+                  "native": "\u677E\u7530\u6E05",
+                  "userPreferred": "Kiyoshi Matsuda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n120742-FpfRtv10BrAJ.png"
+                },
+                "favourites": 5
+              },
+              "role": "Storyboard (eps 1, 2, 12)"
+            },
+            {
+              "node": {
+                "id": 120742,
+                "name": {
+                  "full": "Kiyoshi Matsuda",
+                  "native": "\u677E\u7530\u6E05",
+                  "userPreferred": "Kiyoshi Matsuda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n120742-FpfRtv10BrAJ.png"
+                },
+                "favourites": 5
+              },
+              "role": "Episode Director (eps 1, 12)"
+            },
+            {
+              "node": {
+                "id": 151523,
+                "name": {
+                  "full": "Chie Yamashiro",
+                  "native": "\u5C71\u57CE\u667A\u6075",
+                  "userPreferred": "Chie Yamashiro"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n151523-laq2RCK9pm3p.png"
+                },
+                "favourites": 5
+              },
+              "role": "Episode Director (ep 7)"
+            },
+            {
+              "node": {
+                "id": 157006,
+                "name": {
+                  "full": "Takahiro Ogawa",
+                  "native": "\u5C0F\u5DDD\u5D07\u535A",
+                  "userPreferred": "Takahiro Ogawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n157006-LvBrkUdhKNPb.png"
+                },
+                "favourites": 5
+              },
+              "role": "Associate Producer"
+            },
+            {
+              "node": {
+                "id": 220976,
+                "name": {
+                  "full": "Kouya Okamura",
+                  "native": "\u5CA1\u6751\u8015\u4E5F",
+                  "userPreferred": "Kouya Okamura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n220976-YLcdFJsjtp4P.jpg"
+                },
+                "favourites": 5
+              },
+              "role": "Assistant Animation Producer (eps 9-12)"
+            },
+            {
+              "node": {
+                "id": 119575,
+                "name": {
+                  "full": "Eriko Itou",
+                  "native": "\u4F0A\u85E4\u4F9D\u7E54\u5B50",
+                  "userPreferred": "Eriko Itou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n119575-juAV5RUrr1zV.png"
+                },
+                "favourites": 3
+              },
+              "role": "Chief Animation Director"
+            },
+            {
+              "node": {
+                "id": 120643,
+                "name": {
+                  "full": "Kisuke Koizumi",
+                  "native": "\u5C0F\u6CC9\u7D00\u4ECB",
+                  "userPreferred": "Kisuke Koizumi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n120643-9DiDurPnZfLj.png"
+                },
+                "favourites": 3
+              },
+              "role": "Sound Director"
+            },
+            {
+              "node": {
+                "id": 121575,
+                "name": {
+                  "full": "Ren Eguchi",
+                  "native": "\u6C5F\u53E3\u9023",
+                  "userPreferred": "Ren Eguchi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 3
+              },
+              "role": "Original Story"
+            },
+            {
+              "node": {
+                "id": 132650,
+                "name": {
+                  "full": "Yuuji Ooya",
+                  "native": "\u5927\u77E2\u96C4\u55E3",
+                  "userPreferred": "Yuuji Ooya"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n132650-XHVXdipWbaKT.png"
+                },
+                "favourites": 3
+              },
+              "role": "Storyboard (OP)"
+            },
+            {
+              "node": {
+                "id": 132650,
+                "name": {
+                  "full": "Yuuji Ooya",
+                  "native": "\u5927\u77E2\u96C4\u55E3",
+                  "userPreferred": "Yuuji Ooya"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n132650-XHVXdipWbaKT.png"
+                },
+                "favourites": 3
+              },
+              "role": "Episode Director (OP)"
+            },
+            {
+              "node": {
+                "id": 179920,
+                "name": {
+                  "full": "Rodolfo Novaes",
+                  "native": "Rodolfo Novaes da Silva",
+                  "userPreferred": "Rodolfo Novaes"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n179920-na8WBFpfCzX7.jpg"
+                },
+                "favourites": 3
+              },
+              "role": "ADR Director (Brazilian Portuguese)"
+            },
+            {
+              "node": {
+                "id": 271749,
+                "name": {
+                  "full": "Koudai Katou",
+                  "native": "\u52A0\u85E4\u5E83\u5927",
+                  "userPreferred": "Koudai Katou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 3
+              },
+              "role": "Animation Producer"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 21127,
+    "page": 1,
+    "sort": [
+      "RELEVANCE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:22:03.6686464+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 109749,
+                "name": {
+                  "full": "MAGES.",
+                  "native": "\u682A\u5F0F\u4F1A\u793EMAGES.",
+                  "userPreferred": "MAGES."
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n109749-Mvq7Q3G9rpMs.jpg"
+                },
+                "favourites": 162
+              },
+              "role": "Original Creator"
+            },
+            {
+              "node": {
+                "id": 114313,
+                "name": {
+                  "full": "Chiyomaru Shikura",
+                  "native": "\u5FD7\u5009\u5343\u4EE3\u4E38",
+                  "userPreferred": "Chiyomaru Shikura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n114313-VV4rOrnSb9bU.png"
+                },
+                "favourites": 205
+              },
+              "role": "Original Creator"
+            },
+            {
+              "node": {
+                "id": 105145,
+                "name": {
+                  "full": "huke",
+                  "native": null,
+                  "userPreferred": "huke"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n105145-DXibwFq2FgcI.png"
+                },
+                "favourites": 314
+              },
+              "role": "Original Character Design"
+            },
+            {
+              "node": {
+                "id": 118442,
+                "name": {
+                  "full": "Kenichi Kawamura",
+                  "native": "\u5DDD\u6751\u8CE2\u4E00",
+                  "userPreferred": "Kenichi Kawamura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n118442-o1LwDJCrrZMM.jpg"
+                },
+                "favourites": 9
+              },
+              "role": "Director"
+            },
+            {
+              "node": {
+                "id": 107198,
+                "name": {
+                  "full": "Jukki Hanada",
+                  "native": "\u82B1\u7530\u5341\u8F1D",
+                  "userPreferred": "Jukki Hanada"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n107198-VFEYV6mJjsAF.png"
+                },
+                "favourites": 433
+              },
+              "role": "Series Composition"
+            },
+            {
+              "node": {
+                "id": 118484,
+                "name": {
+                  "full": "Tomoshige Inayoshi",
+                  "native": "\u7A32\u5409\u667A\u91CD",
+                  "userPreferred": "Tomoshige Inayoshi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n118484-PGoilTTxoppO.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "Character Design"
+            },
+            {
+              "node": {
+                "id": 118485,
+                "name": {
+                  "full": "Asako Inayoshi",
+                  "native": "\u7A32\u5409\u671D\u5B50",
+                  "userPreferred": "Asako Inayoshi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n118485-21J2OfW4LIPF.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Prop Design"
+            },
+            {
+              "node": {
+                "id": 186086,
+                "name": {
+                  "full": "Fumihiro Kitahara",
+                  "native": "\u5317\u539F\u53F2\u5C0B",
+                  "userPreferred": "Fumihiro Kitahara"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Title Logo Design"
+            },
+            {
+              "node": {
+                "id": 132891,
+                "name": {
+                  "full": "Takayuki Yamaguchi",
+                  "native": "\u5C71\u53E3\u8CB4\u4E4B",
+                  "userPreferred": "Takayuki Yamaguchi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n132891-FCqOn8H5wC1E.png"
+                },
+                "favourites": 5
+              },
+              "role": "Assistance"
+            },
+            {
+              "node": {
+                "id": 232397,
+                "name": {
+                  "full": "Asako Suzuki",
+                  "native": "\u9234\u6728\u671D\u5B50",
+                  "userPreferred": "Asako Suzuki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n232397-NF0EALUQyqRS.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Assistance"
+            },
+            {
+              "node": {
+                "id": 232398,
+                "name": {
+                  "full": "Rie Sakuma",
+                  "native": "\u4F50\u4E45\u9593\u91CC\u6C5F",
+                  "userPreferred": "Rie Sakuma"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Assistance"
+            },
+            {
+              "node": {
+                "id": 232402,
+                "name": {
+                  "full": "Kaito Suzuki",
+                  "native": "\u9234\u6728\u6D77\u6597",
+                  "userPreferred": "Kaito Suzuki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Assistance"
+            },
+            {
+              "node": {
+                "id": 232403,
+                "name": {
+                  "full": "Yukihiro Matsuo",
+                  "native": "\u677E\u5C3E\u3086\u304D\u3072\u308D",
+                  "userPreferred": "Yukihiro Matsuo"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Assistance"
+            },
+            {
+              "node": {
+                "id": 232405,
+                "name": {
+                  "full": "Tomohiro Ootani",
+                  "native": "\u5927\u8C37\u77E5\u5E83",
+                  "userPreferred": "Tomohiro Ootani"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Assistance"
+            },
+            {
+              "node": {
+                "id": 143352,
+                "name": {
+                  "full": "Kazuhiko Hasegawa",
+                  "native": "\u9577\u8C37\u5DDD\u548C\u5F66",
+                  "userPreferred": "Kazuhiko Hasegawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Assistance"
+            },
+            {
+              "node": {
+                "id": 150069,
+                "name": {
+                  "full": "Makoto Itou",
+                  "native": "\u4F0A\u85E4\u8AA0",
+                  "userPreferred": "Makoto Itou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n150069-zTnvElEXgcrt.png"
+                },
+                "favourites": 1
+              },
+              "role": "Assistance"
+            },
+            {
+              "node": {
+                "id": 155236,
+                "name": {
+                  "full": "Hiroshi Takano",
+                  "native": "\u9DF9\u91CE\u6D69\u58EB",
+                  "userPreferred": "Hiroshi Takano"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Assistance"
+            },
+            {
+              "node": {
+                "id": 155858,
+                "name": {
+                  "full": "Junichirou Tamura",
+                  "native": "\u7530\u6751\u6DF3\u4E00\u90CE",
+                  "userPreferred": "Junichirou Tamura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n155858-lX6aGr0pfTOz.png"
+                },
+                "favourites": 0
+              },
+              "role": "Assistance"
+            },
+            {
+              "node": {
+                "id": 156748,
+                "name": {
+                  "full": "Yoshinori Hasegawa",
+                  "native": "\u9577\u8C37\u5DDD\u5609\u7BC4",
+                  "userPreferred": "Yoshinori Hasegawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n156748-JgY3KbUAG5fE.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Assistance"
+            },
+            {
+              "node": {
+                "id": 190774,
+                "name": {
+                  "full": "Michiko Koyanagi",
+                  "native": "\u5C0F\u67F3\u8DEF\u5B50",
+                  "userPreferred": "Michiko Koyanagi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Assistance"
+            },
+            {
+              "node": {
+                "id": 195552,
+                "name": {
+                  "full": "Hiroyuki Kuroiwa",
+                  "native": "\u9ED2\u5CA9\u88D5\u4E4B",
+                  "userPreferred": "Hiroyuki Kuroiwa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Assistance"
+            },
+            {
+              "node": {
+                "id": 224226,
+                "name": {
+                  "full": "Fumitaka Itou",
+                  "native": "\u4F0A\u85E4\u53F2\u5CFB",
+                  "userPreferred": "Fumitaka Itou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Assistance"
+            },
+            {
+              "node": {
+                "id": 231768,
+                "name": {
+                  "full": "Kazunari Ishii",
+                  "native": "\u77F3\u4E95\u4E00\u6210",
+                  "userPreferred": "Kazunari Ishii"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Assistance"
+            },
+            {
+              "node": {
+                "id": 232191,
+                "name": {
+                  "full": "Yuuko Takaishi",
+                  "native": "\u9AD8\u77F3\u512A\u5B50",
+                  "userPreferred": "Yuuko Takaishi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Assistance"
+            },
+            {
+              "node": {
+                "id": 119687,
+                "name": {
+                  "full": "Junichi Higashi",
+                  "native": "\u6771\u6F64\u4E00",
+                  "userPreferred": "Junichi Higashi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n119687-SuG63thkVsP0.png"
+                },
+                "favourites": 22
+              },
+              "role": "Art Director"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

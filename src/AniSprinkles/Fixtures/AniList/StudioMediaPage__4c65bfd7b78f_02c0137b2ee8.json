@@ -1,0 +1,628 @@
+﻿{
+  "operationName": "StudioMediaPage",
+  "variables": {
+    "id": 11,
+    "page": 3,
+    "sort": [
+      "START_DATE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "02c0137b2ee8",
+  "recordedAt": "2026-09-06T05:32:39.5399174+00:00",
+  "response": {
+    "data": {
+      "Studio": {
+        "media": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 3
+          },
+          "nodes": [
+            {
+              "id": 1352,
+              "title": {
+                "romaji": "Cyber City OEDO 808",
+                "english": "Cyber City Oedo 808",
+                "native": "\u30B5\u30A4\u30D0\u30FC\u30B7\u30C6\u30A3 OEDO 808"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/1352-1Sytay3y8ZON.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/1352-1Sytay3y8ZON.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 70,
+              "favourites": 201,
+              "popularity": 11553,
+              "startDate": {
+                "year": 1990,
+                "month": 6,
+                "day": 21
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 207,
+              "title": {
+                "romaji": "Lodoss-tou Senki",
+                "english": "Record of Lodoss War",
+                "native": "\u30ED\u30FC\u30C9\u30B9\u5CF6\u6226\u8A18"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx207-B2lxEFGigYgd.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx207-B2lxEFGigYgd.png"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 70,
+              "favourites": 564,
+              "popularity": 30102,
+              "startDate": {
+                "year": 1990,
+                "month": 6,
+                "day": 30
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2468,
+              "title": {
+                "romaji": "NINETEEN 19",
+                "english": null,
+                "native": "NINETEEN 19"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/2468.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/2468.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 59,
+              "favourites": 26,
+              "popularity": 2677,
+              "startDate": {
+                "year": 1990,
+                "month": 7,
+                "day": 27
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 108054,
+              "title": {
+                "romaji": "Fukuyama Gekijou: Natsu no Himitsu",
+                "english": null,
+                "native": "\u3075\u304F\u3084\u307E\u5287\u5834 \u306A\u3064\u306E\u3072\u307F\u3064"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b108054-aByfBoKqAKni.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b108054-aByfBoKqAKni.png"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 51,
+              "favourites": 0,
+              "popularity": 679,
+              "startDate": {
+                "year": 1990,
+                "month": 9,
+                "day": 27
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1280,
+              "title": {
+                "romaji": "Mamono Hunter Youko",
+                "english": "Devil Hunter Yohko",
+                "native": "\u9B54\u7269\u30CF\u30F3\u30BF\u30FC\u5996\u5B50"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/n1280-th0KSWQBpMN2.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/n1280-th0KSWQBpMN2.png"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 58,
+              "favourites": 45,
+              "popularity": 5016,
+              "startDate": {
+                "year": 1990,
+                "month": 12,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1793,
+              "title": {
+                "romaji": "Kaze no Na wa Amnesia",
+                "english": "A Wind Named Amnesia",
+                "native": "\u98A8\u306E\u540D\u306F\u30A2\u30E0\u30CD\u30B8\u30A2"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/1793.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/1793.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 58,
+              "favourites": 61,
+              "popularity": 7351,
+              "startDate": {
+                "year": 1990,
+                "month": 12,
+                "day": 22
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 13047,
+              "title": {
+                "romaji": "Anime Koukyoushi: Jungle Taitei",
+                "english": null,
+                "native": "\u30A2\u30CB\u30E1\u4EA4\u97FF\u8A69 \u30B8\u30E3\u30F3\u30B0\u30EB\u5927\u5E1D"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/13047.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/13047.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 55,
+              "favourites": 6,
+              "popularity": 457,
+              "startDate": {
+                "year": 1991,
+                "month": 1,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1925,
+              "title": {
+                "romaji": "Urusei Yatsura: Itsudatte My Darling",
+                "english": "Urusei Yatsura Movie 6: Always My Darling",
+                "native": "\u3046\u308B\u661F\u3084\u3064\u3089 \u3044\u3064\u3060\u3063\u3066\u30FB\u30DE\u30A4\u30FB\u30C0\u30FC\u30EA\u30F3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1925-t4wSF5Q1MAEF.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1925-t4wSF5Q1MAEF.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 65,
+              "favourites": 39,
+              "popularity": 3449,
+              "startDate": {
+                "year": 1991,
+                "month": 8,
+                "day": 18
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1148,
+              "title": {
+                "romaji": "Teito Monogatari",
+                "english": "Doomed Megalopolis",
+                "native": "\u5E1D\u90FD\u7269\u8A9E"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1148-UfNwrPBvEKfa.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1148-UfNwrPBvEKfa.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 57,
+              "favourites": 51,
+              "popularity": 5052,
+              "startDate": {
+                "year": 1991,
+                "month": 9,
+                "day": 27
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 11685,
+              "title": {
+                "romaji": "Takarajima Memorial: Yuunagi to Yobareta Otoko",
+                "english": null,
+                "native": "\u5B9D\u5CF6\u30E1\u30E2\u30EA\u30A2\u30EB\u300C\u5915\u51EA\u3068\u547C\u3070\u308C\u305F\u7537\u300D"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/11685.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/11685.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 57,
+              "favourites": 2,
+              "popularity": 703,
+              "startDate": {
+                "year": 1992,
+                "month": null,
+                "day": null
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1041,
+              "title": {
+                "romaji": "Zetsuai 1989",
+                "english": null,
+                "native": "\u7D76\u611B\u30FC1989\u30FC"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1041-k7oylkxLSAbU.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1041-k7oylkxLSAbU.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 53,
+              "favourites": 29,
+              "popularity": 2973,
+              "startDate": {
+                "year": 1992,
+                "month": 7,
+                "day": 29
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2008,
+              "title": {
+                "romaji": "YAWARA! Sore Yuke Koshinuke Kids!!",
+                "english": null,
+                "native": "YAWARA\uFF01 \u305D\u308C\u3086\u3051\u8170\u306C\u3051\u30AD\u30C3\u30BA\uFF01\uFF01"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/2008.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/2008.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 59,
+              "favourites": 5,
+              "popularity": 1208,
+              "startDate": {
+                "year": 1992,
+                "month": 8,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2785,
+              "title": {
+                "romaji": "OZ",
+                "english": null,
+                "native": "\u30AA\u30BA"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b2785-cQcKJawWcBKz.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b2785-cQcKJawWcBKz.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 45,
+              "favourites": 2,
+              "popularity": 932,
+              "startDate": {
+                "year": 1992,
+                "month": 8,
+                "day": 28
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1043,
+              "title": {
+                "romaji": "Tokyo BABYLON",
+                "english": null,
+                "native": "\u6771\u4EAC\uFF22\uFF21\uFF22\uFF39\uFF2C\uFF2F\uFF2E"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1043-azPnWDQMOGkO.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1043-azPnWDQMOGkO.png"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 62,
+              "favourites": 64,
+              "popularity": 6389,
+              "startDate": {
+                "year": 1992,
+                "month": 10,
+                "day": 21
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 3152,
+              "title": {
+                "romaji": "Download: Namu Amida Butsu wa Ai no Uta",
+                "english": null,
+                "native": "\u30C0\u30A6\u30F3\u30ED\u30FC\u30C9 -\u5357\u7121\u963F\u5F25\u9640\u4ECF\u306F\u611B\u306E\u8A69-"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/3152.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/3152.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 59,
+              "favourites": 32,
+              "popularity": 3523,
+              "startDate": {
+                "year": 1992,
+                "month": 12,
+                "day": 18
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2091,
+              "title": {
+                "romaji": "Oshare Kozou wa Hanamaru",
+                "english": "The Fashion Boy is Cool",
+                "native": "\u304A\u6D12\u843D\u5C0F\u50E7\u306F\u82B1\u30DE\u30EB\u30C3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/2091.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/2091.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 44,
+              "favourites": 3,
+              "popularity": 751,
+              "startDate": {
+                "year": 1993,
+                "month": 4,
+                "day": 23
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2101,
+              "title": {
+                "romaji": "SINGLES",
+                "english": null,
+                "native": "SINGLES"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/2101.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/2101.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 50,
+              "favourites": 2,
+              "popularity": 1130,
+              "startDate": {
+                "year": 1993,
+                "month": 5,
+                "day": 28
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1016,
+              "title": {
+                "romaji": "GUNNM",
+                "english": "Battle Angel Alita",
+                "native": "\u9283\u5922"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1016-3tyU3Y3KtcGA.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1016-3tyU3Y3KtcGA.png"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 67,
+              "favourites": 267,
+              "popularity": 19185,
+              "startDate": {
+                "year": 1993,
+                "month": 6,
+                "day": 21
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2093,
+              "title": {
+                "romaji": "POPS",
+                "english": null,
+                "native": "POPS"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/2093.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/2093.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 44,
+              "favourites": 2,
+              "popularity": 895,
+              "startDate": {
+                "year": 1993,
+                "month": 6,
+                "day": 25
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1329,
+              "title": {
+                "romaji": "O-Hoshisama no Rail",
+                "english": "Rail of the Star: A True Story of Children",
+                "native": "\u304A\u661F\u3055\u307E\u306E\u30EC\u30FC\u30EB"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/1329.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/1329.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 60,
+              "favourites": 4,
+              "popularity": 1269,
+              "startDate": {
+                "year": 1993,
+                "month": 7,
+                "day": 10
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 14181,
+              "title": {
+                "romaji": "Oedo wa Nemurenai!",
+                "english": null,
+                "native": "\u304A\u6C5F\u6238\u306F\u306D\u3080\u308C\u306A\u3044"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/14181.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/14181.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 47,
+              "favourites": 3,
+              "popularity": 860,
+              "startDate": {
+                "year": 1993,
+                "month": 7,
+                "day": 23
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 7967,
+              "title": {
+                "romaji": "Hiroshima ni Ichiban Densha ga Hashitta",
+                "english": null,
+                "native": "\u30D2\u30ED\u30B7\u30DE\u306B\u4E00\u756A\u96FB\u8ECA\u304C\u8D70\u3063\u305F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/7967.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/7967.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 49,
+              "favourites": 3,
+              "popularity": 392,
+              "startDate": {
+                "year": 1993,
+                "month": 8,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2092,
+              "title": {
+                "romaji": "Kiss wa Me ni Shite",
+                "english": null,
+                "native": "\u30AD\u30C3\u30B9\u306F\u77B3\u306B\u3057\u3066"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx2092-KCaWolMzyqLK.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2092-KCaWolMzyqLK.png"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 53,
+              "favourites": 5,
+              "popularity": 1000,
+              "startDate": {
+                "year": 1993,
+                "month": 8,
+                "day": 27
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2017,
+              "title": {
+                "romaji": "Ningyo no Kizu",
+                "english": "Mermaid\u0027s Scar",
+                "native": "\u4EBA\u9B5A\u306E\u50B7"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b2017-7FHF1D3CfIFI.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b2017-7FHF1D3CfIFI.png"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 63,
+              "favourites": 24,
+              "popularity": 3082,
+              "startDate": {
+                "year": 1993,
+                "month": 9,
+                "day": 24
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 5447,
+              "title": {
+                "romaji": "A-Girl",
+                "english": null,
+                "native": "A-Girl"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx5447-I0yyqno0kYhR.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx5447-I0yyqno0kYhR.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 55,
+              "favourites": 25,
+              "popularity": 2398,
+              "startDate": {
+                "year": 1993,
+                "month": 9,
+                "day": 24
+              },
+              "mediaListEntry": null
+            }
+          ]
+        }
+      }
+    }
+  }
+}

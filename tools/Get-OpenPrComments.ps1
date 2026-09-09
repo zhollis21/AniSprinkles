@@ -101,7 +101,22 @@ foreach ($prItem in $openPRs) {
     $reviewLines = [System.Collections.Generic.List[string]]::new()
     foreach ($r in $reviews) {
         $body = $r.body.Trim()
-        if (-not $body -or $body -match '<details>|<summary>|<a href') { continue }
+        if (-not $body) { continue }
+
+        # Unwrap <details> rather than skipping bodies that contain it.
+        #
+        # This used to `continue` on any body matching <details>|<summary>|<a href, which threw away
+        # every Copilot review in full — and Copilot puts two useful things there: the headline
+        # finding above the fold, and a "Suppressed comments" list inside it. Those are findings the
+        # reviewer generated but chose NOT to post as inline threads, so they appear nowhere else in
+        # this report and nowhere in the PR's comment list. They are frequently the sharpest ones.
+        #
+        # <summary> becomes a bold lead-in so the section keeps its label once the tags are gone.
+        $body = $body -replace '(?s)<summary>\s*(.*?)\s*</summary>', "**`$1**`n"
+        $body = $body -replace '</?details[^>]*>', ''
+        $body = ($body -replace '(?m)^\s*$\n{2,}', "`n").Trim()
+        if (-not $body) { continue }
+
         $dt = ([datetime]$r.submitted_at).ToLocalTime().ToString("yyyy-MM-dd h:mm tt")
         $reviewLines.Add("#### $($r.user.login) — $($r.state) — $dt")
         $reviewLines.Add($body)

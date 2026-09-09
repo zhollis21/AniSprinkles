@@ -1,0 +1,172 @@
+﻿{
+  "operationName": "MediaCharactersPage",
+  "variables": {
+    "id": 189323,
+    "page": 1,
+    "sort": [
+      "RELEVANCE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "64eed76a7328",
+  "recordedAt": "2026-09-06T05:24:51.1088309+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "characters": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 271367,
+                "name": {
+                  "full": "Rakurou Hizutome",
+                  "native": "\u967D\u52D9\u697D\u90CE",
+                  "userPreferred": "Rakurou Hizutome"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b271367-RM6DwXf1D0gu.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b271367-RM6DwXf1D0gu.png"
+                },
+                "favourites": 1321
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 281519,
+                "name": {
+                  "full": "Rei Saiga",
+                  "native": "\u658E\u8CC0\u73B2",
+                  "userPreferred": "Rei Saiga"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b281519-reQ83dGVLifA.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b281519-reQ83dGVLifA.png"
+                },
+                "favourites": 250
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 281520,
+                "name": {
+                  "full": "Towa Amane",
+                  "native": "\u5929\u97F3\u6C38\u9060",
+                  "userPreferred": "Towa Amane"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b281520-2l1wxzAuz9zM.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b281520-2l1wxzAuz9zM.png"
+                },
+                "favourites": 667
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 281521,
+                "name": {
+                  "full": "Kei Uomi",
+                  "native": "\u9B5A\u81E3\u6167",
+                  "userPreferred": "Kei Uomi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b281521-3ozszEEc9Y8s.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b281521-3ozszEEc9Y8s.png"
+                },
+                "favourites": 257
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 281522,
+                "name": {
+                  "full": "Emul",
+                  "native": "\u30A8\u30E0\u30EB",
+                  "userPreferred": "Emul"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b281522-AuvXcHPoq0tX.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b281522-AuvXcHPoq0tX.jpg"
+                },
+                "favourites": 625
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 313426,
+                "name": {
+                  "full": "Akane Akitsu",
+                  "native": "\u79CB\u6D25\u831C",
+                  "userPreferred": "Akane Akitsu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b313426-oHFcRxxSrpwD.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b313426-oHFcRxxSrpwD.png"
+                },
+                "favourites": 116
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 313428,
+                "name": {
+                  "full": "Ceecrue",
+                  "native": "\u30B7\u30FC\u30AF\u30EB\u30A5",
+                  "userPreferred": "Ceecrue"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b313428-e3qnE8E796o7.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b313428-e3qnE8E796o7.jpg"
+                },
+                "favourites": 12
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 313440,
+                "name": {
+                  "full": "Mordo",
+                  "native": "\u30E2\u30EB\u30C9",
+                  "userPreferred": "Mordo"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b313440-rqR5kuvVylh8.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b313440-rqR5kuvVylh8.jpg"
+                },
+                "favourites": 8
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 313441,
+                "name": {
+                  "full": "Rust",
+                  "native": "\u30EB\u30B9\u30C8",
+                  "userPreferred": "Rust"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b313441-CvMz7KGOUs0U.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b313441-CvMz7KGOUs0U.png"
+                },
+                "favourites": 57
+              },
+              "role": "SUPPORTING"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

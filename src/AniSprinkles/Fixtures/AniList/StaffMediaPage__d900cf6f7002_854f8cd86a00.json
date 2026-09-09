@@ -1,0 +1,136 @@
+﻿{
+  "operationName": "StaffMediaPage",
+  "variables": {
+    "id": 95075,
+    "page": 1,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "854f8cd86a00",
+  "recordedAt": "2026-09-09T15:58:58.664917+00:00",
+  "response": {
+    "data": {
+      "Staff": {
+        "staffMedia": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 1165,
+                "title": {
+                  "romaji": "Sakura Taisen: Ouka Kenran",
+                  "english": "Sakura Wars: The Gorgeous Blooming Cherry Blossoms",
+                  "native": "\u30B5\u30AF\u30E9\u5927\u6226 ~\u685C\u83EF\u7D62\u721B~"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b1165-cmxTudQc5wHO.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b1165-cmxTudQc5wHO.jpg"
+                },
+                "format": "OVA",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 63,
+                "favourites": 36,
+                "popularity": 3060,
+                "startDate": {
+                  "year": 1997,
+                  "month": 12,
+                  "day": 18
+                },
+                "mediaListEntry": null
+              },
+              "staffRole": "Theme Song Performance (OP, ED2)"
+            },
+            {
+              "node": {
+                "id": 4150,
+                "title": {
+                  "romaji": "Cosmos Pink Shock",
+                  "english": null,
+                  "native": "\u30B3\u30B9\u30E2\u30B9\u3000\u30D4\u30F3\u30AF\u30B7\u30E7\u30C3\u30AF"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx4150-ab0QGFDZIn68.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx4150-ab0QGFDZIn68.jpg"
+                },
+                "format": "OVA",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 52,
+                "favourites": 12,
+                "popularity": 1727,
+                "startDate": {
+                  "year": 1986,
+                  "month": 7,
+                  "day": 21
+                },
+                "mediaListEntry": null
+              },
+              "staffRole": "Theme Song Performance (ED)"
+            },
+            {
+              "node": {
+                "id": 15913,
+                "title": {
+                  "romaji": "Happy\u2606Lucky Bikkuriman",
+                  "english": null,
+                  "native": "\u795D! (\u30CF\u30D4\u2606\u30E9\u30AD)\u30D3\u30C3\u30AF\u30EA\u30DE\u30F3"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/15913.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/15913.jpg"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 58,
+                "favourites": 5,
+                "popularity": 356,
+                "startDate": {
+                  "year": 2006,
+                  "month": 10,
+                  "day": 15
+                },
+                "mediaListEntry": null
+              },
+              "staffRole": "Theme Song Performance (ED)"
+            },
+            {
+              "node": {
+                "id": 16253,
+                "title": {
+                  "romaji": "Umi da! Funade da! Nikoniko, Pun",
+                  "english": null,
+                  "native": "\u6D77\u3060\uFF01\u8239\u51FA\u3060\uFF01\u306B\u3053\u306B\u3053\u3001\u3077\u3093"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx16253-ckp6jCg44OHf.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx16253-ckp6jCg44OHf.png"
+                },
+                "format": "MOVIE",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 53,
+                "favourites": 4,
+                "popularity": 222,
+                "startDate": {
+                  "year": 1990,
+                  "month": 1,
+                  "day": 4
+                },
+                "mediaListEntry": null
+              },
+              "staffRole": "Insert Song Performance (\u0022Yuuyake wa Mama no Nioi\u0022)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

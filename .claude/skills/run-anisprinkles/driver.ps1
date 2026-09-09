@@ -232,6 +232,20 @@ AniSprinkles driver — pwsh .claude/skills/run-anisprinkles/driver.ps1 <command
   logcat [lines]            App-PID logcat tail (default 200)
   applog                    Pull the on-device rotating file log
 
+  seed-token [test|real]    Sign a REAL-AUTH Debug build in over adb, no OAuth tapping (#160)
+                            test  : ANILIST_RECORDER_TOKEN (CI test account; same var the
+                                    fixture recorder uses) — the default
+                            real  : ANISPRINKLES_DEV_TOKEN (your own account)
+                            clear : sign out
+                            -var <NAME> reads any other environment variable instead.
+                            Does nothing on a -p:CiBuild=true build, where sign-in is stubbed.
+
+  dump-token                Read the signed-in token back OUT of a real-auth build (#160).
+                            Sign in on the emulator normally, then run this — the app has
+                            already done the OAuth flow that is awkward to do by hand.
+                            Writes to tmp/dev-token.txt (gitignored) and prints only the
+                            length; the on-device copy is deleted immediately after.
+
   fault <op> <kind> [scope] Arm fault injection on the RUNNING app — no rebuild (#125)
                             op    : 'any', or a prefix whose meaning depends on -layer:
                                       -layer client : IAniListClient method name
@@ -323,7 +337,8 @@ function Cmd-Boot {
 }
 
 function Cmd-Build {
-    # CiBuild=true swaps in CIAuthService / CIAniListClient / CIAiringNotificationService,
+    # CiBuild=true swaps in CIAuthService / CIAiringNotificationService and replays recorded
+    # AniList responses at the HTTP layer (#134),
     # so the app launches already "signed in" with fixture data. No OAuth, no AniList calls,
     # no rate-limit budget spent. EmbedAssembliesIntoApk makes the APK self-contained.
     Say 'dotnet build (Debug, CI stubs)'
@@ -559,6 +574,119 @@ function Cmd-Fault {
 #
 # CIAiringNotificationService stays a no-op, so this changes nothing about the screenshot job: it
 # bypasses the service entirely and nothing broadcasts here during CI.
+# Signs a real-auth Debug build in over adb, so a device pass against real AniList data does not
+# start with tapping through WebAuthenticator (#160 was found needing exactly that). The CI stubs
+# are the only scriptable way past sign-in, which is what made real-auth passes manual until now.
+#
+# The token is read from the environment and never echoed: it is passed straight to adb and only
+# its length is reported back. Note that it does travel on an adb command line, where `am` may
+# echo it into logcat — fine for a throwaway account on a local emulator, not a pattern to reuse.
+function Cmd-SeedToken {
+    param([string[]]$Argv)
+
+    # 'seed-token' with no arguments is the common case, and the dispatch above builds $a as
+    # @($Args) — which for no arguments is an array holding a single $null, not an empty array. So
+    # Count is 1 and $Argv[0] is null, and the first .ToLowerInvariant() below would throw. Strip
+    # the nulls rather than testing for them at each use.
+    $Argv = @($Argv | Where-Object { $null -ne $_ })
+
+    $component = "$Package/.TokenReceiver"
+    $action    = 'com.RainbowSprinkles.TOKEN'
+
+    if ($Argv.Count -ge 1 -and $Argv[0].ToLowerInvariant() -eq 'clear') {
+        Adb shell am broadcast -n $component -a $action --ez clear true *> $null
+        Say 'token cleared — the app is now signed out'
+        return
+    }
+
+    # Which account to sign in as. 'test' reuses the variable the fixture recorder already needs
+    # (tools/record-anilist-fixtures.cs), so the common case manages one credential rather than two.
+    $which = if ($Argv.Count -ge 1) { $Argv[0].ToLowerInvariant() } else { 'test' }
+    $varName = $null
+    for ($i = 0; $i -lt $Argv.Count; $i++) {
+        if ($Argv[$i] -match '^-{1,2}var$') { $i++; $varName = $Argv[$i] }
+    }
+
+    if (-not $varName) {
+        $varName = switch ($which) {
+            'test'  { 'ANILIST_RECORDER_TOKEN' }
+            'real'  { 'ANISPRINKLES_DEV_TOKEN' }
+            default { throw "seed-token takes 'test', 'real', 'clear', or -var <NAME> — got '$which'" }
+        }
+    }
+
+    $token = [Environment]::GetEnvironmentVariable($varName)
+    if ([string]::IsNullOrWhiteSpace($token)) {
+        # Guidance to the host, then a one-line throw: PowerShell renders a multi-line throw as one
+        # unreadable blob, and every other error in this script is a single sentence.
+        Write-Host ''
+        Write-Host "  test  -> ANILIST_RECORDER_TOKEN   the CI test account, shared with tools/record-anilist-fixtures.cs"
+        Write-Host "  real  -> ANISPRINKLES_DEV_TOKEN   your own account, for reproducing real-world data bugs"
+        Write-Host ''
+        Write-Host "  Set it in the shell, not as an argument, so it stays out of shell history:"
+        Write-Host "      `$env:$varName = `"<access-token>`""
+        Write-Host ''
+        throw "$varName is not set, so there is no token to seed."
+    }
+
+    Adb shell am broadcast -n $component -a $action --es token "$token" *> $null
+    Say "token seeded from $varName ($($token.Length) chars) — pull to refresh or relaunch to pick it up"
+}
+
+# Reads the signed-in token back off the device, so the app's own OAuth flow can be the way you
+# obtain a token for the fixture tooling — sign in on the emulator normally, then pull it.
+#
+# AniList's implicit grant returns the token in the fragment of a redirect to anisprinkles://auth,
+# which a desktop browser cannot follow, so getting one by hand is awkward. The app already does
+# that flow correctly; this just hands the result over.
+#
+# The value is never printed. It goes to a gitignored file and only its length is reported, so a
+# live credential does not end up in terminal scrollback or in any transcript of this session.
+function Cmd-DumpToken {
+    $component = "$Package/.TokenReceiver"
+    $action    = 'com.RainbowSprinkles.TOKEN'
+    $remote    = "files/dev-token.txt"
+    $localDir  = Join-Path $RepoRoot 'tmp'
+    $local     = Join-Path $localDir 'dev-token.txt'
+
+    # Clear any stale copy first, or a failed dump silently returns the previous run's token.
+    Adb shell run-as $Package rm -f $remote *> $null
+    Adb shell am broadcast -n $component -a $action --ez dump true *> $null
+
+    # The receiver writes asynchronously, so poll rather than assume it has landed.
+    $content = $null
+    for ($i = 0; $i -lt 20; $i++) {
+        Start-Sleep -Milliseconds 250
+        # AdbOut already prepends exec-out, which runs the command on the device directly — adding
+        # 'shell' here nests it wrongly and returns a truncated, mangled result rather than failing.
+        # (Cmd-AppLog is the reference form.) exec-out is also required rather than incidental: plain
+        # adb shell rewrites LF to CRLF, which would corrupt the token on its way out.
+        $content = (AdbOut run-as $Package cat $remote) -join ''
+        if (-not [string]::IsNullOrWhiteSpace($content)) { break }
+    }
+
+    # Always remove the on-device copy, whatever happened — it holds a live credential.
+    Adb shell run-as $Package rm -f $remote *> $null
+
+    if ([string]::IsNullOrWhiteSpace($content)) {
+        throw 'No token was written. Is this a CI-stub build, or is the app not running? Check driver.ps1 logcat.'
+    }
+
+    $content = $content.Trim()
+    if ($content.StartsWith('<')) {
+        throw "The app has no usable token to dump (state: $content). Sign in on the emulator first."
+    }
+
+    New-Item -ItemType Directory -Force $localDir | Out-Null
+    Set-Content -Path $local -Value $content -NoNewline -Encoding ascii
+
+    Say "token written to tmp/dev-token.txt ($($content.Length) chars) — gitignored, not printed"
+    Write-Host ''
+    Write-Host '  Load it into this shell:'
+    Write-Host '      $env:ANILIST_RECORDER_TOKEN = (Get-Content tmp/dev-token.txt -Raw).Trim()'
+    Write-Host ''
+}
+
 function Cmd-Notify {
     param([string[]]$Argv)
 
@@ -670,6 +798,8 @@ switch ($cmd) {
     'logcat'     { if ($a[0]) { Cmd-Logcat ([int]$a[0]) } else { Cmd-Logcat } }
     'applog'     { Cmd-AppLog }
     'fault'      { Cmd-Fault $a }
+    'seed-token' { Cmd-SeedToken $a }
+    'dump-token' { Cmd-DumpToken }
     'notify'     { Cmd-Notify $a }
     'worker-run' { Cmd-WorkerRun $a }
     'deeplink'   { Cmd-DeepLink $a }

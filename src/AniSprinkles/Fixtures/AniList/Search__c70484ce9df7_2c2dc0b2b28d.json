@@ -1,0 +1,504 @@
+﻿{
+  "operationName": "Search",
+  "variables": {
+    "search": "one",
+    "type": "ANIME",
+    "page": 3,
+    "perPage": 20
+  },
+  "queryFingerprint": "2c2dc0b2b28d",
+  "recordedAt": "2026-09-06T05:17:20.6993547+00:00",
+  "response": {
+    "data": {
+      "Page": {
+        "pageInfo": {
+          "hasNextPage": false,
+          "currentPage": 3
+        },
+        "media": [
+          {
+            "id": 205068,
+            "title": {
+              "romaji": "Wollum Jogyonim",
+              "english": "One-Room TA",
+              "native": "\uC6D0\uB8F8 \uC870\uAD50\uB2D8"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx205068-KPJVtEp9imju.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx205068-KPJVtEp9imju.jpg"
+            },
+            "format": "ONA",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 7,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 70,
+            "favourites": 81,
+            "popularity": 3192,
+            "trending": 4,
+            "startDate": {
+              "year": 2026,
+              "month": 8,
+              "day": 28
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 20527,
+            "title": {
+              "romaji": "Isshuukan Friends.",
+              "english": "One Week Friends",
+              "native": "\u4E00\u9031\u9593\u30D5\u30EC\u30F3\u30BA\u3002"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20527-6idifxd10b2Q.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20527-6idifxd10b2Q.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 73,
+            "favourites": 867,
+            "popularity": 74995,
+            "trending": 1,
+            "startDate": {
+              "year": 2014,
+              "month": 4,
+              "day": 7
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 13029,
+            "title": {
+              "romaji": "Arashi no Yoru ni: Himitsu no Tomodachi",
+              "english": "One Stormy Night: Secret Friends",
+              "native": "\u3042\u3089\u3057\u306E\u3088\u308B\u306B \u3072\u307F\u3064\u306E\u3068\u3082\u3060\u3061"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/13029.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/13029.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 26,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 56,
+            "favourites": 1,
+            "popularity": 700,
+            "trending": 0,
+            "startDate": {
+              "year": 2012,
+              "month": 4,
+              "day": 4
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 99054,
+            "title": {
+              "romaji": "One Room: another",
+              "english": null,
+              "native": "\u30EF\u30F3\u30EB\u30FC\u30E0 -another-"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx99054-FHBbtrk85vb8.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx99054-FHBbtrk85vb8.png"
+            },
+            "format": "OVA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 51,
+            "favourites": 39,
+            "popularity": 7688,
+            "trending": 0,
+            "startDate": {
+              "year": 2017,
+              "month": 5,
+              "day": 26
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 1328,
+            "title": {
+              "romaji": "1-Pound no Fukuin",
+              "english": "One Pound Gospel",
+              "native": "\uFF11\u30DD\u30F3\u30C9\u306E\u798F\u97F3"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1328-moNfGtR4wMOK.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1328-moNfGtR4wMOK.png"
+            },
+            "format": "OVA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 61,
+            "favourites": 21,
+            "popularity": 2943,
+            "trending": 1,
+            "startDate": {
+              "year": 1988,
+              "month": 12,
+              "day": 2
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 1961,
+            "title": {
+              "romaji": "Arashi no Yoru ni",
+              "english": "One Stormy Night",
+              "native": "\u3042\u3089\u3057\u306E\u3088\u308B\u306B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b1961-L9Hw5BgBaNT1.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b1961-L9Hw5BgBaNT1.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 72,
+            "favourites": 127,
+            "popularity": 5960,
+            "trending": 0,
+            "startDate": {
+              "year": 2005,
+              "month": 12,
+              "day": 10
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 5249,
+            "title": {
+              "romaji": "Mitsume ga Tooru",
+              "english": null,
+              "native": "\u4E09\u3064\u76EE\u304C\u3068\u304A\u308B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx5249-azgs2i5vKwLa.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx5249-azgs2i5vKwLa.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 48,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 66,
+            "favourites": 11,
+            "popularity": 739,
+            "trending": 0,
+            "startDate": {
+              "year": 1990,
+              "month": 10,
+              "day": 18
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 103516,
+            "title": {
+              "romaji": "ONE AND THREE FOUR",
+              "english": null,
+              "native": "ONE AND THREE FOUR"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/103516-u2zRh6UeBkOT.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/103516-u2zRh6UeBkOT.jpg"
+            },
+            "format": "MUSIC",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 47,
+            "favourites": 0,
+            "popularity": 242,
+            "trending": 0,
+            "startDate": {
+              "year": 2013,
+              "month": 8,
+              "day": 8
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 189085,
+            "title": {
+              "romaji": "Charisma 1-shuukan",
+              "english": "One Week Charisma",
+              "native": "\u30AB\u30EA\u30B9\u30DE1\u9031\u9593"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx189085-KW4gehvxeFG5.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx189085-KW4gehvxeFG5.jpg"
+            },
+            "format": "MUSIC",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 94,
+            "trending": 0,
+            "startDate": {
+              "year": 2021,
+              "month": 11,
+              "day": 1
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 169747,
+            "title": {
+              "romaji": "Ashita Kara",
+              "english": "to day plus one",
+              "native": "\u3042\u3057\u305F\u304B\u3089"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx169747-XTqLWkPHWx9K.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx169747-XTqLWkPHWx9K.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 143,
+            "trending": 0,
+            "startDate": {
+              "year": 2018,
+              "month": null,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 5252,
+            "title": {
+              "romaji": "ONE PIECE: ROMANCE DAWN STORY",
+              "english": "One Piece: Romance Dawn Story",
+              "native": "ONE PIECE \u30ED\u30DE\u30F3\u30B9 \u30C9\u30FC\u30F3 \u30B9\u30C8\u30FC\u30EA\u30FC"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/5252.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/5252.jpg"
+            },
+            "format": "OVA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 70,
+            "favourites": 104,
+            "popularity": 14536,
+            "trending": 0,
+            "startDate": {
+              "year": 2008,
+              "month": 11,
+              "day": 24
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 139862,
+            "title": {
+              "romaji": "Mizuiro no One-Piece",
+              "english": null,
+              "native": "\u6C34\u8272\u306E\u30EF\u30F3\u30D4\u30FC\u30B9"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b139862-yvpnc0LbW2YN.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b139862-yvpnc0LbW2YN.png"
+            },
+            "format": "MUSIC",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 49,
+            "favourites": 2,
+            "popularity": 277,
+            "trending": 0,
+            "startDate": {
+              "year": 1982,
+              "month": 8,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 15323,
+            "title": {
+              "romaji": "ONE PIECE: Episode of Nami - Koukaishi no Namida to Nakama no Kizuna",
+              "english": null,
+              "native": "ONE PIECE \u30A8\u30D4\u30BD\u30FC\u30C9\u30AA\u30D6\u30CA\u30DF \u301C\u822A\u6D77\u58EB\u306E\u6D99\u3068\u4EF2\u9593\u306E\u7D46\u301C"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/15323.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/15323.jpg"
+            },
+            "format": "SPECIAL",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 78,
+            "favourites": 180,
+            "popularity": 17502,
+            "trending": 0,
+            "startDate": {
+              "year": 2012,
+              "month": 8,
+              "day": 25
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 180,
+            "title": {
+              "romaji": "Vandread",
+              "english": "Vandread",
+              "native": "\u30F4\u30A1\u30F3\u30C9\u30EC\u30C3\u30C9"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx180-67CAKcXsjpUt.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx180-67CAKcXsjpUt.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 13,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 67,
+            "favourites": 224,
+            "popularity": 15796,
+            "trending": 0,
+            "startDate": {
+              "year": 2000,
+              "month": 10,
+              "day": 3
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 21092,
+            "title": {
+              "romaji": "Rakudai Kishi no Cavalry",
+              "english": "Chivalry of a Failed Knight",
+              "native": "\u843D\u7B2C\u9A0E\u58EB\u306E\u82F1\u96C4\u8B5A\uFF08\u30AD\u30E3\u30D0\u30EB\u30EA\u30A3\uFF09"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx21092-1NML6TdngmBq.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx21092-1NML6TdngmBq.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 72,
+            "favourites": 6335,
+            "popularity": 244864,
+            "trending": 4,
+            "startDate": {
+              "year": 2015,
+              "month": 10,
+              "day": 3
+            },
+            "mediaListEntry": {
+              "id": 593364119,
+              "status": "COMPLETED",
+              "progress": 12,
+              "score": 8
+            }
+          },
+          {
+            "id": 193699,
+            "title": {
+              "romaji": "Akuyaku Reijou no Naka no Hito",
+              "english": null,
+              "native": "\u60AA\u5F79\u4EE4\u5B22\u306E\u4E2D\u306E\u4EBA"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx193699-BrNIip2KM28S.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx193699-BrNIip2KM28S.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 60,
+            "popularity": 5379,
+            "trending": 0,
+            "startDate": {
+              "year": 2027,
+              "month": null,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 104096,
+            "title": {
+              "romaji": "Ashita e Mukau Hito",
+              "english": "The One that Heads to Tomorrow",
+              "native": "\u660E\u65E5\u3078\u5411\u304B\u3046\u4EBA"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/104096-ckjPWsSgBnsg.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/104096-ckjPWsSgBnsg.jpg"
+            },
+            "format": "MUSIC",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 47,
+            "favourites": 0,
+            "popularity": 252,
+            "trending": 0,
+            "startDate": {
+              "year": 2015,
+              "month": 4,
+              "day": 6
+            },
+            "mediaListEntry": null
+          }
+        ]
+      }
+    }
+  }
+}

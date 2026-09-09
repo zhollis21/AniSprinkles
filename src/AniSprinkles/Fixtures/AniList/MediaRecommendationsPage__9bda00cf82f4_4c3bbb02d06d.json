@@ -1,0 +1,503 @@
+﻿{
+  "operationName": "MediaRecommendationsPage",
+  "variables": {
+    "id": 30013,
+    "page": 1,
+    "sort": [
+      "RATING_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "4c3bbb02d06d",
+  "recordedAt": "2026-09-06T05:26:58.7174235+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "recommendations": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "nodes": [
+            {
+              "rating": 691,
+              "mediaRecommendation": {
+                "id": 30026,
+                "title": {
+                  "romaji": "HUNTER\u00D7HUNTER",
+                  "english": "Hunter x Hunter",
+                  "native": "HUNTER\u00D7HUNTER"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30026-uCvXMudMzmwI.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30026-uCvXMudMzmwI.jpg"
+                },
+                "averageScore": 88,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 344,
+              "mediaRecommendation": {
+                "id": 30042,
+                "title": {
+                  "romaji": "Dragon Ball",
+                  "english": "Dragon Ball",
+                  "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EB"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30042-4SetGiEbGc9x.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30042-4SetGiEbGc9x.jpg"
+                },
+                "averageScore": 84,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 262,
+              "mediaRecommendation": {
+                "id": 30011,
+                "title": {
+                  "romaji": "NARUTO",
+                  "english": "Naruto",
+                  "native": "NARUTO -\u30CA\u30EB\u30C8-"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx30011-9yUF1dXWgDOx.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx30011-9yUF1dXWgDOx.jpg"
+                },
+                "averageScore": 79,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 169,
+              "mediaRecommendation": {
+                "id": 30012,
+                "title": {
+                  "romaji": "BLEACH",
+                  "english": "Bleach",
+                  "native": "BLEACH"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30012-1epmVfTSv2rr.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30012-1epmVfTSv2rr.png"
+                },
+                "averageScore": 80,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 131,
+              "mediaRecommendation": {
+                "id": 86123,
+                "title": {
+                  "romaji": "Black Clover",
+                  "english": "Black Clover",
+                  "native": "\u30D6\u30E9\u30C3\u30AF\u30AF\u30ED\u30FC\u30D0\u30FC"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx86123-Ill8uBdtvWrR.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx86123-Ill8uBdtvWrR.png"
+                },
+                "averageScore": 77,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 101,
+              "mediaRecommendation": {
+                "id": 85486,
+                "title": {
+                  "romaji": "Boku no Hero Academia",
+                  "english": "My Hero Academia",
+                  "native": "\u50D5\u306E\u30D2\u30FC\u30ED\u30FC\u30A2\u30AB\u30C7\u30DF\u30A2"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx85486-INqnYx8gL3eX.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx85486-INqnYx8gL3eX.jpg"
+                },
+                "averageScore": 78,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 87,
+              "mediaRecommendation": {
+                "id": 37887,
+                "title": {
+                  "romaji": "Toriko",
+                  "english": "Toriko",
+                  "native": "\u30C8\u30EA\u30B3"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx37887-eYfLTjygqwK8.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx37887-eYfLTjygqwK8.png"
+                },
+                "averageScore": 75,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 78,
+              "mediaRecommendation": {
+                "id": 44790,
+                "title": {
+                  "romaji": "Magi",
+                  "english": "Magi: The Labyrinth of Magic",
+                  "native": "\u30DE\u30AE"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx44790-4Rzup5aNVcVC.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx44790-4Rzup5aNVcVC.png"
+                },
+                "averageScore": 81,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 65,
+              "mediaRecommendation": {
+                "id": 30598,
+                "title": {
+                  "romaji": "FAIRY TAIL",
+                  "english": "Fairy Tail",
+                  "native": "FAIRY TAIL"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30598-UOCymo2vPcWe.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30598-UOCymo2vPcWe.png"
+                },
+                "averageScore": 71,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 60,
+              "mediaRecommendation": {
+                "id": 30025,
+                "title": {
+                  "romaji": "Hagane no Renkinjutsushi",
+                  "english": "Fullmetal Alchemist",
+                  "native": "\u92FC\u306E\u932C\u91D1\u8853\u5E2B"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30025-mpPVpCKFTowt.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30025-mpPVpCKFTowt.png"
+                },
+                "averageScore": 89,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 44,
+              "mediaRecommendation": {
+                "id": 46765,
+                "title": {
+                  "romaji": "Kingdom",
+                  "english": "Kingdom",
+                  "native": "\u30AD\u30F3\u30B0\u30C0\u30E0"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx46765-KPXir4sRqJBW.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx46765-KPXir4sRqJBW.png"
+                },
+                "averageScore": 89,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 42,
+              "mediaRecommendation": {
+                "id": 179484,
+                "title": {
+                  "romaji": "GALAXIAS",
+                  "english": "GALAXIAS",
+                  "native": "GALAXIAS"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx179484-E3aY5qtqy8W4.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx179484-E3aY5qtqy8W4.jpg"
+                },
+                "averageScore": 73,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 38,
+              "mediaRecommendation": {
+                "id": 30022,
+                "title": {
+                  "romaji": "Rurouni Kenshin: Meiji Kenkaku Romantan",
+                  "english": "Rurouni Kenshin",
+                  "native": "\u308B\u308D\u3046\u306B\u5263\u5FC3 -\u660E\u6CBB\u5263\u5BA2\u6D6A\u6F2B\u8B5A-"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30022-jxTlViun1o10.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30022-jxTlViun1o10.jpg"
+                },
+                "averageScore": 82,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 35,
+              "mediaRecommendation": {
+                "id": 85143,
+                "title": {
+                  "romaji": "Sinui Tap",
+                  "english": "Tower of God",
+                  "native": "\uC2E0\uC758 \uD0D1"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx85143-23oup3ETbFJk.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx85143-23oup3ETbFJk.jpg"
+                },
+                "averageScore": 81,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 34,
+              "mediaRecommendation": {
+                "id": 30642,
+                "title": {
+                  "romaji": "Vinland Saga",
+                  "english": "Vinland Saga",
+                  "native": "\u30F4\u30A3\u30F3\u30E9\u30F3\u30C9\u30FB\u30B5\u30AC"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30642-0mjRDkf4THpo.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30642-0mjRDkf4THpo.jpg"
+                },
+                "averageScore": 90,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 34,
+              "mediaRecommendation": {
+                "id": 30044,
+                "title": {
+                  "romaji": "Gintama",
+                  "english": "Gin Tama",
+                  "native": "\u9280\u9B42"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30044-vPmoz3vTPvZs.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30044-vPmoz3vTPvZs.jpg"
+                },
+                "averageScore": 86,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 30,
+              "mediaRecommendation": {
+                "id": 30869,
+                "title": {
+                  "romaji": "Konjiki no Gash!!",
+                  "english": "Zatch Bell!",
+                  "native": "\u91D1\u8272\u306E\u30AC\u30C3\u30B7\u30E5!!"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30869-cZHLgwIOv6Lm.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30869-cZHLgwIOv6Lm.jpg"
+                },
+                "averageScore": 82,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 22,
+              "mediaRecommendation": {
+                "id": 78025,
+                "title": {
+                  "romaji": "Magi: Sinbad no Bouken",
+                  "english": "Magi: The Adventures of Sinbad",
+                  "native": "\u30DE\u30AE \u30B7\u30F3\u30C9\u30D0\u30C3\u30C9\u306E\u5192\u967A"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx78025-RrI7jNnJAGnA.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx78025-RrI7jNnJAGnA.jpg"
+                },
+                "averageScore": 80,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 22,
+              "mediaRecommendation": {
+                "id": 30053,
+                "title": {
+                  "romaji": "Yuu\u2606Yuu\u2606Hakusho",
+                  "english": "Yu Yu Hakusho",
+                  "native": "\u5E7D\u2606\u904A\u2606\u767D\u66F8"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30053-wCR6xyGzeUYo.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30053-wCR6xyGzeUYo.png"
+                },
+                "averageScore": 80,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 21,
+              "mediaRecommendation": {
+                "id": 31706,
+                "title": {
+                  "romaji": "JoJo no Kimyou na Bouken: Steel Ball Run",
+                  "english": "JoJo\u0027s Bizarre Adventure: Part 7\u2013Steel Ball Run",
+                  "native": "\u30B8\u30E7\u30B8\u30E7\u306E\u5947\u5999\u306A\u5192\u967A \u30B9\u30C6\u30A3\u30FC\u30EB\u30FB\u30DC\u30FC\u30EB\u30FB\u30E9\u30F3"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx31706-lRncu9VbcBB7.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx31706-lRncu9VbcBB7.png"
+                },
+                "averageScore": 92,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 20,
+              "mediaRecommendation": {
+                "id": 101860,
+                "title": {
+                  "romaji": "EDENS ZERO",
+                  "english": "EDENS ZERO",
+                  "native": "EDENS ZERO"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx101860-mlmDqQ8T4x4j.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx101860-mlmDqQ8T4x4j.jpg"
+                },
+                "averageScore": 70,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 19,
+              "mediaRecommendation": {
+                "id": 30871,
+                "title": {
+                  "romaji": "Dragon Quest: Dai no Daibouken",
+                  "english": "Dragon Quest: The Adventure of Dai",
+                  "native": "\u30C9\u30E9\u30B4\u30F3\u30AF\u30A8\u30B9\u30C8 \u30C0\u30A4\u306E\u5927\u5192\u967A"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30871-NzemCChOPyDk.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30871-NzemCChOPyDk.jpg"
+                },
+                "averageScore": 77,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 19,
+              "mediaRecommendation": {
+                "id": 74347,
+                "title": {
+                  "romaji": "One Punch-Man",
+                  "english": "One-Punch Man",
+                  "native": "\u30EF\u30F3\u30D1\u30F3\u30DE\u30F3"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx74347-sZpmNJ5xLwRK.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx74347-sZpmNJ5xLwRK.jpg"
+                },
+                "averageScore": 85,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 16,
+              "mediaRecommendation": {
+                "id": 86508,
+                "title": {
+                  "romaji": "Dragon Ball Super",
+                  "english": "Dragon Ball Super",
+                  "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EB\u8D85"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx86508-QSahE7mTFEXl.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx86508-QSahE7mTFEXl.png"
+                },
+                "averageScore": 72,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 13,
+              "mediaRecommendation": {
+                "id": 30014,
+                "title": {
+                  "romaji": "Groove Adventure Rave",
+                  "english": "Rave Master",
+                  "native": "\u30EC\u30A4\u30F4"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx30014-Q7yKgaHVVmUg.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx30014-Q7yKgaHVVmUg.jpg"
+                },
+                "averageScore": 75,
+                "mediaListEntry": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

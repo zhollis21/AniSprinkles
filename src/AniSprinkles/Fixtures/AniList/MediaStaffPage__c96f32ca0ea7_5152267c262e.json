@@ -1,0 +1,178 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 85470,
+    "page": 1,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:26:15.8105663+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 118743,
+                "name": {
+                  "full": "Rifujin na Magonote",
+                  "native": "\u7406\u4E0D\u5C3D\u306A\u5B6B\u306E\u624B",
+                  "userPreferred": "Rifujin na Magonote"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n118743-ikzTCd1mLvgn.png"
+                },
+                "favourites": 1039
+              },
+              "role": "Story "
+            },
+            {
+              "node": {
+                "id": 118744,
+                "name": {
+                  "full": "Sirotaka",
+                  "native": "\u30B7\u30ED\u30BF\u304B",
+                  "userPreferred": "Sirotaka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n118744-kluwxjQCK9JQ.jpg"
+                },
+                "favourites": 253
+              },
+              "role": "Illustration"
+            },
+            {
+              "node": {
+                "id": 225035,
+                "name": {
+                  "full": "Kevin Frane",
+                  "native": null,
+                  "userPreferred": "Kevin Frane"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n225035-9ZSfHiQtMlVu.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Translator (English: vol 1)"
+            },
+            {
+              "node": {
+                "id": 317229,
+                "name": {
+                  "full": "Melanie H\u00F6pfler",
+                  "native": null,
+                  "userPreferred": "Melanie H\u00F6pfler"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n317229-anc1dMnj1bsq.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Editing (German)"
+            },
+            {
+              "node": {
+                "id": 214742,
+                "name": {
+                  "full": "Alyssa Orton-Niioka",
+                  "native": null,
+                  "userPreferred": "Alyssa Orton-Niioka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n214742-ZnVq9EVh47Qv.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Translator (English: vols 2, 4, 6-8, 10, 12, 14, 16, 18, 19, 23)"
+            },
+            {
+              "node": {
+                "id": 226705,
+                "name": {
+                  "full": "Paul Cuneo",
+                  "native": null,
+                  "userPreferred": "Paul Cuneo"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n226705-mxwSeCRFpG2j.png"
+                },
+                "favourites": 0
+              },
+              "role": "Translator (English: vols 1, 3, 5, 7, 9, 11, 13, 15, 17, 19)"
+            },
+            {
+              "node": {
+                "id": 269082,
+                "name": {
+                  "full": "Soraphong Kitbunchaporn",
+                  "native": "\u0E2A\u0E23\u0E1E\u0E07\u0E29\u0E4C \u0E01\u0E34\u0E08\u0E1A\u0E31\u0E0D\u0E0A\u0E32\u0E1E\u0E23",
+                  "userPreferred": "Soraphong Kitbunchaporn"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Translator (Thai)"
+            },
+            {
+              "node": {
+                "id": 272768,
+                "name": {
+                  "full": "airco",
+                  "native": "airco",
+                  "userPreferred": "airco"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n272768-7Kpt18AIZck3.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Translator (English: vols 20, 23)"
+            },
+            {
+              "node": {
+                "id": 280856,
+                "name": {
+                  "full": "Sylvia Gallagher",
+                  "native": null,
+                  "userPreferred": "Sylvia Gallagher"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Translator (English: vols 21, 24-26)"
+            },
+            {
+              "node": {
+                "id": 317234,
+                "name": {
+                  "full": "Anemone Bauer",
+                  "native": null,
+                  "userPreferred": "Anemone Bauer"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Translator (German)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

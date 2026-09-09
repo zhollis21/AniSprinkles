@@ -1,0 +1,543 @@
+﻿{
+  "operationName": "MediaRecommendationsPage",
+  "variables": {
+    "id": 21,
+    "page": 1,
+    "sort": [
+      "RATING_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "4c3bbb02d06d",
+  "recordedAt": "2026-09-06T05:24:22.8576568+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "recommendations": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "nodes": [
+            {
+              "rating": 2181,
+              "mediaRecommendation": {
+                "id": 11061,
+                "title": {
+                  "romaji": "HUNTER\u00D7HUNTER (2011)",
+                  "english": "Hunter x Hunter (2011)",
+                  "native": "HUNTER\u00D7HUNTER (2011)"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx11061-y5gsT1hoHuHw.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx11061-y5gsT1hoHuHw.png"
+                },
+                "averageScore": 89,
+                "mediaListEntry": {
+                  "id": 593364053,
+                  "status": "COMPLETED",
+                  "progress": 148,
+                  "score": 7
+                }
+              }
+            },
+            {
+              "rating": 1010,
+              "mediaRecommendation": {
+                "id": 20,
+                "title": {
+                  "romaji": "NARUTO",
+                  "english": "Naruto",
+                  "native": "NARUTO -\u30CA\u30EB\u30C8-"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20-dE6UHbFFg1A5.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20-dE6UHbFFg1A5.jpg"
+                },
+                "averageScore": 80,
+                "mediaListEntry": {
+                  "id": 593364026,
+                  "status": "COMPLETED",
+                  "progress": 220,
+                  "score": 7
+                }
+              }
+            },
+            {
+              "rating": 669,
+              "mediaRecommendation": {
+                "id": 1735,
+                "title": {
+                  "romaji": "NARUTO: Shippuuden",
+                  "english": "Naruto: Shippuden",
+                  "native": "NARUTO -\u30CA\u30EB\u30C8- \u75BE\u98A8\u4F1D"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1735-kGfVm0YqCPcu.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1735-kGfVm0YqCPcu.png"
+                },
+                "averageScore": 82,
+                "mediaListEntry": {
+                  "id": 593364031,
+                  "status": "COMPLETED",
+                  "progress": 500,
+                  "score": 7
+                }
+              }
+            },
+            {
+              "rating": 449,
+              "mediaRecommendation": {
+                "id": 97940,
+                "title": {
+                  "romaji": "Black Clover",
+                  "english": "Black Clover",
+                  "native": "\u30D6\u30E9\u30C3\u30AF\u30AF\u30ED\u30FC\u30D0\u30FC"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx97940-fyh8o7gNbha0.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx97940-fyh8o7gNbha0.png"
+                },
+                "averageScore": 79,
+                "mediaListEntry": {
+                  "id": 593364452,
+                  "status": "COMPLETED",
+                  "progress": 170,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 390,
+              "mediaRecommendation": {
+                "id": 223,
+                "title": {
+                  "romaji": "Dragon Ball",
+                  "english": "Dragon Ball",
+                  "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EB"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx223-scE5uJfXqqj8.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx223-scE5uJfXqqj8.png"
+                },
+                "averageScore": 78,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 245,
+              "mediaRecommendation": {
+                "id": 813,
+                "title": {
+                  "romaji": "Dragon Ball Z",
+                  "english": "Dragon Ball Z",
+                  "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EBZ"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx813-ZhnFNOeCU5dQ.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx813-ZhnFNOeCU5dQ.png"
+                },
+                "averageScore": 80,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 222,
+              "mediaRecommendation": {
+                "id": 269,
+                "title": {
+                  "romaji": "BLEACH",
+                  "english": "Bleach",
+                  "native": "BLEACH"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx269-d2GmRkJbMopq.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx269-d2GmRkJbMopq.png"
+                },
+                "averageScore": 79,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 193,
+              "mediaRecommendation": {
+                "id": 6702,
+                "title": {
+                  "romaji": "FAIRY TAIL",
+                  "english": "Fairy Tail",
+                  "native": "FAIRY TAIL"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b6702-KI4qgSMyI8Pm.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b6702-KI4qgSMyI8Pm.png"
+                },
+                "averageScore": 72,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 117,
+              "mediaRecommendation": {
+                "id": 5114,
+                "title": {
+                  "romaji": "Hagane no Renkinjutsushi: FULLMETAL ALCHEMIST",
+                  "english": "Fullmetal Alchemist: Brotherhood",
+                  "native": "\u92FC\u306E\u932C\u91D1\u8853\u5E2B FULLMETAL ALCHEMIST"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx5114-nSWCgQlmOMtj.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx5114-nSWCgQlmOMtj.jpg"
+                },
+                "averageScore": 90,
+                "mediaListEntry": {
+                  "id": 593364037,
+                  "status": "COMPLETED",
+                  "progress": 64,
+                  "score": 7
+                }
+              }
+            },
+            {
+              "rating": 94,
+              "mediaRecommendation": {
+                "id": 116674,
+                "title": {
+                  "romaji": "BLEACH: Sennen Kessen-hen",
+                  "english": "BLEACH: Thousand-Year Blood War",
+                  "native": "BLEACH \u5343\u5E74\u8840\u6226\u7BC7"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx116674-p3zK4PUX2Aag.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx116674-p3zK4PUX2Aag.jpg"
+                },
+                "averageScore": 88,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 81,
+              "mediaRecommendation": {
+                "id": 136,
+                "title": {
+                  "romaji": "HUNTER\u00D7HUNTER",
+                  "english": "Hunter x Hunter",
+                  "native": "HUNTER\u00D7HUNTER"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx136-gj0bbCpDNrKG.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx136-gj0bbCpDNrKG.jpg"
+                },
+                "averageScore": 83,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 76,
+              "mediaRecommendation": {
+                "id": 21459,
+                "title": {
+                  "romaji": "Boku no Hero Academia",
+                  "english": "My Hero Academia",
+                  "native": "\u50D5\u306E\u30D2\u30FC\u30ED\u30FC\u30A2\u30AB\u30C7\u30DF\u30A2"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21459-nYh85uj2Fuwr.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21459-nYh85uj2Fuwr.jpg"
+                },
+                "averageScore": 77,
+                "mediaListEntry": {
+                  "id": 593364207,
+                  "status": "COMPLETED",
+                  "progress": 13,
+                  "score": 9
+                }
+              }
+            },
+            {
+              "rating": 63,
+              "mediaRecommendation": {
+                "id": 918,
+                "title": {
+                  "romaji": "Gintama",
+                  "english": "Gintama",
+                  "native": "\u9280\u9B42"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx918-iOaeBVUn4uK7.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx918-iOaeBVUn4uK7.jpg"
+                },
+                "averageScore": 85,
+                "mediaListEntry": {
+                  "id": 593363934,
+                  "status": "COMPLETED",
+                  "progress": 201,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 57,
+              "mediaRecommendation": {
+                "id": 1604,
+                "title": {
+                  "romaji": "Katekyou Hitman REBORN!",
+                  "english": "REBORN!",
+                  "native": "\u5BB6\u5EAD\u6559\u5E2B\u30D2\u30C3\u30C8\u30DE\u30F3REBORN!"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1604-W2q38L4OCGLI.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1604-W2q38L4OCGLI.png"
+                },
+                "averageScore": 77,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 53,
+              "mediaRecommendation": {
+                "id": 10033,
+                "title": {
+                  "romaji": "Toriko",
+                  "english": null,
+                  "native": "\u30C8\u30EA\u30B3"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx10033-V7xnlgAVtaVR.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx10033-V7xnlgAVtaVR.jpg"
+                },
+                "averageScore": 69,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 50,
+              "mediaRecommendation": {
+                "id": 14513,
+                "title": {
+                  "romaji": "Magi: The labyrinth of magic",
+                  "english": "Magi: The Labyrinth of Magic",
+                  "native": "\u30DE\u30AE The labyrinth of magic"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx14513-HuUdrFFYftA7.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx14513-HuUdrFFYftA7.jpg"
+                },
+                "averageScore": 78,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 49,
+              "mediaRecommendation": {
+                "id": 119683,
+                "title": {
+                  "romaji": "EDENS ZERO",
+                  "english": "EDENS ZERO",
+                  "native": "EDENS ZERO"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx119683-BC4i4dF5DGNO.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx119683-BC4i4dF5DGNO.jpg"
+                },
+                "averageScore": 70,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 40,
+              "mediaRecommendation": {
+                "id": 159322,
+                "title": {
+                  "romaji": "BLEACH: Sennen Kessen-hen - Ketsubetsu-tan",
+                  "english": "BLEACH: Thousand-Year Blood War - The Separation",
+                  "native": "BLEACH \u5343\u5E74\u8840\u6226\u7BC7-\u8A23\u5225\u8B5A-"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx159322-Sp1GflRhE6Po.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx159322-Sp1GflRhE6Po.jpg"
+                },
+                "averageScore": 86,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 37,
+              "mediaRecommendation": {
+                "id": 20626,
+                "title": {
+                  "romaji": "FAIRY TAIL (2014)",
+                  "english": "Fairy Tail Series 2",
+                  "native": "FAIRY TAIL (2014)"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20626-9LTreIofBgnu.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20626-9LTreIofBgnu.jpg"
+                },
+                "averageScore": 74,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 31,
+              "mediaRecommendation": {
+                "id": 45,
+                "title": {
+                  "romaji": "Rurouni Kenshin: Meiji Kenkaku Romantan",
+                  "english": "Rurouni Kenshin",
+                  "native": "\u308B\u308D\u3046\u306B\u5263\u5FC3 -\u660E\u6CBB\u5263\u5BA2\u6D6A\u6F2B\u8B5A-"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx45-DEFgZRCxiGmF.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx45-DEFgZRCxiGmF.png"
+                },
+                "averageScore": 79,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 31,
+              "mediaRecommendation": {
+                "id": 20789,
+                "title": {
+                  "romaji": "Nanatsu no Taizai",
+                  "english": "The Seven Deadly Sins",
+                  "native": "\u4E03\u3064\u306E\u5927\u7F6A"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20789-Ma5ouSYPkru9.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20789-Ma5ouSYPkru9.jpg"
+                },
+                "averageScore": 73,
+                "mediaListEntry": {
+                  "id": 593365064,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "score": 0
+                }
+              }
+            },
+            {
+              "rating": 30,
+              "mediaRecommendation": {
+                "id": 392,
+                "title": {
+                  "romaji": "Yuu\u2606Yuu\u2606Hakusho",
+                  "english": "Yu Yu Hakusho: Ghostfiles",
+                  "native": "\u5E7D\u2606\u904A\u2606\u767D\u66F8"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx392-z90299zIvYmx.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx392-z90299zIvYmx.png"
+                },
+                "averageScore": 83,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 29,
+              "mediaRecommendation": {
+                "id": 139095,
+                "title": {
+                  "romaji": "FAIRY TAIL: 100 YEARS QUEST",
+                  "english": "FAIRY TAIL 100 YEARS QUEST",
+                  "native": "FAIRY TAIL 100 YEARS QUEST"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx139095-xXcToL6L4vuv.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx139095-xXcToL6L4vuv.jpg"
+                },
+                "averageScore": 75,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 28,
+              "mediaRecommendation": {
+                "id": 6033,
+                "title": {
+                  "romaji": "Dragon Ball Kai",
+                  "english": "Dragon Ball Z Kai",
+                  "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EB\u6539"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx6033-TKDWyjZN3dXk.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx6033-TKDWyjZN3dXk.png"
+                },
+                "averageScore": 77,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 25,
+              "mediaRecommendation": {
+                "id": 2618,
+                "title": {
+                  "romaji": "Takarajima",
+                  "english": "Treasure Island",
+                  "native": "\u5B9D\u5CF6"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/2618-guJAqUkp0pyT.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/2618-guJAqUkp0pyT.png"
+                },
+                "averageScore": 77,
+                "mediaListEntry": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

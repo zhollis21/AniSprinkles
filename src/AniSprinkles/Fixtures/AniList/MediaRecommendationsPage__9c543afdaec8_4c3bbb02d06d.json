@@ -1,0 +1,518 @@
+﻿{
+  "operationName": "MediaRecommendationsPage",
+  "variables": {
+    "id": 156067,
+    "page": 1,
+    "sort": [
+      "RATING_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "4c3bbb02d06d",
+  "recordedAt": "2026-09-06T05:22:29.5320918+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "recommendations": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "nodes": [
+            {
+              "rating": 272,
+              "mediaRecommendation": {
+                "id": 153518,
+                "title": {
+                  "romaji": "Dungeon Meshi",
+                  "english": "Delicious in Dungeon",
+                  "native": "\u30C0\u30F3\u30B8\u30E7\u30F3\u98EF"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx153518-IVXPDY5ph3kO.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx153518-IVXPDY5ph3kO.jpg"
+                },
+                "averageScore": 85,
+                "mediaListEntry": {
+                  "id": 593364470,
+                  "status": "COMPLETED",
+                  "progress": 24,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 191,
+              "mediaRecommendation": {
+                "id": 146850,
+                "title": {
+                  "romaji": "Isekai Nonbiri Nouka",
+                  "english": "Farming Life in Another World",
+                  "native": "\u7570\u4E16\u754C\u306E\u3093\u3073\u308A\u8FB2\u5BB6"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx146850-xfeAFIE0M9hl.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx146850-xfeAFIE0M9hl.jpg"
+                },
+                "averageScore": 74,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 99,
+              "mediaRecommendation": {
+                "id": 97617,
+                "title": {
+                  "romaji": "Isekai Shokudou",
+                  "english": "Restaurant to Another World",
+                  "native": "\u7570\u4E16\u754C\u98DF\u5802"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx97617-TmRRraupfbT5.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx97617-TmRRraupfbT5.jpg"
+                },
+                "averageScore": 72,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 86,
+              "mediaRecommendation": {
+                "id": 180292,
+                "title": {
+                  "romaji": "Arafou Otoko no Isekai Tsuuhan Seikatsu",
+                  "english": "The Daily Life of a Middle-Aged Online Shopper in Another World",
+                  "native": "\u30A2\u30E9\u30D5\u30A9\u30FC\u7537\u306E\u7570\u4E16\u754C\u901A\u8CA9\u751F\u6D3B"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx180292-GG0nwYZ5HeN7.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx180292-GG0nwYZ5HeN7.jpg"
+                },
+                "averageScore": 62,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 69,
+              "mediaRecommendation": {
+                "id": 153360,
+                "title": {
+                  "romaji": "Jidou Hanbaiki ni Umarekawatta Ore wa Meikyuu wo Samayou",
+                  "english": "Reborn as a Vending Machine, I Now Wander the Dungeon",
+                  "native": "\u81EA\u52D5\u8CA9\u58F2\u6A5F\u306B\u751F\u307E\u308C\u5909\u308F\u3063\u305F\u4FFA\u306F\u8FF7\u5BAE\u3092\u5F77\u5FA8\u3046"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx153360-VM22UwGEz8Ir.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx153360-VM22UwGEz8Ir.jpg"
+                },
+                "averageScore": 62,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 58,
+              "mediaRecommendation": {
+                "id": 144092,
+                "title": {
+                  "romaji": "Benriya Saitou-san, Isekai ni Iku",
+                  "english": "Handyman Saitou in Another World",
+                  "native": "\u4FBF\u5229\u5C4B\u658E\u85E4\u3055\u3093\u3001\u7570\u4E16\u754C\u306B\u884C\u304F"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx144092-8EKzzZQofFlW.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx144092-8EKzzZQofFlW.jpg"
+                },
+                "averageScore": 72,
+                "mediaListEntry": {
+                  "id": 541004686,
+                  "status": "COMPLETED",
+                  "progress": 12,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 56,
+              "mediaRecommendation": {
+                "id": 153339,
+                "title": {
+                  "romaji": "Okashi na Tensei",
+                  "english": "Sweet Reincarnation",
+                  "native": "\u304A\u304B\u3057\u306A\u8EE2\u751F"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx153339-u8i4Sc28U6En.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx153339-u8i4Sc28U6En.jpg"
+                },
+                "averageScore": 66,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 41,
+              "mediaRecommendation": {
+                "id": 20923,
+                "title": {
+                  "romaji": "Shokugeki no Souma",
+                  "english": "Food Wars!",
+                  "native": "\u98DF\u621F\u306E\u30BD\u30FC\u30DE"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20923-pNT38pjW3RFH.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20923-pNT38pjW3RFH.jpg"
+                },
+                "averageScore": 78,
+                "mediaListEntry": {
+                  "id": 593364286,
+                  "status": "COMPLETED",
+                  "progress": 24,
+                  "score": 9
+                }
+              }
+            },
+            {
+              "rating": 40,
+              "mediaRecommendation": {
+                "id": 97873,
+                "title": {
+                  "romaji": "Isekai Izakaya: Koto Aitheria no Izakaya Nobu.",
+                  "english": "Isekai Izakaya: Japanese Food From Another World",
+                  "native": "\u7570\u4E16\u754C\u5C45\u9152\u5C4B\uFF5E\u53E4\u90FD\u30A2\u30A4\u30C6\u30FC\u30EA\u30A2\u306E\u5C45\u9152\u5C4B\u306E\u3076\uFF5E"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx97873-jYQ3dPoaOLxX.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx97873-jYQ3dPoaOLxX.jpg"
+                },
+                "averageScore": 71,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 33,
+              "mediaRecommendation": {
+                "id": 155418,
+                "title": {
+                  "romaji": "Seija Musou: Salaryman, Isekai de Ikinokoru Tame ni Ayumu Michi",
+                  "english": "The Great Cleric",
+                  "native": "\u8056\u8005\u7121\u53CC \uFF5E\u30B5\u30E9\u30EA\u30FC\u30DE\u30F3\u3001\u7570\u4E16\u754C\u3067\u751F\u304D\u6B8B\u308B\u305F\u3081\u306B\u6B69\u3080\u9053\uFF5E"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx155418-wLWulAHYVrE5.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx155418-wLWulAHYVrE5.jpg"
+                },
+                "averageScore": 70,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 32,
+              "mediaRecommendation": {
+                "id": 197824,
+                "title": {
+                  "romaji": "Isekai Nonbiri Nouka 2",
+                  "english": "Farming Life in Another World 2",
+                  "native": "\u7570\u4E16\u754C\u306E\u3093\u3073\u308A\u8FB2\u5BB6\uFF12"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx197824-k9Uyef8g49hB.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx197824-k9Uyef8g49hB.png"
+                },
+                "averageScore": 73,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 29,
+              "mediaRecommendation": {
+                "id": 171031,
+                "title": {
+                  "romaji": "Isekai Yururi Kikou: Kosodate Shinagara Boukensha Shimasu",
+                  "english": "A Journey Through Another World: Raising Kids While Adventuring",
+                  "native": "\u7570\u4E16\u754C\u3086\u308B\u308A\u7D00\u884C \uFF5E\u5B50\u80B2\u3066\u3057\u306A\u304C\u3089\u5192\u967A\u8005\u3057\u307E\u3059\uFF5E"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx171031-7RJll3TJnVFA.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx171031-7RJll3TJnVFA.jpg"
+                },
+                "averageScore": 66,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 28,
+              "mediaRecommendation": {
+                "id": 156891,
+                "title": {
+                  "romaji": "Saijaku Tamer wa Gomi Hiroi no Tabi wo Hajimemashita.",
+                  "english": "The Weakest Tamer Began a Journey to Pick Up Trash",
+                  "native": "\u6700\u5F31\u30C6\u30A4\u30DE\u30FC\u306F\u30B4\u30DF\u62FE\u3044\u306E\u65C5\u3092\u59CB\u3081\u307E\u3057\u305F\u3002"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx156891-bw91QNdptQEG.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx156891-bw91QNdptQEG.jpg"
+                },
+                "averageScore": 74,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 28,
+              "mediaRecommendation": {
+                "id": 185544,
+                "title": {
+                  "romaji": "Tsuihousha Shokudou e Youkoso!",
+                  "english": "Welcome to the Outcast\u0027s Restaurant!",
+                  "native": "\u8FFD\u653E\u8005\u98DF\u5802\u3078\u3088\u3046\u3053\u305D\uFF01"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx185544-V9XoC8yJ906f.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx185544-V9XoC8yJ906f.jpg"
+                },
+                "averageScore": 69,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 26,
+              "mediaRecommendation": {
+                "id": 196029,
+                "title": {
+                  "romaji": "Kami no Niwatsuki Kusunoki-tei",
+                  "english": "Kusunoki\u0027s Garden of Gods",
+                  "native": "\u795E\u306E\u5EAD\u4ED8\u304D\u6960\u6728\u90B8"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx196029-4ML0UHngkZhn.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx196029-4ML0UHngkZhn.jpg"
+                },
+                "averageScore": 71,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 23,
+              "mediaRecommendation": {
+                "id": 152682,
+                "title": {
+                  "romaji": "Sasaki to Pii-chan",
+                  "english": "Sasaki and Peeps",
+                  "native": "\u4F50\u3005\u6728\u3068\u30D4\u30FC\u3061\u3083\u3093"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx152682-p91VzQq75uZV.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx152682-p91VzQq75uZV.jpg"
+                },
+                "averageScore": 67,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 22,
+              "mediaRecommendation": {
+                "id": 132806,
+                "title": {
+                  "romaji": "Isekai Shokudou 2",
+                  "english": "Restaurant to Another World 2",
+                  "native": "\u7570\u4E16\u754C\u98DF\u5802\uFF12"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx132806-fuOSzS2YOpIt.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx132806-fuOSzS2YOpIt.jpg"
+                },
+                "averageScore": 76,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 22,
+              "mediaRecommendation": {
+                "id": 161364,
+                "title": {
+                  "romaji": "Toaru Ossan no VRMMO Katsudouki",
+                  "english": "A Playthrough of a Certain Dude\u0027s VRMMO Life",
+                  "native": "\u3068\u3042\u308B\u304A\u3063\u3055\u3093\u306EVRMMO\u6D3B\u52D5\u8A18"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx161364-X0Nk5FvL6GHj.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx161364-X0Nk5FvL6GHj.jpg"
+                },
+                "averageScore": 62,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 21,
+              "mediaRecommendation": {
+                "id": 187663,
+                "title": {
+                  "romaji": "Sozai Saishuka no Isekai Ryokouki",
+                  "english": "A Gatherer\u0027s Adventure in Isekai",
+                  "native": "\u7D20\u6750\u63A1\u53D6\u5BB6\u306E\u7570\u4E16\u754C\u65C5\u884C\u8A18"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx187663-VVdpMlkhwMSh.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx187663-VVdpMlkhwMSh.jpg"
+                },
+                "averageScore": 60,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 18,
+              "mediaRecommendation": {
+                "id": 183291,
+                "title": {
+                  "romaji": "Akujiki Reijou to Kyouketsu Koushaku: Sono Mamono, Watashi ga Oishiku Itadakimasu!",
+                  "english": "Pass the Monster Meat, Milady!",
+                  "native": "\u60AA\u98DF\u4EE4\u5B22\u3068\u72C2\u8840\u516C\u7235\u3000\uFF5E\u305D\u306E\u9B54\u7269\u3001\u79C1\u304C\u7F8E\u5473\u3057\u304F\u3044\u305F\u3060\u304D\u307E\u3059\uFF01\uFF5E"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx183291-qm3bQT1wpmka.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx183291-qm3bQT1wpmka.jpg"
+                },
+                "averageScore": 70,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 17,
+              "mediaRecommendation": {
+                "id": 112608,
+                "title": {
+                  "romaji": "Slime Taoshite 300-nen, Shiranai Uchi ni Level MAX ni Nattemashita",
+                  "english": "I\u0027ve Been Killing Slimes for 300 Years and Maxed Out My Level",
+                  "native": "\u30B9\u30E9\u30A4\u30E0\u5012\u3057\u3066300\u5E74\u3001\u77E5\u3089\u306A\u3044\u3046\u3061\u306B\u30EC\u30D9\u30EBMAX\u306B\u306A\u3063\u3066\u307E\u3057\u305F"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx112608-T3OKdLhxYUfe.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx112608-T3OKdLhxYUfe.png"
+                },
+                "averageScore": 68,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 15,
+              "mediaRecommendation": {
+                "id": 152072,
+                "title": {
+                  "romaji": "Isekai de Mofumofu Nadenade Suru Tame ni Ganbattemasu.",
+                  "english": "Fluffy Paradise",
+                  "native": "\u7570\u4E16\u754C\u3067\u3082\u3075\u3082\u3075\u306A\u3067\u306A\u3067\u3059\u308B\u305F\u3081\u306B\u304C\u3093\u3070\u3063\u3066\u307E\u3059\u3002"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx152072-W9oSGZjsKiqm.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx152072-W9oSGZjsKiqm.jpg"
+                },
+                "averageScore": 66,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 15,
+              "mediaRecommendation": {
+                "id": 209504,
+                "title": {
+                  "romaji": "Suterare Seijo no Isekai Gohantabi: Kakure Skill de Camping Car wo Shoukan Shimashita",
+                  "english": "The Forsaken Saintess and Her Foodie Roadtrip in Another World",
+                  "native": "\u6368\u3066\u3089\u308C\u8056\u5973\u306E\u7570\u4E16\u754C\u3054\u306F\u3093\u65C5 \u96A0\u308C\u30B9\u30AD\u30EB\u3067\u30AD\u30E3\u30F3\u30D4\u30F3\u30B0\u30AB\u30FC\u3092\u53EC\u559A\u3057\u307E\u3057\u305F"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx209504-yRxHWxKuNGtg.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209504-yRxHWxKuNGtg.jpg"
+                },
+                "averageScore": 61,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 13,
+              "mediaRecommendation": {
+                "id": 2966,
+                "title": {
+                  "romaji": "Ookami to Koushinryou",
+                  "english": "Spice and Wolf",
+                  "native": "\u72FC\u3068\u9999\u8F9B\u6599"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx2966-AEULMyYA9WKb.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2966-AEULMyYA9WKb.png"
+                },
+                "averageScore": 80,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 12,
+              "mediaRecommendation": {
+                "id": 98444,
+                "title": {
+                  "romaji": "Yuru Camp\u25B3",
+                  "english": "Laid-Back Camp",
+                  "native": "\u3086\u308B\u30AD\u30E3\u30F3\u25B3"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx98444-Vzysp1EsrzgD.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx98444-Vzysp1EsrzgD.jpg"
+                },
+                "averageScore": 81,
+                "mediaListEntry": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

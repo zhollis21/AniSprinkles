@@ -1,0 +1,728 @@
+﻿{
+  "operationName": "BrowseAnime",
+  "variables": {
+    "page": 3,
+    "perPage": 25,
+    "sort": [
+      "POPULARITY_DESC",
+      "ID"
+    ],
+    "status": "RELEASING",
+    "season": "SUMMER",
+    "seasonYear": 2026
+  },
+  "queryFingerprint": "19cf0d7f308c",
+  "recordedAt": "2026-09-06T05:15:08.7405149+00:00",
+  "response": {
+    "data": {
+      "Page": {
+        "pageInfo": {
+          "hasNextPage": true,
+          "currentPage": 3
+        },
+        "media": [
+          {
+            "id": 196017,
+            "title": {
+              "romaji": "Grow Up Show: Himawari no Circus-dan",
+              "english": "Grow Up Show",
+              "native": "\u30B0\u30ED\u30A6\u30A2\u30C3\u30D7\u30B7\u30E7\u30A6 \uFF5E\u3072\u307E\u308F\u308A\u306E\u30B5\u30FC\u30AB\u30B9\u56E3\uFF5E"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx196017-GynDNdbDzqzk.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx196017-GynDNdbDzqzk.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 71,
+            "favourites": 101,
+            "popularity": 9242,
+            "trending": 31,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 5
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 108992,
+            "title": {
+              "romaji": "Mebius Dust",
+              "english": "Mebius Dust",
+              "native": "\u30E1\u30D3\u30A6\u30B9\u30FB\u30C0\u30B9\u30C8"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx108992-skuOsfmLmMd2.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx108992-skuOsfmLmMd2.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 48,
+            "favourites": 60,
+            "popularity": 7647,
+            "trending": 1,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 9
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 198376,
+            "title": {
+              "romaji": "BanG Dream! Yume\u221EMita",
+              "english": "BanG Dream! YUME\u221EMITA",
+              "native": "\u30D0\u30F3\u30C9\u30EA\uFF01 \u3086\u3081\u221E\u307F\u305F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx198376-sc5qcFv0RSH9.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx198376-sc5qcFv0RSH9.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 13,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 74,
+            "favourites": 140,
+            "popularity": 7264,
+            "trending": 9,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 2
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 185692,
+            "title": {
+              "romaji": "Kabushiki Gaisha Magi Lumiere 2nd Season",
+              "english": "Magilumiere Magical Girls Inc. Season 2",
+              "native": "\u682A\u5F0F\u4F1A\u793E\u30DE\u30B8\u30EB\u30DF\u30A8 \u7B2C2\u671F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx185692-1a8huwOIx7gw.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx185692-1a8huwOIx7gw.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 64,
+            "favourites": 72,
+            "popularity": 7013,
+            "trending": 25,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 5
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 209669,
+            "title": {
+              "romaji": "Hanazakari no Kimitachi e 2nd Season",
+              "english": "Hana-Kimi Season 2",
+              "native": "\u82B1\u3056\u304B\u308A\u306E\u541B\u305F\u3061\u3078 \u7B2C2\u671F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx209669-7GlPe2ra5f1i.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209669-7GlPe2ra5f1i.jpg"
+            },
+            "format": "ONA",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 13,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 69,
+            "favourites": 101,
+            "popularity": 6850,
+            "trending": 3,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 2
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 206249,
+            "title": {
+              "romaji": "Iwamoto-senpai no Suisen",
+              "english": "Recommendations from Iwamoto-Senpai",
+              "native": "\u5CA9\u5143\u5148\u8F29\u30CE\u63A8\u85A6"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx206249-1AUSry416wGz.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206249-1AUSry416wGz.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 51,
+            "favourites": 54,
+            "popularity": 6185,
+            "trending": 8,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 4
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 200230,
+            "title": {
+              "romaji": "Let\u0027s Go Kaikigumi",
+              "english": "Let\u0027s go KAIKIGUMI",
+              "native": "\u30EC\u30C3\u30C4\u30B4\u30FC\u602A\u5947\u7D44"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx200230-YuzdgbXSgi38.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx200230-YuzdgbXSgi38.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 55,
+            "favourites": 54,
+            "popularity": 5597,
+            "trending": 2,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 5
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 201667,
+            "title": {
+              "romaji": "Bungou Stray Dogs Wan! 2",
+              "english": "Bungo Stray Dogs WAN! 2",
+              "native": "\u6587\u8C6A\u30B9\u30C8\u30EC\u30A4\u30C9\u30C3\u30B0\u30B9 \u308F\u3093\uFF01\uFF12"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx201667-oqaW97DQ7HUj.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx201667-oqaW97DQ7HUj.jpg"
+            },
+            "format": "TV_SHORT",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 74,
+            "favourites": 102,
+            "popularity": 4661,
+            "trending": 3,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 2
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 169080,
+            "title": {
+              "romaji": "Azur Lane: Bisoku Zenshin! Ni!!",
+              "english": "Anime AzurLane: Slow Ahead! Season 2",
+              "native": "\u30A2\u30BA\u30FC\u30EB\u30EC\u30FC\u30F3 \u3073\u305D\u304F\u305C\u3093\u3057\u3093\u3063\uFF01\u306B\u3063\uFF01\uFF01"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx169080-el4sMLlqMxeI.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx169080-el4sMLlqMxeI.png"
+            },
+            "format": "TV_SHORT",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 62,
+            "favourites": 42,
+            "popularity": 3910,
+            "trending": 1,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 6
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 213665,
+            "title": {
+              "romaji": "Migawari Reijou wo Sukutta no wa Reikoku Mujihi na Koori no Ouji no Ai deshita",
+              "english": "Saved By the Ice Cold Prince\u0027s Embrace",
+              "native": "\u8EAB\u4EE3\u308F\u308A\u4EE4\u5B22\u3092\u6551\u3063\u305F\u306E\u306F\u51B7\u9177\u7121\u6148\u60B2\u306A\u6C37\u306E\u738B\u5B50\u306E\u611B\u3067\u3057\u305F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx213665-E6byznDKrKY0.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213665-E6byznDKrKY0.png"
+            },
+            "format": "TV_SHORT",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 50,
+            "favourites": 30,
+            "popularity": 2795,
+            "trending": 0,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 7
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 213666,
+            "title": {
+              "romaji": "Perfect Addiction",
+              "english": "Perfect Addiction",
+              "native": "\u30D1\u30FC\u30D5\u30A7\u30AF\u30C8\u30A2\u30C7\u30A3\u30AF\u30B7\u30E7\u30F3"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx213666-nnKcumRblZi1.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213666-nnKcumRblZi1.jpg"
+            },
+            "format": "ONA",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 53,
+            "favourites": 27,
+            "popularity": 2689,
+            "trending": 0,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 8
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 195833,
+            "title": {
+              "romaji": "Honoo no Toukyuujyo Dodge Danko",
+              "english": "Flaming Dodgeball Girl Danko",
+              "native": "\u708E\u306E\u95D8\u7403\u5973 \u30C9\u30C3\u30B8\u5F3E\u5B50"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx195833-h7x6i3NQWROA.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx195833-h7x6i3NQWROA.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 58,
+            "favourites": 23,
+            "popularity": 1988,
+            "trending": 2,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 6
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 207254,
+            "title": {
+              "romaji": "Thunder 3",
+              "english": "Thunder 3",
+              "native": "\u30B5\u30F3\u30C0\u30FC\uFF13"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx207254-StcuNpmZTDCL.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx207254-StcuNpmZTDCL.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 52,
+            "favourites": 18,
+            "popularity": 1983,
+            "trending": 0,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 9
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 209800,
+            "title": {
+              "romaji": "Yoroi Shinden Samurai Troopers Part 2",
+              "english": "Yoroi-Shinden Samurai Troopers Cour 2",
+              "native": "\u93A7\u771F\u4F1D\u30B5\u30E0\u30E9\u30A4\u30C8\u30EB\u30FC\u30D1\u30FC \u7B2C2\u30AF\u30FC\u30EB"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx209800-v3TIdNz1AV0X.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209800-v3TIdNz1AV0X.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 51,
+            "favourites": 22,
+            "popularity": 1625,
+            "trending": 0,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 7
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 213831,
+            "title": {
+              "romaji": "Snack HAZAMA",
+              "english": "Snack Hazama",
+              "native": "\u30B9\u30CA\u30C3\u30AF\u306F\u3056\u307E-HAZAMA-"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx213831-jrH7JR6feW1q.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213831-jrH7JR6feW1q.png"
+            },
+            "format": "TV_SHORT",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 51,
+            "favourites": 12,
+            "popularity": 1113,
+            "trending": 0,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 4
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 213961,
+            "title": {
+              "romaji": "Youjo Shenki 2",
+              "english": null,
+              "native": "\u3088\u3046\u3058\u3087\u3057\u3047\u3093\u304D2"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b213961-x2ZvvtkYSTC9.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b213961-x2ZvvtkYSTC9.png"
+            },
+            "format": "ONA",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 10,
+            "popularity": 824,
+            "trending": 0,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 9
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 213359,
+            "title": {
+              "romaji": "Yami Shibai 17",
+              "english": "Theatre of Darkness: Yamishibai 17",
+              "native": "\u95C7\u829D\u5C45 \u5341\u4E03\u671F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx213359-VDIZoZHMA0LI.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213359-VDIZoZHMA0LI.jpg"
+            },
+            "format": "TV_SHORT",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 8,
+            "popularity": 454,
+            "trending": 0,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 13
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 214703,
+            "title": {
+              "romaji": "Ghost Meets Gal!",
+              "english": null,
+              "native": "\u3054\u30FC\u3059\u3068\u30FB\u307F\u30FC\u3064\u30FB\u304E\u3083\u308B\uFF01"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx214703-iXoaVH6UkiZd.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx214703-iXoaVH6UkiZd.png"
+            },
+            "format": "TV_SHORT",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 4,
+            "popularity": 401,
+            "trending": 0,
+            "startDate": {
+              "year": 2026,
+              "month": 9,
+              "day": 5
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 208824,
+            "title": {
+              "romaji": "Plannosaurus Gachi Koseibutsu-bu",
+              "english": null,
+              "native": "\u30D7\u30E9\u30CE\u30B5\u30A6\u30EB\u30B9 \u30AC\u30C1\u30B3\u30BB\u30A4\u30D6\u30C4\u90E8"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx208824-JeKq65nNiFhA.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx208824-JeKq65nNiFhA.png"
+            },
+            "format": "TV_SHORT",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 7,
+            "popularity": 333,
+            "trending": 0,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 12
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 213506,
+            "title": {
+              "romaji": "Hokuto no Ken: Kenou-gun Zako-tachi no Banka Part 2",
+              "english": null,
+              "native": "\u5317\u6597\u306E\u62F3 \u62F3\u738B\u8ECD\u30B6\u30B3\u305F\u3061\u306E\u633D\u6B4C \u7B2C2\u30AF\u30FC\u30EB"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx213506-vr9kwJjMvXV8.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213506-vr9kwJjMvXV8.jpg"
+            },
+            "format": "TV_SHORT",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 3,
+            "popularity": 287,
+            "trending": 0,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 6
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 212308,
+            "title": {
+              "romaji": "Pan no Akachan (TV)",
+              "english": null,
+              "native": "\u30D1\u30F3\u306E\u8D64\u3061\u3083\u3093"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx212308-HUdh20Djd7cm.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx212308-HUdh20Djd7cm.jpg"
+            },
+            "format": "TV_SHORT",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 1,
+            "popularity": 218,
+            "trending": 0,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 4
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 214855,
+            "title": {
+              "romaji": "Fate/Grand Order: Fujimaru Ritsuka wa Wakaranai Season 4",
+              "english": null,
+              "native": "Fate/Grand Order \u85E4\u4E38\u7ACB\u9999\u306F\u308F\u304B\u3089\u306A\u3044 Season4"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b214855-PbAsjXJq3NB7.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b214855-PbAsjXJq3NB7.jpg"
+            },
+            "format": "ONA",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 2,
+            "popularity": 160,
+            "trending": 0,
+            "startDate": {
+              "year": 2026,
+              "month": 8,
+              "day": 7
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 213861,
+            "title": {
+              "romaji": "Let\u0027s Roll, Cinnamoroll! 2",
+              "english": "Let\u0027s Roll, Cinnamoroll! 2",
+              "native": "\u30EC\u30C3\u30C4\u30ED\u30FC\u30EB\u30B7\u30CA\u30E2\u30ED\u30FC\u30EB"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx213861-PNBuQOrphcbK.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213861-PNBuQOrphcbK.png"
+            },
+            "format": "ONA",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 1,
+            "popularity": 115,
+            "trending": 0,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 2
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 205116,
+            "title": {
+              "romaji": "Aware! Meisaku-kun (2026)",
+              "english": null,
+              "native": "\u3042\u306F\u308C\uFF01\u540D\u4F5C\u304F\u3093 (2026)"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx205116-160t0jWDkIdK.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx205116-160t0jWDkIdK.png"
+            },
+            "format": "TV_SHORT",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 2,
+            "popularity": 87,
+            "trending": 0,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 5
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 213427,
+            "title": {
+              "romaji": "Pie no Mi: Oshi no Mori e Youkoso!",
+              "english": null,
+              "native": "\u30D1\u30A4\u306E\u5B9F \u304A\u3057\u306E\u68EE\u3078\u3088\u3046\u3053\u305D\uFF01"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx213427-lRj8vpcMoPLG.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213427-lRj8vpcMoPLG.png"
+            },
+            "format": "ONA",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 8,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 1,
+            "popularity": 64,
+            "trending": 0,
+            "startDate": {
+              "year": 2026,
+              "month": 6,
+              "day": 22
+            },
+            "mediaListEntry": null
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,790 @@
+﻿{
+  "operationName": "BrowseAnime",
+  "variables": {
+    "page": 2,
+    "perPage": 25,
+    "sort": [
+      "POPULARITY_DESC",
+      "ID"
+    ]
+  },
+  "queryFingerprint": "19cf0d7f308c",
+  "recordedAt": "2026-09-06T05:16:05.3352539+00:00",
+  "response": {
+    "data": {
+      "Page": {
+        "pageInfo": {
+          "hasNextPage": true,
+          "currentPage": 2
+        },
+        "media": [
+          {
+            "id": 1735,
+            "title": {
+              "romaji": "NARUTO: Shippuuden",
+              "english": "Naruto: Shippuden",
+              "native": "NARUTO -\u30CA\u30EB\u30C8- \u75BE\u98A8\u4F1D"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1735-kGfVm0YqCPcu.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1735-kGfVm0YqCPcu.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 500,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 82,
+            "favourites": 48631,
+            "popularity": 608377,
+            "trending": 33,
+            "startDate": {
+              "year": 2007,
+              "month": 2,
+              "day": 15
+            },
+            "mediaListEntry": {
+              "id": 593364031,
+              "status": "COMPLETED",
+              "progress": 500,
+              "score": 7
+            }
+          },
+          {
+            "id": 21234,
+            "title": {
+              "romaji": "Boku dake ga Inai Machi",
+              "english": "ERASED",
+              "native": "\u50D5\u3060\u3051\u304C\u3044\u306A\u3044\u8857"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21234-XmqW39aQ9o7O.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21234-XmqW39aQ9o7O.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 81,
+            "favourites": 27647,
+            "popularity": 603918,
+            "trending": 11,
+            "startDate": {
+              "year": 2016,
+              "month": 1,
+              "day": 8
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 100166,
+            "title": {
+              "romaji": "Boku no Hero Academia 3",
+              "english": "My Hero Academia Season 3",
+              "native": "\u50D5\u306E\u30D2\u30FC\u30ED\u30FC\u30A2\u30AB\u30C7\u30DF\u30A2\uFF13"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx100166-jUCZYbzn2XLw.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx100166-jUCZYbzn2XLw.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 25,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 79,
+            "favourites": 12591,
+            "popularity": 599463,
+            "trending": 5,
+            "startDate": {
+              "year": 2018,
+              "month": 4,
+              "day": 7
+            },
+            "mediaListEntry": {
+              "id": 593364200,
+              "status": "COMPLETED",
+              "progress": 25,
+              "score": 8
+            }
+          },
+          {
+            "id": 9253,
+            "title": {
+              "romaji": "Steins;Gate",
+              "english": "Steins;Gate",
+              "native": "\u30B7\u30E5\u30BF\u30A4\u30F3\u30BA\u30FB\u30B2\u30FC\u30C8"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx9253-tIUXF2gfU8Sg.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx9253-tIUXF2gfU8Sg.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 24,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 89,
+            "favourites": 56413,
+            "popularity": 593130,
+            "trending": 15,
+            "startDate": {
+              "year": 2011,
+              "month": 4,
+              "day": 6
+            },
+            "mediaListEntry": {
+              "id": 593364478,
+              "status": "COMPLETED",
+              "progress": 24,
+              "score": 8
+            }
+          },
+          {
+            "id": 20464,
+            "title": {
+              "romaji": "Haikyuu!!",
+              "english": "HAIKYU!!",
+              "native": "\u30CF\u30A4\u30AD\u30E5\u30FC!!"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20464-ooZUyBe4ptp9.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20464-ooZUyBe4ptp9.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 25,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 84,
+            "favourites": 40303,
+            "popularity": 581909,
+            "trending": 9,
+            "startDate": {
+              "year": 2014,
+              "month": 4,
+              "day": 6
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 97940,
+            "title": {
+              "romaji": "Black Clover",
+              "english": "Black Clover",
+              "native": "\u30D6\u30E9\u30C3\u30AF\u30AF\u30ED\u30FC\u30D0\u30FC"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx97940-fyh8o7gNbha0.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx97940-fyh8o7gNbha0.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 170,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 79,
+            "favourites": 33051,
+            "popularity": 581365,
+            "trending": 51,
+            "startDate": {
+              "year": 2017,
+              "month": 10,
+              "day": 3
+            },
+            "mediaListEntry": {
+              "id": 593364452,
+              "status": "COMPLETED",
+              "progress": 170,
+              "score": 8
+            }
+          },
+          {
+            "id": 101291,
+            "title": {
+              "romaji": "Seishun Buta Yarou wa Bunny Girl Senpai no Yume wo Minai",
+              "english": "Rascal Does Not Dream of Bunny Girl Senpai",
+              "native": "\u9752\u6625\u30D6\u30BF\u91CE\u90CE\u306F\u30D0\u30CB\u30FC\u30AC\u30FC\u30EB\u5148\u8F29\u306E\u5922\u3092\u898B\u306A\u3044"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx101291-wfEdgPqtfU0l.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101291-wfEdgPqtfU0l.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 13,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 81,
+            "favourites": 33426,
+            "popularity": 577981,
+            "trending": 9,
+            "startDate": {
+              "year": 2018,
+              "month": 10,
+              "day": 4
+            },
+            "mediaListEntry": {
+              "id": 593364401,
+              "status": "COMPLETED",
+              "progress": 13,
+              "score": 10
+            }
+          },
+          {
+            "id": 140960,
+            "title": {
+              "romaji": "SPY\u00D7FAMILY",
+              "english": "SPY x FAMILY",
+              "native": "SPY\u00D7FAMILY"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx140960-Kb6R5nYQfjmP.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx140960-Kb6R5nYQfjmP.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 83,
+            "favourites": 26596,
+            "popularity": 568298,
+            "trending": 9,
+            "startDate": {
+              "year": 2022,
+              "month": 4,
+              "day": 9
+            },
+            "mediaListEntry": {
+              "id": 593364701,
+              "status": "COMPLETED",
+              "progress": 12,
+              "score": 10
+            }
+          },
+          {
+            "id": 101921,
+            "title": {
+              "romaji": "Kaguya-sama wa Kokurasetai: Tensaitachi no Renai Zunousen",
+              "english": "Kaguya-sama: Love is War",
+              "native": "\u304B\u3050\u3084\u69D8\u306F\u544A\u3089\u305B\u305F\u3044\uFF5E\u5929\u624D\u305F\u3061\u306E\u604B\u611B\u982D\u8133\u6226\uFF5E"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx101921-ufrjLzhSz7L1.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101921-ufrjLzhSz7L1.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 83,
+            "favourites": 30316,
+            "popularity": 557302,
+            "trending": 11,
+            "startDate": {
+              "year": 2019,
+              "month": 1,
+              "day": 12
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 105333,
+            "title": {
+              "romaji": "Dr. STONE",
+              "english": "Dr. STONE",
+              "native": "Dr.STONE"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx105333-GybuoSoOZfpH.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx105333-GybuoSoOZfpH.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 24,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 81,
+            "favourites": 26054,
+            "popularity": 553327,
+            "trending": 13,
+            "startDate": {
+              "year": 2019,
+              "month": 7,
+              "day": 5
+            },
+            "mediaListEntry": {
+              "id": 593364006,
+              "status": "COMPLETED",
+              "progress": 24,
+              "score": 9
+            }
+          },
+          {
+            "id": 21827,
+            "title": {
+              "romaji": "Violet Evergarden",
+              "english": "Violet Evergarden",
+              "native": "\u30F4\u30A1\u30A4\u30AA\u30EC\u30C3\u30C8\u30FB\u30A8\u30F4\u30A1\u30FC\u30AC\u30FC\u30C7\u30F3"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21827-ubzq619ZA2E9.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21827-ubzq619ZA2E9.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 13,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 85,
+            "favourites": 39205,
+            "popularity": 546018,
+            "trending": 3,
+            "startDate": {
+              "year": 2018,
+              "month": 1,
+              "day": 11
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 101348,
+            "title": {
+              "romaji": "VINLAND SAGA",
+              "english": "Vinland Saga",
+              "native": "\u30F4\u30A3\u30F3\u30E9\u30F3\u30C9\u30FB\u30B5\u30AC"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx101348-2fhDFPCuMNiz.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101348-2fhDFPCuMNiz.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 24,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 87,
+            "favourites": 38896,
+            "popularity": 543876,
+            "trending": 6,
+            "startDate": {
+              "year": 2019,
+              "month": 7,
+              "day": 8
+            },
+            "mediaListEntry": {
+              "id": 593364489,
+              "status": "COMPLETED",
+              "progress": 24,
+              "score": 10
+            }
+          },
+          {
+            "id": 4224,
+            "title": {
+              "romaji": "Toradora!",
+              "english": "Toradora!",
+              "native": "\u3068\u3089\u30C9\u30E9\uFF01"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx4224-PXVMBLNwy2aF.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx4224-PXVMBLNwy2aF.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 25,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 78,
+            "favourites": 22288,
+            "popularity": 541108,
+            "trending": 9,
+            "startDate": {
+              "year": 2008,
+              "month": 10,
+              "day": 2
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 19815,
+            "title": {
+              "romaji": "No Game No Life",
+              "english": "No Game, No Life",
+              "native": "\u30CE\u30FC\u30B2\u30FC\u30E0\u30FB\u30CE\u30FC\u30E9\u30A4\u30D5"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b19815-sEOQ9yQaPKlk.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b19815-sEOQ9yQaPKlk.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 77,
+            "favourites": 20267,
+            "popularity": 539994,
+            "trending": 9,
+            "startDate": {
+              "year": 2014,
+              "month": 4,
+              "day": 9
+            },
+            "mediaListEntry": {
+              "id": 593364092,
+              "status": "COMPLETED",
+              "progress": 12,
+              "score": 8
+            }
+          },
+          {
+            "id": 124080,
+            "title": {
+              "romaji": "Horimiya",
+              "english": "Horimiya",
+              "native": "\u30DB\u30EA\u30DF\u30E4"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx124080-3i22mRVPBS0T.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx124080-3i22mRVPBS0T.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 13,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 81,
+            "favourites": 33758,
+            "popularity": 539310,
+            "trending": 15,
+            "startDate": {
+              "year": 2021,
+              "month": 1,
+              "day": 10
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 20613,
+            "title": {
+              "romaji": "Akame ga Kill!",
+              "english": "Akame ga Kill!",
+              "native": "\u30A2\u30AB\u30E1\u304C\u65AC\u308B\uFF01"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20613-HXHpec4bemk5.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20613-HXHpec4bemk5.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 24,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 73,
+            "favourites": 16905,
+            "popularity": 538027,
+            "trending": 12,
+            "startDate": {
+              "year": 2014,
+              "month": 7,
+              "day": 7
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 20447,
+            "title": {
+              "romaji": "Noragami",
+              "english": "Noragami",
+              "native": "\u30CE\u30E9\u30AC\u30DF"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20447-EoQXeygHaVCK.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20447-EoQXeygHaVCK.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 78,
+            "favourites": 18614,
+            "popularity": 538008,
+            "trending": 7,
+            "startDate": {
+              "year": 2014,
+              "month": 1,
+              "day": 5
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 104276,
+            "title": {
+              "romaji": "Boku no Hero Academia 4",
+              "english": "My Hero Academia Season 4",
+              "native": "\u50D5\u306E\u30D2\u30FC\u30ED\u30FC\u30A2\u30AB\u30C7\u30DF\u30A2\uFF14"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx104276-SnEowMvesWIE.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx104276-SnEowMvesWIE.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 25,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 79,
+            "favourites": 12202,
+            "popularity": 531228,
+            "trending": 3,
+            "startDate": {
+              "year": 2019,
+              "month": 10,
+              "day": 12
+            },
+            "mediaListEntry": {
+              "id": 593364198,
+              "status": "COMPLETED",
+              "progress": 25,
+              "score": 8
+            }
+          },
+          {
+            "id": 20789,
+            "title": {
+              "romaji": "Nanatsu no Taizai",
+              "english": "The Seven Deadly Sins",
+              "native": "\u4E03\u3064\u306E\u5927\u7F6A"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20789-Ma5ouSYPkru9.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20789-Ma5ouSYPkru9.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 24,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 73,
+            "favourites": 12086,
+            "popularity": 527989,
+            "trending": 9,
+            "startDate": {
+              "year": 2014,
+              "month": 10,
+              "day": 5
+            },
+            "mediaListEntry": {
+              "id": 593365064,
+              "status": "PLANNING",
+              "progress": 0,
+              "score": 0
+            }
+          },
+          {
+            "id": 269,
+            "title": {
+              "romaji": "BLEACH",
+              "english": "Bleach",
+              "native": "BLEACH"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx269-d2GmRkJbMopq.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx269-d2GmRkJbMopq.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 366,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 79,
+            "favourites": 33306,
+            "popularity": 518691,
+            "trending": 114,
+            "startDate": {
+              "year": 2004,
+              "month": 10,
+              "day": 5
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 21202,
+            "title": {
+              "romaji": "Kono Subarashii Sekai ni Shukufuku wo!",
+              "english": "KONOSUBA -God\u0027s blessing on this wonderful world!",
+              "native": "\u3053\u306E\u7D20\u6674\u3089\u3057\u3044\u4E16\u754C\u306B\u795D\u798F\u3092\uFF01"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21202-mPOr80AEjUcZ.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21202-mPOr80AEjUcZ.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 10,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 79,
+            "favourites": 23958,
+            "popularity": 516943,
+            "trending": 14,
+            "startDate": {
+              "year": 2016,
+              "month": 1,
+              "day": 14
+            },
+            "mediaListEntry": {
+              "id": 593363892,
+              "status": "COMPLETED",
+              "progress": 10,
+              "score": 10
+            }
+          },
+          {
+            "id": 112151,
+            "title": {
+              "romaji": "Kimetsu no Yaiba: Mugen Ressha-hen",
+              "english": "Demon Slayer -Kimetsu no Yaiba- The Movie: Mugen Train",
+              "native": "\u9B3C\u6EC5\u306E\u5203 \u7121\u9650\u5217\u8ECA\u7DE8"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx112151-1qlQwPB1RrJe.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx112151-1qlQwPB1RrJe.png"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 84,
+            "favourites": 15144,
+            "popularity": 507034,
+            "trending": 4,
+            "startDate": {
+              "year": 2020,
+              "month": 10,
+              "day": 16
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 20623,
+            "title": {
+              "romaji": "Kiseijuu: Sei no Kakuritsu",
+              "english": "Parasyte -the maxim-",
+              "native": "\u5BC4\u751F\u7363 \u30BB\u30A4\u306E\u683C\u7387"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20623-dUARfggnNDOe.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20623-dUARfggnNDOe.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 24,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 81,
+            "favourites": 19614,
+            "popularity": 499579,
+            "trending": 7,
+            "startDate": {
+              "year": 2014,
+              "month": 10,
+              "day": 9
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 99423,
+            "title": {
+              "romaji": "Darling in the Franxx",
+              "english": "DARLING in the FRANXX",
+              "native": "\u30C0\u30FC\u30EA\u30F3\u30FB\u30A4\u30F3\u30FB\u30B6\u30FB\u30D5\u30E9\u30F3\u30AD\u30B9"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx99423-8MBxtwCeHf8B.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx99423-8MBxtwCeHf8B.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 24,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 70,
+            "favourites": 20790,
+            "popularity": 498960,
+            "trending": 8,
+            "startDate": {
+              "year": 2018,
+              "month": 1,
+              "day": 13
+            },
+            "mediaListEntry": {
+              "id": 593365180,
+              "status": "PLANNING",
+              "progress": 0,
+              "score": 0
+            }
+          },
+          {
+            "id": 1575,
+            "title": {
+              "romaji": "Code Geass: Hangyaku no Lelouch",
+              "english": "Code Geass: Lelouch of the Rebellion",
+              "native": "\u30B3\u30FC\u30C9\u30AE\u30A2\u30B9 \u53CD\u9006\u306E\u30EB\u30EB\u30FC\u30B7\u30E5"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1575-hsmWM2ydNm1m.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1575-hsmWM2ydNm1m.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 25,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 85,
+            "favourites": 34412,
+            "popularity": 498732,
+            "trending": 20,
+            "startDate": {
+              "year": 2006,
+              "month": 10,
+              "day": 6
+            },
+            "mediaListEntry": null
+          }
+        ]
+      }
+    }
+  }
+}

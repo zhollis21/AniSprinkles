@@ -1,0 +1,136 @@
+﻿{
+  "operationName": "StaffMediaPage",
+  "variables": {
+    "id": 133507,
+    "page": 1,
+    "sort": [
+      "POPULARITY_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "854f8cd86a00",
+  "recordedAt": "2026-09-06T05:30:43.6360485+00:00",
+  "response": {
+    "data": {
+      "Staff": {
+        "staffMedia": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 147885,
+                "title": {
+                  "romaji": "Cool Doji Danshi",
+                  "english": "Play It Cool, Guys",
+                  "native": "\u30AF\u30FC\u30EB\u30C9\u30B8\u7537\u5B50"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx147885-RuqC9lZH9ao6.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx147885-RuqC9lZH9ao6.jpg"
+                },
+                "format": "TV_SHORT",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 78,
+                "favourites": 1242,
+                "popularity": 40164,
+                "startDate": {
+                  "year": 2022,
+                  "month": 10,
+                  "day": 11
+                },
+                "mediaListEntry": null
+              },
+              "staffRole": "Theme Song Performance (ED1, ED2)"
+            },
+            {
+              "node": {
+                "id": 167087,
+                "title": {
+                  "romaji": "30-sai made Doutei da to Mahou Tsukai ni Nareru Rashii",
+                  "english": "Cherry Magic! Thirty Years of Virginity Can Make You a Wizard?!",
+                  "native": "30\u6B73\u307E\u3067\u7AE5\u8C9E\u3060\u3068\u9B54\u6CD5\u4F7F\u3044\u306B\u306A\u308C\u308B\u3089\u3057\u3044"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx167087-Hf3MjsSVIerP.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx167087-Hf3MjsSVIerP.jpg"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 76,
+                "favourites": 1218,
+                "popularity": 36498,
+                "startDate": {
+                  "year": 2024,
+                  "month": 1,
+                  "day": 11
+                },
+                "mediaListEntry": null
+              },
+              "staffRole": "Theme Song Performance (ED)"
+            },
+            {
+              "node": {
+                "id": 178052,
+                "title": {
+                  "romaji": "Princess-Session Orchestra",
+                  "english": null,
+                  "native": "\u30D5\u309A\u30EA\u30F3\u30BB\u30C3\u30B7\u30E7\u30F3\u30FB\u30AA\u30FC\u30B1\u30B9\u30C8\u30E9"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx178052-igWygf0ZG1gl.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx178052-igWygf0ZG1gl.jpg"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 68,
+                "favourites": 100,
+                "popularity": 5333,
+                "startDate": {
+                  "year": 2025,
+                  "month": 4,
+                  "day": 6
+                },
+                "mediaListEntry": null
+              },
+              "staffRole": "Insert Song Performance (\u0022Shimei wa Akaki Serenade -Ver. First Blood-\u0022; ep 12)"
+            },
+            {
+              "node": {
+                "id": 178052,
+                "title": {
+                  "romaji": "Princess-Session Orchestra",
+                  "english": null,
+                  "native": "\u30D5\u309A\u30EA\u30F3\u30BB\u30C3\u30B7\u30E7\u30F3\u30FB\u30AA\u30FC\u30B1\u30B9\u30C8\u30E9"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx178052-igWygf0ZG1gl.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx178052-igWygf0ZG1gl.jpg"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 68,
+                "favourites": 100,
+                "popularity": 5333,
+                "startDate": {
+                  "year": 2025,
+                  "month": 4,
+                  "day": 6
+                },
+                "mediaListEntry": null
+              },
+              "staffRole": "Insert Song Performance (\u0022Escort Diamond\u0022; ep 13)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

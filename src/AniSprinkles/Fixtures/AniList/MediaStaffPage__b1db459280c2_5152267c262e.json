@@ -1,0 +1,328 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 180829,
+    "page": 1,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:22:43.5255171+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 136962,
+                "name": {
+                  "full": "Sora Nakano",
+                  "native": "\u4E2D\u4E43\u7A7A",
+                  "userPreferred": "Sora Nakano"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n136962-c5JZNnWrYWEG.jpg"
+                },
+                "favourites": 124
+              },
+              "role": "Original Creator"
+            },
+            {
+              "node": {
+                "id": 95201,
+                "name": {
+                  "full": "John Swasey",
+                  "native": null,
+                  "userPreferred": "John Swasey"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95201-cas6XbtZmMay.jpg"
+                },
+                "favourites": 68
+              },
+              "role": "ADR Director (English)"
+            },
+            {
+              "node": {
+                "id": 114327,
+                "name": {
+                  "full": "Hajime Takakuwa",
+                  "native": "\u9AD8\u6851\u4E00",
+                  "userPreferred": "Hajime Takakuwa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/114327-trM6GXihBrlC.jpg"
+                },
+                "favourites": 4
+              },
+              "role": "Sound Director"
+            },
+            {
+              "node": {
+                "id": 121967,
+                "name": {
+                  "full": "Keisuke Yanagi",
+                  "native": "\u67F3\u572D\u4ECB",
+                  "userPreferred": "Keisuke Yanagi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n121967-BZGYpZetxIyV.png"
+                },
+                "favourites": 2
+              },
+              "role": "Editing"
+            },
+            {
+              "node": {
+                "id": 121323,
+                "name": {
+                  "full": "Yuuki Takabayashi",
+                  "native": "\u9AD8\u6797\u30E6\u30FC\u30AD",
+                  "userPreferred": "Yuuki Takabayashi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n121323-EZfJyb9oqU21.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Series Composition"
+            },
+            {
+              "node": {
+                "id": 119738,
+                "name": {
+                  "full": "Kazuhiko Tamura",
+                  "native": "\u305F\u3080\u3089\u304B\u305A\u3072\u3053",
+                  "userPreferred": "Kazuhiko Tamura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Character Design"
+            },
+            {
+              "node": {
+                "id": 119891,
+                "name": {
+                  "full": "Toshikatsu Tokoro",
+                  "native": "\u6240\u4FCA\u514B",
+                  "userPreferred": "Toshikatsu Tokoro"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Director"
+            },
+            {
+              "node": {
+                "id": 129354,
+                "name": {
+                  "full": "Brent Marshall",
+                  "native": null,
+                  "userPreferred": "Brent Marshall"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "ADR Mixer (English)"
+            },
+            {
+              "node": {
+                "id": 135532,
+                "name": {
+                  "full": "Manami Koyama",
+                  "native": "\u6E56\u5C71\u771F\u5948\u7F8E ",
+                  "userPreferred": "Manami Koyama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n135532-VaU5jwGLxOzM.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Art Director"
+            },
+            {
+              "node": {
+                "id": 197992,
+                "name": {
+                  "full": "Patrick Marrero",
+                  "native": null,
+                  "userPreferred": "Patrick Marrero"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "ADR Engineer (English)"
+            },
+            {
+              "node": {
+                "id": 221339,
+                "name": {
+                  "full": "Kouichi Furukawa",
+                  "native": "\u53E4\u5DDD\u5EB7\u4E00",
+                  "userPreferred": "Kouichi Furukawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Color Design"
+            },
+            {
+              "node": {
+                "id": 253307,
+                "name": {
+                  "full": "Yoshikazu Miyagawa",
+                  "native": "\u307F\u3084\u304C\u308F\u3088\u3057\u304B\u305A",
+                  "userPreferred": "Yoshikazu Miyagawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Director of Photography"
+            },
+            {
+              "node": {
+                "id": 365075,
+                "name": {
+                  "full": "Kecori",
+                  "native": "\u3051\u3053\u308A",
+                  "userPreferred": "Kecori"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n365075-alYCcM4tpRhO.png"
+                },
+                "favourites": 0
+              },
+              "role": "Theme Song Lyrics (ED)"
+            },
+            {
+              "node": {
+                "id": 365075,
+                "name": {
+                  "full": "Kecori",
+                  "native": "\u3051\u3053\u308A",
+                  "userPreferred": "Kecori"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n365075-alYCcM4tpRhO.png"
+                },
+                "favourites": 0
+              },
+              "role": "Theme Song Composition (ED)"
+            },
+            {
+              "node": {
+                "id": 365075,
+                "name": {
+                  "full": "Kecori",
+                  "native": "\u3051\u3053\u308A",
+                  "userPreferred": "Kecori"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n365075-alYCcM4tpRhO.png"
+                },
+                "favourites": 0
+              },
+              "role": "Theme Song Performance (ED)"
+            },
+            {
+              "node": {
+                "id": 365076,
+                "name": {
+                  "full": "Hatenkou Fuufu",
+                  "native": "\u7834\u5929\u8352\u592B\u5A66",
+                  "userPreferred": "Hatenkou Fuufu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n365076-8aTZo6gRl4Gn.png"
+                },
+                "favourites": 0
+              },
+              "role": "Theme Song Performance (OP)"
+            },
+            {
+              "node": {
+                "id": 365077,
+                "name": {
+                  "full": "Kenji Ogura",
+                  "native": "\u5C0F\u690B\u5065\u53F8",
+                  "userPreferred": "Kenji Ogura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n365077-lGv4GEgdTw8L.png"
+                },
+                "favourites": 0
+              },
+              "role": "Theme Song Arrangement (ED)"
+            },
+            {
+              "node": {
+                "id": 365078,
+                "name": {
+                  "full": "Miya",
+                  "native": "\u307F\u30FC\u3084",
+                  "userPreferred": "Miya"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n365078-YFsBVc6jPuku.png"
+                },
+                "favourites": 0
+              },
+              "role": "Theme Song Lyrics (OP)"
+            },
+            {
+              "node": {
+                "id": 365078,
+                "name": {
+                  "full": "Miya",
+                  "native": "\u307F\u30FC\u3084",
+                  "userPreferred": "Miya"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n365078-YFsBVc6jPuku.png"
+                },
+                "favourites": 0
+              },
+              "role": "Theme Song Composition (OP)"
+            },
+            {
+              "node": {
+                "id": 365079,
+                "name": {
+                  "full": "Yoshino\u2605",
+                  "native": "\u3088\u3057\u306E\u2605",
+                  "userPreferred": "Yoshino\u2605"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n365079-gmYM7ym0GEUp.png"
+                },
+                "favourites": 0
+              },
+              "role": "Theme Song Arrangement (OP)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

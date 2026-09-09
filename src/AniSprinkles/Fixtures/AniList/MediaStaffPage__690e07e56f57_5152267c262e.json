@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 154587,
+    "page": 1,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:21:09.4608517+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 194287,
+                "name": {
+                  "full": "YOASOBI",
+                  "native": null,
+                  "userPreferred": "YOASOBI"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n194287-qQjdXaBhaIOA.png"
+                },
+                "favourites": 3575
+              },
+              "role": "Theme Song Performance (OP1)"
+            },
+            {
+              "node": {
+                "id": 101801,
+                "name": {
+                  "full": "Yutaka Nakamura",
+                  "native": "\u4E2D\u6751\u8C4A",
+                  "userPreferred": "Yutaka Nakamura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101801-416ksCeKNeKY.png"
+                },
+                "favourites": 1572
+              },
+              "role": "Key Animation (ep 6)"
+            },
+            {
+              "node": {
+                "id": 134254,
+                "name": {
+                  "full": "Keiichirou Saitou",
+                  "native": "\u658E\u85E4\u572D\u4E00\u90CE",
+                  "userPreferred": "Keiichirou Saitou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n134254-bqcsuWzJr87n.png"
+                },
+                "favourites": 1326
+              },
+              "role": "Storyboard (OP1, OP2, eps 1, 11, 21, 26, 28)"
+            },
+            {
+              "node": {
+                "id": 134254,
+                "name": {
+                  "full": "Keiichirou Saitou",
+                  "native": "\u658E\u85E4\u572D\u4E00\u90CE",
+                  "userPreferred": "Keiichirou Saitou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n134254-bqcsuWzJr87n.png"
+                },
+                "favourites": 1326
+              },
+              "role": "2nd Key Animation (OP2, ep 27)"
+            },
+            {
+              "node": {
+                "id": 134254,
+                "name": {
+                  "full": "Keiichirou Saitou",
+                  "native": "\u658E\u85E4\u572D\u4E00\u90CE",
+                  "userPreferred": "Keiichirou Saitou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n134254-bqcsuWzJr87n.png"
+                },
+                "favourites": 1326
+              },
+              "role": "Director"
+            },
+            {
+              "node": {
+                "id": 134254,
+                "name": {
+                  "full": "Keiichirou Saitou",
+                  "native": "\u658E\u85E4\u572D\u4E00\u90CE",
+                  "userPreferred": "Keiichirou Saitou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n134254-bqcsuWzJr87n.png"
+                },
+                "favourites": 1326
+              },
+              "role": "Episode Director (OP1, OP2, ep 28)"
+            },
+            {
+              "node": {
+                "id": 134254,
+                "name": {
+                  "full": "Keiichirou Saitou",
+                  "native": "\u658E\u85E4\u572D\u4E00\u90CE",
+                  "userPreferred": "Keiichirou Saitou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n134254-bqcsuWzJr87n.png"
+                },
+                "favourites": 1326
+              },
+              "role": "Key Animation (ep 28)"
+            },
+            {
+              "node": {
+                "id": 154702,
+                "name": {
+                  "full": "Yorushika",
+                  "native": "\u30E8\u30EB\u30B7\u30AB",
+                  "userPreferred": "Yorushika"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n154702-upFzbDN7f4EG.png"
+                },
+                "favourites": 1288
+              },
+              "role": "Theme Song Performance (OP2)"
+            },
+            {
+              "node": {
+                "id": 119999,
+                "name": {
+                  "full": "Evan Call",
+                  "native": "\u30A8\u30D0\u30F3\u30FB\u30B3\u30FC\u30EB",
+                  "userPreferred": "Evan Call"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n119999-D6YFCpQPSoHf.png"
+                },
+                "favourites": 1162
+              },
+              "role": "Music"
+            },
+            {
+              "node": {
+                "id": 119999,
+                "name": {
+                  "full": "Evan Call",
+                  "native": "\u30A8\u30D0\u30F3\u30FB\u30B3\u30FC\u30EB",
+                  "userPreferred": "Evan Call"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n119999-D6YFCpQPSoHf.png"
+                },
+                "favourites": 1162
+              },
+              "role": "Theme Song Composition (ED1)"
+            },
+            {
+              "node": {
+                "id": 119999,
+                "name": {
+                  "full": "Evan Call",
+                  "native": "\u30A8\u30D0\u30F3\u30FB\u30B3\u30FC\u30EB",
+                  "userPreferred": "Evan Call"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n119999-D6YFCpQPSoHf.png"
+                },
+                "favourites": 1162
+              },
+              "role": "Theme Song Arrangement (ED1, ED2)"
+            },
+            {
+              "node": {
+                "id": 119999,
+                "name": {
+                  "full": "Evan Call",
+                  "native": "\u30A8\u30D0\u30F3\u30FB\u30B3\u30FC\u30EB",
+                  "userPreferred": "Evan Call"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n119999-D6YFCpQPSoHf.png"
+                },
+                "favourites": 1162
+              },
+              "role": "Insert Song Composition (\u0022bliss\u0022; ep 11)"
+            },
+            {
+              "node": {
+                "id": 119999,
+                "name": {
+                  "full": "Evan Call",
+                  "native": "\u30A8\u30D0\u30F3\u30FB\u30B3\u30FC\u30EB",
+                  "userPreferred": "Evan Call"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n119999-D6YFCpQPSoHf.png"
+                },
+                "favourites": 1162
+              },
+              "role": "Insert Song Arrangement (\u0022bliss\u0022; ep 11)"
+            },
+            {
+              "node": {
+                "id": 144537,
+                "name": {
+                  "full": "milet",
+                  "native": "\u30DF\u30EC\u30A4",
+                  "userPreferred": "milet"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n144537-dHMpupPrVATS.jpg"
+                },
+                "favourites": 763
+              },
+              "role": "Insert Song Lyrics (\u0022bliss\u0022; ep 11)"
+            },
+            {
+              "node": {
+                "id": 144537,
+                "name": {
+                  "full": "milet",
+                  "native": "\u30DF\u30EC\u30A4",
+                  "userPreferred": "milet"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n144537-dHMpupPrVATS.jpg"
+                },
+                "favourites": 763
+              },
+              "role": "Insert Song Performance (\u0022bliss\u0022; ep 11)"
+            },
+            {
+              "node": {
+                "id": 144537,
+                "name": {
+                  "full": "milet",
+                  "native": "\u30DF\u30EC\u30A4",
+                  "userPreferred": "milet"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n144537-dHMpupPrVATS.jpg"
+                },
+                "favourites": 763
+              },
+              "role": "Theme Song Performance (ED1, ED2)"
+            },
+            {
+              "node": {
+                "id": 144537,
+                "name": {
+                  "full": "milet",
+                  "native": "\u30DF\u30EC\u30A4",
+                  "userPreferred": "milet"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n144537-dHMpupPrVATS.jpg"
+                },
+                "favourites": 763
+              },
+              "role": "Theme Song Lyrics (ED1, ED2)"
+            },
+            {
+              "node": {
+                "id": 144537,
+                "name": {
+                  "full": "milet",
+                  "native": "\u30DF\u30EC\u30A4",
+                  "userPreferred": "milet"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n144537-dHMpupPrVATS.jpg"
+                },
+                "favourites": 763
+              },
+              "role": "Theme Song Composition (ED2)"
+            },
+            {
+              "node": {
+                "id": 95472,
+                "name": {
+                  "full": "Colleen Clinkenbeard",
+                  "native": null,
+                  "userPreferred": "Colleen Clinkenbeard"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95472-fznpewUW95vm.jpg"
+                },
+                "favourites": 635
+              },
+              "role": "ADR Producer (English)"
+            },
+            {
+              "node": {
+                "id": 114914,
+                "name": {
+                  "full": "Shingo Yamashita",
+                  "native": "\u5C71\u4E0B\u6E05\u609F",
+                  "userPreferred": "Shingo Yamashita"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n114914-aZHfx54YFvVl.png"
+                },
+                "favourites": 545
+              },
+              "role": "Key Animation (ep 6)"
+            },
+            {
+              "node": {
+                "id": 101729,
+                "name": {
+                  "full": "Jad Saxton",
+                  "native": null,
+                  "userPreferred": "Jad Saxton"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101729-tga5Umgm17Mj.jpg"
+                },
+                "favourites": 480
+              },
+              "role": "ADR Director (English)"
+            },
+            {
+              "node": {
+                "id": 103979,
+                "name": {
+                  "full": "Hironori Tanaka",
+                  "native": "\u7530\u4E2D\u5B8F\u7D00",
+                  "userPreferred": "Hironori Tanaka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n103979-iNgo68ikjKgx.jpg"
+                },
+                "favourites": 454
+              },
+              "role": "Key Animation (eps 4, 6)"
+            },
+            {
+              "node": {
+                "id": 112047,
+                "name": {
+                  "full": "Tatsuya Yoshihara",
+                  "native": "\u5409\u539F\u9054\u77E2",
+                  "userPreferred": "Tatsuya Yoshihara"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n112047-9NkVYZai62wg.png"
+                },
+                "favourites": 429
+              },
+              "role": "Key Animation (eps 6, 9)"
+            },
+            {
+              "node": {
+                "id": 122202,
+                "name": {
+                  "full": "Kanehito Yamada",
+                  "native": "\u5C71\u7530\u9418\u4EBA",
+                  "userPreferred": "Kanehito Yamada"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n122202-lxoDudr9vaul.jpg"
+                },
+                "favourites": 315
+              },
+              "role": "Original Story"
+            },
+            {
+              "node": {
+                "id": 100812,
+                "name": {
+                  "full": "Yoshiaki Kawajiri",
+                  "native": "\u5DDD\u5C3B\u5584\u662D",
+                  "userPreferred": "Yoshiaki Kawajiri"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100812-1ZrgDInanSvE.png"
+                },
+                "favourites": 311
+              },
+              "role": "Storyboard (eps 4, 13, 17)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

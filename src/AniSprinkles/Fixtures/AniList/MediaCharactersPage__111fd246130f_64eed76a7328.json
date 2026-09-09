@@ -1,0 +1,428 @@
+﻿{
+  "operationName": "MediaCharactersPage",
+  "variables": {
+    "id": 182255,
+    "page": 2,
+    "sort": [
+      "RELEVANCE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "64eed76a7328",
+  "recordedAt": "2026-09-06T05:18:50.2801219+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "characters": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 2
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 219733,
+                "name": {
+                  "full": "Flamme",
+                  "native": "\u30D5\u30E9\u30F3\u30E1",
+                  "userPreferred": "Flamme"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b219733-FgXseEhMdDE9.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b219733-FgXseEhMdDE9.png"
+                },
+                "favourites": 669
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 219734,
+                "name": {
+                  "full": "Serie",
+                  "native": "\u30BC\u30FC\u30EA\u30A8",
+                  "userPreferred": "Serie"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b219734-aS4UMAb16DGd.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b219734-aS4UMAb16DGd.jpg"
+                },
+                "favourites": 578
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 246054,
+                "name": {
+                  "full": "Methode",
+                  "native": "\u30E1\u30C8\u30FC\u30C7",
+                  "userPreferred": "Methode"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b246054-TKwFFWVGISUd.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b246054-TKwFFWVGISUd.png"
+                },
+                "favourites": 404
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 246055,
+                "name": {
+                  "full": "Genau",
+                  "native": "\u30B2\u30CA\u30A6",
+                  "userPreferred": "Genau"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b246055-3eoVNiZu3bTy.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b246055-3eoVNiZu3bTy.png"
+                },
+                "favourites": 102
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 246058,
+                "name": {
+                  "full": "Denken",
+                  "native": "\u30C7\u30F3\u30B1\u30F3",
+                  "userPreferred": "Denken"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b246058-FOtuSIUBQ4WJ.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b246058-FOtuSIUBQ4WJ.png"
+                },
+                "favourites": 558
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 315929,
+                "name": {
+                  "full": "Edel",
+                  "native": "\u30A8\u30FC\u30C7\u30EB",
+                  "userPreferred": "Edel"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b315929-mJfCA4CLVxJZ.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b315929-mJfCA4CLVxJZ.png"
+                },
+                "favourites": 31
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 319598,
+                "name": {
+                  "full": "Stoltz",
+                  "native": "\u30B7\u30E5\u30C8\u30EB\u30C4",
+                  "userPreferred": "Stoltz"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b319598-R0kVKvFug65D.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b319598-R0kVKvFug65D.png"
+                },
+                "favourites": 66
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 327299,
+                "name": {
+                  "full": "Lernen",
+                  "native": "\u30EC\u30EB\u30CD\u30F3",
+                  "userPreferred": "Lernen"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b327299-NgvxpyNecgoZ.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b327299-NgvxpyNecgoZ.png"
+                },
+                "favourites": 12
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 331269,
+                "name": {
+                  "full": "Revolte",
+                  "native": "\u30EC\u30F4\u30A9\u30EB\u30C6",
+                  "userPreferred": "Revolte"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b331269-PSE8DO36qCoW.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b331269-PSE8DO36qCoW.png"
+                },
+                "favourites": 7
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 331424,
+                "name": {
+                  "full": "Gehen",
+                  "native": "\u30B2\u30FC\u30A8\u30F3",
+                  "userPreferred": "Gehen"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b331424-kn1wRDukHtfY.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b331424-kn1wRDukHtfY.png"
+                },
+                "favourites": 4
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 331425,
+                "name": {
+                  "full": "Milliarde",
+                  "native": "\u30DF\u30EA\u30A2\u30EB\u30C7",
+                  "userPreferred": "Milliarde"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b331425-XgqTo4PKsdhH.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b331425-XgqTo4PKsdhH.jpg"
+                },
+                "favourites": 13
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 331435,
+                "name": {
+                  "full": "Norm",
+                  "native": "\u30CE\u30EB\u30E0",
+                  "userPreferred": "Norm"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b331435-KtkRdUqphwVk.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b331435-KtkRdUqphwVk.png"
+                },
+                "favourites": 1
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 331439,
+                "name": {
+                  "full": "Fass",
+                  "native": "\u30D5\u30A1\u30B9",
+                  "userPreferred": "Fass"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b331439-meDK5YbPGLuQ.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b331439-meDK5YbPGLuQ.png"
+                },
+                "favourites": 5
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 388977,
+                "name": {
+                  "full": "Koya no Shu",
+                  "native": "\u5C0F\u5C4B\u306E\u4E3B",
+                  "userPreferred": "Koya no Shu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b388977-N4J4JRpOO0Xd.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b388977-N4J4JRpOO0Xd.png"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 388979,
+                "name": {
+                  "full": "Musuko",
+                  "native": "\u606F\u5B50",
+                  "userPreferred": "Musuko"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/default.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 388981,
+                "name": {
+                  "full": "Musuko",
+                  "native": "\u606F\u5B50",
+                  "userPreferred": "Musuko"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/default.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 388982,
+                "name": {
+                  "full": "Onsen no Obaa-san",
+                  "native": "\u6E29\u6CC9\u306E\u304A\u3070\u3042\u3055\u3093",
+                  "userPreferred": "Onsen no Obaa-san"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b388982-gk4zMnsoTZXc.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b388982-gk4zMnsoTZXc.png"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 389790,
+                "name": {
+                  "full": "Murabito",
+                  "native": "\u6751\u4EBA",
+                  "userPreferred": "Murabito"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/default.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 389791,
+                "name": {
+                  "full": "Murabito",
+                  "native": "\u6751\u4EBA",
+                  "userPreferred": "Murabito"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/default.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 389792,
+                "name": {
+                  "full": "Murabito",
+                  "native": "\u6751\u4EBA",
+                  "userPreferred": "Murabito"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/default.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 389793,
+                "name": {
+                  "full": "Eihei",
+                  "native": "\u885B\u5175",
+                  "userPreferred": "Eihei"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b389793-l75n0uMYqzty.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b389793-l75n0uMYqzty.png"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 389794,
+                "name": {
+                  "full": "Shuuraku no Juunin",
+                  "native": "\u96C6\u843D\u306E\u4F4F\u4EBA",
+                  "userPreferred": "Shuuraku no Juunin"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/default.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 390700,
+                "name": {
+                  "full": "Murabito",
+                  "native": "\u6751\u4EBA",
+                  "userPreferred": "Murabito"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/default.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 390701,
+                "name": {
+                  "full": "Murabito",
+                  "native": "\u6751\u4EBA",
+                  "userPreferred": "Murabito"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/default.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 390703,
+                "name": {
+                  "full": "Uketsuke",
+                  "native": "\u53D7\u4ED8",
+                  "userPreferred": "Uketsuke"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/default.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

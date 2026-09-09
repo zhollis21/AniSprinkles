@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 182255,
+    "page": 3,
+    "sort": [
+      "RELEVANCE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:18:59.6056469+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 3
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 254369,
+                "name": {
+                  "full": "Yuri Norose",
+                  "native": "\u91CE\u5442\u702C\u53CB\u91CC",
+                  "userPreferred": "Yuri Norose"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Associate Producer"
+            },
+            {
+              "node": {
+                "id": 361234,
+                "name": {
+                  "full": "Anna Kondou",
+                  "native": "\u8FD1\u85E4\u674F\u5948",
+                  "userPreferred": "Anna Kondou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Associate Producer"
+            },
+            {
+              "node": {
+                "id": 387029,
+                "name": {
+                  "full": "Shun Ootsuka",
+                  "native": "\u5927\u585A\u77AC",
+                  "userPreferred": "Shun Ootsuka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Associate Producer"
+            },
+            {
+              "node": {
+                "id": 206993,
+                "name": {
+                  "full": "Ryou Shimoyama",
+                  "native": "\u4E0B\u5C71\u4EAE",
+                  "userPreferred": "Ryou Shimoyama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n206993-BMe8eUzuIVmF.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Advertising Producer"
+            },
+            {
+              "node": {
+                "id": 301995,
+                "name": {
+                  "full": "Minoru Suginaka",
+                  "native": "\u6749\u4E2D\u5B9F",
+                  "userPreferred": "Minoru Suginaka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Advertising"
+            },
+            {
+              "node": {
+                "id": 315809,
+                "name": {
+                  "full": "Minako Kayamori",
+                  "native": "\u6822\u68EE\u7F8E\u5948\u5B50",
+                  "userPreferred": "Minako Kayamori"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Advertising"
+            },
+            {
+              "node": {
+                "id": 315810,
+                "name": {
+                  "full": "Mao Saitou",
+                  "native": "\u9F4B\u85E4\u771F\u7DD2",
+                  "userPreferred": "Mao Saitou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Advertising"
+            },
+            {
+              "node": {
+                "id": 315814,
+                "name": {
+                  "full": "Ayako Ushida",
+                  "native": "\u725B\u7530\u7D62\u5B50",
+                  "userPreferred": "Ayako Ushida"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Advertising"
+            },
+            {
+              "node": {
+                "id": 369023,
+                "name": {
+                  "full": "Naoki Kaneko",
+                  "native": "\u91D1\u5B50\u76F4\u6A39",
+                  "userPreferred": "Naoki Kaneko"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Advertising"
+            },
+            {
+              "node": {
+                "id": 387034,
+                "name": {
+                  "full": "Ayame Tsuruoka",
+                  "native": "\u9DB4\u5CA1\u6587\u82BD",
+                  "userPreferred": "Ayame Tsuruoka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Advertising"
+            },
+            {
+              "node": {
+                "id": 206634,
+                "name": {
+                  "full": "Kanako Arima",
+                  "native": "\u6709\u99AC\u52A0\u5948\u5B50",
+                  "userPreferred": "Kanako Arima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Sound Production"
+            },
+            {
+              "node": {
+                "id": 166550,
+                "name": {
+                  "full": "Haruka Matsushita",
+                  "native": "\u677E\u4E0B\u6625\u9999",
+                  "userPreferred": "Haruka Matsushita"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Recording"
+            },
+            {
+              "node": {
+                "id": 258534,
+                "name": {
+                  "full": "Mako Nakauchi",
+                  "native": "\u4E2D\u5185\u771F\u5B50",
+                  "userPreferred": "Mako Nakauchi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Recording Assistant"
+            },
+            {
+              "node": {
+                "id": 315682,
+                "name": {
+                  "full": "Mimei Aoume",
+                  "native": "\u9752\u6885\u7F8E\u82BD",
+                  "userPreferred": "Mimei Aoume"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n315682-yz62MTRVPYXM.jpg"
+                },
+                "favourites": 18
+              },
+              "role": "Director (ED)"
+            },
+            {
+              "node": {
+                "id": 127377,
+                "name": {
+                  "full": "Seiko Yoshioka",
+                  "native": "\u5409\u5CA1\u8AA0\u5B50",
+                  "userPreferred": "Seiko Yoshioka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n127377-rXdGO7Rzm3RE.png"
+                },
+                "favourites": 32
+              },
+              "role": "Layout Design (eps 1-6)"
+            },
+            {
+              "node": {
+                "id": 112991,
+                "name": {
+                  "full": "Sawako Takagi",
+                  "native": "\u9AD8\u6728\u4F50\u548C\u5B50",
+                  "userPreferred": "Sawako Takagi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 4
+              },
+              "role": "Art Director (eps 1, 4)"
+            },
+            {
+              "node": {
+                "id": 127377,
+                "name": {
+                  "full": "Seiko Yoshioka",
+                  "native": "\u5409\u5CA1\u8AA0\u5B50",
+                  "userPreferred": "Seiko Yoshioka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n127377-rXdGO7Rzm3RE.png"
+                },
+                "favourites": 32
+              },
+              "role": "Art Director (OP)"
+            },
+            {
+              "node": {
+                "id": 242606,
+                "name": {
+                  "full": "Eri Niimi",
+                  "native": "\u65B0\u898B\u6075\u5229",
+                  "userPreferred": "Eri Niimi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Art Director (eps 2, 5)"
+            },
+            {
+              "node": {
+                "id": 242603,
+                "name": {
+                  "full": "Sayo Koyama",
+                  "native": "\u5C0F\u5C71\u7D17\u4EE3",
+                  "userPreferred": "Sayo Koyama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Art Director (ep 3)"
+            },
+            {
+              "node": {
+                "id": 295699,
+                "name": {
+                  "full": "Raimu Oda",
+                  "native": "\u5C0F\u7530\u6765\u5922",
+                  "userPreferred": "Raimu Oda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n295699-rgiPwelKvRp5.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Assistant Director of Photography (eps 1-5)"
+            },
+            {
+              "node": {
+                "id": 142142,
+                "name": {
+                  "full": "Mrs. GREEN APPLE",
+                  "native": "\u30DF\u30BB\u30B9\u30B0\u30EA\u30FC\u30F3\u30A2\u30C3\u30D7\u30EB",
+                  "userPreferred": "Mrs. GREEN APPLE"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n142142-C9Eql3ithIgo.png"
+                },
+                "favourites": 280
+              },
+              "role": "Theme Song Performance (OP)"
+            },
+            {
+              "node": {
+                "id": 144537,
+                "name": {
+                  "full": "milet",
+                  "native": "\u30DF\u30EC\u30A4",
+                  "userPreferred": "milet"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n144537-dHMpupPrVATS.jpg"
+                },
+                "favourites": 763
+              },
+              "role": "Theme Song Performance (ED)"
+            },
+            {
+              "node": {
+                "id": 119119,
+                "name": {
+                  "full": "Tomohiro Suzuki",
+                  "native": "\u9234\u6728\u667A\u5C0B",
+                  "userPreferred": "Tomohiro Suzuki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n119119-VrfR5lH1CdYC.png"
+                },
+                "favourites": 20
+              },
+              "role": "Script (eps 1-7)"
+            },
+            {
+              "node": {
+                "id": 165996,
+                "name": {
+                  "full": "Tomoya Kitagawa",
+                  "native": "\u5317\u5DDD\u670B\u54C9",
+                  "userPreferred": "Tomoya Kitagawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 9
+              },
+              "role": "Episode Director (OP, ep 1)"
+            },
+            {
+              "node": {
+                "id": 124887,
+                "name": {
+                  "full": "Nobuhiro Mutou",
+                  "native": "\u6B66\u85E4\u4FE1\u5B8F",
+                  "userPreferred": "Nobuhiro Mutou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n124887-NerFAQgTEEkE.png"
+                },
+                "favourites": 3
+              },
+              "role": "Episode Director (eps 2, 6)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

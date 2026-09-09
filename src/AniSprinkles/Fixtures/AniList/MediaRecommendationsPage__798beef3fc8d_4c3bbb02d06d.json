@@ -1,0 +1,553 @@
+﻿{
+  "operationName": "MediaRecommendationsPage",
+  "variables": {
+    "id": 2993,
+    "page": 1,
+    "sort": [
+      "RATING_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "4c3bbb02d06d",
+  "recordedAt": "2026-09-06T05:23:26.0315575+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "recommendations": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "nodes": [
+            {
+              "rating": 67,
+              "mediaRecommendation": {
+                "id": 107693,
+                "title": {
+                  "romaji": "Mairimashita! Iruma-kun",
+                  "english": "Welcome to Demon School! Iruma-kun",
+                  "native": "\u9B54\u5165\u308A\u307E\u3057\u305F\uFF01\u5165\u9593\u304F\u3093"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx107693-A9bSSFAMxA6j.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx107693-A9bSSFAMxA6j.jpg"
+                },
+                "averageScore": 77,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 48,
+              "mediaRecommendation": {
+                "id": 3455,
+                "title": {
+                  "romaji": "To LOVE-Ru",
+                  "english": "To Love Ru",
+                  "native": "To LOVE\u308B -\u3068\u3089\u3076\u308B-"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx3455-oNiJmsZZTAAj.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx3455-oNiJmsZZTAAj.png"
+                },
+                "averageScore": 65,
+                "mediaListEntry": {
+                  "id": 593364990,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "score": 0
+                }
+              }
+            },
+            {
+              "rating": 33,
+              "mediaRecommendation": {
+                "id": 11617,
+                "title": {
+                  "romaji": "High School DxD",
+                  "english": "High School DxD",
+                  "native": "\u30CF\u30A4\u30B9\u30AF\u30FC\u30EBD\u00D7D"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx11617-nmxMU9Zh3H5R.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx11617-nmxMU9Zh3H5R.jpg"
+                },
+                "averageScore": 69,
+                "mediaListEntry": {
+                  "id": 593364061,
+                  "status": "COMPLETED",
+                  "progress": 12,
+                  "score": 9
+                }
+              }
+            },
+            {
+              "rating": 21,
+              "mediaRecommendation": {
+                "id": 190704,
+                "title": {
+                  "romaji": "Kanan-sama wa Akumade Choroi",
+                  "english": "Mistress Kanan is Devilishly Easy",
+                  "native": "\u30AB\u30CA\u30F3\u69D8\u306F\u3042\u304F\u307E\u3067\u30C1\u30E7\u30ED\u3044"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx190704-Ts1VvkrNdnCZ.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx190704-Ts1VvkrNdnCZ.jpg"
+                },
+                "averageScore": 70,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 16,
+              "mediaRecommendation": {
+                "id": 2130,
+                "title": {
+                  "romaji": "Kaibutsu Oujo",
+                  "english": "Princess Resurrection",
+                  "native": "\u602A\u7269\u738B\u5973"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/2130.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/2130.jpg"
+                },
+                "averageScore": 65,
+                "mediaListEntry": {
+                  "id": 593365479,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "score": 0
+                }
+              }
+            },
+            {
+              "rating": 16,
+              "mediaRecommendation": {
+                "id": 116338,
+                "title": {
+                  "romaji": "Mairimashita! Iruma-kun 2",
+                  "english": "Welcome to Demon School! Iruma-kun Season 2",
+                  "native": "\u9B54\u5165\u308A\u307E\u3057\u305F\uFF01\u5165\u9593\u304F\u3093 \u7B2C2\u30B7\u30EA\u30FC\u30BA"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx116338-jbuJnLkPMcm7.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx116338-jbuJnLkPMcm7.jpg"
+                },
+                "averageScore": 80,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 13,
+              "mediaRecommendation": {
+                "id": 21093,
+                "title": {
+                  "romaji": "Monster Musume no Iru Nichijou",
+                  "english": "Monster Musume: Everyday Life With Monster Girls",
+                  "native": "\u30E2\u30F3\u30B9\u30BF\u30FC\u5A18\u306E\u3044\u308B\u65E5\u5E38"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21093-fVFDznAnJZmL.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21093-fVFDznAnJZmL.png"
+                },
+                "averageScore": 66,
+                "mediaListEntry": {
+                  "id": 593364234,
+                  "status": "COMPLETED",
+                  "progress": 12,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 12,
+              "mediaRecommendation": {
+                "id": 469,
+                "title": {
+                  "romaji": "Karin",
+                  "english": "Karin: Chibi Vampire",
+                  "native": "\u304B\u308A\u3093"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx469-8v2Am0gCrwvH.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx469-8v2Am0gCrwvH.png"
+                },
+                "averageScore": 67,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 12,
+              "mediaRecommendation": {
+                "id": 193,
+                "title": {
+                  "romaji": "Maburaho",
+                  "english": "Maburaho",
+                  "native": "\u307E\u3076\u3089\u307B"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/193.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/193.jpg"
+                },
+                "averageScore": 61,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 9,
+              "mediaRecommendation": {
+                "id": 79,
+                "title": {
+                  "romaji": "SHUFFLE!",
+                  "english": null,
+                  "native": "SHUFFLE!"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx79-I1ODM0WcMlsn.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx79-I1ODM0WcMlsn.jpg"
+                },
+                "averageScore": 65,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 9,
+              "mediaRecommendation": {
+                "id": 21033,
+                "title": {
+                  "romaji": "Jitsu wa Watashi wa",
+                  "english": "Actually, I Am",
+                  "native": "\u5B9F\u306F\u79C1\u306F"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21033-6RAkCuvCPbFJ.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21033-6RAkCuvCPbFJ.jpg"
+                },
+                "averageScore": 65,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 7,
+              "mediaRecommendation": {
+                "id": 111965,
+                "title": {
+                  "romaji": "Peter Grill to Kenja no Jikan",
+                  "english": "Peter Grill and the Philosopher\u0027s Time",
+                  "native": "\u30D4\u30FC\u30BF\u30FC\u30B0\u30EA\u30EB\u3068\u8CE2\u8005\u306E\u6642\u9593"
+                },
+                "format": "TV_SHORT",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx111965-iUYaDivDR4BG.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx111965-iUYaDivDR4BG.jpg"
+                },
+                "averageScore": 53,
+                "mediaListEntry": {
+                  "id": 593364254,
+                  "status": "COMPLETED",
+                  "progress": 12,
+                  "score": 9
+                }
+              }
+            },
+            {
+              "rating": 6,
+              "mediaRecommendation": {
+                "id": 18897,
+                "title": {
+                  "romaji": "Nisekoi",
+                  "english": "Nisekoi",
+                  "native": "\u30CB\u30BB\u30B3\u30A4"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx18897-G2Fx2ZACsXBU.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx18897-G2Fx2ZACsXBU.jpg"
+                },
+                "averageScore": 73,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 6,
+              "mediaRecommendation": {
+                "id": 248,
+                "title": {
+                  "romaji": "Ichigo 100%",
+                  "english": "Strawberry 100%",
+                  "native": "\u3044\u3061\u3054100%"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/248.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/248.jpg"
+                },
+                "averageScore": 62,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 6,
+              "mediaRecommendation": {
+                "id": 9936,
+                "title": {
+                  "romaji": "Maken-Ki!",
+                  "english": "Maken-Ki! Battling Venus",
+                  "native": "\u30DE\u30B1\u30F3\u59EB\u3063\uFF01"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/9936.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/9936.jpg"
+                },
+                "averageScore": 59,
+                "mediaListEntry": {
+                  "id": 593365183,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "score": 0
+                }
+              }
+            },
+            {
+              "rating": 6,
+              "mediaRecommendation": {
+                "id": 162694,
+                "title": {
+                  "romaji": "Kimi no Koto ga Dai Dai Dai Dai Daisuki na 100-nin no Kanojo",
+                  "english": "The 100 Girlfriends Who Really, Really, Really, Really, REALLY Love You",
+                  "native": "\u541B\u306E\u3053\u3068\u304C\u5927\u5927\u5927\u5927\u5927\u597D\u304D\u306A100\u4EBA\u306E\u5F7C\u5973"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx162694-QFBei5pbjSh8.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx162694-QFBei5pbjSh8.png"
+                },
+                "averageScore": 76,
+                "mediaListEntry": {
+                  "id": 593364330,
+                  "status": "COMPLETED",
+                  "progress": 12,
+                  "score": 9
+                }
+              }
+            },
+            {
+              "rating": 5,
+              "mediaRecommendation": {
+                "id": 9750,
+                "title": {
+                  "romaji": "Itsuka Tenma no Kuro Usagi",
+                  "english": "A Dark Rabbit has Seven Lives",
+                  "native": "\u3044\u3064\u304B\u5929\u9B54\u306E\u9ED2\u30A6\u30B5\u30AE"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/9750.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/9750.jpg"
+                },
+                "averageScore": 60,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 4,
+              "mediaRecommendation": {
+                "id": 11785,
+                "title": {
+                  "romaji": "Haiyore! Nyaruko-san",
+                  "english": "Nyaruko: Crawling with Love!",
+                  "native": "\u9019\u3044\u3088\u308C\uFF01\u30CB\u30E3\u30EB\u5B50\u3055\u3093"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx11785-cBfqpOetdIeF.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx11785-cBfqpOetdIeF.jpg"
+                },
+                "averageScore": 66,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 4,
+              "mediaRecommendation": {
+                "id": 1195,
+                "title": {
+                  "romaji": "Zero no Tsukaima",
+                  "english": "The Familiar of Zero",
+                  "native": "\u30BC\u30ED\u306E\u4F7F\u3044\u9B54"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1195-odpKgDQ7A1fV.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1195-odpKgDQ7A1fV.png"
+                },
+                "averageScore": 68,
+                "mediaListEntry": {
+                  "id": 593365536,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "score": 0
+                }
+              }
+            },
+            {
+              "rating": 4,
+              "mediaRecommendation": {
+                "id": 142849,
+                "title": {
+                  "romaji": "Ayakashi Triangle",
+                  "english": "Ayakashi Triangle",
+                  "native": "\u3042\u3084\u304B\u3057\u30C8\u30E9\u30A4\u30A2\u30F3\u30B0\u30EB"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx142849-TXRh2tW2fu08.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx142849-TXRh2tW2fu08.png"
+                },
+                "averageScore": 61,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 4,
+              "mediaRecommendation": {
+                "id": 171545,
+                "title": {
+                  "romaji": "Youkai Gakkou no Sensei Hajimemashita!",
+                  "english": "A Terrified Teacher at Ghoul School!",
+                  "native": "\u5996\u602A\u5B66\u6821\u306E\u5148\u751F\u306F\u3058\u3081\u307E\u3057\u305F\uFF01"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx171545-j9foxkHeXec7.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx171545-j9foxkHeXec7.jpg"
+                },
+                "averageScore": 68,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 4,
+              "mediaRecommendation": {
+                "id": 15583,
+                "title": {
+                  "romaji": "Date A Live",
+                  "english": "Date A Live",
+                  "native": "\u30C7\u30FC\u30C8\u30FB\u30A2\u30FB\u30E9\u30A4\u30D6"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx15583-Sxd2J4RJdRhj.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx15583-Sxd2J4RJdRhj.jpg"
+                },
+                "averageScore": 68,
+                "mediaListEntry": {
+                  "id": 593365225,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "score": 0
+                }
+              }
+            },
+            {
+              "rating": 4,
+              "mediaRecommendation": {
+                "id": 141391,
+                "title": {
+                  "romaji": "Yofukashi no Uta",
+                  "english": "Call of the Night",
+                  "native": "\u3088\u3075\u304B\u3057\u306E\u3046\u305F"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx141391-M3ZgUKTPENUk.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx141391-M3ZgUKTPENUk.jpg"
+                },
+                "averageScore": 79,
+                "mediaListEntry": {
+                  "id": 593364548,
+                  "status": "COMPLETED",
+                  "progress": 13,
+                  "score": 10
+                }
+              }
+            },
+            {
+              "rating": 3,
+              "mediaRecommendation": {
+                "id": 169927,
+                "title": {
+                  "romaji": "One Room, Hi Atari Futsuu, Tenshi Tsuki.",
+                  "english": "Studio Apartment, Good Lighting, Angel Included",
+                  "native": "\u30EF\u30F3\u30EB\u30FC\u30E0\u3001\u65E5\u5F53\u305F\u308A\u666E\u901A\u3001\u5929\u4F7F\u3064\u304D\u3002"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx169927-3FwBuKn4x5LL.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx169927-3FwBuKn4x5LL.jpg"
+                },
+                "averageScore": 69,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 3,
+              "mediaRecommendation": {
+                "id": 162804,
+                "title": {
+                  "romaji": "Tokidoki Bosotto Rossiya-go de Dereru Tonari no Alya-san",
+                  "english": "Alya Sometimes Hides Her Feelings in Russian",
+                  "native": "\u6642\u3005\u30DC\u30BD\u30C3\u3068\u30ED\u30B7\u30A2\u8A9E\u3067\u30C7\u30EC\u308B\u96A3\u306E\u30A2\u30FC\u30EA\u30E3\u3055\u3093"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx162804-TBeptcAfvqTd.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx162804-TBeptcAfvqTd.jpg"
+                },
+                "averageScore": 75,
+                "mediaListEntry": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

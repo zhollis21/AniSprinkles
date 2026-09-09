@@ -1,0 +1,638 @@
+﻿{
+  "operationName": "StudioMediaPage",
+  "variables": {
+    "id": 102,
+    "page": 3,
+    "sort": [
+      "POPULARITY_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "02c0137b2ee8",
+  "recordedAt": "2026-09-09T16:00:38.8813778+00:00",
+  "response": {
+    "data": {
+      "Studio": {
+        "media": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 3
+          },
+          "nodes": [
+            {
+              "id": 4654,
+              "title": {
+                "romaji": "Toaru Majutsu no Index",
+                "english": "A Certain Magical Index",
+                "native": "\u3068\u3042\u308B\u9B54\u8853\u306E\u7981\u66F8\u76EE\u9332"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx4654-ba44icsxDQZd.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx4654-ba44icsxDQZd.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 70,
+              "favourites": 2623,
+              "popularity": 190548,
+              "startDate": {
+                "year": 2008,
+                "month": 10,
+                "day": 5
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 20966,
+              "title": {
+                "romaji": "Yamada-kun to 7-nin no Majo",
+                "english": "Yamada and the Seven Witches",
+                "native": "\u5C71\u7530\u304F\u3093\u30687\u4EBA\u306E\u9B54\u5973"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20966-HboUtUzEKWl6.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20966-HboUtUzEKWl6.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 73,
+              "favourites": 3279,
+              "popularity": 189349,
+              "startDate": {
+                "year": 2015,
+                "month": 4,
+                "day": 12
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 111762,
+              "title": {
+                "romaji": "Fruits Basket: 2nd Season",
+                "english": "Fruits Basket Season 2",
+                "native": "\u30D5\u30EB\u30FC\u30C4\u30D0\u30B9\u30B1\u30C3\u30C8 2nd Season"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx111762-C8TNf5uRlVNQ.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx111762-C8TNf5uRlVNQ.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 85,
+              "favourites": 6628,
+              "popularity": 186178,
+              "startDate": {
+                "year": 2020,
+                "month": 4,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 777,
+              "title": {
+                "romaji": "HELLSING OVA",
+                "english": "Hellsing Ultimate",
+                "native": "HELLSING OVA"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx777-F6547pSAR2Zd.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx777-F6547pSAR2Zd.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 81,
+              "favourites": 8215,
+              "popularity": 185559,
+              "startDate": {
+                "year": 2006,
+                "month": 2,
+                "day": 10
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 100112,
+              "title": {
+                "romaji": "Kenja no Mago",
+                "english": "Wise Man\u2019s Grandchild",
+                "native": "\u8CE2\u8005\u306E\u5B6B"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx100112-eExFpnYG2QAK.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx100112-eExFpnYG2QAK.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 64,
+              "favourites": 3687,
+              "popularity": 184383,
+              "startDate": {
+                "year": 2019,
+                "month": 4,
+                "day": 10
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 21428,
+              "title": {
+                "romaji": "Hai to Gensou no Grimgar",
+                "english": "Grimgar of Fantasy and Ash",
+                "native": "\u7070\u3068\u5E7B\u60F3\u306E\u30B0\u30EA\u30E0\u30AC\u30EB"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21428-dFVIHeZ8McBe.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21428-dFVIHeZ8McBe.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 74,
+              "favourites": 4473,
+              "popularity": 183154,
+              "startDate": {
+                "year": 2016,
+                "month": 1,
+                "day": 11
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2966,
+              "title": {
+                "romaji": "Ookami to Koushinryou",
+                "english": "Spice and Wolf",
+                "native": "\u72FC\u3068\u9999\u8F9B\u6599"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx2966-AEULMyYA9WKb.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2966-AEULMyYA9WKb.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 80,
+              "favourites": 5799,
+              "popularity": 181841,
+              "startDate": {
+                "year": 2008,
+                "month": 1,
+                "day": 8
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 124194,
+              "title": {
+                "romaji": "Fruits Basket: The Final",
+                "english": "Fruits Basket The Final Season",
+                "native": "\u30D5\u30EB\u30FC\u30C4\u30D0\u30B9\u30B1\u30C3\u30C8The Final"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx124194-TJlqMMR7BGn9.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx124194-TJlqMMR7BGn9.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 89,
+              "favourites": 12012,
+              "popularity": 176712,
+              "startDate": {
+                "year": 2021,
+                "month": 4,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2236,
+              "title": {
+                "romaji": "Toki wo Kakeru Shoujo",
+                "english": "The Girl Who Leapt Through Time",
+                "native": "\u6642\u3092\u304B\u3051\u308B\u5C11\u5973"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx2236-tH5fWFkHyVGg.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2236-tH5fWFkHyVGg.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 3439,
+              "popularity": 174542,
+              "startDate": {
+                "year": 2006,
+                "month": 7,
+                "day": 15
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 6,
+              "title": {
+                "romaji": "TRIGUN",
+                "english": "Trigun",
+                "native": "TRIGUN"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx6-wd4saT1JzStH.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx6-wd4saT1JzStH.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 80,
+              "favourites": 7377,
+              "popularity": 170113,
+              "startDate": {
+                "year": 1998,
+                "month": 4,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 14713,
+              "title": {
+                "romaji": "Kamisama Hajimemashita",
+                "english": "Kamisama Kiss",
+                "native": "\u795E\u69D8\u306F\u3058\u3081\u307E\u3057\u305F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx14713-RyZ7bA7CdvGw.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx14713-RyZ7bA7CdvGw.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 81,
+              "favourites": 9924,
+              "popularity": 170013,
+              "startDate": {
+                "year": 2012,
+                "month": 10,
+                "day": 2
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 10719,
+              "title": {
+                "romaji": "Boku wa Tomodachi ga Sukunai",
+                "english": "Haganai",
+                "native": "\u50D5\u306F\u53CB\u9054\u304C\u5C11\u306A\u3044"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx10719-aNf9gOOw62Fs.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx10719-aNf9gOOw62Fs.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 68,
+              "favourites": 1921,
+              "popularity": 165848,
+              "startDate": {
+                "year": 2011,
+                "month": 10,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 20678,
+              "title": {
+                "romaji": "Shinmai Maou no Testament",
+                "english": "The Testament of Sister New Devil",
+                "native": "\u65B0\u59B9\u9B54\u738B\u306E\u5951\u7D04\u8005"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20678-58D9Yhi4GcH2.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20678-58D9Yhi4GcH2.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 63,
+              "favourites": 2385,
+              "popularity": 161979,
+              "startDate": {
+                "year": 2015,
+                "month": 1,
+                "day": 8
+              },
+              "mediaListEntry": {
+                "id": 593364082,
+                "status": "COMPLETED",
+                "progress": 12,
+                "score": 6
+              }
+            },
+            {
+              "id": 98202,
+              "title": {
+                "romaji": "Tsuki ga Kirei",
+                "english": "Tsukigakirei",
+                "native": "\u6708\u304C\u304D\u308C\u3044"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx98202-H6RtsIMZPALF.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx98202-H6RtsIMZPALF.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 4447,
+              "popularity": 158770,
+              "startDate": {
+                "year": 2017,
+                "month": 4,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 392,
+              "title": {
+                "romaji": "Yuu\u2606Yuu\u2606Hakusho",
+                "english": "Yu Yu Hakusho: Ghostfiles",
+                "native": "\u5E7D\u2606\u904A\u2606\u767D\u66F8"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx392-z90299zIvYmx.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx392-z90299zIvYmx.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 83,
+              "favourites": 9573,
+              "popularity": 158520,
+              "startDate": {
+                "year": 1992,
+                "month": 10,
+                "day": 10
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 790,
+              "title": {
+                "romaji": "Ergo Proxy",
+                "english": "Ergo Proxy",
+                "native": "Ergo Proxy"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx790-YTUCvBKX8ZWK.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx790-YTUCvBKX8ZWK.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 76,
+              "favourites": 5149,
+              "popularity": 157226,
+              "startDate": {
+                "year": 2006,
+                "month": 2,
+                "day": 25
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1195,
+              "title": {
+                "romaji": "Zero no Tsukaima",
+                "english": "The Familiar of Zero",
+                "native": "\u30BC\u30ED\u306E\u4F7F\u3044\u9B54"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1195-odpKgDQ7A1fV.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1195-odpKgDQ7A1fV.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 68,
+              "favourites": 2895,
+              "popularity": 156121,
+              "startDate": {
+                "year": 2006,
+                "month": 7,
+                "day": 3
+              },
+              "mediaListEntry": {
+                "id": 593365536,
+                "status": "PLANNING",
+                "progress": 0,
+                "score": 0
+              }
+            },
+            {
+              "id": 6213,
+              "title": {
+                "romaji": "Toaru Kagaku no Railgun",
+                "english": "A Certain Scientific Railgun",
+                "native": "\u3068\u3042\u308B\u79D1\u5B66\u306E\u8D85\u96FB\u78C1\u7832"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx6213-QtrlDQnexApL.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx6213-QtrlDQnexApL.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 75,
+              "favourites": 3049,
+              "popularity": 154494,
+              "startDate": {
+                "year": 2009,
+                "month": 10,
+                "day": 3
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 108241,
+              "title": {
+                "romaji": "Gleipnir",
+                "english": "Gleipnir",
+                "native": "\u30B0\u30EC\u30A4\u30D7\u30CB\u30EB"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx108241-Mc28QvkdUkfp.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx108241-Mc28QvkdUkfp.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 66,
+              "favourites": 2508,
+              "popularity": 152371,
+              "startDate": {
+                "year": 2020,
+                "month": 4,
+                "day": 5
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 115113,
+              "title": {
+                "romaji": "Uzaki-chan wa Asobitai!",
+                "english": "Uzaki-chan Wants to Hang Out!",
+                "native": "\u5B87\u5D0E\u3061\u3083\u3093\u306F\u904A\u3073\u305F\u3044\uFF01"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx115113-bJDZV7kP0XrP.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx115113-bJDZV7kP0XrP.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 67,
+              "favourites": 2846,
+              "popularity": 150556,
+              "startDate": {
+                "year": 2020,
+                "month": 7,
+                "day": 10
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 100077,
+              "title": {
+                "romaji": "Hinamatsuri",
+                "english": "HINAMATSURI",
+                "native": "\u30D2\u30CA\u307E\u3064\u308A"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx100077-FgGYIt8gGyrn.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx100077-FgGYIt8gGyrn.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 80,
+              "favourites": 4084,
+              "popularity": 149273,
+              "startDate": {
+                "year": 2018,
+                "month": 4,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 7785,
+              "title": {
+                "romaji": "Yojouhan Shinwa Taikei",
+                "english": "The Tatami Galaxy",
+                "native": "\u56DB\u7573\u534A\u795E\u8A71\u5927\u7CFB"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx7785-aTjIhsYva8cJ.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx7785-aTjIhsYva8cJ.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 85,
+              "favourites": 9820,
+              "popularity": 148545,
+              "startDate": {
+                "year": 2010,
+                "month": 4,
+                "day": 23
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 270,
+              "title": {
+                "romaji": "HELLSING",
+                "english": "Hellsing",
+                "native": "HELLSING"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b270-S2ProngvO6BU.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b270-S2ProngvO6BU.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 72,
+              "favourites": 3162,
+              "popularity": 145055,
+              "startDate": {
+                "year": 2001,
+                "month": 10,
+                "day": 11
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1887,
+              "title": {
+                "romaji": "Lucky\u2606Star",
+                "english": "Lucky\u2606Star",
+                "native": "\u3089\u304D\u2606\u3059\u305F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1887-P36Pucd4qKji.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1887-P36Pucd4qKji.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 75,
+              "favourites": 5152,
+              "popularity": 145049,
+              "startDate": {
+                "year": 2007,
+                "month": 4,
+                "day": 8
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 21290,
+              "title": {
+                "romaji": "Netoge no Yome wa Onnanoko ja Nai to Omotta?",
+                "english": "And you thought there is never a girl online?",
+                "native": "\u30CD\u30C8\u30B2\u306E\u5AC1\u306F\u5973\u306E\u5B50\u3058\u3083\u306A\u3044\u3068\u601D\u3063\u305F?"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21290-R6qYWnylwpbL.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21290-R6qYWnylwpbL.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 63,
+              "favourites": 1616,
+              "popularity": 144926,
+              "startDate": {
+                "year": 2016,
+                "month": 4,
+                "day": 7
+              },
+              "mediaListEntry": null
+            }
+          ]
+        }
+      }
+    }
+  }
+}

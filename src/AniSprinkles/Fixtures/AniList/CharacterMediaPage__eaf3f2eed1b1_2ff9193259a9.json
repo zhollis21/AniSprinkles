@@ -1,0 +1,142 @@
+﻿{
+  "operationName": "CharacterMediaPage",
+  "variables": {
+    "id": 61,
+    "page": 3,
+    "sort": [
+      "SCORE_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "2ff9193259a9",
+  "recordedAt": "2026-09-09T15:57:55.7162515+00:00",
+  "response": {
+    "data": {
+      "Character": {
+        "media": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 3
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 53251,
+                "title": {
+                  "romaji": "Chopperman: Yuke Yuke! Minna no Chopper-sensei",
+                  "english": null,
+                  "native": "\u30C1\u30E7\u30C3\u30D1\u30FC\u30DE\u30F3 \u3086\u3051\u3086\u3051!\u307F\u3093\u306A\u306E\u30C1\u30E7\u30C3\u30D1\u30FC\u5148\u751F"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/23251.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/23251.jpg"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "averageScore": 51,
+                "favourites": 2,
+                "popularity": 475,
+                "startDate": {
+                  "year": 2010,
+                  "month": 12,
+                  "day": 1
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "SUPPORTING",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 107256,
+                "title": {
+                  "romaji": "Kyutai Panic Adventure Returns!!!",
+                  "english": null,
+                  "native": "\u7403\u4F53\u30D1\u30CB\u30C3\u30AF\u30A2\u30C9\u30D9\u30F3\u30C1\u30E3\u30FC\u30EA\u30BF\u30FC\u30F3\u30BA!!!"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b107256-Pvgk6VnCmMZq.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b107256-Pvgk6VnCmMZq.png"
+                },
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 46,
+                "favourites": 6,
+                "popularity": 1068,
+                "startDate": {
+                  "year": 2004,
+                  "month": null,
+                  "day": null
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "SUPPORTING",
+              "voiceActors": [
+                {
+                  "id": 95130,
+                  "name": {
+                    "full": "Yuriko Yamaguchi",
+                    "native": "\u5C71\u53E3\u7531\u91CC\u5B50",
+                    "userPreferred": "Yuriko Yamaguchi"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95130-GoO41ve3YWQw.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95130-GoO41ve3YWQw.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 354
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 106492,
+                "title": {
+                  "romaji": "Kyutai Panic Adventure!",
+                  "english": null,
+                  "native": "\u7403\u4F53\u30D1\u30CB\u30C3\u30AF\u30A2\u30C9\u30D9\u30F3\u30C1\u30E3\u30FC!"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b106492-ciLSI5nTJsV7.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b106492-ciLSI5nTJsV7.png"
+                },
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 43,
+                "favourites": 8,
+                "popularity": 1135,
+                "startDate": {
+                  "year": 2003,
+                  "month": null,
+                  "day": null
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "SUPPORTING",
+              "voiceActors": [
+                {
+                  "id": 95130,
+                  "name": {
+                    "full": "Yuriko Yamaguchi",
+                    "native": "\u5C71\u53E3\u7531\u91CC\u5B50",
+                    "userPreferred": "Yuriko Yamaguchi"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95130-GoO41ve3YWQw.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95130-GoO41ve3YWQw.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 354
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}

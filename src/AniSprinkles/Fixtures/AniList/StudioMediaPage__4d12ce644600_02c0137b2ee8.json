@@ -1,0 +1,628 @@
+﻿{
+  "operationName": "StudioMediaPage",
+  "variables": {
+    "id": 245,
+    "page": 1,
+    "sort": [
+      "START_DATE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "02c0137b2ee8",
+  "recordedAt": "2026-09-06T05:31:37.7663752+00:00",
+  "response": {
+    "data": {
+      "Studio": {
+        "media": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "nodes": [
+            {
+              "id": 185260,
+              "title": {
+                "romaji": "PUI PUI Molcar the Movie MOLMAX (Zoku-hen)",
+                "english": null,
+                "native": "PUI PUI \u30E2\u30EB\u30AB\u30FC \u30B6\u30FB\u30E0\u30FC\u30D3\u30FC MOLMAX (\u7D9A\u7DE8)"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx185260-l48JlMk853qY.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx185260-l48JlMk853qY.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "NOT_YET_RELEASED",
+              "averageScore": null,
+              "favourites": 2,
+              "popularity": 245,
+              "startDate": {
+                "year": null,
+                "month": null,
+                "day": null
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 204362,
+              "title": {
+                "romaji": "Kaijuu 8-gou: Kanketsu-hen",
+                "english": null,
+                "native": "\u602A\u7363\uFF18\u53F7 \u5B8C\u7D50\u7DE8"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx204362-H89tolgEPFxh.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx204362-H89tolgEPFxh.jpg"
+              },
+              "format": null,
+              "type": "ANIME",
+              "status": "NOT_YET_RELEASED",
+              "averageScore": null,
+              "favourites": 96,
+              "popularity": 12176,
+              "startDate": {
+                "year": null,
+                "month": null,
+                "day": null
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 212618,
+              "title": {
+                "romaji": "Dorohedoro Season 3",
+                "english": null,
+                "native": "\u30C9\u30ED\u30D8\u30C9\u30ED Season 3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx212618-8qxOOnGuaVXV.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx212618-8qxOOnGuaVXV.jpg"
+              },
+              "format": null,
+              "type": "ANIME",
+              "status": "NOT_YET_RELEASED",
+              "averageScore": null,
+              "favourites": 62,
+              "popularity": 7652,
+              "startDate": {
+                "year": null,
+                "month": null,
+                "day": null
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 213579,
+              "title": {
+                "romaji": "Snowball Earth 2nd Season",
+                "english": null,
+                "native": "\u30B9\u30CE\u30A6\u30DC\u30FC\u30EB\u30A2\u30FC\u30B9 \u7B2C2\u671F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx213579-oFSlp20lxqIV.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213579-oFSlp20lxqIV.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "NOT_YET_RELEASED",
+              "averageScore": null,
+              "favourites": 14,
+              "popularity": 1489,
+              "startDate": {
+                "year": null,
+                "month": null,
+                "day": null
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 16007,
+              "title": {
+                "romaji": "Hyoutan Suzume",
+                "english": null,
+                "native": "\u3072\u3087\u3046\u305F\u3093\u3059\u305A\u3081"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b16007-I8ghWOBd2nq6.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b16007-I8ghWOBd2nq6.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 46,
+              "favourites": 1,
+              "popularity": 343,
+              "startDate": {
+                "year": 1959,
+                "month": 2,
+                "day": 10
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 5225,
+              "title": {
+                "romaji": "Lupin III: Pilot Film",
+                "english": null,
+                "native": "\u30EB\u30D1\u30F3\u4E09\u4E16 Pilot Film"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx5225-ZTPKnILQxGVJ.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx5225-ZTPKnILQxGVJ.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 61,
+              "favourites": 12,
+              "popularity": 4249,
+              "startDate": {
+                "year": 1969,
+                "month": null,
+                "day": null
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2793,
+              "title": {
+                "romaji": "Hi no Tori 2772: Ai no CosmoZone",
+                "english": null,
+                "native": "\u706B\u306E\u9CE5 \uFF12\uFF17\uFF17\uFF12 \u611B\u306E\u30B3\u30B9\u30E2\u30BE\u30FC\u30F3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx2793-lvRbV4rAVXxE.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx2793-lvRbV4rAVXxE.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 63,
+              "favourites": 20,
+              "popularity": 1658,
+              "startDate": {
+                "year": 1980,
+                "month": 3,
+                "day": 15
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 3836,
+              "title": {
+                "romaji": "Meiken Jolie",
+                "english": "Belle and Sebastian",
+                "native": "\u540D\u72AC\u30B8\u30E7\u30EA\u30A3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/3836.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/3836.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 66,
+              "favourites": 23,
+              "popularity": 1516,
+              "startDate": {
+                "year": 1981,
+                "month": 4,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 3946,
+              "title": {
+                "romaji": "Jarinko Chie",
+                "english": null,
+                "native": "\u3058\u3083\u308A\u30F3\u5B50\u30C1\u30A8"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx3946-VTArQe4ZAdrH.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx3946-VTArQe4ZAdrH.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 66,
+              "favourites": 28,
+              "popularity": 2338,
+              "startDate": {
+                "year": 1981,
+                "month": 4,
+                "day": 11
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 7876,
+              "title": {
+                "romaji": "Oz no Mahoutsukai",
+                "english": "The Wizard of Oz",
+                "native": "\u30AA\u30BA\u306E\u9B54\u6CD5\u4F7F\u3044"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b7876-2AgRxSWcVkUX.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b7876-2AgRxSWcVkUX.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 51,
+              "favourites": 0,
+              "popularity": 532,
+              "startDate": {
+                "year": 1982,
+                "month": null,
+                "day": null
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 179752,
+              "title": {
+                "romaji": "Two Down Full Base",
+                "english": null,
+                "native": "\u4E8C\u6B7B\u6E80\u5841"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b179752-SKEOkEzAMAbc.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b179752-SKEOkEzAMAbc.jpg"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": null,
+              "favourites": 0,
+              "popularity": 72,
+              "startDate": {
+                "year": 1982,
+                "month": 5,
+                "day": 5
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 3125,
+              "title": {
+                "romaji": "Tokimeki Tonight",
+                "english": null,
+                "native": "\u3068\u304D\u3081\u304D\u30C8\u30A5\u30CA\u30A4\u30C8"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx3125-WGdWNr44dg2E.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx3125-WGdWNr44dg2E.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 69,
+              "favourites": 91,
+              "popularity": 4645,
+              "startDate": {
+                "year": 1982,
+                "month": 10,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1873,
+              "title": {
+                "romaji": "Plawres Sanshirou",
+                "english": null,
+                "native": "\u30D7\u30E9\u30EC\u30B9\uFF13\u56DB\u90CE"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1873-W5uXjCe7czv9.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1873-W5uXjCe7czv9.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 68,
+              "favourites": 15,
+              "popularity": 1332,
+              "startDate": {
+                "year": 1983,
+                "month": 6,
+                "day": 5
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 9243,
+              "title": {
+                "romaji": "Nine 2: Koibito Sengen",
+                "english": null,
+                "native": "\u30CA\u30A4\u30F32 \u604B\u4EBA\u5BA3\u8A00"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/9243.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/9243.jpg"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 56,
+              "favourites": 4,
+              "popularity": 772,
+              "startDate": {
+                "year": 1983,
+                "month": 12,
+                "day": 18
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1921,
+              "title": {
+                "romaji": "Urusei Yatsura 2: Beautiful Dreamer",
+                "english": "Urusei Yatsura Movie 2: Beautiful Dreamer",
+                "native": "\u3046\u308B\u661F\u3084\u3064\u30892 \u30D3\u30E5\u30FC\u30C6\u30A3\u30D5\u30EB\u30FB\u30C9\u30EA\u30FC\u30DE\u30FC"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1921-YYKPVDPdHXbH.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1921-YYKPVDPdHXbH.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 426,
+              "popularity": 8733,
+              "startDate": {
+                "year": 1984,
+                "month": 2,
+                "day": 11
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 9244,
+              "title": {
+                "romaji": "Nine 3: Kanketsu-hen",
+                "english": null,
+                "native": "\u30CA\u30A4\u30F3 \u5B8C\u7D50\u7DE8"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/9244.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/9244.jpg"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 57,
+              "favourites": 4,
+              "popularity": 712,
+              "startDate": {
+                "year": 1984,
+                "month": 9,
+                "day": 5
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1065,
+              "title": {
+                "romaji": "Touch",
+                "english": null,
+                "native": "\u30BF\u30C3\u30C1"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1065-kwtHZDN5cAOG.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1065-kwtHZDN5cAOG.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 344,
+              "popularity": 12485,
+              "startDate": {
+                "year": 1985,
+                "month": 3,
+                "day": 24
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 10653,
+              "title": {
+                "romaji": "RUNNING Boy: Star Soldier no Himitsu",
+                "english": null,
+                "native": "RUNNING Boy \u30B9\u30BF\u30FC\u30BD\u30EB\u30B8\u30E3\u30FC\u306E\u79D8\u5BC6"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx10653-Quc4n4jbAkH6.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx10653-Quc4n4jbAkH6.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 59,
+              "favourites": 2,
+              "popularity": 280,
+              "startDate": {
+                "year": 1986,
+                "month": 7,
+                "day": 20
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 5053,
+              "title": {
+                "romaji": "Ai City",
+                "english": null,
+                "native": "\u30A2\u30A4\u30FB\u30B7\u30C6\u30A3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx5053-JPxCPjrrJsEa.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx5053-JPxCPjrrJsEa.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 55,
+              "favourites": 18,
+              "popularity": 2989,
+              "startDate": {
+                "year": 1986,
+                "month": 7,
+                "day": 26
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 729,
+              "title": {
+                "romaji": "Hiatari Ryoukou!",
+                "english": "Sunny Ryoko",
+                "native": "\u967D\u3042\u305F\u308A\u826F\u597D\uFF01"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx729-PPuU5qAjDF9F.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx729-PPuU5qAjDF9F.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 67,
+              "favourites": 27,
+              "popularity": 2378,
+              "startDate": {
+                "year": 1987,
+                "month": 3,
+                "day": 29
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 4058,
+              "title": {
+                "romaji": "Makyou Gaiden Le Deus",
+                "english": "Ladius",
+                "native": "\u9B54\u5883\u5916\u4F1D\u30EC\u30FB\u30C7\u30A3\u30A6\u30B9"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/4058.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/4058.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 52,
+              "favourites": 8,
+              "popularity": 1371,
+              "startDate": {
+                "year": 1987,
+                "month": 12,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1432,
+              "title": {
+                "romaji": "Lupin III: Fuuma Ichizoku no Inbou",
+                "english": "Lupin the 3rd: The Fuma Conspiracy",
+                "native": "\u30EB\u30D1\u30F3\u4E09\u4E16\u3000\u98A8\u9B54\u4E00\u65CF\u306E\u9670\u8B00"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx1432-gJjzQHpyDvor.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx1432-gJjzQHpyDvor.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 72,
+              "favourites": 50,
+              "popularity": 4833,
+              "startDate": {
+                "year": 1987,
+                "month": 12,
+                "day": 26
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 6067,
+              "title": {
+                "romaji": "Moeru! Onii-san",
+                "english": "The Burning Wild Man",
+                "native": "\u71C3\u3048\u308B! \u304A\u5144\u3055\u3093"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b6067-LKRnsiebGOck.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b6067-LKRnsiebGOck.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 60,
+              "favourites": 25,
+              "popularity": 970,
+              "startDate": {
+                "year": 1988,
+                "month": 3,
+                "day": 14
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 3035,
+              "title": {
+                "romaji": "Chouon Senshi Borgman",
+                "english": null,
+                "native": "\u8D85\u97F3\u6226\u58EB\u30DC\u30FC\u30B0\u30DE\u30F3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx3035-dy1WxQLLdWHa.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx3035-dy1WxQLLdWHa.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 61,
+              "favourites": 18,
+              "popularity": 1667,
+              "startDate": {
+                "year": 1988,
+                "month": 4,
+                "day": 13
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2906,
+              "title": {
+                "romaji": "Rokushin Gattai GodMars: Juunana-sai no Densetsu",
+                "english": "God Mars: Untold Legend",
+                "native": "\u516D\u795E\u5408\u4F53\u30B4\u30C3\u30C9\u30DE\u30FC\u30BA \u5341\u4E03\u6B73\u306E\u4F1D\u8AAC"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b2906-doFQX5ajhXNm.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b2906-doFQX5ajhXNm.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 56,
+              "favourites": 6,
+              "popularity": 589,
+              "startDate": {
+                "year": 1988,
+                "month": 6,
+                "day": 5
+              },
+              "mediaListEntry": null
+            }
+          ]
+        }
+      }
+    }
+  }
+}

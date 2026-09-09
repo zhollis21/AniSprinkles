@@ -1,0 +1,663 @@
+﻿{
+  "operationName": "StudioMediaPage",
+  "variables": {
+    "id": 245,
+    "page": 2,
+    "sort": [
+      "START_DATE_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "02c0137b2ee8",
+  "recordedAt": "2026-09-06T05:31:30.7366179+00:00",
+  "response": {
+    "data": {
+      "Studio": {
+        "media": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 2
+          },
+          "nodes": [
+            {
+              "id": 195322,
+              "title": {
+                "romaji": "Vigilante: Boku no Hero Academia ILLEGALS 2nd Season",
+                "english": "My Hero Academia: Vigilantes Season 2",
+                "native": "\u30F4\u30A3\u30B8\u30E9\u30F3\u30C6 -\u50D5\u306E\u30D2\u30FC\u30ED\u30FC\u30A2\u30AB\u30C7\u30DF\u30A2 ILLEGALS- \u7B2C2\u671F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx195322-hqBf19mBtM5K.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx195322-hqBf19mBtM5K.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 74,
+              "favourites": 498,
+              "popularity": 39513,
+              "startDate": {
+                "year": 2026,
+                "month": 1,
+                "day": 5
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 132776,
+              "title": {
+                "romaji": "Peleliu: Rakuen no Guernica",
+                "english": null,
+                "native": "\u30DA\u30EA\u30EA\u30E5\u30FC\uFF5E\u697D\u5712\u306E\u30B2\u30EB\u30CB\u30AB\uFF5E"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx132776-uZLvjGAa4qup.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx132776-uZLvjGAa4qup.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 54,
+              "favourites": 11,
+              "popularity": 2241,
+              "startDate": {
+                "year": 2025,
+                "month": 12,
+                "day": 5
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 182896,
+              "title": {
+                "romaji": "Boku no Hero Academia FINAL SEASON",
+                "english": "My Hero Academia FINAL SEASON",
+                "native": "\u50D5\u306E\u30D2\u30FC\u30ED\u30FC\u30A2\u30AB\u30C7\u30DF\u30A2 FINAL SEASON"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx182896-mvxTVHGdDB4q.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx182896-mvxTVHGdDB4q.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 87,
+              "favourites": 5019,
+              "popularity": 132268,
+              "startDate": {
+                "year": 2025,
+                "month": 10,
+                "day": 4
+              },
+              "mediaListEntry": {
+                "id": 593351172,
+                "status": "PLANNING",
+                "progress": 0,
+                "score": 0
+              }
+            },
+            {
+              "id": 177937,
+              "title": {
+                "romaji": "SPY\u00D7FAMILY Season 3",
+                "english": "SPY x FAMILY Season 3",
+                "native": "SPY\u00D7FAMILY Season 3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx177937-Tzgg6rAdhCoH.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx177937-Tzgg6rAdhCoH.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 82,
+              "favourites": 2517,
+              "popularity": 132016,
+              "startDate": {
+                "year": 2025,
+                "month": 10,
+                "day": 4
+              },
+              "mediaListEntry": {
+                "id": 593364728,
+                "status": "COMPLETED",
+                "progress": 13,
+                "score": 9
+              }
+            },
+            {
+              "id": 171627,
+              "title": {
+                "romaji": "Chainsaw Man: Reze-hen",
+                "english": "Chainsaw Man \u2013 The Movie: Reze Arc",
+                "native": "\u30C1\u30A7\u30F3\u30BD\u30FC\u30DE\u30F3 \u30EC\u30BC\u7BC7"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx171627-ZN9D7P46yHnw.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx171627-ZN9D7P46yHnw.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 90,
+              "favourites": 18077,
+              "popularity": 235398,
+              "startDate": {
+                "year": 2025,
+                "month": 9,
+                "day": 19
+              },
+              "mediaListEntry": {
+                "id": 593364127,
+                "status": "COMPLETED",
+                "progress": 1,
+                "score": 9
+              }
+            },
+            {
+              "id": 178754,
+              "title": {
+                "romaji": "Kaijuu 8-gou 2nd Season",
+                "english": "Kaiju No. 8 Season 2",
+                "native": "\u602A\u7363\uFF18\u53F7 \u7B2C\uFF12\u671F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx178754-Dgrub8xgC03M.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx178754-Dgrub8xgC03M.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 2777,
+              "popularity": 153675,
+              "startDate": {
+                "year": 2025,
+                "month": 7,
+                "day": 19
+              },
+              "mediaListEntry": {
+                "id": 593363969,
+                "status": "COMPLETED",
+                "progress": 11,
+                "score": 7
+              }
+            },
+            {
+              "id": 189117,
+              "title": {
+                "romaji": "Dr. STONE: SCIENCE FUTURE Part 2",
+                "english": "Dr. STONE SCIENCE FUTURE Cour 2",
+                "native": "Dr.STONE SCIENCE FUTURE 2\u30AF\u30FC\u30EB"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx189117-TLtCXYT7JPoL.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx189117-TLtCXYT7JPoL.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 85,
+              "favourites": 2013,
+              "popularity": 87098,
+              "startDate": {
+                "year": 2025,
+                "month": 7,
+                "day": 10
+              },
+              "mediaListEntry": {
+                "id": 593363994,
+                "status": "COMPLETED",
+                "progress": 12,
+                "score": 8
+              }
+            },
+            {
+              "id": 185755,
+              "title": {
+                "romaji": "Puniru wa Kawaii Slime 2nd Season",
+                "english": "Puniru is a Kawaii Slime Season 2",
+                "native": "\u3077\u306B\u308B\u306F\u304B\u308F\u3044\u3044\u30B9\u30E9\u30A4\u30E0 \u7B2C2\u671F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx185755-xMle6RCAPwA6.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx185755-xMle6RCAPwA6.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 70,
+              "favourites": 55,
+              "popularity": 2977,
+              "startDate": {
+                "year": 2025,
+                "month": 7,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 193883,
+              "title": {
+                "romaji": "Chibi Godzilla no Gyakushuu 3",
+                "english": "Chibi Godzilla Raids Again Season 3",
+                "native": "\u3061\u3073\u30B4\u30B8\u30E9\u306E\u9006\u8972(\u7B2C3\u671F)"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx193883-Im5tNHwtfAmz.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx193883-Im5tNHwtfAmz.jpg"
+              },
+              "format": "TV_SHORT",
+              "type": "ANIME",
+              "status": "RELEASING",
+              "averageScore": null,
+              "favourites": 6,
+              "popularity": 251,
+              "startDate": {
+                "year": 2025,
+                "month": 7,
+                "day": 2
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 206349,
+              "title": {
+                "romaji": "Maomao no Hitorigoto: USJ wo Chousa Seyo!",
+                "english": null,
+                "native": "\u732B\u732B\u306E\u3072\u3068\u308A\u3054\u3068 \uFF5EUSJ\u3092\u8ABF\u67FB\u305B\u3088\uFF01\uFF5E"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx206349-RzDGDKhWPiMN.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206349-RzDGDKhWPiMN.png"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 55,
+              "favourites": 6,
+              "popularity": 532,
+              "startDate": {
+                "year": 2025,
+                "month": 6,
+                "day": 19
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 185212,
+              "title": {
+                "romaji": "Meitantei Conan: Sekigan no Flashback",
+                "english": "Detective Conan: One-Eyed Flashback",
+                "native": "\u540D\u63A2\u5075\u30B3\u30CA\u30F3 \u96BB\u773C\u306E\u6B8B\u50CF"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx185212-ejyh60F81l8n.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx185212-ejyh60F81l8n.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 75,
+              "favourites": 61,
+              "popularity": 3590,
+              "startDate": {
+                "year": 2025,
+                "month": 4,
+                "day": 18
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 185736,
+              "title": {
+                "romaji": "Vigilante: Boku no Hero Academia ILLEGALS",
+                "english": "My Hero Academia: Vigilantes",
+                "native": "\u30F4\u30A3\u30B8\u30E9\u30F3\u30C6 -\u50D5\u306E\u30D2\u30FC\u30ED\u30FC\u30A2\u30AB\u30C7\u30DF\u30A2 ILLEGALS-"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx185736-Ci6AiGwjKKtp.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx185736-Ci6AiGwjKKtp.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 76,
+              "favourites": 1240,
+              "popularity": 73389,
+              "startDate": {
+                "year": 2025,
+                "month": 4,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 189513,
+              "title": {
+                "romaji": "Sousou no Frieren: \u25CF\u25CF no Mahou Part 2",
+                "english": null,
+                "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \uFF5E\u25CF\u25CF\u306E\u9B54\u6CD5\uFF5E 2\u30AF\u30FC\u30EB"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx189513-1R9Sryve0K53.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx189513-1R9Sryve0K53.png"
+              },
+              "format": "ONA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 71,
+              "favourites": 68,
+              "popularity": 4494,
+              "startDate": {
+                "year": 2025,
+                "month": 4,
+                "day": 2
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 179999,
+              "title": {
+                "romaji": "Kaijuu 8-gou: Hoshina no Kyuujitsu",
+                "english": "Kaiju No.8: Hoshina\u0027s Day Off",
+                "native": "\u602A\u73638\u53F7 \u4FDD\u79D1\u306E\u4F11\u65E5"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx179999-8FuSR5TlOCD1.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx179999-8FuSR5TlOCD1.jpg"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 69,
+              "favourites": 221,
+              "popularity": 23360,
+              "startDate": {
+                "year": 2025,
+                "month": 3,
+                "day": 28
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 179998,
+              "title": {
+                "romaji": "Kaijuu 8-gou Movie",
+                "english": "Kaiju No. 8: Mission Recon",
+                "native": "\u602A\u73638\u53F7 \u7B2C1\u671F\u7DCF\u96C6\u7DE8"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx179998-2QNb7f6oXGUI.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx179998-2QNb7f6oXGUI.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 73,
+              "favourites": 294,
+              "popularity": 26038,
+              "startDate": {
+                "year": 2025,
+                "month": 3,
+                "day": 28
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 186148,
+              "title": {
+                "romaji": "Maomao no Hitorigoto 2nd Season",
+                "english": null,
+                "native": "\u732B\u732B\u306E\u3072\u3068\u308A\u3054\u3068 \u7B2C2\u671F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b186148-Tx8InzoohmXs.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b186148-Tx8InzoohmXs.png"
+              },
+              "format": "ONA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 67,
+              "favourites": 38,
+              "popularity": 2485,
+              "startDate": {
+                "year": 2025,
+                "month": 1,
+                "day": 13
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 176301,
+              "title": {
+                "romaji": "Kusuriya no Hitorigoto 2nd Season",
+                "english": "The Apothecary Diaries Season 2",
+                "native": "\u85AC\u5C4B\u306E\u3072\u3068\u308A\u3054\u3068 \u7B2C2\u671F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx176301-TIGmldLffQGX.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx176301-TIGmldLffQGX.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 88,
+              "favourites": 10516,
+              "popularity": 202420,
+              "startDate": {
+                "year": 2025,
+                "month": 1,
+                "day": 10
+              },
+              "mediaListEntry": {
+                "id": 593363981,
+                "status": "COMPLETED",
+                "progress": 24,
+                "score": 10
+              }
+            },
+            {
+              "id": 172019,
+              "title": {
+                "romaji": "Dr. STONE: SCIENCE FUTURE",
+                "english": "Dr. STONE SCIENCE FUTURE",
+                "native": "Dr.STONE SCIENCE FUTURE"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx172019-3cfZbrYBmV23.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx172019-3cfZbrYBmV23.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 82,
+              "favourites": 2499,
+              "popularity": 115372,
+              "startDate": {
+                "year": 2025,
+                "month": 1,
+                "day": 9
+              },
+              "mediaListEntry": {
+                "id": 593363985,
+                "status": "COMPLETED",
+                "progress": 12,
+                "score": 8
+              }
+            },
+            {
+              "id": 186300,
+              "title": {
+                "romaji": "minute! kaiju no. 8",
+                "english": "minute! Kaiju No. 8",
+                "native": "\u30DF\u30CB\u3063\u3068\uFF01\u304B\u3044\u3058\u3085\u3046\uFF18\u53F7"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b186300-py8AeW9MgfDS.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b186300-py8AeW9MgfDS.jpg"
+              },
+              "format": "ONA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 58,
+              "favourites": 14,
+              "popularity": 1165,
+              "startDate": {
+                "year": 2024,
+                "month": 12,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 136880,
+              "title": {
+                "romaji": "BEASTARS FINAL SEASON Part 1",
+                "english": "BEASTARS Final Season Part 1",
+                "native": "BEASTARS FINAL SEASON Part 1"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx136880-2sAQF6OtPE5M.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx136880-2sAQF6OtPE5M.png"
+              },
+              "format": "ONA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 590,
+              "popularity": 42018,
+              "startDate": {
+                "year": 2024,
+                "month": 12,
+                "day": 5
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 173884,
+              "title": {
+                "romaji": "PUI PUI Molcar the Movie MOLMAX",
+                "english": null,
+                "native": "PUI PUI \u30E2\u30EB\u30AB\u30FC \u30B6\u30FB\u30E0\u30FC\u30D3\u30FC MOLMAX"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx173884-08i5dKubiv1A.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx173884-08i5dKubiv1A.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 61,
+              "favourites": 13,
+              "popularity": 1175,
+              "startDate": {
+                "year": 2024,
+                "month": 11,
+                "day": 29
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 178729,
+              "title": {
+                "romaji": "Ooi! Tonbo 2nd Season",
+                "english": "Tonbo! Season 2",
+                "native": "\u30AA\u30FC\u30A4! \u3068\u3093\u307C \u7B2C2\u671F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx178729-OD1xRCb2Z6NK.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx178729-OD1xRCb2Z6NK.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 70,
+              "favourites": 41,
+              "popularity": 2567,
+              "startDate": {
+                "year": 2024,
+                "month": 10,
+                "day": 5
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 171109,
+              "title": {
+                "romaji": "Fureru.",
+                "english": "Fureru",
+                "native": "\u3075\u308C\u308B\u3002"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx171109-L8VMss7mdCKU.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx171109-L8VMss7mdCKU.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 64,
+              "favourites": 39,
+              "popularity": 7100,
+              "startDate": {
+                "year": 2024,
+                "month": 10,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 170942,
+              "title": {
+                "romaji": "Ao no Hako",
+                "english": "Blue Box",
+                "native": "\u30A2\u30AA\u306E\u30CF\u30B3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx170942-KKcLfQzV57nG.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx170942-KKcLfQzV57nG.jpg"
+              },
+              "format": "ONA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 81,
+              "favourites": 5657,
+              "popularity": 147536,
+              "startDate": {
+                "year": 2024,
+                "month": 10,
+                "day": 3
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 158166,
+              "title": {
+                "romaji": "Kimi no Iro",
+                "english": "The Colors Within",
+                "native": "\u304D\u307F\u306E\u8272"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx158166-TZxLtPvXEVUQ.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx158166-TZxLtPvXEVUQ.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 484,
+              "popularity": 27205,
+              "startDate": {
+                "year": 2024,
+                "month": 8,
+                "day": 30
+              },
+              "mediaListEntry": null
+            }
+          ]
+        }
+      }
+    }
+  }
+}

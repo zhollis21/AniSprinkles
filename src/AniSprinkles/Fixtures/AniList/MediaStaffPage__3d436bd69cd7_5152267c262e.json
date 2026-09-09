@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 30013,
+    "page": 1,
+    "sort": [
+      "ROLE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:26:56.3232763+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 98945,
+                "name": {
+                  "full": "Mikio Itou",
+                  "native": "\u3044\u3068\u3046\u307F\u304D\u304A",
+                  "userPreferred": "Mikio Itou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n98945-Qqi4Hdwhob7u.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Assistant"
+            },
+            {
+              "node": {
+                "id": 97906,
+                "name": {
+                  "full": "Tatsuma Eijiri",
+                  "native": "\u6C5F\u5C3B\u7ACB\u771F",
+                  "userPreferred": "Tatsuma Eijiri"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n97906-bcdu4AHLwb9R.png"
+                },
+                "favourites": 0
+              },
+              "role": "Assistant (former)"
+            },
+            {
+              "node": {
+                "id": 98535,
+                "name": {
+                  "full": "Shinya Suzuki",
+                  "native": "\u9234\u6728\u4FE1\u4E5F",
+                  "userPreferred": "Shinya Suzuki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n98535-5GVAxMRoAqXe.png"
+                },
+                "favourites": 1
+              },
+              "role": "Assistant (Former)"
+            },
+            {
+              "node": {
+                "id": 103532,
+                "name": {
+                  "full": "Katsunori Matsui",
+                  "native": "\u677E\u4E95\u52DD\u6CD5",
+                  "userPreferred": "Katsunori Matsui"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n103532-j6fEB34VV6hA.png"
+                },
+                "favourites": 8
+              },
+              "role": "Assistant (former)"
+            },
+            {
+              "node": {
+                "id": 107002,
+                "name": {
+                  "full": "Yuusaku Shibata",
+                  "native": "\u829D\u7530\u512A\u4F5C  ",
+                  "userPreferred": "Yuusaku Shibata"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n107002-freRtXTd6Net.jpg"
+                },
+                "favourites": 38
+              },
+              "role": "Assistant (former)"
+            },
+            {
+              "node": {
+                "id": 108255,
+                "name": {
+                  "full": "Haruto Ikezawa",
+                  "native": "\u6C60\u6CA2\u6625\u4EBA",
+                  "userPreferred": "Haruto Ikezawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 4
+              },
+              "role": "Assistant (Former)"
+            },
+            {
+              "node": {
+                "id": 120849,
+                "name": {
+                  "full": "Ryou Ishiyama",
+                  "native": "\u77F3\u5C71\u8AD2",
+                  "userPreferred": "Ryou Ishiyama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n120849-JKYRcOm4Xi98.jpg"
+                },
+                "favourites": 15
+              },
+              "role": "Assistant (Former)"
+            },
+            {
+              "node": {
+                "id": 121139,
+                "name": {
+                  "full": "Tsunehiro Date",
+                  "native": "\u4F0A\u9054\u6052\u5927",
+                  "userPreferred": "Tsunehiro Date"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n121139-rpC97N0TJ3nA.png"
+                },
+                "favourites": 26
+              },
+              "role": "Assistant (former)"
+            },
+            {
+              "node": {
+                "id": 121264,
+                "name": {
+                  "full": "Takamasa Moue",
+                  "native": "\u99AC\u4E0A\u9DF9\u5C06",
+                  "userPreferred": "Takamasa Moue"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n121264-cacjsqWN1rvQ.png"
+                },
+                "favourites": 22
+              },
+              "role": "Assistant (former)"
+            },
+            {
+              "node": {
+                "id": 124016,
+                "name": {
+                  "full": "Masaoki Shindou",
+                  "native": "\u771E\u85E4\u96C5\u8208",
+                  "userPreferred": "Masaoki Shindou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n124016-uSBcOirNIkZI.jpg"
+                },
+                "favourites": 144
+              },
+              "role": "Assistant (Former)"
+            },
+            {
+              "node": {
+                "id": 126173,
+                "name": {
+                  "full": "Ei Andou",
+                  "native": "\u5B89\u85E4\u82F1",
+                  "userPreferred": "Ei Andou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Assistant (former)"
+            },
+            {
+              "node": {
+                "id": 137228,
+                "name": {
+                  "full": "Yoshikazu Amami",
+                  "native": "\u5929\u671B\u826F\u4E00",
+                  "userPreferred": "Yoshikazu Amami"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n137228-lZJ58jxwY2fp.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Assistant (former)"
+            },
+            {
+              "node": {
+                "id": 141200,
+                "name": {
+                  "full": "Daiki Ihara",
+                  "native": "\u4F0A\u539F\u5927\u8CB4",
+                  "userPreferred": "Daiki Ihara"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n141200-i0Hpe2SHsepa.jpg"
+                },
+                "favourites": 5
+              },
+              "role": "Assistant (former)"
+            },
+            {
+              "node": {
+                "id": 256452,
+                "name": {
+                  "full": "Shouichi Usui",
+                  "native": "\u81FC\u4E95\u5F70\u4E00",
+                  "userPreferred": "Shouichi Usui"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n256452-arEFvbwX7xhu.png"
+                },
+                "favourites": 11
+              },
+              "role": "Assistant (Former)"
+            },
+            {
+              "node": {
+                "id": 280653,
+                "name": {
+                  "full": "Takanori Asada",
+                  "native": "\u6D45\u7530\u8CB4\u5178",
+                  "userPreferred": "Takanori Asada"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n280653-COi1hMliL0UA.jpg"
+                },
+                "favourites": 3
+              },
+              "role": "Editing (1996-2001)"
+            },
+            {
+              "node": {
+                "id": 314722,
+                "name": {
+                  "full": "Takahiro Habuta",
+                  "native": "\u571F\u751F\u7530\u9AD8\u88D5",
+                  "userPreferred": "Takahiro Habuta"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n314722-Lc95dL9sybGQ.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Editing (2001-2005)"
+            },
+            {
+              "node": {
+                "id": 255496,
+                "name": {
+                  "full": "Daisuke Watanabe",
+                  "native": "\u6E21\u8FBA\u5927\u8F14",
+                  "userPreferred": "Daisuke Watanabe"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Editing (2005-2006)"
+            },
+            {
+              "node": {
+                "id": 203388,
+                "name": {
+                  "full": "Naoki Kawashima",
+                  "native": "\u5DDD\u5CF6\u76F4\u6A39",
+                  "userPreferred": "Naoki Kawashima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Editing (2006-2007)"
+            },
+            {
+              "node": {
+                "id": 168654,
+                "name": {
+                  "full": "Kouhei Oonishi",
+                  "native": "\u5927\u897F\u6052\u5E73",
+                  "userPreferred": "Kouhei Oonishi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n168654-G8GcxndW0FeE.png"
+                },
+                "favourites": 0
+              },
+              "role": "Editing (2007-2008)"
+            },
+            {
+              "node": {
+                "id": 255069,
+                "name": {
+                  "full": "Jean-Baptiste Akira Hattori",
+                  "native": "\u670D\u90E8\u30B8\u30E3\u30F3=\u30D0\u30C6\u30A3\u30B9\u30C8\u54F2",
+                  "userPreferred": "Jean-Baptiste Akira Hattori"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n255069-Mxodh34RcJP3.png"
+                },
+                "favourites": 1
+              },
+              "role": "Editing (2008-2010)"
+            },
+            {
+              "node": {
+                "id": 338141,
+                "name": {
+                  "full": "Takeru Isaka",
+                  "native": "\u4E95\u5742\u5C0A",
+                  "userPreferred": "Takeru Isaka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n338141-LVFssopupFZU.png"
+                },
+                "favourites": 0
+              },
+              "role": "Editing (2011-2014)"
+            },
+            {
+              "node": {
+                "id": 203390,
+                "name": {
+                  "full": "Taku Sugita",
+                  "native": "\u6749\u7530\u5353",
+                  "userPreferred": "Taku Sugita"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "Editing (2014-2017)"
+            },
+            {
+              "node": {
+                "id": 314723,
+                "name": {
+                  "full": "Takuma Naitou",
+                  "native": "\u5185\u85E4\u62D3\u771F",
+                  "userPreferred": "Takuma Naitou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n314723-mplaWDbkGs5b.png"
+                },
+                "favourites": 0
+              },
+              "role": "Editing (2017-2019)"
+            },
+            {
+              "node": {
+                "id": 338142,
+                "name": {
+                  "full": "Ken Takano",
+                  "native": "\u9AD8\u91CE\u5065",
+                  "userPreferred": "Ken Takano"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n338142-oqKrQ2jPyT7p.png"
+                },
+                "favourites": 0
+              },
+              "role": "Editing (2019-2020)"
+            },
+            {
+              "node": {
+                "id": 239368,
+                "name": {
+                  "full": "Yuuji Iwasaki",
+                  "native": "\u5CA9\u5D0E\u6E67\u6CBB",
+                  "userPreferred": "Yuuji Iwasaki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Editing (2020-2023)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

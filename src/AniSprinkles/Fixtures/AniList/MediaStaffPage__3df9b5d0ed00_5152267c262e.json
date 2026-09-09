@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 180367,
+    "page": 1,
+    "sort": [
+      "RELEVANCE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:20:29.2077456+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 97994,
+                "name": {
+                  "full": "Kenta Shinohara",
+                  "native": "\u7BE0\u539F\u5065\u592A",
+                  "userPreferred": "Kenta Shinohara"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n97994-ltGfdqWx7EWt.jpg"
+                },
+                "favourites": 173
+              },
+              "role": "Original Creator"
+            },
+            {
+              "node": {
+                "id": 120505,
+                "name": {
+                  "full": "Hiroshi Ikehata",
+                  "native": "\u6C60\u7560\u535A\u53F2",
+                  "userPreferred": "Hiroshi Ikehata"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n120505-t6ApcMz7tvOE.jpg"
+                },
+                "favourites": 24
+              },
+              "role": "Director"
+            },
+            {
+              "node": {
+                "id": 134251,
+                "name": {
+                  "full": "Masao  Kawase",
+                  "native": "\u5DDD\u702C\u307E\u3055\u304A",
+                  "userPreferred": "Masao  Kawase"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n134251-Wces6KpeZeQj.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Assistant Director"
+            },
+            {
+              "node": {
+                "id": 104540,
+                "name": {
+                  "full": "Hitomi Mieno",
+                  "native": "\u4E09\u91CD\u91CE\u77B3",
+                  "userPreferred": "Hitomi Mieno"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n104540-JMpYb6fdq2kT.png"
+                },
+                "favourites": 52
+              },
+              "role": "Series Composition"
+            },
+            {
+              "node": {
+                "id": 105678,
+                "name": {
+                  "full": "Haruko Iizuka",
+                  "native": "\u98EF\u585A\u6674\u5B50",
+                  "userPreferred": "Haruko Iizuka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n105678-FG6UXFs4o2CF.png"
+                },
+                "favourites": 56
+              },
+              "role": "Character Design"
+            },
+            {
+              "node": {
+                "id": 300166,
+                "name": {
+                  "full": "Yuki Sawa",
+                  "native": "\u6CA2\u53CB\u8CB4",
+                  "userPreferred": "Yuki Sawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Sub Character Design"
+            },
+            {
+              "node": {
+                "id": 341958,
+                "name": {
+                  "full": "Kaishuu Sugimura",
+                  "native": "\u6749\u6751\u4EF7\u79CB",
+                  "userPreferred": "Kaishuu Sugimura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n341958-p6MLR0vrlMRB.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Sub Character Design"
+            },
+            {
+              "node": {
+                "id": 260239,
+                "name": {
+                  "full": "Yuiha Oota",
+                  "native": "\u592A\u7530\u3086\u3044\u306F",
+                  "userPreferred": "Yuiha Oota"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Color Design"
+            },
+            {
+              "node": {
+                "id": 164152,
+                "name": {
+                  "full": "Hisashi Yonezawa",
+                  "native": "\u7C73\u6FA4\u5BFF",
+                  "userPreferred": "Hisashi Yonezawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Director of Photography"
+            },
+            {
+              "node": {
+                "id": 119830,
+                "name": {
+                  "full": "Mutsumi Takemiya",
+                  "native": "\u6B66\u5BAE\u3080\u3064\u307F",
+                  "userPreferred": "Mutsumi Takemiya"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Editing"
+            },
+            {
+              "node": {
+                "id": 121856,
+                "name": {
+                  "full": "Fumiyuki Gou",
+                  "native": "\u90F7\u6587\u88D5\u8CB4",
+                  "userPreferred": "Fumiyuki Gou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n121856-8edNVlALSYNy.jpg"
+                },
+                "favourites": 6
+              },
+              "role": "Sound Director"
+            },
+            {
+              "node": {
+                "id": 105082,
+                "name": {
+                  "full": "Yukari Hashimoto",
+                  "native": "\u6A4B\u672C\u7531\u9999\u5229",
+                  "userPreferred": "Yukari Hashimoto"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n105082-eV6eweMiR1FM.png"
+                },
+                "favourites": 203
+              },
+              "role": "Music"
+            },
+            {
+              "node": {
+                "id": 194287,
+                "name": {
+                  "full": "YOASOBI",
+                  "native": null,
+                  "userPreferred": "YOASOBI"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n194287-qQjdXaBhaIOA.png"
+                },
+                "favourites": 3575
+              },
+              "role": "Theme Song Performance (OP1)"
+            },
+            {
+              "node": {
+                "id": 199392,
+                "name": {
+                  "full": "Lilas Ikuta",
+                  "native": "\u5E7E\u7530\u308A\u3089",
+                  "userPreferred": "Lilas Ikuta"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n199392-g0Apmeiiraz6.png"
+                },
+                "favourites": 505
+              },
+              "role": "Theme Song Vocal Performance (OP1)"
+            },
+            {
+              "node": {
+                "id": 198948,
+                "name": {
+                  "full": "Ayase",
+                  "native": "\u3042\u3084\u305B",
+                  "userPreferred": "Ayase"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n198948-sldqbvJvz0i1.png"
+                },
+                "favourites": 200
+              },
+              "role": "Theme Song Composition (OP1)"
+            },
+            {
+              "node": {
+                "id": 198948,
+                "name": {
+                  "full": "Ayase",
+                  "native": "\u3042\u3084\u305B",
+                  "userPreferred": "Ayase"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n198948-sldqbvJvz0i1.png"
+                },
+                "favourites": 200
+              },
+              "role": "Theme Song Arrangement (OP1)"
+            },
+            {
+              "node": {
+                "id": 198948,
+                "name": {
+                  "full": "Ayase",
+                  "native": "\u3042\u3084\u305B",
+                  "userPreferred": "Ayase"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n198948-sldqbvJvz0i1.png"
+                },
+                "favourites": 200
+              },
+              "role": "Theme Song Lyrics (OP1)"
+            },
+            {
+              "node": {
+                "id": 358176,
+                "name": {
+                  "full": "Aooo",
+                  "native": null,
+                  "userPreferred": "Aooo"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n358176-uXp1J4bOTVEj.jpg"
+                },
+                "favourites": 7
+              },
+              "role": "Theme Song Performance (ED1)"
+            },
+            {
+              "node": {
+                "id": 192559,
+                "name": {
+                  "full": "Surii",
+                  "native": "\u3059\u308A\u3043",
+                  "userPreferred": "Surii"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n192559-0fvZEqZGxrUa.png"
+                },
+                "favourites": 25
+              },
+              "role": "Theme Song Composition (ED1)"
+            },
+            {
+              "node": {
+                "id": 192559,
+                "name": {
+                  "full": "Surii",
+                  "native": "\u3059\u308A\u3043",
+                  "userPreferred": "Surii"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n192559-0fvZEqZGxrUa.png"
+                },
+                "favourites": 25
+              },
+              "role": "Theme Song Lyrics (ED1)"
+            },
+            {
+              "node": {
+                "id": 327095,
+                "name": {
+                  "full": "Hashimero",
+                  "native": "\u306F\u3057\u30E1\u30ED",
+                  "userPreferred": "Hashimero"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n327095-6mgwM9j8WN4f.png"
+                },
+                "favourites": 8
+              },
+              "role": "Theme Song Performance (OP2)"
+            },
+            {
+              "node": {
+                "id": 327095,
+                "name": {
+                  "full": "Hashimero",
+                  "native": "\u306F\u3057\u30E1\u30ED",
+                  "userPreferred": "Hashimero"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n327095-6mgwM9j8WN4f.png"
+                },
+                "favourites": 8
+              },
+              "role": "Theme Song Composition (OP2)"
+            },
+            {
+              "node": {
+                "id": 368187,
+                "name": {
+                  "full": "HYNOME",
+                  "native": "\u30CF\u30A4\u30CE\u30DF",
+                  "userPreferred": "HYNOME"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n368187-K7ZGl5Xl2KHT.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Theme Song Arrangement (OP2)"
+            },
+            {
+              "node": {
+                "id": 327095,
+                "name": {
+                  "full": "Hashimero",
+                  "native": "\u306F\u3057\u30E1\u30ED",
+                  "userPreferred": "Hashimero"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n327095-6mgwM9j8WN4f.png"
+                },
+                "favourites": 8
+              },
+              "role": "Theme Song Lyrics (OP2)"
+            },
+            {
+              "node": {
+                "id": 359165,
+                "name": {
+                  "full": "yutori",
+                  "native": null,
+                  "userPreferred": "yutori"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n359165-i1FYJh49rYHO.png"
+                },
+                "favourites": 9
+              },
+              "role": "Theme Song Performance (ED2)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

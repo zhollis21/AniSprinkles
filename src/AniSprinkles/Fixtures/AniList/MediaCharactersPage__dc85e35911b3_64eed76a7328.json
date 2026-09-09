@@ -1,0 +1,44 @@
+﻿{
+  "operationName": "MediaCharactersPage",
+  "variables": {
+    "id": 209939,
+    "page": 1,
+    "sort": [
+      "RELEVANCE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "64eed76a7328",
+  "recordedAt": "2026-09-06T05:19:27.7777671+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "characters": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 300778,
+                "name": {
+                  "full": "Macht",
+                  "native": "\u30DE\u30CF\u30C8",
+                  "userPreferred": "Macht"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b300778-kvoUHowLjexj.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b300778-kvoUHowLjexj.png"
+                },
+                "favourites": 283
+              },
+              "role": "SUPPORTING"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

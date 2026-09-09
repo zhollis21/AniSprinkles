@@ -1,0 +1,92 @@
+﻿{
+  "operationName": "MediaCharactersPage",
+  "variables": {
+    "id": 85476,
+    "page": 1,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "64eed76a7328",
+  "recordedAt": "2026-09-06T05:27:24.6584561+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "characters": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 45627,
+                "name": {
+                  "full": "Levi",
+                  "native": "\u30EA\u30F4\u30A1\u30A4",
+                  "userPreferred": "Levi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b45627-CR68RyZmddGG.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b45627-CR68RyZmddGG.png"
+                },
+                "favourites": 43142
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 46496,
+                "name": {
+                  "full": "Erwin Smith",
+                  "native": "\u30A8\u30EB\u30F4\u30A3\u30F3\u30FB\u30B9\u30DF\u30B9",
+                  "userPreferred": "Erwin Smith"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b46496-Mu86MENd5wNB.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b46496-Mu86MENd5wNB.png"
+                },
+                "favourites": 13844
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 87929,
+                "name": {
+                  "full": "Isabel Magnolia",
+                  "native": "\u30A4\u30B6\u30D9\u30EB\u30FB\u30DE\u30B0\u30CE\u30EA\u30A2",
+                  "userPreferred": "Isabel Magnolia"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/n87929-FobmgcjvYLJI.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/n87929-FobmgcjvYLJI.jpg"
+                },
+                "favourites": 188
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 87928,
+                "name": {
+                  "full": "Furlan Church",
+                  "native": "\u30D5\u30A1\u30FC\u30E9\u30F3\u30FB\u30C1\u30E3\u30FC\u30C1",
+                  "userPreferred": "Furlan Church"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/n87928-Dfg1T9uJBZ4s.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/n87928-Dfg1T9uJBZ4s.jpg"
+                },
+                "favourites": 120
+              },
+              "role": "MAIN"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,429 @@
+﻿{
+  "operationName": "MediaCharactersPage",
+  "variables": {
+    "id": 2993,
+    "page": 1,
+    "sort": [
+      "ROLE",
+      "RELEVANCE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "64eed76a7328",
+  "recordedAt": "2026-09-06T05:23:11.9728941+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "characters": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 3861,
+                "name": {
+                  "full": "Moka Akashiya",
+                  "native": "\u8D64\u591C\u840C\u9999",
+                  "userPreferred": "Moka Akashiya"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b3861-XaVBmX2LroR1.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b3861-XaVBmX2LroR1.png"
+                },
+                "favourites": 1338
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 3862,
+                "name": {
+                  "full": "Tsukune Aono",
+                  "native": "\u9752\u91CE\u6708\u97F3",
+                  "userPreferred": "Tsukune Aono"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b3862-9hIc2S9Si7NW.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b3862-9hIc2S9Si7NW.png"
+                },
+                "favourites": 257
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 3863,
+                "name": {
+                  "full": "Kurumu Kurono",
+                  "native": "\u9ED2\u4E43\u80E1\u5922",
+                  "userPreferred": "Kurumu Kurono"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b3863-rh1xmY0wYLg9.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b3863-rh1xmY0wYLg9.png"
+                },
+                "favourites": 439
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 3864,
+                "name": {
+                  "full": "Yukari Sendou",
+                  "native": "\u4ED9\u7AE5\u7D2B",
+                  "userPreferred": "Yukari Sendou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b3864-TD9TDMym6tKt.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b3864-TD9TDMym6tKt.png"
+                },
+                "favourites": 152
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 8129,
+                "name": {
+                  "full": "Mizore Shirayuki",
+                  "native": "\u767D\u96EA\u307F\u305E\u308C",
+                  "userPreferred": "Mizore Shirayuki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/8129.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/8129.jpg"
+                },
+                "favourites": 846
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 3865,
+                "name": {
+                  "full": "Ginei Morioka",
+                  "native": "\u68EE\u4E18\u9280\u5F71",
+                  "userPreferred": "Ginei Morioka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b3865-QT1C9JzEcXlD.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b3865-QT1C9JzEcXlD.png"
+                },
+                "favourites": 33
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 3866,
+                "name": {
+                  "full": "Shizuka Nekonome",
+                  "native": "\u732B\u76EE\u9759",
+                  "userPreferred": "Shizuka Nekonome"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b3866-O6ZE2YUUnozR.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b3866-O6ZE2YUUnozR.png"
+                },
+                "favourites": 71
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 8554,
+                "name": {
+                  "full": "Nazo Koumori",
+                  "native": "\u8B0E\u3053\u3046\u3082\u308A",
+                  "userPreferred": "Nazo Koumori"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/8554.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/8554.jpg"
+                },
+                "favourites": 34
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 8685,
+                "name": {
+                  "full": "Untenshu",
+                  "native": "\u904B\u8EE2\u624B",
+                  "userPreferred": "Untenshu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b8685-zBoz6xrq7XNT.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b8685-zBoz6xrq7XNT.png"
+                },
+                "favourites": 29
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 8938,
+                "name": {
+                  "full": "Ruby Toujo",
+                  "native": "\u6A59\u6761\u7460\u5983",
+                  "userPreferred": "Ruby Toujo"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b8938-3zTRM4XnA9hb.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b8938-3zTRM4XnA9hb.png"
+                },
+                "favourites": 156
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 9142,
+                "name": {
+                  "full": "Tenmei Mikogami",
+                  "native": "\u5FA1\u5B50\u795E\u5178\u660E",
+                  "userPreferred": "Tenmei Mikogami"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b9142-pDHqKAnhfXP0.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b9142-pDHqKAnhfXP0.png"
+                },
+                "favourites": 9
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 10508,
+                "name": {
+                  "full": "Ririko Kagome",
+                  "native": "\u7C60\u76EE\u674E\u3005\u5B50",
+                  "userPreferred": "Ririko Kagome"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/10508.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/10508.jpg"
+                },
+                "favourites": 37
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 11850,
+                "name": {
+                  "full": "Kuyou",
+                  "native": "\u4E5D\u66DC",
+                  "userPreferred": "Kuyou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/11850.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/11850.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 18158,
+                "name": {
+                  "full": "Okuto Kotsubo",
+                  "native": "\u5C0F\u58F7\u5965\u4EBA",
+                  "userPreferred": "Okuto Kotsubo"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/18158.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/18158.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 18224,
+                "name": {
+                  "full": "Deshiko Deshi",
+                  "native": "\u3067\u3057\u3067\u3057\u5B50",
+                  "userPreferred": "Deshiko Deshi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/18224.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/18224.jpg"
+                },
+                "favourites": 8
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 18413,
+                "name": {
+                  "full": "Komiya Saizou",
+                  "native": "\u5C0F\u5BAE \u7815\u8535",
+                  "userPreferred": "Komiya Saizou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/18413.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/18413.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 18414,
+                "name": {
+                  "full": "Keito",
+                  "native": "\u86CD\u7CF8",
+                  "userPreferred": "Keito"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/18414.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/18414.jpg"
+                },
+                "favourites": 6
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 27489,
+                "name": {
+                  "full": "Tonko Oniyama",
+                  "native": "\u9B3C\u5C71 \u3068\u3093\u5B50",
+                  "userPreferred": "Tonko Oniyama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/27489.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/27489.jpg"
+                },
+                "favourites": 6
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 33674,
+                "name": {
+                  "full": "Tamao Ichinose",
+                  "native": "\u4E00\u30CE\u702C\u73E0\u9B5A",
+                  "userPreferred": "Tamao Ichinose"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/33674.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/33674.jpg"
+                },
+                "favourites": 19
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 52259,
+                "name": {
+                  "full": "Shijimi Chouno",
+                  "native": "\u8776\u91CE \u3057\u3058\u307F",
+                  "userPreferred": "Shijimi Chouno"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/52259.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/52259.jpg"
+                },
+                "favourites": 7
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 52261,
+                "name": {
+                  "full": "Sumae Mizuno",
+                  "native": "\u6C34\u91CE \u3059\u307E\u3048",
+                  "userPreferred": "Sumae Mizuno"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/52261.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/52261.jpg"
+                },
+                "favourites": 5
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 81733,
+                "name": {
+                  "full": "Tadashi Wanibuchi",
+                  "native": "\u9C10\u6DF5 \u6B63",
+                  "userPreferred": "Tadashi Wanibuchi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/81733.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/81733.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 84027,
+                "name": {
+                  "full": "Oyakata",
+                  "native": "\u304A\u9928\u69D8",
+                  "userPreferred": "Oyakata"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/84027.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/84027.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 17387,
+                "name": {
+                  "full": "Kasumi Aono",
+                  "native": "\u9752\u91CE\u304B\u3059\u307F",
+                  "userPreferred": "Kasumi Aono"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/17387.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/17387.jpg"
+                },
+                "favourites": 13
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 84035,
+                "name": {
+                  "full": "Koji Aono",
+                  "native": "\u9752\u91CE\u5149\u53F8",
+                  "userPreferred": "Koji Aono"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b84035-HNoNYewAwgKS.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b84035-HNoNYewAwgKS.png"
+                },
+                "favourites": 1
+              },
+              "role": "SUPPORTING"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

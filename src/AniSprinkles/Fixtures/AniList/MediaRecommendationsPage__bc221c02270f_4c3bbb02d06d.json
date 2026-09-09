@@ -1,0 +1,47 @@
+﻿{
+  "operationName": "MediaRecommendationsPage",
+  "variables": {
+    "id": 141127,
+    "page": 1,
+    "sort": [
+      "RATING_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "4c3bbb02d06d",
+  "recordedAt": "2026-09-06T05:25:56.8853007+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "recommendations": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "nodes": [
+            {
+              "rating": 1,
+              "mediaRecommendation": {
+                "id": 140253,
+                "title": {
+                  "romaji": "0-Sen Champion",
+                  "english": null,
+                  "native": "0\u6226\u30C1\u30E3\u30F3\u30D4\u30AA\u30F3"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/b140253-B9a7mmDJUm5A.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/b140253-B9a7mmDJUm5A.jpg"
+                },
+                "averageScore": null,
+                "mediaListEntry": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

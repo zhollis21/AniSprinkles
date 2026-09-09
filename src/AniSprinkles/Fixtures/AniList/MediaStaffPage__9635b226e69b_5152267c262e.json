@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 21,
+    "page": 1,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:24:18.1450574+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 96881,
+                "name": {
+                  "full": "Eiichirou Oda",
+                  "native": "\u5C3E\u7530\u6804\u4E00\u90CE",
+                  "userPreferred": "Eiichirou Oda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n96881-Cyv6wFJxpDw7.png"
+                },
+                "favourites": 13111
+              },
+              "role": "Original Creator"
+            },
+            {
+              "node": {
+                "id": 100067,
+                "name": {
+                  "full": "Mamoru Hosoda",
+                  "native": "\u7D30\u7530\u5B88",
+                  "userPreferred": "Mamoru Hosoda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100067-uJP6jmnZhqmF.png"
+                },
+                "favourites": 1854
+              },
+              "role": "Episode Director (ep 199)"
+            },
+            {
+              "node": {
+                "id": 141539,
+                "name": {
+                  "full": "Megumi Ishitani",
+                  "native": "\u77F3\u8C37\u6075",
+                  "userPreferred": "Megumi Ishitani"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n141539-cmuyHHlaB49F.png"
+                },
+                "favourites": 1807
+              },
+              "role": "Assistant Episode Director (eps 919, 927, 933, 939, 1017)"
+            },
+            {
+              "node": {
+                "id": 141539,
+                "name": {
+                  "full": "Megumi Ishitani",
+                  "native": "\u77F3\u8C37\u6075",
+                  "userPreferred": "Megumi Ishitani"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n141539-cmuyHHlaB49F.png"
+                },
+                "favourites": 1807
+              },
+              "role": "Episode Director (OP25, OP26, eps 957, 982, 1015)"
+            },
+            {
+              "node": {
+                "id": 141539,
+                "name": {
+                  "full": "Megumi Ishitani",
+                  "native": "\u77F3\u8C37\u6075",
+                  "userPreferred": "Megumi Ishitani"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n141539-cmuyHHlaB49F.png"
+                },
+                "favourites": 1807
+              },
+              "role": "Storyboard (OP25, OP26, eps 957, 982, 1015, 1072)"
+            },
+            {
+              "node": {
+                "id": 95043,
+                "name": {
+                  "full": "Vic Mignogna",
+                  "native": null,
+                  "userPreferred": "Vic Mignogna"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95043-cgQunZolvkPW.png"
+                },
+                "favourites": 837
+              },
+              "role": "Theme Song Performance (English; OP1, OP3, ED11)"
+            },
+            {
+              "node": {
+                "id": 157396,
+                "name": {
+                  "full": "Vincent Chansard",
+                  "native": null,
+                  "userPreferred": "Vincent Chansard"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n157396-hImhd5b1ibHR.png"
+                },
+                "favourites": 626
+              },
+              "role": "Storyboard Assistance (ep 1144)"
+            },
+            {
+              "node": {
+                "id": 157396,
+                "name": {
+                  "full": "Vincent Chansard",
+                  "native": null,
+                  "userPreferred": "Vincent Chansard"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n157396-hImhd5b1ibHR.png"
+                },
+                "favourites": 626
+              },
+              "role": "Key Animation (OP25, OP26, OP28, eps 957, 1004, 1017, 1028, 1033, 1038, 1045, 1048, 1062, 1066, 1067, 1069, 1071, 1074, 1076, 1093, 1100, 1101, 1109, 1112, 1114, 1121, 1127, 1144)"
+            },
+            {
+              "node": {
+                "id": 206031,
+                "name": {
+                  "full": "Calliope Mori",
+                  "native": "\u68EE\u30AB\u30EA\u30AA\u30DA",
+                  "userPreferred": "Calliope Mori"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n206031-60sv8R7tuw5I.png"
+                },
+                "favourites": 559
+              },
+              "role": "Insert Song Performance (eps 1097-1100)"
+            },
+            {
+              "node": {
+                "id": 206031,
+                "name": {
+                  "full": "Calliope Mori",
+                  "native": "\u68EE\u30AB\u30EA\u30AA\u30DA",
+                  "userPreferred": "Calliope Mori"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n206031-60sv8R7tuw5I.png"
+                },
+                "favourites": 559
+              },
+              "role": "Insert Song Lyrics (eps 1097-1100)"
+            },
+            {
+              "node": {
+                "id": 95659,
+                "name": {
+                  "full": "Brina Palencia",
+                  "native": null,
+                  "userPreferred": "Brina Palencia"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/659.jpg"
+                },
+                "favourites": 557
+              },
+              "role": "Theme Song Performance (English; OP4, ED1)"
+            },
+            {
+              "node": {
+                "id": 103979,
+                "name": {
+                  "full": "Hironori Tanaka",
+                  "native": "\u7530\u4E2D\u5B8F\u7D00",
+                  "userPreferred": "Hironori Tanaka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n103979-iNgo68ikjKgx.jpg"
+                },
+                "favourites": 454
+              },
+              "role": "Key Animation (ep 307)"
+            },
+            {
+              "node": {
+                "id": 101458,
+                "name": {
+                  "full": "Yoshihiko Umakoshi",
+                  "native": "\u99AC\u8D8A\u5609\u5F66",
+                  "userPreferred": "Yoshihiko Umakoshi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101458-bGvJKzGP927H.png"
+                },
+                "favourites": 404
+              },
+              "role": "Key Animation (OP22, OP25, ep 1027)"
+            },
+            {
+              "node": {
+                "id": 95313,
+                "name": {
+                  "full": "Caitlin Glass",
+                  "native": null,
+                  "userPreferred": "Caitlin Glass"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95313-zK3WpeNtACvm.jpg"
+                },
+                "favourites": 383
+              },
+              "role": "Theme Song Performance (English; ED2, ED7, ED10)"
+            },
+            {
+              "node": {
+                "id": 103619,
+                "name": {
+                  "full": "Sushio",
+                  "native": "\u3059\u3057\u304A",
+                  "userPreferred": "Sushio"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n103619-MATBT2jxiPVm.png"
+                },
+                "favourites": 373
+              },
+              "role": "Key Animation (ep 256)"
+            },
+            {
+              "node": {
+                "id": 103893,
+                "name": {
+                  "full": "Shinya Oohira",
+                  "native": "\u5927\u5E73\u664B\u4E5F",
+                  "userPreferred": "Shinya Oohira"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n103893-QwcOIQ3mbO2a.png"
+                },
+                "favourites": 314
+              },
+              "role": "Key Animation (ep 1072)"
+            },
+            {
+              "node": {
+                "id": 95203,
+                "name": {
+                  "full": "Justin Cook",
+                  "native": null,
+                  "userPreferred": "Justin Ryan Cook"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95203-S3aCVxUoYwJl.jpg"
+                },
+                "favourites": 292
+              },
+              "role": "Producer (English)"
+            },
+            {
+              "node": {
+                "id": 107357,
+                "name": {
+                  "full": "Toshiyuki Satou",
+                  "native": "\u4F50\u85E4\u5229\u5E78",
+                  "userPreferred": "Toshiyuki Satou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n107357-96PgjYcdwBFt.png"
+                },
+                "favourites": 279
+              },
+              "role": "Key Animation (ep 1076)"
+            },
+            {
+              "node": {
+                "id": 140344,
+                "name": {
+                  "full": "Weilin Zhang",
+                  "native": "\u5F35\u9B4F\u6797",
+                  "userPreferred": "Weilin Zhang"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n140344-La7nzV3m1jVM.jpg"
+                },
+                "favourites": 278
+              },
+              "role": "Key Animation (ep 1071)"
+            },
+            {
+              "node": {
+                "id": 133303,
+                "name": {
+                  "full": "Keisuke Mori",
+                  "native": "\u68EE\u4F73\u7950",
+                  "userPreferred": "Keisuke Mori"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n133303-wRcpZRX9OYXy.jpg"
+                },
+                "favourites": 245
+              },
+              "role": "Animation Director (OP26, ED19, eps 1015, 1072, 1089, 1111)"
+            },
+            {
+              "node": {
+                "id": 133303,
+                "name": {
+                  "full": "Keisuke Mori",
+                  "native": "\u68EE\u4F73\u7950",
+                  "userPreferred": "Keisuke Mori"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n133303-wRcpZRX9OYXy.jpg"
+                },
+                "favourites": 245
+              },
+              "role": "Key Animation (OP21-OP23, OP25, OP26, ED19, eps 862, 870, 953, 957, 966, 978, 1005, 1015, 1045, 1072, 1089, 1128,)"
+            },
+            {
+              "node": {
+                "id": 133303,
+                "name": {
+                  "full": "Keisuke Mori",
+                  "native": "\u68EE\u4F73\u7950",
+                  "userPreferred": "Keisuke Mori"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n133303-wRcpZRX9OYXy.jpg"
+                },
+                "favourites": 245
+              },
+              "role": "Assistant Animation Director (ep 1045)"
+            },
+            {
+              "node": {
+                "id": 133303,
+                "name": {
+                  "full": "Keisuke Mori",
+                  "native": "\u68EE\u4F73\u7950",
+                  "userPreferred": "Keisuke Mori"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n133303-wRcpZRX9OYXy.jpg"
+                },
+                "favourites": 245
+              },
+              "role": "Training Animation Director (ep 1130)"
+            },
+            {
+              "node": {
+                "id": 106924,
+                "name": {
+                  "full": "Naotoshi Shida",
+                  "native": "\u5FD7\u7530\u76F4\u4FCA",
+                  "userPreferred": "Naotoshi Shida"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/106924-8al7xjlJqfux.jpg"
+                },
+                "favourites": 220
+              },
+              "role": "Key Animation (eps 367, 395, 404, 450, 463, 473, 474, 480, 542, 553, 590, 604, 611, 624, 661, 678, 699, 710, 725, 726, 739, 755, 774, 839, 870, 871, 915, 925, 985, 1000, 1017, 1025, 1028, 1035, 1039, 1044, 1051, 1061, 1066, 1071, 1072, 1075, 1076, 1093)"
+            },
+            {
+              "node": {
+                "id": 106924,
+                "name": {
+                  "full": "Naotoshi Shida",
+                  "native": "\u5FD7\u7530\u76F4\u4FCA",
+                  "userPreferred": "Naotoshi Shida"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/106924-8al7xjlJqfux.jpg"
+                },
+                "favourites": 220
+              },
+              "role": "Storyboard (eps 472, 490, 513, 562, 574, 585, 590)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

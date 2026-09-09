@@ -1,0 +1,589 @@
+﻿{
+  "operationName": "Search",
+  "variables": {
+    "search": "one",
+    "type": "MANGA",
+    "page": 2,
+    "perPage": 20,
+    "isAdult": false
+  },
+  "queryFingerprint": "2c2dc0b2b28d",
+  "recordedAt": "2026-09-06T05:17:25.4380901+00:00",
+  "response": {
+    "data": {
+      "Page": {
+        "pageInfo": {
+          "hasNextPage": true,
+          "currentPage": 2
+        },
+        "media": [
+          {
+            "id": 209932,
+            "title": {
+              "romaji": "Sekigan, Sekiwan, Sekkyaku no Majutsushi @Comic: Mori no Koya ni Komotteitara Haya 2000-Nen. Kizukeba Majin to Yobareteita. Boku wa Tada Majutsu no Tankyuu wo Shitai Dake nanoni",
+              "english": "The One-Eyed, One-Armed, One-Legged Sorcerer",
+              "native": "\u96BB\u773C\u30FB\u96BB\u8155\u30FB\u96BB\u811A\u306E\u9B54\u8853\u5E2B@COMIC\uFF5E\u68EE\u306E\u5C0F\u5C4B\u306B\u7C60\u3063\u3066\u3044\u305F\u3089\u65E92000\u5E74\u3002\u6C17\u3065\u3051\u3070\u9B54\u795E\u3068\u547C\u3070\u308C\u3066\u3044\u305F\u3002\u50D5\u306F\u305F\u3060\u9B54\u8853\u306E\u63A2\u6C42\u3092\u3057\u305F\u3044\u3060\u3051\u306A\u306E\u306B\uFF5E"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx209932-Rlzp1CUyRMId.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx209932-Rlzp1CUyRMId.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 2,
+            "popularity": 166,
+            "trending": 1,
+            "startDate": {
+              "year": 2023,
+              "month": 8,
+              "day": 7
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 80945,
+            "title": {
+              "romaji": "Sono Na wa 101",
+              "english": null,
+              "native": "\u305D\u306E\u540D\u306F101"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx80945-skQYLwUJv6PP.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx80945-skQYLwUJv6PP.png"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 27,
+            "volumes": 5,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 122,
+            "trending": 0,
+            "startDate": {
+              "year": 1977,
+              "month": 10,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 111745,
+            "title": {
+              "romaji": "Machiko no Senya Ichiya",
+              "english": null,
+              "native": "\u307E\u3061\u3053\u306E\u5343\u591C\u4E00\u591C"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx111745-FqYavIc1quQj.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx111745-FqYavIc1quQj.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": 4,
+            "averageScore": null,
+            "favourites": 2,
+            "popularity": 91,
+            "trending": 0,
+            "startDate": {
+              "year": 1984,
+              "month": null,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 67891,
+            "title": {
+              "romaji": "Senya Ichiya Romanesque",
+              "english": null,
+              "native": "\u5343\u591C\u4E00\u591C\u30ED\u30DE\u30CD\u30B9\u30AF"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx67891-BRgYFutgxhK0.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx67891-BRgYFutgxhK0.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 6,
+            "volumes": 1,
+            "averageScore": 58,
+            "favourites": 7,
+            "popularity": 263,
+            "trending": 0,
+            "startDate": {
+              "year": 2012,
+              "month": 4,
+              "day": 12
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 125663,
+            "title": {
+              "romaji": "Yun Qi Yi Jia Yi",
+              "english": "The Duke\u0027s Hidden Baby: BOGO!",
+              "native": "\u5B55\u59BB\u4E00\u52A0\u4E00"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx125663-o9DpejWH4E06.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx125663-o9DpejWH4E06.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 311,
+            "volumes": null,
+            "averageScore": 52,
+            "favourites": 10,
+            "popularity": 643,
+            "trending": 0,
+            "startDate": {
+              "year": 2020,
+              "month": 5,
+              "day": 1
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 115896,
+            "title": {
+              "romaji": "1 Ichi",
+              "english": null,
+              "native": "\uFF11\u4E00"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx115896-MzobIvpmttDL.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx115896-MzobIvpmttDL.png"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 11,
+            "volumes": 1,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 82,
+            "trending": 0,
+            "startDate": {
+              "year": 2014,
+              "month": 4,
+              "day": 22
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 44419,
+            "title": {
+              "romaji": "Anata to Senya Ichiya",
+              "english": null,
+              "native": "\u3042\u306A\u305F\u3068\u5343\u591C\u4E00\u591C"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx44419-zVZDI9mm3cDa.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx44419-zVZDI9mm3cDa.png"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 17,
+            "volumes": 2,
+            "averageScore": 54,
+            "favourites": 1,
+            "popularity": 170,
+            "trending": 0,
+            "startDate": {
+              "year": 2000,
+              "month": 8,
+              "day": 10
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 50657,
+            "title": {
+              "romaji": "Fushigi no Kuni no Senichiya",
+              "english": null,
+              "native": "\u4E0D\u601D\u8B70\u306E\u56FD\u306E\u5343\u4E00\u591C"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx50657-pZCoc690Fc6G.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx50657-pZCoc690Fc6G.png"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": 11,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 79,
+            "trending": 0,
+            "startDate": {
+              "year": 1980,
+              "month": 1,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 33064,
+            "title": {
+              "romaji": "Kiichi!!",
+              "english": null,
+              "native": "\u30AD\u30FC\u30C1!!"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx33064-TaMTZVD59ThX.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx33064-TaMTZVD59ThX.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 87,
+            "volumes": 9,
+            "averageScore": 80,
+            "favourites": 372,
+            "popularity": 9396,
+            "trending": 2,
+            "startDate": {
+              "year": 2001,
+              "month": 7,
+              "day": 27
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 120460,
+            "title": {
+              "romaji": "Hanaui gil",
+              "english": null,
+              "native": "\uD558\uB098\uC758 \uAE38"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx120460-HRm8WqiEsKqf.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx120460-HRm8WqiEsKqf.png"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "CANCELLED",
+            "episodes": null,
+            "chapters": 3,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 128,
+            "trending": 0,
+            "startDate": {
+              "year": 2017,
+              "month": 11,
+              "day": 21
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 31371,
+            "title": {
+              "romaji": "ZERO ONE",
+              "english": null,
+              "native": "ZERO ONE"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/1371-kCazvGeSbZAa.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/1371-kCazvGeSbZAa.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 41,
+            "volumes": 3,
+            "averageScore": 46,
+            "favourites": 5,
+            "popularity": 894,
+            "trending": 0,
+            "startDate": {
+              "year": 1999,
+              "month": 4,
+              "day": 22
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 136515,
+            "title": {
+              "romaji": "One Zero",
+              "english": null,
+              "native": "\u30EF\u30F3\u30FB\u30BC\u30ED"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx136515-8pDTsqe4gkGA.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx136515-8pDTsqe4gkGA.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": 4,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 29,
+            "trending": 0,
+            "startDate": {
+              "year": 1984,
+              "month": null,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 127087,
+            "title": {
+              "romaji": "One Take",
+              "english": "One Take",
+              "native": "\uC6D0\uD14C\uC774\uD06C"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx127087-iDy70NGX5zaK.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx127087-iDy70NGX5zaK.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 49,
+            "volumes": null,
+            "averageScore": 67,
+            "favourites": 17,
+            "popularity": 1505,
+            "trending": 0,
+            "startDate": {
+              "year": 2020,
+              "month": 7,
+              "day": 13
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 52738,
+            "title": {
+              "romaji": "OneLove",
+              "english": "One Love",
+              "native": "OneLove"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/b52738-36Jy22361U0N.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/b52738-36Jy22361U0N.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": 1,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 17,
+            "trending": 0,
+            "startDate": {
+              "year": 2006,
+              "month": 7,
+              "day": 29
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 211351,
+            "title": {
+              "romaji": "One Two!",
+              "english": null,
+              "native": "\uC6D0\uD22C!"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx211351-stv9Zq7tTSO3.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx211351-stv9Zq7tTSO3.png"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 5,
+            "trending": 0,
+            "startDate": {
+              "year": 2024,
+              "month": 11,
+              "day": 14
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 187900,
+            "title": {
+              "romaji": "Housenka Pan",
+              "english": null,
+              "native": "\u307B\u3046\u305B\u3093\u304B\u30FB\u3071\u3093"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx187900-argDHPUiRzDc.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx187900-argDHPUiRzDc.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 4,
+            "volumes": 1,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 14,
+            "trending": 0,
+            "startDate": {
+              "year": 1978,
+              "month": 6,
+              "day": 1
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 145999,
+            "title": {
+              "romaji": "OMEGA ONE",
+              "english": null,
+              "native": "OMEGA ONE"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx145999-WCbVjrYmhZdu.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx145999-WCbVjrYmhZdu.png"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 24,
+            "trending": 0,
+            "startDate": {
+              "year": 2021,
+              "month": 11,
+              "day": 22
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 65835,
+            "title": {
+              "romaji": "Barom 1",
+              "english": "Barom One",
+              "native": "\u30D0\u30ED\u30E0\u30FB\uFF11"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx65835-cZhZTvtw1IqZ.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx65835-cZhZTvtw1IqZ.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 9,
+            "volumes": 5,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 126,
+            "trending": 0,
+            "startDate": {
+              "year": 1970,
+              "month": null,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 79629,
+            "title": {
+              "romaji": "Ougon no Senshi ICZER-ONE",
+              "english": "Golden Warrior Iczer-One",
+              "native": "\u9EC4\u91D1\u306E\u6226\u58EB ICZER-ONE"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/b79629-u6kcexWBT5Z2.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/b79629-u6kcexWBT5Z2.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "CANCELLED",
+            "episodes": null,
+            "chapters": 5,
+            "volumes": 1,
+            "averageScore": 47,
+            "favourites": 2,
+            "popularity": 237,
+            "trending": 0,
+            "startDate": {
+              "year": 1988,
+              "month": 10,
+              "day": 1
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 30013,
+            "title": {
+              "romaji": "ONE PIECE",
+              "english": "One Piece",
+              "native": "ONE PIECE"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30013-BeslEMqiPhlk.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30013-BeslEMqiPhlk.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 91,
+            "favourites": 46530,
+            "popularity": 232169,
+            "trending": 37,
+            "startDate": {
+              "year": 1997,
+              "month": 7,
+              "day": 22
+            },
+            "mediaListEntry": {
+              "id": 593351205,
+              "status": "CURRENT",
+              "progress": 1100,
+              "score": 9
+            }
+          }
+        ]
+      }
+    }
+  }
+}

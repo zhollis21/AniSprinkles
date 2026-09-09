@@ -1,0 +1,112 @@
+﻿{
+  "operationName": "CharacterMediaPage",
+  "variables": {
+    "id": 61,
+    "page": 3,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "2ff9193259a9",
+  "recordedAt": "2026-09-09T15:58:04.987087+00:00",
+  "response": {
+    "data": {
+      "Character": {
+        "media": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 3
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 177475,
+                "title": {
+                  "romaji": "ONE PIECE\u00D7KAWAISOUNI! Kono Boushi wo Omae ni Azukeru",
+                  "english": null,
+                  "native": "ONE PIECE\u00D7\u53EF\u54C0\u60F3\u306B\uFF01\uFF5E\u3053\u306E\u5E3D\u5B50\u3092 \u304A\u524D\u306B\u9810\u3051\u308B\uFF5E"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx177475-8HlvUgopoH0S.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx177475-8HlvUgopoH0S.png"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 58,
+                "favourites": 3,
+                "popularity": 770,
+                "startDate": {
+                  "year": 2024,
+                  "month": 3,
+                  "day": 3
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 53251,
+                "title": {
+                  "romaji": "Chopperman: Yuke Yuke! Minna no Chopper-sensei",
+                  "english": null,
+                  "native": "\u30C1\u30E7\u30C3\u30D1\u30FC\u30DE\u30F3 \u3086\u3051\u3086\u3051!\u307F\u3093\u306A\u306E\u30C1\u30E7\u30C3\u30D1\u30FC\u5148\u751F"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/23251.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/23251.jpg"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "averageScore": 51,
+                "favourites": 2,
+                "popularity": 475,
+                "startDate": {
+                  "year": 2010,
+                  "month": 12,
+                  "day": 1
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "SUPPORTING",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 143293,
+                "title": {
+                  "romaji": "One Piece: Annecy Festival 60th Anniversary",
+                  "english": "One Piece: Annecy Festival 60th Anniversary",
+                  "native": "One Piece: Annecy Festival 60th Anniversary"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx143293-1ngwckHDsK95.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx143293-1ngwckHDsK95.jpg"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 53,
+                "favourites": 2,
+                "popularity": 768,
+                "startDate": {
+                  "year": 2021,
+                  "month": 6,
+                  "day": 16
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "BACKGROUND",
+              "voiceActors": []
+            }
+          ]
+        }
+      }
+    }
+  }
+}

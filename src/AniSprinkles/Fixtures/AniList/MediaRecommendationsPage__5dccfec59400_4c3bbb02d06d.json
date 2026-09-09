@@ -1,0 +1,475 @@
+﻿{
+  "operationName": "MediaRecommendationsPage",
+  "variables": {
+    "id": 156067,
+    "page": 3,
+    "sort": [
+      "RATING_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "4c3bbb02d06d",
+  "recordedAt": "2026-09-06T05:38:20.0577939+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "recommendations": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 3
+          },
+          "nodes": [
+            {
+              "rating": 3,
+              "mediaRecommendation": {
+                "id": 182771,
+                "title": {
+                  "romaji": "Odayaka Kizoku no Kyuuka no Susume.",
+                  "english": "A Gentle Noble\u0027s Vacation Recommendation",
+                  "native": "\u7A4F\u3084\u304B\u8CB4\u65CF\u306E\u4F11\u6687\u306E\u3059\u3059\u3081\u3002"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx182771-KVq712ii32fJ.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx182771-KVq712ii32fJ.jpg"
+                },
+                "averageScore": 67,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 3,
+              "mediaRecommendation": {
+                "id": 21202,
+                "title": {
+                  "romaji": "Kono Subarashii Sekai ni Shukufuku wo!",
+                  "english": "KONOSUBA -God\u0027s blessing on this wonderful world!",
+                  "native": "\u3053\u306E\u7D20\u6674\u3089\u3057\u3044\u4E16\u754C\u306B\u795D\u798F\u3092\uFF01"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21202-mPOr80AEjUcZ.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21202-mPOr80AEjUcZ.png"
+                },
+                "averageScore": 79,
+                "mediaListEntry": {
+                  "id": 593363892,
+                  "status": "COMPLETED",
+                  "progress": 10,
+                  "score": 10
+                }
+              }
+            },
+            {
+              "rating": 2,
+              "mediaRecommendation": {
+                "id": 101973,
+                "title": {
+                  "romaji": "Meng Qi Shi Shen",
+                  "english": "Cinderella Chef",
+                  "native": "\u840C\u59BB\u98DF\u795E"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx101973-phinH9pL2wV8.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101973-phinH9pL2wV8.png"
+                },
+                "averageScore": 71,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 2,
+              "mediaRecommendation": {
+                "id": 100500,
+                "title": {
+                  "romaji": "Kakuriyo no Yadomeshi",
+                  "english": "Kakuriyo -Bed \u0026 Breakfast for Spirits-",
+                  "native": "\u304B\u304F\u308A\u3088\u306E\u5BBF\u98EF"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx100500-D1InEy2GriJV.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx100500-D1InEy2GriJV.jpg"
+                },
+                "averageScore": 73,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 2,
+              "mediaRecommendation": {
+                "id": 155907,
+                "title": {
+                  "romaji": "Buddy Daddies",
+                  "english": "Buddy Daddies",
+                  "native": "Buddy Daddies"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx155907-wY1RqFUHvZ60.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx155907-wY1RqFUHvZ60.jpg"
+                },
+                "averageScore": 80,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 2,
+              "mediaRecommendation": {
+                "id": 106479,
+                "title": {
+                  "romaji": "Itai no wa Iya nano de Bougyoryoku ni Kyokufuri Shitai to Omoimasu.",
+                  "english": "BOFURI: I Don\u0027t Want to Get Hurt, so I\u0027ll Max Out My Defense.",
+                  "native": "\u75DB\u3044\u306E\u306F\u5ACC\u306A\u306E\u3067\u9632\u5FA1\u529B\u306B\u6975\u632F\u308A\u3057\u305F\u3044\u3068\u601D\u3044\u307E\u3059\u3002"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx106479-JmPk1F5ubMtm.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx106479-JmPk1F5ubMtm.png"
+                },
+                "averageScore": 73,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 2,
+              "mediaRecommendation": {
+                "id": 107871,
+                "title": {
+                  "romaji": "Princess Connect! Re:Dive",
+                  "english": "Princess Connect! Re:Dive",
+                  "native": "\u30D7\u30EA\u30F3\u30BB\u30B9\u30B3\u30CD\u30AF\u30C8\uFF01Re:Dive"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx107871-ZOh7oeDd0kq9.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx107871-ZOh7oeDd0kq9.png"
+                },
+                "averageScore": 69,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 1,
+              "mediaRecommendation": {
+                "id": 110287,
+                "title": {
+                  "romaji": "Valkyrie no Shokutaku",
+                  "english": "Cooking with Valkyries",
+                  "native": "\u6226\u4E59\u5973\u306E\u98DF\u5353"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx110287-BEZ8tFCzvJXU.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx110287-BEZ8tFCzvJXU.jpg"
+                },
+                "averageScore": 67,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 1,
+              "mediaRecommendation": {
+                "id": 126213,
+                "title": {
+                  "romaji": "Shin no Nakama ja Nai to Yuusha no Party wo Oidasareta node, Henkyou de Slow Life suru Koto ni shimashita",
+                  "english": "Banished from the Hero\u2019s Party, I Decided to Live a Quiet Life in the Countryside",
+                  "native": "\u771F\u306E\u4EF2\u9593\u3058\u3083\u306A\u3044\u3068\u52C7\u8005\u306E\u30D1\u30FC\u30C6\u30A3\u30FC\u3092\u8FFD\u3044\u51FA\u3055\u308C\u305F\u306E\u3067\u3001\u8FBA\u5883\u3067\u30B9\u30ED\u30FC\u30E9\u30A4\u30D5\u3059\u308B\u3053\u3068\u306B\u3057\u307E\u3057\u305F"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx126213-cXF3hsCcOipI.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx126213-cXF3hsCcOipI.jpg"
+                },
+                "averageScore": 68,
+                "mediaListEntry": {
+                  "id": 593365569,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "score": 0
+                }
+              }
+            },
+            {
+              "rating": 1,
+              "mediaRecommendation": {
+                "id": 158627,
+                "title": {
+                  "romaji": "Dungeon Meshi: Senshi no Kantan Cooking!",
+                  "english": null,
+                  "native": "\u30C0\u30F3\u30B8\u30E7\u30F3\u98EF\uFF5E\u30BB\u30F3\u30B7\u306E\u304B\u3093\u305F\u3093\u30AF\u30C3\u30AD\u30F3\u30B0\uFF01"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b158627-0MPil8prYOQu.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b158627-0MPil8prYOQu.jpg"
+                },
+                "averageScore": 62,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 1,
+              "mediaRecommendation": {
+                "id": 145260,
+                "title": {
+                  "romaji": "Kuro no Shoukanshi",
+                  "english": "Black Summoner",
+                  "native": "\u9ED2\u306E\u53EC\u559A\u58EB"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx145260-Yt5W8aQQKqF2.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx145260-Yt5W8aQQKqF2.jpg"
+                },
+                "averageScore": 69,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 1,
+              "mediaRecommendation": {
+                "id": 169935,
+                "title": {
+                  "romaji": "Saikyou Tank no Meikyuu Kouryaku: Tairyoku 9999 no Rare Skill-mochi Tank, Yuusha Party wo Tsuihou Sareru",
+                  "english": "The Strongest Tank\u0027s Labyrinth Raids -A Tank with a Rare 9999 Resistance Skill Got Kicked from the Hero\u0027s Party-",
+                  "native": "\u6700\u5F37\u30BF\u30F3\u30AF\u306E\u8FF7\u5BAE\u653B\u7565\u3000\uFF5E\u4F53\u529B9999\u306E\u30EC\u30A2\u30B9\u30AD\u30EB\u6301\u3061\u30BF\u30F3\u30AF\u3001\u52C7\u8005\u30D1\u30FC\u30C6\u30A3\u30FC\u3092\u8FFD\u653E\u3055\u308C\u308B\uFF5E"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx169935-w808lLrdFXcl.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx169935-w808lLrdFXcl.jpg"
+                },
+                "averageScore": 59,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 1,
+              "mediaRecommendation": {
+                "id": 156097,
+                "title": {
+                  "romaji": "Jintian De Wancan Jiushi Ni",
+                  "english": "Mythical Creatures Are My Dinners",
+                  "native": "\u4ECA\u5929\u7684\u665A\u9910\u5C31\u662F\u4F60"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx156097-JkXRUyKKIbOs.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx156097-JkXRUyKKIbOs.png"
+                },
+                "averageScore": null,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 1,
+              "mediaRecommendation": {
+                "id": 1093,
+                "title": {
+                  "romaji": "Oishinbo",
+                  "english": null,
+                  "native": "\u7F8E\u5473\u3057\u3093\u307C"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b1093-oNUjFBdNsYlU.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b1093-oNUjFBdNsYlU.jpg"
+                },
+                "averageScore": 66,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 1,
+              "mediaRecommendation": {
+                "id": 4081,
+                "title": {
+                  "romaji": "Natsume Yuujinchou",
+                  "english": "Natsume\u0027s Book of Friends Season 1",
+                  "native": "\u590F\u76EE\u53CB\u4EBA\u5E33"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx4081-xi08naD69tjr.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx4081-xi08naD69tjr.jpg"
+                },
+                "averageScore": 80,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 1,
+              "mediaRecommendation": {
+                "id": 135102,
+                "title": {
+                  "romaji": "Kamitachi ni Hirowareta Otoko 2",
+                  "english": "By the Grace of the Gods 2",
+                  "native": "\u795E\u9054\u306B\u62FE\u308F\u308C\u305F\u7537\uFF12"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx135102-3vX6Rs8e8oHU.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx135102-3vX6Rs8e8oHU.jpg"
+                },
+                "averageScore": 68,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 1,
+              "mediaRecommendation": {
+                "id": 184280,
+                "title": {
+                  "romaji": "Tensui no Sakuna-hime: Kokorowa Inasaku Nisshi",
+                  "english": "Sakuna: Of Rice and Ruin Kokorowa Rice Cultivation Diary",
+                  "native": "\u5929\u7A42\u306E\u30B5\u30AF\u30CA\u30D2\u30E1 \u30B3\u30B3\u30ED\u30EF\u7A32\u4F5C\u65E5\u8A8C"
+                },
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx184280-FA1sWge8Wp5b.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx184280-FA1sWge8Wp5b.jpg"
+                },
+                "averageScore": 65,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 0,
+              "mediaRecommendation": {
+                "id": 125447,
+                "title": {
+                  "romaji": "Thermae Romae Novae",
+                  "english": "Thermae Romae Novae",
+                  "native": "\u30C6\u30EB\u30DE\u30A8\u30FB\u30ED\u30DE\u30A8 \u30CE\u30F4\u30A1\u30A8"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx125447-Sqcq8oDHvZOK.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx125447-Sqcq8oDHvZOK.jpg"
+                },
+                "averageScore": 70,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 0,
+              "mediaRecommendation": {
+                "id": 108268,
+                "title": {
+                  "romaji": "Honzuki no Gekokujou: Shisho ni Naru Tame ni wa Shudan wo Erandeiraremasen",
+                  "english": "Ascendance of a Bookworm",
+                  "native": "\u672C\u597D\u304D\u306E\u4E0B\u524B\u4E0A \u53F8\u66F8\u306B\u306A\u308B\u305F\u3081\u306B\u306F\u624B\u6BB5\u3092\u9078\u3093\u3067\u3044\u3089\u308C\u307E\u305B\u3093"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx108268-Dtt82uOi3vq5.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx108268-Dtt82uOi3vq5.jpg"
+                },
+                "averageScore": 78,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": -1,
+              "mediaRecommendation": {
+                "id": 142080,
+                "title": {
+                  "romaji": "Delicious Party\u2661Precure",
+                  "english": "Delicious Party Precure",
+                  "native": "\u30C7\u30EA\u30B7\u30E3\u30B9\u30D1\u30FC\u30C6\u30A3\u2661\u30D7\u30EA\u30AD\u30E5\u30A2"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx142080-YQEmfiA8D0Fy.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx142080-YQEmfiA8D0Fy.jpg"
+                },
+                "averageScore": 65,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": -1,
+              "mediaRecommendation": {
+                "id": 196218,
+                "title": {
+                  "romaji": "Ryoumin 0-Nin Start no Henkyou Ryoushu-sama",
+                  "english": "The Frontier Lord Begins with Zero Subjects",
+                  "native": "\u9818\u6C110\u4EBA\u30B9\u30BF\u30FC\u30C8\u306E\u8FBA\u5883\u9818\u4E3B\u69D8"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx196218-UsdTTCrwpDIN.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx196218-UsdTTCrwpDIN.jpg"
+                },
+                "averageScore": 66,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": -2,
+              "mediaRecommendation": {
+                "id": 18095,
+                "title": {
+                  "romaji": "Nourin",
+                  "english": "No-Rin",
+                  "native": "\u306E\u3046\u308A\u3093"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx18095-kX8R704uIqDo.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx18095-kX8R704uIqDo.jpg"
+                },
+                "averageScore": 64,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": -2,
+              "mediaRecommendation": {
+                "id": 171400,
+                "title": {
+                  "romaji": "Puniru wa Kawaii Slime",
+                  "english": "Puniru is a Kawaii Slime",
+                  "native": "\u3077\u306B\u308B\u306F\u304B\u308F\u3044\u3044\u30B9\u30E9\u30A4\u30E0"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx171400-fbiXZGItjJtP.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx171400-fbiXZGItjJtP.png"
+                },
+                "averageScore": 67,
+                "mediaListEntry": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

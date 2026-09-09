@@ -1,0 +1,594 @@
+﻿{
+  "operationName": "Search",
+  "variables": {
+    "search": "one",
+    "type": "ANIME",
+    "page": 1,
+    "perPage": 20,
+    "isAdult": false
+  },
+  "queryFingerprint": "2c2dc0b2b28d",
+  "recordedAt": "2026-09-06T05:17:06.6836207+00:00",
+  "response": {
+    "data": {
+      "Page": {
+        "pageInfo": {
+          "hasNextPage": true,
+          "currentPage": 1
+        },
+        "media": [
+          {
+            "id": 102065,
+            "title": {
+              "romaji": "001",
+              "english": null,
+              "native": "001"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b102065-bOnARvMyBPOC.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b102065-bOnARvMyBPOC.png"
+            },
+            "format": "ONA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 30,
+            "favourites": 7,
+            "popularity": 5488,
+            "trending": 0,
+            "startDate": {
+              "year": 2013,
+              "month": 2,
+              "day": 7
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 187317,
+            "title": {
+              "romaji": "AS ONE",
+              "english": null,
+              "native": "\u30A2\u30BA\u30EF\u30F3"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx187317-oD1Pwu43UVPQ.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx187317-oD1Pwu43UVPQ.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 10,
+            "popularity": 1311,
+            "trending": 0,
+            "startDate": {
+              "year": 2025,
+              "month": 8,
+              "day": 22
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 97609,
+            "title": {
+              "romaji": "Cheating Craft",
+              "english": null,
+              "native": "\u30C1\u30FC\u30C6\u30A3\u30F3\u30B0\u30AF\u30E9\u30D5\u30C8"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/97609-qSAaN9XbRQjj.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/97609-qSAaN9XbRQjj.jpg"
+            },
+            "format": "TV_SHORT",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 49,
+            "favourites": 57,
+            "popularity": 17134,
+            "trending": 0,
+            "startDate": {
+              "year": 2016,
+              "month": 10,
+              "day": 5
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 125513,
+            "title": {
+              "romaji": "Kataude",
+              "english": "One Arm",
+              "native": "\u7247\u8155"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx125513-P5lwVv2M4nSw.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx125513-P5lwVv2M4nSw.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 1,
+            "popularity": 337,
+            "trending": 0,
+            "startDate": {
+              "year": 2018,
+              "month": 1,
+              "day": 1
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 1667,
+            "title": {
+              "romaji": "Barom One",
+              "english": "Barom One",
+              "native": "\u30D0\u30ED\u30E0\u30EF\u30F3"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/1667.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/1667.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 13,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 47,
+            "favourites": 4,
+            "popularity": 1070,
+            "trending": 0,
+            "startDate": {
+              "year": 2002,
+              "month": 12,
+              "day": 7
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 171630,
+            "title": {
+              "romaji": "THE ONE PIECE",
+              "english": "THE ONE PIECE",
+              "native": "THE ONE PIECE"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx171630-2U7Y5OIWwXJJ.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx171630-2U7Y5OIWwXJJ.jpg"
+            },
+            "format": null,
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": 7,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 395,
+            "popularity": 25368,
+            "trending": 0,
+            "startDate": {
+              "year": 2027,
+              "month": 2,
+              "day": null
+            },
+            "mediaListEntry": {
+              "id": 593365692,
+              "status": "PLANNING",
+              "progress": 0,
+              "score": 0
+            }
+          },
+          {
+            "id": 168087,
+            "title": {
+              "romaji": "Gu Wei Nan Ting",
+              "english": "The Chosen One",
+              "native": "\u8C37\u56F4\u5357\u4EAD"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx168087-Xp8bIjULlNd4.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx168087-Xp8bIjULlNd4.jpg"
+            },
+            "format": "ONA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 16,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 63,
+            "favourites": 41,
+            "popularity": 1462,
+            "trending": 0,
+            "startDate": {
+              "year": 2025,
+              "month": 9,
+              "day": 30
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 1117,
+            "title": {
+              "romaji": "Pocket Monsters: Maboroshi no Pok\u00E9mon Lugia Bakutan",
+              "english": "Pok\u00E9mon the Movie 2000",
+              "native": "\u5287\u5834\u7248\u30DD\u30B1\u30C3\u30C8\u30E2\u30F3\u30B9\u30BF\u30FC \u5E7B\u306E\u30DD\u30B1\u30E2\u30F3 \u30EB\u30AE\u30A2\u7206\u8A95"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/1117.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/1117.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 71,
+            "favourites": 429,
+            "popularity": 45878,
+            "trending": 1,
+            "startDate": {
+              "year": 1999,
+              "month": 7,
+              "day": 17
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 5040,
+            "title": {
+              "romaji": "One Outs",
+              "english": "One Outs",
+              "native": "\u30EF\u30F3\u30CA\u30A6\u30C4"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx5040-9ruuekq2LZKJ.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx5040-9ruuekq2LZKJ.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 25,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 81,
+            "favourites": 1572,
+            "popularity": 53850,
+            "trending": 1,
+            "startDate": {
+              "year": 2008,
+              "month": 10,
+              "day": 8
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 97857,
+            "title": {
+              "romaji": "One Room",
+              "english": "OneRoom",
+              "native": "One Room"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx97857-ICKs86L2ymjU.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx97857-ICKs86L2ymjU.jpg"
+            },
+            "format": "TV_SHORT",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 52,
+            "favourites": 285,
+            "popularity": 41257,
+            "trending": 0,
+            "startDate": {
+              "year": 2017,
+              "month": 1,
+              "day": 11
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 204491,
+            "title": {
+              "romaji": "Miss Monochrome: MUSIC CLIPS",
+              "english": null,
+              "native": "\u30DF\u30B9\u30FB\u30E2\u30CE\u30AF\u30ED\u30FC\u30E0 MUSIC CLIPS"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx204491-ctlXtdKk4VJi.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx204491-ctlXtdKk4VJi.jpg"
+            },
+            "format": "MUSIC",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 15,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 49,
+            "favourites": 1,
+            "popularity": 150,
+            "trending": 0,
+            "startDate": {
+              "year": 2016,
+              "month": 9,
+              "day": 7
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 21,
+            "title": {
+              "romaji": "ONE PIECE",
+              "english": "ONE PIECE",
+              "native": "ONE PIECE"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21-ELSYx3yMPcKM.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21-ELSYx3yMPcKM.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 87,
+            "favourites": 110708,
+            "popularity": 748080,
+            "trending": 131,
+            "startDate": {
+              "year": 1999,
+              "month": 10,
+              "day": 20
+            },
+            "mediaListEntry": {
+              "id": 593351146,
+              "status": "CURRENT",
+              "progress": 1163,
+              "score": 8
+            }
+          },
+          {
+            "id": 13283,
+            "title": {
+              "romaji": "one off",
+              "english": null,
+              "native": "\u308F\u3093\u304A\u3075 -one off-"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx13283-ve12LPFa2ddd.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx13283-ve12LPFa2ddd.jpg"
+            },
+            "format": "OVA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 4,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 61,
+            "favourites": 25,
+            "popularity": 6351,
+            "trending": 0,
+            "startDate": {
+              "year": 2012,
+              "month": 8,
+              "day": 5
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 6452,
+            "title": {
+              "romaji": "Akuu Daisakusen Srungle",
+              "english": null,
+              "native": "\u4E9C\u7A7A\u5927\u4F5C\u6226\u3000\u30B9\u30E9\u30F3\u30B0\u30EB"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx6452-wilNb4hhTW5j.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx6452-wilNb4hhTW5j.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 53,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 63,
+            "favourites": 9,
+            "popularity": 907,
+            "trending": 0,
+            "startDate": {
+              "year": 1983,
+              "month": 1,
+              "day": 21
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 688,
+            "title": {
+              "romaji": "Uta\u223DKata",
+              "english": "Uta\u221EKata",
+              "native": "\u3046\u305F\u223D\u304B\u305F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx688-RztDGIBBugvj.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx688-RztDGIBBugvj.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 62,
+            "favourites": 49,
+            "popularity": 6592,
+            "trending": 0,
+            "startDate": {
+              "year": 2004,
+              "month": 10,
+              "day": 3
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 2291,
+            "title": {
+              "romaji": "Tatakae!! Iczer-1",
+              "english": "Fight!! Iczer-1",
+              "native": "\u6226\u3048!! \u30A4\u30AF\u30B5\u30FC1"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx2291-mfM44JGWN1vV.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2291-mfM44JGWN1vV.jpg"
+            },
+            "format": "OVA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 3,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 59,
+            "favourites": 69,
+            "popularity": 5082,
+            "trending": 0,
+            "startDate": {
+              "year": 1985,
+              "month": 10,
+              "day": 19
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 142962,
+            "title": {
+              "romaji": "ONE OF US",
+              "english": null,
+              "native": "ONE OF US"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx142962-22tCMEwIT9ZU.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx142962-22tCMEwIT9ZU.jpg"
+            },
+            "format": "MUSIC",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 63,
+            "favourites": 3,
+            "popularity": 488,
+            "trending": 0,
+            "startDate": {
+              "year": 2020,
+              "month": 10,
+              "day": 19
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 180436,
+            "title": {
+              "romaji": "WanDance",
+              "english": "Wandance",
+              "native": "\u30EF\u30F3\u30C0\u30F3\u30B9"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx180436-zR0dJuKGZNOK.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx180436-zR0dJuKGZNOK.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 66,
+            "favourites": 312,
+            "popularity": 23784,
+            "trending": 0,
+            "startDate": {
+              "year": 2025,
+              "month": 10,
+              "day": 8
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 177222,
+            "title": {
+              "romaji": "The One for Me",
+              "english": "The One for Me",
+              "native": "The One for Me"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx177222-0askLR6sBc01.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx177222-0askLR6sBc01.png"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 54,
+            "trending": 0,
+            "startDate": {
+              "year": 2023,
+              "month": null,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 17671,
+            "title": {
+              "romaji": "Animal 1",
+              "english": null,
+              "native": "\u30A2\u30CB\u30DE\u30EB\uFF11"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b17671-5FX5kKX8BcaG.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b17671-5FX5kKX8BcaG.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 27,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 46,
+            "favourites": 9,
+            "popularity": 429,
+            "trending": 0,
+            "startDate": {
+              "year": 1968,
+              "month": 4,
+              "day": 1
+            },
+            "mediaListEntry": null
+          }
+        ]
+      }
+    }
+  }
+}

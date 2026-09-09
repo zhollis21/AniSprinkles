@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 182255,
+    "page": 1,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:19:01.9408734+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 101801,
+                "name": {
+                  "full": "Yutaka Nakamura",
+                  "native": "\u4E2D\u6751\u8C4A",
+                  "userPreferred": "Yutaka Nakamura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101801-416ksCeKNeKY.png"
+                },
+                "favourites": 1572
+              },
+              "role": "Key Animation (ep 8)"
+            },
+            {
+              "node": {
+                "id": 134254,
+                "name": {
+                  "full": "Keiichirou Saitou",
+                  "native": "\u658E\u85E4\u572D\u4E00\u90CE",
+                  "userPreferred": "Keiichirou Saitou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n134254-bqcsuWzJr87n.png"
+                },
+                "favourites": 1326
+              },
+              "role": "Storyboard (ep 7)"
+            },
+            {
+              "node": {
+                "id": 134254,
+                "name": {
+                  "full": "Keiichirou Saitou",
+                  "native": "\u658E\u85E4\u572D\u4E00\u90CE",
+                  "userPreferred": "Keiichirou Saitou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n134254-bqcsuWzJr87n.png"
+                },
+                "favourites": 1326
+              },
+              "role": "Direction Assistance"
+            },
+            {
+              "node": {
+                "id": 119999,
+                "name": {
+                  "full": "Evan Call",
+                  "native": "\u30A8\u30D0\u30F3\u30FB\u30B3\u30FC\u30EB",
+                  "userPreferred": "Evan Call"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n119999-D6YFCpQPSoHf.png"
+                },
+                "favourites": 1162
+              },
+              "role": "Music"
+            },
+            {
+              "node": {
+                "id": 119999,
+                "name": {
+                  "full": "Evan Call",
+                  "native": "\u30A8\u30D0\u30F3\u30FB\u30B3\u30FC\u30EB",
+                  "userPreferred": "Evan Call"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n119999-D6YFCpQPSoHf.png"
+                },
+                "favourites": 1162
+              },
+              "role": "Theme Song Arrangement (ED)"
+            },
+            {
+              "node": {
+                "id": 144537,
+                "name": {
+                  "full": "milet",
+                  "native": "\u30DF\u30EC\u30A4",
+                  "userPreferred": "milet"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n144537-dHMpupPrVATS.jpg"
+                },
+                "favourites": 763
+              },
+              "role": "Theme Song Performance (ED)"
+            },
+            {
+              "node": {
+                "id": 144537,
+                "name": {
+                  "full": "milet",
+                  "native": "\u30DF\u30EC\u30A4",
+                  "userPreferred": "milet"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n144537-dHMpupPrVATS.jpg"
+                },
+                "favourites": 763
+              },
+              "role": "Theme Song Lyrics (ED)"
+            },
+            {
+              "node": {
+                "id": 144537,
+                "name": {
+                  "full": "milet",
+                  "native": "\u30DF\u30EC\u30A4",
+                  "userPreferred": "milet"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n144537-dHMpupPrVATS.jpg"
+                },
+                "favourites": 763
+              },
+              "role": "Theme Song Composition (ED)"
+            },
+            {
+              "node": {
+                "id": 101729,
+                "name": {
+                  "full": "Jad Saxton",
+                  "native": null,
+                  "userPreferred": "Jad Saxton"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101729-tga5Umgm17Mj.jpg"
+                },
+                "favourites": 480
+              },
+              "role": "ADR Director (English)"
+            },
+            {
+              "node": {
+                "id": 112047,
+                "name": {
+                  "full": "Tatsuya Yoshihara",
+                  "native": "\u5409\u539F\u9054\u77E2",
+                  "userPreferred": "Tatsuya Yoshihara"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n112047-9NkVYZai62wg.png"
+                },
+                "favourites": 429
+              },
+              "role": "Key Animation (ep 8)"
+            },
+            {
+              "node": {
+                "id": 122202,
+                "name": {
+                  "full": "Kanehito Yamada",
+                  "native": "\u5C71\u7530\u9418\u4EBA",
+                  "userPreferred": "Kanehito Yamada"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n122202-lxoDudr9vaul.jpg"
+                },
+                "favourites": 315
+              },
+              "role": "Original Story"
+            },
+            {
+              "node": {
+                "id": 142142,
+                "name": {
+                  "full": "Mrs. GREEN APPLE",
+                  "native": "\u30DF\u30BB\u30B9\u30B0\u30EA\u30FC\u30F3\u30A2\u30C3\u30D7\u30EB",
+                  "userPreferred": "Mrs. GREEN APPLE"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n142142-C9Eql3ithIgo.png"
+                },
+                "favourites": 280
+              },
+              "role": "Theme Song Performance (OP)"
+            },
+            {
+              "node": {
+                "id": 107357,
+                "name": {
+                  "full": "Toshiyuki Satou",
+                  "native": "\u4F50\u85E4\u5229\u5E78",
+                  "userPreferred": "Toshiyuki Satou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n107357-96PgjYcdwBFt.png"
+                },
+                "favourites": 279
+              },
+              "role": "Key Animation (eps 3, 7, 8)"
+            },
+            {
+              "node": {
+                "id": 132682,
+                "name": {
+                  "full": "Keiichirou Watanabe",
+                  "native": "\u6E21\u908A\u5553\u4E00\u90CE",
+                  "userPreferred": "Keiichirou Watanabe"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n132682-quXbPwQ4mH3y.jpg"
+                },
+                "favourites": 208
+              },
+              "role": "Key Animation (ep 8)"
+            },
+            {
+              "node": {
+                "id": 138370,
+                "name": {
+                  "full": "Kouki Fujimoto",
+                  "native": "\u85E4\u672C\u822A\u5DF1",
+                  "userPreferred": "Kouki Fujimoto"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n138370-cq1n4Of2zJoz.png"
+                },
+                "favourites": 173
+              },
+              "role": "In-Between Animation (ep 8)"
+            },
+            {
+              "node": {
+                "id": 138370,
+                "name": {
+                  "full": "Kouki Fujimoto",
+                  "native": "\u85E4\u672C\u822A\u5DF1",
+                  "userPreferred": "Kouki Fujimoto"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n138370-cq1n4Of2zJoz.png"
+                },
+                "favourites": 173
+              },
+              "role": "Storyboard (ep 8)"
+            },
+            {
+              "node": {
+                "id": 138370,
+                "name": {
+                  "full": "Kouki Fujimoto",
+                  "native": "\u85E4\u672C\u822A\u5DF1",
+                  "userPreferred": "Kouki Fujimoto"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n138370-cq1n4Of2zJoz.png"
+                },
+                "favourites": 173
+              },
+              "role": "Key Animation (ep 2, 8)"
+            },
+            {
+              "node": {
+                "id": 138370,
+                "name": {
+                  "full": "Kouki Fujimoto",
+                  "native": "\u85E4\u672C\u822A\u5DF1",
+                  "userPreferred": "Kouki Fujimoto"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n138370-cq1n4Of2zJoz.png"
+                },
+                "favourites": 173
+              },
+              "role": "Episode Director (ep 8)"
+            },
+            {
+              "node": {
+                "id": 170189,
+                "name": {
+                  "full": "Tsukasa Abe",
+                  "native": "\u30A2\u30D9\u30C4\u30AB\u30B5",
+                  "userPreferred": "Tsukasa Abe"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n170189-HOqnSDEYpFKZ.jpg"
+                },
+                "favourites": 162
+              },
+              "role": "Original Character Design"
+            },
+            {
+              "node": {
+                "id": 122660,
+                "name": {
+                  "full": "Akiko Takase",
+                  "native": "\u9AD8\u702C\u4E9C\u8CB4\u5B50",
+                  "userPreferred": "Akiko Takase"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n122660-pf3cXCTfaAyi.jpg"
+                },
+                "favourites": 112
+              },
+              "role": "Character Design"
+            },
+            {
+              "node": {
+                "id": 122660,
+                "name": {
+                  "full": "Akiko Takase",
+                  "native": "\u9AD8\u702C\u4E9C\u8CB4\u5B50",
+                  "userPreferred": "Akiko Takase"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n122660-pf3cXCTfaAyi.jpg"
+                },
+                "favourites": 112
+              },
+              "role": "Animation Director (OP, ep 1)"
+            },
+            {
+              "node": {
+                "id": 172088,
+                "name": {
+                  "full": "Takeshi Maenami",
+                  "native": "\u524D\u4E26\u6B66\u5FD7",
+                  "userPreferred": "Takeshi Maenami"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n172088-PQfwnq4hIRIu.png"
+                },
+                "favourites": 110
+              },
+              "role": "Key Animation (ep 6)"
+            },
+            {
+              "node": {
+                "id": 214401,
+                "name": {
+                  "full": "Souta Shigetsugu",
+                  "native": "\u91CD\u6B21\u5275\u592A",
+                  "userPreferred": "Souta Shigetsugu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n214401-CZdYemhYAV7b.jpg"
+                },
+                "favourites": 96
+              },
+              "role": "Key Animation (ep 8)"
+            },
+            {
+              "node": {
+                "id": 121205,
+                "name": {
+                  "full": "Kazuhiro Miwa",
+                  "native": "\u4E09\u8F2A\u548C\u5B8F",
+                  "userPreferred": "Kazuhiro Miwa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n121205-47lcLjXc4tad.png"
+                },
+                "favourites": 93
+              },
+              "role": "Key Animation (ep 4)"
+            },
+            {
+              "node": {
+                "id": 126921,
+                "name": {
+                  "full": "Chengxi Huang",
+                  "native": "\u9EC4\u6210\u5E0C",
+                  "userPreferred": "Chengxi Huang"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n126921-FUVLoigPoq4b.png"
+                },
+                "favourites": 66
+              },
+              "role": "Key Animation (ep 4)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

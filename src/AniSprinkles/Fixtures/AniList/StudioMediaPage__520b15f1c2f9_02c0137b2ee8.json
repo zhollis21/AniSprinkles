@@ -1,0 +1,628 @@
+﻿{
+  "operationName": "StudioMediaPage",
+  "variables": {
+    "id": 18,
+    "page": 2,
+    "sort": [
+      "TITLE_ROMAJI",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "02c0137b2ee8",
+  "recordedAt": "2026-09-09T16:00:27.1848806+00:00",
+  "response": {
+    "data": {
+      "Studio": {
+        "media": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 2
+          },
+          "nodes": [
+            {
+              "id": 5251,
+              "title": {
+                "romaji": "Angel Densetsu",
+                "english": "Angel of Legend",
+                "native": "\u30A8\u30F3\u30B8\u30A7\u30EB\u4F1D\u8AAC"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/5251.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/5251.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 72,
+              "favourites": 253,
+              "popularity": 13952,
+              "startDate": {
+                "year": 1996,
+                "month": 12,
+                "day": 13
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 200379,
+              "title": {
+                "romaji": "Anime Hachikou Monogatari",
+                "english": null,
+                "native": "\u30A2\u30CB\u30E1 \u30CF\u30C1\u516C\u7269\u8A9E"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx200379-QPitSVO2WDt7.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx200379-QPitSVO2WDt7.png"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": null,
+              "favourites": 0,
+              "popularity": 36,
+              "startDate": {
+                "year": 1990,
+                "month": null,
+                "day": null
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 7610,
+              "title": {
+                "romaji": "Anju to Zushioumaru",
+                "english": null,
+                "native": "\u5B89\u5BFF\u3068\u53A8\u5B50\u738B\u4E38"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx7610-knPFRnDYQmHt.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx7610-knPFRnDYQmHt.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 60,
+              "favourites": 15,
+              "popularity": 1535,
+              "startDate": {
+                "year": 1961,
+                "month": 7,
+                "day": 19
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 18821,
+              "title": {
+                "romaji": "Ano Yama ni Noborou yo",
+                "english": null,
+                "native": "\u3042\u306E\u5C71\u306B\u767B\u308D\u3046\u3088"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/18821.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/18821.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 41,
+              "favourites": 0,
+              "popularity": 177,
+              "startDate": {
+                "year": 2003,
+                "month": null,
+                "day": null
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1327,
+              "title": {
+                "romaji": "Aoki Densetsu Shoot!",
+                "english": null,
+                "native": "\u84BC\u304D\u4F1D\u8AAC \u30B7\u30E5\u30FC\u30C8!"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1327-B3BUwfGKCQIB.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1327-B3BUwfGKCQIB.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 70,
+              "favourites": 33,
+              "popularity": 3322,
+              "startDate": {
+                "year": 1993,
+                "month": 11,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 3844,
+              "title": {
+                "romaji": "Apache Yakyuugun",
+                "english": "Apache Baseball Team",
+                "native": "\u30A2\u30D1\u30C3\u30C1\u91CE\u7403\u8ECD"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b3844-pKT3KKJJ71xj.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b3844-pKT3KKJJ71xj.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 57,
+              "favourites": 10,
+              "popularity": 606,
+              "startDate": {
+                "year": 1971,
+                "month": 10,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 7786,
+              "title": {
+                "romaji": "Arabian Nights: Sindbad no Bouken",
+                "english": "Arabian Nights: Sinbad\u0027s Adventures",
+                "native": "\u30A2\u30E9\u30D3\u30A2\u30F3\u30CA\u30A4\u30C8\u30FB\u30B7\u30F3\u30C9\u30D0\u30C3\u30C9\u306E\u5192\u967A"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/7786.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/7786.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 47,
+              "favourites": 7,
+              "popularity": 858,
+              "startDate": {
+                "year": 1962,
+                "month": 6,
+                "day": 16
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 7156,
+              "title": {
+                "romaji": "Arei no Kagami: Way to the Virgin Space",
+                "english": "Arei\u0027s Mirror ~ Way to the Virgin Space",
+                "native": "\u30A2\u30EC\u30A4\u306E\u93E1 ~ Way to the Virgin Space"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx7156-GVbe19xoLVwA.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx7156-GVbe19xoLVwA.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 49,
+              "favourites": 15,
+              "popularity": 1052,
+              "startDate": {
+                "year": 1985,
+                "month": 3,
+                "day": 16
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 3800,
+              "title": {
+                "romaji": "Arrow Emblem: Grand Prix no Taka",
+                "english": "Grand Prix",
+                "native": "\u30A2\u30ED\u30FC\u30A8\u30F3\u30D6\u30EC\u30E0 \u30B0\u30E9\u30F3\u30D7\u30EA\u306E\u9DF9"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx3800-nFCpDGU5q5ue.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx3800-nFCpDGU5q5ue.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 61,
+              "favourites": 21,
+              "popularity": 911,
+              "startDate": {
+                "year": 1977,
+                "month": 9,
+                "day": 22
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 6629,
+              "title": {
+                "romaji": "Asari-chan",
+                "english": null,
+                "native": "\u3042\u3055\u308A\u3061\u3083\u3093"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/6629.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/6629.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 59,
+              "favourites": 8,
+              "popularity": 438,
+              "startDate": {
+                "year": 1982,
+                "month": 1,
+                "day": 25
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 6630,
+              "title": {
+                "romaji": "Asari-chan: Ai no Marchen Shoujo",
+                "english": null,
+                "native": "\u3042\u3055\u308A\u3061\u3083\u3093 \u611B\u306E\u30E1\u30EB\u30D8\u30F3\u5C11\u5973"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/6630.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/6630.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 42,
+              "favourites": 2,
+              "popularity": 190,
+              "startDate": {
+                "year": 1982,
+                "month": 3,
+                "day": 13
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 185541,
+              "title": {
+                "romaji": "Asatir 2: Mirai no Mukashibanashi",
+                "english": "Future Folktales Season 2",
+                "native": "\u30A2\u30B5\u30C6\u30A3\u30FC\u30EB2 \u672A\u6765\u306E\u6614\u3070\u306A\u3057"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx185541-XaTttukXApVj.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx185541-XaTttukXApVj.jpg"
+              },
+              "format": "ONA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": null,
+              "favourites": 7,
+              "popularity": 271,
+              "startDate": {
+                "year": 2024,
+                "month": 11,
+                "day": 3
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 117096,
+              "title": {
+                "romaji": "Asatir: Mirai no Mukashibanashi",
+                "english": "Future Folktales",
+                "native": "\u30A2\u30B5\u30C6\u30A3\u30FC\u30EB \u672A\u6765\u306E\u6614\u3070\u306A\u3057"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx117096-Ealg1PSeoeqh.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx117096-Ealg1PSeoeqh.jpg"
+              },
+              "format": "ONA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 49,
+              "favourites": 12,
+              "popularity": 1510,
+              "startDate": {
+                "year": 2020,
+                "month": 4,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1946,
+              "title": {
+                "romaji": "Ashita no Nadja",
+                "english": null,
+                "native": "\u660E\u65E5\u306E\u30CA\u30FC\u30B8\u30E3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1946-MLn2pjGSGhHJ.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1946-MLn2pjGSGhHJ.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 74,
+              "favourites": 302,
+              "popularity": 10913,
+              "startDate": {
+                "year": 2003,
+                "month": 2,
+                "day": 2
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 8475,
+              "title": {
+                "romaji": "Asura",
+                "english": null,
+                "native": "\u30A2\u30B7\u30E5\u30E9"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/8475.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/8475.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 65,
+              "favourites": 54,
+              "popularity": 7713,
+              "startDate": {
+                "year": 2012,
+                "month": 9,
+                "day": 29
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 9795,
+              "title": {
+                "romaji": "Atashin\u0027chi Movie",
+                "english": null,
+                "native": "\u6620\u753B \u3042\u305F\u3057\u30F3\u3061"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b9795-ZdFGV5ILCOox.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b9795-ZdFGV5ILCOox.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 56,
+              "favourites": 1,
+              "popularity": 401,
+              "startDate": {
+                "year": 2003,
+                "month": 12,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 586,
+              "title": {
+                "romaji": "ayakashi: Japanese Classic Horror",
+                "english": "Ayakashi: Samurai Horror Tales",
+                "native": "\u602A\uFF5Eayakashi\uFF5E Japanese Classic Horror"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx586-alDXEdRVYNU1.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx586-alDXEdRVYNU1.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 69,
+              "favourites": 134,
+              "popularity": 17976,
+              "startDate": {
+                "year": 2006,
+                "month": 1,
+                "day": 13
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 108752,
+              "title": {
+                "romaji": "Azumi Mamma\u2605Mia",
+                "english": null,
+                "native": "\u3042\u305A\u307F \u30DE\u30F3\u30DE\u2605\u30DF\u30FC\u30A2"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b108752-bK4DwujfFoSv.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b108752-bK4DwujfFoSv.jpg"
+              },
+              "format": "TV_SHORT",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": null,
+              "favourites": 2,
+              "popularity": 288,
+              "startDate": {
+                "year": 1997,
+                "month": 7,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1666,
+              "title": {
+                "romaji": "Babel Nisei (1973)",
+                "english": null,
+                "native": "\u30D0\u30D3\u30EB\uFF12\u4E16"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1666-vBYpqA5tAbQG.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1666-vBYpqA5tAbQG.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 57,
+              "favourites": 13,
+              "popularity": 892,
+              "startDate": {
+                "year": 1973,
+                "month": 1,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 6096,
+              "title": {
+                "romaji": "BADBOYS",
+                "english": null,
+                "native": "BADBOYS"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/6096.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/6096.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 60,
+              "favourites": 14,
+              "popularity": 1369,
+              "startDate": {
+                "year": 1993,
+                "month": 9,
+                "day": 25
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 102927,
+              "title": {
+                "romaji": "Bakutsuri Bar Hunter",
+                "english": null,
+                "native": "\u7206\u91E3\u30D0\u30FC\u30CF\u30F3\u30BF\u30FC"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b102927-qr5Eh62sH0kU.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b102927-qr5Eh62sH0kU.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 51,
+              "favourites": 3,
+              "popularity": 534,
+              "startDate": {
+                "year": 2018,
+                "month": 10,
+                "day": 2
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 113654,
+              "title": {
+                "romaji": "Bakutsuri Hunters",
+                "english": null,
+                "native": "\u7206\u91E3\u30CF\u30F3\u30BF\u30FC\u30BA"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx113654-NkQaX5SjANxl.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx113654-NkQaX5SjANxl.jpg"
+              },
+              "format": "ONA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": null,
+              "favourites": 1,
+              "popularity": 115,
+              "startDate": {
+                "year": 2019,
+                "month": 11,
+                "day": 15
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 5082,
+              "title": {
+                "romaji": "Battle Spirits: Shounen Toppa Bashin",
+                "english": null,
+                "native": "\u30D0\u30C8\u30EB\u30B9\u30D4\u30EA\u30C3\u30C4 \u5C11\u5E74\u7A81\u7834\u30D0\u30B7\u30F3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx5082-TPZqtEmnSqSx.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx5082-TPZqtEmnSqSx.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 59,
+              "favourites": 23,
+              "popularity": 1482,
+              "startDate": {
+                "year": 2008,
+                "month": 9,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 20442,
+              "title": {
+                "romaji": "BAYONETTA Bloody Fate",
+                "english": "Bayonetta: Bloody Fate",
+                "native": "\u30D9\u30E8\u30CD\u30C3\u30BF \u30D6\u30E9\u30C3\u30C7\u30A3\u30D5\u30A7\u30A4\u30C8"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20442-h9FYhs7SrKGj.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20442-h9FYhs7SrKGj.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 64,
+              "favourites": 189,
+              "popularity": 14848,
+              "startDate": {
+                "year": 2013,
+                "month": 11,
+                "day": 23
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 9645,
+              "title": {
+                "romaji": "Be-Bop High School",
+                "english": null,
+                "native": "\u30D3\u30FC\u30FB\u30D0\u30C3\u30D7\u30FB\u30CF\u30A4\u30B9\u30AF\u30FC\u30EB"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx9645-Vx2xMtVXdQ5P.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx9645-Vx2xMtVXdQ5P.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 72,
+              "favourites": 99,
+              "popularity": 4948,
+              "startDate": {
+                "year": 1990,
+                "month": 1,
+                "day": 26
+              },
+              "mediaListEntry": null
+            }
+          ]
+        }
+      }
+    }
+  }
+}

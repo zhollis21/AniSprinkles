@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 189046,
+    "page": 1,
+    "sort": [
+      "RELEVANCE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:25:12.1697763+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 118885,
+                "name": {
+                  "full": "Tappei Nagatsuki",
+                  "native": "\u9577\u6708\u9054\u5E73",
+                  "userPreferred": "Tappei Nagatsuki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/118885-yj70Ko0eoZqv.jpg"
+                },
+                "favourites": 2090
+              },
+              "role": "Original Story"
+            },
+            {
+              "node": {
+                "id": 118886,
+                "name": {
+                  "full": "Shinichirou Ootsuka",
+                  "native": "\u5927\u585A\u771F\u4E00\u90CE",
+                  "userPreferred": "Shinichirou Ootsuka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/118886-L9oHZttbUfgo.jpg"
+                },
+                "favourites": 216
+              },
+              "role": "Original Character Design"
+            },
+            {
+              "node": {
+                "id": 134798,
+                "name": {
+                  "full": "Masahiro Shinohara",
+                  "native": "\u7BE0\u539F\u6B63\u5BDB",
+                  "userPreferred": "Masahiro Shinohara"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n134798-TWgvVAmzNSUz.jpg"
+                },
+                "favourites": 16
+              },
+              "role": "Director "
+            },
+            {
+              "node": {
+                "id": 114175,
+                "name": {
+                  "full": "Masahiro Yokotani",
+                  "native": "\u6A2A\u8C37\u660C\u5B8F",
+                  "userPreferred": "Masahiro Yokotani"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/114175-2W52bh3FCxXW.jpg"
+                },
+                "favourites": 33
+              },
+              "role": "Series Composition"
+            },
+            {
+              "node": {
+                "id": 124675,
+                "name": {
+                  "full": "Haruka Sagawa",
+                  "native": "\u4F50\u5DDD\u9065",
+                  "userPreferred": "Haruka Sagawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n124675-Oo3vWIL3U0X0.jpg"
+                },
+                "favourites": 22
+              },
+              "role": "Character Design"
+            },
+            {
+              "node": {
+                "id": 142284,
+                "name": {
+                  "full": "Gouichi Iwahata",
+                  "native": "\u5CA9\u7551\u525B\u4E00",
+                  "userPreferred": "Gouichi Iwahata"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Prop Design"
+            },
+            {
+              "node": {
+                "id": 144481,
+                "name": {
+                  "full": "Noritaka Suzuki",
+                  "native": "\u9234\u6728\u5178\u5B5D",
+                  "userPreferred": "Noritaka Suzuki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 3
+              },
+              "role": "Prop Design"
+            },
+            {
+              "node": {
+                "id": 144948,
+                "name": {
+                  "full": "Ryouka Kinoshita",
+                  "native": "\u6728\u4E0B\u4E86\u9999",
+                  "userPreferred": "Ryouka Kinoshita"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Art Director"
+            },
+            {
+              "node": {
+                "id": 142605,
+                "name": {
+                  "full": "Kaoru Aoki",
+                  "native": "\u9752\u6728\u85AB",
+                  "userPreferred": "Kaoru Aoki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "Art Design"
+            },
+            {
+              "node": {
+                "id": 134288,
+                "name": {
+                  "full": "Izumi Sakamoto ",
+                  "native": "\u5742\u672C\u3044\u3065\u307F",
+                  "userPreferred": "Izumi Sakamoto "
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Color Design"
+            },
+            {
+              "node": {
+                "id": 156710,
+                "name": {
+                  "full": "Miori Miyagi",
+                  "native": "\u5BAE\u57CE\u5DF1\u7E54",
+                  "userPreferred": "Miori Miyagi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Director of Photography"
+            },
+            {
+              "node": {
+                "id": 142612,
+                "name": {
+                  "full": "Hitomi Sudou",
+                  "native": "\u9808\u85E4\u77B3",
+                  "userPreferred": "Hitomi Sudou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Editing"
+            },
+            {
+              "node": {
+                "id": 177283,
+                "name": {
+                  "full": "Kentarou Iijima",
+                  "native": "\u5C45\u5D8B\u5065\u592A\u90CE",
+                  "userPreferred": "Kentarou Iijima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "CG Director"
+            },
+            {
+              "node": {
+                "id": 103074,
+                "name": {
+                  "full": "Jin Aketagawa",
+                  "native": "\u660E\u7530\u5DDD\u4EC1",
+                  "userPreferred": "Jin Aketagawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n103074-36TfkytWdRzi.png"
+                },
+                "favourites": 666
+              },
+              "role": "Sound Director"
+            },
+            {
+              "node": {
+                "id": 142291,
+                "name": {
+                  "full": "Yuuji Furuya",
+                  "native": "\u53E4\u8C37\u53CB\u4E8C",
+                  "userPreferred": "Yuuji Furuya"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n142291-IfPvhBuLm0GW.jpg"
+                },
+                "favourites": 4
+              },
+              "role": "Sound Effects"
+            },
+            {
+              "node": {
+                "id": 119975,
+                "name": {
+                  "full": "Kenichirou Suehiro",
+                  "native": "\u672B\u5EE3\u5065\u4E00\u90CE",
+                  "userPreferred": "Kenichirou Suehiro"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n119975-mOidz23KSKae.png"
+                },
+                "favourites": 378
+              },
+              "role": "Music"
+            },
+            {
+              "node": {
+                "id": 124675,
+                "name": {
+                  "full": "Haruka Sagawa",
+                  "native": "\u4F50\u5DDD\u9065",
+                  "userPreferred": "Haruka Sagawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n124675-Oo3vWIL3U0X0.jpg"
+                },
+                "favourites": 22
+              },
+              "role": "Chief Animation Director (eps 1, 3, 5)"
+            },
+            {
+              "node": {
+                "id": 184471,
+                "name": {
+                  "full": "Keitarou Chiba",
+                  "native": "\u5343\u8449\u5553\u592A\u90CE",
+                  "userPreferred": "Keitarou Chiba"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Monster Design"
+            },
+            {
+              "node": {
+                "id": 96286,
+                "name": {
+                  "full": "Massimo Di Benedetto",
+                  "native": null,
+                  "userPreferred": "Massimo Di Benedetto"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n96286-TD02rKR1qiHV.png"
+                },
+                "favourites": 16
+              },
+              "role": "ADR Director (Italian)"
+            },
+            {
+              "node": {
+                "id": 105140,
+                "name": {
+                  "full": "Kei Oikawa",
+                  "native": "\u53CA\u5DDD\u5553",
+                  "userPreferred": "Kei Oikawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 34
+              },
+              "role": "Storyboard (ep 10)"
+            },
+            {
+              "node": {
+                "id": 105262,
+                "name": {
+                  "full": "Takanori Suzuki",
+                  "native": "\u9234\u6728\u5B5D\u5178",
+                  "userPreferred": "Takanori Suzuki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Key Animation (ep 11)"
+            },
+            {
+              "node": {
+                "id": 110607,
+                "name": {
+                  "full": "Konomi Suzuki",
+                  "native": "\u9234\u6728\u3053\u306E\u307F",
+                  "userPreferred": "Konomi Suzuki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n110607-UtSaOYgCcqBE.jpg"
+                },
+                "favourites": 787
+              },
+              "role": "Theme Song Performance (OP)"
+            },
+            {
+              "node": {
+                "id": 114175,
+                "name": {
+                  "full": "Masahiro Yokotani",
+                  "native": "\u6A2A\u8C37\u660C\u5B8F",
+                  "userPreferred": "Masahiro Yokotani"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/114175-2W52bh3FCxXW.jpg"
+                },
+                "favourites": 33
+              },
+              "role": "Script (eps 1, 4, 7)"
+            },
+            {
+              "node": {
+                "id": 119331,
+                "name": {
+                  "full": "Rie Takahashi",
+                  "native": "\u9AD8\u6A4B\u674E\u4F9D",
+                  "userPreferred": "Rie Takahashi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n119331-5dPuMCxu4RWf.jpg"
+                },
+                "favourites": 17035
+              },
+              "role": "Theme Song Performance (ED2)"
+            },
+            {
+              "node": {
+                "id": 119974,
+                "name": {
+                  "full": "Yoshiko Nakamura",
+                  "native": "\u4E2D\u6751\u80FD\u5B50",
+                  "userPreferred": "Yoshiko Nakamura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 6
+              },
+              "role": "Script (eps 2, 3, 5, 8)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

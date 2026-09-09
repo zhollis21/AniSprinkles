@@ -1,0 +1,58 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 141127,
+    "page": 1,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:25:52.1767962+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 101469,
+                "name": {
+                  "full": "Hiroshi Motomiya",
+                  "native": "\u672C\u5BAE\u3072\u308D\u5FD7",
+                  "userPreferred": "Hiroshi Motomiya"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101469-mPiRqr9E795h.png"
+                },
+                "favourites": 26
+              },
+              "role": "Story \u0026 Art"
+            },
+            {
+              "node": {
+                "id": 254803,
+                "name": {
+                  "full": "Masaharu Yamamoto",
+                  "native": "\u5C71\u672C\u307E\u3055\u306F\u308B",
+                  "userPreferred": "Masaharu Yamamoto"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Story \u0026 Art"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,653 @@
+﻿{
+  "operationName": "StudioMediaPage",
+  "variables": {
+    "id": 245,
+    "page": 3,
+    "sort": [
+      "TITLE_ROMAJI",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "02c0137b2ee8",
+  "recordedAt": "2026-09-06T05:31:51.9951871+00:00",
+  "response": {
+    "data": {
+      "Studio": {
+        "media": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 3
+          },
+          "nodes": [
+            {
+              "id": 131518,
+              "title": {
+                "romaji": "Dr. STONE: NEW WORLD",
+                "english": "Dr. STONE New World",
+                "native": "Dr.STONE NEW WORLD"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx131518-RU7RoUmGb2sP.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx131518-RU7RoUmGb2sP.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 81,
+              "favourites": 3924,
+              "popularity": 201301,
+              "startDate": {
+                "year": 2023,
+                "month": 4,
+                "day": 6
+              },
+              "mediaListEntry": {
+                "id": 593364001,
+                "status": "COMPLETED",
+                "progress": 11,
+                "score": 8
+              }
+            },
+            {
+              "id": 162670,
+              "title": {
+                "romaji": "Dr. STONE: NEW WORLD Part 2",
+                "english": "Dr. STONE New World Part 2",
+                "native": "Dr.STONE NEW WORLD \u7B2C2\u30AF\u30FC\u30EB"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx162670-07XrFq2hreTx.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx162670-07XrFq2hreTx.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 82,
+              "favourites": 2767,
+              "popularity": 138380,
+              "startDate": {
+                "year": 2023,
+                "month": 10,
+                "day": 12
+              },
+              "mediaListEntry": {
+                "id": 593363989,
+                "status": "COMPLETED",
+                "progress": 11,
+                "score": 8
+              }
+            },
+            {
+              "id": 142876,
+              "title": {
+                "romaji": "Dr. STONE: Ryuusui",
+                "english": "Dr. STONE Special Episode \u2013 RYUSUI",
+                "native": "Dr.STONE \u9F8D\u6C34"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx142876-izO35hPP2DZ9.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx142876-izO35hPP2DZ9.jpg"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 81,
+              "favourites": 1946,
+              "popularity": 122861,
+              "startDate": {
+                "year": 2022,
+                "month": 7,
+                "day": 10
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 172019,
+              "title": {
+                "romaji": "Dr. STONE: SCIENCE FUTURE",
+                "english": "Dr. STONE SCIENCE FUTURE",
+                "native": "Dr.STONE SCIENCE FUTURE"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx172019-3cfZbrYBmV23.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx172019-3cfZbrYBmV23.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 82,
+              "favourites": 2499,
+              "popularity": 115372,
+              "startDate": {
+                "year": 2025,
+                "month": 1,
+                "day": 9
+              },
+              "mediaListEntry": {
+                "id": 593363985,
+                "status": "COMPLETED",
+                "progress": 12,
+                "score": 8
+              }
+            },
+            {
+              "id": 189117,
+              "title": {
+                "romaji": "Dr. STONE: SCIENCE FUTURE Part 2",
+                "english": "Dr. STONE SCIENCE FUTURE Cour 2",
+                "native": "Dr.STONE SCIENCE FUTURE 2\u30AF\u30FC\u30EB"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx189117-TLtCXYT7JPoL.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx189117-TLtCXYT7JPoL.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 85,
+              "favourites": 2013,
+              "popularity": 87098,
+              "startDate": {
+                "year": 2025,
+                "month": 7,
+                "day": 10
+              },
+              "mediaListEntry": {
+                "id": 593363994,
+                "status": "COMPLETED",
+                "progress": 12,
+                "score": 8
+              }
+            },
+            {
+              "id": 199221,
+              "title": {
+                "romaji": "Dr. STONE: SCIENCE FUTURE Part 3",
+                "english": "Dr. STONE SCIENCE FUTURE Cour 3",
+                "native": "Dr.STONE SCIENCE FUTURE 3\u30AF\u30FC\u30EB"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx199221-TReDQMNhslHu.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx199221-TReDQMNhslHu.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 83,
+              "favourites": 2176,
+              "popularity": 78674,
+              "startDate": {
+                "year": 2026,
+                "month": 4,
+                "day": 2
+              },
+              "mediaListEntry": {
+                "id": 593365498,
+                "status": "PLANNING",
+                "progress": 0,
+                "score": 0
+              }
+            },
+            {
+              "id": 107418,
+              "title": {
+                "romaji": "Fairy Gone",
+                "english": "Fairy gone",
+                "native": "\u30D5\u30A7\u30A2\u30EA\u30FC\u30B4\u30FC\u30F3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx107418-tCfwTIgpbBMT.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx107418-tCfwTIgpbBMT.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 53,
+              "favourites": 346,
+              "popularity": 46867,
+              "startDate": {
+                "year": 2019,
+                "month": 4,
+                "day": 8
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 21748,
+              "title": {
+                "romaji": "FLCL Alternative",
+                "english": "FLCL Alternative",
+                "native": "\u30D5\u30EA\u30AF\u30EA \u30AA\u30EB\u30BF\u30CA"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21748-ZOusM9wb6Pln.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21748-ZOusM9wb6Pln.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 63,
+              "favourites": 291,
+              "popularity": 35424,
+              "startDate": {
+                "year": 2018,
+                "month": 9,
+                "day": 8
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 21746,
+              "title": {
+                "romaji": "FLCL Progressive",
+                "english": "FLCL Progressive",
+                "native": "\u30D5\u30EA\u30AF\u30EA \u30D7\u30ED\u30B0\u30EC"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21746-wBdtrYaF4ZIr.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21746-wBdtrYaF4ZIr.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 61,
+              "favourites": 346,
+              "popularity": 46112,
+              "startDate": {
+                "year": 2018,
+                "month": 6,
+                "day": 3
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 19899,
+              "title": {
+                "romaji": "Fujiko F. Fujio no Sukoshi Fushigi Tanpen Theater",
+                "english": null,
+                "native": "\u85E4\u5B50\u30FBF\u30FB\u4E0D\u4E8C\u96C4\u306ESF\u77ED\u7DE8\u30B7\u30A2\u30BF\u30FC"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx19899-3tbnh8odDVag.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx19899-3tbnh8odDVag.png"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 62,
+              "favourites": 8,
+              "popularity": 273,
+              "startDate": {
+                "year": 1990,
+                "month": 3,
+                "day": 16
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 171109,
+              "title": {
+                "romaji": "Fureru.",
+                "english": "Fureru",
+                "native": "\u3075\u308C\u308B\u3002"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx171109-L8VMss7mdCKU.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx171109-L8VMss7mdCKU.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 64,
+              "favourites": 39,
+              "popularity": 7100,
+              "startDate": {
+                "year": 2024,
+                "month": 10,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 188139,
+              "title": {
+                "romaji": "Futsutsuka na Akujo de wa Gozaimasu ga: Suuguu Chouso Torikae Den",
+                "english": "Though I Am an Inept Villainess",
+                "native": "\u3075\u3064\u3064\u304B\u306A\u60AA\u5973\u3067\u306F\u3054\u3056\u3044\u307E\u3059\u304C ~\u96DB\u5BAE\u8776\u9F20\u3068\u308A\u304B\u3048\u4F1D~"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx188139-1qIJfWxym8FX.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx188139-1qIJfWxym8FX.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "RELEASING",
+              "averageScore": 77,
+              "favourites": 735,
+              "popularity": 38339,
+              "startDate": {
+                "year": 2026,
+                "month": 7,
+                "day": 12
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 20865,
+              "title": {
+                "romaji": "Fuusen Inu Tinny",
+                "english": null,
+                "native": "\u3075\u3046\u305B\u3093\u3044\u306C\u30C6\u30A3\u30CB\u30FC"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/20865.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/20865.jpg"
+              },
+              "format": "TV_SHORT",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": null,
+              "favourites": 2,
+              "popularity": 269,
+              "startDate": {
+                "year": 2014,
+                "month": 9,
+                "day": 26
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2890,
+              "title": {
+                "romaji": "Gake no Ue no Ponyo",
+                "english": "Ponyo",
+                "native": "\u5D16\u306E\u4E0A\u306E\u30DD\u30CB\u30E7"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx2890-wcNtFr6aUYOR.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2890-wcNtFr6aUYOR.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 79,
+              "favourites": 6945,
+              "popularity": 187526,
+              "startDate": {
+                "year": 2008,
+                "month": 7,
+                "day": 19
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2473,
+              "title": {
+                "romaji": "Ginga Ojousama Densetsu Yuna",
+                "english": "Galaxy Fraulein Yuna",
+                "native": "\u9280\u6CB3\u304A\u5B22\u69D8\u4F1D\u8AAC\u30E6\u30CA \uFF5E\u54C0\u3057\u307F\u306E\u30BB\u30A4\u30EC\u30FC\u30F3\uFF5E"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b2473-abPY8zXUcSyg.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b2473-abPY8zXUcSyg.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 58,
+              "favourites": 26,
+              "popularity": 2626,
+              "startDate": {
+                "year": 1995,
+                "month": 9,
+                "day": 21
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2474,
+              "title": {
+                "romaji": "Ginga Ojousama Densetsu Yuna: Shin\u0060en no Fairy",
+                "english": "Galaxy Fraulein Yuna Returns",
+                "native": "\u9280\u6CB3\u304A\u5B22\u69D8\u4F1D\u8AAC\u30E6\u30CA\u3000\uFF5E\u6DF1\u95C7\u306E\u30D5\u30A7\u30A2\u30EA\u30A3\uFF5E"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b2474-KNIYE0N2GqDI.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b2474-KNIYE0N2GqDI.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 61,
+              "favourites": 26,
+              "popularity": 1560,
+              "startDate": {
+                "year": 1996,
+                "month": 12,
+                "day": 21
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 124786,
+              "title": {
+                "romaji": "Godzilla: Singular Point",
+                "english": "Godzilla Singular Point",
+                "native": "\u30B4\u30B8\u30E9 S.P\uFF1C\u30B7\u30F3\u30AE\u30E5\u30E9\u30DD\u30A4\u30F3\u30C8\uFF1E"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx124786-nq5AzrR1DI7z.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx124786-nq5AzrR1DI7z.jpg"
+              },
+              "format": "ONA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 65,
+              "favourites": 368,
+              "popularity": 23425,
+              "startDate": {
+                "year": 2021,
+                "month": 3,
+                "day": 25
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 110349,
+              "title": {
+                "romaji": "GREAT PRETENDER",
+                "english": "Great Pretender",
+                "native": "GREAT PRETENDER"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx110349-59hhZ9CNHVdk.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx110349-59hhZ9CNHVdk.png"
+              },
+              "format": "ONA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 81,
+              "favourites": 9482,
+              "popularity": 230392,
+              "startDate": {
+                "year": 2020,
+                "month": 6,
+                "day": 2
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 170935,
+              "title": {
+                "romaji": "GREAT PRETENDER: razbliuto",
+                "english": "GREAT PRETENDER razbliuto",
+                "native": "GREAT PRETENDER razbliuto"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx170935-XkUrGgv0gsL4.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx170935-XkUrGgv0gsL4.jpg"
+              },
+              "format": "ONA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 69,
+              "favourites": 144,
+              "popularity": 21887,
+              "startDate": {
+                "year": 2024,
+                "month": 2,
+                "day": 23
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 386,
+              "title": {
+                "romaji": "H2",
+                "english": null,
+                "native": "H2"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx386-x4amUWWKw0qR.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx386-x4amUWWKw0qR.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 69,
+              "favourites": 40,
+              "popularity": 3261,
+              "startDate": {
+                "year": 1995,
+                "month": 6,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 187261,
+              "title": {
+                "romaji": "Haikyuu!!: Bakemono-tachi no Iku Tokoro",
+                "english": null,
+                "native": "\u30CF\u30A4\u30AD\u30E5\u30FC!! \u30D0\u30B1\u30E2\u30CE\u305F\u3061\u306E\u884C\u304F\u3068\u3053\u308D"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx187261-VSwmu8ef3Zvb.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx187261-VSwmu8ef3Zvb.jpg"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "NOT_YET_RELEASED",
+              "averageScore": null,
+              "favourites": 42,
+              "popularity": 6989,
+              "startDate": {
+                "year": 2027,
+                "month": null,
+                "day": null
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 153658,
+              "title": {
+                "romaji": "Haikyuu!!: Gomi Suteba no Kessen",
+                "english": "HAIKYU!! The Dumpster Battle",
+                "native": "\u30CF\u30A4\u30AD\u30E5\u30FC!! \u30B4\u30DF\u6368\u3066\u5834\u306E\u6C7A\u6226"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx153658-KVnjW77cQw3y.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx153658-KVnjW77cQw3y.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 86,
+              "favourites": 2888,
+              "popularity": 97482,
+              "startDate": {
+                "year": 2024,
+                "month": 2,
+                "day": 16
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 174871,
+              "title": {
+                "romaji": "Haikyuu!!: VS Chiisana Kyojin",
+                "english": null,
+                "native": "\u30CF\u30A4\u30AD\u30E5\u30FC!! VS \u5C0F\u3055\u306A\u5DE8\u4EBA"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx174871-NQ2LbAn6RBCd.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx174871-NQ2LbAn6RBCd.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "NOT_YET_RELEASED",
+              "averageScore": null,
+              "favourites": 162,
+              "popularity": 20675,
+              "startDate": {
+                "year": 2027,
+                "month": null,
+                "day": null
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 5936,
+              "title": {
+                "romaji": "Hashire! Shiroi Ookami",
+                "english": "White Fang",
+                "native": "\u8D70\u308C! \u767D\u3044\u30AA\u30AA\u30AB\u30DF"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/5936.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/5936.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 58,
+              "favourites": 15,
+              "popularity": 702,
+              "startDate": {
+                "year": 1990,
+                "month": 4,
+                "day": 28
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2793,
+              "title": {
+                "romaji": "Hi no Tori 2772: Ai no CosmoZone",
+                "english": null,
+                "native": "\u706B\u306E\u9CE5 \uFF12\uFF17\uFF17\uFF12 \u611B\u306E\u30B3\u30B9\u30E2\u30BE\u30FC\u30F3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx2793-lvRbV4rAVXxE.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx2793-lvRbV4rAVXxE.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 63,
+              "favourites": 20,
+              "popularity": 1658,
+              "startDate": {
+                "year": 1980,
+                "month": 3,
+                "day": 15
+              },
+              "mediaListEntry": null
+            }
+          ]
+        }
+      }
+    }
+  }
+}

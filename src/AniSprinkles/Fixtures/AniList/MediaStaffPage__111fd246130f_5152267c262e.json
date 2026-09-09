@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 182255,
+    "page": 2,
+    "sort": [
+      "RELEVANCE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:18:57.2921968+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 2
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 119999,
+                "name": {
+                  "full": "Evan Call",
+                  "native": "\u30A8\u30D0\u30F3\u30FB\u30B3\u30FC\u30EB",
+                  "userPreferred": "Evan Call"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n119999-D6YFCpQPSoHf.png"
+                },
+                "favourites": 1162
+              },
+              "role": "Music"
+            },
+            {
+              "node": {
+                "id": 232551,
+                "name": {
+                  "full": "Takahiro Ikeda",
+                  "native": "\u6C60\u7530\u8CB4\u535A",
+                  "userPreferred": "Takahiro Ikeda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Music Director"
+            },
+            {
+              "node": {
+                "id": 233817,
+                "name": {
+                  "full": "Yui Arima",
+                  "native": "\u6709\u99AC\u7531\u8863",
+                  "userPreferred": "Yui Arima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n233817-XRIewphZ3Bnx.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Music Producer"
+            },
+            {
+              "node": {
+                "id": 156867,
+                "name": {
+                  "full": "Yuuichirou Fukushi",
+                  "native": "\u798F\u58EB\u88D5\u4E00\u90CE",
+                  "userPreferred": "Yuuichirou Fukushi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n156867-KnyVPSHCLp9U.png"
+                },
+                "favourites": 46
+              },
+              "role": "Animation Producer"
+            },
+            {
+              "node": {
+                "id": 315822,
+                "name": {
+                  "full": "Sara Hayakawa",
+                  "native": "\u65E9\u5DDD\u7D17\u826F",
+                  "userPreferred": "Sara Hayakawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Production Desk"
+            },
+            {
+              "node": {
+                "id": 142408,
+                "name": {
+                  "full": "Keiji Oota",
+                  "native": "\u5927\u7530\u572D\u4E8C",
+                  "userPreferred": "Keiji Oota"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n142408-azAJTAkBJ4Mx.png"
+                },
+                "favourites": 1
+              },
+              "role": "Planning"
+            },
+            {
+              "node": {
+                "id": 145111,
+                "name": {
+                  "full": "Nobumasa Sawabe",
+                  "native": "\u6CA2\u8FBA\u4F38\u653F",
+                  "userPreferred": "Nobumasa Sawabe"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n145111-dajXY4xkLV3o.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Planning"
+            },
+            {
+              "node": {
+                "id": 142910,
+                "name": {
+                  "full": "Kunihito Takazawa",
+                  "native": "\u9AD8\u6FA4\u90A6\u4EC1",
+                  "userPreferred": "Kunihito Takazawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Planning Assistance"
+            },
+            {
+              "node": {
+                "id": 146688,
+                "name": {
+                  "full": "Masanori Miyake",
+                  "native": "\u4E09\u5B85\u5C06\u5178",
+                  "userPreferred": "Masanori Miyake"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n146688-h7eWETzuXqgz.png"
+                },
+                "favourites": 5
+              },
+              "role": "Planning Assistance"
+            },
+            {
+              "node": {
+                "id": 232842,
+                "name": {
+                  "full": "Sanae Tashiro",
+                  "native": "\u7530\u4EE3\u65E9\u82D7",
+                  "userPreferred": "Sanae Tashiro"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n232842-wzK2iLTh63hw.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Planning Assistance"
+            },
+            {
+              "node": {
+                "id": 237811,
+                "name": {
+                  "full": "Yuuzou Kuwabara",
+                  "native": "\u6851\u539F\u52C7\u8535",
+                  "userPreferred": "Yuuzou Kuwabara"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Planning Assistance"
+            },
+            {
+              "node": {
+                "id": 335327,
+                "name": {
+                  "full": "Kenzou Ishiguro",
+                  "native": "\u77F3\u9ED2\u7814\u4E09",
+                  "userPreferred": "Kenzou Ishiguro"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Planning Assistance"
+            },
+            {
+              "node": {
+                "id": 148238,
+                "name": {
+                  "full": "Kazutaka Yamanaka",
+                  "native": "\u5C71\u4E2D\u4E00\u5B5D",
+                  "userPreferred": "Kazutaka Yamanaka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n148238-alub0q2qPgI3.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Executive Producer"
+            },
+            {
+              "node": {
+                "id": 142333,
+                "name": {
+                  "full": "Katsuhiro Takei",
+                  "native": "\u6B66\u4E95\u514B\u5F18",
+                  "userPreferred": "Katsuhiro Takei"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n142333-KRxjDMVScN2x.png"
+                },
+                "favourites": 1
+              },
+              "role": "Chief Producer"
+            },
+            {
+              "node": {
+                "id": 170165,
+                "name": {
+                  "full": "Atsushi Takahashi",
+                  "native": "\u9AD8\u6A4B\u6566\u53F8",
+                  "userPreferred": "Atsushi Takahashi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Chief Producer"
+            },
+            {
+              "node": {
+                "id": 128828,
+                "name": {
+                  "full": "Masami Niwa",
+                  "native": "\u4E39\u7FBD\u5C06\u5DF1",
+                  "userPreferred": "Masami Niwa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n128828-NQAmaIk25wMb.png"
+                },
+                "favourites": 0
+              },
+              "role": "Producer"
+            },
+            {
+              "node": {
+                "id": 153756,
+                "name": {
+                  "full": "Ayuri Taguchi",
+                  "native": "\u7530\u53E3\u4E9C\u6709\u7406",
+                  "userPreferred": "Ayuri Taguchi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Producer"
+            },
+            {
+              "node": {
+                "id": 166560,
+                "name": {
+                  "full": "Shouichirou Taguchi",
+                  "native": "\u7530\u53E3\u7FD4\u4E00\u6717",
+                  "userPreferred": "Shouichirou Taguchi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n166560-aNJlWhCGvkJM.png"
+                },
+                "favourites": 1
+              },
+              "role": "Producer"
+            },
+            {
+              "node": {
+                "id": 253147,
+                "name": {
+                  "full": "Ruriko Kikuchi",
+                  "native": "\u83CA\u6C60\u7460\u68A8\u5B50",
+                  "userPreferred": "Ruriko Kikuchi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n253147-wsx4dQjlX5nP.png"
+                },
+                "favourites": 0
+              },
+              "role": "Producer"
+            },
+            {
+              "node": {
+                "id": 275985,
+                "name": {
+                  "full": "Yuito Hirahara",
+                  "native": "\u5E73\u539F\u552F\u706F",
+                  "userPreferred": "Yuito Hirahara"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Producer"
+            },
+            {
+              "node": {
+                "id": 315832,
+                "name": {
+                  "full": "Taisuke Shikama",
+                  "native": "\u56DB\u7AC8\u6CF0\u4ECB",
+                  "userPreferred": "Taisuke Shikama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n315832-HTMdR5A8pZ1R.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Producer"
+            },
+            {
+              "node": {
+                "id": 323348,
+                "name": {
+                  "full": "Kie Hamada",
+                  "native": "\u6FF1\u7530\u8CB4\u60E0",
+                  "userPreferred": "Kie Hamada"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Producer"
+            },
+            {
+              "node": {
+                "id": 371674,
+                "name": {
+                  "full": "Makito Saoda",
+                  "native": "\u7AFF\u7530\u7267\u4EBA",
+                  "userPreferred": "Makito Saoda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Producer"
+            },
+            {
+              "node": {
+                "id": 150001,
+                "name": {
+                  "full": "Atsushi Kirimoto",
+                  "native": "\u6850\u672C\u7BE4",
+                  "userPreferred": "Atsushi Kirimoto"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Associate Producer"
+            },
+            {
+              "node": {
+                "id": 220402,
+                "name": {
+                  "full": "Naoki Iwasa",
+                  "native": "\u5CA9\u4F50\u76F4\u6A39",
+                  "userPreferred": "Naoki Iwasa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Associate Producer"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

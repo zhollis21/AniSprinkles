@@ -1,0 +1,977 @@
+﻿{
+  "operationName": "CharacterMediaPage",
+  "variables": {
+    "id": 61,
+    "page": 2,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "2ff9193259a9",
+  "recordedAt": "2026-09-09T15:58:02.7065115+00:00",
+  "response": {
+    "data": {
+      "Character": {
+        "media": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 2
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 16468,
+                "title": {
+                  "romaji": "ONE PIECE FILM: Z - GLORIOUS ISLAND",
+                  "english": null,
+                  "native": "ONE PIECE FILM Z\u300EGLORIOUS ISLAND\u300F"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b16468-pMKFwfY8lYZX.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b16468-pMKFwfY8lYZX.png"
+                },
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 69,
+                "favourites": 80,
+                "popularity": 11336,
+                "startDate": {
+                  "year": 2012,
+                  "month": 12,
+                  "day": 23
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "SUPPORTING",
+              "voiceActors": [
+                {
+                  "id": 95130,
+                  "name": {
+                    "full": "Yuriko Yamaguchi",
+                    "native": "\u5C71\u53E3\u7531\u91CC\u5B50",
+                    "userPreferred": "Yuriko Yamaguchi"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95130-GoO41ve3YWQw.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95130-GoO41ve3YWQw.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 354
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 9999,
+                "title": {
+                  "romaji": "ONE PIECE 3D: Mugiwara Chase",
+                  "english": "One Piece 3D: Mugiwara Chase",
+                  "native": "ONE PIECE 3D \u9EA6\u308F\u3089\u30C1\u30A7\u30A4\u30B9"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx9999-2icUDMDtpH2L.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx9999-2icUDMDtpH2L.jpg"
+                },
+                "format": "MOVIE",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 64,
+                "favourites": 78,
+                "popularity": 14433,
+                "startDate": {
+                  "year": 2011,
+                  "month": 3,
+                  "day": 19
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 95130,
+                  "name": {
+                    "full": "Yuriko Yamaguchi",
+                    "native": "\u5C71\u53E3\u7531\u91CC\u5B50",
+                    "userPreferred": "Yuriko Yamaguchi"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95130-GoO41ve3YWQw.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95130-GoO41ve3YWQw.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 354
+                },
+                {
+                  "id": 96275,
+                  "name": {
+                    "full": "Patrizia Scianca",
+                    "native": null,
+                    "userPreferred": "Patrizia Scianca"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n96275-K5vy1UBZWPA0.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n96275-K5vy1UBZWPA0.png"
+                  },
+                  "languageV2": "Italian",
+                  "favourites": 18
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 113308,
+                "title": {
+                  "romaji": "Kinen Satsuei",
+                  "english": null,
+                  "native": "\u8A18\u5FF5\u64AE\u5F71"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx113308-u6wWW3d01DSt.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx113308-u6wWW3d01DSt.jpg"
+                },
+                "format": "MUSIC",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 76,
+                "favourites": 76,
+                "popularity": 3697,
+                "startDate": {
+                  "year": 2019,
+                  "month": 11,
+                  "day": 2
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 16239,
+                "title": {
+                  "romaji": "ONE PIECE: Episode of Luffy - Hand Island no Bouken",
+                  "english": "One Piece: Episode of Luffy - Hand Island Adventure",
+                  "native": "ONE PIECE \u30A8\u30D4\u30BD\u30FC\u30C9\u30AA\u30D6\u30EB\u30D5\u30A3 \u301C\u30CF\u30F3\u30C9\u30A2\u30A4\u30E9\u30F3\u30C9\u306E\u5192\u967A\u301C"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b16239-XzoVjd7JK8xJ.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b16239-XzoVjd7JK8xJ.png"
+                },
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 72,
+                "favourites": 66,
+                "popularity": 12460,
+                "startDate": {
+                  "year": 2012,
+                  "month": 12,
+                  "day": 15
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 95130,
+                  "name": {
+                    "full": "Yuriko Yamaguchi",
+                    "native": "\u5C71\u53E3\u7531\u91CC\u5B50",
+                    "userPreferred": "Yuriko Yamaguchi"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95130-GoO41ve3YWQw.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95130-GoO41ve3YWQw.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 354
+                },
+                {
+                  "id": 100881,
+                  "name": {
+                    "full": "Simone Brahmann",
+                    "native": null,
+                    "userPreferred": "Simone Brahmann"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/5881.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/5881.jpg"
+                  },
+                  "languageV2": "German",
+                  "favourites": 5
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 21880,
+                "title": {
+                  "romaji": "ONE PIECE FILM: GOLD - episode 0 711ver.",
+                  "english": null,
+                  "native": "ONE PIECE FILM GOLD \u301Cepisode 0\u301C 711ver."
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx21880-uxsZ880LXSdY.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx21880-uxsZ880LXSdY.jpg"
+                },
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 69,
+                "favourites": 55,
+                "popularity": 9254,
+                "startDate": {
+                  "year": 2016,
+                  "month": 7,
+                  "day": 2
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 95130,
+                  "name": {
+                    "full": "Yuriko Yamaguchi",
+                    "native": "\u5C71\u53E3\u7531\u91CC\u5B50",
+                    "userPreferred": "Yuriko Yamaguchi"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95130-GoO41ve3YWQw.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95130-GoO41ve3YWQw.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 354
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 1238,
+                "title": {
+                  "romaji": "ONE PIECE: Mamore! Saigo no Oobutai",
+                  "english": "One Piece Special: Protect! The Last Great Performance",
+                  "native": "ONE PIECE \u5B88\u308C! \u6700\u5F8C\u306E\u5927\u821E\u53F0"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1238-Rf2wqBrCwgvO.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1238-Rf2wqBrCwgvO.jpg"
+                },
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 69,
+                "favourites": 53,
+                "popularity": 8500,
+                "startDate": {
+                  "year": 2003,
+                  "month": 12,
+                  "day": 14
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 95130,
+                  "name": {
+                    "full": "Yuriko Yamaguchi",
+                    "native": "\u5C71\u53E3\u7531\u91CC\u5B50",
+                    "userPreferred": "Yuriko Yamaguchi"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95130-GoO41ve3YWQw.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95130-GoO41ve3YWQw.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 354
+                },
+                {
+                  "id": 96275,
+                  "name": {
+                    "full": "Patrizia Scianca",
+                    "native": null,
+                    "userPreferred": "Patrizia Scianca"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n96275-K5vy1UBZWPA0.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n96275-K5vy1UBZWPA0.png"
+                  },
+                  "languageV2": "Italian",
+                  "favourites": 18
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 2490,
+                "title": {
+                  "romaji": "ONE PIECE: Mezase! Kaizoku Yakyuu Ou",
+                  "english": null,
+                  "native": "ONE PIECE \u3081\u3056\u305B! \u6D77\u8CCA\u91CE\u7403\u738B"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/2490-AL4WmnCJ5zvE.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/2490-AL4WmnCJ5zvE.jpg"
+                },
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 64,
+                "favourites": 41,
+                "popularity": 8770,
+                "startDate": {
+                  "year": 2004,
+                  "month": 3,
+                  "day": 6
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 95130,
+                  "name": {
+                    "full": "Yuriko Yamaguchi",
+                    "native": "\u5C71\u53E3\u7531\u91CC\u5B50",
+                    "userPreferred": "Yuriko Yamaguchi"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95130-GoO41ve3YWQw.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95130-GoO41ve3YWQw.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 354
+                },
+                {
+                  "id": 100881,
+                  "name": {
+                    "full": "Simone Brahmann",
+                    "native": null,
+                    "userPreferred": "Simone Brahmann"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/5881.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/5881.jpg"
+                  },
+                  "languageV2": "German",
+                  "favourites": 5
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 106572,
+                "title": {
+                  "romaji": "ONE PIECE: Episode of Alabasta - Sabaku no Oujo to Kaizoku-tachi",
+                  "english": null,
+                  "native": "ONE PIECE \u30A8\u30D4\u30BD\u30FC\u30C9\u30AA\u30D6\u30A2\u30E9\u30D0\u30B9\u30BF \u7802\u6F20\u306E\u738B\u5973\u3068\u6D77\u8CCA\u305F\u3061"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/n106572-k1gqIsDcqGaV.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/n106572-k1gqIsDcqGaV.jpg"
+                },
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 68,
+                "favourites": 39,
+                "popularity": 5486,
+                "startDate": {
+                  "year": 2011,
+                  "month": 8,
+                  "day": 20
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "SUPPORTING",
+              "voiceActors": [
+                {
+                  "id": 95130,
+                  "name": {
+                    "full": "Yuriko Yamaguchi",
+                    "native": "\u5C71\u53E3\u7531\u91CC\u5B50",
+                    "userPreferred": "Yuriko Yamaguchi"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95130-GoO41ve3YWQw.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95130-GoO41ve3YWQw.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 354
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 1237,
+                "title": {
+                  "romaji": "ONE PIECE: Oounabara ni Hirake! Dekkai Dekkai Chichi no Yume!",
+                  "english": "One Piece Special: Open Upon the Great Sea! A Father\u0027s Huge, HUGE Dream!",
+                  "native": "ONE PIECE: \u5927\u6D77\u539F\u306B\u3072\u3089\u3051! \u3067\u3063\u304B\u3044\u3067\u3063\u30AB\u30A4\u7236\u306E\u5922"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/1237.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/1237.jpg"
+                },
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 67,
+                "favourites": 37,
+                "popularity": 7864,
+                "startDate": {
+                  "year": 2003,
+                  "month": 4,
+                  "day": 6
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 95130,
+                  "name": {
+                    "full": "Yuriko Yamaguchi",
+                    "native": "\u5C71\u53E3\u7531\u91CC\u5B50",
+                    "userPreferred": "Yuriko Yamaguchi"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95130-GoO41ve3YWQw.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95130-GoO41ve3YWQw.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 354
+                },
+                {
+                  "id": 96275,
+                  "name": {
+                    "full": "Patrizia Scianca",
+                    "native": null,
+                    "userPreferred": "Patrizia Scianca"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n96275-K5vy1UBZWPA0.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n96275-K5vy1UBZWPA0.png"
+                  },
+                  "languageV2": "Italian",
+                  "favourites": 18
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 12001,
+                "title": {
+                  "romaji": "ONE PIECE 3D: Gekisou! Trap Coaster",
+                  "english": null,
+                  "native": "ONE PIECE 3D \u6FC0\u8D70! \u30C8\u30E9\u30C3\u30D7\u30B3\u30FC\u30B9\u30BF\u30FC"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx12001-XX0NNNfaKZ3e.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx12001-XX0NNNfaKZ3e.jpg"
+                },
+                "format": "MOVIE",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 61,
+                "favourites": 33,
+                "popularity": 6342,
+                "startDate": {
+                  "year": 2011,
+                  "month": 12,
+                  "day": 1
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 2020,
+                "title": {
+                  "romaji": "ONE PIECE: Nenmatsu Tokubetsu Kikaku! Mugiwara no Luffy Oyabun Torimonochou",
+                  "english": "One Piece Special: The Detective Memoirs of Chief Straw Hat Luffy",
+                  "native": "ONE PIECE \u5E74\u672B\u7279\u5225\u4F01\u753B\uFF01\u9EA6\u308F\u3089\u306E\u30EB\u30D5\u30A3\u89AA\u5206\u6355\u7269\u5E16"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/2020.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/2020.jpg"
+                },
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 68,
+                "favourites": 29,
+                "popularity": 7610,
+                "startDate": {
+                  "year": 2005,
+                  "month": 12,
+                  "day": 18
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "SUPPORTING",
+              "voiceActors": [
+                {
+                  "id": 95130,
+                  "name": {
+                    "full": "Yuriko Yamaguchi",
+                    "native": "\u5C71\u53E3\u7531\u91CC\u5B50",
+                    "userPreferred": "Yuriko Yamaguchi"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95130-GoO41ve3YWQw.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95130-GoO41ve3YWQw.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 354
+                },
+                {
+                  "id": 96275,
+                  "name": {
+                    "full": "Patrizia Scianca",
+                    "native": null,
+                    "userPreferred": "Patrizia Scianca"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n96275-K5vy1UBZWPA0.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n96275-K5vy1UBZWPA0.png"
+                  },
+                  "languageV2": "Italian",
+                  "favourites": 18
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 30881,
+                "title": {
+                  "romaji": "CROSS EPOCH",
+                  "english": "Cross Epoch",
+                  "native": "CROSS EPOCH"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx30881-Zsx7tzEFxjta.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx30881-Zsx7tzEFxjta.jpg"
+                },
+                "format": "ONE_SHOT",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "averageScore": 61,
+                "favourites": 23,
+                "popularity": 3101,
+                "startDate": {
+                  "year": 2006,
+                  "month": 12,
+                  "day": 25
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 101099,
+                "title": {
+                  "romaji": "HUNGRY DAYS: Aoharu ka yo.",
+                  "english": null,
+                  "native": "HUNGRY DAYS\u3000\u30A2\u30AA\u30CF\u30EB\u304B\u3088\u3002"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b101099-3AoCbJWTj2cV.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b101099-3AoCbJWTj2cV.jpg"
+                },
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 61,
+                "favourites": 23,
+                "popularity": 3091,
+                "startDate": {
+                  "year": 2017,
+                  "month": 6,
+                  "day": 7
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "BACKGROUND",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 113686,
+                "title": {
+                  "romaji": "ONE PIECE novel HEROINES",
+                  "english": "One Piece: Heroines",
+                  "native": "ONE PIECE novel HEROINES"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx113686-DyVNjetsbnQh.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx113686-DyVNjetsbnQh.jpg"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "averageScore": 60,
+                "favourites": 19,
+                "popularity": 993,
+                "startDate": {
+                  "year": 2019,
+                  "month": 12,
+                  "day": 13
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 47152,
+                "title": {
+                  "romaji": "ONE PIECE: STRONG WORLD",
+                  "english": null,
+                  "native": "ONE PIECE STRONG WORLD"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/n47152-v3AqgrZH9BsU.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/n47152-v3AqgrZH9BsU.jpg"
+                },
+                "format": "ONE_SHOT",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "averageScore": 74,
+                "favourites": 18,
+                "popularity": 3851,
+                "startDate": {
+                  "year": 2009,
+                  "month": 11,
+                  "day": 30
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "SUPPORTING",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 110715,
+                "title": {
+                  "romaji": "ONE PIECE Gakuen!!",
+                  "english": "ONE PIECE ACADEMY",
+                  "native": "ONE PIECE\u5B66\u5712!!"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx110715-IqObMH5zGdOM.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx110715-IqObMH5zGdOM.jpg"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "RELEASING",
+                "averageScore": 63,
+                "favourites": 13,
+                "popularity": 1102,
+                "startDate": {
+                  "year": 2019,
+                  "month": 8,
+                  "day": 2
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 128292,
+                "title": {
+                  "romaji": "Gekijouban ONE PIECE: STAMPEDE",
+                  "english": null,
+                  "native": "\u5287\u5834\u7248 ONE PIECE STAMPEDE"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx128292-q4XFNK3q4dXx.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx128292-q4XFNK3q4dXx.jpg"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "averageScore": 66,
+                "favourites": 13,
+                "popularity": 544,
+                "startDate": {
+                  "year": 2019,
+                  "month": 8,
+                  "day": 9
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 128291,
+                "title": {
+                  "romaji": "ONE PIECE novel Mugiwara Stories",
+                  "english": null,
+                  "native": "ONE PIECE novel \u9EA6\u308F\u3089\u30B9\u30C8\u30FC\u30EA\u30FC\u30BA"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx128291-O2AEatR4HU2d.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx128291-O2AEatR4HU2d.png"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "averageScore": 61,
+                "favourites": 12,
+                "popularity": 633,
+                "startDate": {
+                  "year": 2017,
+                  "month": 7,
+                  "day": 7
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 55146,
+                "title": {
+                  "romaji": "ONE PIECE x Toriko",
+                  "english": "One Piece x Toriko: Taste of the Devil Fruit",
+                  "native": "ONE PIECE x \u30C8\u30EA\u30B3"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/25146.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/25146.jpg"
+                },
+                "format": "ONE_SHOT",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "averageScore": 62,
+                "favourites": 11,
+                "popularity": 1778,
+                "startDate": {
+                  "year": 2011,
+                  "month": 4,
+                  "day": 4
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "SUPPORTING",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 126649,
+                "title": {
+                  "romaji": "Tokyo One Piece Tower: Tongari Shima no Dai Hihou",
+                  "english": "The Great Tongari Island Treasure Hunting Adventure",
+                  "native": "\u6771\u4EAC\u30EF\u30F3\u30D4\u30FC\u30B9\u30BF\u30EF\u30FC \u30C8\u30F3\u30AC\u30EA\u5CF6\u306E\u5927\u79D8\u5B9D"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b126649-sbuKTAghtsln.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b126649-sbuKTAghtsln.jpg"
+                },
+                "format": "MOVIE",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 60,
+                "favourites": 9,
+                "popularity": 2182,
+                "startDate": {
+                  "year": 2016,
+                  "month": 11,
+                  "day": 1
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "SUPPORTING",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 106492,
+                "title": {
+                  "romaji": "Kyutai Panic Adventure!",
+                  "english": null,
+                  "native": "\u7403\u4F53\u30D1\u30CB\u30C3\u30AF\u30A2\u30C9\u30D9\u30F3\u30C1\u30E3\u30FC!"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b106492-ciLSI5nTJsV7.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b106492-ciLSI5nTJsV7.png"
+                },
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 43,
+                "favourites": 8,
+                "popularity": 1135,
+                "startDate": {
+                  "year": 2003,
+                  "month": null,
+                  "day": null
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "SUPPORTING",
+              "voiceActors": [
+                {
+                  "id": 95130,
+                  "name": {
+                    "full": "Yuriko Yamaguchi",
+                    "native": "\u5C71\u53E3\u7531\u91CC\u5B50",
+                    "userPreferred": "Yuriko Yamaguchi"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95130-GoO41ve3YWQw.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95130-GoO41ve3YWQw.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 354
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 44414,
+                "title": {
+                  "romaji": "ONE PIECE Log Book Omake",
+                  "english": null,
+                  "native": null
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx44414-5q51CV5hp2Yh.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx44414-5q51CV5hp2Yh.jpg"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "averageScore": 65,
+                "favourites": 7,
+                "popularity": 1108,
+                "startDate": {
+                  "year": 2005,
+                  "month": 4,
+                  "day": 1
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 187380,
+                "title": {
+                  "romaji": "ONE PIECE: Original Episode/Luffy, Law",
+                  "english": null,
+                  "native": "ONE PIECE \u30AA\u30EA\u30B8\u30CA\u30EB\u30A8\u30D4\u30BD\u30FC\u30C9\uFF0F\u30EB\u30D5\u30A3\u3001\u30ED\u30FC"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx187380-RZmxpJyB3A6Y.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx187380-RZmxpJyB3A6Y.jpg"
+                },
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 63,
+                "favourites": 7,
+                "popularity": 1294,
+                "startDate": {
+                  "year": 2025,
+                  "month": 1,
+                  "day": 19
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "BACKGROUND",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 107256,
+                "title": {
+                  "romaji": "Kyutai Panic Adventure Returns!!!",
+                  "english": null,
+                  "native": "\u7403\u4F53\u30D1\u30CB\u30C3\u30AF\u30A2\u30C9\u30D9\u30F3\u30C1\u30E3\u30FC\u30EA\u30BF\u30FC\u30F3\u30BA!!!"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b107256-Pvgk6VnCmMZq.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b107256-Pvgk6VnCmMZq.png"
+                },
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 46,
+                "favourites": 6,
+                "popularity": 1068,
+                "startDate": {
+                  "year": 2004,
+                  "month": null,
+                  "day": null
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "SUPPORTING",
+              "voiceActors": [
+                {
+                  "id": 95130,
+                  "name": {
+                    "full": "Yuriko Yamaguchi",
+                    "native": "\u5C71\u53E3\u7531\u91CC\u5B50",
+                    "userPreferred": "Yuriko Yamaguchi"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95130-GoO41ve3YWQw.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95130-GoO41ve3YWQw.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 354
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 114761,
+                "title": {
+                  "romaji": "A-RA-SHI : Reborn",
+                  "english": null,
+                  "native": "A-RA-SHI : Reborn"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b114761-C2xOMuA44zKY.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b114761-C2xOMuA44zKY.png"
+                },
+                "format": "MUSIC",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 56,
+                "favourites": 5,
+                "popularity": 842,
+                "startDate": {
+                  "year": 2020,
+                  "month": 1,
+                  "day": 4
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": []
+            }
+          ]
+        }
+      }
+    }
+  }
+}

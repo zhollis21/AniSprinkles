@@ -1,0 +1,528 @@
+﻿{
+  "operationName": "MediaRecommendationsPage",
+  "variables": {
+    "id": 144092,
+    "page": 1,
+    "sort": [
+      "RATING_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "4c3bbb02d06d",
+  "recordedAt": "2026-09-06T05:24:41.7802088+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "recommendations": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "nodes": [
+            {
+              "rating": 58,
+              "mediaRecommendation": {
+                "id": 156067,
+                "title": {
+                  "romaji": "Tondemo Skill de Isekai Hourou Meshi",
+                  "english": "Campfire Cooking in Another World with my Absurd Skill",
+                  "native": "\u3068\u3093\u3067\u3082\u30B9\u30AD\u30EB\u3067\u7570\u4E16\u754C\u653E\u6D6A\u30E1\u30B7"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx156067-Jovklss4VWIx.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx156067-Jovklss4VWIx.jpg"
+                },
+                "averageScore": 76,
+                "mediaListEntry": {
+                  "id": 541004332,
+                  "status": "COMPLETED",
+                  "progress": 12,
+                  "score": 9
+                }
+              }
+            },
+            {
+              "rating": 46,
+              "mediaRecommendation": {
+                "id": 135806,
+                "title": {
+                  "romaji": "Isekai Oji-san",
+                  "english": "Uncle from Another World",
+                  "native": "\u7570\u4E16\u754C\u304A\u3058\u3055\u3093"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx135806-uhqZSNTYZe04.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx135806-uhqZSNTYZe04.jpg"
+                },
+                "averageScore": 76,
+                "mediaListEntry": {
+                  "id": 593364482,
+                  "status": "COMPLETED",
+                  "progress": 13,
+                  "score": 9
+                }
+              }
+            },
+            {
+              "rating": 41,
+              "mediaRecommendation": {
+                "id": 153518,
+                "title": {
+                  "romaji": "Dungeon Meshi",
+                  "english": "Delicious in Dungeon",
+                  "native": "\u30C0\u30F3\u30B8\u30E7\u30F3\u98EF"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx153518-IVXPDY5ph3kO.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx153518-IVXPDY5ph3kO.jpg"
+                },
+                "averageScore": 85,
+                "mediaListEntry": {
+                  "id": 593364470,
+                  "status": "COMPLETED",
+                  "progress": 24,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 25,
+              "mediaRecommendation": {
+                "id": 21202,
+                "title": {
+                  "romaji": "Kono Subarashii Sekai ni Shukufuku wo!",
+                  "english": "KONOSUBA -God\u0027s blessing on this wonderful world!",
+                  "native": "\u3053\u306E\u7D20\u6674\u3089\u3057\u3044\u4E16\u754C\u306B\u795D\u798F\u3092\uFF01"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21202-mPOr80AEjUcZ.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21202-mPOr80AEjUcZ.png"
+                },
+                "averageScore": 79,
+                "mediaListEntry": {
+                  "id": 593363892,
+                  "status": "COMPLETED",
+                  "progress": 10,
+                  "score": 10
+                }
+              }
+            },
+            {
+              "rating": 16,
+              "mediaRecommendation": {
+                "id": 146850,
+                "title": {
+                  "romaji": "Isekai Nonbiri Nouka",
+                  "english": "Farming Life in Another World",
+                  "native": "\u7570\u4E16\u754C\u306E\u3093\u3073\u308A\u8FB2\u5BB6"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx146850-xfeAFIE0M9hl.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx146850-xfeAFIE0M9hl.jpg"
+                },
+                "averageScore": 74,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 11,
+              "mediaRecommendation": {
+                "id": 101165,
+                "title": {
+                  "romaji": "Goblin Slayer",
+                  "english": "GOBLIN SLAYER",
+                  "native": "\u30B4\u30D6\u30EA\u30F3\u30B9\u30EC\u30A4\u30E4\u30FC"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx101165-v5NwPXWPFDuD.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101165-v5NwPXWPFDuD.jpg"
+                },
+                "averageScore": 71,
+                "mediaListEntry": {
+                  "id": 548900001,
+                  "status": "COMPLETED",
+                  "progress": 12,
+                  "score": 3
+                }
+              }
+            },
+            {
+              "rating": 8,
+              "mediaRecommendation": {
+                "id": 155418,
+                "title": {
+                  "romaji": "Seija Musou: Salaryman, Isekai de Ikinokoru Tame ni Ayumu Michi",
+                  "english": "The Great Cleric",
+                  "native": "\u8056\u8005\u7121\u53CC \uFF5E\u30B5\u30E9\u30EA\u30FC\u30DE\u30F3\u3001\u7570\u4E16\u754C\u3067\u751F\u304D\u6B8B\u308B\u305F\u3081\u306B\u6B69\u3080\u9053\uFF5E"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx155418-wLWulAHYVrE5.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx155418-wLWulAHYVrE5.jpg"
+                },
+                "averageScore": 70,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 7,
+              "mediaRecommendation": {
+                "id": 97617,
+                "title": {
+                  "romaji": "Isekai Shokudou",
+                  "english": "Restaurant to Another World",
+                  "native": "\u7570\u4E16\u754C\u98DF\u5802"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx97617-TmRRraupfbT5.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx97617-TmRRraupfbT5.jpg"
+                },
+                "averageScore": 72,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 7,
+              "mediaRecommendation": {
+                "id": 21428,
+                "title": {
+                  "romaji": "Hai to Gensou no Grimgar",
+                  "english": "Grimgar of Fantasy and Ash",
+                  "native": "\u7070\u3068\u5E7B\u60F3\u306E\u30B0\u30EA\u30E0\u30AC\u30EB"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21428-dFVIHeZ8McBe.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21428-dFVIHeZ8McBe.jpg"
+                },
+                "averageScore": 74,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 6,
+              "mediaRecommendation": {
+                "id": 137908,
+                "title": {
+                  "romaji": "Chiyu Mahou no Machigatta Tsukaikata",
+                  "english": "The Wrong Way to Use Healing Magic",
+                  "native": "\u6CBB\u7652\u9B54\u6CD5\u306E\u9593\u9055\u3063\u305F\u4F7F\u3044\u65B9"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx137908-50af3lKVbst2.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx137908-50af3lKVbst2.jpg"
+                },
+                "averageScore": 75,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 6,
+              "mediaRecommendation": {
+                "id": 169440,
+                "title": {
+                  "romaji": "Jidou Hanbaiki ni Umarekawatta Ore wa Meikyuu wo Samayou 2nd Season",
+                  "english": "Reborn as a Vending Machine, I Now Wander the Dungeon Season 2",
+                  "native": "\u81EA\u52D5\u8CA9\u58F2\u6A5F\u306B\u751F\u307E\u308C\u5909\u308F\u3063\u305F\u4FFA\u306F\u8FF7\u5BAE\u3092\u5F77\u5FA8\u3046 2nd Season"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx169440-MhlOxaIyASRu.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx169440-MhlOxaIyASRu.jpg"
+                },
+                "averageScore": 64,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 5,
+              "mediaRecommendation": {
+                "id": 152137,
+                "title": {
+                  "romaji": "Isekai Shikkaku",
+                  "english": "No Longer Allowed in Another World",
+                  "native": "\u7570\u4E16\u754C\u5931\u683C"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx152137-JpefyFlYa03R.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx152137-JpefyFlYa03R.jpg"
+                },
+                "averageScore": 71,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 4,
+              "mediaRecommendation": {
+                "id": 172453,
+                "title": {
+                  "romaji": "Akuyaku Reijou Tensei Oji-san",
+                  "english": "From Bureaucrat to Villainess: Dad\u0027s Been Reincarnated!",
+                  "native": "\u60AA\u5F79\u4EE4\u5B22\u8EE2\u751F\u304A\u3058\u3055\u3093"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx172453-7iYNTAEZpNsJ.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx172453-7iYNTAEZpNsJ.png"
+                },
+                "averageScore": 73,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 4,
+              "mediaRecommendation": {
+                "id": 179955,
+                "title": {
+                  "romaji": "Katainaka no Ossan, Kensei ni Naru",
+                  "english": "From Old Country Bumpkin to Master Swordsman",
+                  "native": "\u7247\u7530\u820E\u306E\u304A\u3063\u3055\u3093\u3001\u5263\u8056\u306B\u306A\u308B"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx179955-e4UPTow92B1O.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx179955-e4UPTow92B1O.jpg"
+                },
+                "averageScore": 69,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 3,
+              "mediaRecommendation": {
+                "id": 17265,
+                "title": {
+                  "romaji": "Log Horizon",
+                  "english": "Log Horizon",
+                  "native": "\u30ED\u30B0\u30FB\u30DB\u30E9\u30A4\u30BA\u30F3"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx17265-RyErURYesjJt.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx17265-RyErURYesjJt.jpg"
+                },
+                "averageScore": 76,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 3,
+              "mediaRecommendation": {
+                "id": 20671,
+                "title": {
+                  "romaji": "Log Horizon 2",
+                  "english": "Log Horizon 2",
+                  "native": "\u30ED\u30B0\u30FB\u30DB\u30E9\u30A4\u30BA\u30F3 2"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20671-ZpNJQ5RixVIq.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20671-ZpNJQ5RixVIq.jpg"
+                },
+                "averageScore": 73,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 2,
+              "mediaRecommendation": {
+                "id": 112608,
+                "title": {
+                  "romaji": "Slime Taoshite 300-nen, Shiranai Uchi ni Level MAX ni Nattemashita",
+                  "english": "I\u0027ve Been Killing Slimes for 300 Years and Maxed Out My Level",
+                  "native": "\u30B9\u30E9\u30A4\u30E0\u5012\u3057\u3066300\u5E74\u3001\u77E5\u3089\u306A\u3044\u3046\u3061\u306B\u30EC\u30D9\u30EBMAX\u306B\u306A\u3063\u3066\u307E\u3057\u305F"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx112608-T3OKdLhxYUfe.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx112608-T3OKdLhxYUfe.png"
+                },
+                "averageScore": 68,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 1,
+              "mediaRecommendation": {
+                "id": 168345,
+                "title": {
+                  "romaji": "Dungeon no Naka no Hito",
+                  "english": "Dungeon People",
+                  "native": "\u30C0\u30F3\u30B8\u30E7\u30F3\u306E\u4E2D\u306E\u3072\u3068"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx168345-X28k73J6QAtc.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx168345-X28k73J6QAtc.jpg"
+                },
+                "averageScore": 70,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 1,
+              "mediaRecommendation": {
+                "id": 153360,
+                "title": {
+                  "romaji": "Jidou Hanbaiki ni Umarekawatta Ore wa Meikyuu wo Samayou",
+                  "english": "Reborn as a Vending Machine, I Now Wander the Dungeon",
+                  "native": "\u81EA\u52D5\u8CA9\u58F2\u6A5F\u306B\u751F\u307E\u308C\u5909\u308F\u3063\u305F\u4FFA\u306F\u8FF7\u5BAE\u3092\u5F77\u5FA8\u3046"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx153360-VM22UwGEz8Ir.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx153360-VM22UwGEz8Ir.jpg"
+                },
+                "averageScore": 62,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 1,
+              "mediaRecommendation": {
+                "id": 7711,
+                "title": {
+                  "romaji": "Karigurashi no Arrietty",
+                  "english": "The Secret World of Arrietty",
+                  "native": "\u501F\u308A\u3050\u3089\u3057\u306E\u30A2\u30EA\u30A8\u30C3\u30C6\u30A3"
+                },
+                "format": "MOVIE",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx7711-IDDzqp6d3tQz.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx7711-IDDzqp6d3tQz.jpg"
+                },
+                "averageScore": 77,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 0,
+              "mediaRecommendation": {
+                "id": 152523,
+                "title": {
+                  "romaji": "Kaiko sareta Ankoku Heishi (30-dai) no Slow na Second Life",
+                  "english": "Chillin\u2019 in My 30s after Getting Fired from the Demon King\u2019s Army",
+                  "native": "\u89E3\u96C7\u3055\u308C\u305F\u6697\u9ED2\u5175\u58EB\uFF0830\u4EE3\uFF09\u306E\u30B9\u30ED\u30FC\u306A\u30BB\u30AB\u30F3\u30C9\u30E9\u30A4\u30D5"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx152523-1I1KPnKyOwhe.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx152523-1I1KPnKyOwhe.jpg"
+                },
+                "averageScore": 68,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 0,
+              "mediaRecommendation": {
+                "id": 176053,
+                "title": {
+                  "romaji": "Sayonara Ryuusei Konnichiwa Jinsei",
+                  "english": "Good Bye, Dragon Life",
+                  "native": "\u3055\u3088\u3046\u306A\u3089\u7ADC\u751F\u3001\u3053\u3093\u306B\u3061\u306F\u4EBA\u751F"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx176053-HfPo4pUm6Ktg.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx176053-HfPo4pUm6Ktg.jpg"
+                },
+                "averageScore": 62,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 0,
+              "mediaRecommendation": {
+                "id": 137909,
+                "title": {
+                  "romaji": "Ningen Fushin no Boukensha-tachi ga Sekai wo Sukuu you desu",
+                  "english": "Ningen Fushin: Adventurers Who Don\u2019t Believe in Humanity Will Save the World",
+                  "native": "\u4EBA\u9593\u4E0D\u4FE1\u306E\u5192\u967A\u8005\u305F\u3061\u304C\u4E16\u754C\u3092\u6551\u3046\u3088\u3046\u3067\u3059"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx137909-7c0zEcg9GjYo.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx137909-7c0zEcg9GjYo.png"
+                },
+                "averageScore": 62,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 0,
+              "mediaRecommendation": {
+                "id": 161476,
+                "title": {
+                  "romaji": "Ishura",
+                  "english": "ISHURA",
+                  "native": "\u7570\u4FEE\u7F85"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx161476-ukTxAPHib1Fg.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx161476-ukTxAPHib1Fg.jpg"
+                },
+                "averageScore": 65,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 0,
+              "mediaRecommendation": {
+                "id": 196218,
+                "title": {
+                  "romaji": "Ryoumin 0-Nin Start no Henkyou Ryoushu-sama",
+                  "english": "The Frontier Lord Begins with Zero Subjects",
+                  "native": "\u9818\u6C110\u4EBA\u30B9\u30BF\u30FC\u30C8\u306E\u8FBA\u5883\u9818\u4E3B\u69D8"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx196218-UsdTTCrwpDIN.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx196218-UsdTTCrwpDIN.jpg"
+                },
+                "averageScore": 66,
+                "mediaListEntry": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}
