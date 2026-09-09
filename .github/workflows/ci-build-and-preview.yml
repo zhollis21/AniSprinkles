@@ -872,7 +872,16 @@ jobs:
           # page deeper than was captured, or a query whose fields changed. Blocking rather than
           # warning, because the alternative is what this work removed: a section that silently
           # renders empty and a screenshot nobody can tell is wrong.
-          MISS_LOG=$(adb logcat -d -s AniSprinkles 2>/dev/null | grep -F "FIXTURE MISS" || true)
+          # Greps the full dump written above rather than filtering by tag. The tag filter this
+          # replaced could never have matched: AndroidLogcatLoggerProvider.TrimTag takes the LAST 23
+          # characters of the ILogger category, so FixtureReplayHandler logs under
+          # "es.FixtureReplayHandler", not "AniSprinkles" — only the Android.Util.Log calls in the
+          # broadcast receivers use that literal tag. The gate looked blocking and could not fire.
+          #
+          # No tag, no PID, no conditional step to depend on: logcat-full.txt is written
+          # unconditionally above, and "FIXTURE MISS" is distinctive enough that scanning the whole
+          # buffer cannot false-positive. A gate whose input can go missing is the same bug again.
+          MISS_LOG=$(grep -F "FIXTURE MISS" logs/logcat-full.txt 2>/dev/null || true)
           if [ -n "$MISS_LOG" ]; then
             echo "::error::The app requested data the fixtures do not contain. Re-record with tools/record-anilist-fixtures.cs."
             echo "$MISS_LOG"
