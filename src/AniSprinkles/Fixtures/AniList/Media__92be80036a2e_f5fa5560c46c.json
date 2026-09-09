@@ -1,0 +1,3640 @@
+﻿{
+  "operationName": "Media",
+  "variables": {
+    "id": 30013
+  },
+  "queryFingerprint": "f5fa5560c46c",
+  "recordedAt": "2026-09-06T05:26:42.1411437+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "id": 30013,
+        "idMal": 13,
+        "title": {
+          "romaji": "ONE PIECE",
+          "english": "One Piece",
+          "native": "ONE PIECE"
+        },
+        "coverImage": {
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30013-BeslEMqiPhlk.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30013-BeslEMqiPhlk.jpg",
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx30013-BeslEMqiPhlk.jpg",
+          "color": "#f1935d"
+        },
+        "bannerImage": "https://s4.anilist.co/file/anilistcdn/media/manga/banner/30013-hbbRZqC5MjYh.jpg",
+        "description": "As a child, Monkey D. Luffy was inspired to become a pirate by listening to the tales of the buccaneer \u0022Red-Haired\u0022 Shanks. But his life changed when Luffy accidentally ate the Gum-Gum Devil Fruit and gained the power to stretch like rubber...at the cost of never being able to swim again! Years later, still vowing to become the king of the pirates, Luffy sets out on his adventure...one guy alone in a rowboat, in search of the legendary \u0022One Piece,\u0022 said to be the greatest treasure in the world...\n\u003Cbr\u003E\u003Cbr\u003E\n(Source: VIZ Media)",
+        "format": "MANGA",
+        "type": "MANGA",
+        "status": "RELEASING",
+        "episodes": null,
+        "chapters": null,
+        "volumes": null,
+        "duration": null,
+        "season": null,
+        "seasonYear": null,
+        "source": "ORIGINAL",
+        "countryOfOrigin": "JP",
+        "isAdult": false,
+        "isLicensed": true,
+        "siteUrl": "https://anilist.co/manga/30013",
+        "hashtag": null,
+        "startDate": {
+          "year": 1997,
+          "month": 7,
+          "day": 22
+        },
+        "endDate": {
+          "year": null,
+          "month": null,
+          "day": null
+        },
+        "nextAiringEpisode": null,
+        "trailer": {
+          "id": "q1hfLa75hRs",
+          "site": "youtube"
+        },
+        "synonyms": [
+          "\uC6D0\uD53C\uC2A4",
+          "\u05D5\u05D5\u05D0\u05DF \u05E4\u05D9\u05E1 ",
+          "One Piece - \u0411\u043E\u043B\u044C\u0448\u043E\u0439 \u043A\u0443\u0448",
+          "\u30EF\u30F3\u30D4\u30FC\u30B9",
+          "ONE PIECE\uFF5E\u822A\u6D77\u738B\uFF5E",
+          "\u0E27\u0E31\u0E19\u0E1E\u0E35\u0E0B"
+        ],
+        "genres": [
+          "Action",
+          "Adventure",
+          "Comedy",
+          "Fantasy"
+        ],
+        "averageScore": 91,
+        "meanScore": 91,
+        "popularity": 232169,
+        "favourites": 46530,
+        "isFavourite": false,
+        "trending": 37,
+        "tags": [
+          {
+            "id": 201,
+            "name": "Pirates",
+            "rank": 96,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features sea-faring adventurers branded as criminals by the law.",
+            "category": "Cast-Traits"
+          },
+          {
+            "id": 1310,
+            "name": "Travel",
+            "rank": 96,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Centers around character(s) moving between places a significant distance apart.",
+            "category": "Theme-Other"
+          },
+          {
+            "id": 1277,
+            "name": "Found Family",
+            "rank": 95,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Features a group of characters with no biological relations that are united in a group providing social support.",
+            "category": "Theme-Other"
+          },
+          {
+            "id": 56,
+            "name": "Shounen",
+            "rank": 92,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Target demographic is teenage and young adult males.",
+            "category": "Demographic"
+          },
+          {
+            "id": 105,
+            "name": "Ensemble Cast",
+            "rank": 91,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Features a large cast of characters with (almost) equal screen time and importance to the plot.",
+            "category": "Cast-Main Cast"
+          },
+          {
+            "id": 66,
+            "name": "Super Power",
+            "rank": 87,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features characters with special abilities that allow them to do what would normally be physically or logically impossible.",
+            "category": "Theme-Fantasy"
+          },
+          {
+            "id": 305,
+            "name": "Ships",
+            "rank": 81,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features the use of sea-based transportation vessels.",
+            "category": "Theme-Other-Vehicle"
+          },
+          {
+            "id": 82,
+            "name": "Male Protagonist",
+            "rank": 80,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Main character is male.",
+            "category": "Cast-Main Cast"
+          },
+          {
+            "id": 85,
+            "name": "Tragedy",
+            "rank": 80,
+            "isMediaSpoiler": true,
+            "isGeneralSpoiler": true,
+            "isAdult": false,
+            "description": "Centers around tragic events and unhappy endings.",
+            "category": "Theme-Drama"
+          },
+          {
+            "id": 2008,
+            "name": "Prophecy",
+            "rank": 79,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Features characters or plot elements that revolve around predicting the future.",
+            "category": "Theme-Other"
+          },
+          {
+            "id": 103,
+            "name": "Politics",
+            "rank": 79,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Centers around politics, politicians, or government activities.",
+            "category": "Theme-Other"
+          },
+          {
+            "id": 226,
+            "name": "Fugitive",
+            "rank": 79,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features a character evading capture by an individual or organization.",
+            "category": "Theme-Action"
+          },
+          {
+            "id": 648,
+            "name": "Crime",
+            "rank": 79,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Centers around unlawful activities punishable by the state or other authority.",
+            "category": "Theme-Other"
+          },
+          {
+            "id": 456,
+            "name": "Conspiracy",
+            "rank": 79,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Contains one or more factions controlling or attempting to control the world from the shadows.",
+            "category": "Theme-Drama"
+          },
+          {
+            "id": 34,
+            "name": "Military",
+            "rank": 78,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Centered around the life and activities of military personnel.",
+            "category": "Theme-Other-Organisations"
+          },
+          {
+            "id": 285,
+            "name": "Terrorism",
+            "rank": 77,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Centers around the activities of a terrorist or terrorist organization.",
+            "category": "Theme-Other"
+          },
+          {
+            "id": 83,
+            "name": "Slapstick",
+            "rank": 76,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features comedy based on deliberately clumsy actions or embarrassing events.",
+            "category": "Theme-Comedy"
+          },
+          {
+            "id": 111,
+            "name": "War",
+            "rank": 75,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Partly or completely set during wartime.",
+            "category": "Theme-Other"
+          },
+          {
+            "id": 153,
+            "name": "Time Skip",
+            "rank": 71,
+            "isMediaSpoiler": true,
+            "isGeneralSpoiler": true,
+            "isAdult": false,
+            "description": "Features a gap in time used to advance the story.",
+            "category": "Setting-Time"
+          },
+          {
+            "id": 466,
+            "name": "Lost Civilization",
+            "rank": 71,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Featuring a civilization with few ruins or records that exist in present day knowledge.",
+            "category": "Theme-Other"
+          },
+          {
+            "id": 253,
+            "name": "Gods",
+            "rank": 70,
+            "isMediaSpoiler": true,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features a character of divine or religious nature.",
+            "category": "Cast-Traits"
+          },
+          {
+            "id": 93,
+            "name": "Post-Apocalyptic",
+            "rank": 69,
+            "isMediaSpoiler": true,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Partly or completely set in a world or civilization after a global disaster.",
+            "category": "Setting-Universe"
+          },
+          {
+            "id": 247,
+            "name": "Slavery",
+            "rank": 69,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features slaves, slavery, or slave trade.",
+            "category": "Theme-Other"
+          },
+          {
+            "id": 490,
+            "name": "Anachronism",
+            "rank": 68,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features elements that are out of place in the historical period the work takes place in, particularly modern elements in a historical setting.",
+            "category": "Setting-Time"
+          },
+          {
+            "id": 109,
+            "name": "Primarily Adult Cast",
+            "rank": 68,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Main cast is mostly composed of characters above a high school age.",
+            "category": "Cast-Main Cast"
+          },
+          {
+            "id": 208,
+            "name": "Mythology",
+            "rank": 67,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features mythological elements, especially those from religious or cultural tradition.",
+            "category": "Theme-Fantasy"
+          },
+          {
+            "id": 1091,
+            "name": "Religion",
+            "rank": 66,
+            "isMediaSpoiler": true,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Centers on the belief that humanity is related to supernatural, transcendental, and spiritual elements.",
+            "category": "Theme-Other"
+          },
+          {
+            "id": 43,
+            "name": "Swordplay",
+            "rank": 66,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features the use of swords in combat.",
+            "category": "Theme-Action"
+          },
+          {
+            "id": 342,
+            "name": "Environmental",
+            "rank": 65,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Concern with the state of the natural world and how humans interact with it.",
+            "category": "Theme-Other"
+          },
+          {
+            "id": 433,
+            "name": "Animals",
+            "rank": 65,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features animal characters in a leading role.",
+            "category": "Theme-Other"
+          },
+          {
+            "id": 106,
+            "name": "Gangs",
+            "rank": 64,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Centers around gang organizations.",
+            "category": "Theme-Other-Organisations"
+          },
+          {
+            "id": 1427,
+            "name": "Prison",
+            "rank": 63,
+            "isMediaSpoiler": true,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Partly or completely set in a prison.",
+            "category": "Setting-Scene"
+          },
+          {
+            "id": 104,
+            "name": "Anti-Hero",
+            "rank": 63,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Features a protagonist who lacks conventional heroic attributes and may be considered a borderline villain.",
+            "category": "Cast-Main Cast"
+          },
+          {
+            "id": 310,
+            "name": "Espionage",
+            "rank": 62,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features characters infiltrating an organization in order to steal sensitive information.",
+            "category": "Theme-Action"
+          },
+          {
+            "id": 276,
+            "name": "Kaiju",
+            "rank": 60,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features giant monsters.",
+            "category": "Theme-Fantasy"
+          },
+          {
+            "id": 1304,
+            "name": "Anthropomorphism",
+            "rank": 60,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Contains non-human character(s) that have attributes or characteristics of a human being.",
+            "category": "Cast-Traits"
+          },
+          {
+            "id": 88,
+            "name": "Primarily Male Cast",
+            "rank": 60,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Main cast is mostly composed of male characters.",
+            "category": "Cast-Main Cast"
+          },
+          {
+            "id": 217,
+            "name": "Dystopian",
+            "rank": 60,
+            "isMediaSpoiler": true,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Partly or completely set in a society characterized by poverty, squalor or oppression.",
+            "category": "Setting-Time"
+          },
+          {
+            "id": 142,
+            "name": "Food",
+            "rank": 58,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Centers around cooking or food appraisal.",
+            "category": "Theme-Arts"
+          },
+          {
+            "id": 499,
+            "name": "Skeleton",
+            "rank": 58,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features skeleton(s) as a character.",
+            "category": "Cast-Traits"
+          },
+          {
+            "id": 291,
+            "name": "Samurai",
+            "rank": 57,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features warriors of medieval Japanese nobility bound by a code of honor.",
+            "category": "Cast-Traits"
+          },
+          {
+            "id": 801,
+            "name": "Cyborg",
+            "rank": 57,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features a human character whose physiological functions are aided or enhanced by artificial means.",
+            "category": "Cast-Traits"
+          },
+          {
+            "id": 99,
+            "name": "Henshin",
+            "rank": 56,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features character or costume transformations which often grant special abilities.",
+            "category": "Theme-Fantasy"
+          },
+          {
+            "id": 1052,
+            "name": "Adoption",
+            "rank": 56,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Features a character who has been adopted by someone who is neither of their biological parents.",
+            "category": "Theme-Other"
+          },
+          {
+            "id": 659,
+            "name": "Medicine",
+            "rank": 55,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Centered around the activities of people working in the field of medicine.",
+            "category": "Theme-Other"
+          },
+          {
+            "id": 322,
+            "name": "Assassins",
+            "rank": 55,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Centers around characters who murder people as a profession.",
+            "category": "Theme-Other-Organisations"
+          },
+          {
+            "id": 281,
+            "name": "Surreal Comedy",
+            "rank": 53,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features comedic moments that defy casual reasoning, resulting in illogical events.",
+            "category": "Theme-Comedy"
+          },
+          {
+            "id": 558,
+            "name": "Mermaid",
+            "rank": 53,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "A mythological creature with the body of a human and the tail of a fish.",
+            "category": "Cast-Traits"
+          },
+          {
+            "id": 157,
+            "name": "Guns",
+            "rank": 53,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features the use of guns in combat.",
+            "category": "Theme-Action"
+          },
+          {
+            "id": 252,
+            "name": "Revenge",
+            "rank": 53,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features a character who aims to exact punishment in a resentful or vindictive manner.",
+            "category": "Theme-Drama"
+          },
+          {
+            "id": 175,
+            "name": "Robots",
+            "rank": 53,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features humanoid machines.",
+            "category": "Cast-Traits"
+          },
+          {
+            "id": 144,
+            "name": "Meta",
+            "rank": 53,
+            "isMediaSpoiler": true,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Features fourth wall-breaking references to itself or genre tropes.",
+            "category": "Theme-Other"
+          },
+          {
+            "id": 489,
+            "name": "Drugs",
+            "rank": 52,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features the usage of drugs such as opioids, stimulants, hallucinogens etc.",
+            "category": "Theme-Other"
+          },
+          {
+            "id": 101,
+            "name": "Battle Royale",
+            "rank": 51,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Centers around a fierce group competition, often violent and with only one winner.",
+            "category": "Theme-Action"
+          },
+          {
+            "id": 224,
+            "name": "Dragons",
+            "rank": 51,
+            "isMediaSpoiler": true,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features mythical reptiles which generally have wings and can breathe fire.",
+            "category": "Cast-Traits"
+          },
+          {
+            "id": 259,
+            "name": "Monster Girl",
+            "rank": 51,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features a female character who is part-monster.",
+            "category": "Cast-Traits"
+          },
+          {
+            "id": 1539,
+            "name": "Unrequited Love",
+            "rank": 50,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "One or more characters are experiencing an unrequited love that may or may not be reciprocated.",
+            "category": "Theme-Romance"
+          },
+          {
+            "id": 240,
+            "name": "Amnesia",
+            "rank": 50,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features a character(s) with memory loss.",
+            "category": "Cast-Traits"
+          },
+          {
+            "id": 1453,
+            "name": "Desert",
+            "rank": 50,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features a desert environment.",
+            "category": "Setting-Scene"
+          },
+          {
+            "id": 96,
+            "name": "Time Manipulation",
+            "rank": 48,
+            "isMediaSpoiler": true,
+            "isGeneralSpoiler": true,
+            "isAdult": false,
+            "description": "Prominently features time-traveling or other time-warping phenomena.",
+            "category": "Theme-Sci-Fi"
+          },
+          {
+            "id": 593,
+            "name": "Oiran",
+            "rank": 48,
+            "isMediaSpoiler": true,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features a courtesan character of the Japanese Edo Period.",
+            "category": "Cast-Traits"
+          },
+          {
+            "id": 15,
+            "name": "Demons",
+            "rank": 46,
+            "isMediaSpoiler": true,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features malevolent otherworldly creatures.",
+            "category": "Cast-Traits"
+          },
+          {
+            "id": 254,
+            "name": "Kemonomimi",
+            "rank": 45,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features humanoid characters with animal ears.",
+            "category": "Cast-Traits"
+          },
+          {
+            "id": 161,
+            "name": "Bar",
+            "rank": 45,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Partly or completely set in a bar.",
+            "category": "Setting-Scene"
+          },
+          {
+            "id": 1165,
+            "name": "Transgender",
+            "rank": 44,
+            "isMediaSpoiler": true,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Features a character whose gender identity differs from the sex they were assigned at birth.",
+            "category": "Cast-Traits"
+          },
+          {
+            "id": 122,
+            "name": "Trains",
+            "rank": 44,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features trains.",
+            "category": "Theme-Other-Vehicle"
+          },
+          {
+            "id": 152,
+            "name": "Zombie",
+            "rank": 44,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features reanimated corpses which often prey on live humans and turn them into zombies.",
+            "category": "Cast-Traits"
+          },
+          {
+            "id": 365,
+            "name": "Memory Manipulation",
+            "rank": 44,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features a character(s) who has had their memories altered.",
+            "category": "Theme-Other"
+          },
+          {
+            "id": 255,
+            "name": "Ninja",
+            "rank": 43,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features Japanese warriors traditionally trained in espionage, sabotage and assasination.",
+            "category": "Cast-Traits"
+          },
+          {
+            "id": 704,
+            "name": "Dinosaurs",
+            "rank": 42,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features Dinosaurs, prehistoric reptiles that went extinct millions of years ago.",
+            "category": "Cast-Traits"
+          },
+          {
+            "id": 632,
+            "name": "Centaur",
+            "rank": 42,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features a character with a human upper body and the lower body of a horse.",
+            "category": "Cast-Traits"
+          },
+          {
+            "id": 77,
+            "name": "Gender Bending",
+            "rank": 42,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features a character who dresses and behaves in a way characteristic of another gender, or has been transformed into a person of another gender.",
+            "category": "Theme-Other"
+          },
+          {
+            "id": 1342,
+            "name": "Clone",
+            "rank": 41,
+            "isMediaSpoiler": true,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features a character who is an artificial exact copy of another organism.",
+            "category": "Cast-Traits"
+          },
+          {
+            "id": 517,
+            "name": "Artificial Intelligence",
+            "rank": 40,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Intelligent non-organic machines that work and react similarly to humans.",
+            "category": "Cast-Traits"
+          },
+          {
+            "id": 1681,
+            "name": "Aromantic",
+            "rank": 40,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Features a character who experiences little to no romantic attraction.",
+            "category": "Cast-Traits"
+          },
+          {
+            "id": 1526,
+            "name": "Matriarchy",
+            "rank": 40,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features a country that is ruled by a Queen or a society that is dominated by female inheritance.",
+            "category": "Theme-Other"
+          },
+          {
+            "id": 1068,
+            "name": "Angels",
+            "rank": 38,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features spiritual beings usually represented with wings and halos and believed to be attendants of God.",
+            "category": "Cast-Traits"
+          },
+          {
+            "id": 1578,
+            "name": "Arranged Marriage",
+            "rank": 37,
+            "isMediaSpoiler": true,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Features two characters made to marry each other, usually by their family.",
+            "category": "Cast-Traits"
+          },
+          {
+            "id": 191,
+            "name": "Aliens",
+            "rank": 37,
+            "isMediaSpoiler": true,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features extraterrestrial lifeforms.",
+            "category": "Cast-Traits"
+          },
+          {
+            "id": 772,
+            "name": "Shapeshifting",
+            "rank": 36,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Features character(s) who changes one\u0027s appearance or form.",
+            "category": "Theme-Fantasy"
+          },
+          {
+            "id": 154,
+            "name": "Body Swapping",
+            "rank": 36,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": true,
+            "isAdult": false,
+            "description": "Centers around individuals swapping bodies with one another.",
+            "category": "Theme-Fantasy"
+          },
+          {
+            "id": 1689,
+            "name": "Curses",
+            "rank": 31,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Features a character, object or area that has been cursed, usually by a malevolent supernatural force.",
+            "category": "Theme-Fantasy"
+          }
+        ],
+        "studios": {
+          "edges": []
+        },
+        "rankings": [
+          {
+            "rank": 4,
+            "type": "RATED",
+            "format": "MANGA",
+            "year": null,
+            "season": null,
+            "allTime": true,
+            "context": "highest rated all time"
+          },
+          {
+            "rank": 5,
+            "type": "POPULAR",
+            "format": "MANGA",
+            "year": null,
+            "season": null,
+            "allTime": true,
+            "context": "most popular all time"
+          },
+          {
+            "rank": 1,
+            "type": "RATED",
+            "format": "MANGA",
+            "year": 1997,
+            "season": null,
+            "allTime": false,
+            "context": "highest rated"
+          },
+          {
+            "rank": 1,
+            "type": "POPULAR",
+            "format": "MANGA",
+            "year": 1997,
+            "season": null,
+            "allTime": false,
+            "context": "most popular"
+          }
+        ],
+        "externalLinks": [
+          {
+            "id": 12833,
+            "url": "https://mangaplus.shueisha.co.jp/titles/100020",
+            "site": "MANGA Plus",
+            "type": "STREAMING",
+            "language": "English",
+            "color": "#DC0816",
+            "isDisabled": false
+          },
+          {
+            "id": 37206,
+            "url": "https://www.shonenjump.com/j/rensai/onepiece.html",
+            "site": "Shonen Jump",
+            "type": "STREAMING",
+            "language": "Japanese",
+            "color": "#C60000",
+            "isDisabled": false
+          },
+          {
+            "id": 45769,
+            "url": "https://mangaplus.shueisha.co.jp/titles/100079",
+            "site": "MANGA Plus",
+            "type": "STREAMING",
+            "language": "Thai",
+            "color": "#DC0816",
+            "isDisabled": false
+          },
+          {
+            "id": 101774,
+            "url": "https://www.viz.com/shonenjump/chapters/one-piece",
+            "site": "VIZ",
+            "type": "STREAMING",
+            "language": "English",
+            "color": "#FF0000",
+            "isDisabled": false
+          },
+          {
+            "id": 104298,
+            "url": "https://shonenjumpplus.com/episode/10833519556325021794",
+            "site": "Shonen Jump Plus",
+            "type": "STREAMING",
+            "language": "Japanese",
+            "color": "#E53935",
+            "isDisabled": false
+          },
+          {
+            "id": 141220,
+            "url": "https://mangaplus.shueisha.co.jp/titles/800001",
+            "site": "MANGA Plus",
+            "type": "STREAMING",
+            "language": "German",
+            "color": "#DC0816",
+            "isDisabled": false
+          },
+          {
+            "id": 141221,
+            "url": "https://mangaplus.shueisha.co.jp/titles/800001",
+            "site": "MANGA Plus",
+            "type": "STREAMING",
+            "language": "Spanish",
+            "color": "#DC0816",
+            "isDisabled": false
+          },
+          {
+            "id": 141222,
+            "url": "https://mangaplus.shueisha.co.jp/titles/700005",
+            "site": "MANGA Plus",
+            "type": "STREAMING",
+            "language": "French",
+            "color": "#DC0816",
+            "isDisabled": false
+          },
+          {
+            "id": 141223,
+            "url": "https://series.naver.com/comic/detail.series?productNo=2549781",
+            "site": "Naver Series",
+            "type": "STREAMING",
+            "language": "Korean",
+            "color": "#01DC64",
+            "isDisabled": false
+          },
+          {
+            "id": 141224,
+            "url": "https://page.kakao.com/content/46347471",
+            "site": "KakaoPage",
+            "type": "STREAMING",
+            "language": "Korean",
+            "color": "#FFD200",
+            "isDisabled": false
+          },
+          {
+            "id": 146363,
+            "url": "https://www.viz.com/one-piece",
+            "site": "VIZ",
+            "type": "STREAMING",
+            "language": "English",
+            "color": "#FF0000",
+            "isDisabled": false
+          },
+          {
+            "id": 150476,
+            "url": "https://www.ono.live/manga/one-piece-chapitres",
+            "site": "ONO",
+            "type": "STREAMING",
+            "language": "French",
+            "color": "#FDFDFD",
+            "isDisabled": false
+          },
+          {
+            "id": 155174,
+            "url": "https://one-piece.com/",
+            "site": "Official Site",
+            "type": "INFO",
+            "language": "Japanese",
+            "color": null,
+            "isDisabled": false
+          },
+          {
+            "id": 155175,
+            "url": "https://www.instagram.com/onepiece_staff/",
+            "site": "Instagram",
+            "type": "SOCIAL",
+            "language": "Japanese",
+            "color": "#833AB4",
+            "isDisabled": false
+          },
+          {
+            "id": 155176,
+            "url": "https://x.com/opcom_info",
+            "site": "Twitter",
+            "type": "SOCIAL",
+            "language": "Japanese",
+            "color": "#000000",
+            "isDisabled": false
+          },
+          {
+            "id": 158533,
+            "url": "https://mangaplus.shueisha.co.jp/titles/100140",
+            "site": "MANGA Plus",
+            "type": "STREAMING",
+            "language": "Indonesian",
+            "color": "#DC0816",
+            "isDisabled": false
+          },
+          {
+            "id": 165078,
+            "url": "https://mangamillion.shueisha.co.jp/en/title/1",
+            "site": "MANGA MILLION",
+            "type": "STREAMING",
+            "language": "English",
+            "color": "#FFFFFF",
+            "isDisabled": false
+          }
+        ],
+        "relations": {
+          "edges": [
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 15323,
+                "title": {
+                  "romaji": "ONE PIECE: Episode of Nami - Koukaishi no Namida to Nakama no Kizuna",
+                  "english": null,
+                  "native": "ONE PIECE \u30A8\u30D4\u30BD\u30FC\u30C9\u30AA\u30D6\u30CA\u30DF \u301C\u822A\u6D77\u58EB\u306E\u6D99\u3068\u4EF2\u9593\u306E\u7D46\u301C"
+                },
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/15323.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/15323.jpg"
+                },
+                "startDate": {
+                  "year": 2012,
+                  "month": 8,
+                  "day": 25
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 2107,
+                "title": {
+                  "romaji": "ONE PIECE: Episode of Alabasta - Sabaku no Oujo to Kaizoku-tachi",
+                  "english": "One Piece: The Desert Princess and the Pirates, Adventures in Alabasta",
+                  "native": "ONE PIECE \u30A8\u30D4\u30BD\u30FC\u30C9\u30AA\u30D6\u30A2\u30E9\u30D0\u30B9\u30BF \u7802\u6F20\u306E\u738B\u5973\u3068\u6D77\u8CCA\u305F\u3061"
+                },
+                "format": "MOVIE",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx2107-H8bRuRRbhCIJ.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2107-H8bRuRRbhCIJ.jpg"
+                },
+                "startDate": {
+                  "year": 2007,
+                  "month": 3,
+                  "day": 3
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 19123,
+                "title": {
+                  "romaji": "ONE PIECE: Episode of Merry - Mou Hitori no Nakama no Monogatari",
+                  "english": "One Piece: Episode of Merry - The Tale of One More Friend",
+                  "native": "ONE PIECE \u30A8\u30D4\u30BD\u30FC\u30C9\u30AA\u30D6\u30E1\u30EA\u30FC \u301C\u3082\u3046\u3072\u3068\u308A\u306E\u4EF2\u9593\u306E\u7269\u8A9E\u301C"
+                },
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx19123-leET1CrSJknT.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx19123-leET1CrSJknT.jpg"
+                },
+                "startDate": {
+                  "year": 2013,
+                  "month": 8,
+                  "day": 24
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 21,
+                "title": {
+                  "romaji": "ONE PIECE",
+                  "english": "ONE PIECE",
+                  "native": "ONE PIECE"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "status": "RELEASING",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21-ELSYx3yMPcKM.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21-ELSYx3yMPcKM.jpg"
+                },
+                "startDate": {
+                  "year": 1999,
+                  "month": 10,
+                  "day": 20
+                },
+                "mediaListEntry": {
+                  "id": 593351146,
+                  "status": "CURRENT",
+                  "progress": 1163,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "relationType": "ALTERNATIVE",
+              "node": {
+                "id": 35114,
+                "title": {
+                  "romaji": "Romance Dawn",
+                  "english": null,
+                  "native": "\u30ED\u30DE\u30F3\u30B9\u30C9\u30FC\u30F3"
+                },
+                "format": "ONE_SHOT",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx35114-FIOTu1pOTIuC.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx35114-FIOTu1pOTIuC.png"
+                },
+                "startDate": {
+                  "year": 1996,
+                  "month": 8,
+                  "day": 4
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 101918,
+                "title": {
+                  "romaji": "ONE PIECE: Episode of Sorajima",
+                  "english": "One Piece: Episode of Skypiea",
+                  "native": "ONE PIECE \u30A8\u30D4\u30BD\u30FC\u30C9\u30AA\u30D6\u7A7A\u5CF6"
+                },
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx101918-3uyCYHw1syki.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101918-3uyCYHw1syki.png"
+                },
+                "startDate": {
+                  "year": 2018,
+                  "month": 8,
+                  "day": 25
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 102533,
+                "title": {
+                  "romaji": "One Piece Party",
+                  "english": null,
+                  "native": "\u30EF\u30F3\u30D4\u30FC\u30B9 \u30D1\u30FC\u30C6\u30A3\u30FC"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx102533-YLT9eI1BH2a1.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx102533-YLT9eI1BH2a1.jpg"
+                },
+                "startDate": {
+                  "year": 2014,
+                  "month": 12,
+                  "day": 5
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 103252,
+                "title": {
+                  "romaji": "Shokugeki no Sanji",
+                  "english": "One Piece: Shokugeki no Sanji",
+                  "native": "\u98DF\u621F\u306E\u30B5\u30F3\u30B8"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx103252-58RbwHibqsJY.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx103252-58RbwHibqsJY.jpg"
+                },
+                "startDate": {
+                  "year": 2018,
+                  "month": 7,
+                  "day": 23
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 3848,
+                "title": {
+                  "romaji": "ONE PIECE THE MOVIE: Episode of Chopper Plus - Fuyu ni Saku, Kiseki no Sakura",
+                  "english": "One Piece: Episode Of Chopper \u002B: The Miracle Winter Cherry Blossom",
+                  "native": "ONE PIECE THE MOVIE \u30A8\u30D4\u30BD\u30FC\u30C9\u30AA\u30D6\u30C1\u30E7\u30C3\u30D1\u30FC\u002B \u51AC\u306B\u54B2\u304F\u3001\u5947\u8DE1\u306E\u685C"
+                },
+                "format": "MOVIE",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx3848-SCnYGTn34Llt.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx3848-SCnYGTn34Llt.jpg"
+                },
+                "startDate": {
+                  "year": 2008,
+                  "month": 3,
+                  "day": 1
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SIDE_STORY",
+              "node": {
+                "id": 96427,
+                "title": {
+                  "romaji": "ONE PIECE: Loguetown-hen",
+                  "english": null,
+                  "native": "ONE PIECE \u30ED\u30FC\u30B0\u30BF\u30A6\u30F3\u7DE8"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx96427-XiDc44cTlf29.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx96427-XiDc44cTlf29.png"
+                },
+                "startDate": {
+                  "year": 2000,
+                  "month": 7,
+                  "day": 17
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SIDE_STORY",
+              "node": {
+                "id": 44414,
+                "title": {
+                  "romaji": "ONE PIECE Log Book Omake",
+                  "english": null,
+                  "native": null
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx44414-5q51CV5hp2Yh.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx44414-5q51CV5hp2Yh.jpg"
+                },
+                "startDate": {
+                  "year": 2005,
+                  "month": 4,
+                  "day": 1
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "CHARACTER",
+              "node": {
+                "id": 41926,
+                "title": {
+                  "romaji": "Jump Super Stars",
+                  "english": null,
+                  "native": "\u30B8\u30E3\u30F3\u30D7\u30B9\u30FC\u30D1\u30FC\u30B9\u30BF\u30FC\u30BA"
+                },
+                "format": "ONE_SHOT",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx41926-mygJvKgWqyvr.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx41926-mygJvKgWqyvr.jpg"
+                },
+                "startDate": {
+                  "year": 2005,
+                  "month": 6,
+                  "day": 30
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SIDE_STORY",
+              "node": {
+                "id": 47152,
+                "title": {
+                  "romaji": "ONE PIECE: STRONG WORLD",
+                  "english": null,
+                  "native": "ONE PIECE STRONG WORLD"
+                },
+                "format": "ONE_SHOT",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/n47152-v3AqgrZH9BsU.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/n47152-v3AqgrZH9BsU.jpg"
+                },
+                "startDate": {
+                  "year": 2009,
+                  "month": 11,
+                  "day": 30
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SIDE_STORY",
+              "node": {
+                "id": 105234,
+                "title": {
+                  "romaji": "ONE PIECE: Taose! Kaizoku Ganzack",
+                  "english": null,
+                  "native": "ONE PIECE \u5012\u305B!\u6D77\u8CCA\u30AE\u30E3\u30F3\u30B6\u30C3\u30AF"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/n105234-JtcI0SF33JYj.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/n105234-JtcI0SF33JYj.jpg"
+                },
+                "startDate": {
+                  "year": 1999,
+                  "month": 6,
+                  "day": 3
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 82353,
+                "title": {
+                  "romaji": "Chopperman",
+                  "english": "Chopperman",
+                  "native": "\u30C1\u30E7\u30C3\u30D1\u30FC\u30DE\u30F3"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/52353.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/52353.jpg"
+                },
+                "startDate": {
+                  "year": 2012,
+                  "month": 2,
+                  "day": 5
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 53251,
+                "title": {
+                  "romaji": "Chopperman: Yuke Yuke! Minna no Chopper-sensei",
+                  "english": null,
+                  "native": "\u30C1\u30E7\u30C3\u30D1\u30FC\u30DE\u30F3 \u3086\u3051\u3086\u3051!\u307F\u3093\u306A\u306E\u30C1\u30E7\u30C3\u30D1\u30FC\u5148\u751F"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/23251.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/23251.jpg"
+                },
+                "startDate": {
+                  "year": 2010,
+                  "month": 12,
+                  "day": 1
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "CHARACTER",
+              "node": {
+                "id": 30881,
+                "title": {
+                  "romaji": "CROSS EPOCH",
+                  "english": "Cross Epoch",
+                  "native": "CROSS EPOCH"
+                },
+                "format": "ONE_SHOT",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx30881-Zsx7tzEFxjta.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx30881-Zsx7tzEFxjta.jpg"
+                },
+                "startDate": {
+                  "year": 2006,
+                  "month": 12,
+                  "day": 25
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 99302,
+                "title": {
+                  "romaji": "ONE PIECE: Episode of East Blue - Luffy to 4-nin no Nakama no Daibouken",
+                  "english": "One Piece: Episode of East Blue",
+                  "native": "ONE PIECE \u30A8\u30D4\u30BD\u30FC\u30C9\u30AA\u30D6\u6771\u306E\u6D77\u301C\u30EB\u30D5\u30A3\u30684\u4EBA\u306E\u4EF2\u9593\u306E\u5927\u5192\u967A!!\u301C"
+                },
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx99302-b40WIhc5dylo.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx99302-b40WIhc5dylo.jpg"
+                },
+                "startDate": {
+                  "year": 2017,
+                  "month": 8,
+                  "day": 26
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ALTERNATIVE",
+              "node": {
+                "id": 30793,
+                "title": {
+                  "romaji": "WANTED! Oda Eiichiro Tanpenshuu",
+                  "english": "Wanted! Eiichiro Oda Before One Piece",
+                  "native": "WANTED\uFF01 \u5C3E\u7530\u6804\u4E00\u90CE\u77ED\u7DE8\u96C6"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30793-Zca4SIWG5j8e.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30793-Zca4SIWG5j8e.png"
+                },
+                "startDate": {
+                  "year": 1998,
+                  "month": 11,
+                  "day": 4
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 106572,
+                "title": {
+                  "romaji": "ONE PIECE: Episode of Alabasta - Sabaku no Oujo to Kaizoku-tachi",
+                  "english": null,
+                  "native": "ONE PIECE \u30A8\u30D4\u30BD\u30FC\u30C9\u30AA\u30D6\u30A2\u30E9\u30D0\u30B9\u30BF \u7802\u6F20\u306E\u738B\u5973\u3068\u6D77\u8CCA\u305F\u3061"
+                },
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/n106572-k1gqIsDcqGaV.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/n106572-k1gqIsDcqGaV.jpg"
+                },
+                "startDate": {
+                  "year": 2011,
+                  "month": 8,
+                  "day": 20
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "CHARACTER",
+              "node": {
+                "id": 55146,
+                "title": {
+                  "romaji": "ONE PIECE x Toriko",
+                  "english": "One Piece x Toriko: Taste of the Devil Fruit",
+                  "native": "ONE PIECE x \u30C8\u30EA\u30B3"
+                },
+                "format": "ONE_SHOT",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/25146.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/25146.jpg"
+                },
+                "startDate": {
+                  "year": 2011,
+                  "month": 4,
+                  "day": 4
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 110232,
+                "title": {
+                  "romaji": "ONE PIECE: Koby ni no Kobiyama Urifutatsu Nagi no Oohihou",
+                  "english": "ONE PIECE: Kobiyama, Coby\u2019s Look-Alike \u2014 The Great Treasure of Identical Doubles",
+                  "native": "ONE PIECE \u30B3\u30D3\u30FC\u4F3C\u306E\u5C0F\u65E5\u5C71\u30A6\u30EA\u3075\u305F\u3064\u306A\u304E\u306E\u5927\u79D8\u5B9D"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx110232-Ez6jnlZ7Pp9w.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx110232-Ez6jnlZ7Pp9w.jpg"
+                },
+                "startDate": {
+                  "year": 2018,
+                  "month": 6,
+                  "day": 18
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 110233,
+                "title": {
+                  "romaji": "Koisuru ONE PIECE",
+                  "english": "ONE PIECE in Love",
+                  "native": "\u604B\u3059\u308B\u30EF\u30F3\u30D4\u30FC\u30B9"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx110233-7Z79ZksUA043.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx110233-7Z79ZksUA043.jpg"
+                },
+                "startDate": {
+                  "year": 2018,
+                  "month": 6,
+                  "day": 18
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 110258,
+                "title": {
+                  "romaji": "CHIN PIECE",
+                  "english": null,
+                  "native": "CHIN PIECE"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx110258-w41GRxfZ1EvY.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx110258-w41GRxfZ1EvY.jpg"
+                },
+                "startDate": {
+                  "year": 2018,
+                  "month": 6,
+                  "day": 1
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 110259,
+                "title": {
+                  "romaji": "CHIN PIECE",
+                  "english": null,
+                  "native": "CHIN PIECE"
+                },
+                "format": "ONE_SHOT",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/b110259-JPnbZnsNN3ZI.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/b110259-JPnbZnsNN3ZI.jpg"
+                },
+                "startDate": {
+                  "year": 2017,
+                  "month": 9,
+                  "day": 16
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 104664,
+                "title": {
+                  "romaji": "ONE PIECE novel A",
+                  "english": "One Piece: Ace\u0027s Story",
+                  "native": "ONE PIECE novel A"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx104664-SzR4e85Xjrk9.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx104664-SzR4e85Xjrk9.jpg"
+                },
+                "startDate": {
+                  "year": 2018,
+                  "month": 4,
+                  "day": 4
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 110409,
+                "title": {
+                  "romaji": "Fischer\u0027s x ONE PIECE: 7-tsunagi no Daihihou",
+                  "english": null,
+                  "native": "Fischer\u2019s\u00D7ONE PIECE 7\u3064\u306A\u304E\u306E\u5927\u79D8\u5B9D"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "RELEASING",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx110409-eOKIUyDomby6.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx110409-eOKIUyDomby6.jpg"
+                },
+                "startDate": {
+                  "year": 2018,
+                  "month": 8,
+                  "day": 3
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 110715,
+                "title": {
+                  "romaji": "ONE PIECE Gakuen!!",
+                  "english": "ONE PIECE ACADEMY",
+                  "native": "ONE PIECE\u5B66\u5712!!"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "RELEASING",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx110715-IqObMH5zGdOM.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx110715-IqObMH5zGdOM.jpg"
+                },
+                "startDate": {
+                  "year": 2019,
+                  "month": 8,
+                  "day": 2
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 113686,
+                "title": {
+                  "romaji": "ONE PIECE novel HEROINES",
+                  "english": "One Piece: Heroines",
+                  "native": "ONE PIECE novel HEROINES"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx113686-DyVNjetsbnQh.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx113686-DyVNjetsbnQh.jpg"
+                },
+                "startDate": {
+                  "year": 2019,
+                  "month": 12,
+                  "day": 13
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 117802,
+                "title": {
+                  "romaji": "ONE PIECE episode A",
+                  "english": "One Piece: Ace\u2019s Story\u2014The Manga",
+                  "native": "ONE PIECE episode A"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx117802-CsCjUyuG4lSB.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx117802-CsCjUyuG4lSB.jpg"
+                },
+                "startDate": {
+                  "year": 2020,
+                  "month": 9,
+                  "day": 16
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 119425,
+                "title": {
+                  "romaji": "ONE PIECE novel LAW",
+                  "english": "One Piece: Law\u2019s Story",
+                  "native": "ONE PIECE novel LAW"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx119425-meONVY52FtVp.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx119425-meONVY52FtVp.png"
+                },
+                "startDate": {
+                  "year": 2020,
+                  "month": 4,
+                  "day": 3
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "PREQUEL",
+              "node": {
+                "id": 125826,
+                "title": {
+                  "romaji": "Monsters",
+                  "english": "Monsters",
+                  "native": "\u30E2\u30F3\u30B9\u30BF\u30FC\u30BA"
+                },
+                "format": "ONE_SHOT",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx125826-4gX5jL7LtaFi.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx125826-4gX5jL7LtaFi.png"
+                },
+                "startDate": {
+                  "year": 1994,
+                  "month": 10,
+                  "day": 30
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SIDE_STORY",
+              "node": {
+                "id": 128291,
+                "title": {
+                  "romaji": "ONE PIECE novel Mugiwara Stories",
+                  "english": null,
+                  "native": "ONE PIECE novel \u9EA6\u308F\u3089\u30B9\u30C8\u30FC\u30EA\u30FC\u30BA"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx128291-O2AEatR4HU2d.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx128291-O2AEatR4HU2d.png"
+                },
+                "startDate": {
+                  "year": 2017,
+                  "month": 7,
+                  "day": 7
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SIDE_STORY",
+              "node": {
+                "id": 128292,
+                "title": {
+                  "romaji": "Gekijouban ONE PIECE: STAMPEDE",
+                  "english": null,
+                  "native": "\u5287\u5834\u7248 ONE PIECE STAMPEDE"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx128292-q4XFNK3q4dXx.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx128292-q4XFNK3q4dXx.jpg"
+                },
+                "startDate": {
+                  "year": 2019,
+                  "month": 8,
+                  "day": 9
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ALTERNATIVE",
+              "node": {
+                "id": 134184,
+                "title": {
+                  "romaji": "Romance Dawn",
+                  "english": "Romance Dawn",
+                  "native": "\u30ED\u30DE\u30F3\u30B9\u30C9\u30FC\u30F3"
+                },
+                "format": "ONE_SHOT",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx134184-25CEkbRJEzXB.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx134184-25CEkbRJEzXB.png"
+                },
+                "startDate": {
+                  "year": 1996,
+                  "month": 9,
+                  "day": 23
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ALTERNATIVE",
+              "node": {
+                "id": 138283,
+                "title": {
+                  "romaji": "ONE PIECE: Vivi no Bouken",
+                  "english": "One Piece: Naoshi Komi Covers Vivi\u0027s Adventure",
+                  "native": "ONE PIECE \u30D3\u30D3\u306E\u5192\u967A"
+                },
+                "format": "ONE_SHOT",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx138283-VF4CLmoFCITJ.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx138283-VF4CLmoFCITJ.jpg"
+                },
+                "startDate": {
+                  "year": 2021,
+                  "month": 8,
+                  "day": 30
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ALTERNATIVE",
+              "node": {
+                "id": 110450,
+                "title": {
+                  "romaji": "ONE PIECE: Roronoa Zoro, Umi ni Chiru",
+                  "english": "One Piece: Boichi Covers Zolo vs. Mihawk",
+                  "native": "ONE PIECE \u30ED\u30ED\u30CE\u30A2\u30FB\u30BE\u30ED, \u6D77\u306B\u6563\u308B"
+                },
+                "format": "ONE_SHOT",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx110450-qZbXzWBHysTk.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx110450-qZbXzWBHysTk.jpg"
+                },
+                "startDate": {
+                  "year": 2019,
+                  "month": 7,
+                  "day": 22
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ALTERNATIVE",
+              "node": {
+                "id": 146516,
+                "title": {
+                  "romaji": "Nami vs Kalifa",
+                  "english": null,
+                  "native": "\u30CA\u30DF vs \u30AB\u30EA\u30D5\u30A1"
+                },
+                "format": "ONE_SHOT",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx146516-TkrUTWqxqWci.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx146516-TkrUTWqxqWci.jpg"
+                },
+                "startDate": {
+                  "year": 2022,
+                  "month": 4,
+                  "day": 5
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "CHARACTER",
+              "node": {
+                "id": 154266,
+                "title": {
+                  "romaji": "One Piece 1000-wa Kinen! Tokubetsu Bangai-hen",
+                  "english": null,
+                  "native": "ONE PIECE 1000\u8A71\u8A18\u5FF5! \u7279\u5225\u756A\u5916\u7DE8"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx154266-V6HV8ReEygYZ.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx154266-V6HV8ReEygYZ.png"
+                },
+                "startDate": {
+                  "year": 2021,
+                  "month": 1,
+                  "day": 4
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 466,
+                "title": {
+                  "romaji": "ONE PIECE: Taose! Kaizoku Ganzack",
+                  "english": "One Piece: Defeat the Pirate Ganzack!",
+                  "native": "ONE PIECE \u5012\u305B!\u6D77\u8CCA\u30AE\u30E3\u30F3\u30B6\u30C3\u30AF"
+                },
+                "format": "OVA",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx466-bVP54I7dCB2F.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx466-bVP54I7dCB2F.jpg"
+                },
+                "startDate": {
+                  "year": 1998,
+                  "month": 7,
+                  "day": 26
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "CHARACTER",
+              "node": {
+                "id": 75757,
+                "title": {
+                  "romaji": "Shokugeki no Souma",
+                  "english": "Food Wars!: Shokugeki no Soma",
+                  "native": "\u98DF\u621F\u306E\u30BD\u30FC\u30DE"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx75757-5H35Qy1zGRHI.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx75757-5H35Qy1zGRHI.png"
+                },
+                "startDate": {
+                  "year": 2012,
+                  "month": 11,
+                  "day": 26
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 171630,
+                "title": {
+                  "romaji": "THE ONE PIECE",
+                  "english": "THE ONE PIECE",
+                  "native": "THE ONE PIECE"
+                },
+                "format": null,
+                "type": "ANIME",
+                "status": "NOT_YET_RELEASED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx171630-2U7Y5OIWwXJJ.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx171630-2U7Y5OIWwXJJ.jpg"
+                },
+                "startDate": {
+                  "year": 2027,
+                  "month": 2,
+                  "day": null
+                },
+                "mediaListEntry": {
+                  "id": 593365692,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "score": 0
+                }
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 177475,
+                "title": {
+                  "romaji": "ONE PIECE\u00D7KAWAISOUNI! Kono Boushi wo Omae ni Azukeru",
+                  "english": null,
+                  "native": "ONE PIECE\u00D7\u53EF\u54C0\u60F3\u306B\uFF01\uFF5E\u3053\u306E\u5E3D\u5B50\u3092 \u304A\u524D\u306B\u9810\u3051\u308B\uFF5E"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx177475-8HlvUgopoH0S.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx177475-8HlvUgopoH0S.png"
+                },
+                "startDate": {
+                  "year": 2024,
+                  "month": 3,
+                  "day": 3
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 183423,
+                "title": {
+                  "romaji": "ONE PIECE: Gyojin Tou-hen",
+                  "english": "One Piece Log: Fish-Man Island Saga",
+                  "native": "SPECIAL EDITED VERSION\u300EONE PIECE\u300F\u9B5A\u4EBA\u5CF6\u7DE8"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx183423-6Iiu194UDxD0.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx183423-6Iiu194UDxD0.jpg"
+                },
+                "startDate": {
+                  "year": 2024,
+                  "month": 11,
+                  "day": 3
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "PARENT",
+              "node": {
+                "id": 183727,
+                "title": {
+                  "romaji": "Ore no Keikaku wa Zettai ni Kuruwanai!!",
+                  "english": null,
+                  "native": "\u304A\u308C\u306E\u8A08\u753B\u306F\u7D76\u5BFE\u306B\u72C2\u308F\u306A\u3044!!"
+                },
+                "format": "ONE_SHOT",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx183727-vEnORLXAeKrQ.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx183727-vEnORLXAeKrQ.jpg"
+                },
+                "startDate": {
+                  "year": 2019,
+                  "month": 8,
+                  "day": 9
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 184804,
+                "title": {
+                  "romaji": "Heya Sagashi",
+                  "english": null,
+                  "native": "\u90E8\u5C4B\u63A2\u3057"
+                },
+                "format": "ONE_SHOT",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx184804-WFzessiEJliJ.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx184804-WFzessiEJliJ.jpg"
+                },
+                "startDate": {
+                  "year": 2017,
+                  "month": 12,
+                  "day": 25
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 188120,
+                "title": {
+                  "romaji": "ONE PIECE novel LAW: Kikoku no Toki",
+                  "english": null,
+                  "native": "ONE PIECE novel LAW \u9B3C\u54ED\u306E\u523B"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "status": "RELEASING",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx188120-9LzPyE6jXOSc.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx188120-9LzPyE6jXOSc.png"
+                },
+                "startDate": {
+                  "year": 2024,
+                  "month": 12,
+                  "day": 24
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 216503,
+                "title": {
+                  "romaji": "ONE PIECE novel ZORO",
+                  "english": null,
+                  "native": "ONE PIECE novel ZORO"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx216503-jvpjbmY5dv7b.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx216503-jvpjbmY5dv7b.jpg"
+                },
+                "startDate": {
+                  "year": 2024,
+                  "month": 6,
+                  "day": 4
+                },
+                "mediaListEntry": null
+              }
+            }
+          ]
+        },
+        "characters": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 40,
+                "name": {
+                  "full": "Luffy Monkey",
+                  "native": "\u30E2\u30F3\u30AD\u30FC\u30FBD\u30FB\u30EB\u30D5\u30A3",
+                  "userPreferred": "Luffy D. Monkey"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b40-MNypXsxSRb1R.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b40-MNypXsxSRb1R.png"
+                },
+                "favourites": 36461
+              },
+              "role": "MAIN",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 62,
+                "name": {
+                  "full": "Zoro Roronoa",
+                  "native": "\u30ED\u30ED\u30CE\u30A2\u30FB\u30BE\u30ED",
+                  "userPreferred": "Zoro Roronoa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b62-S7oAeA9WInjV.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b62-S7oAeA9WInjV.png"
+                },
+                "favourites": 29042
+              },
+              "role": "MAIN",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 723,
+                "name": {
+                  "full": "Nami",
+                  "native": "\u30CA\u30DF",
+                  "userPreferred": "Nami"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b723-vp5hPptgnNEC.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b723-vp5hPptgnNEC.png"
+                },
+                "favourites": 10344
+              },
+              "role": "MAIN",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 724,
+                "name": {
+                  "full": "Usopp",
+                  "native": "\u30A6\u30BD\u30C3\u30D7",
+                  "userPreferred": "Usopp"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b724-GFGgI9AJQkfy.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b724-GFGgI9AJQkfy.jpg"
+                },
+                "favourites": 6812
+              },
+              "role": "MAIN",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 305,
+                "name": {
+                  "full": "Sanji",
+                  "native": "\u30B5\u30F3\u30B8",
+                  "userPreferred": "Sanji"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b305-6lisPmHtCnLT.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b305-6lisPmHtCnLT.png"
+                },
+                "favourites": 15422
+              },
+              "role": "MAIN",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 61,
+                "name": {
+                  "full": "Robin Nico",
+                  "native": "\u30CB\u30B3\u30ED\u30D3\u30F3",
+                  "userPreferred": "Robin Nico"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b61-ywXUyyocEEqt.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b61-ywXUyyocEEqt.png"
+                },
+                "favourites": 14940
+              },
+              "role": "MAIN",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 309,
+                "name": {
+                  "full": "Chopper Tony Tony",
+                  "native": "\u30C8\u30CB\u30FC\u30C8\u30CB\u30FC\u30FB\u30C1\u30E7\u30C3\u30D1\u30FC",
+                  "userPreferred": "Chopper Tony Tony"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b309-H64NhbJ2ywIQ.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b309-H64NhbJ2ywIQ.jpg"
+                },
+                "favourites": 8830
+              },
+              "role": "MAIN",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 64,
+                "name": {
+                  "full": "Franky",
+                  "native": "\u30D5\u30E9\u30F3\u30AD\u30FC",
+                  "userPreferred": "Franky"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/n64-ChX6ZzHHjXqA.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/n64-ChX6ZzHHjXqA.png"
+                },
+                "favourites": 4093
+              },
+              "role": "MAIN",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 5627,
+                "name": {
+                  "full": "Brook",
+                  "native": "\u30D6\u30EB\u30C3\u30AF",
+                  "userPreferred": "Brook"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b5627-av8oD3zhKvDl.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b5627-av8oD3zhKvDl.png"
+                },
+                "favourites": 5126
+              },
+              "role": "MAIN",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 18938,
+                "name": {
+                  "full": "Jinbe",
+                  "native": "\u30B8\u30F3\u30D9\u30A8",
+                  "userPreferred": "Jinbe"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b18938-yZANEfjsVhW4.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b18938-yZANEfjsVhW4.png"
+                },
+                "favourites": 2903
+              },
+              "role": "MAIN",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 725,
+                "name": {
+                  "full": "Buggy",
+                  "native": "\u30D0\u30AE\u30FC",
+                  "userPreferred": "Buggy"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/n725-g04AaiaK5f9B.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/n725-g04AaiaK5f9B.png"
+                },
+                "favourites": 2150
+              },
+              "role": "SUPPORTING",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 726,
+                "name": {
+                  "full": "Vivi Nefertari",
+                  "native": "\u30CD\u30D5\u30A7\u30EB\u30BF\u30EA\u30FB\u30D3\u30D3",
+                  "userPreferred": "Vivi Nefertari"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b726-DqAIpscMuYYx.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b726-DqAIpscMuYYx.png"
+                },
+                "favourites": 2010
+              },
+              "role": "SUPPORTING",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 727,
+                "name": {
+                  "full": "Shanks",
+                  "native": "\u30B7\u30E3\u30F3\u30AF\u30B9",
+                  "userPreferred": "Shanks"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b727-wUJx7M1z5xON.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b727-wUJx7M1z5xON.png"
+                },
+                "favourites": 5883
+              },
+              "role": "SUPPORTING",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 1541,
+                "name": {
+                  "full": "Enel",
+                  "native": "\u30A8\u30CD\u30EB",
+                  "userPreferred": "Enel"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b1541-6c8RouunoL88.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b1541-6c8RouunoL88.jpg"
+                },
+                "favourites": 861
+              },
+              "role": "SUPPORTING",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 2064,
+                "name": {
+                  "full": "Dracule Mihawk",
+                  "native": "\u30B8\u30E5\u30E9\u30AD\u30E5\u30FC\u30EB\u30FB\u30DF\u30DB\u30FC\u30AF",
+                  "userPreferred": "Dracule Mihawk"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/n2064-OpnF4nLi6bvL.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/n2064-OpnF4nLi6bvL.png"
+                },
+                "favourites": 2411
+              },
+              "role": "SUPPORTING",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 2072,
+                "name": {
+                  "full": "Ace Portgas",
+                  "native": "\u30DD\u30FC\u30C8\u30AC\u30B9\u30FBD\u30FB\u30A8\u30FC\u30B9",
+                  "userPreferred": "Ace D. Portgas"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b2072-Lc6jEdsueJUK.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b2072-Lc6jEdsueJUK.jpg"
+                },
+                "favourites": 9181
+              },
+              "role": "SUPPORTING",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 2519,
+                "name": {
+                  "full": "Kuro",
+                  "native": "\u30AF\u30ED",
+                  "userPreferred": "Kuro"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b2519-OfgRt6mP6Ae8.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b2519-OfgRt6mP6Ae8.jpg"
+                },
+                "favourites": 88
+              },
+              "role": "SUPPORTING",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 2748,
+                "name": {
+                  "full": "Bellamy",
+                  "native": "\u30D9\u30E9\u30DF\u30FC",
+                  "userPreferred": "Bellamy"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b2748-vnCKira7yjrp.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b2748-vnCKira7yjrp.jpg"
+                },
+                "favourites": 108
+              },
+              "role": "SUPPORTING",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 2749,
+                "name": {
+                  "full": "Crocodile",
+                  "native": "\u30AF\u30ED\u30B3\u30C0\u30A4\u30EB",
+                  "userPreferred": "Crocodile"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b2749-e8ebEBN1SlS2.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b2749-e8ebEBN1SlS2.png"
+                },
+                "favourites": 2023
+              },
+              "role": "SUPPORTING",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 2750,
+                "name": {
+                  "full": "Tashigi",
+                  "native": "\u305F\u3057\u304E",
+                  "userPreferred": "Tashigi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b2750-j3Rf9SC37ehT.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b2750-j3Rf9SC37ehT.jpg"
+                },
+                "favourites": 437
+              },
+              "role": "SUPPORTING",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 2751,
+                "name": {
+                  "full": "Newgate Edward",
+                  "native": "\u30A8\u30C9\u30EF\u30FC\u30C9\u30FB\u4E8C\u30E5\u30FC\u30B2\u30FC\u30C8",
+                  "userPreferred": "Newgate Edward"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b2751-NnzW0N2vCTjX.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b2751-NnzW0N2vCTjX.jpg"
+                },
+                "favourites": 4142
+              },
+              "role": "SUPPORTING",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 2752,
+                "name": {
+                  "full": "Kuzan",
+                  "native": "\u30AF\u30B6\u30F3",
+                  "userPreferred": "Kuzan"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b2752-0ENS2a39muDz.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b2752-0ENS2a39muDz.png"
+                },
+                "favourites": 1848
+              },
+              "role": "SUPPORTING",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 2753,
+                "name": {
+                  "full": "Smoker",
+                  "native": "\u30B9\u30E2\u30FC\u30AB\u30FC",
+                  "userPreferred": "Smoker"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b2753-Y2ja8Pl6PRs0.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b2753-Y2ja8Pl6PRs0.jpg"
+                },
+                "favourites": 1396
+              },
+              "role": "SUPPORTING",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 2754,
+                "name": {
+                  "full": "Doflamingo Donquixote",
+                  "native": "\u30C9\u30D5\u30E9\u30DF\u30F3\u30B4\u30FB\u30C9\u30F3\u30AD\u30DB\u30FC\u30C6",
+                  "userPreferred": "Doflamingo Donquixote"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b2754-B4gGSlNYgsyh.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b2754-B4gGSlNYgsyh.jpg"
+                },
+                "favourites": 4379
+              },
+              "role": "SUPPORTING",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 3331,
+                "name": {
+                  "full": "Teach Marshall",
+                  "native": "\u30DE\u30FC\u30B7\u30E3\u30EB\u30FBD\u30FB\u30C6\u30A3\u30FC\u30C1",
+                  "userPreferred": "Teach D. Marshall"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b3331-7ZJDc4BNv9Yp.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b3331-7ZJDc4BNv9Yp.jpg"
+                },
+                "favourites": 1041
+              },
+              "role": "SUPPORTING",
+              "voiceActors": []
+            }
+          ]
+        },
+        "recommendations": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "nodes": [
+            {
+              "rating": 691,
+              "mediaRecommendation": {
+                "id": 30026,
+                "title": {
+                  "romaji": "HUNTER\u00D7HUNTER",
+                  "english": "Hunter x Hunter",
+                  "native": "HUNTER\u00D7HUNTER"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30026-uCvXMudMzmwI.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30026-uCvXMudMzmwI.jpg"
+                },
+                "averageScore": 88,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 344,
+              "mediaRecommendation": {
+                "id": 30042,
+                "title": {
+                  "romaji": "Dragon Ball",
+                  "english": "Dragon Ball",
+                  "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EB"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30042-4SetGiEbGc9x.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30042-4SetGiEbGc9x.jpg"
+                },
+                "averageScore": 84,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 262,
+              "mediaRecommendation": {
+                "id": 30011,
+                "title": {
+                  "romaji": "NARUTO",
+                  "english": "Naruto",
+                  "native": "NARUTO -\u30CA\u30EB\u30C8-"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx30011-9yUF1dXWgDOx.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx30011-9yUF1dXWgDOx.jpg"
+                },
+                "averageScore": 79,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 169,
+              "mediaRecommendation": {
+                "id": 30012,
+                "title": {
+                  "romaji": "BLEACH",
+                  "english": "Bleach",
+                  "native": "BLEACH"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30012-1epmVfTSv2rr.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30012-1epmVfTSv2rr.png"
+                },
+                "averageScore": 80,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 131,
+              "mediaRecommendation": {
+                "id": 86123,
+                "title": {
+                  "romaji": "Black Clover",
+                  "english": "Black Clover",
+                  "native": "\u30D6\u30E9\u30C3\u30AF\u30AF\u30ED\u30FC\u30D0\u30FC"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx86123-Ill8uBdtvWrR.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx86123-Ill8uBdtvWrR.png"
+                },
+                "averageScore": 77,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 101,
+              "mediaRecommendation": {
+                "id": 85486,
+                "title": {
+                  "romaji": "Boku no Hero Academia",
+                  "english": "My Hero Academia",
+                  "native": "\u50D5\u306E\u30D2\u30FC\u30ED\u30FC\u30A2\u30AB\u30C7\u30DF\u30A2"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx85486-INqnYx8gL3eX.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx85486-INqnYx8gL3eX.jpg"
+                },
+                "averageScore": 78,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 87,
+              "mediaRecommendation": {
+                "id": 37887,
+                "title": {
+                  "romaji": "Toriko",
+                  "english": "Toriko",
+                  "native": "\u30C8\u30EA\u30B3"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx37887-eYfLTjygqwK8.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx37887-eYfLTjygqwK8.png"
+                },
+                "averageScore": 75,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 78,
+              "mediaRecommendation": {
+                "id": 44790,
+                "title": {
+                  "romaji": "Magi",
+                  "english": "Magi: The Labyrinth of Magic",
+                  "native": "\u30DE\u30AE"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx44790-4Rzup5aNVcVC.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx44790-4Rzup5aNVcVC.png"
+                },
+                "averageScore": 81,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 65,
+              "mediaRecommendation": {
+                "id": 30598,
+                "title": {
+                  "romaji": "FAIRY TAIL",
+                  "english": "Fairy Tail",
+                  "native": "FAIRY TAIL"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30598-UOCymo2vPcWe.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30598-UOCymo2vPcWe.png"
+                },
+                "averageScore": 71,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 60,
+              "mediaRecommendation": {
+                "id": 30025,
+                "title": {
+                  "romaji": "Hagane no Renkinjutsushi",
+                  "english": "Fullmetal Alchemist",
+                  "native": "\u92FC\u306E\u932C\u91D1\u8853\u5E2B"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30025-mpPVpCKFTowt.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30025-mpPVpCKFTowt.png"
+                },
+                "averageScore": 89,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 44,
+              "mediaRecommendation": {
+                "id": 46765,
+                "title": {
+                  "romaji": "Kingdom",
+                  "english": "Kingdom",
+                  "native": "\u30AD\u30F3\u30B0\u30C0\u30E0"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx46765-KPXir4sRqJBW.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx46765-KPXir4sRqJBW.png"
+                },
+                "averageScore": 89,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 42,
+              "mediaRecommendation": {
+                "id": 179484,
+                "title": {
+                  "romaji": "GALAXIAS",
+                  "english": "GALAXIAS",
+                  "native": "GALAXIAS"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx179484-E3aY5qtqy8W4.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx179484-E3aY5qtqy8W4.jpg"
+                },
+                "averageScore": 73,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 38,
+              "mediaRecommendation": {
+                "id": 30022,
+                "title": {
+                  "romaji": "Rurouni Kenshin: Meiji Kenkaku Romantan",
+                  "english": "Rurouni Kenshin",
+                  "native": "\u308B\u308D\u3046\u306B\u5263\u5FC3 -\u660E\u6CBB\u5263\u5BA2\u6D6A\u6F2B\u8B5A-"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30022-jxTlViun1o10.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30022-jxTlViun1o10.jpg"
+                },
+                "averageScore": 82,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 35,
+              "mediaRecommendation": {
+                "id": 85143,
+                "title": {
+                  "romaji": "Sinui Tap",
+                  "english": "Tower of God",
+                  "native": "\uC2E0\uC758 \uD0D1"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx85143-23oup3ETbFJk.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx85143-23oup3ETbFJk.jpg"
+                },
+                "averageScore": 81,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 34,
+              "mediaRecommendation": {
+                "id": 30642,
+                "title": {
+                  "romaji": "Vinland Saga",
+                  "english": "Vinland Saga",
+                  "native": "\u30F4\u30A3\u30F3\u30E9\u30F3\u30C9\u30FB\u30B5\u30AC"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30642-0mjRDkf4THpo.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30642-0mjRDkf4THpo.jpg"
+                },
+                "averageScore": 90,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 34,
+              "mediaRecommendation": {
+                "id": 30044,
+                "title": {
+                  "romaji": "Gintama",
+                  "english": "Gin Tama",
+                  "native": "\u9280\u9B42"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30044-vPmoz3vTPvZs.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30044-vPmoz3vTPvZs.jpg"
+                },
+                "averageScore": 86,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 30,
+              "mediaRecommendation": {
+                "id": 30869,
+                "title": {
+                  "romaji": "Konjiki no Gash!!",
+                  "english": "Zatch Bell!",
+                  "native": "\u91D1\u8272\u306E\u30AC\u30C3\u30B7\u30E5!!"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30869-cZHLgwIOv6Lm.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30869-cZHLgwIOv6Lm.jpg"
+                },
+                "averageScore": 82,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 22,
+              "mediaRecommendation": {
+                "id": 78025,
+                "title": {
+                  "romaji": "Magi: Sinbad no Bouken",
+                  "english": "Magi: The Adventures of Sinbad",
+                  "native": "\u30DE\u30AE \u30B7\u30F3\u30C9\u30D0\u30C3\u30C9\u306E\u5192\u967A"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx78025-RrI7jNnJAGnA.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx78025-RrI7jNnJAGnA.jpg"
+                },
+                "averageScore": 80,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 22,
+              "mediaRecommendation": {
+                "id": 30053,
+                "title": {
+                  "romaji": "Yuu\u2606Yuu\u2606Hakusho",
+                  "english": "Yu Yu Hakusho",
+                  "native": "\u5E7D\u2606\u904A\u2606\u767D\u66F8"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30053-wCR6xyGzeUYo.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30053-wCR6xyGzeUYo.png"
+                },
+                "averageScore": 80,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 21,
+              "mediaRecommendation": {
+                "id": 31706,
+                "title": {
+                  "romaji": "JoJo no Kimyou na Bouken: Steel Ball Run",
+                  "english": "JoJo\u0027s Bizarre Adventure: Part 7\u2013Steel Ball Run",
+                  "native": "\u30B8\u30E7\u30B8\u30E7\u306E\u5947\u5999\u306A\u5192\u967A \u30B9\u30C6\u30A3\u30FC\u30EB\u30FB\u30DC\u30FC\u30EB\u30FB\u30E9\u30F3"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx31706-lRncu9VbcBB7.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx31706-lRncu9VbcBB7.png"
+                },
+                "averageScore": 92,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 20,
+              "mediaRecommendation": {
+                "id": 101860,
+                "title": {
+                  "romaji": "EDENS ZERO",
+                  "english": "EDENS ZERO",
+                  "native": "EDENS ZERO"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx101860-mlmDqQ8T4x4j.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx101860-mlmDqQ8T4x4j.jpg"
+                },
+                "averageScore": 70,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 19,
+              "mediaRecommendation": {
+                "id": 30871,
+                "title": {
+                  "romaji": "Dragon Quest: Dai no Daibouken",
+                  "english": "Dragon Quest: The Adventure of Dai",
+                  "native": "\u30C9\u30E9\u30B4\u30F3\u30AF\u30A8\u30B9\u30C8 \u30C0\u30A4\u306E\u5927\u5192\u967A"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30871-NzemCChOPyDk.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30871-NzemCChOPyDk.jpg"
+                },
+                "averageScore": 77,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 19,
+              "mediaRecommendation": {
+                "id": 74347,
+                "title": {
+                  "romaji": "One Punch-Man",
+                  "english": "One-Punch Man",
+                  "native": "\u30EF\u30F3\u30D1\u30F3\u30DE\u30F3"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx74347-sZpmNJ5xLwRK.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx74347-sZpmNJ5xLwRK.jpg"
+                },
+                "averageScore": 85,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 16,
+              "mediaRecommendation": {
+                "id": 86508,
+                "title": {
+                  "romaji": "Dragon Ball Super",
+                  "english": "Dragon Ball Super",
+                  "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EB\u8D85"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx86508-QSahE7mTFEXl.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx86508-QSahE7mTFEXl.png"
+                },
+                "averageScore": 72,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 13,
+              "mediaRecommendation": {
+                "id": 30014,
+                "title": {
+                  "romaji": "Groove Adventure Rave",
+                  "english": "Rave Master",
+                  "native": "\u30EC\u30A4\u30F4"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx30014-Q7yKgaHVVmUg.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx30014-Q7yKgaHVVmUg.jpg"
+                },
+                "averageScore": 75,
+                "mediaListEntry": null
+              }
+            }
+          ]
+        },
+        "stats": {
+          "scoreDistribution": [
+            {
+              "score": 10,
+              "amount": 717
+            },
+            {
+              "score": 20,
+              "amount": 184
+            },
+            {
+              "score": 30,
+              "amount": 230
+            },
+            {
+              "score": 40,
+              "amount": 399
+            },
+            {
+              "score": 50,
+              "amount": 947
+            },
+            {
+              "score": 60,
+              "amount": 1545
+            },
+            {
+              "score": 70,
+              "amount": 4381
+            },
+            {
+              "score": 80,
+              "amount": 8931
+            },
+            {
+              "score": 90,
+              "amount": 24277
+            },
+            {
+              "score": 100,
+              "amount": 55696
+            }
+          ],
+          "statusDistribution": [
+            {
+              "status": "CURRENT",
+              "amount": 168438
+            },
+            {
+              "status": "PLANNING",
+              "amount": 28645
+            },
+            {
+              "status": "COMPLETED",
+              "amount": 9426
+            },
+            {
+              "status": "DROPPED",
+              "amount": 6833
+            },
+            {
+              "status": "PAUSED",
+              "amount": 18827
+            }
+          ]
+        },
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 96881,
+                "name": {
+                  "full": "Eiichirou Oda",
+                  "native": "\u5C3E\u7530\u6804\u4E00\u90CE",
+                  "userPreferred": "Eiichirou Oda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n96881-Cyv6wFJxpDw7.png"
+                },
+                "favourites": 13111
+              },
+              "role": "Story \u0026 Art"
+            },
+            {
+              "node": {
+                "id": 120849,
+                "name": {
+                  "full": "Ryou Ishiyama",
+                  "native": "\u77F3\u5C71\u8AD2",
+                  "userPreferred": "Ryou Ishiyama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n120849-JKYRcOm4Xi98.jpg"
+                },
+                "favourites": 15
+              },
+              "role": "Assistant (Former)"
+            },
+            {
+              "node": {
+                "id": 108255,
+                "name": {
+                  "full": "Haruto Ikezawa",
+                  "native": "\u6C60\u6CA2\u6625\u4EBA",
+                  "userPreferred": "Haruto Ikezawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 4
+              },
+              "role": "Assistant (Former)"
+            },
+            {
+              "node": {
+                "id": 107002,
+                "name": {
+                  "full": "Yuusaku Shibata",
+                  "native": "\u829D\u7530\u512A\u4F5C  ",
+                  "userPreferred": "Yuusaku Shibata"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n107002-freRtXTd6Net.jpg"
+                },
+                "favourites": 38
+              },
+              "role": "Assistant (former)"
+            },
+            {
+              "node": {
+                "id": 97906,
+                "name": {
+                  "full": "Tatsuma Eijiri",
+                  "native": "\u6C5F\u5C3B\u7ACB\u771F",
+                  "userPreferred": "Tatsuma Eijiri"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n97906-bcdu4AHLwb9R.png"
+                },
+                "favourites": 0
+              },
+              "role": "Assistant (former)"
+            },
+            {
+              "node": {
+                "id": 103532,
+                "name": {
+                  "full": "Katsunori Matsui",
+                  "native": "\u677E\u4E95\u52DD\u6CD5",
+                  "userPreferred": "Katsunori Matsui"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n103532-j6fEB34VV6hA.png"
+                },
+                "favourites": 8
+              },
+              "role": "Assistant (former)"
+            },
+            {
+              "node": {
+                "id": 126173,
+                "name": {
+                  "full": "Ei Andou",
+                  "native": "\u5B89\u85E4\u82F1",
+                  "userPreferred": "Ei Andou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Assistant (former)"
+            },
+            {
+              "node": {
+                "id": 137228,
+                "name": {
+                  "full": "Yoshikazu Amami",
+                  "native": "\u5929\u671B\u826F\u4E00",
+                  "userPreferred": "Yoshikazu Amami"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n137228-lZJ58jxwY2fp.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Assistant (former)"
+            },
+            {
+              "node": {
+                "id": 121139,
+                "name": {
+                  "full": "Tsunehiro Date",
+                  "native": "\u4F0A\u9054\u6052\u5927",
+                  "userPreferred": "Tsunehiro Date"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n121139-rpC97N0TJ3nA.png"
+                },
+                "favourites": 26
+              },
+              "role": "Assistant (former)"
+            },
+            {
+              "node": {
+                "id": 141200,
+                "name": {
+                  "full": "Daiki Ihara",
+                  "native": "\u4F0A\u539F\u5927\u8CB4",
+                  "userPreferred": "Daiki Ihara"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n141200-i0Hpe2SHsepa.jpg"
+                },
+                "favourites": 5
+              },
+              "role": "Assistant (former)"
+            },
+            {
+              "node": {
+                "id": 121264,
+                "name": {
+                  "full": "Takamasa Moue",
+                  "native": "\u99AC\u4E0A\u9DF9\u5C06",
+                  "userPreferred": "Takamasa Moue"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n121264-cacjsqWN1rvQ.png"
+                },
+                "favourites": 22
+              },
+              "role": "Assistant (former)"
+            },
+            {
+              "node": {
+                "id": 239368,
+                "name": {
+                  "full": "Yuuji Iwasaki",
+                  "native": "\u5CA9\u5D0E\u6E67\u6CBB",
+                  "userPreferred": "Yuuji Iwasaki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Editing (2020-2023)"
+            },
+            {
+              "node": {
+                "id": 338142,
+                "name": {
+                  "full": "Ken Takano",
+                  "native": "\u9AD8\u91CE\u5065",
+                  "userPreferred": "Ken Takano"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n338142-oqKrQ2jPyT7p.png"
+                },
+                "favourites": 0
+              },
+              "role": "Editing (2019-2020)"
+            },
+            {
+              "node": {
+                "id": 314723,
+                "name": {
+                  "full": "Takuma Naitou",
+                  "native": "\u5185\u85E4\u62D3\u771F",
+                  "userPreferred": "Takuma Naitou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n314723-mplaWDbkGs5b.png"
+                },
+                "favourites": 0
+              },
+              "role": "Editing (2017-2019)"
+            },
+            {
+              "node": {
+                "id": 203390,
+                "name": {
+                  "full": "Taku Sugita",
+                  "native": "\u6749\u7530\u5353",
+                  "userPreferred": "Taku Sugita"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "Editing (2014-2017)"
+            },
+            {
+              "node": {
+                "id": 338141,
+                "name": {
+                  "full": "Takeru Isaka",
+                  "native": "\u4E95\u5742\u5C0A",
+                  "userPreferred": "Takeru Isaka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n338141-LVFssopupFZU.png"
+                },
+                "favourites": 0
+              },
+              "role": "Editing (2011-2014)"
+            },
+            {
+              "node": {
+                "id": 255069,
+                "name": {
+                  "full": "Jean-Baptiste Akira Hattori",
+                  "native": "\u670D\u90E8\u30B8\u30E3\u30F3=\u30D0\u30C6\u30A3\u30B9\u30C8\u54F2",
+                  "userPreferred": "Jean-Baptiste Akira Hattori"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n255069-Mxodh34RcJP3.png"
+                },
+                "favourites": 1
+              },
+              "role": "Editing (2008-2010)"
+            },
+            {
+              "node": {
+                "id": 168654,
+                "name": {
+                  "full": "Kouhei Oonishi",
+                  "native": "\u5927\u897F\u6052\u5E73",
+                  "userPreferred": "Kouhei Oonishi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n168654-G8GcxndW0FeE.png"
+                },
+                "favourites": 0
+              },
+              "role": "Editing (2007-2008)"
+            },
+            {
+              "node": {
+                "id": 203388,
+                "name": {
+                  "full": "Naoki Kawashima",
+                  "native": "\u5DDD\u5CF6\u76F4\u6A39",
+                  "userPreferred": "Naoki Kawashima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Editing (2006-2007)"
+            },
+            {
+              "node": {
+                "id": 255496,
+                "name": {
+                  "full": "Daisuke Watanabe",
+                  "native": "\u6E21\u8FBA\u5927\u8F14",
+                  "userPreferred": "Daisuke Watanabe"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Editing (2005-2006)"
+            },
+            {
+              "node": {
+                "id": 314722,
+                "name": {
+                  "full": "Takahiro Habuta",
+                  "native": "\u571F\u751F\u7530\u9AD8\u88D5",
+                  "userPreferred": "Takahiro Habuta"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n314722-Lc95dL9sybGQ.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Editing (2001-2005)"
+            },
+            {
+              "node": {
+                "id": 280653,
+                "name": {
+                  "full": "Takanori Asada",
+                  "native": "\u6D45\u7530\u8CB4\u5178",
+                  "userPreferred": "Takanori Asada"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n280653-COi1hMliL0UA.jpg"
+                },
+                "favourites": 3
+              },
+              "role": "Editing (1996-2001)"
+            },
+            {
+              "node": {
+                "id": 218470,
+                "name": {
+                  "full": "Stephen Paul",
+                  "native": null,
+                  "userPreferred": "Stephen Paul"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n218470-p5ZllMLM1L6d.jpg"
+                },
+                "favourites": 22
+              },
+              "role": "Translator (English)"
+            },
+            {
+              "node": {
+                "id": 230709,
+                "name": {
+                  "full": "Andy Nakatani",
+                  "native": null,
+                  "userPreferred": "Andy Nakatani"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n230709-jEtDSWI2WCfB.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Translator (English)"
+            },
+            {
+              "node": {
+                "id": 230701,
+                "name": {
+                  "full": "Naoko Amemiya",
+                  "native": null,
+                  "userPreferred": "Naoko Amemiya"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Translator (English: vols 4-9)"
+            }
+          ]
+        },
+        "mediaListEntry": {
+          "id": 593351205,
+          "mediaId": 30013,
+          "status": "CURRENT",
+          "progress": 1100,
+          "score": 9,
+          "repeat": 1,
+          "notes": null,
+          "private": false,
+          "hiddenFromStatusLists": false,
+          "updatedAt": 1788665241
+        }
+      }
+    }
+  }
+}

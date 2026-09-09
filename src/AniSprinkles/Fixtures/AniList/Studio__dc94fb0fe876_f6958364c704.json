@@ -1,0 +1,664 @@
+﻿{
+  "operationName": "Studio",
+  "variables": {
+    "id": 102,
+    "mediaPage": 1,
+    "mediaPerPage": 25,
+    "mediaSort": [
+      "SCORE_DESC",
+      "ID"
+    ]
+  },
+  "queryFingerprint": "f6958364c704",
+  "recordedAt": "2026-09-09T16:00:41.1989895+00:00",
+  "response": {
+    "data": {
+      "Studio": {
+        "id": 102,
+        "name": "Funimation",
+        "isAnimationStudio": false,
+        "favourites": 1124,
+        "isFavourite": false,
+        "siteUrl": "https://anilist.co/studio/102",
+        "media": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "nodes": [
+            {
+              "id": 124194,
+              "title": {
+                "romaji": "Fruits Basket: The Final",
+                "english": "Fruits Basket The Final Season",
+                "native": "\u30D5\u30EB\u30FC\u30C4\u30D0\u30B9\u30B1\u30C3\u30C8The Final"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx124194-TJlqMMR7BGn9.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx124194-TJlqMMR7BGn9.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 89,
+              "favourites": 12012,
+              "popularity": 176712,
+              "startDate": {
+                "year": 2021,
+                "month": 4,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 9253,
+              "title": {
+                "romaji": "Steins;Gate",
+                "english": "Steins;Gate",
+                "native": "\u30B7\u30E5\u30BF\u30A4\u30F3\u30BA\u30FB\u30B2\u30FC\u30C8"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx9253-tIUXF2gfU8Sg.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx9253-tIUXF2gfU8Sg.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 89,
+              "favourites": 56511,
+              "popularity": 593729,
+              "startDate": {
+                "year": 2011,
+                "month": 4,
+                "day": 6
+              },
+              "mediaListEntry": {
+                "id": 593364478,
+                "status": "COMPLETED",
+                "progress": 24,
+                "score": 8
+              }
+            },
+            {
+              "id": 21,
+              "title": {
+                "romaji": "ONE PIECE",
+                "english": "ONE PIECE",
+                "native": "ONE PIECE"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21-ELSYx3yMPcKM.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21-ELSYx3yMPcKM.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "RELEASING",
+              "averageScore": 87,
+              "favourites": 111256,
+              "popularity": 749040,
+              "startDate": {
+                "year": 1999,
+                "month": 10,
+                "day": 20
+              },
+              "mediaListEntry": {
+                "id": 593351146,
+                "status": "CURRENT",
+                "progress": 1163,
+                "score": 8
+              }
+            },
+            {
+              "id": 2904,
+              "title": {
+                "romaji": "Code Geass: Hangyaku no Lelouch R2",
+                "english": "Code Geass: Lelouch of the Rebellion R2",
+                "native": "\u30B3\u30FC\u30C9\u30AE\u30A2\u30B9 \u53CD\u9006\u306E\u30EB\u30EB\u30FC\u30B7\u30E5 R2"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx2904-Fet9Q33suC7G.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2904-Fet9Q33suC7G.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 87,
+              "favourites": 22984,
+              "popularity": 362379,
+              "startDate": {
+                "year": 2008,
+                "month": 4,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 21519,
+              "title": {
+                "romaji": "Kimi no Na wa.",
+                "english": "Your Name.",
+                "native": "\u541B\u306E\u540D\u306F\u3002"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21519-SUo3ZQuCbYhJ.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21519-SUo3ZQuCbYhJ.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 86,
+              "favourites": 46646,
+              "popularity": 713118,
+              "startDate": {
+                "year": 2016,
+                "month": 8,
+                "day": 26
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 111762,
+              "title": {
+                "romaji": "Fruits Basket: 2nd Season",
+                "english": "Fruits Basket Season 2",
+                "native": "\u30D5\u30EB\u30FC\u30C4\u30D0\u30B9\u30B1\u30C3\u30C8 2nd Season"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx111762-C8TNf5uRlVNQ.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx111762-C8TNf5uRlVNQ.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 85,
+              "favourites": 6628,
+              "popularity": 186178,
+              "startDate": {
+                "year": 2020,
+                "month": 4,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1575,
+              "title": {
+                "romaji": "Code Geass: Hangyaku no Lelouch",
+                "english": "Code Geass: Lelouch of the Rebellion",
+                "native": "\u30B3\u30FC\u30C9\u30AE\u30A2\u30B9 \u53CD\u9006\u306E\u30EB\u30EB\u30FC\u30B7\u30E5"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1575-hsmWM2ydNm1m.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1575-hsmWM2ydNm1m.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 85,
+              "favourites": 34469,
+              "popularity": 499320,
+              "startDate": {
+                "year": 2006,
+                "month": 10,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 20958,
+              "title": {
+                "romaji": "Shingeki no Kyojin Season 2",
+                "english": "Attack on Titan Season 2",
+                "native": "\u9032\u6483\u306E\u5DE8\u4EBA Season\uFF12"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20958-HuFJyr54Mmir.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20958-HuFJyr54Mmir.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 85,
+              "favourites": 22310,
+              "popularity": 732545,
+              "startDate": {
+                "year": 2017,
+                "month": 4,
+                "day": 1
+              },
+              "mediaListEntry": {
+                "id": 593364164,
+                "status": "COMPLETED",
+                "progress": 12,
+                "score": 10
+              }
+            },
+            {
+              "id": 457,
+              "title": {
+                "romaji": "Mushishi",
+                "english": "MUSHI-SHI",
+                "native": "\u87F2\u5E2B"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx457-l6cTtNgI9Bi6.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx457-l6cTtNgI9Bi6.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 85,
+              "favourites": 8740,
+              "popularity": 194005,
+              "startDate": {
+                "year": 2005,
+                "month": 10,
+                "day": 23
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 7785,
+              "title": {
+                "romaji": "Yojouhan Shinwa Taikei",
+                "english": "The Tatami Galaxy",
+                "native": "\u56DB\u7573\u534A\u795E\u8A71\u5927\u7CFB"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx7785-aTjIhsYva8cJ.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx7785-aTjIhsYva8cJ.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 85,
+              "favourites": 9820,
+              "popularity": 148545,
+              "startDate": {
+                "year": 2010,
+                "month": 4,
+                "day": 23
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 21127,
+              "title": {
+                "romaji": "Steins;Gate 0",
+                "english": "Steins;Gate 0",
+                "native": "\u30B7\u30E5\u30BF\u30A4\u30F3\u30BA\u30FB\u30B2\u30FC\u30C8 \u30BC\u30ED"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21127-7ARWZkDXKiiD.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21127-7ARWZkDXKiiD.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 84,
+              "favourites": 8436,
+              "popularity": 222305,
+              "startDate": {
+                "year": 2018,
+                "month": 4,
+                "day": 12
+              },
+              "mediaListEntry": {
+                "id": 593351107,
+                "status": "DROPPED",
+                "progress": 0,
+                "score": 0
+              }
+            },
+            {
+              "id": 12355,
+              "title": {
+                "romaji": "Ookami Kodomo no Ame to Yuki",
+                "english": "Wolf Children",
+                "native": "\u304A\u304A\u304B\u307F\u3053\u3069\u3082\u306E\u96E8\u3068\u96EA"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx12355-wNsvhEsXEgrH.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx12355-wNsvhEsXEgrH.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 83,
+              "favourites": 7454,
+              "popularity": 193859,
+              "startDate": {
+                "year": 2012,
+                "month": 6,
+                "day": 25
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 170,
+              "title": {
+                "romaji": "SLAM DUNK",
+                "english": "Slam Dunk",
+                "native": "SLAM DUNK"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx170-cmD8A0vZsp6g.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx170-cmD8A0vZsp6g.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 83,
+              "favourites": 3310,
+              "popularity": 73326,
+              "startDate": {
+                "year": 1993,
+                "month": 10,
+                "day": 16
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 392,
+              "title": {
+                "romaji": "Yuu\u2606Yuu\u2606Hakusho",
+                "english": "Yu Yu Hakusho: Ghostfiles",
+                "native": "\u5E7D\u2606\u904A\u2606\u767D\u66F8"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx392-z90299zIvYmx.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx392-z90299zIvYmx.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 83,
+              "favourites": 9573,
+              "popularity": 158520,
+              "startDate": {
+                "year": 1992,
+                "month": 10,
+                "day": 10
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 108511,
+              "title": {
+                "romaji": "Tensei Shitara Slime Datta Ken 2nd Season",
+                "english": "That Time I Got Reincarnated as a Slime Season 2",
+                "native": "\u8EE2\u751F\u3057\u305F\u3089\u30B9\u30E9\u30A4\u30E0\u3060\u3063\u305F\u4EF6 \u7B2C2\u671F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx108511-PufFordLNyIb.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx108511-PufFordLNyIb.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 83,
+              "favourites": 11151,
+              "popularity": 320757,
+              "startDate": {
+                "year": 2021,
+                "month": 1,
+                "day": 12
+              },
+              "mediaListEntry": {
+                "id": 593364350,
+                "status": "COMPLETED",
+                "progress": 12,
+                "score": 9
+              }
+            },
+            {
+              "id": 11577,
+              "title": {
+                "romaji": "Steins;Gate: Fuka Ryouiki no D\u00E9j\u00E0 vu",
+                "english": "Steins;Gate The Movie \u2013 Load Region of D\u00E9j\u00E0 Vu",
+                "native": "\u5287\u5834\u7248 \u30B7\u30E5\u30BF\u30A4\u30F3\u30BA\u30B2\u30FC\u30C8 \u8CA0\u8377\u9818\u57DF\u306E\u30C7\u30B8\u30E3\u30F4"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx11577-rhqsxLOAge4f.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx11577-rhqsxLOAge4f.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 82,
+              "favourites": 2303,
+              "popularity": 139944,
+              "startDate": {
+                "year": 2013,
+                "month": 4,
+                "day": 20
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 5,
+              "title": {
+                "romaji": "Cowboy Bebop: Tengoku no Tobira",
+                "english": "Cowboy Bebop: The Movie - Knockin\u0027 on Heaven\u0027s Door",
+                "native": "\u30AB\u30A6\u30DC\u30FC\u30A4\u30D3\u30D0\u30C3\u30D7\u5929\u56FD\u306E\u6249"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx5-NozHwXWdNLCz.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx5-NozHwXWdNLCz.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 82,
+              "favourites": 1816,
+              "popularity": 84369,
+              "startDate": {
+                "year": 2001,
+                "month": 9,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 185,
+              "title": {
+                "romaji": "Initial D",
+                "english": "Initial D 1st Stage",
+                "native": "\u982D\u6587\u5B57[\u30A4\u30CB\u30B7\u30E3\u30EB]D"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b185-GvXiR8AKTmdn.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b185-GvXiR8AKTmdn.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 82,
+              "favourites": 6523,
+              "popularity": 116492,
+              "startDate": {
+                "year": 1998,
+                "month": 4,
+                "day": 19
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 105334,
+              "title": {
+                "romaji": "Fruits Basket: 1st Season",
+                "english": "Fruits Basket (2019)",
+                "native": "\u30D5\u30EB\u30FC\u30C4\u30D0\u30B9\u30B1\u30C3\u30C8 1st Season"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx105334-AZwEdMu4KFtV.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx105334-AZwEdMu4KFtV.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 82,
+              "favourites": 15876,
+              "popularity": 310926,
+              "startDate": {
+                "year": 2019,
+                "month": 4,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1210,
+              "title": {
+                "romaji": "NHK ni Youkoso!",
+                "english": "Welcome to the N-H-K",
+                "native": "N\u30FBH\u30FBK\u306B\u3088\u3046\u3053\u305D\uFF01"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1210-2XotjcgqdcaX.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1210-2XotjcgqdcaX.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 82,
+              "favourites": 11255,
+              "popularity": 202588,
+              "startDate": {
+                "year": 2006,
+                "month": 7,
+                "day": 10
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 6114,
+              "title": {
+                "romaji": "RAINBOW: Nisha Rokubou no Shichinin",
+                "english": "Rainbow",
+                "native": "RAINBOW -\u4E8C\u820E\u516D\u623F\u306E\u4E03\u4EBA-"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b6114-pLPszMA7AxbD.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b6114-pLPszMA7AxbD.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 82,
+              "favourites": 2863,
+              "popularity": 89923,
+              "startDate": {
+                "year": 2010,
+                "month": 4,
+                "day": 2
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 20666,
+              "title": {
+                "romaji": "Space\u2606Dandy 2",
+                "english": "Space Dandy 2",
+                "native": "\u30B9\u30DA\u30FC\u30B9\u2606\u30C0\u30F3\u30C7\u30A3 2"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20666-uuCrKd28BFsT.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20666-uuCrKd28BFsT.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 81,
+              "favourites": 1639,
+              "popularity": 44741,
+              "startDate": {
+                "year": 2014,
+                "month": 7,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 5341,
+              "title": {
+                "romaji": "Ookami to Koushinryou II",
+                "english": "Spice and Wolf II",
+                "native": "\u72FC\u3068\u9999\u8F9B\u6599II"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx5341-gyp5OZ1NYPxi.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx5341-gyp5OZ1NYPxi.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 81,
+              "favourites": 2075,
+              "popularity": 97559,
+              "startDate": {
+                "year": 2009,
+                "month": 7,
+                "day": 9
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 13601,
+              "title": {
+                "romaji": "PSYCHO-PASS",
+                "english": "PSYCHO-PASS",
+                "native": "PSYCHO-PASS \u30B5\u30A4\u30B3\u30D1\u30B9"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx13601-i42VFuHpqEOJ.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx13601-i42VFuHpqEOJ.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 81,
+              "favourites": 14540,
+              "popularity": 355989,
+              "startDate": {
+                "year": 2012,
+                "month": 10,
+                "day": 12
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 21355,
+              "title": {
+                "romaji": "Re:Zero kara Hajimeru Isekai Seikatsu",
+                "english": "Re:ZERO -Starting Life in Another World-",
+                "native": "Re:\u30BC\u30ED\u304B\u3089\u59CB\u3081\u308B\u7570\u4E16\u754C\u751F\u6D3B"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21355-wRVUrGxpvIQQ.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21355-wRVUrGxpvIQQ.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 81,
+              "favourites": 37113,
+              "popularity": 620698,
+              "startDate": {
+                "year": 2016,
+                "month": 4,
+                "day": 4
+              },
+              "mediaListEntry": {
+                "id": 593363865,
+                "status": "COMPLETED",
+                "progress": 25,
+                "score": 10
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

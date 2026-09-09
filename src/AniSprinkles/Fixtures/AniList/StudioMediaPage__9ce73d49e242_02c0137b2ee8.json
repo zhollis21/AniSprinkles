@@ -1,0 +1,638 @@
+﻿{
+  "operationName": "StudioMediaPage",
+  "variables": {
+    "id": 11,
+    "page": 3,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "02c0137b2ee8",
+  "recordedAt": "2026-09-06T05:32:20.7629456+00:00",
+  "response": {
+    "data": {
+      "Studio": {
+        "media": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 3
+          },
+          "nodes": [
+            {
+              "id": 3701,
+              "title": {
+                "romaji": "Kaiba",
+                "english": "Kaiba",
+                "native": "\u30AB\u30A4\u30D0"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx3701-ooD3N9dD2rqa.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx3701-ooD3N9dD2rqa.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 79,
+              "favourites": 2205,
+              "popularity": 51072,
+              "startDate": {
+                "year": 2008,
+                "month": 4,
+                "day": 11
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 59,
+              "title": {
+                "romaji": "Chobits",
+                "english": "Chobits",
+                "native": "\u3061\u3087\u3073\u3063\u30C4"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx59-0J95ZHgt4uyP.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx59-0J95ZHgt4uyP.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 71,
+              "favourites": 2112,
+              "popularity": 91168,
+              "startDate": {
+                "year": 2002,
+                "month": 4,
+                "day": 3
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 10271,
+              "title": {
+                "romaji": "Gyakkyou Burai Kaiji: Hakairoku-hen",
+                "english": "Kaiji - Against All Rules",
+                "native": "\u9006\u5883\u7121\u983C\u30AB\u30A4\u30B8 \u7834\u6212\u9332\u7BC7"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx10271-Aep4woDDbXdU.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx10271-Aep4woDDbXdU.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 82,
+              "favourites": 1935,
+              "popularity": 53952,
+              "startDate": {
+                "year": 2011,
+                "month": 4,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 14345,
+              "title": {
+                "romaji": "BTOOOM!",
+                "english": "BTOOOM!",
+                "native": "BTOOOM\uFF01"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx14345-BeDPCuhQGtL5.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx14345-BeDPCuhQGtL5.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 68,
+              "favourites": 1867,
+              "popularity": 164358,
+              "startDate": {
+                "year": 2012,
+                "month": 10,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 101215,
+              "title": {
+                "romaji": "Chihayafuru 3",
+                "english": "Chihayafuru 3",
+                "native": "\u3061\u306F\u3084\u3075\u308B 3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx101215-8TTRNAYJnPMW.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101215-8TTRNAYJnPMW.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 85,
+              "favourites": 1769,
+              "popularity": 45117,
+              "startDate": {
+                "year": 2019,
+                "month": 10,
+                "day": 23
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 5040,
+              "title": {
+                "romaji": "One Outs",
+                "english": "One Outs",
+                "native": "\u30EF\u30F3\u30CA\u30A6\u30C4"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx5040-9ruuekq2LZKJ.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx5040-9ruuekq2LZKJ.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 81,
+              "favourites": 1572,
+              "popularity": 53850,
+              "startDate": {
+                "year": 2008,
+                "month": 10,
+                "day": 8
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 5258,
+              "title": {
+                "romaji": "Hajime no Ippo: New Challenger",
+                "english": "Hajime no Ippo: The Fighting! New Challenger",
+                "native": "\u306F\u3058\u3081\u306E\u4E00\u6B69 New Challenger"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx5258-Qn6GBiSY57iT.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx5258-Qn6GBiSY57iT.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 85,
+              "favourites": 1571,
+              "popularity": 61266,
+              "startDate": {
+                "year": 2009,
+                "month": 1,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 19647,
+              "title": {
+                "romaji": "Hajime no Ippo: Rising",
+                "english": "Hajime No Ippo: The Fighting! - Rising -",
+                "native": "\u306F\u3058\u3081\u306E\u4E00\u6B69 Rising"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx19647-cIy7ShTL6e9h.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx19647-cIy7ShTL6e9h.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 85,
+              "favourites": 1381,
+              "popularity": 59900,
+              "startDate": {
+                "year": 2013,
+                "month": 10,
+                "day": 5
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 133845,
+              "title": {
+                "romaji": "Overlord: Sei Oukoku-hen",
+                "english": "OVERLORD: The Sacred Kingdom",
+                "native": "\u30AA\u30FC\u30D0\u30FC\u30ED\u30FC\u30C9 \u8056\u738B\u56FD\u7DE8"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx133845-InD67nSzCAUr.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx133845-InD67nSzCAUr.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 1330,
+              "popularity": 66958,
+              "startDate": {
+                "year": 2024,
+                "month": 9,
+                "day": 20
+              },
+              "mediaListEntry": {
+                "id": 593364650,
+                "status": "COMPLETED",
+                "progress": 1,
+                "score": 9
+              }
+            },
+            {
+              "id": 133845,
+              "title": {
+                "romaji": "Overlord: Sei Oukoku-hen",
+                "english": "OVERLORD: The Sacred Kingdom",
+                "native": "\u30AA\u30FC\u30D0\u30FC\u30ED\u30FC\u30C9 \u8056\u738B\u56FD\u7DE8"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx133845-InD67nSzCAUr.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx133845-InD67nSzCAUr.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 1330,
+              "popularity": 66958,
+              "startDate": {
+                "year": 2024,
+                "month": 9,
+                "day": 20
+              },
+              "mediaListEntry": {
+                "id": 593364650,
+                "status": "COMPLETED",
+                "progress": 1,
+                "score": 9
+              }
+            },
+            {
+              "id": 4901,
+              "title": {
+                "romaji": "BLACK LAGOON: Roberta\u0027s Blood Trail",
+                "english": "Black Lagoon: Roberta\u0027s Blood Trail",
+                "native": "BLACK LAGOON Roberta\u0027s Blood Trail"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx4901-evMxxc1A8pCF.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx4901-evMxxc1A8pCF.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 79,
+              "favourites": 1324,
+              "popularity": 66405,
+              "startDate": {
+                "year": 2010,
+                "month": 6,
+                "day": 27
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 21823,
+              "title": {
+                "romaji": "ACCA: 13-ku Kansatsu-ka",
+                "english": "ACCA: 13-Territory Inspection Dept.",
+                "native": "ACCA 13\u533A\u76E3\u5BDF\u8AB2"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21823-0XTjZ0Rtm7va.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21823-0XTjZ0Rtm7va.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 75,
+              "favourites": 1296,
+              "popularity": 52719,
+              "startDate": {
+                "year": 2017,
+                "month": 1,
+                "day": 10
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 21410,
+              "title": {
+                "romaji": "Nejimaki Seirei Senki: Tenkyou no Alderamin",
+                "english": "Alderamin on the Sky",
+                "native": "\u306D\u3058\u5DFB\u304D\u7CBE\u970A\u6226\u8A18 \u5929\u93E1\u306E\u30A2\u30EB\u30C7\u30E9\u30DF\u30F3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21410-ZGPqM634gFlX.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21410-ZGPqM634gFlX.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 73,
+              "favourites": 1219,
+              "popularity": 77719,
+              "startDate": {
+                "year": 2016,
+                "month": 7,
+                "day": 9
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 4981,
+              "title": {
+                "romaji": "Casshern Sins",
+                "english": "Casshern Sins",
+                "native": "\u30AD\u30E3\u30B7\u30E3\u30FC\u30F3Sins"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx4981-V6MbMiJUqdvP.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx4981-V6MbMiJUqdvP.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 74,
+              "favourites": 1137,
+              "popularity": 42732,
+              "startDate": {
+                "year": 2008,
+                "month": 10,
+                "day": 2
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 14397,
+              "title": {
+                "romaji": "Chihayafuru 2",
+                "english": "Chihayafuru 2",
+                "native": "\u3061\u306F\u3084\u3075\u308B 2"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx14397-k2mzAGlUthAb.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx14397-k2mzAGlUthAb.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 83,
+              "favourites": 1134,
+              "popularity": 57109,
+              "startDate": {
+                "year": 2013,
+                "month": 1,
+                "day": 12
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1726,
+              "title": {
+                "romaji": "Devil May Cry",
+                "english": "Devil May Cry",
+                "native": "\u30C7\u30D3\u30EB \u30E1\u30A4 \u30AF\u30E9\u30A4"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1726-IrpH32PVADiO.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1726-IrpH32PVADiO.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 66,
+              "favourites": 1046,
+              "popularity": 64016,
+              "startDate": {
+                "year": 2007,
+                "month": 6,
+                "day": 14
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1462,
+              "title": {
+                "romaji": "MEMORIES",
+                "english": "Memories",
+                "native": "MEMORIES"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1462-wHe4bW5b6XRE.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1462-wHe4bW5b6XRE.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 75,
+              "favourites": 997,
+              "popularity": 48625,
+              "startDate": {
+                "year": 1995,
+                "month": 12,
+                "day": 23
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 105749,
+              "title": {
+                "romaji": "Diamond no Ace act II",
+                "english": "Ace of the Diamond act II",
+                "native": "\u30C0\u30A4\u30E4\u306EA act\u2161"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx105749-bbqFNGq0r6mS.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx105749-bbqFNGq0r6mS.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 82,
+              "favourites": 991,
+              "popularity": 26824,
+              "startDate": {
+                "year": 2019,
+                "month": 4,
+                "day": 2
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 21085,
+              "title": {
+                "romaji": "Diamond no Ace: Second Season",
+                "english": "Ace of the Diamond Second Season",
+                "native": "\u30C0\u30A4\u30E4\u306EA\uFF5ESecond Season\uFF5E"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21085-qqkUxpMgtFDW.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21085-qqkUxpMgtFDW.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 82,
+              "favourites": 968,
+              "popularity": 32638,
+              "startDate": {
+                "year": 2015,
+                "month": 4,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 369,
+              "title": {
+                "romaji": "Boogiepop wa Warawanai: Boogiepop Phantom",
+                "english": "Boogiepop Phantom",
+                "native": "\u30D6\u30AE\u30FC\u30DD\u30C3\u30D7\u306F\u7B11\u308F\u306A\u3044 Boogiepop Phantom"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx369-dwzXLDvzzAmK.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx369-dwzXLDvzzAmK.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 70,
+              "favourites": 887,
+              "popularity": 43627,
+              "startDate": {
+                "year": 2000,
+                "month": 1,
+                "day": 5
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 21386,
+              "title": {
+                "romaji": "One Punch Man: Road to Hero",
+                "english": "One-Punch Man: Road to Hero",
+                "native": "\u30EF\u30F3\u30D1\u30F3\u30DE\u30F3\u300C\u30ED\u30FC\u30C9\u30FB\u30C8\u30A5\u30FB\u30D2\u30FC\u30ED\u30FC\u300D"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21386-ZMcREWXeWMow.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21386-ZMcREWXeWMow.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 75,
+              "favourites": 851,
+              "popularity": 92242,
+              "startDate": {
+                "year": 2015,
+                "month": 12,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 267,
+              "title": {
+                "romaji": "Gungrave",
+                "english": "Gungrave",
+                "native": "\u30AC\u30F3\u30B0\u30EC\u30A4\u30F4"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx267-vGNmfjvWb1Qq.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx267-vGNmfjvWb1Qq.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 75,
+              "favourites": 841,
+              "popularity": 41750,
+              "startDate": {
+                "year": 2003,
+                "month": 10,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 101283,
+              "title": {
+                "romaji": "Boogiepop wa Warawanai",
+                "english": "Boogiepop and Others",
+                "native": "\u30D6\u30AE\u30FC\u30DD\u30C3\u30D7\u306F\u7B11\u308F\u306A\u3044"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx101283-YpZqD7wrzWui.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx101283-YpZqD7wrzWui.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 68,
+              "favourites": 841,
+              "popularity": 71895,
+              "startDate": {
+                "year": 2019,
+                "month": 1,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2164,
+              "title": {
+                "romaji": "Dennou Coil",
+                "english": "Den-noh Coil",
+                "native": "\u96FB\u8133\u30B3\u30A4\u30EB"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx2164-4tUI4MJCZQO3.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2164-4tUI4MJCZQO3.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 77,
+              "favourites": 833,
+              "popularity": 43331,
+              "startDate": {
+                "year": 2007,
+                "month": 5,
+                "day": 12
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 522,
+              "title": {
+                "romaji": "Metropolis",
+                "english": null,
+                "native": "\u30E1\u30C8\u30ED\u30DD\u30EA\u30B9"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx522-4Sp8QlrufkG5.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx522-4Sp8QlrufkG5.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 74,
+              "favourites": 816,
+              "popularity": 34514,
+              "startDate": {
+                "year": 2001,
+                "month": 5,
+                "day": 26
+              },
+              "mediaListEntry": null
+            }
+          ]
+        }
+      }
+    }
+  }
+}

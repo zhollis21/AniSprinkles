@@ -1,0 +1,776 @@
+﻿{
+  "operationName": "StaffCharactersPage",
+  "variables": {
+    "id": 95075,
+    "page": 3,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "f488bad27943",
+  "recordedAt": "2026-09-09T15:58:42.4185382+00:00",
+  "response": {
+    "data": {
+      "Staff": {
+        "characters": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 3
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 29257,
+                "name": {
+                  "full": "Sabu",
+                  "native": "\u30B5\u30D6",
+                  "userPreferred": "Sabu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b29257-HoxwxgjRTxM0.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b29257-HoxwxgjRTxM0.png"
+                },
+                "favourites": 0
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 1341,
+                  "title": {
+                    "romaji": "Violence Jack: Harem Bomber",
+                    "english": "Violence Jack: Slumking",
+                    "native": "\u30D0\u30A4\u30AA\u30EC\u30F3\u30B9\u30B8\u30E3\u30C3\u30AF \u30CF\u30FC\u30EC\u30E0\u30DC\u30F3\u30D0\u30FC"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/1341.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/1341.jpg"
+                  },
+                  "format": "OVA",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 48
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 34324,
+                "name": {
+                  "full": "Katsuo Umino",
+                  "native": "\u6D77\u91CE\u30AB\u30C4\u30F2",
+                  "userPreferred": "Katsuo Umino"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/34324.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/34324.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 28,
+                  "title": {
+                    "romaji": "Yakitate!! Japan",
+                    "english": null,
+                    "native": "\u713C\u304D\u305F\u3066!! \u30B8\u30E3\u3071\u3093"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx28-QuKcZpUjTXzV.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx28-QuKcZpUjTXzV.png"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 75
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 34378,
+                "name": {
+                  "full": "Uppy",
+                  "native": null,
+                  "userPreferred": "Uppy"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/34378.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/34378.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 5233,
+                  "title": {
+                    "romaji": "Slayers EVOLUTION-R",
+                    "english": "The Slayers Evolution-R",
+                    "native": "\u30B9\u30EC\u30A4\u30E4\u30FC\u30BA EVOLUTION-R"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx5233-k8mwLNWegjJ4.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx5233-k8mwLNWegjJ4.png"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 71
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 34418,
+                "name": {
+                  "full": "Yuuko Motohashi",
+                  "native": null,
+                  "userPreferred": "Yuuko Motohashi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/34418.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/34418.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 28,
+                  "title": {
+                    "romaji": "Yakitate!! Japan",
+                    "english": null,
+                    "native": "\u713C\u304D\u305F\u3066!! \u30B8\u30E3\u3071\u3093"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx28-QuKcZpUjTXzV.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx28-QuKcZpUjTXzV.png"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 75
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 38560,
+                "name": {
+                  "full": "Sanpei",
+                  "native": "\u4E09\u5E73",
+                  "userPreferred": "Sanpei"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/38560.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/38560.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "MAIN",
+              "media": [
+                {
+                  "id": 9584,
+                  "title": {
+                    "romaji": "Kappa no Sanpei",
+                    "english": null,
+                    "native": "\u30AB\u30C3\u30D1\u306E\u4E09\u5E73"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx9584-SwOfRiTla04u.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx9584-SwOfRiTla04u.jpg"
+                  },
+                  "format": "MOVIE",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": null
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 38685,
+                "name": {
+                  "full": "Shounen",
+                  "native": "\u5C11\u5E74",
+                  "userPreferred": "Shounen"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b38685-ezyr3hl27KHf.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b38685-ezyr3hl27KHf.png"
+                },
+                "favourites": 0
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 495,
+                  "title": {
+                    "romaji": "Bakuretsu Hunters",
+                    "english": "Sorcerer Hunters",
+                    "native": "\u7206\u308C\u3064\u30CF\u30F3\u30BF\u30FC"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx495-YFNsNhRtthNz.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx495-YFNsNhRtthNz.png"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 62
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 41265,
+                "name": {
+                  "full": "Gaku Mikawajima",
+                  "native": "\u4E09\u6CB3\u5CF6\u5B78",
+                  "userPreferred": "Gaku Mikawajima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/default.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 1606,
+                  "title": {
+                    "romaji": "Kekkaishi",
+                    "english": "Kekkaishi",
+                    "native": "\u7D50\u754C\u5E2B"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1606-EquPRtK0dYxv.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1606-EquPRtK0dYxv.png"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 72
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 151701,
+                "name": {
+                  "full": "Nekomaru",
+                  "native": null,
+                  "userPreferred": "Nekomaru"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/default.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 1058,
+                  "title": {
+                    "romaji": "Kidou Shinsengumi Moeyo Ken",
+                    "english": null,
+                    "native": "\u6A5F\u52D5\u65B0\u64B0\u7D44\u3000\u840C\u3048\u3088\u5263"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/1058.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/1058.jpg"
+                  },
+                  "format": "OVA",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 48
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 154289,
+                "name": {
+                  "full": "Michael",
+                  "native": "\u30DE\u30A4\u30B1\u30EB",
+                  "userPreferred": "Michael"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b154289-IOGkhztlsjYh.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b154289-IOGkhztlsjYh.png"
+                },
+                "favourites": 0
+              },
+              "role": "MAIN",
+              "media": [
+                {
+                  "id": 1415,
+                  "title": {
+                    "romaji": "Lupin III: Bye Bye Liberty - Kiki Ippatsu!",
+                    "english": "Lupin the 3rd: Bye Bye, Lady Liberty",
+                    "native": "\u30EB\u30D1\u30F3\u4E09\u4E16 \u30D0\u30A4\u30D0\u30A4\u30FB\u30EA\u30D0\u30C6\u30A3\u30FC\u30FB\u5371\u6A5F\u4E00\u767A!"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1415-2z5dwDRgvcXH.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1415-2z5dwDRgvcXH.jpg"
+                  },
+                  "format": "SPECIAL",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 66
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 160386,
+                "name": {
+                  "full": "Tokisaka",
+                  "native": "\u6642\u9006",
+                  "userPreferred": "Tokisaka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b160386-CDMlGqvtiD9j.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b160386-CDMlGqvtiD9j.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 21038,
+                  "title": {
+                    "romaji": "Ushio to Tora (TV)",
+                    "english": "Ushio and Tora (TV)",
+                    "native": "\u3046\u3057\u304A\u3068\u3068\u3089 (TV)"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21038-BcR2t2y6zORx.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21038-BcR2t2y6zORx.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 73
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 160387,
+                "name": {
+                  "full": "Tokijun",
+                  "native": "\u6642\u9806",
+                  "userPreferred": "Tokijun"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/default.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 21038,
+                  "title": {
+                    "romaji": "Ushio to Tora (TV)",
+                    "english": "Ushio and Tora (TV)",
+                    "native": "\u3046\u3057\u304A\u3068\u3068\u3089 (TV)"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21038-BcR2t2y6zORx.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21038-BcR2t2y6zORx.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 73
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 164541,
+                "name": {
+                  "full": "Phyllis",
+                  "native": "\u30D4\u30E5\u30EA\u30B9",
+                  "userPreferred": "Phyllis"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b164541-qahOqrR8pM5Z.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b164541-qahOqrR8pM5Z.png"
+                },
+                "favourites": 0
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 98436,
+                  "title": {
+                    "romaji": "Mahoutsukai no Yome",
+                    "english": "The Ancient Magus\u0027 Bride",
+                    "native": "\u9B54\u6CD5\u4F7F\u3044\u306E\u5AC1"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx98436-n7sK6POCd0XV.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx98436-n7sK6POCd0XV.png"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 78
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 169151,
+                "name": {
+                  "full": "Seneca",
+                  "native": "\u30BB\u30CD\u30AB",
+                  "userPreferred": "Seneca"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b169151-vAi4iKGw5JzX.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b169151-vAi4iKGw5JzX.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "MAIN",
+              "media": [
+                {
+                  "id": 791,
+                  "title": {
+                    "romaji": "Neo Heroic Fantasia: Arion",
+                    "english": "Neo Heroic Fantasia Arion",
+                    "native": "\u30CD\u30AA\u30FB\u30D2\u30ED\u30A4\u30C3\u30AF\u30FB\u30D5\u30A1\u30F3\u30BF\u30B8\u30A2\u3000\u30A2\u30EA\u30AA\u30F3"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx791-NBHvBYcoMl6T.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx791-NBHvBYcoMl6T.jpg"
+                  },
+                  "format": "MOVIE",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 61
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 176411,
+                "name": {
+                  "full": "Chuutarou",
+                  "native": "\u30C1\u30E5\u30FC\u592A\u90CE",
+                  "userPreferred": "Chuutarou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b176411-LyB4et9ividL.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b176411-LyB4et9ividL.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 16526,
+                  "title": {
+                    "romaji": "Ranpou",
+                    "english": null,
+                    "native": "\u3089\u3093\u307D\u3046"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx16526-uD2D5BgXVsGv.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx16526-uD2D5BgXVsGv.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 53
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 177725,
+                "name": {
+                  "full": "Toyoko Busujima",
+                  "native": null,
+                  "userPreferred": "Toyoko Busujima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b177725-AGaT20FuFimf.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b177725-AGaT20FuFimf.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND",
+              "media": [
+                {
+                  "id": 235,
+                  "title": {
+                    "romaji": "Meitantei Conan",
+                    "english": "Detective Conan",
+                    "native": "\u540D\u63A2\u5075\u30B3\u30CA\u30F3"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx235-MyYT7K3chBdO.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx235-MyYT7K3chBdO.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "RELEASING",
+                  "averageScore": 81
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 205409,
+                "name": {
+                  "full": "Fleney Han",
+                  "native": "\u30D5\u30EC\u30CD\u30FC\u30FB\u30CF\u30F3",
+                  "userPreferred": "Fleney Han"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/default.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "MAIN",
+              "media": [
+                {
+                  "id": 9356,
+                  "title": {
+                    "romaji": "Cool Cool Bye",
+                    "english": null,
+                    "native": "\u30AF\u30FC\u30EB\u30FB\u30AF\u30FC\u30EB\u30FB\u30D0\u30A4"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx9356-QUpq1jpkhpIq.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx9356-QUpq1jpkhpIq.png"
+                  },
+                  "format": "OVA",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 45
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 250570,
+                "name": {
+                  "full": "Borotto",
+                  "native": "\u30DC\u30ED\u30C3\u30C8",
+                  "userPreferred": "Borotto"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/default.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "MAIN",
+              "media": [
+                {
+                  "id": 19873,
+                  "title": {
+                    "romaji": "Marude Dameo",
+                    "english": null,
+                    "native": "\u4E38\u51FA\u3060\u3081\u592B"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/19873.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/19873.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": null
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 251718,
+                "name": {
+                  "full": "Jitanda Funda",
+                  "native": "\u30B8\u30BF\u30F3\u30C0\u30FB\u30D5\u30F3\u30C0",
+                  "userPreferred": "Jitanda Funda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/default.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 2933,
+                  "title": {
+                    "romaji": "Mirai Keisatsu Urashiman",
+                    "english": "Urashiman",
+                    "native": "\u672A\u6765\u8B66\u5BDF\u30A6\u30E9\u30B7\u30DE\u30F3"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx2933-yGgn0Udwm3fm.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2933-yGgn0Udwm3fm.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 65
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 328989,
+                "name": {
+                  "full": "Meiko-san",
+                  "native": "\u30E1\u30A4\u30B3\u3055\u3093",
+                  "userPreferred": "Meiko-san"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b328989-gH7hh2iJyitm.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b328989-gH7hh2iJyitm.png"
+                },
+                "favourites": 0
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 173824,
+                  "title": {
+                    "romaji": "Majime ni Fumajime Kaiketsu Zorori: Zekkouchou!",
+                    "english": null,
+                    "native": "\u307E\u3058\u3081\u306B\u3075\u307E\u3058\u3081 \u304B\u3044\u3051\u3064\u30BE\u30ED\u30EA \u30BC\u30C3\u30B3\u30FC\u30C1\u30E7\u30FC\uFF01"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx173824-THPqfiNGLZYK.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx173824-THPqfiNGLZYK.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": null
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 385961,
+                "name": {
+                  "full": "Gon",
+                  "native": "\u3054\u3093",
+                  "userPreferred": "Gon"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/default.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "MAIN",
+              "media": [
+                {
+                  "id": 9535,
+                  "title": {
+                    "romaji": "Gongitsune",
+                    "english": null,
+                    "native": "\u3054\u3093\u304E\u3064\u306D"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/9535.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/9535.jpg"
+                  },
+                  "format": "MOVIE",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 58
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 391080,
+                "name": {
+                  "full": "Saeki",
+                  "native": "\u4F50\u4F2F",
+                  "userPreferred": "Saeki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/default.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 10653,
+                  "title": {
+                    "romaji": "RUNNING Boy: Star Soldier no Himitsu",
+                    "english": null,
+                    "native": "RUNNING Boy \u30B9\u30BF\u30FC\u30BD\u30EB\u30B8\u30E3\u30FC\u306E\u79D8\u5BC6"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx10653-Quc4n4jbAkH6.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx10653-Quc4n4jbAkH6.png"
+                  },
+                  "format": "MOVIE",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": 59
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 391339,
+                "name": {
+                  "full": "Yoshida",
+                  "native": "\u5409\u7530",
+                  "userPreferred": "Yoshida"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/default.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "SUPPORTING",
+              "media": [
+                {
+                  "id": 180867,
+                  "title": {
+                    "romaji": "Kenritsu Umisora Koukou Yakyuubu-in Yamashita Tarou-kun",
+                    "english": null,
+                    "native": "\u770C\u7ACB\u6D77\u7A7A\u9AD8\u6821\u91CE\u7403\u90E8\u54E1\u5C71\u4E0B\u305F\u308D\u30FC\u304F\u3093"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b180867-8PbL2Z0RXAa7.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b180867-8PbL2Z0RXAa7.png"
+                  },
+                  "format": "OVA",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "averageScore": null
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}

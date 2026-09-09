@@ -1,0 +1,548 @@
+﻿{
+  "operationName": "MediaRecommendationsPage",
+  "variables": {
+    "id": 101165,
+    "page": 1,
+    "sort": [
+      "RATING_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "4c3bbb02d06d",
+  "recordedAt": "2026-09-06T05:25:38.1044642+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "recommendations": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "nodes": [
+            {
+              "rating": 254,
+              "mediaRecommendation": {
+                "id": 113425,
+                "title": {
+                  "romaji": "Kaifuku Jutsushi no Yarinaoshi",
+                  "english": "Redo of Healer",
+                  "native": "\u56DE\u5FA9\u8853\u58EB\u306E\u3084\u308A\u76F4\u3057"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx113425-tYGRUa5pgZje.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx113425-tYGRUa5pgZje.jpg"
+                },
+                "averageScore": 58,
+                "mediaListEntry": {
+                  "id": 593363974,
+                  "status": "COMPLETED",
+                  "progress": 12,
+                  "score": 10
+                }
+              }
+            },
+            {
+              "rating": 167,
+              "mediaRecommendation": {
+                "id": 21428,
+                "title": {
+                  "romaji": "Hai to Gensou no Grimgar",
+                  "english": "Grimgar of Fantasy and Ash",
+                  "native": "\u7070\u3068\u5E7B\u60F3\u306E\u30B0\u30EA\u30E0\u30AC\u30EB"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21428-dFVIHeZ8McBe.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21428-dFVIHeZ8McBe.jpg"
+                },
+                "averageScore": 74,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 111,
+              "mediaRecommendation": {
+                "id": 20832,
+                "title": {
+                  "romaji": "Overlord",
+                  "english": "Overlord",
+                  "native": "\u30AA\u30FC\u30D0\u30FC\u30ED\u30FC\u30C9"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20832-vUNm5zrYWifc.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20832-vUNm5zrYWifc.jpg"
+                },
+                "averageScore": 77,
+                "mediaListEntry": {
+                  "id": 593364388,
+                  "status": "COMPLETED",
+                  "progress": 13,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 74,
+              "mediaRecommendation": {
+                "id": 105156,
+                "title": {
+                  "romaji": "Shinchou Yuusha: Kono Yuusha ga Ore TUEEE Kuse ni Shinchou Sugiru",
+                  "english": "Cautious Hero: The Hero Is Overpowered but Overly Cautious",
+                  "native": "\u614E\u91CD\u52C7\u8005\uFF5E\u3053\u306E\u52C7\u8005\u304C\u4FFA\uFF34\uFF35\uFF25\uFF25\uFF25\u304F\u305B\u306B\u614E\u91CD\u3059\u304E\u308B\uFF5E"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx105156-ZVtxISdoUqnY.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx105156-ZVtxISdoUqnY.png"
+                },
+                "averageScore": 73,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 49,
+              "mediaRecommendation": {
+                "id": 147642,
+                "title": {
+                  "romaji": "Nozomanu Fushi no Boukensha",
+                  "english": "The Unwanted Undead Adventurer",
+                  "native": "\u671B\u307E\u306C\u4E0D\u6B7B\u306E\u5192\u967A\u8005"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx147642-SztpXNn9ke6P.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx147642-SztpXNn9ke6P.jpg"
+                },
+                "averageScore": 74,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 47,
+              "mediaRecommendation": {
+                "id": 21123,
+                "title": {
+                  "romaji": "DRIFTERS",
+                  "english": "DRIFTERS",
+                  "native": "DRIFTERS"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21123-bCuqm8wLDqOw.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21123-bCuqm8wLDqOw.png"
+                },
+                "averageScore": 75,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 42,
+              "mediaRecommendation": {
+                "id": 132474,
+                "title": {
+                  "romaji": "Gaikotsu Kishi-sama, Tadaima Isekai e Odekakechuu",
+                  "english": "Skeleton Knight in Another World",
+                  "native": "\u9AB8\u9AA8\u9A0E\u58EB\u69D8\u3001\u53EA\u4ECA\u7570\u4E16\u754C\u3078\u304A\u51FA\u639B\u3051\u4E2D"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx132474-J2ECHSPkfb9g.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx132474-J2ECHSPkfb9g.jpg"
+                },
+                "averageScore": 70,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 36,
+              "mediaRecommendation": {
+                "id": 129188,
+                "title": {
+                  "romaji": "Goblin Slayer II",
+                  "english": "GOBLIN SLAYER II",
+                  "native": "\u30B4\u30D6\u30EA\u30F3\u30B9\u30EC\u30A4\u30E4\u30FC\u2161"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx129188-zWPBGutZXgjZ.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx129188-zWPBGutZXgjZ.jpg"
+                },
+                "averageScore": 71,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 27,
+              "mediaRecommendation": {
+                "id": 116242,
+                "title": {
+                  "romaji": "100-man no Inochi no Ue ni Ore wa Tatteiru",
+                  "english": "I\u0027m Standing on a Million Lives",
+                  "native": "100\u4E07\u306E\u547D\u306E\u4E0A\u306B\u4FFA\u306F\u7ACB\u3063\u3066\u3044\u308B"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx116242-JY81Khmbqysn.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx116242-JY81Khmbqysn.jpg"
+                },
+                "averageScore": 63,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 26,
+              "mediaRecommendation": {
+                "id": 129196,
+                "title": {
+                  "romaji": "Dungeon ni Deai wo Motomeru no wa Machigatteiru Darou ka IV: Shin Shou Meikyuu-hen",
+                  "english": "Is It Wrong to Try to Pick Up Girls in a Dungeon? IV",
+                  "native": "\u30C0\u30F3\u30B8\u30E7\u30F3\u306B\u51FA\u4F1A\u3044\u3092\u6C42\u3081\u308B\u306E\u306F\u9593\u9055\u3063\u3066\u3044\u308B\u3060\u308D\u3046\u304B\u2163 \u65B0\u7AE0 \u8FF7\u5BAE\u7BC7"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx129196-eFVs05hMbVSm.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx129196-eFVs05hMbVSm.jpg"
+                },
+                "averageScore": 77,
+                "mediaListEntry": {
+                  "id": 593364524,
+                  "status": "COMPLETED",
+                  "progress": 11,
+                  "score": 9
+                }
+              }
+            },
+            {
+              "rating": 17,
+              "mediaRecommendation": {
+                "id": 21560,
+                "title": {
+                  "romaji": "Berserk",
+                  "english": "Berserk (2016)",
+                  "native": "\u30D9\u30EB\u30BB\u30EB\u30AF"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21560-6iifjdssfebJ.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21560-6iifjdssfebJ.jpg"
+                },
+                "averageScore": 56,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 17,
+              "mediaRecommendation": {
+                "id": 141534,
+                "title": {
+                  "romaji": "Mushoku Tensei: Isekai Ittara Honki Dasu Part 2 - Eris no Goblin Toubatsu",
+                  "english": "Mushoku Tensei: Jobless Reincarnation Cour 2 - Eris the Goblin Slayer",
+                  "native": "\u7121\u8077\u8EE2\u751F \uFF5E\u7570\u4E16\u754C\u884C\u3063\u305F\u3089\u672C\u6C17\u3060\u3059\uFF5E \u7B2C2\u30AF\u30FC\u30EB \u30A8\u30EA\u30B9\u306E\u30B4\u30D6\u30EA\u30F3\u8A0E\u4F10"
+                },
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx141534-Tmnlz4mvYhaU.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx141534-Tmnlz4mvYhaU.jpg"
+                },
+                "averageScore": 78,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 16,
+              "mediaRecommendation": {
+                "id": 169417,
+                "title": {
+                  "romaji": "Re:Monster",
+                  "english": "Re:Monster",
+                  "native": "Re:Monster"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx169417-izsfKg0hasRd.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx169417-izsfKg0hasRd.png"
+                },
+                "averageScore": 65,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 15,
+              "mediaRecommendation": {
+                "id": 100182,
+                "title": {
+                  "romaji": "Sword Art Online: Alicization",
+                  "english": "Sword Art Online: Alicization",
+                  "native": "\u30BD\u30FC\u30C9\u30A2\u30FC\u30C8\u30FB\u30AA\u30F3\u30E9\u30A4\u30F3 \u30A2\u30EA\u30B7\u30BC\u30FC\u30B7\u30E7\u30F3"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx100182-KctPmCJ2smHQ.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx100182-KctPmCJ2smHQ.jpg"
+                },
+                "averageScore": 75,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 14,
+              "mediaRecommendation": {
+                "id": 99263,
+                "title": {
+                  "romaji": "Tate no Yuusha no Nariagari",
+                  "english": "The Rising of the Shield Hero",
+                  "native": "\u76FE\u306E\u52C7\u8005\u306E\u6210\u308A\u4E0A\u304C\u308A"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx99263-LcazQwdlWzMy.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx99263-LcazQwdlWzMy.jpg"
+                },
+                "averageScore": 76,
+                "mediaListEntry": {
+                  "id": 593364368,
+                  "status": "COMPLETED",
+                  "progress": 25,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 12,
+              "mediaRecommendation": {
+                "id": 108465,
+                "title": {
+                  "romaji": "Mushoku Tensei: Isekai Ittara Honki Dasu",
+                  "english": "Mushoku Tensei: Jobless Reincarnation",
+                  "native": "\u7121\u8077\u8EE2\u751F \uFF5E\u7570\u4E16\u754C\u884C\u3063\u305F\u3089\u672C\u6C17\u3060\u3059\uFF5E"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx108465-1ANspF1EWyFx.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx108465-1ANspF1EWyFx.jpg"
+                },
+                "averageScore": 82,
+                "mediaListEntry": {
+                  "id": 593363909,
+                  "status": "COMPLETED",
+                  "progress": 11,
+                  "score": 10
+                }
+              }
+            },
+            {
+              "rating": 11,
+              "mediaRecommendation": {
+                "id": 144092,
+                "title": {
+                  "romaji": "Benriya Saitou-san, Isekai ni Iku",
+                  "english": "Handyman Saitou in Another World",
+                  "native": "\u4FBF\u5229\u5C4B\u658E\u85E4\u3055\u3093\u3001\u7570\u4E16\u754C\u306B\u884C\u304F"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx144092-8EKzzZQofFlW.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx144092-8EKzzZQofFlW.jpg"
+                },
+                "averageScore": 72,
+                "mediaListEntry": {
+                  "id": 541004686,
+                  "status": "COMPLETED",
+                  "progress": 12,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 11,
+              "mediaRecommendation": {
+                "id": 175198,
+                "title": {
+                  "romaji": "\u00DCbel Blatt",
+                  "english": "\u00DCbel Blatt",
+                  "native": "\u00DCbel Blatt\uFF5E\u30E6\u30FC\u30D9\u30EB\u30D6\u30E9\u30C3\u30C8\uFF5E"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx175198-AtWwEQPTjQ6N.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx175198-AtWwEQPTjQ6N.jpg"
+                },
+                "averageScore": 60,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 10,
+              "mediaRecommendation": {
+                "id": 127366,
+                "title": {
+                  "romaji": "100-man no Inochi no Ue ni Ore wa Tatteiru 2nd Season",
+                  "english": "I\u0027m Standing on a Million Lives Season 2",
+                  "native": "100\u4E07\u306E\u547D\u306E\u4E0A\u306B\u4FFA\u306F\u7ACB\u3063\u3066\u3044\u308B \u7B2C2\u30B7\u30FC\u30BA\u30F3"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx127366-nQRRRvVbPIDt.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx127366-nQRRRvVbPIDt.jpg"
+                },
+                "averageScore": 66,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 10,
+              "mediaRecommendation": {
+                "id": 156039,
+                "title": {
+                  "romaji": "Boushoku no Berserk",
+                  "english": "Berserk of Gluttony",
+                  "native": "\u66B4\u98DF\u306E\u30D9\u30EB\u30BB\u30EB\u30AF"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx156039-JnepQcVxXLLW.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx156039-JnepQcVxXLLW.jpg"
+                },
+                "averageScore": 67,
+                "mediaListEntry": {
+                  "id": 593365396,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "score": 0
+                }
+              }
+            },
+            {
+              "rating": 10,
+              "mediaRecommendation": {
+                "id": 178869,
+                "title": {
+                  "romaji": "Clevatess: Majuu no Ou to Akago to Kabane no Yuusha",
+                  "english": "Clevatess",
+                  "native": "\u30AF\u30EC\u30D0\u30C6\u30B9-\u9B54\u7363\u306E\u738B\u3068\u8D64\u5B50\u3068\u5C4D\u306E\u52C7\u8005-"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx178869-qiEz0gQD8H5N.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx178869-qiEz0gQD8H5N.png"
+                },
+                "averageScore": 77,
+                "mediaListEntry": {
+                  "id": 593364574,
+                  "status": "COMPLETED",
+                  "progress": 12,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 9,
+              "mediaRecommendation": {
+                "id": 139587,
+                "title": {
+                  "romaji": "Tensei Shitara Ken Deshita",
+                  "english": "Reincarnated as a Sword",
+                  "native": "\u8EE2\u751F\u3057\u305F\u3089\u5263\u3067\u3057\u305F"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx139587-rbZVcigCRtHY.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx139587-rbZVcigCRtHY.jpg"
+                },
+                "averageScore": 74,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 9,
+              "mediaRecommendation": {
+                "id": 130590,
+                "title": {
+                  "romaji": "Maou Gakuin no Futekigousha: Shijou Saikyou no Maou no Shiso, Tensei shite Shison-tachi no Gakkou e Kayou II Part 2",
+                  "english": "The Misfit of Demon King Academy II (Cour 2)",
+                  "native": "\u9B54\u738B\u5B66\u9662\u306E\u4E0D\u9069\u5408\u8005 \uFF5E\u53F2\u4E0A\u6700\u5F37\u306E\u9B54\u738B\u306E\u59CB\u7956\u3001\u8EE2\u751F\u3057\u3066\u5B50\u5B6B\u305F\u3061\u306E\u5B66\u6821\u3078\u901A\u3046\uFF5E \u2161 2\u30AF\u30FC\u30EB"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx130590-698sT7jWoz42.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx130590-698sT7jWoz42.jpg"
+                },
+                "averageScore": 65,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 4,
+              "mediaRecommendation": {
+                "id": 167152,
+                "title": {
+                  "romaji": "Yuusha Kei ni Shosu: Choubatsu Yuusha 9004-tai Keimu Kiroku",
+                  "english": "Sentenced to Be a Hero",
+                  "native": "\u52C7\u8005\u5211\u306B\u51E6\u3059 \u61F2\u7F70\u52C7\u80059004\u968A\u5211\u52D9\u8A18\u9332"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx167152-O1pm6DWwifBD.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx167152-O1pm6DWwifBD.jpg"
+                },
+                "averageScore": 81,
+                "mediaListEntry": {
+                  "id": 593364737,
+                  "status": "COMPLETED",
+                  "progress": 12,
+                  "score": 10
+                }
+              }
+            },
+            {
+              "rating": 2,
+              "mediaRecommendation": {
+                "id": 97986,
+                "title": {
+                  "romaji": "Made in Abyss",
+                  "english": "Made in Abyss",
+                  "native": "\u30E1\u30A4\u30C9\u30A4\u30F3\u30A2\u30D3\u30B9"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx97986-TQ7dCgbS3y5s.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx97986-TQ7dCgbS3y5s.jpg"
+                },
+                "averageScore": 84,
+                "mediaListEntry": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

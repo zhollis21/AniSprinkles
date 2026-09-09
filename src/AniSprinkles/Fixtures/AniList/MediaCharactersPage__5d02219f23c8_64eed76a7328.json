@@ -1,0 +1,428 @@
+﻿{
+  "operationName": "MediaCharactersPage",
+  "variables": {
+    "id": 154587,
+    "page": 3,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "64eed76a7328",
+  "recordedAt": "2026-09-06T05:37:23.7072898+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "characters": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 3
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 326328,
+                "name": {
+                  "full": "Tenshu",
+                  "native": "\u5E97\u4E3B",
+                  "userPreferred": "Tenshu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b326328-mfYja0XnPyaf.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b326328-mfYja0XnPyaf.png"
+                },
+                "favourites": 2
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 326373,
+                "name": {
+                  "full": "Hahaoya",
+                  "native": "\u6BCD\u89AA",
+                  "userPreferred": "Hahaoya"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b326373-scCzFQPjzwlx.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b326373-scCzFQPjzwlx.png"
+                },
+                "favourites": 2
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 326418,
+                "name": {
+                  "full": "Noufu B",
+                  "native": "\u8FB2\u592B",
+                  "userPreferred": "Noufu B"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b326418-4FAzgSQpxqz1.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b326418-4FAzgSQpxqz1.png"
+                },
+                "favourites": 2
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 326421,
+                "name": {
+                  "full": "Chounin B",
+                  "native": "\u753A\u4EBA",
+                  "userPreferred": "Chounin B"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b326421-00YUuaZFnfzs.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b326421-00YUuaZFnfzs.png"
+                },
+                "favourites": 2
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 326422,
+                "name": {
+                  "full": "Kodomo B",
+                  "native": "\u5B50\u4F9B",
+                  "userPreferred": "Kodomo B"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b326422-84h0nA2XWWly.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b326422-84h0nA2XWWly.png"
+                },
+                "favourites": 2
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 326826,
+                "name": {
+                  "full": "Gabel",
+                  "native": "\u30AC\u30FC\u30D9\u30EB",
+                  "userPreferred": "Gabel"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b326826-KhpnVx4CE6Oc.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b326826-KhpnVx4CE6Oc.png"
+                },
+                "favourites": 2
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 326828,
+                "name": {
+                  "full": "Wirt",
+                  "native": "\u30F4\u30A3\u30EB\u30C8",
+                  "userPreferred": "Wirt"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b326828-cujHlvsd6xLc.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b326828-cujHlvsd6xLc.png"
+                },
+                "favourites": 2
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 326833,
+                "name": {
+                  "full": "Gankobaa-san",
+                  "native": "\u9811\u56FA\u5A46\u3055\u3093",
+                  "userPreferred": "Gankobaa-san"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b326833-kn1X1mSLWtTC.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b326833-kn1X1mSLWtTC.png"
+                },
+                "favourites": 2
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 327208,
+                "name": {
+                  "full": "Koya no Omo",
+                  "native": "\u5C0F\u5C4B\u306E\u4E3B",
+                  "userPreferred": "Koya no Omo"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b327208-MknLdYM8opUz.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b327208-MknLdYM8opUz.png"
+                },
+                "favourites": 2
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 327209,
+                "name": {
+                  "full": "Murabito F",
+                  "native": "\u6751\u4EBA",
+                  "userPreferred": "Murabito F"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b327209-8VCBCUpfGpI2.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b327209-8VCBCUpfGpI2.png"
+                },
+                "favourites": 2
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 327521,
+                "name": {
+                  "full": "Roufujin",
+                  "native": "\u8001\u5A66\u4EBA",
+                  "userPreferred": "Roufujin"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b327521-oAFD2538qD73.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b327521-oAFD2538qD73.png"
+                },
+                "favourites": 2
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 315628,
+                "name": {
+                  "full": "Sanretsu-sha C",
+                  "native": "\u53C2\u5217\u8005",
+                  "userPreferred": "Sanretsu-sha C"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/default.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 315629,
+                "name": {
+                  "full": "Sarentsu-sha A",
+                  "native": "\u53C2\u5217\u8005",
+                  "userPreferred": "Sarentsu-sha A"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/default.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 315630,
+                "name": {
+                  "full": "Ou-sama",
+                  "native": "\u738B\u69D8",
+                  "userPreferred": "Ou-sama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b315630-8KezkCJX7RoK.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b315630-8KezkCJX7RoK.png"
+                },
+                "favourites": 1
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 315631,
+                "name": {
+                  "full": "Mahou-ten Tenshu",
+                  "native": "\u9B54\u6CD5\u5E97\u5E97\u4E3B",
+                  "userPreferred": "Mahou-ten Tenshu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b315631-GLsgmUdVPOvY.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b315631-GLsgmUdVPOvY.png"
+                },
+                "favourites": 1
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 315632,
+                "name": {
+                  "full": "Sarentsu-sha B",
+                  "native": "\u53C2\u5217\u8005",
+                  "userPreferred": "Sarentsu-sha B"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/default.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 315637,
+                "name": {
+                  "full": "Chounin A",
+                  "native": "\u753A\u4EBA",
+                  "userPreferred": "Chounin A"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b315637-hmH9dWqqKEK4.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b315637-hmH9dWqqKEK4.png"
+                },
+                "favourites": 1
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 315638,
+                "name": {
+                  "full": "Arakuremono A",
+                  "native": "\u8352\u304F\u308C\u8005",
+                  "userPreferred": "Arakuremono A"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b315638-5logd93rfCIx.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b315638-5logd93rfCIx.png"
+                },
+                "favourites": 1
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 315639,
+                "name": {
+                  "full": "Arakuremono B",
+                  "native": "\u8352\u304F\u308C\u8005",
+                  "userPreferred": "Arakuremono B"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b315639-f4fv83rO4NM4.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b315639-f4fv83rO4NM4.png"
+                },
+                "favourites": 1
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 315642,
+                "name": {
+                  "full": "Sonchou A",
+                  "native": "\u6751\u9577",
+                  "userPreferred": "Sonchou A"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b315642-Nm5q1N4QCmlt.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b315642-Nm5q1N4QCmlt.png"
+                },
+                "favourites": 1
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 315644,
+                "name": {
+                  "full": "Baasan",
+                  "native": "\u5A46\u3055\u3093",
+                  "userPreferred": "Baasan"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b315644-sv7ZoEaOwu42.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b315644-sv7ZoEaOwu42.png"
+                },
+                "favourites": 1
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 316458,
+                "name": {
+                  "full": "Murabito C",
+                  "native": "\u6751\u4EBA",
+                  "userPreferred": "Murabito C"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b316458-uigEvTamAbqV.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b316458-uigEvTamAbqV.png"
+                },
+                "favourites": 1
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 316459,
+                "name": {
+                  "full": "Kodomo A",
+                  "native": "\u5B50\u4F9B",
+                  "userPreferred": "Kodomo A"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b316459-d982O7o48BPF.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b316459-d982O7o48BPF.png"
+                },
+                "favourites": 1
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 319165,
+                "name": {
+                  "full": "Mazoku",
+                  "native": "\u9B54\u65CF",
+                  "userPreferred": "Mazoku"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b319165-8WI7HrFjTgQr.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b319165-8WI7HrFjTgQr.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 325587,
+                "name": {
+                  "full": "Blei",
+                  "native": "\u30D6\u30EC\u30A4",
+                  "userPreferred": "Blei"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b325587-P0uMjKW28Lue.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b325587-P0uMjKW28Lue.png"
+                },
+                "favourites": 1
+              },
+              "role": "SUPPORTING"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

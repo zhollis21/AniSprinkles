@@ -1,0 +1,269 @@
+﻿{
+  "operationName": "MediaCharactersPage",
+  "variables": {
+    "id": 180829,
+    "page": 1,
+    "sort": [
+      "ROLE",
+      "RELEVANCE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "64eed76a7328",
+  "recordedAt": "2026-09-06T05:22:34.2219718+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "characters": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 344264,
+                "name": {
+                  "full": "Mariabell",
+                  "native": "\u30DE\u30EA\u30A2\u30D9\u30EB",
+                  "userPreferred": "Mariabell"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b344264-eHmymcnclWxZ.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b344264-eHmymcnclWxZ.png"
+                },
+                "favourites": 119
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 344263,
+                "name": {
+                  "full": "Hinata Sunohara",
+                  "native": "\u6625\u539F\u65E5\u5411",
+                  "userPreferred": "Hinata Sunohara"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b344263-fVr752QCrAOU.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b344263-fVr752QCrAOU.png"
+                },
+                "favourites": 4
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 344282,
+                "name": {
+                  "full": "Sakura Mochida",
+                  "native": "\u6301\u7530\u54B2\u826F",
+                  "userPreferred": "Sakura Mochida"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b344282-HMTtLI2bwEHT.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b344282-HMTtLI2bwEHT.png"
+                },
+                "favourites": 14
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 344283,
+                "name": {
+                  "full": "Cecil",
+                  "native": "\u30BB\u30B7\u30EB",
+                  "userPreferred": "Cecil"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b344283-oQs6CS7og5dg.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b344283-oQs6CS7og5dg.png"
+                },
+                "favourites": 13
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 344284,
+                "name": {
+                  "full": "Mai",
+                  "native": "\u30E1\u30A4",
+                  "userPreferred": "Mai"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b344284-evB8H3IdaWNL.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b344284-evB8H3IdaWNL.png"
+                },
+                "favourites": 11
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 183417,
+                "name": {
+                  "full": "Sayo Minakami",
+                  "native": "\u6C34\u795E\u5C0F\u591C",
+                  "userPreferred": "Sayo Minakami"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b183417-4wWFMvcf0jpW.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b183417-4wWFMvcf0jpW.png"
+                },
+                "favourites": 303
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 191857,
+                "name": {
+                  "full": "Haruka Hanabishi",
+                  "native": "\u82B1\u83F1\u306F\u308B\u304B",
+                  "userPreferred": "Haruka Hanabishi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b191857-UBO6dKSU2Iin.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b191857-UBO6dKSU2Iin.png"
+                },
+                "favourites": 203
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 191859,
+                "name": {
+                  "full": "Kaoruko Tenkawa",
+                  "native": "\u5929\u5DDD\u85AB\u5B50",
+                  "userPreferred": "Kaoruko Tenkawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b191859-tmn24DMDFPIc.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b191859-tmn24DMDFPIc.png"
+                },
+                "favourites": 300
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 375500,
+                "name": {
+                  "full": "Maou",
+                  "native": "\u9B54\u738B",
+                  "userPreferred": "Maou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b375500-dFCbrN7g5Yij.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b375500-dFCbrN7g5Yij.png"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 375502,
+                "name": {
+                  "full": "Joshiseito",
+                  "native": "\u5973\u5B50\u751F\u5F92",
+                  "userPreferred": "Joshiseito"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/default.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 375504,
+                "name": {
+                  "full": "Danshigakusei",
+                  "native": "\u7537\u5B50\u5B66\u751F",
+                  "userPreferred": "Danshigakusei"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/default.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 375505,
+                "name": {
+                  "full": "Joshigakusei",
+                  "native": "\u5973\u5B50\u5B66\u751F",
+                  "userPreferred": "Joshigakusei"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/default.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 375506,
+                "name": {
+                  "full": "Josei",
+                  "native": "\u5973\u6027",
+                  "userPreferred": "Josei"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/default.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 375507,
+                "name": {
+                  "full": "Tsuukounin A",
+                  "native": "\u901A\u884C\u4EBAA",
+                  "userPreferred": "Tsuukounin A"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/default.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 375508,
+                "name": {
+                  "full": "Tsuukounin B",
+                  "native": "\u901A\u884C\u4EBAB",
+                  "userPreferred": "Tsuukounin B"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/default.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

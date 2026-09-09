@@ -1,0 +1,633 @@
+﻿{
+  "operationName": "StudioMediaPage",
+  "variables": {
+    "id": 102,
+    "page": 3,
+    "sort": [
+      "START_DATE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "02c0137b2ee8",
+  "recordedAt": "2026-09-09T16:01:19.7014204+00:00",
+  "response": {
+    "data": {
+      "Studio": {
+        "media": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 3
+          },
+          "nodes": [
+            {
+              "id": 379,
+              "title": {
+                "romaji": "Heppoko Jikken Animation Excel Saga",
+                "english": "Excel Saga",
+                "native": "\u3078\u3063\u307D\u3053\u5B9F\u9A13\u30A2\u30CB\u30E1\u30FC\u30B7\u30E7\u30F3 \u30A8\u30AF\u30BB\u30EB\u30FB\u30B5\u30FC\u30AC"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx379-qjgzMfG8vQAo.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx379-qjgzMfG8vQAo.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 71,
+              "favourites": 463,
+              "popularity": 24580,
+              "startDate": {
+                "year": 1999,
+                "month": 10,
+                "day": 8
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 186,
+              "title": {
+                "romaji": "Initial D SECOND STAGE",
+                "english": "Initial D 2nd Stage",
+                "native": "\u982D\u6587\u5B57[\u30A4\u30CB\u30B7\u30E3\u30EB]D SECOND STAGE"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b186-eygBSoYwLCYt.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b186-eygBSoYwLCYt.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 81,
+              "favourites": 1261,
+              "popularity": 60399,
+              "startDate": {
+                "year": 1999,
+                "month": 10,
+                "day": 15
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 21,
+              "title": {
+                "romaji": "ONE PIECE",
+                "english": "ONE PIECE",
+                "native": "ONE PIECE"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21-ELSYx3yMPcKM.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21-ELSYx3yMPcKM.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "RELEASING",
+              "averageScore": 87,
+              "favourites": 111256,
+              "popularity": 749040,
+              "startDate": {
+                "year": 1999,
+                "month": 10,
+                "day": 20
+              },
+              "mediaListEntry": {
+                "id": 593351146,
+                "status": "CURRENT",
+                "progress": 1163,
+                "score": 8
+              }
+            },
+            {
+              "id": 1124,
+              "title": {
+                "romaji": "Seikai no Danshou: Tanjou",
+                "english": "Passage of the Stars: Birth",
+                "native": "\u661F\u754C\u306E\u65AD\u7AE0 \u201C\u8A95\u751F\u201D"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1124-DsQjaomdYJxj.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1124-DsQjaomdYJxj.jpg"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 65,
+              "favourites": 5,
+              "popularity": 2505,
+              "startDate": {
+                "year": 2000,
+                "month": 4,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 396,
+              "title": {
+                "romaji": "Seikai no Senki",
+                "english": "Banner of the Stars",
+                "native": "\u661F\u754C\u306E\u6226\u65D7"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx396-Lgdv4FWS5c1J.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx396-Lgdv4FWS5c1J.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 73,
+              "favourites": 92,
+              "popularity": 8733,
+              "startDate": {
+                "year": 2000,
+                "month": 4,
+                "day": 14
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 481,
+              "title": {
+                "romaji": "Yu\u2606Gi\u2606Oh! Duel Monsters",
+                "english": "Yu-Gi-Oh!",
+                "native": "\u904A\u2606\u622F\u2606\u738B\u3000\u30C7\u30E5\u30A8\u30EB\u30E2\u30F3\u30B9\u30BF\u30FC\u30BA"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx481-Qpqy1TQBOxZO.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx481-Qpqy1TQBOxZO.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 73,
+              "favourites": 2780,
+              "popularity": 85824,
+              "startDate": {
+                "year": 2000,
+                "month": 4,
+                "day": 18
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 189,
+              "title": {
+                "romaji": "Love Hina",
+                "english": "Love Hina",
+                "native": "\u30E9\u30D6\u3072\u306A"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx189-ybxKAazvr7cH.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx189-ybxKAazvr7cH.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 66,
+              "favourites": 499,
+              "popularity": 44979,
+              "startDate": {
+                "year": 2000,
+                "month": 4,
+                "day": 19
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1363,
+              "title": {
+                "romaji": "Meitantei Conan: Hitomi no Naka no Ansatsusha",
+                "english": "Detective Conan: Captured in Her Eyes",
+                "native": "\u540D\u63A2\u5075\u30B3\u30CA\u30F3\u3000\u77B3\u306E\u4E2D\u306E\u6697\u6BBA\u8005"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1363-KeaIofC3kYaZ.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1363-KeaIofC3kYaZ.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 192,
+              "popularity": 14477,
+              "startDate": {
+                "year": 2000,
+                "month": 4,
+                "day": 22
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 227,
+              "title": {
+                "romaji": "FLCL",
+                "english": "FLCL",
+                "native": "\u30D5\u30EA\u30AF\u30EA"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx227-qOB9ZhVvNnqO.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx227-qOB9ZhVvNnqO.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 79,
+              "favourites": 14230,
+              "popularity": 206686,
+              "startDate": {
+                "year": 2000,
+                "month": 4,
+                "day": 26
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 393,
+              "title": {
+                "romaji": "Escaflowne",
+                "english": "Escaflowne: A Girl in Gaea",
+                "native": "\u30A8\u30B9\u30AB\u30D5\u30ED\u30FC\u30CD"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx393-KAkauYiiSWGa.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx393-KAkauYiiSWGa.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 66,
+              "favourites": 186,
+              "popularity": 16253,
+              "startDate": {
+                "year": 2000,
+                "month": 6,
+                "day": 24
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 963,
+              "title": {
+                "romaji": "Love Hina: Motoko no Sentaku, Koi ka Ken... Naku na",
+                "english": "Love Hina: Motoko\u0027s Choice, Love or the Sword: Don\u0027t Cry",
+                "native": "\u30E9\u30D6\u3072\u306A \u7D20\u5B50\u306E\u30BB\u30F3\u30BF\u30AF\u3001\u604B\u304B\u5263... \u6CE3\u304F\u306A"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx963-SYYLzJFKc3Hb.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx963-SYYLzJFKc3Hb.jpg"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 67,
+              "favourites": 32,
+              "popularity": 6492,
+              "startDate": {
+                "year": 2000,
+                "month": 9,
+                "day": 27
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 822,
+              "title": {
+                "romaji": "Initial D EXTRA STAGE",
+                "english": "Initial D Extra Stage",
+                "native": "\u982D\u6587\u5B57[\u30A4\u30CB\u30B7\u30E3\u30EB]D EXTRA STAGE"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx822-JgdEklwoIOxm.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx822-JgdEklwoIOxm.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 71,
+              "favourites": 159,
+              "popularity": 17095,
+              "startDate": {
+                "year": 2000,
+                "month": 11,
+                "day": 10
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 287,
+              "title": {
+                "romaji": "Grappler Baki (TV)",
+                "english": "Baki the Grappler",
+                "native": "\u30B0\u30E9\u30C3\u30D7\u30E9\u30FC\u5203\u7259 (TV)"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx287-goNFQRZPze2g.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx287-goNFQRZPze2g.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 72,
+              "favourites": 738,
+              "popularity": 39147,
+              "startDate": {
+                "year": 2001,
+                "month": 1,
+                "day": 9
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 187,
+              "title": {
+                "romaji": "Initial D THIRD STAGE",
+                "english": "Initial D 3rd Stage",
+                "native": "\u982D\u6587\u5B57[\u30A4\u30CB\u30B7\u30E3\u30EB]D THIRD STAGE"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx187-QyCAlBGY3EWw.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx187-QyCAlBGY3EWw.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 936,
+              "popularity": 50872,
+              "startDate": {
+                "year": 2001,
+                "month": 1,
+                "day": 13
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1112,
+              "title": {
+                "romaji": "Vandread Taidouhen",
+                "english": null,
+                "native": "\u30F4\u30A1\u30F3\u30C9\u30EC\u30C3\u30C9 \u80CE\u52D5\u7BC7"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1112-DceDNIPho0tS.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1112-DceDNIPho0tS.png"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 61,
+              "favourites": 20,
+              "popularity": 1794,
+              "startDate": {
+                "year": 2001,
+                "month": 1,
+                "day": 21
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 192,
+              "title": {
+                "romaji": "Love Hina: Haru Special - Kimi Sakura Chiru Nakare!!",
+                "english": "Love Hina Spring Movie",
+                "native": "\u30E9\u30D6\u3072\u306A\u6625\u30B9\u30DA\u30B7\u30E3\u30EB \u301C\u30AD\u30DF\u30B5\u30AF\u30E9\u30C1\u30EB\u30CA\u30AB\u30EC!!\u301C"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx192-mEQSZUwiu2Na.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx192-mEQSZUwiu2Na.jpg"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 67,
+              "favourites": 37,
+              "popularity": 8294,
+              "startDate": {
+                "year": 2001,
+                "month": 4,
+                "day": 2
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 253,
+              "title": {
+                "romaji": "Jungle wa Itsumo Hare nochi Guu",
+                "english": "Har\u00E9\u002BGuu",
+                "native": "\u30B8\u30E3\u30F3\u30B0\u30EB\u306F\u3044\u3064\u3082\u30CF\u30EC\u306E\u3061\u30B0\u30A5"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/253.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/253.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 73,
+              "favourites": 157,
+              "popularity": 9034,
+              "startDate": {
+                "year": 2001,
+                "month": 4,
+                "day": 3
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 100,
+              "title": {
+                "romaji": "Shin Shirayuki-hime Densetsu Pretear",
+                "english": "Pr\u00E9tear: The New Legend of Snow White",
+                "native": "\u65B0\u767D\u96EA\u59EB\u4F1D\u8AAC\u30D7\u30EA\u30FC\u30C6\u30A3\u30A2"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx100-wr3vEOYOiAC1.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx100-wr3vEOYOiAC1.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 67,
+              "favourites": 165,
+              "popularity": 11548,
+              "startDate": {
+                "year": 2001,
+                "month": 4,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 272,
+              "title": {
+                "romaji": "Noir",
+                "english": null,
+                "native": "\u30CE\u30EF\u30FC\u30EB"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx272-lRHGmGHUZMr2.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx272-lRHGmGHUZMr2.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 69,
+              "favourites": 413,
+              "popularity": 29988,
+              "startDate": {
+                "year": 2001,
+                "month": 4,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1364,
+              "title": {
+                "romaji": "Meitantei Conan: Tengoku e no Count Down",
+                "english": "Detective Conan: Countdown to Heaven",
+                "native": "\u540D\u63A2\u5075\u30B3\u30CA\u30F3 \u5929\u56FD\u3078\u306E\u30AB\u30A6\u30F3\u30C8\u30C0\u30A6\u30F3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1364-tlZLDeDo8W0z.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1364-tlZLDeDo8W0z.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 79,
+              "favourites": 163,
+              "popularity": 14273,
+              "startDate": {
+                "year": 2001,
+                "month": 4,
+                "day": 21
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 120,
+              "title": {
+                "romaji": "Fruits Basket",
+                "english": "Fruits Basket",
+                "native": "\u30D5\u30EB\u30FC\u30C4\u30D0\u30B9\u30B1\u30C3\u30C8"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx120-Z5i1sw1xboQP.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx120-Z5i1sw1xboQP.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 75,
+              "favourites": 2495,
+              "popularity": 99355,
+              "startDate": {
+                "year": 2001,
+                "month": 7,
+                "day": 5
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 551,
+              "title": {
+                "romaji": "Grappler Baki: Saidai Tournament-hen",
+                "english": "Grappler Baki Maximum Tournament",
+                "native": "\u30B0\u30E9\u30C3\u30D7\u30E9\u30FC\u5203\u7259(\u30D0\u30AD) \u6700\u5927\u30C8\u30FC\u30CA\u30E1\u30F3\u30C8\u7DE8"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/551.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/551.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 72,
+              "favourites": 342,
+              "popularity": 23313,
+              "startDate": {
+                "year": 2001,
+                "month": 7,
+                "day": 24
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 5,
+              "title": {
+                "romaji": "Cowboy Bebop: Tengoku no Tobira",
+                "english": "Cowboy Bebop: The Movie - Knockin\u0027 on Heaven\u0027s Door",
+                "native": "\u30AB\u30A6\u30DC\u30FC\u30A4\u30D3\u30D0\u30C3\u30D7\u5929\u56FD\u306E\u6249"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx5-NozHwXWdNLCz.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx5-NozHwXWdNLCz.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 82,
+              "favourites": 1816,
+              "popularity": 84369,
+              "startDate": {
+                "year": 2001,
+                "month": 9,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 181,
+              "title": {
+                "romaji": "Vandread: the second stage",
+                "english": "Vandread: The Second Stage",
+                "native": "\u30F4\u30A1\u30F3\u30C9\u30EC\u30C3\u30C9 the second stage"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx181-MSG4LgXhyRhA.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx181-MSG4LgXhyRhA.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 70,
+              "favourites": 120,
+              "popularity": 8362,
+              "startDate": {
+                "year": 2001,
+                "month": 10,
+                "day": 5
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 22,
+              "title": {
+                "romaji": "Tennis no Ouji-sama",
+                "english": "The Prince of Tennis",
+                "native": "\u30C6\u30CB\u30B9\u306E\u738B\u5B50\u69D8"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx22-yEguU9EmxkjK.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx22-yEguU9EmxkjK.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 75,
+              "favourites": 790,
+              "popularity": 36220,
+              "startDate": {
+                "year": 2001,
+                "month": 10,
+                "day": 10
+              },
+              "mediaListEntry": null
+            }
+          ]
+        }
+      }
+    }
+  }
+}

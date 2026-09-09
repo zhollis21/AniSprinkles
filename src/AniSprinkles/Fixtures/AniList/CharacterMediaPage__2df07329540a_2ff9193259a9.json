@@ -1,0 +1,142 @@
+﻿{
+  "operationName": "CharacterMediaPage",
+  "variables": {
+    "id": 61,
+    "page": 3,
+    "sort": [
+      "START_DATE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "2ff9193259a9",
+  "recordedAt": "2026-09-09T15:58:23.691769+00:00",
+  "response": {
+    "data": {
+      "Character": {
+        "media": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 3
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 183423,
+                "title": {
+                  "romaji": "ONE PIECE: Gyojin Tou-hen",
+                  "english": "One Piece Log: Fish-Man Island Saga",
+                  "native": "SPECIAL EDITED VERSION\u300EONE PIECE\u300F\u9B5A\u4EBA\u5CF6\u7DE8"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx183423-6Iiu194UDxD0.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx183423-6Iiu194UDxD0.jpg"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 77,
+                "favourites": 268,
+                "popularity": 14427,
+                "startDate": {
+                  "year": 2024,
+                  "month": 11,
+                  "day": 3
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 95130,
+                  "name": {
+                    "full": "Yuriko Yamaguchi",
+                    "native": "\u5C71\u53E3\u7531\u91CC\u5B50",
+                    "userPreferred": "Yuriko Yamaguchi"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95130-GoO41ve3YWQw.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95130-GoO41ve3YWQw.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 354
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 187380,
+                "title": {
+                  "romaji": "ONE PIECE: Original Episode/Luffy, Law",
+                  "english": null,
+                  "native": "ONE PIECE \u30AA\u30EA\u30B8\u30CA\u30EB\u30A8\u30D4\u30BD\u30FC\u30C9\uFF0F\u30EB\u30D5\u30A3\u3001\u30ED\u30FC"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx187380-RZmxpJyB3A6Y.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx187380-RZmxpJyB3A6Y.jpg"
+                },
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 63,
+                "favourites": 7,
+                "popularity": 1294,
+                "startDate": {
+                  "year": 2025,
+                  "month": 1,
+                  "day": 19
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "BACKGROUND",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 197178,
+                "title": {
+                  "romaji": "ONE PIECE HEROINES",
+                  "english": "ONE PIECE HEROINES",
+                  "native": "ONE PIECE HEROINES"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx197178-Ui8PY9HQbNgu.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx197178-Ui8PY9HQbNgu.jpg"
+                },
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 78,
+                "favourites": 217,
+                "popularity": 15524,
+                "startDate": {
+                  "year": 2026,
+                  "month": 7,
+                  "day": 5
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 95130,
+                  "name": {
+                    "full": "Yuriko Yamaguchi",
+                    "native": "\u5C71\u53E3\u7531\u91CC\u5B50",
+                    "userPreferred": "Yuriko Yamaguchi"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95130-GoO41ve3YWQw.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95130-GoO41ve3YWQw.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 354
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,628 @@
+﻿{
+  "operationName": "StudioMediaPage",
+  "variables": {
+    "id": 11,
+    "page": 2,
+    "sort": [
+      "TITLE_ROMAJI",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "02c0137b2ee8",
+  "recordedAt": "2026-09-06T05:32:46.5929754+00:00",
+  "response": {
+    "data": {
+      "Studio": {
+        "media": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 2
+          },
+          "nodes": [
+            {
+              "id": 177501,
+              "title": {
+                "romaji": "Awajima Hyakkei",
+                "english": "A Hundred Scenes of AWAJIMA",
+                "native": "\u6DE1\u5CF6\u767E\u666F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx177501-BwdlSMEXGZWz.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx177501-BwdlSMEXGZWz.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 72,
+              "favourites": 163,
+              "popularity": 12980,
+              "startDate": {
+                "year": 2026,
+                "month": 4,
+                "day": 10
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1893,
+              "title": {
+                "romaji": "Azuki-chan",
+                "english": null,
+                "native": "\u3042\u305A\u304D\u3061\u3083\u3093"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b1893-mbbkRT2dg08o.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b1893-mbbkRT2dg08o.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 61,
+              "favourites": 15,
+              "popularity": 1136,
+              "startDate": {
+                "year": 1995,
+                "month": 4,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 6095,
+              "title": {
+                "romaji": "Azuki-chan: White Valentine \u2665 Koi no Chance ga Yatte Kita!!",
+                "english": null,
+                "native": "\u3042\u305A\u304D\u3061\u3083\u3093 \u30DB\u30EF\u30A4\u30C8\u30FB\u30D0\u30EC\u30F3\u30BF\u30A4\u30F3\u2665 \u604B\u306E\u30C1\u30E3\u30F3\u30B9\u304C\u3084\u3063\u3066\u304D\u305F!!"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/6095.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/6095.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 54,
+              "favourites": 2,
+              "popularity": 461,
+              "startDate": {
+                "year": 1995,
+                "month": 12,
+                "day": 23
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 124082,
+              "title": {
+                "romaji": "Azur Lane Anime PVs",
+                "english": null,
+                "native": "\u30A2\u30BA\u30FC\u30EB\u30EC\u30FC\u30F3 \u30A2\u30CB\u30E1PVs"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx124082-ex34xC20rmHW.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx124082-ex34xC20rmHW.png"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "RELEASING",
+              "averageScore": 62,
+              "favourites": 41,
+              "popularity": 1787,
+              "startDate": {
+                "year": 2020,
+                "month": 4,
+                "day": 17
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 193907,
+              "title": {
+                "romaji": "Azur Lane: 3 Shuunen Kinen Anime PV",
+                "english": null,
+                "native": "\u30A2\u30BA\u30FC\u30EB\u30EC\u30FC\u30F3 3\u5468\u5E74\u8A18\u5FF5\u30A2\u30CB\u30E1PV"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx193907-NP7JxXP7W1gM.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx193907-NP7JxXP7W1gM.png"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": null,
+              "favourites": 1,
+              "popularity": 176,
+              "startDate": {
+                "year": 2020,
+                "month": 9,
+                "day": 15
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 180871,
+              "title": {
+                "romaji": "Azur Lane: 7 Shuunen Kinen Anime PV",
+                "english": null,
+                "native": "\u30A2\u30BA\u30FC\u30EB\u30EC\u30FC\u30F3 7\u5468\u5E74\u8A18\u5FF5\u30A2\u30CB\u30E1PV"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx180871-u31vgIDoWGHb.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx180871-u31vgIDoWGHb.png"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 56,
+              "favourites": 5,
+              "popularity": 328,
+              "startDate": {
+                "year": 2024,
+                "month": 9,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 288,
+              "title": {
+                "romaji": "Bakuten Shoot Beyblade",
+                "english": "Beyblade",
+                "native": "\u7206\u8EE2\u30B7\u30E5\u30FC\u30C8\u3000\u30D9\u30A4\u30D6\u30EC\u30FC\u30C9"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b288-QLBdXz8n34yP.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b288-QLBdXz8n34yP.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 65,
+              "favourites": 460,
+              "popularity": 27136,
+              "startDate": {
+                "year": 2001,
+                "month": 1,
+                "day": 8
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1668,
+              "title": {
+                "romaji": "Bakuten Shoot Beyblade G Revolution",
+                "english": "Beyblade G Revolution",
+                "native": "\u7206\u8EE2\u30B7\u30E5\u30FC\u30C8\u3000\u30D9\u30A4\u30D6\u30EC\u30FC\u30C9\uFF27\u30EC\u30DC\u30EA\u30E5\u30FC\u30B7\u30E7\u30F3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/n1668-2GDY5wKoXc6O.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/n1668-2GDY5wKoXc6O.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 67,
+              "favourites": 176,
+              "popularity": 11638,
+              "startDate": {
+                "year": 2003,
+                "month": 1,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 4094,
+              "title": {
+                "romaji": "Batman: Gotham Knight",
+                "english": "Batman: Gotham Knight",
+                "native": "\u30D0\u30C3\u30C8\u30DE\u30F3 \u30B4\u30C3\u30B5\u30E0\u30CA\u30A4\u30C8"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx4094-GXGa8ylDY2gv.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx4094-GXGa8ylDY2gv.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 64,
+              "favourites": 76,
+              "popularity": 7155,
+              "startDate": {
+                "year": 2008,
+                "month": 7,
+                "day": 8
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 57,
+              "title": {
+                "romaji": "BECK",
+                "english": "Beck: Mongolian Chop Squad",
+                "native": "BECK"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx57-4wTOlaVSgKoy.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx57-4wTOlaVSgKoy.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 80,
+              "favourites": 3043,
+              "popularity": 82727,
+              "startDate": {
+                "year": 2004,
+                "month": 10,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1269,
+              "title": {
+                "romaji": "Bio Hunter",
+                "english": null,
+                "native": "\u30D0\u30A4\u30AA\u30FB\u30CF\u30F3\u30BF\u30FC"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/1269.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/1269.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 57,
+              "favourites": 43,
+              "popularity": 4467,
+              "startDate": {
+                "year": 1995,
+                "month": 12,
+                "day": 8
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 889,
+              "title": {
+                "romaji": "BLACK LAGOON",
+                "english": "Black Lagoon",
+                "native": "BLACK LAGOON"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx889-4S7N2ciq2cwA.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx889-4S7N2ciq2cwA.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 9398,
+              "popularity": 251371,
+              "startDate": {
+                "year": 2006,
+                "month": 4,
+                "day": 9
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 8440,
+              "title": {
+                "romaji": "Black Lagoon Omake",
+                "english": null,
+                "native": "\u30D6\u30E9\u30C3\u30AF\u30FB\u30E9\u30B0\u30FC\u30F3 \u30AA\u30DE\u30B1"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/n8440-Dha2nkfPGQBW.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/n8440-Dha2nkfPGQBW.png"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 63,
+              "favourites": 80,
+              "popularity": 15492,
+              "startDate": {
+                "year": 2009,
+                "month": 12,
+                "day": 23
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 4901,
+              "title": {
+                "romaji": "BLACK LAGOON: Roberta\u0027s Blood Trail",
+                "english": "Black Lagoon: Roberta\u0027s Blood Trail",
+                "native": "BLACK LAGOON Roberta\u0027s Blood Trail"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx4901-evMxxc1A8pCF.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx4901-evMxxc1A8pCF.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 79,
+              "favourites": 1324,
+              "popularity": 66405,
+              "startDate": {
+                "year": 2010,
+                "month": 6,
+                "day": 27
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1519,
+              "title": {
+                "romaji": "BLACK LAGOON: The Second Barrage",
+                "english": "Black Lagoon: The Second Barrage",
+                "native": "BLACK LAGOON The Second Barrage"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1519-cScqJxQW3LNL.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1519-cScqJxQW3LNL.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 80,
+              "favourites": 2340,
+              "popularity": 106129,
+              "startDate": {
+                "year": 2006,
+                "month": 10,
+                "day": 3
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 6920,
+              "title": {
+                "romaji": "Blade",
+                "english": "Blade",
+                "native": "\u30D6\u30EC\u30A4\u30C9"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/6920.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/6920.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 56,
+              "favourites": 57,
+              "popularity": 6368,
+              "startDate": {
+                "year": 2011,
+                "month": 7,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 3120,
+              "title": {
+                "romaji": "Bobby ni Kubittake",
+                "english": null,
+                "native": "\u30DC\u30D3\u30FC\u306B\u9996\u3063\u305F\u3051"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx3120-BulW2go7PrrW.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx3120-BulW2go7PrrW.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 57,
+              "favourites": 30,
+              "popularity": 2394,
+              "startDate": {
+                "year": 1985,
+                "month": 3,
+                "day": 9
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 4680,
+              "title": {
+                "romaji": "Bocchan",
+                "english": null,
+                "native": "\u574A\u3063\u3061\u3083\u3093"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx4680-Dw3BQpLrt7hS.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx4680-Dw3BQpLrt7hS.jpg"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 57,
+              "favourites": 8,
+              "popularity": 966,
+              "startDate": {
+                "year": 1980,
+                "month": 6,
+                "day": 13
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1672,
+              "title": {
+                "romaji": "Bomberman B-Daman Bakugaiden",
+                "english": "Bomber Man \u0026 Marbleman\u0027s Explosive Side Story",
+                "native": "B[\u30DC\u30F3\u30D0\u30FC\u30DE\u30F3]\u30D3\u30FC\u30C0\u30DE\u30F3\u7206\u5916\u4F1D"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b1672-jrP0OeMKs6Nh.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b1672-jrP0OeMKs6Nh.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 61,
+              "favourites": 12,
+              "popularity": 920,
+              "startDate": {
+                "year": 1998,
+                "month": 2,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1673,
+              "title": {
+                "romaji": "Bomberman B-Daman Bakugaiden V",
+                "english": null,
+                "native": "B[\u30DC\u30F3\u30D0\u30FC\u30DE\u30F3]\u30D3\u30FC\u30C0\u30DE\u30F3\u7206\u5916\u4F1D\uFF36"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b1673-IJAXBUsBj2wz.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b1673-IJAXBUsBj2wz.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 60,
+              "favourites": 10,
+              "popularity": 758,
+              "startDate": {
+                "year": 1999,
+                "month": 2,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 101283,
+              "title": {
+                "romaji": "Boogiepop wa Warawanai",
+                "english": "Boogiepop and Others",
+                "native": "\u30D6\u30AE\u30FC\u30DD\u30C3\u30D7\u306F\u7B11\u308F\u306A\u3044"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx101283-YpZqD7wrzWui.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx101283-YpZqD7wrzWui.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 68,
+              "favourites": 841,
+              "popularity": 71895,
+              "startDate": {
+                "year": 2019,
+                "month": 1,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 369,
+              "title": {
+                "romaji": "Boogiepop wa Warawanai: Boogiepop Phantom",
+                "english": "Boogiepop Phantom",
+                "native": "\u30D6\u30AE\u30FC\u30DD\u30C3\u30D7\u306F\u7B11\u308F\u306A\u3044 Boogiepop Phantom"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx369-dwzXLDvzzAmK.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx369-dwzXLDvzzAmK.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 70,
+              "favourites": 887,
+              "popularity": 43627,
+              "startDate": {
+                "year": 2000,
+                "month": 1,
+                "day": 5
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 3007,
+              "title": {
+                "romaji": "BRONZE KoJI NANJo cathexis",
+                "english": null,
+                "native": "BRONZE KoJI NANJo cathexis"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b3007-wwot2kzcPEjS.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b3007-wwot2kzcPEjS.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 52,
+              "favourites": 15,
+              "popularity": 1375,
+              "startDate": {
+                "year": 1994,
+                "month": 7,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1042,
+              "title": {
+                "romaji": "BRONZE: ZETSUAI since 1989",
+                "english": null,
+                "native": "BRONZE ZETSUAI since 1989"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b1042-WsINU05Tj32p.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b1042-WsINU05Tj32p.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 54,
+              "favourites": 25,
+              "popularity": 2103,
+              "startDate": {
+                "year": 1996,
+                "month": 12,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 14345,
+              "title": {
+                "romaji": "BTOOOM!",
+                "english": "BTOOOM!",
+                "native": "BTOOOM\uFF01"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx14345-BeDPCuhQGtL5.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx14345-BeDPCuhQGtL5.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 68,
+              "favourites": 1867,
+              "popularity": 164358,
+              "startDate": {
+                "year": 2012,
+                "month": 10,
+                "day": 4
+              },
+              "mediaListEntry": null
+            }
+          ]
+        }
+      }
+    }
+  }
+}

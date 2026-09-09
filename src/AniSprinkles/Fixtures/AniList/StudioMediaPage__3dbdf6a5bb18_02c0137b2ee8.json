@@ -1,0 +1,628 @@
+﻿{
+  "operationName": "StudioMediaPage",
+  "variables": {
+    "id": 18,
+    "page": 3,
+    "sort": [
+      "SCORE_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "02c0137b2ee8",
+  "recordedAt": "2026-09-09T15:59:52.09519+00:00",
+  "response": {
+    "data": {
+      "Studio": {
+        "media": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 3
+          },
+          "nodes": [
+            {
+              "id": 352,
+              "title": {
+                "romaji": "Motto! Ojamajo Doremi",
+                "english": null,
+                "native": "\u3082\u301C\u3063\u3068\uFF01\u304A\u30B8\u30E3\u9B54\u5973\u3069\u308C\u307F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx352-QY0OK1NrlhMR.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx352-QY0OK1NrlhMR.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 76,
+              "favourites": 218,
+              "popularity": 6623,
+              "startDate": {
+                "year": 2001,
+                "month": 2,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 3785,
+              "title": {
+                "romaji": "Evangelion Shin Movie: Kyuu",
+                "english": "Evangelion: 3.0 You Can (Not) Redo",
+                "native": "\u30F1\u30F4\u30A1\u30F3\u30B2\u30EA\u30F2\u30F3\u65B0\u5287\u5834\u7248:Q"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx3785-a28lDzqtlfjB.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx3785-a28lDzqtlfjB.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 76,
+              "favourites": 2525,
+              "popularity": 123108,
+              "startDate": {
+                "year": 2012,
+                "month": 11,
+                "day": 17
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 20635,
+              "title": {
+                "romaji": "Dragon Ball Kai (2014)",
+                "english": "Dragon Ball Z Kai: The Final Chapters",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EB\u6539 (2014)"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20635-gUYy4KZfYRb0.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20635-gUYy4KZfYRb0.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 76,
+              "favourites": 1098,
+              "popularity": 54361,
+              "startDate": {
+                "year": 2014,
+                "month": 4,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 133898,
+              "title": {
+                "romaji": "Dragon Ball Super: Super Hero",
+                "english": "Dragon Ball Super: SUPER HERO",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EB\u8D85 \u30B9\u30FC\u30D1\u30FC\u30D2\u30FC\u30ED\u30FC"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx133898-KdQ7fWTG06n4.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx133898-KdQ7fWTG06n4.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 76,
+              "favourites": 1214,
+              "popularity": 53386,
+              "startDate": {
+                "year": 2022,
+                "month": 6,
+                "day": 11
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 171030,
+              "title": {
+                "romaji": "Wonderful Precure!",
+                "english": "Wonderful Precure!",
+                "native": "\u308F\u3093\u3060\u3075\u308B\u3077\u308A\u304D\u3085\u3042\uFF01"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx171030-U7zjkqv8pQFq.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx171030-U7zjkqv8pQFq.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 76,
+              "favourites": 284,
+              "popularity": 5735,
+              "startDate": {
+                "year": 2024,
+                "month": 2,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 9288,
+              "title": {
+                "romaji": "Heartcatch Precure! Hana no Miyako de Fashion Show... Desu ka!?",
+                "english": null,
+                "native": "\u30CF\u30FC\u30C8\u30AD\u30E3\u30C3\u30C1\u30D7\u30EA\u30AD\u30E5\u30A2\uFF01\u82B1\u306E\u90FD\u3067\u30D5\u30A1\u30C3\u30B7\u30E7\u30F3\u30B7\u30E7\u30FC\u30FB\u30FB\u30FB\u3067\u3059\u304B\uFF01\uFF1F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx9288-KBl1SCRhk7Xn.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx9288-KBl1SCRhk7Xn.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 76,
+              "favourites": 60,
+              "popularity": 4079,
+              "startDate": {
+                "year": 2010,
+                "month": 10,
+                "day": 30
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 20835,
+              "title": {
+                "romaji": "ONE PIECE \u00223D2Y\u0022: Ace no shi wo Koete! Luffy Nakama to no Chikai",
+                "english": "One Piece 3D2Y: Overcome Ace\u2019s Death! Luffy\u2019s Vow to his Friends",
+                "native": "ONE PIECE \u201C3D2Y\u201D \u30A8\u30FC\u30B9\u306E\u6B7B\u3092\u8D8A\u3048\u3066! \u30EB\u30D5\u30A3\u4EF2\u9593\u3068\u306E\u8A93\u3044"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20835-QVV6LpJlqe1A.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20835-QVV6LpJlqe1A.jpg"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 76,
+              "favourites": 261,
+              "popularity": 23893,
+              "startDate": {
+                "year": 2014,
+                "month": 8,
+                "day": 30
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 967,
+              "title": {
+                "romaji": "Hokuto no Ken",
+                "english": "Fist of the North Star",
+                "native": "\u5317\u6597\u306E\u62F3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/n967-84jNBaInec98.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/n967-84jNBaInec98.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 76,
+              "favourites": 910,
+              "popularity": 32988,
+              "startDate": {
+                "year": 1984,
+                "month": 10,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 108630,
+              "title": {
+                "romaji": "Majo Minarai wo Sagashite",
+                "english": null,
+                "native": "\u9B54\u5973\u898B\u7FD2\u3044\u3092\u3055\u304C\u3057\u3066"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx108630-pu0vFUXKIuhI.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx108630-pu0vFUXKIuhI.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 76,
+              "favourites": 106,
+              "popularity": 5651,
+              "startDate": {
+                "year": 2020,
+                "month": 11,
+                "day": 13
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 740,
+              "title": {
+                "romaji": "Bishoujo Senshi Sailor Moon R",
+                "english": "Sailor Moon R",
+                "native": "\u7F8E\u5C11\u5973\u6226\u58EB\u30BB\u30FC\u30E9\u30FC\u30E0\u30FC\u30F3 R"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx740-XZhoxj6aJjNc.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx740-XZhoxj6aJjNc.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 76,
+              "favourites": 755,
+              "popularity": 35440,
+              "startDate": {
+                "year": 1993,
+                "month": 3,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 8740,
+              "title": {
+                "romaji": "ONE PIECE FILM: STRONG WORLD - EPISODE:0",
+                "english": null,
+                "native": "ONE PIECE FILM STRONG WORLD EPISODE:0"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b8740-oZajT3brPn7b.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b8740-oZajT3brPn7b.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 76,
+              "favourites": 122,
+              "popularity": 18731,
+              "startDate": {
+                "year": 2010,
+                "month": 4,
+                "day": 16
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 552,
+              "title": {
+                "romaji": "Digimon Adventure",
+                "english": "Digimon: Digital Monsters",
+                "native": "\u30C7\u30B8\u30E2\u30F3\u30A2\u30C9\u30D9\u30F3\u30C1\u30E3\u30FC"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx552-zad0ts5hylQJ.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx552-zad0ts5hylQJ.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 75,
+              "favourites": 2691,
+              "popularity": 71425,
+              "startDate": {
+                "year": 1999,
+                "month": 3,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 874,
+              "title": {
+                "romaji": "Digimon Tamers",
+                "english": null,
+                "native": "\u30C7\u30B8\u30E2\u30F3\u30C6\u30A4\u30DE\u30FC\u30BA"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx874-3uug3PiSeyf7.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx874-3uug3PiSeyf7.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 75,
+              "favourites": 1517,
+              "popularity": 38843,
+              "startDate": {
+                "year": 2001,
+                "month": 4,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 176300,
+              "title": {
+                "romaji": "Ojamajo Doremi 1620\u0027s",
+                "english": null,
+                "native": "\u304A\u30B8\u30E3\u9B54\u5973\u3069\u308C\u307F1620\u0027s"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx176300-Gj0QdWs3AaFW.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx176300-Gj0QdWs3AaFW.png"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 75,
+              "favourites": 35,
+              "popularity": 1477,
+              "startDate": {
+                "year": 2024,
+                "month": 3,
+                "day": 23
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 19703,
+              "title": {
+                "romaji": "Kyousougiga (TV)",
+                "english": "Kyousougiga",
+                "native": "\u4EAC\u9A12\u622F\u753B (TV)"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx19703-OpohqKDqXIp9.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx19703-OpohqKDqXIp9.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 75,
+              "favourites": 1536,
+              "popularity": 66501,
+              "startDate": {
+                "year": 2013,
+                "month": 10,
+                "day": 10
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 202957,
+              "title": {
+                "romaji": "Meitantei Precure!",
+                "english": "Star Detective Precure!",
+                "native": "\u540D\u63A2\u5075\u30D7\u30EA\u30AD\u30E5\u30A2\uFF01"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx202957-fxZGgJTvwXzP.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx202957-fxZGgJTvwXzP.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "RELEASING",
+              "averageScore": 75,
+              "favourites": 170,
+              "popularity": 6351,
+              "startDate": {
+                "year": 2026,
+                "month": 2,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 351,
+              "title": {
+                "romaji": "Ojamajo Doremi Sharp",
+                "english": null,
+                "native": "\u304A\u30B8\u30E3\u9B54\u5973\u3069\u308C\u307F\u266F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b351-d77vjiz5qpni.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b351-d77vjiz5qpni.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 75,
+              "favourites": 222,
+              "popularity": 7779,
+              "startDate": {
+                "year": 2000,
+                "month": 2,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 105857,
+              "title": {
+                "romaji": "Star\u2606Twinkle Precure",
+                "english": null,
+                "native": "\u30B9\u30BF\u30FC\u2606\u30C8\u30A5\u30A4\u30F3\u30AF\u30EB\u30D7\u30EA\u30AD\u30E5\u30A2"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx105857-02ruhcNiPGga.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx105857-02ruhcNiPGga.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 75,
+              "favourites": 287,
+              "popularity": 7373,
+              "startDate": {
+                "year": 2019,
+                "month": 2,
+                "day": 3
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 186714,
+              "title": {
+                "romaji": "GIRLS BAND CRY: Seishun Kyousoukyoku",
+                "english": null,
+                "native": "\u30AC\u30FC\u30EB\u30BA\u30D0\u30F3\u30C9\u30AF\u30E9\u30A4 \u9752\u6625\u72C2\u8D70\u66F2"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx186714-tQVs0CUEoM6Y.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx186714-tQVs0CUEoM6Y.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 75,
+              "favourites": 45,
+              "popularity": 4842,
+              "startDate": {
+                "year": 2025,
+                "month": 10,
+                "day": 3
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2463,
+              "title": {
+                "romaji": "Shounan Bakusouzoku",
+                "english": null,
+                "native": "\u6E58\u5357\u7206\u8D70\u65CF"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx2463-ri3SqhF6RRaz.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2463-ri3SqhF6RRaz.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 75,
+              "favourites": 169,
+              "popularity": 4056,
+              "startDate": {
+                "year": 1986,
+                "month": 9,
+                "day": 10
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 130622,
+              "title": {
+                "romaji": "Kitarou Tanjou: Gegege no Nazo",
+                "english": "The Birth of Kitaro: The Mystery of GeGeGe",
+                "native": "\u9B3C\u592A\u90CE\u8A95\u751F \u30B2\u30B2\u30B2\u306E\u8B0E"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx130622-teeWBNWE9RPk.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx130622-teeWBNWE9RPk.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 75,
+              "favourites": 132,
+              "popularity": 5697,
+              "startDate": {
+                "year": 2023,
+                "month": 11,
+                "day": 17
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 170083,
+              "title": {
+                "romaji": "Dragon Ball DAIMA",
+                "english": "Dragon Ball DAIMA",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EBDAIMA"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx170083-GTwRrhTApcLR.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx170083-GTwRrhTApcLR.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 75,
+              "favourites": 1652,
+              "popularity": 60156,
+              "startDate": {
+                "year": 2024,
+                "month": 10,
+                "day": 11
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1491,
+              "title": {
+                "romaji": "Ginga Tetsudou 999",
+                "english": "Galaxy Express 999",
+                "native": "\u9280\u6CB3\u9244\u9053\uFF19\uFF19\uFF19"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1491-XfYiHNYKDR2P.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1491-XfYiHNYKDR2P.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 75,
+              "favourites": 407,
+              "popularity": 16530,
+              "startDate": {
+                "year": 1978,
+                "month": 9,
+                "day": 14
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 531,
+              "title": {
+                "romaji": "Bishoujo Senshi Sailor Moon R: THE MOVIE",
+                "english": "Sailor Moon R: The Movie",
+                "native": "\u7F8E\u5C11\u5973\u6226\u58EB\u30BB\u30FC\u30E9\u30FC\u30E0\u30FC\u30F3\uFF32 THE MOVIE"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx531-FCc5IMkzRlrU.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx531-FCc5IMkzRlrU.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 74,
+              "favourites": 327,
+              "popularity": 14758,
+              "startDate": {
+                "year": 1993,
+                "month": 12,
+                "day": 5
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1253,
+              "title": {
+                "romaji": "Saint Seiya: Meiou Hades Meikai-hen",
+                "english": "Saint Seiya: The Hades Chapter - Inferno",
+                "native": "\u8056\u95D8\u58EB\u661F\u77E2 \u51A5\u738B\u30CF\u30FC\u30C7\u30B9\u51A5\u754C\u7DE8"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b1253-65jsGEfbPW5K.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b1253-65jsGEfbPW5K.png"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 74,
+              "favourites": 213,
+              "popularity": 10588,
+              "startDate": {
+                "year": 2005,
+                "month": 12,
+                "day": 17
+              },
+              "mediaListEntry": null
+            }
+          ]
+        }
+      }
+    }
+  }
+}

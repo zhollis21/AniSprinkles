@@ -1,0 +1,2251 @@
+﻿{
+  "operationName": "CharacterMediaPage",
+  "variables": {
+    "id": 40,
+    "page": 1,
+    "sort": [
+      "POPULARITY_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "2ff9193259a9",
+  "recordedAt": "2026-09-09T15:56:45.6064139+00:00",
+  "response": {
+    "data": {
+      "Character": {
+        "media": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 21,
+                "title": {
+                  "romaji": "ONE PIECE",
+                  "english": "ONE PIECE",
+                  "native": "ONE PIECE"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21-ELSYx3yMPcKM.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21-ELSYx3yMPcKM.jpg"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "status": "RELEASING",
+                "averageScore": 87,
+                "favourites": 111256,
+                "popularity": 749040,
+                "startDate": {
+                  "year": 1999,
+                  "month": 10,
+                  "day": 20
+                },
+                "mediaListEntry": {
+                  "id": 593351146,
+                  "status": "CURRENT",
+                  "progress": 1163,
+                  "score": 8
+                }
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 95075,
+                  "name": {
+                    "full": "Mayumi Tanaka",
+                    "native": "\u7530\u4E2D\u771F\u5F13",
+                    "userPreferred": "Mayumi Tanaka"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95075-1qD4TeW1ON92.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95075-1qD4TeW1ON92.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 2476
+                },
+                {
+                  "id": 95472,
+                  "name": {
+                    "full": "Colleen Clinkenbeard",
+                    "native": null,
+                    "userPreferred": "Colleen Clinkenbeard"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95472-fznpewUW95vm.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95472-fznpewUW95vm.jpg"
+                  },
+                  "languageV2": "English",
+                  "favourites": 636
+                },
+                {
+                  "id": 101906,
+                  "name": {
+                    "full": "Erica Schroeder",
+                    "native": null,
+                    "userPreferred": "Erica Schroeder"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101906-Cul50rrR8cSA.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n101906-Cul50rrR8cSA.png"
+                  },
+                  "languageV2": "English",
+                  "favourites": 19
+                },
+                {
+                  "id": 115498,
+                  "name": {
+                    "full": "Chuck Powers",
+                    "native": null,
+                    "userPreferred": "Chuck Powers"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/20498.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/20498.jpg"
+                  },
+                  "languageV2": "English",
+                  "favourites": 24
+                },
+                {
+                  "id": 109753,
+                  "name": {
+                    "full": "Su-Jin Kang",
+                    "native": "\uAC15\uC218\uC9C4",
+                    "userPreferred": "Su-Jin Kang"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n109753-qqOQlkfARIzX.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n109753-qqOQlkfARIzX.jpg"
+                  },
+                  "languageV2": "Korean",
+                  "favourites": 4
+                },
+                {
+                  "id": 96163,
+                  "name": {
+                    "full": "Renato Novara",
+                    "native": null,
+                    "userPreferred": "Renato Novara"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n96163-YaGjTo1XM8qd.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n96163-YaGjTo1XM8qd.png"
+                  },
+                  "languageV2": "Italian",
+                  "favourites": 59
+                },
+                {
+                  "id": 96267,
+                  "name": {
+                    "full": "Luigi Rosa",
+                    "native": null,
+                    "userPreferred": "Luigi Rosa"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n96267-I6paUN1vrxxA.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n96267-I6paUN1vrxxA.png"
+                  },
+                  "languageV2": "Italian",
+                  "favourites": 7
+                },
+                {
+                  "id": 101616,
+                  "name": {
+                    "full": "Jaime Roca",
+                    "native": null,
+                    "userPreferred": "Jaime Roca"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101616-mFdztsGP2m3Z.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n101616-mFdztsGP2m3Z.jpg"
+                  },
+                  "languageV2": "Spanish",
+                  "favourites": 13
+                },
+                {
+                  "id": 109027,
+                  "name": {
+                    "full": "Pepa Agudo",
+                    "native": null,
+                    "userPreferred": "Pepa Agudo"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n109027-595auORx3i7S.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n109027-595auORx3i7S.png"
+                  },
+                  "languageV2": "Spanish",
+                  "favourites": 0
+                },
+                {
+                  "id": 117333,
+                  "name": {
+                    "full": "Mireya Mendoza",
+                    "native": null,
+                    "userPreferred": "Mireya Mendoza"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n117333-VonyVJRONHA7.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n117333-VonyVJRONHA7.jpg"
+                  },
+                  "languageV2": "Spanish",
+                  "favourites": 12
+                },
+                {
+                  "id": 202447,
+                  "name": {
+                    "full": "Diana P\u00E9rez",
+                    "native": "Diana Andrea P\u00E9rez Revatett",
+                    "userPreferred": "Diana P\u00E9rez"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n202447-nYFZVZlyafE4.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n202447-nYFZVZlyafE4.png"
+                  },
+                  "languageV2": "Spanish",
+                  "favourites": 2
+                },
+                {
+                  "id": 108265,
+                  "name": {
+                    "full": "Karina Altamirano",
+                    "native": "Karina Alejandra Altamirano Loera",
+                    "userPreferred": "Karina Altamirano"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n108265-KZaM6BEWkV4V.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n108265-KZaM6BEWkV4V.png"
+                  },
+                  "languageV2": "Spanish",
+                  "favourites": 1
+                },
+                {
+                  "id": 180472,
+                  "name": {
+                    "full": "Carol Valen\u00E7a",
+                    "native": null,
+                    "userPreferred": "Carol Valen\u00E7a"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n180472-5L4cJwC0une2.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n180472-5L4cJwC0une2.png"
+                  },
+                  "languageV2": "Portuguese",
+                  "favourites": 41
+                },
+                {
+                  "id": 100138,
+                  "name": {
+                    "full": "Vagner Fagundes",
+                    "native": null,
+                    "userPreferred": "Vagner Fagundes"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100138-5aMzO7vjUu0J.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n100138-5aMzO7vjUu0J.jpg"
+                  },
+                  "languageV2": "Portuguese",
+                  "favourites": 39
+                },
+                {
+                  "id": 188407,
+                  "name": {
+                    "full": "Vin\u00EDcius Fagundes",
+                    "native": null,
+                    "userPreferred": "Vin\u00EDcius Fagundes"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n188407-iY9xR1cCqcmk.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n188407-iY9xR1cCqcmk.jpg"
+                  },
+                  "languageV2": "Portuguese",
+                  "favourites": 1
+                },
+                {
+                  "id": 185888,
+                  "name": {
+                    "full": "Ma Zink",
+                    "native": null,
+                    "userPreferred": "Ma Zink"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n185888-oSOPvwG9FS4o.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n185888-oSOPvwG9FS4o.jpg"
+                  },
+                  "languageV2": "Portuguese",
+                  "favourites": 2
+                },
+                {
+                  "id": 116407,
+                  "name": {
+                    "full": "St\u00E9phane Excoffier",
+                    "native": null,
+                    "userPreferred": "St\u00E9phane Excoffier"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/21407.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/21407.jpg"
+                  },
+                  "languageV2": "French",
+                  "favourites": 12
+                },
+                {
+                  "id": 304186,
+                  "name": {
+                    "full": "Vincent Barazzoni",
+                    "native": null,
+                    "userPreferred": "Vincent Barazzoni"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n304186-Y3klj71Fys6S.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n304186-Y3klj71Fys6S.jpg"
+                  },
+                  "languageV2": "French",
+                  "favourites": 0
+                },
+                {
+                  "id": 100143,
+                  "name": {
+                    "full": "Daniel Schlauch",
+                    "native": null,
+                    "userPreferred": "Daniel Schlauch"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100143-47anXO76XYj9.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n100143-47anXO76XYj9.png"
+                  },
+                  "languageV2": "German",
+                  "favourites": 62
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 30013,
+                "title": {
+                  "romaji": "ONE PIECE",
+                  "english": "One Piece",
+                  "native": "ONE PIECE"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30013-BeslEMqiPhlk.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30013-BeslEMqiPhlk.jpg"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "RELEASING",
+                "averageScore": 91,
+                "favourites": 48797,
+                "popularity": 232453,
+                "startDate": {
+                  "year": 1997,
+                  "month": 7,
+                  "day": 22
+                },
+                "mediaListEntry": {
+                  "id": 593351205,
+                  "status": "CURRENT",
+                  "progress": 1100,
+                  "score": 9
+                }
+              },
+              "characterRole": "MAIN",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 141902,
+                "title": {
+                  "romaji": "ONE PIECE FILM: RED",
+                  "english": "One Piece Film: Red",
+                  "native": "ONE PIECE FILM RED"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx141902-fTyoTk8F8qOl.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx141902-fTyoTk8F8qOl.jpg"
+                },
+                "format": "MOVIE",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 78,
+                "favourites": 2130,
+                "popularity": 78248,
+                "startDate": {
+                  "year": 2022,
+                  "month": 8,
+                  "day": 6
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 95075,
+                  "name": {
+                    "full": "Mayumi Tanaka",
+                    "native": "\u7530\u4E2D\u771F\u5F13",
+                    "userPreferred": "Mayumi Tanaka"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95075-1qD4TeW1ON92.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95075-1qD4TeW1ON92.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 2476
+                },
+                {
+                  "id": 95472,
+                  "name": {
+                    "full": "Colleen Clinkenbeard",
+                    "native": null,
+                    "userPreferred": "Colleen Clinkenbeard"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95472-fznpewUW95vm.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95472-fznpewUW95vm.jpg"
+                  },
+                  "languageV2": "English",
+                  "favourites": 636
+                },
+                {
+                  "id": 96163,
+                  "name": {
+                    "full": "Renato Novara",
+                    "native": null,
+                    "userPreferred": "Renato Novara"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n96163-YaGjTo1XM8qd.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n96163-YaGjTo1XM8qd.png"
+                  },
+                  "languageV2": "Italian",
+                  "favourites": 59
+                },
+                {
+                  "id": 180472,
+                  "name": {
+                    "full": "Carol Valen\u00E7a",
+                    "native": null,
+                    "userPreferred": "Carol Valen\u00E7a"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n180472-5L4cJwC0une2.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n180472-5L4cJwC0une2.png"
+                  },
+                  "languageV2": "Portuguese",
+                  "favourites": 41
+                },
+                {
+                  "id": 185888,
+                  "name": {
+                    "full": "Ma Zink",
+                    "native": null,
+                    "userPreferred": "Ma Zink"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n185888-oSOPvwG9FS4o.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n185888-oSOPvwG9FS4o.jpg"
+                  },
+                  "languageV2": "Portuguese",
+                  "favourites": 2
+                },
+                {
+                  "id": 116407,
+                  "name": {
+                    "full": "St\u00E9phane Excoffier",
+                    "native": null,
+                    "userPreferred": "St\u00E9phane Excoffier"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/21407.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/21407.jpg"
+                  },
+                  "languageV2": "French",
+                  "favourites": 12
+                },
+                {
+                  "id": 100143,
+                  "name": {
+                    "full": "Daniel Schlauch",
+                    "native": null,
+                    "userPreferred": "Daniel Schlauch"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100143-47anXO76XYj9.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n100143-47anXO76XYj9.png"
+                  },
+                  "languageV2": "German",
+                  "favourites": 62
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 12859,
+                "title": {
+                  "romaji": "ONE PIECE FILM: Z",
+                  "english": "One Piece Film: Z",
+                  "native": "ONE PIECE FILM Z"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx12859-uQFENDPzMWz6.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx12859-uQFENDPzMWz6.jpg"
+                },
+                "format": "MOVIE",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 79,
+                "favourites": 914,
+                "popularity": 64304,
+                "startDate": {
+                  "year": 2012,
+                  "month": 12,
+                  "day": 15
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 95075,
+                  "name": {
+                    "full": "Mayumi Tanaka",
+                    "native": "\u7530\u4E2D\u771F\u5F13",
+                    "userPreferred": "Mayumi Tanaka"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95075-1qD4TeW1ON92.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95075-1qD4TeW1ON92.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 2476
+                },
+                {
+                  "id": 95472,
+                  "name": {
+                    "full": "Colleen Clinkenbeard",
+                    "native": null,
+                    "userPreferred": "Colleen Clinkenbeard"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95472-fznpewUW95vm.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95472-fznpewUW95vm.jpg"
+                  },
+                  "languageV2": "English",
+                  "favourites": 636
+                },
+                {
+                  "id": 96163,
+                  "name": {
+                    "full": "Renato Novara",
+                    "native": null,
+                    "userPreferred": "Renato Novara"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n96163-YaGjTo1XM8qd.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n96163-YaGjTo1XM8qd.png"
+                  },
+                  "languageV2": "Italian",
+                  "favourites": 59
+                },
+                {
+                  "id": 180472,
+                  "name": {
+                    "full": "Carol Valen\u00E7a",
+                    "native": null,
+                    "userPreferred": "Carol Valen\u00E7a"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n180472-5L4cJwC0une2.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n180472-5L4cJwC0une2.png"
+                  },
+                  "languageV2": "Portuguese",
+                  "favourites": 41
+                },
+                {
+                  "id": 100143,
+                  "name": {
+                    "full": "Daniel Schlauch",
+                    "native": null,
+                    "userPreferred": "Daniel Schlauch"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100143-47anXO76XYj9.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n100143-47anXO76XYj9.png"
+                  },
+                  "languageV2": "German",
+                  "favourites": 62
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 105143,
+                "title": {
+                  "romaji": "ONE PIECE STAMPEDE",
+                  "english": "One Piece: Stampede",
+                  "native": "ONE PIECE STAMPEDE"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx105143-5uBDmhvMr6At.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx105143-5uBDmhvMr6At.png"
+                },
+                "format": "MOVIE",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 80,
+                "favourites": 1273,
+                "popularity": 61938,
+                "startDate": {
+                  "year": 2019,
+                  "month": 8,
+                  "day": 9
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 95075,
+                  "name": {
+                    "full": "Mayumi Tanaka",
+                    "native": "\u7530\u4E2D\u771F\u5F13",
+                    "userPreferred": "Mayumi Tanaka"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95075-1qD4TeW1ON92.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95075-1qD4TeW1ON92.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 2476
+                },
+                {
+                  "id": 95472,
+                  "name": {
+                    "full": "Colleen Clinkenbeard",
+                    "native": null,
+                    "userPreferred": "Colleen Clinkenbeard"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95472-fznpewUW95vm.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95472-fznpewUW95vm.jpg"
+                  },
+                  "languageV2": "English",
+                  "favourites": 636
+                },
+                {
+                  "id": 96163,
+                  "name": {
+                    "full": "Renato Novara",
+                    "native": null,
+                    "userPreferred": "Renato Novara"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n96163-YaGjTo1XM8qd.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n96163-YaGjTo1XM8qd.png"
+                  },
+                  "languageV2": "Italian",
+                  "favourites": 59
+                },
+                {
+                  "id": 96267,
+                  "name": {
+                    "full": "Luigi Rosa",
+                    "native": null,
+                    "userPreferred": "Luigi Rosa"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n96267-I6paUN1vrxxA.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n96267-I6paUN1vrxxA.png"
+                  },
+                  "languageV2": "Italian",
+                  "favourites": 7
+                },
+                {
+                  "id": 180472,
+                  "name": {
+                    "full": "Carol Valen\u00E7a",
+                    "native": null,
+                    "userPreferred": "Carol Valen\u00E7a"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n180472-5L4cJwC0une2.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n180472-5L4cJwC0une2.png"
+                  },
+                  "languageV2": "Portuguese",
+                  "favourites": 41
+                },
+                {
+                  "id": 100143,
+                  "name": {
+                    "full": "Daniel Schlauch",
+                    "native": null,
+                    "userPreferred": "Daniel Schlauch"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100143-47anXO76XYj9.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n100143-47anXO76XYj9.png"
+                  },
+                  "languageV2": "German",
+                  "favourites": 62
+                },
+                {
+                  "id": 188400,
+                  "name": {
+                    "full": "Tianxiang Yang",
+                    "native": "\u6768\u5929\u7FD4",
+                    "userPreferred": "Tianxiang Yang"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n188400-JwoRMFHdJfKc.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n188400-JwoRMFHdJfKc.png"
+                  },
+                  "languageV2": "Chinese",
+                  "favourites": 34
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 182469,
+                "title": {
+                  "romaji": "ONE PIECE FAN LETTER",
+                  "english": "ONE PIECE FAN LETTER",
+                  "native": "ONE PIECE FAN LETTER"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx182469-JQ808NBPxmgn.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx182469-JQ808NBPxmgn.jpg"
+                },
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 90,
+                "favourites": 3280,
+                "popularity": 57972,
+                "startDate": {
+                  "year": 2024,
+                  "month": 10,
+                  "day": 20
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "SUPPORTING",
+              "voiceActors": [
+                {
+                  "id": 95075,
+                  "name": {
+                    "full": "Mayumi Tanaka",
+                    "native": "\u7530\u4E2D\u771F\u5F13",
+                    "userPreferred": "Mayumi Tanaka"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95075-1qD4TeW1ON92.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95075-1qD4TeW1ON92.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 2476
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 21335,
+                "title": {
+                  "romaji": "ONE PIECE FILM: GOLD",
+                  "english": "One Piece Film: Gold",
+                  "native": "ONE PIECE FILM GOLD"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx21335-XsXdE0AeOkkZ.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx21335-XsXdE0AeOkkZ.jpg"
+                },
+                "format": "MOVIE",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 77,
+                "favourites": 736,
+                "popularity": 57933,
+                "startDate": {
+                  "year": 2016,
+                  "month": 7,
+                  "day": 23
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 95075,
+                  "name": {
+                    "full": "Mayumi Tanaka",
+                    "native": "\u7530\u4E2D\u771F\u5F13",
+                    "userPreferred": "Mayumi Tanaka"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95075-1qD4TeW1ON92.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95075-1qD4TeW1ON92.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 2476
+                },
+                {
+                  "id": 95472,
+                  "name": {
+                    "full": "Colleen Clinkenbeard",
+                    "native": null,
+                    "userPreferred": "Colleen Clinkenbeard"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95472-fznpewUW95vm.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95472-fznpewUW95vm.jpg"
+                  },
+                  "languageV2": "English",
+                  "favourites": 636
+                },
+                {
+                  "id": 96163,
+                  "name": {
+                    "full": "Renato Novara",
+                    "native": null,
+                    "userPreferred": "Renato Novara"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n96163-YaGjTo1XM8qd.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n96163-YaGjTo1XM8qd.png"
+                  },
+                  "languageV2": "Italian",
+                  "favourites": 59
+                },
+                {
+                  "id": 195311,
+                  "name": {
+                    "full": "Ayari Rivera",
+                    "native": "Ayari Iliana Rivera Salazar",
+                    "userPreferred": "Ayari Rivera"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n195311-lZvqFpUQVLNI.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n195311-lZvqFpUQVLNI.png"
+                  },
+                  "languageV2": "Spanish",
+                  "favourites": 2
+                },
+                {
+                  "id": 180472,
+                  "name": {
+                    "full": "Carol Valen\u00E7a",
+                    "native": null,
+                    "userPreferred": "Carol Valen\u00E7a"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n180472-5L4cJwC0une2.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n180472-5L4cJwC0une2.png"
+                  },
+                  "languageV2": "Portuguese",
+                  "favourites": 41
+                },
+                {
+                  "id": 100143,
+                  "name": {
+                    "full": "Daniel Schlauch",
+                    "native": null,
+                    "userPreferred": "Daniel Schlauch"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100143-47anXO76XYj9.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n100143-47anXO76XYj9.png"
+                  },
+                  "languageV2": "German",
+                  "favourites": 62
+                },
+                {
+                  "id": 188400,
+                  "name": {
+                    "full": "Tianxiang Yang",
+                    "native": "\u6768\u5929\u7FD4",
+                    "userPreferred": "Tianxiang Yang"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n188400-JwoRMFHdJfKc.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n188400-JwoRMFHdJfKc.png"
+                  },
+                  "languageV2": "Chinese",
+                  "favourites": 34
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 4155,
+                "title": {
+                  "romaji": "ONE PIECE FILM: STRONG WORLD",
+                  "english": "One Piece Film: Strong World",
+                  "native": "ONE PIECE FILM STRONG WORLD"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx4155-P5TDf6t6qFwX.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx4155-P5TDf6t6qFwX.png"
+                },
+                "format": "MOVIE",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 77,
+                "favourites": 664,
+                "popularity": 55530,
+                "startDate": {
+                  "year": 2009,
+                  "month": 12,
+                  "day": 12
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 95075,
+                  "name": {
+                    "full": "Mayumi Tanaka",
+                    "native": "\u7530\u4E2D\u771F\u5F13",
+                    "userPreferred": "Mayumi Tanaka"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95075-1qD4TeW1ON92.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95075-1qD4TeW1ON92.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 2476
+                },
+                {
+                  "id": 95472,
+                  "name": {
+                    "full": "Colleen Clinkenbeard",
+                    "native": null,
+                    "userPreferred": "Colleen Clinkenbeard"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95472-fznpewUW95vm.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95472-fznpewUW95vm.jpg"
+                  },
+                  "languageV2": "English",
+                  "favourites": 636
+                },
+                {
+                  "id": 96163,
+                  "name": {
+                    "full": "Renato Novara",
+                    "native": null,
+                    "userPreferred": "Renato Novara"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n96163-YaGjTo1XM8qd.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n96163-YaGjTo1XM8qd.png"
+                  },
+                  "languageV2": "Italian",
+                  "favourites": 59
+                },
+                {
+                  "id": 117333,
+                  "name": {
+                    "full": "Mireya Mendoza",
+                    "native": null,
+                    "userPreferred": "Mireya Mendoza"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n117333-VonyVJRONHA7.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n117333-VonyVJRONHA7.jpg"
+                  },
+                  "languageV2": "Spanish",
+                  "favourites": 12
+                },
+                {
+                  "id": 180472,
+                  "name": {
+                    "full": "Carol Valen\u00E7a",
+                    "native": null,
+                    "userPreferred": "Carol Valen\u00E7a"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n180472-5L4cJwC0une2.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n180472-5L4cJwC0une2.png"
+                  },
+                  "languageV2": "Portuguese",
+                  "favourites": 41
+                },
+                {
+                  "id": 100143,
+                  "name": {
+                    "full": "Daniel Schlauch",
+                    "native": null,
+                    "userPreferred": "Daniel Schlauch"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100143-47anXO76XYj9.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n100143-47anXO76XYj9.png"
+                  },
+                  "languageV2": "German",
+                  "favourites": 62
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 459,
+                "title": {
+                  "romaji": "ONE PIECE (Movie)",
+                  "english": "ONE PIECE: The Movie",
+                  "native": "ONE PIECE (Movie)"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx459-Ivw65mUXackh.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx459-Ivw65mUXackh.png"
+                },
+                "format": "MOVIE",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 68,
+                "favourites": 289,
+                "popularity": 35306,
+                "startDate": {
+                  "year": 2000,
+                  "month": 3,
+                  "day": 4
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 95075,
+                  "name": {
+                    "full": "Mayumi Tanaka",
+                    "native": "\u7530\u4E2D\u771F\u5F13",
+                    "userPreferred": "Mayumi Tanaka"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95075-1qD4TeW1ON92.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95075-1qD4TeW1ON92.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 2476
+                },
+                {
+                  "id": 96267,
+                  "name": {
+                    "full": "Luigi Rosa",
+                    "native": null,
+                    "userPreferred": "Luigi Rosa"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n96267-I6paUN1vrxxA.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n96267-I6paUN1vrxxA.png"
+                  },
+                  "languageV2": "Italian",
+                  "favourites": 7
+                },
+                {
+                  "id": 101616,
+                  "name": {
+                    "full": "Jaime Roca",
+                    "native": null,
+                    "userPreferred": "Jaime Roca"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101616-mFdztsGP2m3Z.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n101616-mFdztsGP2m3Z.jpg"
+                  },
+                  "languageV2": "Spanish",
+                  "favourites": 13
+                },
+                {
+                  "id": 100143,
+                  "name": {
+                    "full": "Daniel Schlauch",
+                    "native": null,
+                    "userPreferred": "Daniel Schlauch"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100143-47anXO76XYj9.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n100143-47anXO76XYj9.png"
+                  },
+                  "languageV2": "German",
+                  "favourites": 62
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 464,
+                "title": {
+                  "romaji": "ONE PIECE THE MOVIE: Omatsuri Danshaku to Himitsu no Shima",
+                  "english": "One Piece: Baron Omatsuri and the Secret Island",
+                  "native": "ONE PIECE THE MOVIE \u30AA\u30DE\u30C4\u30EA\u7537\u7235\u3068\u79D8\u5BC6\u306E\u5CF6"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx464-g4wcZPjbhY5j.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx464-g4wcZPjbhY5j.png"
+                },
+                "format": "MOVIE",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 78,
+                "favourites": 940,
+                "popularity": 33703,
+                "startDate": {
+                  "year": 2005,
+                  "month": 3,
+                  "day": 5
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 95075,
+                  "name": {
+                    "full": "Mayumi Tanaka",
+                    "native": "\u7530\u4E2D\u771F\u5F13",
+                    "userPreferred": "Mayumi Tanaka"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95075-1qD4TeW1ON92.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95075-1qD4TeW1ON92.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 2476
+                },
+                {
+                  "id": 96163,
+                  "name": {
+                    "full": "Renato Novara",
+                    "native": null,
+                    "userPreferred": "Renato Novara"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n96163-YaGjTo1XM8qd.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n96163-YaGjTo1XM8qd.png"
+                  },
+                  "languageV2": "Italian",
+                  "favourites": 59
+                },
+                {
+                  "id": 100143,
+                  "name": {
+                    "full": "Daniel Schlauch",
+                    "native": null,
+                    "userPreferred": "Daniel Schlauch"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100143-47anXO76XYj9.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n100143-47anXO76XYj9.png"
+                  },
+                  "languageV2": "German",
+                  "favourites": 62
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 460,
+                "title": {
+                  "romaji": "ONE PIECE: Nejimaki-jima no Bouken",
+                  "english": "One Piece: Clockwork Island Adventure",
+                  "native": "ONE PIECE \u306D\u3058\u307E\u304D\u5CF6\u306E\u5192\u967A"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx460-p9HObfGUhWn0.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx460-p9HObfGUhWn0.jpg"
+                },
+                "format": "MOVIE",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 67,
+                "favourites": 165,
+                "popularity": 26783,
+                "startDate": {
+                  "year": 2001,
+                  "month": 3,
+                  "day": 3
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 95075,
+                  "name": {
+                    "full": "Mayumi Tanaka",
+                    "native": "\u7530\u4E2D\u771F\u5F13",
+                    "userPreferred": "Mayumi Tanaka"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95075-1qD4TeW1ON92.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95075-1qD4TeW1ON92.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 2476
+                },
+                {
+                  "id": 96267,
+                  "name": {
+                    "full": "Luigi Rosa",
+                    "native": null,
+                    "userPreferred": "Luigi Rosa"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n96267-I6paUN1vrxxA.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n96267-I6paUN1vrxxA.png"
+                  },
+                  "languageV2": "Italian",
+                  "favourites": 7
+                },
+                {
+                  "id": 101616,
+                  "name": {
+                    "full": "Jaime Roca",
+                    "native": null,
+                    "userPreferred": "Jaime Roca"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101616-mFdztsGP2m3Z.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n101616-mFdztsGP2m3Z.jpg"
+                  },
+                  "languageV2": "Spanish",
+                  "favourites": 13
+                },
+                {
+                  "id": 100143,
+                  "name": {
+                    "full": "Daniel Schlauch",
+                    "native": null,
+                    "userPreferred": "Daniel Schlauch"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100143-47anXO76XYj9.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n100143-47anXO76XYj9.png"
+                  },
+                  "languageV2": "German",
+                  "favourites": 62
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 171630,
+                "title": {
+                  "romaji": "THE ONE PIECE",
+                  "english": "THE ONE PIECE",
+                  "native": "THE ONE PIECE"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx171630-2U7Y5OIWwXJJ.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx171630-2U7Y5OIWwXJJ.jpg"
+                },
+                "format": null,
+                "type": "ANIME",
+                "status": "NOT_YET_RELEASED",
+                "averageScore": null,
+                "favourites": 397,
+                "popularity": 25621,
+                "startDate": {
+                  "year": 2027,
+                  "month": 2,
+                  "day": null
+                },
+                "mediaListEntry": {
+                  "id": 593365692,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "score": 0
+                }
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 95075,
+                  "name": {
+                    "full": "Mayumi Tanaka",
+                    "native": "\u7530\u4E2D\u771F\u5F13",
+                    "userPreferred": "Mayumi Tanaka"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95075-1qD4TeW1ON92.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95075-1qD4TeW1ON92.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 2476
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 462,
+                "title": {
+                  "romaji": "ONE PIECE THE MOVIE: Dead End no Bouken",
+                  "english": "One Piece The Movie: The Dead End Adventure",
+                  "native": "ONE PIECE THE MOVIE \u30C7\u30C3\u30C9\u30A8\u30F3\u30C9\u306E\u5192\u967A"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx462-Ig8zfdsFWcql.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx462-Ig8zfdsFWcql.png"
+                },
+                "format": "MOVIE",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 72,
+                "favourites": 212,
+                "popularity": 25387,
+                "startDate": {
+                  "year": 2003,
+                  "month": 3,
+                  "day": 1
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 95075,
+                  "name": {
+                    "full": "Mayumi Tanaka",
+                    "native": "\u7530\u4E2D\u771F\u5F13",
+                    "userPreferred": "Mayumi Tanaka"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95075-1qD4TeW1ON92.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95075-1qD4TeW1ON92.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 2476
+                },
+                {
+                  "id": 96267,
+                  "name": {
+                    "full": "Luigi Rosa",
+                    "native": null,
+                    "userPreferred": "Luigi Rosa"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n96267-I6paUN1vrxxA.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n96267-I6paUN1vrxxA.png"
+                  },
+                  "languageV2": "Italian",
+                  "favourites": 7
+                },
+                {
+                  "id": 100143,
+                  "name": {
+                    "full": "Daniel Schlauch",
+                    "native": null,
+                    "userPreferred": "Daniel Schlauch"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100143-47anXO76XYj9.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n100143-47anXO76XYj9.png"
+                  },
+                  "languageV2": "German",
+                  "favourites": 62
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 20835,
+                "title": {
+                  "romaji": "ONE PIECE \u00223D2Y\u0022: Ace no shi wo Koete! Luffy Nakama to no Chikai",
+                  "english": "One Piece 3D2Y: Overcome Ace\u2019s Death! Luffy\u2019s Vow to his Friends",
+                  "native": "ONE PIECE \u201C3D2Y\u201D \u30A8\u30FC\u30B9\u306E\u6B7B\u3092\u8D8A\u3048\u3066! \u30EB\u30D5\u30A3\u4EF2\u9593\u3068\u306E\u8A93\u3044"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20835-QVV6LpJlqe1A.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20835-QVV6LpJlqe1A.jpg"
+                },
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 76,
+                "favourites": 261,
+                "popularity": 23893,
+                "startDate": {
+                  "year": 2014,
+                  "month": 8,
+                  "day": 30
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 95075,
+                  "name": {
+                    "full": "Mayumi Tanaka",
+                    "native": "\u7530\u4E2D\u771F\u5F13",
+                    "userPreferred": "Mayumi Tanaka"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95075-1qD4TeW1ON92.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95075-1qD4TeW1ON92.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 2476
+                },
+                {
+                  "id": 95472,
+                  "name": {
+                    "full": "Colleen Clinkenbeard",
+                    "native": null,
+                    "userPreferred": "Colleen Clinkenbeard"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95472-fznpewUW95vm.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95472-fznpewUW95vm.jpg"
+                  },
+                  "languageV2": "English",
+                  "favourites": 636
+                },
+                {
+                  "id": 180472,
+                  "name": {
+                    "full": "Carol Valen\u00E7a",
+                    "native": null,
+                    "userPreferred": "Carol Valen\u00E7a"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n180472-5L4cJwC0une2.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n180472-5L4cJwC0une2.png"
+                  },
+                  "languageV2": "Portuguese",
+                  "favourites": 41
+                },
+                {
+                  "id": 185888,
+                  "name": {
+                    "full": "Ma Zink",
+                    "native": null,
+                    "userPreferred": "Ma Zink"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n185888-oSOPvwG9FS4o.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n185888-oSOPvwG9FS4o.jpg"
+                  },
+                  "languageV2": "Portuguese",
+                  "favourites": 2
+                },
+                {
+                  "id": 100143,
+                  "name": {
+                    "full": "Daniel Schlauch",
+                    "native": null,
+                    "userPreferred": "Daniel Schlauch"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100143-47anXO76XYj9.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n100143-47anXO76XYj9.png"
+                  },
+                  "languageV2": "German",
+                  "favourites": 62
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 21831,
+                "title": {
+                  "romaji": "ONE PIECE: Heart of Gold",
+                  "english": "One Piece: Heart of Gold",
+                  "native": "ONE PIECE \u301C\u30CF\u30FC\u30C8\u30AA\u30D6\u30B4\u30FC\u30EB\u30C9\u301C"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21831-qj5IKYiPOupF.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21831-qj5IKYiPOupF.jpg"
+                },
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 72,
+                "favourites": 213,
+                "popularity": 23449,
+                "startDate": {
+                  "year": 2016,
+                  "month": 7,
+                  "day": 16
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 95075,
+                  "name": {
+                    "full": "Mayumi Tanaka",
+                    "native": "\u7530\u4E2D\u771F\u5F13",
+                    "userPreferred": "Mayumi Tanaka"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95075-1qD4TeW1ON92.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95075-1qD4TeW1ON92.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 2476
+                },
+                {
+                  "id": 95472,
+                  "name": {
+                    "full": "Colleen Clinkenbeard",
+                    "native": null,
+                    "userPreferred": "Colleen Clinkenbeard"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95472-fznpewUW95vm.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95472-fznpewUW95vm.jpg"
+                  },
+                  "languageV2": "English",
+                  "favourites": 636
+                },
+                {
+                  "id": 180472,
+                  "name": {
+                    "full": "Carol Valen\u00E7a",
+                    "native": null,
+                    "userPreferred": "Carol Valen\u00E7a"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n180472-5L4cJwC0une2.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n180472-5L4cJwC0une2.png"
+                  },
+                  "languageV2": "Portuguese",
+                  "favourites": 41
+                },
+                {
+                  "id": 100143,
+                  "name": {
+                    "full": "Daniel Schlauch",
+                    "native": null,
+                    "userPreferred": "Daniel Schlauch"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100143-47anXO76XYj9.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n100143-47anXO76XYj9.png"
+                  },
+                  "languageV2": "German",
+                  "favourites": 62
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 461,
+                "title": {
+                  "romaji": "ONE PIECE: Chinjuu-jima no Chopper Oukoku",
+                  "english": "One Piece: Chopper\u2019s Kingdom on the Island of Strange Animals",
+                  "native": "ONE PIECE \u73CD\u7363\u5CF6\u306E\u30C1\u30E7\u30C3\u30D1\u30FC\u738B\u56FD"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx461-DC9fMDl3AaK1.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx461-DC9fMDl3AaK1.jpg"
+                },
+                "format": "MOVIE",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 64,
+                "favourites": 141,
+                "popularity": 22861,
+                "startDate": {
+                  "year": 2002,
+                  "month": 3,
+                  "day": 2
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 95075,
+                  "name": {
+                    "full": "Mayumi Tanaka",
+                    "native": "\u7530\u4E2D\u771F\u5F13",
+                    "userPreferred": "Mayumi Tanaka"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95075-1qD4TeW1ON92.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95075-1qD4TeW1ON92.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 2476
+                },
+                {
+                  "id": 96267,
+                  "name": {
+                    "full": "Luigi Rosa",
+                    "native": null,
+                    "userPreferred": "Luigi Rosa"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n96267-I6paUN1vrxxA.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n96267-I6paUN1vrxxA.png"
+                  },
+                  "languageV2": "Italian",
+                  "favourites": 7
+                },
+                {
+                  "id": 100143,
+                  "name": {
+                    "full": "Daniel Schlauch",
+                    "native": null,
+                    "userPreferred": "Daniel Schlauch"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100143-47anXO76XYj9.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n100143-47anXO76XYj9.png"
+                  },
+                  "languageV2": "German",
+                  "favourites": 62
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 463,
+                "title": {
+                  "romaji": "ONE PIECE: Norowareta Seiken",
+                  "english": "One Piece: The Curse of the Sacred Sword",
+                  "native": "ONE PIECE \u546A\u308F\u308C\u305F\u8056\u5263"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx463-QDnETPoHp9oD.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx463-QDnETPoHp9oD.jpg"
+                },
+                "format": "MOVIE",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 67,
+                "favourites": 145,
+                "popularity": 21366,
+                "startDate": {
+                  "year": 2004,
+                  "month": 3,
+                  "day": 6
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 95075,
+                  "name": {
+                    "full": "Mayumi Tanaka",
+                    "native": "\u7530\u4E2D\u771F\u5F13",
+                    "userPreferred": "Mayumi Tanaka"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95075-1qD4TeW1ON92.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95075-1qD4TeW1ON92.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 2476
+                },
+                {
+                  "id": 96267,
+                  "name": {
+                    "full": "Luigi Rosa",
+                    "native": null,
+                    "userPreferred": "Luigi Rosa"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n96267-I6paUN1vrxxA.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n96267-I6paUN1vrxxA.png"
+                  },
+                  "languageV2": "Italian",
+                  "favourites": 7
+                },
+                {
+                  "id": 101616,
+                  "name": {
+                    "full": "Jaime Roca",
+                    "native": null,
+                    "userPreferred": "Jaime Roca"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101616-mFdztsGP2m3Z.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n101616-mFdztsGP2m3Z.jpg"
+                  },
+                  "languageV2": "Spanish",
+                  "favourites": 13
+                },
+                {
+                  "id": 100143,
+                  "name": {
+                    "full": "Daniel Schlauch",
+                    "native": null,
+                    "userPreferred": "Daniel Schlauch"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100143-47anXO76XYj9.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n100143-47anXO76XYj9.png"
+                  },
+                  "languageV2": "German",
+                  "favourites": 62
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 465,
+                "title": {
+                  "romaji": "ONE PIECE THE MOVIE: Karakuri-jou no Mecha Kyohei",
+                  "english": "One Piece: Mega Mecha Soldier of Karakuri Castle",
+                  "native": "ONE PIECE THE MOVIE \u30AB\u30E9\u30AF\u30EA\u57CE\u306E\u30E1\u30AB\u5DE8\u5175"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx465-qSRr0MKYhS0I.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx465-qSRr0MKYhS0I.jpg"
+                },
+                "format": "MOVIE",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 67,
+                "favourites": 116,
+                "popularity": 19721,
+                "startDate": {
+                  "year": 2006,
+                  "month": 3,
+                  "day": 4
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 95075,
+                  "name": {
+                    "full": "Mayumi Tanaka",
+                    "native": "\u7530\u4E2D\u771F\u5F13",
+                    "userPreferred": "Mayumi Tanaka"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95075-1qD4TeW1ON92.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95075-1qD4TeW1ON92.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 2476
+                },
+                {
+                  "id": 96163,
+                  "name": {
+                    "full": "Renato Novara",
+                    "native": null,
+                    "userPreferred": "Renato Novara"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n96163-YaGjTo1XM8qd.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n96163-YaGjTo1XM8qd.png"
+                  },
+                  "languageV2": "Italian",
+                  "favourites": 59
+                },
+                {
+                  "id": 101616,
+                  "name": {
+                    "full": "Jaime Roca",
+                    "native": null,
+                    "userPreferred": "Jaime Roca"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101616-mFdztsGP2m3Z.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n101616-mFdztsGP2m3Z.jpg"
+                  },
+                  "languageV2": "Spanish",
+                  "favourites": 13
+                },
+                {
+                  "id": 100143,
+                  "name": {
+                    "full": "Daniel Schlauch",
+                    "native": null,
+                    "userPreferred": "Daniel Schlauch"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100143-47anXO76XYj9.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n100143-47anXO76XYj9.png"
+                  },
+                  "languageV2": "German",
+                  "favourites": 62
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 8740,
+                "title": {
+                  "romaji": "ONE PIECE FILM: STRONG WORLD - EPISODE:0",
+                  "english": null,
+                  "native": "ONE PIECE FILM STRONG WORLD EPISODE:0"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b8740-oZajT3brPn7b.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b8740-oZajT3brPn7b.jpg"
+                },
+                "format": "OVA",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 76,
+                "favourites": 122,
+                "popularity": 18731,
+                "startDate": {
+                  "year": 2010,
+                  "month": 4,
+                  "day": 16
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 95075,
+                  "name": {
+                    "full": "Mayumi Tanaka",
+                    "native": "\u7530\u4E2D\u771F\u5F13",
+                    "userPreferred": "Mayumi Tanaka"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95075-1qD4TeW1ON92.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95075-1qD4TeW1ON92.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 2476
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 2107,
+                "title": {
+                  "romaji": "ONE PIECE: Episode of Alabasta - Sabaku no Oujo to Kaizoku-tachi",
+                  "english": "One Piece: The Desert Princess and the Pirates, Adventures in Alabasta",
+                  "native": "ONE PIECE \u30A8\u30D4\u30BD\u30FC\u30C9\u30AA\u30D6\u30A2\u30E9\u30D0\u30B9\u30BF \u7802\u6F20\u306E\u738B\u5973\u3068\u6D77\u8CCA\u305F\u3061"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx2107-H8bRuRRbhCIJ.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2107-H8bRuRRbhCIJ.jpg"
+                },
+                "format": "MOVIE",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 70,
+                "favourites": 126,
+                "popularity": 17689,
+                "startDate": {
+                  "year": 2007,
+                  "month": 3,
+                  "day": 3
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 95075,
+                  "name": {
+                    "full": "Mayumi Tanaka",
+                    "native": "\u7530\u4E2D\u771F\u5F13",
+                    "userPreferred": "Mayumi Tanaka"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95075-1qD4TeW1ON92.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95075-1qD4TeW1ON92.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 2476
+                },
+                {
+                  "id": 95472,
+                  "name": {
+                    "full": "Colleen Clinkenbeard",
+                    "native": null,
+                    "userPreferred": "Colleen Clinkenbeard"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95472-fznpewUW95vm.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95472-fznpewUW95vm.jpg"
+                  },
+                  "languageV2": "English",
+                  "favourites": 636
+                },
+                {
+                  "id": 109753,
+                  "name": {
+                    "full": "Su-Jin Kang",
+                    "native": "\uAC15\uC218\uC9C4",
+                    "userPreferred": "Su-Jin Kang"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n109753-qqOQlkfARIzX.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n109753-qqOQlkfARIzX.jpg"
+                  },
+                  "languageV2": "Korean",
+                  "favourites": 4
+                },
+                {
+                  "id": 96163,
+                  "name": {
+                    "full": "Renato Novara",
+                    "native": null,
+                    "userPreferred": "Renato Novara"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n96163-YaGjTo1XM8qd.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n96163-YaGjTo1XM8qd.png"
+                  },
+                  "languageV2": "Italian",
+                  "favourites": 59
+                },
+                {
+                  "id": 180472,
+                  "name": {
+                    "full": "Carol Valen\u00E7a",
+                    "native": null,
+                    "userPreferred": "Carol Valen\u00E7a"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n180472-5L4cJwC0une2.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n180472-5L4cJwC0une2.png"
+                  },
+                  "languageV2": "Portuguese",
+                  "favourites": 41
+                },
+                {
+                  "id": 100143,
+                  "name": {
+                    "full": "Daniel Schlauch",
+                    "native": null,
+                    "userPreferred": "Daniel Schlauch"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100143-47anXO76XYj9.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n100143-47anXO76XYj9.png"
+                  },
+                  "languageV2": "German",
+                  "favourites": 62
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 15323,
+                "title": {
+                  "romaji": "ONE PIECE: Episode of Nami - Koukaishi no Namida to Nakama no Kizuna",
+                  "english": null,
+                  "native": "ONE PIECE \u30A8\u30D4\u30BD\u30FC\u30C9\u30AA\u30D6\u30CA\u30DF \u301C\u822A\u6D77\u58EB\u306E\u6D99\u3068\u4EF2\u9593\u306E\u7D46\u301C"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/15323.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/15323.jpg"
+                },
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 78,
+                "favourites": 185,
+                "popularity": 17512,
+                "startDate": {
+                  "year": 2012,
+                  "month": 8,
+                  "day": 25
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 95075,
+                  "name": {
+                    "full": "Mayumi Tanaka",
+                    "native": "\u7530\u4E2D\u771F\u5F13",
+                    "userPreferred": "Mayumi Tanaka"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95075-1qD4TeW1ON92.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95075-1qD4TeW1ON92.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 2476
+                },
+                {
+                  "id": 100143,
+                  "name": {
+                    "full": "Daniel Schlauch",
+                    "native": null,
+                    "userPreferred": "Daniel Schlauch"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100143-47anXO76XYj9.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n100143-47anXO76XYj9.png"
+                  },
+                  "languageV2": "German",
+                  "favourites": 62
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 3848,
+                "title": {
+                  "romaji": "ONE PIECE THE MOVIE: Episode of Chopper Plus - Fuyu ni Saku, Kiseki no Sakura",
+                  "english": "One Piece: Episode Of Chopper \u002B: The Miracle Winter Cherry Blossom",
+                  "native": "ONE PIECE THE MOVIE \u30A8\u30D4\u30BD\u30FC\u30C9\u30AA\u30D6\u30C1\u30E7\u30C3\u30D1\u30FC\u002B \u51AC\u306B\u54B2\u304F\u3001\u5947\u8DE1\u306E\u685C"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx3848-SCnYGTn34Llt.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx3848-SCnYGTn34Llt.jpg"
+                },
+                "format": "MOVIE",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 71,
+                "favourites": 133,
+                "popularity": 16631,
+                "startDate": {
+                  "year": 2008,
+                  "month": 3,
+                  "day": 1
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 95075,
+                  "name": {
+                    "full": "Mayumi Tanaka",
+                    "native": "\u7530\u4E2D\u771F\u5F13",
+                    "userPreferred": "Mayumi Tanaka"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95075-1qD4TeW1ON92.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95075-1qD4TeW1ON92.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 2476
+                },
+                {
+                  "id": 96163,
+                  "name": {
+                    "full": "Renato Novara",
+                    "native": null,
+                    "userPreferred": "Renato Novara"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n96163-YaGjTo1XM8qd.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n96163-YaGjTo1XM8qd.png"
+                  },
+                  "languageV2": "Italian",
+                  "favourites": 59
+                },
+                {
+                  "id": 100143,
+                  "name": {
+                    "full": "Daniel Schlauch",
+                    "native": null,
+                    "userPreferred": "Daniel Schlauch"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100143-47anXO76XYj9.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n100143-47anXO76XYj9.png"
+                  },
+                  "languageV2": "German",
+                  "favourites": 62
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 197178,
+                "title": {
+                  "romaji": "ONE PIECE HEROINES",
+                  "english": "ONE PIECE HEROINES",
+                  "native": "ONE PIECE HEROINES"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx197178-Ui8PY9HQbNgu.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx197178-Ui8PY9HQbNgu.jpg"
+                },
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 78,
+                "favourites": 217,
+                "popularity": 15524,
+                "startDate": {
+                  "year": 2026,
+                  "month": 7,
+                  "day": 5
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "BACKGROUND",
+              "voiceActors": [
+                {
+                  "id": 95075,
+                  "name": {
+                    "full": "Mayumi Tanaka",
+                    "native": "\u7530\u4E2D\u771F\u5F13",
+                    "userPreferred": "Mayumi Tanaka"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95075-1qD4TeW1ON92.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95075-1qD4TeW1ON92.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 2476
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 19123,
+                "title": {
+                  "romaji": "ONE PIECE: Episode of Merry - Mou Hitori no Nakama no Monogatari",
+                  "english": "One Piece: Episode of Merry - The Tale of One More Friend",
+                  "native": "ONE PIECE \u30A8\u30D4\u30BD\u30FC\u30C9\u30AA\u30D6\u30E1\u30EA\u30FC \u301C\u3082\u3046\u3072\u3068\u308A\u306E\u4EF2\u9593\u306E\u7269\u8A9E\u301C"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx19123-leET1CrSJknT.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx19123-leET1CrSJknT.jpg"
+                },
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 78,
+                "favourites": 169,
+                "popularity": 15281,
+                "startDate": {
+                  "year": 2013,
+                  "month": 8,
+                  "day": 24
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 95075,
+                  "name": {
+                    "full": "Mayumi Tanaka",
+                    "native": "\u7530\u4E2D\u771F\u5F13",
+                    "userPreferred": "Mayumi Tanaka"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95075-1qD4TeW1ON92.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95075-1qD4TeW1ON92.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 2476
+                },
+                {
+                  "id": 100143,
+                  "name": {
+                    "full": "Daniel Schlauch",
+                    "native": null,
+                    "userPreferred": "Daniel Schlauch"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100143-47anXO76XYj9.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n100143-47anXO76XYj9.png"
+                  },
+                  "languageV2": "German",
+                  "favourites": 62
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 99302,
+                "title": {
+                  "romaji": "ONE PIECE: Episode of East Blue - Luffy to 4-nin no Nakama no Daibouken",
+                  "english": "One Piece: Episode of East Blue",
+                  "native": "ONE PIECE \u30A8\u30D4\u30BD\u30FC\u30C9\u30AA\u30D6\u6771\u306E\u6D77\u301C\u30EB\u30D5\u30A3\u30684\u4EBA\u306E\u4EF2\u9593\u306E\u5927\u5192\u967A!!\u301C"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx99302-b40WIhc5dylo.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx99302-b40WIhc5dylo.jpg"
+                },
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 76,
+                "favourites": 145,
+                "popularity": 14814,
+                "startDate": {
+                  "year": 2017,
+                  "month": 8,
+                  "day": 26
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 95075,
+                  "name": {
+                    "full": "Mayumi Tanaka",
+                    "native": "\u7530\u4E2D\u771F\u5F13",
+                    "userPreferred": "Mayumi Tanaka"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95075-1qD4TeW1ON92.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95075-1qD4TeW1ON92.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 2476
+                },
+                {
+                  "id": 95472,
+                  "name": {
+                    "full": "Colleen Clinkenbeard",
+                    "native": null,
+                    "userPreferred": "Colleen Clinkenbeard"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95472-fznpewUW95vm.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95472-fznpewUW95vm.jpg"
+                  },
+                  "languageV2": "English",
+                  "favourites": 636
+                },
+                {
+                  "id": 180472,
+                  "name": {
+                    "full": "Carol Valen\u00E7a",
+                    "native": null,
+                    "userPreferred": "Carol Valen\u00E7a"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n180472-5L4cJwC0une2.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n180472-5L4cJwC0une2.png"
+                  },
+                  "languageV2": "Portuguese",
+                  "favourites": 41
+                },
+                {
+                  "id": 185888,
+                  "name": {
+                    "full": "Ma Zink",
+                    "native": null,
+                    "userPreferred": "Ma Zink"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n185888-oSOPvwG9FS4o.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n185888-oSOPvwG9FS4o.jpg"
+                  },
+                  "languageV2": "Portuguese",
+                  "favourites": 2
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}

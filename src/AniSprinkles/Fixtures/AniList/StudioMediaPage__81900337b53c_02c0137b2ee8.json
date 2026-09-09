@@ -1,0 +1,643 @@
+﻿{
+  "operationName": "StudioMediaPage",
+  "variables": {
+    "id": 11,
+    "page": 2,
+    "sort": [
+      "START_DATE_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "02c0137b2ee8",
+  "recordedAt": "2026-09-06T05:32:27.8242506+00:00",
+  "response": {
+    "data": {
+      "Studio": {
+        "media": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 2
+          },
+          "nodes": [
+            {
+              "id": 144533,
+              "title": {
+                "romaji": "Mushikaburi-hime",
+                "english": "Bibliophile Princess",
+                "native": "\u866B\u304B\u3076\u308A\u59EB"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx144533-DqgPeBmWZPYQ.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx144533-DqgPeBmWZPYQ.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 67,
+              "favourites": 532,
+              "popularity": 29804,
+              "startDate": {
+                "year": 2022,
+                "month": 10,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 133844,
+              "title": {
+                "romaji": "Overlord IV",
+                "english": "Overlord IV",
+                "native": "\u30AA\u30FC\u30D0\u30FC\u30ED\u30FC\u30C9\u2163"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx133844-E32FjKZ0XxEs.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx133844-E32FjKZ0XxEs.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 80,
+              "favourites": 4834,
+              "popularity": 177640,
+              "startDate": {
+                "year": 2022,
+                "month": 7,
+                "day": 5
+              },
+              "mediaListEntry": {
+                "id": 593364658,
+                "status": "COMPLETED",
+                "progress": 13,
+                "score": 9
+              }
+            },
+            {
+              "id": 136302,
+              "title": {
+                "romaji": "Goodbye, Don Glees!",
+                "english": "Goodbye, Don Glees!",
+                "native": "\u30B0\u30C3\u30D0\u30A4\u3001\u30C9\u30F3\u30FB\u30B0\u30EA\u30FC\u30BA\uFF01"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx136302-4R03xBOGWrcq.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx136302-4R03xBOGWrcq.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 73,
+              "favourites": 234,
+              "popularity": 13587,
+              "startDate": {
+                "year": 2022,
+                "month": 2,
+                "day": 18
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 137312,
+              "title": {
+                "romaji": "Hakozume: Kouban Joshi no Gyakushuu",
+                "english": "Police in a Pod",
+                "native": "\u30CF\u30B3\u30C5\u30E1\uFF5E\u4EA4\u756A\u5973\u5B50\u306E\u9006\u8972\uFF5E"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx137312-hlWRtCt25oMg.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx137312-hlWRtCt25oMg.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 68,
+              "favourites": 185,
+              "popularity": 18543,
+              "startDate": {
+                "year": 2022,
+                "month": 1,
+                "day": 5
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 131565,
+              "title": {
+                "romaji": "takt op.Destiny",
+                "english": "takt op.Destiny",
+                "native": "takt op.Destiny"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx131565-3W2YEX6V3K3i.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx131565-3W2YEX6V3K3i.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 69,
+              "favourites": 3283,
+              "popularity": 168843,
+              "startDate": {
+                "year": 2021,
+                "month": 10,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 118103,
+              "title": {
+                "romaji": "Kyuuketsuki Sugu Shinu",
+                "english": "The Vampire Dies in No Time",
+                "native": "\u5438\u8840\u9B3C\u3059\u3050\u6B7B\u306C"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx118103-pue9xw0RB1mc.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx118103-pue9xw0RB1mc.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 70,
+              "favourites": 655,
+              "popularity": 33450,
+              "startDate": {
+                "year": 2021,
+                "month": 10,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 132126,
+              "title": {
+                "romaji": "Sonny Boy",
+                "english": "Sonny Boy",
+                "native": "Sonny Boy"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx132126-4ugVjXMQLAps.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx132126-4ugVjXMQLAps.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 7200,
+              "popularity": 135330,
+              "startDate": {
+                "year": 2021,
+                "month": 7,
+                "day": 16
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 193907,
+              "title": {
+                "romaji": "Azur Lane: 3 Shuunen Kinen Anime PV",
+                "english": null,
+                "native": "\u30A2\u30BA\u30FC\u30EB\u30EC\u30FC\u30F3 3\u5468\u5E74\u8A18\u5FF5\u30A2\u30CB\u30E1PV"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx193907-NP7JxXP7W1gM.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx193907-NP7JxXP7W1gM.png"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": null,
+              "favourites": 1,
+              "popularity": 176,
+              "startDate": {
+                "year": 2020,
+                "month": 9,
+                "day": 15
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 112803,
+              "title": {
+                "romaji": "No Guns Life 2",
+                "english": "No Guns Life Season 2",
+                "native": "\u30CE\u30FC\u30FB\u30AC\u30F3\u30BA\u30FB\u30E9\u30A4\u30D5 2"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx112803-GTBPrkKvlyV5.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx112803-GTBPrkKvlyV5.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 69,
+              "favourites": 234,
+              "popularity": 23777,
+              "startDate": {
+                "year": 2020,
+                "month": 7,
+                "day": 10
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 118971,
+              "title": {
+                "romaji": "Zetsubou Funsai Shoujo \u221E Amida",
+                "english": null,
+                "native": "\u7D76\u671B\u7C89\u7815\u5C11\u5973\u221E\u30A2\u30DF\u30C0"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx118971-35FQjZvFfXoN.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx118971-35FQjZvFfXoN.png"
+              },
+              "format": "MUSIC",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 60,
+              "favourites": 8,
+              "popularity": 856,
+              "startDate": {
+                "year": 2020,
+                "month": 5,
+                "day": 25
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 124082,
+              "title": {
+                "romaji": "Azur Lane Anime PVs",
+                "english": null,
+                "native": "\u30A2\u30BA\u30FC\u30EB\u30EC\u30FC\u30F3 \u30A2\u30CB\u30E1PVs"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx124082-ex34xC20rmHW.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx124082-ex34xC20rmHW.png"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "RELEASING",
+              "averageScore": 62,
+              "favourites": 41,
+              "popularity": 1787,
+              "startDate": {
+                "year": 2020,
+                "month": 4,
+                "day": 17
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 108714,
+              "title": {
+                "romaji": "ACCA: 13-ku Kansatsu-ka - Regards",
+                "english": "ACCA: 13-Territory Inspection Dept. - Regards",
+                "native": "ACCA13\u533A\u76E3\u5BDF\u8AB2 Regards"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx108714-7QDTectcCIa3.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx108714-7QDTectcCIa3.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 70,
+              "favourites": 47,
+              "popularity": 7339,
+              "startDate": {
+                "year": 2020,
+                "month": 2,
+                "day": 14
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 101215,
+              "title": {
+                "romaji": "Chihayafuru 3",
+                "english": "Chihayafuru 3",
+                "native": "\u3061\u306F\u3084\u3075\u308B 3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx101215-8TTRNAYJnPMW.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101215-8TTRNAYJnPMW.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 85,
+              "favourites": 1769,
+              "popularity": 45117,
+              "startDate": {
+                "year": 2019,
+                "month": 10,
+                "day": 23
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 108478,
+              "title": {
+                "romaji": "No Guns Life",
+                "english": "No Guns Life",
+                "native": "\u30CE\u30FC\u30FB\u30AC\u30F3\u30BA\u30FB\u30E9\u30A4\u30D5"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx108478-yHMnmQCtHSDb.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx108478-yHMnmQCtHSDb.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 66,
+              "favourites": 730,
+              "popularity": 60292,
+              "startDate": {
+                "year": 2019,
+                "month": 10,
+                "day": 11
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 101814,
+              "title": {
+                "romaji": "Shoumetsu Toshi",
+                "english": "AFTERLOST",
+                "native": "\u6D88\u6EC5\u90FD\u5E02"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx101814-QVFBowThHDDh.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101814-QVFBowThHDDh.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 48,
+              "favourites": 161,
+              "popularity": 22590,
+              "startDate": {
+                "year": 2019,
+                "month": 4,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 105749,
+              "title": {
+                "romaji": "Diamond no Ace act II",
+                "english": "Ace of the Diamond act II",
+                "native": "\u30C0\u30A4\u30E4\u306EA act\u2161"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx105749-bbqFNGq0r6mS.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx105749-bbqFNGq0r6mS.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 82,
+              "favourites": 991,
+              "popularity": 26824,
+              "startDate": {
+                "year": 2019,
+                "month": 4,
+                "day": 2
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 101283,
+              "title": {
+                "romaji": "Boogiepop wa Warawanai",
+                "english": "Boogiepop and Others",
+                "native": "\u30D6\u30AE\u30FC\u30DD\u30C3\u30D7\u306F\u7B11\u308F\u306A\u3044"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx101283-YpZqD7wrzWui.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx101283-YpZqD7wrzWui.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 68,
+              "favourites": 841,
+              "popularity": 71895,
+              "startDate": {
+                "year": 2019,
+                "month": 1,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 101478,
+              "title": {
+                "romaji": "Wakaokami wa Shougakusei! (Movie)",
+                "english": "Okko\u0027s Inn",
+                "native": "\u82E5\u304A\u304B\u307F\u306F\u5C0F\u5B66\u751F\uFF01(\u5287\u5834\u7248)"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx101478-bo3xR8x2pc3i.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101478-bo3xR8x2pc3i.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 74,
+              "favourites": 132,
+              "popularity": 8749,
+              "startDate": {
+                "year": 2018,
+                "month": 9,
+                "day": 21
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 101697,
+              "title": {
+                "romaji": "Marvel Future Avengers 2nd Season",
+                "english": "Marvel Future Avengers 2nd Season",
+                "native": "\u30DE\u30FC\u30D9\u30EB \u30D5\u30E5\u30FC\u30C1\u30E3\u30FC\u30FB\u30A2\u30D9\u30F3\u30B8\u30E3\u30FC\u30BA 2nd Season"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx101697-0fHSYzI0rj50.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx101697-0fHSYzI0rj50.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 49,
+              "favourites": 9,
+              "popularity": 834,
+              "startDate": {
+                "year": 2018,
+                "month": 7,
+                "day": 30
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 101474,
+              "title": {
+                "romaji": "Overlord III",
+                "english": "Overlord III",
+                "native": "\u30AA\u30FC\u30D0\u30FC\u30ED\u30FC\u30C9\u2162"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx101474-tGRyvSAWMjU9.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101474-tGRyvSAWMjU9.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 77,
+              "favourites": 6026,
+              "popularity": 245926,
+              "startDate": {
+                "year": 2018,
+                "month": 7,
+                "day": 10
+              },
+              "mediaListEntry": {
+                "id": 593364645,
+                "status": "COMPLETED",
+                "progress": 13,
+                "score": 9
+              }
+            },
+            {
+              "id": 101161,
+              "title": {
+                "romaji": "Chuukan Kanriroku Tonegawa",
+                "english": "Mr. Tonegawa: Middle Management Blues",
+                "native": "\u4E2D\u9593\u7BA1\u7406\u9332\u30C8\u30CD\u30AC\u30EF"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx101161-CrSXo1LfBx0D.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101161-CrSXo1LfBx0D.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 69,
+              "favourites": 208,
+              "popularity": 15427,
+              "startDate": {
+                "year": 2018,
+                "month": 7,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 101277,
+              "title": {
+                "romaji": "Wakaokami wa Shougakusei!",
+                "english": null,
+                "native": "\u82E5\u304A\u304B\u307F\u306F\u5C0F\u5B66\u751F\uFF01"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx101277-xpHIcJx3zL3E.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx101277-xpHIcJx3zL3E.jpg"
+              },
+              "format": "TV_SHORT",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 65,
+              "favourites": 15,
+              "popularity": 3273,
+              "startDate": {
+                "year": 2018,
+                "month": 4,
+                "day": 8
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 98437,
+              "title": {
+                "romaji": "Overlord II",
+                "english": "Overlord II",
+                "native": "\u30AA\u30FC\u30D0\u30FC\u30ED\u30FC\u30C9\u2161"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx98437-5q0GWqHhNAgJ.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx98437-5q0GWqHhNAgJ.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 76,
+              "favourites": 5317,
+              "popularity": 265669,
+              "startDate": {
+                "year": 2018,
+                "month": 1,
+                "day": 9
+              },
+              "mediaListEntry": {
+                "id": 593364640,
+                "status": "COMPLETED",
+                "progress": 13,
+                "score": 8
+              }
+            },
+            {
+              "id": 97881,
+              "title": {
+                "romaji": "Cardcaptor Sakura: Clear Card-hen",
+                "english": "Cardcaptor Sakura: Clear Card",
+                "native": "\u30AB\u30FC\u30C9\u30AD\u30E3\u30D7\u30BF\u30FC\u3055\u304F\u3089 \u30AF\u30EA\u30A2\u30AB\u30FC\u30C9\u7DE8"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx97881-QGpBWNtdCxrZ.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx97881-QGpBWNtdCxrZ.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 75,
+              "favourites": 799,
+              "popularity": 33092,
+              "startDate": {
+                "year": 2018,
+                "month": 1,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 99426,
+              "title": {
+                "romaji": "Sora yori mo Tooi Basho",
+                "english": "A Place Further Than the Universe",
+                "native": "\u5B87\u5B99\u3088\u308A\u3082\u9060\u3044\u5834\u6240"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx99426-ti5BL69Ip3kZ.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx99426-ti5BL69Ip3kZ.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 84,
+              "favourites": 9563,
+              "popularity": 166351,
+              "startDate": {
+                "year": 2018,
+                "month": 1,
+                "day": 2
+              },
+              "mediaListEntry": null
+            }
+          ]
+        }
+      }
+    }
+  }
+}

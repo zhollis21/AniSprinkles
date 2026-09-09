@@ -1,0 +1,628 @@
+﻿{
+  "operationName": "StudioMediaPage",
+  "variables": {
+    "id": 102,
+    "page": 1,
+    "sort": [
+      "START_DATE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "02c0137b2ee8",
+  "recordedAt": "2026-09-09T16:01:13.4643436+00:00",
+  "response": {
+    "data": {
+      "Studio": {
+        "media": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "nodes": [
+            {
+              "id": 1445,
+              "title": {
+                "romaji": "Mach GoGoGo",
+                "english": "Speed Racer",
+                "native": "\u30DE\u30C3\u30CF\u3000\uFF27\uFF4F\uFF27\uFF4F\uFF27\uFF4F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/1445.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/1445.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 64,
+              "favourites": 93,
+              "popularity": 4863,
+              "startDate": {
+                "year": 1967,
+                "month": 4,
+                "day": 2
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 223,
+              "title": {
+                "romaji": "Dragon Ball",
+                "english": "Dragon Ball",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EB"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx223-scE5uJfXqqj8.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx223-scE5uJfXqqj8.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 9692,
+              "popularity": 233843,
+              "startDate": {
+                "year": 1986,
+                "month": 2,
+                "day": 26
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 502,
+              "title": {
+                "romaji": "Dragon Ball: Shen Long no Densetsu",
+                "english": "Dragon Ball: Curse of the Blood Rubies",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EB \u795E\u9F8D\u306E\u4F1D\u8AAC"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/502-qMhEQOjbNK0w.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/502-qMhEQOjbNK0w.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 63,
+              "favourites": 112,
+              "popularity": 17572,
+              "startDate": {
+                "year": 1986,
+                "month": 12,
+                "day": 20
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 891,
+              "title": {
+                "romaji": "Dragon Ball: Majinjou no Nemuri Hime",
+                "english": "Dragon Ball: Sleeping Princess in Devil\u0027s Castle",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EB \u9B54\u795E\u57CE\u306E\u306D\u3080\u308A\u59EB"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/n891-OBrwN8w6ffyD.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/n891-OBrwN8w6ffyD.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 63,
+              "favourites": 95,
+              "popularity": 15681,
+              "startDate": {
+                "year": 1987,
+                "month": 7,
+                "day": 18
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 892,
+              "title": {
+                "romaji": "Dragon Ball: Makafushigi Daibouken",
+                "english": "Dragon Ball: Mystical Adventure",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EB \u6469\u8A36\u4E0D\u601D\u8B70\u5927\u5192\u967A"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx892-qSAVWaHQzBwE.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx892-qSAVWaHQzBwE.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 64,
+              "favourites": 108,
+              "popularity": 14674,
+              "startDate": {
+                "year": 1988,
+                "month": 7,
+                "day": 9
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 47,
+              "title": {
+                "romaji": "AKIRA",
+                "english": "Akira",
+                "native": "AKIRA"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx47-4CR68arv452h.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx47-4CR68arv452h.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 79,
+              "favourites": 9253,
+              "popularity": 230887,
+              "startDate": {
+                "year": 1988,
+                "month": 7,
+                "day": 16
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 813,
+              "title": {
+                "romaji": "Dragon Ball Z",
+                "english": "Dragon Ball Z",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EBZ"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx813-ZhnFNOeCU5dQ.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx813-ZhnFNOeCU5dQ.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 80,
+              "favourites": 16263,
+              "popularity": 258712,
+              "startDate": {
+                "year": 1989,
+                "month": 4,
+                "day": 26
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 894,
+              "title": {
+                "romaji": "Dragon Ball Z: Ora no Gohan wo Kaese!!",
+                "english": "Dragon Ball Z: Dead Zone",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EBZ \u30AA\u30E9\u306E\u609F\u98EF\u3092\u304B\u3048\u305B\u30C3!!"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/894-9eA7z7CyNMms.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/894-9eA7z7CyNMms.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 62,
+              "favourites": 204,
+              "popularity": 30580,
+              "startDate": {
+                "year": 1989,
+                "month": 7,
+                "day": 15
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 895,
+              "title": {
+                "romaji": "Dragon Ball Z: Konoyo de Ichiban Tsuyoi Yatsu",
+                "english": "Dragon Ball Z: The World\u0027s Strongest",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EB\uFF3A \u3053\u306E\u4E16\u3067\u4E00\u756A\u5F37\u3044\u30E4\u30C4"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/895-GuuZOIRCBHhI.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/895-GuuZOIRCBHhI.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 61,
+              "favourites": 169,
+              "popularity": 26965,
+              "startDate": {
+                "year": 1990,
+                "month": 3,
+                "day": 10
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 896,
+              "title": {
+                "romaji": "Dragon Ball Z: Chikyuu Marugoto Chou Kessen",
+                "english": "Dragon Ball Z: The Tree of Might",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EB\uFF3A \u5730\u7403\u307E\u308B\u3054\u3068\u8D85\u6C7A\u6226"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/896.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/896.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 63,
+              "favourites": 244,
+              "popularity": 32974,
+              "startDate": {
+                "year": 1990,
+                "month": 7,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 986,
+              "title": {
+                "romaji": "Dragon Ball Z: Tatta Hitori no Saishuu Kessen - Freeza ni Idonda Z Senshi Son Goku no Chi",
+                "english": "Dragon Ball Z: Bardock \u2013 The Father of Goku",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EBZ \u305F\u3063\u305F\u3072\u3068\u308A\u306E\u6700\u7D42\u6C7A\u6226\u301C\u30D5\u30EA\u30FC\u30B6\u306B\u6311\u3093\u3060Z\u6226\u58EB \u5B6B\u609F\u7A7A\u306E\u7236\u301C"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx986-AaMvLpNQrRzu.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx986-AaMvLpNQrRzu.jpg"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 73,
+              "favourites": 430,
+              "popularity": 29081,
+              "startDate": {
+                "year": 1990,
+                "month": 10,
+                "day": 17
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 897,
+              "title": {
+                "romaji": "Dragon Ball Z: Super Saiyajin da Son Goku",
+                "english": "Dragon Ball Z: Lord Slug",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EB\uFF3A \u8D85\u30B5\u30A4\u30E4\u4EBA\u3060\u5B6B\u609F\u7A7A"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/897-XgUEvu807MpG.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/897-XgUEvu807MpG.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 61,
+              "favourites": 213,
+              "popularity": 30558,
+              "startDate": {
+                "year": 1991,
+                "month": 3,
+                "day": 19
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 898,
+              "title": {
+                "romaji": "Dragon Ball Z: Tobikkiri no Saikyou Tai Saikyou",
+                "english": "Dragon Ball Z: Cooler\u0027s Revenge",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EBZ \u3068\u3073\u3063\u304D\u308A\u306E\u6700\u5F37\u5BFE\u6700\u5F37"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/898.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/898.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 68,
+              "favourites": 389,
+              "popularity": 38444,
+              "startDate": {
+                "year": 1991,
+                "month": 7,
+                "day": 20
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 899,
+              "title": {
+                "romaji": "Dragon Ball Z: Gekitotsu!! 100-oku Power no Senshi-tachi",
+                "english": "Dragon Ball Z: The Return of Cooler",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EBZ \u6FC0\u7A81!!100\u5104\u30D1\u30EF\u30FC\u306E\u6226\u58EB\u305F\u3061"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx899-iFXl5a1uH0IV.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx899-iFXl5a1uH0IV.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 64,
+              "favourites": 274,
+              "popularity": 33945,
+              "startDate": {
+                "year": 1992,
+                "month": 3,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 966,
+              "title": {
+                "romaji": "Crayon Shin-chan",
+                "english": "Shin Chan",
+                "native": "\u30AF\u30EC\u30E8\u30F3\u3057\u3093\u3061\u3083\u3093"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b966-QUCdKAk4ls9J.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b966-QUCdKAk4ls9J.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "RELEASING",
+              "averageScore": 77,
+              "favourites": 1029,
+              "popularity": 19877,
+              "startDate": {
+                "year": 1992,
+                "month": 4,
+                "day": 13
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 900,
+              "title": {
+                "romaji": "Dragon Ball Z: Kyokugen Battle!! Sandai Super Saiyajin",
+                "english": "Dragon Ball Z: Super Android 13!",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EB\uFF3A \u6975\u9650\u30D0\u30C8\u30EB\uFF01\u4E09\u5927\u8D85\u30B5\u30A4\u30E4\u4EBA"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/900-cNaooAiGtuYv.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/900-cNaooAiGtuYv.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 64,
+              "favourites": 233,
+              "popularity": 31419,
+              "startDate": {
+                "year": 1992,
+                "month": 7,
+                "day": 11
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 539,
+              "title": {
+                "romaji": "Tenchi Muyou! Ryououki Dai 1-ki",
+                "english": "Tenchi Muyo! Ryo-Ohki",
+                "native": "\u5929\u5730\u7121\u7528! \u9B4E\u7687\u9B3C \u7B2C1\u671F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx539-rwTm0bUFunNX.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx539-rwTm0bUFunNX.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 73,
+              "favourites": 255,
+              "popularity": 12496,
+              "startDate": {
+                "year": 1992,
+                "month": 9,
+                "day": 25
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 392,
+              "title": {
+                "romaji": "Yuu\u2606Yuu\u2606Hakusho",
+                "english": "Yu Yu Hakusho: Ghostfiles",
+                "native": "\u5E7D\u2606\u904A\u2606\u767D\u66F8"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx392-z90299zIvYmx.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx392-z90299zIvYmx.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 83,
+              "favourites": 9573,
+              "popularity": 158520,
+              "startDate": {
+                "year": 1992,
+                "month": 10,
+                "day": 10
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 985,
+              "title": {
+                "romaji": "Dragon Ball Z: Zetsubou e no Hankou!! Nokosareta Chousenshi - Gohan to Trunks",
+                "english": "Dragon Ball Z: The History of Trunks",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EB\uFF3A\u30FB\u7D76\u671B\u3078\u306E\u53CD\u6297\uFF01\uFF01\u6B8B\u3055\u308C\u305F\u8D85\u6226\u58EB\u30FB\u609F\u98EF\u3068\u30C8\u30E9\u30F3\u30AF\u30B9"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx985-5AKFy3HpX0uo.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx985-5AKFy3HpX0uo.jpg"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 76,
+              "favourites": 591,
+              "popularity": 29225,
+              "startDate": {
+                "year": 1993,
+                "month": 2,
+                "day": 24
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 901,
+              "title": {
+                "romaji": "Dragon Ball Z: Moetsukiro!! Nessen - Ressen - Chou Gekisen",
+                "english": "Dragon Ball Z: Broly - The Legendary Super Saiyan",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EBZ \u71C3\u3048\u3064\u304D\u308D!!\u71B1\u6226\u30FB\u70C8\u6226\u30FB\u8D85\u6FC0\u6226"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/901-gB41PQJWFXjp.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/901-gB41PQJWFXjp.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 70,
+              "favourites": 557,
+              "popularity": 41687,
+              "startDate": {
+                "year": 1993,
+                "month": 3,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 882,
+              "title": {
+                "romaji": "Yuu\u2606Yuu\u2606Hakusho: The Golden Seal",
+                "english": "Yu Yu Hakusho: The Movie",
+                "native": "\u5E7D\u2606\u904A\u2606\u767D\u66F8 (1993)"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx882-3TdRv5W4DZaS.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx882-3TdRv5W4DZaS.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 64,
+              "favourites": 71,
+              "popularity": 8594,
+              "startDate": {
+                "year": 1993,
+                "month": 7,
+                "day": 10
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 902,
+              "title": {
+                "romaji": "Dragon Ball Z: Ginga Girigiri!! Bucchigiri no Sugoi Yatsu",
+                "english": "Dragon Ball Z: Bojack Unbound",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EBZ \u9280\u6CB3\u30AE\u30EA\u30AE\u30EA!! \u3076\u3063\u3061\u304E\u308A\u306E\u51C4\u3044\u5974"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/902-OC9WhTInSUvU.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/902-OC9WhTInSUvU.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 68,
+              "favourites": 326,
+              "popularity": 33634,
+              "startDate": {
+                "year": 1993,
+                "month": 7,
+                "day": 10
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1146,
+              "title": {
+                "romaji": "Tenchi Muyou! Ryououki Omatsuri Zenya no Yoru!",
+                "english": "Tenchi Muyo! Ryo-Ohki: The Night Before The Carnival!",
+                "native": "\u5929\u5730\u7121\u7528! \u9B4E\u7687\u9B3C \u304A\u796D\u308A\u524D\u591C\u306E\u591C!"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/1146.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/1146.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 69,
+              "favourites": 63,
+              "popularity": 4681,
+              "startDate": {
+                "year": 1993,
+                "month": 9,
+                "day": 25
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 170,
+              "title": {
+                "romaji": "SLAM DUNK",
+                "english": "Slam Dunk",
+                "native": "SLAM DUNK"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx170-cmD8A0vZsp6g.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx170-cmD8A0vZsp6g.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 83,
+              "favourites": 3310,
+              "popularity": 73326,
+              "startDate": {
+                "year": 1993,
+                "month": 10,
+                "day": 16
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 903,
+              "title": {
+                "romaji": "Dragon Ball Z: Kiken na Futari! Super Senshi wa Nemurenai",
+                "english": "Dragon Ball Z: Broly - Second Coming",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EBZ \u5371\u967A\u306A\u3075\u305F\u308A! \u8D85\u6226\u58EB\u306F\u306D\u3080\u308C\u306A\u3044"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/903.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/903.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 64,
+              "favourites": 310,
+              "popularity": 35976,
+              "startDate": {
+                "year": 1994,
+                "month": 3,
+                "day": 12
+              },
+              "mediaListEntry": null
+            }
+          ]
+        }
+      }
+    }
+  }
+}

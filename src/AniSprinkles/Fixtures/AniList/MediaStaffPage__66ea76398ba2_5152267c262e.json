@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 156067,
+    "page": 3,
+    "sort": [
+      "RELEVANCE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:38:05.926632+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 3
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 134799,
+                "name": {
+                  "full": "Kenji Takahashi",
+                  "native": "\u9AD8\u6A4B\u8B19\u4EC1",
+                  "userPreferred": "Kenji Takahashi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n134799-EQ4BpfVxCUhG.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Episode Director (ED, ep 7)"
+            },
+            {
+              "node": {
+                "id": 141517,
+                "name": {
+                  "full": "Parako Shinohara",
+                  "native": "\u7BE0\u539F\u3071\u3089\u3053",
+                  "userPreferred": "Parako Shinohara"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n141517-XU3zDqVCEl3Y.png"
+                },
+                "favourites": 4
+              },
+              "role": "Episode Director (ep 4)"
+            },
+            {
+              "node": {
+                "id": 152924,
+                "name": {
+                  "full": "Tatsuya Sasaki",
+                  "native": "\u4F50\u3005\u6728\u9054\u4E5F",
+                  "userPreferred": "Tatsuya Sasaki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Episode Director (ep 6)"
+            },
+            {
+              "node": {
+                "id": 231638,
+                "name": {
+                  "full": "Kyouko Yamasaki",
+                  "native": "\u5C71\uFA11\u9999\u5B50",
+                  "userPreferred": "Kyouko Yamasaki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Episode Director (eps 5, 9)"
+            },
+            {
+              "node": {
+                "id": 121293,
+                "name": {
+                  "full": "Yuuki Itou",
+                  "native": "\u4F0A\u85E4\u7950\u6BC5",
+                  "userPreferred": "Yuuki Itou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n121293-Q5NMkmJ3I6FP.jpg"
+                },
+                "favourites": 8
+              },
+              "role": "Episode Director (ep 11)"
+            },
+            {
+              "node": {
+                "id": 161940,
+                "name": {
+                  "full": "Taichi Okamoto",
+                  "native": "\u5CA1\u672C\u6CF0\u77E5",
+                  "userPreferred": "Taichi Okamoto"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 3
+              },
+              "role": "Episode Director (ep 10)"
+            },
+            {
+              "node": {
+                "id": 214309,
+                "name": {
+                  "full": "Iho Ishikawa",
+                  "native": "\u77F3\u5DDD\u4F9D\u7A42",
+                  "userPreferred": "Iho Ishikawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Episode Director (ep 8)"
+            },
+            {
+              "node": {
+                "id": 120742,
+                "name": {
+                  "full": "Kiyoshi Matsuda",
+                  "native": "\u677E\u7530\u6E05",
+                  "userPreferred": "Kiyoshi Matsuda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n120742-FpfRtv10BrAJ.png"
+                },
+                "favourites": 5
+              },
+              "role": "Storyboard (eps 1, 5, 12)"
+            },
+            {
+              "node": {
+                "id": 169274,
+                "name": {
+                  "full": "Takayuki Sano",
+                  "native": "\u4F50\u91CE\u8A89\u5E78",
+                  "userPreferred": "Takayuki Sano"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n169274-J1UKH9NagibP.png"
+                },
+                "favourites": 7
+              },
+              "role": "Storyboard (OP)"
+            },
+            {
+              "node": {
+                "id": 200619,
+                "name": {
+                  "full": "Soumi Nishiyama",
+                  "native": "\u897F\u5C71\u58EE\u6D77",
+                  "userPreferred": "Soumi Nishiyama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Storyboard (ep 2)"
+            },
+            {
+              "node": {
+                "id": 204720,
+                "name": {
+                  "full": "Takahiro Kaneko",
+                  "native": "\u91D1\u5B50\u8CB4\u5F18",
+                  "userPreferred": "Takahiro Kaneko"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n204720-xbZrD5puolkh.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Storyboard (ep 3)"
+            },
+            {
+              "node": {
+                "id": 134799,
+                "name": {
+                  "full": "Kenji Takahashi",
+                  "native": "\u9AD8\u6A4B\u8B19\u4EC1",
+                  "userPreferred": "Kenji Takahashi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n134799-EQ4BpfVxCUhG.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Storyboard (ED, ep 7)"
+            },
+            {
+              "node": {
+                "id": 141517,
+                "name": {
+                  "full": "Parako Shinohara",
+                  "native": "\u7BE0\u539F\u3071\u3089\u3053",
+                  "userPreferred": "Parako Shinohara"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n141517-XU3zDqVCEl3Y.png"
+                },
+                "favourites": 4
+              },
+              "role": "Storyboard (ep 4)"
+            },
+            {
+              "node": {
+                "id": 152257,
+                "name": {
+                  "full": "Ikurou Morimoto",
+                  "native": "\u68EE\u672C\u80B2\u90CE",
+                  "userPreferred": "Ikurou Morimoto"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Storyboard (ep 6)"
+            },
+            {
+              "node": {
+                "id": 111333,
+                "name": {
+                  "full": "Takashi Kawabata",
+                  "native": "\u5DDD\u7551\u55AC",
+                  "userPreferred": "Takashi Kawabata"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n111333-MLLI9hxLkPiZ.png"
+                },
+                "favourites": 12
+              },
+              "role": "Storyboard (ep 8)"
+            },
+            {
+              "node": {
+                "id": 120544,
+                "name": {
+                  "full": "Tetsuo Hirakawa",
+                  "native": "\u5E73\u5DDD\u54F2\u751F",
+                  "userPreferred": "Tetsuo Hirakawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n120544-zpwCs6psAHcp.png"
+                },
+                "favourites": 6
+              },
+              "role": "Storyboard (ep 9)"
+            },
+            {
+              "node": {
+                "id": 121293,
+                "name": {
+                  "full": "Yuuki Itou",
+                  "native": "\u4F0A\u85E4\u7950\u6BC5",
+                  "userPreferred": "Yuuki Itou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n121293-Q5NMkmJ3I6FP.jpg"
+                },
+                "favourites": 8
+              },
+              "role": "Storyboard (ep 11)"
+            },
+            {
+              "node": {
+                "id": 161940,
+                "name": {
+                  "full": "Taichi Okamoto",
+                  "native": "\u5CA1\u672C\u6CF0\u77E5",
+                  "userPreferred": "Taichi Okamoto"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 3
+              },
+              "role": "Storyboard (ep 10)"
+            },
+            {
+              "node": {
+                "id": 140550,
+                "name": {
+                  "full": "Nao Ootsu",
+                  "native": "\u5927\u6D25\u76F4",
+                  "userPreferred": "Nao Ootsu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n140550-RuLKNMRWHDo4.png"
+                },
+                "favourites": 7
+              },
+              "role": "Chief Animation Director (OP, eps 1-5, 8, 11, 12)"
+            },
+            {
+              "node": {
+                "id": 154745,
+                "name": {
+                  "full": "Sara Sakoe",
+                  "native": "\u8FEB\u6C5F\u6C99\u7F85",
+                  "userPreferred": "Sara Sakoe"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Chief Animation Director (eps 4, 6, 7, 9, 10, 12)"
+            },
+            {
+              "node": {
+                "id": 154745,
+                "name": {
+                  "full": "Sara Sakoe",
+                  "native": "\u8FEB\u6C5F\u6C99\u7F85",
+                  "userPreferred": "Sara Sakoe"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Assistant Chief Animation Director (ep 2)"
+            },
+            {
+              "node": {
+                "id": 140550,
+                "name": {
+                  "full": "Nao Ootsu",
+                  "native": "\u5927\u6D25\u76F4",
+                  "userPreferred": "Nao Ootsu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n140550-RuLKNMRWHDo4.png"
+                },
+                "favourites": 7
+              },
+              "role": "Assistant Chief Animation Director (eps 6, 9, 10)"
+            },
+            {
+              "node": {
+                "id": 106185,
+                "name": {
+                  "full": "Hiroyuki Kanbe",
+                  "native": "\u795E\u6238\u6D0B\u884C",
+                  "userPreferred": "Hiroyuki Kanbe"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n106185-L8tWMwBXyAcP.png"
+                },
+                "favourites": 14
+              },
+              "role": "Animation Director (eps 1, 6, 7, 11)"
+            },
+            {
+              "node": {
+                "id": 132759,
+                "name": {
+                  "full": "Taiichi Nakaguma",
+                  "native": "\u4E2D\u718A\u592A\u4E00",
+                  "userPreferred": "Taiichi Nakaguma"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Animation Director (eps 1, 8, 11)"
+            },
+            {
+              "node": {
+                "id": 132907,
+                "name": {
+                  "full": "Dai Imaoka",
+                  "native": "\u4ECA\u5CA1\u5927",
+                  "userPreferred": "Dai Imaoka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Animation Director (eps 1, 6, 8, 11)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

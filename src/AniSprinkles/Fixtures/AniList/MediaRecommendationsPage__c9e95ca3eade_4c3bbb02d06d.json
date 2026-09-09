@@ -1,0 +1,104 @@
+﻿{
+  "operationName": "MediaRecommendationsPage",
+  "variables": {
+    "id": 97889,
+    "page": 1,
+    "sort": [
+      "RATING_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "4c3bbb02d06d",
+  "recordedAt": "2026-09-06T05:21:51.7804248+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "recommendations": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "nodes": [
+            {
+              "rating": 19,
+              "mediaRecommendation": {
+                "id": 9863,
+                "title": {
+                  "romaji": "SKET DANCE",
+                  "english": "SKET Dance",
+                  "native": "SKET DANCE"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx9863-G6dAvTVsfLRO.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx9863-G6dAvTVsfLRO.png"
+                },
+                "averageScore": 78,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 1,
+              "mediaRecommendation": {
+                "id": 8764,
+                "title": {
+                  "romaji": "Hajime Ningen Gon",
+                  "english": null,
+                  "native": "\u306F\u3058\u3081\u4EBA\u9593\u30B4\u30F3"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/8764.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/8764.jpg"
+                },
+                "averageScore": 66,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 0,
+              "mediaRecommendation": {
+                "id": 6702,
+                "title": {
+                  "romaji": "FAIRY TAIL",
+                  "english": "Fairy Tail",
+                  "native": "FAIRY TAIL"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b6702-KI4qgSMyI8Pm.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b6702-KI4qgSMyI8Pm.png"
+                },
+                "averageScore": 72,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": -1,
+              "mediaRecommendation": {
+                "id": 21804,
+                "title": {
+                  "romaji": "Saiki Kusuo no \u03A8-nan",
+                  "english": "The Disastrous Life of Saiki K.",
+                  "native": "\u6589\u6728\u6960\u96C4\u306E\u03A8\u96E3"
+                },
+                "format": "TV_SHORT",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21804-As6tDLAvEvNY.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21804-As6tDLAvEvNY.jpg"
+                },
+                "averageScore": 83,
+                "mediaListEntry": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

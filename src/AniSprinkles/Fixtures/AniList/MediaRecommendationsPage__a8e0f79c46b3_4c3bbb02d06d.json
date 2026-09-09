@@ -1,0 +1,296 @@
+﻿{
+  "operationName": "MediaRecommendationsPage",
+  "variables": {
+    "id": 178789,
+    "page": 1,
+    "sort": [
+      "RATING_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "4c3bbb02d06d",
+  "recordedAt": "2026-09-06T05:20:17.2555326+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "recommendations": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "nodes": [
+            {
+              "rating": 54,
+              "mediaRecommendation": {
+                "id": 154587,
+                "title": {
+                  "romaji": "Sousou no Frieren",
+                  "english": "Frieren: Beyond Journey\u2019s End",
+                  "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx154587-qQTzQnEJJ3oB.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx154587-qQTzQnEJJ3oB.jpg"
+                },
+                "averageScore": 91,
+                "mediaListEntry": {
+                  "id": 540974122,
+                  "status": "COMPLETED",
+                  "progress": 28,
+                  "score": 10
+                }
+              }
+            },
+            {
+              "rating": 50,
+              "mediaRecommendation": {
+                "id": 21355,
+                "title": {
+                  "romaji": "Re:Zero kara Hajimeru Isekai Seikatsu",
+                  "english": "Re:ZERO -Starting Life in Another World-",
+                  "native": "Re:\u30BC\u30ED\u304B\u3089\u59CB\u3081\u308B\u7570\u4E16\u754C\u751F\u6D3B"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21355-wRVUrGxpvIQQ.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21355-wRVUrGxpvIQQ.jpg"
+                },
+                "averageScore": 81,
+                "mediaListEntry": {
+                  "id": 593363865,
+                  "status": "COMPLETED",
+                  "progress": 25,
+                  "score": 10
+                }
+              }
+            },
+            {
+              "rating": 36,
+              "mediaRecommendation": {
+                "id": 189046,
+                "title": {
+                  "romaji": "Re:Zero kara Hajimeru Isekai Seikatsu 4th Season",
+                  "english": "Re:ZERO -Starting Life in Another World- Season 4",
+                  "native": "Re:\u30BC\u30ED\u304B\u3089\u59CB\u3081\u308B\u7570\u4E16\u754C\u751F\u6D3B 4th season"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx189046-yaHWtS5FII46.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx189046-yaHWtS5FII46.jpg"
+                },
+                "averageScore": 90,
+                "mediaListEntry": {
+                  "id": 593351165,
+                  "status": "CURRENT",
+                  "progress": 14,
+                  "score": 10
+                }
+              }
+            },
+            {
+              "rating": 23,
+              "mediaRecommendation": {
+                "id": 21202,
+                "title": {
+                  "romaji": "Kono Subarashii Sekai ni Shukufuku wo!",
+                  "english": "KONOSUBA -God\u0027s blessing on this wonderful world!",
+                  "native": "\u3053\u306E\u7D20\u6674\u3089\u3057\u3044\u4E16\u754C\u306B\u795D\u798F\u3092\uFF01"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21202-mPOr80AEjUcZ.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21202-mPOr80AEjUcZ.png"
+                },
+                "averageScore": 79,
+                "mediaListEntry": {
+                  "id": 593363892,
+                  "status": "COMPLETED",
+                  "progress": 10,
+                  "score": 10
+                }
+              }
+            },
+            {
+              "rating": 20,
+              "mediaRecommendation": {
+                "id": 21428,
+                "title": {
+                  "romaji": "Hai to Gensou no Grimgar",
+                  "english": "Grimgar of Fantasy and Ash",
+                  "native": "\u7070\u3068\u5E7B\u60F3\u306E\u30B0\u30EA\u30E0\u30AC\u30EB"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21428-dFVIHeZ8McBe.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21428-dFVIHeZ8McBe.jpg"
+                },
+                "averageScore": 74,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 9,
+              "mediaRecommendation": {
+                "id": 182205,
+                "title": {
+                  "romaji": "Tensei Shitara Slime Datta Ken 4th Season",
+                  "english": "That Time I Got Reincarnated as a Slime Season 4",
+                  "native": "\u8EE2\u751F\u3057\u305F\u3089\u30B9\u30E9\u30A4\u30E0\u3060\u3063\u305F\u4EF6 \u7B2C4\u671F"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx182205-q2AeO1owuQbO.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx182205-q2AeO1owuQbO.jpg"
+                },
+                "averageScore": 83,
+                "mediaListEntry": {
+                  "id": 593351121,
+                  "status": "CURRENT",
+                  "progress": 14,
+                  "score": 0
+                }
+              }
+            },
+            {
+              "rating": 3,
+              "mediaRecommendation": {
+                "id": 153518,
+                "title": {
+                  "romaji": "Dungeon Meshi",
+                  "english": "Delicious in Dungeon",
+                  "native": "\u30C0\u30F3\u30B8\u30E7\u30F3\u98EF"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx153518-IVXPDY5ph3kO.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx153518-IVXPDY5ph3kO.jpg"
+                },
+                "averageScore": 85,
+                "mediaListEntry": {
+                  "id": 593364470,
+                  "status": "COMPLETED",
+                  "progress": 24,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 2,
+              "mediaRecommendation": {
+                "id": 101280,
+                "title": {
+                  "romaji": "Tensei Shitara Slime Datta Ken",
+                  "english": "That Time I Got Reincarnated as a Slime",
+                  "native": "\u8EE2\u751F\u3057\u305F\u3089\u30B9\u30E9\u30A4\u30E0\u3060\u3063\u305F\u4EF6"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx101280-tDxCVJm714nt.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101280-tDxCVJm714nt.jpg"
+                },
+                "averageScore": 80,
+                "mediaListEntry": {
+                  "id": 593364344,
+                  "status": "COMPLETED",
+                  "progress": 24,
+                  "score": 9
+                }
+              }
+            },
+            {
+              "rating": 2,
+              "mediaRecommendation": {
+                "id": 17265,
+                "title": {
+                  "romaji": "Log Horizon",
+                  "english": "Log Horizon",
+                  "native": "\u30ED\u30B0\u30FB\u30DB\u30E9\u30A4\u30BA\u30F3"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx17265-RyErURYesjJt.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx17265-RyErURYesjJt.jpg"
+                },
+                "averageScore": 76,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 0,
+              "mediaRecommendation": {
+                "id": 132473,
+                "title": {
+                  "romaji": "Saihate no Paladin",
+                  "english": "The Faraway Paladin",
+                  "native": "\u6700\u679C\u3066\u306E\u30D1\u30E9\u30C7\u30A3\u30F3"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx132473-L64hP24nJyEV.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx132473-L64hP24nJyEV.jpg"
+                },
+                "averageScore": 68,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 0,
+              "mediaRecommendation": {
+                "id": 198946,
+                "title": {
+                  "romaji": "Clevatess II: Majuu no Ou to Itsuwari no Yuusha Denshou",
+                  "english": "Clevatess Season 2",
+                  "native": "\u30AF\u30EC\u30D0\u30C6\u30B9\u2161-\u9B54\u7363\u306E\u738B\u3068\u507D\u308A\u306E\u52C7\u8005\u4F1D\u627F-"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx198946-IGXmbqBEYRYD.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx198946-IGXmbqBEYRYD.jpg"
+                },
+                "averageScore": 75,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": -2,
+              "mediaRecommendation": {
+                "id": 147105,
+                "title": {
+                  "romaji": "Tongari Boushi no Atelier",
+                  "english": "Witch Hat Atelier",
+                  "native": "\u3068\u3093\u304C\u308A\u5E3D\u5B50\u306E\u30A2\u30C8\u30EA\u30A8"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx147105-rwOX8qyUy8gV.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx147105-rwOX8qyUy8gV.jpg"
+                },
+                "averageScore": 85,
+                "mediaListEntry": {
+                  "id": 593365663,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "score": 0
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

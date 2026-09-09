@@ -1,0 +1,428 @@
+﻿{
+  "operationName": "MediaCharactersPage",
+  "variables": {
+    "id": 154587,
+    "page": 1,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "64eed76a7328",
+  "recordedAt": "2026-09-06T05:21:02.4156514+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "characters": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 176754,
+                "name": {
+                  "full": "Frieren",
+                  "native": "\u30D5\u30EA\u30FC\u30EC\u30F3",
+                  "userPreferred": "Frieren"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b176754-PCnpqIOkjhFk.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b176754-PCnpqIOkjhFk.png"
+                },
+                "favourites": 22460
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 183965,
+                "name": {
+                  "full": "Fern",
+                  "native": "\u30D5\u30A7\u30EB\u30F3",
+                  "userPreferred": "Fern"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b183965-uGFohBjlFoTp.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b183965-uGFohBjlFoTp.png"
+                },
+                "favourites": 8634
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 184313,
+                "name": {
+                  "full": "Stark",
+                  "native": "\u30B7\u30E5\u30BF\u30EB\u30AF",
+                  "userPreferred": "Stark"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b184313-CQl6GSt4RSny.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b184313-CQl6GSt4RSny.jpg"
+                },
+                "favourites": 5949
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 184311,
+                "name": {
+                  "full": "Himmel",
+                  "native": "\u30D2\u30F3\u30E1\u30EB",
+                  "userPreferred": "Himmel"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b184311-wQFySqYXEqf1.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b184311-wQFySqYXEqf1.png"
+                },
+                "favourites": 4628
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 246057,
+                "name": {
+                  "full": "\u00DCbel",
+                  "native": "\u30E6\u30FC\u30D9\u30EB",
+                  "userPreferred": "\u00DCbel"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b246057-ixvDfpng6I1S.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b246057-ixvDfpng6I1S.png"
+                },
+                "favourites": 2136
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 184312,
+                "name": {
+                  "full": "Eisen",
+                  "native": "\u30A2\u30A4\u30BC\u30F3",
+                  "userPreferred": "Eisen"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b184312-kxd5H6iOHIq4.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b184312-kxd5H6iOHIq4.png"
+                },
+                "favourites": 929
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 184310,
+                "name": {
+                  "full": "Heiter",
+                  "native": "\u30CF\u30A4\u30BF\u30FC",
+                  "userPreferred": "Heiter"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b184310-tiXvrq4FINXP.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b184310-tiXvrq4FINXP.jpg"
+                },
+                "favourites": 821
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 219733,
+                "name": {
+                  "full": "Flamme",
+                  "native": "\u30D5\u30E9\u30F3\u30E1",
+                  "userPreferred": "Flamme"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b219733-FgXseEhMdDE9.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b219733-FgXseEhMdDE9.png"
+                },
+                "favourites": 669
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 205177,
+                "name": {
+                  "full": "Sein",
+                  "native": "\u30B6\u30A4\u30F3",
+                  "userPreferred": "Sein"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b205177-hLV4nVQjoBIC.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b205177-hLV4nVQjoBIC.png"
+                },
+                "favourites": 632
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 219734,
+                "name": {
+                  "full": "Serie",
+                  "native": "\u30BC\u30FC\u30EA\u30A8",
+                  "userPreferred": "Serie"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b219734-aS4UMAb16DGd.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b219734-aS4UMAb16DGd.jpg"
+                },
+                "favourites": 578
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 246058,
+                "name": {
+                  "full": "Denken",
+                  "native": "\u30C7\u30F3\u30B1\u30F3",
+                  "userPreferred": "Denken"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b246058-FOtuSIUBQ4WJ.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b246058-FOtuSIUBQ4WJ.png"
+                },
+                "favourites": 558
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 246054,
+                "name": {
+                  "full": "Methode",
+                  "native": "\u30E1\u30C8\u30FC\u30C7",
+                  "userPreferred": "Methode"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b246054-TKwFFWVGISUd.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b246054-TKwFFWVGISUd.png"
+                },
+                "favourites": 404
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 321720,
+                "name": {
+                  "full": "Sense",
+                  "native": "\u30BC\u30F3\u30BC",
+                  "userPreferred": "Sense"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b321720-LRfYAvhD5I7l.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b321720-LRfYAvhD5I7l.png"
+                },
+                "favourites": 315
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 321716,
+                "name": {
+                  "full": "Wirbel",
+                  "native": "\u30F4\u30A3\u30A2\u30D9\u30EB",
+                  "userPreferred": "Wirbel"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b321716-ORxrJOHaI4H4.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b321716-ORxrJOHaI4H4.png"
+                },
+                "favourites": 283
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 219110,
+                "name": {
+                  "full": "Aura",
+                  "native": "\u30A2\u30A6\u30E9",
+                  "userPreferred": "Aura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b219110-LEB5T4oG0gel.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b219110-LEB5T4oG0gel.png"
+                },
+                "favourites": 254
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 293727,
+                "name": {
+                  "full": "Lawine",
+                  "native": "\u30E9\u30F4\u30A3\u30FC\u30CD",
+                  "userPreferred": "Lawine"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b293727-Jaf2eiNfINWx.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b293727-Jaf2eiNfINWx.png"
+                },
+                "favourites": 254
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 321719,
+                "name": {
+                  "full": "Land",
+                  "native": "\u30E9\u30F3\u30C8",
+                  "userPreferred": "Land"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b321719-GUHhBOb81K9H.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b321719-GUHhBOb81K9H.png"
+                },
+                "favourites": 236
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 293728,
+                "name": {
+                  "full": "Kanne",
+                  "native": "\u30AB\u30F3\u30CD",
+                  "userPreferred": "Kanne"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b293728-0ylNRoIOORcD.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b293728-0ylNRoIOORcD.png"
+                },
+                "favourites": 221
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 246056,
+                "name": {
+                  "full": "Laufen",
+                  "native": "\u30E9\u30AA\u30D5\u30A7\u30F3",
+                  "userPreferred": "Laufen"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b246056-erQexxLtGHVU.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b246056-erQexxLtGHVU.png"
+                },
+                "favourites": 179
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 219732,
+                "name": {
+                  "full": "Kraft",
+                  "native": "\u30AF\u30E9\u30D5\u30C8",
+                  "userPreferred": "Kraft"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b219732-GKmSY9oTm6cR.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b219732-GKmSY9oTm6cR.jpg"
+                },
+                "favourites": 126
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 316986,
+                "name": {
+                  "full": "Linie",
+                  "native": "\u30EA\u30FC\u30CB\u30A8",
+                  "userPreferred": "Linie"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b316986-spmwGktNwX3W.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b316986-spmwGktNwX3W.png"
+                },
+                "favourites": 111
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 246055,
+                "name": {
+                  "full": "Genau",
+                  "native": "\u30B2\u30CA\u30A6",
+                  "userPreferred": "Genau"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b246055-3eoVNiZu3bTy.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b246055-3eoVNiZu3bTy.png"
+                },
+                "favourites": 102
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 319598,
+                "name": {
+                  "full": "Stoltz",
+                  "native": "\u30B7\u30E5\u30C8\u30EB\u30C4",
+                  "userPreferred": "Stoltz"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b319598-R0kVKvFug65D.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b319598-R0kVKvFug65D.png"
+                },
+                "favourites": 66
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 316985,
+                "name": {
+                  "full": "L\u00FCgner",
+                  "native": "\u30EA\u30E5\u30B0\u30CA\u30FC",
+                  "userPreferred": "L\u00FCgner"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b316985-YkCeSIfDF7U1.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b316985-YkCeSIfDF7U1.png"
+                },
+                "favourites": 50
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 326830,
+                "name": {
+                  "full": "Voll Jii",
+                  "native": "\u30D5\u30A9\u30EB\u723A",
+                  "userPreferred": "Voll Jii"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b326830-aTNNxR4FaVfV.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b326830-aTNNxR4FaVfV.png"
+                },
+                "favourites": 45
+              },
+              "role": "SUPPORTING"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

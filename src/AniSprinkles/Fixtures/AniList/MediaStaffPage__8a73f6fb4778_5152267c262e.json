@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 156067,
+    "page": 1,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:22:24.7824373+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 119617,
+                "name": {
+                  "full": "Yuuma Uchida",
+                  "native": "\u5185\u7530\u96C4\u99AC",
+                  "userPreferred": "Yuuma Uchida"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n119617-icFDk96OdV5k.png"
+                },
+                "favourites": 4794
+              },
+              "role": "Theme Song Performance (ED)"
+            },
+            {
+              "node": {
+                "id": 120733,
+                "name": {
+                  "full": "Jill Harris",
+                  "native": null,
+                  "userPreferred": "Jill Harris"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/120733-oXxfxrusFmps.jpg"
+                },
+                "favourites": 205
+              },
+              "role": "Assistant ADR Director (English)"
+            },
+            {
+              "node": {
+                "id": 129030,
+                "name": {
+                  "full": "Dani Chambers",
+                  "native": null,
+                  "userPreferred": "Dani Chambers"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n129030-JpDHbjigIejb.jpg"
+                },
+                "favourites": 131
+              },
+              "role": "ADR Director (English) "
+            },
+            {
+              "node": {
+                "id": 97096,
+                "name": {
+                  "full": "Michiko Yokote",
+                  "native": "\u6A2A\u624B\u7F8E\u667A\u5B50",
+                  "userPreferred": "Michiko Yokote"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n97096-j44QglsuY3kx.png"
+                },
+                "favourites": 71
+              },
+              "role": "Script (eps 1-4, 8)"
+            },
+            {
+              "node": {
+                "id": 97096,
+                "name": {
+                  "full": "Michiko Yokote",
+                  "native": "\u6A2A\u624B\u7F8E\u667A\u5B50",
+                  "userPreferred": "Michiko Yokote"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n97096-j44QglsuY3kx.png"
+                },
+                "favourites": 71
+              },
+              "role": "Series Composition"
+            },
+            {
+              "node": {
+                "id": 127810,
+                "name": {
+                  "full": "Ben Phillips",
+                  "native": null,
+                  "userPreferred": "Ben Phillips"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n127810-VtxRixMyEgee.png"
+                },
+                "favourites": 55
+              },
+              "role": "ADR Script (English)"
+            },
+            {
+              "node": {
+                "id": 107596,
+                "name": {
+                  "full": "Tomohiro Ooshima",
+                  "native": "\u5927\u5D8B\u6587\u535A",
+                  "userPreferred": "Tomohiro Ooshima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n107596-TCCRL1Y5SeLU.png"
+                },
+                "favourites": 41
+              },
+              "role": "Theme Song Composition (ED)"
+            },
+            {
+              "node": {
+                "id": 102450,
+                "name": {
+                  "full": "Anthony Bowling",
+                  "native": null,
+                  "userPreferred": "Anthony Bowling"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/7450.jpg"
+                },
+                "favourites": 36
+              },
+              "role": "ADR Director (English)"
+            },
+            {
+              "node": {
+                "id": 138441,
+                "name": {
+                  "full": "Aaron Campbell",
+                  "native": null,
+                  "userPreferred": "Aaron Campbell"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n138441-AUeCgOsrf1oa.png"
+                },
+                "favourites": 26
+              },
+              "role": "Assistant ADR Director (English)"
+            },
+            {
+              "node": {
+                "id": 210793,
+                "name": {
+                  "full": "Kana Utatane",
+                  "native": "\u3046\u305F\u305F\u306D\u6B4C\u83DC",
+                  "userPreferred": "Kana Utatane"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n210793-th5rFAEyssBH.jpg"
+                },
+                "favourites": 25
+              },
+              "role": "Theme Song Arrangement (ED)"
+            },
+            {
+              "node": {
+                "id": 210793,
+                "name": {
+                  "full": "Kana Utatane",
+                  "native": "\u3046\u305F\u305F\u306D\u6B4C\u83DC",
+                  "userPreferred": "Kana Utatane"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n210793-th5rFAEyssBH.jpg"
+                },
+                "favourites": 25
+              },
+              "role": "Music"
+            },
+            {
+              "node": {
+                "id": 148680,
+                "name": {
+                  "full": "Manabu Nii",
+                  "native": "\u4EC1\u4E95\u5B66",
+                  "userPreferred": "Manabu Nii"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n148680-7meSev0xa23A.png"
+                },
+                "favourites": 23
+              },
+              "role": "Key Animation (OP)"
+            },
+            {
+              "node": {
+                "id": 166607,
+                "name": {
+                  "full": "Lee George",
+                  "native": null,
+                  "userPreferred": "Lee George"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n166607-Q3HLaGwfapvF.jpg"
+                },
+                "favourites": 22
+              },
+              "role": "Assistant ADR Director (English)"
+            },
+            {
+              "node": {
+                "id": 235153,
+                "name": {
+                  "full": "Mahmoud Moftah",
+                  "native": null,
+                  "userPreferred": "Mahmoud Moftah"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n235153-LoZs054aLAtB.png"
+                },
+                "favourites": 21
+              },
+              "role": "Assistant Animation Director (eps 2, 5)"
+            },
+            {
+              "node": {
+                "id": 144217,
+                "name": {
+                  "full": "Manabu Ootsuka",
+                  "native": "\u5927\u585A\u5B66",
+                  "userPreferred": "Manabu Ootsuka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n144217-mQDAy4w7LETM.png"
+                },
+                "favourites": 18
+              },
+              "role": "Planning"
+            },
+            {
+              "node": {
+                "id": 278538,
+                "name": {
+                  "full": "Yuuta Suzuhana",
+                  "native": "\u9234\u83EF\u52C7\u592A",
+                  "userPreferred": "Yuuta Suzuhana"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n278538-BxPS8hPFcfYe.jpg"
+                },
+                "favourites": 18
+              },
+              "role": "2nd Key Animation (eps 2, 7, 8, 10)"
+            },
+            {
+              "node": {
+                "id": 185534,
+                "name": {
+                  "full": "Kevin Thelwell",
+                  "native": null,
+                  "userPreferred": "Kevin D. Thelwell"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n185534-ExGsvETRdNcO.jpg"
+                },
+                "favourites": 17
+              },
+              "role": "Assistant ADR Director (English)"
+            },
+            {
+              "node": {
+                "id": 106185,
+                "name": {
+                  "full": "Hiroyuki Kanbe",
+                  "native": "\u795E\u6238\u6D0B\u884C",
+                  "userPreferred": "Hiroyuki Kanbe"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n106185-L8tWMwBXyAcP.png"
+                },
+                "favourites": 14
+              },
+              "role": "Key Animation (eps 1, 4, 8)"
+            },
+            {
+              "node": {
+                "id": 106185,
+                "name": {
+                  "full": "Hiroyuki Kanbe",
+                  "native": "\u795E\u6238\u6D0B\u884C",
+                  "userPreferred": "Hiroyuki Kanbe"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n106185-L8tWMwBXyAcP.png"
+                },
+                "favourites": 14
+              },
+              "role": "Animation Director (eps 1, 6, 7, 11)"
+            },
+            {
+              "node": {
+                "id": 117377,
+                "name": {
+                  "full": "Masato Kouda",
+                  "native": "\u7532\u7530\u96C5\u4EBA",
+                  "userPreferred": "Masato Kouda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n117377-xnxL7ds5aGWp.png"
+                },
+                "favourites": 14
+              },
+              "role": "Music"
+            },
+            {
+              "node": {
+                "id": 111333,
+                "name": {
+                  "full": "Takashi Kawabata",
+                  "native": "\u5DDD\u7551\u55AC",
+                  "userPreferred": "Takashi Kawabata"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n111333-MLLI9hxLkPiZ.png"
+                },
+                "favourites": 12
+              },
+              "role": "Storyboard (ep 8)"
+            },
+            {
+              "node": {
+                "id": 133514,
+                "name": {
+                  "full": "Rio",
+                  "native": "\u308A\u304A",
+                  "userPreferred": "Rio"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n133514-CG86E5KbugPw.png"
+                },
+                "favourites": 11
+              },
+              "role": "Sub Character Design (eps 5-11)"
+            },
+            {
+              "node": {
+                "id": 133514,
+                "name": {
+                  "full": "Rio",
+                  "native": "\u308A\u304A",
+                  "userPreferred": "Rio"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n133514-CG86E5KbugPw.png"
+                },
+                "favourites": 11
+              },
+              "role": "Costume Design (eps 9-12)"
+            },
+            {
+              "node": {
+                "id": 134516,
+                "name": {
+                  "full": "Hisako Akagi",
+                  "native": "\u8D64\u6728\u5BFF\u5B50",
+                  "userPreferred": "Hisako Akagi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n134516-EzACdL4mIDBd.jpg"
+                },
+                "favourites": 10
+              },
+              "role": "Art Director"
+            },
+            {
+              "node": {
+                "id": 136908,
+                "name": {
+                  "full": "Nanako Ninomiya",
+                  "native": "\u4E8C\u5BAE\u5948\u90A3\u5B50",
+                  "userPreferred": "Nanako Ninomiya"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 9
+              },
+              "role": "Assistant Animation Director (ep 8)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

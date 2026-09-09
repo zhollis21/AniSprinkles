@@ -1,0 +1,584 @@
+﻿{
+  "operationName": "Search",
+  "variables": {
+    "search": "ka",
+    "type": "ANIME",
+    "page": 1,
+    "perPage": 20,
+    "isAdult": false
+  },
+  "queryFingerprint": "2c2dc0b2b28d",
+  "recordedAt": "2026-09-06T05:17:56.1502259+00:00",
+  "response": {
+    "data": {
+      "Page": {
+        "pageInfo": {
+          "hasNextPage": true,
+          "currentPage": 1
+        },
+        "media": [
+          {
+            "id": 112930,
+            "title": {
+              "romaji": "Yes ka No ka Hanbun ka",
+              "english": "Yes, No, or Maybe?",
+              "native": "\u30A4\u30A8\u30B9\u304B\u30CE\u30FC\u304B\u534A\u5206\u304B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx112930-G15f7gmpXPs3.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx112930-G15f7gmpXPs3.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 69,
+            "favourites": 401,
+            "popularity": 21233,
+            "trending": 0,
+            "startDate": {
+              "year": 2020,
+              "month": 12,
+              "day": 11
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 175831,
+            "title": {
+              "romaji": "A Sou ka!",
+              "english": null,
+              "native": "\u3042\u3063\u3000\u305D\u3046\u304B\uFF01"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b175831-QMKoq0mtIa54.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b175831-QMKoq0mtIa54.png"
+            },
+            "format": "MUSIC",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 49,
+            "trending": 0,
+            "startDate": {
+              "year": 1986,
+              "month": 4,
+              "day": 3
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 177047,
+            "title": {
+              "romaji": "DO-KA",
+              "english": "Ignition",
+              "native": "\u5C0E\u706B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx177047-IUazu4gKRDbT.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx177047-IUazu4gKRDbT.jpg"
+            },
+            "format": "MUSIC",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 1,
+            "popularity": 117,
+            "trending": 0,
+            "startDate": {
+              "year": 2024,
+              "month": 4,
+              "day": 16
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 179827,
+            "title": {
+              "romaji": "Jitensha Show-ka Nande Show ka?",
+              "english": null,
+              "native": "\u81EA\u8EE2\u8ECA\u30B7\u30E7\u30FC\u6B4C\u306A\u3093\u3067\u30B7\u30E7\u30FC\u304B\uFF1F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b179827-Wd4nBsISArLD.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b179827-Wd4nBsISArLD.png"
+            },
+            "format": "MUSIC",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 36,
+            "trending": 0,
+            "startDate": {
+              "year": 2003,
+              "month": 12,
+              "day": 21
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 102631,
+            "title": {
+              "romaji": "Yuu\u2606Yuu\u2606Hakusho: TWO SHOTS / Noru ka Soru ka",
+              "english": "Yu Yu Hakusho OVA: \u0022Two Shots\u0022 and \u0022All or Nothing\u0022",
+              "native": "\u5E7D\u2606\u904A\u2606\u767D\u66F8 \u300CTWO SHOTS\u300D\u300C\u306E\u308B\u304B\u305D\u308B\u304B\u300D"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b102631-9VAe1wl7pIGc.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b102631-9VAe1wl7pIGc.png"
+            },
+            "format": "SPECIAL",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 72,
+            "favourites": 61,
+            "popularity": 7900,
+            "trending": 0,
+            "startDate": {
+              "year": 2018,
+              "month": 10,
+              "day": 26
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 121888,
+            "title": {
+              "romaji": "Kaze wa Fuiteru ka?",
+              "english": null,
+              "native": "\u98A8\u306F\u5439\u3044\u3066\u308B\u304B\uFF1F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx121888-F5067Wx0WiZX.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx121888-F5067Wx0WiZX.jpg"
+            },
+            "format": "MUSIC",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 57,
+            "favourites": 4,
+            "popularity": 445,
+            "trending": 0,
+            "startDate": {
+              "year": 2020,
+              "month": 5,
+              "day": 15
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 169028,
+            "title": {
+              "romaji": "Ka Neko Yasu",
+              "english": "Long Live the Cat",
+              "native": "\u5316\u732B\u30E4\u30B9"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx169028-R5zTKtfW7YVs.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx169028-R5zTKtfW7YVs.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 62,
+            "trending": 0,
+            "startDate": {
+              "year": 2020,
+              "month": null,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 170593,
+            "title": {
+              "romaji": "Shin Yaranai ka",
+              "english": null,
+              "native": "\u65B0\u30FB\u3084\u3089\u306A\u3044\u304B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx170593-B3ftC3rFmkwv.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx170593-B3ftC3rFmkwv.jpg"
+            },
+            "format": "OVA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 51,
+            "favourites": 18,
+            "popularity": 1901,
+            "trending": 0,
+            "startDate": {
+              "year": 2024,
+              "month": 4,
+              "day": 1
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 148352,
+            "title": {
+              "romaji": "Ejanaika",
+              "english": null,
+              "native": "\u3048\u3048\u3058\u3083\u306A\u3044\u304B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx148352-8lwAIcLGHgpI.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx148352-8lwAIcLGHgpI.png"
+            },
+            "format": "MUSIC",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 96,
+            "trending": 0,
+            "startDate": {
+              "year": 2021,
+              "month": 7,
+              "day": 27
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 108111,
+            "title": {
+              "romaji": "Sounan desu ka?",
+              "english": "Are You Lost?",
+              "native": "\u30BD\u30A6\u30CA\u30F3\u3067\u3059\u304B\uFF1F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx108111-SSkE9VuTPL2w.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx108111-SSkE9VuTPL2w.jpg"
+            },
+            "format": "TV_SHORT",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 63,
+            "favourites": 490,
+            "popularity": 47809,
+            "trending": 1,
+            "startDate": {
+              "year": 2019,
+              "month": 7,
+              "day": 2
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 112138,
+            "title": {
+              "romaji": "Naizou Arimasu ka",
+              "english": "What\u0027s Inside",
+              "native": "\u5185\u81D3\u3042\u308A\u307E\u3059\u304B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b112138-lryG9IBd71Tt.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b112138-lryG9IBd71Tt.jpg"
+            },
+            "format": "MUSIC",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 57,
+            "favourites": 4,
+            "popularity": 218,
+            "trending": 0,
+            "startDate": {
+              "year": 2019,
+              "month": 1,
+              "day": 22
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 194028,
+            "title": {
+              "romaji": "Kirei ni Shitemoraemasu ka.",
+              "english": "Wash It All Away",
+              "native": "\u7DBA\u9E97\u306B\u3057\u3066\u3082\u3089\u3048\u307E\u3059\u304B\u3002"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx194028-ASKnzjS1ily7.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx194028-ASKnzjS1ily7.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 67,
+            "favourites": 434,
+            "popularity": 22917,
+            "trending": 0,
+            "startDate": {
+              "year": 2026,
+              "month": 1,
+              "day": 5
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 21860,
+            "title": {
+              "romaji": "Shuumatsu Nani Shitemasu ka? Isogashii desu ka? Sukutte Moratte Ii desu ka?",
+              "english": "WorldEnd: What are you doing at the end of the world? Are you busy? Will you save us?",
+              "native": "\u7D42\u672B\u306A\u306B\u3057\u3066\u307E\u3059\u304B? \u5FD9\u3057\u3044\u3067\u3059\u304B? \u6551\u3063\u3066\u3082\u3089\u3063\u3066\u3044\u3044\u3067\u3059\u304B?"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21860-lSIbYJtEbAXu.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21860-lSIbYJtEbAXu.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 75,
+            "favourites": 2964,
+            "popularity": 118851,
+            "trending": 2,
+            "startDate": {
+              "year": 2017,
+              "month": 4,
+              "day": 11
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 13469,
+            "title": {
+              "romaji": "Hyouka: Motsubeki Mono wa",
+              "english": "Hyouka: What Should Be Had",
+              "native": "\u6C37\u83D3 \u6301\u3064\u3079\u304D\u3082\u306E\u306F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx13469-bbRQoSUgmf4T.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx13469-bbRQoSUgmf4T.png"
+            },
+            "format": "OVA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 72,
+            "favourites": 313,
+            "popularity": 53905,
+            "trending": 1,
+            "startDate": {
+              "year": 2012,
+              "month": 7,
+              "day": 8
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 1089,
+            "title": {
+              "romaji": "Choujikuu Yousai Macross: Ai Oboete Imasu ka",
+              "english": "Macross: Do You Remember Love?",
+              "native": "\u8D85\u6642\u7A7A\u8981\u585E\u30DE\u30AF\u30ED\u30B9 -\u611B\u30FB\u304A\u307C\u3048\u3066\u3044\u307E\u3059\u304B-"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/1089-uoP83D60OHxP.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/1089-uoP83D60OHxP.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 77,
+            "favourites": 734,
+            "popularity": 16579,
+            "trending": 0,
+            "startDate": {
+              "year": 1984,
+              "month": 7,
+              "day": 7
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 119819,
+            "title": {
+              "romaji": "Takosuchumu de odorimasen ka",
+              "english": "Shall we dance with Octopustume",
+              "native": "\u30BF\u30B3\u30B9\u30C1\u30E5\u30FC\u30E0\u3067\u304A\u3069\u308A\u307E\u305B\u3093\u304B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx119819-ZfLtt60ixKpF.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx119819-ZfLtt60ixKpF.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 56,
+            "trending": 0,
+            "startDate": {
+              "year": 2012,
+              "month": null,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 21034,
+            "title": {
+              "romaji": "Gochuumon wa Usagi desu ka??",
+              "english": "Is the Order a Rabbit?? Season 2",
+              "native": "\u3054\u6CE8\u6587\u306F\u3046\u3055\u304E\u3067\u3059\u304B\uFF1F\uFF1F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21034-PgPlR55DktTJ.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21034-PgPlR55DktTJ.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 76,
+            "favourites": 605,
+            "popularity": 37728,
+            "trending": 0,
+            "startDate": {
+              "year": 2015,
+              "month": 10,
+              "day": 10
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 109979,
+            "title": {
+              "romaji": "Kimitachi wa Dou Ikiru ka",
+              "english": "The Boy and the Heron",
+              "native": "\u541B\u305F\u3061\u306F\u3069\u3046\u751F\u304D\u308B\u304B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx109979-BRHXpBkCw4oc.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx109979-BRHXpBkCw4oc.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 77,
+            "favourites": 1637,
+            "popularity": 66418,
+            "trending": 0,
+            "startDate": {
+              "year": 2023,
+              "month": 7,
+              "day": 14
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 103927,
+            "title": {
+              "romaji": "Nani ga Dekiru ka na",
+              "english": "Nani ga Dekiru ka na",
+              "native": "\u306A\u306B\u304C\u3067\u304D\u308B\u304B\u306A"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx103927-NT75sy7eEyUa.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx103927-NT75sy7eEyUa.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 38,
+            "favourites": 0,
+            "popularity": 152,
+            "trending": 0,
+            "startDate": {
+              "year": 2009,
+              "month": null,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 118136,
+            "title": {
+              "romaji": "Tonikaku nani ka o hajimeyou",
+              "english": "Let\u2019s Just Get It Started",
+              "native": "\u3068\u306B\u304B\u304F\u306A\u306B\u304B\u3092\u306F\u3058\u3081\u3088\u3046"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b118136-d2kZBCznkp2P.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b118136-d2kZBCznkp2P.jpg"
+            },
+            "format": "MUSIC",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 2,
+            "popularity": 131,
+            "trending": 0,
+            "startDate": {
+              "year": 2020,
+              "month": 4,
+              "day": 4
+            },
+            "mediaListEntry": null
+          }
+        ]
+      }
+    }
+  }
+}

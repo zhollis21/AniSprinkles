@@ -1,0 +1,628 @@
+﻿{
+  "operationName": "StudioMediaPage",
+  "variables": {
+    "id": 245,
+    "page": 2,
+    "sort": [
+      "START_DATE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "02c0137b2ee8",
+  "recordedAt": "2026-09-06T05:31:40.118989+00:00",
+  "response": {
+    "data": {
+      "Studio": {
+        "media": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 2
+          },
+          "nodes": [
+            {
+              "id": 47,
+              "title": {
+                "romaji": "AKIRA",
+                "english": "Akira",
+                "native": "AKIRA"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx47-4CR68arv452h.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx47-4CR68arv452h.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 79,
+              "favourites": 9215,
+              "popularity": 230490,
+              "startDate": {
+                "year": 1988,
+                "month": 7,
+                "day": 16
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2454,
+              "title": {
+                "romaji": "Kimagure Orange\u2606Road: Ano Hi ni Kaeritai",
+                "english": "Kimagure Orange Road: I Want to Return to That Day",
+                "native": "\u304D\u307E\u3050\u308C\u30AA\u30EC\u30F3\u30B8\u2606\u30ED\u30FC\u30C9\u3000\u3042\u306E\u65E5\u306B\u304B\u3048\u308A\u305F\u3044"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/n2454-7t8qOvScDNDu.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/n2454-7t8qOvScDNDu.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 74,
+              "favourites": 72,
+              "popularity": 3584,
+              "startDate": {
+                "year": 1988,
+                "month": 10,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1484,
+              "title": {
+                "romaji": "Youma",
+                "english": "Blood Reign: Curse of the Yoma",
+                "native": "\u5996\u9B54"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1484-doDfkjX9k1Z6.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1484-doDfkjX9k1Z6.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 57,
+              "favourites": 38,
+              "popularity": 3299,
+              "startDate": {
+                "year": 1989,
+                "month": 5,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 11959,
+              "title": {
+                "romaji": "Moeru! Onii-san (OVA)",
+                "english": null,
+                "native": "\u71C3\u3048\u308B! \u304A\u5144\u3055\u3093 (1989)"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b11959-LxwePDD49jis.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b11959-LxwePDD49jis.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 48,
+              "favourites": 2,
+              "popularity": 348,
+              "startDate": {
+                "year": 1989,
+                "month": 7,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1468,
+              "title": {
+                "romaji": "Baoh Raihousha",
+                "english": "Baoh the Visitor",
+                "native": "\u30D0\u30AA\u30FC\u6765\u8A2A\u8005"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx1468-kKU0Wacc8Thk.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx1468-kKU0Wacc8Thk.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 59,
+              "favourites": 80,
+              "popularity": 7329,
+              "startDate": {
+                "year": 1989,
+                "month": 9,
+                "day": 16
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 19899,
+              "title": {
+                "romaji": "Fujiko F. Fujio no Sukoshi Fushigi Tanpen Theater",
+                "english": null,
+                "native": "\u85E4\u5B50\u30FBF\u30FB\u4E0D\u4E8C\u96C4\u306ESF\u77ED\u7DE8\u30B7\u30A2\u30BF\u30FC"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx19899-3tbnh8odDVag.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx19899-3tbnh8odDVag.png"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 62,
+              "favourites": 8,
+              "popularity": 273,
+              "startDate": {
+                "year": 1990,
+                "month": 3,
+                "day": 16
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 5936,
+              "title": {
+                "romaji": "Hashire! Shiroi Ookami",
+                "english": "White Fang",
+                "native": "\u8D70\u308C! \u767D\u3044\u30AA\u30AA\u30AB\u30DF"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/5936.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/5936.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 58,
+              "favourites": 15,
+              "popularity": 702,
+              "startDate": {
+                "year": 1990,
+                "month": 4,
+                "day": 28
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 120873,
+              "title": {
+                "romaji": "Sanchoume no Yuuhi",
+                "english": null,
+                "native": "\u4E09\u4E01\u76EE\u306E\u5915\u65E5"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b120873-G6kZIVlClsrM.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b120873-G6kZIVlClsrM.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 53,
+              "favourites": 4,
+              "popularity": 286,
+              "startDate": {
+                "year": 1990,
+                "month": 10,
+                "day": 12
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1280,
+              "title": {
+                "romaji": "Mamono Hunter Youko",
+                "english": "Devil Hunter Yohko",
+                "native": "\u9B54\u7269\u30CF\u30F3\u30BF\u30FC\u5996\u5B50"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/n1280-th0KSWQBpMN2.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/n1280-th0KSWQBpMN2.png"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 58,
+              "favourites": 45,
+              "popularity": 5016,
+              "startDate": {
+                "year": 1990,
+                "month": 12,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2180,
+              "title": {
+                "romaji": "Slow Step",
+                "english": "Slow Step",
+                "native": "\u30B9\u30ED\u30FC\u30B9\u30C6\u30C3\u30D7"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/2180.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/2180.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 59,
+              "favourites": 7,
+              "popularity": 1754,
+              "startDate": {
+                "year": 1991,
+                "month": 6,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 3640,
+              "title": {
+                "romaji": "Monkey Punch no Sekai: Alice",
+                "english": null,
+                "native": "\u30E2\u30F3\u30AD\u30FC\u30FB\u30D1\u30F3\u30C1\u306E\u4E16\u754C\u3000\u30A2\u30EA\u30B9"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx3640-ELZ87XxBtBEn.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx3640-ELZ87XxBtBEn.png"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 46,
+              "favourites": 3,
+              "popularity": 785,
+              "startDate": {
+                "year": 1991,
+                "month": 12,
+                "day": 13
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 3910,
+              "title": {
+                "romaji": "Kyuukyoku no SEX Adventure Kamasutra",
+                "english": "Kama Sutra",
+                "native": "\u7A76\u6975\u306ESEX\u30A2\u30C9\u30D9\u30F3\u30C1\u30E3\u30FC \u30AB\u30FC\u30DE\u30B9\u30FC\u30C8\u30E9"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b3910-0m2F0eQI5nQd.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b3910-0m2F0eQI5nQd.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 38,
+              "favourites": 5,
+              "popularity": 588,
+              "startDate": {
+                "year": 1992,
+                "month": 4,
+                "day": 24
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 842,
+              "title": {
+                "romaji": "Ushio to Tora",
+                "english": "Ushio and Tora",
+                "native": "\u3046\u3057\u304A\u3068\u3068\u3089"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b842-fVGV9fp1o9io.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b842-fVGV9fp1o9io.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 68,
+              "favourites": 62,
+              "popularity": 4704,
+              "startDate": {
+                "year": 1992,
+                "month": 9,
+                "day": 11
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 213510,
+              "title": {
+                "romaji": "Terajimachou Kidan: Ginnagashi",
+                "english": null,
+                "native": "\u5BFA\u5CF6\u753A\u5947\u8B5A \u304E\u3093\u306A\u304C\u3057"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b213510-nAuoi3hHtR68.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b213510-nAuoi3hHtR68.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": null,
+              "favourites": 1,
+              "popularity": 19,
+              "startDate": {
+                "year": 1993,
+                "month": 1,
+                "day": 15
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 851,
+              "title": {
+                "romaji": "Kyou kara Ore wa!!",
+                "english": null,
+                "native": "\u4ECA\u65E5\u304B\u3089\u4FFA\u306F!!"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx851-iuPWbPLMlUgs.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx851-iuPWbPLMlUgs.png"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 323,
+              "popularity": 11802,
+              "startDate": {
+                "year": 1993,
+                "month": 4,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 617,
+              "title": {
+                "romaji": "Juubee Ninpuuchou",
+                "english": "Ninja Scroll",
+                "native": "\u7363\u5175\u885B\u5FCD\u98A8\u5E16"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx617-yo9IcTEQRNuN.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx617-yo9IcTEQRNuN.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 73,
+              "favourites": 782,
+              "popularity": 36999,
+              "startDate": {
+                "year": 1993,
+                "month": 6,
+                "day": 5
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2465,
+              "title": {
+                "romaji": "Idol Bouei-tai Hummingbird",
+                "english": "Hummingbirds",
+                "native": "\u30A2\u30A4\u30C9\u30EB\u9632\u885B\u968A\u30CF\u30DF\u30F3\u30B0\u30D0\u30FC\u30C9"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/2465.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/2465.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 54,
+              "favourites": 14,
+              "popularity": 1998,
+              "startDate": {
+                "year": 1993,
+                "month": 9,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 4773,
+              "title": {
+                "romaji": "Yamato Takeru",
+                "english": null,
+                "native": "\u30E4\u30DE\u30C8\u30BF\u30B1\u30EB"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b4773-c0mTBOjeiZ3N.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b4773-c0mTBOjeiZ3N.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 66,
+              "favourites": 24,
+              "popularity": 1206,
+              "startDate": {
+                "year": 1994,
+                "month": 4,
+                "day": 9
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1811,
+              "title": {
+                "romaji": "Bounty Dog: Getsumen no Ibu",
+                "english": "Bounty Dog",
+                "native": "\u30D0\u30A6\u30F3\u30C6\u30A3\u30C9\u30C3\u30B0~\u6708\u9762\u306E\u30A4\u30D6~"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b1811-dM3uV5FiMGW6.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b1811-dM3uV5FiMGW6.png"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 54,
+              "favourites": 8,
+              "popularity": 1724,
+              "startDate": {
+                "year": 1994,
+                "month": 10,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 141251,
+              "title": {
+                "romaji": "Susume! Godzilland",
+                "english": null,
+                "native": "\u3059\u3059\u3081\uFF01\u30B4\u30B8\u30E9\u30F3\u30C9"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx141251-7Wn4HWdG9Eln.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx141251-7Wn4HWdG9Eln.png"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 46,
+              "favourites": 9,
+              "popularity": 181,
+              "startDate": {
+                "year": 1994,
+                "month": 11,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 386,
+              "title": {
+                "romaji": "H2",
+                "english": null,
+                "native": "H2"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx386-x4amUWWKw0qR.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx386-x4amUWWKw0qR.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 69,
+              "favourites": 40,
+              "popularity": 3261,
+              "startDate": {
+                "year": 1995,
+                "month": 6,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2473,
+              "title": {
+                "romaji": "Ginga Ojousama Densetsu Yuna",
+                "english": "Galaxy Fraulein Yuna",
+                "native": "\u9280\u6CB3\u304A\u5B22\u69D8\u4F1D\u8AAC\u30E6\u30CA \uFF5E\u54C0\u3057\u307F\u306E\u30BB\u30A4\u30EC\u30FC\u30F3\uFF5E"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b2473-abPY8zXUcSyg.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b2473-abPY8zXUcSyg.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 58,
+              "favourites": 26,
+              "popularity": 2626,
+              "startDate": {
+                "year": 1995,
+                "month": 9,
+                "day": 21
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 9376,
+              "title": {
+                "romaji": "Yamato Takeru: After War",
+                "english": null,
+                "native": "\u30E4\u30DE\u30C8\u30BF\u30B1\u30EB \uFF5EAfter War\uFF5E"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx9376-mNgCp1iA8DSI.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx9376-mNgCp1iA8DSI.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 55,
+              "favourites": 6,
+              "popularity": 434,
+              "startDate": {
+                "year": 1995,
+                "month": 11,
+                "day": 22
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2057,
+              "title": {
+                "romaji": "Ojou-sama Sousamou",
+                "english": "Debutante Detective Corps",
+                "native": "\u304A\u5B22\u69D8\u635C\u67FB\u7DB2"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/2057.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/2057.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 47,
+              "favourites": 13,
+              "popularity": 1833,
+              "startDate": {
+                "year": 1996,
+                "month": 4,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2698,
+              "title": {
+                "romaji": "Sanctuary",
+                "english": "Sanctuary",
+                "native": "\u30B5\u30F3\u30AF\u30C1\u30E5\u30A2\u30EA"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx2698-2bBtlm0FewWP.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx2698-2bBtlm0FewWP.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 59,
+              "favourites": 23,
+              "popularity": 2709,
+              "startDate": {
+                "year": 1996,
+                "month": 5,
+                "day": 1
+              },
+              "mediaListEntry": null
+            }
+          ]
+        }
+      }
+    }
+  }
+}

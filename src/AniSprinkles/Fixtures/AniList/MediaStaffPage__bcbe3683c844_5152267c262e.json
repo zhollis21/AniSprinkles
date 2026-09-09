@@ -1,0 +1,343 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 105778,
+    "page": 1,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:27:12.8158655+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 119917,
+                "name": {
+                  "full": "Tatsuki Fujimoto",
+                  "native": "\u85E4\u672C\u30BF\u30C4\u30AD",
+                  "userPreferred": "Tatsuki Fujimoto"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n119917-xrVbuHyr6y1I.jpg"
+                },
+                "favourites": 14775
+              },
+              "role": "Story \u0026 Art"
+            },
+            {
+              "node": {
+                "id": 216878,
+                "name": {
+                  "full": "Yukinobu Tatsu",
+                  "native": "\u9F8D\u5E78\u4F38",
+                  "userPreferred": "Yukinobu Tatsu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n216878-qJ0xkwUz8XmM.png"
+                },
+                "favourites": 867
+              },
+              "role": "Assistant"
+            },
+            {
+              "node": {
+                "id": 257544,
+                "name": {
+                  "full": "Shihei Lin",
+                  "native": "\u6797\u58EB\u5E73",
+                  "userPreferred": "Shihei Lin"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n257544-M8repb3FUGgr.png"
+                },
+                "favourites": 39
+              },
+              "role": "Editing"
+            },
+            {
+              "node": {
+                "id": 183882,
+                "name": {
+                  "full": "Hanachika Toyama",
+                  "native": "\u9060\u5C71\u82B1\u8FD1",
+                  "userPreferred": "Hanachika Toyama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n183882-U1ohHHs6VuK5.jpg"
+                },
+                "favourites": 33
+              },
+              "role": "Assistant"
+            },
+            {
+              "node": {
+                "id": 219063,
+                "name": {
+                  "full": "Amanda Haley",
+                  "native": null,
+                  "userPreferred": "Amanda Haley"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n219063-rkAzyjaS9H9P.jpg"
+                },
+                "favourites": 12
+              },
+              "role": "Translator (English)"
+            },
+            {
+              "node": {
+                "id": 256027,
+                "name": {
+                  "full": "Jun Nagatsuki",
+                  "native": "\u9577\u6708\u5DE1",
+                  "userPreferred": "Jun Nagatsuki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n256027-i01BLbFscfq6.jpg"
+                },
+                "favourites": 11
+              },
+              "role": "Assistant"
+            },
+            {
+              "node": {
+                "id": 185558,
+                "name": {
+                  "full": "Norihito Sasaki",
+                  "native": "\u4F50\u3005\u6728\u5BA3\u4EBA",
+                  "userPreferred": "Norihito Sasaki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n185558-SC8No48Sv6LW.jpg"
+                },
+                "favourites": 8
+              },
+              "role": "Assistant"
+            },
+            {
+              "node": {
+                "id": 220710,
+                "name": {
+                  "full": "Felipe Monte",
+                  "native": null,
+                  "userPreferred": "Felipe Monte"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n220710-5T0XmGNeS5xq.png"
+                },
+                "favourites": 8
+              },
+              "role": "Translator (Portuguese)"
+            },
+            {
+              "node": {
+                "id": 256023,
+                "name": {
+                  "full": "Sou Nishida",
+                  "native": "\u897F\u7530\u8358",
+                  "userPreferred": "Sou Nishida"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n256023-4WLUe322em8c.jpg"
+                },
+                "favourites": 8
+              },
+              "role": "Assistant"
+            },
+            {
+              "node": {
+                "id": 301278,
+                "name": {
+                  "full": "Yoshino Tsukasa",
+                  "native": "\u82B3\u91CE\u55E3",
+                  "userPreferred": "Yoshino Tsukasa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n301278-qrMImBo14omx.jpg"
+                },
+                "favourites": 4
+              },
+              "role": "Assistant"
+            },
+            {
+              "node": {
+                "id": 218855,
+                "name": {
+                  "full": "S\u00E9bastien Ludmann",
+                  "native": null,
+                  "userPreferred": "S\u00E9bastien Ludmann"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n218855-Ts55hveBN7uD.png"
+                },
+                "favourites": 3
+              },
+              "role": "Translator (French)"
+            },
+            {
+              "node": {
+                "id": 214044,
+                "name": {
+                  "full": "Sabrina Heep",
+                  "native": null,
+                  "userPreferred": "Sabrina Heep"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "Lettering (English)"
+            },
+            {
+              "node": {
+                "id": 230866,
+                "name": {
+                  "full": "Judit Moreno",
+                  "native": null,
+                  "userPreferred": "Judit Moreno"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Translator (Spanish)"
+            },
+            {
+              "node": {
+                "id": 230879,
+                "name": {
+                  "full": "Emilio Ros Casas",
+                  "native": null,
+                  "userPreferred": "Emilio Ros Casas"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n230879-04kT7okDzCLE.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Translator (Spanish)"
+            },
+            {
+              "node": {
+                "id": 233819,
+                "name": {
+                  "full": "Erwan Lossois",
+                  "native": null,
+                  "userPreferred": "Erwan Lossois"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n233819-se3P0P8SI8bW.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Lettering (French)"
+            },
+            {
+              "node": {
+                "id": 260309,
+                "name": {
+                  "full": "Si-Nae Kim",
+                  "native": "\uAE40\uC2DC\uB0B4",
+                  "userPreferred": "Si-Nae Kim"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Translator (Korean)"
+            },
+            {
+              "node": {
+                "id": 277601,
+                "name": {
+                  "full": "Wojciech G\u0119szczak",
+                  "native": null,
+                  "userPreferred": "Wojciech G\u0119szczak"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n277601-a3OZ4cfOc64V.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Translator (Polish)"
+            },
+            {
+              "node": {
+                "id": 289759,
+                "name": {
+                  "full": "Ili Tenjou",
+                  "native": null,
+                  "userPreferred": "Ili Tenjou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Translator (Vietnamese)"
+            },
+            {
+              "node": {
+                "id": 297698,
+                "name": {
+                  "full": "Judith Rodr\u00EDguez",
+                  "native": null,
+                  "userPreferred": "Judith Rodr\u00EDguez"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Translator (Catalan)"
+            },
+            {
+              "node": {
+                "id": 379640,
+                "name": {
+                  "full": "Paulo Kutscher",
+                  "native": null,
+                  "userPreferred": "Paulo Kutscher"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n379640-oRnu8S5i5AnZ.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Translator (Portuguese, MANGA Plus)"
+            },
+            {
+              "node": {
+                "id": 399210,
+                "name": {
+                  "full": "Aino Pukkila",
+                  "native": null,
+                  "userPreferred": "Aino J. Pukkila"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Translator (Finnish)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

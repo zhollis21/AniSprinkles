@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 97889,
+    "page": 1,
+    "sort": [
+      "RELEVANCE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:21:44.808762+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 96904,
+                "name": {
+                  "full": "Hideaki Sorachi",
+                  "native": "\u7A7A\u77E5\u82F1\u79CB",
+                  "userPreferred": "Hideaki Sorachi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n96904-PbWsZd8U0G4v.jpg"
+                },
+                "favourites": 2896
+              },
+              "role": "Original Creator"
+            },
+            {
+              "node": {
+                "id": 97197,
+                "name": {
+                  "full": "Hajime Yatate",
+                  "native": "\u77E2\u7ACB\u8087",
+                  "userPreferred": "Hajime Yatate"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n97197-6NsKNt4EPoul.jpg"
+                },
+                "favourites": 206
+              },
+              "role": "Original Story"
+            },
+            {
+              "node": {
+                "id": 148596,
+                "name": {
+                  "full": "Chizuru Miyawaki",
+                  "native": "\u5BAE\u8107\u5343\u9DB4",
+                  "userPreferred": "Chizuru Miyawaki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n148596-yxLepn1kmgAu.jpg"
+                },
+                "favourites": 17
+              },
+              "role": "Director"
+            },
+            {
+              "node": {
+                "id": 107437,
+                "name": {
+                  "full": "Youichi Fujita",
+                  "native": "\u85E4\u7530\u967D\u4E00",
+                  "userPreferred": "Youichi Fujita"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n107437-tOtrCkQn1AFs.png"
+                },
+                "favourites": 22
+              },
+              "role": "Supervisor"
+            },
+            {
+              "node": {
+                "id": 101887,
+                "name": {
+                  "full": "Shinji Takeuchi",
+                  "native": "\u7AF9\u5185\u9032\u4E8C",
+                  "userPreferred": "Shinji Takeuchi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101887-GTT28h8x5B72.png"
+                },
+                "favourites": 24
+              },
+              "role": "Character Design"
+            },
+            {
+              "node": {
+                "id": 146343,
+                "name": {
+                  "full": "Takayoshi Fukushima",
+                  "native": "\u798F\u5CF6\u5B5D\u559C",
+                  "userPreferred": "Takayoshi Fukushima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Art Director"
+            },
+            {
+              "node": {
+                "id": 147222,
+                "name": {
+                  "full": "Nami Maniwa",
+                  "native": "\u9593\u5EAD\u5948\u7F8E",
+                  "userPreferred": "Nami Maniwa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Art Director"
+            },
+            {
+              "node": {
+                "id": 146561,
+                "name": {
+                  "full": "Ritsuko Utagawa",
+                  "native": "\u6B4C\u5DDD\u5F8B\u5B50",
+                  "userPreferred": "Ritsuko Utagawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n146561-zxsAzVqwclKg.jpg"
+                },
+                "favourites": 3
+              },
+              "role": "Color Design"
+            },
+            {
+              "node": {
+                "id": 147219,
+                "name": {
+                  "full": "Yuuki Teramoto",
+                  "native": "\u5BFA\u672C\u53CB\u7D00",
+                  "userPreferred": "Yuuki Teramoto"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n147219-EWSbXBZz9eeK.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Director of Photography"
+            },
+            {
+              "node": {
+                "id": 129400,
+                "name": {
+                  "full": "Takeshi Seyama",
+                  "native": "\u702C\u5C71\u6B66\u53F8",
+                  "userPreferred": "Takeshi Seyama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n129400-M3PB5LGHKEH6.png"
+                },
+                "favourites": 7
+              },
+              "role": "Editing"
+            },
+            {
+              "node": {
+                "id": 100152,
+                "name": {
+                  "full": "Shinji Takamatsu",
+                  "native": "\u9AD8\u677E\u4FE1\u53F8",
+                  "userPreferred": "Shinji Takamatsu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100152-9WT8iXkyljY4.png"
+                },
+                "favourites": 103
+              },
+              "role": "Sound Director"
+            },
+            {
+              "node": {
+                "id": 108027,
+                "name": {
+                  "full": "Audio Highs",
+                  "native": "\u30AA\u30FC\u30C7\u30A3\u30AA\u30FB\u30CF\u30A4\u30BA",
+                  "userPreferred": "Audio Highs"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n108027-FDYkT66WME0W.png"
+                },
+                "favourites": 25
+              },
+              "role": "Music"
+            },
+            {
+              "node": {
+                "id": 101887,
+                "name": {
+                  "full": "Shinji Takeuchi",
+                  "native": "\u7AF9\u5185\u9032\u4E8C",
+                  "userPreferred": "Shinji Takeuchi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101887-GTT28h8x5B72.png"
+                },
+                "favourites": 24
+              },
+              "role": "Chief Animation Director"
+            },
+            {
+              "node": {
+                "id": 146863,
+                "name": {
+                  "full": "HoneyWorks",
+                  "native": "\u30CF\u30CB\u30FC\u30EF\u30FC\u30AF\u30B9",
+                  "userPreferred": "HoneyWorks"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n146863-p43brp4ekxZz.png"
+                },
+                "favourites": 656
+              },
+              "role": "Theme Song Performance (OP2)"
+            },
+            {
+              "node": {
+                "id": 126807,
+                "name": {
+                  "full": "CHiCO",
+                  "native": "CHiCO",
+                  "userPreferred": "CHiCO"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n126807-Sm9dpyenKd4O.png"
+                },
+                "favourites": 339
+              },
+              "role": "Theme Song Performance (OP2)"
+            },
+            {
+              "node": {
+                "id": 131807,
+                "name": {
+                  "full": "ReaL",
+                  "native": "\u308A\u3042\u308B",
+                  "userPreferred": "ReaL"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n131807-qX6uw6KVCokc.jpg"
+                },
+                "favourites": 13
+              },
+              "role": "Theme Song Performance (OP)"
+            },
+            {
+              "node": {
+                "id": 147220,
+                "name": {
+                  "full": "Rize",
+                  "native": "RIZE",
+                  "userPreferred": "Rize"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n147220-BUHWrxTwI54s.png"
+                },
+                "favourites": 1
+              },
+              "role": "Theme Song Performance (ED)"
+            },
+            {
+              "node": {
+                "id": 134737,
+                "name": {
+                  "full": "Kazuya Saitou",
+                  "native": "\u6589\u85E4\u548C\u4E5F",
+                  "userPreferred": "Kazuya Saitou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Key Animation (ep 319)"
+            },
+            {
+              "node": {
+                "id": 146863,
+                "name": {
+                  "full": "HoneyWorks",
+                  "native": "\u30CF\u30CB\u30FC\u30EF\u30FC\u30AF\u30B9",
+                  "userPreferred": "HoneyWorks"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n146863-p43brp4ekxZz.png"
+                },
+                "favourites": 656
+              },
+              "role": "Theme Song Arrangement (OP2)"
+            },
+            {
+              "node": {
+                "id": 147223,
+                "name": {
+                  "full": "Tomomi Suzuki",
+                  "native": "\u9234\u6728\u77E5\u7F8E",
+                  "userPreferred": "Tomomi Suzuki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "CGI Director"
+            },
+            {
+              "node": {
+                "id": 146863,
+                "name": {
+                  "full": "HoneyWorks",
+                  "native": "\u30CF\u30CB\u30FC\u30EF\u30FC\u30AF\u30B9",
+                  "userPreferred": "HoneyWorks"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n146863-p43brp4ekxZz.png"
+                },
+                "favourites": 656
+              },
+              "role": "Theme Song Composition (OP2)"
+            },
+            {
+              "node": {
+                "id": 147221,
+                "name": {
+                  "full": "Takuya Watanabe",
+                  "native": "\u6E21\u8FBA\u62D3\u4E5F",
+                  "userPreferred": "Takuya Watanabe"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n147221-uvdju4CdjIoN.png"
+                },
+                "favourites": 0
+              },
+              "role": "Theme Song Arrangement (OP)"
+            },
+            {
+              "node": {
+                "id": 131807,
+                "name": {
+                  "full": "ReaL",
+                  "native": "\u308A\u3042\u308B",
+                  "userPreferred": "ReaL"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n131807-qX6uw6KVCokc.jpg"
+                },
+                "favourites": 13
+              },
+              "role": "Theme Song Lyrics (OP)"
+            },
+            {
+              "node": {
+                "id": 115050,
+                "name": {
+                  "full": "Katsuyoshi Kobayashi",
+                  "native": "\u5C0F\u6797\u514B\u826F",
+                  "userPreferred": "Katsuyoshi Kobayashi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n115050-m4IN3QWk3iUn.png"
+                },
+                "favourites": 5
+              },
+              "role": "Sound Supervisor"
+            },
+            {
+              "node": {
+                "id": 131807,
+                "name": {
+                  "full": "ReaL",
+                  "native": "\u308A\u3042\u308B",
+                  "userPreferred": "ReaL"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n131807-qX6uw6KVCokc.jpg"
+                },
+                "favourites": 13
+              },
+              "role": "Theme Song Composition (OP)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 21,
+    "page": 3,
+    "sort": [
+      "ROLE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-09T15:56:16.8950666+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 3
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 334427,
+                "name": {
+                  "full": "Yuuta Haruna",
+                  "native": "\u6625\u540D\u96C4\u592A",
+                  "userPreferred": "Yuuta Haruna"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n334427-cL7HEma1AIJm.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "2nd Key Animation (eps 1048, 1089, 1092, 1097, 1099, 1100, 1106, 1107, 1111, 1114, 1115, 1117)"
+            },
+            {
+              "node": {
+                "id": 299790,
+                "name": {
+                  "full": "MixtheSkele",
+                  "native": null,
+                  "userPreferred": "MixtheSkele"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n299790-fTLoJ4erFiOf.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (eps 1052, 1053, 1057, 1063, 1066, 1068, 1075, 1076, 1081, 1114, 1117, 1118, 1124, 1129, 1132, 1137, 1141)"
+            },
+            {
+              "node": {
+                "id": 315945,
+                "name": {
+                  "full": "shaolong",
+                  "native": "\u5C11\u9686",
+                  "userPreferred": "shaolong"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n315945-6KEs5jayYGpR.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (eps 1061, 1064, 1076)"
+            },
+            {
+              "node": {
+                "id": 344102,
+                "name": {
+                  "full": "Riki Miura",
+                  "native": "\u4E09\u6D66\u8389\u5E0C",
+                  "userPreferred": "Riki Miura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n344102-SrehBDi2L5Qu.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (eps 1061, 1067, 1071, 1077, 1089, 1108)"
+            },
+            {
+              "node": {
+                "id": 290435,
+                "name": {
+                  "full": "Juny",
+                  "native": null,
+                  "userPreferred": "Juny"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n290435-U9aMjDHw52se.jpg"
+                },
+                "favourites": 20
+              },
+              "role": "2nd Key Animation (eps 1062, 1066, 1071, 1093)"
+            },
+            {
+              "node": {
+                "id": 203771,
+                "name": {
+                  "full": "Shunsuke Matsuo",
+                  "native": "\u677E\u5C3E\u4FCA\u4EAE",
+                  "userPreferred": "Shunsuke Matsuo"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (eps 1066, 1071)"
+            },
+            {
+              "node": {
+                "id": 308464,
+                "name": {
+                  "full": "Jos\u00E9 Rebolledo",
+                  "native": null,
+                  "userPreferred": "Jos\u00E9 B. Rebolledo"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n308464-WHOvmj4Gf4EH.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (eps 1066, 1093)"
+            },
+            {
+              "node": {
+                "id": 299033,
+                "name": {
+                  "full": "Jiaqi Jin",
+                  "native": "\u91D1\u5609\u742A",
+                  "userPreferred": "Jiaqi Jin"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (eps 1069, 1070, 1075)"
+            },
+            {
+              "node": {
+                "id": 169958,
+                "name": {
+                  "full": "Kazumi Nakatsu",
+                  "native": "\u4E2D\u6D25\u548C\u7F8E",
+                  "userPreferred": "Kazumi Nakatsu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n169958-xApozAMRfaPn.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (eps 1069, 1075)"
+            },
+            {
+              "node": {
+                "id": 280021,
+                "name": {
+                  "full": "Inu.",
+                  "native": "\u72AC\u3002",
+                  "userPreferred": "Inu."
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n280021-fKxIf2pqEwVQ.png"
+                },
+                "favourites": 1
+              },
+              "role": "2nd Key Animation (eps 1072, 1074, 1076, 1080, 1082, 1084, 1086, 1088, 1089, 1092, 1094, 1100-1102, 1106, 1108-1111, 1115, 1117, 1118, 1122-1124, 1127, 1132, 1137, 1141)"
+            },
+            {
+              "node": {
+                "id": 355820,
+                "name": {
+                  "full": "Anno",
+                  "native": null,
+                  "userPreferred": "Anno"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n355820-XeiAnAhD57TI.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "2nd Key Animation (eps 1072, 1096, 1114, 1115)"
+            },
+            {
+              "node": {
+                "id": 278538,
+                "name": {
+                  "full": "Yuuta Suzuhana",
+                  "native": "\u9234\u83EF\u52C7\u592A",
+                  "userPreferred": "Yuuta Suzuhana"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n278538-BxPS8hPFcfYe.jpg"
+                },
+                "favourites": 18
+              },
+              "role": "2nd Key Animation (eps 1082, 1094, 1100, 1104, 1117, 1132, 1140)"
+            },
+            {
+              "node": {
+                "id": 328353,
+                "name": {
+                  "full": "Tomoaki Hirauchi",
+                  "native": "\u5E73\u5185\u667A\u660E",
+                  "userPreferred": "Tomoaki Hirauchi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n328353-NVMBAnX9cK9K.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "2nd Key Animation (eps 1099, 1100, 1102, 1103, 1108, "
+            },
+            {
+              "node": {
+                "id": 325250,
+                "name": {
+                  "full": "Isaac Bouanga",
+                  "native": null,
+                  "userPreferred": "Isaac Bouanga"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n325250-JCGzSUawCsy0.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "2nd Key Animation (eps 1107, 1113)"
+            },
+            {
+              "node": {
+                "id": 374406,
+                "name": {
+                  "full": "Zixian Liu",
+                  "native": null,
+                  "userPreferred": "Zixian Liu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (eps 1112, 1119, 1121, 1137, 1141)"
+            },
+            {
+              "node": {
+                "id": 350653,
+                "name": {
+                  "full": "TOGONAI",
+                  "native": null,
+                  "userPreferred": "TOGONAI"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n350653-Xfq1W9ZmtOMp.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (eps 1123, 1125, 1140, 1151)"
+            },
+            {
+              "node": {
+                "id": 377707,
+                "name": {
+                  "full": "rama",
+                  "native": null,
+                  "userPreferred": "rama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n377707-AYgQYRIGRz5n.png"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (eps 1124, 1129, 1130, 1138, 1140)"
+            },
+            {
+              "node": {
+                "id": 374410,
+                "name": {
+                  "full": "Iori Adachi",
+                  "native": "\u8DB3\u9054\u4F0A\u7E54",
+                  "userPreferred": "Iori Adachi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (eps 1137, 1141)"
+            },
+            {
+              "node": {
+                "id": 306029,
+                "name": {
+                  "full": "Noriyuki Hirota",
+                  "native": "\u5EE3\u7530\u8A13\u4E4B",
+                  "userPreferred": "Noriyuki Hirota"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n306029-UzARDJ3Jp4A1.png"
+                },
+                "favourites": 4
+              },
+              "role": "2nd Key Animation (eps 977, 978, 998, 1000)"
+            },
+            {
+              "node": {
+                "id": 297267,
+                "name": {
+                  "full": "Shin Kashiwaguma",
+                  "native": "\u67CF\u718A\u4FE1",
+                  "userPreferred": "Shin Kashiwaguma"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n297267-FN3iZBGebiXa.jpg"
+                },
+                "favourites": 16
+              },
+              "role": "2nd Key Animation (eps 977, 985, 998, 1000, 1015, 1024)"
+            },
+            {
+              "node": {
+                "id": 297268,
+                "name": {
+                  "full": "Zhiguang Liu",
+                  "native": "\u5289\u5FD7\u5149",
+                  "userPreferred": "Zhiguang Liu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n297268-B1HGeAIpDiwP.jpg"
+                },
+                "favourites": 6
+              },
+              "role": "2nd Key Animation (eps 978, 1000, 1006, 1010, 1015, 1024, 1096)"
+            },
+            {
+              "node": {
+                "id": 170307,
+                "name": {
+                  "full": "Hanao Iida",
+                  "native": "\u98EF\u7530\u82B1\u7DD2",
+                  "userPreferred": "Hanao Iida"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n170307-64hTCdG9uQep.png"
+                },
+                "favourites": 4
+              },
+              "role": "2nd Key Animation (eps 978, 1000)"
+            },
+            {
+              "node": {
+                "id": 216372,
+                "name": {
+                  "full": "Juresi",
+                  "native": null,
+                  "userPreferred": "Juresi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n216372-vDCN87pFKL6w.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (eps 982, 1015, 1040, 1041, 1046, 1051, 1075)"
+            },
+            {
+              "node": {
+                "id": 332824,
+                "name": {
+                  "full": "Chika Tomaru",
+                  "native": "\u90FD\u4E38\u5343\u6B4C",
+                  "userPreferred": "Chika Tomaru"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n332824-tbyCZSsh8d9X.png"
+                },
+                "favourites": 1
+              },
+              "role": "2nd Key Animation (eps 985, 1000)"
+            },
+            {
+              "node": {
+                "id": 157612,
+                "name": {
+                  "full": "Narumi Takahashi",
+                  "native": "\u9AD8\u6A4B\u6210\u7F8E",
+                  "userPreferred": "Narumi Takahashi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (OP23, OP24, eps 897, 902, 912, 925, 980, 985, 988, 990, 993, 997, 1000, 1016, 1017, 1025, 1026, 1030, 1031, 1033, 1036, 1039, 1040, 1044, 1045, 1048, 1051, 1052, 1056, 1057, 1062, 1069, 1070)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

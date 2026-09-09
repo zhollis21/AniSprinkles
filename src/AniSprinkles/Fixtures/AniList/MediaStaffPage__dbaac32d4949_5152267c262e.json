@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 21,
+    "page": 2,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-09T15:56:09.9148138+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 2
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 101055,
+                "name": {
+                  "full": "Kouhei Tanaka",
+                  "native": "\u7530\u4E2D\u516C\u5E73",
+                  "userPreferred": "Kouhei Tanaka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101055-3QNbr0raaApy.jpg"
+                },
+                "favourites": 201
+              },
+              "role": "Music"
+            },
+            {
+              "node": {
+                "id": 101055,
+                "name": {
+                  "full": "Kouhei Tanaka",
+                  "native": "\u7530\u4E2D\u516C\u5E73",
+                  "userPreferred": "Kouhei Tanaka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101055-3QNbr0raaApy.jpg"
+                },
+                "favourites": 201
+              },
+              "role": "Theme Song Composition (OP1)"
+            },
+            {
+              "node": {
+                "id": 119807,
+                "name": {
+                  "full": "Takashi Kojima",
+                  "native": "\u5C0F\u5CF6\u5D07\u53F2",
+                  "userPreferred": "Takashi Kojima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n119807-bylzQtqt0Cnk.jpg"
+                },
+                "favourites": 191
+              },
+              "role": "Animation Director (ep 1015)"
+            },
+            {
+              "node": {
+                "id": 119807,
+                "name": {
+                  "full": "Takashi Kojima",
+                  "native": "\u5C0F\u5CF6\u5D07\u53F2",
+                  "userPreferred": "Takashi Kojima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n119807-bylzQtqt0Cnk.jpg"
+                },
+                "favourites": 191
+              },
+              "role": "Key Animation (OP21-OP25, eps 677, 697, 704, 892, 905, 933, 943, 961, 972, 1015, 1071)"
+            },
+            {
+              "node": {
+                "id": 119807,
+                "name": {
+                  "full": "Takashi Kojima",
+                  "native": "\u5C0F\u5CF6\u5D07\u53F2",
+                  "userPreferred": "Takashi Kojima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n119807-bylzQtqt0Cnk.jpg"
+                },
+                "favourites": 191
+              },
+              "role": "Assistant Animation Director (ep 1071)"
+            },
+            {
+              "node": {
+                "id": 183674,
+                "name": {
+                  "full": "Vercreek",
+                  "native": null,
+                  "userPreferred": "Vercreek"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n183674-QO8hVtGM7Eml.png"
+                },
+                "favourites": 179
+              },
+              "role": "Key Animation (ep 972)"
+            },
+            {
+              "node": {
+                "id": 132898,
+                "name": {
+                  "full": "Itsuki Tsuchigami",
+                  "native": "\u571F\u4E0A\u3044\u3064\u304D",
+                  "userPreferred": "Itsuki Tsuchigami"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n132898-w0fSPNzRgeS4.png"
+                },
+                "favourites": 160
+              },
+              "role": "Key Animation (eps 990, 1128, 1137)"
+            },
+            {
+              "node": {
+                "id": 156652,
+                "name": {
+                  "full": "AiNA THE END",
+                  "native": "\u30A2\u30A4\u30CA\u30FB\u30B8\u30FB\u30A8\u30F3\u30C9",
+                  "userPreferred": "AiNA THE END"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n156652-LX7wIqzfZZGw.png"
+                },
+                "favourites": 159
+              },
+              "role": "Theme Song Lyrics (OP29)"
+            },
+            {
+              "node": {
+                "id": 156652,
+                "name": {
+                  "full": "AiNA THE END",
+                  "native": "\u30A2\u30A4\u30CA\u30FB\u30B8\u30FB\u30A8\u30F3\u30C9",
+                  "userPreferred": "AiNA THE END"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n156652-LX7wIqzfZZGw.png"
+                },
+                "favourites": 159
+              },
+              "role": "Theme Song Composition (OP29)"
+            },
+            {
+              "node": {
+                "id": 156652,
+                "name": {
+                  "full": "AiNA THE END",
+                  "native": "\u30A2\u30A4\u30CA\u30FB\u30B8\u30FB\u30A8\u30F3\u30C9",
+                  "userPreferred": "AiNA THE END"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n156652-LX7wIqzfZZGw.png"
+                },
+                "favourites": 159
+              },
+              "role": "Theme Song Performance (OP29)"
+            },
+            {
+              "node": {
+                "id": 120120,
+                "name": {
+                  "full": "Bahi JD",
+                  "native": "\u30D0\u30D2\u30FBJD",
+                  "userPreferred": "Bahi JD"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/25120-TDOKOqLgy4ti.jpg"
+                },
+                "favourites": 158
+              },
+              "role": "Storyboard (ep 1072)"
+            },
+            {
+              "node": {
+                "id": 120120,
+                "name": {
+                  "full": "Bahi JD",
+                  "native": "\u30D0\u30D2\u30FBJD",
+                  "userPreferred": "Bahi JD"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/25120-TDOKOqLgy4ti.jpg"
+                },
+                "favourites": 158
+              },
+              "role": "Key Animation (OP24-OP26, OP28, eps 914, 1015, 1072, 1121)"
+            },
+            {
+              "node": {
+                "id": 120120,
+                "name": {
+                  "full": "Bahi JD",
+                  "native": "\u30D0\u30D2\u30FBJD",
+                  "userPreferred": "Bahi JD"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/25120-TDOKOqLgy4ti.jpg"
+                },
+                "favourites": 158
+              },
+              "role": "Assistant Animation Director (ep 1072)"
+            },
+            {
+              "node": {
+                "id": 95859,
+                "name": {
+                  "full": "Leah Clark",
+                  "native": null,
+                  "userPreferred": "Leah Clark"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/859.jpg"
+                },
+                "favourites": 150
+              },
+              "role": "Theme Song Performance (English; ED6)"
+            },
+            {
+              "node": {
+                "id": 135955,
+                "name": {
+                  "full": "Koudai Watanabe",
+                  "native": "\u6E21\u908A\u5DE7\u5927",
+                  "userPreferred": "Koudai Watanabe"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n135955-LByTjaa6HlyC.png"
+                },
+                "favourites": 143
+              },
+              "role": "Key Animation (OP18, eps 696, 870)"
+            },
+            {
+              "node": {
+                "id": 214408,
+                "name": {
+                  "full": "Kay Yu",
+                  "native": "\u30B1\u30A4\u30E6\u30A6",
+                  "userPreferred": "Kay Yu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n214408-D02XFoHbBhnP.jpg"
+                },
+                "favourites": 128
+              },
+              "role": "Key Animation (ep 1066)"
+            },
+            {
+              "node": {
+                "id": 143517,
+                "name": {
+                  "full": "Akihiro Oota",
+                  "native": "\u592A\u7530\u6643\u535A",
+                  "userPreferred": "Akihiro Oota"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n143517-sLlak7YB5rdb.png"
+                },
+                "favourites": 120
+              },
+              "role": "Assistant Animation Director (eps 1019, 1025, 1033, 1049, 1061, 1072, 1100, 1112, 1122)"
+            },
+            {
+              "node": {
+                "id": 143517,
+                "name": {
+                  "full": "Akihiro Oota",
+                  "native": "\u592A\u7530\u6643\u535A",
+                  "userPreferred": "Akihiro Oota"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n143517-sLlak7YB5rdb.png"
+                },
+                "favourites": 120
+              },
+              "role": "Key Animation (OP27, eps 542, 590, 691, 696, 730, 732, 1019, 1025, 1033, 1049, 1061, 1072, 1100, 1112, 1122, 1127)"
+            },
+            {
+              "node": {
+                "id": 172088,
+                "name": {
+                  "full": "Takeshi Maenami",
+                  "native": "\u524D\u4E26\u6B66\u5FD7",
+                  "userPreferred": "Takeshi Maenami"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n172088-PQfwnq4hIRIu.png"
+                },
+                "favourites": 110
+              },
+              "role": "Storyboard (ep 1072)"
+            },
+            {
+              "node": {
+                "id": 172088,
+                "name": {
+                  "full": "Takeshi Maenami",
+                  "native": "\u524D\u4E26\u6B66\u5FD7",
+                  "userPreferred": "Takeshi Maenami"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n172088-PQfwnq4hIRIu.png"
+                },
+                "favourites": 110
+              },
+              "role": "Key Animation (OP23, OP24, eps 915, 960, 966, 978)"
+            },
+            {
+              "node": {
+                "id": 95475,
+                "name": {
+                  "full": "Stephanie Young",
+                  "native": null,
+                  "userPreferred": "Stephanie Young"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95475-QV9KFgsYrsPb.jpg"
+                },
+                "favourites": 104
+              },
+              "role": "Theme Song Performance (English; ED4, ED12)"
+            },
+            {
+              "node": {
+                "id": 136740,
+                "name": {
+                  "full": "Shuu Sugita",
+                  "native": "\u6749\u7530\u67CA",
+                  "userPreferred": "Shuu Sugita"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n136740-VdiAWTqznOfw.jpg"
+                },
+                "favourites": 104
+              },
+              "role": "Animation Director (ep 1074)"
+            },
+            {
+              "node": {
+                "id": 136740,
+                "name": {
+                  "full": "Shuu Sugita",
+                  "native": "\u6749\u7530\u67CA",
+                  "userPreferred": "Shuu Sugita"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n136740-VdiAWTqznOfw.jpg"
+                },
+                "favourites": 104
+              },
+              "role": "Key Animation (OP23-OP25, eps 925, 978, 1028, 1074)"
+            },
+            {
+              "node": {
+                "id": 214401,
+                "name": {
+                  "full": "Souta Shigetsugu",
+                  "native": "\u91CD\u6B21\u5275\u592A",
+                  "userPreferred": "Souta Shigetsugu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n214401-CZdYemhYAV7b.jpg"
+                },
+                "favourites": 96
+              },
+              "role": "Animation Director (eps 1074, 1114, 1115)"
+            },
+            {
+              "node": {
+                "id": 214401,
+                "name": {
+                  "full": "Souta Shigetsugu",
+                  "native": "\u91CD\u6B21\u5275\u592A",
+                  "userPreferred": "Souta Shigetsugu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n214401-CZdYemhYAV7b.jpg"
+                },
+                "favourites": 96
+              },
+              "role": "2nd Key Animation (eps 1001, 1062)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

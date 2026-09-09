@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 21,
+    "page": 3,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-09T15:56:12.247641+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 3
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 214401,
+                "name": {
+                  "full": "Souta Shigetsugu",
+                  "native": "\u91CD\u6B21\u5275\u592A",
+                  "userPreferred": "Souta Shigetsugu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n214401-CZdYemhYAV7b.jpg"
+                },
+                "favourites": 96
+              },
+              "role": "Key Animation (OP24-OP26, eps 960, 978, 1012, 1053, 1055, 1074, 1114)"
+            },
+            {
+              "node": {
+                "id": 214401,
+                "name": {
+                  "full": "Souta Shigetsugu",
+                  "native": "\u91CD\u6B21\u5275\u592A",
+                  "userPreferred": "Souta Shigetsugu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n214401-CZdYemhYAV7b.jpg"
+                },
+                "favourites": 96
+              },
+              "role": "Storyboard (ep 1074)"
+            },
+            {
+              "node": {
+                "id": 214401,
+                "name": {
+                  "full": "Souta Shigetsugu",
+                  "native": "\u91CD\u6B21\u5275\u592A",
+                  "userPreferred": "Souta Shigetsugu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n214401-CZdYemhYAV7b.jpg"
+                },
+                "favourites": 96
+              },
+              "role": "Storyboard Assistance (ep 1062)"
+            },
+            {
+              "node": {
+                "id": 95202,
+                "name": {
+                  "full": "Mike McFarland",
+                  "native": null,
+                  "userPreferred": "Mike McFarland"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/202.jpg"
+                },
+                "favourites": 95
+              },
+              "role": "ADR Director (English)"
+            },
+            {
+              "node": {
+                "id": 152776,
+                "name": {
+                  "full": "Hiroyuki Takashima",
+                  "native": "\u9AD9\u5D8B\u5B8F\u4E4B",
+                  "userPreferred": "Hiroyuki Takashima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n152776-IgD4SyWczAlL.png"
+                },
+                "favourites": 94
+              },
+              "role": "Key Animation (OP24, OP25, ep 1074)"
+            },
+            {
+              "node": {
+                "id": 157363,
+                "name": {
+                  "full": "Chris",
+                  "native": "Christoph Th\u00F6nes",
+                  "userPreferred": "Chris"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n157363-PKgW2VaBlSoi.png"
+                },
+                "favourites": 92
+              },
+              "role": "Key Animation (OP25-OP28, ED19, eps 1015, 1017, 1027, 1054, 1057, 1062, 1071, 1072, 1074, 1093, 1096, 1101, 1114, 1115, 1122, 1125, 1137, 1144)"
+            },
+            {
+              "node": {
+                "id": 101167,
+                "name": {
+                  "full": "Namie Amuro",
+                  "native": "\u5B89\u5BA4\u5948\u7F8E\u6075",
+                  "userPreferred": "Namie Amuro"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101167-XA6Wsp1J4Vhh.png"
+                },
+                "favourites": 89
+              },
+              "role": "Theme Song Performance (OP14, OP20)"
+            },
+            {
+              "node": {
+                "id": 111779,
+                "name": {
+                  "full": "Hiroshi Kitadani",
+                  "native": "\u304D\u305F\u3060\u306B\u3072\u308D\u3057",
+                  "userPreferred": "Hiroshi Kitadani"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n111779-AOuFPUXTcETb.jpg"
+                },
+                "favourites": 88
+              },
+              "role": "Theme Song Performance (OP1, OP15, OP22, OP26)"
+            },
+            {
+              "node": {
+                "id": 101459,
+                "name": {
+                  "full": "Shigeyasu Yamauchi",
+                  "native": "\u5C71\u5185\u91CD\u4FDD",
+                  "userPreferred": "Shigeyasu Yamauchi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101459-dbrtGqU0hX1h.jpg"
+                },
+                "favourites": 85
+              },
+              "role": "Storyboard (eps 6, 11, 167, 939, 986, 1029, 1042)"
+            },
+            {
+              "node": {
+                "id": 101459,
+                "name": {
+                  "full": "Shigeyasu Yamauchi",
+                  "native": "\u5C71\u5185\u91CD\u4FDD",
+                  "userPreferred": "Shigeyasu Yamauchi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101459-dbrtGqU0hX1h.jpg"
+                },
+                "favourites": 85
+              },
+              "role": "Episode Director (eps 6, 11, 167, 986, 1029, 1042)"
+            },
+            {
+              "node": {
+                "id": 136053,
+                "name": {
+                  "full": "Kazutaka Sugiyama",
+                  "native": "\u6749\u5C71\u548C\u9686",
+                  "userPreferred": "Kazutaka Sugiyama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n136053-azEhavFrzoiV.png"
+                },
+                "favourites": 79
+              },
+              "role": "Key Animation (OP25, ep 1074)"
+            },
+            {
+              "node": {
+                "id": 96423,
+                "name": {
+                  "full": "Marcelo Campos",
+                  "native": null,
+                  "userPreferred": "Marcelo Campos"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n96423-YaAvwaxG5fNk.jpg"
+                },
+                "favourites": 69
+              },
+              "role": "ADR Director Assistant (Brazilian Portuguese; 2nd dub)"
+            },
+            {
+              "node": {
+                "id": 141855,
+                "name": {
+                  "full": "Yuu Yoshiyama",
+                  "native": "\u82B3\u5C71\u512A",
+                  "userPreferred": "Yuu Yoshiyama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n141855-zKQKXPURPWS0.png"
+                },
+                "favourites": 67
+              },
+              "role": "Key Animation (OP28, eps 1000, 1065, 1069, 1074, 1081, 1087, 1093, 1100, 1111, 1115, 1122, 1125, 1135, 1144)"
+            },
+            {
+              "node": {
+                "id": 116353,
+                "name": {
+                  "full": "Giorgio Vanni",
+                  "native": null,
+                  "userPreferred": "Giorgio Vanni"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/21353.jpg"
+                },
+                "favourites": 66
+              },
+              "role": "Theme Song Performance (Italian)"
+            },
+            {
+              "node": {
+                "id": 126921,
+                "name": {
+                  "full": "Chengxi Huang",
+                  "native": "\u9EC4\u6210\u5E0C",
+                  "userPreferred": "Chengxi Huang"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n126921-FUVLoigPoq4b.png"
+                },
+                "favourites": 66
+              },
+              "role": "Key Animation (ep 1076)"
+            },
+            {
+              "node": {
+                "id": 103815,
+                "name": {
+                  "full": "Katsumi Ishizuka",
+                  "native": "\u77F3\u585A\u52DD\u6D77",
+                  "userPreferred": "Katsumi Ishizuka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n103815-8NrEBoEBJvFr.jpg"
+                },
+                "favourites": 65
+              },
+              "role": "Action Storyboard Assistance (ep 1004)"
+            },
+            {
+              "node": {
+                "id": 103815,
+                "name": {
+                  "full": "Katsumi Ishizuka",
+                  "native": "\u77F3\u585A\u52DD\u6D77",
+                  "userPreferred": "Katsumi Ishizuka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n103815-8NrEBoEBJvFr.jpg"
+                },
+                "favourites": 65
+              },
+              "role": "Action Storyboard (ep 1046)"
+            },
+            {
+              "node": {
+                "id": 103815,
+                "name": {
+                  "full": "Katsumi Ishizuka",
+                  "native": "\u77F3\u585A\u52DD\u6D77",
+                  "userPreferred": "Katsumi Ishizuka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n103815-8NrEBoEBJvFr.jpg"
+                },
+                "favourites": 65
+              },
+              "role": "Storyboard Assistance (eps 1093, 1144)"
+            },
+            {
+              "node": {
+                "id": 103815,
+                "name": {
+                  "full": "Katsumi Ishizuka",
+                  "native": "\u77F3\u585A\u52DD\u6D77",
+                  "userPreferred": "Katsumi Ishizuka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n103815-8NrEBoEBJvFr.jpg"
+                },
+                "favourites": 65
+              },
+              "role": "Storyboard (eps 1017, 1062)"
+            },
+            {
+              "node": {
+                "id": 103815,
+                "name": {
+                  "full": "Katsumi Ishizuka",
+                  "native": "\u77F3\u585A\u52DD\u6D77",
+                  "userPreferred": "Katsumi Ishizuka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n103815-8NrEBoEBJvFr.jpg"
+                },
+                "favourites": 65
+              },
+              "role": "Animation Director (eps 290, 298, 309, 317, 342, 353, 401, 419, 437, 447, 457, 464, 476, 486, 497, 511, 525, 538, 551, 561, 572, 583, 594, 1062, 1093, 1122, 1125, 1129, 1144)"
+            },
+            {
+              "node": {
+                "id": 103815,
+                "name": {
+                  "full": "Katsumi Ishizuka",
+                  "native": "\u77F3\u585A\u52DD\u6D77",
+                  "userPreferred": "Katsumi Ishizuka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n103815-8NrEBoEBJvFr.jpg"
+                },
+                "favourites": 65
+              },
+              "role": "Key Animation (OP22, OP23, eps 49, 92, 134, 135, 138, 174, 192, 202, 219, 226, 228, 236, 284, 298, 303, 309, 353, 363, 410, 426, 511, 561, 566, 583, 594, 602, 609, 616, 697, 825, 829, 834, 849, 852, 856, 862, 867, 870, 872, 884, 891-893, 899, 906, 914, 92"
+            },
+            {
+              "node": {
+                "id": 105862,
+                "name": {
+                  "full": "Kenichi Maeyamada",
+                  "native": "\u524D\u5C71\u7530\u5065\u4E00",
+                  "userPreferred": "Kenichi Maeyamada"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/10862.jpg"
+                },
+                "favourites": 64
+              },
+              "role": "Theme Song Composition (OP11)"
+            },
+            {
+              "node": {
+                "id": 144208,
+                "name": {
+                  "full": "Hirotaka Mori",
+                  "native": "\u68EE\u5927\u8CB4",
+                  "userPreferred": "Hirotaka Mori"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n144208-TdajgkpasrRP.png"
+                },
+                "favourites": 63
+              },
+              "role": "Assistant Episode Director (eps 563, 566, 569, 572, 575, 578, 581, 584, 587, 590, 593, 596, 598, 601, 604, 607, 609, 611, 614, 616, 618, 621, 624, 627, 630, 633, 636, 639, 641, 644, 648)"
+            },
+            {
+              "node": {
+                "id": 106201,
+                "name": {
+                  "full": "Hideki Araki",
+                  "native": "\u8352\u6728\u82F1\u6A39",
+                  "userPreferred": "Hideki Araki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/106201-mGFH476I8Ke8.jpg"
+                },
+                "favourites": 57
+              },
+              "role": "Key Animation (eps 578, 581, 587, 608, 611, 617, 624, 663)"
+            },
+            {
+              "node": {
+                "id": 103241,
+                "name": {
+                  "full": "\u00DArsula Bezerra",
+                  "native": null,
+                  "userPreferred": "\u00DArsula Bezerra"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n103241-4XFY7zokJaJu.jpg"
+                },
+                "favourites": 54
+              },
+              "role": "ADR Director Assistant (Brazilian Portuguese; 2nd dub)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

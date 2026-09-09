@@ -1,0 +1,254 @@
+﻿{
+  "operationName": "StaffMediaPage",
+  "variables": {
+    "id": 112215,
+    "page": 1,
+    "sort": [
+      "START_DATE_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "854f8cd86a00",
+  "recordedAt": "2026-09-06T05:29:44.3162328+00:00",
+  "response": {
+    "data": {
+      "Staff": {
+        "staffMedia": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 145665,
+                "title": {
+                  "romaji": "NieR:Automata Ver1.1a",
+                  "english": "NieR:Automata Ver1.1a",
+                  "native": "NieR:Automata Ver1.1a"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx145665-Qs53Mta5ngqs.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx145665-Qs53Mta5ngqs.jpg"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 73,
+                "favourites": 2620,
+                "popularity": 120773,
+                "startDate": {
+                  "year": 2023,
+                  "month": 1,
+                  "day": 8
+                },
+                "mediaListEntry": null
+              },
+              "staffRole": "Painting Assistance (ep 8)"
+            },
+            {
+              "node": {
+                "id": 124082,
+                "title": {
+                  "romaji": "Azur Lane Anime PVs",
+                  "english": null,
+                  "native": "\u30A2\u30BA\u30FC\u30EB\u30EC\u30FC\u30F3 \u30A2\u30CB\u30E1PVs"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx124082-ex34xC20rmHW.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx124082-ex34xC20rmHW.png"
+                },
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "RELEASING",
+                "averageScore": 62,
+                "favourites": 41,
+                "popularity": 1787,
+                "startDate": {
+                  "year": 2020,
+                  "month": 4,
+                  "day": 17
+                },
+                "mediaListEntry": null
+              },
+              "staffRole": "Insert Song Performance (ep 5)"
+            },
+            {
+              "node": {
+                "id": 101338,
+                "title": {
+                  "romaji": "Mob Psycho 100 II",
+                  "english": "Mob Psycho 100 II",
+                  "native": "\u30E2\u30D6\u30B5\u30A4\u30B3100 II"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx101338-rokVscjRYzdP.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101338-rokVscjRYzdP.jpg"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 87,
+                "favourites": 25629,
+                "popularity": 448059,
+                "startDate": {
+                  "year": 2019,
+                  "month": 1,
+                  "day": 7
+                },
+                "mediaListEntry": {
+                  "id": 593364017,
+                  "status": "COMPLETED",
+                  "progress": 13,
+                  "score": 9
+                }
+              },
+              "staffRole": "Insert Song Performance (ep 6)"
+            },
+            {
+              "node": {
+                "id": 101291,
+                "title": {
+                  "romaji": "Seishun Buta Yarou wa Bunny Girl Senpai no Yume wo Minai",
+                  "english": "Rascal Does Not Dream of Bunny Girl Senpai",
+                  "native": "\u9752\u6625\u30D6\u30BF\u91CE\u90CE\u306F\u30D0\u30CB\u30FC\u30AC\u30FC\u30EB\u5148\u8F29\u306E\u5922\u3092\u898B\u306A\u3044"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx101291-wfEdgPqtfU0l.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101291-wfEdgPqtfU0l.jpg"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 81,
+                "favourites": 33426,
+                "popularity": 577981,
+                "startDate": {
+                  "year": 2018,
+                  "month": 10,
+                  "day": 4
+                },
+                "mediaListEntry": {
+                  "id": 593364401,
+                  "status": "COMPLETED",
+                  "progress": 13,
+                  "score": 10
+                }
+              },
+              "staffRole": "Theme Song Performance (ED1, ED4)"
+            },
+            {
+              "node": {
+                "id": 99586,
+                "title": {
+                  "romaji": "Harukana Receive",
+                  "english": "Harukana Receive",
+                  "native": "\u306F\u308B\u304B\u306A\u30EC\u30B7\u30FC\u30D6"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx99586-mnJTcYlTpC5T.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx99586-mnJTcYlTpC5T.jpg"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 64,
+                "favourites": 337,
+                "popularity": 38552,
+                "startDate": {
+                  "year": 2018,
+                  "month": 7,
+                  "day": 6
+                },
+                "mediaListEntry": null
+              },
+              "staffRole": "Theme Song Performance (ED1)"
+            },
+            {
+              "node": {
+                "id": 97994,
+                "title": {
+                  "romaji": "Blend S",
+                  "english": "BLEND-S",
+                  "native": "\u30D6\u30EC\u30F3\u30C9\u30FBS"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx97994-JZ1rLkJBcO8V.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx97994-JZ1rLkJBcO8V.png"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 70,
+                "favourites": 2692,
+                "popularity": 180974,
+                "startDate": {
+                  "year": 2017,
+                  "month": 10,
+                  "day": 8
+                },
+                "mediaListEntry": null
+              },
+              "staffRole": "SNS Icon Illustration (ep 9)"
+            },
+            {
+              "node": {
+                "id": 97994,
+                "title": {
+                  "romaji": "Blend S",
+                  "english": "BLEND-S",
+                  "native": "\u30D6\u30EC\u30F3\u30C9\u30FBS"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx97994-JZ1rLkJBcO8V.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx97994-JZ1rLkJBcO8V.png"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 70,
+                "favourites": 2692,
+                "popularity": 180974,
+                "startDate": {
+                  "year": 2017,
+                  "month": 10,
+                  "day": 8
+                },
+                "mediaListEntry": null
+              },
+              "staffRole": "Subtitle Character (ep 4)"
+            },
+            {
+              "node": {
+                "id": 99742,
+                "title": {
+                  "romaji": "Cinderella Girls Gekijou 2nd Season",
+                  "english": "THE iDOLM@STER CINDERELLA GIRLS Theater 2nd Season (TV)",
+                  "native": "\u30B7\u30F3\u30C7\u30EC\u30E9\u30AC\u30FC\u30EB\u30BA\u5287\u5834 2\u671F"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx99742-duoJA5BKNBNe.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx99742-duoJA5BKNBNe.jpg"
+                },
+                "format": "TV_SHORT",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 65,
+                "favourites": 7,
+                "popularity": 3740,
+                "startDate": {
+                  "year": 2017,
+                  "month": 10,
+                  "day": 3
+                },
+                "mediaListEntry": null
+              },
+              "staffRole": "Theme Song Performance (ED 1)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

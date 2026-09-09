@@ -1,0 +1,428 @@
+﻿{
+  "operationName": "MediaCharactersPage",
+  "variables": {
+    "id": 85470,
+    "page": 1,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "64eed76a7328",
+  "recordedAt": "2026-09-06T05:26:08.7747071+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "characters": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 88350,
+                "name": {
+                  "full": "Roxy Migurdia",
+                  "native": "\u30ED\u30AD\u30B7\u30FC\u30FB\u30DF\u30B0\u30EB\u30C7\u30A3\u30A2",
+                  "userPreferred": "Roxy Migurdia"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b88350-QU1iwgZ887U8.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b88350-QU1iwgZ887U8.png"
+                },
+                "favourites": 11952
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 88348,
+                "name": {
+                  "full": "Rudeus Greyrat",
+                  "native": "\u30EB\u30FC\u30C7\u30A6\u30B9\u30FB\u30B0\u30EC\u30A4\u30E9\u30C3\u30C8",
+                  "userPreferred": "Rudeus Greyrat"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b88348-bIe5XnXdRpmX.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b88348-bIe5XnXdRpmX.png"
+                },
+                "favourites": 8563
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 88349,
+                "name": {
+                  "full": "Eris Boreas Greyrat",
+                  "native": "\u30A8\u30EA\u30B9\u30FB\u30DC\u30EC\u30A2\u30B9\u30FB\u30B0\u30EC\u30A4\u30E9\u30C3\u30C8",
+                  "userPreferred": "Eris Boreas Greyrat"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b88349-5dsNUah3oBj8.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b88349-5dsNUah3oBj8.png"
+                },
+                "favourites": 7243
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 88346,
+                "name": {
+                  "full": "Sylphiette",
+                  "native": "\u30B7\u30EB\u30D5\u30A3\u30A8\u30C3\u30C8",
+                  "userPreferred": "Sylphiette"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b88346-h8kCL93AXj4n.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b88346-h8kCL93AXj4n.png"
+                },
+                "favourites": 4447
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 206604,
+                "name": {
+                  "full": "Sara",
+                  "native": "\u30B5\u30E9",
+                  "userPreferred": "Sara"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b206604-kMvs5P9cXJLK.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b206604-kMvs5P9cXJLK.png"
+                },
+                "favourites": 2644
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 88351,
+                "name": {
+                  "full": "Ruijerd Superdia",
+                  "native": "\u30EB\u30A4\u30B8\u30A7\u30EB\u30C9\u30FB\u30B9\u30DA\u30EB\u30C7\u30A3\u30A2",
+                  "userPreferred": "Ruijerd Superdia"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b88351-grqY44xz6bvP.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b88351-grqY44xz6bvP.png"
+                },
+                "favourites": 1908
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 206392,
+                "name": {
+                  "full": "Ghislaine Dedoldia",
+                  "native": "\u30AE\u30EC\u30FC\u30CC\u30FB\u30C7\u30C9\u30EB\u30C7\u30A3\u30A2",
+                  "userPreferred": "Ghislaine Dedoldia"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b206392-BKJ4J3S2FzpF.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b206392-BKJ4J3S2FzpF.png"
+                },
+                "favourites": 1234
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 88347,
+                "name": {
+                  "full": "Paul Greyrat",
+                  "native": "\u30D1\u30A6\u30ED\u30FB\u30B0\u30EC\u30A4\u30E9\u30C3\u30C8",
+                  "userPreferred": "Paul Greyrat"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b88347-YtQTlChhN50m.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b88347-YtQTlChhN50m.png"
+                },
+                "favourites": 1113
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 187382,
+                "name": {
+                  "full": "Orsted",
+                  "native": "\u30AA\u30EB\u30B9\u30C6\u30C3\u30C9",
+                  "userPreferred": "Orsted"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b187382-NBP6I5OKXHH9.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b187382-NBP6I5OKXHH9.png"
+                },
+                "favourites": 886
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 145459,
+                "name": {
+                  "full": "Aisha Greyrat",
+                  "native": "\u30A2\u30A4\u30B7\u30E3\u30FB\u30B0\u30EC\u30A4\u30E9\u30C3\u30C8",
+                  "userPreferred": "Aisha Greyrat"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b145459-qCq1vKZtxkT3.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b145459-qCq1vKZtxkT3.png"
+                },
+                "favourites": 638
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 179855,
+                "name": {
+                  "full": "Zenith Greyrat",
+                  "native": "\u30BC\u30CB\u30B9\u30FB\u30B0\u30EC\u30A4\u30E9\u30C3\u30C8",
+                  "userPreferred": "Zenith Greyrat"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b179855-Tape2W456xwI.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b179855-Tape2W456xwI.png"
+                },
+                "favourites": 629
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 186490,
+                "name": {
+                  "full": "Elinalise Dragonroad",
+                  "native": "\u30A8\u30EA\u30CA\u30EA\u30FC\u30BC\u30FB\u30C9\u30E9\u30B4\u30F3\u30ED\u30FC\u30C9",
+                  "userPreferred": "Elinalise Dragonroad"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b186490-XcaRQQOOrSwX.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b186490-XcaRQQOOrSwX.png"
+                },
+                "favourites": 580
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 137816,
+                "name": {
+                  "full": "Shizuka Nanahoshi",
+                  "native": "\u4E03\u661F\u9759\u9999",
+                  "userPreferred": "Shizuka Nanahoshi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b137816-ub5QE86fHD3C.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b137816-ub5QE86fHD3C.png"
+                },
+                "favourites": 531
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 179854,
+                "name": {
+                  "full": "Lilia",
+                  "native": "\u30EA\u30FC\u30EA\u30E3",
+                  "userPreferred": "Lilia"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b179854-hgRPJ1646RIK.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b179854-hgRPJ1646RIK.png"
+                },
+                "favourites": 503
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 145458,
+                "name": {
+                  "full": "Norn Greyrat",
+                  "native": "\u30CE\u30EB\u30F3\u30FB\u30B0\u30EC\u30A4\u30E9\u30C3\u30C8",
+                  "userPreferred": "Norn Greyrat"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b145458-JG4FkAjUjw2l.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b145458-JG4FkAjUjw2l.png"
+                },
+                "favourites": 492
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 186588,
+                "name": {
+                  "full": "Kishirika Kishirisu",
+                  "native": "\u30AD\u30B7\u30EA\u30AB\u30FB\u30AD\u30B7\u30EA\u30B9",
+                  "userPreferred": "Kishirika Kishirisu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b186588-hooSSJ8S9Wcv.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b186588-hooSSJ8S9Wcv.png"
+                },
+                "favourites": 350
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 187710,
+                "name": {
+                  "full": "Zanoba  Shirone",
+                  "native": "\u30B6\u30CE\u30D0\u30FB\u30B7\u30FC\u30ED\u30FC\u30F3",
+                  "userPreferred": "Zanoba  Shirone"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b187710-z6jIlP8QLJmB.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b187710-z6jIlP8QLJmB.jpg"
+                },
+                "favourites": 322
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 187380,
+                "name": {
+                  "full": "Linia Dedoldia",
+                  "native": "\u30EA\u30CB\u30A2\u30FB\u30C7\u30C9\u30EB\u30C7\u30A3\u30A2",
+                  "userPreferred": "Linia Dedoldia"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b187380-6ZEpCbKFk3vj.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b187380-6ZEpCbKFk3vj.png"
+                },
+                "favourites": 237
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 187381,
+                "name": {
+                  "full": "Pursena Adoldia",
+                  "native": "\u30D7\u30EB\u30BB\u30CA\u30FB\u30A2\u30C9\u30EB\u30C7\u30A3\u30A2\t",
+                  "userPreferred": "Pursena Adoldia"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b187381-WnuMhmJwruWn.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b187381-WnuMhmJwruWn.png"
+                },
+                "favourites": 223
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 187716,
+                "name": {
+                  "full": "Ariel Asura",
+                  "native": "\u30A2\u30EA\u30A8\u30EB\u30FB\u30A2\u30CD\u30E2\u30A4\u30FB\u30A2\u30B9\u30E9",
+                  "userPreferred": "Ariel Anemoi Asura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b187716-ADbNvyRZDcPa.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b187716-ADbNvyRZDcPa.png"
+                },
+                "favourites": 188
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 245377,
+                "name": {
+                  "full": "Soldat Heckler",
+                  "native": "\u30BE\u30EB\u30C0\u30FC\u30C8\u30FB\u30D8\u30C3\u30B1\u30E9\u30FC",
+                  "userPreferred": "Soldat Heckler"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b245377-4ahGPt8W6LIs.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b245377-4ahGPt8W6LIs.jpg"
+                },
+                "favourites": 177
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 255894,
+                "name": {
+                  "full": "Cliff Grimoire",
+                  "native": "\u30AF\u30EA\u30D5\u30FB\u30B0\u30EA\u30E2\u30EB",
+                  "userPreferred": "Cliff Grimoire"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b255894-m8YzAbnDgsIh.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b255894-m8YzAbnDgsIh.jpg"
+                },
+                "favourites": 171
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 208081,
+                "name": {
+                  "full": "Hilda Boreas Greyrat",
+                  "native": "\u30D2\u30EB\u30C0\u30FB\u30DC\u30EC\u30A2\u30B9\u30FB\u30B0\u30EC\u30A4\u30E9\u30C3\u30C8",
+                  "userPreferred": "Hilda Boreas Greyrat"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b208081-IkGyzIBSLI8H.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b208081-IkGyzIBSLI8H.png"
+                },
+                "favourites": 145
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 230591,
+                "name": {
+                  "full": "Juliette",
+                  "native": "\u30B8\u30E5\u30EA\u30A8\u30C3\u30C8",
+                  "userPreferred": "Juliette"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b230591-lSz3ho8eJixx.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b230591-lSz3ho8eJixx.png"
+                },
+                "favourites": 118
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 226704,
+                "name": {
+                  "full": "Geese Nukadia",
+                  "native": "\u30AE\u30FC\u30B9\u30FB\u30CC\u30FC\u30AB\u30C7\u30A3\u30A2",
+                  "userPreferred": "Geese Nukadia"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b226704-6GaXd0Ya1lW6.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b226704-6GaXd0Ya1lW6.png"
+                },
+                "favourites": 112
+              },
+              "role": "SUPPORTING"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

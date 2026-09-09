@@ -39,6 +39,31 @@ If local is behind the PR branch, pull before evaluating. If you cannot — dirt
 tree, mid-rebase — say so explicitly and treat every code claim as provisional
 rather than quietly reasoning from the stale copy.
 
+## Suppressed comments are not optional reading
+
+Copilot posts some findings as inline threads and files the rest under
+**Suppressed comments** inside its review body — findings it generated but chose
+not to raise as threads. They appear nowhere in the PR's comment list, so nothing
+marks them read, nothing resolves them, and they are easy to never see at all.
+
+They are often the sharpest ones, because the suppression is about Copilot's
+confidence, not the finding's importance. A suppressed comment on #161 was the
+only thing that caught `SaveMediaListEntry` recording deletes but not saves.
+
+`Get-OpenPrComments.ps1` now unwraps the `<details>` block these live in, so they
+land in the report under a `Suppressed comments` heading. Read that section with
+the same seriousness as the inline threads.
+
+Two things to know when acting on one:
+
+- **There is no thread to resolve.** Suppressed comments have no `databaseId` and
+  no `reviewThread`, so the reply/resolve flow in Step 3 does not apply. Address
+  the finding in code, and say what you did in the PR description or a general PR
+  comment instead — otherwise there is no record that it was considered.
+- **They can be stale in a way threads are not.** A thread gets marked Outdated
+  when its line moves; a suppressed comment never does. Check the cited code
+  before assuming the concern is still live.
+
 ## Step 2: Evaluate Each Comment
 
 For each comment:

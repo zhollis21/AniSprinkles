@@ -1,0 +1,112 @@
+﻿{
+  "operationName": "CharacterMediaPage",
+  "variables": {
+    "id": 61,
+    "page": 3,
+    "sort": [
+      "TITLE_ROMAJI",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "2ff9193259a9",
+  "recordedAt": "2026-09-09T15:58:33.0320216+00:00",
+  "response": {
+    "data": {
+      "Character": {
+        "media": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 3
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 177475,
+                "title": {
+                  "romaji": "ONE PIECE\u00D7KAWAISOUNI! Kono Boushi wo Omae ni Azukeru",
+                  "english": null,
+                  "native": "ONE PIECE\u00D7\u53EF\u54C0\u60F3\u306B\uFF01\uFF5E\u3053\u306E\u5E3D\u5B50\u3092 \u304A\u524D\u306B\u9810\u3051\u308B\uFF5E"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx177475-8HlvUgopoH0S.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx177475-8HlvUgopoH0S.png"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 58,
+                "favourites": 3,
+                "popularity": 770,
+                "startDate": {
+                  "year": 2024,
+                  "month": 3,
+                  "day": 3
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 103252,
+                "title": {
+                  "romaji": "Shokugeki no Sanji",
+                  "english": "One Piece: Shokugeki no Sanji",
+                  "native": "\u98DF\u621F\u306E\u30B5\u30F3\u30B8"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx103252-58RbwHibqsJY.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx103252-58RbwHibqsJY.jpg"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "averageScore": 70,
+                "favourites": 99,
+                "popularity": 6961,
+                "startDate": {
+                  "year": 2018,
+                  "month": 7,
+                  "day": 23
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "SUPPORTING",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 126649,
+                "title": {
+                  "romaji": "Tokyo One Piece Tower: Tongari Shima no Dai Hihou",
+                  "english": "The Great Tongari Island Treasure Hunting Adventure",
+                  "native": "\u6771\u4EAC\u30EF\u30F3\u30D4\u30FC\u30B9\u30BF\u30EF\u30FC \u30C8\u30F3\u30AC\u30EA\u5CF6\u306E\u5927\u79D8\u5B9D"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b126649-sbuKTAghtsln.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b126649-sbuKTAghtsln.jpg"
+                },
+                "format": "MOVIE",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 60,
+                "favourites": 9,
+                "popularity": 2182,
+                "startDate": {
+                  "year": 2016,
+                  "month": 11,
+                  "day": 1
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "SUPPORTING",
+              "voiceActors": []
+            }
+          ]
+        }
+      }
+    }
+  }
+}

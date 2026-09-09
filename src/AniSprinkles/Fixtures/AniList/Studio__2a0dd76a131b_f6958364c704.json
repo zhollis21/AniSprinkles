@@ -1,0 +1,639 @@
+﻿{
+  "operationName": "Studio",
+  "variables": {
+    "id": 102,
+    "mediaPage": 1,
+    "mediaPerPage": 25,
+    "mediaSort": [
+      "TITLE_ROMAJI",
+      "ID"
+    ]
+  },
+  "queryFingerprint": "f6958364c704",
+  "recordedAt": "2026-09-09T16:01:22.6074242+00:00",
+  "response": {
+    "data": {
+      "Studio": {
+        "id": 102,
+        "name": "Funimation",
+        "isAnimationStudio": false,
+        "favourites": 1124,
+        "isFavourite": false,
+        "siteUrl": "https://anilist.co/studio/102",
+        "media": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "nodes": [
+            {
+              "id": 3269,
+              "title": {
+                "romaji": ".hack//G.U. Trilogy",
+                "english": null,
+                "native": ".hack//G.U. Trilogy"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx3269-8LX2zM2vgr4f.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx3269-8LX2zM2vgr4f.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 66,
+              "favourites": 41,
+              "popularity": 5890,
+              "startDate": {
+                "year": 2008,
+                "month": 3,
+                "day": 25
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 9332,
+              "title": {
+                "romaji": ".hack//Quantum",
+                "english": null,
+                "native": "\u30C9\u30C3\u30C8\u30CF\u30C3\u30AF \u30AF\u30EF\u30F3\u30BF\u30E0"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/9332.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/9332.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 68,
+              "favourites": 34,
+              "popularity": 7878,
+              "startDate": {
+                "year": 2011,
+                "month": 1,
+                "day": 28
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 873,
+              "title": {
+                "romaji": ".hack//Roots",
+                "english": ".hack//Roots",
+                "native": ".hack//Roots"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx873-OizdLkXe1uYR.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx873-OizdLkXe1uYR.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 65,
+              "favourites": 107,
+              "popularity": 12154,
+              "startDate": {
+                "year": 2006,
+                "month": 4,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 11755,
+              "title": {
+                "romaji": "009 RE:CYBORG",
+                "english": "009 Re:Cyborg",
+                "native": "009 RE:CYBORG"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx11755-1iVlPw2ggApz.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx11755-1iVlPw2ggApz.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 59,
+              "favourites": 40,
+              "popularity": 5648,
+              "startDate": {
+                "year": 2012,
+                "month": 10,
+                "day": 27
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 3234,
+              "title": {
+                "romaji": "009-1 Special",
+                "english": "009-1 Special",
+                "native": "\u30BC\u30ED\u30BC\u30ED\u30CA\u30A4\u30F3\u30EF\u30F3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/3234.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/3234.jpg"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 57,
+              "favourites": 7,
+              "popularity": 1483,
+              "startDate": {
+                "year": 2007,
+                "month": 4,
+                "day": 25
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 880,
+              "title": {
+                "romaji": "Aa! Megami-sama!: Sorezore no Tsubasa",
+                "english": "Oh! My Goddess: Flights of Fancy",
+                "native": "\u3042\u3042\u3063\u5973\u795E\u3055\u307E\u3063 \u305D\u308C\u305E\u308C\u306E\u7FFC"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx880-ObSuNphjY7VT.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx880-ObSuNphjY7VT.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 73,
+              "favourites": 86,
+              "popularity": 10720,
+              "startDate": {
+                "year": 2006,
+                "month": 4,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2198,
+              "title": {
+                "romaji": "Aa! Megami-sama!: Sorezore no Tsubasa Specials",
+                "english": "Oh! My Goddess: Flights of Fancy Specials",
+                "native": "\u3042\u3042\u3063\u5973\u795E\u3055\u307E\u3063\u3000\u305D\u308C\u305E\u308C\u306E\u7FFC"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx2198-0pDZwYhmXHlG.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2198-0pDZwYhmXHlG.png"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 72,
+              "favourites": 26,
+              "popularity": 4802,
+              "startDate": {
+                "year": 2007,
+                "month": 2,
+                "day": 23
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 110867,
+              "title": {
+                "romaji": "Africa no Salaryman (TV)",
+                "english": "Africa Salaryman",
+                "native": "\u30A2\u30D5\u30EA\u30AB\u306E\u30B5\u30E9\u30EA\u30FC\u30DE\u30F3 (TV)"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx110867-93WWQaUgpUOS.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx110867-93WWQaUgpUOS.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 59,
+              "favourites": 74,
+              "popularity": 9450,
+              "startDate": {
+                "year": 2019,
+                "month": 10,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1292,
+              "title": {
+                "romaji": "Afro Samurai",
+                "english": "Afro Samurai",
+                "native": "\u30A2\u30D5\u30ED\u30B5\u30E0\u30E9\u30A4"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1292-FcyYgq7Ly34H.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1292-FcyYgq7Ly34H.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 71,
+              "favourites": 1507,
+              "popularity": 87334,
+              "startDate": {
+                "year": 2007,
+                "month": 1,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 13709,
+              "title": {
+                "romaji": "AFRO SAMURAI Movie",
+                "english": "Afro Samurai the Movie",
+                "native": "AFRO SAMURAI \u5287\u5834\u7248"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx13709-nUNyhw7NOiLr.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx13709-nUNyhw7NOiLr.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 72,
+              "favourites": 177,
+              "popularity": 13652,
+              "startDate": {
+                "year": 2007,
+                "month": 10,
+                "day": 27
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 4970,
+              "title": {
+                "romaji": "Afro Samurai: Resurrection",
+                "english": "Afro Samurai: Resurrection",
+                "native": "\u30A2\u30D5\u30ED\u30B5\u30E0\u30E9\u30A4\uFF1A\u30EC\u30B6\u30EC\u30AF\u30B7\u30E7\u30F3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx4970-RtaPhHFnrjpb.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx4970-RtaPhHFnrjpb.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 70,
+              "favourites": 255,
+              "popularity": 22371,
+              "startDate": {
+                "year": 2009,
+                "month": 1,
+                "day": 25
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 123899,
+              "title": {
+                "romaji": "Ai no Utagoe wo Kikasete",
+                "english": "Sing a Bit of Harmony",
+                "native": "\u30A2\u30A4\u306E\u6B4C\u58F0\u3092\u8074\u304B\u305B\u3066"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx123899-AimlRWzAqpHC.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx123899-AimlRWzAqpHC.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 75,
+              "favourites": 618,
+              "popularity": 44637,
+              "startDate": {
+                "year": 2021,
+                "month": 10,
+                "day": 29
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 20726,
+              "title": {
+                "romaji": "Ai Tenchi Muyou!",
+                "english": "Ai Tenchi Muyo!",
+                "native": "\u611B\u30FB\u5929\u5730\u7121\u7528!"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx20726-unPfLPhwnSek.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx20726-unPfLPhwnSek.jpg"
+              },
+              "format": "TV_SHORT",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 55,
+              "favourites": 86,
+              "popularity": 8771,
+              "startDate": {
+                "year": 2014,
+                "month": 10,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 53,
+              "title": {
+                "romaji": "Ai Yori Aoshi",
+                "english": "Ai Yori Aoshi",
+                "native": "\u85CD\u3088\u308A\u9752\u3057"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx53-GPDXGvbhg4w5.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx53-GPDXGvbhg4w5.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 67,
+              "favourites": 159,
+              "popularity": 18288,
+              "startDate": {
+                "year": 2002,
+                "month": 4,
+                "day": 11
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 857,
+              "title": {
+                "romaji": "Air Gear",
+                "english": "Air Gear",
+                "native": "\u30A8\u30A2\u30FB\u30AE\u30A2"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b857-0pbF6kMJpUeL.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b857-0pbF6kMJpUeL.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 70,
+              "favourites": 1193,
+              "popularity": 59198,
+              "startDate": {
+                "year": 2006,
+                "month": 4,
+                "day": 5
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 47,
+              "title": {
+                "romaji": "AKIRA",
+                "english": "Akira",
+                "native": "AKIRA"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx47-4CR68arv452h.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx47-4CR68arv452h.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 79,
+              "favourites": 9253,
+              "popularity": 230887,
+              "startDate": {
+                "year": 1988,
+                "month": 7,
+                "day": 16
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 19429,
+              "title": {
+                "romaji": "Akuma no Riddle",
+                "english": "Riddle Story of Devil",
+                "native": "\u60AA\u9B54\u306E\u30EA\u30C9\u30EB"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx19429-DqVIQgPV0STD.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx19429-DqVIQgPV0STD.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 63,
+              "favourites": 571,
+              "popularity": 61580,
+              "startDate": {
+                "year": 2014,
+                "month": 4,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 20755,
+              "title": {
+                "romaji": "Ansatsu Kyoushitsu",
+                "english": "Assassination Classroom",
+                "native": "\u6697\u6BBA\u6559\u5BA4"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20755-dWrhs569YGUO.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20755-dWrhs569YGUO.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 79,
+              "favourites": 22959,
+              "popularity": 627557,
+              "startDate": {
+                "year": 2015,
+                "month": 1,
+                "day": 10
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 21303,
+              "title": {
+                "romaji": "Ansatsu Kyoushitsu: episode:0 Deai no Jikan",
+                "english": "Assassination Classroom: Meeting Time",
+                "native": "\u6697\u6BBA\u6559\u5BA4 episode:0 \u51FA\u4F1A\u3044\u306E\u6642\u9593"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b21303-CTioSWEf0cqn.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b21303-CTioSWEf0cqn.jpg"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 71,
+              "favourites": 161,
+              "popularity": 31246,
+              "startDate": {
+                "year": 2014,
+                "month": 11,
+                "day": 9
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 9737,
+              "title": {
+                "romaji": "Appleseed XIII",
+                "english": null,
+                "native": "\u30A2\u30C3\u30D7\u30EB\u30B7\u30FC\u30C9 XIII"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx9737-5ScTxWyYT3DH.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx9737-5ScTxWyYT3DH.png"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 55,
+              "favourites": 13,
+              "popularity": 2975,
+              "startDate": {
+                "year": 2011,
+                "month": 6,
+                "day": 3
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 10447,
+              "title": {
+                "romaji": "Aquarion EVOL",
+                "english": "Aquarion EVOL",
+                "native": "\u30A2\u30AF\u30A8\u30EA\u30AA\u30F3EVOL"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx10447-NDvwjLUF9znA.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx10447-NDvwjLUF9znA.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 67,
+              "favourites": 229,
+              "popularity": 18983,
+              "startDate": {
+                "year": 2012,
+                "month": 1,
+                "day": 9
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 493,
+              "title": {
+                "romaji": "Armitage III: POLY-MATRIX",
+                "english": null,
+                "native": "\u30A2\u30DF\u30C6\u30FC\u30B8\u30FB\u30B6\u30FB\u30B5\u30FC\u30C9 POLY-MATRIX"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/493.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/493.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 66,
+              "favourites": 30,
+              "popularity": 3129,
+              "startDate": {
+                "year": 1996,
+                "month": 4,
+                "day": 20
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 6166,
+              "title": {
+                "romaji": "Asobi ni Iku yo!",
+                "english": "Cat Planet Cuties",
+                "native": "\u3042\u305D\u3073\u306B\u3044\u304F\u30E8!"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx6166-TzYLyxIl3a6i.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx6166-TzYLyxIl3a6i.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 61,
+              "favourites": 420,
+              "popularity": 42818,
+              "startDate": {
+                "year": 2010,
+                "month": 7,
+                "day": 11
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 9618,
+              "title": {
+                "romaji": "Asobi ni Iku yo! Asobi ni Oide",
+                "english": "Cat Planet Cuties: Come Drop By",
+                "native": "\u3042\u305D\u3073\u306B\u3044\u304F\u30E8! \u3042\u305D\u3073\u306B\u304A\u3044\u3067"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx9618-vIGNdkdb40Yd.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx9618-vIGNdkdb40Yd.png"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 63,
+              "favourites": 87,
+              "popularity": 10978,
+              "startDate": {
+                "year": 2011,
+                "month": 6,
+                "day": 15
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 7817,
+              "title": {
+                "romaji": "B Gata H Kei",
+                "english": "Yamada\u0027s First Time: B Gata H Kei",
+                "native": "B\u578BH\u7CFB"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx7817-6kYE5LRNoL97.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx7817-6kYE5LRNoL97.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 64,
+              "favourites": 705,
+              "popularity": 71374,
+              "startDate": {
+                "year": 2010,
+                "month": 4,
+                "day": 2
+              },
+              "mediaListEntry": {
+                "id": 593365246,
+                "status": "PLANNING",
+                "progress": 0,
+                "score": 0
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

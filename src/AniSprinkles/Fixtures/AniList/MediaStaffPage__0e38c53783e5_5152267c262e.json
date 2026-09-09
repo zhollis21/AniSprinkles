@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 21,
+    "page": 3,
+    "sort": [
+      "RELEVANCE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-09T15:56:07.5963772+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 3
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 156245,
+                "name": {
+                  "full": "Cristina D\u0027Avena",
+                  "native": "Cristina D\u0027Avena",
+                  "userPreferred": "Cristina D\u0027Avena"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n156245-ylGIAei5JfZX.png"
+                },
+                "favourites": 36
+              },
+              "role": "Theme Song Performance (Italian)"
+            },
+            {
+              "node": {
+                "id": 106517,
+                "name": {
+                  "full": "Tackey \u0026 Tsubasa",
+                  "native": "\u30BF\u30C3\u30AD\u30FC\u0026\u7FFC",
+                  "userPreferred": "Tackey \u0026 Tsubasa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/11517.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "Theme Song Performance (OP8, ED14)"
+            },
+            {
+              "node": {
+                "id": 105715,
+                "name": {
+                  "full": "Justin Houston",
+                  "native": null,
+                  "userPreferred": "Justin Houston"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "Theme Song Performance (English; ED8)"
+            },
+            {
+              "node": {
+                "id": 95043,
+                "name": {
+                  "full": "Vic Mignogna",
+                  "native": null,
+                  "userPreferred": "Vic Mignogna"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95043-cgQunZolvkPW.png"
+                },
+                "favourites": 837
+              },
+              "role": "Theme Song Performance (English; OP1, OP3, ED11)"
+            },
+            {
+              "node": {
+                "id": 102228,
+                "name": {
+                  "full": "Diana Torres",
+                  "native": null,
+                  "userPreferred": "Diana Torres"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n102228-wJ4LMWvbwJ0n.jpg"
+                },
+                "favourites": 4
+              },
+              "role": "Theme Song Performance (Spanish; OP2, OP4, OP5, ED1-ED7)"
+            },
+            {
+              "node": {
+                "id": 95313,
+                "name": {
+                  "full": "Caitlin Glass",
+                  "native": null,
+                  "userPreferred": "Caitlin Glass"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95313-zK3WpeNtACvm.jpg"
+                },
+                "favourites": 384
+              },
+              "role": "Theme Song Performance (English; ED2, ED7, ED10)"
+            },
+            {
+              "node": {
+                "id": 95475,
+                "name": {
+                  "full": "Stephanie Young",
+                  "native": null,
+                  "userPreferred": "Stephanie Young"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95475-QV9KFgsYrsPb.jpg"
+                },
+                "favourites": 104
+              },
+              "role": "Theme Song Performance (English; ED4, ED12)"
+            },
+            {
+              "node": {
+                "id": 95535,
+                "name": {
+                  "full": "Meredith McCoy",
+                  "native": null,
+                  "userPreferred": "Meredith McCoy"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/535.jpg"
+                },
+                "favourites": 13
+              },
+              "role": "Theme Song Performance (English; OP2)"
+            },
+            {
+              "node": {
+                "id": 95659,
+                "name": {
+                  "full": "Brina Palencia",
+                  "native": null,
+                  "userPreferred": "Brina Palencia"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/659.jpg"
+                },
+                "favourites": 558
+              },
+              "role": "Theme Song Performance (English; OP4, ED1)"
+            },
+            {
+              "node": {
+                "id": 95859,
+                "name": {
+                  "full": "Leah Clark",
+                  "native": null,
+                  "userPreferred": "Leah Clark"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/859.jpg"
+                },
+                "favourites": 150
+              },
+              "role": "Theme Song Performance (English; ED6)"
+            },
+            {
+              "node": {
+                "id": 101167,
+                "name": {
+                  "full": "Namie Amuro",
+                  "native": "\u5B89\u5BA4\u5948\u7F8E\u6075",
+                  "userPreferred": "Namie Amuro"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101167-XA6Wsp1J4Vhh.png"
+                },
+                "favourites": 89
+              },
+              "role": "Theme Song Performance (OP14, OP20)"
+            },
+            {
+              "node": {
+                "id": 101629,
+                "name": {
+                  "full": "TVXQ",
+                  "native": "\uB3D9\uBC29\uC2E0\uAE30",
+                  "userPreferred": "TVXQ"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101629-b1elVeIv556k.png"
+                },
+                "favourites": 29
+              },
+              "role": "Theme Song Performance (OP10, OP11, ED17)"
+            },
+            {
+              "node": {
+                "id": 101861,
+                "name": {
+                  "full": "Kristine Sa",
+                  "native": "Hu\u1EF3nh Ng\u1ECDc Nh\u00E3 Y\u1EBF",
+                  "userPreferred": "Kristine Sa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/6861.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Theme Song Performance (English; ED9)"
+            },
+            {
+              "node": {
+                "id": 101322,
+                "name": {
+                  "full": "Mari Yaguchi",
+                  "native": "\u77E2\u53E3\u771F\u91CC",
+                  "userPreferred": "Mari Yaguchi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/6322.jpg"
+                },
+                "favourites": 4
+              },
+              "role": "Theme Song Performance (OP12)"
+            },
+            {
+              "node": {
+                "id": 104204,
+                "name": {
+                  "full": "Janne Da Arc",
+                  "native": "Janne Da Arc",
+                  "userPreferred": "Janne Da Arc"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n104204-IawUw737qJC6.png"
+                },
+                "favourites": 21
+              },
+              "role": "Theme Song Performance (ED8)"
+            },
+            {
+              "node": {
+                "id": 105060,
+                "name": {
+                  "full": "Kumiko Mori",
+                  "native": "\u68EE\u516C\u7F8E\u5B50",
+                  "userPreferred": "Kumiko Mori"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/10060.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Insert Song Performance (ep 569)"
+            },
+            {
+              "node": {
+                "id": 141539,
+                "name": {
+                  "full": "Megumi Ishitani",
+                  "native": "\u77F3\u8C37\u6075",
+                  "userPreferred": "Megumi Ishitani"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n141539-cmuyHHlaB49F.png"
+                },
+                "favourites": 1808
+              },
+              "role": "Episode Director (OP25, OP26, eps 957, 982, 1015)"
+            },
+            {
+              "node": {
+                "id": 117687,
+                "name": {
+                  "full": "Tetsuya Endou",
+                  "native": "\u3048\u3093\u3069\u3046\u3066\u3064\u3084",
+                  "userPreferred": "Tetsuya Endou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n117687-UNCyKlS8ZhSi.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Episode Director (eps 324, 333, 341, 350, 357, 361, 366, 370, 377)"
+            },
+            {
+              "node": {
+                "id": 141605,
+                "name": {
+                  "full": "Kouhei Kureta",
+                  "native": "\u66AE\u7530\u516C\u5E73",
+                  "userPreferred": "Kouhei Kureta"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n141605-SV9XPHWevkPf.png"
+                },
+                "favourites": 0
+              },
+              "role": "Episode Director (ep 1017)"
+            },
+            {
+              "node": {
+                "id": 141606,
+                "name": {
+                  "full": "Aya Komaki",
+                  "native": "\u5C0F\u7267\u6587",
+                  "userPreferred": "Aya Komaki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n141606-wfEJ3f8GK44S.png"
+                },
+                "favourites": 6
+              },
+              "role": "Episode Director (OP23, eps 453, 465, 474, 484, 493, 503, 514, 524, 532, 539, 546, 552, 561, 568, 575, 583, 591, 597, 603, 609, 614, 619, 627, 634, 646, 670, 677, 685, 690, 693, 699, 710, 716, 824, 830, 839, 854, 860, 868, 875, 894, 909, 917, 933)"
+            },
+            {
+              "node": {
+                "id": 100067,
+                "name": {
+                  "full": "Mamoru Hosoda",
+                  "native": "\u7D30\u7530\u5B88",
+                  "userPreferred": "Mamoru Hosoda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100067-uJP6jmnZhqmF.png"
+                },
+                "favourites": 1853
+              },
+              "role": "Episode Director (ep 199)"
+            },
+            {
+              "node": {
+                "id": 101459,
+                "name": {
+                  "full": "Shigeyasu Yamauchi",
+                  "native": "\u5C71\u5185\u91CD\u4FDD",
+                  "userPreferred": "Shigeyasu Yamauchi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101459-dbrtGqU0hX1h.jpg"
+                },
+                "favourites": 85
+              },
+              "role": "Episode Director (eps 6, 11, 167, 986, 1029, 1042)"
+            },
+            {
+              "node": {
+                "id": 110799,
+                "name": {
+                  "full": "Morio Hatano",
+                  "native": "\u7551\u91CE\u68EE\u751F",
+                  "userPreferred": "Morio Hatano"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 8
+              },
+              "role": "Episode Director (eps 239, 247, 254, 261)"
+            },
+            {
+              "node": {
+                "id": 151474,
+                "name": {
+                  "full": "Kazutoshi Mori",
+                  "native": "\u68EE\u4E00\u654F",
+                  "userPreferred": "Kazutoshi Mori"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Assistant Episode Director (eps 418, 422, 427, 430, 435, 438, 445)"
+            },
+            {
+              "node": {
+                "id": 101459,
+                "name": {
+                  "full": "Shigeyasu Yamauchi",
+                  "native": "\u5C71\u5185\u91CD\u4FDD",
+                  "userPreferred": "Shigeyasu Yamauchi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101459-dbrtGqU0hX1h.jpg"
+                },
+                "favourites": 85
+              },
+              "role": "Storyboard (eps 6, 11, 167, 939, 986, 1029, 1042)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,741 @@
+﻿{
+  "operationName": "BrowseAnime",
+  "variables": {
+    "page": 3,
+    "perPage": 25,
+    "sort": [
+      "SCORE_DESC",
+      "ID"
+    ],
+    "isAdult": false
+  },
+  "queryFingerprint": "19cf0d7f308c",
+  "recordedAt": "2026-09-06T05:15:31.2948729+00:00",
+  "response": {
+    "data": {
+      "Page": {
+        "pageInfo": {
+          "hasNextPage": true,
+          "currentPage": 3
+        },
+        "media": [
+          {
+            "id": 130003,
+            "title": {
+              "romaji": "Bocchi the Rock!",
+              "english": "BOCCHI THE ROCK!",
+              "native": "\u307C\u3063\u3061\u30FB\u3056\u30FB\u308D\u3063\u304F\uFF01"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx130003-HTDmeL4RGeJ4.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx130003-HTDmeL4RGeJ4.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 87,
+            "favourites": 28294,
+            "popularity": 264517,
+            "trending": 6,
+            "startDate": {
+              "year": 2022,
+              "month": 10,
+              "day": 9
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 131586,
+            "title": {
+              "romaji": "86: Eighty Six Part 2",
+              "english": "86 EIGHTY-SIX Part 2",
+              "native": "86\uFF0D\u30A8\u30A4\u30C6\u30A3\u30B7\u30C3\u30AF\u30B9\uFF0D \u7B2C2\u30AF\u30FC\u30EB"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx131586-JhC0wcBi09EZ.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx131586-JhC0wcBi09EZ.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 87,
+            "favourites": 13749,
+            "popularity": 195971,
+            "trending": 8,
+            "startDate": {
+              "year": 2021,
+              "month": 10,
+              "day": 3
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 263,
+            "title": {
+              "romaji": "Hajime no Ippo: THE FIGHTING!",
+              "english": "Hajime no Ippo: The Fighting!",
+              "native": "\u306F\u3058\u3081\u306E\u4E00\u6B69 THE FIGHTING!"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx263-ivVyn9xAgwSZ.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx263-ivVyn9xAgwSZ.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 75,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 87,
+            "favourites": 9307,
+            "popularity": 144007,
+            "trending": 10,
+            "startDate": {
+              "year": 2000,
+              "month": 10,
+              "day": 4
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 131681,
+            "title": {
+              "romaji": "Shingeki no Kyojin: The Final Season Part 2",
+              "english": "Attack on Titan Final Season Part 2",
+              "native": "\u9032\u6483\u306E\u5DE8\u4EBA The Final Season Part 2"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx131681-5ooUqvqNtee1.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx131681-5ooUqvqNtee1.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 87,
+            "favourites": 15859,
+            "popularity": 439109,
+            "trending": 9,
+            "startDate": {
+              "year": 2022,
+              "month": 1,
+              "day": 10
+            },
+            "mediaListEntry": {
+              "id": 593364179,
+              "status": "COMPLETED",
+              "progress": 12,
+              "score": 8
+            }
+          },
+          {
+            "id": 172420,
+            "title": {
+              "romaji": "Uma Musume: Pretty Derby - Shin Jidai no Tobira",
+              "english": "Umamusume: Pretty Derby - Beginning of a New Era",
+              "native": "\u30A6\u30DE\u5A18 \u30D7\u30EA\u30C6\u30A3\u30FC\u30C0\u30FC\u30D3\u30FC \u65B0\u6642\u4EE3\u306E\u6249"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx172420-4LjhmwpNMHti.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx172420-4LjhmwpNMHti.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 87,
+            "favourites": 2645,
+            "popularity": 32336,
+            "trending": 2,
+            "startDate": {
+              "year": 2024,
+              "month": 5,
+              "day": 24
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 21733,
+            "title": {
+              "romaji": "Shouwa Genroku Rakugo Shinjuu: Sukeroku Futatabi-hen",
+              "english": "Descending Stories: Showa Genroku Rakugo Shinju",
+              "native": "\u662D\u548C\u5143\u7984\u843D\u8A9E\u5FC3\u4E2D\uFF5E\u52A9\u516D\u518D\u3073\u7BC7\uFF5E"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx21733-SUV6bCTsU51u.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx21733-SUV6bCTsU51u.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 86,
+            "favourites": 2502,
+            "popularity": 53920,
+            "trending": 1,
+            "startDate": {
+              "year": 2017,
+              "month": 1,
+              "day": 7
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 169755,
+            "title": {
+              "romaji": "BLEACH: Sennen Kessen-hen - Soukoku-tan",
+              "english": "BLEACH: Thousand-Year Blood War - The Conflict",
+              "native": "BLEACH \u5343\u5E74\u8840\u6226\u7BC7-\u76F8\u524B\u8B5A-"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx169755-Rqb7MjnzdTc6.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx169755-Rqb7MjnzdTc6.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 14,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 86,
+            "favourites": 4358,
+            "popularity": 116669,
+            "trending": 19,
+            "startDate": {
+              "year": 2024,
+              "month": 10,
+              "day": 5
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 178788,
+            "title": {
+              "romaji": "Kimetsu no Yaiba: Mugenjou-hen Movie 1 - Akaza Sairai",
+              "english": "Demon Slayer: Kimetsu no Yaiba Infinity Castle",
+              "native": "\u5287\u5834\u7248\u300C\u9B3C\u6EC5\u306E\u5203\u300D\u7121\u9650\u57CE\u7DE8 \u7B2C\u4E00\u7AE0 \u7317\u7AA9\u5EA7\u518D\u6765"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx178788-zm3gtpB9TpRt.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx178788-zm3gtpB9TpRt.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 86,
+            "favourites": 6177,
+            "popularity": 195401,
+            "trending": 5,
+            "startDate": {
+              "year": 2025,
+              "month": 7,
+              "day": 18
+            },
+            "mediaListEntry": {
+              "id": 593351128,
+              "status": "PLANNING",
+              "progress": 0,
+              "score": 0
+            }
+          },
+          {
+            "id": 185407,
+            "title": {
+              "romaji": "Takopii no Genzai",
+              "english": "Takopi\u0027s Original Sin",
+              "native": "\u30BF\u30B3\u30D4\u30FC\u306E\u539F\u7F6A"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx185407-7uzY4fA3hokP.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx185407-7uzY4fA3hokP.jpg"
+            },
+            "format": "ONA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 6,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 86,
+            "favourites": 8194,
+            "popularity": 141045,
+            "trending": 4,
+            "startDate": {
+              "year": 2025,
+              "month": 6,
+              "day": 28
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 20751,
+            "title": {
+              "romaji": "Mushishi Zoku Shou 2",
+              "english": "MUSHI-SHI The Next Passage 2",
+              "native": "\u87F2\u5E2B \u7D9A\u7AE0 2"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20751-O3XJ9u30y7Qj.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20751-O3XJ9u30y7Qj.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 10,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 86,
+            "favourites": 1178,
+            "popularity": 58612,
+            "trending": 0,
+            "startDate": {
+              "year": 2014,
+              "month": 10,
+              "day": 19
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 145064,
+            "title": {
+              "romaji": "Jujutsu Kaisen 2nd Season",
+              "english": "JUJUTSU KAISEN Season 2",
+              "native": "\u546A\u8853\u5EFB\u6226 \u7B2C2\u671F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx145064-hSNRJM03pvv1.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx145064-hSNRJM03pvv1.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 23,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 86,
+            "favourites": 22922,
+            "popularity": 489213,
+            "trending": 17,
+            "startDate": {
+              "year": 2023,
+              "month": 7,
+              "day": 6
+            },
+            "mediaListEntry": {
+              "id": 593364143,
+              "status": "COMPLETED",
+              "progress": 23,
+              "score": 10
+            }
+          },
+          {
+            "id": 100784,
+            "title": {
+              "romaji": "Gintama.: Shirogane no Tamashii-hen",
+              "english": "Gintama.: Silver Soul Arc",
+              "native": "\u9280\u9B42. \u9280\u30CE\u9B42\u7BC7"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx100784-7fWdiduBFr95.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx100784-7fWdiduBFr95.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 86,
+            "favourites": 1269,
+            "popularity": 60443,
+            "trending": 1,
+            "startDate": {
+              "year": 2018,
+              "month": 1,
+              "day": 8
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 113108,
+            "title": {
+              "romaji": "Kingdom 3rd Season",
+              "english": "Kingdom Season 3",
+              "native": "\u30AD\u30F3\u30B0\u30C0\u30E0 \u7B2C3\u30B7\u30EA\u30FC\u30BA"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx113108-ArjAmFLubVyu.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx113108-ArjAmFLubVyu.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 26,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 86,
+            "favourites": 1074,
+            "popularity": 26793,
+            "trending": 0,
+            "startDate": {
+              "year": 2020,
+              "month": 4,
+              "day": 6
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 153658,
+            "title": {
+              "romaji": "Haikyuu!!: Gomi Suteba no Kessen",
+              "english": "HAIKYU!! The Dumpster Battle",
+              "native": "\u30CF\u30A4\u30AD\u30E5\u30FC!! \u30B4\u30DF\u6368\u3066\u5834\u306E\u6C7A\u6226"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx153658-KVnjW77cQw3y.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx153658-KVnjW77cQw3y.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 86,
+            "favourites": 2888,
+            "popularity": 97482,
+            "trending": 2,
+            "startDate": {
+              "year": 2024,
+              "month": 2,
+              "day": 16
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 166216,
+            "title": {
+              "romaji": "Boku no Kokoro no Yabai Yatsu 2nd Season",
+              "english": "The Dangers in My Heart Season 2",
+              "native": "\u50D5\u306E\u5FC3\u306E\u30E4\u30D0\u30A4\u3084\u3064 \u7B2C2\u671F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx166216-vCMkF4e3x5FB.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx166216-vCMkF4e3x5FB.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 13,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 86,
+            "favourites": 6003,
+            "popularity": 104590,
+            "trending": 5,
+            "startDate": {
+              "year": 2024,
+              "month": 1,
+              "day": 7
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 136484,
+            "title": {
+              "romaji": "Shiguang Dailiren II",
+              "english": "Link Click Season 2",
+              "native": "\u65F6\u5149\u4EE3\u7406\u4EBA \u7B2C\u4E8C\u5B63"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx136484-QiHcF64PVWQi.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx136484-QiHcF64PVWQi.jpg"
+            },
+            "format": "ONA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 86,
+            "favourites": 3332,
+            "popularity": 69624,
+            "trending": 1,
+            "startDate": {
+              "year": 2023,
+              "month": 7,
+              "day": 14
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 151514,
+            "title": {
+              "romaji": "Chi. Chikyuu no Undou ni Tsuite",
+              "english": "Orb: On the Movements of the Earth",
+              "native": "\u30C1\u3002-\u5730\u7403\u306E\u904B\u52D5\u306B\u3064\u3044\u3066-"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx151514-Y0d82Ah2ZOHX.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx151514-Y0d82Ah2ZOHX.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 25,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 86,
+            "favourites": 7021,
+            "popularity": 122054,
+            "trending": 5,
+            "startDate": {
+              "year": 2024,
+              "month": 10,
+              "day": 5
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 159322,
+            "title": {
+              "romaji": "BLEACH: Sennen Kessen-hen - Ketsubetsu-tan",
+              "english": "BLEACH: Thousand-Year Blood War - The Separation",
+              "native": "BLEACH \u5343\u5E74\u8840\u6226\u7BC7-\u8A23\u5225\u8B5A-"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx159322-Sp1GflRhE6Po.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx159322-Sp1GflRhE6Po.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 13,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 86,
+            "favourites": 5375,
+            "popularity": 142361,
+            "trending": 12,
+            "startDate": {
+              "year": 2023,
+              "month": 7,
+              "day": 8
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 173533,
+            "title": {
+              "romaji": "Monogatari Series: Off \u0026 Monster Season",
+              "english": "MONOGATARI Series: OFF \u0026 MONSTER Season",
+              "native": "\u3008\u7269\u8A9E\u3009\u30B7\u30EA\u30FC\u30BA \u30AA\u30D5\u0026\u30E2\u30F3\u30B9\u30BF\u30FC\u30B7\u30FC\u30BA\u30F3"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx173533-9DN3nHtT2FBm.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx173533-9DN3nHtT2FBm.png"
+            },
+            "format": "ONA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 14,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 86,
+            "favourites": 1203,
+            "popularity": 42061,
+            "trending": 3,
+            "startDate": {
+              "year": 2024,
+              "month": 7,
+              "day": 6
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 174788,
+            "title": {
+              "romaji": "Look Back",
+              "english": "LOOK BACK",
+              "native": "\u30EB\u30C3\u30AF\u30D0\u30C3\u30AF"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx174788-9LsUnn0oEppv.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx174788-9LsUnn0oEppv.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 86,
+            "favourites": 8479,
+            "popularity": 123979,
+            "trending": 6,
+            "startDate": {
+              "year": 2024,
+              "month": 6,
+              "day": 28
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 182587,
+            "title": {
+              "romaji": "[Oshi no Ko] 3rd Season",
+              "english": "OSHI NO KO Season 3",
+              "native": "\u3010\u63A8\u3057\u306E\u5B50\u3011\u7B2C3\u671F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx182587-fsU8LOjmd7oj.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx182587-fsU8LOjmd7oj.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 11,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 86,
+            "favourites": 3750,
+            "popularity": 108857,
+            "trending": 11,
+            "startDate": {
+              "year": 2026,
+              "month": 1,
+              "day": 14
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 195240,
+            "title": {
+              "romaji": "Uma Musume: Cinderella Gray Part 2",
+              "english": "Umamusume: Cinderella Gray 2nd Cour",
+              "native": "\u30A6\u30DE\u5A18 \u30B7\u30F3\u30C7\u30EC\u30E9\u30B0\u30EC\u30A4 \u7B2C2\u30AF\u30FC\u30EB"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx195240-hKcmllV6YHQT.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx195240-hKcmllV6YHQT.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 10,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 86,
+            "favourites": 1315,
+            "popularity": 29280,
+            "trending": 3,
+            "startDate": {
+              "year": 2025,
+              "month": 10,
+              "day": 5
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 199448,
+            "title": {
+              "romaji": "Guimi Zhi Zhu Specials",
+              "english": "Lord of Mysteries Specials",
+              "native": "\u8BE1\u79D8\u4E4B\u4E3B \u7279\u522B\u7BC7"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx199448-BuqzEdkuPSEm.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx199448-BuqzEdkuPSEm.png"
+            },
+            "format": "ONA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 3,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 86,
+            "favourites": 296,
+            "popularity": 12473,
+            "trending": 1,
+            "startDate": {
+              "year": 2026,
+              "month": 6,
+              "day": 20
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 126403,
+            "title": {
+              "romaji": "Shiguang Dailiren",
+              "english": "Link Click",
+              "native": "\u65F6\u5149\u4EE3\u7406\u4EBA"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx126403-BfVSRzWUtVFW.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx126403-BfVSRzWUtVFW.png"
+            },
+            "format": "ONA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 11,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 86,
+            "favourites": 11342,
+            "popularity": 174509,
+            "trending": 5,
+            "startDate": {
+              "year": 2021,
+              "month": 4,
+              "day": 30
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 20992,
+            "title": {
+              "romaji": "Haikyuu!! 2nd Season",
+              "english": "HAIKYU!! 2nd Season",
+              "native": "\u30CF\u30A4\u30AD\u30E5\u30FC!! \u30BB\u30AB\u30F3\u30C9\u30B7\u30FC\u30BA\u30F3"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20992-aHgNbcalVEqk.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20992-aHgNbcalVEqk.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 25,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 86,
+            "favourites": 14128,
+            "popularity": 397946,
+            "trending": 5,
+            "startDate": {
+              "year": 2015,
+              "month": 10,
+              "day": 4
+            },
+            "mediaListEntry": null
+          }
+        ]
+      }
+    }
+  }
+}

@@ -39,11 +39,17 @@ pwsh -NoProfile -File .claude/skills/run-anisprinkles/driver.ps1 env
 ## Build
 
 Always build with `-p:CiBuild=true`. That swaps in `CIAuthService` /
-`CIAniListClient` / `CIAiringNotificationService` (`src/AniSprinkles/Services/CI/`), so the app
-launches **already signed in** against hardcoded fixtures: no OAuth round-trip, no
-real AniList traffic, no rate-limit budget spent, and a deterministic list every
-run. A plain Debug build drops you on the signed-out screen and there is no
-scriptable way past `WebAuthenticator`.
+`CIAiringNotificationService` and puts `FixtureReplayHandler` at the bottom of the HTTP
+pipeline (`src/AniSprinkles/Services/CI/`), so the app launches **already signed in** against
+recorded AniList responses (#134): no OAuth round-trip, no real AniList traffic, no
+rate-limit budget spent, and a deterministic list every run. Unlike the old
+`CIAniListClient`, replay sits *below* the client, so the real `AniListClient` and its
+caching decorator run — which is why a CI build now behaves like the app rather than
+like a stub.
+
+A plain Debug build drops you on the signed-out screen. `driver.ps1 seed-token` gets you
+past that without tapping through `WebAuthenticator` (#160) when you need *real* AniList
+data rather than fixtures.
 
 ```bash
 pwsh -NoProfile -File .claude/skills/run-anisprinkles/driver.ps1 build
@@ -104,6 +110,8 @@ Then drive it. Every command is `driver.ps1 <command> [args]`:
 | `logcat [n]` / `applog` | app-PID logcat tail / the on-device rotating file log |
 | `fault <op> <kind> [scope]` | arm a fault on the **running** app — no rebuild (#125) |
 | `fault clear` | disarm |
+| `seed-token [test\|real]` | sign a **real-auth** Debug build in over adb, no OAuth tapping (#160) |
+| `dump-token` | read the signed-in token back out to `tmp/dev-token.txt` (gitignored) |
 | `notify [media] [ep] [title]` | post a **real** airing notification (#111) — see below |
 | `deeplink <media> [nonce]` | fire the notification's deep-link intent without a notification |
 
@@ -222,20 +230,25 @@ relaunch:
 
 ### Fixture data you can drive against
 
-`CIAniListClient` serves a fixed set, so these strings are always tappable:
+The recorded fixtures (#134) are a real AniList account, so these strings are tappable. They
+change whenever the fixtures are re-recorded — if a `tap` fails, `dump` the screen rather than
+trusting this list, and check `src/AniSprinkles/Fixtures/AniList/MediaListCollection__*.json`
+for what the Library actually holds.
 
-- **Library › Anime** (nav title reads "Library"; sub-tabs are `ANIME` / `MANGA`): `ONE PIECE`, `Shingeki no Kyojin`, `Jujutsu Kaisen`, `HUNTER×HUNTER (2011)`;
-  section headers `Watching` / `Planning` / `Completed`
-- **Media details** (ONE PIECE): `Monkey D. Luffy`, `Roronoa Zoro`, `Nami`,
-  studios `Toei Animation` / `Madhouse` / `Studio Pierrot`; content-descs
-  `Toggle favorite` and `Open studio Toei Animation`
+- **Library › Anime** (nav title reads "Library"; sub-tabs are `ANIME` / `MANGA`), 20 titles
+  across five sections — `Watching`: `ONE PIECE`, `Gintama.`,
+  `Re:Zero kara Hajimeru Isekai Seikatsu 4th Season`; `Completed`: `Sousou no Frieren`,
+  `Goblin Slayer`; `Planning`, `Dropped` (`Witch Watch`, `Steins;Gate 0`) and `Paused`
+  (`SAKAMOTO DAYS`) are populated too — every status has entries, deliberately.
+- **Library › Manga**: `Reading` has `Shingeki no Kyojin` and `ONE PIECE`; `Completed` has
+  `Chainsaw Man`.
+- **Media details** (ONE PIECE): `Luffy D. Monkey`, `Zoro Roronoa` — family-name-first, because
+  names render from `userPreferred` resolved against the account's Staff Name Language (#130).
+  Content-descs `Toggle favorite` and `Open studio <name>`.
 - **Discover**: `Currently Airing`, `Trending Now`, `Top Anime`, `View All ›`
-- **Search tab** filters that same fixture list client-side — `one` matches `ONE PIECE`;
-  anything else (e.g. `cowboy bebop`) correctly renders `No anime found`. That is
-  the stub, not a bug. The All/Anime/Manga pills switch which fixture set is filtered; All (the default) returns both.
-- **Manga** (#12) — not in the Library list, which is still anime-only. Reach them from
-  Attack on Titan's relations carousel, Luffy's character page, the Manga search pill, or
-  `driver.ps1 deeplink <id>`, which is the fastest route to any of them:
+- **Search tab**: only recorded queries resolve — `no`, `one`, `ka`. Anything else is a
+  `FIXTURE MISS`, not a stub quirk: replay has no recording for it and says so in logcat.
+- **Manga** (#12) — also reachable by `driver.ps1 deeplink <id>`, which is the fastest route:
 
   | id | What it is | Why it exists |
   |---|---|---|
@@ -246,7 +259,8 @@ relaunch:
   | `85476` | No Regrets Prologue, ONE_SHOT, 1ch / no volumes | The singular chip (`1 Chapter`) and a Chapters chip with no Volumes chip beside it. |
   | `85470` | Mushoku Tensei, NOVEL, 334ch / 26vol | AniList files novels under type MANGA; proves the page keys off type, not format. |
 
-  Manga search honours `isAdult` exactly as anime search does, with its own 18+ canary.
+  Manga search honours `isAdult` exactly as anime search does. The 18+ canary is synthetic and
+  spliced into replayed responses by `AdultCanary` (#134), not a recorded fixture.
 
 ---
 

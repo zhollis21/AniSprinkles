@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 101165,
+    "page": 1,
+    "sort": [
+      "ROLE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:25:35.6919245+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 153558,
+                "name": {
+                  "full": "Chie Katou",
+                  "native": "\u52A0\u85E4\u5343\u6075",
+                  "userPreferred": "Chie Katou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2D Works"
+            },
+            {
+              "node": {
+                "id": 153463,
+                "name": {
+                  "full": "Lucas Almeida",
+                  "native": null,
+                  "userPreferred": "Lucas Almeida"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n153463-MF7Z63vMJ47o.jpg"
+                },
+                "favourites": 67
+              },
+              "role": "ADR Director (Brazilian Portuguese)"
+            },
+            {
+              "node": {
+                "id": 146770,
+                "name": {
+                  "full": "Rickey Watkins",
+                  "native": null,
+                  "userPreferred": "Rickey Watkins"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "ADR Engineer (English; ep 5)"
+            },
+            {
+              "node": {
+                "id": 218313,
+                "name": {
+                  "full": "Matt Grounds",
+                  "native": null,
+                  "userPreferred": "Matt Grounds"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "ADR Engineer (English; ep 6)"
+            },
+            {
+              "node": {
+                "id": 146774,
+                "name": {
+                  "full": "William Dewell",
+                  "native": null,
+                  "userPreferred": "William Dewell"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "ADR Engineer (English; ep 9)"
+            },
+            {
+              "node": {
+                "id": 207743,
+                "name": {
+                  "full": "James Baker",
+                  "native": null,
+                  "userPreferred": "James Baker"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "ADR Engineer (English; ep 9)"
+            },
+            {
+              "node": {
+                "id": 205442,
+                "name": {
+                  "full": "Ryan Urbanovsky",
+                  "native": null,
+                  "userPreferred": "Ryan Urbanovsky"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "ADR Engineer (English; eps 5, 6, 9)"
+            },
+            {
+              "node": {
+                "id": 128973,
+                "name": {
+                  "full": "Bonny Clinkenbeard",
+                  "native": null,
+                  "userPreferred": "Bonny Clinkenbeard"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n128973-Sil6PJmdRHLX.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "ADR Script (English; eps 5, 6, 9)"
+            },
+            {
+              "node": {
+                "id": 146769,
+                "name": {
+                  "full": "Jeramey Kraatz",
+                  "native": null,
+                  "userPreferred": "Jeramey Kraatz"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n146769-mqPD9ZL4iXEb.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "ADR Script (English; eps 8, 9)"
+            },
+            {
+              "node": {
+                "id": 128973,
+                "name": {
+                  "full": "Bonny Clinkenbeard",
+                  "native": null,
+                  "userPreferred": "Bonny Clinkenbeard"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n128973-Sil6PJmdRHLX.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "ADR Script Supervisor (English)"
+            },
+            {
+              "node": {
+                "id": 146769,
+                "name": {
+                  "full": "Jeramey Kraatz",
+                  "native": null,
+                  "userPreferred": "Jeramey Kraatz"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n146769-mqPD9ZL4iXEb.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "ADR Script Supervisor (English)"
+            },
+            {
+              "node": {
+                "id": 215134,
+                "name": {
+                  "full": "Katsuyoshi Matsuura",
+                  "native": "\u677E\u6D66\u514B\u7FA9",
+                  "userPreferred": "Katsuyoshi Matsuura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Advertising Assistance"
+            },
+            {
+              "node": {
+                "id": 219034,
+                "name": {
+                  "full": "Shouta Komatsu",
+                  "native": "\u5C0F\u677E\u7FD4\u592A",
+                  "userPreferred": "Shouta Komatsu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Advertising Assistance"
+            },
+            {
+              "node": {
+                "id": 250779,
+                "name": {
+                  "full": "Motohisa Katou",
+                  "native": "\u52A0\u85E4\u8CC7\u4E45",
+                  "userPreferred": "Motohisa Katou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Advertising Producer"
+            },
+            {
+              "node": {
+                "id": 118484,
+                "name": {
+                  "full": "Tomoshige Inayoshi",
+                  "native": "\u7A32\u5409\u667A\u91CD",
+                  "userPreferred": "Tomoshige Inayoshi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n118484-PGoilTTxoppO.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "Animation Director (ep 11)"
+            },
+            {
+              "node": {
+                "id": 121346,
+                "name": {
+                  "full": "Ryousuke Kimiya",
+                  "native": "\u6728\u5BAE\u4EAE\u4ECB",
+                  "userPreferred": "Ryousuke Kimiya"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n121346-wgMjBMpmKtD7.jpg"
+                },
+                "favourites": 4
+              },
+              "role": "Animation Director (ep 11)"
+            },
+            {
+              "node": {
+                "id": 132758,
+                "name": {
+                  "full": "Naoki Hiramura",
+                  "native": "\u5E73\u6751\u76F4\u7D00",
+                  "userPreferred": "Naoki Hiramura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n132758-dfzcV3KViJdb.png"
+                },
+                "favourites": 0
+              },
+              "role": "Animation Director (ep 11)"
+            },
+            {
+              "node": {
+                "id": 190391,
+                "name": {
+                  "full": "Gunsou",
+                  "native": "\u3050\u3093\u305D\u3046",
+                  "userPreferred": "Gunsou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Animation Director (ep 11)"
+            },
+            {
+              "node": {
+                "id": 135998,
+                "name": {
+                  "full": "Kazuto Wakayama",
+                  "native": "\u82E5\u5C71\u548C\u4EBA",
+                  "userPreferred": "Kazuto Wakayama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Animation Director (ep 12)"
+            },
+            {
+              "node": {
+                "id": 128876,
+                "name": {
+                  "full": "Hiroshi Tatezaki",
+                  "native": "\u8218\u5D0E\u5927",
+                  "userPreferred": "Hiroshi Tatezaki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n128876-yqmIKaBpGXhx.png"
+                },
+                "favourites": 1
+              },
+              "role": "Animation Director (ep 5)"
+            },
+            {
+              "node": {
+                "id": 136741,
+                "name": {
+                  "full": "Noriyuki Imaoka",
+                  "native": "\u4ECA\u5CA1\u5F8B\u4E4B",
+                  "userPreferred": "Noriyuki Imaoka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n136741-r0LLI5hbfgiw.png"
+                },
+                "favourites": 12
+              },
+              "role": "Animation Director (ep 5)"
+            },
+            {
+              "node": {
+                "id": 150389,
+                "name": {
+                  "full": "Sachiko Muroyama",
+                  "native": "\u5BA4\u5C71\u7965\u5B50",
+                  "userPreferred": "Sachiko Muroyama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n150389-2yU9P8FyJt4D.png"
+                },
+                "favourites": 0
+              },
+              "role": "Animation Director (ep 5)"
+            },
+            {
+              "node": {
+                "id": 157629,
+                "name": {
+                  "full": "Mizuki Iwadare",
+                  "native": "\u5CA9\u5782\u745E\u6A39",
+                  "userPreferred": "Mizuki Iwadare"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Animation Director (ep 5)"
+            },
+            {
+              "node": {
+                "id": 133757,
+                "name": {
+                  "full": "Min-Gi Han",
+                  "native": "\uD55C\uBBFC\uAE30",
+                  "userPreferred": "Min-Gi Han"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Animation Director (ep 6)"
+            },
+            {
+              "node": {
+                "id": 134878,
+                "name": {
+                  "full": "Shuusuke Aizawa",
+                  "native": "\u76F8\u6FA4\u79C0\u4EAE",
+                  "userPreferred": "Shuusuke Aizawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n134878-55rM4EmlX1dk.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Animation Director (ep 8)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

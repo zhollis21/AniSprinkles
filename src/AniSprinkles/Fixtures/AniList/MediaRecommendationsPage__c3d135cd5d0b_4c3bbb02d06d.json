@@ -1,0 +1,368 @@
+﻿{
+  "operationName": "MediaRecommendationsPage",
+  "variables": {
+    "id": 182205,
+    "page": 1,
+    "sort": [
+      "RATING_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "4c3bbb02d06d",
+  "recordedAt": "2026-09-06T05:23:07.2309543+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "recommendations": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "nodes": [
+            {
+              "rating": 61,
+              "mediaRecommendation": {
+                "id": 139518,
+                "title": {
+                  "romaji": "Tsuki ga Michibiku Isekai Douchuu 2nd Season",
+                  "english": "TSUKIMICHI -Moonlit Fantasy- Season 2",
+                  "native": "\u6708\u304C\u5C0E\u304F\u7570\u4E16\u754C\u9053\u4E2D \u7B2C\u4E8C\u5E55"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx139518-GZWYKM8Kg1S2.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx139518-GZWYKM8Kg1S2.png"
+                },
+                "averageScore": 78,
+                "mediaListEntry": {
+                  "id": 593364366,
+                  "status": "COMPLETED",
+                  "progress": 25,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 39,
+              "mediaRecommendation": {
+                "id": 101280,
+                "title": {
+                  "romaji": "Tensei Shitara Slime Datta Ken",
+                  "english": "That Time I Got Reincarnated as a Slime",
+                  "native": "\u8EE2\u751F\u3057\u305F\u3089\u30B9\u30E9\u30A4\u30E0\u3060\u3063\u305F\u4EF6"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx101280-tDxCVJm714nt.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101280-tDxCVJm714nt.jpg"
+                },
+                "averageScore": 80,
+                "mediaListEntry": {
+                  "id": 593364344,
+                  "status": "COMPLETED",
+                  "progress": 24,
+                  "score": 9
+                }
+              }
+            },
+            {
+              "rating": 33,
+              "mediaRecommendation": {
+                "id": 20832,
+                "title": {
+                  "romaji": "Overlord",
+                  "english": "Overlord",
+                  "native": "\u30AA\u30FC\u30D0\u30FC\u30ED\u30FC\u30C9"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20832-vUNm5zrYWifc.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20832-vUNm5zrYWifc.jpg"
+                },
+                "averageScore": 77,
+                "mediaListEntry": {
+                  "id": 593364388,
+                  "status": "COMPLETED",
+                  "progress": 13,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 31,
+              "mediaRecommendation": {
+                "id": 108465,
+                "title": {
+                  "romaji": "Mushoku Tensei: Isekai Ittara Honki Dasu",
+                  "english": "Mushoku Tensei: Jobless Reincarnation",
+                  "native": "\u7121\u8077\u8EE2\u751F \uFF5E\u7570\u4E16\u754C\u884C\u3063\u305F\u3089\u672C\u6C17\u3060\u3059\uFF5E"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx108465-1ANspF1EWyFx.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx108465-1ANspF1EWyFx.jpg"
+                },
+                "averageScore": 82,
+                "mediaListEntry": {
+                  "id": 593363909,
+                  "status": "COMPLETED",
+                  "progress": 11,
+                  "score": 10
+                }
+              }
+            },
+            {
+              "rating": 14,
+              "mediaRecommendation": {
+                "id": 108632,
+                "title": {
+                  "romaji": "Re:Zero kara Hajimeru Isekai Seikatsu 2nd Season",
+                  "english": "Re:ZERO -Starting Life in Another World- Season 2",
+                  "native": "Re:\u30BC\u30ED\u304B\u3089\u59CB\u3081\u308B\u7570\u4E16\u754C\u751F\u6D3B 2nd Season"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx108632-lQWnmw7XaNOK.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx108632-lQWnmw7XaNOK.jpg"
+                },
+                "averageScore": 83,
+                "mediaListEntry": {
+                  "id": 593363869,
+                  "status": "COMPLETED",
+                  "progress": 13,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 10,
+              "mediaRecommendation": {
+                "id": 103632,
+                "title": {
+                  "romaji": "Kumo desu ga, Nani ka?",
+                  "english": "So I\u0027m a Spider, So What?",
+                  "native": "\u8718\u86DB\u3067\u3059\u304C\u3001\u306A\u306B\u304B\uFF1F"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx103632-2wsy9wFUdm1C.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx103632-2wsy9wFUdm1C.jpg"
+                },
+                "averageScore": 72,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 9,
+              "mediaRecommendation": {
+                "id": 178789,
+                "title": {
+                  "romaji": "Mushoku Tensei III: Isekai Ittara Honki Dasu",
+                  "english": "Mushoku Tensei: Jobless Reincarnation Season 3",
+                  "native": "\u7121\u8077\u8EE2\u751F\u2162 \uFF5E\u7570\u4E16\u754C\u884C\u3063\u305F\u3089\u672C\u6C17\u3060\u3059\uFF5E"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx178789-hNXjKFzUq7mk.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx178789-hNXjKFzUq7mk.jpg"
+                },
+                "averageScore": 84,
+                "mediaListEntry": {
+                  "id": 593234122,
+                  "status": "CURRENT",
+                  "progress": 9,
+                  "score": 0
+                }
+              }
+            },
+            {
+              "rating": 6,
+              "mediaRecommendation": {
+                "id": 127720,
+                "title": {
+                  "romaji": "Mushoku Tensei: Isekai Ittara Honki Dasu Part 2",
+                  "english": "Mushoku Tensei: Jobless Reincarnation Cour 2",
+                  "native": "\u7121\u8077\u8EE2\u751F \uFF5E\u7570\u4E16\u754C\u884C\u3063\u305F\u3089\u672C\u6C17\u3060\u3059\uFF5E \u7B2C2\u30AF\u30FC\u30EB"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx127720-ADJgIrUVMdU9.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx127720-ADJgIrUVMdU9.jpg"
+                },
+                "averageScore": 85,
+                "mediaListEntry": {
+                  "id": 593363915,
+                  "status": "COMPLETED",
+                  "progress": 12,
+                  "score": 10
+                }
+              }
+            },
+            {
+              "rating": 6,
+              "mediaRecommendation": {
+                "id": 130166,
+                "title": {
+                  "romaji": "Leadale no Daichi nite",
+                  "english": "In the Land of Leadale",
+                  "native": "\u30EA\u30A2\u30C7\u30A4\u30EB\u306E\u5927\u5730\u306B\u3066"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx130166-YVHrYg4wNA68.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx130166-YVHrYg4wNA68.jpg"
+                },
+                "averageScore": 68,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 5,
+              "mediaRecommendation": {
+                "id": 99263,
+                "title": {
+                  "romaji": "Tate no Yuusha no Nariagari",
+                  "english": "The Rising of the Shield Hero",
+                  "native": "\u76FE\u306E\u52C7\u8005\u306E\u6210\u308A\u4E0A\u304C\u308A"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx99263-LcazQwdlWzMy.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx99263-LcazQwdlWzMy.jpg"
+                },
+                "averageScore": 76,
+                "mediaListEntry": {
+                  "id": 593364368,
+                  "status": "COMPLETED",
+                  "progress": 25,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 3,
+              "mediaRecommendation": {
+                "id": 198946,
+                "title": {
+                  "romaji": "Clevatess II: Majuu no Ou to Itsuwari no Yuusha Denshou",
+                  "english": "Clevatess Season 2",
+                  "native": "\u30AF\u30EC\u30D0\u30C6\u30B9\u2161-\u9B54\u7363\u306E\u738B\u3068\u507D\u308A\u306E\u52C7\u8005\u4F1D\u627F-"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx198946-IGXmbqBEYRYD.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx198946-IGXmbqBEYRYD.jpg"
+                },
+                "averageScore": 75,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 2,
+              "mediaRecommendation": {
+                "id": 187941,
+                "title": {
+                  "romaji": "Tensei Shitara Dragon no Tamago Datta: Saikyou Igai Mezasa Nee",
+                  "english": "Reincarnated as a Dragon Hatchling",
+                  "native": "\u8EE2\u751F\u3057\u305F\u3089\u30C9\u30E9\u30B4\u30F3\u306E\u5375\u3060\u3063\u305F\uFF5E\u6700\u5F37\u4EE5\u5916\u76EE\u6307\u3055\u306D\u3047\uFF5E"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx187941-ykmc8WRedPpw.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx187941-ykmc8WRedPpw.jpg"
+                },
+                "averageScore": 63,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 2,
+              "mediaRecommendation": {
+                "id": 189046,
+                "title": {
+                  "romaji": "Re:Zero kara Hajimeru Isekai Seikatsu 4th Season",
+                  "english": "Re:ZERO -Starting Life in Another World- Season 4",
+                  "native": "Re:\u30BC\u30ED\u304B\u3089\u59CB\u3081\u308B\u7570\u4E16\u754C\u751F\u6D3B 4th season"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx189046-yaHWtS5FII46.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx189046-yaHWtS5FII46.jpg"
+                },
+                "averageScore": 90,
+                "mediaListEntry": {
+                  "id": 593351165,
+                  "status": "CURRENT",
+                  "progress": 14,
+                  "score": 10
+                }
+              }
+            },
+            {
+              "rating": 0,
+              "mediaRecommendation": {
+                "id": 9253,
+                "title": {
+                  "romaji": "Steins;Gate",
+                  "english": "Steins;Gate",
+                  "native": "\u30B7\u30E5\u30BF\u30A4\u30F3\u30BA\u30FB\u30B2\u30FC\u30C8"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx9253-tIUXF2gfU8Sg.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx9253-tIUXF2gfU8Sg.jpg"
+                },
+                "averageScore": 89,
+                "mediaListEntry": {
+                  "id": 593364478,
+                  "status": "COMPLETED",
+                  "progress": 24,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 0,
+              "mediaRecommendation": {
+                "id": 21355,
+                "title": {
+                  "romaji": "Re:Zero kara Hajimeru Isekai Seikatsu",
+                  "english": "Re:ZERO -Starting Life in Another World-",
+                  "native": "Re:\u30BC\u30ED\u304B\u3089\u59CB\u3081\u308B\u7570\u4E16\u754C\u751F\u6D3B"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21355-wRVUrGxpvIQQ.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21355-wRVUrGxpvIQQ.jpg"
+                },
+                "averageScore": 81,
+                "mediaListEntry": {
+                  "id": 593363865,
+                  "status": "COMPLETED",
+                  "progress": 25,
+                  "score": 10
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

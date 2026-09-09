@@ -1,0 +1,503 @@
+﻿{
+  "operationName": "MediaRecommendationsPage",
+  "variables": {
+    "id": 105778,
+    "page": 1,
+    "sort": [
+      "RATING_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "4c3bbb02d06d",
+  "recordedAt": "2026-09-06T05:27:17.5853515+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "recommendations": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "nodes": [
+            {
+              "rating": 3014,
+              "mediaRecommendation": {
+                "id": 101517,
+                "title": {
+                  "romaji": "Jujutsu Kaisen",
+                  "english": "Jujutsu Kaisen",
+                  "native": "\u546A\u8853\u5EFB\u6226"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx101517-H3TdM3g5ZUe9.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx101517-H3TdM3g5ZUe9.jpg"
+                },
+                "averageScore": 80,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 1593,
+              "mediaRecommendation": {
+                "id": 87170,
+                "title": {
+                  "romaji": "Fire Punch",
+                  "english": "Fire Punch",
+                  "native": "\u30D5\u30A1\u30A4\u30A2\u30D1\u30F3\u30C1"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx87170-nyuwcN7rU4pc.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx87170-nyuwcN7rU4pc.jpg"
+                },
+                "averageScore": 79,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 1302,
+              "mediaRecommendation": {
+                "id": 31133,
+                "title": {
+                  "romaji": "Dorohedoro",
+                  "english": "Dorohedoro",
+                  "native": "\u30C9\u30ED\u30D8\u30C9\u30ED"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx31133-Jx6map3Oidz1.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx31133-Jx6map3Oidz1.png"
+                },
+                "averageScore": 86,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 826,
+              "mediaRecommendation": {
+                "id": 132029,
+                "title": {
+                  "romaji": "Dandadan",
+                  "english": "Dandadan",
+                  "native": "\u30C0\u30F3\u30C0\u30C0\u30F3"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx132029-prGF4gePdSKv.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx132029-prGF4gePdSKv.jpg"
+                },
+                "averageScore": 82,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 660,
+              "mediaRecommendation": {
+                "id": 100994,
+                "title": {
+                  "romaji": "Jigokuraku",
+                  "english": "Hell\u2019s Paradise: Jigokuraku",
+                  "native": "\u5730\u7344\u697D"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx100994-f6CMjiQQNVeS.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx100994-f6CMjiQQNVeS.png"
+                },
+                "averageScore": 81,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 311,
+              "mediaRecommendation": {
+                "id": 120760,
+                "title": {
+                  "romaji": "Kaijuu 8-gou",
+                  "english": "Kaiju No.8",
+                  "native": "\u602A\u7363\uFF18\u53F7"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx120760-MtXvMgujLBpe.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx120760-MtXvMgujLBpe.jpg"
+                },
+                "averageScore": 75,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 299,
+              "mediaRecommendation": {
+                "id": 146983,
+                "title": {
+                  "romaji": "Sayonara Eri",
+                  "english": "Goodbye, Eri",
+                  "native": "\u3055\u3088\u306A\u3089\u7D75\u68A8"
+                },
+                "format": "ONE_SHOT",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx146983-pLf4apCkFwKL.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx146983-pLf4apCkFwKL.jpg"
+                },
+                "averageScore": 85,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 252,
+              "mediaRecommendation": {
+                "id": 31474,
+                "title": {
+                  "romaji": "Devilman",
+                  "english": "Devilman",
+                  "native": "\u30C7\u30D3\u30EB\u30DE\u30F3"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx31474-R4x7qkjUfBw6.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx31474-R4x7qkjUfBw6.jpg"
+                },
+                "averageScore": 80,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 216,
+              "mediaRecommendation": {
+                "id": 63327,
+                "title": {
+                  "romaji": "Tokyo Ghoul",
+                  "english": "Tokyo Ghoul",
+                  "native": "\u6771\u4EAC\u55B0\u7A2E \u30C8\u30FC\u30AD\u30E7\u30FC\u30B0\u30FC\u30EB"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx63327-glC9cDxYBja9.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx63327-glC9cDxYBja9.png"
+                },
+                "averageScore": 84,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 207,
+              "mediaRecommendation": {
+                "id": 136807,
+                "title": {
+                  "romaji": "Look Back",
+                  "english": "Look Back",
+                  "native": "\u30EB\u30C3\u30AF\u30D0\u30C3\u30AF"
+                },
+                "format": "ONE_SHOT",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx136807-KNfQQTRD4HUK.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx136807-KNfQQTRD4HUK.jpg"
+                },
+                "averageScore": 83,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 180,
+              "mediaRecommendation": {
+                "id": 30002,
+                "title": {
+                  "romaji": "Berserk",
+                  "english": "Berserk",
+                  "native": "\u30D9\u30EB\u30BB\u30EB\u30AF"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30002-Cul4OeN7bYtn.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30002-Cul4OeN7bYtn.jpg"
+                },
+                "averageScore": 92,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 134,
+              "mediaRecommendation": {
+                "id": 98328,
+                "title": {
+                  "romaji": "Jagaaaaaan",
+                  "english": "Jagaaan",
+                  "native": "\u30B8\u30E3\u30AC\u30FC\u30F3"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx98328-Ays4xVxR1lMU.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx98328-Ays4xVxR1lMU.jpg"
+                },
+                "averageScore": 73,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 121,
+              "mediaRecommendation": {
+                "id": 141261,
+                "title": {
+                  "romaji": "Ayashimon",
+                  "english": "Ayashimon",
+                  "native": "\u30A2\u30E4\u30B7\u30E2\u30F3"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx141261-mt54KpSPn8zh.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx141261-mt54KpSPn8zh.jpg"
+                },
+                "averageScore": 63,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 109,
+              "mediaRecommendation": {
+                "id": 97600,
+                "title": {
+                  "romaji": "Yogen no Nayuta",
+                  "english": "Nayuta of the Prophecy",
+                  "native": "\u4E88\u8A00\u306E\u30CA\u30E6\u30BF"
+                },
+                "format": "ONE_SHOT",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx97600-fEIZyenj4c1o.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx97600-fEIZyenj4c1o.png"
+                },
+                "averageScore": 72,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 93,
+              "mediaRecommendation": {
+                "id": 150378,
+                "title": {
+                  "romaji": "Gokurakugai",
+                  "english": "Gokurakugai",
+                  "native": "\u6975\u697D\u8857"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx150378-cClKErwmvgsv.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx150378-cClKErwmvgsv.jpg"
+                },
+                "averageScore": 76,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 83,
+              "mediaRecommendation": {
+                "id": 31400,
+                "title": {
+                  "romaji": "Abara",
+                  "english": "Abara",
+                  "native": "\u30A2\u30D0\u30E9"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx31400-6It6WXftUVN3.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx31400-6It6WXftUVN3.png"
+                },
+                "averageScore": 64,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 83,
+              "mediaRecommendation": {
+                "id": 126693,
+                "title": {
+                  "romaji": "Choujin X",
+                  "english": "Choujin X",
+                  "native": "\u8D85\u4EBAX"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx126693-hEqUWtBfUHyc.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx126693-hEqUWtBfUHyc.jpg"
+                },
+                "averageScore": 76,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 80,
+              "mediaRecommendation": {
+                "id": 85611,
+                "title": {
+                  "romaji": "Tokyo Ghoul:re",
+                  "english": "Tokyo Ghoul:re",
+                  "native": "\u6771\u4EAC\u55B0\u7A2E-\u30C8\u30FC\u30AD\u30E7\u30FC\u30B0\u30FC\u30EB-:re"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx85611-Asb0BNP23NsJ.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx85611-Asb0BNP23NsJ.png"
+                },
+                "averageScore": 83,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 79,
+              "mediaRecommendation": {
+                "id": 144946,
+                "title": {
+                  "romaji": "Gachiakuta",
+                  "english": "Gachiakuta",
+                  "native": "\u30AC\u30C1\u30A2\u30AF\u30BF"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx144946-cscic3n2SwdY.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx144946-cscic3n2SwdY.jpg"
+                },
+                "averageScore": 81,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 74,
+              "mediaRecommendation": {
+                "id": 169355,
+                "title": {
+                  "romaji": "Kagurabachi",
+                  "english": "Kagurabachi",
+                  "native": "\u30AB\u30B0\u30E9\u30D0\u30C1"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx169355-5pqzh1Wb4NOQ.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx169355-5pqzh1Wb4NOQ.png"
+                },
+                "averageScore": 79,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 65,
+              "mediaRecommendation": {
+                "id": 119968,
+                "title": {
+                  "romaji": "Tougen Anki",
+                  "english": "Tougen Anki: Legend of the Cursed Blood",
+                  "native": "\u6843\u6E90\u6697\u9B3C"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx119968-dFbxdXwpkZ3s.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx119968-dFbxdXwpkZ3s.jpg"
+                },
+                "averageScore": 70,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 60,
+              "mediaRecommendation": {
+                "id": 105263,
+                "title": {
+                  "romaji": "Dai Dark",
+                  "english": "Dai Dark",
+                  "native": "\u5927\u30C0\u30FC\u30AF"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx105263-r8PwuxORXWFP.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx105263-r8PwuxORXWFP.png"
+                },
+                "averageScore": 77,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 60,
+              "mediaRecommendation": {
+                "id": 138577,
+                "title": {
+                  "romaji": "After God",
+                  "english": "After God",
+                  "native": "\u30A2\u30D5\u30BF\u30FC\u30B4\u30C3\u30C9"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx138577-Rev53Zj2JbNC.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx138577-Rev53Zj2JbNC.png"
+                },
+                "averageScore": 77,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 55,
+              "mediaRecommendation": {
+                "id": 30401,
+                "title": {
+                  "romaji": "Kiseijuu",
+                  "english": "Parasyte",
+                  "native": "\u5BC4\u751F\u7363"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30401-siY6wmwnHFi6.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30401-siY6wmwnHFi6.png"
+                },
+                "averageScore": 82,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 47,
+              "mediaRecommendation": {
+                "id": 30267,
+                "title": {
+                  "romaji": "HELLSING",
+                  "english": "HELLSING",
+                  "native": "HELLSING"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30267-w3NHbBONJ4bN.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30267-w3NHbBONJ4bN.jpg"
+                },
+                "averageScore": 79,
+                "mediaListEntry": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

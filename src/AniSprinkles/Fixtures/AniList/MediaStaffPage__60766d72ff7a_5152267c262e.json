@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 170577,
+    "page": 1,
+    "sort": [
+      "RELEVANCE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:23:37.7388856+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 121575,
+                "name": {
+                  "full": "Ren Eguchi",
+                  "native": "\u6C5F\u53E3\u9023",
+                  "userPreferred": "Ren Eguchi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 3
+              },
+              "role": "Original Story"
+            },
+            {
+              "node": {
+                "id": 122096,
+                "name": {
+                  "full": "Masa",
+                  "native": "\u96C5",
+                  "userPreferred": "Masa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n122096-GIzQW67eShdt.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Original Character Design"
+            },
+            {
+              "node": {
+                "id": 120742,
+                "name": {
+                  "full": "Kiyoshi Matsuda",
+                  "native": "\u677E\u7530\u6E05",
+                  "userPreferred": "Kiyoshi Matsuda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n120742-FpfRtv10BrAJ.png"
+                },
+                "favourites": 5
+              },
+              "role": "Director"
+            },
+            {
+              "node": {
+                "id": 134799,
+                "name": {
+                  "full": "Kenji Takahashi",
+                  "native": "\u9AD8\u6A4B\u8B19\u4EC1",
+                  "userPreferred": "Kenji Takahashi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n134799-EQ4BpfVxCUhG.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Assistant Director"
+            },
+            {
+              "node": {
+                "id": 273506,
+                "name": {
+                  "full": "Eiji Matsuo",
+                  "native": "\u677E\u5C3E\u82F1\u5150",
+                  "userPreferred": "Eiji Matsuo"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "Supervisor"
+            },
+            {
+              "node": {
+                "id": 97096,
+                "name": {
+                  "full": "Michiko Yokote",
+                  "native": "\u6A2A\u624B\u7F8E\u667A\u5B50",
+                  "userPreferred": "Michiko Yokote"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n97096-j44QglsuY3kx.png"
+                },
+                "favourites": 71
+              },
+              "role": "Series Composition"
+            },
+            {
+              "node": {
+                "id": 140550,
+                "name": {
+                  "full": "Nao Ootsu",
+                  "native": "\u5927\u6D25\u76F4",
+                  "userPreferred": "Nao Ootsu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n140550-RuLKNMRWHDo4.png"
+                },
+                "favourites": 7
+              },
+              "role": "Character Design"
+            },
+            {
+              "node": {
+                "id": 152777,
+                "name": {
+                  "full": "Tsuyoshi Kuwahara",
+                  "native": "\u6851\u539F\u525B",
+                  "userPreferred": "Tsuyoshi Kuwahara"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Character Design"
+            },
+            {
+              "node": {
+                "id": 282562,
+                "name": {
+                  "full": "Tomoki Nagino",
+                  "native": "\u5948\u6728\u91CE\u667A\u5E0C",
+                  "userPreferred": "Tomoki Nagino"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Art Director"
+            },
+            {
+              "node": {
+                "id": 143236,
+                "name": {
+                  "full": "Kana Tanabe",
+                  "native": "\u7530\u8FBA\u9999\u5948",
+                  "userPreferred": "Kana Tanabe"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "Color Design"
+            },
+            {
+              "node": {
+                "id": 275145,
+                "name": {
+                  "full": "Saho Sawada",
+                  "native": "\u6FA4\u7530\u7D17\u5E06",
+                  "userPreferred": "Saho Sawada"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Director of Photography"
+            },
+            {
+              "node": {
+                "id": 142286,
+                "name": {
+                  "full": "Kumiko Taniguchi",
+                  "native": "\u8C37\u53E3\u4E45\u7F8E\u5B50",
+                  "userPreferred": "Kumiko Taniguchi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Special Effects Director"
+            },
+            {
+              "node": {
+                "id": 128970,
+                "name": {
+                  "full": "Gou Sadamatsu",
+                  "native": "\u5B9A\u677E\u525B",
+                  "userPreferred": "Gou Sadamatsu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n128970-BzVqqH6buYlg.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Editing"
+            },
+            {
+              "node": {
+                "id": 157073,
+                "name": {
+                  "full": "Takumi Yamamoto",
+                  "native": "\u5C71\u672C\u62D3\u5DF3",
+                  "userPreferred": "Takumi Yamamoto"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "CG Director"
+            },
+            {
+              "node": {
+                "id": 120643,
+                "name": {
+                  "full": "Kisuke Koizumi",
+                  "native": "\u5C0F\u6CC9\u7D00\u4ECB",
+                  "userPreferred": "Kisuke Koizumi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n120643-9DiDurPnZfLj.png"
+                },
+                "favourites": 3
+              },
+              "role": "Sound Director"
+            },
+            {
+              "node": {
+                "id": 110747,
+                "name": {
+                  "full": "Kuricorder Quartet",
+                  "native": "\u6817\u30B3\u30FC\u30C0\u30FC\u30AB\u30EB\u30C6\u30C3\u30C8 ",
+                  "userPreferred": "Kuricorder Quartet"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n110747-3eC30GQbQMj1.jpg"
+                },
+                "favourites": 5
+              },
+              "role": "Music"
+            },
+            {
+              "node": {
+                "id": 117377,
+                "name": {
+                  "full": "Masato Kouda",
+                  "native": "\u7532\u7530\u96C5\u4EBA",
+                  "userPreferred": "Masato Kouda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n117377-xnxL7ds5aGWp.png"
+                },
+                "favourites": 14
+              },
+              "role": "Music"
+            },
+            {
+              "node": {
+                "id": 210793,
+                "name": {
+                  "full": "Kana Utatane",
+                  "native": "\u3046\u305F\u305F\u306D\u6B4C\u83DC",
+                  "userPreferred": "Kana Utatane"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n210793-th5rFAEyssBH.jpg"
+                },
+                "favourites": 25
+              },
+              "role": "Music"
+            },
+            {
+              "node": {
+                "id": 271749,
+                "name": {
+                  "full": "Koudai Katou",
+                  "native": "\u52A0\u85E4\u5E83\u5927",
+                  "userPreferred": "Koudai Katou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 3
+              },
+              "role": "Animation Producer"
+            },
+            {
+              "node": {
+                "id": 271749,
+                "name": {
+                  "full": "Koudai Katou",
+                  "native": "\u52A0\u85E4\u5E83\u5927",
+                  "userPreferred": "Koudai Katou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 3
+              },
+              "role": "Production Desk"
+            },
+            {
+              "node": {
+                "id": 119575,
+                "name": {
+                  "full": "Eriko Itou",
+                  "native": "\u4F0A\u85E4\u4F9D\u7E54\u5B50",
+                  "userPreferred": "Eriko Itou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n119575-juAV5RUrr1zV.png"
+                },
+                "favourites": 3
+              },
+              "role": "Chief Animation Director"
+            },
+            {
+              "node": {
+                "id": 133448,
+                "name": {
+                  "full": "Shiho Tanaka",
+                  "native": "\u7530\u4E2D\u5FD7\u7A42",
+                  "userPreferred": "Shiho Tanaka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "Chief Animation Director"
+            },
+            {
+              "node": {
+                "id": 144217,
+                "name": {
+                  "full": "Manabu Ootsuka",
+                  "native": "\u5927\u585A\u5B66",
+                  "userPreferred": "Manabu Ootsuka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n144217-mQDAy4w7LETM.png"
+                },
+                "favourites": 18
+              },
+              "role": "Planning"
+            },
+            {
+              "node": {
+                "id": 296823,
+                "name": {
+                  "full": "Yuusuke Nakai",
+                  "native": "\u4E2D\u4E95\u53CB\u4F51",
+                  "userPreferred": "Yuusuke Nakai"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Producer"
+            },
+            {
+              "node": {
+                "id": 308231,
+                "name": {
+                  "full": "Masashi Yahata",
+                  "native": "\u516B\u5E61\u96C5\u53F2",
+                  "userPreferred": "Masashi Yahata"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Assistant Producer"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,221 @@
+﻿{
+  "operationName": "Media",
+  "variables": {
+    "id": 141127
+  },
+  "queryFingerprint": "f5fa5560c46c",
+  "recordedAt": "2026-09-06T05:25:40.4468667+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "id": 141127,
+        "idMal": null,
+        "title": {
+          "romaji": "Golden Boy",
+          "english": null,
+          "native": "\u30B4\u30FC\u30EB\u30C7\u30F3\u30DC\u30FC\u30A4"
+        },
+        "coverImage": {
+          "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx141127-MJrvungcbkfQ.jpg",
+          "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx141127-MJrvungcbkfQ.jpg",
+          "extraLarge": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/large/bx141127-MJrvungcbkfQ.jpg",
+          "color": "#e45d50"
+        },
+        "bannerImage": null,
+        "description": null,
+        "format": "MANGA",
+        "type": "MANGA",
+        "status": "FINISHED",
+        "episodes": null,
+        "chapters": null,
+        "volumes": 2,
+        "duration": null,
+        "season": null,
+        "seasonYear": null,
+        "source": "ORIGINAL",
+        "countryOfOrigin": "JP",
+        "isAdult": false,
+        "isLicensed": true,
+        "siteUrl": "https://anilist.co/manga/141127",
+        "hashtag": null,
+        "startDate": {
+          "year": 1972,
+          "month": null,
+          "day": null
+        },
+        "endDate": {
+          "year": 1972,
+          "month": 9,
+          "day": 21
+        },
+        "nextAiringEpisode": null,
+        "trailer": null,
+        "synonyms": [],
+        "genres": [
+          "Sports"
+        ],
+        "averageScore": null,
+        "meanScore": 64,
+        "popularity": 467,
+        "favourites": 3,
+        "isFavourite": false,
+        "trending": 0,
+        "tags": [],
+        "studios": {
+          "edges": []
+        },
+        "rankings": [],
+        "externalLinks": [],
+        "relations": {
+          "edges": []
+        },
+        "characters": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "edges": []
+        },
+        "recommendations": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "nodes": [
+            {
+              "rating": 1,
+              "mediaRecommendation": {
+                "id": 140253,
+                "title": {
+                  "romaji": "0-Sen Champion",
+                  "english": null,
+                  "native": "0\u6226\u30C1\u30E3\u30F3\u30D4\u30AA\u30F3"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/b140253-B9a7mmDJUm5A.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/b140253-B9a7mmDJUm5A.jpg"
+                },
+                "averageScore": null,
+                "mediaListEntry": null
+              }
+            }
+          ]
+        },
+        "stats": {
+          "scoreDistribution": [
+            {
+              "score": 20,
+              "amount": 1
+            },
+            {
+              "score": 30,
+              "amount": 2
+            },
+            {
+              "score": 40,
+              "amount": 3
+            },
+            {
+              "score": 50,
+              "amount": 5
+            },
+            {
+              "score": 60,
+              "amount": 5
+            },
+            {
+              "score": 70,
+              "amount": 3
+            },
+            {
+              "score": 80,
+              "amount": 5
+            },
+            {
+              "score": 90,
+              "amount": 8
+            },
+            {
+              "score": 100,
+              "amount": 2
+            }
+          ],
+          "statusDistribution": [
+            {
+              "status": "CURRENT",
+              "amount": 108
+            },
+            {
+              "status": "PLANNING",
+              "amount": 278
+            },
+            {
+              "status": "COMPLETED",
+              "amount": 59
+            },
+            {
+              "status": "DROPPED",
+              "amount": 16
+            },
+            {
+              "status": "PAUSED",
+              "amount": 6
+            }
+          ]
+        },
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 101469,
+                "name": {
+                  "full": "Hiroshi Motomiya",
+                  "native": "\u672C\u5BAE\u3072\u308D\u5FD7",
+                  "userPreferred": "Hiroshi Motomiya"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101469-mPiRqr9E795h.png"
+                },
+                "favourites": 26
+              },
+              "role": "Story \u0026 Art"
+            },
+            {
+              "node": {
+                "id": 254803,
+                "name": {
+                  "full": "Masaharu Yamamoto",
+                  "native": "\u5C71\u672C\u307E\u3055\u306F\u308B",
+                  "userPreferred": "Masaharu Yamamoto"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Story \u0026 Art"
+            }
+          ]
+        },
+        "mediaListEntry": {
+          "id": 593351184,
+          "mediaId": 141127,
+          "status": "PLANNING",
+          "progress": 0,
+          "score": 0,
+          "repeat": 0,
+          "notes": null,
+          "private": false,
+          "hiddenFromStatusLists": false,
+          "updatedAt": 1788671651
+        }
+      }
+    }
+  }
+}

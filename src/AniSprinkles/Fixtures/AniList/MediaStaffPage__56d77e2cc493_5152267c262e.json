@@ -1,0 +1,43 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 182544,
+    "page": 1,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:21:28.2901253+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 121274,
+                "name": {
+                  "full": "Akihiro Ononaka",
+                  "native": "\u5C0F\u91CE\u4E2D\u5F70\u5927",
+                  "userPreferred": "Akihiro Ononaka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n121274-86vc8hNbqreY.jpg"
+                },
+                "favourites": 89
+              },
+              "role": "Original Creator"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

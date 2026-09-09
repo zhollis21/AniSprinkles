@@ -1,0 +1,643 @@
+﻿{
+  "operationName": "StudioMediaPage",
+  "variables": {
+    "id": 102,
+    "page": 3,
+    "sort": [
+      "SCORE_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "02c0137b2ee8",
+  "recordedAt": "2026-09-09T16:00:48.186149+00:00",
+  "response": {
+    "data": {
+      "Studio": {
+        "media": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 3
+          },
+          "nodes": [
+            {
+              "id": 227,
+              "title": {
+                "romaji": "FLCL",
+                "english": "FLCL",
+                "native": "\u30D5\u30EA\u30AF\u30EA"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx227-qOB9ZhVvNnqO.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx227-qOB9ZhVvNnqO.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 79,
+              "favourites": 14230,
+              "popularity": 206686,
+              "startDate": {
+                "year": 2000,
+                "month": 4,
+                "day": 26
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 239,
+              "title": {
+                "romaji": "Gankutsuou",
+                "english": "Gankutsuou: The Count of Monte Cristo",
+                "native": "\u5DCC\u7A9F\u738B"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx239-eldiiZxky1Ul.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx239-eldiiZxky1Ul.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 79,
+              "favourites": 1606,
+              "popularity": 59860,
+              "startDate": {
+                "year": 2004,
+                "month": 10,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1364,
+              "title": {
+                "romaji": "Meitantei Conan: Tengoku e no Count Down",
+                "english": "Detective Conan: Countdown to Heaven",
+                "native": "\u540D\u63A2\u5075\u30B3\u30CA\u30F3 \u5929\u56FD\u3078\u306E\u30AB\u30A6\u30F3\u30C8\u30C0\u30A6\u30F3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1364-tlZLDeDo8W0z.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1364-tlZLDeDo8W0z.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 79,
+              "favourites": 163,
+              "popularity": 14273,
+              "startDate": {
+                "year": 2001,
+                "month": 4,
+                "day": 21
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 4901,
+              "title": {
+                "romaji": "BLACK LAGOON: Roberta\u0027s Blood Trail",
+                "english": "Black Lagoon: Roberta\u0027s Blood Trail",
+                "native": "BLACK LAGOON Roberta\u0027s Blood Trail"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx4901-evMxxc1A8pCF.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx4901-evMxxc1A8pCF.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 79,
+              "favourites": 1324,
+              "popularity": 66462,
+              "startDate": {
+                "year": 2010,
+                "month": 6,
+                "day": 27
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 8129,
+              "title": {
+                "romaji": "Kuragehime",
+                "english": "Princess Jellyfish",
+                "native": "\u6D77\u6708\u59EB"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx8129-VasAsXbiixR1.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx8129-VasAsXbiixR1.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 79,
+              "favourites": 2730,
+              "popularity": 63527,
+              "startDate": {
+                "year": 2010,
+                "month": 10,
+                "day": 15
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 889,
+              "title": {
+                "romaji": "BLACK LAGOON",
+                "english": "Black Lagoon",
+                "native": "BLACK LAGOON"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx889-4S7N2ciq2cwA.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx889-4S7N2ciq2cwA.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 9421,
+              "popularity": 251630,
+              "startDate": {
+                "year": 2006,
+                "month": 4,
+                "day": 9
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 98202,
+              "title": {
+                "romaji": "Tsuki ga Kirei",
+                "english": "Tsukigakirei",
+                "native": "\u6708\u304C\u304D\u308C\u3044"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx98202-H6RtsIMZPALF.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx98202-H6RtsIMZPALF.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 4447,
+              "popularity": 158770,
+              "startDate": {
+                "year": 2017,
+                "month": 4,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 187,
+              "title": {
+                "romaji": "Initial D THIRD STAGE",
+                "english": "Initial D 3rd Stage",
+                "native": "\u982D\u6587\u5B57[\u30A4\u30CB\u30B7\u30E3\u30EB]D THIRD STAGE"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx187-QyCAlBGY3EWw.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx187-QyCAlBGY3EWw.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 936,
+              "popularity": 50872,
+              "startDate": {
+                "year": 2001,
+                "month": 1,
+                "day": 13
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 781,
+              "title": {
+                "romaji": "Meitantei Conan: Seikimatsu no Majutsushi",
+                "english": "Detective Conan: The Last Wizard of the Century",
+                "native": "\u540D\u63A2\u5075\u30B3\u30CA\u30F3 \u4E16\u7D00\u672B\u306E\u9B54\u8853\u5E2B"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx781-5VSeE53N40BF.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx781-5VSeE53N40BF.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 184,
+              "popularity": 15229,
+              "startDate": {
+                "year": 1999,
+                "month": 4,
+                "day": 17
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 114236,
+              "title": {
+                "romaji": "Enen no Shouboutai: Ni no Shou",
+                "english": "Fire Force Season 2",
+                "native": "\u708E\u708E\u30CE\u6D88\u9632\u968A \u5F10\u30CE\u7AE0"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx114236-wfQOWF0Ii3h2.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx114236-wfQOWF0Ii3h2.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 6336,
+              "popularity": 300540,
+              "startDate": {
+                "year": 2020,
+                "month": 7,
+                "day": 4
+              },
+              "mediaListEntry": {
+                "id": 593364875,
+                "status": "COMPLETED",
+                "progress": 24,
+                "score": 7
+              }
+            },
+            {
+              "id": 1363,
+              "title": {
+                "romaji": "Meitantei Conan: Hitomi no Naka no Ansatsusha",
+                "english": "Detective Conan: Captured in Her Eyes",
+                "native": "\u540D\u63A2\u5075\u30B3\u30CA\u30F3\u3000\u77B3\u306E\u4E2D\u306E\u6697\u6BBA\u8005"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1363-KeaIofC3kYaZ.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1363-KeaIofC3kYaZ.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 192,
+              "popularity": 14477,
+              "startDate": {
+                "year": 2000,
+                "month": 4,
+                "day": 22
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 3901,
+              "title": {
+                "romaji": "Baccano! Bangai-hen",
+                "english": null,
+                "native": "\u30D0\u30C3\u30AB\u30FC\u30CE! \u756A\u5916\u7DE8"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx3901-uUj3GeGsebmj.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx3901-uUj3GeGsebmj.png"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 199,
+              "popularity": 38464,
+              "startDate": {
+                "year": 2008,
+                "month": 2,
+                "day": 27
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 77,
+              "title": {
+                "romaji": "Mahou Shoujo Lyrical Nanoha A\u0027s",
+                "english": "Magical Girl Lyrical Nanoha A\u0027s",
+                "native": "\u9B54\u6CD5\u5C11\u5973\u30EA\u30EA\u30AB\u30EB\u306A\u306E\u306F\uFF21\u2019\uFF53"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx77-SwBCj7R1enWi.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx77-SwBCj7R1enWi.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 402,
+              "popularity": 16051,
+              "startDate": {
+                "year": 2005,
+                "month": 10,
+                "day": 2
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 223,
+              "title": {
+                "romaji": "Dragon Ball",
+                "english": "Dragon Ball",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EB"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx223-scE5uJfXqqj8.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx223-scE5uJfXqqj8.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 9692,
+              "popularity": 233843,
+              "startDate": {
+                "year": 1986,
+                "month": 2,
+                "day": 26
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2236,
+              "title": {
+                "romaji": "Toki wo Kakeru Shoujo",
+                "english": "The Girl Who Leapt Through Time",
+                "native": "\u6642\u3092\u304B\u3051\u308B\u5C11\u5973"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx2236-tH5fWFkHyVGg.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2236-tH5fWFkHyVGg.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 3439,
+              "popularity": 174542,
+              "startDate": {
+                "year": 2006,
+                "month": 7,
+                "day": 15
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 20447,
+              "title": {
+                "romaji": "Noragami",
+                "english": "Noragami",
+                "native": "\u30CE\u30E9\u30AC\u30DF"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20447-EoQXeygHaVCK.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20447-EoQXeygHaVCK.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 18633,
+              "popularity": 538444,
+              "startDate": {
+                "year": 2014,
+                "month": 1,
+                "day": 5
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 108463,
+              "title": {
+                "romaji": "Jibaku Shounen Hanako-kun",
+                "english": "Toilet-bound Hanako-kun",
+                "native": "\u5730\u7E1B\u5C11\u5E74 \u82B1\u5B50\u304F\u3093"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx108463-u03vrYnyB3L9.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx108463-u03vrYnyB3L9.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 11093,
+              "popularity": 238434,
+              "startDate": {
+                "year": 2020,
+                "month": 1,
+                "day": 10
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 113311,
+              "title": {
+                "romaji": "Kakushigoto",
+                "english": "Kakushigoto",
+                "native": "\u304B\u304F\u3057\u3054\u3068"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx113311-6bSvvCHBpjpI.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx113311-6bSvvCHBpjpI.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 2487,
+              "popularity": 106713,
+              "startDate": {
+                "year": 2020,
+                "month": 4,
+                "day": 2
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 100465,
+              "title": {
+                "romaji": "Shingeki no Kyojin Season 2: Kakusei no Houkou",
+                "english": "Attack on Titan: The Roar of Awakening",
+                "native": "\u5287\u5834\u7248\u300C\u9032\u6483\u306E\u5DE8\u4EBA\u300DSeason 2\uFF5E\u899A\u9192\u306E\u5486\u54EE\uFF5E"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx100465-ivKS0RqXg5dI.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx100465-ivKS0RqXg5dI.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 326,
+              "popularity": 25968,
+              "startDate": {
+                "year": 2018,
+                "month": 1,
+                "day": 13
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2759,
+              "title": {
+                "romaji": "Evangelion Shin Movie: Jo",
+                "english": "Evangelion: 1.0 You Are (Not) Alone",
+                "native": "\u30F1\u30F4\u30A1\u30F3\u30B2\u30EA\u30F2\u30F3\u65B0\u5287\u5834\u7248:\u5E8F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx2759-S0ATamQtDwlW.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2759-S0ATamQtDwlW.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 2194,
+              "popularity": 144699,
+              "startDate": {
+                "year": 2007,
+                "month": 9,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 535,
+              "title": {
+                "romaji": "Slayers NEXT",
+                "english": "The Slayers Next",
+                "native": "\u30B9\u30EC\u30A4\u30E4\u30FC\u30BA NEXT"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx535-xCRCSK8YG89S.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx535-xCRCSK8YG89S.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 77,
+              "favourites": 358,
+              "popularity": 12982,
+              "startDate": {
+                "year": 1996,
+                "month": 4,
+                "day": 5
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 4155,
+              "title": {
+                "romaji": "ONE PIECE FILM: STRONG WORLD",
+                "english": "One Piece Film: Strong World",
+                "native": "ONE PIECE FILM STRONG WORLD"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx4155-P5TDf6t6qFwX.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx4155-P5TDf6t6qFwX.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 77,
+              "favourites": 664,
+              "popularity": 55530,
+              "startDate": {
+                "year": 2009,
+                "month": 12,
+                "day": 12
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 846,
+              "title": {
+                "romaji": "School Rumble Ni Gakki",
+                "english": "School Rumble 2nd Term",
+                "native": "\u30B9\u30AF\u30FC\u30EB\u30E9\u30F3\u30D6\u30EB \u4E8C\u5B66\u671F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b846-5sTqhxItEaTK.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b846-5sTqhxItEaTK.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 77,
+              "favourites": 330,
+              "popularity": 24916,
+              "startDate": {
+                "year": 2006,
+                "month": 4,
+                "day": 3
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 3588,
+              "title": {
+                "romaji": "Soul Eater",
+                "english": "Soul Eater",
+                "native": "\u30BD\u30A6\u30EB\u30A4\u30FC\u30BF\u30FC"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx3588-fSMggQoFSbUI.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx3588-fSMggQoFSbUI.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 77,
+              "favourites": 16232,
+              "popularity": 392392,
+              "startDate": {
+                "year": 2008,
+                "month": 4,
+                "day": 7
+              },
+              "mediaListEntry": {
+                "id": 593365710,
+                "status": "PLANNING",
+                "progress": 0,
+                "score": 0
+              }
+            },
+            {
+              "id": 101474,
+              "title": {
+                "romaji": "Overlord III",
+                "english": "Overlord III",
+                "native": "\u30AA\u30FC\u30D0\u30FC\u30ED\u30FC\u30C9\u2162"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx101474-tGRyvSAWMjU9.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101474-tGRyvSAWMjU9.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 77,
+              "favourites": 6040,
+              "popularity": 246270,
+              "startDate": {
+                "year": 2018,
+                "month": 7,
+                "day": 10
+              },
+              "mediaListEntry": {
+                "id": 593364645,
+                "status": "COMPLETED",
+                "progress": 13,
+                "score": 9
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

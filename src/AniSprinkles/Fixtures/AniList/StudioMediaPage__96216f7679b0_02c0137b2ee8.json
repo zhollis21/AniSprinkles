@@ -1,0 +1,678 @@
+﻿{
+  "operationName": "StudioMediaPage",
+  "variables": {
+    "id": 6161,
+    "page": 1,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "02c0137b2ee8",
+  "recordedAt": "2026-09-06T05:33:12.4231636+00:00",
+  "response": {
+    "data": {
+      "Studio": {
+        "media": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "nodes": [
+            {
+              "id": 154587,
+              "title": {
+                "romaji": "Sousou no Frieren",
+                "english": "Frieren: Beyond Journey\u2019s End",
+                "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx154587-qQTzQnEJJ3oB.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx154587-qQTzQnEJJ3oB.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 91,
+              "favourites": 55905,
+              "popularity": 477293,
+              "startDate": {
+                "year": 2023,
+                "month": 9,
+                "day": 29
+              },
+              "mediaListEntry": {
+                "id": 540974122,
+                "status": "COMPLETED",
+                "progress": 28,
+                "score": 10
+              }
+            },
+            {
+              "id": 161645,
+              "title": {
+                "romaji": "Kusuriya no Hitorigoto",
+                "english": "The Apothecary Diaries",
+                "native": "\u85AC\u5C4B\u306E\u3072\u3068\u308A\u3054\u3068"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx161645-QLbzHXiYRgV2.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx161645-QLbzHXiYRgV2.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 88,
+              "favourites": 27085,
+              "popularity": 322932,
+              "startDate": {
+                "year": 2023,
+                "month": 10,
+                "day": 22
+              },
+              "mediaListEntry": {
+                "id": 548900515,
+                "status": "COMPLETED",
+                "progress": 24,
+                "score": 10
+              }
+            },
+            {
+              "id": 100388,
+              "title": {
+                "romaji": "BANANA FISH",
+                "english": "BANANA FISH",
+                "native": "BANANA FISH"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx100388-hjkg1AnlJR5z.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx100388-hjkg1AnlJR5z.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 84,
+              "favourites": 20215,
+              "popularity": 308662,
+              "startDate": {
+                "year": 2018,
+                "month": 7,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 140439,
+              "title": {
+                "romaji": "Mob Psycho 100 III",
+                "english": "Mob Psycho 100 III",
+                "native": "\u30E2\u30D6\u30B5\u30A4\u30B3100 \u2162"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx140439-bPKmhe1wNxc9.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx140439-bPKmhe1wNxc9.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 87,
+              "favourites": 12043,
+              "popularity": 263564,
+              "startDate": {
+                "year": 2022,
+                "month": 10,
+                "day": 6
+              },
+              "mediaListEntry": {
+                "id": 593364020,
+                "status": "COMPLETED",
+                "progress": 12,
+                "score": 10
+              }
+            },
+            {
+              "id": 141391,
+              "title": {
+                "romaji": "Yofukashi no Uta",
+                "english": "Call of the Night",
+                "native": "\u3088\u3075\u304B\u3057\u306E\u3046\u305F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx141391-M3ZgUKTPENUk.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx141391-M3ZgUKTPENUk.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 79,
+              "favourites": 11155,
+              "popularity": 281248,
+              "startDate": {
+                "year": 2022,
+                "month": 7,
+                "day": 8
+              },
+              "mediaListEntry": {
+                "id": 593364548,
+                "status": "COMPLETED",
+                "progress": 13,
+                "score": 10
+              }
+            },
+            {
+              "id": 176301,
+              "title": {
+                "romaji": "Kusuriya no Hitorigoto 2nd Season",
+                "english": "The Apothecary Diaries Season 2",
+                "native": "\u85AC\u5C4B\u306E\u3072\u3068\u308A\u3054\u3068 \u7B2C2\u671F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx176301-TIGmldLffQGX.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx176301-TIGmldLffQGX.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 88,
+              "favourites": 10516,
+              "popularity": 202420,
+              "startDate": {
+                "year": 2025,
+                "month": 1,
+                "day": 10
+              },
+              "mediaListEntry": {
+                "id": 593363981,
+                "status": "COMPLETED",
+                "progress": 24,
+                "score": 10
+              }
+            },
+            {
+              "id": 182255,
+              "title": {
+                "romaji": "Sousou no Frieren 2nd Season",
+                "english": "Frieren: Beyond Journey\u2019s End Season 2",
+                "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \u7B2C2\u671F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx182255-butzrqd4I0aC.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx182255-butzrqd4I0aC.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 88,
+              "favourites": 8779,
+              "popularity": 222753,
+              "startDate": {
+                "year": 2026,
+                "month": 1,
+                "day": 16
+              },
+              "mediaListEntry": {
+                "id": 540973986,
+                "status": "COMPLETED",
+                "progress": 10,
+                "score": 9
+              }
+            },
+            {
+              "id": 116267,
+              "title": {
+                "romaji": "Tonikaku Kawaii",
+                "english": "TONIKAWA: Over The Moon For You",
+                "native": "\u30C8\u30CB\u30AB\u30AF\u30AB\u30EF\u30A4\u30A4"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx116267-Eo1biPBTlL4i.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx116267-Eo1biPBTlL4i.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 77,
+              "favourites": 8532,
+              "popularity": 245770,
+              "startDate": {
+                "year": 2020,
+                "month": 10,
+                "day": 3
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 151514,
+              "title": {
+                "romaji": "Chi. Chikyuu no Undou ni Tsuite",
+                "english": "Orb: On the Movements of the Earth",
+                "native": "\u30C1\u3002-\u5730\u7403\u306E\u904B\u52D5\u306B\u3064\u3044\u3066-"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx151514-Y0d82Ah2ZOHX.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx151514-Y0d82Ah2ZOHX.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 86,
+              "favourites": 7021,
+              "popularity": 122054,
+              "startDate": {
+                "year": 2024,
+                "month": 10,
+                "day": 5
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 109298,
+              "title": {
+                "romaji": "Eizouken ni wa Te wo Dasu na!",
+                "english": "Keep Your Hands Off Eizouken!",
+                "native": "\u6620\u50CF\u7814\u306B\u306F\u624B\u3092\u51FA\u3059\u306A\uFF01"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx109298-suwdIUbJEPJx.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx109298-suwdIUbJEPJx.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 80,
+              "favourites": 4282,
+              "popularity": 115918,
+              "startDate": {
+                "year": 2020,
+                "month": 1,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 175914,
+              "title": {
+                "romaji": "Yofukashi no Uta Season 2",
+                "english": "Call of the Night Season 2",
+                "native": "\u3088\u3075\u304B\u3057\u306E\u3046\u305F Season 2"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx175914-VsbL90WzuqoM.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx175914-VsbL90WzuqoM.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 84,
+              "favourites": 3212,
+              "popularity": 102284,
+              "startDate": {
+                "year": 2025,
+                "month": 7,
+                "day": 4
+              },
+              "mediaListEntry": {
+                "id": 593364542,
+                "status": "COMPLETED",
+                "progress": 12,
+                "score": 10
+              }
+            },
+            {
+              "id": 143653,
+              "title": {
+                "romaji": "Kimi wa Houkago Insomnia",
+                "english": "Insomniacs After School",
+                "native": "\u541B\u306F\u653E\u8AB2\u5F8C\u30A4\u30F3\u30BD\u30E0\u30CB\u30A2"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx143653-uq3motvR9kb4.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx143653-uq3motvR9kb4.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 80,
+              "favourites": 3183,
+              "popularity": 109291,
+              "startDate": {
+                "year": 2023,
+                "month": 4,
+                "day": 11
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 97980,
+              "title": {
+                "romaji": "Re:CREATORS",
+                "english": "Re:CREATORS",
+                "native": "Re:CREATORS"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx97980-9NQwPW0igSMk.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx97980-9NQwPW0igSMk.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 73,
+              "favourites": 2689,
+              "popularity": 135391,
+              "startDate": {
+                "year": 2017,
+                "month": 4,
+                "day": 8
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 105018,
+              "title": {
+                "romaji": "Kimi to, Nami ni Noretara",
+                "english": "Ride Your Wave",
+                "native": "\u304D\u307F\u3068\u3001\u6CE2\u306B\u306E\u308C\u305F\u3089"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx105018-XM7rFyryltjb.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx105018-XM7rFyryltjb.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 76,
+              "favourites": 2482,
+              "popularity": 103102,
+              "startDate": {
+                "year": 2019,
+                "month": 6,
+                "day": 21
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 178533,
+              "title": {
+                "romaji": "Ranma 1/2 (2024)",
+                "english": "Ranma1/2 (2024)",
+                "native": "\u3089\u3093\u307E1/2 (2024)"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx178533-b88OLxm50jcH.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx178533-b88OLxm50jcH.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 79,
+              "favourites": 2016,
+              "popularity": 65810,
+              "startDate": {
+                "year": 2024,
+                "month": 10,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 141208,
+              "title": {
+                "romaji": "Tonikaku Kawaii Season 2",
+                "english": "TONIKAWA: Over The Moon For You Season 2",
+                "native": "\u30C8\u30CB\u30AB\u30AF\u30AB\u30EF\u30A4\u30A4\uFF08\u30B7\u30FC\u30BA\u30F32\uFF09"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx141208-On0qHKxo6P5t.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx141208-On0qHKxo6P5t.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 76,
+              "favourites": 1887,
+              "popularity": 92532,
+              "startDate": {
+                "year": 2023,
+                "month": 4,
+                "day": 8
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 129277,
+              "title": {
+                "romaji": "Shinigami Bocchan to Kuro Maid",
+                "english": "The Duke of Death and His Maid",
+                "native": "\u6B7B\u795E\u574A\u3061\u3083\u3093\u3068\u9ED2\u30E1\u30A4\u30C9"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx129277-ou64knqN2eQT.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx129277-ou64knqN2eQT.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 74,
+              "favourites": 1837,
+              "popularity": 85276,
+              "startDate": {
+                "year": 2021,
+                "month": 7,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 107226,
+              "title": {
+                "romaji": "Dumbbell Nan Kilo Moteru?",
+                "english": "How Heavy Are the Dumbbells You Lift?",
+                "native": "\u30C0\u30F3\u30D9\u30EB\u4F55\u30AD\u30ED\u6301\u3066\u308B\uFF1F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx107226-zIyl8iIdR8JA.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx107226-zIyl8iIdR8JA.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 71,
+              "favourites": 1752,
+              "popularity": 124632,
+              "startDate": {
+                "year": 2019,
+                "month": 7,
+                "day": 3
+              },
+              "mediaListEntry": {
+                "id": 593364325,
+                "status": "COMPLETED",
+                "progress": 12,
+                "score": 7
+              }
+            },
+            {
+              "id": 138424,
+              "title": {
+                "romaji": "Karakai Jouzu no Takagi-san 3",
+                "english": "Teasing Master Takagi-san Season 3",
+                "native": "\u304B\u3089\u304B\u3044\u4E0A\u624B\u306E\u9AD8\u6728\u3055\u3093\uFF13"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx138424-97Nz1P7M3O2d.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx138424-97Nz1P7M3O2d.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 82,
+              "favourites": 1525,
+              "popularity": 56463,
+              "startDate": {
+                "year": 2022,
+                "month": 1,
+                "day": 8
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 143277,
+              "title": {
+                "romaji": "Urusei Yatsura (2022)",
+                "english": "Urusei Yatsura (2022) Seasons 1 \u0026 2",
+                "native": "\u3046\u308B\u661F\u3084\u3064\u3089 (2022)"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx143277-snjd4UzsUl8M.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx143277-snjd4UzsUl8M.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 72,
+              "favourites": 1328,
+              "popularity": 74629,
+              "startDate": {
+                "year": 2022,
+                "month": 10,
+                "day": 14
+              },
+              "mediaListEntry": {
+                "id": 593365360,
+                "status": "PLANNING",
+                "progress": 0,
+                "score": 0
+              }
+            },
+            {
+              "id": 178886,
+              "title": {
+                "romaji": "Mikadono Sanshimai wa Angai, Choroi.",
+                "english": "Dealing with Mikadono Sisters Is a Breeze",
+                "native": "\u5E1D\u4E43\u4E09\u59C9\u59B9\u306F\u6848\u5916\u3001\u30C1\u30E7\u30ED\u3044\u3002"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx178886-KjzSXyEB61zX.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx178886-KjzSXyEB61zX.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 76,
+              "favourites": 1319,
+              "popularity": 52162,
+              "startDate": {
+                "year": 2025,
+                "month": 7,
+                "day": 10
+              },
+              "mediaListEntry": {
+                "id": 593365350,
+                "status": "PLANNING",
+                "progress": 0,
+                "score": 0
+              }
+            },
+            {
+              "id": 441,
+              "title": {
+                "romaji": "Shoujo Kakumei Utena: Adolescence Mokushiroku",
+                "english": "Revolutionary Girl Utena: The Adolescence of Utena",
+                "native": "\u5C11\u5973\u9769\u547D\u30A6\u30C6\u30CA \u30A2\u30C9\u30A5\u30EC\u30BB\u30F3\u30B9\u9ED9\u793A\u9332"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx441-JbPY7EiWIeaL.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx441-JbPY7EiWIeaL.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 79,
+              "favourites": 1258,
+              "popularity": 22079,
+              "startDate": {
+                "year": 1999,
+                "month": 8,
+                "day": 14
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 172190,
+              "title": {
+                "romaji": "Kimi wa Meido-sama.",
+                "english": "You are Ms. Servant",
+                "native": "\u541B\u306F\u51A5\u571F\u69D8\u3002"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx172190-i1IqizIUcKkN.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx172190-i1IqizIUcKkN.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 69,
+              "favourites": 1157,
+              "popularity": 59595,
+              "startDate": {
+                "year": 2024,
+                "month": 10,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 127371,
+              "title": {
+                "romaji": "Tonikaku Kawaii: SNS",
+                "english": "TONIKAWA: Over The Moon For You ~SNS~",
+                "native": "\u30C8\u30CB\u30AB\u30AF\u30AB\u30EF\u30A4\u30A4 \uFF5ESNS\uFF5E"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx127371-sQvD9sILl7Lc.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx127371-sQvD9sILl7Lc.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 79,
+              "favourites": 1091,
+              "popularity": 63862,
+              "startDate": {
+                "year": 2021,
+                "month": 8,
+                "day": 18
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 100891,
+              "title": {
+                "romaji": "Kengan Ashura",
+                "english": "KENGAN ASHURA Part I",
+                "native": "\u30B1\u30F3\u30AC\u30F3\u30A2\u30B7\u30E5\u30E9"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx100891-vPfnfkzizYFe.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx100891-vPfnfkzizYFe.jpg"
+              },
+              "format": "ONA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 73,
+              "favourites": 1085,
+              "popularity": 53925,
+              "startDate": {
+                "year": 2019,
+                "month": 7,
+                "day": 31
+              },
+              "mediaListEntry": null
+            }
+          ]
+        }
+      }
+    }
+  }
+}

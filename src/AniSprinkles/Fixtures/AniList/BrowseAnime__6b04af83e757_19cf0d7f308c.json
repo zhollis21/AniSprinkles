@@ -1,0 +1,776 @@
+﻿{
+  "operationName": "BrowseAnime",
+  "variables": {
+    "page": 2,
+    "perPage": 25,
+    "sort": [
+      "SCORE_DESC",
+      "ID"
+    ],
+    "isAdult": false
+  },
+  "queryFingerprint": "19cf0d7f308c",
+  "recordedAt": "2026-09-06T05:15:28.8120491+00:00",
+  "response": {
+    "data": {
+      "Page": {
+        "pageInfo": {
+          "hasNextPage": true,
+          "currentPage": 2
+        },
+        "media": [
+          {
+            "id": 20954,
+            "title": {
+              "romaji": "Koe no Katachi",
+              "english": "A Silent Voice",
+              "native": "\u8072\u306E\u5F62"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20954-sYRfE5jQRtSB.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20954-sYRfE5jQRtSB.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 88,
+            "favourites": 60464,
+            "popularity": 713996,
+            "trending": 8,
+            "startDate": {
+              "year": 2016,
+              "month": 9,
+              "day": 17
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 4181,
+            "title": {
+              "romaji": "CLANNAD: After Story",
+              "english": "Clannad: After Story",
+              "native": "\uFF23\uFF2C\uFF21\uFF2E\uFF2E\uFF21\uFF24 ~After Story~ \u30AF\u30E9\u30CA\u30C9 \u30A2\u30D5\u30BF\u30FC\u30B9\u30C8\u30FC\u30EA\u30FC"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx4181-zUKE7BZC62OF.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx4181-zUKE7BZC62OF.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 24,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 88,
+            "favourites": 17526,
+            "popularity": 223050,
+            "trending": 2,
+            "startDate": {
+              "year": 2008,
+              "month": 10,
+              "day": 3
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 17074,
+            "title": {
+              "romaji": "Monogatari Series: Second Season",
+              "english": "Monogatari Series Second Season",
+              "native": "\u3008\u7269\u8A9E\u3009\u30B7\u30EA\u30FC\u30BA \u30BB\u30AB\u30F3\u30C9\u30B7\u30FC\u30BA\u30F3"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx17074-xMhVAZsEDH66.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx17074-xMhVAZsEDH66.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 26,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 88,
+            "favourites": 11614,
+            "popularity": 171480,
+            "trending": 1,
+            "startDate": {
+              "year": 2013,
+              "month": 7,
+              "day": 7
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 161645,
+            "title": {
+              "romaji": "Kusuriya no Hitorigoto",
+              "english": "The Apothecary Diaries",
+              "native": "\u85AC\u5C4B\u306E\u3072\u3068\u308A\u3054\u3068"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx161645-QLbzHXiYRgV2.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx161645-QLbzHXiYRgV2.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 24,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 88,
+            "favourites": 27085,
+            "popularity": 322932,
+            "trending": 16,
+            "startDate": {
+              "year": 2023,
+              "month": 10,
+              "day": 22
+            },
+            "mediaListEntry": {
+              "id": 548900515,
+              "status": "COMPLETED",
+              "progress": 24,
+              "score": 10
+            }
+          },
+          {
+            "id": 182255,
+            "title": {
+              "romaji": "Sousou no Frieren 2nd Season",
+              "english": "Frieren: Beyond Journey\u2019s End Season 2",
+              "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \u7B2C2\u671F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx182255-butzrqd4I0aC.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx182255-butzrqd4I0aC.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 10,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 88,
+            "favourites": 8779,
+            "popularity": 222753,
+            "trending": 15,
+            "startDate": {
+              "year": 2026,
+              "month": 1,
+              "day": 16
+            },
+            "mediaListEntry": {
+              "id": 540973986,
+              "status": "COMPLETED",
+              "progress": 10,
+              "score": 9
+            }
+          },
+          {
+            "id": 101338,
+            "title": {
+              "romaji": "Mob Psycho 100 II",
+              "english": "Mob Psycho 100 II",
+              "native": "\u30E2\u30D6\u30B5\u30A4\u30B3100 II"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx101338-rokVscjRYzdP.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101338-rokVscjRYzdP.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 13,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 87,
+            "favourites": 25629,
+            "popularity": 448059,
+            "trending": 5,
+            "startDate": {
+              "year": 2019,
+              "month": 1,
+              "day": 7
+            },
+            "mediaListEntry": {
+              "id": 593364017,
+              "status": "COMPLETED",
+              "progress": 13,
+              "score": 9
+            }
+          },
+          {
+            "id": 101925,
+            "title": {
+              "romaji": "Gintama.: Shirogane no Tamashii-hen - Kouhan-sen",
+              "english": "Gintama.: Silver Soul Arc - Second Half War",
+              "native": "\u9280\u9B42. \u9280\u30CE\u9B42\u7BC72"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx101925-gcA84dgcSj2w.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101925-gcA84dgcSj2w.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 14,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 87,
+            "favourites": 1277,
+            "popularity": 56060,
+            "trending": 1,
+            "startDate": {
+              "year": 2018,
+              "month": 7,
+              "day": 9
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 197474,
+            "title": {
+              "romaji": "Shin Gintama Movie: Yoshiwara Daienjou",
+              "english": "Gintama the Movie 2026: Yoshiwara in Flames",
+              "native": "\u65B0\u5287\u5834\u7248 \u9280\u9B42 -\u5409\u539F\u5927\u708E\u4E0A-"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx197474-jTeY1G9gtD8i.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx197474-jTeY1G9gtD8i.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 87,
+            "favourites": 142,
+            "popularity": 5845,
+            "trending": 3,
+            "startDate": {
+              "year": 2026,
+              "month": 2,
+              "day": 13
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 21,
+            "title": {
+              "romaji": "ONE PIECE",
+              "english": "ONE PIECE",
+              "native": "ONE PIECE"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21-ELSYx3yMPcKM.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21-ELSYx3yMPcKM.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 87,
+            "favourites": 110708,
+            "popularity": 748080,
+            "trending": 131,
+            "startDate": {
+              "year": 1999,
+              "month": 10,
+              "day": 20
+            },
+            "mediaListEntry": {
+              "id": 593351146,
+              "status": "CURRENT",
+              "progress": 1163,
+              "score": 8
+            }
+          },
+          {
+            "id": 15335,
+            "title": {
+              "romaji": "Gintama: Kanketsu-hen - Yorozuya yo Eien Nare",
+              "english": "Gintama: The Final Chapter - Be Forever Yorozuya",
+              "native": "\u5287\u5834\u7248 \u9280\u9B42 \u5B8C\u7D50\u7BC7 \u4E07\u4E8B\u5C4B\u3088\u6C38\u9060\u306A\u308C"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx15335-QjijwChGTBs0.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx15335-QjijwChGTBs0.png"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 87,
+            "favourites": 1309,
+            "popularity": 55459,
+            "trending": 1,
+            "startDate": {
+              "year": 2013,
+              "month": 7,
+              "day": 6
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 101348,
+            "title": {
+              "romaji": "VINLAND SAGA",
+              "english": "Vinland Saga",
+              "native": "\u30F4\u30A3\u30F3\u30E9\u30F3\u30C9\u30FB\u30B5\u30AC"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx101348-2fhDFPCuMNiz.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101348-2fhDFPCuMNiz.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 24,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 87,
+            "favourites": 38896,
+            "popularity": 543876,
+            "trending": 6,
+            "startDate": {
+              "year": 2019,
+              "month": 7,
+              "day": 8
+            },
+            "mediaListEntry": {
+              "id": 593364489,
+              "status": "COMPLETED",
+              "progress": 24,
+              "score": 10
+            }
+          },
+          {
+            "id": 109731,
+            "title": {
+              "romaji": "Hibike! Euphonium 3",
+              "english": "Sound! Euphonium 3",
+              "native": "\u97FF\u3051\uFF01\u30E6\u30FC\u30D5\u30A9\u30CB\u30A2\u30E0\uFF13"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx109731-EwHzbtywdcyG.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx109731-EwHzbtywdcyG.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 13,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 87,
+            "favourites": 2364,
+            "popularity": 36247,
+            "trending": 2,
+            "startDate": {
+              "year": 2024,
+              "month": 4,
+              "day": 7
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 21400,
+            "title": {
+              "romaji": "Kizumonogatari III: Reiketsu-hen",
+              "english": "Kizumonogatari Part 3: Reiketsu",
+              "native": "\u50B7\u7269\u8A9E\u3008\u2162\u51B7\u8840\u7BC7\u3009"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21400-38ykNo3j4xXo.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21400-38ykNo3j4xXo.png"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 87,
+            "favourites": 7658,
+            "popularity": 147530,
+            "trending": 0,
+            "startDate": {
+              "year": 2017,
+              "month": 1,
+              "day": 6
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 21698,
+            "title": {
+              "romaji": "Haikyuu!!: Karasuno Koukou VS Shiratorizawa Gakuen Koukou",
+              "english": "HAIKYU!! 3rd Season",
+              "native": "\u30CF\u30A4\u30AD\u30E5\u30FC!! \u70CF\u91CE\u9AD8\u6821 VS \u767D\u9CE5\u6CA2\u5B66\u5712\u9AD8\u6821"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21698-RL71mr1YU5Io.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21698-RL71mr1YU5Io.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 10,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 87,
+            "favourites": 14532,
+            "popularity": 361631,
+            "trending": 1,
+            "startDate": {
+              "year": 2016,
+              "month": 10,
+              "day": 8
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 182896,
+            "title": {
+              "romaji": "Boku no Hero Academia FINAL SEASON",
+              "english": "My Hero Academia FINAL SEASON",
+              "native": "\u50D5\u306E\u30D2\u30FC\u30ED\u30FC\u30A2\u30AB\u30C7\u30DF\u30A2 FINAL SEASON"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx182896-mvxTVHGdDB4q.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx182896-mvxTVHGdDB4q.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 11,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 87,
+            "favourites": 5019,
+            "popularity": 132268,
+            "trending": 3,
+            "startDate": {
+              "year": 2025,
+              "month": 10,
+              "day": 4
+            },
+            "mediaListEntry": {
+              "id": 593351172,
+              "status": "PLANNING",
+              "progress": 0,
+              "score": 0
+            }
+          },
+          {
+            "id": 2904,
+            "title": {
+              "romaji": "Code Geass: Hangyaku no Lelouch R2",
+              "english": "Code Geass: Lelouch of the Rebellion R2",
+              "native": "\u30B3\u30FC\u30C9\u30AE\u30A2\u30B9 \u53CD\u9006\u306E\u30EB\u30EB\u30FC\u30B7\u30E5 R2"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx2904-Fet9Q33suC7G.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2904-Fet9Q33suC7G.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 25,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 87,
+            "favourites": 22957,
+            "popularity": 362049,
+            "trending": 8,
+            "startDate": {
+              "year": 2008,
+              "month": 4,
+              "day": 6
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 140439,
+            "title": {
+              "romaji": "Mob Psycho 100 III",
+              "english": "Mob Psycho 100 III",
+              "native": "\u30E2\u30D6\u30B5\u30A4\u30B3100 \u2162"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx140439-bPKmhe1wNxc9.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx140439-bPKmhe1wNxc9.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 87,
+            "favourites": 12043,
+            "popularity": 263564,
+            "trending": 4,
+            "startDate": {
+              "year": 2022,
+              "month": 10,
+              "day": 6
+            },
+            "mediaListEntry": {
+              "id": 593364020,
+              "status": "COMPLETED",
+              "progress": 12,
+              "score": 10
+            }
+          },
+          {
+            "id": 146984,
+            "title": {
+              "romaji": "Shingeki no Kyojin: The Final Season - Kanketsu-hen Zenpen",
+              "english": "Attack on Titan Final Season THE FINAL CHAPTERS Special 1",
+              "native": "\u9032\u6483\u306E\u5DE8\u4EBA The Final Season\u5B8C\u7D50\u7DE8 \u524D\u7DE8"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx146984-GXrLeT6vQqyP.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx146984-GXrLeT6vQqyP.jpg"
+            },
+            "format": "SPECIAL",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 87,
+            "favourites": 7063,
+            "popularity": 249075,
+            "trending": 4,
+            "startDate": {
+              "year": 2023,
+              "month": 3,
+              "day": 4
+            },
+            "mediaListEntry": {
+              "id": 593364189,
+              "status": "COMPLETED",
+              "progress": 1,
+              "score": 9
+            }
+          },
+          {
+            "id": 162314,
+            "title": {
+              "romaji": "Shingeki no Kyojin: The Final Season - Kanketsu-hen Kouhen",
+              "english": "Attack on Titan Final Season THE FINAL CHAPTERS Special 2",
+              "native": "\u9032\u6483\u306E\u5DE8\u4EBA The Final Season\u5B8C\u7D50\u7DE8 \u5F8C\u7DE8"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx162314-qIWdAAFtvY8J.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx162314-qIWdAAFtvY8J.jpg"
+            },
+            "format": "SPECIAL",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 87,
+            "favourites": 7686,
+            "popularity": 166489,
+            "trending": 4,
+            "startDate": {
+              "year": 2023,
+              "month": 11,
+              "day": 5
+            },
+            "mediaListEntry": {
+              "id": 593364193,
+              "status": "COMPLETED",
+              "progress": 1,
+              "score": 9
+            }
+          },
+          {
+            "id": 177385,
+            "title": {
+              "romaji": "Ikoku Nikki",
+              "english": "Journal with Witch",
+              "native": "\u9055\u56FD\u65E5\u8A18"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx177385-TBpvkGdF28R7.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx177385-TBpvkGdF28R7.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 13,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 87,
+            "favourites": 3141,
+            "popularity": 50122,
+            "trending": 3,
+            "startDate": {
+              "year": 2026,
+              "month": 1,
+              "day": 5
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 103047,
+            "title": {
+              "romaji": "Violet Evergarden Movie",
+              "english": "Violet Evergarden: the Movie",
+              "native": "\u5287\u5834\u7248 \u30F4\u30A1\u30A4\u30AA\u30EC\u30C3\u30C8\u30FB\u30A8\u30F4\u30A1\u30FC\u30AC\u30FC\u30C7\u30F3"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx103047-odblDHHEdehK.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx103047-odblDHHEdehK.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 87,
+            "favourites": 8466,
+            "popularity": 200294,
+            "trending": 2,
+            "startDate": {
+              "year": 2020,
+              "month": 9,
+              "day": 18
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 110277,
+            "title": {
+              "romaji": "Shingeki no Kyojin: The Final Season",
+              "english": "Attack on Titan Final Season",
+              "native": "\u9032\u6483\u306E\u5DE8\u4EBA The Final Season"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx110277-sKUNXAsWMNFw.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx110277-sKUNXAsWMNFw.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 16,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 87,
+            "favourites": 31026,
+            "popularity": 640954,
+            "trending": 13,
+            "startDate": {
+              "year": 2020,
+              "month": 12,
+              "day": 7
+            },
+            "mediaListEntry": {
+              "id": 593364175,
+              "status": "COMPLETED",
+              "progress": 16,
+              "score": 8
+            }
+          },
+          {
+            "id": 113024,
+            "title": {
+              "romaji": "Shoujo\u2606Kageki Revue Starlight Movie",
+              "english": "Revue Starlight: The Movie",
+              "native": "\u5287\u5834\u7248 \u5C11\u5973\u2606\u6B4C\u5287 \u30EC\u30F4\u30E5\u30FC\u30B9\u30BF\u30A1\u30E9\u30A4\u30C8"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx113024-OdzOh0OKFPTN.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx113024-OdzOh0OKFPTN.png"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 87,
+            "favourites": 2444,
+            "popularity": 21015,
+            "trending": 0,
+            "startDate": {
+              "year": 2021,
+              "month": 6,
+              "day": 4
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 151384,
+            "title": {
+              "romaji": "Kaguya-sama wa Kokurasetai: First Kiss wa Owaranai",
+              "english": "Kaguya-sama: Love is War -The First Kiss That Never Ends-",
+              "native": "\u304B\u3050\u3084\u69D8\u306F\u544A\u3089\u305B\u305F\u3044 -\u30D5\u30A1\u30FC\u30B9\u30C8\u30AD\u30C3\u30B9\u306F\u7D42\u308F\u3089\u306A\u3044-"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx151384-gv0q8wOE6D58.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx151384-gv0q8wOE6D58.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 4,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 87,
+            "favourites": 4571,
+            "popularity": 147460,
+            "trending": 3,
+            "startDate": {
+              "year": 2023,
+              "month": 4,
+              "day": 1
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 128207,
+            "title": {
+              "romaji": "THE FIRST SLAM DUNK",
+              "english": "THE FIRST SLAM DUNK",
+              "native": "THE FIRST SLAM DUNK"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx128207-SWpfVJMRfQ9X.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx128207-SWpfVJMRfQ9X.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 87,
+            "favourites": 1695,
+            "popularity": 32236,
+            "trending": 0,
+            "startDate": {
+              "year": 2022,
+              "month": 12,
+              "day": 3
+            },
+            "mediaListEntry": null
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,729 @@
+﻿{
+  "operationName": "BrowseAnime",
+  "variables": {
+    "page": 2,
+    "perPage": 25,
+    "sort": [
+      "POPULARITY_DESC",
+      "ID"
+    ],
+    "status": "RELEASING",
+    "season": "SUMMER",
+    "seasonYear": 2026,
+    "isAdult": false
+  },
+  "queryFingerprint": "19cf0d7f308c",
+  "recordedAt": "2026-09-06T05:14:59.0547911+00:00",
+  "response": {
+    "data": {
+      "Page": {
+        "pageInfo": {
+          "hasNextPage": true,
+          "currentPage": 2
+        },
+        "media": [
+          {
+            "id": 204466,
+            "title": {
+              "romaji": "Otome Kaijuu Caram\u00E9liser",
+              "english": "KAIJU GIRL CARAMELISE",
+              "native": "\u4E59\u5973\u602A\u7363\u30AD\u30E3\u30E9\u30E1\u30EA\u30BC"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx204466-vXMvIs4VOoQd.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx204466-vXMvIs4VOoQd.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 74,
+            "favourites": 647,
+            "popularity": 37688,
+            "trending": 39,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 3
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 197715,
+            "title": {
+              "romaji": "LV999 no Murabito",
+              "english": "The Villager of Level 999",
+              "native": "LV999\u306E\u6751\u4EBA"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx197715-KLFLxU24U1uL.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx197715-KLFLxU24U1uL.png"
+            },
+            "format": "ONA",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 60,
+            "favourites": 473,
+            "popularity": 36244,
+            "trending": 21,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 2
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 177637,
+            "title": {
+              "romaji": "Sayonara Lara",
+              "english": "Goodbye, Lara",
+              "native": "\u3055\u3088\u306A\u3089\u30E9\u30E9"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx177637-8onaQWqKW1C3.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx177637-8onaQWqKW1C3.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 76,
+            "favourites": 565,
+            "popularity": 30981,
+            "trending": 21,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 6
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 196218,
+            "title": {
+              "romaji": "Ryoumin 0-Nin Start no Henkyou Ryoushu-sama",
+              "english": "The Frontier Lord Begins with Zero Subjects",
+              "native": "\u9818\u6C110\u4EBA\u30B9\u30BF\u30FC\u30C8\u306E\u8FBA\u5883\u9818\u4E3B\u69D8"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx196218-UsdTTCrwpDIN.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx196218-UsdTTCrwpDIN.jpg"
+            },
+            "format": "ONA",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 66,
+            "favourites": 383,
+            "popularity": 30550,
+            "trending": 63,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 3
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 128757,
+            "title": {
+              "romaji": "Tai-Ari deshita.: Ojou-sama wa Kakutou Game nante Shinai",
+              "english": "Young Ladies Don\u0027t Play Fighting Games",
+              "native": "\u5BFE\u3042\u308A\u3067\u3057\u305F\u3002 \uFF5E\u304A\u5B22\u3055\u307E\u306F\u683C\u95D8\u30B2\u30FC\u30E0\u306A\u3093\u3066\u3057\u306A\u3044\uFF5E"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx128757-Iqc6hTjEYIz4.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx128757-Iqc6hTjEYIz4.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 74,
+            "favourites": 329,
+            "popularity": 27036,
+            "trending": 18,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 7
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 198409,
+            "title": {
+              "romaji": "Sekai Saikyou no Kouei: Meikyuukoku no Shinjin Tansakusha",
+              "english": "The World\u0027s Strongest Rearguard",
+              "native": "\u4E16\u754C\u6700\u5F37\u306E\u5F8C\u885B \uFF5E\u8FF7\u5BAE\u56FD\u306E\u65B0\u4EBA\u63A2\u7D22\u8005\uFF5E"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx198409-EiWJXfYnvfu4.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx198409-EiWJXfYnvfu4.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 55,
+            "favourites": 307,
+            "popularity": 26904,
+            "trending": 8,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 5
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 182616,
+            "title": {
+              "romaji": "Nige Jouzu no Wakagimi 2nd Season",
+              "english": "The Elusive Samurai Season 2",
+              "native": "\u9003\u3052\u4E0A\u624B\u306E\u82E5\u541B \u7B2C\u4E8C\u671F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx182616-ZOCgArw9cgqI.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx182616-ZOCgArw9cgqI.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 76,
+            "favourites": 237,
+            "popularity": 26216,
+            "trending": 29,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 17
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 169582,
+            "title": {
+              "romaji": "Saikyou Degarashi Ouji no Anyaku Teii Arasoi: Munou wo Enjiru SS Rank Ouji wa Koui Keishou-sen wo Kage kara Shihai suru",
+              "english": "The Insipid Prince\u0027s Furtive Grab for the Throne",
+              "native": "\u6700\u5F37\u51FA\u6DB8\u3089\u3057\u7687\u5B50\u306E\u6697\u8E8D\u5E1D\u4F4D\u4E89\u3044 \u7121\u80FD\u3092\u6F14\u3058\u308BSS\u30E9\u30F3\u30AF\u7687\u5B50\u306F\u7687\u4F4D\u7D99\u627F\u6226\u3092\u5F71\u304B\u3089\u652F\u914D\u3059\u308B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx169582-quL8VMg45fcu.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx169582-quL8VMg45fcu.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 58,
+            "favourites": 277,
+            "popularity": 24212,
+            "trending": 14,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 6
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 199066,
+            "title": {
+              "romaji": "Hanaori-san wa Tensei Shite mo Kenka ga Shitai",
+              "english": "Hanaori-san Still Wants to Fight in the Next Life",
+              "native": "\u82B1\u7E54\u3055\u3093\u306F\u8EE2\u751F\u3057\u3066\u3082\u55A7\u5629\u304C\u3057\u305F\u3044"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx199066-YXDVsguvFZMm.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx199066-YXDVsguvFZMm.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 69,
+            "favourites": 289,
+            "popularity": 23348,
+            "trending": 108,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 12
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 186863,
+            "title": {
+              "romaji": "Neko to Ryuu",
+              "english": "The Cat and the Dragon",
+              "native": "\u732B\u3068\u7ADC"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx186863-AO4efoB8HuzA.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx186863-AO4efoB8HuzA.png"
+            },
+            "format": "ONA",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 77,
+            "favourites": 391,
+            "popularity": 23005,
+            "trending": 66,
+            "startDate": {
+              "year": 2026,
+              "month": 6,
+              "day": 27
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 199408,
+            "title": {
+              "romaji": "Buchigire Reijou wa Houfuku wo Chikaimashita.: Madousho no Chikara de Sokoku wo Tataki Tsubushimasu",
+              "english": "A Livid Lady\u2019s Guide to Getting Even: How I Crushed My Homeland with My Mighty Grimoires",
+              "native": "\u30D6\u30C1\u5207\u308C\u4EE4\u5B22\u306F\u5831\u5FA9\u3092\u8A93\u3044\u307E\u3057\u305F\u3002\u3000\uFF5E\u9B54\u5C0E\u66F8\u306E\u529B\u3067\u7956\u56FD\u3092\u53E9\u304D\u6F70\u3057\u307E\u3059\uFF5E"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx199408-ocRWG4pRWl8f.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx199408-ocRWG4pRWl8f.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 67,
+            "favourites": 244,
+            "popularity": 22780,
+            "trending": 17,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 6
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 206521,
+            "title": {
+              "romaji": "World Is Dancing",
+              "english": "The World Is Dancing",
+              "native": "\u30EF\u30FC\u30EB\u30C9 \u30A4\u30BA \u30C0\u30F3\u30B7\u30F3\u30B0"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx206521-ecJuDgjth84C.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206521-ecJuDgjth84C.png"
+            },
+            "format": "ONA",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 13,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 71,
+            "favourites": 186,
+            "popularity": 21419,
+            "trending": 7,
+            "startDate": {
+              "year": 2026,
+              "month": 6,
+              "day": 29
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 192800,
+            "title": {
+              "romaji": "Heroine? Seijo? Iie, All Works Maid desu (Ko)!",
+              "english": "Heroine? Saint? No, I\u2019m an All-Works Maid (And Proud of It)!",
+              "native": "\u30D2\u30ED\u30A4\u30F3\uFF1F\u8056\u5973\uFF1F\u3044\u3044\u3048\u3001\u30AA\u30FC\u30EB\u30EF\u30FC\u30AF\u30B9\u30E1\u30A4\u30C9\u3067\u3059\uFF08\u8A87\uFF09\uFF01"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx192800-r8zlO0VY0jJP.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx192800-r8zlO0VY0jJP.jpg"
+            },
+            "format": "ONA",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 70,
+            "favourites": 283,
+            "popularity": 21133,
+            "trending": 14,
+            "startDate": {
+              "year": 2026,
+              "month": 6,
+              "day": 24
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 194219,
+            "title": {
+              "romaji": "Oni no Hanayome",
+              "english": "The Ogre\u0027s Bride",
+              "native": "\u9B3C\u306E\u82B1\u5AC1"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b194219-56EhyK775lga.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b194219-56EhyK775lga.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 68,
+            "favourites": 394,
+            "popularity": 20772,
+            "trending": 97,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 5
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 196219,
+            "title": {
+              "romaji": "Mujikaku Seijo wa Kyou mo Muishiki ni Chikara wo Tare Nagasu",
+              "english": "The Oblivious Saint Can\u0027t Contain Her Power",
+              "native": "\u7121\u81EA\u899A\u8056\u5973\u306F\u4ECA\u65E5\u3082\u7121\u610F\u8B58\u306B\u529B\u3092\u5782\u308C\u6D41\u3059"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx196219-imvC0rbk4VzH.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx196219-imvC0rbk4VzH.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 63,
+            "favourites": 223,
+            "popularity": 19732,
+            "trending": 10,
+            "startDate": {
+              "year": 2026,
+              "month": 6,
+              "day": 30
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 207674,
+            "title": {
+              "romaji": "Ushiro no Shoumen Kamui-san",
+              "english": "KAMUI ---He\u0027s behind you",
+              "native": "\u3046\u3057\u308D\u306E\u6B63\u9762\u30AB\u30E0\u30A4\u3055\u3093"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx207674-BT8lFAwH1WrL.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx207674-BT8lFAwH1WrL.jpg"
+            },
+            "format": "TV_SHORT",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 57,
+            "favourites": 281,
+            "popularity": 19167,
+            "trending": 16,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 4
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 209504,
+            "title": {
+              "romaji": "Suterare Seijo no Isekai Gohantabi: Kakure Skill de Camping Car wo Shoukan Shimashita",
+              "english": "The Forsaken Saintess and Her Foodie Roadtrip in Another World",
+              "native": "\u6368\u3066\u3089\u308C\u8056\u5973\u306E\u7570\u4E16\u754C\u3054\u306F\u3093\u65C5 \u96A0\u308C\u30B9\u30AD\u30EB\u3067\u30AD\u30E3\u30F3\u30D4\u30F3\u30B0\u30AB\u30FC\u3092\u53EC\u559A\u3057\u307E\u3057\u305F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx209504-yRxHWxKuNGtg.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209504-yRxHWxKuNGtg.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 61,
+            "favourites": 146,
+            "popularity": 13934,
+            "trending": 7,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 6
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 203880,
+            "title": {
+              "romaji": "Reiwa no Dara-san",
+              "english": "Dara-san of the Reiwa Era",
+              "native": "\u4EE4\u548C\u306E\u30C0\u30E9\u3055\u3093"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx203880-lnruKftb27Nr.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx203880-lnruKftb27Nr.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 13,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 65,
+            "favourites": 185,
+            "popularity": 13382,
+            "trending": 14,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 2
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 196356,
+            "title": {
+              "romaji": "Ibitte Konai Gibo to Gishi",
+              "english": "My Stepmother and Stepsisters Aren\u2019t Wicked",
+              "native": "\u3044\u3073\u3063\u3066\u3053\u306A\u3044\u7FA9\u6BCD\u3068\u7FA9\u59C9"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx196356-2TNt2b9tu0jm.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx196356-2TNt2b9tu0jm.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 64,
+            "favourites": 107,
+            "popularity": 11752,
+            "trending": 7,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 8
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 208225,
+            "title": {
+              "romaji": "\u0022Kimi wo Aisuru Ki wa nai\u0022 to Itta Jiki Koushaku-sama ga Naze ka Dekiai Shitekimasu",
+              "english": "The Duke\u2019s Son Claims He Won\u2019t Love Me Yet Showers Me with Adoration",
+              "native": "\u300C\u304D\u307F\u3092\u611B\u3059\u308B\u6C17\u306F\u306A\u3044\u300D\u3068\u8A00\u3063\u305F\u6B21\u671F\u516C\u7235\u69D8\u304C\u306A\u305C\u304B\u6EBA\u611B\u3057\u3066\u304D\u307E\u3059"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx208225-HJbCC0Z4xRp3.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx208225-HJbCC0Z4xRp3.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 65,
+            "favourites": 130,
+            "popularity": 11697,
+            "trending": 40,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 5
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 188525,
+            "title": {
+              "romaji": "Kore Kaite Shine",
+              "english": "Draw This, Then Die!",
+              "native": "\u3053\u308C\u63CF\u3044\u3066\u6B7B\u306D"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx188525-uWhw4rQcqOyF.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx188525-uWhw4rQcqOyF.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 77,
+            "favourites": 137,
+            "popularity": 10725,
+            "trending": 12,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 3
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 207809,
+            "title": {
+              "romaji": "Sora wa Akai Kawa no Hotori",
+              "english": "Red River",
+              "native": "\u5929\u306F\u8D64\u3044\u6CB3\u306E\u307B\u3068\u308A"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx207809-cpS7CAyjN7iP.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx207809-cpS7CAyjN7iP.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 24,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 61,
+            "favourites": 100,
+            "popularity": 10379,
+            "trending": 5,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 8
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 204060,
+            "title": {
+              "romaji": "Tetsunabe no Jan!",
+              "english": "Iron Wok Jan!",
+              "native": "\u9244\u934B\u306E\u30B8\u30E3\u30F3\uFF01"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx204060-bKhovD8jAlW8.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx204060-bKhovD8jAlW8.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 70,
+            "favourites": 108,
+            "popularity": 10282,
+            "trending": 1,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 5
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 185875,
+            "title": {
+              "romaji": "Mahou Shoujo Lyrical Nanoha EXCEEDS Gun Blaze Vengeance",
+              "english": "Magical Girl Lyrical Nanoha EXCEEDS Gun Blaze Vengeance",
+              "native": "\u9B54\u6CD5\u5C11\u5973\u30EA\u30EA\u30AB\u30EB\u306A\u306E\u306F EXCEEDS Gun Blaze Vengeance"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx185875-XMvDVlIUZODx.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx185875-XMvDVlIUZODx.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 63,
+            "favourites": 135,
+            "popularity": 9480,
+            "trending": 37,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 5
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 203490,
+            "title": {
+              "romaji": "Uchi no Otouto-domo ga Sumimasen",
+              "english": "Please Excuse My Younger Brothers",
+              "native": "\u3046\u3061\u306E\u5F1F\u3069\u3082\u304C\u3059\u307F\u307E\u305B\u3093"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx203490-YQXiymUiDQNA.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx203490-YQXiymUiDQNA.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 24,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 68,
+            "favourites": 134,
+            "popularity": 9402,
+            "trending": 11,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 4
+            },
+            "mediaListEntry": null
+          }
+        ]
+      }
+    }
+  }
+}

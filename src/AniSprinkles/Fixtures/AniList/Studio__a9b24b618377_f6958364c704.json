@@ -1,0 +1,664 @@
+﻿{
+  "operationName": "Studio",
+  "variables": {
+    "id": 11,
+    "mediaPage": 1,
+    "mediaPerPage": 25,
+    "mediaSort": [
+      "START_DATE_DESC",
+      "ID"
+    ]
+  },
+  "queryFingerprint": "f6958364c704",
+  "recordedAt": "2026-09-06T05:32:23.1071079+00:00",
+  "response": {
+    "data": {
+      "Studio": {
+        "id": 11,
+        "name": "MADHOUSE",
+        "isAnimationStudio": true,
+        "favourites": 20425,
+        "isFavourite": false,
+        "siteUrl": "https://anilist.co/studio/11",
+        "media": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "nodes": [
+            {
+              "id": 6585,
+              "title": {
+                "romaji": "Yume Miru Kikai",
+                "english": "The Dream Machine",
+                "native": "\u5922\u307F\u308B\u6A5F\u68B0"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/6585.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/6585.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "CANCELLED",
+              "averageScore": null,
+              "favourites": 9,
+              "popularity": 536,
+              "startDate": {
+                "year": null,
+                "month": null,
+                "day": null
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 209939,
+              "title": {
+                "romaji": "Sousou no Frieren 3rd Season",
+                "english": null,
+                "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \u7B2C3\u671F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx209939-g2Njkml1rheG.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209939-g2Njkml1rheG.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "NOT_YET_RELEASED",
+              "averageScore": null,
+              "favourites": 458,
+              "popularity": 42207,
+              "startDate": {
+                "year": 2027,
+                "month": 10,
+                "day": null
+              },
+              "mediaListEntry": {
+                "id": 548900753,
+                "status": "PLANNING",
+                "progress": 0,
+                "score": 0
+              }
+            },
+            {
+              "id": 194213,
+              "title": {
+                "romaji": "ghost\uFF0Fyoru no hate",
+                "english": "ghost \u2013 end of night",
+                "native": "ghost\uFF0F\u591C\u306E\u679C\u3066"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx194213-hbKL5BMfdtcK.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx194213-hbKL5BMfdtcK.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "NOT_YET_RELEASED",
+              "averageScore": null,
+              "favourites": 17,
+              "popularity": 5374,
+              "startDate": {
+                "year": 2027,
+                "month": 2,
+                "day": 11
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 177501,
+              "title": {
+                "romaji": "Awajima Hyakkei",
+                "english": "A Hundred Scenes of AWAJIMA",
+                "native": "\u6DE1\u5CF6\u767E\u666F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx177501-BwdlSMEXGZWz.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx177501-BwdlSMEXGZWz.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 72,
+              "favourites": 163,
+              "popularity": 12980,
+              "startDate": {
+                "year": 2026,
+                "month": 4,
+                "day": 10
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 177501,
+              "title": {
+                "romaji": "Awajima Hyakkei",
+                "english": "A Hundred Scenes of AWAJIMA",
+                "native": "\u6DE1\u5CF6\u767E\u666F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx177501-BwdlSMEXGZWz.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx177501-BwdlSMEXGZWz.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 72,
+              "favourites": 163,
+              "popularity": 12980,
+              "startDate": {
+                "year": 2026,
+                "month": 4,
+                "day": 10
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 197754,
+              "title": {
+                "romaji": "LIAR GAME",
+                "english": "LIAR GAME",
+                "native": "LIAR GAME"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx197754-Q5KqcUhIdypp.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx197754-Q5KqcUhIdypp.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "RELEASING",
+              "averageScore": 62,
+              "favourites": 486,
+              "popularity": 42189,
+              "startDate": {
+                "year": 2026,
+                "month": 4,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 182255,
+              "title": {
+                "romaji": "Sousou no Frieren 2nd Season",
+                "english": "Frieren: Beyond Journey\u2019s End Season 2",
+                "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \u7B2C2\u671F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx182255-butzrqd4I0aC.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx182255-butzrqd4I0aC.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 88,
+              "favourites": 8779,
+              "popularity": 222753,
+              "startDate": {
+                "year": 2026,
+                "month": 1,
+                "day": 16
+              },
+              "mediaListEntry": {
+                "id": 540973986,
+                "status": "COMPLETED",
+                "progress": 10,
+                "score": 9
+              }
+            },
+            {
+              "id": 182255,
+              "title": {
+                "romaji": "Sousou no Frieren 2nd Season",
+                "english": "Frieren: Beyond Journey\u2019s End Season 2",
+                "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \u7B2C2\u671F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx182255-butzrqd4I0aC.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx182255-butzrqd4I0aC.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 88,
+              "favourites": 8779,
+              "popularity": 222753,
+              "startDate": {
+                "year": 2026,
+                "month": 1,
+                "day": 16
+              },
+              "mediaListEntry": {
+                "id": 540973986,
+                "status": "COMPLETED",
+                "progress": 10,
+                "score": 9
+              }
+            },
+            {
+              "id": 180436,
+              "title": {
+                "romaji": "WanDance",
+                "english": "Wandance",
+                "native": "\u30EF\u30F3\u30C0\u30F3\u30B9"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx180436-zR0dJuKGZNOK.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx180436-zR0dJuKGZNOK.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 66,
+              "favourites": 312,
+              "popularity": 23784,
+              "startDate": {
+                "year": 2025,
+                "month": 10,
+                "day": 8
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 180436,
+              "title": {
+                "romaji": "WanDance",
+                "english": "Wandance",
+                "native": "\u30EF\u30F3\u30C0\u30F3\u30B9"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx180436-zR0dJuKGZNOK.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx180436-zR0dJuKGZNOK.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 66,
+              "favourites": 312,
+              "popularity": 23784,
+              "startDate": {
+                "year": 2025,
+                "month": 10,
+                "day": 8
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 184989,
+              "title": {
+                "romaji": "Nazotoki wa Dinner no Ato de",
+                "english": "The Dinner Table Detective",
+                "native": "\u8B0E\u89E3\u304D\u306F\u30C7\u30A3\u30CA\u30FC\u306E\u3042\u3068\u3067"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx184989-UaWWbrRn2vWV.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx184989-UaWWbrRn2vWV.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 61,
+              "favourites": 114,
+              "popularity": 13723,
+              "startDate": {
+                "year": 2025,
+                "month": 4,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 184989,
+              "title": {
+                "romaji": "Nazotoki wa Dinner no Ato de",
+                "english": "The Dinner Table Detective",
+                "native": "\u8B0E\u89E3\u304D\u306F\u30C7\u30A3\u30CA\u30FC\u306E\u3042\u3068\u3067"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx184989-UaWWbrRn2vWV.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx184989-UaWWbrRn2vWV.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 61,
+              "favourites": 114,
+              "popularity": 13723,
+              "startDate": {
+                "year": 2025,
+                "month": 4,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 151514,
+              "title": {
+                "romaji": "Chi. Chikyuu no Undou ni Tsuite",
+                "english": "Orb: On the Movements of the Earth",
+                "native": "\u30C1\u3002-\u5730\u7403\u306E\u904B\u52D5\u306B\u3064\u3044\u3066-"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx151514-Y0d82Ah2ZOHX.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx151514-Y0d82Ah2ZOHX.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 86,
+              "favourites": 7021,
+              "popularity": 122054,
+              "startDate": {
+                "year": 2024,
+                "month": 10,
+                "day": 5
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 151514,
+              "title": {
+                "romaji": "Chi. Chikyuu no Undou ni Tsuite",
+                "english": "Orb: On the Movements of the Earth",
+                "native": "\u30C1\u3002-\u5730\u7403\u306E\u904B\u52D5\u306B\u3064\u3044\u3066-"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx151514-Y0d82Ah2ZOHX.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx151514-Y0d82Ah2ZOHX.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 86,
+              "favourites": 7021,
+              "popularity": 122054,
+              "startDate": {
+                "year": 2024,
+                "month": 10,
+                "day": 5
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 169315,
+              "title": {
+                "romaji": "Trillion Game",
+                "english": "TRILLION GAME",
+                "native": "\u30C8\u30EA\u30EA\u30AA\u30F3\u30B2\u30FC\u30E0"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx169315-NtbOlSyDtSCZ.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx169315-NtbOlSyDtSCZ.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 72,
+              "favourites": 246,
+              "popularity": 15255,
+              "startDate": {
+                "year": 2024,
+                "month": 10,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 169315,
+              "title": {
+                "romaji": "Trillion Game",
+                "english": "TRILLION GAME",
+                "native": "\u30C8\u30EA\u30EA\u30AA\u30F3\u30B2\u30FC\u30E0"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx169315-NtbOlSyDtSCZ.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx169315-NtbOlSyDtSCZ.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 72,
+              "favourites": 246,
+              "popularity": 15255,
+              "startDate": {
+                "year": 2024,
+                "month": 10,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 133845,
+              "title": {
+                "romaji": "Overlord: Sei Oukoku-hen",
+                "english": "OVERLORD: The Sacred Kingdom",
+                "native": "\u30AA\u30FC\u30D0\u30FC\u30ED\u30FC\u30C9 \u8056\u738B\u56FD\u7DE8"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx133845-InD67nSzCAUr.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx133845-InD67nSzCAUr.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 1330,
+              "popularity": 66958,
+              "startDate": {
+                "year": 2024,
+                "month": 9,
+                "day": 20
+              },
+              "mediaListEntry": {
+                "id": 593364650,
+                "status": "COMPLETED",
+                "progress": 1,
+                "score": 9
+              }
+            },
+            {
+              "id": 133845,
+              "title": {
+                "romaji": "Overlord: Sei Oukoku-hen",
+                "english": "OVERLORD: The Sacred Kingdom",
+                "native": "\u30AA\u30FC\u30D0\u30FC\u30ED\u30FC\u30C9 \u8056\u738B\u56FD\u7DE8"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx133845-InD67nSzCAUr.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx133845-InD67nSzCAUr.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 1330,
+              "popularity": 66958,
+              "startDate": {
+                "year": 2024,
+                "month": 9,
+                "day": 20
+              },
+              "mediaListEntry": {
+                "id": 593364650,
+                "status": "COMPLETED",
+                "progress": 1,
+                "score": 9
+              }
+            },
+            {
+              "id": 180871,
+              "title": {
+                "romaji": "Azur Lane: 7 Shuunen Kinen Anime PV",
+                "english": null,
+                "native": "\u30A2\u30BA\u30FC\u30EB\u30EC\u30FC\u30F3 7\u5468\u5E74\u8A18\u5FF5\u30A2\u30CB\u30E1PV"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx180871-u31vgIDoWGHb.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx180871-u31vgIDoWGHb.png"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 56,
+              "favourites": 5,
+              "popularity": 328,
+              "startDate": {
+                "year": 2024,
+                "month": 9,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 169811,
+              "title": {
+                "romaji": "Yuusha",
+                "english": "The Brave",
+                "native": "\u52C7\u8005"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx169811-tsuH0SJVJy40.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx169811-tsuH0SJVJy40.jpg"
+              },
+              "format": "MUSIC",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 79,
+              "favourites": 93,
+              "popularity": 5140,
+              "startDate": {
+                "year": 2023,
+                "month": 9,
+                "day": 29
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 154587,
+              "title": {
+                "romaji": "Sousou no Frieren",
+                "english": "Frieren: Beyond Journey\u2019s End",
+                "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx154587-qQTzQnEJJ3oB.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx154587-qQTzQnEJJ3oB.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 91,
+              "favourites": 55905,
+              "popularity": 477293,
+              "startDate": {
+                "year": 2023,
+                "month": 9,
+                "day": 29
+              },
+              "mediaListEntry": {
+                "id": 540974122,
+                "status": "COMPLETED",
+                "progress": 28,
+                "score": 10
+              }
+            },
+            {
+              "id": 158530,
+              "title": {
+                "romaji": "AI no Idenshi",
+                "english": "The Gene of AI",
+                "native": "AI\u306E\u907A\u96FB\u5B50"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx158530-CT38yZ23cabT.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx158530-CT38yZ23cabT.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 63,
+              "favourites": 175,
+              "popularity": 18356,
+              "startDate": {
+                "year": 2023,
+                "month": 7,
+                "day": 8
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 154965,
+              "title": {
+                "romaji": "Yamada-kun to Lv999 no Koi wo Suru",
+                "english": "My Love Story with Yamada-kun at Lv999",
+                "native": "\u5C71\u7530\u304F\u3093\u3068Lv999\u306E\u604B\u3092\u3059\u308B"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx154965-vZbBRjtmLp7S.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx154965-vZbBRjtmLp7S.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 77,
+              "favourites": 6502,
+              "popularity": 204974,
+              "startDate": {
+                "year": 2023,
+                "month": 4,
+                "day": 2
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 151300,
+              "title": {
+                "romaji": "Kin no Kuni Mizu no Kuni",
+                "english": "Gold Kingdom and Water Kingdom",
+                "native": "\u91D1\u306E\u56FD\u6C34\u306E\u56FD"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx151300-wC5RkQoMYJ1e.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx151300-wC5RkQoMYJ1e.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 72,
+              "favourites": 69,
+              "popularity": 7134,
+              "startDate": {
+                "year": 2023,
+                "month": 1,
+                "day": 27
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 142914,
+              "title": {
+                "romaji": "Kyuuketsuki Sugu Shinu 2",
+                "english": "The Vampire Dies in No Time Season 2",
+                "native": "\u5438\u8840\u9B3C\u3059\u3050\u6B7B\u306C\uFF12"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx142914-OJ9fd00cE6yk.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx142914-OJ9fd00cE6yk.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 74,
+              "favourites": 209,
+              "popularity": 12266,
+              "startDate": {
+                "year": 2023,
+                "month": 1,
+                "day": 9
+              },
+              "mediaListEntry": null
+            }
+          ]
+        }
+      }
+    }
+  }
+}

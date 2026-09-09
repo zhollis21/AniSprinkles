@@ -1,0 +1,112 @@
+﻿{
+  "operationName": "CharacterMediaPage",
+  "variables": {
+    "id": 61,
+    "page": 3,
+    "sort": [
+      "POPULARITY_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "2ff9193259a9",
+  "recordedAt": "2026-09-09T15:57:46.391547+00:00",
+  "response": {
+    "data": {
+      "Character": {
+        "media": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 3
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 128291,
+                "title": {
+                  "romaji": "ONE PIECE novel Mugiwara Stories",
+                  "english": null,
+                  "native": "ONE PIECE novel \u9EA6\u308F\u3089\u30B9\u30C8\u30FC\u30EA\u30FC\u30BA"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx128291-O2AEatR4HU2d.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx128291-O2AEatR4HU2d.png"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "averageScore": 61,
+                "favourites": 12,
+                "popularity": 633,
+                "startDate": {
+                  "year": 2017,
+                  "month": 7,
+                  "day": 7
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 128292,
+                "title": {
+                  "romaji": "Gekijouban ONE PIECE: STAMPEDE",
+                  "english": null,
+                  "native": "\u5287\u5834\u7248 ONE PIECE STAMPEDE"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx128292-q4XFNK3q4dXx.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx128292-q4XFNK3q4dXx.jpg"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "averageScore": 66,
+                "favourites": 13,
+                "popularity": 544,
+                "startDate": {
+                  "year": 2019,
+                  "month": 8,
+                  "day": 9
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "MAIN",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 53251,
+                "title": {
+                  "romaji": "Chopperman: Yuke Yuke! Minna no Chopper-sensei",
+                  "english": null,
+                  "native": "\u30C1\u30E7\u30C3\u30D1\u30FC\u30DE\u30F3 \u3086\u3051\u3086\u3051!\u307F\u3093\u306A\u306E\u30C1\u30E7\u30C3\u30D1\u30FC\u5148\u751F"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/23251.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/23251.jpg"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "averageScore": 51,
+                "favourites": 2,
+                "popularity": 475,
+                "startDate": {
+                  "year": 2010,
+                  "month": 12,
+                  "day": 1
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "SUPPORTING",
+              "voiceActors": []
+            }
+          ]
+        }
+      }
+    }
+  }
+}

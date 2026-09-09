@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 154587,
+    "page": 3,
+    "sort": [
+      "RELEVANCE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:37:33.1193676+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 3
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 206993,
+                "name": {
+                  "full": "Ryou Shimoyama",
+                  "native": "\u4E0B\u5C71\u4EAE",
+                  "userPreferred": "Ryou Shimoyama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n206993-BMe8eUzuIVmF.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Advertising Producer"
+            },
+            {
+              "node": {
+                "id": 301995,
+                "name": {
+                  "full": "Minoru Suginaka",
+                  "native": "\u6749\u4E2D\u5B9F",
+                  "userPreferred": "Minoru Suginaka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Advertising"
+            },
+            {
+              "node": {
+                "id": 315809,
+                "name": {
+                  "full": "Minako Kayamori",
+                  "native": "\u6822\u68EE\u7F8E\u5948\u5B50",
+                  "userPreferred": "Minako Kayamori"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Advertising"
+            },
+            {
+              "node": {
+                "id": 315810,
+                "name": {
+                  "full": "Mao Saitou",
+                  "native": "\u9F4B\u85E4\u771F\u7DD2",
+                  "userPreferred": "Mao Saitou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Advertising"
+            },
+            {
+              "node": {
+                "id": 315814,
+                "name": {
+                  "full": "Ayako Ushida",
+                  "native": "\u725B\u7530\u7D62\u5B50",
+                  "userPreferred": "Ayako Ushida"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Advertising"
+            },
+            {
+              "node": {
+                "id": 219880,
+                "name": {
+                  "full": "Reimon Kuwabara",
+                  "native": "\u6851\u539F\u793C\u9580",
+                  "userPreferred": "Reimon Kuwabara"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Online Editing"
+            },
+            {
+              "node": {
+                "id": 295672,
+                "name": {
+                  "full": "Fuuka Kawatsu",
+                  "native": "\u5DDD\u6D25\u98A8\u82B1",
+                  "userPreferred": "Fuuka Kawatsu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Online Editing"
+            },
+            {
+              "node": {
+                "id": 315808,
+                "name": {
+                  "full": "Masatoshi Nakano",
+                  "native": "\u4E2D\u91CE\u96C5\u4FCA",
+                  "userPreferred": "Masatoshi Nakano"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Online Editing"
+            },
+            {
+              "node": {
+                "id": 206634,
+                "name": {
+                  "full": "Kanako Arima",
+                  "native": "\u6709\u99AC\u52A0\u5948\u5B50",
+                  "userPreferred": "Kanako Arima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Sound Production"
+            },
+            {
+              "node": {
+                "id": 166550,
+                "name": {
+                  "full": "Haruka Matsushita",
+                  "native": "\u677E\u4E0B\u6625\u9999",
+                  "userPreferred": "Haruka Matsushita"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Recording"
+            },
+            {
+              "node": {
+                "id": 252325,
+                "name": {
+                  "full": "Miho Takahashi",
+                  "native": "\u9AD8\u6A4B\u7F8E\u5E06",
+                  "userPreferred": "Miho Takahashi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n252325-2Ml6YDr5MndJ.jpg"
+                },
+                "favourites": 4
+              },
+              "role": "Director (ED2)"
+            },
+            {
+              "node": {
+                "id": 127377,
+                "name": {
+                  "full": "Seiko Yoshioka",
+                  "native": "\u5409\u5CA1\u8AA0\u5B50",
+                  "userPreferred": "Seiko Yoshioka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n127377-rXdGO7Rzm3RE.png"
+                },
+                "favourites": 32
+              },
+              "role": "Layout Design (eps 1-28)"
+            },
+            {
+              "node": {
+                "id": 193583,
+                "name": {
+                  "full": "Kenya Taniguchi",
+                  "native": "\u8C37\u53E3\u9855\u4E5F",
+                  "userPreferred": "Kenya Taniguchi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n193583-QKfuaTHfKEsO.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "CG Producer (eps 1, 2, 4, 7, 14, 16)"
+            },
+            {
+              "node": {
+                "id": 144537,
+                "name": {
+                  "full": "milet",
+                  "native": "\u30DF\u30EC\u30A4",
+                  "userPreferred": "milet"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n144537-dHMpupPrVATS.jpg"
+                },
+                "favourites": 763
+              },
+              "role": "Theme Song Performance (ED1, ED2)"
+            },
+            {
+              "node": {
+                "id": 194287,
+                "name": {
+                  "full": "YOASOBI",
+                  "native": null,
+                  "userPreferred": "YOASOBI"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n194287-qQjdXaBhaIOA.png"
+                },
+                "favourites": 3575
+              },
+              "role": "Theme Song Performance (OP1)"
+            },
+            {
+              "node": {
+                "id": 119119,
+                "name": {
+                  "full": "Tomohiro Suzuki",
+                  "native": "\u9234\u6728\u667A\u5C0B",
+                  "userPreferred": "Tomohiro Suzuki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n119119-VrfR5lH1CdYC.png"
+                },
+                "favourites": 20
+              },
+              "role": "Script (eps 1-28)"
+            },
+            {
+              "node": {
+                "id": 187711,
+                "name": {
+                  "full": "Kento Matsui",
+                  "native": "\u677E\u4E95\u5065\u4EBA",
+                  "userPreferred": "Kento Matsui"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n187711-5ptHlYTTTzEU.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Episode Director (eps 4, 11)"
+            },
+            {
+              "node": {
+                "id": 153321,
+                "name": {
+                  "full": "Daiki Harashina",
+                  "native": "\u539F\u79D1\u5927\u6A39",
+                  "userPreferred": "Daiki Harashina"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n153321-9pfyMp1WHNSv.png"
+                },
+                "favourites": 6
+              },
+              "role": "Episode Director (ep 3)"
+            },
+            {
+              "node": {
+                "id": 165996,
+                "name": {
+                  "full": "Tomoya Kitagawa",
+                  "native": "\u5317\u5DDD\u670B\u54C9",
+                  "userPreferred": "Tomoya Kitagawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 9
+              },
+              "role": "Episode Director (eps 2, 8, 25)"
+            },
+            {
+              "node": {
+                "id": 165232,
+                "name": {
+                  "full": "Ayaka Tsuji",
+                  "native": "\u8FBB\u5F69\u590F",
+                  "userPreferred": "Ayaka Tsuji"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n165232-tQePzk1aFKef.jpg"
+                },
+                "favourites": 13
+              },
+              "role": "Episode Director (ep 1)"
+            },
+            {
+              "node": {
+                "id": 134254,
+                "name": {
+                  "full": "Keiichirou Saitou",
+                  "native": "\u658E\u85E4\u572D\u4E00\u90CE",
+                  "userPreferred": "Keiichirou Saitou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n134254-bqcsuWzJr87n.png"
+                },
+                "favourites": 1326
+              },
+              "role": "Episode Director (OP1, OP2, ep 28)"
+            },
+            {
+              "node": {
+                "id": 100812,
+                "name": {
+                  "full": "Yoshiaki Kawajiri",
+                  "native": "\u5DDD\u5C3B\u5584\u662D",
+                  "userPreferred": "Yoshiaki Kawajiri"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100812-1ZrgDInanSvE.png"
+                },
+                "favourites": 311
+              },
+              "role": "Storyboard (eps 4, 13, 17)"
+            },
+            {
+              "node": {
+                "id": 153321,
+                "name": {
+                  "full": "Daiki Harashina",
+                  "native": "\u539F\u79D1\u5927\u6A39",
+                  "userPreferred": "Daiki Harashina"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n153321-9pfyMp1WHNSv.png"
+                },
+                "favourites": 6
+              },
+              "role": "Storyboard (eps 3, 24, 26)"
+            },
+            {
+              "node": {
+                "id": 165996,
+                "name": {
+                  "full": "Tomoya Kitagawa",
+                  "native": "\u5317\u5DDD\u670B\u54C9",
+                  "userPreferred": "Tomoya Kitagawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 9
+              },
+              "role": "Storyboard (eps 2, 8, 18, 25)"
+            },
+            {
+              "node": {
+                "id": 134254,
+                "name": {
+                  "full": "Keiichirou Saitou",
+                  "native": "\u658E\u85E4\u572D\u4E00\u90CE",
+                  "userPreferred": "Keiichirou Saitou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n134254-bqcsuWzJr87n.png"
+                },
+                "favourites": 1326
+              },
+              "role": "Storyboard (OP1, OP2, eps 1, 11, 21, 26, 28)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

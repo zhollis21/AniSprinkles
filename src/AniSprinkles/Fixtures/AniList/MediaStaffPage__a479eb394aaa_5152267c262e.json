@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 182255,
+    "page": 3,
+    "sort": [
+      "ROLE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:19:13.672561+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 3
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 391258,
+                "name": {
+                  "full": "tian",
+                  "native": "tian",
+                  "userPreferred": "tian"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 5)"
+            },
+            {
+              "node": {
+                "id": 180871,
+                "name": {
+                  "full": "Nae Nishikimi",
+                  "native": "\u9326\u898B\u5948\u6075",
+                  "userPreferred": "Nae Nishikimi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n180871-vAzZQzDrZvtc.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 6)"
+            },
+            {
+              "node": {
+                "id": 200104,
+                "name": {
+                  "full": "Yuuna Miyata",
+                  "native": "\u5BAE\u7530\u5915\u83DC",
+                  "userPreferred": "Yuuna Miyata"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 6)"
+            },
+            {
+              "node": {
+                "id": 223255,
+                "name": {
+                  "full": "Aika Sakuramoto",
+                  "native": "\u6AFB\u672C\u611B\u4F73",
+                  "userPreferred": "Aika Sakuramoto"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 6)"
+            },
+            {
+              "node": {
+                "id": 295724,
+                "name": {
+                  "full": "Daiki Nojima",
+                  "native": "\u91CE\u5CF6\u5927\u63EE",
+                  "userPreferred": "Daiki Nojima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 6)"
+            },
+            {
+              "node": {
+                "id": 302074,
+                "name": {
+                  "full": "Yingcong Ji",
+                  "native": "\u5B63\u82F1\u8070",
+                  "userPreferred": "Yingcong Ji"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 6)"
+            },
+            {
+              "node": {
+                "id": 352729,
+                "name": {
+                  "full": "Shu Heng",
+                  "native": "\u6A6B\u7AEA",
+                  "userPreferred": "Shu Heng"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 6)"
+            },
+            {
+              "node": {
+                "id": 355742,
+                "name": {
+                  "full": "Mika Horii",
+                  "native": "\u5800\u4E95\u7F8E\u5609",
+                  "userPreferred": "Mika Horii"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 6)"
+            },
+            {
+              "node": {
+                "id": 392680,
+                "name": {
+                  "full": "Tomoki Moriyama",
+                  "native": "\u68EE\u5C71\u667A\u559C",
+                  "userPreferred": "Tomoki Moriyama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 6)"
+            },
+            {
+              "node": {
+                "id": 295101,
+                "name": {
+                  "full": "Valentio Krisnanda",
+                  "native": "\u30F4\u30A1\u30EC\u30F3\u30C6\u30A3\u30AA\u30AF\u30EA\u30B9\u30CA\u30F3\u30C0",
+                  "userPreferred": "Valentio Krisnanda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n295101-F4w46p3xp9D9.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "2nd Key Animation (ep 7)"
+            },
+            {
+              "node": {
+                "id": 373719,
+                "name": {
+                  "full": "Mitsuki Kakitou",
+                  "native": "\u57A3\u6771\u5149\u5E0C",
+                  "userPreferred": "Mitsuki Kakitou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (eps 1-3, 5-9)"
+            },
+            {
+              "node": {
+                "id": 359232,
+                "name": {
+                  "full": "Sakura Fuji",
+                  "native": "\u85E4\u54B2\u6765",
+                  "userPreferred": "Sakura Fuji"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (eps 1-3, 5, 7-9)"
+            },
+            {
+              "node": {
+                "id": 373717,
+                "name": {
+                  "full": "Yuri Hanya",
+                  "native": "\u534A\u8C37\u53CB\u5229",
+                  "userPreferred": "Yuri Hanya"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (eps 1-3, 5, 7-9)"
+            },
+            {
+              "node": {
+                "id": 157670,
+                "name": {
+                  "full": "Misato Honma",
+                  "native": "\u672C\u9593\u7F8E\u91CC",
+                  "userPreferred": "Misato Honma"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (eps 1-3, 5)"
+            },
+            {
+              "node": {
+                "id": 252923,
+                "name": {
+                  "full": "Hayato Satou",
+                  "native": "\u4F50\u85E4\u99FF\u6597",
+                  "userPreferred": "Hayato Satou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (eps 1-5)"
+            },
+            {
+              "node": {
+                "id": 333505,
+                "name": {
+                  "full": "Towa Koguma",
+                  "native": "\u5C0F\u718A\u51AC\u548C",
+                  "userPreferred": "Towa Koguma"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (eps 1, 2, 4)"
+            },
+            {
+              "node": {
+                "id": 364330,
+                "name": {
+                  "full": "Fumika Abe",
+                  "native": "\u963F\u90E8\u6587\u96C5",
+                  "userPreferred": "Fumika Abe"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (eps 1, 2, 5-9)"
+            },
+            {
+              "node": {
+                "id": 385071,
+                "name": {
+                  "full": "Yuudai Kitano",
+                  "native": "\u5317\u91CE\u96C4\u5927",
+                  "userPreferred": "Yuudai Kitano"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (eps 1, 2, 6)"
+            },
+            {
+              "node": {
+                "id": 257253,
+                "name": {
+                  "full": "Misae Kawakubo",
+                  "native": "\u5DDD\u4E45\u4FDD\u7F8E\u51B4",
+                  "userPreferred": "Misae Kawakubo"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (eps 1, 3, 4)"
+            },
+            {
+              "node": {
+                "id": 252371,
+                "name": {
+                  "full": "Keiko Fujimi",
+                  "native": "\u85E4\u898B\u656C\u5B50",
+                  "userPreferred": "Keiko Fujimi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (eps 1, 4, 5)"
+            },
+            {
+              "node": {
+                "id": 179831,
+                "name": {
+                  "full": "Sanae Sugiyama",
+                  "native": "\u6749\u5C71\u65E9\u82D7",
+                  "userPreferred": "Sanae Sugiyama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (eps 1, 6)"
+            },
+            {
+              "node": {
+                "id": 240818,
+                "name": {
+                  "full": "Ayano Kimura",
+                  "native": "\u6728\u6751\u5F69\u4E43",
+                  "userPreferred": "Ayano Kimura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (eps 1, 6)"
+            },
+            {
+              "node": {
+                "id": 296318,
+                "name": {
+                  "full": "Arisu Kawabata",
+                  "native": "\u5DDD\u7551\u6709\u6F84",
+                  "userPreferred": "Arisu Kawabata"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (eps 1, 6)"
+            },
+            {
+              "node": {
+                "id": 308255,
+                "name": {
+                  "full": "Tomoaki Kamiya",
+                  "native": "\u795E\u8C37\u53CB\u4EAE",
+                  "userPreferred": "Tomoaki Kamiya"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (eps 1, 6)"
+            },
+            {
+              "node": {
+                "id": 345653,
+                "name": {
+                  "full": "Keisei Shimizu",
+                  "native": "\u6E05\u6C34\u5553\u751F",
+                  "userPreferred": "Keisei Shimizu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (eps 1, 6)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

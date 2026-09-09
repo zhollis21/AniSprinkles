@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 21127,
+    "page": 1,
+    "sort": [
+      "ROLE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:22:08.339638+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 142690,
+                "name": {
+                  "full": "Shigeyuki Koresawa",
+                  "native": "\u30B3\u30EC\u30B5\u30EF\u30B7\u30B2\u30E6\u30AD",
+                  "userPreferred": "Shigeyuki Koresawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n142690-CKqjjrMaa5TV.png"
+                },
+                "favourites": 4
+              },
+              "role": "2D Design (OP)"
+            },
+            {
+              "node": {
+                "id": 146498,
+                "name": {
+                  "full": "Tom",
+                  "native": "\u706F\u5922",
+                  "userPreferred": "Tom"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n146498-qZPRJgH7RHcp.jpg"
+                },
+                "favourites": 3
+              },
+              "role": "2D Design (OP)"
+            },
+            {
+              "node": {
+                "id": 148257,
+                "name": {
+                  "full": "Yuusuke Sakai",
+                  "native": "\u5742\u4E95\u30E6\u30A6\u30B9\u30B1",
+                  "userPreferred": "Yuusuke Sakai"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2D Design (OP)"
+            },
+            {
+              "node": {
+                "id": 142690,
+                "name": {
+                  "full": "Shigeyuki Koresawa",
+                  "native": "\u30B3\u30EC\u30B5\u30EF\u30B7\u30B2\u30E6\u30AD",
+                  "userPreferred": "Shigeyuki Koresawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n142690-CKqjjrMaa5TV.png"
+                },
+                "favourites": 4
+              },
+              "role": "2D Works (eps 1-23)"
+            },
+            {
+              "node": {
+                "id": 146498,
+                "name": {
+                  "full": "Tom",
+                  "native": "\u706F\u5922",
+                  "userPreferred": "Tom"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n146498-qZPRJgH7RHcp.jpg"
+                },
+                "favourites": 3
+              },
+              "role": "2D Works (eps 1-23)"
+            },
+            {
+              "node": {
+                "id": 202601,
+                "name": {
+                  "full": "Monta Tokita",
+                  "native": "\u523B\u7530\u9580\u5927",
+                  "userPreferred": "Monta Tokita"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2D Works (eps 1, 2, 13, 21)"
+            },
+            {
+              "node": {
+                "id": 209512,
+                "name": {
+                  "full": "Yuu Hashizume",
+                  "native": "\u6A4B\u722A\u512A",
+                  "userPreferred": "Yuu Hashizume"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2D Works (eps 10-23)"
+            },
+            {
+              "node": {
+                "id": 153558,
+                "name": {
+                  "full": "Chie Katou",
+                  "native": "\u52A0\u85E4\u5343\u6075",
+                  "userPreferred": "Chie Katou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2D Works (eps 3-23)"
+            },
+            {
+              "node": {
+                "id": 232571,
+                "name": {
+                  "full": "Ringo Hatta",
+                  "native": "\u516B\u7530\u6797\u6A8E",
+                  "userPreferred": "Ringo Hatta"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2D Works (eps 7, 11)"
+            },
+            {
+              "node": {
+                "id": 197103,
+                "name": {
+                  "full": "Mitsunori Fujioka",
+                  "native": "\u85E4\u5CA1\u4E09\u5FB3",
+                  "userPreferred": "Mitsunori Fujioka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ED2, eps 8, 14, 17, 18, 23)"
+            },
+            {
+              "node": {
+                "id": 131687,
+                "name": {
+                  "full": "Osamu Sumiya",
+                  "native": "\u89D2\u8C37\u7406",
+                  "userPreferred": "Osamu Sumiya"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 12)"
+            },
+            {
+              "node": {
+                "id": 142303,
+                "name": {
+                  "full": "Masato Okada",
+                  "native": "\u5CA1\u7530\u96C5\u4EBA",
+                  "userPreferred": "Masato Okada"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 12)"
+            },
+            {
+              "node": {
+                "id": 170019,
+                "name": {
+                  "full": "Yuuki Tanihigashi",
+                  "native": "\u8C37\u6771\u7950\u5E0C",
+                  "userPreferred": "Yuuki Tanihigashi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 12)"
+            },
+            {
+              "node": {
+                "id": 170021,
+                "name": {
+                  "full": "Naoyuki Takahashi",
+                  "native": "\u9AD8\u6A4B\u5C1A\u5343",
+                  "userPreferred": "Naoyuki Takahashi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 12)"
+            },
+            {
+              "node": {
+                "id": 139178,
+                "name": {
+                  "full": "Kenta Katade",
+                  "native": "\u7247\u51FA\u5065\u592A",
+                  "userPreferred": "Kenta Katade"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 13)"
+            },
+            {
+              "node": {
+                "id": 159113,
+                "name": {
+                  "full": "Wataru Sekimoto",
+                  "native": "\u95A2\u672C\u6E21",
+                  "userPreferred": "Wataru Sekimoto"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 13)"
+            },
+            {
+              "node": {
+                "id": 142306,
+                "name": {
+                  "full": "Nana Fujiki",
+                  "native": "\u85E4\u6728\u5948\u3005",
+                  "userPreferred": "Nana Fujiki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 15)"
+            },
+            {
+              "node": {
+                "id": 149177,
+                "name": {
+                  "full": "Naoko Shoukinji",
+                  "native": "\u6B63\u91D1\u5BFA\u76F4\u5B50",
+                  "userPreferred": "Naoko Shoukinji"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 15)"
+            },
+            {
+              "node": {
+                "id": 183192,
+                "name": {
+                  "full": "Masaaki Yasaka",
+                  "native": "\u516B\u5742\u5C06\u6210",
+                  "userPreferred": "Masaaki Yasaka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 15)"
+            },
+            {
+              "node": {
+                "id": 196423,
+                "name": {
+                  "full": "Tomiko Okuda",
+                  "native": "\u5965\u7530\u5BCC\u7F8E\u5B50",
+                  "userPreferred": "Tomiko Okuda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 15)"
+            },
+            {
+              "node": {
+                "id": 136746,
+                "name": {
+                  "full": "Masamichi Ishiyama",
+                  "native": "\u77F3\u5C71\u6B63\u4FEE",
+                  "userPreferred": "Masamichi Ishiyama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n136746-wtx1K2Ekyi67.png"
+                },
+                "favourites": 10
+              },
+              "role": "2nd Key Animation (ep 2)"
+            },
+            {
+              "node": {
+                "id": 187739,
+                "name": {
+                  "full": "Nana Kanno",
+                  "native": "\u7C21\u91CE\u5948\u3005",
+                  "userPreferred": "Nana Kanno"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 2)"
+            },
+            {
+              "node": {
+                "id": 155483,
+                "name": {
+                  "full": "Yousuke Imakubo",
+                  "native": "\u4ECA\u4E45\u4FDD\u6D0B\u4ECB",
+                  "userPreferred": "Yousuke Imakubo"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 21)"
+            },
+            {
+              "node": {
+                "id": 132911,
+                "name": {
+                  "full": "Reina Yamauchi",
+                  "native": "\u5C71\u5185\u73B2\u5948",
+                  "userPreferred": "Reina Yamauchi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 3)"
+            },
+            {
+              "node": {
+                "id": 147278,
+                "name": {
+                  "full": "Ayako Oogi",
+                  "native": "\u5927\u6728\u7DBE\u5B50",
+                  "userPreferred": "Ayako Oogi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n147278-uLaMY1QVTA12.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "2nd Key Animation (ep 3)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,428 @@
+﻿{
+  "operationName": "MediaCharactersPage",
+  "variables": {
+    "id": 144092,
+    "page": 1,
+    "sort": [
+      "RELEVANCE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "64eed76a7328",
+  "recordedAt": "2026-09-06T05:24:32.2351318+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "characters": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 36309,
+                "name": {
+                  "full": "Narrator",
+                  "native": "\u30CA\u30EC\u30FC\u30BF\u30FC",
+                  "userPreferred": "Narrator"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b36309-6KM0riV4lqfN.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b36309-6KM0riV4lqfN.jpg"
+                },
+                "favourites": 2336
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 283056,
+                "name": {
+                  "full": "Saitou",
+                  "native": "\u30B5\u30A4\u30C8\u30A6",
+                  "userPreferred": "Saitou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b283056-elToNcAnsgFY.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b283056-elToNcAnsgFY.jpg"
+                },
+                "favourites": 98
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 283057,
+                "name": {
+                  "full": "Raelza",
+                  "native": "\u30E9\u30A8\u30EB\u30B6",
+                  "userPreferred": "Raelza"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b283057-WnYVTbdNUlUK.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b283057-WnYVTbdNUlUK.jpg"
+                },
+                "favourites": 280
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 283058,
+                "name": {
+                  "full": "Lafanpan",
+                  "native": "\u30E9\u30D5\u30A1\u30F3\u30D1\u30F3",
+                  "userPreferred": "Lafanpan"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b283058-ms3PHozIYokB.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b283058-ms3PHozIYokB.jpg"
+                },
+                "favourites": 151
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 283059,
+                "name": {
+                  "full": "Morlock",
+                  "native": "\u30E2\u30FC\u30ED\u30C3\u30AF",
+                  "userPreferred": "Morlock"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b283059-7cKqpJefqqas.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b283059-7cKqpJefqqas.jpg"
+                },
+                "favourites": 121
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 290703,
+                "name": {
+                  "full": "Mevena",
+                  "native": "\u30E1\u30F4\u30A7\u30CA",
+                  "userPreferred": "Mevena"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b290703-hbkyuM0Ixx7z.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b290703-hbkyuM0Ixx7z.jpg"
+                },
+                "favourites": 11
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 290704,
+                "name": {
+                  "full": "Gibungle",
+                  "native": "\u30AE\u30D6\u30F3\u30B0\u30EB",
+                  "userPreferred": "Gibungle"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b290704-CMtm5iVUH5US.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b290704-CMtm5iVUH5US.jpg"
+                },
+                "favourites": 13
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 290705,
+                "name": {
+                  "full": "Ririza Lassenpop",
+                  "native": "\u30EA\u30EA\u30FC\u30B6\u30FB\u30E9\u30C3\u30BB\u30F3\u30DD\u30C3\u30D7",
+                  "userPreferred": "Ririza Lassenpop"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b290705-dOWN2PJ5RixS.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b290705-dOWN2PJ5RixS.jpg"
+                },
+                "favourites": 90
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 290706,
+                "name": {
+                  "full": "Guivre Arsenrad",
+                  "native": "\u30AE\u30FC\u30D6\u30EB\u30FB\u30A2\u30FC\u30BB\u30F3\u30E9\u30C3\u30C9",
+                  "userPreferred": "Guivre Arsenrad"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b290706-fWpVk5sEzobB.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b290706-fWpVk5sEzobB.jpg"
+                },
+                "favourites": 12
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 290707,
+                "name": {
+                  "full": "Franlil Aril",
+                  "native": "\u30D5\u30E9\u30F3\u30EA\u30EB\u30FB\u30EA\u30EB\u30FB\u30A2\u30FC\u30EA\u30EB",
+                  "userPreferred": "Franlil Lil Aril"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b290707-AHz6EXHyAR5C.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b290707-AHz6EXHyAR5C.jpg"
+                },
+                "favourites": 21
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 290708,
+                "name": {
+                  "full": "Ninia Carlsenhardt",
+                  "native": "\u30CB\u30CB\u30A2\u30FB\u30AB\u30FC\u30EB\u30BB\u30F3\u30CF\u30FC\u30C8",
+                  "userPreferred": "Ninia Carlsenhardt"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b290708-KZovnpxSFxQ2.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b290708-KZovnpxSFxQ2.jpg"
+                },
+                "favourites": 11
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 296172,
+                "name": {
+                  "full": "Oba-san",
+                  "native": "\u304A\u3070\u3055\u3093",
+                  "userPreferred": "Oba-san"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b296172-yTJYpqfISR89.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b296172-yTJYpqfISR89.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 296173,
+                "name": {
+                  "full": "Boukensha",
+                  "native": "\u5192\u967A\u8005",
+                  "userPreferred": "Boukensha"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b296173-Tu438odHpiuy.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b296173-Tu438odHpiuy.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 296174,
+                "name": {
+                  "full": "Shachou",
+                  "native": "\u793E\u9577",
+                  "userPreferred": "Shachou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b296174-ZVUchOSQ6GXn.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b296174-ZVUchOSQ6GXn.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 296778,
+                "name": {
+                  "full": "Cains Rackin",
+                  "native": "\u30AB\u30A4\u30F3\u30BA\u30FB\u30E9\u30C3\u30AF\u30A4\u30F3",
+                  "userPreferred": "Cains Rackin"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b296778-CTwYhH6H6dwi.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b296778-CTwYhH6H6dwi.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 296779,
+                "name": {
+                  "full": "Lychee",
+                  "native": "\u30E9\u30A4\u30C1",
+                  "userPreferred": "Lychee"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b296779-2JTJGIjJlaEI.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b296779-2JTJGIjJlaEI.jpg"
+                },
+                "favourites": 7
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 296780,
+                "name": {
+                  "full": "Montell Puitto",
+                  "native": "\u30E2\u30F3\u30C6\u30A3\u30FC\u30EB\u30FB\u30D7\u30FC\u30A4\u30C3\u30C8",
+                  "userPreferred": "Montell Puitto"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b296780-etJ3Arq7tcEP.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b296780-etJ3Arq7tcEP.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 296781,
+                "name": {
+                  "full": "Dolgh",
+                  "native": "\u30C9\u30EB\u30B0",
+                  "userPreferred": "Dolgh"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b296781-16U0jGeT4FVx.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b296781-16U0jGeT4FVx.jpg"
+                },
+                "favourites": 4
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 296782,
+                "name": {
+                  "full": "Ou-sama",
+                  "native": "\u738B\u69D8",
+                  "userPreferred": "Ou-sama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b296782-AG76yExfNe2w.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b296782-AG76yExfNe2w.jpg"
+                },
+                "favourites": 3
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 296783,
+                "name": {
+                  "full": "Hydra",
+                  "native": "\u30D2\u30C9\u30E9",
+                  "userPreferred": "Hydra"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b296783-kop4sIjxKEn1.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b296783-kop4sIjxKEn1.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 297249,
+                "name": {
+                  "full": "Rogas Meif",
+                  "native": "\u30ED\u30FC\u30AC\u30B9\u30FB\u30E1\u30A4\u30D5",
+                  "userPreferred": "Rogas Meif"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b297249-yUiaL63Ig2vs.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b297249-yUiaL63Ig2vs.jpg"
+                },
+                "favourites": 6
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 297253,
+                "name": {
+                  "full": "Lavella",
+                  "native": "\u30E9\u30FC\u30F4\u30A7\u30E9",
+                  "userPreferred": "Lavella"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b297253-zLDLVySZJxEl.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b297253-zLDLVySZJxEl.jpg"
+                },
+                "favourites": 26
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 297258,
+                "name": {
+                  "full": "Kisurugi",
+                  "native": "\u30AD\u30B9\u30EB\u30AE",
+                  "userPreferred": "Kisurugi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b297258-Wq9oV6kNIHbU.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b297258-Wq9oV6kNIHbU.jpg"
+                },
+                "favourites": 17
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 297259,
+                "name": {
+                  "full": "Dohnbain",
+                  "native": "\u30C9\u30F3\u30D0\u30A4\u30F3",
+                  "userPreferred": "Dohnbain"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b297259-qGG83V7a1zX2.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b297259-qGG83V7a1zX2.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 316511,
+                "name": {
+                  "full": "Tarefong",
+                  "native": "\u30BF\u30FC\u30EC\u30D5\u30A9\u30F3",
+                  "userPreferred": "Tarefong"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b316511-oWiuLIYGtB3i.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b316511-oWiuLIYGtB3i.jpg"
+                },
+                "favourites": 3
+              },
+              "role": "SUPPORTING"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,770 @@
+﻿{
+  "operationName": "BrowseAnime",
+  "variables": {
+    "page": 1,
+    "perPage": 25,
+    "sort": [
+      "TRENDING_DESC",
+      "ID"
+    ]
+  },
+  "queryFingerprint": "19cf0d7f308c",
+  "recordedAt": "2026-09-06T05:15:18.8959301+00:00",
+  "response": {
+    "data": {
+      "Page": {
+        "pageInfo": {
+          "hasNextPage": true,
+          "currentPage": 1
+        },
+        "media": [
+          {
+            "id": 185874,
+            "title": {
+              "romaji": "BLEACH: Sennen Kessen-hen - Kashin-tan",
+              "english": "BLEACH: Thousand-Year Blood War - The Calamity",
+              "native": "BLEACH \u5343\u5E74\u8840\u6226\u7BC7-\u798D\u9032\u8B5A-"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx185874-aU3e6tBT6wwA.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx185874-aU3e6tBT6wwA.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 10,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 90,
+            "favourites": 3232,
+            "popularity": 82887,
+            "trending": 360,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 25
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 195600,
+            "title": {
+              "romaji": "Yomi no Tsugai",
+              "english": "Daemons of the Shadow Realm",
+              "native": "\u9EC4\u6CC9\u306E\u30C4\u30AC\u30A4"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx195600-moI0UFArtOme.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx195600-moI0UFArtOme.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 24,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 78,
+            "favourites": 2905,
+            "popularity": 132926,
+            "trending": 351,
+            "startDate": {
+              "year": 2026,
+              "month": 4,
+              "day": 4
+            },
+            "mediaListEntry": {
+              "id": 593364930,
+              "status": "CURRENT",
+              "progress": 20,
+              "score": 0
+            }
+          },
+          {
+            "id": 182205,
+            "title": {
+              "romaji": "Tensei Shitara Slime Datta Ken 4th Season",
+              "english": "That Time I Got Reincarnated as a Slime Season 4",
+              "native": "\u8EE2\u751F\u3057\u305F\u3089\u30B9\u30E9\u30A4\u30E0\u3060\u3063\u305F\u4EF6 \u7B2C4\u671F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx182205-q2AeO1owuQbO.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx182205-q2AeO1owuQbO.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 24,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 83,
+            "favourites": 4674,
+            "popularity": 132388,
+            "trending": 245,
+            "startDate": {
+              "year": 2026,
+              "month": 4,
+              "day": 3
+            },
+            "mediaListEntry": {
+              "id": 593351121,
+              "status": "CURRENT",
+              "progress": 14,
+              "score": 0
+            }
+          },
+          {
+            "id": 201514,
+            "title": {
+              "romaji": "Saijo no Osewa: Takane no Hanadarake na Meimonkou de, Gakuin Ichi no Ojou-sama (Seikatsu Nouryoku Kaimu) wo Kagenagara Osewa suru Koto ni Narimashita",
+              "english": "Rich Girl Caretaker: I\u0027m Secretly the Caregiver of the Most Popular Girl in This Rich Kid School",
+              "native": "\u624D\u5973\u306E\u304A\u4E16\u8A71 \u9AD8\u5DBA\u306E\u82B1\u3060\u3089\u3051\u306A\u540D\u9580\u6821\u3067\u3001\u5B66\u9662\u4E00\u306E\u304A\u5B22\u69D8(\u751F\u6D3B\u80FD\u529B\u7686\u7121)\u3092\u9670\u306A\u304C\u3089\u304A\u4E16\u8A71\u3059\u308B\u3053\u3068\u306B\u306A\u308A\u307E\u3057\u305F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx201514-BHAeWhSbcBrT.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx201514-BHAeWhSbcBrT.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 70,
+            "favourites": 619,
+            "popularity": 40983,
+            "trending": 222,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 5
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 187538,
+            "title": {
+              "romaji": "BLACK TORCH",
+              "english": "BLACK TORCH",
+              "native": "BLACK TORCH"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx187538-fXVXKYUA3VV6.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx187538-fXVXKYUA3VV6.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 70,
+            "favourites": 959,
+            "popularity": 65373,
+            "trending": 178,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 4
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 190569,
+            "title": {
+              "romaji": "Tenmaku no Jaadugar",
+              "english": "Jaadugar: A Witch in Mongolia",
+              "native": "\u5929\u5E55\u306E\u30B8\u30E3\u30FC\u30C9\u30A5\u30FC\u30AC\u30EB"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx190569-KnCQLI3Z8hPX.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx190569-KnCQLI3Z8hPX.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 82,
+            "favourites": 747,
+            "popularity": 40881,
+            "trending": 133,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 4
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 21,
+            "title": {
+              "romaji": "ONE PIECE",
+              "english": "ONE PIECE",
+              "native": "ONE PIECE"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21-ELSYx3yMPcKM.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21-ELSYx3yMPcKM.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 87,
+            "favourites": 110708,
+            "popularity": 748080,
+            "trending": 131,
+            "startDate": {
+              "year": 1999,
+              "month": 10,
+              "day": 20
+            },
+            "mediaListEntry": {
+              "id": 593351146,
+              "status": "CURRENT",
+              "progress": 1163,
+              "score": 8
+            }
+          },
+          {
+            "id": 196187,
+            "title": {
+              "romaji": "Super no Ura de Yani Suu Futari",
+              "english": "Smoking Behind the Supermarket with You",
+              "native": "\u30B9\u30FC\u30D1\u30FC\u306E\u88CF\u3067\u30E4\u30CB\u5438\u3046\u3075\u305F\u308A"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx196187-0dgFi2CPp3xn.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx196187-0dgFi2CPp3xn.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 82,
+            "favourites": 3569,
+            "popularity": 115797,
+            "trending": 117,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 10
+            },
+            "mediaListEntry": {
+              "id": 593365724,
+              "status": "PLANNING",
+              "progress": 0,
+              "score": 0
+            }
+          },
+          {
+            "id": 269,
+            "title": {
+              "romaji": "BLEACH",
+              "english": "Bleach",
+              "native": "BLEACH"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx269-d2GmRkJbMopq.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx269-d2GmRkJbMopq.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 366,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 79,
+            "favourites": 33306,
+            "popularity": 518691,
+            "trending": 114,
+            "startDate": {
+              "year": 2004,
+              "month": 10,
+              "day": 5
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 189046,
+            "title": {
+              "romaji": "Re:Zero kara Hajimeru Isekai Seikatsu 4th Season",
+              "english": "Re:ZERO -Starting Life in Another World- Season 4",
+              "native": "Re:\u30BC\u30ED\u304B\u3089\u59CB\u3081\u308B\u7570\u4E16\u754C\u751F\u6D3B 4th season"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx189046-yaHWtS5FII46.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx189046-yaHWtS5FII46.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 19,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 90,
+            "favourites": 7063,
+            "popularity": 136865,
+            "trending": 109,
+            "startDate": {
+              "year": 2026,
+              "month": 4,
+              "day": 8
+            },
+            "mediaListEntry": {
+              "id": 593351165,
+              "status": "CURRENT",
+              "progress": 14,
+              "score": 10
+            }
+          },
+          {
+            "id": 209983,
+            "title": {
+              "romaji": "Hell Mode: Yarikomi-zuki no Gamer wa Haisettei no Isekai de Musou Suru 2nd Season",
+              "english": "HELL MODE: The Hardcore Gamer Dominates in Another World with Garbage Balancing Season 2",
+              "native": "\u30D8\u30EB\u30E2\u30FC\u30C9 \uFF5E\u3084\u308A\u8FBC\u307F\u597D\u304D\u306E\u30B2\u30FC\u30DE\u30FC\u306F\u5EC3\u8A2D\u5B9A\u306E\u7570\u4E16\u754C\u3067\u7121\u53CC\u3059\u308B\uFF5E 2nd Season"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx209983-sFOcKyqMufxb.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209983-sFOcKyqMufxb.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 13,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 72,
+            "favourites": 610,
+            "popularity": 37918,
+            "trending": 109,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 4
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 199066,
+            "title": {
+              "romaji": "Hanaori-san wa Tensei Shite mo Kenka ga Shitai",
+              "english": "Hanaori-san Still Wants to Fight in the Next Life",
+              "native": "\u82B1\u7E54\u3055\u3093\u306F\u8EE2\u751F\u3057\u3066\u3082\u55A7\u5629\u304C\u3057\u305F\u3044"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx199066-YXDVsguvFZMm.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx199066-YXDVsguvFZMm.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 69,
+            "favourites": 289,
+            "popularity": 23348,
+            "trending": 108,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 12
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 184492,
+            "title": {
+              "romaji": "Mairimashita! Iruma-kun 4",
+              "english": "Welcome to Demon School! Iruma-kun Season 4",
+              "native": "\u9B54\u5165\u308A\u307E\u3057\u305F\uFF01\u5165\u9593\u304F\u3093 \u7B2C4\u30B7\u30EA\u30FC\u30BA"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx184492-KUVFGieuMaOx.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx184492-KUVFGieuMaOx.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 24,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 80,
+            "favourites": 904,
+            "popularity": 40657,
+            "trending": 107,
+            "startDate": {
+              "year": 2026,
+              "month": 4,
+              "day": 4
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 194219,
+            "title": {
+              "romaji": "Oni no Hanayome",
+              "english": "The Ogre\u0027s Bride",
+              "native": "\u9B3C\u306E\u82B1\u5AC1"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b194219-56EhyK775lga.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b194219-56EhyK775lga.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 68,
+            "favourites": 394,
+            "popularity": 20772,
+            "trending": 97,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 5
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 171110,
+            "title": {
+              "romaji": "Honzuki no Gekokujou: Ryoushu no Youjo",
+              "english": "Ascendance of a Bookworm: Adopted Daughter of an Archduke",
+              "native": "\u672C\u597D\u304D\u306E\u4E0B\u524B\u4E0A \u9818\u4E3B\u306E\u990A\u5973"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx171110-7zOdInS6DQNL.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx171110-7zOdInS6DQNL.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 24,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 76,
+            "favourites": 659,
+            "popularity": 38196,
+            "trending": 81,
+            "startDate": {
+              "year": 2026,
+              "month": 4,
+              "day": 4
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 178789,
+            "title": {
+              "romaji": "Mushoku Tensei III: Isekai Ittara Honki Dasu",
+              "english": "Mushoku Tensei: Jobless Reincarnation Season 3",
+              "native": "\u7121\u8077\u8EE2\u751F\u2162 \uFF5E\u7570\u4E16\u754C\u884C\u3063\u305F\u3089\u672C\u6C17\u3060\u3059\uFF5E"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx178789-hNXjKFzUq7mk.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx178789-hNXjKFzUq7mk.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 14,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 84,
+            "favourites": 4772,
+            "popularity": 151946,
+            "trending": 74,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 4
+            },
+            "mediaListEntry": {
+              "id": 593234122,
+              "status": "CURRENT",
+              "progress": 9,
+              "score": 0
+            }
+          },
+          {
+            "id": 186863,
+            "title": {
+              "romaji": "Neko to Ryuu",
+              "english": "The Cat and the Dragon",
+              "native": "\u732B\u3068\u7ADC"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx186863-AO4efoB8HuzA.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx186863-AO4efoB8HuzA.png"
+            },
+            "format": "ONA",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 77,
+            "favourites": 391,
+            "popularity": 23005,
+            "trending": 66,
+            "startDate": {
+              "year": 2026,
+              "month": 6,
+              "day": 27
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 180136,
+            "title": {
+              "romaji": "Tsuihou Sareta Tensei Juukishi wa Game Chishiki de Musou Suru",
+              "english": "The Exiled Heavy Knight Knows How to Game the System",
+              "native": "\u8FFD\u653E\u3055\u308C\u305F\u8EE2\u751F\u91CD\u9A0E\u58EB\u306F\u30B2\u30FC\u30E0\u77E5\u8B58\u3067\u7121\u53CC\u3059\u308B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx180136-gtMTCRlOD4OE.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx180136-gtMTCRlOD4OE.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 26,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 66,
+            "favourites": 1017,
+            "popularity": 59249,
+            "trending": 65,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 3
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 208044,
+            "title": {
+              "romaji": "Rakudai Kenja no Gakuin Musou: Nidome no Tensei, S-Rank Cheat Majutsushi Bouken-roku",
+              "english": "From Overshadowed to Overpowered: Second Reincarnation of a Talentless Sage",
+              "native": "\u843D\u7B2C\u8CE2\u8005\u306E\u5B66\u9662\u7121\u53CC\uFF5E\u4E8C\u5EA6\u76EE\u306E\u8EE2\u751F\u3001S\u30E9\u30F3\u30AF\u30C1\u30FC\u30C8\u9B54\u8853\u5E2B\u5192\u967A\u9332\uFF5E"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx208044-Pm2UhvApQFUh.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx208044-Pm2UhvApQFUh.jpg"
+            },
+            "format": "ONA",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 62,
+            "favourites": 737,
+            "popularity": 49058,
+            "trending": 64,
+            "startDate": {
+              "year": 2026,
+              "month": 6,
+              "day": 26
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 196218,
+            "title": {
+              "romaji": "Ryoumin 0-Nin Start no Henkyou Ryoushu-sama",
+              "english": "The Frontier Lord Begins with Zero Subjects",
+              "native": "\u9818\u6C110\u4EBA\u30B9\u30BF\u30FC\u30C8\u306E\u8FBA\u5883\u9818\u4E3B\u69D8"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx196218-UsdTTCrwpDIN.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx196218-UsdTTCrwpDIN.jpg"
+            },
+            "format": "ONA",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 66,
+            "favourites": 383,
+            "popularity": 30550,
+            "trending": 63,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 3
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 207141,
+            "title": {
+              "romaji": "Yani Neko",
+              "english": "Chainsmoker Cat",
+              "native": "\u30E4\u30CB\u306D\u3053"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx207141-h5q5KJPd6vaX.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx207141-h5q5KJPd6vaX.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 67,
+            "favourites": 1286,
+            "popularity": 70819,
+            "trending": 61,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 3
+            },
+            "mediaListEntry": {
+              "id": 593365728,
+              "status": "PLANNING",
+              "progress": 0,
+              "score": 0
+            }
+          },
+          {
+            "id": 199748,
+            "title": {
+              "romaji": "Koko wa Ore ni Makasete Saki ni Ike to Ittekara 10-nen ga Tattara Densetsu ni Natteita.",
+              "english": "I Became a Legend After My 10 Year-Long Last Stand",
+              "native": "\u3053\u3053\u306F\u4FFA\u306B\u4EFB\u305B\u3066\u5148\u306B\u884C\u3051\u3068\u8A00\u3063\u3066\u304B\u3089\uFF11\uFF10\u5E74\u304C\u305F\u3063\u305F\u3089\u4F1D\u8AAC\u306B\u306A\u3063\u3066\u3044\u305F\u3002"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx199748-PAFk9pGSUmFL.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx199748-PAFk9pGSUmFL.png"
+            },
+            "format": "ONA",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 63,
+            "favourites": 491,
+            "popularity": 38390,
+            "trending": 53,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 3
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 210031,
+            "title": {
+              "romaji": "Seihantai na Kimi to Boku 2nd Season",
+              "english": "You and I Are Polar Opposites Season 2",
+              "native": "\u6B63\u53CD\u5BFE\u306A\u541B\u3068\u50D5 \u7B2C2\u671F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx210031-TppgcHZh46LY.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx210031-TppgcHZh46LY.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 13,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 82,
+            "favourites": 1188,
+            "popularity": 57211,
+            "trending": 52,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 5
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 97940,
+            "title": {
+              "romaji": "Black Clover",
+              "english": "Black Clover",
+              "native": "\u30D6\u30E9\u30C3\u30AF\u30AF\u30ED\u30FC\u30D0\u30FC"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx97940-fyh8o7gNbha0.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx97940-fyh8o7gNbha0.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 170,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 79,
+            "favourites": 33051,
+            "popularity": 581365,
+            "trending": 51,
+            "startDate": {
+              "year": 2017,
+              "month": 10,
+              "day": 3
+            },
+            "mediaListEntry": {
+              "id": 593364452,
+              "status": "COMPLETED",
+              "progress": 170,
+              "score": 8
+            }
+          },
+          {
+            "id": 135865,
+            "title": {
+              "romaji": "Youjo Senki II",
+              "english": "Saga of Tanya the Evil Season 2",
+              "native": "\u5E7C\u5973\u6226\u8A18\u2161"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx135865-T7XIPMAbqcxN.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx135865-T7XIPMAbqcxN.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 80,
+            "favourites": 1809,
+            "popularity": 90910,
+            "trending": 48,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 8
+            },
+            "mediaListEntry": {
+              "id": 593365588,
+              "status": "PLANNING",
+              "progress": 0,
+              "score": 0
+            }
+          }
+        ]
+      }
+    }
+  }
+}

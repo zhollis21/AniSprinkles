@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 154587,
+    "page": 2,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:37:35.4410634+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 2
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 107357,
+                "name": {
+                  "full": "Toshiyuki Satou",
+                  "native": "\u4F50\u85E4\u5229\u5E78",
+                  "userPreferred": "Toshiyuki Satou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n107357-96PgjYcdwBFt.png"
+                },
+                "favourites": 279
+              },
+              "role": "Key Animation (OP1, OP2, eps 1, 2, 4-6, 9, 15, 21, 25, 27)"
+            },
+            {
+              "node": {
+                "id": 102136,
+                "name": {
+                  "full": "Kou Yoshinari",
+                  "native": "\u5409\u6210\u92FC",
+                  "userPreferred": "Kou Yoshinari"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n102136-UJ0xV3z3dgOp.jpg"
+                },
+                "favourites": 223
+              },
+              "role": "Animation (ED1)"
+            },
+            {
+              "node": {
+                "id": 102136,
+                "name": {
+                  "full": "Kou Yoshinari",
+                  "native": "\u5409\u6210\u92FC",
+                  "userPreferred": "Kou Yoshinari"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n102136-UJ0xV3z3dgOp.jpg"
+                },
+                "favourites": 223
+              },
+              "role": "Key Animation (OP1, OP2, eps 1, 3)"
+            },
+            {
+              "node": {
+                "id": 132682,
+                "name": {
+                  "full": "Keiichirou Watanabe",
+                  "native": "\u6E21\u908A\u5553\u4E00\u90CE",
+                  "userPreferred": "Keiichirou Watanabe"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n132682-quXbPwQ4mH3y.jpg"
+                },
+                "favourites": 208
+              },
+              "role": "Key Animation (eps 6, 26)"
+            },
+            {
+              "node": {
+                "id": 133370,
+                "name": {
+                  "full": "Kerorira",
+                  "native": "\u3051\u308D\u308A\u3089",
+                  "userPreferred": "Kerorira"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n133370-NYI4aL3W0OnB.png"
+                },
+                "favourites": 202
+              },
+              "role": "Key Animation (OP1, OP2, eps 1, 10, 28)"
+            },
+            {
+              "node": {
+                "id": 198948,
+                "name": {
+                  "full": "Ayase",
+                  "native": "\u3042\u3084\u305B",
+                  "userPreferred": "Ayase"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n198948-sldqbvJvz0i1.png"
+                },
+                "favourites": 200
+              },
+              "role": "Theme Song Composition (OP1)"
+            },
+            {
+              "node": {
+                "id": 198948,
+                "name": {
+                  "full": "Ayase",
+                  "native": "\u3042\u3084\u305B",
+                  "userPreferred": "Ayase"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n198948-sldqbvJvz0i1.png"
+                },
+                "favourites": 200
+              },
+              "role": "Theme Song Arrangement (OP1)"
+            },
+            {
+              "node": {
+                "id": 198948,
+                "name": {
+                  "full": "Ayase",
+                  "native": "\u3042\u3084\u305B",
+                  "userPreferred": "Ayase"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n198948-sldqbvJvz0i1.png"
+                },
+                "favourites": 200
+              },
+              "role": "Theme Song Lyrics (OP1)"
+            },
+            {
+              "node": {
+                "id": 183674,
+                "name": {
+                  "full": "Vercreek",
+                  "native": null,
+                  "userPreferred": "Vercreek"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n183674-QO8hVtGM7Eml.png"
+                },
+                "favourites": 179
+              },
+              "role": "Key Animation (ep 26)"
+            },
+            {
+              "node": {
+                "id": 138370,
+                "name": {
+                  "full": "Kouki Fujimoto",
+                  "native": "\u85E4\u672C\u822A\u5DF1",
+                  "userPreferred": "Kouki Fujimoto"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n138370-cq1n4Of2zJoz.png"
+                },
+                "favourites": 173
+              },
+              "role": "Episode Director (ep 9)"
+            },
+            {
+              "node": {
+                "id": 138370,
+                "name": {
+                  "full": "Kouki Fujimoto",
+                  "native": "\u85E4\u672C\u822A\u5DF1",
+                  "userPreferred": "Kouki Fujimoto"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n138370-cq1n4Of2zJoz.png"
+                },
+                "favourites": 173
+              },
+              "role": "Key Animation (OP1, OP2, eps 9, 23, 25)"
+            },
+            {
+              "node": {
+                "id": 138370,
+                "name": {
+                  "full": "Kouki Fujimoto",
+                  "native": "\u85E4\u672C\u822A\u5DF1",
+                  "userPreferred": "Kouki Fujimoto"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n138370-cq1n4Of2zJoz.png"
+                },
+                "favourites": 173
+              },
+              "role": "Storyboard (ep 9)"
+            },
+            {
+              "node": {
+                "id": 100921,
+                "name": {
+                  "full": "Morio Asaka",
+                  "native": "\u6D45\u9999\u5B88\u751F",
+                  "userPreferred": "Morio Asaka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100921-Sd0rSsSxxzpW.png"
+                },
+                "favourites": 171
+              },
+              "role": "Episode Director (ep 15)"
+            },
+            {
+              "node": {
+                "id": 170189,
+                "name": {
+                  "full": "Tsukasa Abe",
+                  "native": "\u30A2\u30D9\u30C4\u30AB\u30B5",
+                  "userPreferred": "Tsukasa Abe"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n170189-HOqnSDEYpFKZ.jpg"
+                },
+                "favourites": 162
+              },
+              "role": "Goddess Illustration (ep 11)"
+            },
+            {
+              "node": {
+                "id": 170189,
+                "name": {
+                  "full": "Tsukasa Abe",
+                  "native": "\u30A2\u30D9\u30C4\u30AB\u30B5",
+                  "userPreferred": "Tsukasa Abe"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n170189-HOqnSDEYpFKZ.jpg"
+                },
+                "favourites": 162
+              },
+              "role": "Original Character Design"
+            },
+            {
+              "node": {
+                "id": 159212,
+                "name": {
+                  "full": "n-buna",
+                  "native": "\u30CA\u30D6\u30CA",
+                  "userPreferred": "n-buna"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n159212-iAjUTX9lkuuB.png"
+                },
+                "favourites": 138
+              },
+              "role": "Theme Song Lyrics (OP2)"
+            },
+            {
+              "node": {
+                "id": 159212,
+                "name": {
+                  "full": "n-buna",
+                  "native": "\u30CA\u30D6\u30CA",
+                  "userPreferred": "n-buna"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n159212-iAjUTX9lkuuB.png"
+                },
+                "favourites": 138
+              },
+              "role": "Theme Song Composition (OP2)"
+            },
+            {
+              "node": {
+                "id": 159212,
+                "name": {
+                  "full": "n-buna",
+                  "native": "\u30CA\u30D6\u30CA",
+                  "userPreferred": "n-buna"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n159212-iAjUTX9lkuuB.png"
+                },
+                "favourites": 138
+              },
+              "role": "Theme Song Arrangement (OP2)"
+            },
+            {
+              "node": {
+                "id": 128243,
+                "name": {
+                  "full": "Shun Enokido",
+                  "native": "\u698E\u6238\u99FF",
+                  "userPreferred": "Shun Enokido"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n128243-jHmvPyEDd1u7.png"
+                },
+                "favourites": 115
+              },
+              "role": "Key Animation (ep 6)"
+            },
+            {
+              "node": {
+                "id": 122660,
+                "name": {
+                  "full": "Akiko Takase",
+                  "native": "\u9AD8\u702C\u4E9C\u8CB4\u5B50",
+                  "userPreferred": "Akiko Takase"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n122660-pf3cXCTfaAyi.jpg"
+                },
+                "favourites": 112
+              },
+              "role": "Design Works"
+            },
+            {
+              "node": {
+                "id": 122660,
+                "name": {
+                  "full": "Akiko Takase",
+                  "native": "\u9AD8\u702C\u4E9C\u8CB4\u5B50",
+                  "userPreferred": "Akiko Takase"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n122660-pf3cXCTfaAyi.jpg"
+                },
+                "favourites": 112
+              },
+              "role": "Animation Director (eps 6, 12, 28)"
+            },
+            {
+              "node": {
+                "id": 122660,
+                "name": {
+                  "full": "Akiko Takase",
+                  "native": "\u9AD8\u702C\u4E9C\u8CB4\u5B50",
+                  "userPreferred": "Akiko Takase"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n122660-pf3cXCTfaAyi.jpg"
+                },
+                "favourites": 112
+              },
+              "role": "Key Animation (OP2)"
+            },
+            {
+              "node": {
+                "id": 122660,
+                "name": {
+                  "full": "Akiko Takase",
+                  "native": "\u9AD8\u702C\u4E9C\u8CB4\u5B50",
+                  "userPreferred": "Akiko Takase"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n122660-pf3cXCTfaAyi.jpg"
+                },
+                "favourites": 112
+              },
+              "role": "Chief Animation Director (eps 22, 28)"
+            },
+            {
+              "node": {
+                "id": 130358,
+                "name": {
+                  "full": "China",
+                  "native": "\u3061\u306A",
+                  "userPreferred": "China"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n130358-WH8yNAlbX72n.png"
+                },
+                "favourites": 112
+              },
+              "role": "Key Animation (OP1, ep 28)"
+            },
+            {
+              "node": {
+                "id": 172088,
+                "name": {
+                  "full": "Takeshi Maenami",
+                  "native": "\u524D\u4E26\u6B66\u5FD7",
+                  "userPreferred": "Takeshi Maenami"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n172088-PQfwnq4hIRIu.png"
+                },
+                "favourites": 110
+              },
+              "role": "Key Animation (eps 5, 26)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

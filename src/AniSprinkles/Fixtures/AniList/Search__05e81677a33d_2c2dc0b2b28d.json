@@ -1,0 +1,582 @@
+﻿{
+  "operationName": "Search",
+  "variables": {
+    "search": "ka",
+    "page": 2,
+    "perPage": 20
+  },
+  "queryFingerprint": "2c2dc0b2b28d",
+  "recordedAt": "2026-09-06T05:17:51.4727887+00:00",
+  "response": {
+    "data": {
+      "Page": {
+        "pageInfo": {
+          "hasNextPage": true,
+          "currentPage": 2
+        },
+        "media": [
+          {
+            "id": 118589,
+            "title": {
+              "romaji": "Kasumi ka Kumo ka Seishoujo",
+              "english": null,
+              "native": "\u304B\u3059\u307F\u304B\u96F2\u304B\u8056\u5C11\u5973"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx118589-0IICVZlAXIbm.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx118589-0IICVZlAXIbm.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 8,
+            "volumes": 1,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 18,
+            "trending": 0,
+            "startDate": {
+              "year": 1989,
+              "month": 2,
+              "day": 1
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 143235,
+            "title": {
+              "romaji": "Yokogao to Kousai: Yes ka No ka Hanbun ka Bangaihen",
+              "english": null,
+              "native": "\u6A2A\u9854\u3068\u8679\u5F69 ~\u30A4\u30A8\u30B9\u304B\u30CE\u30FC\u304B\u534A\u5206\u304B \u756A\u5916\u7BC7~"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx143235-3AMEuJ3iayrq.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx143235-3AMEuJ3iayrq.png"
+            },
+            "format": "NOVEL",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 16,
+            "volumes": 1,
+            "averageScore": null,
+            "favourites": 3,
+            "popularity": 86,
+            "trending": 0,
+            "startDate": {
+              "year": 2017,
+              "month": 4,
+              "day": 20
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 39354,
+            "title": {
+              "romaji": "Ka-i-ka-n\u2665Spiral",
+              "english": null,
+              "native": "\u30AB\u30FB\u30A4\u30FB\u30AB\u30FB\u30F3\u2665\u30B9\u30D1\u30A4\u30E9\u30EB"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/9354.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/9354.jpg"
+            },
+            "format": "ONE_SHOT",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 1,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 74,
+            "trending": 0,
+            "startDate": {
+              "year": 2004,
+              "month": 11,
+              "day": 16
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 111169,
+            "title": {
+              "romaji": "Yuusha ka Maou ka Erabasete",
+              "english": null,
+              "native": "\u52C7\u8005\u304B\u9B54\u738B\u304B\u9078\u3070\u305B\u3066"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx111169-T9DqsySGJTYz.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx111169-T9DqsySGJTYz.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 16,
+            "volumes": 2,
+            "averageScore": 55,
+            "favourites": 3,
+            "popularity": 606,
+            "trending": 0,
+            "startDate": {
+              "year": 2019,
+              "month": 4,
+              "day": 27
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 161757,
+            "title": {
+              "romaji": "Seika Amai ka Shoppai ka",
+              "english": null,
+              "native": "\u751F\u82B1\u7518\u3044\u304B\u3057\u3087\u3063\u3071\u3044\u304B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/b161757-st7iCiIfkXm0.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/b161757-st7iCiIfkXm0.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 19,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 24,
+            "trending": 0,
+            "startDate": {
+              "year": 2018,
+              "month": 8,
+              "day": 29
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 126372,
+            "title": {
+              "romaji": "Koi ka Mahou ka Wakaranai!",
+              "english": null,
+              "native": "\u604B\u304B\u9B54\u6CD5\u304B\u308F\u304B\u3089\u306A\u3044\uFF01"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx126372-4LagUCQ7N7sG.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx126372-4LagUCQ7N7sG.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 33,
+            "volumes": 4,
+            "averageScore": 61,
+            "favourites": 81,
+            "popularity": 5105,
+            "trending": 0,
+            "startDate": {
+              "year": 2020,
+              "month": 12,
+              "day": 9
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 183079,
+            "title": {
+              "romaji": "Ai to ka Koi to ka, Kudaranai.",
+              "english": null,
+              "native": "\u611B\u3068\u304B\u604B\u3068\u304B\u3001\u304F\u3060\u3089\u306A\u3044\u3002"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx183079-Ye5uAOoqL2l1.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx183079-Ye5uAOoqL2l1.jpg"
+            },
+            "format": "NOVEL",
+            "type": "MANGA",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 3,
+            "popularity": 79,
+            "trending": 0,
+            "startDate": {
+              "year": 2024,
+              "month": 10,
+              "day": 18
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 41099,
+            "title": {
+              "romaji": "KA RE SHI",
+              "english": "Boyfriend",
+              "native": "KA\u30FBRE\u30FBSHI"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx41099-wptjHb7AtYzF.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx41099-wptjHb7AtYzF.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": 8,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 41,
+            "trending": 0,
+            "startDate": {
+              "year": 1995,
+              "month": null,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 48760,
+            "title": {
+              "romaji": "Hanjuku-Hime",
+              "english": null,
+              "native": "\u534A\u719F\u59EB"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/18760.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/18760.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 5,
+            "volumes": 1,
+            "averageScore": null,
+            "favourites": 1,
+            "popularity": 143,
+            "trending": 0,
+            "startDate": {
+              "year": 2010,
+              "month": 1,
+              "day": 25
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 51565,
+            "title": {
+              "romaji": "Unmei no Aite Desu ga, Nani ka?",
+              "english": null,
+              "native": "\u904B\u547D\u306E\u76F8\u624B\u3067\u3059\u304C\u3001\u4F55\u304B\uFF1F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/21565.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/21565.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 5,
+            "volumes": 1,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 37,
+            "trending": 0,
+            "startDate": {
+              "year": 2010,
+              "month": null,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 113194,
+            "title": {
+              "romaji": "Kuwaremasen ka?",
+              "english": null,
+              "native": "\u55B0\u308F\u308C\u9B54\u305B\u3093\u304B\uFF1F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx113194-BTOotac8omN0.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx113194-BTOotac8omN0.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 4,
+            "volumes": 1,
+            "averageScore": 52,
+            "favourites": 1,
+            "popularity": 90,
+            "trending": 0,
+            "startDate": {
+              "year": 2019,
+              "month": 4,
+              "day": 25
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 186244,
+            "title": {
+              "romaji": "Katari-ka",
+              "english": null,
+              "native": "\u30AB\u30BF\u30EA\u30AB \u8A9E\u308A\u798D"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx186244-ui4A9xxLXail.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx186244-ui4A9xxLXail.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 186,
+            "trending": 0,
+            "startDate": {
+              "year": 2024,
+              "month": 10,
+              "day": 11
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 49911,
+            "title": {
+              "romaji": "Nyotai-ka.",
+              "english": "Nyotai-ka!",
+              "native": "\u306B\u3087\u305F\u3044\u304B\u3063\u3002"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx49911-ri7q1yCaX7Kk.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx49911-ri7q1yCaX7Kk.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 60,
+            "volumes": 5,
+            "averageScore": 60,
+            "favourites": 9,
+            "popularity": 1682,
+            "trending": 0,
+            "startDate": {
+              "year": 2009,
+              "month": null,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 36993,
+            "title": {
+              "romaji": "Tsuite Masuka",
+              "english": null,
+              "native": "\u6191\u3044\u3066\u307E\u3059\u304B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx36993-rvq5A9Iv1X7x.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx36993-rvq5A9Iv1X7x.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": 8,
+            "averageScore": null,
+            "favourites": 1,
+            "popularity": 38,
+            "trending": 0,
+            "startDate": {
+              "year": 1993,
+              "month": 5,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 44633,
+            "title": {
+              "romaji": "Seiyuu Ka!",
+              "english": "Voice Over!: Seiyuu Academy",
+              "native": "\u58F0\u512A\u304B\u3063!"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx44633-EuXudyXKm6zY.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx44633-EuXudyXKm6zY.png"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 70,
+            "volumes": 12,
+            "averageScore": 76,
+            "favourites": 53,
+            "popularity": 2767,
+            "trending": 0,
+            "startDate": {
+              "year": 2009,
+              "month": 6,
+              "day": 20
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 32888,
+            "title": {
+              "romaji": "KaNa",
+              "english": null,
+              "native": "KaNa~\u54C0~"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx32888-lMfbD3bapR9x.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx32888-lMfbD3bapR9x.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 28,
+            "volumes": 4,
+            "averageScore": 50,
+            "favourites": 3,
+            "popularity": 231,
+            "trending": 0,
+            "startDate": {
+              "year": 1999,
+              "month": 1,
+              "day": 1
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 175831,
+            "title": {
+              "romaji": "A Sou ka!",
+              "english": null,
+              "native": "\u3042\u3063\u3000\u305D\u3046\u304B\uFF01"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b175831-QMKoq0mtIa54.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b175831-QMKoq0mtIa54.png"
+            },
+            "format": "MUSIC",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 0,
+            "popularity": 49,
+            "trending": 0,
+            "startDate": {
+              "year": 1986,
+              "month": 4,
+              "day": 3
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 154026,
+            "title": {
+              "romaji": "Chounouryokusha ka!?",
+              "english": null,
+              "native": "\u8D85\u80FD\u529B\u8005\u304B!?"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx154026-iLJIpuafLpuG.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx154026-iLJIpuafLpuG.jpg"
+            },
+            "format": "ONE_SHOT",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 1,
+            "volumes": null,
+            "averageScore": 58,
+            "favourites": 3,
+            "popularity": 199,
+            "trending": 0,
+            "startDate": {
+              "year": 2022,
+              "month": 4,
+              "day": 24
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 143238,
+            "title": {
+              "romaji": "Koigataki to Kousai: Yes ka No ka Hanbun ka Bangaihen 2",
+              "english": null,
+              "native": "\u604B\u6575\u3068\u8679\u5F69~\u30A4\u30A8\u30B9\u304B\u30CE\u30FC\u304B\u534A\u5206\u304B\u756A\u5916\u7BC72~"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx143238-j8spThOxWJCl.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx143238-j8spThOxWJCl.jpg"
+            },
+            "format": "NOVEL",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 23,
+            "volumes": 1,
+            "averageScore": null,
+            "favourites": 1,
+            "popularity": 45,
+            "trending": 0,
+            "startDate": {
+              "year": 2018,
+              "month": 8,
+              "day": 10
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 177047,
+            "title": {
+              "romaji": "DO-KA",
+              "english": "Ignition",
+              "native": "\u5C0E\u706B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx177047-IUazu4gKRDbT.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx177047-IUazu4gKRDbT.jpg"
+            },
+            "format": "MUSIC",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": null,
+            "favourites": 1,
+            "popularity": 117,
+            "trending": 0,
+            "startDate": {
+              "year": 2024,
+              "month": 4,
+              "day": 16
+            },
+            "mediaListEntry": null
+          }
+        ]
+      }
+    }
+  }
+}

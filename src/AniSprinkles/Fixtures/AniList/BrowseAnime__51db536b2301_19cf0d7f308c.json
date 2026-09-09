@@ -1,0 +1,806 @@
+﻿{
+  "operationName": "BrowseAnime",
+  "variables": {
+    "page": 3,
+    "perPage": 25,
+    "sort": [
+      "TRENDING_DESC",
+      "ID"
+    ],
+    "isAdult": false
+  },
+  "queryFingerprint": "19cf0d7f308c",
+  "recordedAt": "2026-09-06T05:15:16.4257291+00:00",
+  "response": {
+    "data": {
+      "Page": {
+        "pageInfo": {
+          "hasNextPage": true,
+          "currentPage": 3
+        },
+        "media": [
+          {
+            "id": 16498,
+            "title": {
+              "romaji": "Shingeki no Kyojin",
+              "english": "Attack on Titan",
+              "native": "\u9032\u6483\u306E\u5DE8\u4EBA"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx16498-buvcRTBx4NSm.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx16498-buvcRTBx4NSm.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 25,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 85,
+            "favourites": 87264,
+            "popularity": 1051019,
+            "trending": 23,
+            "startDate": {
+              "year": 2013,
+              "month": 4,
+              "day": 7
+            },
+            "mediaListEntry": {
+              "id": 593364161,
+              "status": "COMPLETED",
+              "progress": 25,
+              "score": 10
+            }
+          },
+          {
+            "id": 178025,
+            "title": {
+              "romaji": "Gachiakuta",
+              "english": "Gachiakuta",
+              "native": "\u30AC\u30C1\u30A2\u30AF\u30BF"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx178025-cWJKEsZynkil.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx178025-cWJKEsZynkil.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 24,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 82,
+            "favourites": 10728,
+            "popularity": 254198,
+            "trending": 23,
+            "startDate": {
+              "year": 2025,
+              "month": 7,
+              "day": 6
+            },
+            "mediaListEntry": {
+              "id": 593364551,
+              "status": "COMPLETED",
+              "progress": 24,
+              "score": 8
+            }
+          },
+          {
+            "id": 147105,
+            "title": {
+              "romaji": "Tongari Boushi no Atelier",
+              "english": "Witch Hat Atelier",
+              "native": "\u3068\u3093\u304C\u308A\u5E3D\u5B50\u306E\u30A2\u30C8\u30EA\u30A8"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx147105-rwOX8qyUy8gV.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx147105-rwOX8qyUy8gV.jpg"
+            },
+            "format": "ONA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 13,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 85,
+            "favourites": 11201,
+            "popularity": 222505,
+            "trending": 22,
+            "startDate": {
+              "year": 2026,
+              "month": 4,
+              "day": 6
+            },
+            "mediaListEntry": {
+              "id": 593365663,
+              "status": "PLANNING",
+              "progress": 0,
+              "score": 0
+            }
+          },
+          {
+            "id": 185262,
+            "title": {
+              "romaji": "Hell Mode: Yarikomi-zuki no Gamer wa Haisettei no Isekai de Musou Suru",
+              "english": "HELL MODE: The Hardcore Gamer Dominates in Another World with Garbage Balancing",
+              "native": "\u30D8\u30EB\u30E2\u30FC\u30C9 \uFF5E\u3084\u308A\u8FBC\u307F\u597D\u304D\u306E\u30B2\u30FC\u30DE\u30FC\u306F\u5EC3\u8A2D\u5B9A\u306E\u7570\u4E16\u754C\u3067\u7121\u53CC\u3059\u308B\uFF5E"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx185262-95wbx3Y9hCwm.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx185262-95wbx3Y9hCwm.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 72,
+            "favourites": 994,
+            "popularity": 52564,
+            "trending": 22,
+            "startDate": {
+              "year": 2026,
+              "month": 1,
+              "day": 10
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 185542,
+            "title": {
+              "romaji": "Gaikotsu Kishi-sama, Tadaima Isekai e Odekakechuu II",
+              "english": "Skeleton Knight in Another World Season 2",
+              "native": "\u9AB8\u9AA8\u9A0E\u58EB\u69D8\u3001\u53EA\u4ECA\u7570\u4E16\u754C\u3078\u304A\u51FA\u639B\u3051\u4E2D\u2161"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx185542-6a9LCWlLHa0T.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx185542-6a9LCWlLHa0T.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 66,
+            "favourites": 684,
+            "popularity": 47243,
+            "trending": 22,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 4
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 187260,
+            "title": {
+              "romaji": "Kimi ga Shinu made Koi wo Shitai",
+              "english": "I Want to Love You Till Your Dying Day",
+              "native": "\u304D\u307F\u304C\u6B7B\u306C\u307E\u3067\u604B\u3092\u3057\u305F\u3044"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx187260-WW5RBa5NINRP.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx187260-WW5RBa5NINRP.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 13,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 74,
+            "favourites": 976,
+            "popularity": 53552,
+            "trending": 22,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 7
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 146065,
+            "title": {
+              "romaji": "Mushoku Tensei II: Isekai Ittara Honki Dasu",
+              "english": "Mushoku Tensei: Jobless Reincarnation Season 2",
+              "native": "\u7121\u8077\u8EE2\u751F\u2161 \uFF5E\u7570\u4E16\u754C\u884C\u3063\u305F\u3089\u672C\u6C17\u3060\u3059\uFF5E"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx146065-IjirxRK26O03.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx146065-IjirxRK26O03.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 13,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 81,
+            "favourites": 7982,
+            "popularity": 261467,
+            "trending": 21,
+            "startDate": {
+              "year": 2023,
+              "month": 7,
+              "day": 3
+            },
+            "mediaListEntry": {
+              "id": 593234680,
+              "status": "COMPLETED",
+              "progress": 13,
+              "score": 10
+            }
+          },
+          {
+            "id": 177637,
+            "title": {
+              "romaji": "Sayonara Lara",
+              "english": "Goodbye, Lara",
+              "native": "\u3055\u3088\u306A\u3089\u30E9\u30E9"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx177637-8onaQWqKW1C3.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx177637-8onaQWqKW1C3.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 76,
+            "favourites": 565,
+            "popularity": 30981,
+            "trending": 21,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 6
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 197715,
+            "title": {
+              "romaji": "LV999 no Murabito",
+              "english": "The Villager of Level 999",
+              "native": "LV999\u306E\u6751\u4EBA"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx197715-KLFLxU24U1uL.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx197715-KLFLxU24U1uL.png"
+            },
+            "format": "ONA",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 60,
+            "favourites": 473,
+            "popularity": 36244,
+            "trending": 21,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 2
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 1575,
+            "title": {
+              "romaji": "Code Geass: Hangyaku no Lelouch",
+              "english": "Code Geass: Lelouch of the Rebellion",
+              "native": "\u30B3\u30FC\u30C9\u30AE\u30A2\u30B9 \u53CD\u9006\u306E\u30EB\u30EB\u30FC\u30B7\u30E5"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1575-hsmWM2ydNm1m.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1575-hsmWM2ydNm1m.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 25,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 85,
+            "favourites": 34412,
+            "popularity": 498732,
+            "trending": 20,
+            "startDate": {
+              "year": 2006,
+              "month": 10,
+              "day": 6
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 163134,
+            "title": {
+              "romaji": "Re:Zero kara Hajimeru Isekai Seikatsu 3rd Season",
+              "english": "Re:ZERO -Starting Life in Another World- Season 3",
+              "native": "Re:\u30BC\u30ED\u304B\u3089\u59CB\u3081\u308B\u7570\u4E16\u754C\u751F\u6D3B 3rd season"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx163134-yieRFbvUOH9a.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx163134-yieRFbvUOH9a.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 16,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 84,
+            "favourites": 6409,
+            "popularity": 194349,
+            "trending": 20,
+            "startDate": {
+              "year": 2024,
+              "month": 10,
+              "day": 2
+            },
+            "mediaListEntry": {
+              "id": 593351176,
+              "status": "COMPLETED",
+              "progress": 16,
+              "score": 8
+            }
+          },
+          {
+            "id": 101280,
+            "title": {
+              "romaji": "Tensei Shitara Slime Datta Ken",
+              "english": "That Time I Got Reincarnated as a Slime",
+              "native": "\u8EE2\u751F\u3057\u305F\u3089\u30B9\u30E9\u30A4\u30E0\u3060\u3063\u305F\u4EF6"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx101280-tDxCVJm714nt.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101280-tDxCVJm714nt.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 24,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 80,
+            "favourites": 23489,
+            "popularity": 460967,
+            "trending": 19,
+            "startDate": {
+              "year": 2018,
+              "month": 10,
+              "day": 2
+            },
+            "mediaListEntry": {
+              "id": 593364344,
+              "status": "COMPLETED",
+              "progress": 24,
+              "score": 9
+            }
+          },
+          {
+            "id": 108465,
+            "title": {
+              "romaji": "Mushoku Tensei: Isekai Ittara Honki Dasu",
+              "english": "Mushoku Tensei: Jobless Reincarnation",
+              "native": "\u7121\u8077\u8EE2\u751F \uFF5E\u7570\u4E16\u754C\u884C\u3063\u305F\u3089\u672C\u6C17\u3060\u3059\uFF5E"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx108465-1ANspF1EWyFx.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx108465-1ANspF1EWyFx.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 11,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 82,
+            "favourites": 26485,
+            "popularity": 455457,
+            "trending": 19,
+            "startDate": {
+              "year": 2021,
+              "month": 1,
+              "day": 11
+            },
+            "mediaListEntry": {
+              "id": 593363909,
+              "status": "COMPLETED",
+              "progress": 11,
+              "score": 10
+            }
+          },
+          {
+            "id": 169755,
+            "title": {
+              "romaji": "BLEACH: Sennen Kessen-hen - Soukoku-tan",
+              "english": "BLEACH: Thousand-Year Blood War - The Conflict",
+              "native": "BLEACH \u5343\u5E74\u8840\u6226\u7BC7-\u76F8\u524B\u8B5A-"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx169755-Rqb7MjnzdTc6.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx169755-Rqb7MjnzdTc6.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 14,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 86,
+            "favourites": 4358,
+            "popularity": 116669,
+            "trending": 19,
+            "startDate": {
+              "year": 2024,
+              "month": 10,
+              "day": 5
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 200637,
+            "title": {
+              "romaji": "Kimi no Koto ga Dai Dai Dai Dai Daisuki na 100-nin no Kanojo 3rd Season",
+              "english": "The 100 Girlfriends Who Really, Really, Really, Really, REALLY Love You Season 3",
+              "native": "\u541B\u306E\u3053\u3068\u304C\u5927\u5927\u5927\u5927\u5927\u597D\u304D\u306A100\u4EBA\u306E\u5F7C\u5973 \u7B2C3\u671F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx200637-QLR5uv9SbQ69.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx200637-QLR5uv9SbQ69.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 79,
+            "favourites": 798,
+            "popularity": 38469,
+            "trending": 19,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 5
+            },
+            "mediaListEntry": {
+              "id": 593364957,
+              "status": "CURRENT",
+              "progress": 1,
+              "score": 5
+            }
+          },
+          {
+            "id": 918,
+            "title": {
+              "romaji": "Gintama",
+              "english": "Gintama",
+              "native": "\u9280\u9B42"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx918-iOaeBVUn4uK7.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx918-iOaeBVUn4uK7.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 201,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 85,
+            "favourites": 17228,
+            "popularity": 295316,
+            "trending": 18,
+            "startDate": {
+              "year": 2006,
+              "month": 4,
+              "day": 4
+            },
+            "mediaListEntry": {
+              "id": 593363934,
+              "status": "COMPLETED",
+              "progress": 201,
+              "score": 8
+            }
+          },
+          {
+            "id": 108632,
+            "title": {
+              "romaji": "Re:Zero kara Hajimeru Isekai Seikatsu 2nd Season",
+              "english": "Re:ZERO -Starting Life in Another World- Season 2",
+              "native": "Re:\u30BC\u30ED\u304B\u3089\u59CB\u3081\u308B\u7570\u4E16\u754C\u751F\u6D3B 2nd Season"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx108632-lQWnmw7XaNOK.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx108632-lQWnmw7XaNOK.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 13,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 83,
+            "favourites": 13021,
+            "popularity": 378278,
+            "trending": 18,
+            "startDate": {
+              "year": 2020,
+              "month": 7,
+              "day": 8
+            },
+            "mediaListEntry": {
+              "id": 593363869,
+              "status": "COMPLETED",
+              "progress": 13,
+              "score": 8
+            }
+          },
+          {
+            "id": 128757,
+            "title": {
+              "romaji": "Tai-Ari deshita.: Ojou-sama wa Kakutou Game nante Shinai",
+              "english": "Young Ladies Don\u0027t Play Fighting Games",
+              "native": "\u5BFE\u3042\u308A\u3067\u3057\u305F\u3002 \uFF5E\u304A\u5B22\u3055\u307E\u306F\u683C\u95D8\u30B2\u30FC\u30E0\u306A\u3093\u3066\u3057\u306A\u3044\uFF5E"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx128757-Iqc6hTjEYIz4.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx128757-Iqc6hTjEYIz4.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 74,
+            "favourites": 329,
+            "popularity": 27036,
+            "trending": 18,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 7
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 166873,
+            "title": {
+              "romaji": "Mushoku Tensei II: Isekai Ittara Honki Dasu Part 2",
+              "english": "Mushoku Tensei: Jobless Reincarnation Season 2 Part 2",
+              "native": "\u7121\u8077\u8EE2\u751F\u2161 \uFF5E\u7570\u4E16\u754C\u884C\u3063\u305F\u3089\u672C\u6C17\u3060\u3059\uFF5E \u7B2C2\u30AF\u30FC\u30EB"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx166873-xO0BRPkmwFll.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx166873-xO0BRPkmwFll.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 83,
+            "favourites": 6195,
+            "popularity": 207515,
+            "trending": 18,
+            "startDate": {
+              "year": 2024,
+              "month": 4,
+              "day": 8
+            },
+            "mediaListEntry": {
+              "id": 593234192,
+              "status": "COMPLETED",
+              "progress": 12,
+              "score": 9
+            }
+          },
+          {
+            "id": 101922,
+            "title": {
+              "romaji": "Kimetsu no Yaiba",
+              "english": "Demon Slayer: Kimetsu no Yaiba",
+              "native": "\u9B3C\u6EC5\u306E\u5203"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx101922-WBsBl0ClmgYL.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101922-WBsBl0ClmgYL.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 26,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 83,
+            "favourites": 60949,
+            "popularity": 991252,
+            "trending": 17,
+            "startDate": {
+              "year": 2019,
+              "month": 4,
+              "day": 6
+            },
+            "mediaListEntry": {
+              "id": 593364095,
+              "status": "COMPLETED",
+              "progress": 26,
+              "score": 9
+            }
+          },
+          {
+            "id": 127720,
+            "title": {
+              "romaji": "Mushoku Tensei: Isekai Ittara Honki Dasu Part 2",
+              "english": "Mushoku Tensei: Jobless Reincarnation Cour 2",
+              "native": "\u7121\u8077\u8EE2\u751F \uFF5E\u7570\u4E16\u754C\u884C\u3063\u305F\u3089\u672C\u6C17\u3060\u3059\uFF5E \u7B2C2\u30AF\u30FC\u30EB"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx127720-ADJgIrUVMdU9.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx127720-ADJgIrUVMdU9.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 85,
+            "favourites": 13402,
+            "popularity": 322366,
+            "trending": 17,
+            "startDate": {
+              "year": 2021,
+              "month": 10,
+              "day": 4
+            },
+            "mediaListEntry": {
+              "id": 593363915,
+              "status": "COMPLETED",
+              "progress": 12,
+              "score": 10
+            }
+          },
+          {
+            "id": 145064,
+            "title": {
+              "romaji": "Jujutsu Kaisen 2nd Season",
+              "english": "JUJUTSU KAISEN Season 2",
+              "native": "\u546A\u8853\u5EFB\u6226 \u7B2C2\u671F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx145064-hSNRJM03pvv1.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx145064-hSNRJM03pvv1.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 23,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 86,
+            "favourites": 22922,
+            "popularity": 489213,
+            "trending": 17,
+            "startDate": {
+              "year": 2023,
+              "month": 7,
+              "day": 6
+            },
+            "mediaListEntry": {
+              "id": 593364143,
+              "status": "COMPLETED",
+              "progress": 23,
+              "score": 10
+            }
+          },
+          {
+            "id": 151807,
+            "title": {
+              "romaji": "Ore dake Level Up na Ken",
+              "english": "Solo Leveling",
+              "native": "\u4FFA\u3060\u3051\u30EC\u30D9\u30EB\u30A2\u30C3\u30D7\u306A\u4EF6"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx151807-it355ZgzquUd.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx151807-it355ZgzquUd.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 80,
+            "favourites": 20830,
+            "popularity": 443772,
+            "trending": 17,
+            "startDate": {
+              "year": 2024,
+              "month": 1,
+              "day": 7
+            },
+            "mediaListEntry": {
+              "id": 593351062,
+              "status": "COMPLETED",
+              "progress": 12,
+              "score": 9
+            }
+          },
+          {
+            "id": 169583,
+            "title": {
+              "romaji": "Tenkousaki no Seiso Karen na Bishoujo ga, Mukashi Danshi to Omotte Issho ni Asonda Osananajimi datta Ken",
+              "english": "Oh Boy, Was I Wrong About Her",
+              "native": "\u8EE2\u6821\u5148\u306E\u6E05\u695A\u53EF\u6190\u306A\u7F8E\u5C11\u5973\u304C\u3001\u6614\u7537\u5B50\u3068\u601D\u3063\u3066\u4E00\u7DD2\u306B\u904A\u3093\u3060\u5E7C\u99B4\u67D3\u3060\u3063\u305F\u4EF6"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx169583-0ZTdBGrKNIbe.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx169583-0ZTdBGrKNIbe.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 70,
+            "favourites": 489,
+            "popularity": 38385,
+            "trending": 17,
+            "startDate": {
+              "year": 2026,
+              "month": 7,
+              "day": 6
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 176301,
+            "title": {
+              "romaji": "Kusuriya no Hitorigoto 2nd Season",
+              "english": "The Apothecary Diaries Season 2",
+              "native": "\u85AC\u5C4B\u306E\u3072\u3068\u308A\u3054\u3068 \u7B2C2\u671F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx176301-TIGmldLffQGX.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx176301-TIGmldLffQGX.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 24,
+            "chapters": null,
+            "volumes": null,
+            "averageScore": 88,
+            "favourites": 10516,
+            "popularity": 202420,
+            "trending": 17,
+            "startDate": {
+              "year": 2025,
+              "month": 1,
+              "day": 10
+            },
+            "mediaListEntry": {
+              "id": 593363981,
+              "status": "COMPLETED",
+              "progress": 24,
+              "score": 10
+            }
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,638 @@
+﻿{
+  "operationName": "StudioMediaPage",
+  "variables": {
+    "id": 102,
+    "page": 1,
+    "sort": [
+      "START_DATE_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "02c0137b2ee8",
+  "recordedAt": "2026-09-09T16:01:02.9071432+00:00",
+  "response": {
+    "data": {
+      "Studio": {
+        "media": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "nodes": [
+            {
+              "id": 143203,
+              "title": {
+                "romaji": "Kyoukai Senki Part 2",
+                "english": "AMAIM Warrior at the Borderline Part 2",
+                "native": "\u5883\u754C\u6226\u6A5F \u7B2C\u4E8C\u90E8"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx143203-WhXWagWXSg3Z.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx143203-WhXWagWXSg3Z.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 61,
+              "favourites": 59,
+              "popularity": 4954,
+              "startDate": {
+                "year": 2022,
+                "month": 4,
+                "day": 12
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 119056,
+              "title": {
+                "romaji": "Kenja no Deshi wo Nanoru Kenja",
+                "english": "She Professed Herself Pupil of the Wise Man",
+                "native": "\u8CE2\u8005\u306E\u5F1F\u5B50\u3092\u540D\u4E57\u308B\u8CE2\u8005"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx119056-v9Ls3eKyf0Nf.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx119056-v9Ls3eKyf0Nf.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 60,
+              "favourites": 575,
+              "popularity": 43857,
+              "startDate": {
+                "year": 2022,
+                "month": 1,
+                "day": 12
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 139804,
+              "title": {
+                "romaji": "TRIBE NINE",
+                "english": "Tribe Nine",
+                "native": "\u30C8\u30E9\u30A4\u30D6\u30CA\u30A4\u30F3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx139804-kpZVaUQvisjl.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx139804-kpZVaUQvisjl.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 56,
+              "favourites": 137,
+              "popularity": 17041,
+              "startDate": {
+                "year": 2022,
+                "month": 1,
+                "day": 10
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 123899,
+              "title": {
+                "romaji": "Ai no Utagoe wo Kikasete",
+                "english": "Sing a Bit of Harmony",
+                "native": "\u30A2\u30A4\u306E\u6B4C\u58F0\u3092\u8074\u304B\u305B\u3066"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx123899-AimlRWzAqpHC.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx123899-AimlRWzAqpHC.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 75,
+              "favourites": 618,
+              "popularity": 44637,
+              "startDate": {
+                "year": 2021,
+                "month": 10,
+                "day": 29
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 120646,
+              "title": {
+                "romaji": "Senpai ga Uzai Kouhai no Hanashi",
+                "english": "My Senpai is Annoying",
+                "native": "\u5148\u8F29\u304C\u3046\u3056\u3044\u5F8C\u8F29\u306E\u8A71"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx120646-CeYcpChKQt0F.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx120646-CeYcpChKQt0F.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 74,
+              "favourites": 2101,
+              "popularity": 114401,
+              "startDate": {
+                "year": 2021,
+                "month": 10,
+                "day": 10
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 127412,
+              "title": {
+                "romaji": "Taishou Otome Otogibanashi",
+                "english": "Taisho Otome Fairy Tale",
+                "native": "\u5927\u6B63\u30AA\u30C8\u30E1\u5FA1\u4F3D\u8A71"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx127412-dpHXV2X9tskV.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx127412-dpHXV2X9tskV.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 76,
+              "favourites": 1424,
+              "popularity": 53978,
+              "startDate": {
+                "year": 2021,
+                "month": 10,
+                "day": 9
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 126213,
+              "title": {
+                "romaji": "Shin no Nakama ja Nai to Yuusha no Party wo Oidasareta node, Henkyou de Slow Life suru Koto ni shimashita",
+                "english": "Banished from the Hero\u2019s Party, I Decided to Live a Quiet Life in the Countryside",
+                "native": "\u771F\u306E\u4EF2\u9593\u3058\u3083\u306A\u3044\u3068\u52C7\u8005\u306E\u30D1\u30FC\u30C6\u30A3\u30FC\u3092\u8FFD\u3044\u51FA\u3055\u308C\u305F\u306E\u3067\u3001\u8FBA\u5883\u3067\u30B9\u30ED\u30FC\u30E9\u30A4\u30D5\u3059\u308B\u3053\u3068\u306B\u3057\u307E\u3057\u305F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx126213-cXF3hsCcOipI.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx126213-cXF3hsCcOipI.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 68,
+              "favourites": 2162,
+              "popularity": 125879,
+              "startDate": {
+                "year": 2021,
+                "month": 10,
+                "day": 6
+              },
+              "mediaListEntry": {
+                "id": 593365569,
+                "status": "PLANNING",
+                "progress": 0,
+                "score": 0
+              }
+            },
+            {
+              "id": 109745,
+              "title": {
+                "romaji": "MUTEKING THE Dancing HERO",
+                "english": "MUTEKING THE Dancing HERO",
+                "native": "MUTEKING THE Dancing HERO"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx109745-W4NnQxYpGJJO.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx109745-W4NnQxYpGJJO.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 56,
+              "favourites": 28,
+              "popularity": 3126,
+              "startDate": {
+                "year": 2021,
+                "month": 10,
+                "day": 3
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 120608,
+              "title": {
+                "romaji": "Meikyuu Black Company",
+                "english": "The Dungeon of Black Company",
+                "native": "\u8FF7\u5BAE\u30D6\u30E9\u30C3\u30AF\u30AB\u30F3\u30D1\u30CB\u30FC"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx120608-gjCnIszBGe9k.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx120608-gjCnIszBGe9k.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 70,
+              "favourites": 1134,
+              "popularity": 75654,
+              "startDate": {
+                "year": 2021,
+                "month": 7,
+                "day": 9
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 128712,
+              "title": {
+                "romaji": "Tantei wa mou, Shindeiru.",
+                "english": "The Detective Is Already Dead",
+                "native": "\u63A2\u5075\u306F\u3082\u3046\u3001\u6B7B\u3093\u3067\u3044\u308B\u3002"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx128712-AlVwHbrugvj6.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx128712-AlVwHbrugvj6.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 61,
+              "favourites": 1872,
+              "popularity": 128861,
+              "startDate": {
+                "year": 2021,
+                "month": 7,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 131150,
+              "title": {
+                "romaji": "SCARLET NEXUS",
+                "english": "Scarlet Nexus",
+                "native": "SCARLET NEXUS"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx131150-YjdcqAvbHfxw.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx131150-YjdcqAvbHfxw.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 53,
+              "favourites": 551,
+              "popularity": 35822,
+              "startDate": {
+                "year": 2021,
+                "month": 7,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 131149,
+              "title": {
+                "romaji": "Higurashi no Naku Koro ni Sotsu",
+                "english": "Higurashi: When They Cry - SOTSU",
+                "native": "\u3072\u3050\u3089\u3057\u306E\u306A\u304F\u9803\u306B\u5352"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx131149-Yx4j5dfb3494.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx131149-Yx4j5dfb3494.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 64,
+              "favourites": 685,
+              "popularity": 38635,
+              "startDate": {
+                "year": 2021,
+                "month": 7,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 125038,
+              "title": {
+                "romaji": "Shadows House",
+                "english": "SHADOWS HOUSE",
+                "native": "\u30B7\u30E3\u30C9\u30FC\u30CF\u30A6\u30B9"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx125038-BCfEvry0QBXW.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx125038-BCfEvry0QBXW.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 77,
+              "favourites": 2515,
+              "popularity": 101615,
+              "startDate": {
+                "year": 2021,
+                "month": 4,
+                "day": 11
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 129814,
+              "title": {
+                "romaji": "BLUE REFLECTION RAY",
+                "english": "Blue Reflection Ray",
+                "native": "BLUE REFLECTION RAY/\u6FAA"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx129814-eXwKMTyCNge7.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx129814-eXwKMTyCNge7.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 53,
+              "favourites": 122,
+              "popularity": 12219,
+              "startDate": {
+                "year": 2021,
+                "month": 4,
+                "day": 10
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 124194,
+              "title": {
+                "romaji": "Fruits Basket: The Final",
+                "english": "Fruits Basket The Final Season",
+                "native": "\u30D5\u30EB\u30FC\u30C4\u30D0\u30B9\u30B1\u30C3\u30C8The Final"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx124194-TJlqMMR7BGn9.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx124194-TJlqMMR7BGn9.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 89,
+              "favourites": 12012,
+              "popularity": 176712,
+              "startDate": {
+                "year": 2021,
+                "month": 4,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 115183,
+              "title": {
+                "romaji": "MARS RED",
+                "english": "MARS RED",
+                "native": "MARS RED"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx115183-jvILP9lWry4s.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx115183-jvILP9lWry4s.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 63,
+              "favourites": 433,
+              "popularity": 44954,
+              "startDate": {
+                "year": 2021,
+                "month": 4,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 116588,
+              "title": {
+                "romaji": "Sentouin, Hakenshimasu!",
+                "english": "Combatants Will Be Dispatched!",
+                "native": "\u6226\u95D8\u54E1\u3001\u6D3E\u9063\u3057\u307E\u3059\uFF01"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx116588-noyscGIN8FIr.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx116588-noyscGIN8FIr.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 68,
+              "favourites": 2010,
+              "popularity": 123855,
+              "startDate": {
+                "year": 2021,
+                "month": 4,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 112376,
+              "title": {
+                "romaji": "Dragon, Ie wo Kau.",
+                "english": "Dragon Goes House-Hunting",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u3001\u5BB6\u3092\u8CB7\u3046\u3002"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx112376-M0TG5XsAmcJQ.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx112376-M0TG5XsAmcJQ.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 59,
+              "favourites": 239,
+              "popularity": 21612,
+              "startDate": {
+                "year": 2021,
+                "month": 4,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 124845,
+              "title": {
+                "romaji": "Wonder Egg Priority",
+                "english": "WONDER EGG PRIORITY",
+                "native": "\u30EF\u30F3\u30C0\u30FC\u30A8\u30C3\u30B0\u30FB\u30D7\u30E9\u30A4\u30AA\u30EA\u30C6\u30A3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx124845-JXORhqCTGt04.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx124845-JXORhqCTGt04.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 74,
+              "favourites": 8124,
+              "popularity": 284770,
+              "startDate": {
+                "year": 2021,
+                "month": 1,
+                "day": 13
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 114862,
+              "title": {
+                "romaji": "Log Horizon: Entaku Houkai",
+                "english": "Log Horizon: Destruction of the Round Table",
+                "native": "\u30ED\u30B0\u30FB\u30DB\u30E9\u30A4\u30BA\u30F3\u3000\u5186\u5353\u5D29\u58CA"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx114862-DTRU67Z1gJ9N.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx114862-DTRU67Z1gJ9N.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 69,
+              "favourites": 851,
+              "popularity": 71433,
+              "startDate": {
+                "year": 2021,
+                "month": 1,
+                "day": 13
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 108511,
+              "title": {
+                "romaji": "Tensei Shitara Slime Datta Ken 2nd Season",
+                "english": "That Time I Got Reincarnated as a Slime Season 2",
+                "native": "\u8EE2\u751F\u3057\u305F\u3089\u30B9\u30E9\u30A4\u30E0\u3060\u3063\u305F\u4EF6 \u7B2C2\u671F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx108511-PufFordLNyIb.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx108511-PufFordLNyIb.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 83,
+              "favourites": 11151,
+              "popularity": 320757,
+              "startDate": {
+                "year": 2021,
+                "month": 1,
+                "day": 12
+              },
+              "mediaListEntry": {
+                "id": 593364350,
+                "status": "COMPLETED",
+                "progress": 12,
+                "score": 9
+              }
+            },
+            {
+              "id": 123785,
+              "title": {
+                "romaji": "Praeter no Kizu",
+                "english": "Scar on the Praeter",
+                "native": "\u30D7\u30EC\u30A4\u30BF\u306E\u50B7"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx123785-ciGZuIesWH7l.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx123785-ciGZuIesWH7l.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 52,
+              "favourites": 108,
+              "popularity": 11378,
+              "startDate": {
+                "year": 2021,
+                "month": 1,
+                "day": 9
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 113476,
+              "title": {
+                "romaji": "SHOW BY ROCK!! STARS!!",
+                "english": "Show by Rock!! Stars!!",
+                "native": "SHOW BY ROCK!!STARS!!"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx113476-X0y7eSl4TAHd.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx113476-X0y7eSl4TAHd.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 71,
+              "favourites": 95,
+              "popularity": 5431,
+              "startDate": {
+                "year": 2021,
+                "month": 1,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 122807,
+              "title": {
+                "romaji": "Taisou Zamurai",
+                "english": "The Gymnastics Samurai",
+                "native": "\u4F53\u64CD\u30B6\u30E0\u30E9\u30A4"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx122807-m8jdQLQRSSUI.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx122807-m8jdQLQRSSUI.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 69,
+              "favourites": 379,
+              "popularity": 23394,
+              "startDate": {
+                "year": 2020,
+                "month": 10,
+                "day": 11
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 112667,
+              "title": {
+                "romaji": "Kimi to Boku no Saigo no Senjo, Arui wa Sekai ga Hajimaru Seisen",
+                "english": "Our Last Crusade or the Rise of a New World",
+                "native": "\u30AD\u30DF\u3068\u50D5\u306E\u6700\u5F8C\u306E\u6226\u5834\u3001\u3042\u308B\u3044\u306F\u4E16\u754C\u304C\u59CB\u307E\u308B\u8056\u6226"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx112667-GYFeAlZ38mXK.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx112667-GYFeAlZ38mXK.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 66,
+              "favourites": 2118,
+              "popularity": 111890,
+              "startDate": {
+                "year": 2020,
+                "month": 10,
+                "day": 7
+              },
+              "mediaListEntry": null
+            }
+          ]
+        }
+      }
+    }
+  }
+}

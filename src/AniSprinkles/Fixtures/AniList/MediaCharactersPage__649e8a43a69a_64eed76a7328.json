@@ -1,0 +1,428 @@
+﻿{
+  "operationName": "MediaCharactersPage",
+  "variables": {
+    "id": 53390,
+    "page": 1,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "64eed76a7328",
+  "recordedAt": "2026-09-06T05:26:27.7495257+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "characters": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 45627,
+                "name": {
+                  "full": "Levi",
+                  "native": "\u30EA\u30F4\u30A1\u30A4",
+                  "userPreferred": "Levi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b45627-CR68RyZmddGG.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b45627-CR68RyZmddGG.png"
+                },
+                "favourites": 43142
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 40882,
+                "name": {
+                  "full": "Eren Yeager",
+                  "native": "\u30A8\u30EC\u30F3\u30FB\u30A4\u30A7\u30FC\u30AC\u30FC",
+                  "userPreferred": "Eren Yeager"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b40882-dsj7IP943WFF.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b40882-dsj7IP943WFF.jpg"
+                },
+                "favourites": 34871
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 40881,
+                "name": {
+                  "full": "Mikasa Ackerman",
+                  "native": "\u30DF\u30AB\u30B5\u30FB\u30A2\u30C3\u30AB\u30FC\u30DE\u30F3",
+                  "userPreferred": "Mikasa Ackerman"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b40881-F3gr1PkreDvj.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b40881-F3gr1PkreDvj.png"
+                },
+                "favourites": 28716
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 46494,
+                "name": {
+                  "full": "Armin Arlert",
+                  "native": "\u30A2\u30EB\u30DF\u30F3\u30FB\u30A2\u30EB\u30EC\u30EB\u30C8",
+                  "userPreferred": "Armin Arlert"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b46494-g7xYYuBtYPnO.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b46494-g7xYYuBtYPnO.png"
+                },
+                "favourites": 16151
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 71121,
+                "name": {
+                  "full": "Hange Zoe",
+                  "native": "\u30CF\u30F3\u30B8\u30FB\u30BE\u30A8",
+                  "userPreferred": "Hange Zoe"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b71121-7R7CnQd3lHgt.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b71121-7R7CnQd3lHgt.png"
+                },
+                "favourites": 15469
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 46496,
+                "name": {
+                  "full": "Erwin Smith",
+                  "native": "\u30A8\u30EB\u30F4\u30A3\u30F3\u30FB\u30B9\u30DF\u30B9",
+                  "userPreferred": "Erwin Smith"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b46496-Mu86MENd5wNB.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b46496-Mu86MENd5wNB.png"
+                },
+                "favourites": 13844
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 125659,
+                "name": {
+                  "full": "Gabi Braun",
+                  "native": "\u30AC\u30D3\u30FB\u30D6\u30E9\u30A6\u30F3",
+                  "userPreferred": "Gabi Braun"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b125659-O37MZQWibV7g.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b125659-O37MZQWibV7g.png"
+                },
+                "favourites": 9795
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 45887,
+                "name": {
+                  "full": "Sasha Blouse",
+                  "native": "\u30B5\u30B7\u30E3\u30FB\u30D6\u30E9\u30A6\u30B9",
+                  "userPreferred": "Sasha Blouse"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b45887-QPtJH0KwqthW.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b45887-QPtJH0KwqthW.jpg"
+                },
+                "favourites": 9274
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 46484,
+                "name": {
+                  "full": "Reiner Braun",
+                  "native": "\u30E9\u30A4\u30CA\u30FC\u30FB\u30D6\u30E9\u30A6\u30F3",
+                  "userPreferred": "Reiner Braun"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b46484-P6A2GjNQn49F.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b46484-P6A2GjNQn49F.png"
+                },
+                "favourites": 8343
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 46498,
+                "name": {
+                  "full": "Jean Kirstein",
+                  "native": "\u30B8\u30E3\u30F3\u30FB\u30AD\u30EB\u30B7\u30E5\u30BF\u30A4\u30F3",
+                  "userPreferred": "Jean Kirstein"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b46498-ritqAj9FW6jX.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b46498-ritqAj9FW6jX.png"
+                },
+                "favourites": 7292
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 46490,
+                "name": {
+                  "full": "Annie Leonhart",
+                  "native": "\u30A2\u30CB\u30FB\u30EC\u30AA\u30F3\u30CF\u30FC\u30C8",
+                  "userPreferred": "Annie Leonhart"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b46490-tan274Ifc1Jf.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b46490-tan274Ifc1Jf.jpg"
+                },
+                "favourites": 5431
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 62481,
+                "name": {
+                  "full": "Krista Lenz",
+                  "native": "\u30AF\u30EA\u30B9\u30BF\u30FB\u30EC\u30F3\u30BA",
+                  "userPreferred": "Krista Lenz"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b62481-ZZDa7vn17lMU.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b62481-ZZDa7vn17lMU.png"
+                },
+                "favourites": 4218
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 71479,
+                "name": {
+                  "full": "Ymir",
+                  "native": "\u30E6\u30DF\u30EB",
+                  "userPreferred": "Ymir"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b71479-huCD908XIdqv.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b71479-huCD908XIdqv.png"
+                },
+                "favourites": 3773
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 125661,
+                "name": {
+                  "full": "Zeke",
+                  "native": "\u30B8\u30FC\u30AF",
+                  "userPreferred": "Zeke"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b125661-FiqFvAtNlL0v.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b125661-FiqFvAtNlL0v.png"
+                },
+                "favourites": 3755
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 125603,
+                "name": {
+                  "full": "Pieck Finger",
+                  "native": "\u30D4\u30FC\u30AF\u30FB\u30D5\u30A3\u30F3\u30AC\u30FC",
+                  "userPreferred": "Pieck Finger"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b125603-Z2rgiHUGbAmY.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b125603-Z2rgiHUGbAmY.png"
+                },
+                "favourites": 3690
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 46486,
+                "name": {
+                  "full": "Connie Springer",
+                  "native": "\u30B3\u30CB\u30FC\u30FB\u30B9\u30D7\u30EA\u30F3\u30AC\u30FC",
+                  "userPreferred": "Connie Springer"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/n46486-izhPjzut6WCZ.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/n46486-izhPjzut6WCZ.png"
+                },
+                "favourites": 2806
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 125660,
+                "name": {
+                  "full": "Falco Grice",
+                  "native": "\u30D5\u30A1\u30EB\u30B3\u30FB\u30B0\u30E9\u30A4\u30B9",
+                  "userPreferred": "Falco Grice"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b125660-mrmpOJLjJIkv.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b125660-mrmpOJLjJIkv.jpg"
+                },
+                "favourites": 1304
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 133216,
+                "name": {
+                  "full": "Yelena",
+                  "native": "\u30A4\u30A7\u30EC\u30CA",
+                  "userPreferred": "Yelena"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b133216-HKl61n4F7eYv.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b133216-HKl61n4F7eYv.png"
+                },
+                "favourites": 1084
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 46488,
+                "name": {
+                  "full": "Bertolt Hoover",
+                  "native": "\u30D9\u30EB\u30C8\u30EB\u30C8\u30FB\u30D5\u30FC\u30D0\u30FC",
+                  "userPreferred": "Bertolt Hoover"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b46488-wm6HvkdkHoZu.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b46488-wm6HvkdkHoZu.jpg"
+                },
+                "favourites": 913
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 127703,
+                "name": {
+                  "full": "Floch Forster",
+                  "native": "\u30D5\u30ED\u30C3\u30AF\u30FB\u30D5\u30A9\u30EB\u30B9\u30BF\u30FC",
+                  "userPreferred": "Floch Forster"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b127703-qNIccR0yPZKu.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b127703-qNIccR0yPZKu.png"
+                },
+                "favourites": 827
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 127443,
+                "name": {
+                  "full": "Kenny Ackerman",
+                  "native": "\u30B1\u30CB\u30FC\u30FB\u30A2\u30C3\u30AB\u30FC\u30DE\u30F3",
+                  "userPreferred": "Kenny Ackerman"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/127443-aVMXGOchpsvj.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/127443-aVMXGOchpsvj.png"
+                },
+                "favourites": 724
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 62485,
+                "name": {
+                  "full": "Dot Pixis",
+                  "native": "\u30C9\u30C3\u30C8\u30FB\u30D4\u30AF\u30B7\u30B9",
+                  "userPreferred": "Dot Pixis"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b62485-I0U5Cat3z65K.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b62485-I0U5Cat3z65K.png"
+                },
+                "favourites": 707
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 62501,
+                "name": {
+                  "full": "Petra Ral",
+                  "native": "\u30DA\u30C8\u30E9\u30FB\u30E9\u30EB",
+                  "userPreferred": "Petra Ral"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/n62501-CfTtAAgs64nE.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/n62501-CfTtAAgs64nE.jpg"
+                },
+                "favourites": 689
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 62477,
+                "name": {
+                  "full": "Grisha Yeager",
+                  "native": "\u30B0\u30EA\u30B7\u30E3\u30FB\u30A4\u30A7\u30FC\u30AC\u30FC",
+                  "userPreferred": "Grisha Yeager"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b62477-3AHBGul9bXK8.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b62477-3AHBGul9bXK8.jpg"
+                },
+                "favourites": 638
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 86017,
+                "name": {
+                  "full": "Hitch Dreyse",
+                  "native": "\u30D2\u30C3\u30C1\u30FB\u30C9\u30EA\u30B9",
+                  "userPreferred": "Hitch Dreyse"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b86017-m6vXFRKWMwUo.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b86017-m6vXFRKWMwUo.jpg"
+                },
+                "favourites": 631
+              },
+              "role": "SUPPORTING"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

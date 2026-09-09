@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 30013,
+    "page": 1,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-06T05:26:53.7901289+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 96881,
+                "name": {
+                  "full": "Eiichirou Oda",
+                  "native": "\u5C3E\u7530\u6804\u4E00\u90CE",
+                  "userPreferred": "Eiichirou Oda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n96881-Cyv6wFJxpDw7.png"
+                },
+                "favourites": 13111
+              },
+              "role": "Story \u0026 Art"
+            },
+            {
+              "node": {
+                "id": 124016,
+                "name": {
+                  "full": "Masaoki Shindou",
+                  "native": "\u771E\u85E4\u96C5\u8208",
+                  "userPreferred": "Masaoki Shindou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n124016-uSBcOirNIkZI.jpg"
+                },
+                "favourites": 144
+              },
+              "role": "Assistant (Former)"
+            },
+            {
+              "node": {
+                "id": 220675,
+                "name": {
+                  "full": "Drik Sada",
+                  "native": null,
+                  "userPreferred": "Drik Sada"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n220675-UiZ1LedAUzTi.png"
+                },
+                "favourites": 46
+              },
+              "role": "Translator (Portuguese: vols 1-46)"
+            },
+            {
+              "node": {
+                "id": 107002,
+                "name": {
+                  "full": "Yuusaku Shibata",
+                  "native": "\u829D\u7530\u512A\u4F5C  ",
+                  "userPreferred": "Yuusaku Shibata"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n107002-freRtXTd6Net.jpg"
+                },
+                "favourites": 38
+              },
+              "role": "Assistant (former)"
+            },
+            {
+              "node": {
+                "id": 219478,
+                "name": {
+                  "full": "Pawe\u0142 Dyba\u0142a",
+                  "native": null,
+                  "userPreferred": "Pawe\u0142 Dyba\u0142a"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n219478-jHAPka9Ld6Nu.jpg"
+                },
+                "favourites": 33
+              },
+              "role": "Translator (Polish)"
+            },
+            {
+              "node": {
+                "id": 121139,
+                "name": {
+                  "full": "Tsunehiro Date",
+                  "native": "\u4F0A\u9054\u6052\u5927",
+                  "userPreferred": "Tsunehiro Date"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n121139-rpC97N0TJ3nA.png"
+                },
+                "favourites": 26
+              },
+              "role": "Assistant (former)"
+            },
+            {
+              "node": {
+                "id": 121264,
+                "name": {
+                  "full": "Takamasa Moue",
+                  "native": "\u99AC\u4E0A\u9DF9\u5C06",
+                  "userPreferred": "Takamasa Moue"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n121264-cacjsqWN1rvQ.png"
+                },
+                "favourites": 22
+              },
+              "role": "Assistant (former)"
+            },
+            {
+              "node": {
+                "id": 218470,
+                "name": {
+                  "full": "Stephen Paul",
+                  "native": null,
+                  "userPreferred": "Stephen Paul"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n218470-p5ZllMLM1L6d.jpg"
+                },
+                "favourites": 22
+              },
+              "role": "Translator (English)"
+            },
+            {
+              "node": {
+                "id": 120849,
+                "name": {
+                  "full": "Ryou Ishiyama",
+                  "native": "\u77F3\u5C71\u8AD2",
+                  "userPreferred": "Ryou Ishiyama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n120849-JKYRcOm4Xi98.jpg"
+                },
+                "favourites": 15
+              },
+              "role": "Assistant (Former)"
+            },
+            {
+              "node": {
+                "id": 256452,
+                "name": {
+                  "full": "Shouichi Usui",
+                  "native": "\u81FC\u4E95\u5F70\u4E00",
+                  "userPreferred": "Shouichi Usui"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n256452-arEFvbwX7xhu.png"
+                },
+                "favourites": 11
+              },
+              "role": "Assistant (Former)"
+            },
+            {
+              "node": {
+                "id": 103532,
+                "name": {
+                  "full": "Katsunori Matsui",
+                  "native": "\u677E\u4E95\u52DD\u6CD5",
+                  "userPreferred": "Katsunori Matsui"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n103532-j6fEB34VV6hA.png"
+                },
+                "favourites": 8
+              },
+              "role": "Assistant (former)"
+            },
+            {
+              "node": {
+                "id": 220710,
+                "name": {
+                  "full": "Felipe Monte",
+                  "native": null,
+                  "userPreferred": "Felipe Monte"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n220710-5T0XmGNeS5xq.png"
+                },
+                "favourites": 8
+              },
+              "role": "Translator (Portuguese: vol 47-)"
+            },
+            {
+              "node": {
+                "id": 141200,
+                "name": {
+                  "full": "Daiki Ihara",
+                  "native": "\u4F0A\u539F\u5927\u8CB4",
+                  "userPreferred": "Daiki Ihara"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n141200-i0Hpe2SHsepa.jpg"
+                },
+                "favourites": 5
+              },
+              "role": "Assistant (former)"
+            },
+            {
+              "node": {
+                "id": 108255,
+                "name": {
+                  "full": "Haruto Ikezawa",
+                  "native": "\u6C60\u6CA2\u6625\u4EBA",
+                  "userPreferred": "Haruto Ikezawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 4
+              },
+              "role": "Assistant (Former)"
+            },
+            {
+              "node": {
+                "id": 140342,
+                "name": {
+                  "full": "Midori Matsuda",
+                  "native": "\u677E\u7530\u7FE0",
+                  "userPreferred": "Midori Matsuda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n140342-yNdTfT8oXTmF.jpg"
+                },
+                "favourites": 4
+              },
+              "role": "Illustration (ch 1145)"
+            },
+            {
+              "node": {
+                "id": 225598,
+                "name": {
+                  "full": "Antje Bockel",
+                  "native": null,
+                  "userPreferred": "Antje Bockel"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n225598-mSEXZ0ZAAksU.jpg"
+                },
+                "favourites": 3
+              },
+              "role": "Translator (German: vols 50-)"
+            },
+            {
+              "node": {
+                "id": 280653,
+                "name": {
+                  "full": "Takanori Asada",
+                  "native": "\u6D45\u7530\u8CB4\u5178",
+                  "userPreferred": "Takanori Asada"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n280653-COi1hMliL0UA.jpg"
+                },
+                "favourites": 3
+              },
+              "role": "Editing (1996-2001)"
+            },
+            {
+              "node": {
+                "id": 203390,
+                "name": {
+                  "full": "Taku Sugita",
+                  "native": "\u6749\u7530\u5353",
+                  "userPreferred": "Taku Sugita"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "Editing (2014-2017)"
+            },
+            {
+              "node": {
+                "id": 230252,
+                "name": {
+                  "full": "Ayako Koike",
+                  "native": null,
+                  "userPreferred": "Ayako Koike"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n230252-PPpvl2apQ3k6.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "Translator (Spanish: vols 42- )"
+            },
+            {
+              "node": {
+                "id": 230714,
+                "name": {
+                  "full": "Agust\u00EDn Gomez Sanz",
+                  "native": null,
+                  "userPreferred": "Agust\u00EDn Gomez Sanz"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n230714-qX54SYOcQqHh.png"
+                },
+                "favourites": 2
+              },
+              "role": "Translator (Spanish, Editorial Ivr\u00E9a)"
+            },
+            {
+              "node": {
+                "id": 281587,
+                "name": {
+                  "full": "Magnus Johansson",
+                  "native": null,
+                  "userPreferred": "Magnus Johansson"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "Translator (Swedish, vols 55\u201365)"
+            },
+            {
+              "node": {
+                "id": 98535,
+                "name": {
+                  "full": "Shinya Suzuki",
+                  "native": "\u9234\u6728\u4FE1\u4E5F",
+                  "userPreferred": "Shinya Suzuki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n98535-5GVAxMRoAqXe.png"
+                },
+                "favourites": 1
+              },
+              "role": "Assistant (Former)"
+            },
+            {
+              "node": {
+                "id": 126173,
+                "name": {
+                  "full": "Ei Andou",
+                  "native": "\u5B89\u85E4\u82F1",
+                  "userPreferred": "Ei Andou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Assistant (former)"
+            },
+            {
+              "node": {
+                "id": 137228,
+                "name": {
+                  "full": "Yoshikazu Amami",
+                  "native": "\u5929\u671B\u826F\u4E00",
+                  "userPreferred": "Yoshikazu Amami"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n137228-lZJ58jxwY2fp.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Assistant (former)"
+            },
+            {
+              "node": {
+                "id": 215014,
+                "name": {
+                  "full": "Terje Nordberg",
+                  "native": null,
+                  "userPreferred": "Terje Nordberg"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n215014-rYrMIHwsESjg.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Translator (Norwegian: vols 1-45)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

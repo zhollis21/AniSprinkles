@@ -1,0 +1,186 @@
+﻿{
+  "operationName": "MediaRecommendationsPage",
+  "variables": {
+    "id": 182255,
+    "page": 2,
+    "sort": [
+      "RATING_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "4c3bbb02d06d",
+  "recordedAt": "2026-09-06T05:19:18.3570707+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "recommendations": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 2
+          },
+          "nodes": [
+            {
+              "rating": 1,
+              "mediaRecommendation": {
+                "id": 146065,
+                "title": {
+                  "romaji": "Mushoku Tensei II: Isekai Ittara Honki Dasu",
+                  "english": "Mushoku Tensei: Jobless Reincarnation Season 2",
+                  "native": "\u7121\u8077\u8EE2\u751F\u2161 \uFF5E\u7570\u4E16\u754C\u884C\u3063\u305F\u3089\u672C\u6C17\u3060\u3059\uFF5E"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx146065-IjirxRK26O03.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx146065-IjirxRK26O03.png"
+                },
+                "averageScore": 81,
+                "mediaListEntry": {
+                  "id": 593234680,
+                  "status": "COMPLETED",
+                  "progress": 13,
+                  "score": 10
+                }
+              }
+            },
+            {
+              "rating": 1,
+              "mediaRecommendation": {
+                "id": 1818,
+                "title": {
+                  "romaji": "CLAYMORE",
+                  "english": "Claymore",
+                  "native": "CLAYMORE"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1818-KieLJv0qo3mO.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1818-KieLJv0qo3mO.jpg"
+                },
+                "averageScore": 74,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 1,
+              "mediaRecommendation": {
+                "id": 113717,
+                "title": {
+                  "romaji": "Ousama Ranking",
+                  "english": "Ranking of Kings",
+                  "native": "\u738B\u69D8\u30E9\u30F3\u30AD\u30F3\u30B0"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx113717-9sNnN8WRgK15.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx113717-9sNnN8WRgK15.jpg"
+                },
+                "averageScore": 83,
+                "mediaListEntry": {
+                  "id": 593364435,
+                  "status": "COMPLETED",
+                  "progress": 23,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 1,
+              "mediaRecommendation": {
+                "id": 186333,
+                "title": {
+                  "romaji": "Majutsushi Kunon wa Mieteiru",
+                  "english": "Kunon the Sorcerer Can See",
+                  "native": "\u9B54\u8853\u5E2B\u30AF\u30CE\u30F3\u306F\u898B\u3048\u3066\u3044\u308B"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx186333-32qDHxLkndpg.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx186333-32qDHxLkndpg.png"
+                },
+                "averageScore": 65,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 0,
+              "mediaRecommendation": {
+                "id": 21355,
+                "title": {
+                  "romaji": "Re:Zero kara Hajimeru Isekai Seikatsu",
+                  "english": "Re:ZERO -Starting Life in Another World-",
+                  "native": "Re:\u30BC\u30ED\u304B\u3089\u59CB\u3081\u308B\u7570\u4E16\u754C\u751F\u6D3B"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21355-wRVUrGxpvIQQ.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21355-wRVUrGxpvIQQ.jpg"
+                },
+                "averageScore": 81,
+                "mediaListEntry": {
+                  "id": 593363865,
+                  "status": "COMPLETED",
+                  "progress": 25,
+                  "score": 10
+                }
+              }
+            },
+            {
+              "rating": -1,
+              "mediaRecommendation": {
+                "id": 174576,
+                "title": {
+                  "romaji": "Tsue to Tsurugi no Wistoria",
+                  "english": "Wistoria: Wand and Sword",
+                  "native": "\u6756\u3068\u5263\u306E\u30A6\u30A3\u30B9\u30C8\u30EA\u30A2"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx174576-tpKcHG0eO6CS.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx174576-tpKcHG0eO6CS.jpg"
+                },
+                "averageScore": 79,
+                "mediaListEntry": {
+                  "id": 593364901,
+                  "status": "COMPLETED",
+                  "progress": 12,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": -2,
+              "mediaRecommendation": {
+                "id": 20789,
+                "title": {
+                  "romaji": "Nanatsu no Taizai",
+                  "english": "The Seven Deadly Sins",
+                  "native": "\u4E03\u3064\u306E\u5927\u7F6A"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20789-Ma5ouSYPkru9.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20789-Ma5ouSYPkru9.jpg"
+                },
+                "averageScore": 73,
+                "mediaListEntry": {
+                  "id": 593365064,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "score": 0
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,633 @@
+﻿{
+  "operationName": "StudioMediaPage",
+  "variables": {
+    "id": 102,
+    "page": 2,
+    "sort": [
+      "TITLE_ROMAJI",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "02c0137b2ee8",
+  "recordedAt": "2026-09-09T16:01:27.2934727+00:00",
+  "response": {
+    "data": {
+      "Studio": {
+        "media": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 2
+          },
+          "nodes": [
+            {
+              "id": 3901,
+              "title": {
+                "romaji": "Baccano! Bangai-hen",
+                "english": null,
+                "native": "\u30D0\u30C3\u30AB\u30FC\u30CE! \u756A\u5916\u7DE8"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx3901-uUj3GeGsebmj.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx3901-uUj3GeGsebmj.png"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 199,
+              "popularity": 38464,
+              "startDate": {
+                "year": 2008,
+                "month": 2,
+                "day": 27
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 6347,
+              "title": {
+                "romaji": "Baka to Test to Shoukanjuu",
+                "english": "Baka and Test - Summon the Beasts",
+                "native": "\u30D0\u30AB\u3068\u30C6\u30B9\u30C8\u3068\u53EC\u559A\u7363"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx6347-DCSHLkCY7UT3.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx6347-DCSHLkCY7UT3.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 71,
+              "favourites": 1907,
+              "popularity": 118651,
+              "startDate": {
+                "year": 2010,
+                "month": 1,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 8516,
+              "title": {
+                "romaji": "Baka to Test to Shoukanjuu Ni!",
+                "english": "Baka and Test - Summon the Beasts 2",
+                "native": "\u30D0\u30AB\u3068\u30C6\u30B9\u30C8\u3068\u53EC\u559A\u7363 \u306B\u3063\uFF01"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx8516-uAw5qWkceccn.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx8516-uAw5qWkceccn.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 74,
+              "favourites": 664,
+              "popularity": 65355,
+              "startDate": {
+                "year": 2011,
+                "month": 7,
+                "day": 8
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 7870,
+              "title": {
+                "romaji": "Baka to Test to Shoukanjuu Specials",
+                "english": "Baka and Test - Summon the Beasts Specials",
+                "native": "\u672A\u516C\u958B\u6620\u50CF (\u5236\u4F5C: \u30E0\u30C3\u30C4\u30EA\u5546\u4F1A)"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/7870.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/7870.jpg"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 68,
+              "favourites": 43,
+              "popularity": 10401,
+              "startDate": {
+                "year": 2010,
+                "month": 4,
+                "day": 23
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 9471,
+              "title": {
+                "romaji": "Baka to Test to Shoukanjuu: Matsuri",
+                "english": "Baka and Test - Summon the Beasts: Matsuri",
+                "native": "\u30D0\u30AB\u3068\u30C6\u30B9\u30C8\u3068\u53EC\u559A\u7363 \uFF5E\u796D\uFF5E"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b9471-9OD9AGXNbdmq.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b9471-9OD9AGXNbdmq.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 72,
+              "favourites": 170,
+              "popularity": 28143,
+              "startDate": {
+                "year": 2011,
+                "month": 2,
+                "day": 23
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 7805,
+              "title": {
+                "romaji": "Baka to Test to Shoukanjuu: Mondai - Christmas ni Tsuite Kotae Nasai",
+                "english": "Baka and Test - Summon the Beasts: Christmas Special",
+                "native": "\u30D0\u30AB\u3068\u30C6\u30B9\u30C8\u3068\u53EC\u559A\u7363 \u554F\u984C \u30AF\u30EA\u30B9\u30DE\u30B9\u306B\u3064\u3044\u3066\u7B54\u3048\u306A\u3055\u3044"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/7805.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/7805.jpg"
+              },
+              "format": "ONA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 62,
+              "favourites": 28,
+              "popularity": 8663,
+              "startDate": {
+                "year": 2009,
+                "month": 12,
+                "day": 16
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 109,
+              "title": {
+                "romaji": "Bakuretsu Tenshi",
+                "english": "Burst Angel",
+                "native": "\u7206\u88C2\u5929\u4F7F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx109-WfAppfDHUpBf.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx109-WfAppfDHUpBf.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 63,
+              "favourites": 121,
+              "popularity": 13151,
+              "startDate": {
+                "year": 2004,
+                "month": 5,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2205,
+              "title": {
+                "romaji": "Bakuretsu Tenshi: Infinity",
+                "english": "Burst Angel: Infinity",
+                "native": "\u7206\u88C2\u5929\u4F7F -\u30A4\u30F3\u30D5\u30A3\u30CB\u30C6\u30A3-"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx2205-PaNctk3dsM0H.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2205-PaNctk3dsM0H.png"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 61,
+              "favourites": 24,
+              "popularity": 3022,
+              "startDate": {
+                "year": 2007,
+                "month": 3,
+                "day": 23
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2212,
+              "title": {
+                "romaji": "Bakuretsu Tenshi: Infinity Specials",
+                "english": null,
+                "native": "\u7206\u88C2\u5929\u4F7F -Infinity-"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b2212-xBTWKbIeXrf7.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b2212-xBTWKbIeXrf7.jpg"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 57,
+              "favourites": 6,
+              "popularity": 927,
+              "startDate": {
+                "year": 2007,
+                "month": 3,
+                "day": 23
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1682,
+              "title": {
+                "romaji": "Baldr Force Exe Resolution",
+                "english": "Baldr Force EXE",
+                "native": "\u30D0\u30EB\u30C9\u30D5\u30A9\u30FC\u30B9\u3000\u30A8\u30B0\u30BC\u3000\u30EC\u30BD\u30EA\u30E5\u30FC\u30B7\u30E7\u30F3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1682-c2oyUlYIWiqz.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1682-c2oyUlYIWiqz.png"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 57,
+              "favourites": 19,
+              "popularity": 3865,
+              "startDate": {
+                "year": 2006,
+                "month": 11,
+                "day": 10
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2986,
+              "title": {
+                "romaji": "Bamboo Blade",
+                "english": null,
+                "native": "\u30D0\u30F3\u30D6\u30FC\u30D6\u30EC\u30FC\u30C9"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx2986-WroNLF4WEnRo.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2986-WroNLF4WEnRo.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 69,
+              "favourites": 145,
+              "popularity": 18052,
+              "startDate": {
+                "year": 2007,
+                "month": 10,
+                "day": 2
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 67,
+              "title": {
+                "romaji": "Basilisk: Kouga Ninpouchou",
+                "english": "Basilisk",
+                "native": "\u30D0\u30B8\u30EA\u30B9\u30AF \u7532\u8CC0\u5FCD\u6CD5\u5E16"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx67-aBz3s2hBTtdH.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx67-aBz3s2hBTtdH.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 71,
+              "favourites": 493,
+              "popularity": 33922,
+              "startDate": {
+                "year": 2005,
+                "month": 4,
+                "day": 13
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 57,
+              "title": {
+                "romaji": "BECK",
+                "english": "Beck: Mongolian Chop Squad",
+                "native": "BECK"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx57-4wTOlaVSgKoy.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx57-4wTOlaVSgKoy.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 80,
+              "favourites": 3052,
+              "popularity": 82818,
+              "startDate": {
+                "year": 2004,
+                "month": 10,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 107876,
+              "title": {
+                "romaji": "BEM",
+                "english": "BEM",
+                "native": "BEM"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx107876-dzJ7Cur0Xzka.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx107876-dzJ7Cur0Xzka.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 56,
+              "favourites": 158,
+              "popularity": 22108,
+              "startDate": {
+                "year": 2019,
+                "month": 7,
+                "day": 15
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 10396,
+              "title": {
+                "romaji": "Ben-To",
+                "english": "Ben-To",
+                "native": "\u30D9\u30F3\u30FB\u30C8\u30FC"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/10396.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/10396.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 68,
+              "favourites": 810,
+              "popularity": 70850,
+              "startDate": {
+                "year": 2011,
+                "month": 10,
+                "day": 9
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 21192,
+              "title": {
+                "romaji": "BIKINI WARRIORS",
+                "english": "Bikini Warriors",
+                "native": "\u30D3\u30AD\u30CB\u30FB\u30A6\u30A9\u30EA\u30A2\u30FC\u30BA"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21192-ruq1rScmb9fv.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21192-ruq1rScmb9fv.jpg"
+              },
+              "format": "TV_SHORT",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 46,
+              "favourites": 228,
+              "popularity": 25416,
+              "startDate": {
+                "year": 2015,
+                "month": 7,
+                "day": 8
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 13535,
+              "title": {
+                "romaji": "Binbougami ga!",
+                "english": "Good Luck Girl!",
+                "native": "\u8CA7\u4E4F\u795E\u304C!"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx13535-3TFMnKs0CDls.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx13535-3TFMnKs0CDls.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 74,
+              "favourites": 617,
+              "popularity": 52044,
+              "startDate": {
+                "year": 2012,
+                "month": 7,
+                "day": 5
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1498,
+              "title": {
+                "romaji": "BLACK BLOOD BROTHERS",
+                "english": "Black Blood Brothers",
+                "native": "BLACK BLOOD BROTHERS"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1498-Un9KTrfUKkVj.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1498-Un9KTrfUKkVj.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 66,
+              "favourites": 98,
+              "popularity": 13214,
+              "startDate": {
+                "year": 2006,
+                "month": 9,
+                "day": 8
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 68,
+              "title": {
+                "romaji": "Black Cat",
+                "english": "Black Cat",
+                "native": "\u30D6\u30E9\u30C3\u30AF\u30AD\u30E3\u30C3\u30C8"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx68-BY1vMbDYz977.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx68-BY1vMbDYz977.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 70,
+              "favourites": 595,
+              "popularity": 42813,
+              "startDate": {
+                "year": 2005,
+                "month": 10,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 97940,
+              "title": {
+                "romaji": "Black Clover",
+                "english": "Black Clover",
+                "native": "\u30D6\u30E9\u30C3\u30AF\u30AF\u30ED\u30FC\u30D0\u30FC"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx97940-fyh8o7gNbha0.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx97940-fyh8o7gNbha0.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 79,
+              "favourites": 33131,
+              "popularity": 582363,
+              "startDate": {
+                "year": 2017,
+                "month": 10,
+                "day": 3
+              },
+              "mediaListEntry": {
+                "id": 593364452,
+                "status": "COMPLETED",
+                "progress": 170,
+                "score": 8
+              }
+            },
+            {
+              "id": 106223,
+              "title": {
+                "romaji": "Black Clover: All Mahou Kishi Kanshasai",
+                "english": "Black Clover: The All Magic Knights Thanksgiving Festa",
+                "native": "\u30D6\u30E9\u30C3\u30AF\u30AF\u30ED\u30FC\u30D0\u30FC \u30AA\u30FC\u30EB\u9B54\u6CD5\u9A0E\u58EB\u611F\u8B1D\u796D"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx106223-TfmLcrFbAPK7.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx106223-TfmLcrFbAPK7.jpg"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 62,
+              "favourites": 80,
+              "popularity": 10857,
+              "startDate": {
+                "year": 2018,
+                "month": 11,
+                "day": 25
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 889,
+              "title": {
+                "romaji": "BLACK LAGOON",
+                "english": "Black Lagoon",
+                "native": "BLACK LAGOON"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx889-4S7N2ciq2cwA.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx889-4S7N2ciq2cwA.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 9421,
+              "popularity": 251630,
+              "startDate": {
+                "year": 2006,
+                "month": 4,
+                "day": 9
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 4901,
+              "title": {
+                "romaji": "BLACK LAGOON: Roberta\u0027s Blood Trail",
+                "english": "Black Lagoon: Roberta\u0027s Blood Trail",
+                "native": "BLACK LAGOON Roberta\u0027s Blood Trail"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx4901-evMxxc1A8pCF.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx4901-evMxxc1A8pCF.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 79,
+              "favourites": 1324,
+              "popularity": 66462,
+              "startDate": {
+                "year": 2010,
+                "month": 6,
+                "day": 27
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1519,
+              "title": {
+                "romaji": "BLACK LAGOON: The Second Barrage",
+                "english": "Black Lagoon: The Second Barrage",
+                "native": "BLACK LAGOON The Second Barrage"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1519-cScqJxQW3LNL.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1519-cScqJxQW3LNL.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 80,
+              "favourites": 2341,
+              "popularity": 106219,
+              "startDate": {
+                "year": 2006,
+                "month": 10,
+                "day": 3
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 11285,
+              "title": {
+                "romaji": "Black\u2605Rock Shooter (TV)",
+                "english": "Black Rock Shooter",
+                "native": "\u30D6\u30E9\u30C3\u30AF\u2605\u30ED\u30C3\u30AF\u30B7\u30E5\u30FC\u30BF\u30FC (TV)"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx11285-uO6GgQUjikbf.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx11285-uO6GgQUjikbf.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 63,
+              "favourites": 1057,
+              "popularity": 68896,
+              "startDate": {
+                "year": 2012,
+                "month": 2,
+                "day": 3
+              },
+              "mediaListEntry": null
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,628 @@
+﻿{
+  "operationName": "StudioMediaPage",
+  "variables": {
+    "id": 18,
+    "page": 3,
+    "sort": [
+      "START_DATE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "02c0137b2ee8",
+  "recordedAt": "2026-09-09T16:00:20.0259147+00:00",
+  "response": {
+    "data": {
+      "Studio": {
+        "media": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 3
+          },
+          "nodes": [
+            {
+              "id": 179727,
+              "title": {
+                "romaji": "Chuuchuu Banban",
+                "english": null,
+                "native": "\u30C1\u30E5\u30A6\u30C1\u30E5\u30A6\u30D0\u30F3\u30D0\u30F3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b179727-yevt2fyTUgzr.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b179727-yevt2fyTUgzr.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": null,
+              "favourites": 0,
+              "popularity": 48,
+              "startDate": {
+                "year": 1970,
+                "month": 3,
+                "day": 17
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 9172,
+              "title": {
+                "romaji": "Kaitei Sanman Mile",
+                "english": null,
+                "native": "\u6D77\u5E953\u4E07\u30DE\u30A4\u30EB"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/9172.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/9172.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 54,
+              "favourites": 5,
+              "popularity": 710,
+              "startDate": {
+                "year": 1970,
+                "month": 7,
+                "day": 19
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 3870,
+              "title": {
+                "romaji": "Kick no Oni",
+                "english": "Demon of the Kick",
+                "native": "\u30AD\u30C3\u30AF\u306E\u9B3C"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b3870-KHOm8NbnchKI.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b3870-KHOm8NbnchKI.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 44,
+              "favourites": 4,
+              "popularity": 523,
+              "startDate": {
+                "year": 1970,
+                "month": 10,
+                "day": 2
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 4113,
+              "title": {
+                "romaji": "Mahou no Mako-chan",
+                "english": null,
+                "native": "\u9B54\u6CD5\u306E\u30DE\u30B3\u3061\u3083\u3093"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b4113-NSBUUxTahMYk.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b4113-NSBUUxTahMYk.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 62,
+              "favourites": 16,
+              "popularity": 994,
+              "startDate": {
+                "year": 1970,
+                "month": 11,
+                "day": 2
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 3842,
+              "title": {
+                "romaji": "Doubutsu Takarajima",
+                "english": "Animal Treasure Island",
+                "native": "\u3069\u3046\u3076\u3064\u5B9D\u5CF6"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx3842-ZyFg07J2Jdb8.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx3842-ZyFg07J2Jdb8.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 61,
+              "favourites": 14,
+              "popularity": 1497,
+              "startDate": {
+                "year": 1971,
+                "month": 3,
+                "day": 20
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 3843,
+              "title": {
+                "romaji": "Ali Baba to 40-hiki no Touzoku",
+                "english": "Ali Baba and the Forty Thieves",
+                "native": "\u30A2\u30EA\u30D0\u30D0\u3068\uFF14\uFF10\u5339\u306E\u76D7\u8CCA"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/3843.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/3843.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 52,
+              "favourites": 3,
+              "popularity": 758,
+              "startDate": {
+                "year": 1971,
+                "month": 7,
+                "day": 8
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 6311,
+              "title": {
+                "romaji": "Sarutobi Ecchan",
+                "english": "Sarutobi Ecchan",
+                "native": "\u3055\u308B\u3068\u3073\u30A8\u30C3\u3061\u3083\u3093"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b6311-nNaboHQrPhS9.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b6311-nNaboHQrPhS9.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 62,
+              "favourites": 13,
+              "popularity": 608,
+              "startDate": {
+                "year": 1971,
+                "month": 10,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 3844,
+              "title": {
+                "romaji": "Apache Yakyuugun",
+                "english": "Apache Baseball Team",
+                "native": "\u30A2\u30D1\u30C3\u30C1\u91CE\u7403\u8ECD"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b3844-pKT3KKJJ71xj.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b3844-pKT3KKJJ71xj.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 57,
+              "favourites": 10,
+              "popularity": 606,
+              "startDate": {
+                "year": 1971,
+                "month": 10,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 6971,
+              "title": {
+                "romaji": "Gegege no Kitarou (1971)",
+                "english": null,
+                "native": "\u30B2\u30B2\u30B2\u306E\u9B3C\u592A\u90CE"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/6971.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/6971.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 63,
+              "favourites": 13,
+              "popularity": 1132,
+              "startDate": {
+                "year": 1971,
+                "month": 10,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1537,
+              "title": {
+                "romaji": "Genshi Shounen Ryuu",
+                "english": "Ryu the Primitive Boy",
+                "native": "\u539F\u59CB\u5C11\u5E74\u30EA\u30E5\u30A6"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/1537.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/1537.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 58,
+              "favourites": 21,
+              "popularity": 1206,
+              "startDate": {
+                "year": 1971,
+                "month": 10,
+                "day": 30
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 5006,
+              "title": {
+                "romaji": "Nagagutsu Sanjuushi",
+                "english": null,
+                "native": "\u306A\u304C\u3050\u3064\u4E09\u9283\u58EB"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/5006.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/5006.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 62,
+              "favourites": 7,
+              "popularity": 778,
+              "startDate": {
+                "year": 1972,
+                "month": 3,
+                "day": 18
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 3845,
+              "title": {
+                "romaji": "Mahou Tsukai Chappy",
+                "english": null,
+                "native": "\u9B54\u6CD5\u4F7F\u3044\u30C1\u30E3\u30C3\u30D4\u30FC"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/3845.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/3845.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 61,
+              "favourites": 11,
+              "popularity": 606,
+              "startDate": {
+                "year": 1972,
+                "month": 4,
+                "day": 3
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2252,
+              "title": {
+                "romaji": "Devilman",
+                "english": "Devilman",
+                "native": "\u30C7\u30D3\u30EB\u30DE\u30F3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b2252-j7TwAtCwqYuY.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b2252-j7TwAtCwqYuY.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 64,
+              "favourites": 150,
+              "popularity": 13216,
+              "startDate": {
+                "year": 1972,
+                "month": 7,
+                "day": 8
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 11269,
+              "title": {
+                "romaji": "Maken Liner 0011 Henshin Seyo!",
+                "english": null,
+                "native": "\u9B54\u72AC\u30E9\u30A4\u30CA\u30FC\uFF10\uFF10\uFF11\uFF11\u5909\u8EAB\u305B\u3088"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx11269-GoqJXD0DCE4e.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx11269-GoqJXD0DCE4e.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 44,
+              "favourites": 3,
+              "popularity": 482,
+              "startDate": {
+                "year": 1972,
+                "month": 7,
+                "day": 16
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2253,
+              "title": {
+                "romaji": "Mazinger Z",
+                "english": "Mazinger Z",
+                "native": "\u30DE\u30B8\u30F3\u30AC\u30FC\uFF3A"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx2253-nS4Os86CPB5a.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2253-nS4Os86CPB5a.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 68,
+              "favourites": 136,
+              "popularity": 6744,
+              "startDate": {
+                "year": 1972,
+                "month": 12,
+                "day": 3
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1666,
+              "title": {
+                "romaji": "Babel Nisei (1973)",
+                "english": null,
+                "native": "\u30D0\u30D3\u30EB\uFF12\u4E16"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1666-vBYpqA5tAbQG.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1666-vBYpqA5tAbQG.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 57,
+              "favourites": 13,
+              "popularity": 892,
+              "startDate": {
+                "year": 1973,
+                "month": 1,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 3758,
+              "title": {
+                "romaji": "Panda no Daibouken",
+                "english": null,
+                "native": "\u30D1\u30F3\u30C0\u306E\u5927\u5192\u967A"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/3758.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/3758.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 49,
+              "favourites": 2,
+              "popularity": 381,
+              "startDate": {
+                "year": 1973,
+                "month": 3,
+                "day": 17
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 3846,
+              "title": {
+                "romaji": "Microid S",
+                "english": null,
+                "native": "\u30DF\u30AF\u30ED\u30A4\u30C9\uFF33"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/3846.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/3846.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 61,
+              "favourites": 7,
+              "popularity": 435,
+              "startDate": {
+                "year": 1973,
+                "month": 4,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 3898,
+              "title": {
+                "romaji": "Mazinger Z vs. Devilman",
+                "english": "Mazinger Z vs. Devilman",
+                "native": "\u30DE\u30B8\u30F3\u30AC\u30FC\uFF3A\u5BFE\u30C7\u30D3\u30EB\u30DE\u30F3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/3898.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/3898.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 57,
+              "favourites": 20,
+              "popularity": 1959,
+              "startDate": {
+                "year": 1973,
+                "month": 7,
+                "day": 18
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 3630,
+              "title": {
+                "romaji": "Miracle Shoujo Limit-chan",
+                "english": null,
+                "native": "\u30DF\u30E9\u30AF\u30EB\u5C11\u5973\u30EA\u30DF\u30C3\u30C8\u3061\u3083\u3093"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx3630-lYU2oKPQnyU3.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx3630-lYU2oKPQnyU3.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 49,
+              "favourites": 5,
+              "popularity": 505,
+              "startDate": {
+                "year": 1973,
+                "month": 10,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1337,
+              "title": {
+                "romaji": "Dororon Enma-kun",
+                "english": null,
+                "native": "\u30C9\u30ED\u30ED\u30F3\u3048\u3093\u9B54\u304F\u3093"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/1337.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/1337.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 62,
+              "favourites": 21,
+              "popularity": 1494,
+              "startDate": {
+                "year": 1973,
+                "month": 10,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1661,
+              "title": {
+                "romaji": "Cutey Honey",
+                "english": "Cutie Honey",
+                "native": "\u30AD\u30E5\u30FC\u30C6\u30A3\u30FC\u30CF\u30CB\u30FC"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1661-f4cDRKIaPzA2.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1661-f4cDRKIaPzA2.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 60,
+              "favourites": 105,
+              "popularity": 7869,
+              "startDate": {
+                "year": 1973,
+                "month": 10,
+                "day": 13
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 8494,
+              "title": {
+                "romaji": "Kikansha Yaemon: D51 no Daibouken",
+                "english": null,
+                "native": "D51\u306E\u5927\u5192\u967A \u304D\u304B\u3093\u3057\u3083\u3084\u3048\u3082\u3093"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/8494.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/8494.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 44,
+              "favourites": 1,
+              "popularity": 233,
+              "startDate": {
+                "year": 1974,
+                "month": 3,
+                "day": 16
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 3388,
+              "title": {
+                "romaji": "Majokko Megu-chan",
+                "english": "Witch Girl Meg",
+                "native": "\u9B54\u5973\u3063\u5B50\u30E1\u30B0\u3061\u3083\u3093"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/3388-v9JkMF78blEv.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/3388-v9JkMF78blEv.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 63,
+              "favourites": 25,
+              "popularity": 1673,
+              "startDate": {
+                "year": 1974,
+                "month": 4,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 3579,
+              "title": {
+                "romaji": "Getter Robo",
+                "english": "Getter Robo",
+                "native": "\u30B2\u30C3\u30BF\u30FC\u30ED\u30DC"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b3579-b4eywFaEGBD5.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b3579-b4eywFaEGBD5.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 64,
+              "favourites": 54,
+              "popularity": 4116,
+              "startDate": {
+                "year": 1974,
+                "month": 4,
+                "day": 4
+              },
+              "mediaListEntry": null
+            }
+          ]
+        }
+      }
+    }
+  }
+}

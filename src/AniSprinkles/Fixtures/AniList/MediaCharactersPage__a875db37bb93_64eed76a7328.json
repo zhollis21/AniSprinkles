@@ -1,0 +1,429 @@
+﻿{
+  "operationName": "MediaCharactersPage",
+  "variables": {
+    "id": 178788,
+    "page": 1,
+    "sort": [
+      "ROLE",
+      "RELEVANCE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "64eed76a7328",
+  "recordedAt": "2026-09-06T05:23:49.5505855+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "characters": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 126071,
+                "name": {
+                  "full": "Tanjirou Kamado",
+                  "native": "\u7AC8\u9580\u70AD\u6CBB\u90CE",
+                  "userPreferred": "Tanjirou Kamado"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b126071-BTNEc1nRIv68.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b126071-BTNEc1nRIv68.png"
+                },
+                "favourites": 19908
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 129131,
+                "name": {
+                  "full": "Zenitsu Agatsuma",
+                  "native": "\u6211\u59BB\u5584\u9038",
+                  "userPreferred": "Zenitsu Agatsuma"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b129131-FZrQ7lSlxmEr.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b129131-FZrQ7lSlxmEr.png"
+                },
+                "favourites": 15344
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 130050,
+                "name": {
+                  "full": "Giyuu Tomioka",
+                  "native": "\u51A8\u5CA1\u7FA9\u52C7",
+                  "userPreferred": "Giyuu Tomioka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b130050-qsLThJs5VIbz.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b130050-qsLThJs5VIbz.png"
+                },
+                "favourites": 13885
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 136070,
+                "name": {
+                  "full": "Shinobu Kochou",
+                  "native": "\u80E1\u8776\u3057\u306E\u3076",
+                  "userPreferred": "Shinobu Kochou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b136070-MC9LLxJsHyHE.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b136070-MC9LLxJsHyHE.png"
+                },
+                "favourites": 10037
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 141694,
+                "name": {
+                  "full": "Akaza",
+                  "native": "\u7317\u7AA9\u5EA7",
+                  "userPreferred": "Akaza"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b141694-0COi0GVXPuEn.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b141694-0COi0GVXPuEn.png"
+                },
+                "favourites": 4342
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 144591,
+                "name": {
+                  "full": "Douma",
+                  "native": "\u7AE5\u78E8",
+                  "userPreferred": "Douma"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b144591-v2yrXtHorZFS.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b144591-v2yrXtHorZFS.png"
+                },
+                "favourites": 1276
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 165862,
+                "name": {
+                  "full": "Kaigaku",
+                  "native": "\u736A\u5CB3",
+                  "userPreferred": "Kaigaku"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b165862-G9PpuvlEsfdN.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b165862-G9PpuvlEsfdN.jpg"
+                },
+                "favourites": 53
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 127518,
+                "name": {
+                  "full": "Nezuko Kamado",
+                  "native": "\u7AC8\u9580\u79B0\u8C46\u5B50",
+                  "userPreferred": "Nezuko Kamado"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b127518-NRlq1CQ1v1ro.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b127518-NRlq1CQ1v1ro.png"
+                },
+                "favourites": 16436
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 129130,
+                "name": {
+                  "full": "Inosuke Hashibira",
+                  "native": "\u5634\u5E73\u4F0A\u4E4B\u52A9",
+                  "userPreferred": "Inosuke Hashibira"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/n129130-SJC0Kn1DU39E.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/n129130-SJC0Kn1DU39E.jpg"
+                },
+                "favourites": 16035
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 129132,
+                "name": {
+                  "full": "Muzan Kibutsuji",
+                  "native": "\u9B3C\u821E\u8FBB\u7121\u60E8",
+                  "userPreferred": "Muzan Kibutsuji"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b129132-4nIZakUZ1o8W.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b129132-4nIZakUZ1o8W.jpg"
+                },
+                "favourites": 2376
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 136069,
+                "name": {
+                  "full": "Muichirou Tokitou",
+                  "native": "\u6642\u900F\u7121\u4E00\u90CE",
+                  "userPreferred": "Muichirou Tokitou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b136069-6PLglx4tETUX.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b136069-6PLglx4tETUX.png"
+                },
+                "favourites": 5343
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 136071,
+                "name": {
+                  "full": "Tengen Uzui",
+                  "native": "\u5B87\u9AC4\u5929\u5143",
+                  "userPreferred": "Tengen Uzui"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b136071-99Kexnnn2PiV.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b136071-99Kexnnn2PiV.png"
+                },
+                "favourites": 8268
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 136072,
+                "name": {
+                  "full": "Mitsuri Kanroji",
+                  "native": "\u7518\u9732\u5BFA\u871C\u7483",
+                  "userPreferred": "Mitsuri Kanroji"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b136072-xVwyRUKdpybi.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b136072-xVwyRUKdpybi.png"
+                },
+                "favourites": 6873
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 137773,
+                "name": {
+                  "full": "Sakonji Urokodaki",
+                  "native": "\u9C57\u6EDD\u5DE6\u8FD1\u6B21 ",
+                  "userPreferred": "Sakonji Urokodaki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b137773-N4O52f73dJKZ.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b137773-N4O52f73dJKZ.png"
+                },
+                "favourites": 787
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 137774,
+                "name": {
+                  "full": "Sanemi Shinazugawa",
+                  "native": "\u4E0D\u6B7B\u5DDD\u5B9F\u5F25",
+                  "userPreferred": "Sanemi Shinazugawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b137774-O1iYrnGLB71l.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b137774-O1iYrnGLB71l.png"
+                },
+                "favourites": 2940
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 137775,
+                "name": {
+                  "full": "Jigorou Kuwajima",
+                  "native": "\u6851\u5CF6\u6148\u609F\u90CE",
+                  "userPreferred": "Jigorou Kuwajima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b137775-WVj9nyVaYo45.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b137775-WVj9nyVaYo45.png"
+                },
+                "favourites": 95
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 137776,
+                "name": {
+                  "full": "Genya Shinazugawa",
+                  "native": "\u4E0D\u6B7B\u5DDD\u7384\u5F25",
+                  "userPreferred": "Genya Shinazugawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b137776-E0QuFD7y19OQ.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b137776-E0QuFD7y19OQ.jpg"
+                },
+                "favourites": 1933
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 137777,
+                "name": {
+                  "full": "Obanai Iguro",
+                  "native": "\u4F0A\u9ED2\u5C0F\u82AD\u5185",
+                  "userPreferred": "Obanai Iguro"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b137777-kGViiNyx0wa7.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b137777-kGViiNyx0wa7.jpg"
+                },
+                "favourites": 3114
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 137778,
+                "name": {
+                  "full": "Gyoumei Himejima",
+                  "native": "\u60B2\u9CF4\u5DBC\u884C\u51A5",
+                  "userPreferred": "Gyoumei Himejima"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b137778-H4Uzb9cSCvZ6.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b137778-H4Uzb9cSCvZ6.jpg"
+                },
+                "favourites": 1752
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 137808,
+                "name": {
+                  "full": "Kagaya Ubuyashiki",
+                  "native": "\u7523\u5C4B\u6577\u8000\u54C9",
+                  "userPreferred": "Kagaya Ubuyashiki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b137808-4yA8XQUDrAho.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b137808-4yA8XQUDrAho.png"
+                },
+                "favourites": 651
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 137810,
+                "name": {
+                  "full": "Matsuemon Tennouji",
+                  "native": "\u5929\u738B\u5BFA\u677E\u53F3\u885B\u9580",
+                  "userPreferred": "Matsuemon Tennouji"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b137810-x5JEOQTuxd86.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b137810-x5JEOQTuxd86.png"
+                },
+                "favourites": 390
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 138846,
+                "name": {
+                  "full": "Yushirou",
+                  "native": "\u6108\u53F2\u90CE",
+                  "userPreferred": "Yushirou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b138846-i8frJEl8baly.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b138846-i8frJEl8baly.jpg"
+                },
+                "favourites": 787
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 138847,
+                "name": {
+                  "full": "Tamayo",
+                  "native": "\u73E0\u4E16",
+                  "userPreferred": "Tamayo"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b138847-rOwIPLKaR5Ux.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b138847-rOwIPLKaR5Ux.jpg"
+                },
+                "favourites": 1105
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 139038,
+                "name": {
+                  "full": "Kanao Tsuyuri",
+                  "native": "\u6817\u82B1\u843D\u30AB\u30CA\u30F2",
+                  "userPreferred": "Kanao Tsuyuri"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b139038-OcOoDUyLEsRn.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b139038-OcOoDUyLEsRn.png"
+                },
+                "favourites": 5514
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 139039,
+                "name": {
+                  "full": "Kanae Kochou",
+                  "native": "\u80E1\u8776\u30AB\u30CA\u30A8",
+                  "userPreferred": "Kanae Kochou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b139039-YmIZQzx1HdvY.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b139039-YmIZQzx1HdvY.png"
+                },
+                "favourites": 396
+              },
+              "role": "SUPPORTING"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

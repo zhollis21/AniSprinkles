@@ -1,0 +1,538 @@
+﻿{
+  "operationName": "MediaRecommendationsPage",
+  "variables": {
+    "id": 21,
+    "page": 3,
+    "sort": [
+      "RATING_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "4c3bbb02d06d",
+  "recordedAt": "2026-09-09T15:56:21.5770164+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "recommendations": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 3
+          },
+          "nodes": [
+            {
+              "rating": 7,
+              "mediaRecommendation": {
+                "id": 177475,
+                "title": {
+                  "romaji": "ONE PIECE\u00D7KAWAISOUNI! Kono Boushi wo Omae ni Azukeru",
+                  "english": null,
+                  "native": "ONE PIECE\u00D7\u53EF\u54C0\u60F3\u306B\uFF01\uFF5E\u3053\u306E\u5E3D\u5B50\u3092 \u304A\u524D\u306B\u9810\u3051\u308B\uFF5E"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx177475-8HlvUgopoH0S.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx177475-8HlvUgopoH0S.png"
+                },
+                "averageScore": 58,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 7,
+              "mediaRecommendation": {
+                "id": 182896,
+                "title": {
+                  "romaji": "Boku no Hero Academia FINAL SEASON",
+                  "english": "My Hero Academia FINAL SEASON",
+                  "native": "\u50D5\u306E\u30D2\u30FC\u30ED\u30FC\u30A2\u30AB\u30C7\u30DF\u30A2 FINAL SEASON"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx182896-mvxTVHGdDB4q.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx182896-mvxTVHGdDB4q.jpg"
+                },
+                "averageScore": 87,
+                "mediaListEntry": {
+                  "id": 593351172,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "score": 0
+                }
+              }
+            },
+            {
+              "rating": 6,
+              "mediaRecommendation": {
+                "id": 1412,
+                "title": {
+                  "romaji": "Lupin III",
+                  "english": "Lupin the 3rd",
+                  "native": "\u30EB\u30D1\u30F3\u4E09\u4E16"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx1412-70kA9bzDoleV.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx1412-70kA9bzDoleV.jpg"
+                },
+                "averageScore": 74,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 6,
+              "mediaRecommendation": {
+                "id": 10189,
+                "title": {
+                  "romaji": "HUNTER\u00D7HUNTER Pilot-ban",
+                  "english": null,
+                  "native": "HUNTER\u00D7HUNTER \u30D1\u30A4\u30ED\u30C3\u30C8\u7248"
+                },
+                "format": "OVA",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx10189-Zzk7UAz3GEtk.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx10189-Zzk7UAz3GEtk.png"
+                },
+                "averageScore": 68,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 6,
+              "mediaRecommendation": {
+                "id": 154,
+                "title": {
+                  "romaji": "Shaman King",
+                  "english": "Shaman King",
+                  "native": "\u30B7\u30E3\u30FC\u30DE\u30F3\u30AD\u30F3\u30B0"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx154-hSYv4EtcBE1p.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx154-hSYv4EtcBE1p.png"
+                },
+                "averageScore": 74,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 6,
+              "mediaRecommendation": {
+                "id": 113717,
+                "title": {
+                  "romaji": "Ousama Ranking",
+                  "english": "Ranking of Kings",
+                  "native": "\u738B\u69D8\u30E9\u30F3\u30AD\u30F3\u30B0"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx113717-9sNnN8WRgK15.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx113717-9sNnN8WRgK15.jpg"
+                },
+                "averageScore": 83,
+                "mediaListEntry": {
+                  "id": 593364435,
+                  "status": "COMPLETED",
+                  "progress": 23,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 6,
+              "mediaRecommendation": {
+                "id": 154587,
+                "title": {
+                  "romaji": "Sousou no Frieren",
+                  "english": "Frieren: Beyond Journey\u2019s End",
+                  "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx154587-qQTzQnEJJ3oB.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx154587-qQTzQnEJJ3oB.jpg"
+                },
+                "averageScore": 91,
+                "mediaListEntry": {
+                  "id": 540974122,
+                  "status": "COMPLETED",
+                  "progress": 28,
+                  "score": 10
+                }
+              }
+            },
+            {
+              "rating": 6,
+              "mediaRecommendation": {
+                "id": 21394,
+                "title": {
+                  "romaji": "Magi: Sinbad no Bouken",
+                  "english": "Magi: Adventure of Sinbad",
+                  "native": "\u30DE\u30AE \u30B7\u30F3\u30C9\u30D0\u30C3\u30C9\u306E\u5192\u967A"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21394-yauvzIHGAoZv.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21394-yauvzIHGAoZv.jpg"
+                },
+                "averageScore": 77,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 6,
+              "mediaRecommendation": {
+                "id": 552,
+                "title": {
+                  "romaji": "Digimon Adventure",
+                  "english": "Digimon: Digital Monsters",
+                  "native": "\u30C7\u30B8\u30E2\u30F3\u30A2\u30C9\u30D9\u30F3\u30C1\u30E3\u30FC"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx552-zad0ts5hylQJ.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx552-zad0ts5hylQJ.jpg"
+                },
+                "averageScore": 75,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 6,
+              "mediaRecommendation": {
+                "id": 178025,
+                "title": {
+                  "romaji": "Gachiakuta",
+                  "english": "Gachiakuta",
+                  "native": "\u30AC\u30C1\u30A2\u30AF\u30BF"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx178025-cWJKEsZynkil.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx178025-cWJKEsZynkil.jpg"
+                },
+                "averageScore": 82,
+                "mediaListEntry": {
+                  "id": 593364551,
+                  "status": "COMPLETED",
+                  "progress": 24,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 5,
+              "mediaRecommendation": {
+                "id": 9513,
+                "title": {
+                  "romaji": "Beelzebub",
+                  "english": "Beelzebub",
+                  "native": "\u3079\u308B\u305C\u30D0\u30D6"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx9513-is6YiSgKbyQX.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx9513-is6YiSgKbyQX.jpg"
+                },
+                "averageScore": 75,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 5,
+              "mediaRecommendation": {
+                "id": 102977,
+                "title": {
+                  "romaji": "Golden Kamuy 2nd Season",
+                  "english": "Golden Kamuy Season 2",
+                  "native": "\u30B4\u30FC\u30EB\u30C7\u30F3\u30AB\u30E0\u30A4 \u7B2C\u4E8C\u671F"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx102977-gUejfwQWpnzX.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx102977-gUejfwQWpnzX.png"
+                },
+                "averageScore": 81,
+                "mediaListEntry": {
+                  "id": 593364752,
+                  "status": "COMPLETED",
+                  "progress": 12,
+                  "score": 9
+                }
+              }
+            },
+            {
+              "rating": 5,
+              "mediaRecommendation": {
+                "id": 2836,
+                "title": {
+                  "romaji": "Chiisana Viking Vickie",
+                  "english": "Vicky the Viking",
+                  "native": "\u5C0F\u3055\u306A\u30D0\u30A4\u30AD\u30F3\u30B0\u30D3\u30C3\u30B1"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/2836.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/2836.jpg"
+                },
+                "averageScore": 62,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 5,
+              "mediaRecommendation": {
+                "id": 105310,
+                "title": {
+                  "romaji": "Enen no Shouboutai",
+                  "english": "Fire Force",
+                  "native": "\u708E\u708E\u30CE\u6D88\u9632\u968A"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx105310-2PKUvoaA6fTn.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx105310-2PKUvoaA6fTn.jpg"
+                },
+                "averageScore": 76,
+                "mediaListEntry": {
+                  "id": 593364484,
+                  "status": "COMPLETED",
+                  "progress": 24,
+                  "score": 7
+                }
+              }
+            },
+            {
+              "rating": 5,
+              "mediaRecommendation": {
+                "id": 163139,
+                "title": {
+                  "romaji": "Boku no Hero Academia 7",
+                  "english": "My Hero Academia Season 7",
+                  "native": "\u50D5\u306E\u30D2\u30FC\u30ED\u30FC\u30A2\u30AB\u30C7\u30DF\u30A2 7"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx163139-JchZhUFlNTWU.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx163139-JchZhUFlNTWU.jpg"
+                },
+                "averageScore": 82,
+                "mediaListEntry": {
+                  "id": 593364222,
+                  "status": "COMPLETED",
+                  "progress": 21,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 5,
+              "mediaRecommendation": {
+                "id": 142876,
+                "title": {
+                  "romaji": "Dr. STONE: Ryuusui",
+                  "english": "Dr. STONE Special Episode \u2013 RYUSUI",
+                  "native": "Dr.STONE \u9F8D\u6C34"
+                },
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx142876-izO35hPP2DZ9.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx142876-izO35hPP2DZ9.jpg"
+                },
+                "averageScore": 81,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 5,
+              "mediaRecommendation": {
+                "id": 154116,
+                "title": {
+                  "romaji": "Undead Unluck",
+                  "english": "Undead Unluck",
+                  "native": "\u30A2\u30F3\u30C7\u30C3\u30C9\u30A2\u30F3\u30E9\u30C3\u30AF"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx154116-3ydDI9hhvPgw.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx154116-3ydDI9hhvPgw.png"
+                },
+                "averageScore": 76,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 5,
+              "mediaRecommendation": {
+                "id": 3272,
+                "title": {
+                  "romaji": "Kinnikuman",
+                  "english": null,
+                  "native": "\u30AD\u30F3\u8089\u30DE\u30F3"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/3272.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/3272.jpg"
+                },
+                "averageScore": 69,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 5,
+              "mediaRecommendation": {
+                "id": 8,
+                "title": {
+                  "romaji": "Bouken Ou Beet",
+                  "english": "Beet the Vandel Buster",
+                  "native": "\u5192\u967A\u738B\u30D3\u30A3\u30C8"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b8-ReS3TwSgrDDi.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b8-ReS3TwSgrDDi.jpg"
+                },
+                "averageScore": 66,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 4,
+              "mediaRecommendation": {
+                "id": 4940,
+                "title": {
+                  "romaji": "Sabaku no Kaizoku! Captain Kuppa",
+                  "english": "Captain Kuppa",
+                  "native": "\u7802\u6F20\u306E\u6D77\u8CCA\uFF01 \u30AD\u30E3\u30D7\u30C6\u30F3\u30AF\u30C3\u30D1"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b4940-nFGWsvdSdDC0.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b4940-nFGWsvdSdDC0.jpg"
+                },
+                "averageScore": 53,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 4,
+              "mediaRecommendation": {
+                "id": 1017,
+                "title": {
+                  "romaji": "Majutsushi Orphen",
+                  "english": "Orphen",
+                  "native": "\u9B54\u8853\u58EB\u30AA\u30FC\u30D5\u30A7\u30F3"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx1017-tPKIClRY3XhN.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx1017-tPKIClRY3XhN.jpg"
+                },
+                "averageScore": 67,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 4,
+              "mediaRecommendation": {
+                "id": 126819,
+                "title": {
+                  "romaji": "Gintama: THE SEMI-FINAL",
+                  "english": null,
+                  "native": "\u9280\u9B42 THE SEMI-FINAL"
+                },
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx126819-KlcARzqDMjvf.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx126819-KlcARzqDMjvf.jpg"
+                },
+                "averageScore": 83,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 4,
+              "mediaRecommendation": {
+                "id": 1536,
+                "title": {
+                  "romaji": "Busou Renkin",
+                  "english": "Arms Alchemy",
+                  "native": "\u6B66\u88C5\u932C\u91D1"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1536-IkwAKpAiioIv.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1536-IkwAKpAiioIv.png"
+                },
+                "averageScore": 69,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 4,
+              "mediaRecommendation": {
+                "id": 1086,
+                "title": {
+                  "romaji": "Kenran Butou Sai: The Mars Daybreak",
+                  "english": "Mars Daybreak",
+                  "native": "\u7D62\u721B\u821E\u8E0F\u796D\u30B6\uFF65\u30DE\u30FC\u30BA\uFF65\u30C7\u30A4\u30D6\u30EC\u30A4\u30AF"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1086-k0AG8q8C4134.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1086-k0AG8q8C4134.jpg"
+                },
+                "averageScore": 68,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 4,
+              "mediaRecommendation": {
+                "id": 1050,
+                "title": {
+                  "romaji": "Bobobo-bo Bo-bobo",
+                  "english": "Bobobo-bo Bo-bobo",
+                  "native": "\u30DC\u30DC\u30DC\u30FC\u30DC\u30FB\u30DC\u30FC\u30DC\u30DC"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1050-qQAPEPu1kNKP.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1050-qQAPEPu1kNKP.jpg"
+                },
+                "averageScore": 72,
+                "mediaListEntry": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

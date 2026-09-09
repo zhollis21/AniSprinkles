@@ -1,0 +1,21 @@
+﻿{
+  "operationName": "Search",
+  "variables": {
+    "search": "no",
+    "page": 1,
+    "perPage": 20
+  },
+  "queryFingerprint": "2c2dc0b2b28d",
+  "recordedAt": "2026-09-06T05:16:33.5943347+00:00",
+  "response": {
+    "data": {
+      "Page": {
+        "pageInfo": {
+          "hasNextPage": false,
+          "currentPage": 1
+        },
+        "media": []
+      }
+    }
+  }
+}

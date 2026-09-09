@@ -1,0 +1,543 @@
+﻿{
+  "operationName": "MediaRecommendationsPage",
+  "variables": {
+    "id": 182255,
+    "page": 1,
+    "sort": [
+      "RATING_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "4c3bbb02d06d",
+  "recordedAt": "2026-09-06T05:19:16.0532988+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "recommendations": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "nodes": [
+            {
+              "rating": 100,
+              "mediaRecommendation": {
+                "id": 153518,
+                "title": {
+                  "romaji": "Dungeon Meshi",
+                  "english": "Delicious in Dungeon",
+                  "native": "\u30C0\u30F3\u30B8\u30E7\u30F3\u98EF"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx153518-IVXPDY5ph3kO.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx153518-IVXPDY5ph3kO.jpg"
+                },
+                "averageScore": 85,
+                "mediaListEntry": {
+                  "id": 593364470,
+                  "status": "COMPLETED",
+                  "progress": 24,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 96,
+              "mediaRecommendation": {
+                "id": 21827,
+                "title": {
+                  "romaji": "Violet Evergarden",
+                  "english": "Violet Evergarden",
+                  "native": "\u30F4\u30A1\u30A4\u30AA\u30EC\u30C3\u30C8\u30FB\u30A8\u30F4\u30A1\u30FC\u30AC\u30FC\u30C7\u30F3"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21827-ubzq619ZA2E9.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21827-ubzq619ZA2E9.png"
+                },
+                "averageScore": 85,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 69,
+              "mediaRecommendation": {
+                "id": 161645,
+                "title": {
+                  "romaji": "Kusuriya no Hitorigoto",
+                  "english": "The Apothecary Diaries",
+                  "native": "\u85AC\u5C4B\u306E\u3072\u3068\u308A\u3054\u3068"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx161645-QLbzHXiYRgV2.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx161645-QLbzHXiYRgV2.jpg"
+                },
+                "averageScore": 88,
+                "mediaListEntry": {
+                  "id": 548900515,
+                  "status": "COMPLETED",
+                  "progress": 24,
+                  "score": 10
+                }
+              }
+            },
+            {
+              "rating": 43,
+              "mediaRecommendation": {
+                "id": 147105,
+                "title": {
+                  "romaji": "Tongari Boushi no Atelier",
+                  "english": "Witch Hat Atelier",
+                  "native": "\u3068\u3093\u304C\u308A\u5E3D\u5B50\u306E\u30A2\u30C8\u30EA\u30A8"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx147105-rwOX8qyUy8gV.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx147105-rwOX8qyUy8gV.jpg"
+                },
+                "averageScore": 85,
+                "mediaListEntry": {
+                  "id": 593365663,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "score": 0
+                }
+              }
+            },
+            {
+              "rating": 37,
+              "mediaRecommendation": {
+                "id": 112609,
+                "title": {
+                  "romaji": "Majo no Tabitabi",
+                  "english": "Wandering Witch: The Journey of Elaina",
+                  "native": "\u9B54\u5973\u306E\u65C5\u3005"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx112609-hBCbnYlEHluz.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx112609-hBCbnYlEHluz.jpg"
+                },
+                "averageScore": 74,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 27,
+              "mediaRecommendation": {
+                "id": 114535,
+                "title": {
+                  "romaji": "Fumetsu no Anata e",
+                  "english": "To Your Eternity",
+                  "native": "\u4E0D\u6EC5\u306E\u3042\u306A\u305F\u3078"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx114535-y3NnjexcqKG1.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx114535-y3NnjexcqKG1.jpg"
+                },
+                "averageScore": 81,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 24,
+              "mediaRecommendation": {
+                "id": 176301,
+                "title": {
+                  "romaji": "Kusuriya no Hitorigoto 2nd Season",
+                  "english": "The Apothecary Diaries Season 2",
+                  "native": "\u85AC\u5C4B\u306E\u3072\u3068\u308A\u3054\u3068 \u7B2C2\u671F"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx176301-TIGmldLffQGX.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx176301-TIGmldLffQGX.jpg"
+                },
+                "averageScore": 88,
+                "mediaListEntry": {
+                  "id": 593363981,
+                  "status": "COMPLETED",
+                  "progress": 24,
+                  "score": 10
+                }
+              }
+            },
+            {
+              "rating": 16,
+              "mediaRecommendation": {
+                "id": 457,
+                "title": {
+                  "romaji": "Mushishi",
+                  "english": "MUSHI-SHI",
+                  "native": "\u87F2\u5E2B"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx457-l6cTtNgI9Bi6.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx457-l6cTtNgI9Bi6.png"
+                },
+                "averageScore": 85,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 16,
+              "mediaRecommendation": {
+                "id": 179966,
+                "title": {
+                  "romaji": "Silent Witch: Chinmoku no Majo no Kakushigoto",
+                  "english": "Secrets of the Silent Witch",
+                  "native": "\u30B5\u30A4\u30EC\u30F3\u30C8\u30FB\u30A6\u30A3\u30C3\u30C1 \u6C88\u9ED9\u306E\u9B54\u5973\u306E\u96A0\u3057\u3054\u3068"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx179966-g0EU7rVe2Og7.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx179966-g0EU7rVe2Og7.jpg"
+                },
+                "averageScore": 81,
+                "mediaListEntry": {
+                  "id": 593365425,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "score": 0
+                }
+              }
+            },
+            {
+              "rating": 12,
+              "mediaRecommendation": {
+                "id": 4081,
+                "title": {
+                  "romaji": "Natsume Yuujinchou",
+                  "english": "Natsume\u0027s Book of Friends Season 1",
+                  "native": "\u590F\u76EE\u53CB\u4EBA\u5E33"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx4081-xi08naD69tjr.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx4081-xi08naD69tjr.jpg"
+                },
+                "averageScore": 80,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 12,
+              "mediaRecommendation": {
+                "id": 486,
+                "title": {
+                  "romaji": "Kino no Tabi: the Beautiful World",
+                  "english": "Kino\u0027s Journey",
+                  "native": "\u30AD\u30CE\u306E\u65C5 -the Beautiful World-"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx486-xXUgNOEBuxGs.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx486-xXUgNOEBuxGs.jpg"
+                },
+                "averageScore": 81,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 12,
+              "mediaRecommendation": {
+                "id": 98448,
+                "title": {
+                  "romaji": "Kino no Tabi -the Beautiful World- the Animated Series",
+                  "english": "Kino\u0027s Journey -the Beautiful World- the Animated Series",
+                  "native": "\u30AD\u30CE\u306E\u65C5 -the Beautiful World- the Animated Series"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx98448-OdfxrjAhkYvp.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx98448-OdfxrjAhkYvp.jpg"
+                },
+                "averageScore": 73,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 11,
+              "mediaRecommendation": {
+                "id": 185514,
+                "title": {
+                  "romaji": "Champignon no Majo",
+                  "english": "Champignon Witch",
+                  "native": "\u30B7\u30E3\u30F3\u30D4\u30CB\u30AA\u30F3\u306E\u9B54\u5973"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx185514-mfJqhtz22l1Z.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx185514-mfJqhtz22l1Z.jpg"
+                },
+                "averageScore": 66,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 8,
+              "mediaRecommendation": {
+                "id": 99420,
+                "title": {
+                  "romaji": "Shoujo Shuumatsu Ryokou",
+                  "english": "Girls\u0027 Last Tour",
+                  "native": "\u5C11\u5973\u7D42\u672B\u65C5\u884C"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx99420-k5Tel6yRMwA8.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx99420-k5Tel6yRMwA8.png"
+                },
+                "averageScore": 81,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 8,
+              "mediaRecommendation": {
+                "id": 127720,
+                "title": {
+                  "romaji": "Mushoku Tensei: Isekai Ittara Honki Dasu Part 2",
+                  "english": "Mushoku Tensei: Jobless Reincarnation Cour 2",
+                  "native": "\u7121\u8077\u8EE2\u751F \uFF5E\u7570\u4E16\u754C\u884C\u3063\u305F\u3089\u672C\u6C17\u3060\u3059\uFF5E \u7B2C2\u30AF\u30FC\u30EB"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx127720-ADJgIrUVMdU9.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx127720-ADJgIrUVMdU9.jpg"
+                },
+                "averageScore": 85,
+                "mediaListEntry": {
+                  "id": 593363915,
+                  "status": "COMPLETED",
+                  "progress": 12,
+                  "score": 10
+                }
+              }
+            },
+            {
+              "rating": 7,
+              "mediaRecommendation": {
+                "id": 18115,
+                "title": {
+                  "romaji": "Magi: The kingdom of magic",
+                  "english": "Magi: The Kingdom of Magic",
+                  "native": "\u30DE\u30AE The kingdom of magic"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx18115-dilbAD4yGMfc.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx18115-dilbAD4yGMfc.png"
+                },
+                "averageScore": 81,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 5,
+              "mediaRecommendation": {
+                "id": 99457,
+                "title": {
+                  "romaji": "Sayonara no Asa ni Yakusoku no Hana wo Kazarou",
+                  "english": "Maquia: When the Promised Flower Blooms",
+                  "native": "\u3055\u3088\u306A\u3089\u306E\u671D\u306B\u7D04\u675F\u306E\u82B1\u3092\u304B\u3056\u308D\u3046"
+                },
+                "format": "MOVIE",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx99457-OD0xtM8NlHNQ.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx99457-OD0xtM8NlHNQ.png"
+                },
+                "averageScore": 82,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 4,
+              "mediaRecommendation": {
+                "id": 21284,
+                "title": {
+                  "romaji": "Flying Witch",
+                  "english": "Flying Witch",
+                  "native": "\u3075\u3089\u3044\u3093\u3050\u3046\u3043\u3063\u3061"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21284-vQcCLIWt1o5O.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21284-vQcCLIWt1o5O.png"
+                },
+                "averageScore": 74,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 4,
+              "mediaRecommendation": {
+                "id": 20770,
+                "title": {
+                  "romaji": "Akatsuki no Yona",
+                  "english": "Yona of the Dawn",
+                  "native": "\u6681\u306E\u30E8\u30CA"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20770-brCDvhTXlums.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20770-brCDvhTXlums.png"
+                },
+                "averageScore": 79,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 4,
+              "mediaRecommendation": {
+                "id": 5420,
+                "title": {
+                  "romaji": "Kemono no Souja Erin",
+                  "english": "Erin",
+                  "native": "\u7363\u306E\u594F\u8005\u30A8\u30EA\u30F3"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx5420-hOjyV2QC1yIG.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx5420-hOjyV2QC1yIG.jpg"
+                },
+                "averageScore": 80,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 3,
+              "mediaRecommendation": {
+                "id": 108465,
+                "title": {
+                  "romaji": "Mushoku Tensei: Isekai Ittara Honki Dasu",
+                  "english": "Mushoku Tensei: Jobless Reincarnation",
+                  "native": "\u7121\u8077\u8EE2\u751F \uFF5E\u7570\u4E16\u754C\u884C\u3063\u305F\u3089\u672C\u6C17\u3060\u3059\uFF5E"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx108465-1ANspF1EWyFx.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx108465-1ANspF1EWyFx.jpg"
+                },
+                "averageScore": 82,
+                "mediaListEntry": {
+                  "id": 593363909,
+                  "status": "COMPLETED",
+                  "progress": 11,
+                  "score": 10
+                }
+              }
+            },
+            {
+              "rating": 3,
+              "mediaRecommendation": {
+                "id": 14513,
+                "title": {
+                  "romaji": "Magi: The labyrinth of magic",
+                  "english": "Magi: The Labyrinth of Magic",
+                  "native": "\u30DE\u30AE The labyrinth of magic"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx14513-HuUdrFFYftA7.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx14513-HuUdrFFYftA7.jpg"
+                },
+                "averageScore": 78,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 2,
+              "mediaRecommendation": {
+                "id": 145140,
+                "title": {
+                  "romaji": "Helck",
+                  "english": "Helck",
+                  "native": "Helck"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx145140-tHT8TT2XSsOh.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx145140-tHT8TT2XSsOh.jpg"
+                },
+                "averageScore": 71,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 2,
+              "mediaRecommendation": {
+                "id": 145728,
+                "title": {
+                  "romaji": "Ookami to Koushinryou: MERCHANT MEETS THE WISE WOLF",
+                  "english": "Spice and Wolf: MERCHANT MEETS THE WISE WOLF",
+                  "native": "\u72FC\u3068\u9999\u8F9B\u6599 MERCHANT MEETS THE WISE WOLF"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx145728-YUKXjN2E81Pq.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx145728-YUKXjN2E81Pq.jpg"
+                },
+                "averageScore": 79,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 2,
+              "mediaRecommendation": {
+                "id": 97940,
+                "title": {
+                  "romaji": "Black Clover",
+                  "english": "Black Clover",
+                  "native": "\u30D6\u30E9\u30C3\u30AF\u30AF\u30ED\u30FC\u30D0\u30FC"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx97940-fyh8o7gNbha0.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx97940-fyh8o7gNbha0.png"
+                },
+                "averageScore": 79,
+                "mediaListEntry": {
+                  "id": 593364452,
+                  "status": "COMPLETED",
+                  "progress": 170,
+                  "score": 8
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

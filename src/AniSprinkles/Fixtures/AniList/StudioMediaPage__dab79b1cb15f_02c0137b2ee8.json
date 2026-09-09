@@ -1,0 +1,633 @@
+﻿{
+  "operationName": "StudioMediaPage",
+  "variables": {
+    "id": 102,
+    "page": 3,
+    "sort": [
+      "TITLE_ROMAJI",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "02c0137b2ee8",
+  "recordedAt": "2026-09-09T16:01:29.6257763+00:00",
+  "response": {
+    "data": {
+      "Studio": {
+        "media": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 3
+          },
+          "nodes": [
+            {
+              "id": 3407,
+              "title": {
+                "romaji": "Blassreiter",
+                "english": null,
+                "native": "\u30D6\u30E9\u30B9\u30EC\u30A4\u30BF\u30FC"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx3407-y7VtUyaY6PlG.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx3407-y7VtUyaY6PlG.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 63,
+              "favourites": 99,
+              "popularity": 14733,
+              "startDate": {
+                "year": 2008,
+                "month": 4,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 18767,
+              "title": {
+                "romaji": "BlazBlue: Alter Memory",
+                "english": "BlazBlue: Alter Memory",
+                "native": "\u30D6\u30EC\u30A4\u30D6\u30EB\u30FC \u30AA\u30EB\u30BF\u30FC\u30E1\u30E2\u30EA\u30FC"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx18767-d0WG5AuetQZ9.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx18767-d0WG5AuetQZ9.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 55,
+              "favourites": 110,
+              "popularity": 18199,
+              "startDate": {
+                "year": 2013,
+                "month": 10,
+                "day": 9
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 10490,
+              "title": {
+                "romaji": "BLOOD-C",
+                "english": "Blood-C",
+                "native": "BLOOD-C"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx10490-Rqx4jlTOMFWx.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx10490-Rqx4jlTOMFWx.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 62,
+              "favourites": 1356,
+              "popularity": 100290,
+              "startDate": {
+                "year": 2011,
+                "month": 7,
+                "day": 8
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 10681,
+              "title": {
+                "romaji": "BLOOD-C: The Last Dark",
+                "english": "BLOOD-C: The Last Dark",
+                "native": "\u5287\u5834\u7248 BLOOD-C The Last Dark"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b10681-uogOpLtvaUX2.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b10681-uogOpLtvaUX2.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 69,
+              "favourites": 380,
+              "popularity": 27043,
+              "startDate": {
+                "year": 2012,
+                "month": 6,
+                "day": 2
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 58,
+              "title": {
+                "romaji": "BLUE GENDER",
+                "english": "Blue Gender",
+                "native": "BLUE GENDER"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b58-2KarB5N1dB0P.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b58-2KarB5N1dB0P.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 66,
+              "favourites": 191,
+              "popularity": 17210,
+              "startDate": {
+                "year": 1999,
+                "month": 10,
+                "day": 8
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1380,
+              "title": {
+                "romaji": "BLUE GENDER: THE WARRIOR",
+                "english": "Blue Gender: The Warrior",
+                "native": "BLUE GENDER THE WARRIOR"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/1380.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/1380.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 58,
+              "favourites": 18,
+              "popularity": 2441,
+              "startDate": {
+                "year": 2002,
+                "month": 11,
+                "day": 20
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 129814,
+              "title": {
+                "romaji": "BLUE REFLECTION RAY",
+                "english": "Blue Reflection Ray",
+                "native": "BLUE REFLECTION RAY/\u6FAA"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx129814-eXwKMTyCNge7.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx129814-eXwKMTyCNge7.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 53,
+              "favourites": 122,
+              "popularity": 12219,
+              "startDate": {
+                "year": 2021,
+                "month": 4,
+                "day": 10
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 10719,
+              "title": {
+                "romaji": "Boku wa Tomodachi ga Sukunai",
+                "english": "Haganai",
+                "native": "\u50D5\u306F\u53CB\u9054\u304C\u5C11\u306A\u3044"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx10719-aNf9gOOw62Fs.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx10719-aNf9gOOw62Fs.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 68,
+              "favourites": 1921,
+              "popularity": 165848,
+              "startDate": {
+                "year": 2011,
+                "month": 10,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 14967,
+              "title": {
+                "romaji": "Boku wa Tomodachi ga Sukunai NEXT",
+                "english": "Haganai NEXT",
+                "native": "\u50D5\u306F\u53CB\u9054\u304C\u5C11\u306A\u3044 NEXT"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx14967-ZGsclJ1xjPwr.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx14967-ZGsclJ1xjPwr.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 69,
+              "favourites": 884,
+              "popularity": 104562,
+              "startDate": {
+                "year": 2013,
+                "month": 1,
+                "day": 11
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 14027,
+              "title": {
+                "romaji": "Boku wa Tomodachi ga Sukunai: Relay Shousetsu wa Ketsumatsu ga Hanpanai L(\u309C\u25A1\u309C)\u300D",
+                "english": "Haganai: Add-on Disc",
+                "native": "\u50D5\u306F\u53CB\u9054\u304C\u5C11\u306A\u3044 \u30EA\u30EC\u30FC\u5C0F\u8AAC\u306F\u7D50\u672B\u304C\u534A\u7AEF\u306A\u3044L(\u309C\u25A1\u309C)\u300D"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/14027.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/14027.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 67,
+              "favourites": 137,
+              "popularity": 28728,
+              "startDate": {
+                "year": 2012,
+                "month": 9,
+                "day": 26
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 15605,
+              "title": {
+                "romaji": "BROTHERS CONFLICT",
+                "english": "Brothers Conflict",
+                "native": "BROTHERS CONFLICT"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx15605-32Ek1RRxHon0.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx15605-32Ek1RRxHon0.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 52,
+              "favourites": 323,
+              "popularity": 32191,
+              "startDate": {
+                "year": 2013,
+                "month": 7,
+                "day": 2
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 568,
+              "title": {
+                "romaji": "Bubblegum Crisis TOKYO 2040",
+                "english": null,
+                "native": "\u30D0\u30D6\u30EB\u30AC\u30E0\u30AF\u30E9\u30A4\u30B7\u30B9 TOKYO2040"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx568-XvVqG7WdO1jo.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx568-XvVqG7WdO1jo.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 68,
+              "favourites": 121,
+              "popularity": 9162,
+              "startDate": {
+                "year": 1998,
+                "month": 10,
+                "day": 8
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 21311,
+              "title": {
+                "romaji": "Bungou Stray Dogs",
+                "english": "Bungo Stray Dogs",
+                "native": "\u6587\u8C6A\u30B9\u30C8\u30EC\u30A4\u30C9\u30C3\u30B0\u30B9"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21311-hAXyT8Yoh6G9.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21311-hAXyT8Yoh6G9.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 77,
+              "favourites": 17823,
+              "popularity": 420562,
+              "startDate": {
+                "year": 2016,
+                "month": 4,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 10163,
+              "title": {
+                "romaji": "C: THE MONEY OF SOUL AND POSSIBILITY CONTROL",
+                "english": "[C] - CONTROL - The Money and Soul of Possibility",
+                "native": "\u300CC\u300D THE MONEY OF SOUL AND POSSIBILITY CONTROL"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx10163-DGTY24yRLZrt.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx10163-DGTY24yRLZrt.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 67,
+              "favourites": 663,
+              "popularity": 65836,
+              "startDate": {
+                "year": 2011,
+                "month": 4,
+                "day": 15
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 12505,
+              "title": {
+                "romaji": "C\u00B3 Special",
+                "english": "C3: Outdoor School Confusion",
+                "native": "\u30B7\u30FC\u30AD\u30E5\u30FC\u30D6"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/12505.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/12505.jpg"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 62,
+              "favourites": 30,
+              "popularity": 6537,
+              "startDate": {
+                "year": 2012,
+                "month": 4,
+                "day": 25
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 10578,
+              "title": {
+                "romaji": "C\u00B3",
+                "english": "C3",
+                "native": "\u30B7\u30FC\u30AD\u30E5\u30FC\u30D6"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b10578-Wv2VQQpSIsHA.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b10578-Wv2VQQpSIsHA.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 61,
+              "favourites": 203,
+              "popularity": 34667,
+              "startDate": {
+                "year": 2011,
+                "month": 10,
+                "day": 1
+              },
+              "mediaListEntry": {
+                "id": 593365539,
+                "status": "PLANNING",
+                "progress": 0,
+                "score": 0
+              }
+            },
+            {
+              "id": 4981,
+              "title": {
+                "romaji": "Casshern Sins",
+                "english": "Casshern Sins",
+                "native": "\u30AD\u30E3\u30B7\u30E3\u30FC\u30F3Sins"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx4981-V6MbMiJUqdvP.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx4981-V6MbMiJUqdvP.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 74,
+              "favourites": 1140,
+              "popularity": 42788,
+              "startDate": {
+                "year": 2008,
+                "month": 10,
+                "day": 2
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 4975,
+              "title": {
+                "romaji": "Ch\u00E4oS;HEAd",
+                "english": "Ch\u00E4oS;HEAd",
+                "native": "\u30AB\u30AA\u30B9\u30D8\u30C3\u30C9"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx4975-89ESCZZNG4yZ.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx4975-89ESCZZNG4yZ.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 57,
+              "favourites": 265,
+              "popularity": 50850,
+              "startDate": {
+                "year": 2008,
+                "month": 10,
+                "day": 9
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 59,
+              "title": {
+                "romaji": "Chobits",
+                "english": "Chobits",
+                "native": "\u3061\u3087\u3073\u3063\u30C4"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx59-0J95ZHgt4uyP.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx59-0J95ZHgt4uyP.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 71,
+              "favourites": 2116,
+              "popularity": 91235,
+              "startDate": {
+                "year": 2002,
+                "month": 4,
+                "day": 3
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 596,
+              "title": {
+                "romaji": "Chobits: Chibits - Sumomo, Kotoko Todokeru",
+                "english": null,
+                "native": "\u3061\u3087\u3073\u3063\u30C4 \u3061\u3073\u3063\u30C4 \u3059\u3082\u3082\u30FB\u7434\u5B50\u3000\u5C4A\u3051\u308B"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/596.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/596.jpg"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 65,
+              "favourites": 39,
+              "popularity": 7785,
+              "startDate": {
+                "year": 2003,
+                "month": 6,
+                "day": 27
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 16157,
+              "title": {
+                "romaji": "Choujigen Game Neptune THE ANIMATION",
+                "english": "Hyperdimension Neptunia",
+                "native": "\u8D85\u6B21\u5143\u30B2\u30A4\u30E0 \u30CD\u30D7\u30C6\u30E5\u30FC\u30CC THE ANIMATION"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx16157-GFIuj9e2Y8nK.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx16157-GFIuj9e2Y8nK.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 65,
+              "favourites": 510,
+              "popularity": 38467,
+              "startDate": {
+                "year": 2013,
+                "month": 6,
+                "day": 22
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 20472,
+              "title": {
+                "romaji": "Choujigen Game Neptune THE ANIMATION: Yakusoku no Eien (True End)",
+                "english": "Hyperdimension Neptunia: The Eternity (True Ending) Promised",
+                "native": "\u8D85\u6B21\u5143\u30B2\u30A4\u30E0 \u30CD\u30D7\u30C6\u30E5\u30FC\u30CC THE ANIMATION \u7D04\u675F\u306E\u6C38\u9060\uFF08\u30C8\u30A5\u30EB\u30FC\u30A8\u30F3\u30C9\uFF09"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20472-Ywr8YyhaYTbU.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20472-Ywr8YyhaYTbU.png"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 68,
+              "favourites": 72,
+              "popularity": 9753,
+              "startDate": {
+                "year": 2014,
+                "month": 3,
+                "day": 26
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 60,
+              "title": {
+                "romaji": "Chrno Crusade",
+                "english": "Chrono Crusade",
+                "native": "\u30AF\u30ED\u30CE\u30AF\u30EB\u30BB\u30A4\u30C9"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx60-nWs0N9upSorj.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx60-nWs0N9upSorj.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 71,
+              "favourites": 458,
+              "popularity": 34014,
+              "startDate": {
+                "year": 2003,
+                "month": 11,
+                "day": 24
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1818,
+              "title": {
+                "romaji": "CLAYMORE",
+                "english": "Claymore",
+                "native": "CLAYMORE"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1818-KieLJv0qo3mO.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1818-KieLJv0qo3mO.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 74,
+              "favourites": 2614,
+              "popularity": 120838,
+              "startDate": {
+                "year": 2007,
+                "month": 4,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 97880,
+              "title": {
+                "romaji": "Code Geass: Fukkatsu no Lelouch",
+                "english": "Code Geass: Lelouch of the Re;surrection",
+                "native": "\u30B3\u30FC\u30C9\u30AE\u30A2\u30B9 \u5FA9\u6D3B\u306E\u30EB\u30EB\u30FC\u30B7\u30E5"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx97880-sZWHViJfrvXm.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx97880-sZWHViJfrvXm.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 77,
+              "favourites": 2057,
+              "popularity": 97035,
+              "startDate": {
+                "year": 2019,
+                "month": 2,
+                "day": 9
+              },
+              "mediaListEntry": null
+            }
+          ]
+        }
+      }
+    }
+  }
+}

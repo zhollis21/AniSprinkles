@@ -15,6 +15,20 @@ public class AniListClient : IAniListClient
     public void InvalidateEntityCache() { }
 
     private static readonly Uri GraphQlEndpoint = new("https://graphql.anilist.co");
+
+    /// <summary>
+    /// Sent on every request (#160). AniList refuses anything carrying neither a <c>Referer</c> nor
+    /// an <c>Authorization</c> header with HTTP 403, and — worse than a plain rejection — a body
+    /// reading "The AniList API has been temporarily disabled due to severe stability issues."
+    /// <see cref="AniListErrorClassifier"/> matches that text as an outage marker, so without this
+    /// the app tells the user AniList is down while AniList is serving other clients normally.
+    /// <para>
+    /// The token would satisfy the same filter, and is now sent wherever we hold one, but it cannot
+    /// be the whole answer: signed-out browsing (Discover, Search, every details page) has no token
+    /// by definition, and the airing worker can run before one is readable after a reboot (#149).
+    /// </para>
+    /// </summary>
+    private static readonly Uri GraphQlReferer = new("https://anilist.co/");
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
         PropertyNameCaseInsensitive = true,
@@ -417,13 +431,19 @@ public class AniListClient : IAniListClient
         int page = 1;
         bool hasNextPage;
 
+        // AiringSchedule is a public query, so this is optional rather than required — the worker
+        // can legitimately run before a token is readable after a reboot (#149). Send it when we
+        // have one anyway: AniList refuses unauthenticated requests that carry no Referer (#160),
+        // and there is nothing to gain from withholding a credential we are already holding.
+        var token = await _authService.GetAccessTokenAsync(cancellationToken).ConfigureAwait(false);
+
         do
         {
             var data = await SendAsync<AiringScheduleData>(
                 "AiringSchedule",
                 AiringScheduleQuery,
                 new { mediaIds, airingAfter, airingBefore, page },
-                token: null, // AiringSchedule is a public query — no auth needed
+                token,
                 cancellationToken).ConfigureAwait(false);
 
             if (data.Page?.AiringSchedules is { } schedules)
@@ -549,11 +569,14 @@ public class AniListClient : IAniListClient
     public async Task<(IReadOnlyList<StaffCharacterEdge> Items, PageInfo? PageInfo)> LoadStaffCharactersPageAsync(
         int id, int page, string sort, int perPage = 25, CancellationToken cancellationToken = default)
     {
+        // Public query, optional token — sent when we have one so the request is never the
+        // credential-less, Referer-less shape AniList rejects outright (#160).
+        var token = await _authService.GetAccessTokenAsync(cancellationToken).ConfigureAwait(false);
         var data = await SendAsync<StaffData>(
             "StaffCharactersPage",
             StaffCharactersPageQuery,
             new { id, page, sort = WithTiebreaker(sort), perPage },
-            token: null,
+            token,
             cancellationToken).ConfigureAwait(false);
 
         if (data.Staff?.Characters is null)
@@ -663,11 +686,13 @@ public class AniListClient : IAniListClient
     public async Task<(IReadOnlyList<CharacterEdge> Items, PageInfo? PageInfo)> LoadMediaCharactersPageAsync(
         int id, int page, string sort, int perPage = 25, CancellationToken cancellationToken = default)
     {
+        // Public query, optional token — see LoadStaffCharactersPageAsync (#160).
+        var token = await _authService.GetAccessTokenAsync(cancellationToken).ConfigureAwait(false);
         var data = await SendAsync<MediaData>(
             "MediaCharactersPage",
             MediaCharactersPageQuery,
             new { id, page, sort = CharacterPageSort(sort), perPage },
-            token: null,
+            token,
             cancellationToken).ConfigureAwait(false);
 
         if (data.Media?.Characters is null)
@@ -695,11 +720,13 @@ public class AniListClient : IAniListClient
     public async Task<(IReadOnlyList<StaffEdge> Items, PageInfo? PageInfo)> LoadMediaStaffPageAsync(
         int id, int page, string sort, int perPage = 25, CancellationToken cancellationToken = default)
     {
+        // Public query, optional token — see LoadStaffCharactersPageAsync (#160).
+        var token = await _authService.GetAccessTokenAsync(cancellationToken).ConfigureAwait(false);
         var data = await SendAsync<MediaData>(
             "MediaStaffPage",
             MediaStaffPageQuery,
             new { id, page, sort = WithTiebreaker(sort), perPage },
-            token: null,
+            token,
             cancellationToken).ConfigureAwait(false);
 
         if (data.Media?.Staff is null)
@@ -823,6 +850,7 @@ public class AniListClient : IAniListClient
         _logger.LogInformation("GraphQL {Operation} request", operationName);
 
         using var request = new HttpRequestMessage(HttpMethod.Post, GraphQlEndpoint);
+        request.Headers.Referrer = GraphQlReferer;
 
         // Hand LoggingHandler the token this call was made with. Inside the pipeline it would
         // otherwise only see HttpClient's linked token, which HttpClient.Timeout cancels too — and

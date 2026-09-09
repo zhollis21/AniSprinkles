@@ -1,0 +1,428 @@
+﻿{
+  "operationName": "MediaCharactersPage",
+  "variables": {
+    "id": 182255,
+    "page": 1,
+    "sort": [
+      "RELEVANCE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "64eed76a7328",
+  "recordedAt": "2026-09-06T05:18:47.9505307+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "characters": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 176754,
+                "name": {
+                  "full": "Frieren",
+                  "native": "\u30D5\u30EA\u30FC\u30EC\u30F3",
+                  "userPreferred": "Frieren"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b176754-PCnpqIOkjhFk.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b176754-PCnpqIOkjhFk.png"
+                },
+                "favourites": 22460
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 183965,
+                "name": {
+                  "full": "Fern",
+                  "native": "\u30D5\u30A7\u30EB\u30F3",
+                  "userPreferred": "Fern"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b183965-uGFohBjlFoTp.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b183965-uGFohBjlFoTp.png"
+                },
+                "favourites": 8634
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 184313,
+                "name": {
+                  "full": "Stark",
+                  "native": "\u30B7\u30E5\u30BF\u30EB\u30AF",
+                  "userPreferred": "Stark"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b184313-CQl6GSt4RSny.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b184313-CQl6GSt4RSny.jpg"
+                },
+                "favourites": 5949
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 184311,
+                "name": {
+                  "full": "Himmel",
+                  "native": "\u30D2\u30F3\u30E1\u30EB",
+                  "userPreferred": "Himmel"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b184311-wQFySqYXEqf1.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b184311-wQFySqYXEqf1.png"
+                },
+                "favourites": 4628
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 184310,
+                "name": {
+                  "full": "Heiter",
+                  "native": "\u30CF\u30A4\u30BF\u30FC",
+                  "userPreferred": "Heiter"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b184310-tiXvrq4FINXP.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b184310-tiXvrq4FINXP.jpg"
+                },
+                "favourites": 821
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 184312,
+                "name": {
+                  "full": "Eisen",
+                  "native": "\u30A2\u30A4\u30BC\u30F3",
+                  "userPreferred": "Eisen"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b184312-kxd5H6iOHIq4.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b184312-kxd5H6iOHIq4.png"
+                },
+                "favourites": 929
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 321716,
+                "name": {
+                  "full": "Wirbel",
+                  "native": "\u30F4\u30A3\u30A2\u30D9\u30EB",
+                  "userPreferred": "Wirbel"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b321716-ORxrJOHaI4H4.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b321716-ORxrJOHaI4H4.png"
+                },
+                "favourites": 283
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 321718,
+                "name": {
+                  "full": "Ehre",
+                  "native": "\u30A8\u30FC\u30EC",
+                  "userPreferred": "Ehre"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b321718-MV9ZCxtNdOpJ.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b321718-MV9ZCxtNdOpJ.png"
+                },
+                "favourites": 39
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 327305,
+                "name": {
+                  "full": "Scharf",
+                  "native": "\u30B7\u30E3\u30EB\u30D5",
+                  "userPreferred": "Scharf"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b327305-DsvizGfxKnE8.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b327305-DsvizGfxKnE8.png"
+                },
+                "favourites": 19
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 331267,
+                "name": {
+                  "full": "Minami no Yuusha",
+                  "native": "\u5357\u306E\u52C7\u8005",
+                  "userPreferred": "Minami no Yuusha"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b331267-hLeSvYXwuTDt.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b331267-hLeSvYXwuTDt.png"
+                },
+                "favourites": 78
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 331423,
+                "name": {
+                  "full": "Dach Hakushaku",
+                  "native": "\u30C0\u30C3\u30CF\u4F2F\u7235",
+                  "userPreferred": "Dach Hakushaku"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b331423-D1WkXFsj0Rdk.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b331423-D1WkXFsj0Rdk.png"
+                },
+                "favourites": 1
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 219110,
+                "name": {
+                  "full": "Aura",
+                  "native": "\u30A2\u30A6\u30E9",
+                  "userPreferred": "Aura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b219110-LEB5T4oG0gel.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b219110-LEB5T4oG0gel.png"
+                },
+                "favourites": 254
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 300778,
+                "name": {
+                  "full": "Macht",
+                  "native": "\u30DE\u30CF\u30C8",
+                  "userPreferred": "Macht"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b300778-kvoUHowLjexj.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b300778-kvoUHowLjexj.png"
+                },
+                "favourites": 283
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 315938,
+                "name": {
+                  "full": "B\u00F6se",
+                  "native": "\u30DC\u30FC\u30BA",
+                  "userPreferred": "B\u00F6se"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b315938-GOkQKOqUAQo9.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b315938-GOkQKOqUAQo9.png"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 331265,
+                "name": {
+                  "full": "Schlacht",
+                  "native": "\u30B7\u30E5\u30E9\u30CF\u30C8",
+                  "userPreferred": "Schlacht"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b331265-V6xCje9U7OeT.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b331265-V6xCje9U7OeT.png"
+                },
+                "favourites": 2
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 331273,
+                "name": {
+                  "full": "Grausam",
+                  "native": "\u30B0\u30E9\u30AA\u30B6\u30FC\u30E0",
+                  "userPreferred": "Grausam"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b331273-hV3gfkSJA0Iw.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b331273-hV3gfkSJA0Iw.png"
+                },
+                "favourites": 1
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 386951,
+                "name": {
+                  "full": "Gyosha",
+                  "native": "\u5FA1\u8005",
+                  "userPreferred": "Gyosha"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b386951-yMbsDNZdoDyR.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b386951-yMbsDNZdoDyR.png"
+                },
+                "favourites": 1
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 387926,
+                "name": {
+                  "full": "Shitsuji",
+                  "native": "\u57F7\u4E8B",
+                  "userPreferred": "Shitsuji"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b387926-SiDGkz0ZvGYJ.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b387926-SiDGkz0ZvGYJ.png"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 387927,
+                "name": {
+                  "full": "Dach Hakushaku no Sousofu",
+                  "native": "\u30C0\u30C3\u30CF\u4F2F\u7235\u306E\u66FE\u7956\u7236",
+                  "userPreferred": "Dach Hakushaku no Sousofu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b387927-FDZ8i6BhPjB1.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b387927-FDZ8i6BhPjB1.png"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 387928,
+                "name": {
+                  "full": "Tsurugi no Mazoku",
+                  "native": "\u5263\u306E\u9B54\u65CF",
+                  "userPreferred": "Tsurugi no Mazoku"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b387928-QHEDJrm7kVgb.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b387928-QHEDJrm7kVgb.png"
+                },
+                "favourites": 2
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 387929,
+                "name": {
+                  "full": "Murabito",
+                  "native": "\u6751\u4EBA",
+                  "userPreferred": "Murabito"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/default.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 387930,
+                "name": {
+                  "full": "Kodomo",
+                  "native": "\u5B50\u4F9B",
+                  "userPreferred": "Kodomo"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/default.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 387931,
+                "name": {
+                  "full": "Kodomo",
+                  "native": "\u5B50\u4F9B",
+                  "userPreferred": "Kodomo"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/default.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 387932,
+                "name": {
+                  "full": "Kodomo",
+                  "native": "\u5B50\u4F9B",
+                  "userPreferred": "Kodomo"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/default.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "BACKGROUND"
+            },
+            {
+              "node": {
+                "id": 205177,
+                "name": {
+                  "full": "Sein",
+                  "native": "\u30B6\u30A4\u30F3",
+                  "userPreferred": "Sein"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b205177-hLV4nVQjoBIC.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b205177-hLV4nVQjoBIC.png"
+                },
+                "favourites": 632
+              },
+              "role": "BACKGROUND"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

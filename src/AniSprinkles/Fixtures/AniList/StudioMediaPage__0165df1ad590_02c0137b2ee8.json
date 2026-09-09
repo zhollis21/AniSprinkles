@@ -1,0 +1,628 @@
+﻿{
+  "operationName": "StudioMediaPage",
+  "variables": {
+    "id": 11,
+    "page": 3,
+    "sort": [
+      "TITLE_ROMAJI",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "02c0137b2ee8",
+  "recordedAt": "2026-09-06T05:32:48.929553+00:00",
+  "response": {
+    "data": {
+      "Studio": {
+        "media": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 3
+          },
+          "nodes": [
+            {
+              "id": 1614,
+              "title": {
+                "romaji": "Captain Tsubasa: Road to 2002",
+                "english": "Captain Tsubasa",
+                "native": "\u30AD\u30E3\u30D7\u30C6\u30F3\u7FFC (2001)"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/1614-fRXNtx7QobbQ.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/1614-fRXNtx7QobbQ.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 71,
+              "favourites": 229,
+              "popularity": 11378,
+              "startDate": {
+                "year": 2001,
+                "month": 10,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 232,
+              "title": {
+                "romaji": "Cardcaptor Sakura",
+                "english": "Cardcaptor Sakura",
+                "native": "\u30AB\u30FC\u30C9\u30AD\u30E3\u30D7\u30BF\u30FC\u3055\u304F\u3089"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx232-ERyKCNNPJJeh.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx232-ERyKCNNPJJeh.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 81,
+              "favourites": 7350,
+              "popularity": 102844,
+              "startDate": {
+                "year": 1998,
+                "month": 4,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 371,
+              "title": {
+                "romaji": "Cardcaptor Sakura Movie",
+                "english": "Cardcaptor Sakura: The Movie",
+                "native": "\u5287\u5834\u7248 \u30AB\u30FC\u30C9\u30AD\u30E3\u30D7\u30BF\u30FC\u3055\u304F\u3089"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx371-sdrIzrI5qXl3.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx371-sdrIzrI5qXl3.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 75,
+              "favourites": 431,
+              "popularity": 21766,
+              "startDate": {
+                "year": 1999,
+                "month": 8,
+                "day": 21
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 372,
+              "title": {
+                "romaji": "Cardcaptor Sakura Movie: Fuinsareta Card",
+                "english": "Cardcaptor Sakura the Movie 2: The Sealed Card",
+                "native": "\u5287\u5834\u7248 \u30AB\u30FC\u30C9\u30AD\u30E3\u30D7\u30BF\u30FC\u3055\u304F\u3089 \u5C01\u5370\u3055\u308C\u305F\u30AB\u30FC\u30C9"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx372-fTXJwelrAAC6.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx372-fTXJwelrAAC6.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 81,
+              "favourites": 694,
+              "popularity": 25239,
+              "startDate": {
+                "year": 2000,
+                "month": 7,
+                "day": 15
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 97881,
+              "title": {
+                "romaji": "Cardcaptor Sakura: Clear Card-hen",
+                "english": "Cardcaptor Sakura: Clear Card",
+                "native": "\u30AB\u30FC\u30C9\u30AD\u30E3\u30D7\u30BF\u30FC\u3055\u304F\u3089 \u30AF\u30EA\u30A2\u30AB\u30FC\u30C9\u7DE8"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx97881-QGpBWNtdCxrZ.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx97881-QGpBWNtdCxrZ.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 75,
+              "favourites": 799,
+              "popularity": 33092,
+              "startDate": {
+                "year": 2018,
+                "month": 1,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 98554,
+              "title": {
+                "romaji": "Cardcaptor Sakura: Clear Card-hen - Prologue Sakura to Futatsu no Kuma",
+                "english": "Cardcaptor Sakura: Clear Card Prologue \u2013 Sakura and the Two Bears",
+                "native": "\u30AB\u30FC\u30C9\u30AD\u30E3\u30D7\u30BF\u30FC\u3055\u304F\u3089 \u30AF\u30EA\u30A2\u30AB\u30FC\u30C9\u7DE8 \u30D7\u30ED\u30ED\u30FC\u30B0 \u3055\u304F\u3089\u3068\u3075\u305F\u3064\u306E\u304F\u307E"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx98554-8MrEGrmSI7qu.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx98554-8MrEGrmSI7qu.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 75,
+              "favourites": 198,
+              "popularity": 13846,
+              "startDate": {
+                "year": 2017,
+                "month": 9,
+                "day": 13
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1078,
+              "title": {
+                "romaji": "Cardcaptor Sakura: Kero-chan ni Omakase!",
+                "english": "Cardcaptor Sakura: Leave it to Kero!",
+                "native": "\u30B1\u30ED\u3061\u3083\u3093\u306B\u304A\u307E\u304B\u305B\uFF01"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/1078-c24UkFy6f2Xe.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/1078-c24UkFy6f2Xe.png"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 69,
+              "favourites": 67,
+              "popularity": 7171,
+              "startDate": {
+                "year": 2000,
+                "month": 7,
+                "day": 15
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2424,
+              "title": {
+                "romaji": "Cardcaptor Sakura: Suteki Desu wa, Sakura-chan! Tomoyo no Cardcaptor Sakura Katsuyaku Video Nikki!",
+                "english": null,
+                "native": "\u3059\u3066\u304D\u3067\u3059\u308F\u3001\u3055\u304F\u3089\u3061\u3083\u3093!\u3000\u77E5\u4E16\u306E\u30AB\u30FC\u30C9\u30AD\u30E3\u30D7\u30BF\u30FC\u3055\u304F\u3089\u6D3B\u8E8D\u30D3\u30C7\u30AA\u65E5\u8A18!"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx2424-QEdHHMSHEDsL.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2424-QEdHHMSHEDsL.png"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 71,
+              "favourites": 71,
+              "popularity": 7103,
+              "startDate": {
+                "year": 1998,
+                "month": 9,
+                "day": 25
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 4981,
+              "title": {
+                "romaji": "Casshern Sins",
+                "english": "Casshern Sins",
+                "native": "\u30AD\u30E3\u30B7\u30E3\u30FC\u30F3Sins"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx4981-V6MbMiJUqdvP.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx4981-V6MbMiJUqdvP.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 74,
+              "favourites": 1137,
+              "popularity": 42732,
+              "startDate": {
+                "year": 2008,
+                "month": 10,
+                "day": 2
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2495,
+              "title": {
+                "romaji": "Chance: Triangle Session",
+                "english": "Chance Pop Session",
+                "native": "\u30C1\u30E3\u30F3\u30B9\u301C\u30C8\u30E9\u30A4\u30A2\u30F3\u30B0\u30EB\u30BB\u30C3\u30B7\u30E7\u30F3\u301C"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx2495-T6KGP6qGhSNQ.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2495-T6KGP6qGhSNQ.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 58,
+              "favourites": 8,
+              "popularity": 1910,
+              "startDate": {
+                "year": 2001,
+                "month": 5,
+                "day": 21
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 4975,
+              "title": {
+                "romaji": "Ch\u00E4oS;HEAd",
+                "english": "Ch\u00E4oS;HEAd",
+                "native": "\u30AB\u30AA\u30B9\u30D8\u30C3\u30C9"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx4975-89ESCZZNG4yZ.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx4975-89ESCZZNG4yZ.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 57,
+              "favourites": 265,
+              "popularity": 50823,
+              "startDate": {
+                "year": 2008,
+                "month": 10,
+                "day": 9
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 151514,
+              "title": {
+                "romaji": "Chi. Chikyuu no Undou ni Tsuite",
+                "english": "Orb: On the Movements of the Earth",
+                "native": "\u30C1\u3002-\u5730\u7403\u306E\u904B\u52D5\u306B\u3064\u3044\u3066-"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx151514-Y0d82Ah2ZOHX.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx151514-Y0d82Ah2ZOHX.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 86,
+              "favourites": 7021,
+              "popularity": 122054,
+              "startDate": {
+                "year": 2024,
+                "month": 10,
+                "day": 5
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 151514,
+              "title": {
+                "romaji": "Chi. Chikyuu no Undou ni Tsuite",
+                "english": "Orb: On the Movements of the Earth",
+                "native": "\u30C1\u3002-\u5730\u7403\u306E\u904B\u52D5\u306B\u3064\u3044\u3066-"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx151514-Y0d82Ah2ZOHX.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx151514-Y0d82Ah2ZOHX.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 86,
+              "favourites": 7021,
+              "popularity": 122054,
+              "startDate": {
+                "year": 2024,
+                "month": 10,
+                "day": 5
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 3841,
+              "title": {
+                "romaji": "Chi\u0027s Sweet Home",
+                "english": null,
+                "native": "\u30C1\u30FC\u30BA\u30B9\u30A4\u30FC\u30C8\u30DB\u30FC\u30E0"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx3841-PSDYqPPpBVBC.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx3841-PSDYqPPpBVBC.jpg"
+              },
+              "format": "TV_SHORT",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 73,
+              "favourites": 190,
+              "popularity": 13010,
+              "startDate": {
+                "year": 2008,
+                "month": 3,
+                "day": 31
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 7972,
+              "title": {
+                "romaji": "Chi\u0027s Sweet Home OVA",
+                "english": null,
+                "native": "\u30C1\u30FC\u30BA\u30B9\u30A4\u30FC\u30C8\u30DB\u30FC\u30E0"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/7972-NT2oKn8eIYQu.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/7972-NT2oKn8eIYQu.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 67,
+              "favourites": 3,
+              "popularity": 1623,
+              "startDate": {
+                "year": 2010,
+                "month": 4,
+                "day": 23
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 6024,
+              "title": {
+                "romaji": "Chi\u0027s Sweet Home: Atarashii Ouchi",
+                "english": "Chi\u0027s Sweet Home - Chi\u0027s New Address",
+                "native": "\u30C1\u30FC\u30BA\u30B9\u30A4\u30FC\u30C8\u30DB\u30FC\u30E0 \u3042\u305F\u3089\u3057\u3044\u304A\u3046\u3061"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx6024-eYiQMRfPfWiF.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx6024-eYiQMRfPfWiF.jpg"
+              },
+              "format": "TV_SHORT",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 74,
+              "favourites": 52,
+              "popularity": 5544,
+              "startDate": {
+                "year": 2009,
+                "month": 3,
+                "day": 30
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 10800,
+              "title": {
+                "romaji": "Chihayafuru",
+                "english": "Chihayafuru",
+                "native": "\u3061\u306F\u3084\u3075\u308B"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx10800-hofcUL0YEL7O.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx10800-hofcUL0YEL7O.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 80,
+              "favourites": 3815,
+              "popularity": 123076,
+              "startDate": {
+                "year": 2011,
+                "month": 10,
+                "day": 5
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 14397,
+              "title": {
+                "romaji": "Chihayafuru 2",
+                "english": "Chihayafuru 2",
+                "native": "\u3061\u306F\u3084\u3075\u308B 2"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx14397-k2mzAGlUthAb.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx14397-k2mzAGlUthAb.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 83,
+              "favourites": 1134,
+              "popularity": 57109,
+              "startDate": {
+                "year": 2013,
+                "month": 1,
+                "day": 12
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 18745,
+              "title": {
+                "romaji": "Chihayafuru 2: Waga Mi Yo ni Furu Nagame Seshi Ma ni",
+                "english": null,
+                "native": "\u3061\u306F\u3084\u3075\u308B\uFF12\u3000\u308F\u304C\u307F\u3088\u306B\u3075\u308B\u306A\u304C\u3081\u305B\u3057\u307E\u306B"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/18745.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/18745.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 68,
+              "favourites": 18,
+              "popularity": 10888,
+              "startDate": {
+                "year": 2013,
+                "month": 9,
+                "day": 13
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 101215,
+              "title": {
+                "romaji": "Chihayafuru 3",
+                "english": "Chihayafuru 3",
+                "native": "\u3061\u306F\u3084\u3075\u308B 3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx101215-8TTRNAYJnPMW.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101215-8TTRNAYJnPMW.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 85,
+              "favourites": 1769,
+              "popularity": 45117,
+              "startDate": {
+                "year": 2019,
+                "month": 10,
+                "day": 23
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 59,
+              "title": {
+                "romaji": "Chobits",
+                "english": "Chobits",
+                "native": "\u3061\u3087\u3073\u3063\u30C4"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx59-0J95ZHgt4uyP.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx59-0J95ZHgt4uyP.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 71,
+              "favourites": 2112,
+              "popularity": 91168,
+              "startDate": {
+                "year": 2002,
+                "month": 4,
+                "day": 3
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 596,
+              "title": {
+                "romaji": "Chobits: Chibits - Sumomo, Kotoko Todokeru",
+                "english": null,
+                "native": "\u3061\u3087\u3073\u3063\u30C4 \u3061\u3073\u3063\u30C4 \u3059\u3082\u3082\u30FB\u7434\u5B50\u3000\u5C4A\u3051\u308B"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/596.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/596.jpg"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 65,
+              "favourites": 39,
+              "popularity": 7782,
+              "startDate": {
+                "year": 2003,
+                "month": 6,
+                "day": 27
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 101161,
+              "title": {
+                "romaji": "Chuukan Kanriroku Tonegawa",
+                "english": "Mr. Tonegawa: Middle Management Blues",
+                "native": "\u4E2D\u9593\u7BA1\u7406\u9332\u30C8\u30CD\u30AC\u30EF"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx101161-CrSXo1LfBx0D.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101161-CrSXo1LfBx0D.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 69,
+              "favourites": 208,
+              "popularity": 15427,
+              "startDate": {
+                "year": 2018,
+                "month": 7,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 5848,
+              "title": {
+                "romaji": "Cinnamon the Movie",
+                "english": "Cinnamoroll: The Movie",
+                "native": "\u30B7\u30CA\u30E2\u30F3 the Movie"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/5848.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/5848.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 62,
+              "favourites": 26,
+              "popularity": 1998,
+              "startDate": {
+                "year": 2007,
+                "month": 12,
+                "day": 22
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2274,
+              "title": {
+                "romaji": "CLAMP in Wonderland",
+                "english": null,
+                "native": "CLAMP in Wonderland"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx2274-8CyyKyyKQeJL.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2274-8CyyKyyKQeJL.jpg"
+              },
+              "format": "MUSIC",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 64,
+              "favourites": 20,
+              "popularity": 4689,
+              "startDate": {
+                "year": 1994,
+                "month": 11,
+                "day": 21
+              },
+              "mediaListEntry": null
+            }
+          ]
+        }
+      }
+    }
+  }
+}
