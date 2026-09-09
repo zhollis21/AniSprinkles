@@ -1,0 +1,404 @@
+﻿{
+  "operationName": "CharacterMediaPage",
+  "variables": {
+    "id": 61,
+    "page": 3,
+    "sort": [
+      "START_DATE_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "2ff9193259a9",
+  "recordedAt": "2026-09-09T15:58:14.3625485+00:00",
+  "response": {
+    "data": {
+      "Character": {
+        "media": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 3
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 106492,
+                "title": {
+                  "romaji": "Kyutai Panic Adventure!",
+                  "english": null,
+                  "native": "\u7403\u4F53\u30D1\u30CB\u30C3\u30AF\u30A2\u30C9\u30D9\u30F3\u30C1\u30E3\u30FC!"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b106492-ciLSI5nTJsV7.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b106492-ciLSI5nTJsV7.png"
+                },
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "averageScore": 43,
+                "favourites": 8,
+                "popularity": 1135,
+                "startDate": {
+                  "year": 2003,
+                  "month": null,
+                  "day": null
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "SUPPORTING",
+              "voiceActors": [
+                {
+                  "id": 95130,
+                  "name": {
+                    "full": "Yuriko Yamaguchi",
+                    "native": "\u5C71\u53E3\u7531\u91CC\u5B50",
+                    "userPreferred": "Yuriko Yamaguchi"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95130-GoO41ve3YWQw.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95130-GoO41ve3YWQw.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 354
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 21,
+                "title": {
+                  "romaji": "ONE PIECE",
+                  "english": "ONE PIECE",
+                  "native": "ONE PIECE"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21-ELSYx3yMPcKM.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21-ELSYx3yMPcKM.jpg"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "status": "RELEASING",
+                "averageScore": 87,
+                "favourites": 111256,
+                "popularity": 749040,
+                "startDate": {
+                  "year": 1999,
+                  "month": 10,
+                  "day": 20
+                },
+                "mediaListEntry": {
+                  "id": 593351146,
+                  "status": "CURRENT",
+                  "progress": 1163,
+                  "score": 8
+                }
+              },
+              "characterRole": "MAIN",
+              "voiceActors": [
+                {
+                  "id": 95983,
+                  "name": {
+                    "full": "Yuuko Kobayashi",
+                    "native": "\u5C0F\u6797\u512A\u5B50",
+                    "userPreferred": "Yuuko Kobayashi"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95983-lqRFYTojbkRi.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95983-lqRFYTojbkRi.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 14
+                },
+                {
+                  "id": 95130,
+                  "name": {
+                    "full": "Yuriko Yamaguchi",
+                    "native": "\u5C71\u53E3\u7531\u91CC\u5B50",
+                    "userPreferred": "Yuriko Yamaguchi"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95130-GoO41ve3YWQw.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95130-GoO41ve3YWQw.png"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 354
+                },
+                {
+                  "id": 111463,
+                  "name": {
+                    "full": "Anzu Nagai",
+                    "native": "\u6C38\u4E95\u674F",
+                    "userPreferred": "Anzu Nagai"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/16463.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/16463.jpg"
+                  },
+                  "languageV2": "Japanese",
+                  "favourites": 30
+                },
+                {
+                  "id": 95905,
+                  "name": {
+                    "full": "Veronica Taylor",
+                    "native": null,
+                    "userPreferred": "Veronica Taylor"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95905-X3mxkcZkmmKN.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95905-X3mxkcZkmmKN.jpg"
+                  },
+                  "languageV2": "English",
+                  "favourites": 73
+                },
+                {
+                  "id": 101729,
+                  "name": {
+                    "full": "Jad Saxton",
+                    "native": null,
+                    "userPreferred": "Jad Saxton"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101729-tga5Umgm17Mj.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n101729-tga5Umgm17Mj.jpg"
+                  },
+                  "languageV2": "English",
+                  "favourites": 481
+                },
+                {
+                  "id": 107011,
+                  "name": {
+                    "full": "Natasha Parker",
+                    "native": null,
+                    "userPreferred": "Natasha Parker"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n107011-kf5aXlTCoYG9.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n107011-kf5aXlTCoYG9.jpg"
+                  },
+                  "languageV2": "English",
+                  "favourites": 1
+                },
+                {
+                  "id": 95475,
+                  "name": {
+                    "full": "Stephanie Young",
+                    "native": null,
+                    "userPreferred": "Stephanie Young"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n95475-QV9KFgsYrsPb.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n95475-QV9KFgsYrsPb.jpg"
+                  },
+                  "languageV2": "English",
+                  "favourites": 104
+                },
+                {
+                  "id": 109865,
+                  "name": {
+                    "full": "So-Yeon",
+                    "native": "\uC18C\uC5F0",
+                    "userPreferred": "So-Yeon"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n109865-MYklOuRucAAZ.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n109865-MYklOuRucAAZ.jpg"
+                  },
+                  "languageV2": "Korean",
+                  "favourites": 1
+                },
+                {
+                  "id": 96275,
+                  "name": {
+                    "full": "Patrizia Scianca",
+                    "native": null,
+                    "userPreferred": "Patrizia Scianca"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n96275-K5vy1UBZWPA0.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n96275-K5vy1UBZWPA0.png"
+                  },
+                  "languageV2": "Italian",
+                  "favourites": 18
+                },
+                {
+                  "id": 182238,
+                  "name": {
+                    "full": "Kerygma Flores",
+                    "native": "Martha Kerygma Flores Galaviz",
+                    "userPreferred": "Kerygma Flores"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n182238-a9oJUDFGbga1.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n182238-a9oJUDFGbga1.png"
+                  },
+                  "languageV2": "Spanish",
+                  "favourites": 1
+                },
+                {
+                  "id": 108961,
+                  "name": {
+                    "full": "Rosa Campillo",
+                    "native": null,
+                    "userPreferred": "Rosa Campillo"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/13961.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/13961.jpg"
+                  },
+                  "languageV2": "Spanish",
+                  "favourites": 2
+                },
+                {
+                  "id": 106637,
+                  "name": {
+                    "full": "Ang\u00E9lica Santos",
+                    "native": null,
+                    "userPreferred": "Ang\u00E9lica Santos"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n106637-rabolg9O12Mn.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n106637-rabolg9O12Mn.jpg"
+                  },
+                  "languageV2": "Portuguese",
+                  "favourites": 6
+                },
+                {
+                  "id": 100178,
+                  "name": {
+                    "full": "Samira Fernandes",
+                    "native": null,
+                    "userPreferred": "Samira Fernandes"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/5178.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/5178.jpg"
+                  },
+                  "languageV2": "Portuguese",
+                  "favourites": 24
+                },
+                {
+                  "id": 244870,
+                  "name": {
+                    "full": "Gigi Patta",
+                    "native": null,
+                    "userPreferred": "Gigi Patta"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n244870-j6jxmsibglgI.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n244870-j6jxmsibglgI.jpg"
+                  },
+                  "languageV2": "Portuguese",
+                  "favourites": 3
+                },
+                {
+                  "id": 116893,
+                  "name": {
+                    "full": "Marie Nonnenmacher",
+                    "native": null,
+                    "userPreferred": "Marie Nonnenmacher"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/21893.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/21893.jpg"
+                  },
+                  "languageV2": "French",
+                  "favourites": 8
+                },
+                {
+                  "id": 165055,
+                  "name": {
+                    "full": "Fabienne Loriaux",
+                    "native": null,
+                    "userPreferred": "Fabienne Loriaux"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n165055-N54AkVkhuhm2.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n165055-N54AkVkhuhm2.png"
+                  },
+                  "languageV2": "French",
+                  "favourites": 0
+                },
+                {
+                  "id": 116347,
+                  "name": {
+                    "full": "Marcha Van Boven",
+                    "native": null,
+                    "userPreferred": "Marcha Van Boven"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/21347.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/21347.jpg"
+                  },
+                  "languageV2": "French",
+                  "favourites": 0
+                },
+                {
+                  "id": 158831,
+                  "name": {
+                    "full": "C\u00E9line Melloul",
+                    "native": null,
+                    "userPreferred": "C\u00E9line Melloul"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n158831-18d3bDPeV6MB.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/n158831-18d3bDPeV6MB.jpg"
+                  },
+                  "languageV2": "French",
+                  "favourites": 0
+                },
+                {
+                  "id": 100881,
+                  "name": {
+                    "full": "Simone Brahmann",
+                    "native": null,
+                    "userPreferred": "Simone Brahmann"
+                  },
+                  "image": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/5881.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/staff/large/5881.jpg"
+                  },
+                  "languageV2": "German",
+                  "favourites": 5
+                }
+              ]
+            },
+            {
+              "node": {
+                "id": 30013,
+                "title": {
+                  "romaji": "ONE PIECE",
+                  "english": "One Piece",
+                  "native": "ONE PIECE"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30013-BeslEMqiPhlk.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30013-BeslEMqiPhlk.jpg"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "RELEASING",
+                "averageScore": 91,
+                "favourites": 48797,
+                "popularity": 232453,
+                "startDate": {
+                  "year": 1997,
+                  "month": 7,
+                  "day": 22
+                },
+                "mediaListEntry": {
+                  "id": 593351205,
+                  "status": "CURRENT",
+                  "progress": 1100,
+                  "score": 9
+                }
+              },
+              "characterRole": "MAIN",
+              "voiceActors": []
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -170,6 +170,19 @@ internal sealed class RecorderOptions
     public int DeepMediaCount { get; private init; }
 
     /// <summary>
+    /// Media that must be recorded <em>deep</em> — full sort and paging coverage, plus their own
+    /// studios, characters and staff — whatever their position in the list.
+    /// <para>
+    /// The CI capture script drills into a specific title (ONE PIECE) and taps its studio chip, a
+    /// character and a voice actor. Which titles ended up deep used to be an accident of round-robin
+    /// order, so those entity pages were recorded for some unrelated title and every tap in CI was a
+    /// fixture miss. This is the coupling made explicit: if the screenshot script drives a title, name
+    /// it here, or its detail pages lead nowhere.
+    /// </para>
+    /// </summary>
+    public IReadOnlyList<int> DeepMediaIds { get; private init; } = [];
+
+    /// <summary>
     /// How many list entries get media fixtures at all; 0 means every one.
     /// <para>
     /// This is what decouples the size of the fixture set from the size of the test account. The
@@ -192,6 +205,9 @@ internal sealed class RecorderOptions
         var maxPages = 3;
         var deepMedia = 3;
         var maxMedia = 0;
+        // ONE PIECE. The CI capture script opens it by name and taps into its studio, character
+        // and staff pages, so it has to be deep or those taps hit fixture misses.
+        var deepMediaIds = new List<int> { 21 };
 
         for (var i = 0; i < args.Length; i++)
         {
@@ -215,6 +231,9 @@ internal sealed class RecorderOptions
                 case "--max-media" when i + 1 < args.Length:
                     maxMedia = int.Parse(args[++i]);
                     break;
+                case "--deep-media-ids" when i + 1 < args.Length:
+                    deepMediaIds = [.. args[++i].Split(",", StringSplitOptions.RemoveEmptyEntries).Select(int.Parse)];
+                    break;
                 default:
                     throw new ArgumentException($"Unrecognised argument '{args[i]}'.");
             }
@@ -228,6 +247,7 @@ internal sealed class RecorderOptions
             MaxPages = maxPages,
             DeepMediaCount = deepMedia,
             MaxMedia = maxMedia,
+            DeepMediaIds = deepMediaIds,
         };
     }
 }
@@ -613,6 +633,21 @@ internal sealed class RecordingPlan(
 
         var animeIds = SelectMediaIds(animeGroups, options.MaxMedia);
         var mangaIds = SelectMediaIds(mangaGroups, options.MaxMedia);
+
+        // Pinned titles go to the front, so "deep" means them rather than whichever titles the
+        // round-robin happened to reach first. Also added if the cap left them out entirely — a
+        // pinned id that is not recorded at all is the same fixture miss by a different route.
+        foreach (var pinned in options.DeepMediaIds.Reverse())
+        {
+            animeIds.Remove(pinned);
+            animeIds.Insert(0, pinned);
+        }
+
+        if (options.DeepMediaIds.Count > 0)
+        {
+            Console.WriteLine($"  pinned deep: {string.Join(", ", options.DeepMediaIds)}");
+        }
+
         Console.WriteLine($"  {animeIds.Count} anime, {mangaIds.Count} manga selected for recording");
 
         if (animeIds.Count == 0)
@@ -715,9 +750,14 @@ internal sealed class RecordingPlan(
 
     private async Task RecordMediaAsync(IReadOnlyList<int> animeIds, IReadOnlyList<int> mangaIds)
     {
-        var characterIds = new HashSet<int>();
-        var staffIds = new HashSet<int>();
-        var studioIds = new HashSet<int>();
+        // Collected per media, not pooled across all of them.
+        //
+        // Pooling and taking the first few made *which* entities got recorded incidental: the set
+        // filled in media order, so a run recorded Frieren's cast and MADHOUSE while the CI capture
+        // script drills into ONE PIECE — every entity page it touches was a fixture miss. The point
+        // of --deep-media is that those first few titles are fully explorable, and a details page
+        // whose studio and character chips lead nowhere is not.
+        var perMediaEntities = new List<(int MediaId, List<int> Characters, List<int> Staff, List<int> Studios)>();
         var recommendedIds = new HashSet<int>();
 
         var deep = 0;
@@ -745,16 +785,20 @@ internal sealed class RecordingPlan(
                 continue;
             }
 
+            var characters = new List<int>();
+            var staff = new List<int>();
+            var studios = new List<int>();
+
             foreach (var edge in media.Characters)
             {
                 if (edge.Node is { Id: > 0 } node)
                 {
-                    characterIds.Add(node.Id);
+                    characters.Add(node.Id);
                 }
 
                 if (edge.VoiceActors.FirstOrDefault() is { Id: > 0 } voiceActor)
                 {
-                    staffIds.Add(voiceActor.Id);
+                    staff.Add(voiceActor.Id);
                 }
             }
 
@@ -762,14 +806,16 @@ internal sealed class RecordingPlan(
             {
                 if (edge.Node is { Id: > 0 } node)
                 {
-                    staffIds.Add(node.Id);
+                    staff.Add(node.Id);
                 }
             }
 
             foreach (var studio in media.Studios.Where(s => s.Id > 0))
             {
-                studioIds.Add(studio.Id);
+                studios.Add(studio.Id);
             }
+
+            perMediaEntities.Add((id, characters, staff, studios));
 
             foreach (var recommendation in media.Recommendations)
             {
@@ -812,13 +858,43 @@ internal sealed class RecordingPlan(
             await client.GetMediaAsync(id);
         }
 
-        await RecordPeopleAsync(characterIds, staffIds, studioIds);
+        // Only the deep media get their entity pages recorded — those are the titles --deep-media
+        // promises are fully explorable, and recording every entity of every title would be
+        // thousands of requests. Taking from each one separately is what stops the selection being
+        // an accident of iteration order.
+        var characterIds = new List<int>();
+        var staffIds = new List<int>();
+        var studioIds = new List<int>();
+
+        foreach (var entry in perMediaEntities.Take(options.DeepMediaCount))
+        {
+            characterIds.AddRange(entry.Characters.Take(EntitiesPerMedia));
+            staffIds.AddRange(entry.Staff.Take(EntitiesPerMedia));
+
+            // Sliced like the rest. A studio costs ~13 requests once its six production sorts are
+            // walked, and ONE PIECE alone lists eleven — recording them all would be most of a
+            // recording run for chips nothing taps. The order here is the order the details page
+            // renders, and both CI and a human tap from the top, so the first couple are the ones
+            // that need to lead somewhere.
+            studioIds.AddRange(entry.Studios.Take(EntitiesPerMedia));
+        }
+
+        await RecordPeopleAsync(
+            new HashSet<int>(characterIds), new HashSet<int>(staffIds), new HashSet<int>(studioIds));
     }
+
+    /// <summary>
+    /// How many characters and staff to record per deep media. Two is enough to prove the pages
+    /// work and keeps the request count sane; the cast lists themselves are already recorded in
+    /// full as part of the media's own paging fixtures.
+    /// </summary>
+    private const int EntitiesPerMedia = 2;
 
     private async Task RecordPeopleAsync(
         IReadOnlySet<int> characterIds, IReadOnlySet<int> staffIds, IReadOnlySet<int> studioIds)
     {
-        foreach (var id in characterIds.Take(options.DeepMediaCount))
+        // No further truncation — the caller already chose these, per deep media.
+        foreach (var id in characterIds)
         {
             logger.Step($"Character {id}");
             await SafelyAsync($"character {id}", async () =>
@@ -831,7 +907,7 @@ internal sealed class RecordingPlan(
             });
         }
 
-        foreach (var id in staffIds.Take(options.DeepMediaCount))
+        foreach (var id in staffIds)
         {
             logger.Step($"Staff {id}");
             await SafelyAsync($"staff {id}", async () =>
@@ -849,7 +925,7 @@ internal sealed class RecordingPlan(
             });
         }
 
-        foreach (var id in studioIds.Take(options.DeepMediaCount))
+        foreach (var id in studioIds)
         {
             logger.Step($"Studio {id}");
             await SafelyAsync($"studio {id}", async () =>

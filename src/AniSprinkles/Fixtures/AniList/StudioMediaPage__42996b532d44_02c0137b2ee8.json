@@ -1,0 +1,628 @@
+﻿{
+  "operationName": "StudioMediaPage",
+  "variables": {
+    "id": 102,
+    "page": 2,
+    "sort": [
+      "START_DATE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "02c0137b2ee8",
+  "recordedAt": "2026-09-09T16:01:17.2817473+00:00",
+  "response": {
+    "data": {
+      "Studio": {
+        "media": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 2
+          },
+          "nodes": [
+            {
+              "id": 904,
+              "title": {
+                "romaji": "Dragon Ball Z: Super Senshi Gekiha!! Katsu no wa Ore da",
+                "english": "Dragon Ball Z: Bio-Broly",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EB\uFF3A \u8D85\u6226\u58EB\u6483\u7834!!\u52DD\u306E\u306F\u30AA\u30EC\u3060"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/904-nuPbNMkv1uX2.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/904-nuPbNMkv1uX2.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 52,
+              "favourites": 204,
+              "popularity": 33315,
+              "startDate": {
+                "year": 1994,
+                "month": 7,
+                "day": 9
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2125,
+              "title": {
+                "romaji": "Yuu\u2606Yuu\u2606Hakusho: Eizou Hakusho",
+                "english": "Yu Yu Hakusho: Eizou Hakusho",
+                "native": "\u5E7D\u2606\u904A\u2606\u767D\u66F8 \u6620\u50CF\u767D\u66F8 \u6697\u9ED2\u6B66\u8853\u4F1A\u306E\u7AE0 \u4E0A\u5DFB \u0026 \u4E0B\u5DFB"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/2125.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/2125.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 70,
+              "favourites": 76,
+              "popularity": 5329,
+              "startDate": {
+                "year": 1994,
+                "month": 9,
+                "day": 21
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 540,
+              "title": {
+                "romaji": "Tenchi Muyou! Ryououki Dai 2-ki",
+                "english": "Tenchi Muyo! Ryo-Ohki Season 2",
+                "native": "\u5929\u5730\u7121\u7528! \u9B4E\u7687\u9B3C \u7B2C2\u671F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/540.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/540.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 73,
+              "favourites": 79,
+              "popularity": 5908,
+              "startDate": {
+                "year": 1994,
+                "month": 9,
+                "day": 25
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 905,
+              "title": {
+                "romaji": "Dragon Ball Z: Fukkatsu no Fusion!! Goku to Vegeta",
+                "english": "Dragon Ball Z: Fusion Reborn",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EB\uFF3A \u5FA9\u6D3B\u306E\u30D5\u30E5\u30FC\u30B8\u30E7\u30F3!!\u609F\u7A7A\u3068\u30D9\u30B8\u30FC\u30BF"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/905-T97prwPOeyxm.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/905-T97prwPOeyxm.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 74,
+              "favourites": 716,
+              "popularity": 42489,
+              "startDate": {
+                "year": 1995,
+                "month": 3,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 696,
+              "title": {
+                "romaji": "Tenchi Muyou!",
+                "english": "Tenchi Muyo! Tenchi Universe",
+                "native": "\u5929\u5730\u7121\u7528\uFF01"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx696-q40thYobzxmz.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx696-q40thYobzxmz.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 71,
+              "favourites": 359,
+              "popularity": 18617,
+              "startDate": {
+                "year": 1995,
+                "month": 4,
+                "day": 2
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 534,
+              "title": {
+                "romaji": "Slayers",
+                "english": "The Slayers",
+                "native": "\u30B9\u30EC\u30A4\u30E4\u30FC\u30BA"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx534-BPGH9zsSFPm3.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx534-BPGH9zsSFPm3.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 74,
+              "favourites": 767,
+              "popularity": 31744,
+              "startDate": {
+                "year": 1995,
+                "month": 4,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 906,
+              "title": {
+                "romaji": "Dragon Ball Z: Ryuuken Bakuhatsu!! Goku ga Yaraneba Dare ga Yaru",
+                "english": "Dragon Ball Z: Wrath of the Dragon",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EB\uFF3A \u9F8D\u62F3\u7206\u767A!!\u609F\u7A7A\u304C\u3084\u3089\u306D\u3070\u8AB0\u304C\u3084\u308B"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/906-TmrkEiLnm9nR.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/906-TmrkEiLnm9nR.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 71,
+              "favourites": 474,
+              "popularity": 36483,
+              "startDate": {
+                "year": 1995,
+                "month": 7,
+                "day": 15
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2126,
+              "title": {
+                "romaji": "Yuu\u2606Yuu\u2606Hakusho: Eizou Hakusho II",
+                "english": "Yu Yu Hakusho: Eizou Hakusho II",
+                "native": "\u6620\u50CF\u767D\u66F8\u2161: \u5E7D\u52A9\u3001\u8535\u9B54\u3001\u98DB\u5F71\u3001\u6851\u539F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/2126.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/2126.jpg"
+              },
+              "format": "OVA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 69,
+              "favourites": 37,
+              "popularity": 4272,
+              "startDate": {
+                "year": 1995,
+                "month": 12,
+                "day": 16
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 225,
+              "title": {
+                "romaji": "Dragon Ball GT",
+                "english": "Dragon Ball GT",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EBGT"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx225-pzkDUVy7tKxH.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx225-pzkDUVy7tKxH.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 63,
+              "favourites": 2368,
+              "popularity": 129238,
+              "startDate": {
+                "year": 1996,
+                "month": 2,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 893,
+              "title": {
+                "romaji": "Dragon Ball: Saikyou e no Michi",
+                "english": "Dragon Ball: The Path to Power",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EB \u6700\u5F37\u3078\u306E\u9053"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b893-bzc4Y5KYngZJ.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b893-bzc4Y5KYngZJ.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 68,
+              "favourites": 164,
+              "popularity": 15685,
+              "startDate": {
+                "year": 1996,
+                "month": 3,
+                "day": 2
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 182,
+              "title": {
+                "romaji": "Tenkuu no Escaflowne",
+                "english": "Vision of Escaflowne",
+                "native": "\u5929\u7A7A\u306E\u30A8\u30B9\u30AB\u30D5\u30ED\u30FC\u30CD"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx182-YzZtZWMZCSFf.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx182-YzZtZWMZCSFf.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 73,
+              "favourites": 904,
+              "popularity": 40796,
+              "startDate": {
+                "year": 1996,
+                "month": 4,
+                "day": 2
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 535,
+              "title": {
+                "romaji": "Slayers NEXT",
+                "english": "The Slayers Next",
+                "native": "\u30B9\u30EC\u30A4\u30E4\u30FC\u30BA NEXT"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx535-xCRCSK8YG89S.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx535-xCRCSK8YG89S.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 77,
+              "favourites": 358,
+              "popularity": 12982,
+              "startDate": {
+                "year": 1996,
+                "month": 4,
+                "day": 5
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 493,
+              "title": {
+                "romaji": "Armitage III: POLY-MATRIX",
+                "english": null,
+                "native": "\u30A2\u30DF\u30C6\u30FC\u30B8\u30FB\u30B6\u30FB\u30B5\u30FC\u30C9 POLY-MATRIX"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/493.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/493.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 66,
+              "favourites": 30,
+              "popularity": 3129,
+              "startDate": {
+                "year": 1996,
+                "month": 4,
+                "day": 20
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 987,
+              "title": {
+                "romaji": "Dragon Ball GT: Goku Gaiden! Yuuki no Akashi wa Suushinchuu",
+                "english": "Dragon Ball GT: A Hero\u0027s Legacy",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EBGT \u609F\u7A7A\u5916\u4F1D! \u52C7\u6C17\u306E\u8A3C\u3057\u306F\u56DB\u661F\u7403(\u30B9\u30FC\u30B7\u30F3\u30C1\u30E5\u30A6)"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/987.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/987.jpg"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 62,
+              "favourites": 203,
+              "popularity": 19289,
+              "startDate": {
+                "year": 1997,
+                "month": 3,
+                "day": 26
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 538,
+              "title": {
+                "romaji": "Shin Tenchi Muyou!",
+                "english": "Tenchi in Tokyo",
+                "native": "\u65B0\u30FB\u5929\u5730\u7121\u7528!"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx538-yPo9msL7L6sm.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx538-yPo9msL7L6sm.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 65,
+              "favourites": 78,
+              "popularity": 6814,
+              "startDate": {
+                "year": 1997,
+                "month": 4,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1172,
+              "title": {
+                "romaji": "Slayers TRY",
+                "english": "The Slayers Try",
+                "native": "\u30B9\u30EC\u30A4\u30E4\u30FC\u30BA TRY"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1172-lNafo4vTzqho.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1172-lNafo4vTzqho.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 75,
+              "favourites": 176,
+              "popularity": 9939,
+              "startDate": {
+                "year": 1997,
+                "month": 4,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 6,
+              "title": {
+                "romaji": "TRIGUN",
+                "english": "Trigun",
+                "native": "TRIGUN"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx6-wd4saT1JzStH.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx6-wd4saT1JzStH.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 80,
+              "favourites": 7377,
+              "popularity": 170113,
+              "startDate": {
+                "year": 1998,
+                "month": 4,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 780,
+              "title": {
+                "romaji": "Meitantei Conan: Juuyonbanme no Target",
+                "english": "Detective Conan: The Fourteenth Target",
+                "native": "\u540D\u63A2\u5075\u30B3\u30CA\u30F3 \uFF11\uFF14\u756A\u76EE\u306E\u6A19\u7684"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b780-hxqAnXzg8DX4.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b780-hxqAnXzg8DX4.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 77,
+              "favourites": 152,
+              "popularity": 15227,
+              "startDate": {
+                "year": 1998,
+                "month": 4,
+                "day": 18
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 185,
+              "title": {
+                "romaji": "Initial D",
+                "english": "Initial D 1st Stage",
+                "native": "\u982D\u6587\u5B57[\u30A4\u30CB\u30B7\u30E3\u30EB]D"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b185-GvXiR8AKTmdn.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b185-GvXiR8AKTmdn.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 82,
+              "favourites": 6523,
+              "popularity": 116492,
+              "startDate": {
+                "year": 1998,
+                "month": 4,
+                "day": 19
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 339,
+              "title": {
+                "romaji": "serial experiments lain",
+                "english": "Serial Experiments Lain",
+                "native": "serial experiments lain"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx339-xF2wp1NQuQ4r.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx339-xF2wp1NQuQ4r.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 80,
+              "favourites": 16175,
+              "popularity": 252417,
+              "startDate": {
+                "year": 1998,
+                "month": 7,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 568,
+              "title": {
+                "romaji": "Bubblegum Crisis TOKYO 2040",
+                "english": null,
+                "native": "\u30D0\u30D6\u30EB\u30AC\u30E0\u30AF\u30E9\u30A4\u30B7\u30B9 TOKYO2040"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx568-XvVqG7WdO1jo.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx568-XvVqG7WdO1jo.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 68,
+              "favourites": 121,
+              "popularity": 9162,
+              "startDate": {
+                "year": 1998,
+                "month": 10,
+                "day": 8
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 290,
+              "title": {
+                "romaji": "Seikai no Monshou",
+                "english": "Crest of the Stars",
+                "native": "\u661F\u754C\u306E\u7D0B\u7AE0"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx290-Bf2q1HYyKbNG.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx290-Bf2q1HYyKbNG.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 73,
+              "favourites": 186,
+              "popularity": 15823,
+              "startDate": {
+                "year": 1999,
+                "month": 1,
+                "day": 2
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1226,
+              "title": {
+                "romaji": "Seihou Tenshi Angel Links",
+                "english": "Angel Links",
+                "native": "\u661F\u65B9\u5929\u4F7F\u30A8\u30F3\u30B8\u30A7\u30EB\u30EA\u30F3\u30AF\u30B9"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1226-sx2zVXFu1maX.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1226-sx2zVXFu1maX.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 57,
+              "favourites": 19,
+              "popularity": 3384,
+              "startDate": {
+                "year": 1999,
+                "month": 4,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 781,
+              "title": {
+                "romaji": "Meitantei Conan: Seikimatsu no Majutsushi",
+                "english": "Detective Conan: The Last Wizard of the Century",
+                "native": "\u540D\u63A2\u5075\u30B3\u30CA\u30F3 \u4E16\u7D00\u672B\u306E\u9B54\u8853\u5E2B"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx781-5VSeE53N40BF.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx781-5VSeE53N40BF.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 184,
+              "popularity": 15229,
+              "startDate": {
+                "year": 1999,
+                "month": 4,
+                "day": 17
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 58,
+              "title": {
+                "romaji": "BLUE GENDER",
+                "english": "Blue Gender",
+                "native": "BLUE GENDER"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b58-2KarB5N1dB0P.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b58-2KarB5N1dB0P.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 66,
+              "favourites": 191,
+              "popularity": 17210,
+              "startDate": {
+                "year": 1999,
+                "month": 10,
+                "day": 8
+              },
+              "mediaListEntry": null
+            }
+          ]
+        }
+      }
+    }
+  }
+}

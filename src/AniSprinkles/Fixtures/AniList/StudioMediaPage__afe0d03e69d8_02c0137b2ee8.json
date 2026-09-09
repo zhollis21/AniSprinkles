@@ -1,0 +1,633 @@
+﻿{
+  "operationName": "StudioMediaPage",
+  "variables": {
+    "id": 18,
+    "page": 3,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "02c0137b2ee8",
+  "recordedAt": "2026-09-09T16:00:01.3743436+00:00",
+  "response": {
+    "data": {
+      "Studio": {
+        "media": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 3
+          },
+          "nodes": [
+            {
+              "id": 2397,
+              "title": {
+                "romaji": "Digimon Adventure: Bokura no War Game!",
+                "english": "Digimon: Our War Game",
+                "native": "\u30C7\u30B8\u30E2\u30F3\u30A2\u30C9\u30D9\u30F3\u30C1\u30E3\u30FC \u307C\u304F\u3089\u306E\u30A6\u30A9\u30FC\u30B2\u30FC\u30E0!"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx2397-jFhwpduFwf3r.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2397-jFhwpduFwf3r.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 76,
+              "favourites": 615,
+              "popularity": 20479,
+              "startDate": {
+                "year": 2000,
+                "month": 3,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 20778,
+              "title": {
+                "romaji": "Dragon Ball Z: Fukkatsu no \u0022F\u0022",
+                "english": "Dragon Ball Z: Resurrection \u0027F\u0027",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EBZ \u5FA9\u6D3B\u306E\u300CF\u300D"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20778-HYEes09iv8fJ.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20778-HYEes09iv8fJ.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 67,
+              "favourites": 604,
+              "popularity": 60312,
+              "startDate": {
+                "year": 2015,
+                "month": 4,
+                "day": 18
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2961,
+              "title": {
+                "romaji": "Digimon Adventure (Movie)",
+                "english": "Digimon Adventure (Movie)",
+                "native": "\u30C7\u30B8\u30E2\u30F3\u30A2\u30C9\u30D9\u30F3\u30C1\u30E3\u30FC (Movie)"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx2961-RMVNKewZWfv9.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2961-RMVNKewZWfv9.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 74,
+              "favourites": 593,
+              "popularity": 25536,
+              "startDate": {
+                "year": 1999,
+                "month": 3,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 985,
+              "title": {
+                "romaji": "Dragon Ball Z: Zetsubou e no Hankou!! Nokosareta Chousenshi - Gohan to Trunks",
+                "english": "Dragon Ball Z: The History of Trunks",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EB\uFF3A\u30FB\u7D76\u671B\u3078\u306E\u53CD\u6297\uFF01\uFF01\u6B8B\u3055\u308C\u305F\u8D85\u6226\u58EB\u30FB\u609F\u98EF\u3068\u30C8\u30E9\u30F3\u30AF\u30B9"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx985-5AKFy3HpX0uo.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx985-5AKFy3HpX0uo.jpg"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 76,
+              "favourites": 591,
+              "popularity": 29225,
+              "startDate": {
+                "year": 1993,
+                "month": 2,
+                "day": 24
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1132,
+              "title": {
+                "romaji": "Digimon Frontier",
+                "english": null,
+                "native": "\u30C7\u30B8\u30E2\u30F3\u30D5\u30ED\u30F3\u30C6\u30A3\u30A2"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx1132-sAQyMO3rSg69.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx1132-sAQyMO3rSg69.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 69,
+              "favourites": 580,
+              "popularity": 29083,
+              "startDate": {
+                "year": 2002,
+                "month": 4,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 901,
+              "title": {
+                "romaji": "Dragon Ball Z: Moetsukiro!! Nessen - Ressen - Chou Gekisen",
+                "english": "Dragon Ball Z: Broly - The Legendary Super Saiyan",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EBZ \u71C3\u3048\u3064\u304D\u308D!!\u71B1\u6226\u30FB\u70C8\u6226\u30FB\u8D85\u6FC0\u6226"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/901-gB41PQJWFXjp.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/901-gB41PQJWFXjp.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 70,
+              "favourites": 557,
+              "popularity": 41687,
+              "startDate": {
+                "year": 1993,
+                "month": 3,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1050,
+              "title": {
+                "romaji": "Bobobo-bo Bo-bobo",
+                "english": "Bobobo-bo Bo-bobo",
+                "native": "\u30DC\u30DC\u30DC\u30FC\u30DC\u30FB\u30DC\u30FC\u30DC\u30DC"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1050-qQAPEPu1kNKP.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1050-qQAPEPu1kNKP.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 72,
+              "favourites": 542,
+              "popularity": 21344,
+              "startDate": {
+                "year": 2003,
+                "month": 11,
+                "day": 8
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1239,
+              "title": {
+                "romaji": "Bishoujo Senshi Sailor Moon SuperS",
+                "english": "Sailor Moon SuperS",
+                "native": "\u7F8E\u5C11\u5973\u6226\u58EB\u30BB\u30FC\u30E9\u30FC\u30E0\u30FC\u30F3 Super S"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1239-bYf4KsFfsUhf.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1239-bYf4KsFfsUhf.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 74,
+              "favourites": 533,
+              "popularity": 25468,
+              "startDate": {
+                "year": 1995,
+                "month": 3,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 102352,
+              "title": {
+                "romaji": "Super Dragon Ball Heroes",
+                "english": null,
+                "native": "\u30B9\u30FC\u30D1\u30FC\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EB\u30D2\u30FC\u30ED\u30FC\u30BA"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b102352-iTBUsIV9x7KH.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b102352-iTBUsIV9x7KH.jpg"
+              },
+              "format": "ONA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 54,
+              "favourites": 513,
+              "popularity": 26506,
+              "startDate": {
+                "year": 2018,
+                "month": 7,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 12191,
+              "title": {
+                "romaji": "Smile Precure!",
+                "english": "Glitter Force",
+                "native": "\u30B9\u30DE\u30A4\u30EB\u30D7\u30EA\u30AD\u30E5\u30A2"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx12191-nWmjNC2appDV.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx12191-nWmjNC2appDV.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 70,
+              "favourites": 508,
+              "popularity": 18404,
+              "startDate": {
+                "year": 2012,
+                "month": 2,
+                "day": 5
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 603,
+              "title": {
+                "romaji": "Futari wa Precure",
+                "english": "Precure",
+                "native": "\u3075\u305F\u308A\u306F\u30D7\u30EA\u30AD\u30E5\u30A2"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx603-sTv5PVWt8FGi.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx603-sTv5PVWt8FGi.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 71,
+              "favourites": 491,
+              "popularity": 21803,
+              "startDate": {
+                "year": 2004,
+                "month": 2,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 906,
+              "title": {
+                "romaji": "Dragon Ball Z: Ryuuken Bakuhatsu!! Goku ga Yaraneba Dare ga Yaru",
+                "english": "Dragon Ball Z: Wrath of the Dragon",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EB\uFF3A \u9F8D\u62F3\u7206\u767A!!\u609F\u7A7A\u304C\u3084\u3089\u306D\u3070\u8AB0\u304C\u3084\u308B"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/906-TmrkEiLnm9nR.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/906-TmrkEiLnm9nR.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 71,
+              "favourites": 474,
+              "popularity": 36483,
+              "startDate": {
+                "year": 1995,
+                "month": 7,
+                "day": 15
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 353,
+              "title": {
+                "romaji": "Ojamajo Doremi Dokkaan!",
+                "english": null,
+                "native": "\u304A\u30B8\u30E3\u9B54\u5973\u3069\u308C\u307F\u30C9\u30C3\u30AB\u301C\u30F3\uFF01"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx353-OPqNN0mZ6onZ.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx353-OPqNN0mZ6onZ.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 79,
+              "favourites": 454,
+              "popularity": 6099,
+              "startDate": {
+                "year": 2002,
+                "month": 2,
+                "day": 3
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 10033,
+              "title": {
+                "romaji": "Toriko",
+                "english": null,
+                "native": "\u30C8\u30EA\u30B3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx10033-V7xnlgAVtaVR.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx10033-V7xnlgAVtaVR.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 69,
+              "favourites": 452,
+              "popularity": 27485,
+              "startDate": {
+                "year": 2011,
+                "month": 4,
+                "day": 3
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 100661,
+              "title": {
+                "romaji": "HUGtto! Precure",
+                "english": null,
+                "native": "HUG\u3063\u3068\uFF01\u30D7\u30EA\u30AD\u30E5\u30A2"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx100661-XT2NWXKklV5T.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx100661-XT2NWXKklV5T.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 451,
+              "popularity": 9305,
+              "startDate": {
+                "year": 2018,
+                "month": 2,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 21001,
+              "title": {
+                "romaji": "Go! Princess Precure",
+                "english": "Go! Princess Precure",
+                "native": "Go!\u30D7\u30EA\u30F3\u30BB\u30B9\u30D7\u30EA\u30AD\u30E5\u30A2"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21001-49nYJTr7Wnsu.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21001-49nYJTr7Wnsu.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 78,
+              "favourites": 437,
+              "popularity": 8754,
+              "startDate": {
+                "year": 2015,
+                "month": 2,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 852,
+              "title": {
+                "romaji": "Gokinjo Monogatari",
+                "english": null,
+                "native": "\u3054\u8FD1\u6240\u7269\u8A9E"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx852-1chkfKkfOczt.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx852-1chkfKkfOczt.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 76,
+              "favourites": 430,
+              "popularity": 12285,
+              "startDate": {
+                "year": 1995,
+                "month": 9,
+                "day": 10
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 986,
+              "title": {
+                "romaji": "Dragon Ball Z: Tatta Hitori no Saishuu Kessen - Freeza ni Idonda Z Senshi Son Goku no Chi",
+                "english": "Dragon Ball Z: Bardock \u2013 The Father of Goku",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EBZ \u305F\u3063\u305F\u3072\u3068\u308A\u306E\u6700\u7D42\u6C7A\u6226\u301C\u30D5\u30EA\u30FC\u30B6\u306B\u6311\u3093\u3060Z\u6226\u58EB \u5B6B\u609F\u7A7A\u306E\u7236\u301C"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx986-AaMvLpNQrRzu.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx986-AaMvLpNQrRzu.jpg"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 73,
+              "favourites": 430,
+              "popularity": 29081,
+              "startDate": {
+                "year": 1990,
+                "month": 10,
+                "day": 17
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 108260,
+              "title": {
+                "romaji": "Digimon Adventure: LAST EVOLUTION Kizuna",
+                "english": "Digimon Adventure: Last Evolution Kizuna",
+                "native": "\u30C7\u30B8\u30E2\u30F3\u30A2\u30C9\u30D9\u30F3\u30C1\u30E3\u30FC LAST EVOLUTION \u7D46"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx108260-2TAbERdThOZR.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx108260-2TAbERdThOZR.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 80,
+              "favourites": 426,
+              "popularity": 13682,
+              "startDate": {
+                "year": 2020,
+                "month": 2,
+                "day": 21
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1491,
+              "title": {
+                "romaji": "Ginga Tetsudou 999",
+                "english": "Galaxy Express 999",
+                "native": "\u9280\u6CB3\u9244\u9053\uFF19\uFF19\uFF19"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1491-XfYiHNYKDR2P.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1491-XfYiHNYKDR2P.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 75,
+              "favourites": 407,
+              "popularity": 16530,
+              "startDate": {
+                "year": 1978,
+                "month": 9,
+                "day": 14
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 171630,
+              "title": {
+                "romaji": "THE ONE PIECE",
+                "english": "THE ONE PIECE",
+                "native": "THE ONE PIECE"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx171630-2U7Y5OIWwXJJ.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx171630-2U7Y5OIWwXJJ.jpg"
+              },
+              "format": null,
+              "type": "ANIME",
+              "status": "NOT_YET_RELEASED",
+              "averageScore": null,
+              "favourites": 397,
+              "popularity": 25621,
+              "startDate": {
+                "year": 2027,
+                "month": 2,
+                "day": null
+              },
+              "mediaListEntry": {
+                "id": 593365692,
+                "status": "PLANNING",
+                "progress": 0,
+                "score": 0
+              }
+            },
+            {
+              "id": 898,
+              "title": {
+                "romaji": "Dragon Ball Z: Tobikkiri no Saikyou Tai Saikyou",
+                "english": "Dragon Ball Z: Cooler\u0027s Revenge",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EBZ \u3068\u3073\u3063\u304D\u308A\u306E\u6700\u5F37\u5BFE\u6700\u5F37"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/898.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/898.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 68,
+              "favourites": 389,
+              "popularity": 38444,
+              "startDate": {
+                "year": 1991,
+                "month": 7,
+                "day": 20
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 21462,
+              "title": {
+                "romaji": "Bishoujo Senshi Sailor Moon: Crystal - Death Busters-hen",
+                "english": "Pretty Guardian Sailor Moon Crystal: Season 3",
+                "native": "\u7F8E\u5C11\u5973\u6226\u58EB\u30BB\u30FC\u30E9\u30FC\u30E0\u30FC\u30F3 Crystal \u30C7\u30B9\u30FB\u30D0\u30B9\u30BF\u30FC\u30BA\u7DE8"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21462-bRbgZYf4Sgxj.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21462-bRbgZYf4Sgxj.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 76,
+              "favourites": 385,
+              "popularity": 16802,
+              "startDate": {
+                "year": 2016,
+                "month": 4,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 12231,
+              "title": {
+                "romaji": "Dragon Ball: Episode of Bardock",
+                "english": "Dragon Ball: Episode of Bardock",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EB \u30A8\u30D4\u30BD\u30FC\u30C9 \u30AA\u30D6 \u30D0\u30FC\u30C0\u30C3\u30AF"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/12231.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/12231.jpg"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 68,
+              "favourites": 375,
+              "popularity": 32222,
+              "startDate": {
+                "year": 2011,
+                "month": 12,
+                "day": 17
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 859,
+              "title": {
+                "romaji": "Digimon Savers",
+                "english": "Digimon Data Squad",
+                "native": "\u30C7\u30B8\u30E2\u30F3\u30BB\u30A4\u30D0\u30FC\u30BA"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/859-bjjZXdawvrJW.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/859-bjjZXdawvrJW.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 67,
+              "favourites": 373,
+              "popularity": 18393,
+              "startDate": {
+                "year": 2006,
+                "month": 4,
+                "day": 2
+              },
+              "mediaListEntry": null
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 21,
+    "page": 2,
+    "sort": [
+      "RELEVANCE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-09-09T15:56:05.2720715+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 2
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 103799,
+                "name": {
+                  "full": "Toshio Deguchi",
+                  "native": "\u51FA\u53E3\u3068\u3057\u304A ",
+                  "userPreferred": "Toshio Deguchi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Animation Director (eps 1046, 1054)"
+            },
+            {
+              "node": {
+                "id": 104174,
+                "name": {
+                  "full": "Yukiko Nakatani",
+                  "native": "\u4E2D\u8C37\u53CB\u7D00\u5B50",
+                  "userPreferred": "Yukiko Nakatani"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n104174-3hABPETOl2co.png"
+                },
+                "favourites": 32
+              },
+              "role": "Animation Director (eps 585, 591, 597, 610, 620, 625, 638, 894, 919)"
+            },
+            {
+              "node": {
+                "id": 103798,
+                "name": {
+                  "full": "Kazuya Hisada",
+                  "native": "\u4E45\u7530\u548C\u4E5F",
+                  "userPreferred": "Kazuya Hisada"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n103798-LdEfvPnDnoWo.png"
+                },
+                "favourites": 22
+              },
+              "role": "Animation Director (eps 1, 7, 22, 29, 36, 43, 51, 56, 63, 70, 77, 84, 91, 97, 113, 120, 129, 136, 142, 148, 154, 161, 170, 177, 183, 189, 192, 200, 208, 215, 224, 227, 232, 240, 243, 248, 253, 258, 261, 268, 274, 279, 285, 291, 297, 303, 310, 321, 328, 33"
+            },
+            {
+              "node": {
+                "id": 103468,
+                "name": {
+                  "full": "Shigefumi Shingaki",
+                  "native": "\u65B0\u57A3\u91CD\u6587",
+                  "userPreferred": "Shigefumi Shingaki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n103468-VxKdEOZu6bSk.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "Animation Director"
+            },
+            {
+              "node": {
+                "id": 103463,
+                "name": {
+                  "full": "Eisaku Inoue",
+                  "native": "\u4E95\u4E0A\u6804\u4F5C",
+                  "userPreferred": "Eisaku Inoue"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n103463-F0X7cqxJ4qs0.jpg"
+                },
+                "favourites": 4
+              },
+              "role": "Animation Director (eps 2, 9, 14, 19, 26, 33, 41, 48, 93, 119, 168, 175, 220, 237, 244, 284, 312, 325, 336, 347, 357, 367, 377, 474, 484, 493, 500, 512, 524, 535, 813, 842, 848, 855, 867, 878, 884, 897, 907, 913, 924, 929, 940, 957, 966, 976, 980, 1106, 1"
+            },
+            {
+              "node": {
+                "id": 103181,
+                "name": {
+                  "full": "Yuuji Kondou",
+                  "native": "\u8FD1\u85E4\u512A\u6B21",
+                  "userPreferred": "Yuuji Kondou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Animation Director"
+            },
+            {
+              "node": {
+                "id": 103804,
+                "name": {
+                  "full": "Masahiro Shimanuki",
+                  "native": "\u5CF6\u8CAB\u6B63\u5F18",
+                  "userPreferred": "Masahiro Shimanuki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 4
+              },
+              "role": "Animation Director"
+            },
+            {
+              "node": {
+                "id": 100653,
+                "name": {
+                  "full": "Yuuki Kinoshita",
+                  "native": "\u6728\u4E0B\u3086\u3046\u304D",
+                  "userPreferred": "Yuuki Kinoshita"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n100653-LpKc3EUAxTL7.png"
+                },
+                "favourites": 12
+              },
+              "role": "Animation Director"
+            },
+            {
+              "node": {
+                "id": 101936,
+                "name": {
+                  "full": "Yukari Kobayashi",
+                  "native": "\u5C0F\u6797\u3086\u304B\u308A",
+                  "userPreferred": "Yukari Kobayashi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101936-Q7x8GkJtXFRo.png"
+                },
+                "favourites": 11
+              },
+              "role": "Animation Director"
+            },
+            {
+              "node": {
+                "id": 111683,
+                "name": {
+                  "full": "Hideaki Maniwa",
+                  "native": "\u771F\u5EAD\u79C0\u660E",
+                  "userPreferred": "Hideaki Maniwa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n111683-J678ke1hgs3u.png"
+                },
+                "favourites": 1
+              },
+              "role": "Animation Director"
+            },
+            {
+              "node": {
+                "id": 102679,
+                "name": {
+                  "full": "Noboru Koizumi",
+                  "native": "\u5C0F\u6CC9\u6607",
+                  "userPreferred": "Noboru Koizumi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n102679-vtVFFvIUzvsy.png"
+                },
+                "favourites": 11
+              },
+              "role": "Key Animation"
+            },
+            {
+              "node": {
+                "id": 103802,
+                "name": {
+                  "full": "Masayuki Takagi",
+                  "native": "\u9AD8\u6728\u96C5\u4E4B",
+                  "userPreferred": "Masayuki Takagi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "Key Animation (eps 118, 133, 139, 145, 151, 173, 180, 186, 198, 204, 216, 226, 235, 241, 252, 291, 294, 301, 308, 311, 315, 316, 324, 332, 340, 346, 355, 363, 380, 397, 405, 415, 422, 423, 426, 432, 441, 449, 456, 476, 480, 483, 488, 510, 517, 521, 531)"
+            },
+            {
+              "node": {
+                "id": 111683,
+                "name": {
+                  "full": "Hideaki Maniwa",
+                  "native": "\u771F\u5EAD\u79C0\u660E",
+                  "userPreferred": "Hideaki Maniwa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n111683-J678ke1hgs3u.png"
+                },
+                "favourites": 1
+              },
+              "role": "Key Animation"
+            },
+            {
+              "node": {
+                "id": 104171,
+                "name": {
+                  "full": "Atsuko Kawamura",
+                  "native": "\u5DDD\u6751\u6566\u5B50",
+                  "userPreferred": "Atsuko Kawamura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Key Animation"
+            },
+            {
+              "node": {
+                "id": 115623,
+                "name": {
+                  "full": "Hiroki Harada",
+                  "native": "\u539F\u7530\u5927\u57FA",
+                  "userPreferred": "Hiroki Harada"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n115623-TQa2q4mtVQzO.png"
+                },
+                "favourites": 21
+              },
+              "role": "Key Animation"
+            },
+            {
+              "node": {
+                "id": 121365,
+                "name": {
+                  "full": "Junichi Kitamura",
+                  "native": "\u5317\u6751\u6DF3\u4E00",
+                  "userPreferred": "Junichi Kitamura"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n121365-o51ceJQy6qUA.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Key Animation"
+            },
+            {
+              "node": {
+                "id": 103804,
+                "name": {
+                  "full": "Masahiro Shimanuki",
+                  "native": "\u5CF6\u8CAB\u6B63\u5F18",
+                  "userPreferred": "Masahiro Shimanuki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 4
+              },
+              "role": "Key Animation (eps 1014, 1024, 1035, 1044, 1075, 1096)"
+            },
+            {
+              "node": {
+                "id": 141605,
+                "name": {
+                  "full": "Kouhei Kureta",
+                  "native": "\u66AE\u7530\u516C\u5E73",
+                  "userPreferred": "Kouhei Kureta"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n141605-SV9XPHWevkPf.png"
+                },
+                "favourites": 0
+              },
+              "role": "Director (eps 892-1030)"
+            },
+            {
+              "node": {
+                "id": 132478,
+                "name": {
+                  "full": "Hiroaki Miyamoto",
+                  "native": "\u5BAE\u5143\u5B8F\u5F70",
+                  "userPreferred": "Hiroaki Miyamoto"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n132478-PaxxL5ijiFYz.jpg"
+                },
+                "favourites": 5
+              },
+              "role": "Director (eps 352-679)"
+            },
+            {
+              "node": {
+                "id": 141606,
+                "name": {
+                  "full": "Aya Komaki",
+                  "native": "\u5C0F\u7267\u6587",
+                  "userPreferred": "Aya Komaki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n141606-wfEJ3f8GK44S.png"
+                },
+                "favourites": 6
+              },
+              "role": "Director (eps 892-961)"
+            },
+            {
+              "node": {
+                "id": 107867,
+                "name": {
+                  "full": "Tatsuya Nagamine",
+                  "native": "\u9577\u5CEF\u9054\u4E5F",
+                  "userPreferred": "Tatsuya Nagamine"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n107867-8tHwWzrFXSrv.jpg"
+                },
+                "favourites": 48
+              },
+              "role": "Director (eps 780-782, 892-1122)"
+            },
+            {
+              "node": {
+                "id": 140342,
+                "name": {
+                  "full": "Midori Matsuda",
+                  "native": "\u677E\u7530\u7FE0",
+                  "userPreferred": "Midori Matsuda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n140342-yNdTfT8oXTmF.jpg"
+                },
+                "favourites": 4
+              },
+              "role": "Character Design (eps 780-782, 892- )"
+            },
+            {
+              "node": {
+                "id": 104397,
+                "name": {
+                  "full": "Anton\u00EDn Dvo\u0159\u00E1k",
+                  "native": null,
+                  "userPreferred": "Anton\u00EDn Dvo\u0159\u00E1k"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n104397-7OnfsYCLT7ag.jpg"
+                },
+                "favourites": 43
+              },
+              "role": "Music  (\u0022Symphony No. 9 in E Minor \u0022From the New World\u0022 Op)"
+            },
+            {
+              "node": {
+                "id": 116353,
+                "name": {
+                  "full": "Giorgio Vanni",
+                  "native": null,
+                  "userPreferred": "Giorgio Vanni"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/21353.jpg"
+                },
+                "favourites": 66
+              },
+              "role": "Theme Song Performance (Italian)"
+            },
+            {
+              "node": {
+                "id": 115046,
+                "name": {
+                  "full": "Takako Uehara",
+                  "native": "\u591A\u9999\u5B50 \u4E0A\u539F",
+                  "userPreferred": "Takako Uehara"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/20046.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Theme Song Performance (ED7)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

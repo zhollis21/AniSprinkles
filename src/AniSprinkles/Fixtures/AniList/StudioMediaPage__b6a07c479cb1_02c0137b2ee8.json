@@ -1,0 +1,628 @@
+﻿{
+  "operationName": "StudioMediaPage",
+  "variables": {
+    "id": 18,
+    "page": 1,
+    "sort": [
+      "START_DATE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "02c0137b2ee8",
+  "recordedAt": "2026-09-09T16:00:15.3448221+00:00",
+  "response": {
+    "data": {
+      "Studio": {
+        "media": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "nodes": [
+            {
+              "id": 163991,
+              "title": {
+                "romaji": "Gosu",
+                "english": null,
+                "native": "\uACE0\uC218"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b163991-l1SNf7Q5SfBG.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b163991-l1SNf7Q5SfBG.jpg"
+              },
+              "format": null,
+              "type": "ANIME",
+              "status": "NOT_YET_RELEASED",
+              "averageScore": null,
+              "favourites": 19,
+              "popularity": 1689,
+              "startDate": {
+                "year": null,
+                "month": null,
+                "day": null
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 198663,
+              "title": {
+                "romaji": "KAIJU DECODE: Aidara no Yubiwa",
+                "english": null,
+                "native": "\u602A\u7363\u30C7\u30B3\u30FC\u30C9 \u30A2\u30A4\u30C0\u30E9\u306E\u6307\u8F2A"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx198663-eIYld0XWimKB.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx198663-eIYld0XWimKB.jpg"
+              },
+              "format": null,
+              "type": "ANIME",
+              "status": "NOT_YET_RELEASED",
+              "averageScore": null,
+              "favourites": 3,
+              "popularity": 306,
+              "startDate": {
+                "year": null,
+                "month": null,
+                "day": null
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 203448,
+              "title": {
+                "romaji": "World Trigger REBOOT Project (Provisional Title)",
+                "english": null,
+                "native": "\u30EF\u30FC\u30EB\u30C9\u30C8\u30EA\u30AC\u30FC REBOOT\u30D7\u30ED\u30B8\u30A7\u30AF\u30C8 \uFF08\u4EEE\uFF09"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx203448-lzXoU41UeJCU.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx203448-lzXoU41UeJCU.jpg"
+              },
+              "format": null,
+              "type": "ANIME",
+              "status": "NOT_YET_RELEASED",
+              "averageScore": null,
+              "favourites": 71,
+              "popularity": 4571,
+              "startDate": {
+                "year": null,
+                "month": null,
+                "day": null
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 206812,
+              "title": {
+                "romaji": "Dragon Ball Super: Ginga Patrol",
+                "english": null,
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EB\u8D85 \u9280\u6CB3\u30D1\u30C8\u30ED\u30FC\u30EB"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx206812-XMuteotGcnU8.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206812-XMuteotGcnU8.jpg"
+              },
+              "format": null,
+              "type": "ANIME",
+              "status": "NOT_YET_RELEASED",
+              "averageScore": null,
+              "favourites": 178,
+              "popularity": 9769,
+              "startDate": {
+                "year": null,
+                "month": null,
+                "day": null
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 214442,
+              "title": {
+                "romaji": "Ginga Tetsudou 999 Movie (Provisional Title)",
+                "english": null,
+                "native": "\u9280\u6CB3\u9244\u9053999 \u65B0\u4F5C\u5287\u5834\u30A2\u30CB\u30E1\u30FC\u30B7\u30E7\u30F3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx214442-fi1lkNH4WFJz.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx214442-fi1lkNH4WFJz.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "NOT_YET_RELEASED",
+              "averageScore": null,
+              "favourites": 2,
+              "popularity": 366,
+              "startDate": {
+                "year": null,
+                "month": null,
+                "day": null
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 5662,
+              "title": {
+                "romaji": "Suteneko Tora-chan",
+                "english": null,
+                "native": "\u3059\u3066\u732B\u30C8\u30E9\u3061\u3083\u3093"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b5662-GvO96VG3zeaO.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b5662-GvO96VG3zeaO.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 52,
+              "favourites": 6,
+              "popularity": 791,
+              "startDate": {
+                "year": 1947,
+                "month": 9,
+                "day": 25
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 12603,
+              "title": {
+                "romaji": "Tora-chan to Hanayome",
+                "english": "Little Tiger and Bride",
+                "native": "\u30C8\u30E9\u3061\u3083\u3093\u3068\u82B1\u5AC1"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/12603.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/12603.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 51,
+              "favourites": 5,
+              "popularity": 668,
+              "startDate": {
+                "year": 1948,
+                "month": 2,
+                "day": 15
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 184982,
+              "title": {
+                "romaji": "Poppoya-san: Nonki Ekichou",
+                "english": null,
+                "native": "\u30DD\u30C3\u30DD\u3084\u3055\u3093 \u306E\u3093\u304D\u99C5\u9577"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/default.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/default.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": null,
+              "favourites": 0,
+              "popularity": 64,
+              "startDate": {
+                "year": 1948,
+                "month": 10,
+                "day": null
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 184983,
+              "title": {
+                "romaji": "Poppoya-san: Nonki Kikanshi",
+                "english": null,
+                "native": "\u30DD\u30C3\u30DD\u3084\u3055\u3093 \u306E\u3093\u304D\u6A5F\u95A2\u58EB"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/default.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/default.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": null,
+              "favourites": 0,
+              "popularity": 62,
+              "startDate": {
+                "year": 1949,
+                "month": 6,
+                "day": null
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 169524,
+              "title": {
+                "romaji": "Doubutsu Dai Yakyuu Sen",
+                "english": null,
+                "native": "\u52D5\u7269\u5927\u91CE\u7403\u6226"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b169524-2QrEHghitlUP.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b169524-2QrEHghitlUP.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": null,
+              "favourites": 0,
+              "popularity": 97,
+              "startDate": {
+                "year": 1949,
+                "month": 12,
+                "day": null
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 170156,
+              "title": {
+                "romaji": "Kobito to Aomushi",
+                "english": null,
+                "native": "\u5C0F\u4EBA\u3068\u9752\u866B"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b170156-7n4g6Lu2FD64.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b170156-7n4g6Lu2FD64.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": null,
+              "favourites": 0,
+              "popularity": 98,
+              "startDate": {
+                "year": 1950,
+                "month": 12,
+                "day": null
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 6993,
+              "title": {
+                "romaji": "Koneko no Rakugaki",
+                "english": null,
+                "native": "\u3053\u306D\u3053\u306E\u3089\u304F\u304C\u304D"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx6993-9K3SFQJ4bIAZ.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx6993-9K3SFQJ4bIAZ.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 53,
+              "favourites": 6,
+              "popularity": 1183,
+              "startDate": {
+                "year": 1957,
+                "month": 5,
+                "day": 13
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 179805,
+              "title": {
+                "romaji": "Kappa no Paatarou",
+                "english": null,
+                "native": "\u304B\u3063\u3071\u306E\u3071\u3042\u592A\u90CE"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b179805-MPBIko0uj4DF.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b179805-MPBIko0uj4DF.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": null,
+              "favourites": 0,
+              "popularity": 47,
+              "startDate": {
+                "year": 1957,
+                "month": 11,
+                "day": 15
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 4513,
+              "title": {
+                "romaji": "Hakujaden",
+                "english": "Panda and the Magic Serpent",
+                "native": "\u767D\u86C7\u4F1D"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b4513-CimSIpSc6u3Z.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b4513-CimSIpSc6u3Z.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 55,
+              "favourites": 12,
+              "popularity": 2649,
+              "startDate": {
+                "year": 1958,
+                "month": 10,
+                "day": 22
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 6994,
+              "title": {
+                "romaji": "Koneko no Studio",
+                "english": "Kitty\u0027s Studio",
+                "native": "\u3053\u306D\u3053\u306E\u30B9\u30BF\u30B8\u30AA"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b6994-UFUeKKd9V7Ib.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b6994-UFUeKKd9V7Ib.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 57,
+              "favourites": 8,
+              "popularity": 986,
+              "startDate": {
+                "year": 1959,
+                "month": 4,
+                "day": 9
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 179748,
+              "title": {
+                "romaji": "Tanuki-san Ooatari",
+                "english": null,
+                "native": "\u305F\u306C\u304D\u3055\u3093\u5927\u5F53\u308A"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b179748-q66rs849ivMx.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b179748-q66rs849ivMx.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": null,
+              "favourites": 0,
+              "popularity": 65,
+              "startDate": {
+                "year": 1959,
+                "month": 7,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 4948,
+              "title": {
+                "romaji": "Shounen Sarutobi Sasuke",
+                "english": "Magic Boy",
+                "native": "\u5C11\u5E74\u733F\u98DB\u4F50\u52A9"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx4948-jCgpSVUX3srk.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx4948-jCgpSVUX3srk.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 54,
+              "favourites": 7,
+              "popularity": 1145,
+              "startDate": {
+                "year": 1959,
+                "month": 12,
+                "day": 25
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 4481,
+              "title": {
+                "romaji": "Saiyuuki",
+                "english": "Alakazam the Great",
+                "native": "\u897F\u904A\u8A18"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx4481-teZlyolwFmuG.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx4481-teZlyolwFmuG.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 55,
+              "favourites": 11,
+              "popularity": 1705,
+              "startDate": {
+                "year": 1960,
+                "month": 8,
+                "day": 14
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 7610,
+              "title": {
+                "romaji": "Anju to Zushioumaru",
+                "english": null,
+                "native": "\u5B89\u5BFF\u3068\u53A8\u5B50\u738B\u4E38"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx7610-knPFRnDYQmHt.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx7610-knPFRnDYQmHt.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 60,
+              "favourites": 15,
+              "popularity": 1535,
+              "startDate": {
+                "year": 1961,
+                "month": 7,
+                "day": 19
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 179749,
+              "title": {
+                "romaji": "Tanoshii Bunmeishi: Tetsu Monogatari",
+                "english": null,
+                "native": "\u305F\u306E\u3057\u3044\u6587\u660E\u53F2 \u9244\u3082\u306E\u304C\u305F\u308A"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b179749-4PPFBcfMFz6U.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b179749-4PPFBcfMFz6U.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": null,
+              "favourites": 0,
+              "popularity": 64,
+              "startDate": {
+                "year": 1962,
+                "month": 4,
+                "day": 22
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 7786,
+              "title": {
+                "romaji": "Arabian Nights: Sindbad no Bouken",
+                "english": "Arabian Nights: Sinbad\u0027s Adventures",
+                "native": "\u30A2\u30E9\u30D3\u30A2\u30F3\u30CA\u30A4\u30C8\u30FB\u30B7\u30F3\u30C9\u30D0\u30C3\u30C9\u306E\u5192\u967A"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/7786.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/7786.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 47,
+              "favourites": 7,
+              "popularity": 858,
+              "startDate": {
+                "year": 1962,
+                "month": 6,
+                "day": 16
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 125322,
+              "title": {
+                "romaji": "Mogura no Motoro",
+                "english": null,
+                "native": "\u3082\u3050\u3089\u306E\u30E2\u30C8\u30ED"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b125322-UAPa7Zomr8wC.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b125322-UAPa7Zomr8wC.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 39,
+              "favourites": 2,
+              "popularity": 221,
+              "startDate": {
+                "year": 1962,
+                "month": 7,
+                "day": 19
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 3905,
+              "title": {
+                "romaji": "Wanpaku Ouji no Orochi Taiji",
+                "english": "Orochi, the Eight-Headed Dragon",
+                "native": "\u308F\u3093\u3071\u304F\u738B\u5B50\u306E\u5927\u86C7\u9000\u6CBB"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx3905-uu3lXujtSS6M.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx3905-uu3lXujtSS6M.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 63,
+              "favourites": 28,
+              "popularity": 1962,
+              "startDate": {
+                "year": 1963,
+                "month": 3,
+                "day": 24
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 17521,
+              "title": {
+                "romaji": "Ookami Shounen Ken",
+                "english": null,
+                "native": "\u72FC\u5C11\u5E74\u30B1\u30F3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/17521.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/17521.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 54,
+              "favourites": 3,
+              "popularity": 436,
+              "startDate": {
+                "year": 1963,
+                "month": 11,
+                "day": 25
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 9228,
+              "title": {
+                "romaji": "Wan Wan Chuushingura",
+                "english": null,
+                "native": "\u308F\u3093\u308F\u3093\u5FE0\u81E3\u8535"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx9228-UvXR069uBSJy.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx9228-UvXR069uBSJy.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "averageScore": 56,
+              "favourites": 15,
+              "popularity": 898,
+              "startDate": {
+                "year": 1963,
+                "month": 12,
+                "day": 21
+              },
+              "mediaListEntry": null
+            }
+          ]
+        }
+      }
+    }
+  }
+}

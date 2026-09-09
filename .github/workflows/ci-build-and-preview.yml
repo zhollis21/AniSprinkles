@@ -659,6 +659,17 @@ jobs:
             echo "::warning::Could not tap Toei Animation studio chip — skipping studio screenshot"
           fi
 
+          # Back to the top of the details page before the next capture goes looking.
+          #
+          # Coming back from the studio page leaves the scroll position down at Studios, and
+          # scroll_until_text only swipes DOWNWARDS — while Characters sits ABOVE Studios. So the
+          # character search could never succeed once the studio capture had run, whatever name it
+          # looked for. That is why fixing the name alone did not bring the screenshot back.
+          for _ in 1 2 3 4 5 6 7 8 9 10; do
+            adb shell input swipe 540 700 540 1900 120 >/dev/null 2>&1 || true
+          done
+          sleep 1
+
           # Screenshot 4: Character details (Luffy). Scroll the One Piece details page down to the
           # Characters section and tap Luffy, then capture his page at the TOP so the hero
           # (portrait, name, stat cards) represents the page.
@@ -710,7 +721,11 @@ jobs:
           STAFF_READY=0
           while [ $STAFF_WAIT -lt 15 ]; do
             adb shell uiautomator dump /sdcard/ui_staff.xml 2>/dev/null || true
-            if adb shell cat /sdcard/ui_staff.xml 2>/dev/null | grep -qi "Voice Roles\|Production"; then
+            # "Voice Roles" only. The bare word "Production" was meant to catch the Production Roles
+            # section, but it also matches studio names — the media details page lists "Mushi
+            # Production" and "Asahi Production" — so the guard passed while still sitting on the
+            # wrong page and captured it anyway, which is the failure the guard exists to stop.
+            if adb shell cat /sdcard/ui_staff.xml 2>/dev/null | grep -qi "Voice Roles"; then
               echo "  Staff page ready after ${STAFF_WAIT}s"
               STAFF_READY=1
               break

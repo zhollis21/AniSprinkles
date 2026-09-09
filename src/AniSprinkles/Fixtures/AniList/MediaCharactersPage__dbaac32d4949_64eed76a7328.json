@@ -1,0 +1,428 @@
+﻿{
+  "operationName": "MediaCharactersPage",
+  "variables": {
+    "id": 21,
+    "page": 2,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "64eed76a7328",
+  "recordedAt": "2026-09-09T15:55:55.9477333+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "characters": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 2
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 2749,
+                "name": {
+                  "full": "Crocodile",
+                  "native": "\u30AF\u30ED\u30B3\u30C0\u30A4\u30EB",
+                  "userPreferred": "Crocodile"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b2749-e8ebEBN1SlS2.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b2749-e8ebEBN1SlS2.png"
+                },
+                "favourites": 2026
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 726,
+                "name": {
+                  "full": "Vivi Nefertari",
+                  "native": "\u30CD\u30D5\u30A7\u30EB\u30BF\u30EA\u30FB\u30D3\u30D3",
+                  "userPreferred": "Vivi Nefertari"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b726-DqAIpscMuYYx.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b726-DqAIpscMuYYx.png"
+                },
+                "favourites": 2012
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 2752,
+                "name": {
+                  "full": "Kuzan",
+                  "native": "\u30AF\u30B6\u30F3",
+                  "userPreferred": "Kuzan"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b2752-0ENS2a39muDz.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b2752-0ENS2a39muDz.png"
+                },
+                "favourites": 1848
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 7453,
+                "name": {
+                  "full": "Kuma Bartholomew",
+                  "native": "\u30D0\u30FC\u30BD\u30ED\u30DF\u30E5\u30FC\u30FB\u304F\u307E",
+                  "userPreferred": "Kuma Bartholomew"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b7453-c3MArieFBs9w.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b7453-c3MArieFBs9w.png"
+                },
+                "favourites": 1619
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 17142,
+                "name": {
+                  "full": "Rayleigh Silvers",
+                  "native": "\u30B7\u30EB\u30D0\u30FC\u30BA\u30FB\u30EC\u30A4\u30EA\u30FC",
+                  "userPreferred": "Rayleigh Silvers"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b17142-OXOpztWZIE2A.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b17142-OXOpztWZIE2A.png"
+                },
+                "favourites": 1502
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 4883,
+                "name": {
+                  "full": "Roger Gold",
+                  "native": "\u30B4\u30FC\u30EB\u30C9\u30FB\u30ED\u30B8\u30E3\u30FC",
+                  "userPreferred": "Roger Gold"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b4883-0t76xH00sehO.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b4883-0t76xH00sehO.png"
+                },
+                "favourites": 1398
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 2753,
+                "name": {
+                  "full": "Smoker",
+                  "native": "\u30B9\u30E2\u30FC\u30AB\u30FC",
+                  "userPreferred": "Smoker"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b2753-Y2ja8Pl6PRs0.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b2753-Y2ja8Pl6PRs0.jpg"
+                },
+                "favourites": 1395
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 8064,
+                "name": {
+                  "full": "Garp",
+                  "native": "\u30AC\u30FC\u30D7",
+                  "userPreferred": "Garp"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b8064-dPltKaZ8RAsj.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b8064-dPltKaZ8RAsj.jpg"
+                },
+                "favourites": 1386
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 149797,
+                "name": {
+                  "full": "Oden Kouzuki",
+                  "native": "\u5149\u6708\u304A\u3067\u3093",
+                  "userPreferred": "Oden Kouzuki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b149797-UmdR7up3kgoK.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b149797-UmdR7up3kgoK.png"
+                },
+                "favourites": 1263
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 270493,
+                "name": {
+                  "full": "Uta",
+                  "native": "\u30A6\u30BF",
+                  "userPreferred": "Uta"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b270493-pviD8gBS5BXW.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b270493-pviD8gBS5BXW.png"
+                },
+                "favourites": 1144
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 9323,
+                "name": {
+                  "full": "Marco",
+                  "native": "\u30DE\u30EB\u30B3",
+                  "userPreferred": "Marco"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b9323-tGArly93xBZv.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b9323-tGArly93xBZv.png"
+                },
+                "favourites": 1045
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 3331,
+                "name": {
+                  "full": "Teach Marshall",
+                  "native": "\u30DE\u30FC\u30B7\u30E3\u30EB\u30FBD\u30FB\u30C6\u30A3\u30FC\u30C1",
+                  "userPreferred": "Teach D. Marshall"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b3331-7ZJDc4BNv9Yp.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b3331-7ZJDc4BNv9Yp.jpg"
+                },
+                "favourites": 1042
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 14989,
+                "name": {
+                  "full": "Kid Eustass",
+                  "native": "\u30E6\u30FC\u30B9\u30BF\u30B9\u30FB\u30AD\u30C3\u30C9",
+                  "userPreferred": "Kid Eustass"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b14989-uykLqnBTdAc2.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b14989-uykLqnBTdAc2.jpg"
+                },
+                "favourites": 1029
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 1541,
+                "name": {
+                  "full": "Enel",
+                  "native": "\u30A8\u30CD\u30EB",
+                  "userPreferred": "Enel"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b1541-6c8RouunoL88.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b1541-6c8RouunoL88.jpg"
+                },
+                "favourites": 861
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 85647,
+                "name": {
+                  "full": "Bartolomeo",
+                  "native": "\u30D0\u30EB\u30C8\u30ED\u30E1\u30AA",
+                  "userPreferred": "Bartolomeo"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/n85647-WfwG1ixb2qZL.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/n85647-WfwG1ixb2qZL.png"
+                },
+                "favourites": 843
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 20295,
+                "name": {
+                  "full": "Jewelry Bonney",
+                  "native": "\u30B8\u30E5\u30A8\u30EA\u30FC\u30FB\u30DC\u30CB\u30FC",
+                  "userPreferred": "Jewelry Bonney"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b20295-LqpG4Y3HkKxu.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b20295-LqpG4Y3HkKxu.png"
+                },
+                "favourites": 778
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 82259,
+                "name": {
+                  "full": "Isshou",
+                  "native": "\u30A4\u30C3\u30B7\u30E7\u30A6",
+                  "userPreferred": "Isshou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b82259-NFdvvcSHup7Z.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b82259-NFdvvcSHup7Z.jpg"
+                },
+                "favourites": 722
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 126179,
+                "name": {
+                  "full": "Carrot",
+                  "native": "\u30AD\u30E3\u30ED\u30C3\u30C8",
+                  "userPreferred": "Carrot"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b126179-bxjxEfrqtiuN.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b126179-bxjxEfrqtiuN.png"
+                },
+                "favourites": 711
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 21093,
+                "name": {
+                  "full": "Borsalino",
+                  "native": "\u30DC\u30EB\u30B5\u30EA\u30FC\u30CE",
+                  "userPreferred": "Borsalino"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b21093-Pc4kOjUn3ZkZ.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b21093-Pc4kOjUn3ZkZ.png"
+                },
+                "favourites": 706
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 12361,
+                "name": {
+                  "full": "Koby",
+                  "native": "\u30B3\u30D3\u30FC",
+                  "userPreferred": "Koby"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b12361-H0SmgKxZ9T61.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b12361-H0SmgKxZ9T61.png"
+                },
+                "favourites": 691
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 127891,
+                "name": {
+                  "full": "Reiju Vinsmoke",
+                  "native": "\u30F4\u30A3\u30F3\u30B9\u30E2\u30FC\u30AF\u30FB\u30EC\u30A4\u30B8\u30E5",
+                  "userPreferred": "Reiju Vinsmoke"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b127891-FSRMoIQeDyV8.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b127891-FSRMoIQeDyV8.png"
+                },
+                "favourites": 657
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 5677,
+                "name": {
+                  "full": "Lucci Rob",
+                  "native": "\u30ED\u30D6\uFF65\u30EB\u30C3\u30C1",
+                  "userPreferred": "Lucci Rob"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b5677-ZrZunVe7Kq5P.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b5677-ZrZunVe7Kq5P.png"
+                },
+                "favourites": 623
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 4884,
+                "name": {
+                  "full": "Dragon",
+                  "native": "\u30C9\u30E9\u30B4\u30F3",
+                  "userPreferred": "Dragon"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b4884-iBn6FzQ2ESLC.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b4884-iBn6FzQ2ESLC.png"
+                },
+                "favourites": 619
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 46109,
+                "name": {
+                  "full": "Kaidou",
+                  "native": "\u30AB\u30A4\u30C9\u30A6",
+                  "userPreferred": "Kaidou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b46109-MT7Hm4Bk93In.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b46109-MT7Hm4Bk93In.png"
+                },
+                "favourites": 518
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 17492,
+                "name": {
+                  "full": "Bepo",
+                  "native": "\u30D9\u30DD",
+                  "userPreferred": "Bepo"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b17492-PCFNvded635o.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b17492-PCFNvded635o.png"
+                },
+                "favourites": 463
+              },
+              "role": "SUPPORTING"
+            }
+          ]
+        }
+      }
+    }
+  }
+}
