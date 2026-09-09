@@ -627,7 +627,10 @@ jobs:
 
           # Screenshot 3: Studio details (Toei Animation). Tap the studio chip in the One Piece
           # quick-info row, capture the Studio Details page, then return to One Piece details.
-          if tap_studio_chip "Toei Animation" 6; then
+          # No explicit swipe count — the default in tap_studio_chip is the single place that
+          # decides, so raising it there actually takes effect. Passing 6 here is what made the
+          # previous attempt at this a no-op.
+          if tap_studio_chip "Toei Animation"; then
             STUDIO_WAIT=0
             STUDIO_READY=0
             while [ $STUDIO_WAIT -lt 15 ]; do
@@ -656,27 +659,46 @@ jobs:
             echo "::warning::Could not tap Toei Animation studio chip — skipping studio screenshot"
           fi
 
-          # Screenshot 4: Character details (Monkey D. Luffy). Scroll the One Piece details page
-          # down to the Characters section and tap Luffy, then capture his page at the TOP so the
-          # hero (portrait, name, stat cards) represents the page.
-          scroll_until_text "Monkey D. Luffy" && tap_element_by_text "Monkey D. Luffy" || echo "::warning::Could not reach Luffy from the details page"
+          # Screenshot 4: Character details (Luffy). Scroll the One Piece details page down to the
+          # Characters section and tap Luffy, then capture his page at the TOP so the hero
+          # (portrait, name, stat cards) represents the page.
+          #
+          # The name is "Luffy D. Monkey", not "Monkey D. Luffy": names render from userPreferred,
+          # which AniList resolves against the account's Staff Name Language and returns
+          # family-name-first for Japanese names (#130). The old hand-written fixture mirrored
+          # `full` into `userPreferred` and so read the other way round — this string is coupled to
+          # the recorded data and needs rechecking whenever fixtures are re-recorded.
+          CHARACTER_NAME="Luffy D. Monkey"
+          scroll_until_text "$CHARACTER_NAME" && tap_element_by_text "$CHARACTER_NAME" || echo "::warning::Could not reach $CHARACTER_NAME from the details page"
 
           CHAR_WAIT=0
+          CHAR_READY=0
           while [ $CHAR_WAIT -lt 15 ]; do
             adb shell uiautomator dump /sdcard/ui_char.xml 2>/dev/null || true
             if adb shell cat /sdcard/ui_char.xml 2>/dev/null | grep -qi "Voice Actors\|Appears In"; then
               echo "  Character page ready after ${CHAR_WAIT}s"
+              CHAR_READY=1
               break
             fi
             sleep 1
             CHAR_WAIT=$((CHAR_WAIT + 1))
           done
-          # Slightly longer settle: the hero portrait is a large remote image captured early in
-          # the page's life, so give Glide a moment to paint it before the screenshot.
-          sleep 2
-          adb shell screencap -p /sdcard/character_details.png || echo "::warning::Failed to capture character screenshot"
-          adb pull /sdcard/character_details.png screenshots/character_details.png || echo "::warning::Failed to pull character screenshot"
-          echo "Captured: character_details.png (Luffy — $AUTH_MODE)"
+
+          # Capture only if we actually got there. This poll already knew the page had not opened
+          # and shot the screen anyway, so a failed tap produced a screenshot of whatever happened
+          # to be showing — the bottom of the media details page — published under the label
+          # "Luffy (Character)". A missing screenshot is honest; a wrong one labelled correctly is
+          # the same silently-wrong signal this whole change set out to remove.
+          if [ "$CHAR_READY" -eq 1 ]; then
+            # Slightly longer settle: the hero portrait is a large remote image captured early in
+            # the page's life, so give Glide a moment to paint it before the screenshot.
+            sleep 2
+            adb shell screencap -p /sdcard/character_details.png || echo "::warning::Failed to capture character screenshot"
+            adb pull /sdcard/character_details.png screenshots/character_details.png || echo "::warning::Failed to pull character screenshot"
+            echo "Captured: character_details.png (Luffy — $AUTH_MODE)"
+          else
+            echo "::warning::Character page never opened — skipping rather than capturing the wrong screen"
+          fi
           # Now scroll the voice-actor strip into view to locate the staff-page tap target below.
           scroll_until_text "Mayumi Tanaka" || echo "::warning::Voice Actors list did not appear"
 
@@ -685,20 +707,30 @@ jobs:
           tap_element_by_text "Mayumi Tanaka" || echo "::warning::Could not tap Mayumi Tanaka"
 
           STAFF_WAIT=0
+          STAFF_READY=0
           while [ $STAFF_WAIT -lt 15 ]; do
             adb shell uiautomator dump /sdcard/ui_staff.xml 2>/dev/null || true
             if adb shell cat /sdcard/ui_staff.xml 2>/dev/null | grep -qi "Voice Roles\|Production"; then
               echo "  Staff page ready after ${STAFF_WAIT}s"
+              STAFF_READY=1
               break
             fi
             sleep 1
             STAFF_WAIT=$((STAFF_WAIT + 1))
           done
-          # Slightly longer settle so the hero portrait paints before capture (see above).
-          sleep 2
-          adb shell screencap -p /sdcard/staff_details.png || echo "::warning::Failed to capture staff screenshot"
-          adb pull /sdcard/staff_details.png screenshots/staff_details.png || echo "::warning::Failed to pull staff screenshot"
-          echo "Captured: staff_details.png (Mayumi Tanaka — $AUTH_MODE)"
+
+          # Same guard as the character capture above, and the same reason: this failure cascades
+          # from that one — a tap that never reached the character page leaves the voice-actor
+          # strip unreachable too, so both screenshots were the same wrong screen under two labels.
+          if [ "$STAFF_READY" -eq 1 ]; then
+            # Slightly longer settle so the hero portrait paints before capture (see above).
+            sleep 2
+            adb shell screencap -p /sdcard/staff_details.png || echo "::warning::Failed to capture staff screenshot"
+            adb pull /sdcard/staff_details.png screenshots/staff_details.png || echo "::warning::Failed to pull staff screenshot"
+            echo "Captured: staff_details.png (Mayumi Tanaka — $AUTH_MODE)"
+          else
+            echo "::warning::Staff page never opened — skipping rather than capturing the wrong screen"
+          fi
 
           # Straight to the Settings tab. The details stack this leaves behind on the Library tab
           # does not matter — the next section taps its own tab too. Guarded because `set -e`
@@ -998,7 +1030,7 @@ jobs:
             }
 
             // --- Build PR comment body ---
-            const authNote = '> ✅ **Authenticated UI** — screenshots rendered via compile-time CI stub services with hardcoded data. No OAuth token required.';
+            const authNote = '> ✅ **Authenticated UI** — stubbed auth plus real AniList responses recorded against a test account and replayed at the HTTP layer (#134). No OAuth token required.';
             const pageDesc = '';
 
             const bodyParts = [
@@ -1060,12 +1092,13 @@ jobs:
       - name: Generate Screenshot Summary
         if: always()
         run: |
+          MISSING_SHOTS=""
           echo "## 📱 UI Screenshots" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           if [ -d "screenshots" ] && [ "$(ls -A screenshots/ 2>/dev/null)" ]; then
             echo "Screenshots captured and uploaded as artifacts." >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
-            echo "> ✅ **Authenticated UI** — rendered via compile-time CI stub services with hardcoded data." >> $GITHUB_STEP_SUMMARY
+            echo "> ✅ **Authenticated UI** — stubbed auth plus recorded AniList responses replayed at the HTTP layer (#134)." >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "| Screenshot | Page |" >> $GITHUB_STEP_SUMMARY
             echo "|---|---|" >> $GITHUB_STEP_SUMMARY
@@ -1085,9 +1118,24 @@ jobs:
               if [ -f "screenshots/$file" ]; then
                 echo "| \`$file\` | $label |" >> $GITHUB_STEP_SUMMARY
               else
-                echo "::warning::Expected screenshot missing: $file"
+                echo "::error::Expected screenshot missing: $file"
+                MISSING_SHOTS="${MISSING_SHOTS}${file} "
               fi
             done
           else
             echo "⚠️ No screenshots were captured. Check the emulator step logs." >> $GITHUB_STEP_SUMMARY
+            MISSING_SHOTS="<all>"
+          fi
+
+          # Blocking, not a warning. studio_details.png disappeared for two runs without anyone
+          # noticing, because a warning in a 2000-line log and a quietly shorter table are not a
+          # signal. The captures that navigate now skip rather than shoot the wrong screen, which
+          # turns "wrong screenshot" into "absent screenshot" — and that trade only pays if absent
+          # is loud. Same argument that made this job blocking for the adult canary: a gate that
+          # detects and does not block is a gate that gets scrolled past.
+          if [ -n "$MISSING_SHOTS" ]; then
+            echo "::error::UI screenshot capture incomplete — missing: $MISSING_SHOTS"
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "> ❌ **Missing screenshots:** \`$MISSING_SHOTS\`" >> $GITHUB_STEP_SUMMARY
+            exit 1
           fi
