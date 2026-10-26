@@ -7,6 +7,15 @@
 # What counts as "something the compiler reads" is wider than the source:
 #
 #   .cs, .xaml                  the source itself.
+#   .xml                        AndroidManifest.xml and the Android resources
+#                               under Platforms/Android/Resources/. aapt2
+#                               compiles these, and a malformed one fails the
+#                               Android build as hard as bad C# does - a
+#                               different pipeline from .xaml, which is MAUI's.
+#                               Images under Resources/ are deliberately not
+#                               tracked: they are added and removed through the
+#                               project rather than hand-edited, so the cost of
+#                               fingerprinting every .png buys very little.
 #   .csproj, .props, .targets   a reference, a constant, a TFM, a warning
 #                               setting. None of these is a source file and all
 #                               of them change what a build produces.
@@ -56,7 +65,7 @@ $payload = if ($raw.Trim()) { try { $raw | ConvertFrom-Json } catch { $null } } 
 $root = if ($env:CLAUDE_PROJECT_DIR) { $env:CLAUDE_PROJECT_DIR } else { (Get-Location).Path }
 $stamp = Join-Path $root '.claude/hooks/.last-build'
 
-$sourceExtensions = @('.cs', '.xaml')
+$sourceExtensions = @('.cs', '.xaml', '.xml')
 $buildInputExtensions = @('.csproj', '.props', '.targets')
 $buildInputNames = @('.editorconfig', 'global.json', 'nuget.config')
 
