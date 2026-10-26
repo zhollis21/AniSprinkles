@@ -397,13 +397,12 @@ Before the first `AskUserQuestion`, all of these must hold:
       widget, at the moment they are choosing, with no way to compare them side
       by side.
 
-      This is not prose standing in **instead of** the popup, which is what
-      `CLAUDE.md` forbids. The popup still carries the choices and is the only
-      thing that asks; the brief carries the reasoning behind them, which
-      `AGENTS.md` asks for in the same breath. The test is whether the user
-      could answer inside the widget without the prose — if the prose is where
-      the choosing happens, or it ends with "so, A or B?", it has gone too far.
-      Never render the alternatives as a numbered menu in the message.
+      This is the *Presenting options* rule in `AGENTS.md` and `CLAUDE.md`, not
+      an exception to it: the popup carries the choices and is the only thing
+      that asks, the brief carries the reasoning behind them. So don't render
+      the alternatives as a menu here, and don't end the brief with "so, A or
+      B?" — the test there is whether the user could answer inside the widget
+      without the prose.
 - [ ] **Every tuned constant the plan adds or changes is in the brief, and asked
       about.** Debounces, cache TTLs, page sizes, retry delays and caps,
       retention windows, notification intervals: each with its value and a line

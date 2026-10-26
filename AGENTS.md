@@ -213,7 +213,9 @@ When asked to pull PR feedback, use `.claude/skills/ani-pr-feedback/SKILL.md` (`
 
 ### Presenting options
 
-When presenting 2+ approaches to the user, list them clearly with tradeoffs for each. Do not just pick one and proceed without asking. If your client supports a popup/question UI (e.g. `AskUserQuestion`, `vscode_askQuestions`), use it instead of listing options in plain text.
+When presenting 2+ approaches to the user, say what each direction costs and which you recommend. Do not just pick one and proceed without asking.
+
+If your client supports a popup/question UI (e.g. `AskUserQuestion`, `vscode_askQuestions`), **that popup is what asks**: it carries the choices and collects the answer, while the prose carries the reasoning behind them. Don't also render the alternatives as a menu in the message, and don't compress the tradeoffs into the widget's own option descriptions — those are read at the moment of choosing, with no way to compare them side by side. The test is whether the choice could be answered in the popup without the prose; if the choosing happens in the prose, it has gone too far. Without such a UI, lay the options out in prose with their tradeoffs and ask outright.
 
 ### Output style
 
