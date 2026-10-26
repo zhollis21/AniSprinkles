@@ -101,4 +101,5 @@ dotnet build src/AniSprinkles/AniSprinkles.csproj -c Debug -f net10.0-android -p
 | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
 | [`AGENTS.md`](AGENTS.md)                   | Architecture reference, conventions, build commands, and AI agent instructions                                             |
 | [`DEVELOPER_NOTES.md`](DEVELOPER_NOTES.md) | Local dev notes: error simulation, troubleshooting tips                                                                    |
-| [`.claude/skills/`](.claude/skills/)       | Workflow slash commands: `/ani-kickoff`, `/run-anisprinkles`, `/ani-debug`, `/ani-review`, `/ani-pr-feedback`, `/project-architecture`, `/airing-notifications` |
+| [`.claude/skills/`](.claude/skills/)       | Workflow slash commands: `/ani-kickoff`, `/ani-issue`, `/run-anisprinkles`, `/ani-debug`, `/ani-review`, `/ani-pr-feedback`, `/project-architecture`, `/airing-notifications` |
+| [`.claude/hooks/`](.claude/hooks/)         | Claude Code hooks: `build-on-stop.ps1` builds whatever the session's changes can affect before handing back, and blocks on any error or warning |
