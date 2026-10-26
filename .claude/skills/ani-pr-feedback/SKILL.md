@@ -84,8 +84,9 @@ For each comment, the entry says:
      guard, a stale comment, a test the rule plainly requires): state the fix in
      a line and move on. Do not manufacture alternatives for it.
    - **A real choice** — two or more fixes that lead to different code, or a fix
-     with a cost worth knowing about: lay out the options with the pro and con of
-     each, and say which you recommend.
+     with a cost worth knowing about: say in prose what each direction costs and
+     which you recommend, and leave the choosing to the popup below rather than
+     rendering a menu here.
 
 Then ask. Use `AskUserQuestion` for the real choices, batched into one call; for
 the open-and-shut ones and the non-issues, ask for a single go-ahead rather than

@@ -389,12 +389,21 @@ Before the first `AskUserQuestion`, all of these must hold:
       the analysis is not finished, and a menu is being offered in place of a
       judgement.
 - [ ] **The decisions are named in the brief, with their tradeoffs, before the
-      popup opens.** Each one: what is being decided, the options, a line or two
-      of pro and con apiece, and your recommendation. Facts alone are not a
-      brief. The tell is a brief that explains the problem thoroughly and then
-      jumps straight to the question box, leaving every tradeoff compressed into
-      option descriptions the user reads inside the widget, at the moment they
-      are choosing, with no way to compare them side by side.
+      popup opens.** Each one: what is being decided, what each direction costs
+      — a line or two apiece — and your recommendation with its reason. Facts
+      alone are not a brief. The tell is a brief that explains the problem
+      thoroughly and then jumps straight to the question box, leaving every
+      tradeoff compressed into option descriptions the user reads inside the
+      widget, at the moment they are choosing, with no way to compare them side
+      by side.
+
+      This is not prose standing in **instead of** the popup, which is what
+      `CLAUDE.md` forbids. The popup still carries the choices and is the only
+      thing that asks; the brief carries the reasoning behind them, which
+      `AGENTS.md` asks for in the same breath. The test is whether the user
+      could answer inside the widget without the prose — if the prose is where
+      the choosing happens, or it ends with "so, A or B?", it has gone too far.
+      Never render the alternatives as a numbered menu in the message.
 - [ ] **Every tuned constant the plan adds or changes is in the brief, and asked
       about.** Debounces, cache TTLs, page sizes, retry delays and caps,
       retention windows, notification intervals: each with its value and a line
@@ -405,11 +414,6 @@ Before the first `AskUserQuestion`, all of these must hold:
       `DiagnosticsLogBuffer.DefaultRetention` is quoted as "5 minutes" in the
       disclosure popup, and anything that spends request budget spends it against
       a rate limit the user is deliberately conservative about.
-
-      This does not conflict with *never list options in plain text*. That rule
-      stops prose being used **instead of** the popup — it does not license
-      withholding the reasoning until the popup. The popup is where the choice is
-      made; the brief is where the tradeoffs are read.
 
 A question that survives all seven is worth the user's attention. One that does
 not is a request for them to do Step 3 for you.
@@ -423,8 +427,9 @@ The brief covers, in this order and briefly:
   neighbouring issues will consume or feed it (the dependency order from Step 2).
   Say what closing this unblocks; that is usually the best argument for doing it
   now, or for not.
-- **The decisions to make** — each one named, with the options and the tradeoff
-  in a line or two apiece, and your recommendation. This is the list Step 3
+- **The decisions to make** — each one named, with what each direction costs in
+  a line or two apiece, and your recommendation. Written as prose, not as a
+  menu; the popup is what presents the choices. This is the list Step 3
   produced. Leave one out only when there is genuinely nothing to decide — one
   viable way to do it, and you would not change course whatever the answer was.
   "I have a clear preference" is not that; neither is "the repo points one way".

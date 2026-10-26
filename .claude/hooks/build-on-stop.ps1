@@ -1,7 +1,26 @@
 # Stop hook: before Claude hands back, the code it changed must build, with zero
-# warnings (AGENTS.md, Build Quality). Runs only when a .cs or .xaml file has
-# changed since the last run that passed - a fingerprint of their paths, sizes
-# and write times, kept in .claude/hooks/.last-build, which is git-ignored.
+# warnings (AGENTS.md, Build Quality). Runs only when something the compiler
+# reads has changed since the last run that passed - a fingerprint of those
+# files' paths, sizes and write times, kept in .claude/hooks/.last-build, which
+# is git-ignored.
+#
+# What counts as "something the compiler reads" is wider than the source:
+#
+#   .cs, .xaml                  the source itself.
+#   .csproj, .props, .targets   a reference, a constant, a TFM, a warning
+#                               setting. None of these is a source file and all
+#                               of them change what a build produces.
+#   .editorconfig               analyzer severity lives here (CA1822 is
+#                               suppressed project-wide in it), so a change can
+#                               turn a warning on in a file nobody touched.
+#   global.json, nuget.config   the SDK pin and the feed list. Neither exists
+#   Directory.*.props/targets   today; they are matched so that adding one does
+#                               not silently fall outside the fingerprint.
+#   Fixtures/AniList/*.json     embedded as resources under CiBuild, and the
+#                               only thing the CiBuild trigger below is about.
+#
+# AniSprinkles.slnx is deliberately not included: the hook builds the three
+# projects directly, so the solution file is not an input to any of them.
 #
 # Which builds run depends on what changed, because the Android ones cost
 # minutes and the plain net10.0 ones cost seconds:
@@ -15,6 +34,11 @@
 #   the Android TFM       when anything under src/AniSprinkles/ changed.
 #   the CiBuild variant   when a fixture or a `#if CI` file changed, since that
 #                         is the only build that compiles those blocks.
+#   all three             when a build input changed. Which projects a .csproj
+#                         or .editorconfig change reaches is not worth
+#                         modelling - Core is referenced by everything, and a
+#                         root .editorconfig reaches every file in every
+#                         project - so this one is deliberately conservative.
 #
 # Tests are not run here - that is /ani-review's job. This hook answers one
 # question: does it still build clean?
@@ -31,6 +55,27 @@ $raw = [Console]::In.ReadToEnd()
 $payload = if ($raw.Trim()) { try { $raw | ConvertFrom-Json } catch { $null } } else { $null }
 $root = if ($env:CLAUDE_PROJECT_DIR) { $env:CLAUDE_PROJECT_DIR } else { (Get-Location).Path }
 $stamp = Join-Path $root '.claude/hooks/.last-build'
+
+$sourceExtensions = @('.cs', '.xaml')
+$buildInputExtensions = @('.csproj', '.props', '.targets')
+$buildInputNames = @('.editorconfig', 'global.json', 'nuget.config')
+
+function Test-Tracked([string]$path) {
+    $name = [System.IO.Path]::GetFileName($path)
+    if ($buildInputNames -contains $name) { return $true }
+    $extension = [System.IO.Path]::GetExtension($path)
+    if ($sourceExtensions -contains $extension) { return $true }
+    if ($buildInputExtensions -contains $extension) { return $true }
+    # Only the AniList fixtures, not any .json: the app ships appsettings-ish
+    # and tooling JSON that no build embeds.
+    return $extension -eq '.json' -and $path -match '[\\/]Fixtures[\\/]AniList[\\/]'
+}
+
+function Test-BuildInput([string]$path) {
+    $name = [System.IO.Path]::GetFileName($path)
+    if ($buildInputNames -contains $name) { return $true }
+    return $buildInputExtensions -contains [System.IO.Path]::GetExtension($path)
+}
 
 # Walks the source trees, pruning obj/ and bin/ as it descends rather than
 # filtering them out afterwards. That matters more than it looks: the Android
@@ -51,10 +96,14 @@ function Get-Sources([string[]]$dirs) {
             if ($leaf -ne 'obj' -and $leaf -ne 'bin') { $pending.Enqueue($sub) }
         }
         foreach ($file in [System.IO.Directory]::EnumerateFiles($current)) {
-            if ($file.EndsWith('.cs') -or $file.EndsWith('.xaml')) {
-                $files.Add([System.IO.FileInfo]::new($file))
-            }
+            if (Test-Tracked $file) { $files.Add([System.IO.FileInfo]::new($file)) }
         }
+    }
+    # The repo-root build inputs, which live outside src/ and tests/. Matched by
+    # name rather than listed, so Directory.Build.props arriving later is picked
+    # up without touching this.
+    foreach ($file in [System.IO.Directory]::EnumerateFiles($root)) {
+        if (Test-BuildInput $file) { $files.Add([System.IO.FileInfo]::new($file)) }
     }
     $files
 }
@@ -114,8 +163,17 @@ else {
 # could not answer): build everything rather than guess which half is stale.
 if (-not $changed) { $changed = $all }
 
-$touchesApp = [bool]($changed | Where-Object { $_.FullName -match '[\\/]src[\\/]AniSprinkles[\\/]' })
-$touchesCi = [bool]($changed | Where-Object {
+# A build input reaches further than the project it sits in, so it forces the
+# lot rather than being classified.
+$touchesBuildInput = [bool]($changed | Where-Object { Test-BuildInput $_.FullName })
+
+# A fixture lives inside the app project but cannot break the build that does
+# not embed it, so it is not enough on its own to pay for the plain Android TFM.
+$touchesApp = $touchesBuildInput -or [bool]($changed | Where-Object {
+        $_.FullName -match '[\\/]src[\\/]AniSprinkles[\\/]' -and
+        $_.FullName -notmatch '[\\/]Fixtures[\\/]AniList[\\/]'
+    })
+$touchesCi = $touchesBuildInput -or [bool]($changed | Where-Object {
         $_.FullName -match '[\\/]Services[\\/]CI[\\/]' -or
         $_.FullName -match '[\\/]Services[\\/]Fixtures[\\/]' -or
         $_.FullName -match '[\\/]Fixtures[\\/]AniList[\\/]'
