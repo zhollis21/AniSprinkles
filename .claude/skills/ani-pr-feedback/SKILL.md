@@ -1,7 +1,7 @@
 ---
 name: ani-pr-feedback
 description: "Pull and evaluate open PR review comments for this repository. Use when asked to address PR feedback, review open comments, or work through reviewer notes."
-allowed-tools: Bash(pwsh tools/Get-OpenPrComments.ps1) Bash(gh pr edit:*) Bash(gh pr view:*) Bash(gh pr comment:*) Bash(gh api graphql:*) Bash(gh api repos/:*) Read Glob Grep
+allowed-tools: Bash(pwsh tools/Get-OpenPrComments.ps1) Bash(gh pr edit:*) Bash(gh pr view:*) Bash(gh pr comment:*) Bash(gh api graphql:*) Bash(gh api repos/:*) Bash(git *) Bash(dotnet *) Read Glob Grep Edit Write AskUserQuestion
 ---
 
 # PR Feedback
@@ -66,12 +66,72 @@ Two things to know when acting on one:
 
 ## Step 2: Evaluate Each Comment
 
-For each comment:
+**Present the whole picture before asking anything.** Write an overview in the
+conversation first, one entry per comment, so the user reads every finding with
+its evaluation before a single question lands. A question arriving cold asks the
+user to re-derive the reviewer's point and your view of it before they can
+answer; the same question after the overview is answerable in a word.
 
-1. Determine if it's a valid concern that needs fixing
-2. If valid — explain the issue, present possible solutions with pros/cons, then wait for the user to choose before implementing
-3. If unsure — ask the user before acting
-4. Do not assume all comments are valid or silently fix them
+For each comment, the entry says:
+
+1. **What the reviewer found**, in a sentence — not a paste of the comment.
+2. **Whether it is valid**, and why. Reviewers can be wrong: check the cited line
+   against the synced checkout, check whether a later push already addressed it,
+   and check the claim against the code rather than accepting it. Say "not an
+   issue — here's why" as readily as "valid".
+3. **If valid, what to do about it.** Match the depth to the decision:
+   - **Open-and-shut** — one obviously right fix and nothing to weigh (a missing
+     guard, a stale comment, a test the rule plainly requires): state the fix in
+     a line and move on. Do not manufacture alternatives for it.
+   - **A real choice** — two or more fixes that lead to different code, or a fix
+     with a cost worth knowing about: say in prose what each direction costs and
+     which you recommend, and leave the choosing to the popup below rather than
+     rendering a menu here.
+
+Then ask. Use `AskUserQuestion` for the real choices, batched into one call; for
+the open-and-shut ones and the non-issues, ask for a single go-ahead rather than
+a question apiece. Wait for the answer before implementing anything — do not
+silently fix a comment, and do not assume a comment is valid because a reviewer
+posted it.
+
+## Step 2b: Hunt for the siblings of every valid finding
+
+A reviewer's finding is one instance of a class. The reviewer cited the line it
+happened to notice, not every line the same reasoning applies to — and a fix that
+covers only the cited line leaves the rest of the class in place, now with a
+false sense that it was looked at.
+
+So for each finding you judge valid, before the overview goes to the user, name
+the class it belongs to and search the branch for other members — the siblings
+belong in the overview, so the one go-ahead covers them too:
+
+- **Name the class in one line.** Not "the missing `Referer` on line 412" but
+  "any path that reaches AniList without the header its filter accepts". Not
+  "`SearchPageModel` re-reads the adult flag per page" but "any surface that
+  pages without pinning the flag its page 1 was seeded under". Not "this
+  `catch (OperationCanceledException)` won't fire" but "any cancellation path
+  that reads the exception type rather than the token".
+- **Enumerate, don't skim.** For a "this seam is bypassed" class, list every
+  caller of the thing being bypassed. For a UI-thread class, list every
+  continuation that writes bound state, not just the one cited. For a
+  hard-coded-constant class, `grep` the literal across
+  `src/AniSprinkles.Core/`, `src/AniSprinkles/` and `tests/`, not just the file
+  cited. For a filter class, check all four browse surfaces — Library included,
+  since it is the one that filters client-side.
+- **Include the code the PR did not write.** The class rarely stops at the diff.
+  The `Referer` header sits in two places on purpose (#160) precisely because the
+  class is "every path to AniList", and a worker that has always bypassed the
+  client is the same finding as a new path that does.
+
+Report the siblings alongside the original in the overview — "Copilot found X at
+A; the same class also lives at B and C; D looked like a member and is not,
+because …" — and fix them under the same go-ahead. A sibling that is a judgment
+call rather than open-and-shut goes to the user like any other real choice. Each
+fixed sibling gets its own failing test first where the boundary allows one; a
+sibling nobody tested is a sibling nobody proved.
+
+This is where the review pays for itself: the cited line is almost never the only
+one, and the siblings are never in a comment.
 
 ## Step 3: Resolve threads and keep the PR current
 
@@ -105,5 +165,6 @@ Don't leave handled comments open — the open-comment list should only ever sho
 
 - Do not silently fix comments without presenting them to the user first
 - Evaluate reviewer comments independently — reviewers can be wrong
+- Every valid finding is a class, not a line: search the branch for its siblings before fixing it (Step 2b)
 - Skip threads already marked resolved unless the user asks to revisit them
 - Resolve each thread as you finish with it (fixed or agreed non-issue), and keep the PR description current

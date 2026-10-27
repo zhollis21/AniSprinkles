@@ -10,6 +10,8 @@ If issues are found: fix them, then re-run this review from the top. Do not pres
 
 Review all code written in this session against the checklist below. Fix every issue found before presenting. Do not surface the list of bugs found — present only the clean summary.
 
+**Run this generatively, not confirmationally.** The failure mode is reading the code and tests you just wrote and asking "does this look right?" — that question can only confirm what is there. It cannot find what is missing, because what is missing is not in the list you are reading. For every checklist item, derive from the code what *should* exist, write that down, and diff it against what does. Items that are binary and greppable (a suppression, a stale reference, an unused using) survive the lazier reading; items needing enumeration — test coverage above all — do not.
+
 ## Checklist
 
 **Async paths**
@@ -85,9 +87,18 @@ Review all code written in this session against the checklist below. Fix every i
 
 **Tests**
 
+Judge coverage from the API surface, never from the test list. **Full coverage is not the same as tested** — coverage measures which lines *ran*, not which inputs were *considered*, so a page model can be at 100% line coverage and still accept values nobody thought about. Before deciding the tests are thorough, **build the matrix**: every public entry point down one axis, every class of input a caller can actually pass across the other — valid, sentinel (`default`, `null`, the empty collection), boundary (zero, one, one-past-the-last, `MaxValue`), malformed, and stale. Tick the cells that have a real test. Then name the empty cells out loud and decide deliberately which to fill and why the rest can stay empty. An empty cell nobody named is an oversight; an empty cell with a stated reason is a decision.
+
 - New behavior has new tests; changed behavior has updated tests
-- Bug fixes include a regression test that fails without the fix
-- Tests cover failure paths, not just the happy path
+- **Bug fixes include a regression test written first and seen to fail.** If the fix landed first anyway, revert it, confirm the test goes red, and restore — that is worth the two minutes (`AGENTS.md`, Build and Test). A test that has never failed is indistinguishable from one asserting the wrong thing
+- **Mutation-check every assertion that protects an invariant that matters.** Break the invariant on purpose — weaken a comparison, delete a guard clause, drop half a compound condition — confirm the test goes red, then restore. This applies to new code, not only to bug fixes: a test that has never been seen to fail may be passing for a reason unrelated to what it claims, and coverage will not reveal that, since the lines still run. Say in the summary which invariants were mutation-checked and what the mutation was
+- Tests cover failure paths, not just the happy path — and *every* failure path the code can take, not one representative sample. Four classifier branches want four cases, not one that happens to hit the first
+- **Destructive operations get their own invalid-input tests, separate from the read operations.** A stale or malformed id that reads the wrong entry is a bug; one that deletes or overwrites an entry is a worse bug, it runs through different code, and afterwards it looks like legitimate behaviour. Testing the read path does not cover the write path
+- **Where two branches interact, test the crossing in a single sequence** — a cache that fills and then expires, a page that seeds and then re-seeds under a changed setting, a save that fails and is then coalesced into a second pass. Each branch tested alone can pass while the handover between them is broken
+- **Invariants that hand-maintained bookkeeping can violate get asserted directly** — a count kept alongside a collection, a dirty-marker set kept beside the values it tracks, a parallel index. Drive a mixed sequence of operations, then assert the two agree, rather than trusting each operation to have maintained it
+- Values round-trip at the extremes of their own type, not just at comfortable mid-range values — this is what catches a narrowing cast or a silent clamp
+- **An enum parameter is an `int` with names.** `(MediaKind)999` casts in silently, and full coverage will not catch it because the lines still run. Any public API or converter taking an enum has a case for an undefined value
+- A collection handed out through a read-only interface can still be downcast and mutated unless it is genuinely read-only — test that, rather than trusting the declared type
 - **Ask what is untested that could have been testable, not just whether what you wrote is tested.**
   `tests/` references `src/AniSprinkles.Core/` only, so anything left in the MAUI app project is
   unreachable — and that is where bugs hide, because nothing is watching. For each piece of new or
@@ -122,10 +133,13 @@ Review all code written in this session against the checklist below. Fix every i
 
 - New code matches surrounding style (naming, file organization, access modifiers, async patterns)
 - New abstractions follow existing patterns rather than introducing parallel ones
+- Simplest implementation that does the job — no caching, hand-tuning or lower-level work without a specific identified need (`AGENTS.md`, Engineering principles)
+- **Verify claimed precedent instead of recalling it.** Before a decision rests on "the neighbouring code does this" — go read that code. Precedent recalled from memory is usually right about the pattern and wrong about the detail, and the detail is what settles the question: whether that continuation is actually on the UI thread, whether that surface actually pins the flag, whether that suppression was actually approved. One grep, before the justification, not after someone challenges it
 
 **Comments and docs**
 
 - Match the final code, not an earlier draft
+- **Widening what something accepts or reports includes its documentation.** When a rule starts firing for a second case, or a type starts accepting a third kind of caller, the summary that named the first one becomes wrong in the same change — and wrong in the way nobody notices, because it still reads as a sentence about the code. Re-read the doc comment of anything whose reach you changed, and audit the whole set rather than the line you touched
 
 **TODOs**
 
@@ -151,6 +165,7 @@ Present:
 
 1. What was done and why (brief)
 2. Architectural tradeoffs or non-obvious decisions
-3. Residual concerns where the right approach is genuinely unclear
+3. How the work was verified — which invariants were mutation-checked and what the mutation was, plus any matrix cell left deliberately untested and why
+4. Residual concerns where the right approach is genuinely unclear
 
 Do NOT list bugs found and fixed. Do NOT ask for approval on obvious decisions.

@@ -11,5 +11,19 @@
     "dotnet-diag@dotnet-agent-skills": true,
     "dotnet-template-engine@dotnet-agent-skills": true,
     "dotnet-upgrade@dotnet-agent-skills": true
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "pwsh -NoProfile -File \"$CLAUDE_PROJECT_DIR/.claude/hooks/build-on-stop.ps1\"",
+            "timeout": 900,
+            "statusMessage": "Building what changed before handing back..."
+          }
+        ]
+      }
+    ]
   }
 }
