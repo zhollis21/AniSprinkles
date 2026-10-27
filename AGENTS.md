@@ -72,6 +72,7 @@ dotnet test tests/AniSprinkles.UnitTests/AniSprinkles.UnitTests.csproj -c Debug
   - **Fixing a bug starts with a failing test.** Write the test that reproduces the reported behaviour, run it, and watch it fail *for the reason you expect*, before touching the fix. A test written after the fix proves the code passes its own description — it does not prove it would have caught the bug, and a test that never failed is indistinguishable from one asserting the wrong thing. If the bug genuinely cannot be reached from `tests/` (see what throws off-device, above), say so explicitly and verify on device via `/run-anisprinkles` instead — don't quietly skip the step.
   - `AppSettings.Load/Save/Clear/SyncFromViewer` go through the injectable `AppSettings.Storage` seam (#121), so paths ending in them — a successful `SettingsPageModel.LoadAsync`, for instance — are testable. `TestDataBuilder.ResetAppSettings()` installs a `FakePreferences` and returns it.
   - Test classes that write to the process-wide `AppSettings` statics must join the `AppSettings` collection (`AppSettingsCollection.Name`) so they do not run in parallel. That includes `AppSettings.Storage`.
+  - **Full coverage is not the same as tested.** Coverage measures which lines *ran*, not which inputs were *considered*, so a page model or converter can sit at 100% line and branch coverage and still accept values nobody thought about. Write tests against the input space rather than the line count: for each public entry point, ask what a caller can actually pass instead of what the docs say they should. Enums are the classic trap — an enum parameter looks pinned by the type system, but it is an `int` with names and `(MediaKind)999` casts in silently. Sentinels and boundaries want their own cases (zero, negative, `MaxValue`, `null`, the empty collection, the default struct), as does any state where two "is this empty/none/valid?" predicates could disagree with each other. A collection handed out through a read-only interface can still be downcast and mutated unless it is genuinely read-only. `/ani-review` carries the full procedure — build the matrix of entry points against input classes, then name the empty cells deliberately.
 
 ## CI Stubs (`-p:CiBuild=true`)
 
@@ -147,7 +148,17 @@ dotnet build src/AniSprinkles/AniSprinkles.csproj -c Debug -f net10.0-android
 dotnet build src/AniSprinkles/AniSprinkles.csproj -c Debug -f net10.0-android -p:EmbedAssembliesIntoApk=true -p:CiBuild=true
 ```
 
+Claude Code sessions have a Stop hook that runs whichever of these the change can affect and blocks on any error or warning (`.claude/hooks/build-on-stop.ps1`; see `CLAUDE.md`). It is a backstop, not a substitute — it builds nothing when the sources are unchanged, and it runs no tests.
+
 **A green local suite is not a green suite.** Test classes writing to the process-wide `AppSettings` statics share one collection, so failures that depend on *ordering within* it surface on CI and not here — #128's pending-upstream markers leaked between tests exactly that way, passing locally every run. `TestDataBuilder.ResetAppSettings()` goes through `AppSettings.Clear()` so those markers reset; **new process-wide state must be reset there too**, or it poisons whichever test happens to run next.
+
+## Engineering principles
+
+**Write the cleanest, most understandable, maintainable and testable version by default.** Reach for a more complicated or lower-level implementation only when there is a *specific, identified* need — a measured performance problem, a platform constraint — never a suspected future one.
+
+Concretely: two explicit properties beat packing state into one; a plain class beats a hand-rolled store; a straightforward projection beats a clever one; an injected seam beats reaching for a static. When a real constraint does force something awkward, say in a comment what the constraint was, so the next reader can tell whether it still applies — the `HapticFeedback` exception under Architecture and the `ConfigureAwait(true)` markers under Project Conventions are both this.
+
+Two standing exceptions, both documented above rather than inferred: **testability** (logic that must be reachable from `tests/` belongs in Core behind a seam, even when that costs an interface) and the **AniList request budget** (batching Discover's rows into one aliased request is not premature cleverness, it is the rule). And when fixing a bug, the failing test comes first — see Build and Test.
 
 ## Project Conventions
 
@@ -202,7 +213,9 @@ When asked to pull PR feedback, use `.claude/skills/ani-pr-feedback/SKILL.md` (`
 
 ### Presenting options
 
-When presenting 2+ approaches to the user, list them clearly with tradeoffs for each. Do not just pick one and proceed without asking. If your client supports a popup/question UI (e.g. `AskUserQuestion`, `vscode_askQuestions`), use it instead of listing options in plain text.
+When presenting 2+ approaches to the user, say what each direction costs and which you recommend. Do not just pick one and proceed without asking.
+
+If your client supports a popup/question UI (e.g. `AskUserQuestion`, `vscode_askQuestions`), **that popup is what asks**: it carries the choices and collects the answer, while the prose carries the reasoning behind them. Don't also render the alternatives as a menu in the message, and don't compress the tradeoffs into the widget's own option descriptions — those are read at the moment of choosing, with no way to compare them side by side. The test is whether the choice could be answered in the popup without the prose; if the choosing happens in the prose, it has gone too far. Without such a UI, lay the options out in prose with their tradeoffs and ask outright.
 
 ### Output style
 

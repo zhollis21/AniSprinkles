@@ -1,8 +1,8 @@
 ---
 name: ani-kickoff
-description: "Start work on a GitHub issue the right way: pull the issue, verify it isn't stale or already fixed, analyze solutions independently of whatever the issue proposes, surface tradeoffs, ask clarifying questions, and agree a plan before any code exists. Use whenever the user names issue numbers to work on — \"let's do #112\", \"start issue 63\", \"pick up 52 and 62\" — or asks to take something off the backlog. Prefer this over jumping straight into implementation, even when the issue looks obvious."
+description: "Start work on a GitHub issue the right way: pull the issue, verify it isn't stale or already fixed, analyze solutions independently of whatever the issue proposes, brief the user on the issue and the decisions it needs, ask clarifying questions, agree a plan, then build it. Use whenever the user names issue numbers to work on — \"let's do #112\", \"start issue 63\", \"pick up 52 and 62\" — or asks to take something off the backlog. Prefer this over jumping straight into implementation, even when the issue looks obvious."
 argument-hint: "<issue number> [more issue numbers]"
-allowed-tools: Bash(gh *) Bash(git *) Bash(cp *) Bash(diff *) Read Grep Glob AskUserQuestion ExitPlanMode
+allowed-tools: Bash(gh *) Bash(git *) Bash(cp *) Bash(diff *) Bash(dotnet *) Bash(pwsh *) Read Grep Glob Edit Write AskUserQuestion ExitPlanMode Skill
 ---
 
 # Ani-kickoff
@@ -12,10 +12,11 @@ Kicking off: $ARGUMENTS
 The point of this skill is to spend thinking time where it is cheap. A wrong
 assumption costs seconds to fix while it is still a sentence in a plan, and hours
 once it is code with tests and a PR built on top of it. So the order here is
-deliberately: understand → verify → analyze → ask → agree → *then* branch.
+deliberately: understand → verify → analyze → brief → ask → agree → *then* branch
+and build.
 
-Nothing gets implemented during this skill. It ends at an approved plan and a
-branch to build it on.
+Nothing gets implemented before the plan is approved. Once it is, the approval is
+the go-ahead: cut the branch and carry straight on into implementation.
 
 It does write to GitHub, in two narrow places, because findings that live only in
 a chat window get re-derived at full price by the next person to open the issue:
@@ -286,6 +287,41 @@ Come up with at least one genuine alternative before settling. If the issue's
 option really is best, saying *why* it beat the alternative is far more useful
 than saying it was the only thing considered.
 
+**Read the code each option would touch, before judging any of them.** This is
+the step that is easiest to skip and most expensive to have skipped, because an
+issue's options were written from the code as it stood months ago and read as
+though they still describe it. Most of them quietly assert something — that a
+page model already holds the state, that a seam exists to inject through, that a
+value is pinned by a test, that a fixture already covers the call. Those
+assertions are the whole basis of the tradeoff, and every one of them is
+checkable in a couple of minutes.
+
+So for each option, open the files it would change and write down what you found:
+
+- **The state it assumes exists.** Go and look at it. "The entry already knows
+  which unit its progress is in" is the kind of claim that turns out to be
+  *derived* rather than stored (`MediaListEntry.UsesVolumeProgress`), which moves
+  an option from cheap to needing a capture-and-revert path.
+- **The seam it assumes is available.** An option that puts logic in Core needs
+  an abstraction for everything platform-bound it touches — `IPreferences`,
+  `IDispatcher`, `IDialogService`, `ISecureTokenStorage`, an
+  `HttpMessageHandler`. If there is no seam, writing one is part of that
+  option's cost, not a detail to discover later.
+- **The constraint it assumes binds.** Date it the same way this step dates a
+  documented decision: a constraint that was true when written can be free now,
+  or expensive in a way it wasn't.
+- **What would actually break.** Grep for the pinned values, recorded fixtures
+  and CI gates the change would invalidate. A new `IAniListClient` operation, a
+  new sort or a deeper page needs a re-recording or the run fails with
+  `FIXTURE MISS`; the adult canary, `IconGlyphReferenceTests` and
+  `DiagnosticsDisclosureTests` all fail on purpose when something they pin
+  moves. "This needs the fixtures re-recorded" and "this changes two numbers in
+  one test" are different decisions wearing the same words.
+
+An option you have not checked this way is not an option yet — it is a paraphrase
+of the ticket. Offering it as one asks the user to arbitrate between descriptions
+neither of you has confirmed.
+
 Check candidate approaches against the conventions that actually bite here:
 
 - **DI lifetimes** — services and tab PageModels are singleton; pages and
@@ -316,16 +352,127 @@ or changes on-device behavior you cannot verify from the desktop.
 
 ---
 
-## Step 4 — Ask clarifying questions
+## Step 4 — Brief, then ask
+
+**Brief first, questions second.** Before the first `AskUserQuestion`, write a
+short overview in the conversation so the user is answering from the same picture
+you are. A question arriving cold — "cache the browse pages, or refetch them?" —
+asks the user to reconstruct the whole problem in their head before they can
+answer it; the same question after two paragraphs of context is answerable in a
+sentence.
+
+**The failure this prevents, stated plainly, because it is the easy thing to
+do:** read the issue, lift its **A / B / C** into a question box, ask which one
+the user wants. It looks like consulting them and is the opposite. The options
+came from the ticket rather than from the code, nobody has checked whether they
+still describe reality, and the user is being asked to pick between three
+summaries you have not verified — so their answer cannot be better than the
+ticket was. The tell is that when they reply "explain more" or "I need more
+info", the reading you do *then* changes your own recommendation. Everything that
+reading would have found was available before the question was asked.
+
+Before the first `AskUserQuestion`, all of these must hold:
+
+- [ ] **Every option names a file you opened.** Not `AGENTS.md`, not
+      `/project-architecture` — the code it would change. If you cannot cite
+      one, you are about to quote the ticket back.
+- [ ] **No option's premise is still an assumption.** Step 3's checks are done
+      and written down, including the ones that killed an option.
+- [ ] **Every fact the question rests on has been looked up**, so what is left is
+      the decision itself. This is not a reason to drop the question — a decision
+      stays the user's however clearly the code points. It is a reason the
+      question should arrive with its answer already costed.
+- [ ] **Each option's real cost is known**, not its cost as the ticket described
+      it — including how many AniList requests it adds and whether a fixture
+      re-recording comes with it.
+- [ ] **You have a recommendation and a reason.** No recommendation usually means
+      the analysis is not finished, and a menu is being offered in place of a
+      judgement.
+- [ ] **The decisions are named in the brief, with their tradeoffs, before the
+      popup opens.** Each one: what is being decided, what each direction costs
+      — a line or two apiece — and your recommendation with its reason. Facts
+      alone are not a brief. The tell is a brief that explains the problem
+      thoroughly and then jumps straight to the question box, leaving every
+      tradeoff compressed into option descriptions the user reads inside the
+      widget, at the moment they are choosing, with no way to compare them side
+      by side.
+
+      This is the *Presenting options* rule in `AGENTS.md` and `CLAUDE.md`, not
+      an exception to it: the popup carries the choices and is the only thing
+      that asks, the brief carries the reasoning behind them. So don't render
+      the alternatives as a menu here, and don't end the brief with "so, A or
+      B?" — the test there is whether the user could answer inside the widget
+      without the prose.
+- [ ] **Every tuned constant the plan adds or changes is in the brief, and asked
+      about.** Debounces, cache TTLs, page sizes, retry delays and caps,
+      retention windows, notification intervals: each with its value and a line
+      of scale — what it means in requests, seconds or screens. "Placeholder, we
+      can tune it later" is still a number the user has not agreed, and a plan
+      that settles the approach but not its numbers is not agreed. Some of them
+      are load-bearing well beyond their own call site:
+      `DiagnosticsLogBuffer.DefaultRetention` is quoted as "5 minutes" in the
+      disclosure popup, and anything that spends request budget spends it against
+      a rate limit the user is deliberately conservative about.
+
+A question that survives all seven is worth the user's attention. One that does
+not is a request for them to do Step 3 for you.
+
+The brief covers, in this order and briefly:
+
+- **What the issue is** — the problem in your own words, reflecting what Step 2
+  verified rather than the issue's title. Say what already exists that this
+  builds on, with file paths.
+- **Where it fits** — what depends on it, what it depends on, and which
+  neighbouring issues will consume or feed it (the dependency order from Step 2).
+  Say what closing this unblocks; that is usually the best argument for doing it
+  now, or for not.
+- **The decisions to make** — each one named, with what each direction costs in
+  a line or two apiece, and your recommendation. Written as prose, not as a
+  menu; the popup is what presents the choices. This is the list Step 3
+  produced. Leave one out only when there is genuinely nothing to decide — one
+  viable way to do it, and you would not change course whatever the answer was.
+  "I have a clear preference" is not that; neither is "the repo points one way".
+  State those as recommendations and still ask. A decision quietly resolved in
+  the brief is a decision taken away.
+
+Write it in plain language. A decision explained as "the other three browse
+surfaces already pin the adult flag to the value page 1 was seeded under, so this
+one should too" lands better than a paragraph of tradeoffs that assumes the user
+remembers why. Keep it to what the questions need — this is a brief, not the
+plan; the plan is Step 5.
+
+Then ask.
 
 The user's explicit goal is to fix it right the first time, which means questions
-are welcome — but their value comes from being answerable and consequential, not
-from their quantity.
+are welcome. There is no budget to stay under — make each one answerable and
+consequential, then ask all of them. Batching keeps that cheap.
 
-Ask about anything where two readings lead to genuinely different code. Skip
-anything you can settle yourself by reading the codebase; burning a question on
-something greppable spends the user's attention badly and makes the real
-questions easier to skim past.
+Ask about anything where two readings lead to genuinely different code.
+
+**When in doubt, ask.** The costs here are not symmetric, and it is worth being
+blunt about which way they fall: a question the user did not need costs them a
+few seconds, and something built the way they did not want costs hours, plus the
+argument about whether to keep it. Do not talk yourself out of a question on the
+grounds that you could defend a choice from the repo. Being able to justify a
+decision is not the same as it being yours to make.
+
+The distinction that matters is **facts versus decisions**, not greppable versus
+not:
+
+- **A fact about the code is never a question.** Does that state exist, what does
+  that method do, is this value pinned by a test, when was that written — go and
+  look. You have the tools and the user does not have the file open. Asking is
+  not caution, it is offloading Step 3.
+- **A decision about what to build is always the user's**, however confidently
+  the repo points one way. Which approach, what is in scope, whether it is
+  acceptable to break or rewrite something, which of two defensible readings of
+  the issue is the one they meant. A repo can tell you what is *possible* and
+  what it would *cost*; it cannot tell you what they want.
+
+The two are easy to confuse because a decision usually rests on facts. Settle the
+facts by reading, then put the decision to them **with the facts attached** —
+that is what makes a question answerable in a sentence instead of a research
+project.
 
 Good questions tend to be grounded in something specific you found: "the issue
 says diagnostic logs should be sendable — the file logger keeps 3 rotated
@@ -356,6 +503,9 @@ Present the plan in the conversation and end at an explicit approval gate
 - **What we're solving** — restated in your own words, reflecting what you
   verified in Step 2, not just the issue's title
 - **Approach chosen, and what it beat** — with the reasoning
+- **Numbers** — every tuned constant the plan introduces or changes, with the
+  value the user agreed in Step 4; the approval covers these too, so a number
+  that reaches the code without appearing here was never agreed
 - **Steps** — ordered, each concrete enough to act on, naming the files involved
 - **Tradeoffs and risks** — what could go wrong, what is hard to undo
 - **Verification** — how we'll confirm it works. For anything user-visible this
@@ -437,9 +587,10 @@ number and mention the others in the branch name or the eventual PR body.
 
 Confirm the branch name before creating it; it is annoying to rename later.
 
-Create the branch and stop there. Don't commit, don't push, and don't start
-implementing — per `AGENTS.md`, those are separate explicit asks. Hand back with
-a one-line summary of what was agreed and what the next step is.
+Create the branch and carry on: the approved plan is the instruction to
+implement, so start building without asking again. Don't commit and don't push —
+per `AGENTS.md`, those stay separate explicit asks. Run `/ani-review` before
+presenting the result.
 
 ---
 
