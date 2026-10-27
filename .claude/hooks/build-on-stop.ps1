@@ -56,6 +56,14 @@
 # them. If it is still failing when Claude stops again (stop_hook_active), the
 # hook lets it stop - so Claude can say the build is broken and why - rather
 # than trapping it in a loop on an error it cannot fix.
+#
+# This gate fails OPEN, deliberately. If it exceeds the timeout in
+# settings.json it is killed, nothing is blocked and no stamp is written, so
+# the stop goes through unverified and the next one tries again. A dev-loop
+# check that can strand a session is worse than one that occasionally misses;
+# CI is the gate that does not miss. All three builds measured 267s warm, and
+# the timeout is set well above that so only a genuinely pathological run
+# (a cold NuGet restore on a fresh worktree) reaches it.
 
 $ErrorActionPreference = 'Stop'
 # Run by hand (no payload on stdin) this must still work, so an empty or
@@ -75,8 +83,14 @@ function Test-Tracked([string]$path) {
     $extension = [System.IO.Path]::GetExtension($path)
     if ($sourceExtensions -contains $extension) { return $true }
     if ($buildInputExtensions -contains $extension) { return $true }
-    # Only the AniList fixtures, not any .json: the app ships appsettings-ish
-    # and tooling JSON that no build embeds.
+    # The app icon and splash are named explicitly in the csproj (MauiIcon,
+    # MauiSplashScreen), so renaming or removing one fails the build. The
+    # Images, Fonts and Raw assets are globbed, which tolerates both, so they
+    # stay out.
+    if ($path -match '[\\/]Resources[\\/](AppIcon|Splash)[\\/]') { return $true }
+    # Only the AniList fixtures, not any .json: launchSettings.json is a debug
+    # profile and nothing embeds it. The csproj embeds Fixtures\AniList\*.json
+    # and nothing else, so this matches the project exactly.
     return $extension -eq '.json' -and $path -match '[\\/]Fixtures[\\/]AniList[\\/]'
 }
 
@@ -130,9 +144,12 @@ if ((Test-Path $stamp) -and (Get-Content $stamp -Raw).Trim() -eq $hash) {
 }
 
 # Everything newer than the last passing run decides which builds are needed.
+# These are paths rather than files on disk, because a deletion has to be
+# classifiable too and there is no FileInfo for a file that is gone.
 if (Test-Path $stamp) {
     $since = (Get-Item $stamp).LastWriteTimeUtc
-    $changed = @($all | Where-Object { $_.LastWriteTimeUtc -gt $since })
+    $changed = @($all | Where-Object { $_.LastWriteTimeUtc -gt $since } |
+        ForEach-Object { $_.FullName })
 }
 else {
     # No stamp - a fresh worktree, or the first stop of a session. File times
@@ -143,19 +160,25 @@ else {
     $changed = @()
     $gitAnswered = $false
     try {
-        $tracked = & git -C $root diff --name-only HEAD 2>$null
+        # core.quotepath=false, or git escapes any non-ASCII path as octal
+        # ("src/\303\251.cs") and the join below would build a name that
+        # matches nothing - a silent under-build rather than a visible error.
+        $tracked = & git -C $root -c core.quotepath=false diff --name-only HEAD 2>$null
         $trackedOk = $LASTEXITCODE -eq 0
-        $untracked = & git -C $root ls-files --others --exclude-standard 2>$null
+        $untracked = & git -C $root -c core.quotepath=false ls-files --others --exclude-standard 2>$null
         if ($trackedOk -and $LASTEXITCODE -eq 0) {
             $gitAnswered = $true
-            $names = [System.Collections.Generic.HashSet[string]]::new(
-                [StringComparer]::OrdinalIgnoreCase)
-            foreach ($name in @($tracked) + @($untracked)) {
-                if ($name) {
-                    [void]$names.Add((Join-Path $root $name.Replace('/', [IO.Path]::DirectorySeparatorChar)))
-                }
-            }
-            $changed = @($all | Where-Object { $names.Contains($_.FullName) })
+            # Filtered by what we track, NOT by what is still on disk. A
+            # deleted file is reported by git and absent from $all, so
+            # intersecting with $all drops it - and a deletion that breaks the
+            # build is exactly what must not be dropped. Classification below
+            # works on paths, so a path with no file behind it still resolves
+            # to the right builds.
+            $changed = @(@($tracked) + @($untracked) |
+                Where-Object { $_ } |
+                ForEach-Object { Join-Path $root $_.Replace('/', [IO.Path]::DirectorySeparatorChar) } |
+                Where-Object { (Test-Tracked $_) -or (Test-BuildInput $_) } |
+                Select-Object -Unique)
         }
     }
     catch { $gitAnswered = $false }
@@ -168,24 +191,24 @@ else {
     }
 }
 
-# The fingerprint moved but nothing identifiable changed (a deletion, or git
-# could not answer): build everything rather than guess which half is stale.
-if (-not $changed) { $changed = $all }
+# The fingerprint moved but nothing identifiable changed (git could not
+# answer): build everything rather than guess which half is stale.
+if (-not $changed) { $changed = @($all | ForEach-Object { $_.FullName }) }
 
 # A build input reaches further than the project it sits in, so it forces the
 # lot rather than being classified.
-$touchesBuildInput = [bool]($changed | Where-Object { Test-BuildInput $_.FullName })
+$touchesBuildInput = [bool]($changed | Where-Object { Test-BuildInput $_ })
 
 # A fixture lives inside the app project but cannot break the build that does
 # not embed it, so it is not enough on its own to pay for the plain Android TFM.
 $touchesApp = $touchesBuildInput -or [bool]($changed | Where-Object {
-        $_.FullName -match '[\\/]src[\\/]AniSprinkles[\\/]' -and
-        $_.FullName -notmatch '[\\/]Fixtures[\\/]AniList[\\/]'
+        $_ -match '[\\/]src[\\/]AniSprinkles[\\/]' -and
+        $_ -notmatch '[\\/]Fixtures[\\/]AniList[\\/]'
     })
 $touchesCi = $touchesBuildInput -or [bool]($changed | Where-Object {
-        $_.FullName -match '[\\/]Services[\\/]CI[\\/]' -or
-        $_.FullName -match '[\\/]Services[\\/]Fixtures[\\/]' -or
-        $_.FullName -match '[\\/]Fixtures[\\/]AniList[\\/]'
+        $_ -match '[\\/]Services[\\/]CI[\\/]' -or
+        $_ -match '[\\/]Services[\\/]Fixtures[\\/]' -or
+        $_ -match '[\\/]Fixtures[\\/]AniList[\\/]'
     })
 
 $builds = [System.Collections.Generic.List[object]]::new()
