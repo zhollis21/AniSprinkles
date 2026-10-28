@@ -1,0 +1,50 @@
+﻿{
+  "operationName": "Search",
+  "variables": {
+    "search": "no",
+    "page": 1,
+    "perPage": 20
+  },
+  "queryFingerprint": "7ff4361b69e7",
+  "recordedAt": "2026-10-27T17:47:04.166681+00:00",
+  "response": {
+    "data": {
+      "Page": {
+        "pageInfo": {
+          "hasNextPage": false,
+          "currentPage": 1
+        },
+        "media": [
+          {
+            "id": 60765,
+            "title": {
+              "romaji": "Change!!",
+              "english": null,
+              "native": "\u30C1\u30A7\u30F3\u30B8\uFF01\uFF01"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/30765.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/30765.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 8,
+            "volumes": 1,
+            "weightedScore": null,
+            "favourites": 4,
+            "popularity": 166,
+            "trending": 0,
+            "startDate": {
+              "year": 2010,
+              "month": 8,
+              "day": 5
+            },
+            "mediaListEntry": null
+          }
+        ]
+      }
+    }
+  }
+}

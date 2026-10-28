@@ -225,6 +225,17 @@ public partial class MediaListPageModel : ObservableObject
         _currentViewMode = ListViewModePreference.Load(preferences);
 
         var savedSort = preferences.Get(SortFieldPreferenceKey, nameof(SortField.LastUpdated));
+
+        // SortField.AverageScore was renamed to WeightedScore when AniList deprecated the field
+        // (#163). The preference stores the member *name*, and Enum.TryParse falls through on a
+        // miss to leave the default — so without this, anyone sorting by it would silently find
+        // themselves back on Recently Updated after updating. Safe to delete once no install can
+        // still be carrying the old name.
+        if (string.Equals(savedSort, "AverageScore", StringComparison.Ordinal))
+        {
+            savedSort = nameof(SortField.WeightedScore);
+        }
+
         if (Enum.TryParse<SortField>(savedSort, out var restoredSort))
         {
             _currentSortField = restoredSort;

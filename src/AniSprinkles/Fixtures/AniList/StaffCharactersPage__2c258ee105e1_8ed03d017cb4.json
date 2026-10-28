@@ -1,0 +1,27 @@
+﻿{
+  "operationName": "StaffCharactersPage",
+  "variables": {
+    "id": 170189,
+    "page": 1,
+    "sort": [
+      "ROLE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "8ed03d017cb4",
+  "recordedAt": "2026-10-27T17:58:45.2816696+00:00",
+  "response": {
+    "data": {
+      "Staff": {
+        "characters": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "edges": []
+        }
+      }
+    }
+  }
+}

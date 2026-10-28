@@ -1,0 +1,633 @@
+﻿{
+  "operationName": "StudioMediaPage",
+  "variables": {
+    "id": 18,
+    "page": 3,
+    "sort": [
+      "POPULARITY_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "b21d12c3640f",
+  "recordedAt": "2026-10-27T17:59:08.4162105+00:00",
+  "response": {
+    "data": {
+      "Studio": {
+        "media": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 3
+          },
+          "nodes": [
+            {
+              "id": 967,
+              "title": {
+                "romaji": "Hokuto no Ken",
+                "english": "Fist of the North Star",
+                "native": "\u5317\u6597\u306E\u62F3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/n967-84jNBaInec98.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/n967-84jNBaInec98.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "weightedScore": 76,
+              "favourites": 886,
+              "popularity": 33400,
+              "startDate": {
+                "year": 1984,
+                "month": 10,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 128207,
+              "title": {
+                "romaji": "THE FIRST SLAM DUNK",
+                "english": "THE FIRST SLAM DUNK",
+                "native": "THE FIRST SLAM DUNK"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx128207-SWpfVJMRfQ9X.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx128207-SWpfVJMRfQ9X.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "weightedScore": 87,
+              "favourites": 1716,
+              "popularity": 33079,
+              "startDate": {
+                "year": 2022,
+                "month": 12,
+                "day": 3
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 532,
+              "title": {
+                "romaji": "Bishoujo Senshi Sailor Moon S",
+                "english": "Sailor Moon S",
+                "native": "\u7F8E\u5C11\u5973\u6226\u58EB\u30BB\u30FC\u30E9\u30FC\u30E0\u30FC\u30F3 S"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx532-D6yrPcsSxhSE.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx532-D6yrPcsSxhSE.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "weightedScore": 78,
+              "favourites": 1067,
+              "popularity": 32872,
+              "startDate": {
+                "year": 1994,
+                "month": 3,
+                "day": 19
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 12231,
+              "title": {
+                "romaji": "Dragon Ball: Episode of Bardock",
+                "english": "Dragon Ball: Episode of Bardock",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EB \u30A8\u30D4\u30BD\u30FC\u30C9 \u30AA\u30D6 \u30D0\u30FC\u30C0\u30C3\u30AF"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/12231.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/12231.jpg"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "weightedScore": 69,
+              "favourites": 352,
+              "popularity": 32711,
+              "startDate": {
+                "year": 2011,
+                "month": 12,
+                "day": 17
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1723,
+              "title": {
+                "romaji": "Clannad Movie",
+                "english": "Clannad: The Motion Picture",
+                "native": "\u5287\u5834\u7248 \u30AF\u30E9\u30CA\u30C9"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1723-PzMdQPvfcxxA.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1723-PzMdQPvfcxxA.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "weightedScore": 67,
+              "favourites": 237,
+              "popularity": 32385,
+              "startDate": {
+                "year": 2007,
+                "month": 9,
+                "day": 15
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 900,
+              "title": {
+                "romaji": "Dragon Ball Z: Kyokugen Battle!! Sandai Super Saiyajin",
+                "english": "Dragon Ball Z: Super Android 13!",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EB\uFF3A \u6975\u9650\u30D0\u30C8\u30EB\uFF01\u4E09\u5927\u8D85\u30B5\u30A4\u30E4\u4EBA"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/900-cNaooAiGtuYv.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/900-cNaooAiGtuYv.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "weightedScore": 64,
+              "favourites": 227,
+              "popularity": 31960,
+              "startDate": {
+                "year": 1992,
+                "month": 7,
+                "day": 11
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 894,
+              "title": {
+                "romaji": "Dragon Ball Z: Ora no Gohan wo Kaese!!",
+                "english": "Dragon Ball Z: Dead Zone",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EBZ \u30AA\u30E9\u306E\u609F\u98EF\u3092\u304B\u3048\u305B\u30C3!!"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/894-9eA7z7CyNMms.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/894-9eA7z7CyNMms.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "weightedScore": 62,
+              "favourites": 197,
+              "popularity": 31103,
+              "startDate": {
+                "year": 1989,
+                "month": 7,
+                "day": 15
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 897,
+              "title": {
+                "romaji": "Dragon Ball Z: Super Saiyajin da Son Goku",
+                "english": "Dragon Ball Z: Lord Slug",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EB\uFF3A \u8D85\u30B5\u30A4\u30E4\u4EBA\u3060\u5B6B\u609F\u7A7A"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/897-XgUEvu807MpG.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/897-XgUEvu807MpG.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "weightedScore": 61,
+              "favourites": 202,
+              "popularity": 31062,
+              "startDate": {
+                "year": 1991,
+                "month": 3,
+                "day": 19
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 985,
+              "title": {
+                "romaji": "Dragon Ball Z: Zetsubou e no Hankou!! Nokosareta Chousenshi - Gohan to Trunks",
+                "english": "Dragon Ball Z: The History of Trunks",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EB\uFF3A\u30FB\u7D76\u671B\u3078\u306E\u53CD\u6297\uFF01\uFF01\u6B8B\u3055\u308C\u305F\u8D85\u6226\u58EB\u30FB\u609F\u98EF\u3068\u30C8\u30E9\u30F3\u30AF\u30B9"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx985-5AKFy3HpX0uo.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx985-5AKFy3HpX0uo.jpg"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "weightedScore": 77,
+              "favourites": 578,
+              "popularity": 29763,
+              "startDate": {
+                "year": 1993,
+                "month": 2,
+                "day": 24
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 171630,
+              "title": {
+                "romaji": "THE ONE PIECE",
+                "english": "THE ONE PIECE",
+                "native": "THE ONE PIECE"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx171630-2U7Y5OIWwXJJ.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx171630-2U7Y5OIWwXJJ.jpg"
+              },
+              "format": null,
+              "type": "ANIME",
+              "status": "NOT_YET_RELEASED",
+              "weightedScore": null,
+              "favourites": 491,
+              "popularity": 29659,
+              "startDate": {
+                "year": 2027,
+                "month": 2,
+                "day": null
+              },
+              "mediaListEntry": {
+                "id": 593365692,
+                "status": "PLANNING",
+                "progress": 0,
+                "score": 0
+              }
+            },
+            {
+              "id": 986,
+              "title": {
+                "romaji": "Dragon Ball Z: Tatta Hitori no Saishuu Kessen - Freeza ni Idonda Z Senshi Son Goku no Chi",
+                "english": "Dragon Ball Z: Bardock \u2013 The Father of Goku",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EBZ \u305F\u3063\u305F\u3072\u3068\u308A\u306E\u6700\u7D42\u6C7A\u6226\u301C\u30D5\u30EA\u30FC\u30B6\u306B\u6311\u3093\u3060Z\u6226\u58EB \u5B6B\u609F\u7A7A\u306E\u7236\u301C"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx986-AaMvLpNQrRzu.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx986-AaMvLpNQrRzu.jpg"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "weightedScore": 73,
+              "favourites": 417,
+              "popularity": 29441,
+              "startDate": {
+                "year": 1990,
+                "month": 10,
+                "day": 17
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1132,
+              "title": {
+                "romaji": "Digimon Frontier",
+                "english": null,
+                "native": "\u30C7\u30B8\u30E2\u30F3\u30D5\u30ED\u30F3\u30C6\u30A3\u30A2"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx1132-sAQyMO3rSg69.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx1132-sAQyMO3rSg69.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "weightedScore": 69,
+              "favourites": 554,
+              "popularity": 29388,
+              "startDate": {
+                "year": 2002,
+                "month": 4,
+                "day": 7
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 250,
+              "title": {
+                "romaji": "Konjiki no Gash Bell!!",
+                "english": "Zatch Bell!",
+                "native": "\u91D1\u8272\u306E\u30AC\u30C3\u30B7\u30E5\u30D9\u30EB!!"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b250-w0c2KefXfW2i.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b250-w0c2KefXfW2i.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "weightedScore": 73,
+              "favourites": 704,
+              "popularity": 28820,
+              "startDate": {
+                "year": 2003,
+                "month": 4,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 206814,
+              "title": {
+                "romaji": "Dragon Ball Super: Beerus",
+                "english": "Dragon Ball Super: Beerus",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EB\u8D85 \u30D3\u30EB\u30B9"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx206814-PVVzRbf1IQpe.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206814-PVVzRbf1IQpe.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "RELEASING",
+              "weightedScore": 81,
+              "favourites": 684,
+              "popularity": 28351,
+              "startDate": {
+                "year": 2026,
+                "month": 10,
+                "day": 11
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 6774,
+              "title": {
+                "romaji": "Kuuchuu Buranko",
+                "english": "Welcome to Irabu\u0027s Office",
+                "native": "\u7A7A\u4E2D\u30D6\u30E9\u30F3\u30B3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx6774-9yybYg3VePJU.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx6774-9yybYg3VePJU.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "weightedScore": 76,
+              "favourites": 682,
+              "popularity": 28323,
+              "startDate": {
+                "year": 2009,
+                "month": 10,
+                "day": 15
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 13391,
+              "title": {
+                "romaji": "Rakuen Tsuihou: Expelled From Paradise",
+                "english": "Expelled From Paradise",
+                "native": "\u697D\u5712\u8FFD\u653E -Expelled From Paradise-"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx13391-uj1wsF4E8mXO.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx13391-uj1wsF4E8mXO.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "weightedScore": 70,
+              "favourites": 234,
+              "popularity": 28231,
+              "startDate": {
+                "year": 2014,
+                "month": 11,
+                "day": 15
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 10033,
+              "title": {
+                "romaji": "Toriko",
+                "english": null,
+                "native": "\u30C8\u30EA\u30B3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx10033-V7xnlgAVtaVR.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx10033-V7xnlgAVtaVR.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "weightedScore": 70,
+              "favourites": 432,
+              "popularity": 27841,
+              "startDate": {
+                "year": 2011,
+                "month": 4,
+                "day": 3
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 895,
+              "title": {
+                "romaji": "Dragon Ball Z: Konoyo de Ichiban Tsuyoi Yatsu",
+                "english": "Dragon Ball Z: The World\u0027s Strongest",
+                "native": "\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EB\uFF3A \u3053\u306E\u4E16\u3067\u4E00\u756A\u5F37\u3044\u30E4\u30C4"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/895-GuuZOIRCBHhI.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/895-GuuZOIRCBHhI.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "weightedScore": 61,
+              "favourites": 158,
+              "popularity": 27413,
+              "startDate": {
+                "year": 1990,
+                "month": 3,
+                "day": 10
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 460,
+              "title": {
+                "romaji": "ONE PIECE: Nejimaki-jima no Bouken",
+                "english": "One Piece: Clockwork Island Adventure",
+                "native": "ONE PIECE \u306D\u3058\u307E\u304D\u5CF6\u306E\u5192\u967A"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx460-p9HObfGUhWn0.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx460-p9HObfGUhWn0.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "weightedScore": 67,
+              "favourites": 171,
+              "popularity": 27157,
+              "startDate": {
+                "year": 2001,
+                "month": 3,
+                "day": 3
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 102352,
+              "title": {
+                "romaji": "Super Dragon Ball Heroes",
+                "english": null,
+                "native": "\u30B9\u30FC\u30D1\u30FC\u30C9\u30E9\u30B4\u30F3\u30DC\u30FC\u30EB\u30D2\u30FC\u30ED\u30FC\u30BA"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b102352-iTBUsIV9x7KH.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b102352-iTBUsIV9x7KH.jpg"
+              },
+              "format": "ONA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "weightedScore": 53,
+              "favourites": 449,
+              "popularity": 27001,
+              "startDate": {
+                "year": 2018,
+                "month": 7,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 20802,
+              "title": {
+                "romaji": "Digimon Adventure tri. 1: Saikai",
+                "english": "Digimon Adventure tri. Chapter 1: Reunion",
+                "native": "\u30C7\u30B8\u30E2\u30F3\u30A2\u30C9\u30D9\u30F3\u30C1\u30E3\u30FC tri. \u7B2C1\u7AE0\u300C\u518D\u4F1A\u300D"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20802-4fra401ry8FT.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20802-4fra401ry8FT.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "weightedScore": 71,
+              "favourites": 215,
+              "popularity": 26117,
+              "startDate": {
+                "year": 2015,
+                "month": 11,
+                "day": 21
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 2961,
+              "title": {
+                "romaji": "Digimon Adventure (Movie)",
+                "english": "Digimon Adventure (Movie)",
+                "native": "\u30C7\u30B8\u30E2\u30F3\u30A2\u30C9\u30D9\u30F3\u30C1\u30E3\u30FC (Movie)"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx2961-RMVNKewZWfv9.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2961-RMVNKewZWfv9.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "weightedScore": 74,
+              "favourites": 577,
+              "popularity": 25834,
+              "startDate": {
+                "year": 1999,
+                "month": 3,
+                "day": 6
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 1239,
+              "title": {
+                "romaji": "Bishoujo Senshi Sailor Moon SuperS",
+                "english": "Sailor Moon SuperS",
+                "native": "\u7F8E\u5C11\u5973\u6226\u58EB\u30BB\u30FC\u30E9\u30FC\u30E0\u30FC\u30F3 Super S"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx1239-bYf4KsFfsUhf.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1239-bYf4KsFfsUhf.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "weightedScore": 74,
+              "favourites": 482,
+              "popularity": 25765,
+              "startDate": {
+                "year": 1995,
+                "month": 3,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 462,
+              "title": {
+                "romaji": "ONE PIECE THE MOVIE: Dead End no Bouken",
+                "english": "One Piece The Movie: The Dead End Adventure",
+                "native": "ONE PIECE THE MOVIE \u30C7\u30C3\u30C9\u30A8\u30F3\u30C9\u306E\u5192\u967A"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx462-Ig8zfdsFWcql.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx462-Ig8zfdsFWcql.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "weightedScore": 72,
+              "favourites": 213,
+              "popularity": 25747,
+              "startDate": {
+                "year": 2003,
+                "month": 3,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 21452,
+              "title": {
+                "romaji": "Seikaisuru Kado",
+                "english": "KADO: The Right Answer",
+                "native": "\u6B63\u89E3\u3059\u308B\u30AB\u30C9"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21452-nMuqJmziSDn3.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21452-nMuqJmziSDn3.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "weightedScore": 64,
+              "favourites": 145,
+              "popularity": 25229,
+              "startDate": {
+                "year": 2017,
+                "month": 4,
+                "day": 6
+              },
+              "mediaListEntry": null
+            }
+          ]
+        }
+      }
+    }
+  }
+}

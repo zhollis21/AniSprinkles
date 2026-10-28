@@ -1,0 +1,140 @@
+﻿{
+  "operationName": "MediaCharactersPage",
+  "variables": {
+    "id": 99462,
+    "page": 1,
+    "sort": [
+      "RELEVANCE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "64eed76a7328",
+  "recordedAt": "2026-10-28T11:24:40.9331262+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "characters": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 141842,
+                "name": {
+                  "full": "Roxanne",
+                  "native": "\u30ED\u30AF\u30B5\u30FC\u30CC",
+                  "userPreferred": "Roxanne"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b141842-COxvdfYzbbRi.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b141842-COxvdfYzbbRi.jpg"
+                },
+                "favourites": 607
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 192936,
+                "name": {
+                  "full": "Sherry",
+                  "native": null,
+                  "userPreferred": "Sherry"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b192936-5h0KQ6vEBGYT.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b192936-5h0KQ6vEBGYT.jpg"
+                },
+                "favourites": 156
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 268339,
+                "name": {
+                  "full": "Michio Kaga",
+                  "native": "\u52A0\u8CC0\u9053\u592B",
+                  "userPreferred": "Michio Kaga"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b268339-N7MpnVcrrW4o.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b268339-N7MpnVcrrW4o.jpg"
+                },
+                "favourites": 67
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 279038,
+                "name": {
+                  "full": "Alan",
+                  "native": "\u30A2\u30E9\u30F3",
+                  "userPreferred": "Alan"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b279038-EBtZkSmXj0oF.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b279038-EBtZkSmXj0oF.jpg"
+                },
+                "favourites": 22
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 287922,
+                "name": {
+                  "full": "Miria",
+                  "native": "\u30DF\u30EA\u30A2",
+                  "userPreferred": "Miria"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b287922-USpJgVVeL7rS.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b287922-USpJgVVeL7rS.png"
+                },
+                "favourites": 82
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 287923,
+                "name": {
+                  "full": "Vesta",
+                  "native": "\u30D9\u30B9\u30BF",
+                  "userPreferred": "Vesta"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b287923-2SIOxOQevHfC.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b287923-2SIOxOQevHfC.png"
+                },
+                "favourites": 90
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 287924,
+                "name": {
+                  "full": "Rutina",
+                  "native": "\u30EB\u30C6\u30A3\u30CA",
+                  "userPreferred": "Rutina"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b287924-FKEeWnEn9J69.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b287924-FKEeWnEn9J69.png"
+                },
+                "favourites": 68
+              },
+              "role": "SUPPORTING"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

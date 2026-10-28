@@ -114,7 +114,7 @@ public class AniListClientOperationsTests
     {
         var harness = new Harness().Returns("Media", """
             {"Media":{
-                "id":9,"type":"ANIME","episodes":12,"averageScore":88,
+                "id":9,"type":"ANIME","episodes":12,"weightedScore":88,
                 "title":{"romaji":"Frieren","english":"Frieren"},
                 "mediaListEntry":{"id":555,"status":"CURRENT","progress":4,"score":9.0}
             }}
@@ -126,6 +126,9 @@ public class AniListClientOperationsTests
         Assert.NotNull(entry);
         Assert.Equal(9, media.Id);
         Assert.Equal(12, media.Episodes);
+        // Asserted rather than merely present in the payload: the response key moved with #163, and
+        // a key that no longer binds deserializes to null without failing anything.
+        Assert.Equal(88, media.WeightedScore);
         Assert.Equal(555, entry.Id);
         Assert.Equal(MediaListStatus.Current, entry.Status);
         Assert.Equal(4, entry.Progress);
@@ -544,6 +547,74 @@ public class AniListClientOperationsTests
             .Returns("MediaListCollection", """{"MediaListCollection":null}""");
 
         Assert.Empty(await harness.Client.GetMediaListGroupedAsync(MediaKind.Anime, TestContext.Current.CancellationToken));
+    }
+
+    // ── Schema migrations (#163) ─────────────────────────────────────
+    //
+    // These pin the *outgoing query text*, which is normally not worth asserting — it is the
+    // fixtures that prove a query works. But both of these are field-level migrations where the
+    // old spelling keeps working for now: AniList still answers `averageScore` as an alias of
+    // `weightedScore`, and `relationType(version: 2)` still resolves. So a regression here is
+    // invisible everywhere else — the app renders, the fixtures replay, and nothing fails until
+    // AniList drops the field or someone wonders why no relation ever says "Same Universe".
+
+    [Fact]
+    public async Task GetMedia_AsksForWeightedScoreRatherThanTheDeprecatedAverageScore()
+    {
+        var harness = new Harness().Returns("Media", """{"Media":{"id":9,"type":"ANIME"}}""");
+
+        await harness.Client.GetMediaAsync(9, TestContext.Current.CancellationToken);
+
+        var query = harness.Handler.Last.Query;
+        Assert.NotNull(query);
+        Assert.Contains("weightedScore", query, StringComparison.Ordinal);
+        Assert.DoesNotContain("averageScore", query, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task BrowseAnimePage_AsksForWeightedScore_ViaTheSharedBrowseFragment()
+    {
+        // BrowseMediaFragment is appended to four operations, so one assertion covers Search,
+        // Discover and both browse variants as well.
+        var harness = new Harness().Returns("BrowseAnime", EmptyPage);
+
+        await harness.Client.BrowseAnimePageAsync(
+            "SCORE_DESC", status: null, season: null, seasonYear: null,
+            isAdult: false, format: null, page: 1,
+            cancellationToken: TestContext.Current.CancellationToken);
+
+        var query = harness.Handler.Last.Query;
+        Assert.NotNull(query);
+        Assert.Contains("weightedScore", query, StringComparison.Ordinal);
+        Assert.DoesNotContain("averageScore", query, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task GetMedia_AsksForRelationsVersion3_SoSameUniverseIsNotReportedAsOther()
+    {
+        var harness = new Harness().Returns("Media", """{"Media":{"id":9,"type":"ANIME"}}""");
+
+        await harness.Client.GetMediaAsync(9, TestContext.Current.CancellationToken);
+
+        var query = harness.Handler.Last.Query;
+        Assert.NotNull(query);
+        Assert.Contains("relationType(version: 3)", query, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task GetMedia_MapsSameUniverseRelation_ToItsDisplayName()
+    {
+        var harness = new Harness().Returns("Media", """
+            {"Media":{"id":9,"type":"ANIME","relations":{"edges":[
+                {"relationType":"SAME_UNIVERSE","node":{"id":40,"type":"ANIME"}}
+            ]}}}
+            """);
+
+        var (media, _) = await harness.Client.GetMediaAsync(9, TestContext.Current.CancellationToken);
+
+        Assert.NotNull(media);
+        var relation = Assert.Single(media.Relations);
+        Assert.Equal("Same Universe", relation.RelationType);
     }
 
     private const string EmptyPage =

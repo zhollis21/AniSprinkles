@@ -1,0 +1,790 @@
+﻿{
+  "operationName": "MediaListCollection",
+  "variables": {
+    "userId": 7720462,
+    "type": "ANIME"
+  },
+  "queryFingerprint": "fcbb231143f2",
+  "recordedAt": "2026-10-27T17:45:04.8760444+00:00",
+  "response": {
+    "data": {
+      "MediaListCollection": {
+        "lists": [
+          {
+            "name": "Completed",
+            "entries": [
+              {
+                "id": 540973986,
+                "mediaId": 182255,
+                "status": "COMPLETED",
+                "progress": 10,
+                "progressVolumes": null,
+                "score": 9,
+                "repeat": 0,
+                "updatedAt": 1788670797,
+                "private": false,
+                "hiddenFromStatusLists": false,
+                "notes": null,
+                "media": {
+                  "id": 182255,
+                  "title": {
+                    "romaji": "Sousou no Frieren 2nd Season",
+                    "english": "Frieren: Beyond Journey\u2019s End Season 2",
+                    "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \u7B2C2\u671F"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx182255-butzrqd4I0aC.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx182255-butzrqd4I0aC.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "episodes": 10,
+                  "chapters": null,
+                  "volumes": null,
+                  "season": "WINTER",
+                  "seasonYear": 2026,
+                  "weightedScore": 87,
+                  "popularity": 233784,
+                  "isAdult": false,
+                  "nextAiringEpisode": null
+                }
+              },
+              {
+                "id": 540974122,
+                "mediaId": 154587,
+                "status": "COMPLETED",
+                "progress": 28,
+                "progressVolumes": null,
+                "score": 10,
+                "repeat": 1,
+                "updatedAt": 1788670795,
+                "private": false,
+                "hiddenFromStatusLists": false,
+                "notes": null,
+                "media": {
+                  "id": 154587,
+                  "title": {
+                    "romaji": "Sousou no Frieren",
+                    "english": "Frieren: Beyond Journey\u2019s End",
+                    "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx154587-qQTzQnEJJ3oB.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx154587-qQTzQnEJJ3oB.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "episodes": 28,
+                  "chapters": null,
+                  "volumes": null,
+                  "season": "FALL",
+                  "seasonYear": 2023,
+                  "weightedScore": 91,
+                  "popularity": 493490,
+                  "isAdult": false,
+                  "nextAiringEpisode": null
+                }
+              },
+              {
+                "id": 541004332,
+                "mediaId": 156067,
+                "status": "COMPLETED",
+                "progress": 12,
+                "progressVolumes": null,
+                "score": 9,
+                "repeat": 0,
+                "updatedAt": 1788671116,
+                "private": false,
+                "hiddenFromStatusLists": false,
+                "notes": null,
+                "media": {
+                  "id": 156067,
+                  "title": {
+                    "romaji": "Tondemo Skill de Isekai Hourou Meshi",
+                    "english": "Campfire Cooking in Another World with my Absurd Skill",
+                    "native": "\u3068\u3093\u3067\u3082\u30B9\u30AD\u30EB\u3067\u7570\u4E16\u754C\u653E\u6D6A\u30E1\u30B7"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx156067-Jovklss4VWIx.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx156067-Jovklss4VWIx.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "episodes": 12,
+                  "chapters": null,
+                  "volumes": null,
+                  "season": "WINTER",
+                  "seasonYear": 2023,
+                  "weightedScore": 76,
+                  "popularity": 122968,
+                  "isAdult": false,
+                  "nextAiringEpisode": null
+                }
+              },
+              {
+                "id": 541004445,
+                "mediaId": 170577,
+                "status": "COMPLETED",
+                "progress": 12,
+                "progressVolumes": null,
+                "score": 9,
+                "repeat": 0,
+                "updatedAt": 1788671154,
+                "private": false,
+                "hiddenFromStatusLists": false,
+                "notes": null,
+                "media": {
+                  "id": 170577,
+                  "title": {
+                    "romaji": "Tondemo Skill de Isekai Hourou Meshi 2",
+                    "english": "Campfire Cooking in Another World with my Absurd Skill Season 2",
+                    "native": "\u3068\u3093\u3067\u3082\u30B9\u30AD\u30EB\u3067\u7570\u4E16\u754C\u653E\u6D6A\u30E1\u30B72"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx170577-ocYSFAcry7ty.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx170577-ocYSFAcry7ty.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "episodes": 12,
+                  "chapters": null,
+                  "volumes": null,
+                  "season": "FALL",
+                  "seasonYear": 2025,
+                  "weightedScore": 77,
+                  "popularity": 61362,
+                  "isAdult": false,
+                  "nextAiringEpisode": null
+                }
+              },
+              {
+                "id": 541004686,
+                "mediaId": 144092,
+                "status": "COMPLETED",
+                "progress": 12,
+                "progressVolumes": null,
+                "score": 8,
+                "repeat": 0,
+                "updatedAt": 1788671061,
+                "private": false,
+                "hiddenFromStatusLists": false,
+                "notes": null,
+                "media": {
+                  "id": 144092,
+                  "title": {
+                    "romaji": "Benriya Saitou-san, Isekai ni Iku",
+                    "english": "Handyman Saitou in Another World",
+                    "native": "\u4FBF\u5229\u5C4B\u658E\u85E4\u3055\u3093\u3001\u7570\u4E16\u754C\u306B\u884C\u304F"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx144092-8EKzzZQofFlW.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx144092-8EKzzZQofFlW.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "episodes": 12,
+                  "chapters": null,
+                  "volumes": null,
+                  "season": "WINTER",
+                  "seasonYear": 2023,
+                  "weightedScore": 72,
+                  "popularity": 77119,
+                  "isAdult": false,
+                  "nextAiringEpisode": null
+                }
+              },
+              {
+                "id": 548900001,
+                "mediaId": 101165,
+                "status": "COMPLETED",
+                "progress": 12,
+                "progressVolumes": null,
+                "score": 3,
+                "repeat": 0,
+                "updatedAt": 1775741930,
+                "private": false,
+                "hiddenFromStatusLists": false,
+                "notes": null,
+                "media": {
+                  "id": 101165,
+                  "title": {
+                    "romaji": "Goblin Slayer",
+                    "english": "GOBLIN SLAYER",
+                    "native": "\u30B4\u30D6\u30EA\u30F3\u30B9\u30EC\u30A4\u30E4\u30FC"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx101165-v5NwPXWPFDuD.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101165-v5NwPXWPFDuD.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "episodes": 12,
+                  "chapters": null,
+                  "volumes": null,
+                  "season": "FALL",
+                  "seasonYear": 2018,
+                  "weightedScore": 71,
+                  "popularity": 307292,
+                  "isAdult": false,
+                  "nextAiringEpisode": null
+                }
+              }
+            ]
+          },
+          {
+            "name": "Planning",
+            "entries": [
+              {
+                "id": 548900753,
+                "mediaId": 209939,
+                "status": "PLANNING",
+                "progress": 0,
+                "progressVolumes": null,
+                "score": 0,
+                "repeat": 0,
+                "updatedAt": 1788671589,
+                "private": false,
+                "hiddenFromStatusLists": false,
+                "notes": null,
+                "media": {
+                  "id": 209939,
+                  "title": {
+                    "romaji": "Sousou no Frieren 3rd Season",
+                    "english": null,
+                    "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \u7B2C3\u671F"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx209939-g2Njkml1rheG.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209939-g2Njkml1rheG.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "NOT_YET_RELEASED",
+                  "episodes": null,
+                  "chapters": null,
+                  "volumes": null,
+                  "season": "FALL",
+                  "seasonYear": 2027,
+                  "weightedScore": null,
+                  "popularity": 47672,
+                  "isAdult": false,
+                  "nextAiringEpisode": null
+                }
+              },
+              {
+                "id": 593351074,
+                "mediaId": 182544,
+                "status": "PLANNING",
+                "progress": 0,
+                "progressVolumes": null,
+                "score": 0,
+                "repeat": 0,
+                "updatedAt": 1788671293,
+                "private": false,
+                "hiddenFromStatusLists": false,
+                "notes": null,
+                "media": {
+                  "id": 182544,
+                  "title": {
+                    "romaji": "Mahou Shoujo ni Akogarete 2nd Season",
+                    "english": null,
+                    "native": "\u9B54\u6CD5\u5C11\u5973\u306B\u3042\u3053\u304C\u308C\u3066 \u7B2C2\u671F"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx182544-fbx8pqKrYSaL.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx182544-fbx8pqKrYSaL.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "NOT_YET_RELEASED",
+                  "episodes": null,
+                  "chapters": null,
+                  "volumes": null,
+                  "season": null,
+                  "seasonYear": null,
+                  "weightedScore": null,
+                  "popularity": 14150,
+                  "isAdult": false,
+                  "nextAiringEpisode": null
+                }
+              },
+              {
+                "id": 593351100,
+                "mediaId": 180829,
+                "status": "PLANNING",
+                "progress": 0,
+                "progressVolumes": null,
+                "score": 0,
+                "repeat": 0,
+                "updatedAt": 1788671296,
+                "private": false,
+                "hiddenFromStatusLists": false,
+                "notes": null,
+                "media": {
+                  "id": 180829,
+                  "title": {
+                    "romaji": "Chotto dake Ai ga Omoi Dark Elf ga Isekai kara Oikakete Kita",
+                    "english": "Yandere Dark Elf: She Chased Me All the Way From Another World!",
+                    "native": "\u3061\u3087\u3063\u3068\u3060\u3051\u611B\u304C\u91CD\u3044\u30C0\u30FC\u30AF\u30A8\u30EB\u30D5\u304C\u7570\u4E16\u754C\u304B\u3089\u8FFD\u3044\u304B\u3051\u3066\u304D\u305F"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx180829-jHViG8fIkaIJ.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx180829-jHViG8fIkaIJ.jpg"
+                  },
+                  "format": "TV_SHORT",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "episodes": 12,
+                  "chapters": null,
+                  "volumes": null,
+                  "season": "SPRING",
+                  "seasonYear": 2025,
+                  "weightedScore": 53,
+                  "popularity": 29805,
+                  "isAdult": false,
+                  "nextAiringEpisode": null
+                }
+              },
+              {
+                "id": 593351128,
+                "mediaId": 178788,
+                "status": "PLANNING",
+                "progress": 0,
+                "progressVolumes": null,
+                "score": 0,
+                "repeat": 0,
+                "updatedAt": 1788671298,
+                "private": false,
+                "hiddenFromStatusLists": false,
+                "notes": null,
+                "media": {
+                  "id": 178788,
+                  "title": {
+                    "romaji": "Kimetsu no Yaiba: Mugenjou-hen Movie 1 - Akaza Sairai",
+                    "english": "Demon Slayer: Kimetsu no Yaiba Infinity Castle",
+                    "native": "\u5287\u5834\u7248\u300C\u9B3C\u6EC5\u306E\u5203\u300D\u7121\u9650\u57CE\u7DE8 \u7B2C\u4E00\u7AE0 \u7317\u7AA9\u5EA7\u518D\u6765"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx178788-zm3gtpB9TpRt.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx178788-zm3gtpB9TpRt.jpg"
+                  },
+                  "format": "MOVIE",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "episodes": 1,
+                  "chapters": null,
+                  "volumes": null,
+                  "season": "SUMMER",
+                  "seasonYear": 2025,
+                  "weightedScore": 86,
+                  "popularity": 205851,
+                  "isAdult": false,
+                  "nextAiringEpisode": null
+                }
+              },
+              {
+                "id": 593351151,
+                "mediaId": 189323,
+                "status": "PLANNING",
+                "progress": 0,
+                "progressVolumes": null,
+                "score": 0,
+                "repeat": 0,
+                "updatedAt": 1788671300,
+                "private": false,
+                "hiddenFromStatusLists": false,
+                "notes": null,
+                "media": {
+                  "id": 189323,
+                  "title": {
+                    "romaji": "Shangri-La Frontier 3rd Season",
+                    "english": "Shangri-La Frontier Season 3",
+                    "native": "\u30B7\u30E3\u30F3\u30B0\u30EA\u30E9\u30FB\u30D5\u30ED\u30F3\u30C6\u30A3\u30A2 3rd season"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx189323-gHXhqIOBUY8F.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx189323-gHXhqIOBUY8F.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "NOT_YET_RELEASED",
+                  "episodes": null,
+                  "chapters": null,
+                  "volumes": null,
+                  "season": "WINTER",
+                  "seasonYear": 2027,
+                  "weightedScore": null,
+                  "popularity": 38795,
+                  "isAdult": false,
+                  "nextAiringEpisode": {
+                    "episode": 1,
+                    "airingAt": 1800172800,
+                    "timeUntilAiring": 7049696
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "Dropped",
+            "entries": [
+              {
+                "id": 593351081,
+                "mediaId": 180367,
+                "status": "DROPPED",
+                "progress": 0,
+                "progressVolumes": null,
+                "score": 6,
+                "repeat": 0,
+                "updatedAt": 1788671641,
+                "private": false,
+                "hiddenFromStatusLists": false,
+                "notes": null,
+                "media": {
+                  "id": 180367,
+                  "title": {
+                    "romaji": "Witch Watch",
+                    "english": "WITCH WATCH",
+                    "native": "\u30A6\u30A3\u30C3\u30C1\u30A6\u30A9\u30C3\u30C1"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx180367-GlRuB2lG7Kaa.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx180367-GlRuB2lG7Kaa.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "episodes": 25,
+                  "chapters": null,
+                  "volumes": null,
+                  "season": "SPRING",
+                  "seasonYear": 2025,
+                  "weightedScore": 72,
+                  "popularity": 102433,
+                  "isAdult": false,
+                  "nextAiringEpisode": null
+                }
+              },
+              {
+                "id": 593351107,
+                "mediaId": 21127,
+                "status": "DROPPED",
+                "progress": 0,
+                "progressVolumes": null,
+                "score": 0,
+                "repeat": 0,
+                "updatedAt": 1788671644,
+                "private": false,
+                "hiddenFromStatusLists": false,
+                "notes": null,
+                "media": {
+                  "id": 21127,
+                  "title": {
+                    "romaji": "Steins;Gate 0",
+                    "english": "Steins;Gate 0",
+                    "native": "\u30B7\u30E5\u30BF\u30A4\u30F3\u30BA\u30FB\u30B2\u30FC\u30C8 \u30BC\u30ED"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21127-7ARWZkDXKiiD.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21127-7ARWZkDXKiiD.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "episodes": 23,
+                  "chapters": null,
+                  "volumes": null,
+                  "season": "SPRING",
+                  "seasonYear": 2018,
+                  "weightedScore": 84,
+                  "popularity": 225611,
+                  "isAdult": false,
+                  "nextAiringEpisode": null
+                }
+              },
+              {
+                "id": 593351136,
+                "mediaId": 2993,
+                "status": "DROPPED",
+                "progress": 5,
+                "progressVolumes": null,
+                "score": 0,
+                "repeat": 0,
+                "updatedAt": 1788671646,
+                "private": false,
+                "hiddenFromStatusLists": false,
+                "notes": null,
+                "media": {
+                  "id": 2993,
+                  "title": {
+                    "romaji": "Rosario to Vampire",
+                    "english": "Rosario \u002B Vampire",
+                    "native": "\u30ED\u30B6\u30EA\u30AA\u3068\u30D0\u30F3\u30D1\u30A4\u30A2"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/2993.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/2993.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "episodes": 13,
+                  "chapters": null,
+                  "volumes": null,
+                  "season": "WINTER",
+                  "seasonYear": 2008,
+                  "weightedScore": 63,
+                  "popularity": 127348,
+                  "isAdult": false,
+                  "nextAiringEpisode": null
+                }
+              }
+            ]
+          },
+          {
+            "name": "Paused",
+            "entries": [
+              {
+                "id": 593351085,
+                "mediaId": 177709,
+                "status": "PAUSED",
+                "progress": 7,
+                "progressVolumes": null,
+                "score": 0,
+                "repeat": 0,
+                "updatedAt": 1788671649,
+                "private": false,
+                "hiddenFromStatusLists": false,
+                "notes": null,
+                "media": {
+                  "id": 177709,
+                  "title": {
+                    "romaji": "SAKAMOTO DAYS",
+                    "english": "SAKAMOTO DAYS",
+                    "native": "SAKAMOTO DAYS"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx177709-e5Qx6RlsBgD5.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx177709-e5Qx6RlsBgD5.png"
+                  },
+                  "format": "ONA",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "episodes": 11,
+                  "chapters": null,
+                  "volumes": null,
+                  "season": "WINTER",
+                  "seasonYear": 2025,
+                  "weightedScore": 76,
+                  "popularity": 226666,
+                  "isAdult": false,
+                  "nextAiringEpisode": null
+                }
+              }
+            ]
+          },
+          {
+            "name": "Watching",
+            "entries": [
+              {
+                "id": 593351094,
+                "mediaId": 97889,
+                "status": "CURRENT",
+                "progress": 10,
+                "progressVolumes": null,
+                "score": 0,
+                "repeat": 0,
+                "updatedAt": 1788671270,
+                "private": false,
+                "hiddenFromStatusLists": false,
+                "notes": null,
+                "media": {
+                  "id": 97889,
+                  "title": {
+                    "romaji": "Gintama.",
+                    "english": "Gintama Season 4",
+                    "native": "\u9280\u9B42\u3002"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx97889-ytqHdmus9wQi.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx97889-ytqHdmus9wQi.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "episodes": 12,
+                  "chapters": null,
+                  "volumes": null,
+                  "season": "WINTER",
+                  "seasonYear": 2017,
+                  "weightedScore": 89,
+                  "popularity": 83725,
+                  "isAdult": false,
+                  "nextAiringEpisode": null
+                }
+              },
+              {
+                "id": 593351121,
+                "mediaId": 182205,
+                "status": "CURRENT",
+                "progress": 22,
+                "progressVolumes": null,
+                "score": 0,
+                "repeat": 0,
+                "updatedAt": 1789611243,
+                "private": false,
+                "hiddenFromStatusLists": false,
+                "notes": null,
+                "media": {
+                  "id": 182205,
+                  "title": {
+                    "romaji": "Tensei Shitara Slime Datta Ken 4th Season Part 1 \u0026 2",
+                    "english": "That Time I Got Reincarnated as a Slime Season 4",
+                    "native": "\u8EE2\u751F\u3057\u305F\u3089\u30B9\u30E9\u30A4\u30E0\u3060\u3063\u305F\u4EF6 \u7B2C4\u671F \u7B2C1\u00262\u30AF\u30FC\u30EB"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx182205-q2AeO1owuQbO.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx182205-q2AeO1owuQbO.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "episodes": 24,
+                  "chapters": null,
+                  "volumes": null,
+                  "season": "SPRING",
+                  "seasonYear": 2026,
+                  "weightedScore": 83,
+                  "popularity": 146094,
+                  "isAdult": false,
+                  "nextAiringEpisode": null
+                }
+              },
+              {
+                "id": 593351146,
+                "mediaId": 21,
+                "status": "CURRENT",
+                "progress": 1163,
+                "progressVolumes": null,
+                "score": 8,
+                "repeat": 0,
+                "updatedAt": 1788671274,
+                "private": false,
+                "hiddenFromStatusLists": false,
+                "notes": null,
+                "media": {
+                  "id": 21,
+                  "title": {
+                    "romaji": "ONE PIECE",
+                    "english": "ONE PIECE",
+                    "native": "ONE PIECE"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21-ELSYx3yMPcKM.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21-ELSYx3yMPcKM.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "RELEASING",
+                  "episodes": null,
+                  "chapters": null,
+                  "volumes": null,
+                  "season": "FALL",
+                  "seasonYear": 1999,
+                  "weightedScore": 87,
+                  "popularity": 763318,
+                  "isAdult": false,
+                  "nextAiringEpisode": {
+                    "episode": 1181,
+                    "airingAt": 1798985760,
+                    "timeUntilAiring": 5862656
+                  }
+                }
+              },
+              {
+                "id": 593364933,
+                "mediaId": 11757,
+                "status": "CURRENT",
+                "progress": 0,
+                "progressVolumes": null,
+                "score": 0,
+                "repeat": 0,
+                "updatedAt": 1788671281,
+                "private": false,
+                "hiddenFromStatusLists": false,
+                "notes": null,
+                "media": {
+                  "id": 11757,
+                  "title": {
+                    "romaji": "Sword Art Online",
+                    "english": "Sword Art Online",
+                    "native": "\u30BD\u30FC\u30C9\u30A2\u30FC\u30C8\u30FB\u30AA\u30F3\u30E9\u30A4\u30F3"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx11757-SxYDUzdr9rh2.jpg",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx11757-SxYDUzdr9rh2.jpg"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "episodes": 25,
+                  "chapters": null,
+                  "volumes": null,
+                  "season": "SUMMER",
+                  "seasonYear": 2012,
+                  "weightedScore": 70,
+                  "popularity": 728758,
+                  "isAdult": false,
+                  "nextAiringEpisode": null
+                }
+              },
+              {
+                "id": 593364945,
+                "mediaId": 10073,
+                "status": "CURRENT",
+                "progress": 4,
+                "progressVolumes": null,
+                "score": 0,
+                "repeat": 0,
+                "updatedAt": 1788671284,
+                "private": false,
+                "hiddenFromStatusLists": false,
+                "notes": null,
+                "media": {
+                  "id": 10073,
+                  "title": {
+                    "romaji": "Seikon no Qwaser II",
+                    "english": "The Qwaser of Stigmata II",
+                    "native": "\u8056\u75D5\u306E\u30AF\u30A7\u30A4\u30B5\u30FC II"
+                  },
+                  "coverImage": {
+                    "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx10073-MNiZ5o5RxzIt.png",
+                    "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx10073-MNiZ5o5RxzIt.png"
+                  },
+                  "format": "TV",
+                  "type": "ANIME",
+                  "status": "FINISHED",
+                  "episodes": 12,
+                  "chapters": null,
+                  "volumes": null,
+                  "season": "SPRING",
+                  "seasonYear": 2011,
+                  "weightedScore": 57,
+                  "popularity": 25820,
+                  "isAdult": false,
+                  "nextAiringEpisode": null
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

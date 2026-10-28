@@ -1,0 +1,88 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 99462,
+    "page": 1,
+    "sort": [
+      "RELEVANCE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-10-28T11:24:43.2274042+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 119273,
+                "name": {
+                  "full": "Shachi Sogano",
+                  "native": "\u8607\u6211\u6368\u6065",
+                  "userPreferred": "Shachi Sogano"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 12
+              },
+              "role": "Original Story"
+            },
+            {
+              "node": {
+                "id": 102329,
+                "name": {
+                  "full": "Issei Hyouju",
+                  "native": "\u6C37\u6A39\u4E00\u4E16",
+                  "userPreferred": "Issei Hyouju"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n102329-N9n6K3kieX0D.jpg"
+                },
+                "favourites": 23
+              },
+              "role": "Story \u0026 Art"
+            },
+            {
+              "node": {
+                "id": 101520,
+                "name": {
+                  "full": "Douji Shiki",
+                  "native": "\u56DB\u5B63\u7AE5\u5B50",
+                  "userPreferred": "Douji Shiki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101520-vQ1XCOSy8OKK.jpg"
+                },
+                "favourites": 21
+              },
+              "role": "Character Design"
+            },
+            {
+              "node": {
+                "id": 268817,
+                "name": {
+                  "full": "Ponprasit Trisukchat",
+                  "native": "\u0E1E\u0E23\u0E1B\u0E23\u0E30\u0E2A\u0E34\u0E17\u0E18\u0E34\u0E4C \u0E15\u0E23\u0E35\u0E28\u0E31\u0E01\u0E14\u0E34\u0E4C\u0E0A\u0E32\u0E15\u0E34",
+                  "userPreferred": "Ponprasit Trisukchat"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Translator (Thai)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,403 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 10073,
+    "page": 1,
+    "sort": [
+      "ROLE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-10-28T11:24:06.4979864+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 120168,
+                "name": {
+                  "full": "Rena Okuyama",
+                  "native": "\u5965\u5C71\u9234\u5948",
+                  "userPreferred": "Rena Okuyama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/120168-Ax5yTZY6Knji.jpg"
+                },
+                "favourites": 5
+              },
+              "role": "2nd Key Animation (ep 1)"
+            },
+            {
+              "node": {
+                "id": 131197,
+                "name": {
+                  "full": "Kazuma Tanaka",
+                  "native": "\u7530\u4E2D\u4E00\u771F",
+                  "userPreferred": "Kazuma Tanaka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n131197-ALop3p7kSVcO.png"
+                },
+                "favourites": 3
+              },
+              "role": "2nd Key Animation (ep 3)"
+            },
+            {
+              "node": {
+                "id": 177097,
+                "name": {
+                  "full": "Yousuke Itou",
+                  "native": "\u4F0A\u85E4\u967D\u7950",
+                  "userPreferred": "Yousuke Itou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n177097-NifhlvD5ieIC.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "2nd Key Animation (eps 3, 4, 10)"
+            },
+            {
+              "node": {
+                "id": 108747,
+                "name": {
+                  "full": "Kouji Haneda",
+                  "native": "\u7FBD\u7530\u6D69\u4E8C",
+                  "userPreferred": "Kouji Haneda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n108747-RtxaCNnCbOjI.png"
+                },
+                "favourites": 19
+              },
+              "role": "Animation Director  (ED)"
+            },
+            {
+              "node": {
+                "id": 116819,
+                "name": {
+                  "full": "Toshimitsu Kobayashi",
+                  "native": "\u5C0F\u6797\u5229\u5145",
+                  "userPreferred": "Toshimitsu Kobayashi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/116819-nUSr5EbGKeSM.jpg"
+                },
+                "favourites": 5
+              },
+              "role": "Animation Director  (ep 4, 8, 12)"
+            },
+            {
+              "node": {
+                "id": 123419,
+                "name": {
+                  "full": "Chikara Sakurai",
+                  "native": "\u6AFB\u4E95\u89AA\u826F",
+                  "userPreferred": "Chikara Sakurai"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n123419-NtAlDP6Vuorg.jpg"
+                },
+                "favourites": 20
+              },
+              "role": "Animation Director (OP)"
+            },
+            {
+              "node": {
+                "id": 121347,
+                "name": {
+                  "full": "Kouki Nagayoshi",
+                  "native": "\u6C38\u5409\u5E78\u6A39",
+                  "userPreferred": "Kouki Nagayoshi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 3
+              },
+              "role": "Art Director"
+            },
+            {
+              "node": {
+                "id": 121347,
+                "name": {
+                  "full": "Kouki Nagayoshi",
+                  "native": "\u6C38\u5409\u5E78\u6A39",
+                  "userPreferred": "Kouki Nagayoshi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 3
+              },
+              "role": "Background Art"
+            },
+            {
+              "node": {
+                "id": 107537,
+                "name": {
+                  "full": "Hiraku Kaneko",
+                  "native": "\u91D1\u5B50\u3072\u3089\u304F",
+                  "userPreferred": "Hiraku Kaneko"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n107537-9H6MAmXhW1qS.png"
+                },
+                "favourites": 70
+              },
+              "role": "Director"
+            },
+            {
+              "node": {
+                "id": 124305,
+                "name": {
+                  "full": "Toshihito Naka",
+                  "native": "\u4E2D\u667A\u4EC1",
+                  "userPreferred": "Toshihito Naka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n124305-ejHVk2pYIUwn.png"
+                },
+                "favourites": 2
+              },
+              "role": "Episode Director (ep 9)"
+            },
+            {
+              "node": {
+                "id": 108747,
+                "name": {
+                  "full": "Kouji Haneda",
+                  "native": "\u7FBD\u7530\u6D69\u4E8C",
+                  "userPreferred": "Kouji Haneda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n108747-RtxaCNnCbOjI.png"
+                },
+                "favourites": 19
+              },
+              "role": "Key Animation  (ED)"
+            },
+            {
+              "node": {
+                "id": 101188,
+                "name": {
+                  "full": "Hirofumi Suzuki",
+                  "native": "\u9234\u6728\u535A\u6587",
+                  "userPreferred": "Hirofumi Suzuki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101188-pHKGTeDNvlPC.png"
+                },
+                "favourites": 40
+              },
+              "role": "Key Animation  (OP)"
+            },
+            {
+              "node": {
+                "id": 120168,
+                "name": {
+                  "full": "Rena Okuyama",
+                  "native": "\u5965\u5C71\u9234\u5948",
+                  "userPreferred": "Rena Okuyama"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/120168-Ax5yTZY6Knji.jpg"
+                },
+                "favourites": 5
+              },
+              "role": "Key Animation (ED, ep 7)"
+            },
+            {
+              "node": {
+                "id": 112047,
+                "name": {
+                  "full": "Tatsuya Yoshihara",
+                  "native": "\u5409\u539F\u9054\u77E2",
+                  "userPreferred": "Tatsuya Yoshihara"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n112047-9NkVYZai62wg.png"
+                },
+                "favourites": 425
+              },
+              "role": "Key Animation (ED)"
+            },
+            {
+              "node": {
+                "id": 123993,
+                "name": {
+                  "full": "Hiroshi Yakou",
+                  "native": "\u77E2\u5411\u5B8F\u5FD7",
+                  "userPreferred": "Hiroshi Yakou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/123993-oSKWupXeXGFG.jpg"
+                },
+                "favourites": 21
+              },
+              "role": "Key Animation (ep 1)"
+            },
+            {
+              "node": {
+                "id": 131197,
+                "name": {
+                  "full": "Kazuma Tanaka",
+                  "native": "\u7530\u4E2D\u4E00\u771F",
+                  "userPreferred": "Kazuma Tanaka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n131197-ALop3p7kSVcO.png"
+                },
+                "favourites": 3
+              },
+              "role": "Key Animation (ep 4)"
+            },
+            {
+              "node": {
+                "id": 108115,
+                "name": {
+                  "full": "Tatsuya Katou",
+                  "native": "\u52A0\u85E4\u9054\u4E5F",
+                  "userPreferred": "Tatsuya Katou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/108115-0l56m5nW53zR.jpg"
+                },
+                "favourites": 172
+              },
+              "role": "Music"
+            },
+            {
+              "node": {
+                "id": 97416,
+                "name": {
+                  "full": "Kenetsu Satou",
+                  "native": "\u4F50\u85E4\u5065\u60A6",
+                  "userPreferred": "Kenetsu Satou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 14
+              },
+              "role": "Original Character Design"
+            },
+            {
+              "node": {
+                "id": 105817,
+                "name": {
+                  "full": "Hiroyuki Yoshino",
+                  "native": "\u5409\u91CE\u5F18\u5E78",
+                  "userPreferred": "Hiroyuki Yoshino"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n105817-OCXZUMV70BEg.jpg"
+                },
+                "favourites": 30
+              },
+              "role": "Original Creator"
+            },
+            {
+              "node": {
+                "id": 105294,
+                "name": {
+                  "full": "Touko Machida",
+                  "native": "\u5F85\u7530\u5802\u5B50",
+                  "userPreferred": "Touko Machida"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/10294.jpg"
+                },
+                "favourites": 10
+              },
+              "role": "Script  (ep 10)"
+            },
+            {
+              "node": {
+                "id": 101929,
+                "name": {
+                  "full": "Makoto Uezu",
+                  "native": "\u4E0A\u6C5F\u6D32\u8AA0",
+                  "userPreferred": "Makoto Uezu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101929-gsiCxUBGUOWn.png"
+                },
+                "favourites": 13
+              },
+              "role": "Script (eps 1, 4-6, 8, 12)"
+            },
+            {
+              "node": {
+                "id": 101929,
+                "name": {
+                  "full": "Makoto Uezu",
+                  "native": "\u4E0A\u6C5F\u6D32\u8AA0",
+                  "userPreferred": "Makoto Uezu"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101929-gsiCxUBGUOWn.png"
+                },
+                "favourites": 13
+              },
+              "role": "Series Composition"
+            },
+            {
+              "node": {
+                "id": 103074,
+                "name": {
+                  "full": "Jin Aketagawa",
+                  "native": "\u660E\u7530\u5DDD\u4EC1",
+                  "userPreferred": "Jin Aketagawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n103074-36TfkytWdRzi.png"
+                },
+                "favourites": 650
+              },
+              "role": "Sound Director"
+            },
+            {
+              "node": {
+                "id": 101738,
+                "name": {
+                  "full": "Takeo Takahashi",
+                  "native": "\u9AD8\u6A4B\u4E08\u592B",
+                  "userPreferred": "Takeo Takahashi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101738-1XlVpj72X1xy.png"
+                },
+                "favourites": 23
+              },
+              "role": "Storyboard (ED, eps 10, 12)"
+            },
+            {
+              "node": {
+                "id": 123419,
+                "name": {
+                  "full": "Chikara Sakurai",
+                  "native": "\u6AFB\u4E95\u89AA\u826F",
+                  "userPreferred": "Chikara Sakurai"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n123419-NtAlDP6Vuorg.jpg"
+                },
+                "favourites": 20
+              },
+              "role": "Storyboard (OP)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

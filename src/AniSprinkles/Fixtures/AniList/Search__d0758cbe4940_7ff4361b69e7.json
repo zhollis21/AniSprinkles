@@ -1,0 +1,443 @@
+﻿{
+  "operationName": "Search",
+  "variables": {
+    "search": "one",
+    "page": 2,
+    "perPage": 20,
+    "isAdult": true
+  },
+  "queryFingerprint": "7ff4361b69e7",
+  "recordedAt": "2026-10-27T17:47:29.6191023+00:00",
+  "response": {
+    "data": {
+      "Page": {
+        "pageInfo": {
+          "hasNextPage": false,
+          "currentPage": 2
+        },
+        "media": [
+          {
+            "id": 154270,
+            "title": {
+              "romaji": "One Kill",
+              "english": "ONE KILL",
+              "native": "\uC6D0\uD0AC"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 73,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 4,
+            "popularity": 205,
+            "trending": 0,
+            "startDate": {
+              "year": 2019,
+              "month": 8,
+              "day": 28
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 129316,
+            "title": {
+              "romaji": "One Side",
+              "english": null,
+              "native": "\u308F\u3093\u3055\u3044\u3069"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "ONE_SHOT",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 1,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 0,
+            "popularity": 16,
+            "trending": 0,
+            "startDate": {
+              "year": 2015,
+              "month": 3,
+              "day": 12
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 187680,
+            "title": {
+              "romaji": "One Face",
+              "english": "One Face",
+              "native": "\uC6D0\uD398\uC774\uC2A4"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 24,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 0,
+            "popularity": 17,
+            "trending": 0,
+            "startDate": {
+              "year": 2017,
+              "month": 7,
+              "day": 24
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 89479,
+            "title": {
+              "romaji": "One Shota",
+              "english": null,
+              "native": "\u304A\u306D\u30B7\u30E7\u30BF"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 11,
+            "volumes": 1,
+            "weightedScore": null,
+            "favourites": 1,
+            "popularity": 127,
+            "trending": 0,
+            "startDate": {
+              "year": 2013,
+              "month": 10,
+              "day": 31
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 94815,
+            "title": {
+              "romaji": "Shota Hunting",
+              "english": null,
+              "native": "\u30B7\u30E7\u30BF\u30CF\u30F3\u30C6\u30A3\u30F3\u30B0"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 10,
+            "volumes": 1,
+            "weightedScore": null,
+            "favourites": 8,
+            "popularity": 252,
+            "trending": 0,
+            "startDate": {
+              "year": 2015,
+              "month": 4,
+              "day": 30
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 114931,
+            "title": {
+              "romaji": "Another one",
+              "english": null,
+              "native": "Another one"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "ONE_SHOT",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 1,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 0,
+            "popularity": 30,
+            "trending": 0,
+            "startDate": {
+              "year": 2019,
+              "month": 9,
+              "day": 12
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 39958,
+            "title": {
+              "romaji": "Round Shell",
+              "english": null,
+              "native": "\u30E9\u30F3\u30C9\u30BB\u30EB"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 17,
+            "volumes": 2,
+            "weightedScore": null,
+            "favourites": 4,
+            "popularity": 172,
+            "trending": 0,
+            "startDate": {
+              "year": 2004,
+              "month": null,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 179568,
+            "title": {
+              "romaji": "Two on One",
+              "english": null,
+              "native": "\u30C4\u30FC\u30FB\u30AA\u30F3\u30FB\u30EF\u30F3"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "ONE_SHOT",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 1,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 0,
+            "popularity": 35,
+            "trending": 0,
+            "startDate": {
+              "year": 2024,
+              "month": 7,
+              "day": 12
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 156298,
+            "title": {
+              "romaji": "Slave One",
+              "english": null,
+              "native": "\u30B9\u30EC\u30A4\u30D6\u30FB\u30EF\u30F3"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 10,
+            "volumes": 1,
+            "weightedScore": null,
+            "favourites": 0,
+            "popularity": 40,
+            "trending": 0,
+            "startDate": {
+              "year": 2019,
+              "month": 9,
+              "day": 27
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 157978,
+            "title": {
+              "romaji": "Chijo One!",
+              "english": null,
+              "native": "\u75F4\u5973\u30AA\u30CD\uFF01"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 10,
+            "volumes": 1,
+            "weightedScore": null,
+            "favourites": 0,
+            "popularity": 73,
+            "trending": 0,
+            "startDate": {
+              "year": 2020,
+              "month": 7,
+              "day": 31
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 158210,
+            "title": {
+              "romaji": "One for all",
+              "english": "One for All",
+              "native": "One for all"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "ONE_SHOT",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 1,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 0,
+            "popularity": 12,
+            "trending": 0,
+            "startDate": {
+              "year": 2021,
+              "month": 10,
+              "day": 20
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 134835,
+            "title": {
+              "romaji": "Nijigen Comic Magazine: Yuri Ninshin",
+              "english": null,
+              "native": "\u4E8C\u6B21\u5143\u30B3\u30DF\u30C3\u30AF\u30DE\u30AC\u30B8\u30F3 \u767E\u5408\u598A\u5A20"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 16,
+            "volumes": 2,
+            "weightedScore": null,
+            "favourites": 6,
+            "popularity": 253,
+            "trending": 0,
+            "startDate": {
+              "year": 2016,
+              "month": 4,
+              "day": 16
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 68937,
+            "title": {
+              "romaji": "Futari de Ippo",
+              "english": null,
+              "native": "\u3075\u305F\u308A\u3067\u3044\u3063\u307D"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "ONE_SHOT",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 1,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 0,
+            "popularity": 25,
+            "trending": 0,
+            "startDate": {
+              "year": 2011,
+              "month": 11,
+              "day": 28
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 119900,
+            "title": {
+              "romaji": "One For All!",
+              "english": "One For All!",
+              "native": "One for all\uFF01"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "ONE_SHOT",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 1,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 0,
+            "popularity": 23,
+            "trending": 0,
+            "startDate": {
+              "year": 2018,
+              "month": 7,
+              "day": 27
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 172152,
+            "title": {
+              "romaji": "One Roomtel",
+              "english": "Payment Accepted",
+              "native": "\uC6D0\uB8F8\uD154"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 40,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 0,
+            "popularity": 51,
+            "trending": 0,
+            "startDate": {
+              "year": 2021,
+              "month": 2,
+              "day": 13
+            },
+            "mediaListEntry": null
+          }
+        ]
+      }
+    }
+  }
+}

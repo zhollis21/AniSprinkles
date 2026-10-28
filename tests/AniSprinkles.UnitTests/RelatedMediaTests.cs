@@ -103,7 +103,7 @@ public class RelatedMediaTests
     [InlineData(0, "—")]
     [InlineData(85, "8.5")]
     public void ScoreOrDash_ShowsDashWhenMissing(int? score, string expected)
-        => Assert.Equal(expected, new RelatedMedia { AverageScore = score }.ScoreOrDash);
+        => Assert.Equal(expected, new RelatedMedia { WeightedScore = score }.ScoreOrDash);
 
     [Fact]
     public void YearOrDash_ShowsDashWhenMissing()

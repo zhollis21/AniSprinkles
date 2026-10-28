@@ -268,8 +268,8 @@ public static class MediaListSectionsMerger
                         {
                             SortField.LastUpdated => match.Entry.UpdatedAt != newEntry.UpdatedAt,
                             SortField.Score => match.Entry.Score != newEntry.Score,
-                            SortField.AverageScore =>
-                                match.Entry.Media?.AverageScore != newEntry.Media?.AverageScore,
+                            SortField.WeightedScore =>
+                                match.Entry.Media?.WeightedScore != newEntry.Media?.WeightedScore,
                             _ => false,
                         };
                         if (sortKeyChanged)

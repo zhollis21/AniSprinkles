@@ -9,7 +9,7 @@
 //
 // Why record rather than query live from the workflow:
 //   - CI commits and diffs screenshots. Live data moves daily (airing countdowns, popularity,
-//     averageScore), so every run would diff and the signal would drown.
+//     weightedScore), so every run would diff and the signal would drown.
 //   - The adult-content canary must be guaranteed present and guaranteed filtered. Live data cannot
 //     promise that.
 //   - GitHub runner IPs are shared, and AniList rate-limits per IP.
