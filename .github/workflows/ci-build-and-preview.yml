@@ -729,11 +729,23 @@ jobs:
           STAFF_READY=0
           while [ $STAFF_WAIT -lt 15 ]; do
             adb shell uiautomator dump /sdcard/ui_staff.xml 2>/dev/null || true
-            # "Voice Roles" only. The bare word "Production" was meant to catch the Production Roles
-            # section, but it also matches studio names — the media details page lists "Mushi
-            # Production" and "Asahi Production" — so the guard passed while still sitting on the
-            # wrong page and captured it anyway, which is the failure the guard exists to stop.
-            if adb shell cat /sdcard/ui_staff.xml 2>/dev/null | grep -qi "Voice Roles"; then
+            # "Born", not "Voice Roles" — the third marker on this page to be wrong, for the third
+            # reason, so the rule is worth stating: a readiness marker must be above the fold AND
+            # absent from every page a missed tap could leave us on.
+            #
+            # The bare word "Production" failed the second half (studio names on media details:
+            # "Mushi Production", "Asahi Production"). "Voice Roles" failed the first: its heading
+            # sits below the hero, stat cards, fact chips and bio prose, and a uiautomator dump
+            # only holds realised nodes, so it was never present on arrival. That is why the
+            # screenshot has been absent since #161 — the page loads fine (the device log shows
+            # "25 voice roles, 4 production roles" and PageState → Content), the guard just could
+            # not see it. #161 merged with this job red, so #166 is the first run to surface it.
+            #
+            # "Born" is the staff page's first stat card, unconditional static text right under the
+            # hero, and the only occurrence of that string in src/AniSprinkles/Views — the character
+            # page's equivalent card says "Birthday". Matched on the dump's attribute rather than
+            # bare text so a bio reading "born in Tokyo" cannot satisfy it from the wrong page.
+            if adb shell cat /sdcard/ui_staff.xml 2>/dev/null | grep -qE '(text|content-desc)="Born"'; then
               echo "  Staff page ready after ${STAFF_WAIT}s"
               STAFF_READY=1
               break
