@@ -1,0 +1,367 @@
+﻿{
+  "operationName": "StaffMediaPage",
+  "variables": {
+    "id": 122202,
+    "page": 1,
+    "sort": [
+      "POPULARITY_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "0948d0ef7c9d",
+  "recordedAt": "2026-10-27T17:58:24.5224147+00:00",
+  "response": {
+    "data": {
+      "Staff": {
+        "staffMedia": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 154587,
+                "title": {
+                  "romaji": "Sousou no Frieren",
+                  "english": "Frieren: Beyond Journey\u2019s End",
+                  "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx154587-qQTzQnEJJ3oB.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx154587-qQTzQnEJJ3oB.jpg"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "weightedScore": 91,
+                "favourites": 56581,
+                "popularity": 493490,
+                "startDate": {
+                  "year": 2023,
+                  "month": 9,
+                  "day": 29
+                },
+                "mediaListEntry": {
+                  "id": 540974122,
+                  "status": "COMPLETED",
+                  "progress": 28,
+                  "score": 10
+                }
+              },
+              "staffRole": "Original Story"
+            },
+            {
+              "node": {
+                "id": 182255,
+                "title": {
+                  "romaji": "Sousou no Frieren 2nd Season",
+                  "english": "Frieren: Beyond Journey\u2019s End Season 2",
+                  "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \u7B2C2\u671F"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx182255-butzrqd4I0aC.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx182255-butzrqd4I0aC.jpg"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "weightedScore": 87,
+                "favourites": 8846,
+                "popularity": 233784,
+                "startDate": {
+                  "year": 2026,
+                  "month": 1,
+                  "day": 16
+                },
+                "mediaListEntry": {
+                  "id": 540973986,
+                  "status": "COMPLETED",
+                  "progress": 10,
+                  "score": 9
+                }
+              },
+              "staffRole": "Original Story"
+            },
+            {
+              "node": {
+                "id": 118586,
+                "title": {
+                  "romaji": "Sousou no Frieren",
+                  "english": "Frieren: Beyond Journey\u2019s End",
+                  "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx118586-CXKgWikBFQgS.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx118586-CXKgWikBFQgS.jpg"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "RELEASING",
+                "weightedScore": 87,
+                "favourites": 7843,
+                "popularity": 86536,
+                "startDate": {
+                  "year": 2020,
+                  "month": 4,
+                  "day": 28
+                },
+                "mediaListEntry": null
+              },
+              "staffRole": "Story"
+            },
+            {
+              "node": {
+                "id": 209939,
+                "title": {
+                  "romaji": "Sousou no Frieren 3rd Season",
+                  "english": null,
+                  "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \u7B2C3\u671F"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx209939-g2Njkml1rheG.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209939-g2Njkml1rheG.jpg"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "status": "NOT_YET_RELEASED",
+                "weightedScore": null,
+                "favourites": 546,
+                "popularity": 47672,
+                "startDate": {
+                  "year": 2027,
+                  "month": 10,
+                  "day": null
+                },
+                "mediaListEntry": {
+                  "id": 548900753,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "score": 0
+                }
+              },
+              "staffRole": "Original Story"
+            },
+            {
+              "node": {
+                "id": 170068,
+                "title": {
+                  "romaji": "Sousou no Frieren: \u25CF\u25CF no Mahou",
+                  "english": null,
+                  "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \uFF5E\u25CF\u25CF\u306E\u9B54\u6CD5\uFF5E"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx170068-ijY3tCP8KoWP.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx170068-ijY3tCP8KoWP.jpg"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "weightedScore": 73,
+                "favourites": 108,
+                "popularity": 11210,
+                "startDate": {
+                  "year": 2023,
+                  "month": 10,
+                  "day": 11
+                },
+                "mediaListEntry": null
+              },
+              "staffRole": "Original Story"
+            },
+            {
+              "node": {
+                "id": 169811,
+                "title": {
+                  "romaji": "Yuusha",
+                  "english": "The Brave",
+                  "native": "\u52C7\u8005"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx169811-tsuH0SJVJy40.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx169811-tsuH0SJVJy40.jpg"
+                },
+                "format": "MUSIC",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "weightedScore": 80,
+                "favourites": 92,
+                "popularity": 5221,
+                "startDate": {
+                  "year": 2023,
+                  "month": 9,
+                  "day": 29
+                },
+                "mediaListEntry": null
+              },
+              "staffRole": "Original Story Supervisor"
+            },
+            {
+              "node": {
+                "id": 189513,
+                "title": {
+                  "romaji": "Sousou no Frieren: \u25CF\u25CF no Mahou Part 2",
+                  "english": null,
+                  "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \uFF5E\u25CF\u25CF\u306E\u9B54\u6CD5\uFF5E 2\u30AF\u30FC\u30EB"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx189513-1R9Sryve0K53.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx189513-1R9Sryve0K53.png"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "weightedScore": 71,
+                "favourites": 70,
+                "popularity": 4671,
+                "startDate": {
+                  "year": 2025,
+                  "month": 4,
+                  "day": 2
+                },
+                "mediaListEntry": null
+              },
+              "staffRole": "Original Story"
+            },
+            {
+              "node": {
+                "id": 206425,
+                "title": {
+                  "romaji": "Sousou no Frieren: \u25CF\u25CF no Mahou Part 3",
+                  "english": null,
+                  "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \uFF5E\u25CF\u25CF\u306E\u9B54\u6CD5\uFF5E 3\u30AF\u30FC\u30EB"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b206425-WOwXsfDbHZwb.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b206425-WOwXsfDbHZwb.jpg"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "weightedScore": 70,
+                "favourites": 27,
+                "popularity": 2363,
+                "startDate": {
+                  "year": 2026,
+                  "month": 1,
+                  "day": 19
+                },
+                "mediaListEntry": null
+              },
+              "staffRole": "Original Story"
+            },
+            {
+              "node": {
+                "id": 173310,
+                "title": {
+                  "romaji": "Sousou no Frieren Anthology",
+                  "english": null,
+                  "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \u30A2\u30F3\u30BD\u30ED\u30B8"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx173310-IWXoTriCztvp.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx173310-IWXoTriCztvp.jpg"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "weightedScore": 68,
+                "favourites": 23,
+                "popularity": 1629,
+                "startDate": {
+                  "year": 2023,
+                  "month": 12,
+                  "day": 18
+                },
+                "mediaListEntry": null
+              },
+              "staffRole": "Original Story"
+            },
+            {
+              "node": {
+                "id": 99143,
+                "title": {
+                  "romaji": "Bocchi Hakase to Robot Shoujo no Zetsubou Teki Utopia",
+                  "english": null,
+                  "native": "\u307C\u3063\u3061\u535A\u58EB\u3068\u30ED\u30DC\u30C3\u30C8\u5C11\u5973\u306E\u7D76\u671B\u7684\u30E6\u30FC\u30C8\u30D4\u30A2"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx99143-KiK8F1fRvEwc.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx99143-KiK8F1fRvEwc.jpg"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "weightedScore": 65,
+                "favourites": 12,
+                "popularity": 1188,
+                "startDate": {
+                  "year": 2016,
+                  "month": 9,
+                  "day": 27
+                },
+                "mediaListEntry": null
+              },
+              "staffRole": "Story \u0026 Art"
+            },
+            {
+              "node": {
+                "id": 179850,
+                "title": {
+                  "romaji": "Shousetsu Sousou no Frieren ~Zensou\uFF5E",
+                  "english": "Frieren: Beyond Journey\u2019s End ~Prelude~",
+                  "native": "\u5C0F\u8AAC \u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3\u3000\uFF5E\u524D\u594F\uFF5E"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx179850-zraVuNgk4XCI.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx179850-zraVuNgk4XCI.jpg"
+                },
+                "format": "NOVEL",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "weightedScore": 70,
+                "favourites": 17,
+                "popularity": 718,
+                "startDate": {
+                  "year": 2024,
+                  "month": 4,
+                  "day": 17
+                },
+                "mediaListEntry": null
+              },
+              "staffRole": "Original Story"
+            },
+            {
+              "node": {
+                "id": 87957,
+                "title": {
+                  "romaji": "Nanashi wa Ittai Dare deshou?",
+                  "english": null,
+                  "native": "\u540D\u7121\u3057\u306F\u4E00\u4F53\u8AB0\u3067\u3057\u3087\u3046?"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx87957-IuQamFuwsFDB.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx87957-IuQamFuwsFDB.jpg"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "weightedScore": null,
+                "favourites": 0,
+                "popularity": 173,
+                "startDate": {
+                  "year": 2013,
+                  "month": 4,
+                  "day": 23
+                },
+                "mediaListEntry": null
+              },
+              "staffRole": "Story"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

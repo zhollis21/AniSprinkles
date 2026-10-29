@@ -1,0 +1,749 @@
+﻿{
+  "operationName": "BrowseAnime",
+  "variables": {
+    "page": 1,
+    "perPage": 25,
+    "sort": [
+      "POPULARITY_DESC",
+      "ID"
+    ],
+    "status": "NOT_YET_RELEASED",
+    "season": "WINTER",
+    "seasonYear": 2027,
+    "isAdult": false
+  },
+  "queryFingerprint": "51e7ef9f8a63",
+  "recordedAt": "2026-10-27T17:46:30.9895247+00:00",
+  "response": {
+    "data": {
+      "Page": {
+        "pageInfo": {
+          "hasNextPage": true,
+          "currentPage": 1
+        },
+        "media": [
+          {
+            "id": 177704,
+            "title": {
+              "romaji": "MASHLE: Sanma Taisou Shinkakusha Saishuu Shiken-hen",
+              "english": null,
+              "native": "\u30DE\u30C3\u30B7\u30E5\u30EB-MASHLE- \u4E09\u9B54\u5BFE\u4E89\u795E\u899A\u8005\u6700\u7D42\u8A66\u9A13\u7DE8"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx177704-y10Nw7MUXCHD.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx177704-y10Nw7MUXCHD.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 489,
+            "popularity": 40551,
+            "trending": 11,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 189323,
+            "title": {
+              "romaji": "Shangri-La Frontier 3rd Season",
+              "english": "Shangri-La Frontier Season 3",
+              "native": "\u30B7\u30E3\u30F3\u30B0\u30EA\u30E9\u30FB\u30D5\u30ED\u30F3\u30C6\u30A3\u30A2 3rd season"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx189323-gHXhqIOBUY8F.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx189323-gHXhqIOBUY8F.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 615,
+            "popularity": 38795,
+            "trending": 4,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": 10
+            },
+            "mediaListEntry": {
+              "id": 593351151,
+              "status": "PLANNING",
+              "progress": 0,
+              "score": 0
+            }
+          },
+          {
+            "id": 186822,
+            "title": {
+              "romaji": "Ki ni Natteru Hito ga Otoko ja Nakatta",
+              "english": "The Guy She Was Interested In Wasn\u0027t a Guy At All",
+              "native": "\u6C17\u306B\u306A\u3063\u3066\u308B\u4EBA\u304C\u7537\u3058\u3083\u306A\u304B\u3063\u305F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx186822-9zsR5NtOP0yJ.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx186822-9zsR5NtOP0yJ.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 526,
+            "popularity": 32405,
+            "trending": 14,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": 8
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 169579,
+            "title": {
+              "romaji": "Sekai Saikou no Ansatsusha, Isekai Kizoku ni Tensei suru 2nd Season",
+              "english": null,
+              "native": "\u4E16\u754C\u6700\u9AD8\u306E\u6697\u6BBA\u8005\u3001\u7570\u4E16\u754C\u8CB4\u65CF\u306B\u8EE2\u751F\u3059\u308B 2nd\u30B7\u30FC\u30BA\u30F3"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx169579-KxMH0iq7jlPr.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx169579-KxMH0iq7jlPr.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 381,
+            "popularity": 30052,
+            "trending": 4,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 171630,
+            "title": {
+              "romaji": "THE ONE PIECE",
+              "english": "THE ONE PIECE",
+              "native": "THE ONE PIECE"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx171630-2U7Y5OIWwXJJ.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx171630-2U7Y5OIWwXJJ.jpg"
+            },
+            "format": null,
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": 7,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 491,
+            "popularity": 29659,
+            "trending": 2,
+            "startDate": {
+              "year": 2027,
+              "month": 2,
+              "day": null
+            },
+            "mediaListEntry": {
+              "id": 593365692,
+              "status": "PLANNING",
+              "progress": 0,
+              "score": 0
+            }
+          },
+          {
+            "id": 204363,
+            "title": {
+              "romaji": "SAKAMOTO DAYS 2nd Season",
+              "english": "SAKAMOTO DAYS Season 2",
+              "native": "SAKAMOTO DAYS \u7B2C2\u671F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx204363-rDHWhXs48Ygl.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx204363-rDHWhXs48Ygl.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 294,
+            "popularity": 28720,
+            "trending": 5,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 197620,
+            "title": {
+              "romaji": "SEKIRO: NO DEFEAT",
+              "english": "Sekiro: No Defeat",
+              "native": "SEKIRO: NO DEFEAT"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx197620-COEsbB1otIdR.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx197620-COEsbB1otIdR.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": 8,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 166,
+            "popularity": 19834,
+            "trending": 3,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 204747,
+            "title": {
+              "romaji": "One Punch Man 3 Part 2",
+              "english": "One Punch Man Season 3 Part 2",
+              "native": "\u30EF\u30F3\u30D1\u30F3\u30DE\u30F3 \u7B2C3\u671F\u7B2C2\u30AF\u30FC\u30EB"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx204747-INMrngH10Kwq.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx204747-INMrngH10Kwq.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 156,
+            "popularity": 16608,
+            "trending": 5,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": null
+            },
+            "mediaListEntry": {
+              "id": 593365740,
+              "status": "PLANNING",
+              "progress": 0,
+              "score": 0
+            }
+          },
+          {
+            "id": 213752,
+            "title": {
+              "romaji": "MARRIAGETOXIN 2nd Season",
+              "english": null,
+              "native": "\u30DE\u30EA\u30C3\u30B8\u30C8\u30AD\u30B7\u30F3 \u7B2C2\u671F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx213752-UNsERPORVGfJ.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213752-UNsERPORVGfJ.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 127,
+            "popularity": 14669,
+            "trending": 6,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 202564,
+            "title": {
+              "romaji": "Kakunaru Ue wa",
+              "english": null,
+              "native": "\u63CF\u304F\u306A\u308B\u3046\u3048\u306F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx202564-gLnCiyS8vHsB.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx202564-gLnCiyS8vHsB.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 161,
+            "popularity": 13931,
+            "trending": 5,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 204579,
+            "title": {
+              "romaji": "Jirai nan desu ka? Chihara-san",
+              "english": null,
+              "native": "\u5730\u96F7\u306A\u3093\u3067\u3059\u304B\uFF1F\u5730\u539F\u3055\u3093"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx204579-eIieS4KuQN9x.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx204579-eIieS4KuQN9x.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 124,
+            "popularity": 11397,
+            "trending": 3,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": 8
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 209980,
+            "title": {
+              "romaji": "Isekai de Cheat Skill wo Te ni Shita Ore wa, Genjitsu Sekai wo mo Musou Suru: Level Up wa Jinsei wo Kaeta 2nd Season",
+              "english": null,
+              "native": "\u7570\u4E16\u754C\u3067\u30C1\u30FC\u30C8\u80FD\u529B\u3092\u624B\u306B\u3057\u305F\u4FFA\u306F\u3001\u73FE\u5B9F\u4E16\u754C\u3092\u3082\u7121\u53CC\u3059\u308B \uFF5E\u30EC\u30D9\u30EB\u30A2\u30C3\u30D7\u306F\u4EBA\u751F\u3092\u5909\u3048\u305F\uFF5E 2nd Season"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx209980-CTTwiweBKBS2.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209980-CTTwiweBKBS2.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 156,
+            "popularity": 11097,
+            "trending": 7,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 217070,
+            "title": {
+              "romaji": "Futsutsuka na Akujo de wa Gozaimasu ga: Suuguu Chouso Torikae Den Part 2",
+              "english": null,
+              "native": "\u3075\u3064\u3064\u304B\u306A\u60AA\u5973\u3067\u306F\u3054\u3056\u3044\u307E\u3059\u304C \uFF5E\u96DB\u5BAE\u8776\u9F20\u3068\u308A\u304B\u3048\u4F1D\uFF5E \u7B2C\u4E8C\u5E55"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx217070-Muh7Kjw4RQsi.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx217070-Muh7Kjw4RQsi.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 99,
+            "popularity": 10186,
+            "trending": 0,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 188892,
+            "title": {
+              "romaji": "Kuroiwa Medaka ni Watashi no Kawaii ga Tsuujinai 2nd Season",
+              "english": null,
+              "native": "\u9ED2\u5CA9\u30E1\u30C0\u30AB\u306B\u79C1\u306E\u53EF\u611B\u3044\u304C\u901A\u3058\u306A\u3044 \u7B2C2\u671F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx188892-KpzXYChwPxyT.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx188892-KpzXYChwPxyT.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 121,
+            "popularity": 9774,
+            "trending": 1,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 190244,
+            "title": {
+              "romaji": "Date A Live F Last Date",
+              "english": null,
+              "native": "\u30C7\u30FC\u30C8\u30FB\u30A2\u30FB\u30E9\u30A4\u30D6F Last Date"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx190244-u2yo4hPmVp6Z.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx190244-u2yo4hPmVp6Z.png"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 131,
+            "popularity": 7846,
+            "trending": 2,
+            "startDate": {
+              "year": 2027,
+              "month": 3,
+              "day": 26
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 216624,
+            "title": {
+              "romaji": "Shishite Ikiru SSS-kyuu Hunter",
+              "english": "SSS-Class Revival Hunter",
+              "native": "\u6B7B\u3057\u3066\u751F\u304D\u308BSSS\u7D1A\u30CF\u30F3\u30BF\u30FC"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx216624-ZgSowlLTtu3G.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx216624-ZgSowlLTtu3G.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 97,
+            "popularity": 7779,
+            "trending": 5,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 213360,
+            "title": {
+              "romaji": "Akane-banashi 2nd Season",
+              "english": null,
+              "native": "\u3042\u304B\u306D\u567A \u7B2C2\u671F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx213360-xNEWCLeQkXkI.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213360-xNEWCLeQkXkI.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 35,
+            "popularity": 7496,
+            "trending": 1,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 186741,
+            "title": {
+              "romaji": "Himekishi-sama no Himo",
+              "english": null,
+              "native": "\u59EB\u9A0E\u58EB\u69D8\u306E\u30D2\u30E2"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx186741-jfAFI71jie1x.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx186741-jfAFI71jie1x.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 73,
+            "popularity": 6999,
+            "trending": 2,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 194213,
+            "title": {
+              "romaji": "ghost\uFF0Fyoru no hate",
+              "english": "ghost \u2013 end of night",
+              "native": "ghost\uFF0F\u591C\u306E\u679C\u3066"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx194213-hbKL5BMfdtcK.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx194213-hbKL5BMfdtcK.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 26,
+            "popularity": 6882,
+            "trending": 0,
+            "startDate": {
+              "year": 2027,
+              "month": 2,
+              "day": 11
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 196333,
+            "title": {
+              "romaji": "Hirayasumi",
+              "english": null,
+              "native": "\u3072\u3089\u3084\u3059\u307F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx196333-HRmwgn8j8tvi.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx196333-HRmwgn8j8tvi.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 45,
+            "popularity": 6811,
+            "trending": 1,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 206298,
+            "title": {
+              "romaji": "Medalist Movie",
+              "english": null,
+              "native": "\u5287\u5834\u7248 \u30E1\u30C0\u30EA\u30B9\u30C8"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx206298-q8wPQWpcT4WV.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206298-q8wPQWpcT4WV.png"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 44,
+            "popularity": 6230,
+            "trending": 0,
+            "startDate": {
+              "year": 2027,
+              "month": 2,
+              "day": 19
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 205130,
+            "title": {
+              "romaji": "Histori\u00E9",
+              "english": null,
+              "native": "\u30D2\u30B9\u30C8\u30EA\u30A8"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx205130-dC5WuIvGMMgr.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx205130-dC5WuIvGMMgr.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 33,
+            "popularity": 6143,
+            "trending": 1,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 208766,
+            "title": {
+              "romaji": "Bless",
+              "english": null,
+              "native": "\u30D6\u30EC\u30B9"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx208766-FIvJRb63ztBJ.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx208766-FIvJRb63ztBJ.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 32,
+            "popularity": 6095,
+            "trending": 0,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 210073,
+            "title": {
+              "romaji": "Golden Kamuy: Saishuushou - Bousou Ressha-hen",
+              "english": null,
+              "native": "\u30B4\u30FC\u30EB\u30C7\u30F3\u30AB\u30E0\u30A4 \u6700\u7D42\u7AE0 \u66B4\u8D70\u5217\u8ECA\u7DE8"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx210073-ZyVP60Cn7pLJ.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx210073-ZyVP60Cn7pLJ.jpg"
+            },
+            "format": null,
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 32,
+            "popularity": 5422,
+            "trending": 0,
+            "startDate": {
+              "year": null,
+              "month": null,
+              "day": null
+            },
+            "mediaListEntry": {
+              "id": 593365644,
+              "status": "PLANNING",
+              "progress": 0,
+              "score": 0
+            }
+          },
+          {
+            "id": 207251,
+            "title": {
+              "romaji": "Mairimashita! Iruma-kun: If Episode of Mafia",
+              "english": null,
+              "native": "\u9B54\u5165\u308A\u307E\u3057\u305F\uFF01\u5165\u9593\u304F\u3093 if Episode of \u9B54\u30D5\u30A3\u30A2"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx207251-1opGPW7xVHQ8.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx207251-1opGPW7xVHQ8.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 71,
+            "popularity": 5342,
+            "trending": 6,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": 4
+            },
+            "mediaListEntry": null
+          }
+        ]
+      }
+    }
+  }
+}

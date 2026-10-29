@@ -1,0 +1,728 @@
+﻿{
+  "operationName": "BrowseAnime",
+  "variables": {
+    "page": 2,
+    "perPage": 25,
+    "sort": [
+      "POPULARITY_DESC",
+      "ID"
+    ],
+    "status": "NOT_YET_RELEASED",
+    "season": "WINTER",
+    "seasonYear": 2027
+  },
+  "queryFingerprint": "51e7ef9f8a63",
+  "recordedAt": "2026-10-27T17:46:40.2500528+00:00",
+  "response": {
+    "data": {
+      "Page": {
+        "pageInfo": {
+          "hasNextPage": true,
+          "currentPage": 2
+        },
+        "media": [
+          {
+            "id": 197619,
+            "title": {
+              "romaji": "Kekkaishi no Ichirinka",
+              "english": "Bride of the Barrier Master",
+              "native": "\u7D50\u754C\u5E2B\u306E\u4E00\u8F2A\u83EF"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx197619-dxMkg18OwS7r.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx197619-dxMkg18OwS7r.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 47,
+            "popularity": 5308,
+            "trending": 1,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 200578,
+            "title": {
+              "romaji": "Isshiki-san wa Koi wo Shiritai.",
+              "english": null,
+              "native": "\u4E00\u5F0F\u3055\u3093\u306F\u604B\u3092\u77E5\u308A\u305F\u3044\u3002"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx200578-F1U6GNXA0p3l.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx200578-F1U6GNXA0p3l.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 53,
+            "popularity": 5108,
+            "trending": 0,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 189121,
+            "title": {
+              "romaji": "BanG Dream! MyGO!!!!! // Ave Mujica",
+              "english": null,
+              "native": "BanG Dream! MyGO!!!!! // Ave Mujica"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx189121-m3EHJ33Y8jgT.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx189121-m3EHJ33Y8jgT.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 46,
+            "popularity": 5027,
+            "trending": 1,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": 8
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 210199,
+            "title": {
+              "romaji": "The Fable 2nd Season",
+              "english": null,
+              "native": "\u30B6\u30FB\u30D5\u30A1\u30D6\u30EB \u7B2C2\u671F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx210199-THddm86dG5PI.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx210199-THddm86dG5PI.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 63,
+            "popularity": 4539,
+            "trending": 1,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": 10
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 213877,
+            "title": {
+              "romaji": "MURCI\u00C9LAGO",
+              "english": null,
+              "native": "\u30E0\u30EB\u30B7\u30A8\u30E9\u30B4"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx213877-NK48aPaVO29y.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213877-NK48aPaVO29y.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 33,
+            "popularity": 3980,
+            "trending": 1,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 209661,
+            "title": {
+              "romaji": "Zatsuyou Fuyojutsu-shi ga Jibun no Saikyou ni Kizuku Made",
+              "english": "Magical Buffs: The Support Caster is Stronger Than He Realized!",
+              "native": "\u96D1\u7528\u4ED8\u4E0E\u8853\u5E2B\u304C\u81EA\u5206\u306E\u6700\u5F37\u306B\u6C17\u4ED8\u304F\u307E\u3067"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx209661-RHN7Jp3VPdFV.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209661-RHN7Jp3VPdFV.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 46,
+            "popularity": 3923,
+            "trending": 3,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": 4
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 213052,
+            "title": {
+              "romaji": "Dengeki Daisy",
+              "english": null,
+              "native": "\u96FB\u6483\u30C7\u30A4\u30B8\u30FC"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx213052-RzCXgG576ilW.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213052-RzCXgG576ilW.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 31,
+            "popularity": 3590,
+            "trending": 1,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 174427,
+            "title": {
+              "romaji": "Zombie no Afureta Sekai de Ore dake ga Osowarenai",
+              "english": null,
+              "native": "\u30BE\u30F3\u30D3\u306E\u3042\u3075\u308C\u305F\u4E16\u754C\u3067\u4FFA\u3060\u3051\u304C\u8972\u308F\u308C\u306A\u3044"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx174427-ozv3bFtwB08m.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx174427-ozv3bFtwB08m.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 46,
+            "popularity": 3452,
+            "trending": 0,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 213497,
+            "title": {
+              "romaji": "Sudachi no Maoujou",
+              "english": null,
+              "native": "\u3059\u3060\u3061\u306E\u9B54\u738B\u57CE"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx213497-bi5uWSWWtGmH.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213497-bi5uWSWWtGmH.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 33,
+            "popularity": 3288,
+            "trending": 1,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 202282,
+            "title": {
+              "romaji": "Disney Twisted-Wonderland: THE ANIMATION - Season 2: EPISODE of SAVANACLAW",
+              "english": null,
+              "native": "\u30C7\u30A3\u30BA\u30CB\u30FC \u30C4\u30A4\u30B9\u30C6\u30C3\u30C9\u30EF\u30F3\u30C0\u30FC\u30E9\u30F3\u30C9 \u30B6 \u30A2\u30CB\u30E1\u30FC\u30B7\u30E7\u30F3 \u30B7\u30FC\u30BA\u30F32\u300C\u30A8\u30D4\u30BD\u30FC\u30C9 \u30AA\u30D6 \u30B5\u30D0\u30CA\u30AF\u30ED\u30FC\u300D"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx202282-4KJHHwWKebwv.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx202282-4KJHHwWKebwv.jpg"
+            },
+            "format": "ONA",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 45,
+            "popularity": 3268,
+            "trending": 0,
+            "startDate": {
+              "year": 2026,
+              "month": 12,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 202503,
+            "title": {
+              "romaji": "Majutsu wo Kiwamete Tabi ni Deta Tensei Elf, Moteamashita Jumyou de Ikeru Densetsu to Naru",
+              "english": null,
+              "native": "\u9B54\u8853\u3092\u6975\u3081\u3066\u65C5\u306B\u51FA\u305F\u8EE2\u751F\u30A8\u30EB\u30D5\u3001\u6301\u3066\u4F59\u3057\u305F\u5BFF\u547D\u3067\u751F\u3051\u308B\u4F1D\u8AAC\u3068\u306A\u308B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx202503-U8b43fpnu9EI.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx202503-U8b43fpnu9EI.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 38,
+            "popularity": 3268,
+            "trending": 2,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 207782,
+            "title": {
+              "romaji": "Odebu Akujo ni Tensei Shitara, Naze ka Last Boss Ouji-sama ni Shuuchaku Sareteimasu",
+              "english": null,
+              "native": "\u304A\u30C7\u30D6\u60AA\u5973\u306B\u8EE2\u751F\u3057\u305F\u3089\u3001\u306A\u305C\u304B\u30E9\u30B9\u30DC\u30B9\u738B\u5B50\u69D8\u306B\u57F7\u7740\u3055\u308C\u3066\u3044\u307E\u3059"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx207782-wKac51K7adn3.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx207782-wKac51K7adn3.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 39,
+            "popularity": 3208,
+            "trending": 0,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 187303,
+            "title": {
+              "romaji": "Giant Ojou-sama",
+              "english": null,
+              "native": "\u30B8\u30E3\u30A4\u30A2\u30F3\u30C8\u304A\u5B22\u69D8"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx187303-ZY8i5D8JA5cB.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx187303-ZY8i5D8JA5cB.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 31,
+            "popularity": 2870,
+            "trending": 0,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 194030,
+            "title": {
+              "romaji": "Gacha wo Mawashite Nakama wo Fuyasu: Saikyou no Bishoujo Gundan wo Tsukuriagero",
+              "english": null,
+              "native": "\u30AC\u30C1\u30E3\u3092\u56DE\u3057\u3066\u4EF2\u9593\u3092\u5897\u3084\u3059 \u6700\u5F37\u306E\u7F8E\u5C11\u5973\u8ECD\u56E3\u3092\u4F5C\u308A\u4E0A\u3052\u308D"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx194030-vUznQtK7kodY.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx194030-vUznQtK7kodY.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 29,
+            "popularity": 2863,
+            "trending": 1,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 198728,
+            "title": {
+              "romaji": "Kaze wo Tsugumono",
+              "english": null,
+              "native": "\u98A8\u3092\u7D99\u3050\u3082\u306E"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx198728-RguTjB254b7H.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx198728-RguTjB254b7H.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 8,
+            "popularity": 2843,
+            "trending": 1,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 197095,
+            "title": {
+              "romaji": "Kaketa Tsuki no Mercedes",
+              "english": null,
+              "native": "\u6B20\u3051\u305F\u6708\u306E\u30E1\u30EB\u30BB\u30C7\u30B9"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx197095-NultpVkKUJWz.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx197095-NultpVkKUJWz.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 22,
+            "popularity": 2763,
+            "trending": 1,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 199590,
+            "title": {
+              "romaji": "Matsurika Kanriden",
+              "english": null,
+              "native": "\u8309\u8389\u82B1\u5B98\u540F\u4F1D"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx199590-gMBbisGLCZxa.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx199590-gMBbisGLCZxa.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 18,
+            "popularity": 2517,
+            "trending": 0,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 199337,
+            "title": {
+              "romaji": "Shin Samurai-den YAIBA 2",
+              "english": null,
+              "native": "\u771F\u2022\u4F8D\u4F1D YAIBA \u7B2C\u4E8C\u671F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx199337-ZGs9fsoxYT6N.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx199337-ZGs9fsoxYT6N.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 14,
+            "popularity": 2493,
+            "trending": 0,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": 9
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 209221,
+            "title": {
+              "romaji": "Isekai Tensei Soudouki",
+              "english": null,
+              "native": "\u7570\u4E16\u754C\u8EE2\u751F\u9A12\u52D5\u8A18"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx209221-QBpwh553rVNr.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209221-QBpwh553rVNr.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 14,
+            "popularity": 2243,
+            "trending": 1,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 206798,
+            "title": {
+              "romaji": "Doukyo Shiteiru Kensei no Onna Shishou ga Kawaisugite Mainichi Shiawase desu",
+              "english": null,
+              "native": "\u540C\u5C45\u3057\u3066\u3044\u308B\u5263\u8056\u306E\u5973\u5E2B\u5320\u304B\u3099\u53EF\u611B\u3059\u304D\u3099\u3066\u6BCE\u65E5\u5E78\u305B\u3066\u3099\u3059"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx206798-WBoAkt6k7sx9.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206798-WBoAkt6k7sx9.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 32,
+            "popularity": 2041,
+            "trending": 3,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 188546,
+            "title": {
+              "romaji": "Ore to Yuu-nii!",
+              "english": null,
+              "native": "\u4FFA\u3068\u60A0\u5144\uFF01"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx188546-unC9pna5yjl7.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx188546-unC9pna5yjl7.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 29,
+            "popularity": 1684,
+            "trending": 0,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 205430,
+            "title": {
+              "romaji": "Boukensha License wo Hakudatsu Sareta Ossan Dakedo, Manamusume ga Dekita no de Nonbiri Jinsei wo Ouka Suru",
+              "english": null,
+              "native": "\u5192\u967A\u8005\u30E9\u30A4\u30BB\u30F3\u30B9\u3092\u5265\u596A\u3055\u308C\u305F\u304A\u3063\u3055\u3093\u3060\u3051\u3069\u3001\u611B\u5A18\u304C\u3067\u304D\u305F\u306E\u3067\u306E\u3093\u3073\u308A\u4EBA\u751F\u3092\u8B33\u6B4C\u3059\u308B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx205430-u0DOkPrpzBOI.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx205430-u0DOkPrpzBOI.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 14,
+            "popularity": 1636,
+            "trending": 0,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 211070,
+            "title": {
+              "romaji": "Pen to Wappa to Jijitsukon",
+              "english": null,
+              "native": "\u30DA\u30F3\u3068\u624B\u9320\u3068\u4E8B\u5B9F\u5A5A"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx211070-ECOdD6WOC6gF.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx211070-ECOdD6WOC6gF.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 13,
+            "popularity": 1455,
+            "trending": 0,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 185697,
+            "title": {
+              "romaji": "ARCANADEA",
+              "english": null,
+              "native": "\u30A2\u30EB\u30AB\u30CA\u30C7\u30A3\u30A2"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx185697-hAEKGqiaUF2N.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx185697-hAEKGqiaUF2N.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 7,
+            "popularity": 1449,
+            "trending": 1,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 214049,
+            "title": {
+              "romaji": "Kizuguchi to Houtai",
+              "english": null,
+              "native": "\u50B7\u53E3\u3068\u5305\u5E2F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx214049-8lsk5vf0XIdu.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx214049-8lsk5vf0XIdu.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "NOT_YET_RELEASED",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 9,
+            "popularity": 1429,
+            "trending": 0,
+            "startDate": {
+              "year": 2027,
+              "month": 1,
+              "day": 10
+            },
+            "mediaListEntry": null
+          }
+        ]
+      }
+    }
+  }
+}

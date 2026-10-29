@@ -1,0 +1,313 @@
+﻿{
+  "operationName": "MediaRecommendationsPage",
+  "variables": {
+    "id": 101175,
+    "page": 1,
+    "sort": [
+      "RATING_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "a692e3c683a1",
+  "recordedAt": "2026-10-27T17:51:36.9436884+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "recommendations": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "nodes": [
+            {
+              "rating": 29,
+              "mediaRecommendation": {
+                "id": 66213,
+                "title": {
+                  "romaji": "Monster Musume no Iru Nichijou",
+                  "english": "Monster Musume",
+                  "native": "\u30E2\u30F3\u30B9\u30BF\u30FC\u5A18\u306E\u3044\u308B\u65E5\u5E38"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx66213-OK32r4Vhi2jx.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx66213-OK32r4Vhi2jx.jpg"
+                },
+                "weightedScore": 72,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 14,
+              "mediaRecommendation": {
+                "id": 118354,
+                "title": {
+                  "romaji": "Isekai Demo Fuuzoku Jou Yatte Mita",
+                  "english": "Call Girl in Another World",
+                  "native": "\u7570\u4E16\u754C\u3067\u3082\u98A8\u4FD7\u5B22\u3084\u3063\u3066\u307F\u305F"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx118354-MzuXw7mWxdfe.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx118354-MzuXw7mWxdfe.jpg"
+                },
+                "weightedScore": 53,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 13,
+              "mediaRecommendation": {
+                "id": 103636,
+                "title": {
+                  "romaji": "Kemokko Dobutsuen!",
+                  "english": null,
+                  "native": "\u3051\u3082\u3063\u5A18\u3069\u30FC\u3076\u3064\u3048\u3093"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx103636-GFUJow392Mdj.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx103636-GFUJow392Mdj.jpg"
+                },
+                "weightedScore": 63,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 10,
+              "mediaRecommendation": {
+                "id": 107751,
+                "title": {
+                  "romaji": "Ishuzoku Joshi ni \u25CB\u25CB Suru Hanashi",
+                  "english": null,
+                  "native": "\u7570\u7A2E\u65CF\u5973\u5B50\u306B\u25CB\u25CB\u3059\u308B\u8A71"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx107751-gjEnhmUyY8QQ.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx107751-gjEnhmUyY8QQ.png"
+                },
+                "weightedScore": 68,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 6,
+              "mediaRecommendation": {
+                "id": 98522,
+                "title": {
+                  "romaji": "Teisou Gyakuten Sekai",
+                  "english": null,
+                  "native": "\u8C9E\u64CD\u9006\u8EE2\u4E16\u754C"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx98522-h3bEyfLpXs7L.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx98522-h3bEyfLpXs7L.jpg"
+                },
+                "weightedScore": 65,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 5,
+              "mediaRecommendation": {
+                "id": 101562,
+                "title": {
+                  "romaji": "Succubus ja Nai Mon!",
+                  "english": "I\u0027m Not a Succubus!",
+                  "native": "\u30B5\u30AD\u30E5\u30D0\u30B9\u3058\u3083\u306A\u3044\u3082\u3093\uFF01"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx101562-dQqdXhLOW5qn.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx101562-dQqdXhLOW5qn.jpg"
+                },
+                "weightedScore": 62,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 3,
+              "mediaRecommendation": {
+                "id": 87260,
+                "title": {
+                  "romaji": "Shuumatsu no Harem",
+                  "english": "World\u0027s End Harem",
+                  "native": "\u7D42\u672B\u306E\u30CF\u30FC\u30EC\u30E0"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx87260-J9QyBqdME03s.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx87260-J9QyBqdME03s.png"
+                },
+                "weightedScore": 57,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 2,
+              "mediaRecommendation": {
+                "id": 81315,
+                "title": {
+                  "romaji": "12BEAST",
+                  "english": "12 Beast",
+                  "native": "12BEAST \u30C8\u30A5\u30A8\u30EB\u30F4 \u30D3\u30FC\u30B9\u30C8"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx81315-FI88avN4NI9c.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx81315-FI88avN4NI9c.jpg"
+                },
+                "weightedScore": 62,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 2,
+              "mediaRecommendation": {
+                "id": 98175,
+                "title": {
+                  "romaji": "Elf-san wa Yaserarenai.",
+                  "english": "Plus-Sized Elf",
+                  "native": "\u30A8\u30EB\u30D5\u3055\u3093\u306F\u75E9\u305B\u3089\u308C\u306A\u3044\u3002"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx98175-sBBfWRdSt1Bn.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx98175-sBBfWRdSt1Bn.jpg"
+                },
+                "weightedScore": 66,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 2,
+              "mediaRecommendation": {
+                "id": 117259,
+                "title": {
+                  "romaji": "Shokutai no Yoru Ingoku no Chigiri",
+                  "english": null,
+                  "native": "\u8755\u80CE\u30CE\u591C \u6DEB\u7344\u30CE\u5951"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx117259-zAgQhRSFVdCC.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx117259-zAgQhRSFVdCC.jpg"
+                },
+                "weightedScore": null,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 1,
+              "mediaRecommendation": {
+                "id": 92504,
+                "title": {
+                  "romaji": "Seitenkan shite Jibun Jishin to H Shitai!",
+                  "english": null,
+                  "native": "\u6027\u8EE2\u63DB\u3057\u3066\u81EA\u5206\u81EA\u8EAB\u3068H\u3057\u305F\u3044\uFF01"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/92504-frVotzS3gtye.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/92504-frVotzS3gtye.jpg"
+                },
+                "weightedScore": null,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 1,
+              "mediaRecommendation": {
+                "id": 119288,
+                "title": {
+                  "romaji": "Anata no Machi no Shokushuyasan",
+                  "english": null,
+                  "native": "\u3042\u306A\u305F\u306E\u8857\u306E\u89E6\u624B\u5C4B\u3055\u3093"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx119288-vnDxL7B5byaT.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx119288-vnDxL7B5byaT.jpg"
+                },
+                "weightedScore": 67,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 1,
+              "mediaRecommendation": {
+                "id": 140334,
+                "title": {
+                  "romaji": "Nukitashi: Nukige Mitai na Shima ni Sunderu Watashi wa Dou Surya Ii desu ka?",
+                  "english": null,
+                  "native": "\u306C\u304D\u305F\u3057\uFF0D\u629C\u304D\u30B2\u30FC\u307F\u305F\u3044\u306A\u5CF6\u306B\u4F4F\u3093\u3067\u308B\u308F\u305F\u3057\u306F\u3069\u3046\u3059\u308A\u3083\u3044\u3044\u3067\u3059\u304B\uFF1F"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx140334-K9iawEY9AQFn.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx140334-K9iawEY9AQFn.jpg"
+                },
+                "weightedScore": 61,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 1,
+              "mediaRecommendation": {
+                "id": 164954,
+                "title": {
+                  "romaji": "Boku no Oku-san wa Ningen da",
+                  "english": null,
+                  "native": "\u50D5\u306E\u5965\u3055\u3093\u306F\u4EBA\u9593\u3060"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx164954-2S1TwZwTi6j7.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx164954-2S1TwZwTi6j7.jpg"
+                },
+                "weightedScore": null,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 0,
+              "mediaRecommendation": {
+                "id": 123003,
+                "title": {
+                  "romaji": "Valhalla Otintin Kan",
+                  "english": null,
+                  "native": "\u30F4\u30A1\u30EB\u30CF\u30E9\u30FB\u30AA\u30C6\u30A3\u30F3\u30C6\u30A3\u30F3\u9928"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx123003-ZvS5TsBJwDeX.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx123003-ZvS5TsBJwDeX.jpg"
+                },
+                "weightedScore": 62,
+                "mediaListEntry": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

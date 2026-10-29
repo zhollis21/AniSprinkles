@@ -1,0 +1,336 @@
+﻿{
+  "operationName": "Search",
+  "variables": {
+    "search": "ka",
+    "type": "ANIME",
+    "page": 3,
+    "perPage": 20
+  },
+  "queryFingerprint": "7ff4361b69e7",
+  "recordedAt": "2026-10-27T17:48:46.1612242+00:00",
+  "response": {
+    "data": {
+      "Page": {
+        "pageInfo": {
+          "hasNextPage": false,
+          "currentPage": 3
+        },
+        "media": [
+          {
+            "id": 192867,
+            "title": {
+              "romaji": "Android wa Keiken Ninzuu ni Hairimasu ka??",
+              "english": "Does it Count if You Lose Your Innocence to an Android?",
+              "native": "\u30A2\u30F3\u30C9\u30ED\u30A4\u30C9\u306F\u7D4C\u9A13\u4EBA\u6570\u306B\u5165\u308A\u307E\u3059\u304B\uFF1F\uFF1F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx192867-AXAu2LP7YA7Y.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx192867-AXAu2LP7YA7Y.jpg"
+            },
+            "format": "TV_SHORT",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 8,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 60,
+            "favourites": 159,
+            "popularity": 15017,
+            "trending": 1,
+            "startDate": {
+              "year": 2026,
+              "month": 1,
+              "day": 10
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 182094,
+            "title": {
+              "romaji": "Onii-san... Ohitori desu ka?",
+              "english": null,
+              "native": "\u304A\u5144\u3055\u3093\u2026\u304A\u3072\u3068\u308A\u3067\u3059\u304B\uFF1F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx182094-0jQKpSNuM98f.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx182094-0jQKpSNuM98f.png"
+            },
+            "format": "ONA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 63,
+            "favourites": 46,
+            "popularity": 1405,
+            "trending": 0,
+            "startDate": {
+              "year": 2024,
+              "month": 11,
+              "day": 29
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 104257,
+            "title": {
+              "romaji": "Lupin wa Ima mo Moete Iru ka?",
+              "english": "Is Lupin Still Burning?",
+              "native": "\u30EB\u30D1\u30F3\u306F\u4ECA\u3082\u71C3\u3048\u3066\u3044\u308B\u304B\uFF1F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx104257-D7AKMDDVf0lV.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx104257-D7AKMDDVf0lV.jpg"
+            },
+            "format": "OVA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 68,
+            "favourites": 14,
+            "popularity": 2478,
+            "trending": 0,
+            "startDate": {
+              "year": 2018,
+              "month": 7,
+              "day": 25
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 179799,
+            "title": {
+              "romaji": "Nani ka Ii Koto Arurashii",
+              "english": null,
+              "native": "\u4F55\u304B\u3044\u3044\u3053\u3068\u3042\u308B\u3089\u3057\u3044"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/default.jpg"
+            },
+            "format": "MUSIC",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 0,
+            "popularity": 43,
+            "trending": 0,
+            "startDate": {
+              "year": 1968,
+              "month": 2,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 151763,
+            "title": {
+              "romaji": "TAMA \u0026 FRIENDS: 3 Choume Monogatari",
+              "english": null,
+              "native": "TAMA\u0026FRIENDS 3\u4E01\u76EE\u7269\u8A9E"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b151763-0I4HVCv4erd0.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b151763-0I4HVCv4erd0.jpg"
+            },
+            "format": "OVA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 7,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 1,
+            "popularity": 77,
+            "trending": 0,
+            "startDate": {
+              "year": 1988,
+              "month": 11,
+              "day": 21
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 21823,
+            "title": {
+              "romaji": "ACCA: 13-ku Kansatsu-ka",
+              "english": "ACCA: 13-Territory Inspection Dept.",
+              "native": "ACCA 13\u533A\u76E3\u5BDF\u8AB2"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21823-0XTjZ0Rtm7va.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21823-0XTjZ0Rtm7va.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 75,
+            "favourites": 1234,
+            "popularity": 53329,
+            "trending": 0,
+            "startDate": {
+              "year": 2017,
+              "month": 1,
+              "day": 10
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 98525,
+            "title": {
+              "romaji": "Kuroko no Basket: Oshaberi Shiyou ka",
+              "english": null,
+              "native": "\u304A\u558B\u308A\u3057\u3088\u3046\u304B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx98525-s8UIbkp4wx1R.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx98525-s8UIbkp4wx1R.jpg"
+            },
+            "format": "SPECIAL",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 68,
+            "favourites": 34,
+            "popularity": 5412,
+            "trending": 0,
+            "startDate": {
+              "year": 2017,
+              "month": 1,
+              "day": 27
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 179286,
+            "title": {
+              "romaji": "Uso Nanka Iu Mon ka",
+              "english": null,
+              "native": "\u3046\u305D\u306A\u3093\u304B \u3044\u3046\u3082\u3093\u304B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b179286-J1TFQgMMBF0d.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b179286-J1TFQgMMBF0d.jpg"
+            },
+            "format": "MUSIC",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 0,
+            "popularity": 46,
+            "trending": 0,
+            "startDate": {
+              "year": 1964,
+              "month": 6,
+              "day": null
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 101099,
+            "title": {
+              "romaji": "HUNGRY DAYS: Aoharu ka yo.",
+              "english": null,
+              "native": "HUNGRY DAYS\u3000\u30A2\u30AA\u30CF\u30EB\u304B\u3088\u3002"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b101099-3AoCbJWTj2cV.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b101099-3AoCbJWTj2cV.jpg"
+            },
+            "format": "SPECIAL",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 11,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 62,
+            "favourites": 22,
+            "popularity": 3120,
+            "trending": 0,
+            "startDate": {
+              "year": 2017,
+              "month": 6,
+              "day": 7
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 104198,
+            "title": {
+              "romaji": "Gochuumon wa Usagi desu ka? BLOOM",
+              "english": "Is the Order a Rabbit? BLOOM",
+              "native": "\u3054\u6CE8\u6587\u306F\u3046\u3055\u304E\u3067\u3059\u304B\uFF1F BLOOM"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx104198-bT8qBPJWxtiY.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx104198-bT8qBPJWxtiY.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 78,
+            "favourites": 465,
+            "popularity": 22749,
+            "trending": 1,
+            "startDate": {
+              "year": 2020,
+              "month": 10,
+              "day": 10
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 21660,
+            "title": {
+              "romaji": "Dungeon ni Deai wo Motomeru no wa Machigatteiru Darou ka: Dungeon ni Onsen wo Motomeru no wa Machigatteiru Darou ka",
+              "english": "Is It Wrong to Try to Pick Up Girls in a Dungeon?: Is It Wrong to Expect a Hot Spring in a Dungeon?",
+              "native": "\u30C0\u30F3\u30B8\u30E7\u30F3\u306B\u51FA\u4F1A\u3044\u3092\u6C42\u3081\u308B\u306E\u306F\u9593\u9055\u3063\u3066\u3044\u308B\u3060\u308D\u3046\u304B \u30C0\u30F3\u30B8\u30E7\u30F3\u306B\u6E29\u6CC9\u3092\u6C42\u3081\u308B\u306E\u306F \u9593\u9055\u3063\u3066\u3044\u308B\u3060\u308D\u3046\u304B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21660-ulujIFzucKf1.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21660-ulujIFzucKf1.jpg"
+            },
+            "format": "OVA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 67,
+            "favourites": 365,
+            "popularity": 51644,
+            "trending": 0,
+            "startDate": {
+              "year": 2016,
+              "month": 12,
+              "day": 7
+            },
+            "mediaListEntry": {
+              "id": 593364834,
+              "status": "COMPLETED",
+              "progress": 1,
+              "score": 9
+            }
+          }
+        ]
+      }
+    }
+  }
+}

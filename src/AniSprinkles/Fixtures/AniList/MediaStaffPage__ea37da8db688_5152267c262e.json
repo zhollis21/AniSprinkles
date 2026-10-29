@@ -10,7 +10,7 @@
     "perPage": 25
   },
   "queryFingerprint": "5152267c262e",
-  "recordedAt": "2026-09-09T15:56:14.585611+00:00",
+  "recordedAt": "2026-10-28T11:18:31.6181983+00:00",
   "response": {
     "data": {
       "Media": {
@@ -20,6 +20,21 @@
             "currentPage": 2
           },
           "edges": [
+            {
+              "node": {
+                "id": 337234,
+                "name": {
+                  "full": "Ronan",
+                  "native": null,
+                  "userPreferred": "Ronan"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n337234-N8517mYb24O7.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "2nd Key Animation (ep 1113)"
+            },
             {
               "node": {
                 "id": 355816,
@@ -217,6 +232,21 @@
             },
             {
               "node": {
+                "id": 409728,
+                "name": {
+                  "full": "Splatin",
+                  "native": null,
+                  "userPreferred": "Splatin"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n409728-9CVxKrKdOT6i.jpg"
+                },
+                "favourites": 1
+              },
+              "role": "2nd Key Animation (ep 1171)"
+            },
+            {
+              "node": {
                 "id": 143521,
                 "name": {
                   "full": "Kenji Yokoyama",
@@ -286,7 +316,7 @@
                 "image": {
                   "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n214401-CZdYemhYAV7b.jpg"
                 },
-                "favourites": 96
+                "favourites": 98
               },
               "role": "2nd Key Animation (eps 1001, 1062)"
             },
@@ -364,36 +394,6 @@
                 "favourites": 0
               },
               "role": "2nd Key Animation (eps 1026, 1035, 1062, 1074, 1079)"
-            },
-            {
-              "node": {
-                "id": 304160,
-                "name": {
-                  "full": "Enrico Nobili",
-                  "native": null,
-                  "userPreferred": "Enrico Nobili"
-                },
-                "image": {
-                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n304160-JCqr683AXPoB.png"
-                },
-                "favourites": 20
-              },
-              "role": "2nd Key Animation (eps 1038, 1039, 1041, 1045, 1048, 1051, 1053, 1075)"
-            },
-            {
-              "node": {
-                "id": 297652,
-                "name": {
-                  "full": "Koto Nishikawa",
-                  "native": "\u897F\u5DDD\u7434",
-                  "userPreferred": "Koto Nishikawa"
-                },
-                "image": {
-                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
-                },
-                "favourites": 0
-              },
-              "role": "2nd Key Animation (eps 1039, 1041, 1044, 1046, 1048, 1049, 1051, 1053, 1055, 1056, 1058, 1062, 1069, 1071)"
             }
           ]
         }

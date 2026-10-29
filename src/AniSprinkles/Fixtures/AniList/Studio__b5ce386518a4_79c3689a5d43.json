@@ -1,0 +1,654 @@
+﻿{
+  "operationName": "Studio",
+  "variables": {
+    "id": 245,
+    "mediaPage": 1,
+    "mediaPerPage": 25,
+    "mediaSort": [
+      "START_DATE_DESC",
+      "ID"
+    ]
+  },
+  "queryFingerprint": "79c3689a5d43",
+  "recordedAt": "2026-10-27T18:01:20.9567681+00:00",
+  "response": {
+    "data": {
+      "Studio": {
+        "id": 245,
+        "name": "Toho",
+        "isAnimationStudio": false,
+        "favourites": 484,
+        "isFavourite": false,
+        "siteUrl": "https://anilist.co/studio/245",
+        "media": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "nodes": [
+            {
+              "id": 213579,
+              "title": {
+                "romaji": "Snowball Earth 2nd Season",
+                "english": null,
+                "native": "\u30B9\u30CE\u30A6\u30DC\u30FC\u30EB\u30A2\u30FC\u30B9 \u7B2C2\u671F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx213579-oFSlp20lxqIV.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213579-oFSlp20lxqIV.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "NOT_YET_RELEASED",
+              "weightedScore": null,
+              "favourites": 17,
+              "popularity": 1721,
+              "startDate": {
+                "year": null,
+                "month": null,
+                "day": null
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 212618,
+              "title": {
+                "romaji": "Dorohedoro Season 3",
+                "english": null,
+                "native": "\u30C9\u30ED\u30D8\u30C9\u30ED Season 3"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx212618-8qxOOnGuaVXV.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx212618-8qxOOnGuaVXV.jpg"
+              },
+              "format": null,
+              "type": "ANIME",
+              "status": "NOT_YET_RELEASED",
+              "weightedScore": null,
+              "favourites": 68,
+              "popularity": 8340,
+              "startDate": {
+                "year": null,
+                "month": null,
+                "day": null
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 185260,
+              "title": {
+                "romaji": "PUI PUI Molcar the Movie MOLMAX (Zoku-hen)",
+                "english": null,
+                "native": "PUI PUI \u30E2\u30EB\u30AB\u30FC \u30B6\u30FB\u30E0\u30FC\u30D3\u30FC MOLMAX (\u7D9A\u7DE8)"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx185260-l48JlMk853qY.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx185260-l48JlMk853qY.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "NOT_YET_RELEASED",
+              "weightedScore": null,
+              "favourites": 2,
+              "popularity": 255,
+              "startDate": {
+                "year": null,
+                "month": null,
+                "day": null
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 218099,
+              "title": {
+                "romaji": "Dr.STONE: TERRAFORMING",
+                "english": null,
+                "native": "Dr.STONE TERRAFORMING"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx218099-D8t4YUt0Jonv.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx218099-D8t4YUt0Jonv.jpg"
+              },
+              "format": null,
+              "type": "ANIME",
+              "status": "NOT_YET_RELEASED",
+              "weightedScore": null,
+              "favourites": 62,
+              "popularity": 8552,
+              "startDate": {
+                "year": null,
+                "month": null,
+                "day": null
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 209939,
+              "title": {
+                "romaji": "Sousou no Frieren 3rd Season",
+                "english": null,
+                "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \u7B2C3\u671F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx209939-g2Njkml1rheG.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209939-g2Njkml1rheG.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "NOT_YET_RELEASED",
+              "weightedScore": null,
+              "favourites": 546,
+              "popularity": 47672,
+              "startDate": {
+                "year": 2027,
+                "month": 10,
+                "day": null
+              },
+              "mediaListEntry": {
+                "id": 548900753,
+                "status": "PLANNING",
+                "progress": 0,
+                "score": 0
+              }
+            },
+            {
+              "id": 200927,
+              "title": {
+                "romaji": "Kusuriya no Hitorigoto 3rd Season Part 2",
+                "english": null,
+                "native": "\u85AC\u5C4B\u306E\u3072\u3068\u308A\u3054\u3068 \u7B2C3\u671F \u7B2C2\u30AF\u30FC\u30EB"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx200927-IXFYyIb728bM.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx200927-IXFYyIb728bM.png"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "NOT_YET_RELEASED",
+              "weightedScore": null,
+              "favourites": 113,
+              "popularity": 14186,
+              "startDate": {
+                "year": 2027,
+                "month": 4,
+                "day": null
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 217434,
+              "title": {
+                "romaji": "Mushoku Tensei III: Isekai Ittara Honki Dasu Part 2",
+                "english": null,
+                "native": "\u7121\u8077\u8EE2\u751F\u2162 \uFF5E\u7570\u4E16\u754C\u884C\u3063\u305F\u3089\u672C\u6C17\u3060\u3059\uFF5E \u7B2C2\u30AF\u30FC\u30EB"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx217434-xqZNBp5U3hgY.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx217434-xqZNBp5U3hgY.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "NOT_YET_RELEASED",
+              "weightedScore": null,
+              "favourites": 422,
+              "popularity": 30181,
+              "startDate": {
+                "year": 2027,
+                "month": null,
+                "day": null
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 217283,
+              "title": {
+                "romaji": "Phantom Busters",
+                "english": null,
+                "native": "\u30D5\u30A1\u30F3\u30C8\u30E0\u30D0\u30B9\u30BF\u30FC\u30BA"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx217283-WN3L0tIFq3qi.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx217283-WN3L0tIFq3qi.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "NOT_YET_RELEASED",
+              "weightedScore": null,
+              "favourites": 53,
+              "popularity": 1895,
+              "startDate": {
+                "year": 2027,
+                "month": null,
+                "day": null
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 204362,
+              "title": {
+                "romaji": "Kaijuu 8-gou: Kanketsu-hen",
+                "english": null,
+                "native": "\u602A\u7363\uFF18\u53F7 \u5B8C\u7D50\u7DE8"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx204362-LapbhALZUGsR.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx204362-LapbhALZUGsR.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "NOT_YET_RELEASED",
+              "weightedScore": null,
+              "favourites": 101,
+              "popularity": 13678,
+              "startDate": {
+                "year": 2027,
+                "month": null,
+                "day": null
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 187261,
+              "title": {
+                "romaji": "Haikyuu!!: Bakemono-tachi no Iku Tokoro",
+                "english": null,
+                "native": "\u30CF\u30A4\u30AD\u30E5\u30FC!! \u30D0\u30B1\u30E2\u30CE\u305F\u3061\u306E\u884C\u304F\u3068\u3053\u308D"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx187261-VSwmu8ef3Zvb.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx187261-VSwmu8ef3Zvb.jpg"
+              },
+              "format": "SPECIAL",
+              "type": "ANIME",
+              "status": "NOT_YET_RELEASED",
+              "weightedScore": null,
+              "favourites": 45,
+              "popularity": 7477,
+              "startDate": {
+                "year": 2027,
+                "month": null,
+                "day": null
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 174871,
+              "title": {
+                "romaji": "Haikyuu!!: VS Chiisana Kyojin",
+                "english": null,
+                "native": "\u30CF\u30A4\u30AD\u30E5\u30FC!! VS \u5C0F\u3055\u306A\u5DE8\u4EBA"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx174871-NQ2LbAn6RBCd.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx174871-NQ2LbAn6RBCd.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "NOT_YET_RELEASED",
+              "weightedScore": null,
+              "favourites": 171,
+              "popularity": 21858,
+              "startDate": {
+                "year": 2027,
+                "month": null,
+                "day": null
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 200929,
+              "title": {
+                "romaji": "Kusuriya no Hitorigoto: Bouhi no Hihou",
+                "english": "The Apothecary Diaries: The Late Lady\u2019s Treasure",
+                "native": "\u85AC\u5C4B\u306E\u3072\u3068\u308A\u3054\u3068 \u4EA1\u5983\u306E\u79D8\u5B9D"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx200929-dx3hnftE7K7C.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx200929-dx3hnftE7K7C.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "NOT_YET_RELEASED",
+              "weightedScore": null,
+              "favourites": 315,
+              "popularity": 31858,
+              "startDate": {
+                "year": 2026,
+                "month": 12,
+                "day": 11
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 218532,
+              "title": {
+                "romaji": "Maomao no Hitorigoto 3rd Season",
+                "english": null,
+                "native": "\u732B\u732B\u306E\u3072\u3068\u308A\u3054\u3068 \u7B2C3\u671F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx218532-I1GCprJrJ5sm.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx218532-I1GCprJrJ5sm.png"
+              },
+              "format": "ONA",
+              "type": "ANIME",
+              "status": "RELEASING",
+              "weightedScore": null,
+              "favourites": 7,
+              "popularity": 380,
+              "startDate": {
+                "year": 2026,
+                "month": 10,
+                "day": 5
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 189123,
+              "title": {
+                "romaji": "Ao no Hako Season 2",
+                "english": "Blue Box Season 2",
+                "native": "\u30A2\u30AA\u306E\u30CF\u30B3 Season\uFF12"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx189123-0secXELIhkIW.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx189123-0secXELIhkIW.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "RELEASING",
+              "weightedScore": 81,
+              "favourites": 854,
+              "popularity": 50392,
+              "startDate": {
+                "year": 2026,
+                "month": 10,
+                "day": 4
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 195516,
+              "title": {
+                "romaji": "Kusuriya no Hitorigoto 3rd Season",
+                "english": "The Apothecary Diaries Season 3",
+                "native": "\u85AC\u5C4B\u306E\u3072\u3068\u308A\u3054\u3068 \u7B2C3\u671F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx195516-MJpUZlOberqH.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx195516-MJpUZlOberqH.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "RELEASING",
+              "weightedScore": 85,
+              "favourites": 2622,
+              "popularity": 105810,
+              "startDate": {
+                "year": 2026,
+                "month": 10,
+                "day": 2
+              },
+              "mediaListEntry": {
+                "id": 593365729,
+                "status": "PLANNING",
+                "progress": 0,
+                "score": 0
+              }
+            },
+            {
+              "id": 202717,
+              "title": {
+                "romaji": "Chiikawa: Ningyo no Shima no Himitsu",
+                "english": null,
+                "native": "\u6620\u753B\u3061\u3044\u304B\u308F \u4EBA\u9B5A\u306E\u5CF6\u306E\u3072\u307F\u3064"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx202717-kHDn7BRiP9CR.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx202717-kHDn7BRiP9CR.jpg"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "weightedScore": 81,
+              "favourites": 97,
+              "popularity": 3221,
+              "startDate": {
+                "year": 2026,
+                "month": 7,
+                "day": 24
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 214068,
+              "title": {
+                "romaji": "Moshi, Korekara Umarerunonara",
+                "english": "Echo",
+                "native": "\u3082\u3057\u3001\u3053\u308C\u304B\u3089\u751F\u307E\u308C\u308B\u306E\u306A\u3089"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx214068-th35W8qQmycd.png",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx214068-th35W8qQmycd.png"
+              },
+              "format": "MOVIE",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "weightedScore": null,
+              "favourites": 4,
+              "popularity": 352,
+              "startDate": {
+                "year": 2026,
+                "month": 7,
+                "day": 19
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 188139,
+              "title": {
+                "romaji": "Futsutsuka na Akujo de wa Gozaimasu ga: Suuguu Chouso Torikae Den",
+                "english": "Though I Am an Inept Villainess",
+                "native": "\u3075\u3064\u3064\u304B\u306A\u60AA\u5973\u3067\u306F\u3054\u3056\u3044\u307E\u3059\u304C ~\u96DB\u5BAE\u8776\u9F20\u3068\u308A\u304B\u3048\u4F1D~"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx188139-1qIJfWxym8FX.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx188139-1qIJfWxym8FX.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "weightedScore": 81,
+              "favourites": 1674,
+              "popularity": 51616,
+              "startDate": {
+                "year": 2026,
+                "month": 7,
+                "day": 12
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 178789,
+              "title": {
+                "romaji": "Mushoku Tensei III: Isekai Ittara Honki Dasu",
+                "english": "Mushoku Tensei: Jobless Reincarnation Season 3",
+                "native": "\u7121\u8077\u8EE2\u751F\u2162 \uFF5E\u7570\u4E16\u754C\u884C\u3063\u305F\u3089\u672C\u6C17\u3060\u3059\uFF5E"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx178789-hNXjKFzUq7mk.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx178789-hNXjKFzUq7mk.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "weightedScore": 86,
+              "favourites": 6988,
+              "popularity": 174482,
+              "startDate": {
+                "year": 2026,
+                "month": 7,
+                "day": 4
+              },
+              "mediaListEntry": {
+                "id": 593234122,
+                "status": "COMPLETED",
+                "progress": 14,
+                "score": 7
+              }
+            },
+            {
+              "id": 196144,
+              "title": {
+                "romaji": "Snowball Earth",
+                "english": "SNOWBALL EARTH",
+                "native": "\u30B9\u30CE\u30A6\u30DC\u30FC\u30EB\u30A2\u30FC\u30B9"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx196144-UqVOcMjThkqa.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx196144-UqVOcMjThkqa.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "weightedScore": 67,
+              "favourites": 213,
+              "popularity": 15356,
+              "startDate": {
+                "year": 2026,
+                "month": 4,
+                "day": 3
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 170019,
+              "title": {
+                "romaji": "Otonari no Tenshi-sama ni Itsunomanika Dame Ningen ni Sareteita Ken 2nd Season",
+                "english": "The Angel Next Door Spoils Me Rotten2",
+                "native": "\u304A\u96A3\u306E\u5929\u4F7F\u69D8\u306B\u3044\u3064\u306E\u9593\u306B\u304B\u99C4\u76EE\u4EBA\u9593\u306B\u3055\u308C\u3066\u3044\u305F\u4EF6 \u7B2C2\u671F"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx170019-djbN0b934MhE.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx170019-djbN0b934MhE.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "weightedScore": 72,
+              "favourites": 2155,
+              "popularity": 81963,
+              "startDate": {
+                "year": 2026,
+                "month": 4,
+                "day": 3
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 199221,
+              "title": {
+                "romaji": "Dr. STONE: SCIENCE FUTURE Part 3",
+                "english": "Dr. STONE SCIENCE FUTURE Cour 3",
+                "native": "Dr.STONE SCIENCE FUTURE 3\u30AF\u30FC\u30EB"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx199221-TReDQMNhslHu.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx199221-TReDQMNhslHu.jpg"
+              },
+              "format": "TV",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "weightedScore": 83,
+              "favourites": 2286,
+              "popularity": 83292,
+              "startDate": {
+                "year": 2026,
+                "month": 4,
+                "day": 2
+              },
+              "mediaListEntry": {
+                "id": 593365498,
+                "status": "PLANNING",
+                "progress": 0,
+                "score": 0
+              }
+            },
+            {
+              "id": 218008,
+              "title": {
+                "romaji": "Chibi Godzilla no Gyakushuu Season 4",
+                "english": "Chibi Godzilla Raids Again Season 4",
+                "native": "\u3061\u3073\u30B4\u30B8\u30E9\u306E\u9006\u8972 \u30B7\u30FC\u30BA\u30F34"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b218008-pDrQDUyfAnm6.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b218008-pDrQDUyfAnm6.jpg"
+              },
+              "format": "TV_SHORT",
+              "type": "ANIME",
+              "status": "RELEASING",
+              "weightedScore": null,
+              "favourites": 2,
+              "popularity": 47,
+              "startDate": {
+                "year": 2026,
+                "month": 4,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 173172,
+              "title": {
+                "romaji": "Dorohedoro Season 2",
+                "english": "Dorohedoro Season 2",
+                "native": "\u30C9\u30ED\u30D8\u30C9\u30ED Season 2"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx173172-404XnuOS0DhR.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx173172-404XnuOS0DhR.jpg"
+              },
+              "format": "ONA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "weightedScore": 83,
+              "favourites": 1390,
+              "popularity": 45874,
+              "startDate": {
+                "year": 2026,
+                "month": 4,
+                "day": 1
+              },
+              "mediaListEntry": null
+            },
+            {
+              "id": 187267,
+              "title": {
+                "romaji": "BEASTARS FINAL SEASON Part 2",
+                "english": "BEASTARS Final Season Part 2",
+                "native": "BEASTARS FINAL SEASON Part 2"
+              },
+              "coverImage": {
+                "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx187267-clvlTabOPdPo.jpg",
+                "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx187267-clvlTabOPdPo.jpg"
+              },
+              "format": "ONA",
+              "type": "ANIME",
+              "status": "FINISHED",
+              "weightedScore": 73,
+              "favourites": 319,
+              "popularity": 20471,
+              "startDate": {
+                "year": 2026,
+                "month": 3,
+                "day": 7
+              },
+              "mediaListEntry": null
+            }
+          ]
+        }
+      }
+    }
+  }
+}

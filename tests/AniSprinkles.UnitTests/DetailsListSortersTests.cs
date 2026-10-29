@@ -12,7 +12,7 @@ public class DetailsListSortersTests
             {
                 Id = id,
                 Popularity = pop,
-                AverageScore = score,
+                WeightedScore = score,
                 Favourites = fav,
                 StartDate = year is null && month is null && day is null ? null : new MediaDate { Year = year, Month = month, Day = day },
                 Title = title is null ? null : new MediaTitle { Romaji = title },
@@ -272,6 +272,25 @@ public class DetailsListSortersTests
         var result = DetailsListSorters.SortRelations("RELATION", items);
 
         Assert.Equal(new[] { 5, 10, 20, 30 }, result.Select(e => e.Node!.Id));
+    }
+
+    [Fact]
+    public void SortRelations_SameUniverse_LandsInTheTrailingBucketAlongsideOther()
+    {
+        // Relations version 3 added SAME_UNIVERSE (#163), which version 2 reported as OTHER. We
+        // don't curate it, so it keeps OTHER's position — pinned here because that placement is
+        // currently incidental: it falls out of the switch's default arm rather than being chosen,
+        // so adding a curated arm for a neighbouring type could move it without anything failing.
+        var items = new List<MediaRelationEdge>
+        {
+            Relation(30, "Other"),
+            Relation(20, "Same Universe"),
+            Relation(5, "Sequel"),
+        };
+
+        var result = DetailsListSorters.SortRelations("RELATION", items);
+
+        Assert.Equal(new int?[] { 5, 20, 30 }, result.Select(e => e.Node?.Id));
     }
 
     [Fact]

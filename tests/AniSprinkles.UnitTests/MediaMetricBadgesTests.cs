@@ -20,7 +20,7 @@ public class MediaMetricBadgesTests
     private static RelatedMedia Media(
         int? popularity = null,
         int? trending = null,
-        int? averageScore = null,
+        int? weightedScore = null,
         int? favourites = null,
         int? year = null,
         string? format = null)
@@ -29,7 +29,7 @@ public class MediaMetricBadgesTests
             Id = 1,
             Popularity = popularity,
             Trending = trending,
-            AverageScore = averageScore,
+            WeightedScore = weightedScore,
             Favourites = favourites,
             StartDate = year is null ? null : new MediaDate { Year = year },
             Format = format,
@@ -72,7 +72,7 @@ public class MediaMetricBadgesTests
     [Fact]
     public void ScoreSort_ShowsTheStarGlyphAndTheTenPointRating()
     {
-        var badge = MediaMetricBadges.ForMediaSort(Media(averageScore: 84), "SCORE_DESC");
+        var badge = MediaMetricBadges.ForMediaSort(Media(weightedScore: 84), "SCORE_DESC");
 
         Assert.NotNull(badge);
         Assert.Equal(Glyphs.Regular.Star24, badge.Glyph);
@@ -110,7 +110,7 @@ public class MediaMetricBadgesTests
     {
         // The whole point of a per-sort badge is that the reader can tell which metric they are
         // looking at without reading the sort control, so two sorts sharing a glyph is a defect.
-        var media = Media(popularity: 1, trending: 1, averageScore: 1, favourites: 1, year: 2000);
+        var media = Media(popularity: 1, trending: 1, weightedScore: 1, favourites: 1, year: 2000);
         string[] sorts = ["POPULARITY_DESC", "TRENDING_DESC", "SCORE_DESC", "FAVOURITES_DESC", "START_DATE_DESC"];
 
         var glyphs = sorts
@@ -152,7 +152,7 @@ public class MediaMetricBadgesTests
     public void AZeroScore_CountsAsMissingRatherThanAsAScoreOfZero()
     {
         // AniList sends 0 for "not yet scored", which HasScore treats as absent.
-        var badge = MediaMetricBadges.ForMediaSort(Media(averageScore: 0), "SCORE_DESC");
+        var badge = MediaMetricBadges.ForMediaSort(Media(weightedScore: 0), "SCORE_DESC");
 
         Assert.NotNull(badge);
         Assert.Equal("—", badge.Text);

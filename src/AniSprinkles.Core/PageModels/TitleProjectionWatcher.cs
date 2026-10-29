@@ -7,8 +7,8 @@ namespace AniSprinkles.PageModels;
 /// moves (#127).
 /// <para>
 /// Deliberately narrower than <see cref="DisplaySettingsSnapshot"/>: the browse and carousel surfaces
-/// show a community average score (<c>RelatedMedia.ScoreDisplay</c>, computed from
-/// <c>AverageScore</c>) rather than the viewer's own, so the score-format setting does not reach
+/// show the community score (<c>RelatedMedia.ScoreDisplay</c>, computed from
+/// <c>WeightedScore</c>) rather than the viewer's own, so the score-format setting does not reach
 /// them. Only the title does. Library and the Media Details rating control are the exceptions and
 /// compare the full snapshot themselves.
 /// </para>

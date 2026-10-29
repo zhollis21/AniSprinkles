@@ -88,7 +88,7 @@ public static class DetailsListSorters
         var ordered = items.OrderBy(e => node(e) is null);
         var withKey = sort switch
         {
-            "SCORE_DESC" => ordered.ThenByDescending(e => node(e)?.AverageScore ?? 0),
+            "SCORE_DESC" => ordered.ThenByDescending(e => node(e)?.WeightedScore ?? 0),
             "FAVOURITES_DESC" => ordered.ThenByDescending(e => node(e)?.Favourites ?? 0),
             // Match AniList's server date order so small (client-sorted) and large (server-sorted) lists
             // agree: undated entries sort FIRST in BOTH directions, then by full date (year→month→day).

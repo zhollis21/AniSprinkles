@@ -1,0 +1,563 @@
+﻿{
+  "operationName": "MediaRecommendationsPage",
+  "variables": {
+    "id": 11757,
+    "page": 1,
+    "sort": [
+      "RATING_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "a692e3c683a1",
+  "recordedAt": "2026-10-27T17:50:40.9058673+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "recommendations": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "nodes": [
+            {
+              "rating": 401,
+              "mediaRecommendation": {
+                "id": 99263,
+                "title": {
+                  "romaji": "Tate no Yuusha no Nariagari",
+                  "english": "The Rising of the Shield Hero",
+                  "native": "\u76FE\u306E\u52C7\u8005\u306E\u6210\u308A\u4E0A\u304C\u308A"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx99263-LcazQwdlWzMy.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx99263-LcazQwdlWzMy.jpg"
+                },
+                "weightedScore": 76,
+                "mediaListEntry": {
+                  "id": 593364368,
+                  "status": "COMPLETED",
+                  "progress": 25,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 291,
+              "mediaRecommendation": {
+                "id": 17265,
+                "title": {
+                  "romaji": "Log Horizon",
+                  "english": "Log Horizon",
+                  "native": "\u30ED\u30B0\u30FB\u30DB\u30E9\u30A4\u30BA\u30F3"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx17265-RyErURYesjJt.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx17265-RyErURYesjJt.jpg"
+                },
+                "weightedScore": 76,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 238,
+              "mediaRecommendation": {
+                "id": 20920,
+                "title": {
+                  "romaji": "Dungeon ni Deai wo Motomeru no wa Machigatteiru Darou ka",
+                  "english": "Is It Wrong to Try to Pick Up Girls in a Dungeon?",
+                  "native": "\u30C0\u30F3\u30B8\u30E7\u30F3\u306B\u51FA\u4F1A\u3044\u3092\u6C42\u3081\u308B\u306E\u306F\u9593\u9055\u3063\u3066\u3044\u308B\u3060\u308D\u3046\u304B"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20920-MTREwZOG4BAD.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20920-MTREwZOG4BAD.jpg"
+                },
+                "weightedScore": 73,
+                "mediaListEntry": {
+                  "id": 593364227,
+                  "status": "COMPLETED",
+                  "progress": 13,
+                  "score": 9
+                }
+              }
+            },
+            {
+              "rating": 166,
+              "mediaRecommendation": {
+                "id": 151807,
+                "title": {
+                  "romaji": "Ore dake Level Up na Ken",
+                  "english": "Solo Leveling",
+                  "native": "\u4FFA\u3060\u3051\u30EC\u30D9\u30EB\u30A2\u30C3\u30D7\u306A\u4EF6"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx151807-it355ZgzquUd.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx151807-it355ZgzquUd.png"
+                },
+                "weightedScore": 80,
+                "mediaListEntry": {
+                  "id": 593351062,
+                  "status": "COMPLETED",
+                  "progress": 12,
+                  "score": 9
+                }
+              }
+            },
+            {
+              "rating": 165,
+              "mediaRecommendation": {
+                "id": 151970,
+                "title": {
+                  "romaji": "Shangri-La Frontier",
+                  "english": "Shangri-La Frontier",
+                  "native": "\u30B7\u30E3\u30F3\u30B0\u30EA\u30E9\u30FB\u30D5\u30ED\u30F3\u30C6\u30A3\u30A2"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx151970-xtIx3VqEk02X.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx151970-xtIx3VqEk02X.jpg"
+                },
+                "weightedScore": 80,
+                "mediaListEntry": {
+                  "id": 593351143,
+                  "status": "COMPLETED",
+                  "progress": 25,
+                  "score": 9
+                }
+              }
+            },
+            {
+              "rating": 146,
+              "mediaRecommendation": {
+                "id": 101280,
+                "title": {
+                  "romaji": "Tensei Shitara Slime Datta Ken",
+                  "english": "That Time I Got Reincarnated as a Slime",
+                  "native": "\u8EE2\u751F\u3057\u305F\u3089\u30B9\u30E9\u30A4\u30E0\u3060\u3063\u305F\u4EF6"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx101280-tDxCVJm714nt.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101280-tDxCVJm714nt.jpg"
+                },
+                "weightedScore": 80,
+                "mediaListEntry": {
+                  "id": 593364344,
+                  "status": "COMPLETED",
+                  "progress": 24,
+                  "score": 9
+                }
+              }
+            },
+            {
+              "rating": 141,
+              "mediaRecommendation": {
+                "id": 106479,
+                "title": {
+                  "romaji": "Itai no wa Iya nano de Bougyoryoku ni Kyokufuri Shitai to Omoimasu.",
+                  "english": "BOFURI: I Don\u0027t Want to Get Hurt, so I\u0027ll Max Out My Defense.",
+                  "native": "\u75DB\u3044\u306E\u306F\u5ACC\u306A\u306E\u3067\u9632\u5FA1\u529B\u306B\u6975\u632F\u308A\u3057\u305F\u3044\u3068\u601D\u3044\u307E\u3059\u3002"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx106479-JmPk1F5ubMtm.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx106479-JmPk1F5ubMtm.png"
+                },
+                "weightedScore": 73,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 125,
+              "mediaRecommendation": {
+                "id": 11759,
+                "title": {
+                  "romaji": "Accel World",
+                  "english": "Accel World",
+                  "native": "\u30A2\u30AF\u30BB\u30EB\u30FB\u30EF\u30FC\u30EB\u30C9"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx11759-o3ZRpFYnP5Lc.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx11759-o3ZRpFYnP5Lc.jpg"
+                },
+                "weightedScore": 67,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 67,
+              "mediaRecommendation": {
+                "id": 107420,
+                "title": {
+                  "romaji": "Infinite Dendrogram",
+                  "english": "Infinite Dendrogram",
+                  "native": "\u30A4\u30F3\u30D5\u30A3\u30CB\u30C3\u30C8\u30FB\u30C7\u30F3\u30C9\u30ED\u30B0\u30E9\u30E0"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx107420-fTC53wOorIsl.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx107420-fTC53wOorIsl.jpg"
+                },
+                "weightedScore": 59,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 59,
+              "mediaRecommendation": {
+                "id": 126791,
+                "title": {
+                  "romaji": "Kyuukyoku Shinka Shita Full Dive RPG ga Genjitsu yori mo Kusogee Dattara",
+                  "english": "Full Dive: This Ultimate Next-Gen Full Dive RPG Is Even Shittier than Real Life!",
+                  "native": "\u7A76\u6975\u9032\u5316\u3057\u305F\u30D5\u30EB\u30C0\u30A4\u30D6RPG\u304C\u73FE\u5B9F\u3088\u308A\u3082\u30AF\u30BD\u30B2\u30FC\u3060\u3063\u305F\u3089"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx126791-Rwhm1a5QFope.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx126791-Rwhm1a5QFope.jpg"
+                },
+                "weightedScore": 62,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 56,
+              "mediaRecommendation": {
+                "id": 176496,
+                "title": {
+                  "romaji": "Ore dake Level Up na Ken: Season 2 - Arise from the Shadow",
+                  "english": "Solo Leveling Season 2 -Arise from the Shadow-",
+                  "native": "\u4FFA\u3060\u3051\u30EC\u30D9\u30EB\u30A2\u30C3\u30D7\u306A\u4EF6 Season 2 -Arise from the Shadow-"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx176496-9BDMjAZGEbq4.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx176496-9BDMjAZGEbq4.png"
+                },
+                "weightedScore": 84,
+                "mediaListEntry": {
+                  "id": 593351088,
+                  "status": "COMPLETED",
+                  "progress": 13,
+                  "score": 10
+                }
+              }
+            },
+            {
+              "rating": 51,
+              "mediaRecommendation": {
+                "id": 170890,
+                "title": {
+                  "romaji": "THE NEW GATE",
+                  "english": "THE NEW GATE",
+                  "native": "THE NEW GATE"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx170890-XrggQYjAJAGa.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx170890-XrggQYjAJAGa.jpg"
+                },
+                "weightedScore": 64,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 44,
+              "mediaRecommendation": {
+                "id": 101167,
+                "title": {
+                  "romaji": "Dungeon ni Deai wo Motomeru no wa Machigatteiru Darou ka II",
+                  "english": "Is It Wrong to Try to Pick Up Girls in a Dungeon? II",
+                  "native": "\u30C0\u30F3\u30B8\u30E7\u30F3\u306B\u51FA\u4F1A\u3044\u3092\u6C42\u3081\u308B\u306E\u306F\u9593\u9055\u3063\u3066\u3044\u308B\u3060\u308D\u3046\u304B\u2161"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx101167-Yasvj97UR9ue.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101167-Yasvj97UR9ue.png"
+                },
+                "weightedScore": 71,
+                "mediaListEntry": {
+                  "id": 593364509,
+                  "status": "COMPLETED",
+                  "progress": 12,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 41,
+              "mediaRecommendation": {
+                "id": 20832,
+                "title": {
+                  "romaji": "Overlord",
+                  "english": "Overlord",
+                  "native": "\u30AA\u30FC\u30D0\u30FC\u30ED\u30FC\u30C9"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20832-vUNm5zrYWifc.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20832-vUNm5zrYWifc.jpg"
+                },
+                "weightedScore": 76,
+                "mediaListEntry": {
+                  "id": 593364388,
+                  "status": "COMPLETED",
+                  "progress": 13,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 33,
+              "mediaRecommendation": {
+                "id": 20671,
+                "title": {
+                  "romaji": "Log Horizon 2",
+                  "english": "Log Horizon 2",
+                  "native": "\u30ED\u30B0\u30FB\u30DB\u30E9\u30A4\u30BA\u30F3 2"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20671-ZpNJQ5RixVIq.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20671-ZpNJQ5RixVIq.jpg"
+                },
+                "weightedScore": 73,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 33,
+              "mediaRecommendation": {
+                "id": 20994,
+                "title": {
+                  "romaji": "GATE: Jieitai Kanochi nite, Kaku Tatakaeri",
+                  "english": "Gate",
+                  "native": "GATE \u81EA\u885B\u968A \u5F7C\u306E\u5730\u306B\u3066\u3001\u65AF\u304F\u6226\u3048\u308A"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20994-pSDk4I58jAK5.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20994-pSDk4I58jAK5.jpg"
+                },
+                "weightedScore": 74,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 32,
+              "mediaRecommendation": {
+                "id": 112124,
+                "title": {
+                  "romaji": "Dungeon ni Deai wo Motomeru no wa Machigatteiru Darou ka III",
+                  "english": "Is It Wrong to Try to Pick Up Girls in a Dungeon? III",
+                  "native": "\u30C0\u30F3\u30B8\u30E7\u30F3\u306B\u51FA\u4F1A\u3044\u3092\u6C42\u3081\u308B\u306E\u306F\u9593\u9055\u3063\u3066\u3044\u308B\u3060\u308D\u3046\u304B\u2162"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx112124-ZmoOntBuiSUU.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx112124-ZmoOntBuiSUU.jpg"
+                },
+                "weightedScore": 74,
+                "mediaListEntry": {
+                  "id": 593364517,
+                  "status": "COMPLETED",
+                  "progress": 12,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 29,
+              "mediaRecommendation": {
+                "id": 170732,
+                "title": {
+                  "romaji": "Dungeon ni Deai wo Motomeru no wa Machigatteiru Darou ka V: Houjou no Megami-hen",
+                  "english": "Is It Wrong To Try To Pick Up Girls in a Dungeon? V",
+                  "native": "\u30C0\u30F3\u30B8\u30E7\u30F3\u306B\u51FA\u4F1A\u3044\u3092\u6C42\u3081\u308B\u306E\u306F\u9593\u9055\u3063\u3066\u3044\u308B\u3060\u308D\u3046\u304B\u2164 \u8C4A\u7A63\u306E\u5973\u795E\u7BC7"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx170732-PwCMhnnOKdBu.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx170732-PwCMhnnOKdBu.jpg"
+                },
+                "weightedScore": 79,
+                "mediaListEntry": {
+                  "id": 593364529,
+                  "status": "COMPLETED",
+                  "progress": 15,
+                  "score": 9
+                }
+              }
+            },
+            {
+              "rating": 29,
+              "mediaRecommendation": {
+                "id": 212888,
+                "title": {
+                  "romaji": "Tempal: Item no Chikara",
+                  "english": "Overgeared",
+                  "native": "\u30C6\u30E0\u30D1\u30EB\uFF5E\u30A2\u30A4\u30C6\u30E0\u306E\u529B\uFF5E"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx212888-NhyvqPt5aIuJ.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx212888-NhyvqPt5aIuJ.jpg"
+                },
+                "weightedScore": 76,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 24,
+              "mediaRecommendation": {
+                "id": 21428,
+                "title": {
+                  "romaji": "Hai to Gensou no Grimgar",
+                  "english": "Grimgar of Fantasy and Ash",
+                  "native": "\u7070\u3068\u5E7B\u60F3\u306E\u30B0\u30EA\u30E0\u30AC\u30EB"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21428-dFVIHeZ8McBe.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21428-dFVIHeZ8McBe.jpg"
+                },
+                "weightedScore": 74,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 23,
+              "mediaRecommendation": {
+                "id": 116242,
+                "title": {
+                  "romaji": "100-man no Inochi no Ue ni Ore wa Tatteiru",
+                  "english": "I\u0027m Standing on a Million Lives",
+                  "native": "100\u4E07\u306E\u547D\u306E\u4E0A\u306B\u4FFA\u306F\u7ACB\u3063\u3066\u3044\u308B"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx116242-JY81Khmbqysn.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx116242-JY81Khmbqysn.jpg"
+                },
+                "weightedScore": 63,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 21,
+              "mediaRecommendation": {
+                "id": 112323,
+                "title": {
+                  "romaji": "Arifureta Shokugyou de Sekai Saikyou 2nd season",
+                  "english": "Arifureta: From Commonplace to World\u0027s Strongest Season 2",
+                  "native": "\u3042\u308A\u3075\u308C\u305F\u8077\u696D\u3067\u4E16\u754C\u6700\u5F37 2nd season"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx112323-C6nlP84x8jH8.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx112323-C6nlP84x8jH8.png"
+                },
+                "weightedScore": 70,
+                "mediaListEntry": {
+                  "id": 593365023,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "score": 0
+                }
+              }
+            },
+            {
+              "rating": 20,
+              "mediaRecommendation": {
+                "id": 19815,
+                "title": {
+                  "romaji": "No Game No Life",
+                  "english": "No Game, No Life",
+                  "native": "\u30CE\u30FC\u30B2\u30FC\u30E0\u30FB\u30CE\u30FC\u30E9\u30A4\u30D5"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b19815-sEOQ9yQaPKlk.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b19815-sEOQ9yQaPKlk.jpg"
+                },
+                "weightedScore": 77,
+                "mediaListEntry": {
+                  "id": 593364092,
+                  "status": "COMPLETED",
+                  "progress": 12,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 20,
+              "mediaRecommendation": {
+                "id": 167820,
+                "title": {
+                  "romaji": "Good Night World",
+                  "english": "GOOD NIGHT WORLD",
+                  "native": "\u30B0\u30C3\u30C9\u30FB\u30CA\u30A4\u30C8\u30FB\u30EF\u30FC\u30EB\u30C9"
+                },
+                "format": "ONA",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx167820-RO0nRXw7fcpu.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx167820-RO0nRXw7fcpu.jpg"
+                },
+                "weightedScore": 69,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 19,
+              "mediaRecommendation": {
+                "id": 100085,
+                "title": {
+                  "romaji": "Shichisei no Subaru",
+                  "english": "Seven Senses of the Re\u0027Union",
+                  "native": "\u4E03\u661F\u306E\u30B9\u30D0\u30EB"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx100085-vlkcAE221VeM.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx100085-vlkcAE221VeM.jpg"
+                },
+                "weightedScore": 57,
+                "mediaListEntry": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

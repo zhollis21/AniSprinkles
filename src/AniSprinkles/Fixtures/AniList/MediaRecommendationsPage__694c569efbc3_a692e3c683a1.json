@@ -1,0 +1,503 @@
+﻿{
+  "operationName": "MediaRecommendationsPage",
+  "variables": {
+    "id": 109017,
+    "page": 1,
+    "sort": [
+      "RATING_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "a692e3c683a1",
+  "recordedAt": "2026-10-27T17:52:18.7129371+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "recommendations": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "nodes": [
+            {
+              "rating": 34,
+              "mediaRecommendation": {
+                "id": 98285,
+                "title": {
+                  "romaji": "Machigatta ko wo Mahou Shoujo ni Shite Shimatta",
+                  "english": "Machimaho: I Messed Up and Made the Wrong Person Into a Magical Girl!",
+                  "native": "\u9593\u9055\u3063\u305F\u5B50\u3092\u9B54\u6CD5\u5C11\u5973\u306B\u3057\u3066\u3057\u307E\u3063\u305F"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx98285-MoERY01IDz72.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx98285-MoERY01IDz72.jpg"
+                },
+                "weightedScore": 70,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 27,
+              "mediaRecommendation": {
+                "id": 170419,
+                "title": {
+                  "romaji": "Mahou Shoujo 201",
+                  "english": null,
+                  "native": "\u9B54\u6CD5\u5C11\u5973201"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx170419-cx6SJ3xEa9qQ.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx170419-cx6SJ3xEa9qQ.jpg"
+                },
+                "weightedScore": 67,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 25,
+              "mediaRecommendation": {
+                "id": 125528,
+                "title": {
+                  "romaji": "Rosengarten Saga",
+                  "english": "Rosen Garten Saga",
+                  "native": "\u30ED\u30FC\u30BC\u30F3\u30AC\u30FC\u30C6\u30F3\u30FB\u30B5\u30FC\u30AC"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx125528-BOF55llKv2d7.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx125528-BOF55llKv2d7.jpg"
+                },
+                "weightedScore": 75,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 23,
+              "mediaRecommendation": {
+                "id": 88609,
+                "title": {
+                  "romaji": "Kill la Kill",
+                  "english": "KILL la KILL",
+                  "native": "\u30AD\u30EB\u30E9\u30AD\u30EB"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx88609-Y5q7eQkRPJxx.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx88609-Y5q7eQkRPJxx.jpg"
+                },
+                "weightedScore": 63,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 10,
+              "mediaRecommendation": {
+                "id": 97695,
+                "title": {
+                  "romaji": "Zannen Jokanbu Black General-san",
+                  "english": "Precarious Woman Executive Miss Black General",
+                  "native": "\u6B8B\u5FF5\u5973\u5E79\u90E8\u30D6\u30E9\u30C3\u30AF\u30B8\u30A7\u30CD\u30E9\u30EB\u3055\u3093"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx97695-OgjU5Kz3GDIj.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx97695-OgjU5Kz3GDIj.jpg"
+                },
+                "weightedScore": 72,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 10,
+              "mediaRecommendation": {
+                "id": 141152,
+                "title": {
+                  "romaji": "Kaguhara-san no Fetish Note",
+                  "english": null,
+                  "native": "\u9999\u539F\u3055\u3093\u306E\u3075\u3047\u3061\u306E\u30FC\u3068"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx141152-NZ550PGsvX7C.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx141152-NZ550PGsvX7C.jpg"
+                },
+                "weightedScore": 75,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 9,
+              "mediaRecommendation": {
+                "id": 141283,
+                "title": {
+                  "romaji": "Tokimeke \u2661 Mahou Youjo Coco Pure",
+                  "english": null,
+                  "native": "\u3068\u304D\u3081\u3051\u2661\u9B54\u6CD5\u5E7C\u5973\u30B3\u30B3\u30D4\u30E5\u30A2"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx141283-91iilil93lWT.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx141283-91iilil93lWT.jpg"
+                },
+                "weightedScore": null,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 5,
+              "mediaRecommendation": {
+                "id": 106064,
+                "title": {
+                  "romaji": "Mato Seihei no Slave",
+                  "english": "Chained Soldier",
+                  "native": "\u9B54\u90FD\u7CBE\u5175\u306E\u30B9\u30EC\u30A4\u30D6"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx106064-WBMhTOo7UQ20.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx106064-WBMhTOo7UQ20.png"
+                },
+                "weightedScore": 74,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 5,
+              "mediaRecommendation": {
+                "id": 105808,
+                "title": {
+                  "romaji": "Hero-san to Moto Onna Kanbu-san",
+                  "english": "Superwomen in Love! Honey Trap and Rapid Rabbit",
+                  "native": "\u30D2\u30FC\u30ED\u30FC\u3055\u3093\u3068\u5143\u5973\u5E79\u90E8\u3055\u3093"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx105808-pz5GMrhTA2Qj.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx105808-pz5GMrhTA2Qj.jpg"
+                },
+                "weightedScore": 70,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 5,
+              "mediaRecommendation": {
+                "id": 119506,
+                "title": {
+                  "romaji": "Warui ga Watashi wa Yuri ja Nai",
+                  "english": null,
+                  "native": "\u60AA\u3044\u304C\u79C1\u306F\u767E\u5408\u3058\u3083\u306A\u3044"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx119506-ApRkIeWnWEdZ.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx119506-ApRkIeWnWEdZ.jpg"
+                },
+                "weightedScore": 73,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 5,
+              "mediaRecommendation": {
+                "id": 100674,
+                "title": {
+                  "romaji": "Mahou Shoujo Tokushusen Asuka",
+                  "english": "Magical Girl Spec-Ops Asuka",
+                  "native": "\u9B54\u6CD5\u5C11\u5973\u7279\u6B8A\u6226\u3042\u3059\u304B"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx100674-em8JQLYFsqRu.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx100674-em8JQLYFsqRu.jpg"
+                },
+                "weightedScore": 69,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 4,
+              "mediaRecommendation": {
+                "id": 54457,
+                "title": {
+                  "romaji": "Mahou Shoujo Madoka\u2606Magica",
+                  "english": "Puella Magi Madoka Magica",
+                  "native": "\u9B54\u6CD5\u5C11\u5973\u307E\u3069\u304B\u2606\u30DE\u30AE\u30AB"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx54457-qnru2gBhb202.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx54457-qnru2gBhb202.jpg"
+                },
+                "weightedScore": 79,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 4,
+              "mediaRecommendation": {
+                "id": 66131,
+                "title": {
+                  "romaji": "Fate/kaleid liner Prisma\u2606Illya 3rei!!",
+                  "english": "Fate/kaleid liner Prisma \u2606 Illya Drei 3!!",
+                  "native": "Fate/kaleid liner \u30D7\u30EA\u30BA\u30DE\u2606\u30A4\u30EA\u30E4 \u30C9\u30E9\u30A4\uFF01\uFF01"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx66131-w94lTVMjhs6R.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx66131-w94lTVMjhs6R.png"
+                },
+                "weightedScore": 82,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 3,
+              "mediaRecommendation": {
+                "id": 113982,
+                "title": {
+                  "romaji": "Gunbured x Sisters",
+                  "english": "GUNBURED \u00D7 SISTERS",
+                  "native": "\u30AC\u30F3\u30D0\u30EC\u30C3\u30C9\u00D7\u30B7\u30B9\u30BF\u30FC\u30BA"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx113982-UfptxS7DnqOE.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx113982-UfptxS7DnqOE.jpg"
+                },
+                "weightedScore": 63,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 3,
+              "mediaRecommendation": {
+                "id": 102543,
+                "title": {
+                  "romaji": "Cosmo Familia*",
+                  "english": "Cosmo Familia",
+                  "native": "\u30B3\u30B9\u30E2\u30D5\u30A1\u30DF\u30EA\u30A2\uFF0A"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx102543-gLw6YZ3MaZng.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx102543-gLw6YZ3MaZng.jpg"
+                },
+                "weightedScore": 62,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 3,
+              "mediaRecommendation": {
+                "id": 108069,
+                "title": {
+                  "romaji": "Hino-san no Baka",
+                  "english": null,
+                  "native": "\u98DB\u91CE\u3055\u3093\u306E\u30D0\u30AB"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx108069-0o09tvykf8Pu.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx108069-0o09tvykf8Pu.jpg"
+                },
+                "weightedScore": 73,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 3,
+              "mediaRecommendation": {
+                "id": 86539,
+                "title": {
+                  "romaji": "Mahou Shoujo Nante Mou Ii desu kara.",
+                  "english": null,
+                  "native": "\u9B54\u6CD5\u5C11\u5973\u306A\u3093\u3066\u3082\u3046\u3044\u3044\u3067\u3059\u304B\u3089\u3002"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx86539-wysZnT2JJSNy.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx86539-wysZnT2JJSNy.jpg"
+                },
+                "weightedScore": 54,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 3,
+              "mediaRecommendation": {
+                "id": 85281,
+                "title": {
+                  "romaji": "MURCI\u00C9LAGO",
+                  "english": "MURCI\u00C9LAGO",
+                  "native": "MURCI\u00C9LAGO-\u30E0\u30EB\u30B7\u30A8\u30E9\u30B4-"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx85281-nQMiUnSqg0F0.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx85281-nQMiUnSqg0F0.png"
+                },
+                "weightedScore": 72,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 3,
+              "mediaRecommendation": {
+                "id": 30015,
+                "title": {
+                  "romaji": "Mahou Sensei Negima!",
+                  "english": "Negima! Magister Negi Magi",
+                  "native": "\u9B54\u6CD5\u5148\u751F\u30CD\u30AE\u307E!"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/15.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/15.jpg"
+                },
+                "weightedScore": 75,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 3,
+              "mediaRecommendation": {
+                "id": 181372,
+                "title": {
+                  "romaji": "Shi ni Modori Oujo wa Ikinobiru Tameni Yuri Harem wo Tsukuru Koto ni Shita",
+                  "english": "The Death Defying Princess Creates a Yuri Harem to Survive",
+                  "native": "\u6B7B\u306B\u623B\u308A\u738B\u5973\u306F\u751F\u304D\u5EF6\u3073\u308B\u305F\u3081\u306B\u767E\u5408\u30CF\u30FC\u30EC\u30E0\u3092\u4F5C\u308B\u3053\u3068\u306B\u3057\u305F"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx181372-kz6vIiPsOrar.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx181372-kz6vIiPsOrar.jpg"
+                },
+                "weightedScore": 65,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 2,
+              "mediaRecommendation": {
+                "id": 86096,
+                "title": {
+                  "romaji": "\u03B3: Gamma",
+                  "english": null,
+                  "native": "\u03B3-\u30AC\u30F3\u30DE-"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx86096-QnNbaAj40Atk.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx86096-QnNbaAj40Atk.jpg"
+                },
+                "weightedScore": 67,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 2,
+              "mediaRecommendation": {
+                "id": 128442,
+                "title": {
+                  "romaji": "Kaijin Kaihatsubu no Kuroitsu-san",
+                  "english": null,
+                  "native": "\u602A\u4EBA\u958B\u767A\u90E8\u306E\u9ED2\u4E95\u6D25\u3055\u3093"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx128442-vtrE05SBUf5C.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx128442-vtrE05SBUf5C.jpg"
+                },
+                "weightedScore": 61,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 2,
+              "mediaRecommendation": {
+                "id": 103867,
+                "title": {
+                  "romaji": "Yurutto Hunter \u2606 Wantan-chan",
+                  "english": null,
+                  "native": "\u3086\u308B\u3063\u3068\u30CF\u30F3\u30BF\u30FC\u2606\u30EF\u30F3\u30BF\u30F3\u3061\u3083\u3093"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx103867-6bQFQ3hSE8Ye.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx103867-6bQFQ3hSE8Ye.jpg"
+                },
+                "weightedScore": 60,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 2,
+              "mediaRecommendation": {
+                "id": 109065,
+                "title": {
+                  "romaji": "Aa toka Uu shika Ienai",
+                  "english": null,
+                  "native": "\u3042\u30FC\u3068\u304B\u3046\u30FC\u3057\u304B\u8A00\u3048\u306A\u3044"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx109065-e9kkowKeoL5X.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx109065-e9kkowKeoL5X.jpg"
+                },
+                "weightedScore": 68,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 2,
+              "mediaRecommendation": {
+                "id": 55297,
+                "title": {
+                  "romaji": "Prison School",
+                  "english": "Prison School",
+                  "native": "\u76E3\u7344\u5B66\u5712"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx55297-4gAl9TLpkhfX.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx55297-4gAl9TLpkhfX.png"
+                },
+                "weightedScore": 72,
+                "mediaListEntry": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

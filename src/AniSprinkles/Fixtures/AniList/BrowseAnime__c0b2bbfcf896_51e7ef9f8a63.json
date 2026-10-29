@@ -1,0 +1,736 @@
+﻿{
+  "operationName": "BrowseAnime",
+  "variables": {
+    "page": 2,
+    "perPage": 25,
+    "sort": [
+      "SCORE_DESC",
+      "ID"
+    ],
+    "isAdult": true
+  },
+  "queryFingerprint": "51e7ef9f8a63",
+  "recordedAt": "2026-10-27T17:46:54.7534693+00:00",
+  "response": {
+    "data": {
+      "Page": {
+        "pageInfo": {
+          "hasNextPage": true,
+          "currentPage": 2
+        },
+        "media": [
+          {
+            "id": 179823,
+            "title": {
+              "romaji": "Iribitari Gal ni Manko Tsukawasete Morau Hanashi Animation",
+              "english": null,
+              "native": "\u5165\u308A\u6D78\u308A\u30AE\u30E3\u30EB\u306B\u307E\u3007\u3053\u4F7F\u308F\u305B\u3066\u8CB0\u3046\u8A71 Animation"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "ONA",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 71,
+            "favourites": 195,
+            "popularity": 3441,
+            "trending": 0,
+            "startDate": {
+              "year": 2024,
+              "month": 10,
+              "day": 4
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 20783,
+            "title": {
+              "romaji": "Rance 01: Hikari wo Motomete THE ANIMATION",
+              "english": null,
+              "native": "\u30E9\u30F3\u30B901 \u5149\u3092\u3082\u3068\u3081\u3066 THE ANIMATION"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "OVA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 4,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 71,
+            "favourites": 275,
+            "popularity": 10084,
+            "trending": 0,
+            "startDate": {
+              "year": 2014,
+              "month": 12,
+              "day": 26
+            },
+            "mediaListEntry": {
+              "id": 593365716,
+              "status": "PLANNING",
+              "progress": 0,
+              "score": 0
+            }
+          },
+          {
+            "id": 7411,
+            "title": {
+              "romaji": "Kanojo \u00D7 Kanojo \u00D7 Kanojo: Sanshimai to no Dokidoki Kyoudou Seikatsu",
+              "english": "Kanojo x Kanojo x Kanojo",
+              "native": "\u5F7C\u5973\u00D7\u5F7C\u5973\u00D7\u5F7C\u5973\uFF5E\u4E09\u59C9\u59B9\u3068\u306E\u30C9\u30AD\u30C9\u30AD\u5171\u540C\u751F\u6D3B\uFF5E"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "OVA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 3,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 71,
+            "favourites": 265,
+            "popularity": 11004,
+            "trending": 0,
+            "startDate": {
+              "year": 2009,
+              "month": 12,
+              "day": 25
+            },
+            "mediaListEntry": {
+              "id": 593365386,
+              "status": "PLANNING",
+              "progress": 0,
+              "score": 0
+            }
+          },
+          {
+            "id": 118166,
+            "title": {
+              "romaji": "Isekai Harem Monogatari",
+              "english": "Otherworld Harem Story",
+              "native": "\u7570\u4E16\u754C\u30CF\u30FC\u30EC\u30E0\u7269\u8A9E"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "OVA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 4,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 71,
+            "favourites": 420,
+            "popularity": 9135,
+            "trending": 1,
+            "startDate": {
+              "year": 2020,
+              "month": 7,
+              "day": 31
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 3220,
+            "title": {
+              "romaji": "Kanashimi no Belladonna",
+              "english": "Belladonna of Sadness",
+              "native": "\u54C0\u3057\u307F\u306E\u30D9\u30E9\u30C9\u30F3\u30CA"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 71,
+            "favourites": 865,
+            "popularity": 22611,
+            "trending": 0,
+            "startDate": {
+              "year": 1973,
+              "month": 6,
+              "day": 30
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 10779,
+            "title": {
+              "romaji": "Eroge!: H mo Game mo Kaihatsu Zanmai",
+              "english": "Eroge! Sex and Gamedev",
+              "native": "\u3048\u308D\u3052\u30FC! \uFF5EH\u3082\u30B2\u30FC\u30E0\u3082\u958B\u767A\u4E09\u6627\uFF5E"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "OVA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 6,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 71,
+            "favourites": 396,
+            "popularity": 13475,
+            "trending": 0,
+            "startDate": {
+              "year": 2011,
+              "month": 8,
+              "day": 26
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 109326,
+            "title": {
+              "romaji": "Joshi Luck!",
+              "english": null,
+              "native": "\u3058\u3087\u3057\u30E9\u30AF\uFF01"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "OVA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 6,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 71,
+            "favourites": 283,
+            "popularity": 6726,
+            "trending": 0,
+            "startDate": {
+              "year": 2019,
+              "month": 9,
+              "day": 6
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 186829,
+            "title": {
+              "romaji": "Kakurenbo THE ANIMATION",
+              "english": null,
+              "native": "\u304B\u304F\u308C\u3093\u307C THE ANIMATION"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "OVA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 71,
+            "favourites": 72,
+            "popularity": 2034,
+            "trending": 0,
+            "startDate": {
+              "year": 2025,
+              "month": 9,
+              "day": 26
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 18597,
+            "title": {
+              "romaji": "Kanojo \u00D7 Kanojo \u00D7 Kanojo (2013)",
+              "english": "Kanojo x Kanojo x Kanojo Full Version",
+              "native": "\u5F7C\u5973\u00D7\u5F7C\u5973\u00D7\u5F7C\u5973 \u5B8C\u5168\u7248"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "OVA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 71,
+            "favourites": 125,
+            "popularity": 3386,
+            "trending": 0,
+            "startDate": {
+              "year": 2013,
+              "month": 4,
+              "day": 19
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 200228,
+            "title": {
+              "romaji": "Oshikake! Bakunyuu Gal Harem Seikatsu",
+              "english": null,
+              "native": "\u304A\u3057\u304B\u3051\uFF01\u7206\u4E73\u30AE\u30E3\u30EB\u30CF\u30FC\u30EC\u30E0\u6027\u6D3B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "OVA",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 71,
+            "favourites": 80,
+            "popularity": 1328,
+            "trending": 0,
+            "startDate": {
+              "year": 2025,
+              "month": 11,
+              "day": 28
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 109171,
+            "title": {
+              "romaji": "Saezuru Tori wa Habatakanai: The clouds gather",
+              "english": "Twittering Birds Never Fly: The Clouds Gather",
+              "native": "\u56C0\u308B\u9CE5\u306F\u7FBD\u3070\u305F\u304B\u306A\u3044 The clouds gather"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 71,
+            "favourites": 280,
+            "popularity": 13040,
+            "trending": 0,
+            "startDate": {
+              "year": 2020,
+              "month": 2,
+              "day": 15
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 104451,
+            "title": {
+              "romaji": "Saimin Seishidou",
+              "english": null,
+              "native": "\u50AC\u7720\u6027\u6307\u5C0E"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "OVA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 6,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 70,
+            "favourites": 406,
+            "popularity": 7661,
+            "trending": 0,
+            "startDate": {
+              "year": 2019,
+              "month": 2,
+              "day": 1
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 108413,
+            "title": {
+              "romaji": "Ecchi na Onee-chan ni Shiboraretai",
+              "english": null,
+              "native": "\u30A8\u30C3\u30C1\u306A\u304A\u59C9\u3061\u3083\u3093\u306B\u643E\u3089\u308C\u305F\u3044"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "OVA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 2,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 70,
+            "favourites": 282,
+            "popularity": 6736,
+            "trending": 0,
+            "startDate": {
+              "year": 2019,
+              "month": 7,
+              "day": 5
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 106578,
+            "title": {
+              "romaji": "Seikatsu Shuukan THE ANIMATION",
+              "english": null,
+              "native": "\u6027\u6D3B\u9031\u9593 THE ANIMATION"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "OVA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 2,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 70,
+            "favourites": 264,
+            "popularity": 8004,
+            "trending": 0,
+            "startDate": {
+              "year": 2019,
+              "month": 3,
+              "day": 29
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 165321,
+            "title": {
+              "romaji": "Tsundero Series",
+              "english": null,
+              "native": "\u30C4\u30F3\u30C7\u30ED\u30B7\u30EA\u30FC\u30BA"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "OVA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 6,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 70,
+            "favourites": 191,
+            "popularity": 3118,
+            "trending": 0,
+            "startDate": {
+              "year": 2023,
+              "month": 9,
+              "day": 1
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 101033,
+            "title": {
+              "romaji": "Muttsuri Dosukebe Russia Gibo Shimai no Honshitsu Minuite Sex Zanmai",
+              "english": null,
+              "native": "\u3080\u3063\u3064\u308A\u30C9\u30B9\u30B1\u30D9\u30ED\u30B7\u30A2\u7FA9\u6BCD\u59C9\u59B9\u306E\u672C\u8CEA\u898B\u629C\u3044\u3066\u30BB\u30C3\u30AF\u30B9\u4E09\u6627"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "OVA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 2,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 70,
+            "favourites": 310,
+            "popularity": 6346,
+            "trending": 0,
+            "startDate": {
+              "year": 2018,
+              "month": 6,
+              "day": 1
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 112936,
+            "title": {
+              "romaji": "\u25CB\u25CB Kouhai",
+              "english": null,
+              "native": "\u25CB\u25CB\u4EA4\u914D"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "OVA",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 70,
+            "favourites": 212,
+            "popularity": 5015,
+            "trending": 0,
+            "startDate": {
+              "year": 2020,
+              "month": 1,
+              "day": 31
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 131826,
+            "title": {
+              "romaji": "Eroge de Subete wa Kaiketsu Dekiru! THE ANIMATION",
+              "english": null,
+              "native": "\u30A8\u30ED\u30B2\u3067\u5168\u3066\u306F\u89E3\u6C7A\u3067\u304D\u308B\uFF01 THE ANIMATION"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "OVA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 2,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 70,
+            "favourites": 177,
+            "popularity": 3755,
+            "trending": 0,
+            "startDate": {
+              "year": 2021,
+              "month": 6,
+              "day": 25
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 20933,
+            "title": {
+              "romaji": "Baku Ane: Otouto Shibocchau zo! THE ANIMATION",
+              "english": null,
+              "native": "\u3070\u304F\u3042\u306D \u5F1F\u3057\u307C\u3063\u3061\u3083\u3046\u305E! THE ANIMATION"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "OVA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 70,
+            "favourites": 286,
+            "popularity": 9598,
+            "trending": 0,
+            "startDate": {
+              "year": 2014,
+              "month": 8,
+              "day": 29
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 177149,
+            "title": {
+              "romaji": "Bubble de House de ***: Ofuro Maker no Showroom ga Sharehouse de... The Animation",
+              "english": null,
+              "native": "\u30D0\u30D6\u30EBde\u30CF\u30A6\u30B9de\u3007\u3007\u3007 \u301C\u304A\u98A8\u5442\u30E1\u30FC\u30AB\u30FC\u306E\u30B7\u30E7\u30FC\u30EB\u30FC\u30E0\u304C\u30B7\u30A7\u30A2\u30CF\u30A6\u30B9\u3067\u2026\u301C The Animation"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "OVA",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 70,
+            "favourites": 97,
+            "popularity": 1744,
+            "trending": 0,
+            "startDate": {
+              "year": 2024,
+              "month": 8,
+              "day": 30
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 7748,
+            "title": {
+              "romaji": "Sono Hanabira ni Kuchizuke wo: Anata to Koibito Tsunagi",
+              "english": "A Kiss For The Petals - Joined in Love with You",
+              "native": "\u305D\u306E\u82B1\u3073\u3089\u306B\u304F\u3061\u3065\u3051\u3092\u3000\u3042\u306A\u305F\u3068\u604B\u4EBA\u3064\u306A\u304E"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "OVA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 70,
+            "favourites": 216,
+            "popularity": 12390,
+            "trending": 0,
+            "startDate": {
+              "year": 2010,
+              "month": 7,
+              "day": 30
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 20934,
+            "title": {
+              "romaji": "Swing Out Sisters (2014)",
+              "english": null,
+              "native": "\u30B9\u30A6\u30A3\u30F3\u30B0 \u30A2\u30A6\u30C8 \u30B7\u30B9\u30BF\u30FC\u30BA"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "OVA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 70,
+            "favourites": 123,
+            "popularity": 5137,
+            "trending": 0,
+            "startDate": {
+              "year": 2014,
+              "month": 1,
+              "day": 30
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 21100,
+            "title": {
+              "romaji": "Fella Pure: Mitarashi-san Chi no Jijou - THE ANIMATION",
+              "english": null,
+              "native": "\u30D5\u30A7\u30E9\u30D4\u30E5\u30A2 ~\u5FA1\u624B\u6D17\u3055\u3093\u5BB6\u306E\u4E8B\u60C5~ THE ANIMATION"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "OVA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 70,
+            "favourites": 292,
+            "popularity": 8371,
+            "trending": 1,
+            "startDate": {
+              "year": 2014,
+              "month": 3,
+              "day": 28
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 107131,
+            "title": {
+              "romaji": "Megane no Megami",
+              "english": null,
+              "native": "\u30E1\u30AC\u30CDno\u30E1\u30AC\u30DF"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "OVA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 2,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 70,
+            "favourites": 169,
+            "popularity": 4217,
+            "trending": 0,
+            "startDate": {
+              "year": 2019,
+              "month": 5,
+              "day": 31
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 152292,
+            "title": {
+              "romaji": "Boku ni Sefure ga Dekita Riyuu",
+              "english": null,
+              "native": "\u50D5\u306B\u30BB\u30D5\u30EC\u304C\u51FA\u6765\u305F\u7406\u7531"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "OVA",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 6,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 70,
+            "favourites": 190,
+            "popularity": 3380,
+            "trending": 0,
+            "startDate": {
+              "year": 2022,
+              "month": 10,
+              "day": 7
+            },
+            "mediaListEntry": null
+          }
+        ]
+      }
+    }
+  }
+}

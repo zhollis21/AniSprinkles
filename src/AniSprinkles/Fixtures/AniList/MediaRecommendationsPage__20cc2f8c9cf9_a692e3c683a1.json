@@ -1,0 +1,143 @@
+﻿{
+  "operationName": "MediaRecommendationsPage",
+  "variables": {
+    "id": 10073,
+    "page": 1,
+    "sort": [
+      "RATING_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "a692e3c683a1",
+  "recordedAt": "2026-10-27T17:51:09.0210619+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "recommendations": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "nodes": [
+            {
+              "rating": 2,
+              "mediaRecommendation": {
+                "id": 20678,
+                "title": {
+                  "romaji": "Shinmai Maou no Testament",
+                  "english": "The Testament of Sister New Devil",
+                  "native": "\u65B0\u59B9\u9B54\u738B\u306E\u5951\u7D04\u8005"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20678-58D9Yhi4GcH2.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20678-58D9Yhi4GcH2.png"
+                },
+                "weightedScore": 63,
+                "mediaListEntry": {
+                  "id": 593364082,
+                  "status": "COMPLETED",
+                  "progress": 12,
+                  "score": 6
+                }
+              }
+            },
+            {
+              "rating": 1,
+              "mediaRecommendation": {
+                "id": 12549,
+                "title": {
+                  "romaji": "Dakara Boku wa, H ga Dekinai.",
+                  "english": "So, I Can\u0027t Play H!",
+                  "native": "\u3060\u304B\u3089\u50D5\u306F\u3001H\u304C\u3067\u304D\u306A\u3044\u3002"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx12549-GhbJO9KBUC7o.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx12549-GhbJO9KBUC7o.jpg"
+                },
+                "weightedScore": 60,
+                "mediaListEntry": {
+                  "id": 593364998,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "score": 0
+                }
+              }
+            },
+            {
+              "rating": 1,
+              "mediaRecommendation": {
+                "id": 21378,
+                "title": {
+                  "romaji": "Masou Gakuen H\u00D7H",
+                  "english": "Hybrid x Heart Magias Academy Ataraxia",
+                  "native": "\u9B54\u88C5\u5B66\u5712H\u00D7H"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21378-83u2Jo9aACxx.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21378-83u2Jo9aACxx.jpg"
+                },
+                "weightedScore": 56,
+                "mediaListEntry": {
+                  "id": 593365266,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "score": 0
+                }
+              }
+            },
+            {
+              "rating": 1,
+              "mediaRecommendation": {
+                "id": 21116,
+                "title": {
+                  "romaji": "Valkyrie Drive: Mermaid",
+                  "english": "Valkyrie Drive: Mermaid",
+                  "native": "\u30F4\u30A1\u30EB\u30AD\u30EA\u30FC\u30C9\u30E9\u30A4\u30F4 \u30DE\u30FC\u30E1\u30A4\u30C9"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21116-wvQsXTMU3QDg.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21116-wvQsXTMU3QDg.png"
+                },
+                "weightedScore": 55,
+                "mediaListEntry": {
+                  "id": 593365320,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "score": 0
+                }
+              }
+            },
+            {
+              "rating": 0,
+              "mediaRecommendation": {
+                "id": 20705,
+                "title": {
+                  "romaji": "sin: Nanatsu no Taizai",
+                  "english": "Seven Mortal Sins",
+                  "native": "sin \u4E03\u3064\u306E\u5927\u7F6A"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20705-X2uRDZWD6xGn.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20705-X2uRDZWD6xGn.jpg"
+                },
+                "weightedScore": 52,
+                "mediaListEntry": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

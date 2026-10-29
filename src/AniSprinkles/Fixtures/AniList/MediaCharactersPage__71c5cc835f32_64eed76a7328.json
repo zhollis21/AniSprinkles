@@ -1,0 +1,317 @@
+﻿{
+  "operationName": "MediaCharactersPage",
+  "variables": {
+    "id": 10073,
+    "page": 1,
+    "sort": [
+      "ROLE",
+      "RELEVANCE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "64eed76a7328",
+  "recordedAt": "2026-10-28T11:23:55.0376856+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "characters": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 21339,
+                "name": {
+                  "full": "Mafuyu Oribe",
+                  "native": "\u7E54\u90E8\u307E\u3075\u3086",
+                  "userPreferred": "Mafuyu Oribe"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b21339-7Z7fyUnZ95pu.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b21339-7Z7fyUnZ95pu.png"
+                },
+                "favourites": 97
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 21340,
+                "name": {
+                  "full": "Tomo Yamanobe",
+                  "native": "\u5C71\u8FBA\u71C8",
+                  "userPreferred": "Tomo Yamanobe"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/21340.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/21340.jpg"
+                },
+                "favourites": 115
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 21506,
+                "name": {
+                  "full": "Alexander Nikolaevich Hell",
+                  "native": "\u30A2\u30EC\u30AF\u30B5\u30F3\u30C9\u30EB \u30CB\u30B3\u30E9\u30A8\u30D3\u30C3\u30C1 \u30D8\u30EB",
+                  "userPreferred": "Alexander Nikolaevich Hell"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b21506-flHTBCmzm8ss.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b21506-flHTBCmzm8ss.png"
+                },
+                "favourites": 117
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 29540,
+                "name": {
+                  "full": "Hana Katsuragi",
+                  "native": "\u6842\u6728\u83EF",
+                  "userPreferred": "Hana Katsuragi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b29540-BdpAZNkZFChr.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b29540-BdpAZNkZFChr.png"
+                },
+                "favourites": 37
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 29541,
+                "name": {
+                  "full": "Ekaterina Kurae",
+                  "native": "\u30A8\u30AB\u30C6\u30EA\u30FC\u30CA\uFF1D\u30AF\u30E9\u30A8",
+                  "userPreferred": "Ekaterina Kurae"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/29541.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/29541.jpg"
+                },
+                "favourites": 145
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 21341,
+                "name": {
+                  "full": "Teresa Beria",
+                  "native": "\u30C6\u30EC\u30B5\u30FB\u30D9\u30EA\u30A2",
+                  "userPreferred": "Teresa Beria"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b21341-NbdmXdIOuChv.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b21341-NbdmXdIOuChv.png"
+                },
+                "favourites": 46
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 29539,
+                "name": {
+                  "full": "Miyuri Tsujidou",
+                  "native": "\u8FBB\u5802\u7F8E\u7531\u68A8",
+                  "userPreferred": "Miyuri Tsujidou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/29539.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/29539.jpg"
+                },
+                "favourites": 24
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 30460,
+                "name": {
+                  "full": "Yuri Noda",
+                  "native": "\u30E6\u30FC\u30EA\uFF1D\u91CE\u7530",
+                  "userPreferred": "Yuri Noda"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/30460.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/30460.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 31317,
+                "name": {
+                  "full": "Fumika Mitarai",
+                  "native": "\u5FA1\u624B\u6D17\u53F2\u4F3D",
+                  "userPreferred": "Fumika Mitarai"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/31317.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/31317.jpg"
+                },
+                "favourites": 19
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 31881,
+                "name": {
+                  "full": "Urara Oikawa",
+                  "native": "\u53CA\u5DDD\u9E97",
+                  "userPreferred": "Urara Oikawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/31881.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/31881.jpg"
+                },
+                "favourites": 29
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 35829,
+                "name": {
+                  "full": "Yumie Hiiragi",
+                  "native": "\u67CA\u5F13\u6C5F",
+                  "userPreferred": "Yumie Hiiragi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/35829.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/35829.jpg"
+                },
+                "favourites": 4
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 39786,
+                "name": {
+                  "full": "Lulu Shiizaki",
+                  "native": "\u690E\u5D0E\u308B\u308B",
+                  "userPreferred": "Lulu Shiizaki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b39786-BDc0SOdDLN9E.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b39786-BDc0SOdDLN9E.png"
+                },
+                "favourites": 4
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 41936,
+                "name": {
+                  "full": "Miyuki Seta",
+                  "native": null,
+                  "userPreferred": "Miyuki Seta"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/41936.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/41936.jpg"
+                },
+                "favourites": 2
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 41937,
+                "name": {
+                  "full": "Tsubasa Amano",
+                  "native": "\u5929\u4E43 \u7FFC\uFF08\u3042\u307E\u306E \u3064\u3070\u3055\uFF09",
+                  "userPreferred": "Tsubasa Amano"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/41937.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/41937.jpg"
+                },
+                "favourites": 3
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 41938,
+                "name": {
+                  "full": "Ayame Satsuki",
+                  "native": "\u7690\u6708\u3042\u3084\u3081",
+                  "userPreferred": "Ayame Satsuki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/41938.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/41938.jpg"
+                },
+                "favourites": 9
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 42238,
+                "name": {
+                  "full": "Jita Phrygianos",
+                  "native": "\u30B8\u30FC\u30BF\u30FB\u30D5\u30EA\u30AE\u30A2\u30CE\u30B9",
+                  "userPreferred": "Jita Phrygianos"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/42238.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/42238.jpg"
+                },
+                "favourites": 10
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 42242,
+                "name": {
+                  "full": "Wan Chen",
+                  "native": "\u6C6A\u9707",
+                  "userPreferred": "Wan Chen"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/42242.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/42242.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 43781,
+                "name": {
+                  "full": "Edgar",
+                  "native": "\u30A8\u30C9\u30AC\u30FC",
+                  "userPreferred": "Edgar"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/43781.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/43781.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "SUPPORTING"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

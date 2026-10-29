@@ -1,0 +1,147 @@
+﻿{
+  "operationName": "Character",
+  "variables": {
+    "id": 300778,
+    "mediaPage": 1,
+    "mediaSort": [
+      "TITLE_ROMAJI",
+      "ID"
+    ]
+  },
+  "queryFingerprint": "5156d4e10ff9",
+  "recordedAt": "2026-10-27T17:56:05.2497382+00:00",
+  "response": {
+    "data": {
+      "Character": {
+        "id": 300778,
+        "name": {
+          "full": "Macht",
+          "native": "\u30DE\u30CF\u30C8",
+          "userPreferred": "Macht",
+          "alternative": [
+            "Macht of El Dorado"
+          ],
+          "alternativeSpoiler": []
+        },
+        "image": {
+          "large": "https://s4.anilist.co/file/anilistcdn/character/large/b300778-kvoUHowLjexj.png",
+          "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b300778-kvoUHowLjexj.png"
+        },
+        "description": "Macht is a demon and a member of the Seven Sages of Destruction that directly serve the Demon King. He wishes to understand human emotions and find a solution for humans and demons to coexist.\n\nHe strives for this goal by utilizing inhumane methods.",
+        "gender": "Male",
+        "age": null,
+        "bloodType": null,
+        "dateOfBirth": {
+          "year": null,
+          "month": null,
+          "day": null
+        },
+        "favourites": 283,
+        "isFavourite": false,
+        "siteUrl": "https://anilist.co/character/300778",
+        "media": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 118586,
+                "title": {
+                  "romaji": "Sousou no Frieren",
+                  "english": "Frieren: Beyond Journey\u2019s End",
+                  "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx118586-CXKgWikBFQgS.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx118586-CXKgWikBFQgS.jpg"
+                },
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "RELEASING",
+                "weightedScore": 87,
+                "favourites": 7843,
+                "popularity": 86536,
+                "startDate": {
+                  "year": 2020,
+                  "month": 4,
+                  "day": 28
+                },
+                "mediaListEntry": null
+              },
+              "characterRole": "SUPPORTING",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 182255,
+                "title": {
+                  "romaji": "Sousou no Frieren 2nd Season",
+                  "english": "Frieren: Beyond Journey\u2019s End Season 2",
+                  "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \u7B2C2\u671F"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx182255-butzrqd4I0aC.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx182255-butzrqd4I0aC.jpg"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "weightedScore": 87,
+                "favourites": 8846,
+                "popularity": 233784,
+                "startDate": {
+                  "year": 2026,
+                  "month": 1,
+                  "day": 16
+                },
+                "mediaListEntry": {
+                  "id": 540973986,
+                  "status": "COMPLETED",
+                  "progress": 10,
+                  "score": 9
+                }
+              },
+              "characterRole": "BACKGROUND",
+              "voiceActors": []
+            },
+            {
+              "node": {
+                "id": 209939,
+                "title": {
+                  "romaji": "Sousou no Frieren 3rd Season",
+                  "english": null,
+                  "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \u7B2C3\u671F"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx209939-g2Njkml1rheG.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209939-g2Njkml1rheG.jpg"
+                },
+                "format": "TV",
+                "type": "ANIME",
+                "status": "NOT_YET_RELEASED",
+                "weightedScore": null,
+                "favourites": 546,
+                "popularity": 47672,
+                "startDate": {
+                  "year": 2027,
+                  "month": 10,
+                  "day": null
+                },
+                "mediaListEntry": {
+                  "id": 548900753,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "score": 0
+                }
+              },
+              "characterRole": "SUPPORTING",
+              "voiceActors": []
+            }
+          ]
+        }
+      }
+    }
+  }
+}

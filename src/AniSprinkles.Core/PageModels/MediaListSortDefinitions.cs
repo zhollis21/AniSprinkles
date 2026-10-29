@@ -12,13 +12,17 @@ public static class MediaListSortDefinitions
 {
     public static readonly IReadOnlyList<(string Code, string Display)> All =
     [
-        ("LastUpdated:desc",  "Recently Updated"),
-        ("LastUpdated:asc",   "Oldest Updated"),
-        ("Title:asc",         "Title (A→Z)"),
-        ("Title:desc",        "Title (Z→A)"),
-        ("Score:desc",        "My Score (high→low)"),
-        ("Score:asc",         "My Score (low→high)"),
-        ("AverageScore:desc", "Avg Score (high→low)"),
-        ("AverageScore:asc",  "Avg Score (low→high)"),
+        ("LastUpdated:desc",   "Recently Updated"),
+        ("LastUpdated:asc",    "Oldest Updated"),
+        ("Title:asc",          "Title (A→Z)"),
+        ("Title:desc",         "Title (Z→A)"),
+        ("Score:desc",         "My Score (high→low)"),
+        ("Score:asc",          "My Score (low→high)"),
+        // The Code tracks the SortField name, which followed AniList's rename to weightedScore
+        // (#163); the Display deliberately did not. "Avg Score" is the familiar wording and fits
+        // the picker row, and the two fields return identical values, so there is nothing to
+        // correct for the user yet.
+        ("WeightedScore:desc", "Avg Score (high→low)"),
+        ("WeightedScore:asc",  "Avg Score (low→high)"),
     ];
 }

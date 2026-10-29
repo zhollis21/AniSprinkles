@@ -1,0 +1,88 @@
+﻿{
+  "operationName": "MediaStaffPage",
+  "variables": {
+    "id": 101175,
+    "page": 1,
+    "sort": [
+      "ROLE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "5152267c262e",
+  "recordedAt": "2026-10-28T11:24:34.0463016+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "staff": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 122045,
+                "name": {
+                  "full": "masha",
+                  "native": "masha",
+                  "userPreferred": "masha"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/122045-b3QtDqbOvPZo.jpg"
+                },
+                "favourites": 41
+              },
+              "role": "Art"
+            },
+            {
+              "node": {
+                "id": 225294,
+                "name": {
+                  "full": "Rochelle Gancio",
+                  "native": null,
+                  "userPreferred": "Rochelle Gancio"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/default.jpg"
+                },
+                "favourites": 0
+              },
+              "role": "Lettering (English)"
+            },
+            {
+              "node": {
+                "id": 121428,
+                "name": {
+                  "full": "Amahara",
+                  "native": "\u5929\u539F",
+                  "userPreferred": "Amahara"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n121428-5zrZZTGVPAAK.jpg"
+                },
+                "favourites": 121
+              },
+              "role": "Story"
+            },
+            {
+              "node": {
+                "id": 219580,
+                "name": {
+                  "full": "Ko Ransom",
+                  "native": null,
+                  "userPreferred": "Ko Ransom"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n219580-yQUP1oanetPa.jpg"
+                },
+                "favourites": 16
+              },
+              "role": "Translator (English)"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

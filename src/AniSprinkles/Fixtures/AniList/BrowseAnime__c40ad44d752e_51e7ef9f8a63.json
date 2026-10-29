@@ -1,0 +1,729 @@
+﻿{
+  "operationName": "BrowseAnime",
+  "variables": {
+    "page": 2,
+    "perPage": 25,
+    "sort": [
+      "POPULARITY_DESC",
+      "ID"
+    ],
+    "status": "RELEASING",
+    "season": "FALL",
+    "seasonYear": 2026,
+    "isAdult": false
+  },
+  "queryFingerprint": "51e7ef9f8a63",
+  "recordedAt": "2026-10-27T17:45:22.0805303+00:00",
+  "response": {
+    "data": {
+      "Page": {
+        "pageInfo": {
+          "hasNextPage": true,
+          "currentPage": 2
+        },
+        "media": [
+          {
+            "id": 209219,
+            "title": {
+              "romaji": "Tensei Goblin Dakedo Shitsumon Aru?",
+              "english": "So What\u0027s Wrong with Getting Reborn as a Goblin?",
+              "native": "\u8EE2\u751F\u30B4\u30D6\u30EA\u30F3\u3060\u3051\u3069\u8CEA\u554F\u3042\u308B\uFF1F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx209219-3yhKlRx0LX3p.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209219-3yhKlRx0LX3p.jpg"
+            },
+            "format": "ONA",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 66,
+            "favourites": 219,
+            "popularity": 20775,
+            "trending": 111,
+            "startDate": {
+              "year": 2026,
+              "month": 10,
+              "day": 5
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 209502,
+            "title": {
+              "romaji": "Shiotaiou no Satou-san ga Ore ni dake Amai",
+              "english": "The Cold Sato-san is Only Sweet to Me",
+              "native": "\u5869\u5BFE\u5FDC\u306E\u4F50\u85E4\u3055\u3093\u304C\u4FFA\u306B\u3060\u3051\u7518\u3044"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx209502-C81oN8M4Smlo.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209502-C81oN8M4Smlo.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 69,
+            "favourites": 241,
+            "popularity": 20562,
+            "trending": 288,
+            "startDate": {
+              "year": 2026,
+              "month": 10,
+              "day": 6
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 204650,
+            "title": {
+              "romaji": "Tougen Anki: Nikko\u30FBKegon no Taki-hen",
+              "english": "TOUGEN ANKI: Nikko Kegon Falls Arc",
+              "native": "\u6843\u6E90\u6697\u9B3C \u65E5\u5149\u30FB\u83EF\u53B3\u306E\u6EDD\u7DE8"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx204650-cAQOzQ84Lwk8.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx204650-cAQOzQ84Lwk8.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 72,
+            "favourites": 284,
+            "popularity": 19994,
+            "trending": 21,
+            "startDate": {
+              "year": 2026,
+              "month": 10,
+              "day": 2
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 187402,
+            "title": {
+              "romaji": "Tensei shita Dai Seijo wa, Seijo de Aru Koto wo Hita Kakusu",
+              "english": "A Tale of the Secret Saint",
+              "native": "\u8EE2\u751F\u3057\u305F\u5927\u8056\u5973\u306F\u3001\u8056\u5973\u3067\u3042\u308B\u3053\u3068\u3092\u3072\u305F\u96A0\u3059"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx187402-ReKkLwFmMV3q.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx187402-ReKkLwFmMV3q.jpg"
+            },
+            "format": "ONA",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 70,
+            "favourites": 204,
+            "popularity": 18216,
+            "trending": 26,
+            "startDate": {
+              "year": 2026,
+              "month": 10,
+              "day": 3
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 205896,
+            "title": {
+              "romaji": "Shinja Zero no Megami-sama to Hajimeru Isekai Kouryaku",
+              "english": "Full Clearing Another World under a Goddess with Zero Believers",
+              "native": "\u4FE1\u8005\u30BC\u30ED\u306E\u5973\u795E\u30B5\u30DE\u3068\u59CB\u3081\u308B\u7570\u4E16\u754C\u653B\u7565"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx205896-ElrV8oVAsuax.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx205896-ElrV8oVAsuax.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 65,
+            "favourites": 172,
+            "popularity": 18066,
+            "trending": 53,
+            "startDate": {
+              "year": 2026,
+              "month": 10,
+              "day": 11
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 206401,
+            "title": {
+              "romaji": "FX Senshi Kurumi-chan",
+              "english": "FX Fighter Kurumi-chan",
+              "native": "FX\u6226\u58EB\u304F\u308B\u307F\u3061\u3083\u3093"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx206401-8cAebkI0i8BA.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206401-8cAebkI0i8BA.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 67,
+            "favourites": 179,
+            "popularity": 17902,
+            "trending": 15,
+            "startDate": {
+              "year": 2026,
+              "month": 10,
+              "day": 1
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 209872,
+            "title": {
+              "romaji": "Ranma 1/2 (2024) 3rd Season",
+              "english": "Ranma1/2 (2024) Season 3",
+              "native": "\u3089\u3093\u307E1/2 (2024) \u7B2C3\u671F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx209872-RBeVPqwejHFp.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209872-RBeVPqwejHFp.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 78,
+            "favourites": 198,
+            "popularity": 17433,
+            "trending": 45,
+            "startDate": {
+              "year": 2026,
+              "month": 10,
+              "day": 4
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 211778,
+            "title": {
+              "romaji": "Sekai Saikyou no Majo, Hajimemashita",
+              "english": "The World\u0027s Strongest Witch",
+              "native": "\u4E16\u754C\u6700\u5F37\u306E\u9B54\u5973\u3001\u59CB\u3081\u307E\u3057\u305F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx211778-0MXK5HqVFBYH.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx211778-0MXK5HqVFBYH.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 70,
+            "favourites": 172,
+            "popularity": 17065,
+            "trending": 20,
+            "startDate": {
+              "year": 2026,
+              "month": 10,
+              "day": 7
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 180894,
+            "title": {
+              "romaji": "Romelia Senki: Maou wo Taoshita nochi mo Jinrui Yabasou dakara Guntai Soshiki Shita",
+              "english": "Romelia War Chronicle",
+              "native": "\u30ED\u30E1\u30EA\u30A2\u6226\u8A18 \u301C\u9B54\u738B\u3092\u5012\u3057\u305F\u5F8C\u3082\u4EBA\u985E\u3084\u3070\u305D\u3046\u3060\u304B\u3089\u8ECD\u968A\u7D44\u7E54\u3057\u305F\u301C"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx180894-o3pz4DWFm3je.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx180894-o3pz4DWFm3je.png"
+            },
+            "format": "ONA",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 24,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 71,
+            "favourites": 158,
+            "popularity": 16282,
+            "trending": 34,
+            "startDate": {
+              "year": 2026,
+              "month": 10,
+              "day": 3
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 195571,
+            "title": {
+              "romaji": "Shuiro no Kamen",
+              "english": "The Vermilion Mask",
+              "native": "\u6731\u8272\u306E\u4EEE\u9762"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx195571-fvj7u5GI7BRT.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx195571-fvj7u5GI7BRT.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 68,
+            "favourites": 180,
+            "popularity": 15619,
+            "trending": 20,
+            "startDate": {
+              "year": 2026,
+              "month": 10,
+              "day": 10
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 198727,
+            "title": {
+              "romaji": "Chitose-kun wa Ramune Bin no Naka Part 2",
+              "english": "Chitose Is in the Ramune Bottle 2nd Cour",
+              "native": "\u5343\u6B73\u304F\u3093\u306F\u30E9\u30E0\u30CD\u74F6\u306E\u306A\u304B 2\u30AF\u30FC\u30EB"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx198727-BL0JTpg0G8tq.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx198727-BL0JTpg0G8tq.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 11,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 77,
+            "favourites": 194,
+            "popularity": 15204,
+            "trending": 66,
+            "startDate": {
+              "year": 2026,
+              "month": 10,
+              "day": 13
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 186742,
+            "title": {
+              "romaji": "Toaru Anbu no ITEM",
+              "english": "A Certain Dark Item",
+              "native": "\u3068\u3042\u308B\u6697\u90E8\u306E\u5C11\u5973\u5171\u68F2"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx186742-v7yfbefc8fuO.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx186742-v7yfbefc8fuO.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 69,
+            "favourites": 155,
+            "popularity": 14956,
+            "trending": 18,
+            "startDate": {
+              "year": 2026,
+              "month": 10,
+              "day": 9
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 176314,
+            "title": {
+              "romaji": "Sasaki to Pii-chan Season 2",
+              "english": "Sasaki and Peeps Season 2",
+              "native": "\u4F50\u3005\u6728\u3068\u30D4\u30FC\u3061\u3083\u3093 \u30B7\u30FC\u30BA\u30F3\uFF12"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx176314-lpvca6vjmkeO.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx176314-lpvca6vjmkeO.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 70,
+            "favourites": 165,
+            "popularity": 14898,
+            "trending": 9,
+            "startDate": {
+              "year": 2026,
+              "month": 10,
+              "day": 7
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 211877,
+            "title": {
+              "romaji": "Kanojo no Tomodachi",
+              "english": "My Girlfriend\u0027s Friend",
+              "native": "\u5F7C\u5973\u306E\u53CB\u9054"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx211877-yWQ2r7XmWvG6.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx211877-yWQ2r7XmWvG6.jpg"
+            },
+            "format": "TV_SHORT",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 49,
+            "favourites": 192,
+            "popularity": 13110,
+            "trending": 12,
+            "startDate": {
+              "year": 2026,
+              "month": 10,
+              "day": 5
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 200455,
+            "title": {
+              "romaji": "Yowaki MAX Reijou Nano ni, Ratsuwan Konyakusha-sama no Kake ni Notte Shimatta",
+              "english": "Even Though I\u0027m a Super Timid Noble Girl, I Accepted the Bet From My Cunning Fianc\u00E9",
+              "native": "\u5F31\u6C17MAX\u4EE4\u5B22\u306A\u306E\u306B\u3001\u8FA3\u8155\u5A5A\u7D04\u8005\u69D8\u306E\u8CED\u3051\u306B\u4E57\u3063\u3066\u3057\u307E\u3063\u305F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx200455-P3XStRQMJ7Di.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx200455-P3XStRQMJ7Di.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 67,
+            "favourites": 125,
+            "popularity": 12634,
+            "trending": 33,
+            "startDate": {
+              "year": 2026,
+              "month": 10,
+              "day": 4
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 178868,
+            "title": {
+              "romaji": "Magic Knight Rayearth (2026)",
+              "english": "Magic Knight Rayearth (2026)",
+              "native": "\u9B54\u6CD5\u9A0E\u58EB\u30EC\u30A4\u30A2\u30FC\u30B9 (2026)"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx178868-mfp0HIHNJNAm.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx178868-mfp0HIHNJNAm.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 69,
+            "favourites": 106,
+            "popularity": 11561,
+            "trending": 9,
+            "startDate": {
+              "year": 2026,
+              "month": 10,
+              "day": 7
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 199007,
+            "title": {
+              "romaji": "#Zombie Sagashitemasu",
+              "english": "#I\u0027m Looking For a Zombie",
+              "native": "#\u30BE\u30F3\u30D3\u3055\u304C\u3057\u3066\u307E\u3059"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx199007-8R1HsnflnHJE.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx199007-8R1HsnflnHJE.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 61,
+            "favourites": 86,
+            "popularity": 10871,
+            "trending": 11,
+            "startDate": {
+              "year": 2026,
+              "month": 10,
+              "day": 3
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 213657,
+            "title": {
+              "romaji": "Yozakura-san Chi no Daisakusen 2nd Season Part 2",
+              "english": "Mission: Yozakura Family Season 2 Part 2",
+              "native": "\u591C\u685C\u3055\u3093\u3061\u306E\u5927\u4F5C\u6226 \u7B2C2\u671F \u7B2C2\u30AF\u30FC\u30EB"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx213657-ORNXVEBCjXaz.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213657-ORNXVEBCjXaz.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 72,
+            "favourites": 116,
+            "popularity": 9766,
+            "trending": 10,
+            "startDate": {
+              "year": 2026,
+              "month": 10,
+              "day": 11
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 209499,
+            "title": {
+              "romaji": "TANK CHAIR: Sensha Isu",
+              "english": "TANK CHAIR",
+              "native": "TANK CHAIR-\u6226\u8ECA\u6905\u5B50-"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx209499-S0sWFrCpft85.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209499-S0sWFrCpft85.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 62,
+            "favourites": 87,
+            "popularity": 8735,
+            "trending": 10,
+            "startDate": {
+              "year": 2026,
+              "month": 10,
+              "day": 4
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 160803,
+            "title": {
+              "romaji": "Mahou Shoujo Ikusei Keikaku: restart",
+              "english": "MAGICAL GIRL RAISING PROJECT restart",
+              "native": "\u9B54\u6CD5\u5C11\u5973\u80B2\u6210\u8A08\u753B restart"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx160803-Rcr3IvhE7q9c.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx160803-Rcr3IvhE7q9c.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": null,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 61,
+            "favourites": 75,
+            "popularity": 7313,
+            "trending": 22,
+            "startDate": {
+              "year": 2026,
+              "month": 10,
+              "day": 6
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 187316,
+            "title": {
+              "romaji": "Gensou Suikoden",
+              "english": null,
+              "native": "\u5E7B\u60F3\u6C34\u6EF8\u4F1D"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx187316-jucYCojVTjSY.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx187316-jucYCojVTjSY.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 23,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 60,
+            "favourites": 74,
+            "popularity": 7265,
+            "trending": 46,
+            "startDate": {
+              "year": 2026,
+              "month": 10,
+              "day": 3
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 206774,
+            "title": {
+              "romaji": "Mouse Cursor de Genjitsu wo Sousa Dekiru You ni Natta node, Onnanoko wo Ippai Click Shimasu",
+              "english": "Now That I Can Control Reality With A Mouse Cursor, I\u0027m Gonna Click Away On The Girls!",
+              "native": "\u30DE\u30A6\u30B9\u30AB\u30FC\u30BD\u30EB\u3067\u73FE\u5B9F\u3092\u64CD\u4F5C\u3067\u304D\u308B\u3088\u3046\u306B\u306A\u3063\u305F\u306E\u3067\u3001\u5973\u306E\u5B50\u3092\u3044\u3063\u3071\u3044\u30AF\u30EA\u30C3\u30AF\u3057\u307E\u30FC\u3059"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx206774-gXVdrySlLY6y.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206774-gXVdrySlLY6y.jpg"
+            },
+            "format": "TV_SHORT",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 8,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 52,
+            "favourites": 94,
+            "popularity": 7178,
+            "trending": 7,
+            "startDate": {
+              "year": 2026,
+              "month": 10,
+              "day": 5
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 212799,
+            "title": {
+              "romaji": "Marronnier Oukoku no Shichinin no Kishi",
+              "english": "The Seven Knights of the Marronnier Kingdom",
+              "native": "\u30DE\u30ED\u30CB\u30A8\u738B\u56FD\u306E\u4E03\u4EBA\u306E\u9A0E\u58EB"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx212799-n7WDdic7IL1z.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx212799-n7WDdic7IL1z.png"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 20,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 66,
+            "favourites": 47,
+            "popularity": 6995,
+            "trending": 6,
+            "startDate": {
+              "year": 2026,
+              "month": 10,
+              "day": 3
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 200294,
+            "title": {
+              "romaji": "Choujun! Choujou Senpai",
+              "english": "Super Psychic Policeman Chojo",
+              "native": "\u8D85\u5DE1\uFF01\u8D85\u6761\u5148\u8F29"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx200294-E6KIgkFaJOfG.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx200294-E6KIgkFaJOfG.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 65,
+            "favourites": 60,
+            "popularity": 6964,
+            "trending": 71,
+            "startDate": {
+              "year": 2026,
+              "month": 10,
+              "day": 6
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 203473,
+            "title": {
+              "romaji": "Kyoufu Collector",
+              "english": "HORROR COLLECTOR",
+              "native": "\u6050\u6016\u30B3\u30EC\u30AF\u30BF\u30FC"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b203473-pzyaqV432Qko.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b203473-pzyaqV432Qko.jpg"
+            },
+            "format": "TV",
+            "type": "ANIME",
+            "status": "RELEASING",
+            "episodes": 12,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 51,
+            "favourites": 57,
+            "popularity": 6512,
+            "trending": 8,
+            "startDate": {
+              "year": 2026,
+              "month": 10,
+              "day": 10
+            },
+            "mediaListEntry": null
+          }
+        ]
+      }
+    }
+  }
+}

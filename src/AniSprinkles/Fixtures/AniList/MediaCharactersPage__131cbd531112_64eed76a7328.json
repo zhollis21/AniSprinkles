@@ -1,0 +1,428 @@
+﻿{
+  "operationName": "MediaCharactersPage",
+  "variables": {
+    "id": 11757,
+    "page": 1,
+    "sort": [
+      "RELEVANCE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "64eed76a7328",
+  "recordedAt": "2026-10-28T11:23:45.7105062+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "characters": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 36765,
+                "name": {
+                  "full": "Kazuto Kirigaya",
+                  "native": "\u6850\u30F6\u8C37\u548C\u4EBA",
+                  "userPreferred": "Kazuto Kirigaya"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b36765-BnLbXg0Tzzh9.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b36765-BnLbXg0Tzzh9.png"
+                },
+                "favourites": 8873
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 36828,
+                "name": {
+                  "full": "Asuna Yuuki",
+                  "native": "\u7D50\u57CE\u660E\u65E5\u5948",
+                  "userPreferred": "Asuna Yuuki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b36828-j5ib0adAzGMx.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b36828-j5ib0adAzGMx.png"
+                },
+                "favourites": 10128
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 36829,
+                "name": {
+                  "full": "Akihiko Kayaba",
+                  "native": "\u8305\u5834\u6676\u5F66",
+                  "userPreferred": "Akihiko Kayaba"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b36829-X5zITNEQ7xij.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b36829-X5zITNEQ7xij.png"
+                },
+                "favourites": 261
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 36830,
+                "name": {
+                  "full": "Ryoutarou Tsuboi",
+                  "native": "\u58F7\u4E95\u907C\u592A\u90CE",
+                  "userPreferred": "Ryoutarou Tsuboi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b36830-41SWIDvhqOo4.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b36830-41SWIDvhqOo4.png"
+                },
+                "favourites": 814
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 36831,
+                "name": {
+                  "full": "Suguha Kirigaya",
+                  "native": "\u6850\u30F6\u8C37\u76F4\u8449",
+                  "userPreferred": "Suguha Kirigaya"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b36831-JfyFU7gPPVmr.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b36831-JfyFU7gPPVmr.png"
+                },
+                "favourites": 1150
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 36832,
+                "name": {
+                  "full": "Shouzou Yuuki",
+                  "native": "\u7D50\u57CE\u5F70\u4E09",
+                  "userPreferred": "Shouzou Yuuki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b36832-q664R7PQXI0o.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b36832-q664R7PQXI0o.png"
+                },
+                "favourites": 5
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 36833,
+                "name": {
+                  "full": "Midori Kirigaya",
+                  "native": "\u6850\u30F6\u8C37\u7FE0",
+                  "userPreferred": "Midori Kirigaya"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b36833-SeO3lEvZD9m5.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b36833-SeO3lEvZD9m5.png"
+                },
+                "favourites": 12
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 37681,
+                "name": {
+                  "full": "Keiko Ayano",
+                  "native": "\u7DBE\u91CE\u73EA\u5B50",
+                  "userPreferred": "Keiko Ayano"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b37681-GDtOAN6NiJ9M.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b37681-GDtOAN6NiJ9M.jpg"
+                },
+                "favourites": 563
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 43892,
+                "name": {
+                  "full": "Yui",
+                  "native": "\u30E6\u30A4",
+                  "userPreferred": "Yui"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b43892-Ig6ZMdUbQDO2.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b43892-Ig6ZMdUbQDO2.jpg"
+                },
+                "favourites": 1167
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 43906,
+                "name": {
+                  "full": "Rika Shinozaki",
+                  "native": "\u7BE0\u5D0E\u91CC\u9999",
+                  "userPreferred": "Rika Shinozaki"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b43906-15QwTm2ZFDse.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b43906-15QwTm2ZFDse.png"
+                },
+                "favourites": 635
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 54099,
+                "name": {
+                  "full": "Andrew Gilbert Mills",
+                  "native": "\u30A2\u30F3\u30C9\u30EA\u30E5\u30FC\u30FB\u30AE\u30EB\u30D0\u30FC\u30C8\u30FB\u30DF\u30EB\u30BA",
+                  "userPreferred": "Andrew Gilbert Mills"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b54099-fOi8orxVTHt1.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b54099-fOi8orxVTHt1.png"
+                },
+                "favourites": 353
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 54777,
+                "name": {
+                  "full": "Sachi",
+                  "native": "\u30B5\u30C1",
+                  "userPreferred": "Sachi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b54777-MduA5ck1lJUy.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b54777-MduA5ck1lJUy.png"
+                },
+                "favourites": 220
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 54779,
+                "name": {
+                  "full": "Keita",
+                  "native": "\u30B1\u30A4\u30BF",
+                  "userPreferred": "Keita"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b54779-1uCYd8WjboiM.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b54779-1uCYd8WjboiM.png"
+                },
+                "favourites": 5
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 65169,
+                "name": {
+                  "full": "Diavel",
+                  "native": "\u30C7\u30A3\u30A2\u30D9\u30EB",
+                  "userPreferred": "Diavel"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b65169-1pgUxA6JjpeA.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b65169-1pgUxA6JjpeA.png"
+                },
+                "favourites": 19
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 65171,
+                "name": {
+                  "full": "Kibaou",
+                  "native": "\u30AD\u30D0\u30AA\u30A6",
+                  "userPreferred": "Kibaou"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b65171-4gM7UgGDU6H5.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b65171-4gM7UgGDU6H5.png"
+                },
+                "favourites": 9
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 66327,
+                "name": {
+                  "full": "Kuradeel",
+                  "native": "\u30AF\u30E9\u30C7\u30A3\u30FC\u30EB",
+                  "userPreferred": "Kuradeel"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/66327.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/66327.jpg"
+                },
+                "favourites": 3
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 66645,
+                "name": {
+                  "full": "Tomo Hosaka",
+                  "native": "\u5E06\u5742\u30AB\u30EA\u30FC\u30CA\u670B",
+                  "userPreferred": "Tomo Carina Hosaka"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b66645-Np9FjjBajBkd.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b66645-Np9FjjBajBkd.jpg"
+                },
+                "favourites": 195
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 67149,
+                "name": {
+                  "full": "Caynz",
+                  "native": "\u30AB\u30A4\u30F3\u30BA",
+                  "userPreferred": "Caynz"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b67149-UcNSv3YWMl26.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b67149-UcNSv3YWMl26.png"
+                },
+                "favourites": 1
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 67151,
+                "name": {
+                  "full": "Yolko",
+                  "native": "\u30E8\u30EB\u30B3",
+                  "userPreferred": "Yolko"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/67151.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/67151.jpg"
+                },
+                "favourites": 8
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 69403,
+                "name": {
+                  "full": "Godfree",
+                  "native": "\u30B4\u30C9\u30D5\u30EA\u30FC",
+                  "userPreferred": "Godfree"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b69403-6C1xSy93KQ51.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b69403-6C1xSy93KQ51.png"
+                },
+                "favourites": 5
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 70677,
+                "name": {
+                  "full": "Sasha",
+                  "native": null,
+                  "userPreferred": "Sasha"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b70677-pAInS7JFbijN.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b70677-pAInS7JFbijN.png"
+                },
+                "favourites": 9
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 70679,
+                "name": {
+                  "full": "Yulier",
+                  "native": "\u30E6\u30EA\u30A8\u30FC\u30EB",
+                  "userPreferred": "Yulier"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b70679-5pdgQUiIhpGb.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b70679-5pdgQUiIhpGb.png"
+                },
+                "favourites": 19
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 70681,
+                "name": {
+                  "full": "Thinker",
+                  "native": "\u30B7\u30F3\u30AB\u30FC",
+                  "userPreferred": "Thinker"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b70681-TJpdp1p7Pcuw.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b70681-TJpdp1p7Pcuw.png"
+                },
+                "favourites": 4
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 70683,
+                "name": {
+                  "full": "Vassago Casals",
+                  "native": "\u30F4\u30A1\u30B5\u30B4\u30FB\u30AB\u30B6\u30EB\u30B9",
+                  "userPreferred": "Vassago Casals"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b70683-5ATgLAHphZtc.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b70683-5ATgLAHphZtc.jpg"
+                },
+                "favourites": 32
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 70687,
+                "name": {
+                  "full": "Atsushi Kanamoto",
+                  "native": "\u91D1\u672C\u6566",
+                  "userPreferred": "Atsushi Kanamoto"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b70687-Au0xDfoUoBGy.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b70687-Au0xDfoUoBGy.jpg"
+                },
+                "favourites": 10
+              },
+              "role": "SUPPORTING"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

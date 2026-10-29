@@ -13,7 +13,7 @@ public class RelatedMedia
     public string? Type { get; set; }
     public string? Status { get; set; }
     public MediaCoverImage? CoverImage { get; set; }
-    public int? AverageScore { get; set; }
+    public int? WeightedScore { get; set; }
     public int? Favourites { get; set; }
     public int? Popularity { get; set; }
     public int? Trending { get; set; }
@@ -43,14 +43,14 @@ public class RelatedMedia
     /// </summary>
     public MediaKind Kind => MediaKindExtensions.ParseMediaKind(Type);
 
-    public bool HasScore => AverageScore is > 0;
+    public bool HasScore => WeightedScore is > 0;
     public bool HasFavourites => Favourites is > 0;
     public bool HasPopularity => Popularity is > 0;
     public bool HasYear => StartDate?.Year is > 0;
 
     // AniList stores scores 0–100; render as a 0–10.0 rating since that scale is more recognizable.
     public string ScoreDisplay => HasScore
-        ? (AverageScore!.Value / 10.0).ToString("0.0", CultureInfo.InvariantCulture)
+        ? (WeightedScore!.Value / 10.0).ToString("0.0", CultureInfo.InvariantCulture)
         : string.Empty;
 
     public string FavouritesDisplay => MetricFormat.Compact(Favourites);

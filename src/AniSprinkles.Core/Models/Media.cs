@@ -31,7 +31,7 @@ public class Media : IFavouritable
     public bool? IsLicensed { get; set; }
     public string? SiteUrl { get; set; }
     public string? Hashtag { get; set; }
-    public int? AverageScore { get; set; }
+    public int? WeightedScore { get; set; }
     public int? MeanScore { get; set; }
     public int? Popularity { get; set; }
     public int? Favourites { get; set; }

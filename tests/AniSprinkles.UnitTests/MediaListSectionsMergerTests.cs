@@ -280,31 +280,31 @@ public class MediaListSectionsMergerTests
     }
 
     [Fact]
-    public void Merge_AverageScoreChange_WithAverageScoreSort_ReOrdersSection()
+    public void Merge_WeightedScoreChange_WithWeightedScoreSort_ReOrdersSection()
     {
-        // Arrange — sorted descending by Media.AverageScore, entry 1 (90) above entry 2 (70).
+        // Arrange — sorted descending by Media.WeightedScore, entry 1 (90) above entry 2 (70).
         var e1 = TestDataBuilder.Entry(1);
-        e1.Media!.AverageScore = 90;
+        e1.Media!.WeightedScore = 90;
         var e2 = TestDataBuilder.Entry(2);
-        e2.Media!.AverageScore = 70;
+        e2.Media!.WeightedScore = 70;
 
         var sections = TestDataBuilder.BuildInitial(
             TestDataBuilder.Groups(TestDataBuilder.Group("Watching", e1, e2)),
-            sortField: SortField.AverageScore,
+            sortField: SortField.WeightedScore,
             sortAscending: false);
         Assert.Equal(1, sections[0][0].MediaId); // pre-condition
 
         // Entry 2's average is raised above entry 1's.
         var e1Same = TestDataBuilder.Entry(1);
-        e1Same.Media!.AverageScore = 90;
+        e1Same.Media!.WeightedScore = 90;
         var e2Bumped = TestDataBuilder.Entry(2);
-        e2Bumped.Media!.AverageScore = 95;
+        e2Bumped.Media!.WeightedScore = 95;
 
         // Act
         MediaListSectionsMerger.Merge(
             sections,
             TestDataBuilder.Groups(TestDataBuilder.Group("Watching", e1Same, e2Bumped)),
-            [], true, SortField.AverageScore, false, "");
+            [], true, SortField.WeightedScore, false, "");
 
         // Assert
         Assert.Equal(2, sections[0][0].MediaId);

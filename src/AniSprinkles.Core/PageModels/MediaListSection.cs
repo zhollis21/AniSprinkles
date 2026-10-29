@@ -288,9 +288,9 @@ public class MediaListSection : ObservableCollection<MediaListEntry>
             SortField.Score => _sortAscending
                 ? items.OrderBy(e => e.Score ?? -1)
                 : items.OrderByDescending(e => e.Score ?? -1),
-            SortField.AverageScore => _sortAscending
-                ? items.OrderBy(e => e.Media?.AverageScore ?? -1)
-                : items.OrderByDescending(e => e.Media?.AverageScore ?? -1),
+            SortField.WeightedScore => _sortAscending
+                ? items.OrderBy(e => e.Media?.WeightedScore ?? -1)
+                : items.OrderByDescending(e => e.Media?.WeightedScore ?? -1),
             // SortField.LastUpdated
             _ => _sortAscending
                 ? items.OrderBy(e => e.UpdatedAt ?? DateTimeOffset.MinValue)
