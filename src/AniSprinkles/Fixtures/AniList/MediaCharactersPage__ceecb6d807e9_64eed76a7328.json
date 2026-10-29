@@ -1,0 +1,253 @@
+﻿{
+  "operationName": "MediaCharactersPage",
+  "variables": {
+    "id": 109017,
+    "page": 1,
+    "sort": [
+      "ROLE",
+      "RELEVANCE",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "64eed76a7328",
+  "recordedAt": "2026-10-28T11:25:03.8870052+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "characters": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 175746,
+                "name": {
+                  "full": "Utena Hiiragi",
+                  "native": "\u67CA\u3046\u3066\u306A",
+                  "userPreferred": "Utena Hiiragi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b175746-JlJnFu7so79j.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b175746-JlJnFu7so79j.png"
+                },
+                "favourites": 1508
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 190374,
+                "name": {
+                  "full": "Kiwi Araga",
+                  "native": "\u963F\u826F\u6CB3\u30AD\u30A6\u30A3",
+                  "userPreferred": "Kiwi Araga"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b190374-mqGruyIYBjmo.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b190374-mqGruyIYBjmo.png"
+                },
+                "favourites": 665
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 191858,
+                "name": {
+                  "full": "Korisu Morino",
+                  "native": "\u675C\u4E43\u3053\u308A\u3059",
+                  "userPreferred": "Korisu Morino"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b191858-VcAmTDFM9lQH.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b191858-VcAmTDFM9lQH.png"
+                },
+                "favourites": 261
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 255889,
+                "name": {
+                  "full": "Nemo Anemo",
+                  "native": "\u59C9\u6BCD\u30CD\u30E2",
+                  "userPreferred": "Nemo Anemo"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b255889-p212OLFZ385a.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b255889-p212OLFZ385a.png"
+                },
+                "favourites": 162
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 255890,
+                "name": {
+                  "full": "Matama Akoya",
+                  "native": "\u963F\u53E4\u5C4B\u771F\u73E0",
+                  "userPreferred": "Matama Akoya"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b255890-QaJpYLkOCpwz.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b255890-QaJpYLkOCpwz.png"
+                },
+                "favourites": 214
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 183417,
+                "name": {
+                  "full": "Sayo Minakami",
+                  "native": "\u6C34\u795E\u5C0F\u591C",
+                  "userPreferred": "Sayo Minakami"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b183417-4wWFMvcf0jpW.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b183417-4wWFMvcf0jpW.png"
+                },
+                "favourites": 309
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 191857,
+                "name": {
+                  "full": "Haruka Hanabishi",
+                  "native": "\u82B1\u83F1\u306F\u308B\u304B",
+                  "userPreferred": "Haruka Hanabishi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b191857-UBO6dKSU2Iin.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b191857-UBO6dKSU2Iin.png"
+                },
+                "favourites": 206
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 191859,
+                "name": {
+                  "full": "Kaoruko Tenkawa",
+                  "native": "\u5929\u5DDD\u85AB\u5B50",
+                  "userPreferred": "Kaoruko Tenkawa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b191859-tmn24DMDFPIc.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b191859-tmn24DMDFPIc.png"
+                },
+                "favourites": 303
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 288446,
+                "name": {
+                  "full": "Momo Momomori",
+                  "native": "\u6843\u68EE\u767E\u82B1",
+                  "userPreferred": "Momo Momomori"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b288446-08GymoOo3wpP.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b288446-08GymoOo3wpP.png"
+                },
+                "favourites": 12
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 288447,
+                "name": {
+                  "full": "Randa Tada",
+                  "native": "\u591A\u7530\u862D\u6736",
+                  "userPreferred": "Randa Tada"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b288447-tFNh2eButh6w.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b288447-tFNh2eButh6w.png"
+                },
+                "favourites": 31
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 288448,
+                "name": {
+                  "full": "Lord Enorme",
+                  "native": "\u30ED\u30FC\u30C9\u30A8\u30CE\u30EB\u30E1",
+                  "userPreferred": "Lord Enorme"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b288448-UwiDijgJAWVK.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b288448-UwiDijgJAWVK.png"
+                },
+                "favourites": 42
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 301180,
+                "name": {
+                  "full": "Venalita",
+                  "native": "\u30F4\u30A7\u30CA\u30EA\u30FC\u30BF",
+                  "userPreferred": "Venalita"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b301180-8vJH8ZjQuZmb.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b301180-8vJH8ZjQuZmb.jpg"
+                },
+                "favourites": 67
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 301181,
+                "name": {
+                  "full": "Sister Gigant",
+                  "native": "\u30B7\u30B9\u30BF\u30AE\u30AC\u30F3\u30C8",
+                  "userPreferred": "Sister Gigant"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b301181-skLBJd1bN0Tm.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b301181-skLBJd1bN0Tm.png"
+                },
+                "favourites": 88
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 301182,
+                "name": {
+                  "full": "Vatz",
+                  "native": "\u30F4\u30A1\u2015\u30C4",
+                  "userPreferred": "Vatz"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b301182-XGO1lQpLEXma.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b301182-XGO1lQpLEXma.jpg"
+                },
+                "favourites": 14
+              },
+              "role": "SUPPORTING"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

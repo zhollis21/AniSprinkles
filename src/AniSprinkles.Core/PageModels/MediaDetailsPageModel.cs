@@ -299,7 +299,7 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
     public int DescriptionMaxLines
         => IsDescriptionExpanded ? int.MaxValue : DescriptionTruncationHeuristic.CollapsedMaxLines;
 
-    public string ScorePercentDisplay => Media?.AverageScore is > 0 ? $"{Media.AverageScore}%" : "--";
+    public string ScorePercentDisplay => Media?.WeightedScore is > 0 ? $"{Media.WeightedScore}%" : "--";
 
     public string PopularityDisplay => Media?.Popularity is > 0 ? $"{Media.Popularity:N0}" : "--";
 

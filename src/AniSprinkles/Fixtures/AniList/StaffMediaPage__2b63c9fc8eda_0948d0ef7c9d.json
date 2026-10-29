@@ -1,0 +1,60 @@
+﻿{
+  "operationName": "StaffMediaPage",
+  "variables": {
+    "id": 95130,
+    "page": 1,
+    "sort": [
+      "TITLE_ROMAJI",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "0948d0ef7c9d",
+  "recordedAt": "2026-10-27T17:57:08.0930396+00:00",
+  "response": {
+    "data": {
+      "Staff": {
+        "staffMedia": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 32,
+                "title": {
+                  "romaji": "Shin Seiki Evangelion Movie: Air / Magokoro wo, Kimi ni",
+                  "english": "Neon Genesis Evangelion: The End of Evangelion",
+                  "native": "\u65B0\u4E16\u7D00\u30A8\u30F4\u30A1\u30F3\u30B2\u30EA\u30AA\u30F3\u5287\u5834\u7248 Air/\u307E\u3054\u3053\u308D\u3092\u3001\u541B\u306B"
+                },
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx32-5JYsv0wc122I.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx32-5JYsv0wc122I.jpg"
+                },
+                "format": "MOVIE",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "weightedScore": 86,
+                "favourites": 19593,
+                "popularity": 257281,
+                "startDate": {
+                  "year": 1997,
+                  "month": 7,
+                  "day": 19
+                },
+                "mediaListEntry": {
+                  "id": 602459843,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "score": 0
+                }
+              },
+              "staffRole": "Special Production Team Performance"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

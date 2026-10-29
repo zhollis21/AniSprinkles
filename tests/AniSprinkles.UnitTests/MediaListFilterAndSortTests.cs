@@ -291,6 +291,30 @@ public class MediaListFilterAndSortTests
     }
 
     [Fact]
+    public async Task APersistedAverageScoreSort_SurvivesTheRenameToWeightedScore()
+    {
+        // #163 renamed SortField.AverageScore to WeightedScore. The preference stores the member
+        // name, so without the migration in the constructor this restores as the default and the
+        // user's chosen sort disappears on update — quietly, since Enum.TryParse just fails.
+        var harness = new Harness(savedSortField: "AverageScore");
+
+        await harness.LoadAsync();
+
+        Assert.Equal(SortField.WeightedScore, harness.Model.CurrentSortField);
+        Assert.Equal("WeightedScore:desc", harness.Model.SelectedSortCode);
+    }
+
+    [Fact]
+    public async Task APersistedSortField_IsRestoredUnderItsCurrentName()
+    {
+        var harness = new Harness(savedSortField: nameof(SortField.WeightedScore));
+
+        await harness.LoadAsync();
+
+        Assert.Equal(SortField.WeightedScore, harness.Model.CurrentSortField);
+    }
+
+    [Fact]
     public async Task EveryCodeThePickerOffers_IsAccepted()
     {
         // The build-time guard in MediaListSortDefinitionsTests says the codes parse; this says the
@@ -333,8 +357,17 @@ public class MediaListFilterAndSortTests
 
     private sealed class Harness
     {
-        public Harness()
+        /// <param name="savedSortField">
+        /// Seeded before the page model is constructed, because restoring the persisted sort happens
+        /// in its constructor — setting the preference afterwards is too late to be read.
+        /// </param>
+        public Harness(string? savedSortField = null)
         {
+            if (savedSortField is not null)
+            {
+                Preferences.Set("anime_sort_field", savedSortField);
+            }
+
             var auth = Substitute.For<IAuthService>();
             auth.GetAccessTokenAsync(Arg.Any<CancellationToken>()).Returns("token");
 

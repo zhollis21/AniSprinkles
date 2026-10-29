@@ -1016,7 +1016,7 @@ public class AniListClient : IAniListClient
             IsLicensed = dto.IsLicensed,
             SiteUrl = dto.SiteUrl,
             Hashtag = dto.Hashtag,
-            AverageScore = dto.AverageScore,
+            WeightedScore = dto.WeightedScore,
             MeanScore = dto.MeanScore,
             Popularity = dto.Popularity,
             Favourites = dto.Favourites,
@@ -1111,7 +1111,7 @@ public class AniListClient : IAniListClient
         Type = dto.Type,
         Status = dto.Status,
         CoverImage = dto.CoverImage,
-        AverageScore = dto.AverageScore,
+        WeightedScore = dto.WeightedScore,
         Favourites = dto.Favourites,
         Popularity = dto.Popularity,
         StartDate = dto.StartDate,
@@ -1731,7 +1731,7 @@ public class AniListClient : IAniListClient
         public bool? IsLicensed { get; set; }
         public string? SiteUrl { get; set; }
         public string? Hashtag { get; set; }
-        public int? AverageScore { get; set; }
+        public int? WeightedScore { get; set; }
         public int? MeanScore { get; set; }
         public int? Popularity { get; set; }
         public int? Favourites { get; set; }
@@ -1793,7 +1793,7 @@ public class AniListClient : IAniListClient
         public string? Type { get; set; }
         public string? Status { get; set; }
         public MediaCoverImage? CoverImage { get; set; }
-        public int? AverageScore { get; set; }
+        public int? WeightedScore { get; set; }
         public int? Favourites { get; set; }
         public int? Popularity { get; set; }
         public MediaDate? StartDate { get; set; }
@@ -2023,7 +2023,7 @@ query MediaListCollection($userId: Int, $type: MediaType) {
           volumes
           season
           seasonYear
-          averageScore
+          weightedScore
           popularity
           isAdult
           nextAiringEpisode { episode airingAt timeUntilAiring }
@@ -2046,7 +2046,7 @@ fragment browseMedia on Media {
   episodes
   chapters
   volumes
-  averageScore
+  weightedScore
   favourites
   popularity
   trending
@@ -2146,7 +2146,7 @@ query Media($id: Int!) {
     trailer { id site }
     synonyms
     genres
-    averageScore
+    weightedScore
     meanScore
     popularity
     favourites
@@ -2163,7 +2163,7 @@ query Media($id: Int!) {
     externalLinks { id url site type language color isDisabled }
     relations {
       edges {
-        relationType(version: 2)
+        relationType(version: 3)
         node {
           id
           title { romaji english native }
@@ -2204,7 +2204,7 @@ query Media($id: Int!) {
           format
           type
           coverImage { medium large }
-          averageScore
+          weightedScore
           mediaListEntry { id status progress score }
         }
       }
@@ -2266,7 +2266,7 @@ mutation SaveMediaListEntry($mediaId: Int, $status: MediaListStatus, $progress: 
       volumes
       season
       seasonYear
-      averageScore
+      weightedScore
       popularity
     }
   }
@@ -2386,7 +2386,7 @@ query Staff($id: Int!, $charactersPage: Int = 1, $mediaPage: Int = 1, $character
           format
           type
           status
-          averageScore
+          weightedScore
         }
       }
     }
@@ -2400,7 +2400,7 @@ query Staff($id: Int!, $charactersPage: Int = 1, $mediaPage: Int = 1, $character
           format
           type
           status
-          averageScore
+          weightedScore
           favourites
           popularity
           startDate { year month day }
@@ -2427,7 +2427,7 @@ query StaffCharactersPage($id: Int!, $page: Int!, $sort: [CharacterSort], $perPa
           format
           type
           status
-          averageScore
+          weightedScore
         }
       }
     }
@@ -2447,7 +2447,7 @@ query StaffMediaPage($id: Int!, $page: Int!, $sort: [MediaSort], $perPage: Int =
           format
           type
           status
-          averageScore
+          weightedScore
           favourites
           popularity
           startDate { year month day }
@@ -2472,7 +2472,7 @@ query CharacterMediaPage($id: Int!, $page: Int!, $sort: [MediaSort], $perPage: I
           format
           type
           status
-          averageScore
+          weightedScore
           favourites
           popularity
           startDate { year month day }
@@ -2544,7 +2544,7 @@ query MediaRecommendationsPage($id: Int!, $page: Int!, $sort: [RecommendationSor
           format
           type
           coverImage { medium large }
-          averageScore
+          weightedScore
           mediaListEntry { id status progress score }
         }
       }
@@ -2570,7 +2570,7 @@ query Studio($id: Int!, $mediaPage: Int = 1, $mediaPerPage: Int = 25, $mediaSort
         format
         type
         status
-        averageScore
+        weightedScore
         favourites
         popularity
         startDate { year month day }
@@ -2592,7 +2592,7 @@ query StudioMediaPage($id: Int!, $page: Int!, $sort: [MediaSort], $perPage: Int 
         format
         type
         status
-        averageScore
+        weightedScore
         favourites
         popularity
         startDate { year month day }
@@ -2626,7 +2626,7 @@ query Character($id: Int!, $mediaPage: Int = 1, $mediaSort: [MediaSort] = [POPUL
           format
           type
           status
-          averageScore
+          weightedScore
           favourites
           popularity
           startDate { year month day }

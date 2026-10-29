@@ -1,0 +1,741 @@
+﻿{
+  "operationName": "BrowseAnime",
+  "variables": {
+    "page": 2,
+    "perPage": 25,
+    "sort": [
+      "SCORE_DESC",
+      "ID"
+    ],
+    "format": "MOVIE"
+  },
+  "queryFingerprint": "51e7ef9f8a63",
+  "recordedAt": "2026-10-27T17:46:12.0048257+00:00",
+  "response": {
+    "data": {
+      "Page": {
+        "pageInfo": {
+          "hasNextPage": true,
+          "currentPage": 2
+        },
+        "media": [
+          {
+            "id": 21399,
+            "title": {
+              "romaji": "Kizumonogatari II: Nekketsu-hen",
+              "english": "Kizumonogatari Part 2: Nekketsu",
+              "native": "\u50B7\u7269\u8A9E\u3008\u2161\u71B1\u8840\u7BC7\u3009"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21399-VTAdAqc8u5AE.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21399-VTAdAqc8u5AE.png"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 85,
+            "favourites": 3585,
+            "popularity": 144839,
+            "trending": 1,
+            "startDate": {
+              "year": 2016,
+              "month": 8,
+              "day": 19
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 11981,
+            "title": {
+              "romaji": "Mahou Shoujo Madoka\u2606Magica: Hangyaku no Monogatari",
+              "english": "Puella Magi Madoka Magica the Movie -Rebellion-",
+              "native": "\u5287\u5834\u7248 \u9B54\u6CD5\u5C11\u5973\u307E\u3069\u304B\u2606\u30DE\u30AE\u30AB \u53DB\u9006\u306E\u7269\u8A9E"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b11981-koz1IoISs3eU.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b11981-koz1IoISs3eU.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 84,
+            "favourites": 7460,
+            "popularity": 121273,
+            "trending": 2,
+            "startDate": {
+              "year": 2013,
+              "month": 10,
+              "day": 26
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 21008,
+            "title": {
+              "romaji": "Mushishi Tokubetsu-hen: Suzu no Shizuku",
+              "english": "MUSHI-SHI Special: Bell Droplets",
+              "native": "\u87F2\u5E2B \u7279\u5225\u7DE8\u300C\u9234\u306E\u96EB\u300D"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21008-6sn1vYneDtPc.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21008-6sn1vYneDtPc.png"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 84,
+            "favourites": 293,
+            "popularity": 32438,
+            "trending": 0,
+            "startDate": {
+              "year": 2015,
+              "month": 5,
+              "day": 16
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 104157,
+            "title": {
+              "romaji": "Seishun Buta Yarou wa Yumemiru Shoujo no Yume wo Minai",
+              "english": "Rascal Does Not Dream of a Dreaming Girl",
+              "native": "\u9752\u6625\u30D6\u30BF\u91CE\u90CE\u306F\u3086\u3081\u307F\u308B\u5C11\u5973\u306E\u5922\u3092\u898B\u306A\u3044"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx104157-rk99XI56PaIC.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx104157-rk99XI56PaIC.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 84,
+            "favourites": 10447,
+            "popularity": 264701,
+            "trending": 5,
+            "startDate": {
+              "year": 2019,
+              "month": 6,
+              "day": 15
+            },
+            "mediaListEntry": {
+              "id": 593364637,
+              "status": "COMPLETED",
+              "progress": 1,
+              "score": 10
+            }
+          },
+          {
+            "id": 175199,
+            "title": {
+              "romaji": "Given: Umi e",
+              "english": "given The Movie: To the Sea",
+              "native": "\u30AE\u30F4\u30F3 \u6D77\u3078"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx175199-WxlBkrVGK8Fg.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx175199-WxlBkrVGK8Fg.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 84,
+            "favourites": 456,
+            "popularity": 14143,
+            "trending": 1,
+            "startDate": {
+              "year": 2024,
+              "month": 9,
+              "day": 20
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 99750,
+            "title": {
+              "romaji": "Kimi no Suizou wo Tabetai",
+              "english": "I Want to Eat Your Pancreas",
+              "native": "\u541B\u306E\u81B5\u81D3\u3092\u305F\u3079\u305F\u3044"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx99750-pNyly9d3MEgV.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx99750-pNyly9d3MEgV.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 84,
+            "favourites": 19803,
+            "popularity": 381227,
+            "trending": 9,
+            "startDate": {
+              "year": 2018,
+              "month": 9,
+              "day": 1
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 192809,
+            "title": {
+              "romaji": "Jujutsu Kaisen: Kaigyoku\u30FBGyokusetsu",
+              "english": "JUJUTSU KAISEN: Hidden Inventory / Premature Death \u2013 The Movie",
+              "native": "\u546A\u8853\u5EFB\u6226 \u61D0\u7389\u30FB\u7389\u6298"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx192809-wRlqABGsx2Qs.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx192809-wRlqABGsx2Qs.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 84,
+            "favourites": 797,
+            "popularity": 30918,
+            "trending": 2,
+            "startDate": {
+              "year": 2025,
+              "month": 5,
+              "day": 30
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 4282,
+            "title": {
+              "romaji": "Kara no Kyoukai: Mujun Rasen",
+              "english": "the Garden of sinners Chapter 5: Paradox Paradigm",
+              "native": "\u7A7A\u306E\u5883\u754C \u77DB\u76FE\u87BA\u65CB"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx4282-R19YmET0glSZ.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx4282-R19YmET0glSZ.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 84,
+            "favourites": 2488,
+            "popularity": 61642,
+            "trending": 0,
+            "startDate": {
+              "year": 2008,
+              "month": 8,
+              "day": 16
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 9617,
+            "title": {
+              "romaji": "K-ON! Movie",
+              "english": "K-ON!: The Movie",
+              "native": "\u6620\u753B\u3051\u3044\u304A\u3093\uFF01"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx9617-Z2RA1TIkcNEg.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx9617-Z2RA1TIkcNEg.png"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 84,
+            "favourites": 2738,
+            "popularity": 90815,
+            "trending": 0,
+            "startDate": {
+              "year": 2011,
+              "month": 12,
+              "day": 3
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 21718,
+            "title": {
+              "romaji": "Fate/stay night [Heaven\u0027s Feel] II. lost butterfly",
+              "english": "Fate/stay night [Heaven\u0027s Feel] II. lost butterfly",
+              "native": "Fate/stay night[Heaven\u0027s Feel] \u2160\u2160.lost butterfly"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21718-Hjj26Sapx1bd.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21718-Hjj26Sapx1bd.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 84,
+            "favourites": 4024,
+            "popularity": 132128,
+            "trending": 3,
+            "startDate": {
+              "year": 2019,
+              "month": 1,
+              "day": 12
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 112151,
+            "title": {
+              "romaji": "Kimetsu no Yaiba: Mugen Ressha-hen",
+              "english": "Demon Slayer -Kimetsu no Yaiba- The Movie: Mugen Train",
+              "native": "\u9B3C\u6EC5\u306E\u5203 \u7121\u9650\u5217\u8ECA\u7DE8"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx112151-1qlQwPB1RrJe.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx112151-1qlQwPB1RrJe.png"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 84,
+            "favourites": 13714,
+            "popularity": 515533,
+            "trending": 5,
+            "startDate": {
+              "year": 2020,
+              "month": 10,
+              "day": 16
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 171099,
+            "title": {
+              "romaji": "Bocchi the Rock! Re:Re:",
+              "english": "BOCCHI THE ROCK! Recap Part 2",
+              "native": "\u307C\u3063\u3061\u30FB\u3056\u30FB\u308D\u3063\u304F\uFF01 Re:Re:"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx171099-JexoHylkSZ6r.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx171099-JexoHylkSZ6r.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 84,
+            "favourites": 211,
+            "popularity": 13957,
+            "trending": 1,
+            "startDate": {
+              "year": 2024,
+              "month": 8,
+              "day": 9
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 7472,
+            "title": {
+              "romaji": "Gintama: Shinyaku Benizakura-hen",
+              "english": "Gintama - The Movie",
+              "native": "\u9280\u9B42 \u65B0\u8A33\u7D05\u685C\u7BC7"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx7472-RveDgQsIZUNG.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx7472-RveDgQsIZUNG.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 83,
+            "favourites": 557,
+            "popularity": 40050,
+            "trending": 0,
+            "startDate": {
+              "year": 2010,
+              "month": 4,
+              "day": 24
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 109190,
+            "title": {
+              "romaji": "Violet Evergarden Gaiden: Eien to Jidou Shuki Ningyou",
+              "english": "Violet Evergarden: Eternity and the Auto Memory Doll",
+              "native": "\u30F4\u30A1\u30A4\u30AA\u30EC\u30C3\u30C8\u30FB\u30A8\u30F4\u30A1\u30FC\u30AC\u30FC\u30C7\u30F3 \u5916\u4F1D~\u6C38\u9060\u3068\u81EA\u52D5\u624B\u8A18\u4EBA\u5F62~"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx109190-e8mv1qdmpjLW.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx109190-e8mv1qdmpjLW.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 83,
+            "favourites": 3350,
+            "popularity": 147460,
+            "trending": 2,
+            "startDate": {
+              "year": 2019,
+              "month": 9,
+              "day": 6
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 578,
+            "title": {
+              "romaji": "Hotaru no Haka",
+              "english": "Grave of the Fireflies",
+              "native": "\u706B\u5782\u308B\u306E\u5893"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx578-vU6XcOlb1XFU.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx578-vU6XcOlb1XFU.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 83,
+            "favourites": 7191,
+            "popularity": 205753,
+            "trending": 2,
+            "startDate": {
+              "year": 1988,
+              "month": 4,
+              "day": 15
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 12355,
+            "title": {
+              "romaji": "Ookami Kodomo no Ame to Yuki",
+              "english": "Wolf Children",
+              "native": "\u304A\u304A\u304B\u307F\u3053\u3069\u3082\u306E\u96E8\u3068\u96EA"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx12355-wNsvhEsXEgrH.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx12355-wNsvhEsXEgrH.png"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 83,
+            "favourites": 7013,
+            "popularity": 195945,
+            "trending": 2,
+            "startDate": {
+              "year": 2012,
+              "month": 6,
+              "day": 25
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 138425,
+            "title": {
+              "romaji": "Karakai Jouzu no Takagi-san Movie",
+              "english": "Teasing Master Takagi-san: The Movie",
+              "native": "\u5287\u5834\u7248 \u304B\u3089\u304B\u3044\u4E0A\u624B\u306E\u9AD8\u6728\u3055\u3093"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx138425-c3yXTMt39DeT.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx138425-c3yXTMt39DeT.png"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 83,
+            "favourites": 868,
+            "popularity": 31223,
+            "trending": 0,
+            "startDate": {
+              "year": 2022,
+              "month": 6,
+              "day": 10
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 199340,
+            "title": {
+              "romaji": "Seishun Buta Yarou wa Dear Friend no Yume wo Minai",
+              "english": "Rascal Does Not Dream of a Dear Friend",
+              "native": "\u9752\u6625\u30D6\u30BF\u91CE\u90CE\u306F\u30C7\u30A3\u30A2\u30D5\u30EC\u30F3\u30C9\u306E\u5922\u3092\u898B\u306A\u3044"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx199340-YQlmzvmcJzyt.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx199340-YQlmzvmcJzyt.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 83,
+            "favourites": 496,
+            "popularity": 34658,
+            "trending": 3,
+            "startDate": {
+              "year": 2026,
+              "month": 10,
+              "day": 16
+            },
+            "mediaListEntry": {
+              "id": 593365511,
+              "status": "PLANNING",
+              "progress": 0,
+              "score": 0
+            }
+          },
+          {
+            "id": 165253,
+            "title": {
+              "romaji": "Bocchi the Rock! Re:",
+              "english": "BOCCHI THE ROCK! Recap Part 1",
+              "native": "\u307C\u3063\u3061\u30FB\u3056\u30FB\u308D\u3063\u304F\uFF01Re:"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx165253-nAwyrMZm4jBA.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx165253-nAwyrMZm4jBA.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 83,
+            "favourites": 317,
+            "popularity": 26220,
+            "trending": 1,
+            "startDate": {
+              "year": 2024,
+              "month": 6,
+              "day": 7
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 100178,
+            "title": {
+              "romaji": "Liz to Aoi Tori",
+              "english": "Liz and the Blue Bird",
+              "native": "\u30EA\u30BA\u3068\u9752\u3044\u9CE5"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx100178-MVATisQLOhkp.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx100178-MVATisQLOhkp.png"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 83,
+            "favourites": 4527,
+            "popularity": 73409,
+            "trending": 0,
+            "startDate": {
+              "year": 2018,
+              "month": 4,
+              "day": 21
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 131573,
+            "title": {
+              "romaji": "Jujutsu Kaisen 0",
+              "english": "JUJUTSU KAISEN 0",
+              "native": "\u546A\u8853\u5EFB\u6226 0"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx131573-rpl82vDEDRm6.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx131573-rpl82vDEDRm6.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 83,
+            "favourites": 12401,
+            "popularity": 445052,
+            "trending": 8,
+            "startDate": {
+              "year": 2021,
+              "month": 12,
+              "day": 24
+            },
+            "mediaListEntry": {
+              "id": 593364137,
+              "status": "COMPLETED",
+              "progress": 1,
+              "score": 10
+            }
+          },
+          {
+            "id": 177687,
+            "title": {
+              "romaji": "Hyakuemu.",
+              "english": "100 METERS",
+              "native": "\u3072\u3083\u304F\u3048\u3080\u3002"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx177687-T4SrtVjrmW01.png",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx177687-T4SrtVjrmW01.png"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 83,
+            "favourites": 1856,
+            "popularity": 45836,
+            "trending": 1,
+            "startDate": {
+              "year": 2025,
+              "month": 9,
+              "day": 19
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 101344,
+            "title": {
+              "romaji": "Made in Abyss: Hourou Suru Tasogare",
+              "english": "Made in Abyss: Wandering Twilight",
+              "native": "\u30E1\u30A4\u30C9\u30A4\u30F3\u30A2\u30D3\u30B9 \u653E\u6D6A\u3059\u308B\u9EC4\u660F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx101344-NbEG3Ryria9S.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101344-NbEG3Ryria9S.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 83,
+            "favourites": 650,
+            "popularity": 46109,
+            "trending": 0,
+            "startDate": {
+              "year": 2019,
+              "month": 1,
+              "day": 18
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 186861,
+            "title": {
+              "romaji": "Nezha: Zhi Mo Tong Nao Hai",
+              "english": "Ne Zha 2",
+              "native": "\u54EA\u5412\u4E4B\u9B54\u7AE5\u95F9\u6D77"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx186861-3zhIhilJvbJz.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx186861-3zhIhilJvbJz.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 83,
+            "favourites": 249,
+            "popularity": 5979,
+            "trending": 0,
+            "startDate": {
+              "year": 2025,
+              "month": 1,
+              "day": 29
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 104460,
+            "title": {
+              "romaji": "Yuru Camp\u25B3 Movie",
+              "english": "Laid-Back Camp The Movie",
+              "native": "\u6620\u753B \u3086\u308B\u30AD\u30E3\u30F3\u25B3"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx104460-EwUV9ZJMCtnR.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx104460-EwUV9ZJMCtnR.jpg"
+            },
+            "format": "MOVIE",
+            "type": "ANIME",
+            "status": "FINISHED",
+            "episodes": 1,
+            "chapters": null,
+            "volumes": null,
+            "weightedScore": 83,
+            "favourites": 823,
+            "popularity": 39833,
+            "trending": 0,
+            "startDate": {
+              "year": 2022,
+              "month": 7,
+              "day": 1
+            },
+            "mediaListEntry": null
+          }
+        ]
+      }
+    }
+  }
+}

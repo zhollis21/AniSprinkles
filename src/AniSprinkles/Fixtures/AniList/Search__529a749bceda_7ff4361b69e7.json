@@ -1,0 +1,22 @@
+﻿{
+  "operationName": "Search",
+  "variables": {
+    "search": "no",
+    "page": 1,
+    "perPage": 20,
+    "isAdult": false
+  },
+  "queryFingerprint": "7ff4361b69e7",
+  "recordedAt": "2026-10-27T17:46:59.5348045+00:00",
+  "response": {
+    "data": {
+      "Page": {
+        "pageInfo": {
+          "hasNextPage": false,
+          "currentPage": 1
+        },
+        "media": []
+      }
+    }
+  }
+}

@@ -1,0 +1,428 @@
+﻿{
+  "operationName": "MediaCharactersPage",
+  "variables": {
+    "id": 101175,
+    "page": 1,
+    "sort": [
+      "FAVOURITES_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "64eed76a7328",
+  "recordedAt": "2026-10-28T11:24:24.8365494+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "characters": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "edges": [
+            {
+              "node": {
+                "id": 150297,
+                "name": {
+                  "full": "Crimvael",
+                  "native": "\u30AF\u30EA\u30E0\u30F4\u30A7\u30FC\u30EB",
+                  "userPreferred": "Crimvael"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b150297-X0mqOSbflNOn.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b150297-X0mqOSbflNOn.png"
+                },
+                "favourites": 511
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 151135,
+                "name": {
+                  "full": "Meidri",
+                  "native": "\u30E1\u30A4\u30C9\u30EA\u30FC",
+                  "userPreferred": "Meidri"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b151135-pAd9ADT0Xj46.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b151135-pAd9ADT0Xj46.jpg"
+                },
+                "favourites": 313
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 150298,
+                "name": {
+                  "full": "Stunk",
+                  "native": "\u30B9\u30BF\u30F3\u30AF",
+                  "userPreferred": "Stunk"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b150298-kipLcAuVqvXq.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b150298-kipLcAuVqvXq.jpg"
+                },
+                "favourites": 273
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 151133,
+                "name": {
+                  "full": "Aloe",
+                  "native": "\u30A2\u30ED\u30A8",
+                  "userPreferred": "Aloe"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b151133-Azon02zjceuv.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b151133-Azon02zjceuv.png"
+                },
+                "favourites": 206
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 150299,
+                "name": {
+                  "full": "Zel ",
+                  "native": "\u30BC\u30EB",
+                  "userPreferred": "Zel "
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b150299-yUcOdBo7DJWr.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b150299-yUcOdBo7DJWr.png"
+                },
+                "favourites": 185
+              },
+              "role": "MAIN"
+            },
+            {
+              "node": {
+                "id": 151149,
+                "name": {
+                  "full": "Tiaplate",
+                  "native": "\u30C6\u30A3\u30A2\u30D7\u30EC\u30FC\u30C8",
+                  "userPreferred": "Tiaplate"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b151149-zCsw5VpdE65K.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b151149-zCsw5VpdE65K.png"
+                },
+                "favourites": 131
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 151150,
+                "name": {
+                  "full": "Elza",
+                  "native": "\u30A8\u30EB\u30B6",
+                  "userPreferred": "Elza"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b151150-43wqCLatjpq7.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b151150-43wqCLatjpq7.png"
+                },
+                "favourites": 106
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 151134,
+                "name": {
+                  "full": "Kanchal",
+                  "native": "\u30AB\u30F3\u30C1\u30E3\u30EB",
+                  "userPreferred": "Kanchal"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b151134-UBJdao93zMV7.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b151134-UBJdao93zMV7.png"
+                },
+                "favourites": 74
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 151142,
+                "name": {
+                  "full": "Milky",
+                  "native": "\u30DF\u30EB\u30AD\u30FC",
+                  "userPreferred": "Milky"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b151142-G4KW2vgYAQSl.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b151142-G4KW2vgYAQSl.png"
+                },
+                "favourites": 60
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 157650,
+                "name": {
+                  "full": "Death Abyss",
+                  "native": "\u30C7\u30B9\u30A2\u30D3\u30B9",
+                  "userPreferred": "Death Abyss"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b157650-ZRvebhQ5MB7f.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b157650-ZRvebhQ5MB7f.png"
+                },
+                "favourites": 54
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 151144,
+                "name": {
+                  "full": "Ginny",
+                  "native": "\u30AE\u30CB\u30FC",
+                  "userPreferred": "Ginny"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b151144-OUZz98C8H2BT.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b151144-OUZz98C8H2BT.png"
+                },
+                "favourites": 52
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 163300,
+                "name": {
+                  "full": "Demia",
+                  "native": "\u30C7\u30DF\u30A2",
+                  "userPreferred": "Demia"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b163300-xfHcumaswOSR.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b163300-xfHcumaswOSR.png"
+                },
+                "favourites": 49
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 151141,
+                "name": {
+                  "full": "Elma",
+                  "native": "\u30A8\u30EB\u30DE",
+                  "userPreferred": "Elma"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b151141-8Sb7IjwTbMUA.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b151141-8Sb7IjwTbMUA.png"
+                },
+                "favourites": 47
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 151137,
+                "name": {
+                  "full": "Okpa",
+                  "native": "\u30AA\u30AF\u30D1",
+                  "userPreferred": "Okpa"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b151137-6Yn15j3pANPD.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b151137-6Yn15j3pANPD.png"
+                },
+                "favourites": 40
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 151136,
+                "name": {
+                  "full": "Eldry",
+                  "native": "\u30A8\u30EB\u30C9\u30EA\u30FC",
+                  "userPreferred": "Eldry"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b151136-huYQ6ddcY2P6.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b151136-huYQ6ddcY2P6.png"
+                },
+                "favourites": 38
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 151143,
+                "name": {
+                  "full": "Mii",
+                  "native": "\u307F\u30FC",
+                  "userPreferred": "Mii"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b151143-5O0xtmJEBjM2.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b151143-5O0xtmJEBjM2.png"
+                },
+                "favourites": 30
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 158613,
+                "name": {
+                  "full": "Lymee",
+                  "native": "\u30E9\u30A4\u30DF\u30A3",
+                  "userPreferred": "Lymee"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b158613-oB7KrQ3snele.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b158613-oB7KrQ3snele.jpg"
+                },
+                "favourites": 28
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 159386,
+                "name": {
+                  "full": "Data",
+                  "native": "\u30C7\u30FC\u30BF\u30FC",
+                  "userPreferred": "Data"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b159386-9UNTGzNOKrTp.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b159386-9UNTGzNOKrTp.jpg"
+                },
+                "favourites": 25
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 161147,
+                "name": {
+                  "full": "Mimiro",
+                  "native": "\u30DF\u30DF\u30ED",
+                  "userPreferred": "Mimiro"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b161147-RlpfY3hAu86m.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b161147-RlpfY3hAu86m.png"
+                },
+                "favourites": 24
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 151138,
+                "name": {
+                  "full": "Piltia",
+                  "native": "\u30D4\u30EB\u30C6\u30A3\u30A2",
+                  "userPreferred": "Piltia"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b151138-GcFYMCnRA7ti.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b151138-GcFYMCnRA7ti.jpg"
+                },
+                "favourites": 22
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 162638,
+                "name": {
+                  "full": "Flamper",
+                  "native": "\u30D5\u30E9\u30F3\u30D1\u30FC",
+                  "userPreferred": "Flamper"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b162638-ljzTIvn5zo6R.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b162638-ljzTIvn5zo6R.png"
+                },
+                "favourites": 19
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 151145,
+                "name": {
+                  "full": "Mitsue",
+                  "native": "\u30DF\u30C4\u30A8",
+                  "userPreferred": "Mitsue"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b151145-lC8TCWKrVskX.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b151145-lC8TCWKrVskX.png"
+                },
+                "favourites": 17
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 162025,
+                "name": {
+                  "full": "Mayospell",
+                  "native": "\u30DE\u30E8\u30B9\u30DA\u30EB",
+                  "userPreferred": "Mayospell"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b162025-1yhcrT4NlM3Z.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b162025-1yhcrT4NlM3Z.png"
+                },
+                "favourites": 17
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 159972,
+                "name": {
+                  "full": "Hoshi",
+                  "native": "\u30DB\u30FC\u30B7\u30A3",
+                  "userPreferred": "Hoshi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b159972-H0wROGGezOuY.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b159972-H0wROGGezOuY.jpg"
+                },
+                "favourites": 15
+              },
+              "role": "SUPPORTING"
+            },
+            {
+              "node": {
+                "id": 159974,
+                "name": {
+                  "full": "Reishi",
+                  "native": "\u30EC\u30A4\u30B7",
+                  "userPreferred": "Reishi"
+                },
+                "image": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b159974-CRfMJaA0NKcz.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/character/large/b159974-CRfMJaA0NKcz.jpg"
+                },
+                "favourites": 14
+              },
+              "role": "SUPPORTING"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

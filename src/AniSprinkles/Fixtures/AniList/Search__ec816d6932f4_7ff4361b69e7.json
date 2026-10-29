@@ -1,0 +1,583 @@
+﻿{
+  "operationName": "Search",
+  "variables": {
+    "search": "ka",
+    "page": 1,
+    "perPage": 20,
+    "isAdult": true
+  },
+  "queryFingerprint": "7ff4361b69e7",
+  "recordedAt": "2026-10-27T17:48:20.722146+00:00",
+  "response": {
+    "data": {
+      "Page": {
+        "pageInfo": {
+          "hasNextPage": true,
+          "currentPage": 1
+        },
+        "media": [
+          {
+            "id": 89397,
+            "title": {
+              "romaji": "Oniichan, Sekai de Ichiban Shiawase ni Shitageru ne",
+              "english": null,
+              "native": "\u304A\u5144\u3061\u3083\u3093\u3001\u4E16\u754C\u3067\u4E00\u756A\u5E78\u305B\u306B\u3057\u305F\u3052\u308B\u306D\u3063"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 9,
+            "volumes": 1,
+            "weightedScore": null,
+            "favourites": 0,
+            "popularity": 100,
+            "trending": 0,
+            "startDate": {
+              "year": 2013,
+              "month": 2,
+              "day": 20
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 149169,
+            "title": {
+              "romaji": "LYRICALLY",
+              "english": null,
+              "native": "LYRICALLY"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 8,
+            "volumes": 1,
+            "weightedScore": null,
+            "favourites": 1,
+            "popularity": 66,
+            "trending": 0,
+            "startDate": {
+              "year": 2019,
+              "month": 2,
+              "day": 28
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 171427,
+            "title": {
+              "romaji": "Koi ka Yamai ka Unmei ka",
+              "english": "Love, Illness, Or Destiny?",
+              "native": "\u604B\u304B\u75C5\u304B\u904B\u547D\u304B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 5,
+            "volumes": 1,
+            "weightedScore": null,
+            "favourites": 0,
+            "popularity": 57,
+            "trending": 0,
+            "startDate": {
+              "year": 2022,
+              "month": 12,
+              "day": 10
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 128094,
+            "title": {
+              "romaji": "Mucchin Girl",
+              "english": null,
+              "native": "\u30E0\u30C3\u30C1\u30F3\u30FB\u30AC\u30FC\u30EB"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 21,
+            "volumes": 1,
+            "weightedScore": null,
+            "favourites": 0,
+            "popularity": 33,
+            "trending": 0,
+            "startDate": {
+              "year": 2000,
+              "month": 9,
+              "day": 30
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 146938,
+            "title": {
+              "romaji": "Uso ka Makoto ka",
+              "english": null,
+              "native": "\u30A6\u30BD\u304B\u30DE\u30B3\u30C8\u304B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 6,
+            "volumes": 1,
+            "weightedScore": 61,
+            "favourites": 8,
+            "popularity": 795,
+            "trending": 0,
+            "startDate": {
+              "year": 2019,
+              "month": 5,
+              "day": 31
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 207342,
+            "title": {
+              "romaji": "Koi ka Hakai ka",
+              "english": null,
+              "native": "\u604B\u304B\u7834\u58CA\u304B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 8,
+            "volumes": 1,
+            "weightedScore": null,
+            "favourites": 0,
+            "popularity": 74,
+            "trending": 0,
+            "startDate": {
+              "year": 2018,
+              "month": 9,
+              "day": 28
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 89424,
+            "title": {
+              "romaji": "Renai Kakuu Seikyuu",
+              "english": "Fictitious Claim Love",
+              "native": "\u604B\u611B\u67B6\u7A7A\u8ACB\u6C42"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 10,
+            "volumes": 1,
+            "weightedScore": null,
+            "favourites": 0,
+            "popularity": 44,
+            "trending": 0,
+            "startDate": {
+              "year": 2013,
+              "month": 1,
+              "day": 29
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 163511,
+            "title": {
+              "romaji": "Kuu ka, Kuwareru ka?",
+              "english": null,
+              "native": "\u98DF\u3046\u304B\u3001\u98DF\u308F\u308C\u308B\u304B?"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 5,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 4,
+            "popularity": 53,
+            "trending": 0,
+            "startDate": {
+              "year": 2018,
+              "month": 3,
+              "day": 11
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 164785,
+            "title": {
+              "romaji": "Yume ka Utsutsu ka",
+              "english": "Dream or Reality",
+              "native": "\u30E6\u30E1\u30AB \u30A6\u30C4\u30C4\u30AB"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 1,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 3,
+            "popularity": 124,
+            "trending": 0,
+            "startDate": {
+              "year": 2020,
+              "month": 10,
+              "day": 9
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 106270,
+            "title": {
+              "romaji": "Shinshi ka Kemono ka",
+              "english": "A Gentleman or a Beast",
+              "native": "\u7D33\u58EB\u304B\u7363\u304B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 6,
+            "volumes": 1,
+            "weightedScore": null,
+            "favourites": 0,
+            "popularity": 8,
+            "trending": 0,
+            "startDate": {
+              "year": 2009,
+              "month": 3,
+              "day": 25
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 88036,
+            "title": {
+              "romaji": "Yuujou ka Yokujou ka!?",
+              "english": null,
+              "native": "\u53CB\u60C5\u304B\u6B32\u60C5\u304B\u3063\uFF01\uFF1F"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "ONE_SHOT",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 1,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 1,
+            "popularity": 69,
+            "trending": 0,
+            "startDate": {
+              "year": 2013,
+              "month": 3,
+              "day": 26
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 103566,
+            "title": {
+              "romaji": "Noru ka Soru ka",
+              "english": null,
+              "native": "\u4F38\u308B\u304B\u53CD\u308B\u304B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 6,
+            "volumes": 1,
+            "weightedScore": 58,
+            "favourites": 0,
+            "popularity": 266,
+            "trending": 0,
+            "startDate": {
+              "year": 2015,
+              "month": 1,
+              "day": 30
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 172012,
+            "title": {
+              "romaji": "Charge!! or die: Kakin ka Shi ka",
+              "english": null,
+              "native": "Charge!! or die\uFF5E\u8AB2\u91D1\u304B\u6B7B\u304B\uFF5E"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 1,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 0,
+            "popularity": 25,
+            "trending": 0,
+            "startDate": {
+              "year": 2018,
+              "month": 6,
+              "day": 17
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 116952,
+            "title": {
+              "romaji": "Apple Graffiti",
+              "english": null,
+              "native": "Apple\u30B0\u30E9\u30D5\u30A3\u30C6\u30A3"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 10,
+            "volumes": 1,
+            "weightedScore": null,
+            "favourites": 0,
+            "popularity": 20,
+            "trending": 0,
+            "startDate": {
+              "year": 1992,
+              "month": 12,
+              "day": 15
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 91964,
+            "title": {
+              "romaji": "Nyotai-ka!",
+              "english": null,
+              "native": "\u306B\u3087\u305F\u3044\u304B\uFF01"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "ONE_SHOT",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 1,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 0,
+            "popularity": 91,
+            "trending": 0,
+            "startDate": {
+              "year": 2011,
+              "month": 10,
+              "day": 14
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 96365,
+            "title": {
+              "romaji": "Eigyou Ni-ka!",
+              "english": "The Second Sales Division!",
+              "native": "\u55B6\u696D\u4E8C\u8AB2\u3063!"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 19,
+            "volumes": 2,
+            "weightedScore": 74,
+            "favourites": 24,
+            "popularity": 1431,
+            "trending": 0,
+            "startDate": {
+              "year": 2014,
+              "month": 4,
+              "day": 30
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 97523,
+            "title": {
+              "romaji": "JC\u2606Encount",
+              "english": null,
+              "native": "JC\u2606\u63F4\u30AB\u30A6\u30F3\u30C8"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 9,
+            "volumes": 1,
+            "weightedScore": null,
+            "favourites": 1,
+            "popularity": 50,
+            "trending": 0,
+            "startDate": {
+              "year": 2015,
+              "month": 1,
+              "day": 27
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 78427,
+            "title": {
+              "romaji": "Otokonoko HEAVEN",
+              "english": null,
+              "native": "\u30AA\u30C8\u30B3\u306E\u30B3HEAVEN"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 759,
+            "volumes": 64,
+            "weightedScore": null,
+            "favourites": 11,
+            "popularity": 366,
+            "trending": 0,
+            "startDate": {
+              "year": 2011,
+              "month": 12,
+              "day": 20
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 89944,
+            "title": {
+              "romaji": "Shounen Collect",
+              "english": null,
+              "native": "\u5C11\u5E74\u30B3\u30EC\u30AF\u30C8"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "MANGA",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 13,
+            "volumes": 1,
+            "weightedScore": null,
+            "favourites": 0,
+            "popularity": 78,
+            "trending": 0,
+            "startDate": {
+              "year": 2013,
+              "month": 12,
+              "day": 20
+            },
+            "mediaListEntry": null
+          },
+          {
+            "id": 192117,
+            "title": {
+              "romaji": "Oni ga Deru ka Ja ga Deru ka",
+              "english": null,
+              "native": "\u9B3C\u304C\u51FA\u308B\u304B\u86C7\u304C\u51FA\u308B\u304B"
+            },
+            "coverImage": {
+              "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg",
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/a-very-polite-cat-in-a-tiny-hat-default.jpg"
+            },
+            "format": "ONE_SHOT",
+            "type": "MANGA",
+            "status": "FINISHED",
+            "episodes": null,
+            "chapters": 1,
+            "volumes": null,
+            "weightedScore": null,
+            "favourites": 1,
+            "popularity": 16,
+            "trending": 0,
+            "startDate": {
+              "year": 2025,
+              "month": 1,
+              "day": 19
+            },
+            "mediaListEntry": null
+          }
+        ]
+      }
+    }
+  }
+}
