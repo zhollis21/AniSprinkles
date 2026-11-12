@@ -72,7 +72,7 @@ public partial class OutageStateService(IDispatcher dispatcher) : ObservableObje
     private void DispatchOrInvoke(Action action)
     {
         // Injected IDispatcher rather than MainThread, which throws
-        // NotImplementedInReferenceAssemblyException on the plain net10.0 TFM this library targets —
+        // NotImplementedInReferenceAssemblyException on the plain net11.0 TFM this library targets —
         // the old catch only covered InvalidOperationException, so the "falls back inline in unit
         // tests" its comment promised never actually happened.
         //

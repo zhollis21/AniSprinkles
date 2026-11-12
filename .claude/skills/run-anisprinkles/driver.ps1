@@ -28,7 +28,7 @@ $ErrorActionPreference = 'Stop'
 $Package  = 'com.RainbowSprinkles.AniSprinkles'
 $RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..\..')).Path
 $ShotDir  = Join-Path $RepoRoot 'tmp\driver-screens'
-$Apk      = Join-Path $RepoRoot 'src\AniSprinkles\bin\Debug\net10.0-android\com.RainbowSprinkles.AniSprinkles-Signed.apk'
+$Apk      = Join-Path $RepoRoot 'src\AniSprinkles\bin\Debug\net11.0-android\com.RainbowSprinkles.AniSprinkles-Signed.apk'
 
 # ---------------------------------------------------------------- SDK plumbing
 
@@ -201,7 +201,7 @@ AniSprinkles driver — pwsh .claude/skills/run-anisprinkles/driver.ps1 <command
 
   env                       Show resolved SDK / adb / device state
   boot [avd]                Start the emulator and block until boot completes
-                            (default AVD: pixel_9_-_api_36)
+                            (default AVD: pixel_10_pro_xl_-_api_36)
   build                     dotnet build -p:CiBuild=true (stub auth + stub API data)
   install                   adb install -r -d the signed debug APK
   launch                    Force-restart the app (cold, ~20s) and wait for its process
@@ -296,7 +296,7 @@ function Cmd-Env {
 }
 
 function Cmd-Boot {
-    param([string]$Avd = 'pixel_9_-_api_36')
+    param([string]$Avd = 'pixel_10_pro_xl_-_api_36')
 
     # Reuse an emulator only if it is the AVD that was actually asked for. Matching
     # on "any emulator is online" meant `boot <other-avd>` silently did nothing and
@@ -344,7 +344,7 @@ function Cmd-Build {
     Say 'dotnet build (Debug, CI stubs)'
     Push-Location $RepoRoot
     try {
-        & dotnet build src/AniSprinkles/AniSprinkles.csproj -c Debug -f net10.0-android `
+        & dotnet build src/AniSprinkles/AniSprinkles.csproj -c Debug -f net11.0-android `
             -p:EmbedAssembliesIntoApk=true -p:CiBuild=true
         if ($LASTEXITCODE -ne 0) { throw "build failed ($LASTEXITCODE)" }
     } finally { Pop-Location }

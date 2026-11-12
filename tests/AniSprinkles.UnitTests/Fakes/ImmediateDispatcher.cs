@@ -4,7 +4,7 @@ namespace AniSprinkles.UnitTests.Fakes;
 /// An <see cref="IDispatcher"/> that runs work inline on the calling thread. Page models marshal
 /// UI-affecting writes through the dispatcher; off-device there is no UI thread to marshal to, and
 /// MAUI's own <c>MainThread</c> helpers throw <c>NotImplementedInReferenceAssemblyException</c> on
-/// the plain <c>net10.0</c> TFM — injecting this is what makes those paths observable.
+/// the plain <c>net11.0</c> TFM — injecting this is what makes those paths observable.
 /// </summary>
 public sealed class ImmediateDispatcher : IDispatcher
 {

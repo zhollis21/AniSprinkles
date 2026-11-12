@@ -6,7 +6,7 @@ namespace AniSprinkles.Services.Maui;
 /// <see cref="IAppEnvironment"/> over MAUI Essentials, for the header of a diagnostic report (#112).
 /// <para>
 /// Lives on this side of the seam because <c>AppInfo</c> and <c>DeviceInfo</c> throw rather than
-/// degrade on the plain <c>net10.0</c> test TFM — reading them from Core would make the whole report
+/// degrade on the plain <c>net11.0</c> test TFM — reading them from Core would make the whole report
 /// flow untestable. Each property is guarded anyway: a report is worth sending with an unknown
 /// device model, and is worth nothing if collecting the model threw.
 /// </para>

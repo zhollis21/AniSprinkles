@@ -28,7 +28,7 @@
                     <BoxView Grid.Row="0"
                              BackgroundColor="{Binding PageTitle, Converter={StaticResource RainbowAccentConverter}}"
                              Opacity="0.25"
-                             IsVisible="{Binding HasBannerImage, Converter={StaticResource InvertedBoolConverter}}" />
+                             IsVisible="{!HasBannerImage}" />
                     <!-- Gradient scrim for text readability over cover image -->
                     <BoxView Grid.Row="0">
                         <BoxView.Background>
@@ -166,17 +166,17 @@
             <!-- ============================================ -->
             <FlexLayout Wrap="Wrap" JustifyContent="Start" AlignItems="Center">
                 <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
-                        IsVisible="{Binding EpisodesDisplay, Converter={StaticResource StringNotNullOrEmptyConverter}}">
+                        IsVisible="{!string.IsNullOrWhiteSpace(EpisodesDisplay)}">
                     <Label Text="{Binding EpisodesDisplay}" Style="{StaticResource ChipLabelStyle}"
                            TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Episodes'}" />
                 </Border>
                 <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
-                        IsVisible="{Binding DurationPillDisplay, Converter={StaticResource StringNotNullOrEmptyConverter}}">
+                        IsVisible="{!string.IsNullOrWhiteSpace(DurationPillDisplay)}">
                     <Label Text="{Binding DurationPillDisplay}" Style="{StaticResource ChipLabelStyle}"
                            TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Duration'}" />
                 </Border>
                 <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
-                        IsVisible="{Binding SeasonYearDisplay, Converter={StaticResource StringNotNullOrEmptyConverter}}">
+                        IsVisible="{!string.IsNullOrWhiteSpace(SeasonYearDisplay)}">
                     <Label Text="{Binding SeasonYearDisplay}" Style="{StaticResource ChipLabelStyle}"
                            TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Season'}" />
                 </Border>
@@ -188,12 +188,12 @@
                     null counts until the series finishes.
                 -->
                 <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
-                        IsVisible="{Binding ChaptersDisplay, Converter={StaticResource StringNotNullOrEmptyConverter}}">
+                        IsVisible="{!string.IsNullOrWhiteSpace(ChaptersDisplay)}">
                     <Label Text="{Binding ChaptersDisplay}" Style="{StaticResource ChipLabelStyle}"
                            TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Chapters'}" />
                 </Border>
                 <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
-                        IsVisible="{Binding VolumesDisplay, Converter={StaticResource StringNotNullOrEmptyConverter}}">
+                        IsVisible="{!string.IsNullOrWhiteSpace(VolumesDisplay)}">
                     <Label Text="{Binding VolumesDisplay}" Style="{StaticResource ChipLabelStyle}"
                            TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Volumes'}" />
                 </Border>
@@ -278,7 +278,7 @@
                                        VerticalTextAlignment="Center" />
                                 <!-- Chevron down when collapsed -->
                                 <Image Grid.Column="2" WidthRequest="16" HeightRequest="16" VerticalOptions="Center"
-                                       IsVisible="{Binding IsStatusExpanded, Converter={StaticResource InvertedBoolConverter}}">
+                                       IsVisible="{!IsStatusExpanded}">
                                     <Image.Source>
                                         <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.ChevronDown24}"
                                                          FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
@@ -523,7 +523,7 @@
 
                         <!-- Smileys (Point3) -->
                         <HorizontalStackLayout Spacing="24" HorizontalOptions="Center" IsVisible="{Binding ScoreFormatIsSmileys}">
-                            <Image WidthRequest="44" HeightRequest="44" Opacity="{Binding SmileyHappySelected, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=True}">
+                            <Image WidthRequest="44" HeightRequest="44" Opacity="{SmileyHappySelected ? 1.0 : 0.6}">
                                 <Image.GestureRecognizers><TapGestureRecognizer Command="{Binding SetSmileyRatingCommand}" CommandParameter="3" /></Image.GestureRecognizers>
                                 <Image.Source>
                                     <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.EmojiLaugh24}"
@@ -531,7 +531,7 @@
                                                      Color="{StaticResource RainbowGreen}" Size="44" />
                                 </Image.Source>
                             </Image>
-                            <Image WidthRequest="44" HeightRequest="44" Opacity="{Binding SmileyNeutralSelected, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=True}">
+                            <Image WidthRequest="44" HeightRequest="44" Opacity="{SmileyNeutralSelected ? 1.0 : 0.6}">
                                 <Image.GestureRecognizers><TapGestureRecognizer Command="{Binding SetSmileyRatingCommand}" CommandParameter="2" /></Image.GestureRecognizers>
                                 <Image.Source>
                                     <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.EmojiMeh24}"
@@ -539,7 +539,7 @@
                                                      Color="{StaticResource RainbowYellow}" Size="44" />
                                 </Image.Source>
                             </Image>
-                            <Image WidthRequest="44" HeightRequest="44" Opacity="{Binding SmileySadSelected, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=True}">
+                            <Image WidthRequest="44" HeightRequest="44" Opacity="{SmileySadSelected ? 1.0 : 0.6}">
                                 <Image.GestureRecognizers><TapGestureRecognizer Command="{Binding SetSmileyRatingCommand}" CommandParameter="1" /></Image.GestureRecognizers>
                                 <Image.Source>
                                     <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.EmojiSad24}"

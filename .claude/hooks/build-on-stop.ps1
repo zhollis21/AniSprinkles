@@ -32,7 +32,7 @@
 # projects directly, so the solution file is not an input to any of them.
 #
 # Which builds run depends on what changed, because the Android ones cost
-# minutes and the plain net10.0 ones cost seconds:
+# minutes and the plain net11.0 ones cost seconds:
 #
 #   tests + Core          always, when anything changed. The test project
 #                         project-references Core, so one command covers both -
@@ -155,7 +155,7 @@ else {
     # No stamp - a fresh worktree, or the first stop of a session. File times
     # say nothing useful here (a fresh checkout writes every file at once), so
     # ask git what differs from HEAD instead. Running all three builds blind
-    # costs about four and a half minutes, which is too much to pay on a stop
+    # costs close to three minutes (166 s on .NET 11), which is too much to pay on a stop
     # that may have changed one file in Core.
     $changed = @()
     $gitAnswered = $false
@@ -219,14 +219,14 @@ $builds.Add(@{
 if ($touchesApp) {
     $builds.Add(@{
             Name = 'Android (Debug)'
-            Args = @('build', (Join-Path $root 'src/AniSprinkles/AniSprinkles.csproj'), '-c', 'Debug', '-f', 'net10.0-android')
+            Args = @('build', (Join-Path $root 'src/AniSprinkles/AniSprinkles.csproj'), '-c', 'Debug', '-f', 'net11.0-android')
         })
 }
 if ($touchesCi) {
     $builds.Add(@{
             Name = 'Android (CiBuild)'
             Args = @('build', (Join-Path $root 'src/AniSprinkles/AniSprinkles.csproj'), '-c', 'Debug',
-                '-f', 'net10.0-android', '-p:EmbedAssembliesIntoApk=true', '-p:CiBuild=true')
+                '-f', 'net11.0-android', '-p:EmbedAssembliesIntoApk=true', '-p:CiBuild=true')
         })
 }
 

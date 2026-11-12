@@ -21,7 +21,7 @@ public static partial class AppSettings
     /// <see cref="SyncFromViewer"/>, and so anything reaching them, such as a successful
     /// <c>SettingsPageModel.LoadAsync</c> — used to be untestable: the static
     /// <c>Preferences.Default</c> throws <c>NotImplementedInReferenceAssemblyException</c> on the
-    /// plain <c>net10.0</c> TFM the tests build against. Tests assign a dictionary-backed fake here
+    /// plain <c>net11.0</c> TFM the tests build against. Tests assign a dictionary-backed fake here
     /// instead.
     /// </para>
     /// <para>

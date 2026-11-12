@@ -8,7 +8,7 @@ A colourful .NET MAUI Android app for tracking your anime and manga with [AniLis
 [![CI Build & UI Preview](https://github.com/zhollis21/AniSprinkles/actions/workflows/ci-build-and-preview.yml/badge.svg)](https://github.com/zhollis21/AniSprinkles/actions/workflows/ci-build-and-preview.yml)
 [![Android Release](https://github.com/zhollis21/AniSprinkles/actions/workflows/android-release.yml/badge.svg)](https://github.com/zhollis21/AniSprinkles/actions/workflows/android-release.yml)
 ![Platform](https://img.shields.io/badge/platform-Android-3ddc84?logo=android&logoColor=white)
-![.NET](https://img.shields.io/badge/.NET-10-512bd4?logo=dotnet&logoColor=white)
+![.NET](https://img.shields.io/badge/.NET-11-512bd4?logo=dotnet&logoColor=white)
 
 </div>
 
@@ -47,7 +47,7 @@ See the [open feature backlog](https://github.com/zhollis21/AniSprinkles/issues?
 
 ## Building
 
-Requires the [.NET 10 SDK](https://dotnet.microsoft.com/download) and the `maui-android` workload:
+Requires the [.NET 11 SDK](https://dotnet.microsoft.com/download) and the `maui-android` workload:
 
 ```powershell
 dotnet workload install maui-android
@@ -55,18 +55,18 @@ dotnet workload install maui-android
 
 ```powershell
 # Debug compile (type-check + analyzers). NOT an installable APK: without
-# EmbedAssembliesIntoApk this leaves a ~19 MB Fast Deployment package that aborts
+# EmbedAssembliesIntoApk this leaves a ~22 MB Fast Deployment package that aborts
 # at launch with no managed stack trace.
-dotnet build src/AniSprinkles/AniSprinkles.csproj -c Debug -f net10.0-android
+dotnet build src/AniSprinkles/AniSprinkles.csproj -c Debug -f net11.0-android
 
-# Debug APK you can actually install (~97 MB)
-dotnet build src/AniSprinkles/AniSprinkles.csproj -c Debug -f net10.0-android -p:EmbedAssembliesIntoApk=true
+# Debug APK you can actually install (~150 MB)
+dotnet build src/AniSprinkles/AniSprinkles.csproj -c Debug -f net11.0-android -p:EmbedAssembliesIntoApk=true
 
 # Release AAB
-dotnet publish src/AniSprinkles/AniSprinkles.csproj -c Release -f net10.0-android -p:AndroidPackageFormat=aab -o output
+dotnet publish src/AniSprinkles/AniSprinkles.csproj -c Release -f net11.0-android -p:AndroidPackageFormat=aab -o output
 
 # CI build — compile-time stub services, no OAuth token required
-dotnet build src/AniSprinkles/AniSprinkles.csproj -c Debug -f net10.0-android -p:EmbedAssembliesIntoApk=true -p:CiBuild=true
+dotnet build src/AniSprinkles/AniSprinkles.csproj -c Debug -f net11.0-android -p:EmbedAssembliesIntoApk=true -p:CiBuild=true
 ```
 
 ---
@@ -75,7 +75,7 @@ dotnet build src/AniSprinkles/AniSprinkles.csproj -c Debug -f net10.0-android -p
 
 | Concern    | Choice                                                                                     |
 | ---------- | ------------------------------------------------------------------------------------------ |
-| Platform   | .NET MAUI Android-only (`net10.0-android`, min SDK 31)                                     |
+| Platform   | .NET MAUI Android-only (`net11.0-android`, min SDK 31)                                     |
 | Pattern    | MVVM — CommunityToolkit.Mvvm (`[ObservableProperty]`, `[RelayCommand]`)                    |
 | Navigation | Shell bottom tab bar + programmatic details routes (`media-details`, `character-details`, `staff-details`, `studio-details`) |
 | Auth       | AniList OAuth implicit grant; redirect URI `anisprinkles://auth`; token in `SecureStorage` |
@@ -88,7 +88,7 @@ dotnet build src/AniSprinkles/AniSprinkles.csproj -c Debug -f net10.0-android -p
 
 ## CI & Release
 
-- **`ci-build-and-preview.yml`** — runs on every PR: builds with `-p:CiBuild=true`, captures and commits UI screenshots
+- **`ci-build-and-preview.yml`** — runs on every PR: builds and unit-tests, builds a Release APK and launches it on the emulator, then builds with `-p:CiBuild=true` and captures and commits UI screenshots
 - **`android-release.yml`** — triggers on GitHub Release publication: builds a signed AAB, uploads artifact and ProGuard mapping
 - **`promote-release.yml`** — promotes between Play Console tracks (internal → alpha → beta → production)
 - Version scheme: `ApplicationDisplayVersion` from release tag (`v1.2.3` → `1.2.3`); `ApplicationVersion` (versionCode) from `YYMMDDNNN`

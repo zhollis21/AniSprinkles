@@ -25,7 +25,7 @@
                                 <BoxView Grid.Row="0"
                              BackgroundColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Profile'}"
                              Opacity="0.3"
-                             IsVisible="{Binding HasBanner, Converter={StaticResource InvertedBoolConverter}}" />
+                             IsVisible="{!HasBanner}" />
 
                                 <VerticalStackLayout Grid.Row="0" Grid.RowSpan="2"
                                          Spacing="8"
@@ -227,7 +227,7 @@
                                     <FlexLayout Wrap="Wrap" JustifyContent="Start" AlignItems="Center">
                                         <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
                                     Stroke="{Binding SelectedTitleLanguage, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Romaji}"
-                                    Opacity="{Binding SelectedTitleLanguage, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=Romaji}">
+                                    Opacity="{SelectedTitleLanguage == UserTitleLanguage.Romaji ? 1.0 : 0.6}">
                                             <Border.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding SetTitleLanguageCommand}" CommandParameter="Romaji" />
                                             </Border.GestureRecognizers>
@@ -235,7 +235,7 @@
                                         </Border>
                                         <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
                                     Stroke="{Binding SelectedTitleLanguage, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=English}"
-                                    Opacity="{Binding SelectedTitleLanguage, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=English}">
+                                    Opacity="{SelectedTitleLanguage == UserTitleLanguage.English ? 1.0 : 0.6}">
                                             <Border.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding SetTitleLanguageCommand}" CommandParameter="English" />
                                             </Border.GestureRecognizers>
@@ -243,7 +243,7 @@
                                         </Border>
                                         <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
                                     Stroke="{Binding SelectedTitleLanguage, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Native}"
-                                    Opacity="{Binding SelectedTitleLanguage, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=Native}">
+                                    Opacity="{SelectedTitleLanguage == UserTitleLanguage.Native ? 1.0 : 0.6}">
                                             <Border.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding SetTitleLanguageCommand}" CommandParameter="Native" />
                                             </Border.GestureRecognizers>
@@ -256,7 +256,7 @@
                                     <HorizontalStackLayout Spacing="6">
                                         <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6"
                                     Stroke="{Binding SelectedStaffNameLanguage, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=RomajiWestern}"
-                                    Opacity="{Binding SelectedStaffNameLanguage, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=RomajiWestern}">
+                                    Opacity="{SelectedStaffNameLanguage == UserStaffNameLanguage.RomajiWestern ? 1.0 : 0.6}">
                                             <Border.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding SetStaffNameLanguageCommand}" CommandParameter="RomajiWestern" />
                                             </Border.GestureRecognizers>
@@ -264,7 +264,7 @@
                                         </Border>
                                         <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6"
                                     Stroke="{Binding SelectedStaffNameLanguage, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Romaji}"
-                                    Opacity="{Binding SelectedStaffNameLanguage, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=Romaji}">
+                                    Opacity="{SelectedStaffNameLanguage == UserStaffNameLanguage.Romaji ? 1.0 : 0.6}">
                                             <Border.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding SetStaffNameLanguageCommand}" CommandParameter="Romaji" />
                                             </Border.GestureRecognizers>
@@ -272,7 +272,7 @@
                                         </Border>
                                         <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6"
                                     Stroke="{Binding SelectedStaffNameLanguage, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Native}"
-                                    Opacity="{Binding SelectedStaffNameLanguage, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=Native}">
+                                    Opacity="{SelectedStaffNameLanguage == UserStaffNameLanguage.Native ? 1.0 : 0.6}">
                                             <Border.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding SetStaffNameLanguageCommand}" CommandParameter="Native" />
                                             </Border.GestureRecognizers>
@@ -285,7 +285,7 @@
                                     <FlexLayout Wrap="Wrap" JustifyContent="Start" AlignItems="Center">
                                         <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
                                     Stroke="{Binding SelectedScoreFormat, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Point100}"
-                                    Opacity="{Binding SelectedScoreFormat, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=Point100}">
+                                    Opacity="{SelectedScoreFormat == ScoreFormat.Point100 ? 1.0 : 0.6}">
                                             <Border.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding SetScoreFormatCommand}" CommandParameter="Point100" />
                                             </Border.GestureRecognizers>
@@ -293,7 +293,7 @@
                                         </Border>
                                         <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
                                     Stroke="{Binding SelectedScoreFormat, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Point10Decimal}"
-                                    Opacity="{Binding SelectedScoreFormat, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=Point10Decimal}">
+                                    Opacity="{SelectedScoreFormat == ScoreFormat.Point10Decimal ? 1.0 : 0.6}">
                                             <Border.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding SetScoreFormatCommand}" CommandParameter="Point10Decimal" />
                                             </Border.GestureRecognizers>
@@ -301,7 +301,7 @@
                                         </Border>
                                         <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
                                     Stroke="{Binding SelectedScoreFormat, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Point10}"
-                                    Opacity="{Binding SelectedScoreFormat, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=Point10}">
+                                    Opacity="{SelectedScoreFormat == ScoreFormat.Point10 ? 1.0 : 0.6}">
                                             <Border.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding SetScoreFormatCommand}" CommandParameter="Point10" />
                                             </Border.GestureRecognizers>
@@ -309,7 +309,7 @@
                                         </Border>
                                         <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
                                     Stroke="{Binding SelectedScoreFormat, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Point5}"
-                                    Opacity="{Binding SelectedScoreFormat, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=Point5}">
+                                    Opacity="{SelectedScoreFormat == ScoreFormat.Point5 ? 1.0 : 0.6}">
                                             <Border.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding SetScoreFormatCommand}" CommandParameter="Point5" />
                                             </Border.GestureRecognizers>
@@ -317,7 +317,7 @@
                                         </Border>
                                         <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
                                     Stroke="{Binding SelectedScoreFormat, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Point3}"
-                                    Opacity="{Binding SelectedScoreFormat, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=Point3}">
+                                    Opacity="{SelectedScoreFormat == ScoreFormat.Point3 ? 1.0 : 0.6}">
                                             <Border.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding SetScoreFormatCommand}" CommandParameter="Point3" />
                                             </Border.GestureRecognizers>
@@ -493,7 +493,7 @@
                             <VerticalStackLayout Spacing="12">
                                 <views:AuthActionsView />
                                 <Grid ColumnDefinitions="*,Auto"
-                          IsVisible="{Binding AniListUserId, Converter={StaticResource StringNotNullOrEmptyConverter}}">
+                          IsVisible="{!string.IsNullOrWhiteSpace(AniListUserId)}">
                                     <Label Text="User ID" Style="{StaticResource Caption1}" TextColor="{StaticResource Gray400}" VerticalTextAlignment="Center" />
                                     <Label Grid.Column="1" Text="{Binding AniListUserId}" Style="{StaticResource Body2Strong}"
                                TextColor="{Binding AniListUserId, Converter={StaticResource RainbowAccentConverter}}" VerticalTextAlignment="Center" />

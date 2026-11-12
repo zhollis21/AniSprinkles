@@ -4,7 +4,7 @@ namespace AniSprinkles.UnitTests.Fakes;
 
 /// <summary>
 /// Fixed values for the report header. The real implementation reads MAUI Essentials, which throws
-/// on the plain <c>net10.0</c> test TFM — which is the whole reason <see cref="IAppEnvironment"/>
+/// on the plain <c>net11.0</c> test TFM — which is the whole reason <see cref="IAppEnvironment"/>
 /// exists.
 /// </summary>
 public sealed class StubAppEnvironment : IAppEnvironment

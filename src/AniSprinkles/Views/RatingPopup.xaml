@@ -11,7 +11,6 @@
 
     <toolkit:Popup.Resources>
         <converters:RainbowAccentConverter x:Key="RainbowAccentConverter" />
-        <converters:SortFieldOpacityConverter x:Key="SortFieldOpacityConverter" />
     </toolkit:Popup.Resources>
 
     <Border StrokeShape="RoundRectangle 20"
