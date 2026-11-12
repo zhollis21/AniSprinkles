@@ -141,7 +141,7 @@ maui devflow list
 | `ui hit-test <x> <y>` | every element at a point, innermost first — how you find who owns a gesture |
 | `ui screenshot --output <path>` | the app's window only (use `driver.ps1 shot` for system UI) |
 | `ui navigate <route>` | `Shell.GoToAsync` by route |
-| `batch` | run several `ui …` lines from stdin in **one** session — required for back-to-back taps (see Gotchas) |
+| `batch` | run several `ui …` lines from stdin in **one** session — required for back-to-back taps (see Gotchas). `MAUI <verb>` is an alias for `ui <verb>` (what `maui-devflow-debug/references/batch.md` shows); `MAUI ui <verb>` is an error |
 | `logs [--limit N] [-f]` | the app's `ILogger` output — `NAVTRACE`, `PageState`, `HTTP` |
 | `network list` / `network detail <id>` | captured AniList requests, headers and bodies included |
 | `storage preferences list` / `storage secure-storage get <key>` | app storage (writes need the MCP server — see Gotchas) |
@@ -408,7 +408,9 @@ works — that is what the driver and DevFlow above are for.
   land on the launcher and every subsequent lookup fails. `driver.ps1 resume` gets you back in
   ~3s. Prefer `ui tap Tab_<route>` over `back` for switching tabs.
 
-- **Network capture records the `Authorization` header verbatim.** In a fixtures build that is
+- **Network capture records the `Authorization` header verbatim** — a documented exception to
+  "bearer tokens are always redacted" (`AGENTS.md`), as is `storage secure-storage get` on the
+  token's key. In a fixtures build that is
   `CIAuthService`'s fake token. In a real-auth Debug build (after `seed-token`) `network detail`
   shows your real AniList token — readable from this PC only (the agent and its forward are on
   loopback; the broker listens on every interface but answers `403 loopback required` to anything
