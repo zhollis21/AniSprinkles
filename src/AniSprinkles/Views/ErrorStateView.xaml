@@ -34,7 +34,7 @@
                    LineBreakMode="WordWrap" />
 
             <!-- Retry button -->
-            <Border StrokeShape="RoundRectangle 12" StrokeThickness="1"
+            <Border AutomationId="RetryButton" StrokeShape="RoundRectangle 12" StrokeThickness="1"
                     Stroke="{Binding ErrorAccentColor, Source={x:Reference Self}}"
                     Background="Transparent"
                     Padding="20,10"

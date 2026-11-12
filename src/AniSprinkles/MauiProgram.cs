@@ -4,6 +4,8 @@ using AniSprinkles.Utilities;
 using CommunityToolkit.Maui;
 #if DEBUG
 using AniSprinkles.Services.FaultInjection;
+using Microsoft.Maui.DevFlow.Agent;
+using Microsoft.Maui.DevFlow.Agent.Core.Network;
 #endif
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
@@ -196,6 +198,17 @@ public static class MauiProgram
             {
                 InnerHandler = network,
             };
+
+            // MAUI DevFlow's network capture (#170), just under LoggingHandler and above fault
+            // injection, so it records each attempt with whatever answered it — the wire, a fixture,
+            // or an injected fault. DevFlow only intercepts HttpClients it creates through DI; this
+            // one is built by hand, so it has to be wrapped explicitly. It records request headers
+            // verbatim, AniListClient's Authorization included: a real-auth Debug build puts the token
+            // in DevFlow's network log. Accepted on #170 — the agent and its adb forward listen on
+            // loopback, the host broker refuses any non-loopback client, and browser origins are
+            // refused, so it is readable from this PC and nowhere else. CreateHandler returns null if
+            // the agent has not started, and the client then goes uncaptured.
+            network = DevFlowHttp.CreateHandler(network) ?? network;
 #endif
             var logging = sp.GetRequiredService<LoggingHandler>();
             logging.InnerHandler = network;
@@ -287,6 +300,13 @@ public static class MauiProgram
                 }
             });
 
+#endif
+
+#if DEBUG
+        // MAUI DevFlow agent (#170): the visual tree, taps, logs and storage that `maui devflow` and its
+        // MCP server drive — /run-anisprinkles is built on it. Debug only, and the package reference
+        // carries the same condition, so a Release APK does not contain the agent at all.
+        builder.AddMauiDevFlowAgent();
 #endif
 
         var app = builder.Build();

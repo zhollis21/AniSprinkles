@@ -17,7 +17,7 @@
             <!-- STANDARD ITEM TEMPLATE (list rows)           -->
             <!-- ============================================ -->
             <DataTemplate x:Key="StandardItemTemplate" x:DataType="models:MediaListEntry">
-                <Border Style="{StaticResource ListRowStyle}" Margin="0,0,0,6">
+                <Border Style="{StaticResource ListRowStyle}" Margin="0,0,0,6" AutomationId="MediaCard">
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnItemTapped" />
                     </Border.GestureRecognizers>
@@ -69,7 +69,7 @@
                         </VerticalStackLayout>
 
                         <!-- +1 EP pill (Watching / Rewatching; dimmed when caught up) -->
-                        <Border Grid.Column="2"
+                        <Border AutomationId="IncrementProgressPill" Grid.Column="2"
                                 StrokeShape="RoundRectangle 18"
                                 StrokeThickness="1"
                                 Stroke="{StaticResource Gray600}"
@@ -105,7 +105,7 @@
             <!-- LARGE ITEM TEMPLATE (2-col grid cards)       -->
             <!-- ============================================ -->
             <DataTemplate x:Key="LargeItemTemplate" x:DataType="models:MediaListEntry">
-                <Border Style="{StaticResource CardStyle}" Padding="0" Margin="4">
+                <Border Style="{StaticResource CardStyle}" Padding="0" Margin="4" AutomationId="MediaCard">
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnItemTapped" />
                     </Border.GestureRecognizers>
@@ -192,7 +192,7 @@
                                 <!-- +1 EP pill (Watching / Rewatching; dimmed when caught up).
                                      Bottom-right of the card; label spells out the action so users
                                      don't have to guess what '+' means. -->
-                                <Border Grid.Column="1"
+                                <Border AutomationId="IncrementProgressPill" Grid.Column="1"
                                         StrokeShape="RoundRectangle 18"
                                         StrokeThickness="1"
                                         Stroke="{StaticResource Gray600}"
@@ -229,7 +229,7 @@
             <!-- COMPACT ITEM TEMPLATE (text-only rows)       -->
             <!-- ============================================ -->
             <DataTemplate x:Key="CompactItemTemplate" x:DataType="models:MediaListEntry">
-                <Grid ColumnDefinitions="*,Auto,Auto,32"
+                <Grid AutomationId="MediaCard" ColumnDefinitions="*,Auto,Auto,32"
                       ColumnSpacing="8"
                       Padding="12,7"
                       MinimumHeightRequest="36">
@@ -270,7 +270,7 @@
                         </Label>
                     </HorizontalStackLayout>
                     <!-- +1 button (Watching / Rewatching; dimmed when caught up) -->
-                    <Border Grid.Column="3"
+                    <Border AutomationId="IncrementProgressPill" Grid.Column="3"
                             StrokeShape="RoundRectangle 14"
                             StrokeThickness="1"
                             Stroke="{StaticResource Gray600}"

@@ -21,6 +21,13 @@
     <PackageVersion Include="Sentry.Maui" Version="6.12.1" />
   </ItemGroup>
 
+  <ItemGroup Label="Debug-only tooling">
+    <!-- MAUI DevFlow (#170): the in-app agent the `maui devflow` CLI and MCP server drive. Preview
+         only — dotnet/maui-labs has no stable release. Keep it in step with the global `maui` CLI
+         (`dotnet tool list -g`); the agent and CLI ship from one repo on one version. -->
+    <PackageVersion Include="Microsoft.Maui.DevFlow.Agent" Version="0.1.0-preview.14.26555.2" />
+  </ItemGroup>
+
   <ItemGroup Label="AndroidX">
     <PackageVersion Include="Xamarin.AndroidX.AppCompat" Version="1.8.0" />
     <PackageVersion Include="Xamarin.AndroidX.Work.Runtime" Version="2.12.0" />

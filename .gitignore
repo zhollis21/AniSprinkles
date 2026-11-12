@@ -103,3 +103,6 @@ tools/*
 *.db
 *.sqlite
 /DEVELOPER_NOTES.md
+
+# `maui ai` (#170) takes this lock while it edits .maui/ai-assets.json; the json is tracked, the lock is not
+/.maui/*.lock
