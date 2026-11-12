@@ -120,6 +120,15 @@ jobs:
               set -e
               echo "$OUTPUT"
 
+              # Everything below parses a copy with the colour codes stripped. On a GitHub runner
+              # MTP colours its summary even though stdout is a pipe — the bytes are
+              # "ESC[32mTest run summary: Passed!" and "ESC[m  total: 1661" — so patterns anchored
+              # at the start of a line matched nothing. The first CI run on MTP (#168) was green
+              # with both gates below silently off; the only sign was "Counts could not be parsed"
+              # in the step summary. Local output has no codes, so a local test of the parser
+              # passes either way.
+              PLAIN=$(printf '%s\n' "$OUTPUT" | sed -E 's/\x1B\[[0-9;]*[A-Za-z]//g')
+
               # Three output formats are recognised. The first is what this repo produces now:
               #   MTP (#168):  "Test run summary: Passed!" followed by indented "total: 1661",
               #                "failed: 0", "succeeded: 1661", "skipped: 0", "duration: 8s 810ms"
@@ -130,16 +139,16 @@ jobs:
               # counts, so when the suite moved to Microsoft.Testing.Platform and neither older
               # pattern matched any more, the skip gate and the total floor would both have gone
               # quiet while the job stayed green — the exact failure they were written to catch.
-              MTP_LINE=$(echo "$OUTPUT" | grep -E "^Test run summary: " | tail -1)
-              NEW_LINE=$(echo "$OUTPUT" | grep -E "^(Passed|Failed)!  - " | tail -1)
-              VSTEST_LINE=$(echo "$OUTPUT" | grep -E "^Test Run (Successful|Failed)\." | tail -1)
+              MTP_LINE=$(echo "$PLAIN" | grep -E "^Test run summary: " | tail -1)
+              NEW_LINE=$(echo "$PLAIN" | grep -E "^(Passed|Failed)!  - " | tail -1)
+              VSTEST_LINE=$(echo "$PLAIN" | grep -E "^Test Run (Successful|Failed)\." | tail -1)
 
               if [ -n "$MTP_LINE" ]; then
-                P=$(echo "$OUTPUT" | grep -oP '^\s+succeeded:\s*\K\d+' | tail -1); P="${P:-?}"
-                F=$(echo "$OUTPUT" | grep -oP '^\s+failed:\s*\K\d+'    | tail -1); F="${F:-?}"
-                S=$(echo "$OUTPUT" | grep -oP '^\s+skipped:\s*\K\d+'   | tail -1); S="${S:-?}"
-                T=$(echo "$OUTPUT" | grep -oP '^\s+total:\s*\K\d+'     | tail -1); T="${T:-?}"
-                D=$(echo "$OUTPUT" | grep -oP '^\s+duration:\s*\K\S.*' | tail -1); D="${D:-?}"
+                P=$(echo "$PLAIN" | grep -oP '^\s+succeeded:\s*\K\d+' | tail -1); P="${P:-?}"
+                F=$(echo "$PLAIN" | grep -oP '^\s+failed:\s*\K\d+'    | tail -1); F="${F:-?}"
+                S=$(echo "$PLAIN" | grep -oP '^\s+skipped:\s*\K\d+'   | tail -1); S="${S:-?}"
+                T=$(echo "$PLAIN" | grep -oP '^\s+total:\s*\K\d+'     | tail -1); T="${T:-?}"
+                D=$(echo "$PLAIN" | grep -oP '^\s+duration:\s*\K\S.*' | tail -1); D="${D:-?}"
                 PARSED=1
               elif [ -n "$NEW_LINE" ]; then
                 P=$(echo "$NEW_LINE" | grep -oP 'Passed:\s*\K\d+' | head -1);  P="${P:-?}"
@@ -149,11 +158,11 @@ jobs:
                 D=$(echo "$NEW_LINE" | grep -oP 'Duration:\s*\K[\d.]+ m?s' | head -1); D="${D:-?}"
                 PARSED=1
               elif [ -n "$VSTEST_LINE" ]; then
-                P=$(echo "$OUTPUT" | grep -oP '^\s+Passed:\s*\K\d+'  | head -1); P="${P:-0}"
-                F=$(echo "$OUTPUT" | grep -oP '^\s+Failed:\s*\K\d+'  | head -1); F="${F:-0}"
-                S=$(echo "$OUTPUT" | grep -oP '^\s+Skipped:\s*\K\d+' | head -1); S="${S:-0}"
-                T=$(echo "$OUTPUT" | grep -oP 'Total tests:\s*\K\d+' | head -1); T="${T:-0}"
-                D_RAW=$(echo "$OUTPUT" | grep -oP 'Total time:\s*\K[\d.]+' | head -1)
+                P=$(echo "$PLAIN" | grep -oP '^\s+Passed:\s*\K\d+'  | head -1); P="${P:-0}"
+                F=$(echo "$PLAIN" | grep -oP '^\s+Failed:\s*\K\d+'  | head -1); F="${F:-0}"
+                S=$(echo "$PLAIN" | grep -oP '^\s+Skipped:\s*\K\d+' | head -1); S="${S:-0}"
+                T=$(echo "$PLAIN" | grep -oP 'Total tests:\s*\K\d+' | head -1); T="${T:-0}"
+                D_RAW=$(echo "$PLAIN" | grep -oP 'Total time:\s*\K[\d.]+' | head -1)
                 D="${D_RAW:+${D_RAW}s}"; D="${D:-?}"
                 PARSED=1
               else
