@@ -193,6 +193,10 @@ See `/project-architecture` for page patterns and performance defaults.
 
 See `.claude/skills/ani-debug/SKILL.md` (`/ani-debug`) for the full adb log workflow, crash/jank/NAVTRACE scan commands, and analysis guidelines.
 
+**Reading and driving the UI goes through MAUI DevFlow (#170).** Every Debug build — CI builds included, never Release — carries the `Microsoft.Maui.DevFlow.Agent`, which the `maui devflow` CLI and the `maui-devflow` MCP server (`.mcp.json`) talk to: the MAUI visual tree, taps by `AutomationId`, logs, captured network traffic and app storage. `driver.ps1` keeps the device lifecycle and the broadcasts. See `/run-anisprinkles`.
+
+- **Give an element a stable `AutomationId` when a script or agent needs to drive it**, rather than letting the script match its visible text. PascalCase, named for what it is, not where it sits — `MediaCard`, `FavoriteToggle`, `RetryButton` — and the same id on every template or page that shows the same thing. It reaches DevFlow and also uiautomator's `resource-id`, so the CI capture script can use the same ids (#162).
+
 ## Local Tools
 
 The `tools/` directory (git-ignored) contains local development scripts:

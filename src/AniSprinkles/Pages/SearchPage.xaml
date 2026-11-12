@@ -35,6 +35,7 @@
                        AutomationProperties.IsInAccessibleTree="False" />
                 <Entry Grid.Column="1"
                        x:Name="SearchEntry"
+                       AutomationId="SearchEntry"
                        Placeholder="{Binding SearchPlaceholder}"
                        Text="{Binding SearchText}"
                        ClearButtonVisibility="WhileEditing"

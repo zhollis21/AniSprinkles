@@ -76,6 +76,14 @@
 		<PackageReference Include="Xamarin.AndroidX.SavedState.SavedState.Ktx" />
 	</ItemGroup>
 
+	<!-- MAUI DevFlow agent (#170): Debug only, CI builds included. This condition is what keeps it
+	     out of Release — MauiProgram's #if DEBUG only stops it being started, and the assembly not
+	     being in the APK at all is the guarantee. A Release APK has no "Microsoft.Maui.DevFlow"
+	     string in any entry (checked against CommunityToolkit.Maui / Sentry.Maui, which do show). -->
+	<ItemGroup Condition="'$(Configuration)' == 'Debug'">
+		<PackageReference Include="Microsoft.Maui.DevFlow.Agent" />
+	</ItemGroup>
+
 	<!-- Append CI preprocessor symbol when building for CI screenshots (-p:CiBuild=true) -->
 	<!-- Restricted to Debug to prevent accidentally shipping stub services in a Release build -->
 	<PropertyGroup Condition="'$(CiBuild)' == 'true' AND '$(Configuration)' == 'Debug'">
