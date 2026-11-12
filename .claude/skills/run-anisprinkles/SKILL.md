@@ -24,8 +24,6 @@ Two tools, split by what each is for (#170):
 
 Paths below are relative to the repo root.
 
-Paths below are relative to the repo root.
-
 ---
 
 ## Prerequisites
@@ -34,7 +32,7 @@ Already present on this machine; listed so you can check them if something break
 
 - .NET 11 SDK (`11.0.100` or any later 11.0 SDK — `global.json` sets that as a floor and rolls forward to the newest installed 11.0 feature band) with the `maui-android` workload
 - Android SDK at `C:\Program Files (x86)\Android\android-sdk`
-  (platform-tools 37.0.1, emulator 35.5.10, API 36 `google_apis_playstore` x86_64 image)
+  (platform-tools 37.0.1, emulator 37.2.13, API 36 `google_apis_playstore` x86_64 image)
 - An AVD — the driver defaults to `pixel_10_pro_xl_-_api_36`
 - The `maui` CLI as a global tool, on the same version as the `Microsoft.Maui.DevFlow.Agent`
   package in `Directory.Packages.props` (both preview, both from `dotnet/maui-labs`):
@@ -87,7 +85,7 @@ driver's build prints the same warning and error counts, so it covers the review
 run it directly and never build the Android head just to run tests.
 
 **Do not chain a build with device driving in one shell call.** `build` alone can run 6+
-minutes; adding `install`/`launch`/`tap` behind it means one stalled step burns the whole
+minutes; adding `install`/`launch` and DevFlow calls behind it means one stalled step burns the whole
 timeout and takes the completed steps down with it. Build in its own call (background it if
 you have other work), then drive in a second.
 
@@ -310,7 +308,8 @@ Prefer the `AutomationId`s above where one exists: they survive a re-recording, 
   `Chainsaw Man`.
 - **Media details** (ONE PIECE): `Luffy D. Monkey`, `Zoro Roronoa` — family-name-first, because
   names render from `userPreferred` resolved against the account's Staff Name Language (#130).
-  Content-descs `Toggle favorite` and `Open studio <name>`.
+  The heart is `FavoriteToggle`; studio chips carry the accessibility description
+  `Open studio <name>`.
 - **Discover**: `Currently Airing`, `Trending Now`, `Top Anime`, `View All ›`
 - **Search tab**: only recorded queries resolve — `no`, `one`, `ka`. Anything else is a
   `FIXTURE MISS`, not a stub quirk: replay has no recording for it and says so in logcat.
@@ -347,7 +346,7 @@ dotnet test tests/AniSprinkles.UnitTests/AniSprinkles.UnitTests.csproj -c Debug
 
 Pure-algorithm + XAML-well-formedness tests only; no device needed. They do **not**
 cover PageModels or any UI, so a green run says nothing about whether the app
-works — that is what the driver above is for.
+works — that is what the driver and DevFlow above are for.
 
 ---
 
@@ -413,8 +412,8 @@ works — that is what the driver above is for.
   `CIAuthService`'s fake token. In a real-auth Debug build (after `seed-token`) `network detail`
   shows your real AniList token — readable from this PC only (the agent and its forward are on
   loopback; the broker listens on every interface but answers `403 loopback required` to anything
-  else, a faked `Host: localhost` included; browser origins are refused), but anything an agent session reads is sent to the
-  model with that session.
+  else, a faked `Host: localhost` included; browser origins are refused). Anything an agent
+  session reads, though, is sent to the model with that session.
 
 - **`dotnet watch` hot reload works on small pages only.** A static `Label.Text` edit on
   `FeedPage.xaml` applied in ~5 s and refreshed the open page; the same edit on the 1,330-line
