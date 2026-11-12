@@ -103,6 +103,7 @@
                     <Border Style="{StaticResource FavouriteToggleButtonStyle}"
                             HorizontalOptions="End" VerticalOptions="Start"
                             Margin="0,12,12,0"
+                            AutomationId="FavoriteToggle"
                             SemanticProperties.Description="Toggle favorite"
                             IsVisible="{Binding IsAuthenticated}">
                         <Border.GestureRecognizers>

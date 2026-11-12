@@ -61,6 +61,7 @@
                     <Border Grid.Column="2"
                             Style="{StaticResource FavouriteToggleButtonStyle}"
                             VerticalOptions="Center"
+                            AutomationId="FavoriteToggle"
                             SemanticProperties.Description="Toggle favorite"
                             IsVisible="{Binding IsAuthenticated}">
                         <Border.GestureRecognizers>

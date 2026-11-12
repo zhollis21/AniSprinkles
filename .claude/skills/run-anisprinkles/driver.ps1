@@ -1,6 +1,7 @@
 <#
 .SYNOPSIS
-  Build / launch / drive AniSprinkles on an Android emulator from the command line.
+  Build / boot / install / launch AniSprinkles on an Android emulator, and send it the
+  app-specific broadcasts no general tool provides.
 
 .DESCRIPTION
   Agent-facing harness for the MAUI Android app. Every command is a subcommand:
@@ -8,6 +9,13 @@
       pwsh .claude/skills/run-anisprinkles/driver.ps1 <command> [args]
 
   Run `driver.ps1 help` for the full command list.
+
+  Reading and driving the UI is MAUI DevFlow's job, not this script's (#170): the
+  `maui devflow` CLI and its MCP server talk to an agent inside every Debug build.
+  `launch` starts DevFlow's broker and the adb reverse it needs, so the agent registers.
+  What stays here is what DevFlow cannot do: device and APK lifecycle, Android key
+  events, screenshots that include system UI, and the broadcasts (fault injection,
+  token seeding, notifications, the airing worker, deep links).
 
   Written for Windows + PowerShell 7. It pins itself to the Android SDK that
   actually has the AVD system images (see Resolve-Sdk) so it does not pick up a
@@ -33,11 +41,11 @@ $Apk      = Join-Path $RepoRoot 'src\AniSprinkles\bin\Debug\net11.0-android\com.
 # ---------------------------------------------------------------- SDK plumbing
 
 function Resolve-Sdk {
-    # This machine has TWO Android SDK roots:
-    #   C:\Program Files (x86)\Android\android-sdk   (VS/Xamarin — has the API 36 images, adb 36)
-    #   %LOCALAPPDATA%\Android\Sdk                   (partial Android Studio — adb 34, no API 36 image)
-    # PATH points at the second one, whose emulator PANICs with
-    # "Cannot find AVD system path". Pick the root that actually has system images.
+    # The SDK is Visual Studio's, C:\Program Files (x86)\Android\android-sdk, and ANDROID_HOME
+    # points at it. Android Studio's %LOCALAPPDATA%\Android\Sdk was a second root on PATH until
+    # 2026-11-12 (adb 34, no API 36 image; its emulator PANICs with "Cannot find AVD system
+    # path"). It stays a last-resort candidate; the check below still picks the root that
+    # actually has system images, whatever ANDROID_HOME says.
     $candidates = @()
     if ($env:ANDROID_SDK_ROOT) { $candidates += $env:ANDROID_SDK_ROOT }
     if ($env:ANDROID_HOME)     { $candidates += $env:ANDROID_HOME }
@@ -135,62 +143,34 @@ function Wait-BootCompleted {
     throw "sys.boot_completed never reached 1 after ${Seconds}s"
 }
 
-# ------------------------------------------------------------------- UI probing
+# ------------------------------------------------------------------ MAUI DevFlow
 
-function Get-UiDump {
-    # uiautomator writes to the device, then we stream it back with exec-out.
-    # Do NOT try `uiautomator dump /dev/tty` — it interleaves the tool's own
-    # "UI hierarchy dumped to:" status line into the XML.
-    Adb shell rm -f /sdcard/ui.xml *> $null
-    Adb shell uiautomator dump /sdcard/ui.xml *> $null
-    $xml = AdbOut cat /sdcard/ui.xml
-    if (-not $xml) { throw 'UI dump was empty — is the app foregrounded?' }
-    return ($xml -join '')
-}
+function Start-DevFlowBroker {
+    # The DevFlow agent in a Debug build registers with a broker on the host (port 19223)
+    # and is then reachable through `maui devflow …` and its MCP server (#170). Without the
+    # broker it still starts, on a fallback port, but nothing discovers it — so `launch`
+    # makes sure both halves are in place before the app starts. Best-effort: a machine
+    # without the `maui` CLI still gets a launched app, just no DevFlow.
+    if (-not (Get-Command maui -ErrorAction SilentlyContinue)) {
+        Say 'DevFlow: `maui` CLI not on PATH (dotnet tool install -g Microsoft.Maui.Cli --prerelease) — skipping broker'
+        return
+    }
+    # The agent reaches the host broker through this reverse. It is per-device and lost
+    # when the emulator restarts, so it is re-applied on every launch.
+    Adb reverse tcp:19223 tcp:19223 *> $null
 
-function Find-Bounds {
-    param([string]$Xml, [string]$Attr, [string]$Value, [switch]$Prefix)
-
-    # Split on '>' so each node is its own line; otherwise a greedy match can
-    # pick up the bounds of a LATER node than the one whose text matched.
-    $nodes = $Xml -split '>'
-    $esc = [regex]::Escape($Value)
-    $pattern = if ($Prefix) { "$Attr=`"$esc[^`"]*`"" } else { "$Attr=`"$esc`"" }
-
-    foreach ($n in $nodes) {
-        if ($n -match $pattern -and $n -match 'bounds="\[(\d+),(\d+)\]\[(\d+),(\d+)\]"') {
-            return [pscustomobject]@{
-                L = [int]$Matches[1]; T = [int]$Matches[2]
-                R = [int]$Matches[3]; B = [int]$Matches[4]
-                CX = [int](([int]$Matches[1] + [int]$Matches[3]) / 2)
-                CY = [int](([int]$Matches[2] + [int]$Matches[4]) / 2)
-            }
+    $running = $false
+    try { $running = [bool]((maui devflow broker status --json 2>$null | ConvertFrom-Json).running) } catch { }
+    if (-not $running) {
+        # `broker start` leaves a daemon behind that inherits the caller's stdout, so run it
+        # detached; capturing its output would block until the daemon exits.
+        Start-Process maui -ArgumentList 'devflow', 'broker', 'start' -WindowStyle Hidden | Out-Null
+        for ($i = 0; $i -lt 20 -and -not $running; $i++) {
+            Start-Sleep -Milliseconds 500
+            try { $running = [bool]((maui devflow broker status --json 2>$null | ConvertFrom-Json).running) } catch { }
         }
     }
-    return $null
-}
-
-function Tap-By {
-    param([string]$Attr, [string]$Value, [switch]$Long, [switch]$Prefix)
-    # An empty value would happily match the app's many empty text="" nodes and tap
-    # something arbitrary — fail loudly instead.
-    if (-not $Value) { throw "no $Attr given, e.g. driver.ps1 tap `"ONE PIECE`"" }
-    $b = Find-Bounds -Xml (Get-UiDump) -Attr $Attr -Value $Value -Prefix:$Prefix
-    if (-not $b) { throw "No node with $Attr='$Value'" }
-    if ($Long) {
-        Say "long-press $Attr='$Value' at ($($b.CX),$($b.CY))"
-        Adb shell input swipe $b.CX $b.CY $b.CX $b.CY 800 *> $null
-    } else {
-        Say "tap $Attr='$Value' at ($($b.CX),$($b.CY))"
-        Adb shell input tap $b.CX $b.CY *> $null
-    }
-    Start-Sleep -Milliseconds 1200
-}
-
-function Get-ScreenSize {
-    $s = (AdbOut wm size) -join ''
-    if ($s -match '(\d+)x(\d+)') { return @([int]$Matches[1], [int]$Matches[2]) }
-    throw "Could not read screen size from '$s'"
+    Say "DevFlow: broker $(if ($running) { 'running on 19223' } else { 'did not start — the agent will fall back to port 9223' })"
 }
 
 # ---------------------------------------------------------------- commands
@@ -204,30 +184,23 @@ AniSprinkles driver — pwsh .claude/skills/run-anisprinkles/driver.ps1 <command
                             (default AVD: pixel_10_pro_xl_-_api_36)
   build                     dotnet build -p:CiBuild=true (stub auth + stub API data)
   install                   adb install -r -d the signed debug APK
-  launch                    Force-restart the app (cold, ~20s) and wait for its process
+  launch                    Start DevFlow's broker + adb reverse, force-restart the app
+                            (cold, ~20s) and wait for its process
   resume                    Bring the app back to the foreground without restarting
-                            (use after a stray `back` drops you to the launcher)
+                            (use after a stray back press drops you to the launcher)
   up [avd]                  boot + install + launch
   stop                      Force-stop the app
   kill-emu                  Shut the emulator down
 
-  shot <name>               Screenshot -> tmp/driver-screens/<name>.png
-  dump [filter]             Print visible text/content-desc nodes (optionally grepped)
-  xml [path]                Save the raw uiautomator XML (default tmp/driver-screens/ui.xml)
-
-  tap <text>                Tap a node by exact visible text
-  tap-prefix <text>         Tap a node whose text STARTS WITH <text>   (e.g. "View All")
-  tap-desc <desc>           Tap a node by content-desc (icon buttons)
-  longpress <text>          Long-press a node by visible text (opens quick-actions)
-  type <text>               Type into the focused field
-  clear [n]                 Delete n chars (default 60) from the focused field
-  key <KEYCODE>             e.g. BACK, ENTER, HOME
+  shot <name>               Screenshot -> tmp/driver-screens/<name>.png (whole screen,
+                            system UI included; maui devflow ui screenshot is the app only)
+  key <KEYCODE>             e.g. BACK, ENTER, HOME — any Android key event
   back                      KEYCODE_BACK
-  swipe up|down|left|right  One content-area swipe
-  scroll-to <text>          Swipe up until <text> appears (max 10)
-  wait-for <text> [secs]    Poll the UI until <text> appears (default 30s)
-  goto <tab>                Switch tabs: Library|Discover|Search|Feed|Settings
-  search                    Shortcut for `goto Search`
+
+  Reading, tapping, typing, scrolling and waiting are MAUI DevFlow's (#170):
+    maui devflow ui tree | query | tap | fill | scroll | gesture | hit-test | screenshot
+  The old dump / xml / tap / tap-desc / tap-prefix / longpress / type / clear / swipe /
+  scroll-to / wait-for / goto / search verbs are gone — /run-anisprinkles has the mapping.
 
   logcat [lines]            App-PID logcat tail (default 200)
   applog                    Pull the on-device rotating file log
@@ -405,6 +378,8 @@ function Cmd-Launch {
     $activity = ((AdbOut cmd package resolve-activity --brief -c android.intent.category.LAUNCHER $Package) |
                  Where-Object { $_ -match '/' } | Select-Object -Last 1).Trim()
     if (-not $activity) { throw "could not resolve launcher activity for $Package" }
+    # Before the process starts: the agent looks for the broker once, at startup.
+    if (-not $Resume) { Start-DevFlowBroker }
     Say "am start $activity$(if ($Resume) { ' (warm)' })"
     if ($Resume) { Adb shell am start -W -n $activity }
     else         { Adb shell am start -W -S -n $activity }
@@ -426,81 +401,6 @@ function Cmd-Shot {
     if (-not (Test-Path $out)) { throw 'screencap/pull produced no file' }
     Say "$out ($([math]::Round((Get-Item $out).Length / 1KB)) KB)"
     return $out
-}
-
-function Cmd-Dump {
-    param([string]$Filter)
-    $xml = Get-UiDump
-    $lines = foreach ($n in ($xml -split '>')) {
-        $t = if ($n -match 'text="([^"]*)"') { $Matches[1] } else { '' }
-        $d = if ($n -match 'content-desc="([^"]*)"') { $Matches[1] } else { '' }
-        if ($t -or $d) {
-            $bits = @()
-            if ($t) { $bits += "text=`"$t`"" }
-            if ($d) { $bits += "desc=`"$d`"" }
-            $bits -join '  '
-        }
-    }
-    $lines = $lines | Select-Object -Unique
-    if ($Filter) { $lines = $lines | Where-Object { $_ -like "*$Filter*" } }
-    $lines | Write-Host
-}
-
-function Cmd-Xml {
-    param([string]$Path)
-    New-Item -ItemType Directory -Force -Path $ShotDir *> $null
-    if (-not $Path) { $Path = Join-Path $ShotDir 'ui.xml' }
-    Get-UiDump | Set-Content -Path $Path -Encoding utf8
-    Say $Path
-}
-
-function Cmd-Swipe {
-    param([string]$Dir = 'up')
-    $w, $h = Get-ScreenSize
-    $cx = [int]($w / 2)
-    switch ($Dir) {
-        'up'    { Adb shell input swipe $cx ([int]($h * 0.75)) $cx ([int]($h * 0.28)) 300 *> $null }
-        'down'  { Adb shell input swipe $cx ([int]($h * 0.28)) $cx ([int]($h * 0.75)) 300 *> $null }
-        'left'  { Adb shell input swipe ([int]($w * 0.85)) ([int]($h / 2)) ([int]($w * 0.15)) ([int]($h / 2)) 300 *> $null }
-        'right' { Adb shell input swipe ([int]($w * 0.15)) ([int]($h / 2)) ([int]($w * 0.85)) ([int]($h / 2)) 300 *> $null }
-        default { throw "swipe direction must be up|down|left|right" }
-    }
-    Start-Sleep -Milliseconds 900
-}
-
-function Cmd-ScrollTo {
-    param([string]$Text, [int]$Max = 10)
-    for ($i = 0; $i -le $Max; $i++) {
-        if ((Get-UiDump) -match [regex]::Escape("text=`"$Text`"")) {
-            Say "found '$Text' after $i swipe(s)"; return
-        }
-        Cmd-Swipe up
-    }
-    throw "'$Text' not found after $Max swipes"
-}
-
-function Cmd-WaitFor {
-    param([string]$Text, [int]$Seconds = 30)
-    for ($i = 0; $i -lt $Seconds; $i++) {
-        try { if ((Get-UiDump) -match [regex]::Escape($Text)) { Say "'$Text' after ${i}s"; return } } catch { }
-        Start-Sleep -Seconds 1
-    }
-    throw "'$Text' never appeared within ${Seconds}s"
-}
-
-function Cmd-Goto {
-    param([string]$Page)
-    # Bottom tab bar (issue #43): every tab label is a real uiautomator node carrying
-    # both text and content-desc, so a tab switch is a plain text tap. This replaced
-    # the old open-the-drawer-then-pick dance, and works from anywhere — including
-    # partway down a pushed details stack.
-    Tap-By -Attr 'text' -Value $Page
-    Start-Sleep -Seconds 2
-}
-
-function Cmd-Search {
-    # Search is its own tab now, so this is just a tab switch.
-    Cmd-Goto 'Search'
 }
 
 function Cmd-Logcat {
@@ -773,28 +673,9 @@ switch ($cmd) {
     'stop'       { Adb shell am force-stop $Package; Say 'stopped' }
     'kill-emu'   { Adb emu kill; Say 'emulator killed' }
     'shot'       { if ($a[0]) { Cmd-Shot $a[0] } else { Cmd-Shot } }
-    'dump'       { Cmd-Dump ($a -join ' ') }
-    'xml'        { Cmd-Xml ($a[0]) }
-    'tap'        { Tap-By -Attr 'text' -Value ($a -join ' ') }
-    'tap-prefix' { Tap-By -Attr 'text' -Value ($a -join ' ') -Prefix }
-    'tap-desc'   { Tap-By -Attr 'content-desc' -Value ($a -join ' ') }
-    'longpress'  { Tap-By -Attr 'text' -Value ($a -join ' ') -Long }
-    'type'       { Adb shell input text (($a -join ' ') -replace ' ', '%s'); Start-Sleep -Milliseconds 600 }
-    'clear'      { # KEYCODE_CTRL_A is not select-all on Android — spam DEL instead.
-                   $n = if ($a[0] -match '^\d+$') { [int]$a[0] } else { 60 }
-                   Adb shell input keyevent KEYCODE_MOVE_END *> $null
-                   Adb shell input keyevent (@('KEYCODE_DEL') * $n) *> $null
-                   Start-Sleep -Milliseconds 600 }
     'key'        { if (-not $a[0]) { throw 'key needs a keycode, e.g. driver.ps1 key ENTER' }
                    Adb shell input keyevent "KEYCODE_$($a[0].ToUpperInvariant())"; Start-Sleep -Milliseconds 800 }
     'back'       { Adb shell input keyevent KEYCODE_BACK; Start-Sleep -Milliseconds 1000 }
-    'swipe'      { if ($a[0]) { Cmd-Swipe $a[0] } else { Cmd-Swipe } }
-    'scroll-to'  { Cmd-ScrollTo ($a -join ' ') }
-    'wait-for'   { $secs = 30; $txt = $a -join ' '
-                   if ($a.Count -gt 1 -and $a[-1] -match '^\d+$') { $secs = [int]$a[-1]; $txt = ($a[0..($a.Count - 2)] -join ' ') }
-                   Cmd-WaitFor $txt $secs }
-    'search'     { Cmd-Search }
-    'goto'       { Cmd-Goto ($a -join ' ') }
     'logcat'     { if ($a[0]) { Cmd-Logcat ([int]$a[0]) } else { Cmd-Logcat } }
     'applog'     { Cmd-AppLog }
     'fault'      { Cmd-Fault $a }
@@ -803,5 +684,13 @@ switch ($cmd) {
     'notify'     { Cmd-Notify $a }
     'worker-run' { Cmd-WorkerRun $a }
     'deeplink'   { Cmd-DeepLink $a }
+    { $_ -in @('dump', 'xml', 'tap', 'tap-prefix', 'tap-desc', 'longpress', 'type', 'clear',
+               'swipe', 'scroll-to', 'wait-for', 'goto', 'search') } {
+        Write-Host "'$Command' was removed (#170): reading and driving the UI is MAUI DevFlow's now."
+        Write-Host '  maui devflow ui tree | query --text/--automationId [--wait-until exists] | tap | fill'
+        Write-Host '  maui devflow ui scroll | gesture longpress | hit-test | screenshot'
+        Write-Host 'The old-verb mapping is in .claude/skills/run-anisprinkles/SKILL.md.'
+        exit 1
+    }
     default      { Write-Host "Unknown command '$Command'`n"; Cmd-Help; exit 1 }
 }
