@@ -169,6 +169,16 @@ jobs:
                 PARSED=0
               fi
 
+              # Say in the job log what was parsed. The counts otherwise reach only the step
+              # summary, which is why a parser that matched nothing went unnoticed: the log
+              # looked identical either way. Unparsed output is a warning, not a failure — see
+              # the rule just below — but it is now one that shows on the run page.
+              if [ "$PARSED" -eq 1 ]; then
+                echo "Parsed test results for $PROJ_NAME: $P passed, $F failed, $S skipped, $T total"
+              else
+                echo "::warning::Could not parse the test results for $PROJ_NAME, so the skipped-test gate and the test floor did not act on it."
+              fi
+
               # Pass/fail is keyed off the test runner's exit code, not our ability to parse
               # its output — a runner output format change should never fail CI on its own.
               if [ "$PROJ_EXIT" -eq 0 ]; then ICON="✅"; else ICON="❌"; OVERALL_EXIT=1; fi

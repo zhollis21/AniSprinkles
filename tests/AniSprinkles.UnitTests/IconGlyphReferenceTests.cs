@@ -258,7 +258,9 @@ public class IconGlyphReferenceTests
 
         if (File.Exists(propsPath))
         {
-            var match = Regex.Match(File.ReadAllText(propsPath), pattern);
+            // NuGet package IDs are case-insensitive, and tools/generate-glyphs.cs reads this same file
+            // ignoring case. Matching exactly here would make the two disagree about one entry.
+            var match = Regex.Match(File.ReadAllText(propsPath), pattern, RegexOptions.IgnoreCase);
             if (match.Success)
             {
                 return match.Groups["version"].Value;

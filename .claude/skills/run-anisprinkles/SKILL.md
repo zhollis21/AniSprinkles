@@ -23,7 +23,7 @@ Paths below are relative to the repo root.
 
 Already present on this machine; listed so you can check them if something breaks.
 
-- .NET 11 SDK (`dotnet --version` → `11.0.100`, pinned by `global.json`) with the `maui-android` workload
+- .NET 11 SDK (`11.0.100` or any later 11.0 SDK — `global.json` sets that as a floor and rolls forward to the newest installed 11.0 feature band) with the `maui-android` workload
 - Android SDK at `C:\Program Files (x86)\Android\android-sdk`
   (platform-tools 36.0.0, emulator 35.5.10, API 36 `google_apis_playstore` x86_64 image)
 - An AVD — the driver defaults to `pixel_10_pro_xl_-_api_36`
