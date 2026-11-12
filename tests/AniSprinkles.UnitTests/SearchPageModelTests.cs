@@ -11,7 +11,7 @@ namespace AniSprinkles.UnitTests;
 ///
 /// These are the defects PR #116 found across six review rounds — three of them regressions
 /// introduced by the previous round's fix. None were reachable before #62 moved the page models
-/// into a plain <c>net10.0</c> library, and none are reachable on device either: each needs a
+/// into a plain <c>net11.0</c> library, and none are reachable on device either: each needs a
 /// specific interleaving (a fetch failing at a precise moment, a superseded continuation resuming
 /// after a newer one, a debounced settings write landing between two reads).
 /// </summary>

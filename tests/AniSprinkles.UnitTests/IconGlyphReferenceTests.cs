@@ -19,12 +19,13 @@ namespace AniSprinkles.UnitTests;
 ///    platform-only icon package (#62). A mirror can drift from its source.
 ///
 /// The assembly is read through PE metadata rather than <c>Assembly.Load</c>: it targets
-/// <c>net10.0-android36.0</c> and will not load into this <c>net10.0</c> test host.
+/// <c>net10.0-android36.0</c> and will not load into this <c>net11.0</c> test host.
 /// </summary>
 public class IconGlyphReferenceTests
 {
     private const string PackageId = "IconFont.Maui.FluentIcons";
     private const string IconNamespace = "IconFont.Maui.FluentIcons";
+    private const string CentralPackageFile = "Directory.Packages.props";
 
     private static readonly Lazy<string> RepoRoot = new(FindRepoRoot);
 
@@ -240,23 +241,24 @@ public class IconGlyphReferenceTests
     }
 
     /// <summary>
-    /// Reads the pinned version out of whichever project declares the package, so a bump points this
-    /// test at the new assembly instead of silently validating against a stale one.
+    /// Reads the pinned version out of <c>Directory.Packages.props</c>, so a bump points this test at
+    /// the new assembly instead of silently validating against a stale one.
     /// <para>
-    /// Scans every csproj under <c>src/</c> rather than naming one: hardcoding the app's path meant
-    /// that moving the project (#62's sibling-layout restructure) turned all 190 glyph cases into
-    /// silent skips, which is precisely the hole #117 exists to close. A missing declaration is a
-    /// repo-structure problem, not an environment gap, so it throws instead of skipping.
+    /// Every package version in the repo lives in that one file since #168 (Central Package
+    /// Management); the project files name the package and nothing else. Before that this scanned
+    /// the csprojs under <c>src/</c>, and the move turned all 200 glyph cases red at once — which is
+    /// the behaviour wanted. A missing entry is a repo-structure problem, not an environment gap, so
+    /// it throws instead of skipping: the silent skip is precisely the hole #117 exists to close.
     /// </para>
     /// </summary>
     private static string ResolvePackageVersion()
     {
-        var pattern = $@"PackageReference\s+Include=""{Regex.Escape(PackageId)}""\s+Version=""(?<version>[^""]+)""";
+        var propsPath = Path.Combine(RepoRoot.Value, CentralPackageFile);
+        var pattern = $@"PackageVersion\s+Include=""{Regex.Escape(PackageId)}""\s+Version=""(?<version>[^""]+)""";
 
-        foreach (var csproj in Directory.EnumerateFiles(
-            Path.Combine(RepoRoot.Value, "src"), "*.csproj", SearchOption.AllDirectories))
+        if (File.Exists(propsPath))
         {
-            var match = Regex.Match(File.ReadAllText(csproj), pattern);
+            var match = Regex.Match(File.ReadAllText(propsPath), pattern);
             if (match.Success)
             {
                 return match.Groups["version"].Value;
@@ -264,9 +266,9 @@ public class IconGlyphReferenceTests
         }
 
         throw new InvalidOperationException(
-            $"No project under src/ declares a PackageReference to {PackageId}. If the package was " +
-            "removed on purpose, delete Core's mirrored Glyphs.cs and this test together; otherwise " +
-            "this test can no longer validate anything.");
+            $"{CentralPackageFile} at the repo root declares no PackageVersion for {PackageId}. If the " +
+            "package was removed on purpose, delete Core's mirrored Glyphs.cs and this test together; " +
+            "otherwise this test can no longer validate anything.");
     }
 
     private static IEnumerable<string> EnumerateXamlFiles()

@@ -4,7 +4,7 @@ namespace AniSprinkles.Services.Abstractions;
 /// The handful of environment facts a diagnostic report needs in its header (#112).
 /// <para>
 /// A seam because every one of these comes from MAUI Essentials — <c>AppInfo</c>, <c>DeviceInfo</c> —
-/// which throw rather than degrade on the plain <c>net10.0</c> test TFM. Reading them straight from a
+/// which throw rather than degrade on the plain <c>net11.0</c> test TFM. Reading them straight from a
 /// page model would make the whole report flow untestable.
 /// </para>
 /// </summary>

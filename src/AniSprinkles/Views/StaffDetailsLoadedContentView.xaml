@@ -330,7 +330,7 @@
                                                     VerticalOptions="End"
                                                     Margin="0,0,6,6"
                                                     Padding="0"
-                                                    IsVisible="{Binding Media.CoverImage.Medium, Converter={StaticResource StringNotNullOrEmptyConverter}}">
+                                                    IsVisible="{!string.IsNullOrWhiteSpace(Media?.CoverImage?.Medium)}">
                                                 <Border.GestureRecognizers>
                                                     <TapGestureRecognizer x:DataType="{x:Null}"
                                                                           Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToMediaCommand}"

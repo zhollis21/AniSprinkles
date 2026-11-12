@@ -10,7 +10,7 @@ namespace AniSprinkles.Services.Maui;
 /// <see cref="IDialogService"/> adapter over the XAML popups in <c>AniSprinkles.Views</c> and
 /// <c>Shell.Current.DisplayPromptAsync</c>. Lives here rather than in Core because every one of those
 /// types needs <c>CommunityToolkit.Maui</c> and a live shell; keeping them behind the interface is
-/// what lets the page models run on the plain <c>net10.0</c> test TFM. Mirrors
+/// what lets the page models run on the plain <c>net11.0</c> test TFM. Mirrors
 /// <see cref="MauiShellNavigationService"/> and <see cref="MauiUserFeedback"/>.
 /// <para>
 /// Every method returns the "user dismissed" value when there is no current page, matching the

@@ -4,7 +4,7 @@ namespace AniSprinkles.Services.Abstractions;
 /// Transient, non-blocking user feedback (snackbars / toasts). Abstracted so PageModels and the
 /// shared <see cref="AniSprinkles.PageModels.ListOperationRunner"/> can be unit-tested without
 /// CommunityToolkit.Maui's MAUI-only <c>Snackbar</c>/<c>Toast</c> statics (which don't resolve on
-/// the plain <c>net10.0</c> test TFM). Mirrors why <see cref="INavigationService"/> exists.
+/// the plain <c>net11.0</c> test TFM). Mirrors why <see cref="INavigationService"/> exists.
 /// </summary>
 public interface IUserFeedback
 {

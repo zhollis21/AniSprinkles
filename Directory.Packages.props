@@ -1,0 +1,46 @@
+<Project>
+
+  <!-- Central Package Management (#168). Every package version in the repo lives here; the project
+       files say which packages they use and nothing about versions. Before this, Core and the app
+       each carried their own Microsoft.Maui.Controls, CommunityToolkit.Mvvm and Sentry versions and
+       a comment asking that they be kept in lockstep. Now there is one number to change. -->
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+
+  <ItemGroup Label="App and Core">
+    <PackageVersion Include="Microsoft.Maui.Controls" Version="11.0.10" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="11.0.0" />
+    <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <PackageVersion Include="CommunityToolkit.Maui" Version="17.0.0" />
+    <PackageVersion Include="IconFont.Maui.FluentIcons" Version="1.1.1" />
+    <PackageVersion Include="Syncfusion.Maui.Toolkit" Version="1.0.11" />
+    <!-- Sentry and Sentry.Maui are one release train: the app references Sentry.Maui, Core references
+         the plain Sentry package it is built on. Move them together. -->
+    <PackageVersion Include="Sentry" Version="6.12.1" />
+    <PackageVersion Include="Sentry.Maui" Version="6.12.1" />
+  </ItemGroup>
+
+  <ItemGroup Label="AndroidX">
+    <PackageVersion Include="Xamarin.AndroidX.AppCompat" Version="1.8.0" />
+    <PackageVersion Include="Xamarin.AndroidX.Work.Runtime" Version="2.12.0" />
+    <!-- AndroidX companion packages are pinned as a train so NuGet does not mix old KTX bindings
+         with newer base AndroidX packages pulled by MAUI/WorkManager. Revisit with each MAUI upgrade. -->
+    <PackageVersion Include="Xamarin.AndroidX.Activity.Ktx" Version="1.13.0.1" />
+    <PackageVersion Include="Xamarin.AndroidX.Collection.Ktx" Version="1.6.0.1" />
+    <PackageVersion Include="Xamarin.AndroidX.Core" Version="1.19.1" />
+    <PackageVersion Include="Xamarin.AndroidX.Core.Core.Ktx" Version="1.19.1" />
+    <PackageVersion Include="Xamarin.AndroidX.Fragment.Ktx" Version="1.9.1" />
+    <PackageVersion Include="Xamarin.AndroidX.Lifecycle.Common.Java8" Version="2.11.0.1" />
+    <PackageVersion Include="Xamarin.AndroidX.Lifecycle.Runtime.Ktx" Version="2.11.0.1" />
+    <PackageVersion Include="Xamarin.AndroidX.Lifecycle.Runtime.Ktx.Android" Version="2.11.0.1" />
+    <PackageVersion Include="Xamarin.AndroidX.Lifecycle.ViewModel.Ktx" Version="2.11.0.1" />
+    <PackageVersion Include="Xamarin.AndroidX.SavedState.SavedState.Ktx" Version="1.5.0.1" />
+  </ItemGroup>
+
+  <ItemGroup Label="Tests">
+    <PackageVersion Include="xunit.v3.mtp-v2" Version="4.0.3" />
+    <PackageVersion Include="NSubstitute" Version="5.3.0" />
+  </ItemGroup>
+
+</Project>

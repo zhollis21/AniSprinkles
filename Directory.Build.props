@@ -1,0 +1,12 @@
+<Project>
+
+  <!-- Settings every project in the repo shares (#168). MSBuild imports this file into each project
+       before the project's own properties, so a project can still override anything here. It also
+       reaches the file-based tools under tools/, which build as projects of their own. Package
+       versions are the other shared file: Directory.Packages.props. -->
+  <PropertyGroup>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+</Project>
