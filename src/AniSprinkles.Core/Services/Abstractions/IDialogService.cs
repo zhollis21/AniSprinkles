@@ -34,7 +34,7 @@ public readonly record struct DiagnosticsReportChoice(string? Description);
 /// Modal user interaction — confirmations, prompts, and the bottom-sheet pickers. Abstracted for the
 /// same reason as <see cref="INavigationService"/> and <see cref="IUserFeedback"/>: the concrete
 /// popups are XAML-backed <c>CommunityToolkit.Maui</c> types that only exist in the MAUI app project,
-/// and page models have to be exercisable from <c>net10.0</c> unit tests without them.
+/// and page models have to be exercisable from <c>net11.0</c> unit tests without them.
 /// <para>
 /// Note that <c>Shell.Current</c> is <c>null</c> rather than throwing off-device, so a page model
 /// calling a popup directly would silently no-op in a test and read as a pass. Going through this

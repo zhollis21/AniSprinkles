@@ -23,10 +23,10 @@ Paths below are relative to the repo root.
 
 Already present on this machine; listed so you can check them if something breaks.
 
-- .NET 10 SDK (`dotnet --version` → `10.0.303`) with the `maui-android` workload
+- .NET 11 SDK (`11.0.100` or any later 11.0 SDK — `global.json` sets that as a floor and rolls forward to the newest installed 11.0 feature band) with the `maui-android` workload
 - Android SDK at `C:\Program Files (x86)\Android\android-sdk`
   (platform-tools 36.0.0, emulator 35.5.10, API 36 `google_apis_playstore` x86_64 image)
-- An AVD — the driver defaults to `pixel_9_-_api_36`
+- An AVD — the driver defaults to `pixel_10_pro_xl_-_api_36`
 
 Check all of it at once:
 
@@ -55,18 +55,19 @@ data rather than fixtures.
 pwsh -NoProfile -File .claude/skills/run-anisprinkles/driver.ps1 build
 ```
 
-Takes **~6 minutes** from cold (`Time Elapsed 00:05:53`) and produces a ~97 MB APK
-at `src/AniSprinkles/bin/Debug/net10.0-android/com.RainbowSprinkles.AniSprinkles-Signed.apk`.
+Takes **about a minute and a half** (78 s measured from a wiped `bin`/`obj` on .NET 11, and much the
+same warm — packaging dominates, not compiling) and produces a ~150 MB APK
+at `src/AniSprinkles/bin/Debug/net11.0-android/com.RainbowSprinkles.AniSprinkles-Signed.apk`.
 Skip it if you have not touched `src/` since the last build.
 
 **Build the Android head exactly one way: `driver.ps1 build`.** It is tempting to run a
-plain `dotnet build src/AniSprinkles/AniSprinkles.csproj -c Debug -f net10.0-android` to check for
-warnings and then `driver.ps1 build` for the APK — that wastes a second ~6-minute build
+plain `dotnet build src/AniSprinkles/AniSprinkles.csproj -c Debug -f net11.0-android` to check for
+warnings and then `driver.ps1 build` for the APK — that wastes a second build
 *and* leaves a broken APK, because the plain build omits `EmbedAssembliesIntoApk` and
-overwrites the deployable ~97 MB APK with a ~19 MB Fast Deployment one (see Gotchas). The
+overwrites the deployable ~150 MB APK with a ~22 MB Fast Deployment one (see Gotchas). The
 driver's build prints the same warning and error counts, so it covers the review pass too.
 
-`dotnet test` does **not** need any of this — the test project targets plain `net10.0`, so
+`dotnet test` does **not** need any of this — the test project targets plain `net11.0`, so
 run it directly and never build the Android head just to run tests.
 
 **Do not chain a build with device driving in one shell call.** `build` alone can run 6+
@@ -345,24 +346,24 @@ works — that is what the driver above is for.
   `KEYCODE_DEL` instead.
 
 - **A plain `dotnet build` silently clobbers the deployable APK.** Running
-  `dotnet build src/AniSprinkles/AniSprinkles.csproj -c Debug -f net10.0-android` to check for
+  `dotnet build src/AniSprinkles/AniSprinkles.csproj -c Debug -f net11.0-android` to check for
   warnings is fine, but it omits `-p:EmbedAssembliesIntoApk=true` and leaves a
-  ~19 MB *Fast Deployment* APK where the ~97 MB one was. Installing that gives a
+  ~22 MB *Fast Deployment* APK where the ~150 MB one was. Installing that gives a
   process that dies instantly, before any managed code, with no .NET stack trace —
   just `SIGABRT` and, buried in logcat:
 
   ```
-  F/monodroid: No assemblies found in '.../files/.__override__/x86_64'
-               Assuming this is part of Fast Deployment. Exiting...
+  E monodroid: CLR error: Failed to load System.Private.CoreLib.dll (error code 0x80070002)
+  F monodroid: Failed to initialize CoreCLR. Error code: 80070002
   ```
 
   It reads like a crash in your change and is not one. **Check the APK size** — if
-  it is ~19 MB rather than ~97 MB, that is the whole story. Rebuild with
-  `driver.ps1 build` (which passes both flags) before installing. A leftover
-  `.__override__` directory can also survive an uninstall, so if it persists after
-  a correct rebuild, uninstall the package before reinstalling.
+  it is ~22 MB rather than ~150 MB, that is the whole story. Rebuild with
+  `driver.ps1 build` (which passes both flags) before installing. Fast Deployment
+  keeps its files outside the app (`/data/local/tmp/fastdeploy2/<package>` on .NET 11), so if the
+  failure persists after a correct rebuild, uninstall the package before reinstalling.
 
-- **The debug APK is ~97 MB and installs land on `INSUFFICIENT_STORAGE`** once the
+- **The debug APK is ~150 MB and installs land on `INSUFFICIENT_STORAGE`** once the
   AVD's `/data` gets tight (mine had 570 MB free and still failed). `driver.ps1
   install` detects it, uninstalls the old copy, and retries. Note that `adb install`
   prints `Failure [...]` and can still exit 0 — the driver parses the output text,
@@ -408,7 +409,7 @@ works — that is what the driver above is for.
 | `AVD <name> never attached to adb`, and `emulator`/`qemu-system-x86_64` are running but idle (well under 1s CPU, no port in the 5554-5600 range listening) | A stale AVD lock. qemu starts, finds the AVD claimed, and hangs instead of exiting — so each retry silently adds another hung pair. Kill every `emulator`/`qemu*` process, then delete `~/.android/avd/<name>.avd/*.lock` (`hardware-qemu.ini.lock`, `multiinstance.lock`) and boot again. Run `emulator -verbose` to confirm: it prints `Running multiple emulators with the same AVD`. Check acceleration first with `emulator -accel-check` to rule out WHPX. |
 | `df 'C:/Program Files/Git/data': No such file` | Git Bash path mangling — `MSYS_NO_PATHCONV=1`. |
 | App runs but shows the signed-out screen | You built without `-p:CiBuild=true`. Rebuild with `driver.ps1 build`. |
-| App dies instantly, `SIGABRT`, no .NET stack | APK is ~19 MB not ~97 MB — a plain `dotnet build` overwrote it. `driver.ps1 build`. |
+| App dies instantly, `SIGABRT`, no .NET stack | APK is ~22 MB not ~150 MB — a plain `dotnet build` overwrote it. `driver.ps1 build`. |
 
 For deeper on-device diagnostics (ANR / jank / Glide cascades / NAVTRACE timings),
 switch to **`/ani-debug`** — it has the full log-collection and interpretation

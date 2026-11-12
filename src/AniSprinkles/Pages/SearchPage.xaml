@@ -58,7 +58,7 @@
         <HorizontalStackLayout Grid.Row="2" Spacing="8" Margin="0,0,0,8">
             <Border Style="{StaticResource ChipBorderStyle}" Padding="14,6"
                     Stroke="{Binding SearchFilterKey, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=All}"
-                    Opacity="{Binding SearchFilterKey, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=All}">
+                    Opacity="{SearchFilterKey == 'All' ? 1.0 : 0.6}">
                 <Border.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding SelectSearchFilterCommand}" CommandParameter="All" />
                 </Border.GestureRecognizers>
@@ -67,7 +67,7 @@
             </Border>
             <Border Style="{StaticResource ChipBorderStyle}" Padding="14,6"
                     Stroke="{Binding SearchFilterKey, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Anime}"
-                    Opacity="{Binding SearchFilterKey, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=Anime}">
+                    Opacity="{SearchFilterKey == 'Anime' ? 1.0 : 0.6}">
                 <Border.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding SelectSearchFilterCommand}" CommandParameter="Anime" />
                 </Border.GestureRecognizers>
@@ -76,7 +76,7 @@
             </Border>
             <Border Style="{StaticResource ChipBorderStyle}" Padding="14,6"
                     Stroke="{Binding SearchFilterKey, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Manga}"
-                    Opacity="{Binding SearchFilterKey, Converter={StaticResource SortFieldOpacityConverter}, ConverterParameter=Manga}">
+                    Opacity="{SearchFilterKey == 'Manga' ? 1.0 : 0.6}">
                 <Border.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding SelectSearchFilterCommand}" CommandParameter="Manga" />
                 </Border.GestureRecognizers>

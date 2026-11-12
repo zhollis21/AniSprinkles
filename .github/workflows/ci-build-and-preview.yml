@@ -51,13 +51,13 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: "10.0.x"
+          dotnet-version: "11.0.x"
 
       - name: Cache NuGet Packages
         uses: actions/cache@v5
         with:
           path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('AniSprinkles.slnx', 'src/**/*.csproj', 'tests/**/*.csproj') }}
+          key: ${{ runner.os }}-nuget-${{ hashFiles('AniSprinkles.slnx', 'Directory.Packages.props', 'src/**/*.csproj', 'tests/**/*.csproj') }}
           restore-keys: |
             ${{ runner.os }}-nuget-
 
@@ -71,7 +71,7 @@ jobs:
         run: |
           dotnet build src/AniSprinkles/AniSprinkles.csproj \
             -c Debug \
-            -f net10.0-android \
+            -f net11.0-android \
             -p:EmbedAssembliesIntoApk=true \
             -p:CiBuild=true \
             --no-restore
@@ -90,7 +90,7 @@ jobs:
           #     stale-assembly run reported 557 against a 644-test suite; neither shows up as a skip.
           #     Ratchet it up as the suite grows. Lowering it needs a reason.
           MAX_SKIPPED_TESTS=0
-          MIN_TOTAL_TESTS=830
+          MIN_TOTAL_TESTS=1600
 
           # The parsed counts are strings and can be the literal "?" (see the new-runner branch
           # below), so everything numeric is guarded through here before a -gt / -lt comparison.
@@ -120,13 +120,37 @@ jobs:
               set -e
               echo "$OUTPUT"
 
-              # Support both output formats:
+              # Everything below parses a copy with the colour codes stripped. On a GitHub runner
+              # MTP colours its summary even though stdout is a pipe — the bytes are
+              # "ESC[32mTest run summary: Passed!" and "ESC[m  total: 1661" — so patterns anchored
+              # at the start of a line matched nothing. The first CI run on MTP (#168) was green
+              # with both gates below silently off; the only sign was "Counts could not be parsed"
+              # in the step summary. Local output has no codes, so a local test of the parser
+              # passes either way.
+              PLAIN=$(printf '%s\n' "$OUTPUT" | sed -E 's/\x1B\[[0-9;]*[A-Za-z]//g')
+
+              # Three output formats are recognised. The first is what this repo produces now:
+              #   MTP (#168):  "Test run summary: Passed!" followed by indented "total: 1661",
+              #                "failed: 0", "succeeded: 1661", "skipped: 0", "duration: 8s 810ms"
               #   New runner:  "Passed!  - Failed: 0, Passed: 25, ..., Duration: 200 ms" (or "Duration: 2 s" on slower runs)
               #   VSTest/CI:   "Test Run Successful.\nTotal tests: 25\n     Passed: 25\n Total time: 0.71 Seconds"
-              NEW_LINE=$(echo "$OUTPUT" | grep -E "^(Passed|Failed)!  - " | tail -1)
-              VSTEST_LINE=$(echo "$OUTPUT" | grep -E "^Test Run (Successful|Failed)\." | tail -1)
+              #
+              # The MTP branch is not optional decoration. Both gates below act only on parsed
+              # counts, so when the suite moved to Microsoft.Testing.Platform and neither older
+              # pattern matched any more, the skip gate and the total floor would both have gone
+              # quiet while the job stayed green — the exact failure they were written to catch.
+              MTP_LINE=$(echo "$PLAIN" | grep -E "^Test run summary: " | tail -1)
+              NEW_LINE=$(echo "$PLAIN" | grep -E "^(Passed|Failed)!  - " | tail -1)
+              VSTEST_LINE=$(echo "$PLAIN" | grep -E "^Test Run (Successful|Failed)\." | tail -1)
 
-              if [ -n "$NEW_LINE" ]; then
+              if [ -n "$MTP_LINE" ]; then
+                P=$(echo "$PLAIN" | grep -oP '^\s+succeeded:\s*\K\d+' | tail -1); P="${P:-?}"
+                F=$(echo "$PLAIN" | grep -oP '^\s+failed:\s*\K\d+'    | tail -1); F="${F:-?}"
+                S=$(echo "$PLAIN" | grep -oP '^\s+skipped:\s*\K\d+'   | tail -1); S="${S:-?}"
+                T=$(echo "$PLAIN" | grep -oP '^\s+total:\s*\K\d+'     | tail -1); T="${T:-?}"
+                D=$(echo "$PLAIN" | grep -oP '^\s+duration:\s*\K\S.*' | tail -1); D="${D:-?}"
+                PARSED=1
+              elif [ -n "$NEW_LINE" ]; then
                 P=$(echo "$NEW_LINE" | grep -oP 'Passed:\s*\K\d+' | head -1);  P="${P:-?}"
                 F=$(echo "$NEW_LINE" | grep -oP 'Failed:\s*\K\d+' | head -1);  F="${F:-?}"
                 S=$(echo "$NEW_LINE" | grep -oP 'Skipped:\s*\K\d+' | head -1); S="${S:-?}"
@@ -134,15 +158,25 @@ jobs:
                 D=$(echo "$NEW_LINE" | grep -oP 'Duration:\s*\K[\d.]+ m?s' | head -1); D="${D:-?}"
                 PARSED=1
               elif [ -n "$VSTEST_LINE" ]; then
-                P=$(echo "$OUTPUT" | grep -oP '^\s+Passed:\s*\K\d+'  | head -1); P="${P:-0}"
-                F=$(echo "$OUTPUT" | grep -oP '^\s+Failed:\s*\K\d+'  | head -1); F="${F:-0}"
-                S=$(echo "$OUTPUT" | grep -oP '^\s+Skipped:\s*\K\d+' | head -1); S="${S:-0}"
-                T=$(echo "$OUTPUT" | grep -oP 'Total tests:\s*\K\d+' | head -1); T="${T:-0}"
-                D_RAW=$(echo "$OUTPUT" | grep -oP 'Total time:\s*\K[\d.]+' | head -1)
+                P=$(echo "$PLAIN" | grep -oP '^\s+Passed:\s*\K\d+'  | head -1); P="${P:-0}"
+                F=$(echo "$PLAIN" | grep -oP '^\s+Failed:\s*\K\d+'  | head -1); F="${F:-0}"
+                S=$(echo "$PLAIN" | grep -oP '^\s+Skipped:\s*\K\d+' | head -1); S="${S:-0}"
+                T=$(echo "$PLAIN" | grep -oP 'Total tests:\s*\K\d+' | head -1); T="${T:-0}"
+                D_RAW=$(echo "$PLAIN" | grep -oP 'Total time:\s*\K[\d.]+' | head -1)
                 D="${D_RAW:+${D_RAW}s}"; D="${D:-?}"
                 PARSED=1
               else
                 PARSED=0
+              fi
+
+              # Say in the job log what was parsed. The counts otherwise reach only the step
+              # summary, which is why a parser that matched nothing went unnoticed: the log
+              # looked identical either way. Unparsed output is a warning, not a failure — see
+              # the rule just below — but it is now one that shows on the run page.
+              if [ "$PARSED" -eq 1 ]; then
+                echo "Parsed test results for $PROJ_NAME: $P passed, $F failed, $S skipped, $T total"
+              else
+                echo "::warning::Could not parse the test results for $PROJ_NAME, so the skipped-test gate and the test floor did not act on it."
               fi
 
               # Pass/fail is keyed off the test runner's exit code, not our ability to parse
@@ -200,7 +234,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: debug-apk
-          path: src/AniSprinkles/bin/Debug/net10.0-android/*-Signed.apk
+          path: src/AniSprinkles/bin/Debug/net11.0-android/*-Signed.apk
           retention-days: 5
           if-no-files-found: error
 
@@ -214,22 +248,71 @@ jobs:
           fi
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Configuration:** Debug" >> $GITHUB_STEP_SUMMARY
-          echo "**Framework:** net10.0-android" >> $GITHUB_STEP_SUMMARY
+          echo "**Framework:** net11.0-android" >> $GITHUB_STEP_SUMMARY
           echo "**Build Time:** $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+
+  # Builds the configuration that actually ships, so the emulator job can launch it (#155).
+  # A separate job rather than more steps in build-and-test: it runs alongside the Debug build
+  # instead of after it, and a Release failure is reported as its own red check.
+  build-release:
+    name: Build Release
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v6
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: "11.0.x"
+
+      - name: Cache NuGet Packages
+        uses: actions/cache@v5
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-release-${{ hashFiles('AniSprinkles.slnx', 'Directory.Packages.props', 'src/**/*.csproj', 'tests/**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-release-
+            ${{ runner.os }}-nuget-
+
+      - name: Install MAUI Workload
+        run: dotnet workload install maui-android
+
+      # An APK rather than the AAB the release workflow publishes: an emulator cannot install a
+      # bundle. Trimming, r8 and ReadyToRun are identical either way — only the container differs.
+      # Unsigned by us, so the SDK signs it with a throwaway debug key, which is all a launch needs.
+      - name: Build Release APK
+        run: |
+          dotnet build src/AniSprinkles/AniSprinkles.csproj \
+            -c Release \
+            -f net11.0-android \
+            -p:AndroidPackageFormat=apk
+
+      - name: Upload Release APK
+        uses: actions/upload-artifact@v7
+        with:
+          name: release-apk
+          path: src/AniSprinkles/bin/Release/net11.0-android/*-Signed.apk
+          retention-days: 5
+          if-no-files-found: error
 
   ui-screenshots:
     name: UI Screenshots
     runs-on: ubuntu-latest
-    needs: build-and-test
+    needs: [build-and-test, build-release]
     timeout-minutes: 30
     # Deliberately NOT continue-on-error. This job carries the adult-content canary, and a job that
     # cannot fail cannot gate: with continue-on-error the canary's exit 1 failed the job while the
     # run still concluded success, so a filter regression would have merged clean.
     #
     # Flaky captures do not fail the run either way — every "could not find / timed out capturing"
-    # path already degrades to ::warning:: and carries on. The seven exit 1 sites are all real
-    # gates: canary marker missing from AdultCanary.cs, a FIXTURE MISS in logcat, no signed APK, install failed, launcher
-    # activity unresolvable, app window never appeared, and the canary itself.
+    # path already degrades to ::warning:: and carries on. Every exit 1 in the script is a real
+    # gate: the Release launch gate (#155: its marker missing from the page source, no Release
+    # APK, launcher activity unresolvable, or the Release build failing to render), canary marker
+    # missing from AdultCanary.cs, a FIXTURE MISS in logcat, no signed APK, install failed,
+    # launcher activity unresolvable, app window never appeared, and the canary itself.
 
     steps:
       - name: Checkout Code
@@ -242,6 +325,12 @@ jobs:
         with:
           name: debug-apk
           path: /tmp/apk
+
+      - name: Download Release APK
+        uses: actions/download-artifact@v8
+        with:
+          name: release-apk
+          path: /tmp/release-apk
 
       - name: Enable KVM
         run: |
@@ -468,6 +557,80 @@ jobs:
             fi
           }
 
+          PACKAGE="com.RainbowSprinkles.AniSprinkles"
+
+          # ---- Release launch gate (#155) ---------------------------------------------------------
+          #
+          # Everything else in this job runs the Debug + CI-stub APK. Release differs in exactly the
+          # ways that break at runtime rather than at compile time — trimming, r8, and (since .NET 11,
+          # #168) CoreCLR with ReadyToRun instead of Mono — and until this gate nothing launched a
+          # Release build before it shipped. v0.13.0 reached the Play Store as a blank window that way.
+          #
+          # So: install the Release APK, launch it, and require the launch tab to actually render.
+          # Compiling is not the test; v0.13.0 compiled.
+          #
+          # It runs signed-out on purpose. -p:CiBuild=true is refused under Release, so there are no
+          # fixtures and no stub token, and the signed-out Library tab is the one screen that renders
+          # a fixed string without touching AniList. A blank shell cannot show it.
+          #
+          # Same rule as the adult canary below: a gate that greps for a literal must also prove the
+          # literal still exists in the source, or renaming the label leaves it failing forever — or
+          # worse, a looser match passing forever.
+          RELEASE_MARKER="Sign in to AniList"
+          RELEASE_MARKER_SOURCE="${GITHUB_WORKSPACE:-.}/src/AniSprinkles/Pages/AnimeLibraryPage.xaml"
+          RELEASE_LAUNCH_WAIT=60
+          if [ ! -f "$RELEASE_MARKER_SOURCE" ] || ! grep -qF "$RELEASE_MARKER" "$RELEASE_MARKER_SOURCE"; then
+            echo "::error::The Release gate looks for '$RELEASE_MARKER', which no longer appears in $RELEASE_MARKER_SOURCE. Update RELEASE_MARKER to whatever the signed-out Library tab shows now."
+            exit 1
+          fi
+
+          RELEASE_APK=$(find /tmp/release-apk -name "*-Signed.apk" -type f | head -1 || true)
+          if [ -z "$RELEASE_APK" ]; then
+            echo "::error::No Release APK found in artifacts — the Release gate cannot run."
+            exit 1
+          fi
+
+          mkdir -p logs
+          echo "Release gate: installing $RELEASE_APK"
+          # A reused AVD may still hold a Debug install signed with another runner's debug key.
+          adb uninstall "$PACKAGE" >/dev/null 2>&1 || true
+          adb install -r -d "$RELEASE_APK"
+          adb shell wm dismiss-keyguard
+          adb logcat -c || true
+
+          RELEASE_ACTIVITY=$(adb shell cmd package resolve-activity --brief -c android.intent.category.LAUNCHER "$PACKAGE" | tail -1 || true)
+          if [ -z "$RELEASE_ACTIVITY" ] || echo "$RELEASE_ACTIVITY" | grep -qi "error\|no activity"; then
+            echo "::error::Release gate: could not resolve the launcher activity — got: '$RELEASE_ACTIVITY'"
+            exit 1
+          fi
+          adb shell am start -W -S -n "$RELEASE_ACTIVITY"
+
+          RELEASE_RENDERED=0
+          RELEASE_ELAPSED=0
+          while [ "$RELEASE_ELAPSED" -lt "$RELEASE_LAUNCH_WAIT" ]; do
+            sleep 3
+            RELEASE_ELAPSED=$((RELEASE_ELAPSED + 3))
+            adb shell rm -f /sdcard/ui_release.xml >/dev/null 2>&1 || true
+            if adb shell uiautomator dump /sdcard/ui_release.xml >/dev/null 2>&1 \
+               && adb shell cat /sdcard/ui_release.xml 2>/dev/null | grep -qF "$RELEASE_MARKER"; then
+              RELEASE_RENDERED=1
+              break
+            fi
+          done
+
+          # Kept whether it passed or not: when this gate fails, this file is the only evidence.
+          adb logcat -d -v threadtime > logs/logcat-release.txt 2>&1 || echo "::warning::Failed to dump Release logcat"
+
+          if [ "$RELEASE_RENDERED" -ne 1 ]; then
+            echo "::error::Release gate FAILED — the Release build did not render '$RELEASE_MARKER' within ${RELEASE_LAUNCH_WAIT}s of launch. It either crashed or drew an empty shell; see logs/logcat-release.txt in the device-logcat artifact."
+            grep -E "FATAL|AndroidRuntime|DOTNET|com\.RainbowSprinkles" logs/logcat-release.txt | tail -40 || true
+            exit 1
+          fi
+          echo "Release gate passed: '$RELEASE_MARKER' rendered after ${RELEASE_ELAPSED}s"
+
+          # The Debug APK below was signed on a different runner, so it cannot install over this one.
+          adb uninstall "$PACKAGE" >/dev/null 2>&1 || true
+
           # Locate the APK
           APK_PATH=$(find /tmp/apk -name "*-Signed.apk" -type f | head -1 || true)
           if [ -z "$APK_PATH" ]; then
@@ -481,7 +644,6 @@ jobs:
           adb install -r -d "$APK_PATH"
 
           # Verify the package actually installed before trying to launch it.
-          PACKAGE="com.RainbowSprinkles.AniSprinkles"
           if ! adb shell pm list packages | grep -qF "$PACKAGE"; then
             echo "::error::Package $PACKAGE not found after install — aborting"
             exit 1

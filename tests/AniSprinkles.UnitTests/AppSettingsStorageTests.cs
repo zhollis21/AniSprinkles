@@ -6,7 +6,7 @@ namespace AniSprinkles.UnitTests;
 /// <summary>
 /// #121. <c>AppSettings</c> persistence used to be unreachable from here: <c>Load</c>, <c>Save</c>,
 /// <c>Clear</c> and <c>SyncFromViewer</c> all went through the static <c>Preferences.Default</c>,
-/// which throws <c>NotImplementedInReferenceAssemblyException</c> on the plain <c>net10.0</c> TFM
+/// which throws <c>NotImplementedInReferenceAssemblyException</c> on the plain <c>net11.0</c> TFM
 /// these tests build against. With the storage seam in place they round-trip like any other code.
 /// </summary>
 [Collection(AppSettingsCollection.Name)]
