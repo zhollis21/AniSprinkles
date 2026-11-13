@@ -461,7 +461,7 @@ jobs:
           # studios and a short page, the real one has eleven plus real tags, rankings, relations
           # and links, so the Studios section sits much further down. Swipes are cheap; a silently
           # missing capture is not, so the budget is double the most a run has needed: the Pixel 10
-          # Pro XL at API 37 reached it after 7 and 6 swipes in two runs (#176), so 14.
+          # Pro XL at API 37 reached it after 7, 6 and 5 swipes in three runs (#176), so 14.
           tap_studio_chip() {
             local studio="$1" max="${2:-14}" i
             # 0..max: look before the first swipe and after every one, the last included.
@@ -497,8 +497,8 @@ jobs:
           # revealed and then tapped. Returns success as soon as the text is found.
           # Usage: scroll_until_text "Monkey D. Luffy" [max_swipes]
           # Default budget: double the most a run has needed. On the Pixel 10 Pro XL at API 37 (#176),
-          # Luffy on the media details page took 2 and 3 swipes in two runs, Mayumi Tanaka on Luffy's
-          # character page 2 and 1 — counts move by one between runs — so 6.
+          # Luffy on the media details page took 2, 3 and 2 swipes in three runs, Mayumi Tanaka on
+          # Luffy's character page 2, 1 and 1 — counts move by one between runs — so 6.
           scroll_until_text() {
             local needle="$1" max="${2:-6}" i
             # 0..max: look before the first swipe and after every one, the last included.
@@ -1201,8 +1201,9 @@ jobs:
           chmod +x /tmp/capture_screenshots.sh
 
       # The runner image ships Android Command Line Tools 12.0 (2023), whose avdmanager predates
-      # the Pixel 10, so `profile: pixel_10_pro_xl` below failed with "No device found" (#176). The emulator action uses whatever is in cmdline-tools/latest
-      # (it only installs its own when the folder is missing), so update that folder in place.
+      # the Pixel 10, so `profile: pixel_10_pro_xl` below failed with "No device found" (#176).
+      # The emulator action uses whatever is in cmdline-tools/latest (it only installs its own
+      # when the folder is missing), so update that folder in place.
       - name: Update Android Command Line Tools
         run: |
           TOOLS="$ANDROID_HOME/cmdline-tools"
