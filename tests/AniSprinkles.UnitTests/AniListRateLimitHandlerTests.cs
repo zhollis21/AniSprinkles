@@ -35,15 +35,6 @@ public class AniListRateLimitHandlerTests
             InnerHandler = inner,
         };
 
-    private static async Task AdvanceUntilCompleteAsync(Task task, ManualTimeProvider time, int maxSteps = 50)
-    {
-        for (var i = 0; i < maxSteps && !task.IsCompleted; i++)
-        {
-            time.Advance(TimeSpan.FromSeconds(1));
-            await Task.Yield();
-        }
-    }
-
     [Test]
     public async Task SendAsync_CarriesRequestOptionsThroughTheRetryTemplate()
     {
@@ -111,7 +102,7 @@ public class AniListRateLimitHandlerTests
         using var invoker = new HttpMessageInvoker(CreateHandler(inner, time));
 
         var task = invoker.SendAsync(Request(), TestContext.CurrentContext.CancellationToken);
-        await AdvanceUntilCompleteAsync(task, time);
+        await time.AdvanceUntilCompleteAsync(task, TimeSpan.FromSeconds(1));
         var response = await task;
 
         Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
@@ -140,11 +131,34 @@ public class AniListRateLimitHandlerTests
         using var invoker = new HttpMessageInvoker(CreateHandler(inner, time, maxRetries: 2));
 
         var task = invoker.SendAsync(Request(), TestContext.CurrentContext.CancellationToken);
-        await AdvanceUntilCompleteAsync(task, time);
+        await time.AdvanceUntilCompleteAsync(task, TimeSpan.FromSeconds(1));
 
         var ex = await Assert.ThrowsAsync<AniListApiException>(() => task);
         Assert.That(ex.Kind, Is.EqualTo(ApiErrorKind.RateLimited));
         Assert.That(inner.CallCount, Is.EqualTo(3)); // initial + 2 retries
+    }
+
+    [Test]
+    [CancelAfter(10_000)]
+    public async Task SendAsync_InnerHandlerSlowerThanTheTestLoop_StillRetriesToCompletion()
+    {
+        // The CI hang (#178): on a loaded runner the handler reached its retry delay only after
+        // the test had finished advancing the fake clock, so the delay's timer was never fired.
+        // A response that takes real time to arrive reproduces that ordering on any machine.
+        var time = new ManualTimeProvider(Start);
+        var inner = new QueuedHttpMessageHandler(async i =>
+        {
+            await Task.Delay(TimeSpan.FromMilliseconds(50));
+            return i < 2 ? TooMany(1) : Ok();
+        });
+        using var invoker = new HttpMessageInvoker(CreateHandler(inner, time, maxRetries: 2));
+
+        var task = invoker.SendAsync(Request(), TestContext.CurrentContext.CancellationToken);
+        await time.AdvanceUntilCompleteAsync(task, TimeSpan.FromSeconds(1));
+        var response = await task;
+
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+        Assert.That(inner.CallCount, Is.EqualTo(3));
     }
 
     [Test]

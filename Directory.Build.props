@@ -7,6 +7,12 @@
   <PropertyGroup>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <!-- Runtime async (#178): the runtime runs async methods that return Task or ValueTask itself,
+         instead of the compiler emitting a state machine class for each. async void methods and
+         lambdas (event handlers, OnAppearing overrides) are not covered and keep their compiler
+         state machine. It is out of preview in .NET 11 but still opt-in in SDK 11.0.100. Changing
+         it does not trigger a recompile, so wipe bin/obj before measuring its effect. -->
+    <Features>$(Features);runtime-async=on</Features>
   </PropertyGroup>
 
 </Project>
