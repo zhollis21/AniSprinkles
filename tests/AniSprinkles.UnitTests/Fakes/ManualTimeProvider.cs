@@ -19,6 +19,46 @@ public sealed class ManualTimeProvider : TimeProvider
 
     public override DateTimeOffset GetUtcNow() => _now;
 
+    /// <summary>Whether any timer is waiting to fire.</summary>
+    public bool HasPendingTimers
+    {
+        get
+        {
+            lock (_lock)
+            {
+                return _timers.Any(t => !t.Disposed);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Drives <paramref name="task"/> through its delays on this clock, a <paramref name="step"/>
+    /// at a time. The clock moves only while a timer is pending, so time never runs ahead of a
+    /// delay the code has not registered yet. The limit is real time, not a number of steps.
+    /// A fixed count of advance-and-yield steps hung CI (#178): on a loaded runner the steps ran
+    /// out before the code under test registered its next delay, that delay never fired, and the
+    /// test's await on the task waited forever. Here slow code is waited for, and code that really
+    /// stalls fails the test instead of hanging the run.
+    /// </summary>
+    public async Task AdvanceUntilCompleteAsync(Task task, TimeSpan step)
+    {
+        var deadline = DateTime.UtcNow + TimeSpan.FromSeconds(10);
+        while (!task.IsCompleted)
+        {
+            if (DateTime.UtcNow > deadline)
+            {
+                Assert.Fail($"The task did not complete within 10 seconds of real time (fake clock at {GetUtcNow():O}).");
+            }
+
+            if (HasPendingTimers)
+            {
+                Advance(step);
+            }
+
+            await Task.WhenAny(task, Task.Delay(TimeSpan.FromMilliseconds(5)));
+        }
+    }
+
     public void Advance(TimeSpan by)
     {
         lock (_lock)
