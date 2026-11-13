@@ -191,11 +191,7 @@ public class FaultInjectingHttpHandlerTests
         using var client = new HttpClient(rateLimit);
 
         var pending = client.SendAsync(Request(), TestContext.CurrentContext.CancellationToken);
-        for (var i = 0; i < 50 && !pending.IsCompleted; i++)
-        {
-            time.Advance(TimeSpan.FromSeconds(1));
-            await Task.Yield();
-        }
+        await time.AdvanceUntilCompleteAsync(pending, TimeSpan.FromSeconds(1));
 
         var response = await pending;
 

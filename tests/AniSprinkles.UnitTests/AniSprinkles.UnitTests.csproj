@@ -20,6 +20,10 @@
     <PackageReference Include="NUnit.Analyzers" PrivateAssets="all" />
     <PackageReference Include="NUnit3TestAdapter" />
     <PackageReference Include="NSubstitute" />
+    <!-- Inert unless a run passes the hangdump option. CI does: a run that stalls past the timeout prints
+         the tests still in flight, writes a dump of the test process and fails, rather than
+         sitting silent until the job timeout with its output still buffered. -->
+    <PackageReference Include="Microsoft.Testing.Extensions.HangDump" />
   </ItemGroup>
 
   <ItemGroup>
