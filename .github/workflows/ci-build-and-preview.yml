@@ -115,7 +115,14 @@ jobs:
             for proj in $TEST_PROJECTS; do
               PROJ_NAME=$(basename "$proj" .csproj)
               set +e
-              OUTPUT=$(dotnet test "$proj" --no-restore --verbosity normal 2>&1)
+              # --hangdump: the output is captured whole into OUTPUT, so a hung run printed nothing
+              # at all until the 20-minute job timeout killed it, and then not even which test hung.
+              # The suite takes about 10 seconds; past 3 minutes the HangDump extension lists the
+              # tests still in flight, dumps the process into TestResults (uploaded below) and
+              # exits non-zero, which fails the step like any failing test.
+              OUTPUT=$(dotnet test "$proj" --no-restore --verbosity normal \
+                --hangdump --hangdump-timeout 3m \
+                --results-directory "$GITHUB_WORKSPACE/TestResults/$PROJ_NAME" 2>&1)
               PROJ_EXIT=$?
               set -e
               echo "$OUTPUT"
@@ -229,6 +236,16 @@ jobs:
               echo "> ℹ️ No test projects found."
             } >> "$GITHUB_STEP_SUMMARY"
           fi
+
+      - name: Upload Test Hang Dump
+        # Only a hang writes a dump; on any other failure there is nothing here to upload.
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: test-hang-dump
+          path: TestResults/**/*.dmp
+          retention-days: 5
+          if-no-files-found: ignore
 
       - name: Upload APK
         uses: actions/upload-artifact@v7
