@@ -9,7 +9,7 @@ namespace AniSprinkles.UnitTests;
 /// </summary>
 public class UserFeedbackExtensionsTests
 {
-    [Fact]
+    [Test]
     public async Task FailureSnackbar_DuringAServiceOutage_ShowsTheOutageTitleAndDropsRetry()
     {
         // The outage banner is already on screen and a retry cannot succeed for minutes or hours.
@@ -20,15 +20,15 @@ public class UserFeedbackExtensionsTests
             "Failed to save. Please try again.",
             retryAction: () => { });
 
-        Assert.Equal("AniList is Down", Assert.Single(feedback.Snackbars));
-        Assert.Null(feedback.LastSnackbarAction);
+        Assert.That(feedback.Snackbars, Has.Exactly(1).Items);
+        Assert.That(feedback.Snackbars.Single(), Is.EqualTo("AniList is Down"));
+        Assert.That<Action?>(feedback.LastSnackbarAction, Is.Null);
     }
 
-    [Theory]
-    [InlineData(ApiErrorKind.Network)]
-    [InlineData(ApiErrorKind.RateLimited)]
-    [InlineData(ApiErrorKind.NotFound)]
-    [InlineData(ApiErrorKind.Unknown)]
+    [TestCase(ApiErrorKind.Network)]
+    [TestCase(ApiErrorKind.RateLimited)]
+    [TestCase(ApiErrorKind.NotFound)]
+    [TestCase(ApiErrorKind.Unknown)]
     public async Task FailureSnackbar_ForEveryOtherKind_KeepsTheFallbackMessageAndTheRetry(ApiErrorKind kind)
     {
         var feedback = new RecordingUserFeedback();
@@ -39,43 +39,45 @@ public class UserFeedbackExtensionsTests
             "Failed to save. Please try again.",
             retryAction: () => retried = true);
 
-        Assert.Equal("Failed to save. Please try again.", Assert.Single(feedback.Snackbars));
-        Assert.NotNull(feedback.LastSnackbarAction);
+        Assert.That(feedback.Snackbars, Has.Exactly(1).Items);
+        Assert.That(feedback.Snackbars.Single(), Is.EqualTo("Failed to save. Please try again."));
+        Assert.That<Action?>(feedback.LastSnackbarAction, Is.Not.Null);
 
         feedback.LastSnackbarAction!();
-        Assert.True(retried);
+        Assert.That(retried, Is.True);
     }
 
-    [Fact]
+    [Test]
     public async Task FailureSnackbar_ForANonApiException_StillUsesTheFallback()
     {
         var feedback = new RecordingUserFeedback();
 
         await feedback.ShowFailureSnackbarAsync(new InvalidOperationException("boom"), "Failed.");
 
-        Assert.Equal("Failed.", Assert.Single(feedback.Snackbars));
-        Assert.Null(feedback.LastSnackbarAction);
+        Assert.That(feedback.Snackbars, Has.Exactly(1).Items);
+        Assert.That(feedback.Snackbars.Single(), Is.EqualTo("Failed."));
+        Assert.That<Action?>(feedback.LastSnackbarAction, Is.Null);
     }
 }
 
 public class MoveToListChoiceTests
 {
-    [Fact]
+    [Test]
     public void To_CarriesTheStatusAndIsNotARemoval()
     {
         var choice = MoveToListChoice.To(MediaListStatus.Paused);
 
-        Assert.Equal(MediaListStatus.Paused, choice.Status);
-        Assert.False(choice.IsRemove);
+        Assert.That(choice.Status, Is.EqualTo(MediaListStatus.Paused));
+        Assert.That(choice.IsRemove, Is.False);
     }
 
-    [Fact]
+    [Test]
     public void Remove_CarriesNoStatus()
     {
         // EntryActionCoordinator branches on IsRemove first and only then reads Status. A Remove
         // that also carried a status would make that ordering load-bearing by accident.
-        Assert.True(MoveToListChoice.Remove.IsRemove);
-        Assert.Null(MoveToListChoice.Remove.Status);
+        Assert.That(MoveToListChoice.Remove.IsRemove, Is.True);
+        Assert.That(MoveToListChoice.Remove.Status, Is.Null);
     }
 }
 
@@ -86,33 +88,33 @@ public class LongPressTapSuppressorTests
     // test class that happened to run alongside this one — DetailsSpineTests and
     // MediaBrowsePageModelTests both drive those commands, and neither is serialised against this.
 
-    [Fact]
+    [Test]
     public void ATapAtTheInstantOfTheLongPress_IsSuppressed()
     {
         // MAUI's TapGestureRecognizer fires on finger-up after a long press, so the card's navigate
         // command would otherwise run underneath the action sheet the long press just opened.
-        Assert.True(LongPressTapSuppressor.IsWithinWindow(10_000, 10_000));
+        Assert.That(LongPressTapSuppressor.IsWithinWindow(10_000, 10_000), Is.True);
     }
 
-    [Fact]
+    [Test]
     public void ATapJustInsideTheWindow_IsSuppressed()
-        => Assert.True(LongPressTapSuppressor.IsWithinWindow(10_799, 10_000));
+        => Assert.That(LongPressTapSuppressor.IsWithinWindow(10_799, 10_000), Is.True);
 
-    [Fact]
+    [Test]
     public void ATapOnceTheWindowHasElapsed_IsLetThrough()
         // The other half of the contract: suppression has to end, or a real tap on the same card
         // never navigates.
-        => Assert.False(LongPressTapSuppressor.IsWithinWindow(10_800, 10_000));
+        => Assert.That(LongPressTapSuppressor.IsWithinWindow(10_800, 10_000), Is.False);
 
-    [Fact]
+    [Test]
     public void WithNoLongPressEverRecorded_NothingIsSuppressed()
     {
         LongPressTapSuppressor.Reset();
 
-        Assert.False(LongPressTapSuppressor.ShouldSuppressTap());
+        Assert.That(LongPressTapSuppressor.ShouldSuppressTap(), Is.False);
     }
 
-    [Fact]
+    [Test]
     public void Stamp_RecordsThePressSoTheFollowUpTapIsSuppressed()
     {
         // The one test that writes the shared static, so it clears it again immediately.
@@ -120,7 +122,7 @@ public class LongPressTapSuppressorTests
         {
             LongPressTapSuppressor.Stamp();
 
-            Assert.True(LongPressTapSuppressor.ShouldSuppressTap());
+            Assert.That(LongPressTapSuppressor.ShouldSuppressTap(), Is.True);
         }
         finally
         {
@@ -128,44 +130,43 @@ public class LongPressTapSuppressorTests
         }
     }
 
-    [Fact]
+    [Test]
     public void SuppressionWindow_IsLongEnoughToCoverASlowRelease()
     {
         // Stamped at detection AND again at finger-up; the window only has to outlive the gap
         // between the second stamp and the synthetic tap.
-        Assert.True(LongPressTapSuppressor.SuppressionWindow >= TimeSpan.FromMilliseconds(500));
+        Assert.That(LongPressTapSuppressor.SuppressionWindow >= TimeSpan.FromMilliseconds(500), Is.True);
     }
 }
 
 public class OutageStateServiceTests
 {
-    [Fact]
+    [Test]
     public void ReportFailure_WithAnOutage_PublishesTheBannerCopy()
     {
         var service = new OutageStateService(new ImmediateDispatcher());
 
         service.ReportFailure(new AniListApiException(ApiErrorKind.ServiceOutage, "down"));
 
-        Assert.True(service.IsOutage);
-        Assert.Equal("AniList is Down", service.Title);
-        Assert.NotEmpty(service.Subtitle);
-        Assert.NotEmpty(service.IconGlyph);
+        Assert.That(service.IsOutage, Is.True);
+        Assert.That(service.Title, Is.EqualTo("AniList is Down"));
+        Assert.That(service.Subtitle, Is.Not.Empty);
+        Assert.That(service.IconGlyph, Is.Not.Empty);
     }
 
-    [Theory]
-    [InlineData(ApiErrorKind.Network)]
-    [InlineData(ApiErrorKind.RateLimited)]
-    [InlineData(ApiErrorKind.NotFound)]
+    [TestCase(ApiErrorKind.Network)]
+    [TestCase(ApiErrorKind.RateLimited)]
+    [TestCase(ApiErrorKind.NotFound)]
     public void ReportFailure_WithAnyOtherKind_DoesNotRaiseTheBanner(ApiErrorKind kind)
     {
         var service = new OutageStateService(new ImmediateDispatcher());
 
         service.ReportFailure(new AniListApiException(kind, "boom"));
 
-        Assert.False(service.IsOutage);
+        Assert.That(service.IsOutage, Is.False);
     }
 
-    [Fact]
+    [Test]
     public void ReportSuccess_ClearsAPreviouslyRaisedOutage()
     {
         // The state is sticky so the banner does not flap during a partial outage; a success is the
@@ -175,11 +176,11 @@ public class OutageStateServiceTests
 
         service.ReportSuccess();
 
-        Assert.False(service.IsOutage);
-        Assert.Empty(service.Title);
+        Assert.That(service.IsOutage, Is.False);
+        Assert.That(service.Title, Is.Empty);
     }
 
-    [Fact]
+    [Test]
     public void StateWrites_GoThroughTheDispatcherWhenOffTheUiThread()
     {
         // Callers arrive on pool threads (AniListClient.SendAsync uses ConfigureAwait(false)) and
@@ -189,11 +190,11 @@ public class OutageStateServiceTests
 
         service.ReportFailure(new AniListApiException(ApiErrorKind.ServiceOutage, "down"));
 
-        Assert.Equal(1, dispatcher.DispatchCount);
-        Assert.True(service.IsOutage);
+        Assert.That(dispatcher.DispatchCount, Is.EqualTo(1));
+        Assert.That(service.IsOutage, Is.True);
     }
 
-    [Fact]
+    [Test]
     public void StateWrites_RunInlineWhenTheDispatcherCannotQueueThem()
     {
         // Dispatch returns false before there is a dispatcher loop — early startup. Dropping the
@@ -205,8 +206,8 @@ public class OutageStateServiceTests
 
         service.ReportFailure(new AniListApiException(ApiErrorKind.ServiceOutage, "down"));
 
-        Assert.Equal(1, dispatcher.DispatchCount);
-        Assert.True(service.IsOutage);
+        Assert.That(dispatcher.DispatchCount, Is.EqualTo(1));
+        Assert.That(service.IsOutage, Is.True);
     }
 
     private sealed class RecordingDispatcher : IDispatcher

@@ -78,18 +78,18 @@ public class DiagnosticsReportCoordinatorTests
 
     // ── Consent comes first ──────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task TheDisclosureIsShownBeforeAnythingIsSent()
     {
         using var harness = new Harness();
         harness.UserSends();
 
-        await harness.Coordinator.ReportAsync(TestContext.Current.CancellationToken);
+        await harness.Coordinator.ReportAsync(TestContext.CurrentContext.CancellationToken);
 
-        Assert.Contains(nameof(IDialogService.ShowDiagnosticsReportAsync), harness.Dialogs.Calls);
+        Assert.That(harness.Dialogs.Calls, Does.Contain(nameof(IDialogService.ShowDiagnosticsReportAsync)));
     }
 
-    [Fact]
+    [Test]
     public async Task TheDisclosureStatesWhatWillBeCollected()
     {
         // The popup's promise and the code that fulfils it live in one file precisely so this can be
@@ -97,36 +97,36 @@ public class DiagnosticsReportCoordinatorTests
         using var harness = new Harness();
         harness.UserSends();
 
-        await harness.Coordinator.ReportAsync(TestContext.Current.CancellationToken);
+        await harness.Coordinator.ReportAsync(TestContext.CurrentContext.CancellationToken);
 
-        Assert.Equal(DiagnosticsReportCoordinator.DisclosureSummary, harness.Dialogs.LastDiagnosticsSummary);
+        Assert.That(harness.Dialogs.LastDiagnosticsSummary, Is.EqualTo(DiagnosticsReportCoordinator.DisclosureSummary));
     }
 
-    [Fact]
+    [Test]
     public async Task CancellingAtTheDisclosureSendsNothing()
     {
         using var harness = new Harness();
         harness.Buffer.CreateLogger("Nav").LogInformation("something private");
         // DiagnosticsReportAnswer defaults to null — the user dismissed the sheet.
 
-        var sent = await harness.Coordinator.ReportAsync(TestContext.Current.CancellationToken);
+        var sent = await harness.Coordinator.ReportAsync(TestContext.CurrentContext.CancellationToken);
 
-        Assert.False(sent);
-        Assert.Empty(harness.Sink.Reports);
+        Assert.That(sent, Is.False);
+        Assert.That(harness.Sink.Reports, Is.Empty);
     }
 
-    [Fact]
+    [Test]
     public async Task CancellingShowsNoConfirmation()
     {
         // A "sent" snackbar after a cancel would be actively misleading about what left the device.
         using var harness = new Harness();
 
-        await harness.Coordinator.ReportAsync(TestContext.Current.CancellationToken);
+        await harness.Coordinator.ReportAsync(TestContext.CurrentContext.CancellationToken);
 
-        Assert.Empty(harness.Feedback.Snackbars);
+        Assert.That(harness.Feedback.Snackbars, Is.Empty);
     }
 
-    [Fact]
+    [Test]
     public async Task NothingIsCollectedUntilTheUserHasConsented()
     {
         // Collecting first and discarding on cancel would work identically from the outside, and
@@ -141,28 +141,29 @@ public class DiagnosticsReportCoordinatorTests
             return Task.CompletedTask;
         };
 
-        await harness.Coordinator.ReportAsync(TestContext.Current.CancellationToken);
+        await harness.Coordinator.ReportAsync(TestContext.CurrentContext.CancellationToken);
 
-        Assert.True(sinkWasUntouchedAtDisclosure);
+        Assert.That(sinkWasUntouchedAtDisclosure, Is.True);
     }
 
     // ── The happy path ───────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task SendingDeliversTheRingContents()
     {
         using var harness = new Harness();
         harness.Buffer.CreateLogger("Nav").LogInformation("NAVTRACE load start (manga 42)");
         harness.UserSends();
 
-        var sent = await harness.Coordinator.ReportAsync(TestContext.Current.CancellationToken);
+        var sent = await harness.Coordinator.ReportAsync(TestContext.CurrentContext.CancellationToken);
 
-        Assert.True(sent);
-        var report = Assert.Single(harness.Sink.Reports);
-        Assert.Contains("NAVTRACE load start (manga 42)", report);
+        Assert.That(sent, Is.True);
+        Assert.That(harness.Sink.Reports, Has.Exactly(1).Items);
+        var report = harness.Sink.Reports.Single();
+        Assert.That(report, Does.Contain("NAVTRACE load start (manga 42)"));
     }
 
-    [Fact]
+    [Test]
     public async Task SendingIncludesAFlushedPreviousSession()
     {
         // The crash case: the process died, the ring went with it, and this file is all that is left
@@ -171,12 +172,13 @@ public class DiagnosticsReportCoordinatorTests
         harness.SessionLog.Save(["the run before the crash"]);
         harness.UserSends();
 
-        await harness.Coordinator.ReportAsync(TestContext.Current.CancellationToken);
+        await harness.Coordinator.ReportAsync(TestContext.CurrentContext.CancellationToken);
 
-        Assert.Contains("the run before the crash", Assert.Single(harness.Sink.Reports));
+        Assert.That(harness.Sink.Reports, Has.Exactly(1).Items);
+        Assert.That(harness.Sink.Reports.Single(), Does.Contain("the run before the crash"));
     }
 
-    [Fact]
+    [Test]
     public async Task TheUsersDescriptionReachesBothTheReportAndTheSink()
     {
         // Two routes on purpose: into the attachment so the file is self-contained, and alongside it
@@ -184,47 +186,50 @@ public class DiagnosticsReportCoordinatorTests
         using var harness = new Harness();
         harness.UserSends("I kept tapping manga and they all failed");
 
-        await harness.Coordinator.ReportAsync(TestContext.Current.CancellationToken);
+        await harness.Coordinator.ReportAsync(TestContext.CurrentContext.CancellationToken);
 
-        Assert.Contains("I kept tapping manga", Assert.Single(harness.Sink.Reports));
-        Assert.Equal("I kept tapping manga and they all failed", harness.Sink.LastDescription);
+        Assert.That(harness.Sink.Reports, Has.Exactly(1).Items);
+        Assert.That(harness.Sink.Reports.Single(), Does.Contain("I kept tapping manga"));
+        Assert.That(harness.Sink.LastDescription, Is.EqualTo("I kept tapping manga and they all failed"));
     }
 
-    [Fact]
+    [Test]
     public async Task SendingWithNoDescriptionIsAllowed()
     {
         // Requiring text would be friction for someone who only wants the log attached.
         using var harness = new Harness();
         harness.UserSends(description: null);
 
-        Assert.True(await harness.Coordinator.ReportAsync(TestContext.Current.CancellationToken));
+        Assert.That(await harness.Coordinator.ReportAsync(TestContext.CurrentContext.CancellationToken), Is.True);
     }
 
-    [Fact]
+    [Test]
     public async Task TheReportCarriesTheEnvironmentHeader()
     {
         using var harness = new Harness();
         harness.Environment.AppVersion = "9.9.9 (99)";
         harness.UserSends();
 
-        await harness.Coordinator.ReportAsync(TestContext.Current.CancellationToken);
+        await harness.Coordinator.ReportAsync(TestContext.CurrentContext.CancellationToken);
 
-        Assert.Contains("9.9.9 (99)", Assert.Single(harness.Sink.Reports));
+        Assert.That(harness.Sink.Reports, Has.Exactly(1).Items);
+        Assert.That(harness.Sink.Reports.Single(), Does.Contain("9.9.9 (99)"));
     }
 
-    [Fact]
+    [Test]
     public async Task TheReportSaysWhetherTheUserWasSignedIn()
     {
         using var harness = new Harness();
         harness.Auth.GetAccessTokenAsync(Arg.Any<CancellationToken>()).Returns(Task.FromResult<string?>(null));
         harness.UserSends();
 
-        await harness.Coordinator.ReportAsync(TestContext.Current.CancellationToken);
+        await harness.Coordinator.ReportAsync(TestContext.CurrentContext.CancellationToken);
 
-        Assert.Contains("signed in: no", Assert.Single(harness.Sink.Reports));
+        Assert.That(harness.Sink.Reports, Has.Exactly(1).Items);
+        Assert.That(harness.Sink.Reports.Single(), Does.Contain("signed in: no"));
     }
 
-    [Fact]
+    [Test]
     public async Task ASuccessfulSendIsConfirmedInWordsThatMatchTheDisclosure()
     {
         // Sentry says nothing back to the sender, so this snackbar is the only evidence the user
@@ -233,14 +238,15 @@ public class DiagnosticsReportCoordinatorTests
         using var harness = new Harness();
         harness.UserSends();
 
-        await harness.Coordinator.ReportAsync(TestContext.Current.CancellationToken);
+        await harness.Coordinator.ReportAsync(TestContext.CurrentContext.CancellationToken);
 
-        Assert.Equal(DiagnosticsReportCoordinator.SentMessage, Assert.Single(harness.Feedback.Snackbars));
+        Assert.That(harness.Feedback.Snackbars, Has.Exactly(1).Items);
+        Assert.That(harness.Feedback.Snackbars.Single(), Is.EqualTo(DiagnosticsReportCoordinator.SentMessage));
     }
 
     // ── When the send does not land ──────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task AFailedSendIsReportedAsAFailure()
     {
         // Telling the user their report was filed when nothing left the device is the worst outcome
@@ -249,13 +255,14 @@ public class DiagnosticsReportCoordinatorTests
         harness.Sink.Result = false;
         harness.UserSends();
 
-        var sent = await harness.Coordinator.ReportAsync(TestContext.Current.CancellationToken);
+        var sent = await harness.Coordinator.ReportAsync(TestContext.CurrentContext.CancellationToken);
 
-        Assert.False(sent);
-        Assert.Equal(DiagnosticsReportCoordinator.FailedMessage, Assert.Single(harness.Feedback.Snackbars));
+        Assert.That(sent, Is.False);
+        Assert.That(harness.Feedback.Snackbars, Has.Exactly(1).Items);
+        Assert.That(harness.Feedback.Snackbars.Single(), Is.EqualTo(DiagnosticsReportCoordinator.FailedMessage));
     }
 
-    [Fact]
+    [Test]
     public async Task AFailedSendKeepsThePreviousSessionForTheRetry()
     {
         // Clearing on failure would throw away the crash flush — the thing the whole disk fallback
@@ -265,12 +272,12 @@ public class DiagnosticsReportCoordinatorTests
         harness.Sink.Result = false;
         harness.UserSends();
 
-        await harness.Coordinator.ReportAsync(TestContext.Current.CancellationToken);
+        await harness.Coordinator.ReportAsync(TestContext.CurrentContext.CancellationToken);
 
-        Assert.Equal(["the crash"], harness.SessionLog.Load());
+        Assert.That(harness.SessionLog.Load(), Is.EqualTo(["the crash"]));
     }
 
-    [Fact]
+    [Test]
     public async Task ASuccessfulSendClearsThePreviousSession()
     {
         // Otherwise the same crash rides along on every report the user ever files afterwards.
@@ -278,12 +285,12 @@ public class DiagnosticsReportCoordinatorTests
         harness.SessionLog.Save(["the crash"]);
         harness.UserSends();
 
-        await harness.Coordinator.ReportAsync(TestContext.Current.CancellationToken);
+        await harness.Coordinator.ReportAsync(TestContext.CurrentContext.CancellationToken);
 
-        Assert.Empty(harness.SessionLog.Load());
+        Assert.That(harness.SessionLog.Load(), Is.Empty);
     }
 
-    [Fact]
+    [Test]
     public async Task AThrowingSinkIsReportedToTheUserRatherThanRaised()
     {
         // This runs off a button pressed because something was already wrong. The reporting path
@@ -292,13 +299,14 @@ public class DiagnosticsReportCoordinatorTests
         harness.Sink.Throws = new InvalidOperationException("transport exploded");
         harness.UserSends();
 
-        var sent = await harness.Coordinator.ReportAsync(TestContext.Current.CancellationToken);
+        var sent = await harness.Coordinator.ReportAsync(TestContext.CurrentContext.CancellationToken);
 
-        Assert.False(sent);
-        Assert.Equal(DiagnosticsReportCoordinator.FailedMessage, Assert.Single(harness.Feedback.Snackbars));
+        Assert.That(sent, Is.False);
+        Assert.That(harness.Feedback.Snackbars, Has.Exactly(1).Items);
+        Assert.That(harness.Feedback.Snackbars.Single(), Is.EqualTo(DiagnosticsReportCoordinator.FailedMessage));
     }
 
-    [Fact]
+    [Test]
     public async Task AFailingAuthCheckDoesNotLoseTheReport()
     {
         // Secure storage can fail — and if it just did, that is itself something the log will show.
@@ -308,12 +316,12 @@ public class DiagnosticsReportCoordinatorTests
             .Returns<Task<string?>>(_ => throw new InvalidOperationException("keystore unavailable"));
         harness.UserSends();
 
-        Assert.True(await harness.Coordinator.ReportAsync(TestContext.Current.CancellationToken));
+        Assert.That(await harness.Coordinator.ReportAsync(TestContext.CurrentContext.CancellationToken), Is.True);
     }
 
     // ── Double-tap ───────────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task ASecondReportWhileTheFirstIsStillRunningIsIgnored()
     {
         // The send waits on a network flush, so a second press is easy — and would file two events
@@ -323,17 +331,17 @@ public class DiagnosticsReportCoordinatorTests
         var second = Task.FromResult(false);
         harness.Dialogs.BeforeDiagnosticsReportAsync = async () =>
         {
-            second = harness.Coordinator.ReportAsync(TestContext.Current.CancellationToken);
+            second = harness.Coordinator.ReportAsync(TestContext.CurrentContext.CancellationToken);
             await Task.Yield();
         };
 
-        await harness.Coordinator.ReportAsync(TestContext.Current.CancellationToken);
+        await harness.Coordinator.ReportAsync(TestContext.CurrentContext.CancellationToken);
 
-        Assert.False(await second);
-        Assert.Single(harness.Sink.Reports);
+        Assert.That(await second, Is.False);
+        Assert.That(harness.Sink.Reports, Has.Exactly(1).Items);
     }
 
-    [Fact]
+    [Test]
     public async Task IsBusyIsClearedAfterAFailureSoTheUserCanTryAgain()
     {
         // A guard that latches on would leave the button permanently dead after one bad network
@@ -342,20 +350,20 @@ public class DiagnosticsReportCoordinatorTests
         harness.Sink.Throws = new InvalidOperationException("boom");
         harness.UserSends();
 
-        await harness.Coordinator.ReportAsync(TestContext.Current.CancellationToken);
+        await harness.Coordinator.ReportAsync(TestContext.CurrentContext.CancellationToken);
 
-        Assert.False(harness.Coordinator.IsBusy);
+        Assert.That(harness.Coordinator.IsBusy, Is.False);
     }
 
-    [Fact]
+    [Test]
     public async Task ReportingTwiceInSequenceIsAllowed()
     {
         // Settings is not a one-shot: a user may hit two different problems in one session.
         using var harness = new Harness();
         harness.UserSends();
 
-        Assert.True(await harness.Coordinator.ReportAsync(TestContext.Current.CancellationToken));
-        Assert.True(await harness.Coordinator.ReportAsync(TestContext.Current.CancellationToken));
-        Assert.Equal(2, harness.Sink.Reports.Count);
+        Assert.That(await harness.Coordinator.ReportAsync(TestContext.CurrentContext.CancellationToken), Is.True);
+        Assert.That(await harness.Coordinator.ReportAsync(TestContext.CurrentContext.CancellationToken), Is.True);
+        Assert.That(harness.Sink.Reports.Count, Is.EqualTo(2));
     }
 }

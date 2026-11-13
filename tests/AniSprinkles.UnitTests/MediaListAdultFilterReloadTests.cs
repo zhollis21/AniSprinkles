@@ -13,43 +13,43 @@ namespace AniSprinkles.UnitTests;
 /// window, so turning 18+ content off and tabbing back left the entries on screen — and unlike the
 /// other three, tabbing away and back again did not clear it either.
 /// </summary>
-[Collection(AppSettingsCollection.Name)]
+[NonParallelizable]
 public class MediaListAdultFilterReloadTests
 {
     public MediaListAdultFilterReloadTests() => TestDataBuilder.ResetAppSettings();
 
-    [Fact]
+    [Test]
     public async Task ReturningToLibrary_AfterAdultContentIsTurnedOff_DropsTheAdultEntries()
     {
         var harness = new Harness();
         harness.ViewerReports(displayAdultContent: true);
         await harness.Model.LoadAsync();
-        Assert.Contains(harness.AllEntries(), e => e.Media?.IsAdult == true);
+        Assert.That(harness.AllEntries(), Has.Some.Matches<MediaListEntry>(e => e is { Media.IsAdult: true }));
 
         // The user turns 18+ content off on Settings, which commits immediately (#118), and taps
         // back to Library well inside the five-minute freshness window.
         harness.ViewerReports(displayAdultContent: false);
         await harness.Model.LoadAsync();
 
-        Assert.DoesNotContain(harness.AllEntries(), e => e.Media?.IsAdult == true);
-        Assert.Contains(harness.AllEntries(), e => e.MediaId == 1);
+        Assert.That(harness.AllEntries(), Has.None.Matches<MediaListEntry>(e => e is { Media.IsAdult: true }));
+        Assert.That(harness.AllEntries(), Has.Some.Matches<MediaListEntry>(e => e is { MediaId: 1 }));
     }
 
-    [Fact]
+    [Test]
     public async Task ReturningToLibrary_AfterAdultContentIsTurnedOn_BringsThemBack()
     {
         var harness = new Harness();
         harness.ViewerReports(displayAdultContent: false);
         await harness.Model.LoadAsync();
-        Assert.DoesNotContain(harness.AllEntries(), e => e.Media?.IsAdult == true);
+        Assert.That(harness.AllEntries(), Has.None.Matches<MediaListEntry>(e => e is { Media.IsAdult: true }));
 
         harness.ViewerReports(displayAdultContent: true);
         await harness.Model.LoadAsync();
 
-        Assert.Contains(harness.AllEntries(), e => e.Media?.IsAdult == true);
+        Assert.That(harness.AllEntries(), Has.Some.Matches<MediaListEntry>(e => e is { Media.IsAdult: true }));
     }
 
-    [Fact]
+    [Test]
     public async Task ReturningToLibrary_InsideTheSaveDebounce_DoesNotRevertTheLocalChange()
     {
         // The regression this pairs with: fixing the short-circuit above made Library reload exactly
@@ -66,11 +66,11 @@ public class MediaListAdultFilterReloadTests
 
         await harness.Model.LoadAsync();
 
-        Assert.False(AppSettings.DisplayAdultContent);
-        Assert.DoesNotContain(harness.AllEntries(), e => e.Media?.IsAdult == true);
+        Assert.That(AppSettings.DisplayAdultContent, Is.False);
+        Assert.That(harness.AllEntries(), Has.None.Matches<MediaListEntry>(e => e is { Media.IsAdult: true }));
     }
 
-    [Fact]
+    [Test]
     public async Task ReturningToLibrary_WithTheSettingUnchanged_StillShortCircuits()
     {
         // The freshness window is what keeps tab switching snappy on a large list. Adding the

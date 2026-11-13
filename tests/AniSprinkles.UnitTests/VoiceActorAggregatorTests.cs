@@ -17,18 +17,18 @@ public class VoiceActorAggregatorTests
     private static (IReadOnlyList<CharacterMediaEdge> Items, PageInfo? PageInfo) Result(
         PageInfo info, params CharacterMediaEdge[] edges) => (edges.ToList(), info);
 
-    [Fact]
+    [Test]
     public void Seed_SameActorAcrossEdges_DedupedByStaffId()
     {
         var aggregator = new VoiceActorAggregator((_, _) => throw new InvalidOperationException());
 
         aggregator.Seed([Edge(Actor(1, "Japanese")), Edge(Actor(1, "Japanese"))], Page(1, hasNext: false));
 
-        Assert.Single(aggregator.Items);
-        Assert.Equal(1, aggregator.Items[0].Id);
+        Assert.That(aggregator.Items, Has.Exactly(1).Items);
+        Assert.That(aggregator.Items[0].Id, Is.EqualTo(1));
     }
 
-    [Fact]
+    [Test]
     public void Seed_MixedLanguages_OrdersJapaneseFirst()
     {
         var aggregator = new VoiceActorAggregator((_, _) => throw new InvalidOperationException());
@@ -36,35 +36,35 @@ public class VoiceActorAggregatorTests
         // English has far more favourites but Japanese (the original seiyuu) must still sort first.
         aggregator.Seed([Edge(Actor(1, "English", favourites: 9999), Actor(2, "Japanese", favourites: 5))], Page(1, hasNext: false));
 
-        Assert.Equal("Japanese", aggregator.Items[0].Language);
-        Assert.Equal("English", aggregator.Items[1].Language);
+        Assert.That(aggregator.Items[0].Language, Is.EqualTo("Japanese"));
+        Assert.That(aggregator.Items[1].Language, Is.EqualTo("English"));
     }
 
-    [Fact]
+    [Test]
     public void Seed_NoVoiceActors_IsEmpty()
     {
         var aggregator = new VoiceActorAggregator((_, _) => throw new InvalidOperationException());
 
         aggregator.Seed([Edge()], Page(1, hasNext: false));
 
-        Assert.True(aggregator.IsEmpty);
-        Assert.False(aggregator.HasMore);
+        Assert.That(aggregator.IsEmpty, Is.True);
+        Assert.That(aggregator.HasMore, Is.False);
     }
 
-    [Fact]
+    [Test]
     public async Task CheckForMoreAsync_NextPageHasNewActor_AppendsIt()
     {
         var aggregator = new VoiceActorAggregator((page, _) =>
             Task.FromResult(Result(Page(2, hasNext: false), Edge(Actor(2, "English")))));
         aggregator.Seed([Edge(Actor(1, "Japanese"))], Page(1, hasNext: true));
 
-        await aggregator.CheckForMoreAsync(TestContext.Current.CancellationToken);
+        await aggregator.CheckForMoreAsync(TestContext.CurrentContext.CancellationToken);
 
-        Assert.Equal([1, 2], aggregator.Items.Select(a => a.Id));
-        Assert.False(aggregator.HasMore);
+        Assert.That(aggregator.Items.Select(a => a.Id), Is.EqualTo([1, 2]));
+        Assert.That(aggregator.HasMore, Is.False);
     }
 
-    [Fact]
+    [Test]
     public async Task CheckForMoreAsync_PagesRepeatSeenActors_WalksUntilNewFound()
     {
         var pages = new Dictionary<int, (IReadOnlyList<CharacterMediaEdge>, PageInfo?)>
@@ -80,13 +80,13 @@ public class VoiceActorAggregatorTests
         });
         aggregator.Seed([Edge(Actor(1, "Japanese"))], Page(1, hasNext: true));
 
-        await aggregator.CheckForMoreAsync(TestContext.Current.CancellationToken);
+        await aggregator.CheckForMoreAsync(TestContext.CurrentContext.CancellationToken);
 
-        Assert.Equal([2, 3], fetchedPages);
-        Assert.Equal([1, 2], aggregator.Items.Select(a => a.Id));
+        Assert.That(fetchedPages, Is.EqualTo([2, 3]));
+        Assert.That(aggregator.Items.Select(a => a.Id), Is.EqualTo([1, 2]));
     }
 
-    [Fact]
+    [Test]
     public async Task CheckForMoreAsync_NoNewActorsWithinCap_StopsAtPageCap()
     {
         var fetchedPages = new List<int>();
@@ -99,26 +99,26 @@ public class VoiceActorAggregatorTests
             maxPagesPerCheck: 2);
         aggregator.Seed([Edge(Actor(1, "Japanese"))], Page(1, hasNext: true));
 
-        await aggregator.CheckForMoreAsync(TestContext.Current.CancellationToken);
+        await aggregator.CheckForMoreAsync(TestContext.CurrentContext.CancellationToken);
 
-        Assert.Equal([2, 3], fetchedPages); // walked exactly the cap
-        Assert.Single(aggregator.Items);     // surfaced nobody new
-        Assert.True(aggregator.HasMore);     // more remains to search next tap
+        Assert.That(fetchedPages, Is.EqualTo([2, 3])); // walked exactly the cap
+        Assert.That(aggregator.Items, Has.Exactly(1).Items);     // surfaced nobody new
+        Assert.That(aggregator.HasMore, Is.True);     // more remains to search next tap
     }
 
-    [Fact]
+    [Test]
     public async Task CheckForMoreAsync_MediaExhausted_SetsHasMoreFalse()
     {
         var aggregator = new VoiceActorAggregator((page, _) =>
             Task.FromResult(Result(Page(2, hasNext: false), Edge(Actor(1, "Japanese"))))); // repeat, last page
         aggregator.Seed([Edge(Actor(1, "Japanese"))], Page(1, hasNext: true));
 
-        await aggregator.CheckForMoreAsync(TestContext.Current.CancellationToken);
+        await aggregator.CheckForMoreAsync(TestContext.CurrentContext.CancellationToken);
 
-        Assert.False(aggregator.HasMore);
+        Assert.That(aggregator.HasMore, Is.False);
     }
 
-    [Fact]
+    [Test]
     public async Task CheckForMoreAsync_NoNextPage_DoesNotFetch()
     {
         var fetched = false;
@@ -129,12 +129,12 @@ public class VoiceActorAggregatorTests
         });
         aggregator.Seed([Edge(Actor(1, "Japanese"))], Page(1, hasNext: false));
 
-        await aggregator.CheckForMoreAsync(TestContext.Current.CancellationToken);
+        await aggregator.CheckForMoreAsync(TestContext.CurrentContext.CancellationToken);
 
-        Assert.False(fetched);
+        Assert.That(fetched, Is.False);
     }
 
-    [Fact]
+    [Test]
     public void Reset_AfterSeed_ClearsItemsAndPagingState()
     {
         var aggregator = new VoiceActorAggregator((_, _) => throw new InvalidOperationException());
@@ -142,7 +142,7 @@ public class VoiceActorAggregatorTests
 
         aggregator.Reset();
 
-        Assert.Empty(aggregator.Items);
-        Assert.False(aggregator.HasMore);
+        Assert.That(aggregator.Items, Is.Empty);
+        Assert.That(aggregator.HasMore, Is.False);
     }
 }

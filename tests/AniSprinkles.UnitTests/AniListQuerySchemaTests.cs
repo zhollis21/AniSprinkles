@@ -22,7 +22,7 @@ namespace AniSprinkles.UnitTests;
 /// </summary>
 public class AniListQuerySchemaTests
 {
-    [Fact]
+    [Test]
     public void NoQueryAsksForTheDeprecatedAverageScore()
     {
         var offenders = GraphQlDocuments()
@@ -30,10 +30,10 @@ public class AniListQuerySchemaTests
             .Select(d => d.Name)
             .ToList();
 
-        Assert.Empty(offenders);
+        Assert.That(offenders, Is.Empty);
     }
 
-    [Fact]
+    [Test]
     public void TheScoreFieldIsStillSelectedSomewhere()
     {
         // The counterpart to the assertion above: that one also passes if the field is dropped
@@ -48,16 +48,16 @@ public class AniListQuerySchemaTests
         var selecting = GraphQlDocuments()
             .Count(d => d.Text.Contains("weightedScore", StringComparison.Ordinal));
 
-        Assert.True(selecting >= 12, $"Only {selecting} documents select weightedScore.");
+        Assert.That(selecting >= 12, Is.True, $"Only {selecting} documents select weightedScore.");
     }
 
-    [Fact]
+    [Test]
     public void RelationsAreRequestedAtVersion3()
     {
         var documents = GraphQlDocuments().ToList();
 
-        Assert.DoesNotContain(documents, d => d.Text.Contains("relationType(version: 2)", StringComparison.Ordinal));
-        Assert.Contains(documents, d => d.Text.Contains("relationType(version: 3)", StringComparison.Ordinal));
+        Assert.That(documents, Has.None.Matches<(string Name, string Text)>(d => d.Text.Contains("relationType(version: 2)", StringComparison.Ordinal)));
+        Assert.That(documents, Has.Some.Matches<(string Name, string Text)>(d => d.Text.Contains("relationType(version: 3)", StringComparison.Ordinal)));
     }
 
     /// <summary>
@@ -81,8 +81,9 @@ public class AniListQuerySchemaTests
         // non-literal, or moved to another type, every assertion above would quietly hold over an
         // empty set. Twelve is the count that selects the score field, so the floor sits just below
         // the real total rather than at an arbitrary number.
-        Assert.True(
+        Assert.That(
             literals.Count >= 15,
+            Is.True,
             $"Expected to find the GraphQL documents by reflection, found {literals.Count}. "
             + "If the query constants moved, this helper needs updating — the assertions are "
             + "meaningless until it finds them again.");
