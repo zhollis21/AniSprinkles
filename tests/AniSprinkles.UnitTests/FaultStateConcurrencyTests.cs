@@ -20,13 +20,13 @@ public class FaultStateConcurrencyTests
     /// Pinned because "that boxes per use, so it synchronizes nothing" is a plausible-sounding
     /// review comment, and the answer should be checkable rather than argued.
     /// </summary>
-    [Fact]
+    [Test]
     public void TheGateType_IsAReferenceType()
     {
-        Assert.False(typeof(Lock).IsValueType);
+        Assert.That(typeof(Lock).IsValueType, Is.False);
     }
 
-    [Fact]
+    [Test]
     public async Task ScopeNext_FiresExactlyOnceUnderContention()
     {
         var state = new FaultState();
@@ -34,10 +34,10 @@ public class FaultStateConcurrencyTests
 
         var affected = await CountAffectedAsync(state, callers: 64);
 
-        Assert.Equal(1, affected);
+        Assert.That(affected, Is.EqualTo(1));
     }
 
-    [Fact]
+    [Test]
     public async Task FirstN_AffectsExactlyNUnderContention()
     {
         // The discriminating case. A lost increment leaves the counter behind the number of calls,
@@ -47,10 +47,10 @@ public class FaultStateConcurrencyTests
 
         var affected = await CountAffectedAsync(state, callers: 200);
 
-        Assert.Equal(10, affected);
+        Assert.That(affected, Is.EqualTo(10));
     }
 
-    [Fact]
+    [Test]
     public async Task EveryNth_AffectsTheExactExpectedShareUnderContention()
     {
         var state = new FaultState();
@@ -58,7 +58,7 @@ public class FaultStateConcurrencyTests
 
         var affected = await CountAffectedAsync(state, callers: 200);
 
-        Assert.Equal(50, affected);
+        Assert.That(affected, Is.EqualTo(50));
     }
 
     /// <summary>Releases every caller at once so they genuinely contend, then counts the faulted ones.</summary>
@@ -69,7 +69,7 @@ public class FaultStateConcurrencyTests
 
         var work = Enumerable.Range(0, callers).Select(_ => Task.Run(async () =>
         {
-            await start.WaitAsync(TestContext.Current.CancellationToken);
+            await start.WaitAsync(TestContext.CurrentContext.CancellationToken);
             if (!state.Decide("GetMediaAsync", FaultLayer.Client).IsPassThrough)
             {
                 Interlocked.Increment(ref affected);

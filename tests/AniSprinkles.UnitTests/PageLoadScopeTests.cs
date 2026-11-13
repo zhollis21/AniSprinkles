@@ -4,17 +4,17 @@ namespace AniSprinkles.UnitTests;
 
 public class PageLoadScopeTests
 {
-    [Fact]
+    [Test]
     public void Begin_ReturnsLiveToken()
     {
         using var scope = new PageLoadScope();
 
         var token = scope.Begin();
 
-        Assert.False(token.IsCancellationRequested);
+        Assert.That(token.IsCancellationRequested, Is.False);
     }
 
-    [Fact]
+    [Test]
     public void Cancel_CancelsTheCurrentToken()
     {
         using var scope = new PageLoadScope();
@@ -22,10 +22,10 @@ public class PageLoadScopeTests
 
         scope.Cancel();
 
-        Assert.True(token.IsCancellationRequested);
+        Assert.That(token.IsCancellationRequested, Is.True);
     }
 
-    [Fact]
+    [Test]
     public void Begin_CancelsThePreviousScope()
     {
         using var scope = new PageLoadScope();
@@ -33,11 +33,11 @@ public class PageLoadScopeTests
         var first = scope.Begin();
         var second = scope.Begin();
 
-        Assert.True(first.IsCancellationRequested);   // a new load aborts the prior one
-        Assert.False(second.IsCancellationRequested);
+        Assert.That(first.IsCancellationRequested, Is.True);   // a new load aborts the prior one
+        Assert.That(second.IsCancellationRequested, Is.False);
     }
 
-    [Fact]
+    [Test]
     public void EnsureActive_WhenLive_ReusesTheSameToken()
     {
         using var scope = new PageLoadScope();
@@ -45,11 +45,11 @@ public class PageLoadScopeTests
 
         var ensured = scope.EnsureActive();
 
-        Assert.Equal(begun, ensured);                 // not recreated while still live
-        Assert.False(ensured.IsCancellationRequested);
+        Assert.That(ensured, Is.EqualTo(begun));                 // not recreated while still live
+        Assert.That(ensured.IsCancellationRequested, Is.False);
     }
 
-    [Fact]
+    [Test]
     public void EnsureActive_AfterCancel_ReturnsAFreshLiveToken()
     {
         using var scope = new PageLoadScope();
@@ -58,10 +58,10 @@ public class PageLoadScopeTests
 
         var token = scope.EnsureActive();
 
-        Assert.False(token.IsCancellationRequested);  // recreated so the follow-on op can run
+        Assert.That(token.IsCancellationRequested, Is.False);  // recreated so the follow-on op can run
     }
 
-    [Fact]
+    [Test]
     public void Cancel_AfterEnsureActiveRecreated_CancelsTheNewToken()
     {
         using var scope = new PageLoadScope();
@@ -71,16 +71,16 @@ public class PageLoadScopeTests
 
         scope.Cancel();                               // a real navigate-away
 
-        Assert.True(token.IsCancellationRequested);   // still cancellable on nav-away
+        Assert.That(token.IsCancellationRequested, Is.True);   // still cancellable on nav-away
     }
 
-    [Fact]
+    [Test]
     public void EnsureActive_WithoutBegin_StartsAScope()
     {
         using var scope = new PageLoadScope();
 
         var token = scope.EnsureActive();
 
-        Assert.False(token.IsCancellationRequested);
+        Assert.That(token.IsCancellationRequested, Is.False);
     }
 }

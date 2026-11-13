@@ -7,37 +7,34 @@ namespace AniSprinkles.UnitTests;
 // exact same rules SelectSort applies, so a typo'd entry (or a renamed SortField) fails CI before it ships.
 public class MediaListSortDefinitionsTests
 {
-    public static TheoryData<string> AllCodes()
-    {
-        var data = new TheoryData<string>();
-        foreach (var (code, _) in MediaListSortDefinitions.All)
-        {
-            data.Add(code);
-        }
+    public static IEnumerable<string> AllCodes()
+        => MediaListSortDefinitions.All.Select(d => d.Code);
 
-        return data;
-    }
-
-    [Theory]
-    [MemberData(nameof(AllCodes))]
+    [TestCaseSource(nameof(AllCodes))]
     public void Code_ParsesAsFieldAndDirection(string code)
     {
         var parts = code.Split(':');
 
-        Assert.Equal(2, parts.Length);
-        Assert.True(Enum.TryParse<SortField>(parts[0], out _), $"'{parts[0]}' is not a SortField");
-        Assert.Contains(parts[1], new[] { "asc", "desc" });
+        Assert.That(parts.Length, Is.EqualTo(2));
+        Assert.That(Enum.TryParse<SortField>(parts[0], out _), Is.True, $"'{parts[0]}' is not a SortField");
+        Assert.That(new[] { "asc", "desc" }, Does.Contain(parts[1]));
     }
 
-    [Fact]
+    [Test]
     public void Codes_AreUnique()
     {
         var codes = MediaListSortDefinitions.All.Select(d => d.Code).ToList();
 
-        Assert.Equal(codes.Count, codes.Distinct(StringComparer.Ordinal).Count());
+        Assert.That(codes.Distinct(StringComparer.Ordinal).Count(), Is.EqualTo(codes.Count));
     }
 
-    [Fact]
+    [Test]
     public void Definitions_AllHaveDisplayText()
-        => Assert.All(MediaListSortDefinitions.All, d => Assert.False(string.IsNullOrWhiteSpace(d.Display)));
+        => Assert.Multiple(() =>
+        {
+            foreach (var d in MediaListSortDefinitions.All)
+            {
+                Assert.That(string.IsNullOrWhiteSpace(d.Display), Is.False, d.Code);
+            }
+        });
 }

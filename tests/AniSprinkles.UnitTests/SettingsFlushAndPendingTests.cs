@@ -15,12 +15,12 @@ namespace AniSprinkles.UnitTests;
 /// inside the window read the server's stale copy and reverted the toggle the user had just flipped.
 /// </para>
 /// </summary>
-[Collection(AppSettingsCollection.Name)]
+[NonParallelizable]
 public class SettingsFlushTests
 {
     public SettingsFlushTests() => TestDataBuilder.ResetAppSettings();
 
-    [Fact]
+    [Test]
     public async Task FlushPendingSave_SendsAChangeStillSittingInTheDebounce()
     {
         var harness = new Harness();
@@ -34,7 +34,7 @@ public class SettingsFlushTests
             Arg.Is<UpdateUserRequest>(r => r.DisplayAdultContent == false), Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task FlushPendingSave_WithNothingPending_SendsNothing()
     {
         // OnDisappearing fires on every tab away, most of which changed nothing. Flushing must not
@@ -48,7 +48,7 @@ public class SettingsFlushTests
             Arg.Any<UpdateUserRequest>(), Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task FlushPendingSave_AfterAPlainLoad_SendsNothingEvenWhenTheViewerHasNoNotificationOptions()
     {
         // Guards the CI screenshot job. It opens Settings and then tabs to Discover, which now runs
@@ -61,12 +61,12 @@ public class SettingsFlushTests
 
         await harness.Model.FlushPendingSaveAsync();
 
-        Assert.False(harness.Model.HasUnsavedChanges);
+        Assert.That(harness.Model.HasUnsavedChanges, Is.False);
         await harness.Client.DidNotReceive().UpdateUserAsync(
             Arg.Any<UpdateUserRequest>(), Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task ReturningToSettings_BeforeTheSaveLands_DoesNotRevertTheToggle()
     {
         // Copilot caught this on #129. PopulateFromUser confirmed the pending marker on ANY viewer
@@ -81,11 +81,11 @@ public class SettingsFlushTests
         // The user tabs back to Settings before the save has landed, so the viewer still says on.
         await harness.Model.LoadAsync();
 
-        Assert.False(harness.Model.DisplayAdultContent);
-        Assert.False(AppSettings.DisplayAdultContent);
+        Assert.That(harness.Model.DisplayAdultContent, Is.False);
+        Assert.That(AppSettings.DisplayAdultContent, Is.False);
     }
 
-    [Fact]
+    [Test]
     public async Task ReturningToSettings_OnceTheServerAgrees_ClearsThePendingMarker()
     {
         // The other half: the marker must not latch forever. Once the server reports the value the
@@ -102,11 +102,11 @@ public class SettingsFlushTests
         harness.ViewerNowReports(displayAdultContent: true);
         await harness.Model.LoadAsync();
 
-        Assert.True(AppSettings.DisplayAdultContent);
-        Assert.True(harness.Model.DisplayAdultContent);
+        Assert.That(AppSettings.DisplayAdultContent, Is.True);
+        Assert.That(harness.Model.DisplayAdultContent, Is.True);
     }
 
-    [Fact]
+    [Test]
     public async Task FlushPendingSave_AfterAPermissionDenialRevertedTheToggle_StillSendsTheRevert()
     {
         // The other side of the branch above. When notification permission is denied, the model
@@ -123,7 +123,7 @@ public class SettingsFlushTests
             Arg.Is<UpdateUserRequest>(r => r.AiringNotifications == false), Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task FlushPendingSave_CancelsTheDebounceSoTheChangeIsNotSentTwice()
     {
         var harness = new Harness();
@@ -224,12 +224,12 @@ public class SettingsFlushTests
 /// pending flag encodes the invariant that actually matters: a locally committed change outranks the
 /// server's copy until the server confirms it.
 /// </summary>
-[Collection(AppSettingsCollection.Name)]
+[NonParallelizable]
 public class AppSettingsPendingAdultContentTests
 {
     public AppSettingsPendingAdultContentTests() => TestDataBuilder.ResetAppSettings();
 
-    [Fact]
+    [Test]
     public void SyncFromViewer_DoesNotRevertALocalChangeTheServerHasNotSeenYet()
     {
         AppSettings.SetDisplayAdultContent(false);
@@ -237,10 +237,10 @@ public class AppSettingsPendingAdultContentTests
         // A Library refresh landing inside the debounce window: the server still reports the old on.
         AppSettings.SyncFromViewer(Viewer(displayAdultContent: true, titleLanguage: UserTitleLanguage.English));
 
-        Assert.False(AppSettings.DisplayAdultContent);
+        Assert.That(AppSettings.DisplayAdultContent, Is.False);
     }
 
-    [Fact]
+    [Test]
     public void SyncFromViewer_StillAppliesEveryOtherPreference()
     {
         // The guard is one field wide. A cross-device title-language change must still land.
@@ -248,10 +248,10 @@ public class AppSettingsPendingAdultContentTests
 
         AppSettings.SyncFromViewer(Viewer(displayAdultContent: true, titleLanguage: UserTitleLanguage.English));
 
-        Assert.Equal(UserTitleLanguage.English, AppSettings.TitleLanguage);
+        Assert.That(AppSettings.TitleLanguage, Is.EqualTo(UserTitleLanguage.English));
     }
 
-    [Fact]
+    [Test]
     public void SyncFromViewer_ResumesFollowingTheServerOnceTheChangeIsConfirmed()
     {
         AppSettings.SetDisplayAdultContent(false);
@@ -262,10 +262,10 @@ public class AppSettingsPendingAdultContentTests
         // A genuine cross-device change — made on the AniList website — must now be honoured.
         AppSettings.SyncFromViewer(Viewer(displayAdultContent: true, titleLanguage: UserTitleLanguage.Romaji));
 
-        Assert.True(AppSettings.DisplayAdultContent);
+        Assert.That(AppSettings.DisplayAdultContent, Is.True);
     }
 
-    [Fact]
+    [Test]
     public void SyncFromViewer_DoesNotTreatAStaleLoadAsConfirmation()
     {
         // The marker must survive a viewer response that disagrees with us, or the next Settings
@@ -275,18 +275,18 @@ public class AppSettingsPendingAdultContentTests
         AppSettings.SyncFromViewer(Viewer(displayAdultContent: true, titleLanguage: UserTitleLanguage.Romaji));
         AppSettings.SyncFromViewer(Viewer(displayAdultContent: true, titleLanguage: UserTitleLanguage.Romaji));
 
-        Assert.False(AppSettings.DisplayAdultContent);
+        Assert.That(AppSettings.DisplayAdultContent, Is.False);
     }
 
-    [Fact]
+    [Test]
     public void SyncFromViewer_WithNoLocalChangePending_FollowsTheServer()
     {
         AppSettings.SyncFromViewer(Viewer(displayAdultContent: true, titleLanguage: UserTitleLanguage.Romaji));
 
-        Assert.True(AppSettings.DisplayAdultContent);
+        Assert.That(AppSettings.DisplayAdultContent, Is.True);
     }
 
-    [Fact]
+    [Test]
     public void Clear_DropsThePendingMarkerSoTheNextAccountStartsClean()
     {
         // Sign-out must not leave the previous user's unconfirmed change shadowing the next viewer.
@@ -295,7 +295,7 @@ public class AppSettingsPendingAdultContentTests
 
         AppSettings.SyncFromViewer(Viewer(displayAdultContent: true, titleLanguage: UserTitleLanguage.Romaji));
 
-        Assert.True(AppSettings.DisplayAdultContent);
+        Assert.That(AppSettings.DisplayAdultContent, Is.True);
     }
 
     private static AniListUser Viewer(bool displayAdultContent, UserTitleLanguage titleLanguage) => new()

@@ -11,7 +11,7 @@ namespace AniSprinkles.UnitTests;
 /// gets a volume progress bar without anyone tracking chapters ever seeing one.
 /// </para>
 /// </summary>
-[Collection(AppSettingsCollection.Name)]
+[NonParallelizable]
 public class MediaListEntryMangaProgressTests
 {
     public MediaListEntryMangaProgressTests() => TestDataBuilder.ResetAppSettings();
@@ -33,68 +33,65 @@ public class MediaListEntryMangaProgressTests
 
     // ── Which unit is active ─────────────────────────────────────────
 
-    [Theory]
-    // progress, progressVolumes, expected volume mode
-    [InlineData(null, null, false)]  // brand-new entry: chapters by default
-    [InlineData(0, 0, false)]        // AniList returns 0/0 for a fresh entry, not null
-    [InlineData(12, null, false)]    // chapter reader
-    [InlineData(12, 3, false)]       // tracks both: chapters win
-    [InlineData(0, 3, true)]         // volume-only reader
-    [InlineData(null, 3, true)]      // volume-only reader, chapters never set
+    [TestCase(null, null, false)]  // brand-new entry: chapters by default
+    [TestCase(0, 0, false)]        // AniList returns 0/0 for a fresh entry, not null
+    [TestCase(12, null, false)]    // chapter reader
+    [TestCase(12, 3, false)]       // tracks both: chapters win
+    [TestCase(0, 3, true)]         // volume-only reader
+    [TestCase(null, 3, true)]      // volume-only reader, chapters never set
     public void UsesVolumeProgress_OnlyWhenVolumesSetAndChaptersAreNot(
         int? progress, int? progressVolumes, bool expected)
     {
         var entry = Manga(progress: progress, progressVolumes: progressVolumes, chapters: 141, volumes: 34);
 
-        Assert.Equal(expected, entry.UsesVolumeProgress);
+        Assert.That(entry.UsesVolumeProgress, Is.EqualTo(expected));
     }
 
-    [Fact]
+    [Test]
     public void UsesVolumeProgress_IsNeverTrueForAnime()
     {
         // The volumes field is meaningless for anime; a stray value must not flip the unit.
         var entry = TestDataBuilder.Entry(1, progress: 0, progressVolumes: 3, episodes: 12);
 
-        Assert.False(entry.UsesVolumeProgress);
-        Assert.Equal(MediaProgressUnit.Episode, entry.ActiveProgressUnit);
+        Assert.That(entry.UsesVolumeProgress, Is.False);
+        Assert.That(entry.ActiveProgressUnit, Is.EqualTo(MediaProgressUnit.Episode));
     }
 
-    [Theory]
-    [InlineData(12, null, MediaProgressUnit.Chapter)]
-    [InlineData(0, 3, MediaProgressUnit.Volume)]
+    [TestCase(12, null, MediaProgressUnit.Chapter)]
+    [TestCase(0, 3, MediaProgressUnit.Volume)]
     public void ActiveProgressUnit_FollowsTheInferredMode(
         int? progress, int? progressVolumes, MediaProgressUnit expected)
     {
         var entry = Manga(progress: progress, progressVolumes: progressVolumes, chapters: 141, volumes: 34);
 
-        Assert.Equal(expected, entry.ActiveProgressUnit);
+        Assert.That(entry.ActiveProgressUnit, Is.EqualTo(expected));
     }
 
     // ── Active value, total and display ──────────────────────────────
 
-    [Fact]
+    [Test]
     public void ChapterMode_ReadsChaptersForValueAndTotal()
     {
         var entry = Manga(progress: 100, progressVolumes: null, chapters: 141, volumes: 34);
 
-        Assert.Equal(100, entry.ActiveProgress);
-        Assert.Equal(141, entry.ActiveProgressTotal);
-        Assert.True(entry.HasKnownProgressTotal);
-        Assert.Equal("100/141", entry.ProgressDisplay);
+        Assert.That(entry.ActiveProgress, Is.EqualTo(100));
+        Assert.That(entry.ActiveProgressTotal, Is.EqualTo(141));
+        Assert.That(entry.HasKnownProgressTotal, Is.True);
+        Assert.That(entry.ProgressDisplay, Is.EqualTo("100/141"));
     }
 
-    [Fact]
+    [Test]
     public void VolumeMode_ReadsVolumesForValueAndTotal()
     {
         var entry = Manga(progress: 0, progressVolumes: 20, chapters: 141, volumes: 34);
 
-        Assert.Equal(20, entry.ActiveProgress);
-        Assert.Equal(34, entry.ActiveProgressTotal);
-        Assert.True(entry.HasKnownProgressTotal);
-        Assert.Equal("20/34", entry.ProgressDisplay);
+        Assert.That(entry.ActiveProgress, Is.EqualTo(20));
+        Assert.That(entry.ActiveProgressTotal, Is.EqualTo(34));
+        Assert.That(entry.HasKnownProgressTotal, Is.True);
+        Assert.That(entry.ProgressDisplay, Is.EqualTo("20/34"));
     }
 
-    [Fact]
+    [Test]
     public void OngoingManga_HasNoTotalAtAll()
     {
         // The common case, and the one that most changes behaviour: AniList returns null chapters
@@ -103,14 +100,14 @@ public class MediaListEntryMangaProgressTests
         // there is no cap, no completion, and no progress bar.
         var entry = Manga(progress: 1100, chapters: null, volumes: null);
 
-        Assert.Null(entry.ActiveProgressTotal);
-        Assert.False(entry.HasKnownProgressTotal);
-        Assert.Equal("1100", entry.ProgressDisplay);
-        Assert.False(entry.IsCompletionAt(99999));
-        Assert.Equal(99999, entry.ClampProgress(99999));
+        Assert.That(entry.ActiveProgressTotal, Is.Null);
+        Assert.That(entry.HasKnownProgressTotal, Is.False);
+        Assert.That(entry.ProgressDisplay, Is.EqualTo("1100"));
+        Assert.That(entry.IsCompletionAt(99999), Is.False);
+        Assert.That(entry.ClampProgress(99999), Is.EqualTo(99999));
     }
 
-    [Fact]
+    [Test]
     public void VolumeMode_WithVolumeCountMissing_FallsBackToNoTotalRatherThanChapters()
     {
         // Some finished one-shots carry chapters but no volumes (verified: the Death Note one-shot
@@ -118,67 +115,66 @@ public class MediaListEntryMangaProgressTests
         // "3/141" on screen, so the total is simply unknown in that case.
         var entry = Manga(progress: 0, progressVolumes: 3, chapters: 141, volumes: null);
 
-        Assert.True(entry.UsesVolumeProgress);
-        Assert.Null(entry.ActiveProgressTotal);
-        Assert.False(entry.HasKnownProgressTotal);
+        Assert.That(entry.UsesVolumeProgress, Is.True);
+        Assert.That(entry.ActiveProgressTotal, Is.Null);
+        Assert.That(entry.HasKnownProgressTotal, Is.False);
     }
 
     // ── Completion and clamping follow the active unit ───────────────
 
-    [Theory]
-    [InlineData(33, false)]
-    [InlineData(34, true)]
-    [InlineData(35, true)]
+    [TestCase(33, false)]
+    [TestCase(34, true)]
+    [TestCase(35, true)]
     public void VolumeMode_CompletionIsCheckedAgainstTheVolumeTotal(int value, bool expected)
     {
         var entry = Manga(progress: 0, progressVolumes: 20, chapters: 141, volumes: 34);
 
-        Assert.Equal(expected, entry.IsCompletionAt(value));
+        Assert.That(entry.IsCompletionAt(value), Is.EqualTo(expected));
     }
 
-    [Fact]
+    [Test]
     public void ChapterMode_CompletionIsCheckedAgainstTheChapterTotal()
     {
         var entry = Manga(progress: 100, chapters: 141, volumes: 34);
 
-        Assert.False(entry.IsCompletionAt(34)); // the volume total must not complete a chapter reader
-        Assert.True(entry.IsCompletionAt(141));
+        Assert.That(entry.IsCompletionAt(34), Is.False); // the volume total must not complete a chapter reader
+        Assert.That(entry.IsCompletionAt(141), Is.True);
     }
 
-    [Fact]
+    [Test]
     public void VolumeMode_ClampsToTheVolumeTotal()
     {
         var entry = Manga(progress: 0, progressVolumes: 20, chapters: 141, volumes: 34);
 
-        Assert.Equal(34, entry.ClampProgress(99));
-        Assert.Equal(0, entry.ClampProgress(-1));
+        Assert.That(entry.ClampProgress(99), Is.EqualTo(34));
+        Assert.That(entry.ClampProgress(-1), Is.EqualTo(0));
     }
 
     // ── Writing back to the active unit ──────────────────────────────
 
-    [Fact]
+    [Test]
     public void SetActiveProgress_ChapterMode_WritesChaptersAndLeavesVolumesAlone()
     {
         var entry = Manga(progress: 100, progressVolumes: 12, chapters: 141, volumes: 34);
 
         entry.SetActiveProgress(101);
 
-        Assert.Equal(101, entry.Progress);
-        Assert.Equal(12, entry.ProgressVolumes);
+        Assert.That(entry.Progress, Is.EqualTo(101));
+        Assert.That(entry.ProgressVolumes, Is.EqualTo(12));
     }
 
-    [Fact]
+    [Test]
     public void SetActiveProgress_VolumeMode_WritesVolumesAndLeavesChaptersAlone()
     {
         var entry = Manga(progress: 0, progressVolumes: 20, chapters: 141, volumes: 34);
 
         entry.SetActiveProgress(21);
 
-        Assert.Equal(21, entry.ProgressVolumes);
-        Assert.Equal(0, entry.Progress);
+        Assert.That(entry.ProgressVolumes, Is.EqualTo(21));
+        Assert.That(entry.Progress, Is.EqualTo(0));
     }
 
-    [Fact]
+    [Test]
     public void SetActiveProgress_VolumeModeDecrementedToZero_FallsBackToChapters()
     {
         // Pinning a real edge of the inferred rule rather than pretending it doesn't exist: the
@@ -188,14 +184,14 @@ public class MediaListEntryMangaProgressTests
 
         entry.SetActiveProgress(0);
 
-        Assert.Equal(0, entry.ProgressVolumes);
-        Assert.False(entry.UsesVolumeProgress);
-        Assert.Equal(MediaProgressUnit.Chapter, entry.ActiveProgressUnit);
+        Assert.That(entry.ProgressVolumes, Is.EqualTo(0));
+        Assert.That(entry.UsesVolumeProgress, Is.False);
+        Assert.That(entry.ActiveProgressUnit, Is.EqualTo(MediaProgressUnit.Chapter));
     }
 
     // ── Airing members stay inert for manga ──────────────────────────
 
-    [Fact]
+    [Test]
     public void Manga_HasNoAiringInfo()
     {
         // These already key off NextAiringEpisode, which AniList never populates for manga, so they
@@ -203,74 +199,74 @@ public class MediaListEntryMangaProgressTests
         // manga is "3 chapters behind".
         var entry = Manga(progress: 100, chapters: 141);
 
-        Assert.Null(entry.EpisodesBehind);
-        Assert.Null(entry.NextEpisodeDisplay);
-        Assert.Null(entry.AiringInfoDisplay);
-        Assert.False(entry.HasAiringInfo);
+        Assert.That(entry.EpisodesBehind, Is.Null);
+        Assert.That(entry.NextEpisodeDisplay, Is.Null);
+        Assert.That(entry.AiringInfoDisplay, Is.Null);
+        Assert.That(entry.HasAiringInfo, Is.False);
     }
 
     // ── The anime path is unchanged ──────────────────────────────────
 
-    [Fact]
+    [Test]
     public void Anime_StillUsesEpisodesAndTheAiringFallback()
     {
         var finite = TestDataBuilder.Entry(1, progress: 5, episodes: 12);
-        Assert.Equal(MediaProgressUnit.Episode, finite.ActiveProgressUnit);
-        Assert.Equal(12, finite.ActiveProgressTotal);
-        Assert.True(finite.HasKnownProgressTotal);
+        Assert.That(finite.ActiveProgressUnit, Is.EqualTo(MediaProgressUnit.Episode));
+        Assert.That(finite.ActiveProgressTotal, Is.EqualTo(12));
+        Assert.That(finite.HasKnownProgressTotal, Is.True);
 
         // Long-running airing show: a soft cap from nextAiringEpisode, but no finite total.
         var airing = TestDataBuilder.Entry(2, progress: 1000, episodes: null, nextAiringEpisode: 1088);
-        Assert.Equal(1087, airing.ActiveProgressTotal);
-        Assert.False(airing.HasKnownProgressTotal);
-        Assert.False(airing.IsCompletionAt(1087));
+        Assert.That(airing.ActiveProgressTotal, Is.EqualTo(1087));
+        Assert.That(airing.HasKnownProgressTotal, Is.False);
+        Assert.That(airing.IsCompletionAt(1087), Is.False);
     }
 
     // ── The +1 control's labels ──────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void IncrementLabel_UsesTheActiveUnitsAbbreviation()
     {
-        Assert.Equal("+1 EP", TestDataBuilder.Entry(1, progress: 5, episodes: 12).IncrementLabel);
-        Assert.Equal("+1 CH", Manga(progress: 100, chapters: 141).IncrementLabel);
-        Assert.Equal("+1 VOL", Manga(progressVolumes: 20).IncrementLabel);
+        Assert.That(TestDataBuilder.Entry(1, progress: 5, episodes: 12).IncrementLabel, Is.EqualTo("+1 EP"));
+        Assert.That(Manga(progress: 100, chapters: 141).IncrementLabel, Is.EqualTo("+1 CH"));
+        Assert.That(Manga(progressVolumes: 20).IncrementLabel, Is.EqualTo("+1 VOL"));
     }
 
-    [Fact]
+    [Test]
     public void IncrementDescription_TracksTheActiveUnitRatherThanSayingEpisode()
     {
         // The screen-reader text sat hardcoded as "Increment episode progress" in
         // MediaListLoadedContentView while the visible label beside it was already bound to
         // IncrementLabel. Harmless while the view was anime-only; once #12 shared it with manga,
         // TalkBack announced "episode" over a +1 VOL button.
-        Assert.Equal(
-            "Increment episode progress",
-            TestDataBuilder.Entry(1, progress: 5, episodes: 12).IncrementDescription);
-        Assert.Equal(
-            "Increment chapter progress",
-            Manga(progress: 100, chapters: 141).IncrementDescription);
-        Assert.Equal(
-            "Increment volume progress",
-            Manga(progressVolumes: 20).IncrementDescription);
+        Assert.That(
+            TestDataBuilder.Entry(1, progress: 5, episodes: 12).IncrementDescription,
+            Is.EqualTo("Increment episode progress"));
+        Assert.That(
+            Manga(progress: 100, chapters: 141).IncrementDescription,
+            Is.EqualTo("Increment chapter progress"));
+        Assert.That(
+            Manga(progressVolumes: 20).IncrementDescription,
+            Is.EqualTo("Increment volume progress"));
     }
 
-    [Fact]
+    [Test]
     public void IncrementHint_UsesTheUnitsOwnVerbAndNoun()
     {
         // The hint sat hardcoded beside the description with the same anime-only wording. The
         // anime string is unchanged on purpose — only the manga cases are new.
-        Assert.Equal(
-            "Adds one to the watched episode count",
-            TestDataBuilder.Entry(1, progress: 5, episodes: 12).IncrementHint);
-        Assert.Equal(
-            "Adds one to the read chapter count",
-            Manga(progress: 100, chapters: 141).IncrementHint);
-        Assert.Equal(
-            "Adds one to the read volume count",
-            Manga(progressVolumes: 20).IncrementHint);
+        Assert.That(
+            TestDataBuilder.Entry(1, progress: 5, episodes: 12).IncrementHint,
+            Is.EqualTo("Adds one to the watched episode count"));
+        Assert.That(
+            Manga(progress: 100, chapters: 141).IncrementHint,
+            Is.EqualTo("Adds one to the read chapter count"));
+        Assert.That(
+            Manga(progressVolumes: 20).IncrementHint,
+            Is.EqualTo("Adds one to the read volume count"));
     }
 
-    [Fact]
+    [Test]
     public void IncrementLabels_RaiseChangeNotificationsWhenEitherCounterMoves()
     {
         // Both labels are computed, so the +1 button keeps stale text unless each counter
@@ -283,7 +279,7 @@ public class MediaListEntryMangaProgressTests
         entry.Progress = 7;
         entry.ProgressVolumes = 4;
 
-        Assert.Equal(2, changed.Count(n => n == nameof(MediaListEntry.IncrementLabel)));
-        Assert.Equal(2, changed.Count(n => n == nameof(MediaListEntry.IncrementDescription)));
+        Assert.That(changed.Count(n => n == nameof(MediaListEntry.IncrementLabel)), Is.EqualTo(2));
+        Assert.That(changed.Count(n => n == nameof(MediaListEntry.IncrementDescription)), Is.EqualTo(2));
     }
 }

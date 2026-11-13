@@ -14,14 +14,14 @@ public class DevFlowDebugOnlyTests
 
     private static readonly Lazy<string> RepoRoot = new(FindRepoRoot);
 
-    [Fact]
+    [Test]
     public void DevFlowPackageReferences_AreFound()
     {
         // Without this, every assertion below could pass vacuously after a rename or a move.
-        Assert.NotEmpty(DevFlowPackageReferences());
+        Assert.That(DevFlowPackageReferences(), Is.Not.Empty);
     }
 
-    [Fact]
+    [Test]
     public void EveryDevFlowPackageReference_IsDebugOnly()
     {
         var offenders = DevFlowPackageReferences()
@@ -29,24 +29,24 @@ public class DevFlowDebugOnlyTests
             .Select(r => $"{r.File}: {r.Include} (conditions: {(r.Conditions.Count == 0 ? "none" : string.Join(" | ", r.Conditions))})")
             .ToList();
 
-        Assert.True(offenders.Count == 0,
+        Assert.That(offenders.Count == 0,
+            Is.True,
             "MAUI DevFlow must be referenced only under Condition=\"" + DebugOnlyCondition + "\":\n"
             + string.Join("\n", offenders));
     }
 
-    [Theory]
-    [InlineData(new string[0], false)]
-    [InlineData(new[] { "'$(Configuration)' == 'Debug'" }, true)]
-    [InlineData(new[] { " '$(Configuration)'=='Debug' " }, true)]
-    [InlineData(new[] { "'$(CiBuild)' == 'true'" }, false)]
-    [InlineData(new[] { "'$(Configuration)' != 'Release'" }, false)]
-    [InlineData(new[] { "'$(Configuration)' == 'Debug' OR '$(CiBuild)' == 'true'" }, false)]
+    [TestCase(new string[0], false)]
+    [TestCase(new[] { "'$(Configuration)' == 'Debug'" }, true)]
+    [TestCase(new[] { " '$(Configuration)'=='Debug' " }, true)]
+    [TestCase(new[] { "'$(CiBuild)' == 'true'" }, false)]
+    [TestCase(new[] { "'$(Configuration)' != 'Release'" }, false)]
+    [TestCase(new[] { "'$(Configuration)' == 'Debug' OR '$(CiBuild)' == 'true'" }, false)]
     public void ConditionCheck_AcceptsOnlyThePlainDebugCondition(string[] conditions, bool accepted)
     {
         // The rule is deliberately exact: anything that is not literally "Debug" — an OR, a
         // != Release, a CI-only flag — can admit a configuration that ships.
         var isAccepted = conditions.Any(c => Normalize(c) == Normalize(DebugOnlyCondition));
-        Assert.Equal(accepted, isAccepted);
+        Assert.That(isAccepted, Is.EqualTo(accepted));
     }
 
     private static List<DevFlowReference> DevFlowPackageReferences()

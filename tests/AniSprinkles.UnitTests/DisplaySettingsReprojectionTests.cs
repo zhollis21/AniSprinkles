@@ -12,14 +12,14 @@ namespace AniSprinkles.UnitTests;
 /// already-fetched items render rather than which items exist, so the answer is a re-projection —
 /// and it must not cost an AniList request.
 /// </summary>
-[Collection(AppSettingsCollection.Name)]
+[NonParallelizable]
 public class DisplaySettingsReprojectionTests
 {
     public DisplaySettingsReprojectionTests() => TestDataBuilder.ResetAppSettings();
 
     // ── The snapshot ─────────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void Snapshot_ComparesSectionOrderByContent()
     {
         // The list is joined into a string on purpose: a List<string> member on a record struct
@@ -30,11 +30,11 @@ public class DisplaySettingsReprojectionTests
         AppSettings.AnimeSectionOrder = ["Completed", "Watching"];
         var after = DisplaySettingsSnapshot.Current;
 
-        Assert.True(after.SectionOrderDiffersFrom(before));
-        Assert.False(after.RenderingDiffersFrom(before));
+        Assert.That(after.SectionOrderDiffersFrom(before), Is.True);
+        Assert.That(after.RenderingDiffersFrom(before), Is.False);
     }
 
-    [Fact]
+    [Test]
     public void Snapshot_TreatsSectionOrderAsIrrelevantToRendering()
     {
         // Section order reorders sections; it does not re-render their contents.
@@ -43,12 +43,11 @@ public class DisplaySettingsReprojectionTests
 
         AppSettings.AnimeSectionOrder = ["Completed"];
 
-        Assert.False(DisplaySettingsSnapshot.Current.RenderingDiffersFrom(before));
+        Assert.That(DisplaySettingsSnapshot.Current.RenderingDiffersFrom(before), Is.False);
     }
 
-    [Theory]
-    [InlineData(true, false)]
-    [InlineData(false, true)]
+    [TestCase(true, false)]
+    [TestCase(false, true)]
     public void Snapshot_ReportsRenderingChanges(bool moveTitleLanguage, bool moveScoreFormat)
     {
         var before = DisplaySettingsSnapshot.Current;
@@ -63,21 +62,21 @@ public class DisplaySettingsReprojectionTests
             AppSettings.ScoreFormat = ScoreFormat.Point5;
         }
 
-        Assert.True(DisplaySettingsSnapshot.Current.RenderingDiffersFrom(before));
+        Assert.That(DisplaySettingsSnapshot.Current.RenderingDiffersFrom(before), Is.True);
     }
 
-    [Fact]
+    [Test]
     public void Snapshot_OfUnchangedSettings_ReportsNoDifference()
     {
         var before = DisplaySettingsSnapshot.Current;
 
-        Assert.False(DisplaySettingsSnapshot.Current.RenderingDiffersFrom(before));
-        Assert.False(DisplaySettingsSnapshot.Current.SectionOrderDiffersFrom(before));
+        Assert.That(DisplaySettingsSnapshot.Current.RenderingDiffersFrom(before), Is.False);
+        Assert.That(DisplaySettingsSnapshot.Current.SectionOrderDiffersFrom(before), Is.False);
     }
 
     // ── The item projections ─────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void RefreshingAnEntry_RaisesTheNestedTitlePathAndTheScoreMembers()
     {
         // Media is a plain class, so the notification has to come from the container for the
@@ -87,12 +86,12 @@ public class DisplaySettingsReprojectionTests
 
         entry.RefreshDisplayProjections();
 
-        Assert.Contains(nameof(MediaListEntry.Media), raised);
-        Assert.Contains(nameof(MediaListEntry.ScoreDisplay), raised);
-        Assert.Contains(nameof(MediaListEntry.IsNumericScoreFormat), raised);
+        Assert.That(raised, Does.Contain(nameof(MediaListEntry.Media)));
+        Assert.That(raised, Does.Contain(nameof(MediaListEntry.ScoreDisplay)));
+        Assert.That(raised, Does.Contain(nameof(MediaListEntry.IsNumericScoreFormat)));
     }
 
-    [Fact]
+    [Test]
     public void RefreshingACarouselItem_RaisesTheNodePath()
     {
         var item = new BrowseMediaItem { Node = new RelatedMedia() };
@@ -100,10 +99,10 @@ public class DisplaySettingsReprojectionTests
 
         item.RefreshDisplayProjections();
 
-        Assert.Contains(nameof(BrowseMediaItem.Node), raised);
+        Assert.That(raised, Does.Contain(nameof(BrowseMediaItem.Node)));
     }
 
-    [Fact]
+    [Test]
     public void RefreshingARecommendation_RaisesItsOwnNestedPath()
     {
         // The odd one out: its RelatedMedia hangs off MediaRecommendation, not Node.
@@ -112,15 +111,15 @@ public class DisplaySettingsReprojectionTests
 
         node.RefreshDisplayProjections();
 
-        Assert.Contains(nameof(MediaRecommendationNode.MediaRecommendation), raised);
+        Assert.That(raised, Does.Contain(nameof(MediaRecommendationNode.MediaRecommendation)));
     }
 
-    [Fact]
+    [Test]
     public void EveryCarouselContainer_ImplementsTheProjectionContract()
     {
         // A carousel type that forgets the interface renders stale titles forever, and nothing else
         // would catch it — the binding simply never updates.
-        Assert.All(
+        Assert.That(
             new object[]
             {
                 new MediaListEntry(),
@@ -132,10 +131,10 @@ public class DisplaySettingsReprojectionTests
                 new MediaRecommendationNode(),
                 new StaffCharacterEdge(),
             },
-            item => Assert.IsAssignableFrom<IDisplayProjection>(item));
+            Is.All.InstanceOf<IDisplayProjection>());
     }
 
-    [Fact]
+    [Test]
     public void RefreshingAVoiceRole_RaisesTheMediaPathNotTheCharacterOne()
     {
         // The card shows the character's own name over the title of the media they are in, and it is
@@ -145,13 +144,13 @@ public class DisplaySettingsReprojectionTests
 
         edge.RefreshDisplayProjections();
 
-        Assert.Contains(nameof(StaffCharacterEdge.Media), raised);
-        Assert.DoesNotContain(nameof(StaffCharacterEdge.Node), raised);
+        Assert.That(raised, Does.Contain(nameof(StaffCharacterEdge.Media)));
+        Assert.That(raised, Does.Not.Contain(nameof(StaffCharacterEdge.Node)));
     }
 
     // ── Library, the reported repro ──────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task ChangingTitleLanguage_AndReturningToLibrary_RerendersWithoutRefetching()
     {
         var harness = new Harness();
@@ -161,11 +160,11 @@ public class DisplaySettingsReprojectionTests
         AppSettings.TitleLanguage = UserTitleLanguage.English;
         await harness.Model.LoadAsync(); // tab back, well inside the five-minute freshness window
 
-        Assert.Contains(nameof(MediaListEntry.Media), raised);
+        Assert.That(raised, Does.Contain(nameof(MediaListEntry.Media)));
         await harness.Client.Received(1).GetMediaListGroupedAsync(Arg.Any<MediaKind>(), Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task ChangingScoreFormat_AndReturningToLibrary_RerendersWithoutRefetching()
     {
         var harness = new Harness();
@@ -175,11 +174,11 @@ public class DisplaySettingsReprojectionTests
         AppSettings.ScoreFormat = ScoreFormat.Point5;
         await harness.Model.LoadAsync();
 
-        Assert.Contains(nameof(MediaListEntry.ScoreDisplay), raised);
+        Assert.That(raised, Does.Contain(nameof(MediaListEntry.ScoreDisplay)));
         await harness.Client.Received(1).GetMediaListGroupedAsync(Arg.Any<MediaKind>(), Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task ReturningToLibrary_WithNothingChanged_RaisesNothing()
     {
         // OnAppearing fires on every tab away and back. Re-projecting unconditionally would reset a
@@ -190,10 +189,10 @@ public class DisplaySettingsReprojectionTests
 
         await harness.Model.LoadAsync();
 
-        Assert.Empty(raised);
+        Assert.That(raised, Is.Empty);
     }
 
-    [Fact]
+    [Test]
     public async Task ChangingTitleLanguage_WhileSortedByTitle_ReordersTheRows()
     {
         // MediaListSection sorts by Media.DisplayTitle, so a language change moves rows as well as
@@ -204,16 +203,16 @@ public class DisplaySettingsReprojectionTests
 
         await harness.Model.LoadAsync();
         harness.Model.SelectSortCommand.Execute($"{SortField.Title}:asc");
-        Assert.Equal([1, 2], harness.VisibleMediaIds());
+        Assert.That(harness.VisibleMediaIds(), Is.EqualTo([1, 2]));
 
         AppSettings.TitleLanguage = UserTitleLanguage.English;
         await harness.Model.LoadAsync();
 
-        Assert.Equal([2, 1], harness.VisibleMediaIds());
+        Assert.That(harness.VisibleMediaIds(), Is.EqualTo([2, 1]));
         await harness.Client.Received(1).GetMediaListGroupedAsync(Arg.Any<MediaKind>(), Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task ChangingSectionOrder_AndReturningToLibrary_ReordersWithoutRefetching()
     {
         var harness = new Harness();
@@ -223,12 +222,12 @@ public class DisplaySettingsReprojectionTests
 
         AppSettings.AnimeSectionOrder = ["Watching", "Completed"];
         await harness.Model.LoadAsync();
-        Assert.Equal(["Watching", "Completed"], harness.SectionTitles());
+        Assert.That(harness.SectionTitles(), Is.EqualTo(["Watching", "Completed"]));
 
         AppSettings.AnimeSectionOrder = ["Completed", "Watching"];
         await harness.Model.LoadAsync();
 
-        Assert.Equal(["Completed", "Watching"], harness.SectionTitles());
+        Assert.That(harness.SectionTitles(), Is.EqualTo(["Completed", "Watching"]));
         await harness.Client.Received(1).GetMediaListGroupedAsync(Arg.Any<MediaKind>(), Arg.Any<CancellationToken>());
     }
 
@@ -240,7 +239,7 @@ public class DisplaySettingsReprojectionTests
     // LoadAsync passed while the feature was broken on device, because it exercised a call the app
     // never makes.
 
-    [Fact]
+    [Test]
     public async Task ChangingScoreFormat_AndReturningToMediaDetails_SwitchesTheRatingControl()
     {
         // Registered transient but kept alive in its tab's navigation stack, so tabbing to Settings
@@ -252,13 +251,13 @@ public class DisplaySettingsReprojectionTests
         AppSettings.ScoreFormat = ScoreFormat.Point5;
         model.RefreshDisplaySettings();
 
-        Assert.Contains(nameof(MediaDetailsPageModel.ScoreFormatIsStars), raised);
-        Assert.Contains(nameof(MediaDetailsPageModel.ScoreFormatIsNumeric), raised);
-        Assert.Contains(nameof(MediaDetailsPageModel.NumericScoreMax), raised);
+        Assert.That(raised, Does.Contain(nameof(MediaDetailsPageModel.ScoreFormatIsStars)));
+        Assert.That(raised, Does.Contain(nameof(MediaDetailsPageModel.ScoreFormatIsNumeric)));
+        Assert.That(raised, Does.Contain(nameof(MediaDetailsPageModel.NumericScoreMax)));
         await client.Received(1).GetMediaAsync(Arg.Any<int>(), Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task ChangingTitleLanguage_AndReturningToMediaDetails_RerendersTheHeaderAndCarousels()
     {
         var model = BuildMediaDetails(out var client);
@@ -268,11 +267,11 @@ public class DisplaySettingsReprojectionTests
         AppSettings.TitleLanguage = UserTitleLanguage.English;
         model.RefreshDisplaySettings();
 
-        Assert.Contains(nameof(MediaDetailsPageModel.PageTitle), raised);
+        Assert.That(raised, Does.Contain(nameof(MediaDetailsPageModel.PageTitle)));
         await client.Received(1).GetMediaAsync(Arg.Any<int>(), Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task ReturningToMediaDetails_WithNothingChanged_RaisesNoDisplayNotifications()
     {
         // OnNavigatedTo fires on every tab return and on the initial navigation, so this has to be
@@ -283,11 +282,11 @@ public class DisplaySettingsReprojectionTests
         var raised = Recorded(model);
         model.RefreshDisplaySettings();
 
-        Assert.DoesNotContain(nameof(MediaDetailsPageModel.ScoreFormatIsStars), raised);
-        Assert.DoesNotContain(nameof(MediaDetailsPageModel.PageTitle), raised);
+        Assert.That(raised, Does.Not.Contain(nameof(MediaDetailsPageModel.ScoreFormatIsStars)));
+        Assert.That(raised, Does.Not.Contain(nameof(MediaDetailsPageModel.PageTitle)));
     }
 
-    [Fact]
+    [Test]
     public async Task RefreshingDisplaySettingsTwice_OnlyRerendersOnce()
     {
         // The snapshot has to advance, or every subsequent tab return would re-raise for a change
@@ -301,10 +300,10 @@ public class DisplaySettingsReprojectionTests
         var raised = Recorded(model);
         model.RefreshDisplaySettings();
 
-        Assert.Empty(raised);
+        Assert.That(raised, Is.Empty);
     }
 
-    [Fact]
+    [Test]
     public async Task ChangingTitleLanguage_AndReturningToMediaDetails_StillWorksViaTheLoadPath()
     {
         // The reuse guard keeps its own call: a sort popup closing does fire OnAppearing, which
@@ -316,7 +315,7 @@ public class DisplaySettingsReprojectionTests
         AppSettings.TitleLanguage = UserTitleLanguage.English;
         await model.LoadAsync(42, listEntry: null);
 
-        Assert.Contains(nameof(MediaDetailsPageModel.PageTitle), raised);
+        Assert.That(raised, Does.Contain(nameof(MediaDetailsPageModel.PageTitle)));
     }
 
     private static MediaDetailsPageModel BuildMediaDetails(out IAniListClient client)
@@ -346,7 +345,7 @@ public class DisplaySettingsReprojectionTests
 
     // ── The shared watcher ───────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void Watcher_RefreshesOnlyWhenTheTitleLanguageMoves()
     {
         var item = new BrowseMediaItem { Node = new RelatedMedia() };
@@ -354,18 +353,18 @@ public class DisplaySettingsReprojectionTests
         var watcher = new TitleProjectionWatcher();
 
         watcher.RefreshIfTitleLanguageChanged([item]);
-        Assert.Empty(raised);
+        Assert.That(raised, Is.Empty);
 
         AppSettings.ScoreFormat = ScoreFormat.Point5;
         watcher.RefreshIfTitleLanguageChanged([item]);
-        Assert.Empty(raised); // browse cards show the community average, which no format setting reaches
+        Assert.That(raised, Is.Empty); // browse cards show the community average, which no format setting reaches
 
         AppSettings.TitleLanguage = UserTitleLanguage.English;
         watcher.RefreshIfTitleLanguageChanged([item]);
-        Assert.Contains(nameof(BrowseMediaItem.Node), raised);
+        Assert.That(raised, Does.Contain(nameof(BrowseMediaItem.Node)));
     }
 
-    [Fact]
+    [Test]
     public void Watcher_DoesNotRefreshTwiceForOneChange()
     {
         var item = new BrowseMediaItem { Node = new RelatedMedia() };
@@ -378,10 +377,10 @@ public class DisplaySettingsReprojectionTests
         var raised = Recorded(item);
         watcher.RefreshIfTitleLanguageChanged([item]);
 
-        Assert.Empty(raised);
+        Assert.That(raised, Is.Empty);
     }
 
-    [Fact]
+    [Test]
     public void Watcher_MarkRendered_SwallowsAChangeTheCallerAlreadyApplied()
     {
         // Called after a load rebuilds the cards, so the next appearance does not redo the work.
@@ -394,7 +393,7 @@ public class DisplaySettingsReprojectionTests
         var raised = Recorded(item);
         watcher.RefreshIfTitleLanguageChanged([item]);
 
-        Assert.Empty(raised);
+        Assert.That(raised, Is.Empty);
     }
 
     private static List<string> Recorded(INotifyPropertyChanged source)

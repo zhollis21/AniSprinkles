@@ -10,32 +10,28 @@ namespace AniSprinkles.UnitTests;
 /// </summary>
 public class MediaListVocabularyTests
 {
-    [Theory]
-    [InlineData(MediaListStatus.Current, MediaKind.Anime, "Watching")]
-    [InlineData(MediaListStatus.Current, MediaKind.Manga, "Reading")]
-    [InlineData(MediaListStatus.Planning, MediaKind.Anime, "Plan to Watch")]
-    [InlineData(MediaListStatus.Planning, MediaKind.Manga, "Plan to Read")]
-    [InlineData(MediaListStatus.Repeating, MediaKind.Anime, "Rewatching")]
-    [InlineData(MediaListStatus.Repeating, MediaKind.Manga, "Rereading")]
+    [TestCase(MediaListStatus.Current, MediaKind.Anime, "Watching")]
+    [TestCase(MediaListStatus.Current, MediaKind.Manga, "Reading")]
+    [TestCase(MediaListStatus.Planning, MediaKind.Anime, "Plan to Watch")]
+    [TestCase(MediaListStatus.Planning, MediaKind.Manga, "Plan to Read")]
+    [TestCase(MediaListStatus.Repeating, MediaKind.Anime, "Rewatching")]
+    [TestCase(MediaListStatus.Repeating, MediaKind.Manga, "Rereading")]
     // The other three read the same for both types, so they fall through to the enum name.
-    [InlineData(MediaListStatus.Completed, MediaKind.Manga, "Completed")]
-    [InlineData(MediaListStatus.Paused, MediaKind.Manga, "Paused")]
-    [InlineData(MediaListStatus.Dropped, MediaKind.Manga, "Dropped")]
+    [TestCase(MediaListStatus.Completed, MediaKind.Manga, "Completed")]
+    [TestCase(MediaListStatus.Paused, MediaKind.Manga, "Paused")]
+    [TestCase(MediaListStatus.Dropped, MediaKind.Manga, "Dropped")]
     public void StatusLabel_UsesTheTypesVerb(MediaListStatus status, MediaKind kind, string expected)
-        => Assert.Equal(expected, MediaListVocabulary.StatusLabel(status, kind));
+        => Assert.That(MediaListVocabulary.StatusLabel(status, kind), Is.EqualTo(expected));
 
-    [Theory]
-    // The chip has room for one word, so Planning stays short where the picker says "Plan to Read".
-    [InlineData(MediaListStatus.Planning, MediaKind.Manga, "Planning")]
-    [InlineData(MediaListStatus.Current, MediaKind.Manga, "Reading")]
-    [InlineData(MediaListStatus.Repeating, MediaKind.Anime, "Rewatching")]
+    [TestCase(MediaListStatus.Planning, MediaKind.Manga, "Planning")]
+    [TestCase(MediaListStatus.Current, MediaKind.Manga, "Reading")]
+    [TestCase(MediaListStatus.Repeating, MediaKind.Anime, "Rewatching")]
     public void StatusChipLabel_StaysToOneWord(MediaListStatus status, MediaKind kind, string expected)
-        => Assert.Equal(expected, MediaListVocabulary.StatusChipLabel(status, kind));
+        => Assert.That(MediaListVocabulary.StatusChipLabel(status, kind), Is.EqualTo(expected));
 
-    [Theory]
-    [InlineData(MediaProgressUnit.Episode, "Episode", "episodes", "EP", "watched", "Episodes watched")]
-    [InlineData(MediaProgressUnit.Chapter, "Chapter", "chapters", "CH", "read", "Chapters read")]
-    [InlineData(MediaProgressUnit.Volume, "Volume", "volumes", "VOL", "read", "Volumes read")]
+    [TestCase(MediaProgressUnit.Episode, "Episode", "episodes", "EP", "watched", "Episodes watched")]
+    [TestCase(MediaProgressUnit.Chapter, "Chapter", "chapters", "CH", "read", "Chapters read")]
+    [TestCase(MediaProgressUnit.Volume, "Volume", "volumes", "VOL", "read", "Volumes read")]
     public void TheUnitWords_AgreeWithEachOther(
         MediaProgressUnit unit,
         string noun,
@@ -44,28 +40,26 @@ public class MediaListVocabularyTests
         string verb,
         string header)
     {
-        Assert.Equal(noun, MediaListVocabulary.UnitNoun(unit));
-        Assert.Equal(plural, MediaListVocabulary.UnitNounPlural(unit));
-        Assert.Equal(abbreviation, MediaListVocabulary.UnitAbbreviation(unit));
-        Assert.Equal(verb, MediaListVocabulary.ConsumedVerb(unit));
-        Assert.Equal(header, MediaListVocabulary.UnitProgressHeader(unit));
+        Assert.That(MediaListVocabulary.UnitNoun(unit), Is.EqualTo(noun));
+        Assert.That(MediaListVocabulary.UnitNounPlural(unit), Is.EqualTo(plural));
+        Assert.That(MediaListVocabulary.UnitAbbreviation(unit), Is.EqualTo(abbreviation));
+        Assert.That(MediaListVocabulary.ConsumedVerb(unit), Is.EqualTo(verb));
+        Assert.That(MediaListVocabulary.UnitProgressHeader(unit), Is.EqualTo(header));
     }
 
-    [Theory]
-    [InlineData("ANIME", MediaKind.Anime)]
-    [InlineData("MANGA", MediaKind.Manga)]
-    [InlineData("manga", MediaKind.Manga)]
-    [InlineData("NOVEL", MediaKind.Anime)]  // A format, not a type — AniList files novels under MANGA.
-    [InlineData(null, MediaKind.Anime)]
+    [TestCase("ANIME", MediaKind.Anime)]
+    [TestCase("MANGA", MediaKind.Manga)]
+    [TestCase("manga", MediaKind.Manga)]
+    [TestCase("NOVEL", MediaKind.Anime)]  // A format, not a type — AniList files novels under MANGA.
+    [TestCase(null, MediaKind.Anime)]
     public void ParseMediaKind_TreatsAnythingUnrecognisedAsAnime(string? type, MediaKind expected)
-        => Assert.Equal(expected, MediaKindExtensions.ParseMediaKind(type));
+        => Assert.That(MediaKindExtensions.ParseMediaKind(type), Is.EqualTo(expected));
 
-    [Theory]
-    [InlineData(MediaKind.Anime, "ANIME")]
-    [InlineData(MediaKind.Manga, "MANGA")]
+    [TestCase(MediaKind.Anime, "ANIME")]
+    [TestCase(MediaKind.Manga, "MANGA")]
     public void ToAniListType_RoundTrips(MediaKind kind, string expected)
     {
-        Assert.Equal(expected, kind.ToAniListType());
-        Assert.Equal(kind, MediaKindExtensions.ParseMediaKind(kind.ToAniListType()));
+        Assert.That(kind.ToAniListType(), Is.EqualTo(expected));
+        Assert.That(MediaKindExtensions.ParseMediaKind(kind.ToAniListType()), Is.EqualTo(kind));
     }
 }

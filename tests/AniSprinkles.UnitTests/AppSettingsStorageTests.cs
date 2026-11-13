@@ -9,14 +9,14 @@ namespace AniSprinkles.UnitTests;
 /// which throws <c>NotImplementedInReferenceAssemblyException</c> on the plain <c>net11.0</c> TFM
 /// these tests build against. With the storage seam in place they round-trip like any other code.
 /// </summary>
-[Collection(AppSettingsCollection.Name)]
+[NonParallelizable]
 public class AppSettingsStorageTests
 {
     private readonly FakePreferences _storage;
 
     public AppSettingsStorageTests() => _storage = TestDataBuilder.ResetAppSettings();
 
-    [Fact]
+    [Test]
     public void SaveThenLoad_BringsEveryValueBack()
     {
         AppSettings.TitleLanguage = UserTitleLanguage.Native;
@@ -34,26 +34,26 @@ public class AppSettingsStorageTests
 
         AppSettings.Load();
 
-        Assert.Equal(UserTitleLanguage.Native, AppSettings.TitleLanguage);
-        Assert.Equal(ScoreFormat.Point5, AppSettings.ScoreFormat);
-        Assert.True(AppSettings.DisplayAdultContent);
-        Assert.Equal(["Rewatching", "Watching", "Completed"], AppSettings.AnimeSectionOrder);
+        Assert.That(AppSettings.TitleLanguage, Is.EqualTo(UserTitleLanguage.Native));
+        Assert.That(AppSettings.ScoreFormat, Is.EqualTo(ScoreFormat.Point5));
+        Assert.That(AppSettings.DisplayAdultContent, Is.True);
+        Assert.That(AppSettings.AnimeSectionOrder, Is.EqualTo(["Rewatching", "Watching", "Completed"]));
     }
 
-    [Fact]
+    [Test]
     public void Load_OnAFreshInstall_FallsBackToTheDocumentedDefaults()
     {
         AppSettings.Load();
 
-        Assert.Equal(UserTitleLanguage.Romaji, AppSettings.TitleLanguage);
-        Assert.Equal(ScoreFormat.Point100, AppSettings.ScoreFormat);
+        Assert.That(AppSettings.TitleLanguage, Is.EqualTo(UserTitleLanguage.Romaji));
+        Assert.That(AppSettings.ScoreFormat, Is.EqualTo(ScoreFormat.Point100));
 
         // Defaults to off: an unconfigured install must not show 18+ results.
-        Assert.False(AppSettings.DisplayAdultContent);
-        Assert.Empty(AppSettings.AnimeSectionOrder);
+        Assert.That(AppSettings.DisplayAdultContent, Is.False);
+        Assert.That(AppSettings.AnimeSectionOrder, Is.Empty);
     }
 
-    [Fact]
+    [Test]
     public void Load_WithAnUnrecognisedStoredEnum_KeepsTheCurrentValueRatherThanThrowing()
     {
         // A downgrade, or an enum member that was renamed, leaves a value the parse cannot resolve.
@@ -64,11 +64,11 @@ public class AppSettingsStorageTests
 
         AppSettings.Load();
 
-        Assert.Equal(UserTitleLanguage.Romaji, AppSettings.TitleLanguage);
-        Assert.Equal(ScoreFormat.Point100, AppSettings.ScoreFormat);
+        Assert.That(AppSettings.TitleLanguage, Is.EqualTo(UserTitleLanguage.Romaji));
+        Assert.That(AppSettings.ScoreFormat, Is.EqualTo(ScoreFormat.Point100));
     }
 
-    [Fact]
+    [Test]
     public void SyncFromViewer_AppliesTheProfileAndPersistsIt()
     {
         AppSettings.SyncFromViewer(new AniListUser
@@ -82,16 +82,16 @@ public class AppSettingsStorageTests
             },
         });
 
-        Assert.Equal(UserTitleLanguage.English, AppSettings.TitleLanguage);
-        Assert.True(AppSettings.DisplayAdultContent);
+        Assert.That(AppSettings.TitleLanguage, Is.EqualTo(UserTitleLanguage.English));
+        Assert.That(AppSettings.DisplayAdultContent, Is.True);
 
         // Persisted, not just assigned — the sync is what makes the choice outlive the process.
-        Assert.Equal("English", _storage.Get("title_language", string.Empty));
-        Assert.True(_storage.Get("display_adult_content", false));
-        Assert.Equal("Completed", _storage.Get("anime_section_order", string.Empty));
+        Assert.That(_storage.Get("title_language", string.Empty), Is.EqualTo("English"));
+        Assert.That(_storage.Get("display_adult_content", false), Is.True);
+        Assert.That(_storage.Get("anime_section_order", string.Empty), Is.EqualTo("Completed"));
     }
 
-    [Fact]
+    [Test]
     public void Clear_ResetsTheStaticsAndRemovesTheStoredKeys()
     {
         AppSettings.SyncFromViewer(new AniListUser
@@ -107,19 +107,19 @@ public class AppSettingsStorageTests
 
         AppSettings.Clear();
 
-        Assert.Equal(UserTitleLanguage.Romaji, AppSettings.TitleLanguage);
-        Assert.Equal(ScoreFormat.Point100, AppSettings.ScoreFormat);
-        Assert.Empty(AppSettings.AnimeSectionOrder);
+        Assert.That(AppSettings.TitleLanguage, Is.EqualTo(UserTitleLanguage.Romaji));
+        Assert.That(AppSettings.ScoreFormat, Is.EqualTo(ScoreFormat.Point100));
+        Assert.That(AppSettings.AnimeSectionOrder, Is.Empty);
 
         // Sign-out has to take the adult-content preference with it, both in memory and on disk —
         // the next account on this device starts from the safe default.
-        Assert.False(AppSettings.DisplayAdultContent);
-        Assert.False(_storage.ContainsKey("display_adult_content"));
-        Assert.False(_storage.ContainsKey("title_language"));
-        Assert.False(_storage.ContainsKey("anime_section_order"));
+        Assert.That(AppSettings.DisplayAdultContent, Is.False);
+        Assert.That(_storage.ContainsKey("display_adult_content"), Is.False);
+        Assert.That(_storage.ContainsKey("title_language"), Is.False);
+        Assert.That(_storage.ContainsKey("anime_section_order"), Is.False);
     }
 
-    [Fact]
+    [Test]
     public void ResetAppSettings_ClearsThePendingMarkers()
     {
         // The markers #128 added are process-wide statics, and the test harness reset did not
@@ -143,8 +143,8 @@ public class AppSettingsStorageTests
             },
         });
 
-        Assert.Equal(ScoreFormat.Point10Decimal, AppSettings.ScoreFormat);
-        Assert.Equal(UserTitleLanguage.English, AppSettings.TitleLanguage);
-        Assert.False(AppSettings.DisplayAdultContent);
+        Assert.That(AppSettings.ScoreFormat, Is.EqualTo(ScoreFormat.Point10Decimal));
+        Assert.That(AppSettings.TitleLanguage, Is.EqualTo(UserTitleLanguage.English));
+        Assert.That(AppSettings.DisplayAdultContent, Is.False);
     }
 }
