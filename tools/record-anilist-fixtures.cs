@@ -63,7 +63,7 @@ if (string.IsNullOrWhiteSpace(token))
         The easy way is to let the app do the OAuth flow for you: sign in on the emulator as the
         test account, then
 
-            pwsh -NoProfile -File .claude/skills/run-anisprinkles/driver.ps1 dump-token
+            pwsh -NoProfile -File .claude/skills/run-app/driver.ps1 dump-token
 
         which writes tmp/dev-token.txt (gitignored), and this tool reads it from there.
 

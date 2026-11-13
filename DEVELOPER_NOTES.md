@@ -13,15 +13,15 @@ build and no rebuild between scenarios — you arm faults in the app you are alr
 
 ```powershell
 # Break the next GetStudio call, then let it succeed on Retry
-pwsh .claude/skills/run-anisprinkles/driver.ps1 fault GetStudio NotFound next
+pwsh .claude/skills/run-app/driver.ps1 fault GetStudio NotFound next
 
 # Every Discover call fails until cleared
-pwsh .claude/skills/run-anisprinkles/driver.ps1 fault GetDiscoverSections ServiceOutage always
+pwsh .claude/skills/run-app/driver.ps1 fault GetDiscoverSections ServiceOutage always
 
 # 4s of latency on any call, without failing it — opens the cancellation / debounce windows
-pwsh .claude/skills/run-anisprinkles/driver.ps1 fault any delay next -delay 4000
+pwsh .claude/skills/run-app/driver.ps1 fault any delay next -delay 4000
 
-pwsh .claude/skills/run-anisprinkles/driver.ps1 fault clear
+pwsh .claude/skills/run-app/driver.ps1 fault clear
 ```
 
 `fault <op> <kind> [scope]`, where `kind` is an `ApiErrorKind` or `delay`, and `scope` is

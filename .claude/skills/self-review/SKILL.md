@@ -1,5 +1,5 @@
 ---
-name: ani-review
+name: self-review
 description: "Run automatically after any code changes in this session. Iterate: fix issues found, then re-run this review, until the review passes clean. Present the summary only when the review is clean. After 5 passes without a clean result, stop and ask the user. Ask the user immediately at any genuine decision point or unexpected discovery before proceeding."
 allowed-tools: Read Glob Grep
 ---
@@ -35,6 +35,7 @@ Review all code written in this session against the checklist below. Fix every i
 - Implicit styles (`<Style TargetType="X">` with no `x:Key`) apply to **every** matching element — a locally-set property can be silently overridden. Verify each local style value actually takes effect.
 - **MAUI `Background` (Brush) always wins over `BackgroundColor` (Color).** The app's implicit `<Style TargetType="Border">` sets `Background`, so any `Border` needing a custom fill must set `Background` (e.g. a `SolidColorBrush`), **not** `BackgroundColor` — otherwise the accent silently renders as the default card background. For dynamic colors, the binding/converter must produce a `Brush`.
 - New views are not in the CI screenshot set by default — visual-only regressions (wrong/missing accent colors) won't be caught by screenshots, so check styling by reading, not just by trusting the build.
+- **A change that alters what is drawn has been looked at, not just compiled.** Launch it with `/run-app`, navigate to the changed screen, take the screenshot and open it. Say in the summary which screen was looked at and what it showed — or, if no device was available, say that plainly rather than letting a clean build stand in for it. Reading the XAML catches the `Background`-vs-`BackgroundColor` class; it does not catch a label clipped by its row, a view that never becomes visible, or text the user finds missing before you do
 
 **Execution trace**
 
@@ -112,6 +113,10 @@ Judge coverage from the API surface, never from the test list. **Full coverage i
   model that writes a preference, or a service wired through DI, is testable even when the thing
   consuming it is not — and those wiring tests are what stop a rename passing green while the
   feature is dead.
+- **A guard that cannot be reached, and cannot be reached in a test either, is unverifiable code** —
+  prefer deleting it over shipping it, unless a seam that exists for real reasons already makes it
+  testable. A defensive branch nobody can drive is one nobody has seen work, and every later reviewer
+  will spend time reasoning about it
 
 **Build & test health**
 
@@ -155,7 +160,7 @@ Judge coverage from the API surface, never from the test list. **Full coverage i
 
 **Documentation**
 
-- Check all repo docs for sections that need updating based on the changes: `README.md`, `AGENTS.md`, `CLAUDE.md`, and any relevant skill files under `.claude/skills/` (e.g. `project-architecture`, `airing-notifications`, `ani-debug`)
+- Check all repo docs for sections that need updating based on the changes: `README.md`, `AGENTS.md`, `CLAUDE.md`, and any relevant skill files under `.claude/skills/` (e.g. `project-architecture`, `airing-notifications`, `device-debug`)
 - Look for stale references to architecture, services, conventions, build steps, or patterns touched in this session
 - If updates are needed, make them before presenting the summary
 
@@ -165,7 +170,7 @@ Present:
 
 1. What was done and why (brief)
 2. Architectural tradeoffs or non-obvious decisions
-3. How the work was verified — which invariants were mutation-checked and what the mutation was, plus any matrix cell left deliberately untested and why
+3. How the work was verified — which invariants were mutation-checked and what the mutation was, plus any matrix cell left deliberately untested and why; for a visual change, which screen was looked at on device and what it showed
 4. Residual concerns where the right approach is genuinely unclear
 
 Do NOT list bugs found and fixed. Do NOT ask for approval on obvious decisions.
