@@ -10,14 +10,13 @@ namespace AniSprinkles.UnitTests;
 /// <see cref="MediaListPageModel"/> serves both, so these are the seams where a wrong answer would
 /// be invisible — the anime half kept working either way and only manga would be broken.
 /// </summary>
-[Collection(AppSettingsCollection.Name)]
+[NonParallelizable]
 public class MediaListPageModelKindTests
 {
     public MediaListPageModelKindTests() => TestDataBuilder.ResetAppSettings();
 
-    [Theory]
-    [InlineData(false, MediaKind.Anime)]
-    [InlineData(true, MediaKind.Manga)]
+    [TestCase(false, MediaKind.Anime)]
+    [TestCase(true, MediaKind.Manga)]
     public async Task EachHalf_AsksForItsOwnMediaType(bool manga, MediaKind expected)
     {
         var harness = new Harness(manga);
@@ -29,7 +28,7 @@ public class MediaListPageModelKindTests
             .GetMediaListGroupedAsync(expected, Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task EachHalf_OrdersSectionsByItsOwnSectionOrder()
     {
         // The names differ, so ordering the manga tab by the anime order would sort every manga
@@ -44,10 +43,10 @@ public class MediaListPageModelKindTests
 
         await manga.Model.LoadAsync();
 
-        Assert.Equal(["Completed", "Reading"], manga.Model.Sections.Select(s => s.Title));
+        Assert.That(manga.Model.Sections.Select(s => s.Title), Is.EqualTo(["Completed", "Reading"]));
     }
 
-    [Fact]
+    [Test]
     public async Task TheSortPreference_IsNotSharedBetweenTheHalves()
     {
         // Sorting your manga by title must not silently reorder your anime.
@@ -61,13 +60,13 @@ public class MediaListPageModelKindTests
 
         manga.Model.SelectSortCommand.Execute("Title:asc");
 
-        Assert.Equal(SortField.Title, manga.Model.CurrentSortField);
-        Assert.Equal(SortField.LastUpdated, anime.Model.CurrentSortField);
-        Assert.Equal("Title", preferences.Get("manga_sort_field", string.Empty));
-        Assert.Equal(string.Empty, preferences.Get("anime_sort_field", string.Empty));
+        Assert.That(manga.Model.CurrentSortField, Is.EqualTo(SortField.Title));
+        Assert.That(anime.Model.CurrentSortField, Is.EqualTo(SortField.LastUpdated));
+        Assert.That(preferences.Get("manga_sort_field", string.Empty), Is.EqualTo("Title"));
+        Assert.That(preferences.Get("anime_sort_field", string.Empty), Is.EqualTo(string.Empty));
     }
 
-    [Fact]
+    [Test]
     public void TheViewMode_IsSharedDeliberately()
     {
         // Unlike sort, view mode is one app-wide setting shared with the media-browse View All
@@ -78,12 +77,12 @@ public class MediaListPageModelKindTests
         anime.Model.CycleViewModeCommand.Execute(null);
         var expected = anime.Model.CurrentViewMode;
 
-        Assert.Equal(expected, new Harness(manga: true, preferences).Model.CurrentViewMode);
+        Assert.That(new Harness(manga: true, preferences).Model.CurrentViewMode, Is.EqualTo(expected));
     }
 
     // ── The empty state ──────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task ASuccessfulLoadWithNothingOnTheList_IsEmptyRatherThanContent()
     {
         // Rendering zero sections is a blank page, and this is the common case for manga — plenty
@@ -93,11 +92,11 @@ public class MediaListPageModelKindTests
 
         await harness.Model.LoadAsync();
 
-        Assert.Equal(PageState.Empty, harness.Model.CurrentState);
-        Assert.Equal(nameof(PageState.Empty), harness.Model.CurrentStateKey);
+        Assert.That(harness.Model.CurrentState, Is.EqualTo(PageState.Empty));
+        Assert.That(harness.Model.CurrentStateKey, Is.EqualTo(nameof(PageState.Empty)));
     }
 
-    [Fact]
+    [Test]
     public async Task AnEmptyListIsNotAnError()
     {
         // The two are one branch apart — both end with no sections on screen — and conflating them
@@ -107,11 +106,11 @@ public class MediaListPageModelKindTests
 
         await harness.Model.LoadAsync();
 
-        Assert.NotEqual(PageState.Error, harness.Model.CurrentState);
-        Assert.Empty(harness.Model.ErrorTitle);
+        Assert.That(harness.Model.CurrentState, Is.Not.EqualTo(PageState.Error));
+        Assert.That(harness.Model.ErrorTitle, Is.Empty);
     }
 
-    [Fact]
+    [Test]
     public async Task AListEmptiedByTheAdultFilter_AlsoLandsOnEmpty()
     {
         // The state is decided from the sections actually built, not the groups the server sent,
@@ -122,10 +121,10 @@ public class MediaListPageModelKindTests
 
         await harness.Model.LoadAsync();
 
-        Assert.Equal(PageState.Empty, harness.Model.CurrentState);
+        Assert.That(harness.Model.CurrentState, Is.EqualTo(PageState.Empty));
     }
 
-    [Fact]
+    [Test]
     public async Task AListWithEntries_ReachesContent()
     {
         var harness = new Harness(manga: true);
@@ -133,13 +132,13 @@ public class MediaListPageModelKindTests
 
         await harness.Model.LoadAsync();
 
-        Assert.Equal(PageState.Content, harness.Model.CurrentState);
-        Assert.Null(harness.Model.CurrentStateKey);
+        Assert.That(harness.Model.CurrentState, Is.EqualTo(PageState.Content));
+        Assert.That(harness.Model.CurrentStateKey, Is.Null);
     }
 
     // ── Section defaults ─────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task RereadingDefaultsToExpanded_AsRewatchingDoesForAnime()
     {
         // The re-consuming section is the one a returning reader wants open; it is named
@@ -153,14 +152,14 @@ public class MediaListPageModelKindTests
         await harness.Model.LoadAsync();
 
         var sections = harness.Model.Sections.ToDictionary(s => s.Title);
-        Assert.True(sections["Reading"].IsExpanded);      // first section
-        Assert.True(sections["Rereading"].IsExpanded);
-        Assert.False(sections["Completed"].IsExpanded);
+        Assert.That(sections["Reading"].IsExpanded, Is.True);      // first section
+        Assert.That(sections["Rereading"].IsExpanded, Is.True);
+        Assert.That(sections["Completed"].IsExpanded, Is.False);
     }
 
     // ── Airing notifications are anime-only ──────────────────────────
 
-    [Fact]
+    [Test]
     public async Task TheMangaHalf_NeverTouchesTheAiringNotificationService()
     {
         // Manga does not air. Caching ids for the background worker or asking for notification
@@ -175,7 +174,7 @@ public class MediaListPageModelKindTests
         harness.Airing.DidNotReceiveWithAnyArgs().SchedulePeriodicCheck();
     }
 
-    [Fact]
+    [Test]
     public async Task TheAnimeHalf_StillCachesForTheWorker()
     {
         // The counterpart assertion: the hook exists to be overridden, not to disable the feature.
@@ -185,7 +184,7 @@ public class MediaListPageModelKindTests
 
         await harness.Model.LoadAsync();
 
-        Assert.Equal([1], AiringNotificationState.ReadMediaIds(preferences));
+        Assert.That(AiringNotificationState.ReadMediaIds(preferences), Is.EqualTo([1]));
     }
 
     private sealed class Harness

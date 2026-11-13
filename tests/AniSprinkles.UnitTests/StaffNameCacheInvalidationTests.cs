@@ -6,10 +6,6 @@ using NSubstitute;
 
 namespace AniSprinkles.UnitTests;
 
-// NSubstitute verification needs Arg.Any<CancellationToken>() matchers, which conflict with
-// xUnit1051's "pass TestContext.Current.CancellationToken" recommendation.
-#pragma warning disable xUnit1051
-
 /// <summary>
 /// Changing Staff Name Language has to drop the cached entity reads (#130).
 /// <para>
@@ -20,14 +16,14 @@ namespace AniSprinkles.UnitTests;
 /// the old rendering from cache.
 /// </para>
 /// </summary>
-[Collection(AppSettingsCollection.Name)]
+[NonParallelizable]
 public class StaffNameCacheInvalidationTests
 {
     public StaffNameCacheInvalidationTests() => TestDataBuilder.ResetAppSettings();
 
     // ── The cache itself ──────────────────────────────────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task InvalidateEntityCache_ForcesTheNextReadToHitTheInnerClient()
     {
         var inner = Substitute.For<IAniListClient>();
@@ -46,7 +42,7 @@ public class StaffNameCacheInvalidationTests
         await inner.Received(2).GetCharacterAsync(1, Arg.Any<string>(), Arg.Any<int>(), Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task InvalidateEntityCache_ClearsStaffAndStudioReadsToo()
     {
         // All three entity kinds carry person names, so a partial clear would leave staff or studio
@@ -68,7 +64,7 @@ public class StaffNameCacheInvalidationTests
         await inner.Received(2).GetStudioAsync(3, Arg.Any<string>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public void InvalidateEntityCache_OnAnEmptyCache_IsHarmless()
     {
         var cache = new CachingAniListClient(Substitute.For<IAniListClient>());
@@ -79,7 +75,7 @@ public class StaffNameCacheInvalidationTests
 
     // ── Who triggers it ───────────────────────────────────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task ChangingTheSettingInTheApp_InvalidatesTheCache()
     {
         var harness = new Harness();
@@ -91,7 +87,7 @@ public class StaffNameCacheInvalidationTests
         harness.Client.Received(1).InvalidateEntityCache();
     }
 
-    [Fact]
+    [Test]
     public async Task ChangingItUpstream_InvalidatesOnTheNextLoad()
     {
         // The website or another device. This arrives through PopulateFromUser, not the changed
@@ -107,7 +103,7 @@ public class StaffNameCacheInvalidationTests
         harness.Client.Received(1).InvalidateEntityCache();
     }
 
-    [Fact]
+    [Test]
     public async Task TheFirstLoad_DoesNotInvalidate()
     {
         // The dirty-tracking field starts at the enum default, and _loadedUser is already assigned
@@ -120,7 +116,7 @@ public class StaffNameCacheInvalidationTests
         harness.Client.DidNotReceive().InvalidateEntityCache();
     }
 
-    [Fact]
+    [Test]
     public async Task ReloadingWithTheSettingUnchanged_DoesNotInvalidate()
     {
         // Settings is a tab; it reloads on every visit. Invalidating on each one would refetch every

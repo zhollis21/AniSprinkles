@@ -27,21 +27,23 @@ public class DiagnosticsLogBufferTests
 
     // ── What a line carries ──────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void ALineCarriesItsTimestampLevelCategoryAndMessage()
     {
         var (buffer, _) = NewBuffer();
 
         buffer.CreateLogger("AniSprinkles.Nav").LogInformation("NAVTRACE load start (manga 42)");
 
-        var line = Assert.Single(buffer.Snapshot());
-        Assert.Contains("[Information]", line);
-        Assert.Contains("AniSprinkles.Nav", line);
-        Assert.Contains("NAVTRACE load start (manga 42)", line);
-        Assert.Contains(Start.ToString("O"), line);
+        var snapshot = buffer.Snapshot();
+        Assert.That(snapshot, Has.Exactly(1).Items);
+        var line = snapshot.Single();
+        Assert.That(line, Does.Contain("[Information]"));
+        Assert.That(line, Does.Contain("AniSprinkles.Nav"));
+        Assert.That(line, Does.Contain("NAVTRACE load start (manga 42)"));
+        Assert.That(line, Does.Contain(Start.ToString("O")));
     }
 
-    [Fact]
+    [Test]
     public void AnExceptionIsAppendedToItsLine()
     {
         // The stack trace is most of what makes a report actionable; dropping it would leave the
@@ -50,12 +52,14 @@ public class DiagnosticsLogBufferTests
 
         buffer.CreateLogger("Api").LogError(new InvalidOperationException("boom"), "call failed");
 
-        var line = Assert.Single(buffer.Snapshot());
-        Assert.Contains("call failed", line);
-        Assert.Contains("boom", line);
+        var snapshot = buffer.Snapshot();
+        Assert.That(snapshot, Has.Exactly(1).Items);
+        var line = snapshot.Single();
+        Assert.That(line, Does.Contain("call failed"));
+        Assert.That(line, Does.Contain("boom"));
     }
 
-    [Fact]
+    [Test]
     public void AnExceptionKeepsItsStackTracesLineBreaks()
     {
         // Deliberate, and the counterpart to the message-flattening test below: a record starts on
@@ -75,15 +79,16 @@ public class DiagnosticsLogBufferTests
 
         buffer.CreateLogger("Api").LogError(thrown, "call failed");
 
-        var line = Assert.Single(buffer.Snapshot());
-        Assert.Contains('\n', line);
-        Assert.StartsWith(Start.ToString("O"), line, StringComparison.Ordinal);
+        var snapshot = buffer.Snapshot();
+        Assert.That(snapshot, Has.Exactly(1).Items);
+        var line = snapshot.Single();
+        Assert.That(line, Does.Contain('\n'));
+        Assert.That(line, Does.StartWith(Start.ToString("O")));
     }
 
-    [Theory]
-    [InlineData("first\nsecond")]
-    [InlineData("first\r\nsecond")]
-    [InlineData("first\rsecond")]
+    [TestCase("first\nsecond")]
+    [TestCase("first\r\nsecond")]
+    [TestCase("first\rsecond")]
     public void AMultiLineMessageIsFlattenedOntoOneLine(string message)
     {
         // One record per line is the contract every reader downstream depends on. All three newline
@@ -93,14 +98,16 @@ public class DiagnosticsLogBufferTests
 
         buffer.CreateLogger("Api").LogInformation("{Message}", message);
 
-        var line = Assert.Single(buffer.Snapshot());
-        Assert.DoesNotContain('\n', line);
-        Assert.DoesNotContain('\r', line);
-        Assert.Contains("first", line);
-        Assert.Contains("second", line);
+        var snapshot = buffer.Snapshot();
+        Assert.That(snapshot, Has.Exactly(1).Items);
+        var line = snapshot.Single();
+        Assert.That(line, Does.Not.Contain('\n'));
+        Assert.That(line, Does.Not.Contain('\r'));
+        Assert.That(line, Does.Contain("first"));
+        Assert.That(line, Does.Contain("second"));
     }
 
-    [Fact]
+    [Test]
     public void EntriesComeBackOldestFirst()
     {
         // A report is read top to bottom as a narrative. Reversed, it is unreadable.
@@ -114,15 +121,15 @@ public class DiagnosticsLogBufferTests
         logger.LogInformation("three");
 
         var lines = buffer.Snapshot();
-        Assert.Equal(3, lines.Count);
-        Assert.Contains("one", lines[0]);
-        Assert.Contains("two", lines[1]);
-        Assert.Contains("three", lines[2]);
+        Assert.That(lines.Count, Is.EqualTo(3));
+        Assert.That(lines[0], Does.Contain("one"));
+        Assert.That(lines[1], Does.Contain("two"));
+        Assert.That(lines[2], Does.Contain("three"));
     }
 
     // ── Level filtering ──────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void MessagesBelowTheMinimumLevelAreDropped()
     {
         var (buffer, _) = NewBuffer(minimumLevel: LogLevel.Information);
@@ -131,11 +138,13 @@ public class DiagnosticsLogBufferTests
         logger.LogDebug("debug noise");
         logger.LogInformation("worth keeping");
 
-        var line = Assert.Single(buffer.Snapshot());
-        Assert.Contains("worth keeping", line);
+        var snapshot = buffer.Snapshot();
+        Assert.That(snapshot, Has.Exactly(1).Items);
+        var line = snapshot.Single();
+        Assert.That(line, Does.Contain("worth keeping"));
     }
 
-    [Fact]
+    [Test]
     public void InformationIsKept_WhichIsTheWholePointOfThisSink()
     {
         // The file log drops Information in Release, which is every trace worth having — no NAVTRACE,
@@ -144,21 +153,21 @@ public class DiagnosticsLogBufferTests
 
         buffer.CreateLogger("Nav").LogInformation("NAVTRACE something");
 
-        Assert.Single(buffer.Snapshot());
+        Assert.That(buffer.Snapshot(), Has.Exactly(1).Items);
     }
 
-    [Fact]
+    [Test]
     public void LogLevelNoneIsNeverEnabled()
     {
         var (buffer, _) = NewBuffer(minimumLevel: LogLevel.Trace);
 
         var logger = buffer.CreateLogger("Any");
 
-        Assert.True(logger.IsEnabled(LogLevel.Trace));
-        Assert.False(logger.IsEnabled(LogLevel.None));
+        Assert.That(logger.IsEnabled(LogLevel.Trace), Is.True);
+        Assert.That(logger.IsEnabled(LogLevel.None), Is.False);
     }
 
-    [Fact]
+    [Test]
     public void BeginScopeReturnsSomethingDisposable()
     {
         // Scopes are not supported, but ILogger callers dispose the handle unconditionally.
@@ -166,12 +175,12 @@ public class DiagnosticsLogBufferTests
 
         using var scope = buffer.CreateLogger("Any").BeginScope("state");
 
-        Assert.NotNull(scope);
+        Assert.That(scope, Is.Not.Null);
     }
 
     // ── The age bound ────────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void EntriesOlderThanTheRetentionWindowAreDropped()
     {
         var (buffer, clock) = NewBuffer(retention: TimeSpan.FromMinutes(5));
@@ -181,11 +190,13 @@ public class DiagnosticsLogBufferTests
         clock.Advance(TimeSpan.FromMinutes(6));
         logger.LogInformation("recent");
 
-        var line = Assert.Single(buffer.Snapshot());
-        Assert.Contains("recent", line);
+        var snapshot = buffer.Snapshot();
+        Assert.That(snapshot, Has.Exactly(1).Items);
+        var line = snapshot.Single();
+        Assert.That(line, Does.Contain("recent"));
     }
 
-    [Fact]
+    [Test]
     public void AnEntryExactlyAtTheEdgeOfTheWindowIsKept()
     {
         // The boundary is inclusive: an entry exactly `retention` old is still inside the window the
@@ -195,10 +206,10 @@ public class DiagnosticsLogBufferTests
         buffer.CreateLogger("Edge").LogInformation("right on the line");
         clock.Advance(TimeSpan.FromMinutes(5));
 
-        Assert.Single(buffer.Snapshot());
+        Assert.That(buffer.Snapshot(), Has.Exactly(1).Items);
     }
 
-    [Fact]
+    [Test]
     public void AgedOutEntriesAreDroppedOnSnapshotEvenWithNoFurtherWrites()
     {
         // The failure this guards: an app that goes quiet after a problem — which is exactly what a
@@ -209,10 +220,10 @@ public class DiagnosticsLogBufferTests
         buffer.CreateLogger("Quiet").LogInformation("long ago");
         clock.Advance(TimeSpan.FromHours(1));
 
-        Assert.Empty(buffer.Snapshot());
+        Assert.That(buffer.Snapshot(), Is.Empty);
     }
 
-    [Fact]
+    [Test]
     public void TheWindowSlidesRatherThanResetting()
     {
         var (buffer, clock) = NewBuffer(retention: TimeSpan.FromMinutes(5));
@@ -226,14 +237,14 @@ public class DiagnosticsLogBufferTests
 
         // At t=10m the window covers (5m, 10m] — the five most recent entries.
         var lines = buffer.Snapshot();
-        Assert.Equal(5, lines.Count);
-        Assert.Contains("minute 5", lines[0]);
-        Assert.Contains("minute 9", lines[^1]);
+        Assert.That(lines.Count, Is.EqualTo(5));
+        Assert.That(lines[0], Does.Contain("minute 5"));
+        Assert.That(lines[^1], Does.Contain("minute 9"));
     }
 
     // ── The count bound ──────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void TheRingNeverGrowsPastItsEntryCap()
     {
         // Retention alone is not a memory bound. A burst — a paged list, a retry storm — can emit
@@ -247,10 +258,10 @@ public class DiagnosticsLogBufferTests
             logger.LogInformation("line {Index}", i);
         }
 
-        Assert.Equal(50, buffer.Snapshot().Count);
+        Assert.That(buffer.Snapshot().Count, Is.EqualTo(50));
     }
 
-    [Fact]
+    [Test]
     public void WhenTheCapIsHitTheOldestLinesGoFirst()
     {
         // Dropping the newest would throw away the moment of failure and keep the run-up to it,
@@ -264,12 +275,12 @@ public class DiagnosticsLogBufferTests
         }
 
         var lines = buffer.Snapshot();
-        Assert.Contains("line 3", lines[0]);
-        Assert.Contains("line 5", lines[^1]);
-        Assert.DoesNotContain(lines, l => l.Contains("line 0"));
+        Assert.That(lines[0], Does.Contain("line 3"));
+        Assert.That(lines[^1], Does.Contain("line 5"));
+        Assert.That(lines, Has.None.Contains("line 0"));
     }
 
-    [Fact]
+    [Test]
     public void ACapOfZeroIsClampedRatherThanDisablingTheBuffer()
     {
         // Guards a configuration mistake turning the feature into a silent no-op that still reports
@@ -278,12 +289,12 @@ public class DiagnosticsLogBufferTests
 
         buffer.CreateLogger("Any").LogInformation("something");
 
-        Assert.Single(buffer.Snapshot());
+        Assert.That(buffer.Snapshot(), Has.Exactly(1).Items);
     }
 
     // ── Snapshot semantics ───────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void ASnapshotIsNotAffectedByLaterWrites()
     {
         // The report is built from a snapshot while the app keeps logging — including the report
@@ -295,18 +306,18 @@ public class DiagnosticsLogBufferTests
         var snapshot = buffer.Snapshot();
         logger.LogInformation("after");
 
-        Assert.Single(snapshot);
+        Assert.That(snapshot, Has.Exactly(1).Items);
     }
 
-    [Fact]
+    [Test]
     public void AnEmptyBufferSnapshotsToNothingRatherThanThrowing()
     {
         var (buffer, _) = NewBuffer();
 
-        Assert.Empty(buffer.Snapshot());
+        Assert.That(buffer.Snapshot(), Is.Empty);
     }
 
-    [Fact]
+    [Test]
     public void DisposeDoesNotThrowAndLeavesLoggersUsable()
     {
         // Unlike the file logger, there is nothing to release — and MAUI disposes providers at times
@@ -317,12 +328,12 @@ public class DiagnosticsLogBufferTests
         buffer.Dispose();
         logger.LogInformation("after dispose");
 
-        Assert.Single(buffer.Snapshot());
+        Assert.That(buffer.Snapshot(), Has.Exactly(1).Items);
     }
 
     // ── Concurrency ──────────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task ConcurrentWritesFromManyThreadsDoNotLoseOrCorruptEntries()
     {
         // Logging happens on every thread this app uses — UI, HTTP continuations, the airing worker.
@@ -339,10 +350,10 @@ public class DiagnosticsLogBufferTests
             }
         })));
 
-        Assert.Equal(2000, buffer.Snapshot().Count);
+        Assert.That(buffer.Snapshot().Count, Is.EqualTo(2000));
     }
 
-    [Fact]
+    [Test]
     public async Task SnapshottingWhileWritingIsSafe()
     {
         var (buffer, _) = NewBuffer(maxEntries: 10_000);
@@ -357,7 +368,7 @@ public class DiagnosticsLogBufferTests
                     logger.LogInformation("noise");
                 }
             },
-            TestContext.Current.CancellationToken);
+            TestContext.CurrentContext.CancellationToken);
 
         for (var i = 0; i < 200; i++)
         {

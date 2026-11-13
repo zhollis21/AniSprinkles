@@ -5,12 +5,12 @@ namespace AniSprinkles.UnitTests;
 /// status-change flow. The UI half (<c>ListEntryStatusFlow</c>) depends on MAUI
 /// popups and is covered by manual testing.
 /// </summary>
-[Collection(AppSettingsCollection.Name)]
+[NonParallelizable]
 public class ListEntryStatusMutationsTests
 {
     public ListEntryStatusMutationsTests() => TestDataBuilder.ResetAppSettings();
 
-    [Fact]
+    [Test]
     public void ApplyStatusChange_Repeating_ResetsProgress_And_IncrementsRepeat()
     {
         var entry = TestDataBuilder.Entry(1, progress: 12, status: MediaListStatus.Completed, episodes: 12);
@@ -18,13 +18,13 @@ public class ListEntryStatusMutationsTests
 
         var needsScorePrompt = ListEntryStatusMutations.ApplyStatusChange(entry, MediaListStatus.Repeating);
 
-        Assert.False(needsScorePrompt);
-        Assert.Equal(MediaListStatus.Repeating, entry.Status);
-        Assert.Equal(0, entry.Progress);
-        Assert.Equal(4, entry.Repeat);
+        Assert.That(needsScorePrompt, Is.False);
+        Assert.That(entry.Status, Is.EqualTo(MediaListStatus.Repeating));
+        Assert.That(entry.Progress, Is.EqualTo(0));
+        Assert.That(entry.Repeat, Is.EqualTo(4));
     }
 
-    [Fact]
+    [Test]
     public void ApplyStatusChange_Repeating_FromNullRepeat_StartsAtOne()
     {
         var entry = TestDataBuilder.Entry(1, progress: 3, status: MediaListStatus.Current);
@@ -32,10 +32,10 @@ public class ListEntryStatusMutationsTests
 
         ListEntryStatusMutations.ApplyStatusChange(entry, MediaListStatus.Repeating);
 
-        Assert.Equal(1, entry.Repeat);
+        Assert.That(entry.Repeat, Is.EqualTo(1));
     }
 
-    [Fact]
+    [Test]
     public void ApplyStatusChange_Paused_DoesNotChangeProgressOrRepeat()
     {
         var entry = TestDataBuilder.Entry(1, progress: 5, status: MediaListStatus.Current, episodes: 12);
@@ -43,25 +43,25 @@ public class ListEntryStatusMutationsTests
 
         var needsScorePrompt = ListEntryStatusMutations.ApplyStatusChange(entry, MediaListStatus.Paused);
 
-        Assert.False(needsScorePrompt);
-        Assert.Equal(MediaListStatus.Paused, entry.Status);
-        Assert.Equal(5, entry.Progress);
-        Assert.Equal(2, entry.Repeat);
+        Assert.That(needsScorePrompt, Is.False);
+        Assert.That(entry.Status, Is.EqualTo(MediaListStatus.Paused));
+        Assert.That(entry.Progress, Is.EqualTo(5));
+        Assert.That(entry.Repeat, Is.EqualTo(2));
     }
 
-    [Fact]
+    [Test]
     public void ApplyStatusChange_Completed_WithKnownTotal_FillsProgress_AndRequestsScorePrompt()
     {
         var entry = TestDataBuilder.Entry(1, progress: 8, status: MediaListStatus.Current, episodes: 12);
 
         var needsScorePrompt = ListEntryStatusMutations.ApplyStatusChange(entry, MediaListStatus.Completed);
 
-        Assert.True(needsScorePrompt);
-        Assert.Equal(MediaListStatus.Completed, entry.Status);
-        Assert.Equal(12, entry.Progress);
+        Assert.That(needsScorePrompt, Is.True);
+        Assert.That(entry.Status, Is.EqualTo(MediaListStatus.Completed));
+        Assert.That(entry.Progress, Is.EqualTo(12));
     }
 
-    [Fact]
+    [Test]
     public void ApplyStatusChange_Completed_WithoutKnownTotal_LeavesProgress_ButStillRequestsScorePrompt()
     {
         // Long-running airing show: no total episode count, only a next-airing episode.
@@ -71,12 +71,12 @@ public class ListEntryStatusMutationsTests
 
         var needsScorePrompt = ListEntryStatusMutations.ApplyStatusChange(entry, MediaListStatus.Completed);
 
-        Assert.True(needsScorePrompt);
-        Assert.Equal(MediaListStatus.Completed, entry.Status);
-        Assert.Equal(1000, entry.Progress);
+        Assert.That(needsScorePrompt, Is.True);
+        Assert.That(entry.Status, Is.EqualTo(MediaListStatus.Completed));
+        Assert.That(entry.Progress, Is.EqualTo(1000));
     }
 
-    [Fact]
+    [Test]
     public void ApplyStatusChange_Current_FromCompletedAtCap_WalksProgressBackByOne()
     {
         // Completed → Watching with progress already at max would leave the +1 button
@@ -85,23 +85,23 @@ public class ListEntryStatusMutationsTests
 
         var needsScorePrompt = ListEntryStatusMutations.ApplyStatusChange(entry, MediaListStatus.Current);
 
-        Assert.False(needsScorePrompt);
-        Assert.Equal(MediaListStatus.Current, entry.Status);
-        Assert.Equal(11, entry.Progress);
+        Assert.That(needsScorePrompt, Is.False);
+        Assert.That(entry.Status, Is.EqualTo(MediaListStatus.Current));
+        Assert.That(entry.Progress, Is.EqualTo(11));
     }
 
-    [Fact]
+    [Test]
     public void ApplyStatusChange_Current_BelowCap_LeavesProgressUntouched()
     {
         var entry = TestDataBuilder.Entry(1, progress: 5, status: MediaListStatus.Paused, episodes: 12);
 
         ListEntryStatusMutations.ApplyStatusChange(entry, MediaListStatus.Current);
 
-        Assert.Equal(MediaListStatus.Current, entry.Status);
-        Assert.Equal(5, entry.Progress);
+        Assert.That(entry.Status, Is.EqualTo(MediaListStatus.Current));
+        Assert.That(entry.Progress, Is.EqualTo(5));
     }
 
-    [Fact]
+    [Test]
     public void ApplyStatusChange_Current_AiringShowAtAiredCap_LeavesProgressUntouched()
     {
         // No known total, only a next-airing episode. User is caught up — that's
@@ -112,13 +112,13 @@ public class ListEntryStatusMutationsTests
 
         ListEntryStatusMutations.ApplyStatusChange(entry, MediaListStatus.Current);
 
-        Assert.Equal(MediaListStatus.Current, entry.Status);
-        Assert.Equal(1087, entry.Progress);
+        Assert.That(entry.Status, Is.EqualTo(MediaListStatus.Current));
+        Assert.That(entry.Progress, Is.EqualTo(1087));
     }
 
     // ── Manga (#12) ──────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void ApplyStatusChange_Completed_MangaChapterReader_FillsChaptersNotEpisodes()
     {
         var entry = TestDataBuilder.Entry(
@@ -127,11 +127,11 @@ public class ListEntryStatusMutationsTests
 
         ListEntryStatusMutations.ApplyStatusChange(entry, MediaListStatus.Completed);
 
-        Assert.Equal(141, entry.Progress);
-        Assert.Null(entry.ProgressVolumes);
+        Assert.That(entry.Progress, Is.EqualTo(141));
+        Assert.That(entry.ProgressVolumes, Is.Null);
     }
 
-    [Fact]
+    [Test]
     public void ApplyStatusChange_Completed_MangaVolumeReader_FillsVolumesNotChapters()
     {
         var entry = TestDataBuilder.Entry(
@@ -140,11 +140,11 @@ public class ListEntryStatusMutationsTests
 
         ListEntryStatusMutations.ApplyStatusChange(entry, MediaListStatus.Completed);
 
-        Assert.Equal(34, entry.ProgressVolumes);
-        Assert.Equal(0, entry.Progress);
+        Assert.That(entry.ProgressVolumes, Is.EqualTo(34));
+        Assert.That(entry.Progress, Is.EqualTo(0));
     }
 
-    [Fact]
+    [Test]
     public void ApplyStatusChange_Completed_OngoingManga_LeavesProgressAloneForWantOfATotal()
     {
         // AniList returns null chapters AND null volumes for every RELEASING series, and manga has
@@ -154,11 +154,11 @@ public class ListEntryStatusMutationsTests
 
         ListEntryStatusMutations.ApplyStatusChange(entry, MediaListStatus.Completed);
 
-        Assert.Equal(MediaListStatus.Completed, entry.Status);
-        Assert.Equal(1100, entry.Progress);
+        Assert.That(entry.Status, Is.EqualTo(MediaListStatus.Completed));
+        Assert.That(entry.Progress, Is.EqualTo(1100));
     }
 
-    [Fact]
+    [Test]
     public void ApplyStatusChange_Repeating_ClearsBothCounters()
     {
         // Clearing only chapters would leave volumes above zero with chapters at zero — exactly the
@@ -170,13 +170,13 @@ public class ListEntryStatusMutationsTests
 
         ListEntryStatusMutations.ApplyStatusChange(entry, MediaListStatus.Repeating);
 
-        Assert.Equal(0, entry.Progress);
-        Assert.Equal(0, entry.ProgressVolumes);
-        Assert.False(entry.UsesVolumeProgress);
-        Assert.Equal(1, entry.Repeat);
+        Assert.That(entry.Progress, Is.EqualTo(0));
+        Assert.That(entry.ProgressVolumes, Is.EqualTo(0));
+        Assert.That(entry.UsesVolumeProgress, Is.False);
+        Assert.That(entry.Repeat, Is.EqualTo(1));
     }
 
-    [Fact]
+    [Test]
     public void ApplyStatusChange_Current_MangaVolumeReaderAtCap_WalksTheVolumeCountBack()
     {
         var entry = TestDataBuilder.Entry(
@@ -185,7 +185,7 @@ public class ListEntryStatusMutationsTests
 
         ListEntryStatusMutations.ApplyStatusChange(entry, MediaListStatus.Current);
 
-        Assert.Equal(33, entry.ProgressVolumes);
-        Assert.Equal(0, entry.Progress);
+        Assert.That(entry.ProgressVolumes, Is.EqualTo(33));
+        Assert.That(entry.Progress, Is.EqualTo(0));
     }
 }

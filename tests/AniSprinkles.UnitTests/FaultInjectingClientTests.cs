@@ -5,11 +5,6 @@ using NSubstitute;
 
 namespace AniSprinkles.UnitTests;
 
-// NSubstitute setup/verification requires Arg.Any<CancellationToken>() matchers, which inherently
-// conflict with xUnit1051's "pass TestContext.Current.CancellationToken" recommendation. Suppress
-// it for this file, as CachingAniListClientTests does for the same reason.
-#pragma warning disable xUnit1051
-
 /// <summary>
 /// Covers the decorator itself (#125) — that it passes through when disarmed, fails only the calls
 /// the profile targets, and hands the inner client back afterwards.
@@ -33,7 +28,7 @@ public class FaultInjectingClientTests
         ApiErrorKind kind, FaultScope scope, string? op = null, TimeSpan delay = default)
         => new(op, kind, scope, delay, FaultLayer.Client);
 
-    [Fact]
+    [Test]
     public async Task Disarmed_DelegatesToTheInnerClient()
     {
         var inner = Substitute.For<IAniListClient>();
@@ -42,11 +37,11 @@ public class FaultInjectingClientTests
 
         var (media, _) = await client.GetMediaAsync(7);
 
-        Assert.Equal(7, media!.Id);
+        Assert.That(media!.Id, Is.EqualTo(7));
         await inner.Received(1).GetMediaAsync(7, Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task ArmedFault_ThrowsTheClassifiedKindWithoutCallingInner()
     {
         var inner = Substitute.For<IAniListClient>();
@@ -56,12 +51,12 @@ public class FaultInjectingClientTests
 
         var ex = await Assert.ThrowsAsync<AniListApiException>(() => client.GetStudioAsync(3));
 
-        Assert.Equal(ApiErrorKind.NotFound, ex.Kind);
+        Assert.That(ex.Kind, Is.EqualTo(ApiErrorKind.NotFound));
         await inner.DidNotReceive().GetStudioAsync(
             Arg.Any<int>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task ScopeNext_FailsOnceThenLetsRetrySucceed()
     {
         // This is the scenario the whole feature exists for: proving that Retry actually recovers.
@@ -76,11 +71,11 @@ public class FaultInjectingClientTests
         await Assert.ThrowsAsync<AniListApiException>(() => client.GetMediaAsync(7));
         var (media, _) = await client.GetMediaAsync(7);
 
-        Assert.Equal(7, media!.Id);
+        Assert.That(media!.Id, Is.EqualTo(7));
         await inner.Received(1).GetMediaAsync(7, Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task UntargetedOperations_StillReachTheFixtures()
     {
         // The composition property: a fault armed at one operation must leave every other screen
@@ -93,11 +88,11 @@ public class FaultInjectingClientTests
 
         var (media, _) = await client.GetMediaAsync(1);
 
-        Assert.Equal(1, media!.Id);
+        Assert.That(media!.Id, Is.EqualTo(1));
         await Assert.ThrowsAsync<AniListApiException>(() => client.GetStudioAsync(1));
     }
 
-    [Fact]
+    [Test]
     public async Task DelayOnlyFault_StillReturnsRealData()
     {
         var inner = Substitute.For<IAniListClient>();
@@ -108,10 +103,10 @@ public class FaultInjectingClientTests
 
         var (media, _) = await client.GetMediaAsync(4);
 
-        Assert.Equal(4, media!.Id);
+        Assert.That(media!.Id, Is.EqualTo(4));
     }
 
-    [Fact]
+    [Test]
     public async Task DelayedFault_ObservesCancellation()
     {
         // The delay honours the token on purpose — "does navigating away actually stop this?" is the
@@ -126,11 +121,11 @@ public class FaultInjectingClientTests
         var pending = client.GetMediaAsync(1, cts.Token);
         await cts.CancelAsync();
 
-        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => pending);
+        await Assert.CatchAsync<OperationCanceledException>(() => pending);
         await inner.DidNotReceive().GetMediaAsync(Arg.Any<int>(), Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task ServiceOutageFault_ReportsToTheOutageBanner()
     {
         // Injecting above AniListClient bypasses its own ReportFailure, so the decorator has to do
@@ -145,7 +140,7 @@ public class FaultInjectingClientTests
         outage.Received(1).ReportFailure(Arg.Is<AniListApiException>(e => e.Kind == ApiErrorKind.ServiceOutage));
     }
 
-    [Fact]
+    [Test]
     public async Task InjectedOutage_ClearsTheBannerOnceACallSucceedsAgain()
     {
         // Caught on device: Retry restored the page to Content with the outage banner still up. The
@@ -163,7 +158,7 @@ public class FaultInjectingClientTests
         outage.Received(1).ReportSuccess();
     }
 
-    [Fact]
+    [Test]
     public async Task SuccessWithNoInjectedOutage_LeavesTheBannerAlone()
     {
         // The decorator sits above CachingAniListClient and cannot tell a cache hit from a real
@@ -177,7 +172,7 @@ public class FaultInjectingClientTests
         outage.DidNotReceive().ReportSuccess();
     }
 
-    [Fact]
+    [Test]
     public async Task NonOutageFault_DoesNotArmTheBannerClear()
     {
         // Only ServiceOutage raises the banner, so only ServiceOutage should later clear it.

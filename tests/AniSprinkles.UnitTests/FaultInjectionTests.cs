@@ -23,78 +23,75 @@ public class FaultInjectionTests
 
     // ── Scope arithmetic ──────────────────────────────────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void Next_AffectsOnlyTheFirstMatchingCall()
     {
         var scope = FaultScope.Next;
 
-        Assert.True(scope.Includes(1));
-        Assert.False(scope.Includes(2));
-        Assert.False(scope.Includes(3));
+        Assert.That(scope.Includes(1), Is.True);
+        Assert.That(scope.Includes(2), Is.False);
+        Assert.That(scope.Includes(3), Is.False);
     }
 
-    [Fact]
+    [Test]
     public void Always_AffectsEveryCall()
     {
         var scope = FaultScope.Always;
 
-        Assert.True(scope.Includes(1));
-        Assert.True(scope.Includes(50));
+        Assert.That(scope.Includes(1), Is.True);
+        Assert.That(scope.Includes(50), Is.True);
     }
 
-    [Theory]
-    [InlineData(1, false)]
-    [InlineData(2, false)]
-    [InlineData(3, true)]
-    [InlineData(6, true)]
-    [InlineData(7, false)]
+    [TestCase(1, false)]
+    [TestCase(2, false)]
+    [TestCase(3, true)]
+    [TestCase(6, true)]
+    [TestCase(7, false)]
     public void EveryNth_AffectsMultiplesOnly(int hit, bool expected)
     {
-        Assert.Equal(expected, FaultScope.EveryNth(3).Includes(hit));
+        Assert.That(FaultScope.EveryNth(3).Includes(hit), Is.EqualTo(expected));
     }
 
-    [Theory]
-    [InlineData(1, true)]
-    [InlineData(2, true)]
-    [InlineData(3, false)]
+    [TestCase(1, true)]
+    [TestCase(2, true)]
+    [TestCase(3, false)]
     public void FirstN_AffectsTheLeadingCallsOnly(int hit, bool expected)
     {
-        Assert.Equal(expected, FaultScope.FirstN(2).Includes(hit));
+        Assert.That(FaultScope.FirstN(2).Includes(hit), Is.EqualTo(expected));
     }
 
-    [Theory]
-    [InlineData(0)]
-    [InlineData(-1)]
+    [TestCase(0)]
+    [TestCase(-1)]
     public void CountedScopes_WithNonPositiveN_MatchNothing(int n)
     {
         // The count arrives from an adb extra, so a typo must disarm the fault rather than take the
         // app down or — worse — silently fault every call via a modulo-by-zero-adjacent surprise.
-        Assert.False(FaultScope.EveryNth(n).Includes(1));
-        Assert.False(FaultScope.FirstN(n).Includes(1));
+        Assert.That(FaultScope.EveryNth(n).Includes(1), Is.False);
+        Assert.That(FaultScope.FirstN(n).Includes(1), Is.False);
     }
 
     // ── Arming and matching ───────────────────────────────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void Disarmed_PassesEverythingThrough()
     {
         var state = new FaultState();
 
-        Assert.Null(state.Current);
-        Assert.True(state.Decide("GetMediaAsync", FaultLayer.Client).IsPassThrough);
+        Assert.That(state.Current, Is.Null);
+        Assert.That(state.Decide("GetMediaAsync", FaultLayer.Client).IsPassThrough, Is.True);
     }
 
-    [Fact]
+    [Test]
     public void ArmedForNext_AffectsOneCallThenPassesThrough()
     {
         var state = new FaultState();
         state.Arm(Profile(FaultScope.Next));
 
-        Assert.Equal(ApiErrorKind.ServiceOutage, state.Decide("GetMediaAsync", FaultLayer.Client).Kind);
-        Assert.True(state.Decide("GetMediaAsync", FaultLayer.Client).IsPassThrough);
+        Assert.That(state.Decide("GetMediaAsync", FaultLayer.Client).Kind, Is.EqualTo(ApiErrorKind.ServiceOutage));
+        Assert.That(state.Decide("GetMediaAsync", FaultLayer.Client).IsPassThrough, Is.True);
     }
 
-    [Fact]
+    [Test]
     public void OperationPrefix_MatchesTheAsyncSuffixedMethodName()
     {
         // The whole point of prefix matching: `--es op GetStudio` has to arm GetStudioAsync without
@@ -102,11 +99,11 @@ public class FaultInjectionTests
         var state = new FaultState();
         state.Arm(Profile(FaultScope.Always, op: "GetStudio"));
 
-        Assert.Equal(ApiErrorKind.ServiceOutage, state.Decide("GetStudioAsync", FaultLayer.Client).Kind);
-        Assert.True(state.Decide("GetMediaAsync", FaultLayer.Client).IsPassThrough);
+        Assert.That(state.Decide("GetStudioAsync", FaultLayer.Client).Kind, Is.EqualTo(ApiErrorKind.ServiceOutage));
+        Assert.That(state.Decide("GetMediaAsync", FaultLayer.Client).IsPassThrough, Is.True);
     }
 
-    [Fact]
+    [Test]
     public void NonMatchingOperations_DoNotAdvanceTheCounter()
     {
         // Otherwise `scope next` armed at GetStudio would be consumed by whatever unrelated call
@@ -114,12 +111,12 @@ public class FaultInjectionTests
         var state = new FaultState();
         state.Arm(Profile(FaultScope.Next, op: "GetStudio"));
 
-        Assert.True(state.Decide("GetMediaAsync", FaultLayer.Client).IsPassThrough);
-        Assert.True(state.Decide("GetViewerAsync", FaultLayer.Client).IsPassThrough);
-        Assert.Equal(ApiErrorKind.ServiceOutage, state.Decide("GetStudioAsync", FaultLayer.Client).Kind);
+        Assert.That(state.Decide("GetMediaAsync", FaultLayer.Client).IsPassThrough, Is.True);
+        Assert.That(state.Decide("GetViewerAsync", FaultLayer.Client).IsPassThrough, Is.True);
+        Assert.That(state.Decide("GetStudioAsync", FaultLayer.Client).Kind, Is.EqualTo(ApiErrorKind.ServiceOutage));
     }
 
-    [Fact]
+    [Test]
     public void AProfileFiresOnlyAtItsOwnLayer()
     {
         // Both seams share one FaultState, so without this a single armed profile would fire twice
@@ -127,22 +124,22 @@ public class FaultInjectionTests
         var state = new FaultState();
         state.Arm(Profile(FaultScope.Always, layer: FaultLayer.Http));
 
-        Assert.True(state.Decide("GetMediaAsync", FaultLayer.Client).IsPassThrough);
-        Assert.Equal(ApiErrorKind.ServiceOutage, state.Decide("GetMediaAsync", FaultLayer.Http).Kind);
+        Assert.That(state.Decide("GetMediaAsync", FaultLayer.Client).IsPassThrough, Is.True);
+        Assert.That(state.Decide("GetMediaAsync", FaultLayer.Http).Kind, Is.EqualTo(ApiErrorKind.ServiceOutage));
     }
 
-    [Fact]
+    [Test]
     public void Clear_Disarms()
     {
         var state = new FaultState();
         state.Arm(Profile(FaultScope.Always));
         state.Clear();
 
-        Assert.Null(state.Current);
-        Assert.True(state.Decide("GetMediaAsync", FaultLayer.Client).IsPassThrough);
+        Assert.That(state.Current, Is.Null);
+        Assert.That(state.Decide("GetMediaAsync", FaultLayer.Client).IsPassThrough, Is.True);
     }
 
-    [Fact]
+    [Test]
     public void ReArming_ResetsTheCounter()
     {
         // Arming the same scope twice must mean the same thing both times; a carried-over counter
@@ -153,10 +150,10 @@ public class FaultInjectionTests
 
         state.Arm(Profile(FaultScope.Next));
 
-        Assert.Equal(ApiErrorKind.ServiceOutage, state.Decide("GetMediaAsync", FaultLayer.Client).Kind);
+        Assert.That(state.Decide("GetMediaAsync", FaultLayer.Client).Kind, Is.EqualTo(ApiErrorKind.ServiceOutage));
     }
 
-    [Fact]
+    [Test]
     public void DelayOnlyProfile_IsNotAPassThrough()
     {
         // A fault with no error kind is legitimate and load-bearing: it is the only way to open the
@@ -171,8 +168,8 @@ public class FaultInjectionTests
 
         var decision = state.Decide("GetMediaAsync", FaultLayer.Client);
 
-        Assert.False(decision.IsPassThrough);
-        Assert.Null(decision.Kind);
-        Assert.Equal(TimeSpan.FromMilliseconds(500), decision.Delay);
+        Assert.That(decision.IsPassThrough, Is.False);
+        Assert.That(decision.Kind, Is.Null);
+        Assert.That(decision.Delay, Is.EqualTo(TimeSpan.FromMilliseconds(500)));
     }
 }

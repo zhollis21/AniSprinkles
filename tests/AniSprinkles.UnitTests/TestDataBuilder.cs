@@ -108,7 +108,7 @@ internal static class TestDataBuilder
     /// <para>
     /// The properties are still set directly rather than through Clear(): the point is a known
     /// starting state, and going through the storage path would make every test depend on Clear()
-    /// being correct. Test classes that call this belong in the <see cref="AppSettingsCollection"/>
+    /// being correct. Test classes that call this must be <c>[NonParallelizable]</c>
     /// so they don't race each other over these statics — including <c>AppSettings.Storage</c>.
     /// </para>
     /// </summary>

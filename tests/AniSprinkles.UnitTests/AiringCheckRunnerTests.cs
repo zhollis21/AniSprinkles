@@ -57,7 +57,7 @@ public class AiringCheckRunnerTests
 
     // ── The checkpoint invariant ────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void WhenTheFetchThrows_TheCheckpointIsNotAdvanced()
     {
         // The whole point of the checkpoint discipline: a failed window must stay available for the
@@ -69,10 +69,10 @@ public class AiringCheckRunnerTests
         Assert.Throws<HttpRequestException>(() => AiringCheckRunner.Run(
             preferences, new ManualTimeProvider(Start), fetch.Invoke, _ => { }, () => false));
 
-        Assert.Equal(StartUnix - 3600, AiringNotificationState.ReadCheckpoint(preferences, StartUnix));
+        Assert.That(AiringNotificationState.ReadCheckpoint(preferences, StartUnix), Is.EqualTo(StartUnix - 3600));
     }
 
-    [Fact]
+    [Test]
     public void WhenTheFetchThrows_NothingIsNotified_AndTheNotifiedSetIsUntouched()
     {
         var preferences = PreferencesWith(21);
@@ -82,11 +82,11 @@ public class AiringCheckRunnerTests
         Assert.Throws<InvalidOperationException>(() => AiringCheckRunner.Run(
             preferences, new ManualTimeProvider(Start), fetch.Invoke, notified.Add, () => false));
 
-        Assert.Empty(notified);
-        Assert.False(preferences.ContainsKey(AiringNotificationState.NotifiedKey));
+        Assert.That(notified, Is.Empty);
+        Assert.That(preferences.ContainsKey(AiringNotificationState.NotifiedKey), Is.False);
     }
 
-    [Fact]
+    [Test]
     public void AfterASuccessfulFetch_TheCheckpointAdvancesToTheWindowEnd()
     {
         var preferences = PreferencesWith(21);
@@ -95,11 +95,11 @@ public class AiringCheckRunnerTests
         var outcome = AiringCheckRunner.Run(
             preferences, new ManualTimeProvider(Start), fetch.Invoke, _ => { }, () => false);
 
-        Assert.Equal(AiringCheckStatus.Completed, outcome.Status);
-        Assert.Equal(StartUnix, AiringNotificationState.ReadCheckpoint(preferences, StartUnix + 9999));
+        Assert.That(outcome.Status, Is.EqualTo(AiringCheckStatus.Completed));
+        Assert.That(AiringNotificationState.ReadCheckpoint(preferences, StartUnix + 9999), Is.EqualTo(StartUnix));
     }
 
-    [Fact]
+    [Test]
     public void TheWindow_RunsFromTheStoredCheckpointToNow()
     {
         var preferences = PreferencesWith(21, 16498);
@@ -108,12 +108,12 @@ public class AiringCheckRunnerTests
 
         AiringCheckRunner.Run(preferences, new ManualTimeProvider(Start), fetch.Invoke, _ => { }, () => false);
 
-        Assert.Equal(StartUnix - 900, fetch.AiringAfter);
-        Assert.Equal(StartUnix, fetch.AiringBefore);
-        Assert.Equal([21, 16498], fetch.MediaIds);
+        Assert.That(fetch.AiringAfter, Is.EqualTo(StartUnix - 900));
+        Assert.That(fetch.AiringBefore, Is.EqualTo(StartUnix));
+        Assert.That(fetch.MediaIds, Is.EqualTo([21, 16498]));
     }
 
-    [Fact]
+    [Test]
     public void TheWindowEnd_AndTheNewCheckpoint_AreTheSameInstant()
     {
         // Captured before the fetch and reused afterwards. Reading the clock again after the fetch
@@ -123,10 +123,10 @@ public class AiringCheckRunnerTests
 
         AiringCheckRunner.Run(preferences, new ManualTimeProvider(Start), fetch.Invoke, _ => { }, () => false);
 
-        Assert.Equal(fetch.AiringBefore, AiringNotificationState.ReadCheckpoint(preferences, StartUnix + 9999));
+        Assert.That(AiringNotificationState.ReadCheckpoint(preferences, StartUnix + 9999), Is.EqualTo(fetch.AiringBefore));
     }
 
-    [Fact]
+    [Test]
     public void TheWindow_IsCurrentlyUnclamped()
     {
         // Documents today's behaviour rather than endorsing it: a checkpoint left behind by a long
@@ -138,12 +138,12 @@ public class AiringCheckRunnerTests
 
         AiringCheckRunner.Run(preferences, new ManualTimeProvider(Start), fetch.Invoke, _ => { }, () => false);
 
-        Assert.Equal(30 * 86400, fetch.AiringBefore - fetch.AiringAfter);
+        Assert.That(fetch.AiringBefore - fetch.AiringAfter, Is.EqualTo(30 * 86400));
     }
 
     // ── Truncated fetches ───────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void ATruncatedFetch_AdvancesOnlyAsFarAsTheNewestEntrySeen()
     {
         // Paging stopped at its bound, so episodes past it were never read. Advancing to the end of
@@ -158,11 +158,11 @@ public class AiringCheckRunnerTests
         var outcome = AiringCheckRunner.Run(
             preferences, new ManualTimeProvider(Start), fetch.Invoke, _ => { }, () => false);
 
-        Assert.Equal(AiringCheckStatus.Truncated, outcome.Status);
-        Assert.Equal(StartUnix - 3600, AiringNotificationState.ReadCheckpoint(preferences, StartUnix + 9999));
+        Assert.That(outcome.Status, Is.EqualTo(AiringCheckStatus.Truncated));
+        Assert.That(AiringNotificationState.ReadCheckpoint(preferences, StartUnix + 9999), Is.EqualTo(StartUnix - 3600));
     }
 
-    [Fact]
+    [Test]
     public void ATruncatedFetch_StillNotifiesWhatItRead()
     {
         var preferences = PreferencesWith(21);
@@ -171,10 +171,10 @@ public class AiringCheckRunnerTests
 
         AiringCheckRunner.Run(preferences, new ManualTimeProvider(Start), fetch.Invoke, notified.Add, () => false);
 
-        Assert.Single(notified);
+        Assert.That(notified, Has.Exactly(1).Items);
     }
 
-    [Fact]
+    [Test]
     public void ATruncatedFetchWithNothingToShow_StillAdvancesToTheWindowEnd()
     {
         // The one case that must move on. There is no entry to anchor to, and holding the checkpoint
@@ -186,10 +186,10 @@ public class AiringCheckRunnerTests
 
         AiringCheckRunner.Run(preferences, new ManualTimeProvider(Start), fetch.Invoke, _ => { }, () => false);
 
-        Assert.Equal(StartUnix, AiringNotificationState.ReadCheckpoint(preferences, StartUnix + 9999));
+        Assert.That(AiringNotificationState.ReadCheckpoint(preferences, StartUnix + 9999), Is.EqualTo(StartUnix));
     }
 
-    [Fact]
+    [Test]
     public void ATruncatedFetch_NeverMovesTheCheckpointBackwards()
     {
         // A stale airingAt — clock skew, or an entry from before the window — must not rewind the
@@ -200,10 +200,10 @@ public class AiringCheckRunnerTests
 
         AiringCheckRunner.Run(preferences, new ManualTimeProvider(Start), fetch.Invoke, _ => { }, () => false);
 
-        Assert.Equal(StartUnix - 3600, AiringNotificationState.ReadCheckpoint(preferences, StartUnix + 9999));
+        Assert.That(AiringNotificationState.ReadCheckpoint(preferences, StartUnix + 9999), Is.EqualTo(StartUnix - 3600));
     }
 
-    [Fact]
+    [Test]
     public void ATruncatedFetch_NeverMovesTheCheckpointPastTheWindow()
     {
         var preferences = PreferencesWith(21);
@@ -211,12 +211,12 @@ public class AiringCheckRunnerTests
 
         AiringCheckRunner.Run(preferences, new ManualTimeProvider(Start), fetch.Invoke, _ => { }, () => false);
 
-        Assert.Equal(StartUnix, AiringNotificationState.ReadCheckpoint(preferences, StartUnix + 999999));
+        Assert.That(AiringNotificationState.ReadCheckpoint(preferences, StartUnix + 999999), Is.EqualTo(StartUnix));
     }
 
     // ── No media IDs ────────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void WithNoCachedMediaIds_NothingIsFetchedAndTheCheckpointIsLeftAlone()
     {
         var preferences = new FakePreferences();
@@ -225,14 +225,14 @@ public class AiringCheckRunnerTests
         var outcome = AiringCheckRunner.Run(
             preferences, new ManualTimeProvider(Start), fetch.Invoke, _ => { }, () => false);
 
-        Assert.Equal(AiringCheckStatus.NoMediaIds, outcome.Status);
-        Assert.Equal(0, fetch.CallCount);
-        Assert.False(preferences.ContainsKey(AiringNotificationState.LastCheckKey));
+        Assert.That(outcome.Status, Is.EqualTo(AiringCheckStatus.NoMediaIds));
+        Assert.That(fetch.CallCount, Is.EqualTo(0));
+        Assert.That(preferences.ContainsKey(AiringNotificationState.LastCheckKey), Is.False);
     }
 
     // ── Dedup ───────────────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void AnEpisodeAlreadyNotified_IsNotNotifiedAgain()
     {
         var preferences = PreferencesWith(21);
@@ -243,10 +243,10 @@ public class AiringCheckRunnerTests
         time.Advance(TimeSpan.FromMinutes(15));
         AiringCheckRunner.Run(preferences, time, new RecordingFetch([Entry(21, 1050)]).Invoke, notified.Add, () => false);
 
-        Assert.Single(notified);
+        Assert.That(notified, Has.Exactly(1).Items);
     }
 
-    [Fact]
+    [Test]
     public void ANewEpisodeOfAnAlreadyNotifiedMedia_IsStillNotified()
     {
         var preferences = PreferencesWith(21);
@@ -257,10 +257,10 @@ public class AiringCheckRunnerTests
         time.Advance(TimeSpan.FromDays(7));
         AiringCheckRunner.Run(preferences, time, new RecordingFetch([Entry(21, 1051)]).Invoke, notified.Add, () => false);
 
-        Assert.Equal([1050, 1051], notified.Select(e => e.Episode));
+        Assert.That(notified.Select(e => e.Episode), Is.EqualTo([1050, 1051]));
     }
 
-    [Fact]
+    [Test]
     public void DuplicatesWithinOneFetch_AreNotifiedOnce()
     {
         var preferences = PreferencesWith(21);
@@ -273,14 +273,14 @@ public class AiringCheckRunnerTests
             notified.Add,
             () => false);
 
-        Assert.Single(notified);
-        Assert.Equal(2, outcome.Examined);
-        Assert.Equal(1, outcome.Notified);
+        Assert.That(notified, Has.Exactly(1).Items);
+        Assert.That(outcome.Examined, Is.EqualTo(2));
+        Assert.That(outcome.Notified, Is.EqualTo(1));
     }
 
     // ── Cancellation (the sign-out race) ────────────────────────────
 
-    [Fact]
+    [Test]
     public void WhenCancelledBeforeTheFirstNotification_NothingIsPostedAndNothingIsPersisted()
     {
         // Sign-out cancels the WorkManager job and clears this state, but cancellation does not
@@ -296,13 +296,13 @@ public class AiringCheckRunnerTests
             notified.Add,
             () => true);
 
-        Assert.Equal(AiringCheckStatus.Cancelled, outcome.Status);
-        Assert.Empty(notified);
-        Assert.False(preferences.ContainsKey(AiringNotificationState.LastCheckKey));
-        Assert.False(preferences.ContainsKey(AiringNotificationState.NotifiedKey));
+        Assert.That(outcome.Status, Is.EqualTo(AiringCheckStatus.Cancelled));
+        Assert.That(notified, Is.Empty);
+        Assert.That(preferences.ContainsKey(AiringNotificationState.LastCheckKey), Is.False);
+        Assert.That(preferences.ContainsKey(AiringNotificationState.NotifiedKey), Is.False);
     }
 
-    [Fact]
+    [Test]
     public void WhenCancelledPartWayThrough_TheRemainingEpisodesAreNotNotified()
     {
         var preferences = PreferencesWith(21);
@@ -320,13 +320,13 @@ public class AiringCheckRunnerTests
             },
             () => cancelled);
 
-        Assert.Equal(AiringCheckStatus.Cancelled, outcome.Status);
-        Assert.Single(notified);
-        Assert.False(preferences.ContainsKey(AiringNotificationState.LastCheckKey));
-        Assert.False(preferences.ContainsKey(AiringNotificationState.NotifiedKey));
+        Assert.That(outcome.Status, Is.EqualTo(AiringCheckStatus.Cancelled));
+        Assert.That(notified, Has.Exactly(1).Items);
+        Assert.That(preferences.ContainsKey(AiringNotificationState.LastCheckKey), Is.False);
+        Assert.That(preferences.ContainsKey(AiringNotificationState.NotifiedKey), Is.False);
     }
 
-    [Fact]
+    [Test]
     public void WhenCancelledAfterTheLastNotification_TheWritesAreStillSuppressed()
     {
         // The loop guard cannot fire here — there is nothing left to iterate — so the second check
@@ -341,12 +341,12 @@ public class AiringCheckRunnerTests
             _ => cancelled = true,
             () => cancelled);
 
-        Assert.Equal(AiringCheckStatus.Cancelled, outcome.Status);
-        Assert.False(preferences.ContainsKey(AiringNotificationState.LastCheckKey));
-        Assert.False(preferences.ContainsKey(AiringNotificationState.NotifiedKey));
+        Assert.That(outcome.Status, Is.EqualTo(AiringCheckStatus.Cancelled));
+        Assert.That(preferences.ContainsKey(AiringNotificationState.LastCheckKey), Is.False);
+        Assert.That(preferences.ContainsKey(AiringNotificationState.NotifiedKey), Is.False);
     }
 
-    [Fact]
+    [Test]
     public void CancellationWithNothingToNotify_StillSuppressesTheCheckpointAdvance()
     {
         var preferences = PreferencesWith(21);
@@ -354,11 +354,11 @@ public class AiringCheckRunnerTests
         var outcome = AiringCheckRunner.Run(
             preferences, new ManualTimeProvider(Start), new RecordingFetch().Invoke, _ => { }, () => true);
 
-        Assert.Equal(AiringCheckStatus.Cancelled, outcome.Status);
-        Assert.False(preferences.ContainsKey(AiringNotificationState.LastCheckKey));
+        Assert.That(outcome.Status, Is.EqualTo(AiringCheckStatus.Cancelled));
+        Assert.That(preferences.ContainsKey(AiringNotificationState.LastCheckKey), Is.False);
     }
 
-    [Fact]
+    [Test]
     public void WhenPostingANotificationThrows_TheCheckpointIsNotAdvanced()
     {
         // Same rule as a failed fetch: a run that did not finish must leave its window available.
@@ -375,13 +375,13 @@ public class AiringCheckRunnerTests
             _ => throw new InvalidOperationException("notification manager unavailable"),
             () => false));
 
-        Assert.False(preferences.ContainsKey(AiringNotificationState.LastCheckKey));
-        Assert.False(preferences.ContainsKey(AiringNotificationState.NotifiedKey));
+        Assert.That(preferences.ContainsKey(AiringNotificationState.LastCheckKey), Is.False);
+        Assert.That(preferences.ContainsKey(AiringNotificationState.NotifiedKey), Is.False);
     }
 
     // ── Pruning across runs ─────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void TheNotifiedSet_DoesNotGrowWithoutBound()
     {
         var preferences = PreferencesWith(21);
@@ -396,6 +396,6 @@ public class AiringCheckRunnerTests
         // Ten daily runs ending on day 9, seven-day retention, and the boundary is inclusive — so
         // episodes 1 and 2 (days 0 and 1) fall outside the cutoff and 3 through 10 survive.
         var stored = AiringNotificationState.ReadNotifiedSet(preferences);
-        Assert.Equal(["21:10", "21:3", "21:4", "21:5", "21:6", "21:7", "21:8", "21:9"], stored.Keys.Order());
+        Assert.That(stored.Keys.Order(), Is.EqualTo(["21:10", "21:3", "21:4", "21:5", "21:6", "21:7", "21:8", "21:9"]));
     }
 }

@@ -15,14 +15,14 @@ namespace AniSprinkles.UnitTests;
 /// reverts. These pin the generalised version, plus the two silent-drop paths around it.
 /// </para>
 /// </summary>
-[Collection(AppSettingsCollection.Name)]
+[NonParallelizable]
 public class SettingsSaveDurabilityTests
 {
     public SettingsSaveDurabilityTests() => TestDataBuilder.ResetAppSettings();
 
     // ── The revert ───────────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task AFailedTitleLanguageSave_SurvivesReopeningSettings()
     {
         var harness = new Harness();
@@ -36,11 +36,11 @@ public class SettingsSaveDurabilityTests
         // landed.
         await harness.Model.LoadAsync();
 
-        Assert.Equal(UserTitleLanguage.English, harness.Model.SelectedTitleLanguage);
-        Assert.Equal(UserTitleLanguage.English, AppSettings.TitleLanguage);
+        Assert.That(harness.Model.SelectedTitleLanguage, Is.EqualTo(UserTitleLanguage.English));
+        Assert.That(AppSettings.TitleLanguage, Is.EqualTo(UserTitleLanguage.English));
     }
 
-    [Fact]
+    [Test]
     public async Task AFailedScoreFormatSave_SurvivesReopeningSettings()
     {
         var harness = new Harness();
@@ -51,11 +51,11 @@ public class SettingsSaveDurabilityTests
         await harness.Model.FlushPendingSaveAsync();
         await harness.Model.LoadAsync();
 
-        Assert.Equal(ScoreFormat.Point5, harness.Model.SelectedScoreFormat);
-        Assert.Equal(ScoreFormat.Point5, AppSettings.ScoreFormat);
+        Assert.That(harness.Model.SelectedScoreFormat, Is.EqualTo(ScoreFormat.Point5));
+        Assert.That(AppSettings.ScoreFormat, Is.EqualTo(ScoreFormat.Point5));
     }
 
-    [Fact]
+    [Test]
     public async Task AFailedStaffNameLanguageSave_SurvivesReopeningSettings()
     {
         // Held only by the page model — AppSettings has no entry for it (#130) — so its pending
@@ -68,10 +68,10 @@ public class SettingsSaveDurabilityTests
         await harness.Model.FlushPendingSaveAsync();
         await harness.Model.LoadAsync();
 
-        Assert.Equal(UserStaffNameLanguage.Native, harness.Model.SelectedStaffNameLanguage);
+        Assert.That(harness.Model.SelectedStaffNameLanguage, Is.EqualTo(UserStaffNameLanguage.Native));
     }
 
-    [Fact]
+    [Test]
     public async Task AFailedActivityMergeTimeSave_SurvivesReopeningSettings()
     {
         var harness = new Harness();
@@ -82,10 +82,10 @@ public class SettingsSaveDurabilityTests
         await harness.Model.FlushPendingSaveAsync();
         await harness.Model.LoadAsync();
 
-        Assert.Equal(120, harness.Model.ActivityMergeTime);
+        Assert.That(harness.Model.ActivityMergeTime, Is.EqualTo(120));
     }
 
-    [Fact]
+    [Test]
     public async Task OnceTheServerAgrees_TheSettingFollowsTheServerAgain()
     {
         // The marker must clear, or a change made on the website would never reach this device.
@@ -104,10 +104,10 @@ public class SettingsSaveDurabilityTests
         harness.ViewerNowReports(titleLanguage: UserTitleLanguage.Native);
         await harness.Model.LoadAsync();
 
-        Assert.Equal(UserTitleLanguage.Native, harness.Model.SelectedTitleLanguage);
+        Assert.That(harness.Model.SelectedTitleLanguage, Is.EqualTo(UserTitleLanguage.Native));
     }
 
-    [Fact]
+    [Test]
     public async Task WithNoLocalChange_TheServerStillWins()
     {
         // The guard must not turn into "the device always wins" — a change made on the website has
@@ -118,11 +118,11 @@ public class SettingsSaveDurabilityTests
         harness.ViewerNowReports(titleLanguage: UserTitleLanguage.Native);
         await harness.Model.LoadAsync();
 
-        Assert.Equal(UserTitleLanguage.Native, harness.Model.SelectedTitleLanguage);
-        Assert.Equal(UserTitleLanguage.Native, AppSettings.TitleLanguage);
+        Assert.That(harness.Model.SelectedTitleLanguage, Is.EqualTo(UserTitleLanguage.Native));
+        Assert.That(AppSettings.TitleLanguage, Is.EqualTo(UserTitleLanguage.Native));
     }
 
-    [Fact]
+    [Test]
     public async Task ASuccessfulSave_LeavesNothingPending()
     {
         var harness = new Harness();
@@ -134,10 +134,10 @@ public class SettingsSaveDurabilityTests
         harness.ViewerNowReports(titleLanguage: UserTitleLanguage.Native);
         await harness.Model.LoadAsync();
 
-        Assert.Equal(UserTitleLanguage.Native, harness.Model.SelectedTitleLanguage);
+        Assert.That(harness.Model.SelectedTitleLanguage, Is.EqualTo(UserTitleLanguage.Native));
     }
 
-    [Fact]
+    [Test]
     public async Task ASaveTheServerAcceptsButDoesNotEcho_DoesNotResendForever()
     {
         // The failure mode the pending marker could otherwise create: baselining dirty-tracking
@@ -157,14 +157,14 @@ public class SettingsSaveDurabilityTests
         await harness.Model.FlushPendingSaveAsync();
         await harness.Model.FlushPendingSaveAsync();
 
-        Assert.Equal(
-            sendsAfterFirstSave,
-            harness.Client.ReceivedCalls().Count(c => c.GetMethodInfo().Name == nameof(IAniListClient.UpdateUserAsync)));
+        Assert.That(
+            harness.Client.ReceivedCalls().Count(c => c.GetMethodInfo().Name == nameof(IAniListClient.UpdateUserAsync)),
+            Is.EqualTo(sendsAfterFirstSave));
     }
 
     // ── Notification settings ────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task AFailedAiringNotificationsSave_SurvivesReopeningSettings()
     {
         // The worst one to revert: the WorkManager job is already scheduled, so a toggle that flips
@@ -177,10 +177,10 @@ public class SettingsSaveDurabilityTests
         await harness.Model.FlushPendingSaveAsync();
         await harness.Model.LoadAsync();
 
-        Assert.True(harness.Model.AiringNotifications);
+        Assert.That(harness.Model.AiringNotifications, Is.True);
     }
 
-    [Fact]
+    [Test]
     public async Task AFailedPerTypeNotificationSave_SurvivesReopeningSettings()
     {
         // Starts enabled on the server, so turning it off is a real change rather than a no-op.
@@ -192,13 +192,13 @@ public class SettingsSaveDurabilityTests
         await harness.Model.FlushPendingSaveAsync();
         await harness.Model.LoadAsync();
 
-        Assert.False(harness.Model.NotificationItems.Single(i => i.Type == "ACTIVITY_LIKE").IsEnabled);
+        Assert.That(harness.Model.NotificationItems.Single(i => i.Type == "ACTIVITY_LIKE").IsEnabled, Is.False);
 
         // Scoped to the type the user touched — the others still follow the server.
-        Assert.True(harness.Model.NotificationItems.Single(i => i.Type == "AIRING").IsEnabled);
+        Assert.That(harness.Model.NotificationItems.Single(i => i.Type == "AIRING").IsEnabled, Is.True);
     }
 
-    [Fact]
+    [Test]
     public async Task APerTypeChangeMadeElsewhere_StillArrives()
     {
         // The guard must stay scoped to the type the user actually touched.
@@ -208,11 +208,11 @@ public class SettingsSaveDurabilityTests
         harness.ViewerNowReports(notificationTypesEnabled: ["ACTIVITY_LIKE"]);
         await harness.Model.LoadAsync();
 
-        Assert.True(harness.Model.NotificationItems.Single(i => i.Type == "ACTIVITY_LIKE").IsEnabled);
-        Assert.False(harness.Model.NotificationItems.Single(i => i.Type == "AIRING").IsEnabled);
+        Assert.That(harness.Model.NotificationItems.Single(i => i.Type == "ACTIVITY_LIKE").IsEnabled, Is.True);
+        Assert.That(harness.Model.NotificationItems.Single(i => i.Type == "AIRING").IsEnabled, Is.False);
     }
 
-    [Fact]
+    [Test]
     public async Task ASuccessfulNotificationSave_LeavesNothingPending()
     {
         var harness = new Harness();
@@ -225,12 +225,12 @@ public class SettingsSaveDurabilityTests
         harness.ViewerNowReports(airingNotifications: false);
         await harness.Model.LoadAsync();
 
-        Assert.False(harness.Model.AiringNotifications);
+        Assert.That(harness.Model.AiringNotifications, Is.False);
     }
 
     // ── The orphaned WorkManager job ─────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task ReopeningSettings_AfterAiringWasTurnedOffElsewhere_CancelsTheScheduledJob()
     {
         // Independent of saving: turn the setting off on the AniList website, come back here, and
@@ -242,11 +242,11 @@ public class SettingsSaveDurabilityTests
         harness.ViewerNowReports(airingNotifications: false);
         await harness.Model.LoadAsync();
 
-        Assert.False(harness.Model.AiringNotifications);
+        Assert.That(harness.Model.AiringNotifications, Is.False);
         harness.Notifications.Received().CancelPeriodicCheck();
     }
 
-    [Fact]
+    [Test]
     public async Task ReopeningSettings_WithAiringStillOn_DoesNotCancelTheJob()
     {
         var harness = new Harness(airingNotifications: true);
@@ -260,7 +260,7 @@ public class SettingsSaveDurabilityTests
 
     // ── The Retry affordance ─────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task AServiceOutage_OffersNoRetry()
     {
         // Retrying cannot succeed for minutes or hours, and the outage banner already says so.
@@ -272,13 +272,12 @@ public class SettingsSaveDurabilityTests
         harness.Model.SelectedTitleLanguage = UserTitleLanguage.English;
         await harness.Model.FlushPendingSaveAsync();
 
-        Assert.Null(harness.Feedback.LastSnackbarAction);
+        Assert.That<Action?>(harness.Feedback.LastSnackbarAction, Is.Null);
     }
 
-    [Theory]
-    [InlineData(ApiErrorKind.Network)]
-    [InlineData(ApiErrorKind.RateLimited)]
-    [InlineData(ApiErrorKind.Unknown)]
+    [TestCase(ApiErrorKind.Network)]
+    [TestCase(ApiErrorKind.RateLimited)]
+    [TestCase(ApiErrorKind.Unknown)]
     public async Task EveryOtherFailureKind_KeepsTheRetry(ApiErrorKind kind)
     {
         var harness = new Harness();
@@ -288,10 +287,10 @@ public class SettingsSaveDurabilityTests
         harness.Model.SelectedTitleLanguage = UserTitleLanguage.English;
         await harness.Model.FlushPendingSaveAsync();
 
-        Assert.NotNull(harness.Feedback.LastSnackbarAction);
+        Assert.That<Action?>(harness.Feedback.LastSnackbarAction, Is.Not.Null);
     }
 
-    [Fact]
+    [Test]
     public async Task TheSaveFailureSnackbar_StillHoldsForTwentySeconds()
     {
         // The long dwell is the whole recovery path: the user has to notice it to retry.
@@ -302,12 +301,12 @@ public class SettingsSaveDurabilityTests
         harness.Model.SelectedTitleLanguage = UserTitleLanguage.English;
         await harness.Model.FlushPendingSaveAsync();
 
-        Assert.Equal(TimeSpan.FromSeconds(20), harness.Feedback.LastSnackbarDuration);
+        Assert.That(harness.Feedback.LastSnackbarDuration, Is.EqualTo(TimeSpan.FromSeconds(20)));
     }
 
     // ── The in-flight drop ───────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task ASaveArrivingWhileAnotherIsInFlight_IsCoalescedNotDropped()
     {
         // SaveSettingsAsync returned immediately when IsSaving, scheduling nothing — so a Retry tap

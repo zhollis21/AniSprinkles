@@ -9,12 +9,12 @@ namespace AniSprinkles.UnitTests;
 /// #52 Phase 1 for <see cref="MediaDetailsPageModel"/>: the <c>LoadAsync</c> state machine and the
 /// retry affordance that rides on it.
 /// </summary>
-[Collection(AppSettingsCollection.Name)]
+[NonParallelizable]
 public class MediaDetailsPageModelTests
 {
     public MediaDetailsPageModelTests() => TestDataBuilder.ResetAppSettings();
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_HappyPath_ShowsContentAndAllowsRetry()
     {
         var harness = new Harness();
@@ -22,12 +22,12 @@ public class MediaDetailsPageModelTests
 
         await harness.Model.LoadAsync(42, listEntry: null);
 
-        Assert.Equal(PageState.Content, harness.Model.CurrentState);
-        Assert.Equal(42, harness.Model.Media?.Id);
-        Assert.True(harness.Model.CanRetry);
+        Assert.That(harness.Model.CurrentState, Is.EqualTo(PageState.Content));
+        Assert.That(harness.Model.Media?.Id, Is.EqualTo(42));
+        Assert.That(harness.Model.CanRetry, Is.True);
     }
 
-    [Fact]
+    [Test]
     public async Task IsDescriptionTruncated_UsesTheSharedHeuristic()
     {
         // This page carried its own copy of the estimate, calibrated at 45 chars per line while the
@@ -40,11 +40,11 @@ public class MediaDetailsPageModelTests
 
         await harness.Model.LoadAsync(42, listEntry: null);
 
-        Assert.True(harness.Model.IsDescriptionTruncated);
-        Assert.Equal(DescriptionTruncationHeuristic.CollapsedMaxLines, harness.Model.DescriptionMaxLines);
+        Assert.That(harness.Model.IsDescriptionTruncated, Is.True);
+        Assert.That(harness.Model.DescriptionMaxLines, Is.EqualTo(DescriptionTruncationHeuristic.CollapsedMaxLines));
     }
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_WithANonPositiveMediaId_ErrorsWithoutRetryAndWithoutCallingTheApi()
     {
         // A bad id will still be bad on retry, so the button must not be offered.
@@ -52,12 +52,12 @@ public class MediaDetailsPageModelTests
 
         await harness.Model.LoadAsync(0, listEntry: null);
 
-        Assert.Equal(PageState.Error, harness.Model.CurrentState);
-        Assert.False(harness.Model.CanRetry);
+        Assert.That(harness.Model.CurrentState, Is.EqualTo(PageState.Error));
+        Assert.That(harness.Model.CanRetry, Is.False);
         await harness.Client.DidNotReceive().GetMediaAsync(Arg.Any<int>(), Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_WhenTheApiReturnsNoMedia_ErrorsButKeepsRetryAvailable()
     {
         var harness = new Harness();
@@ -65,11 +65,11 @@ public class MediaDetailsPageModelTests
 
         await harness.Model.LoadAsync(42, listEntry: null);
 
-        Assert.Equal(PageState.Error, harness.Model.CurrentState);
-        Assert.True(harness.Model.CanRetry);
+        Assert.That(harness.Model.CurrentState, Is.EqualTo(PageState.Error));
+        Assert.That(harness.Model.CanRetry, Is.True);
     }
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_WhenTheMediaIsNotFound_KeepsTheWordingButStillOffersRetry()
     {
         // NotFound is usually AniList telling us the id does not resolve — a dangling relation or a
@@ -81,13 +81,13 @@ public class MediaDetailsPageModelTests
 
         await harness.Model.LoadAsync(42, listEntry: null);
 
-        Assert.Equal(PageState.Error, harness.Model.CurrentState);
-        Assert.Equal("Entry Unavailable", harness.Model.ErrorTitle);
-        Assert.True(harness.Model.CanRetry);
-        Assert.NotEqual(string.Empty, harness.Model.ErrorDetails);
+        Assert.That(harness.Model.CurrentState, Is.EqualTo(PageState.Error));
+        Assert.That(harness.Model.ErrorTitle, Is.EqualTo("Entry Unavailable"));
+        Assert.That(harness.Model.CanRetry, Is.True);
+        Assert.That(harness.Model.ErrorDetails, Is.Not.EqualTo(string.Empty));
     }
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_WhenTheFetchThrows_ErrorsAndKeepsRetryAvailable()
     {
         var harness = new Harness();
@@ -95,12 +95,12 @@ public class MediaDetailsPageModelTests
 
         await harness.Model.LoadAsync(42, listEntry: null);
 
-        Assert.Equal(PageState.Error, harness.Model.CurrentState);
-        Assert.Equal("No Internet Connection", harness.Model.ErrorTitle);
-        Assert.True(harness.Model.CanRetry);
+        Assert.That(harness.Model.CurrentState, Is.EqualTo(PageState.Error));
+        Assert.That(harness.Model.ErrorTitle, Is.EqualTo("No Internet Connection"));
+        Assert.That(harness.Model.CanRetry, Is.True);
     }
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_ForTheAlreadyLoadedMedia_ReusesItWithoutASecondRequest()
     {
         // Query attributes get re-applied on resume and back transitions; refetching there would
@@ -112,10 +112,10 @@ public class MediaDetailsPageModelTests
         await harness.Model.LoadAsync(42, listEntry: null);
 
         await harness.Client.Received(1).GetMediaAsync(42, Arg.Any<CancellationToken>());
-        Assert.Equal(PageState.Content, harness.Model.CurrentState);
+        Assert.That(harness.Model.CurrentState, Is.EqualTo(PageState.Content));
     }
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_ForTheAlreadyLoadedMedia_DoesNotOverwriteTheInMemoryListEntry()
     {
         // The in-memory entry reflects saves the user has made since; a stale navigation parameter
@@ -127,29 +127,29 @@ public class MediaDetailsPageModelTests
         await harness.Model.LoadAsync(42, listEntry: null);
         await harness.Model.LoadAsync(42, new MediaListEntry { Id = 7, MediaId = 42, Progress = 1 });
 
-        Assert.Equal(12, harness.Model.ListEntry?.Progress);
+        Assert.That(harness.Model.ListEntry?.Progress, Is.EqualTo(12));
     }
 
-    [Fact]
+    [Test]
     public async Task RetryLoad_ReInvokesWithTheLastRequestedIdAndItsNavigationListEntry()
     {
         var harness = new Harness();
         harness.Throws(new InvalidOperationException("boom"));
 
         await harness.Model.LoadAsync(42, new MediaListEntry { Id = 7, MediaId = 42, Progress = 3 });
-        Assert.Equal(PageState.Error, harness.Model.CurrentState);
+        Assert.That(harness.Model.CurrentState, Is.EqualTo(PageState.Error));
 
         harness.ReturnsMedia(new Media { Id = 42 });
         await harness.Model.RetryLoadCommand.ExecuteAsync(null);
 
-        Assert.Equal(PageState.Content, harness.Model.CurrentState);
-        Assert.Equal(42, harness.Model.Media?.Id);
+        Assert.That(harness.Model.CurrentState, Is.EqualTo(PageState.Content));
+        Assert.That(harness.Model.Media?.Id, Is.EqualTo(42));
         // The retry has to carry the navigation entry too, or the retried page loses the list context
         // the user arrived with.
-        Assert.Equal(3, harness.Model.ListEntry?.Progress);
+        Assert.That(harness.Model.ListEntry?.Progress, Is.EqualTo(3));
     }
 
-    [Fact]
+    [Test]
     public async Task RetryLoad_BeforeAnythingHasBeenRequested_DoesNothing()
     {
         var harness = new Harness();
@@ -160,7 +160,7 @@ public class MediaDetailsPageModelTests
         await harness.Client.DidNotReceive().GetMediaAsync(Arg.Any<int>(), Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_WhileALoadIsAlreadyInFlight_IsDropped()
     {
         var harness = new Harness();
@@ -175,11 +175,11 @@ public class MediaDetailsPageModelTests
         gate.SetResult((new Media { Id = 42 }, null));
         await first;
 
-        Assert.Equal(42, harness.Model.Media?.Id);
+        Assert.That(harness.Model.Media?.Id, Is.EqualTo(42));
         await harness.Client.Received(1).GetMediaAsync(Arg.Any<int>(), Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_WhenASecondLoadIsDropped_DoesNotHandItsListEntryToTheLoadStillRunning()
     {
         var harness = new Harness();
@@ -195,11 +195,11 @@ public class MediaDetailsPageModelTests
         gate.SetResult((new Media { Id = 42 }, null));
         await live;
 
-        Assert.Equal(3, harness.Model.ListEntry?.Progress);
-        Assert.Equal(7, harness.Model.ListEntry?.Id);
+        Assert.That(harness.Model.ListEntry?.Progress, Is.EqualTo(3));
+        Assert.That(harness.Model.ListEntry?.Id, Is.EqualTo(7));
     }
 
-    [Fact]
+    [Test]
     public async Task RetryLoad_AfterASecondLoadWasDropped_ReusesTheLiveLoadsListEntry()
     {
         var harness = new Harness();
@@ -213,11 +213,11 @@ public class MediaDetailsPageModelTests
         await harness.Model.RetryLoadCommand.ExecuteAsync(null);
 
         // The second load was accepted (nothing was in flight), so retry follows it, not the first.
-        Assert.Equal(99, harness.Model.Media?.Id);
-        Assert.Equal(99, harness.Model.ListEntry?.Progress);
+        Assert.That(harness.Model.Media?.Id, Is.EqualTo(99));
+        Assert.That(harness.Model.ListEntry?.Progress, Is.EqualTo(99));
     }
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_WhenASecondLoadIsDropped_DoesNotRenumberTheLiveLoadsTraceLines()
     {
         var harness = new Harness();
@@ -232,11 +232,15 @@ public class MediaDetailsPageModelTests
 
         // load#1 is the live load; load#2 was dropped. Everything the live load emits after the drop
         // must still say load#1, or the correlation id is worse than useless when reading a trace.
-        Assert.Contains(harness.Logger.Containing("skipped because"), m => m.Contains("load#2", StringComparison.Ordinal));
-        Assert.All(
-            harness.Logger.Containing("DATATRACE"),
-            m => Assert.Contains("load#1", m, StringComparison.Ordinal));
-        Assert.Contains(harness.Logger.Containing("media fetch completed"), m => m.Contains("load#1", StringComparison.Ordinal));
+        Assert.That(harness.Logger.Containing("skipped because"), Has.Some.Contains("load#2"));
+        Assert.Multiple(() =>
+        {
+            foreach (var m in harness.Logger.Containing("DATATRACE"))
+            {
+                Assert.That(m, Does.Contain("load#1"));
+            }
+        });
+        Assert.That(harness.Logger.Containing("media fetch completed"), Has.Some.Contains("load#1"));
     }
 
     private sealed class Harness
@@ -273,7 +277,7 @@ public class MediaDetailsPageModelTests
 
     // ── Manga (#12) ──────────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task AMangaPage_LabelsEveryStatusInTheReadingVocabulary()
     {
         var harness = new Harness();
@@ -281,13 +285,13 @@ public class MediaDetailsPageModelTests
 
         await harness.Model.LoadAsync(53390, listEntry: null);
 
-        Assert.Equal(MediaKind.Manga, harness.Model.CurrentMediaKind);
-        Assert.Equal("Reading", harness.Model.StatusLabelCurrent);
-        Assert.Equal("Plan to Read", harness.Model.StatusLabelPlanning);
-        Assert.Equal("Rereading", harness.Model.StatusLabelRepeating);
+        Assert.That(harness.Model.CurrentMediaKind, Is.EqualTo(MediaKind.Manga));
+        Assert.That(harness.Model.StatusLabelCurrent, Is.EqualTo("Reading"));
+        Assert.That(harness.Model.StatusLabelPlanning, Is.EqualTo("Plan to Read"));
+        Assert.That(harness.Model.StatusLabelRepeating, Is.EqualTo("Rereading"));
     }
 
-    [Fact]
+    [Test]
     public async Task AnAnimePage_KeepsTheWatchingVocabulary()
     {
         var harness = new Harness();
@@ -295,15 +299,15 @@ public class MediaDetailsPageModelTests
 
         await harness.Model.LoadAsync(42, listEntry: null);
 
-        Assert.Equal(MediaKind.Anime, harness.Model.CurrentMediaKind);
-        Assert.Equal("Watching", harness.Model.StatusLabelCurrent);
-        Assert.Equal("Plan to Watch", harness.Model.StatusLabelPlanning);
-        Assert.Equal("Rewatching", harness.Model.StatusLabelRepeating);
-        Assert.Equal(MediaProgressUnit.Episode, harness.Model.CurrentProgressUnit);
-        Assert.Equal("Episodes watched", harness.Model.ProgressSectionLabel);
+        Assert.That(harness.Model.CurrentMediaKind, Is.EqualTo(MediaKind.Anime));
+        Assert.That(harness.Model.StatusLabelCurrent, Is.EqualTo("Watching"));
+        Assert.That(harness.Model.StatusLabelPlanning, Is.EqualTo("Plan to Watch"));
+        Assert.That(harness.Model.StatusLabelRepeating, Is.EqualTo("Rewatching"));
+        Assert.That(harness.Model.CurrentProgressUnit, Is.EqualTo(MediaProgressUnit.Episode));
+        Assert.That(harness.Model.ProgressSectionLabel, Is.EqualTo("Episodes watched"));
     }
 
-    [Fact]
+    [Test]
     public async Task AMangaChipRow_ShowsChaptersAndVolumesInsteadOfEpisodesAndSeason()
     {
         var harness = new Harness();
@@ -311,20 +315,20 @@ public class MediaDetailsPageModelTests
 
         await harness.Model.LoadAsync(53390, listEntry: null);
 
-        Assert.Equal("141 Chapters", harness.Model.ChaptersDisplay);
-        Assert.Equal("34 Volumes", harness.Model.VolumesDisplay);
+        Assert.That(harness.Model.ChaptersDisplay, Is.EqualTo("141 Chapters"));
+        Assert.That(harness.Model.VolumesDisplay, Is.EqualTo("34 Volumes"));
 
         // One-shots make the singular a visible chip rather than a theoretical one.
         harness.Model.Media = MangaMedia(chapters: 1, volumes: null);
-        Assert.Equal("1 Chapter", harness.Model.ChaptersDisplay);
-        Assert.Equal(string.Empty, harness.Model.VolumesDisplay);
+        Assert.That(harness.Model.ChaptersDisplay, Is.EqualTo("1 Chapter"));
+        Assert.That(harness.Model.VolumesDisplay, Is.EqualTo(string.Empty));
         // The anime chips gate on their own emptiness, so they hide themselves for manga.
-        Assert.Equal(string.Empty, harness.Model.EpisodesDisplay);
-        Assert.Equal(string.Empty, harness.Model.DurationPillDisplay);
-        Assert.Equal(string.Empty, harness.Model.SeasonYearDisplay);
+        Assert.That(harness.Model.EpisodesDisplay, Is.EqualTo(string.Empty));
+        Assert.That(harness.Model.DurationPillDisplay, Is.EqualTo(string.Empty));
+        Assert.That(harness.Model.SeasonYearDisplay, Is.EqualTo(string.Empty));
     }
 
-    [Fact]
+    [Test]
     public async Task AMangaChapterReader_GetsAChapterProgressControl()
     {
         var harness = new Harness();
@@ -333,16 +337,16 @@ public class MediaDetailsPageModelTests
 
         await harness.Model.LoadAsync(53390, entry);
 
-        Assert.Equal(MediaProgressUnit.Chapter, harness.Model.CurrentProgressUnit);
-        Assert.Equal("Chapter", harness.Model.ProgressUnitNoun);
+        Assert.That(harness.Model.CurrentProgressUnit, Is.EqualTo(MediaProgressUnit.Chapter));
+        Assert.That(harness.Model.ProgressUnitNoun, Is.EqualTo("Chapter"));
         // The row heading is the only thing on the page that says WHICH counter the number and the
         // slider refer to — the unit is decided per entry, so a bare "Progress" was ambiguous.
-        Assert.Equal("Chapters read", harness.Model.ProgressSectionLabel);
-        Assert.Equal("100 / 141", harness.Model.ProgressLabel);
-        Assert.Equal(141, harness.Model.ProgressSliderMax);
+        Assert.That(harness.Model.ProgressSectionLabel, Is.EqualTo("Chapters read"));
+        Assert.That(harness.Model.ProgressLabel, Is.EqualTo("100 / 141"));
+        Assert.That(harness.Model.ProgressSliderMax, Is.EqualTo(141));
     }
 
-    [Fact]
+    [Test]
     public async Task AMangaVolumeReader_GetsAVolumeProgressControl()
     {
         var harness = new Harness();
@@ -354,14 +358,14 @@ public class MediaDetailsPageModelTests
 
         await harness.Model.LoadAsync(53390, entry);
 
-        Assert.Equal(MediaProgressUnit.Volume, harness.Model.CurrentProgressUnit);
-        Assert.Equal("Volume", harness.Model.ProgressUnitNoun);
-        Assert.Equal("Volumes read", harness.Model.ProgressSectionLabel);
-        Assert.Equal("20 / 34", harness.Model.ProgressLabel);
-        Assert.Equal(34, harness.Model.ProgressSliderMax);
+        Assert.That(harness.Model.CurrentProgressUnit, Is.EqualTo(MediaProgressUnit.Volume));
+        Assert.That(harness.Model.ProgressUnitNoun, Is.EqualTo("Volume"));
+        Assert.That(harness.Model.ProgressSectionLabel, Is.EqualTo("Volumes read"));
+        Assert.That(harness.Model.ProgressLabel, Is.EqualTo("20 / 34"));
+        Assert.That(harness.Model.ProgressSliderMax, Is.EqualTo(34));
     }
 
-    [Fact]
+    [Test]
     public async Task AnOngoingManga_HasNoProgressBarBecauseAniListPublishesNoTotal()
     {
         // Not an edge case: AniList returns null chapters and null volumes for every RELEASING
@@ -373,12 +377,12 @@ public class MediaDetailsPageModelTests
 
         await harness.Model.LoadAsync(30013, entry);
 
-        Assert.False(harness.Model.HasProgressSliderMax);
-        Assert.Equal("1100", harness.Model.ProgressLabel);
-        Assert.Equal(0, harness.Model.ProgressFraction);
+        Assert.That(harness.Model.HasProgressSliderMax, Is.False);
+        Assert.That(harness.Model.ProgressLabel, Is.EqualTo("1100"));
+        Assert.That(harness.Model.ProgressFraction, Is.EqualTo(0));
     }
 
-    [Fact]
+    [Test]
     public async Task IncrementingAVolumeReader_MovesVolumesAndLeavesChaptersAlone()
     {
         var harness = new Harness();
@@ -391,8 +395,8 @@ public class MediaDetailsPageModelTests
 
         await harness.Model.IncrementProgressCommand.ExecuteAsync(null);
 
-        Assert.Equal(21, entry.ProgressVolumes);
-        Assert.Equal(0, entry.Progress);
+        Assert.That(entry.ProgressVolumes, Is.EqualTo(21));
+        Assert.That(entry.Progress, Is.EqualTo(0));
     }
 
     private static Media MangaMedia(int? chapters, int? volumes) => new()

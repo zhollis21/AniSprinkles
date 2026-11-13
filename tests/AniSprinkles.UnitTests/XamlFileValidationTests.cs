@@ -12,19 +12,17 @@ public class XamlFileValidationTests
     // be called once per file during discovery and once per file during validation.
     private static readonly Lazy<string> RepoRoot = new(FindRepoRoot);
 
-    [Theory]
-    [MemberData(nameof(AllXamlFiles))]
+    [TestCaseSource(nameof(AllXamlFiles))]
     public void XamlFile_IsWellFormedXml(string relativePath)
     {
         var fullPath = Path.Combine(RepoRoot.Value, relativePath);
-        var ex = Record.Exception(() => XDocument.Load(fullPath, LoadOptions.SetLineInfo));
-        Assert.True(ex is null, $"{relativePath} - {ex?.Message}");
+        Assert.That(() => XDocument.Load(fullPath, LoadOptions.SetLineInfo), Throws.Nothing, relativePath);
     }
 
-    [Fact]
+    [Test]
     public void Discovery_FindsXamlFiles()
     {
-        Assert.NotEmpty(AllXamlFiles());
+        Assert.That(AllXamlFiles(), Is.Not.Empty);
     }
 
     public static IEnumerable<object[]> AllXamlFiles()

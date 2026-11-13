@@ -11,7 +11,7 @@ namespace AniSprinkles.UnitTests;
 /// </summary>
 public class StaffDetailsPageModelTests
 {
-    [Fact]
+    [Test]
     public async Task LoadAsync_SeedsVoiceRolesAndProductionRolesFromTheirOwnConnections()
     {
         var harness = new Harness();
@@ -19,13 +19,13 @@ public class StaffDetailsPageModelTests
 
         await harness.Model.LoadAsync(42);
 
-        Assert.Equal(2, harness.Model.DisplayedVoiceRoles.Count);
-        Assert.Equal(3, harness.Model.DisplayedProductionRoles.Count);
-        Assert.True(harness.Model.HasVoiceRoles);
-        Assert.True(harness.Model.HasProductionRoles);
+        Assert.That(harness.Model.DisplayedVoiceRoles.Count, Is.EqualTo(2));
+        Assert.That(harness.Model.DisplayedProductionRoles.Count, Is.EqualTo(3));
+        Assert.That(harness.Model.HasVoiceRoles, Is.True);
+        Assert.That(harness.Model.HasProductionRoles, Is.True);
     }
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_UsesEachSectionsOwnDefaultSort()
     {
         var harness = new Harness();
@@ -35,13 +35,13 @@ public class StaffDetailsPageModelTests
 
         // The defaults must match the sub-block sorts of the heavy Staff query, or the seeded page and
         // the highlighted dropdown option disagree.
-        Assert.Equal("FAVOURITES_DESC", harness.Model.VoiceRolesSort);
-        Assert.Equal("POPULARITY_DESC", harness.Model.ProductionRolesSort);
-        Assert.True(harness.Model.VoiceRolesSortOptions.Single(o => o.Code == "FAVOURITES_DESC").IsSelected);
-        Assert.True(harness.Model.ProductionRolesSortOptions.Single(o => o.Code == "POPULARITY_DESC").IsSelected);
+        Assert.That(harness.Model.VoiceRolesSort, Is.EqualTo("FAVOURITES_DESC"));
+        Assert.That(harness.Model.ProductionRolesSort, Is.EqualTo("POPULARITY_DESC"));
+        Assert.That(harness.Model.VoiceRolesSortOptions.Single(o => o.Code == "FAVOURITES_DESC").IsSelected, Is.True);
+        Assert.That(harness.Model.ProductionRolesSortOptions.Single(o => o.Code == "POPULARITY_DESC").IsSelected, Is.True);
     }
 
-    [Fact]
+    [Test]
     public async Task SelectVoiceRolesSort_RefetchesVoiceRolesAndLeavesProductionRolesAlone()
     {
         var harness = new Harness();
@@ -55,18 +55,18 @@ public class StaffDetailsPageModelTests
 
         await harness.Model.SelectVoiceRolesSortCommand.ExecuteAsync("ROLE");
 
-        Assert.Equal("ROLE", harness.Model.VoiceRolesSort);
-        Assert.Single(harness.Model.DisplayedVoiceRoles);
-        Assert.True(harness.Model.VoiceRolesSortOptions.Single(o => o.Code == "ROLE").IsSelected);
+        Assert.That(harness.Model.VoiceRolesSort, Is.EqualTo("ROLE"));
+        Assert.That(harness.Model.DisplayedVoiceRoles, Has.Exactly(1).Items);
+        Assert.That(harness.Model.VoiceRolesSortOptions.Single(o => o.Code == "ROLE").IsSelected, Is.True);
 
         // The two connections are independent: re-sorting one must not disturb the other.
-        Assert.Equal(3, harness.Model.DisplayedProductionRoles.Count);
-        Assert.Equal("POPULARITY_DESC", harness.Model.ProductionRolesSort);
+        Assert.That(harness.Model.DisplayedProductionRoles.Count, Is.EqualTo(3));
+        Assert.That(harness.Model.ProductionRolesSort, Is.EqualTo("POPULARITY_DESC"));
         await harness.Client.DidNotReceive().LoadStaffMediaPageAsync(
             Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task SelectVoiceRolesSort_WithTheCompleteList_ReordersInMemoryWithoutAnApiCall()
     {
         var harness = new Harness();
@@ -77,13 +77,13 @@ public class StaffDetailsPageModelTests
 
         // Once the whole connection is loaded the server can't know anything we don't — spending a
         // rate-limited request to re-sort it would be waste.
-        Assert.Equal("ROLE", harness.Model.VoiceRolesSort);
-        Assert.Equal(2, harness.Model.DisplayedVoiceRoles.Count);
+        Assert.That(harness.Model.VoiceRolesSort, Is.EqualTo("ROLE"));
+        Assert.That(harness.Model.DisplayedVoiceRoles.Count, Is.EqualTo(2));
         await harness.Client.DidNotReceive().LoadStaffCharactersPageAsync(
             Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task SelectVoiceRolesSort_WithTheSortAlreadyActive_DoesNotRefetch()
     {
         var harness = new Harness();
@@ -96,7 +96,7 @@ public class StaffDetailsPageModelTests
             Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_ForANewStaffMember_ResetsBothSortSelections()
     {
         var harness = new Harness();
@@ -107,16 +107,16 @@ public class StaffDetailsPageModelTests
             .LoadStaffCharactersPageAsync(Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult<(IReadOnlyList<StaffCharacterEdge>, PageInfo?)>(([], null)));
         await harness.Model.SelectVoiceRolesSortCommand.ExecuteAsync("ROLE");
-        Assert.Equal("ROLE", harness.Model.VoiceRolesSort);
+        Assert.That(harness.Model.VoiceRolesSort, Is.EqualTo("ROLE"));
 
         harness.Returns(StaffWith(voiceRoles: 1, productionRoles: 1));
         await harness.Model.LoadAsync(2);
 
-        Assert.Equal("FAVOURITES_DESC", harness.Model.VoiceRolesSort);
-        Assert.True(harness.Model.VoiceRolesSortOptions.Single(o => o.Code == "FAVOURITES_DESC").IsSelected);
+        Assert.That(harness.Model.VoiceRolesSort, Is.EqualTo("FAVOURITES_DESC"));
+        Assert.That(harness.Model.VoiceRolesSortOptions.Single(o => o.Code == "FAVOURITES_DESC").IsSelected, Is.True);
     }
 
-    [Fact]
+    [Test]
     public async Task NavigateToCharacter_NavigatesWithTheCharacterId()
     {
         var harness = new Harness();
@@ -129,7 +129,7 @@ public class StaffDetailsPageModelTests
             Arg.Is<IDictionary<string, object>>(d => (int)d["characterId"] == 7));
     }
 
-    [Fact]
+    [Test]
     public async Task NavigateToCharacter_WithAnInvalidId_DoesNothing()
     {
         var harness = new Harness();
@@ -183,7 +183,7 @@ public class StaffDetailsPageModelTests
     // Staff bios are the ones that exercise it hardest: they are where the Markdown lists and the
     // links to agencies and other creators live.
 
-    [Fact]
+    [Test]
     public async Task BioProse_TurnsNewlinesIntoBreaks_SoAListKeepsItsShape()
     {
         // Staff 96881's __Trivia:__ list in miniature. Lone newlines are structural here, so
@@ -193,12 +193,12 @@ public class StaffDetailsPageModelTests
 
         await harness.Model.LoadAsync(42);
 
-        Assert.Equal(
-            "<b>Trivia:</b><br>- Married.<br>- Loves Lupin III.",
-            harness.Model.BioProse);
+        Assert.That(
+            harness.Model.BioProse,
+            Is.EqualTo("<b>Trivia:</b><br>- Married.<br>- Loves Lupin III."));
     }
 
-    [Fact]
+    [Test]
     public async Task IsDescriptionTruncated_MeasuresTheRenderedBio_NotTheRawMarkdown()
     {
         var harness = new Harness();
@@ -209,10 +209,10 @@ public class StaffDetailsPageModelTests
         // Short on characters, but seven visual lines once the breaks become <br>. Measured against
         // the raw markdown — which contains no <br> by construction — this reads as text that fits,
         // so no "Read more" appears while the label clamps and tail-truncates anyway.
-        Assert.True(harness.Model.IsDescriptionTruncated);
+        Assert.That(harness.Model.IsDescriptionTruncated, Is.True);
     }
 
-    [Fact]
+    [Test]
     public async Task TogglingSpoilers_RenotifiesTruncation()
     {
         var harness = new Harness();
@@ -223,18 +223,18 @@ public class StaffDetailsPageModelTests
         });
         await harness.Model.LoadAsync(42);
 
-        Assert.False(harness.Model.IsDescriptionTruncated);
+        Assert.That(harness.Model.IsDescriptionTruncated, Is.False);
 
         var raised = new List<string?>();
         harness.Model.PropertyChanged += (_, e) => raised.Add(e.PropertyName);
 
         harness.Model.ToggleSpoilersCommand.Execute(null);
 
-        Assert.Contains(nameof(StaffDetailsPageModel.IsDescriptionTruncated), raised);
-        Assert.True(harness.Model.IsDescriptionTruncated);
+        Assert.That(raised, Does.Contain(nameof(StaffDetailsPageModel.IsDescriptionTruncated)));
+        Assert.That(harness.Model.IsDescriptionTruncated, Is.True);
     }
 
-    [Fact]
+    [Test]
     public async Task BioStats_RenderMarkdownInTheValue()
     {
         // Staff 96881's "Favorite Mangaka" is a link, and the stat path never ran the markdown
@@ -248,12 +248,12 @@ public class StaffDetailsPageModelTests
 
         await harness.Model.LoadAsync(42);
 
-        Assert.Equal(
-            "<a href=\"https://anilist.co/staff/96901\">Akira Toriyama</a>",
-            harness.Model.BioStats[0].ValueDisplay);
+        Assert.That(
+            harness.Model.BioStats[0].ValueDisplay,
+            Is.EqualTo("<a href=\"https://anilist.co/staff/96901\">Akira Toriyama</a>"));
     }
 
-    [Fact]
+    [Test]
     public async Task BioStats_AreStillFoundWhenTheColonSitsOutsideTheUnderscores()
     {
         // A miss on the opening line latches the parser into prose, so this spelling used to cost
@@ -263,27 +263,27 @@ public class StaffDetailsPageModelTests
 
         await harness.Model.LoadAsync(42);
 
-        Assert.Equal(2, harness.Model.BioStats.Count);
-        Assert.Equal("Height", harness.Model.BioStats[0].LabelDisplay);
-        Assert.Equal("Born", harness.Model.BioStats[1].LabelDisplay);
-        Assert.Equal("Prose.", harness.Model.BioProse);
+        Assert.That(harness.Model.BioStats.Count, Is.EqualTo(2));
+        Assert.That(harness.Model.BioStats[0].LabelDisplay, Is.EqualTo("Height"));
+        Assert.That(harness.Model.BioStats[1].LabelDisplay, Is.EqualTo("Born"));
+        Assert.That(harness.Model.BioProse, Is.EqualTo("Prose."));
     }
 
-    [Fact]
+    [Test]
     public async Task ASpoilerSpanningParagraphs_CollapsesToOneChipThenRestoresItsBreaks()
     {
         var harness = new Harness();
         harness.Returns(new Staff { Id = 42, Description = "Before.\n\n~!Secret one.\n\nSecret two.!~" });
         await harness.Model.LoadAsync(42);
 
-        Assert.DoesNotContain("Secret", harness.Model.BioProse, StringComparison.Ordinal);
-        Assert.Contains("[spoiler]", harness.Model.BioProse, StringComparison.Ordinal);
+        Assert.That(harness.Model.BioProse, Does.Not.Contain("Secret"));
+        Assert.That(harness.Model.BioProse, Does.Contain("[spoiler]"));
 
         harness.Model.ToggleSpoilersCommand.Execute(null);
 
-        Assert.Equal(
-            "Before.<br><br>Secret one.<br><br>Secret two.",
-            harness.Model.BioProse);
+        Assert.That(
+            harness.Model.BioProse,
+            Is.EqualTo("Before.<br><br>Secret one.<br><br>Secret two."));
     }
 
     private sealed class Harness

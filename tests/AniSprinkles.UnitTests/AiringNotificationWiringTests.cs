@@ -16,12 +16,12 @@ namespace AniSprinkles.UnitTests;
 /// <c>AiringNotificationState</c>, which is what makes the two halves impossible to separate.
 /// </para>
 /// </summary>
-[Collection(AppSettingsCollection.Name)]
+[NonParallelizable]
 public class AiringNotificationWiringTests
 {
     // ── AnimeLibraryPageModel caches the IDs the worker polls ────────────
 
-    [Fact]
+    [Test]
     public async Task AfterAListLoad_TheReleasingMediaIdsAreCachedForTheWorker()
     {
         var preferences = new FakePreferences();
@@ -38,10 +38,10 @@ public class AiringNotificationWiringTests
 
         // Watching + Rewatching + Planning, RELEASING only. Completed is excluded even when the
         // show is still airing — the user is not waiting on those episodes.
-        Assert.Equal([21, 101922, 195600], AiringNotificationState.ReadMediaIds(preferences).Order());
+        Assert.That(AiringNotificationState.ReadMediaIds(preferences).Order(), Is.EqualTo([21, 101922, 195600]));
     }
 
-    [Fact]
+    [Test]
     public async Task AListWithNothingReleasing_CachesAnEmptyList()
     {
         // Not the same as "never written": the worker distinguishes an empty cache from a stale one
@@ -58,10 +58,10 @@ public class AiringNotificationWiringTests
 
         await BuildAnimeLibrary(client, preferences).LoadAsync();
 
-        Assert.Empty(AiringNotificationState.ReadMediaIds(preferences));
+        Assert.That(AiringNotificationState.ReadMediaIds(preferences), Is.Empty);
     }
 
-    [Fact]
+    [Test]
     public async Task ARepeatedMediaAcrossGroups_IsCachedOnce()
     {
         var preferences = new FakePreferences();
@@ -74,12 +74,12 @@ public class AiringNotificationWiringTests
 
         await BuildAnimeLibrary(client, preferences).LoadAsync();
 
-        Assert.Equal([21], AiringNotificationState.ReadMediaIds(preferences));
+        Assert.That(AiringNotificationState.ReadMediaIds(preferences), Is.EqualTo([21]));
     }
 
     // ── SettingsPageModel resets the checkpoint when notifications go off ──
 
-    [Fact]
+    [Test]
     public async Task TurningNotificationsOff_ResetsTheCheckpoint()
     {
         // So re-enabling notifies only for new episodes rather than replaying everything that aired
@@ -91,10 +91,10 @@ public class AiringNotificationWiringTests
         harness.Model.AiringNotifications = false;
         await FlushAsync();
 
-        Assert.False(preferences.ContainsKey(AiringNotificationState.LastCheckKey));
+        Assert.That(preferences.ContainsKey(AiringNotificationState.LastCheckKey), Is.False);
     }
 
-    [Fact]
+    [Test]
     public async Task TurningNotificationsOff_LeavesTheOtherAiringKeysAlone()
     {
         // Only the checkpoint resets. The notified set in particular must survive, or re-enabling
@@ -110,9 +110,9 @@ public class AiringNotificationWiringTests
         harness.Model.AiringNotifications = false;
         await FlushAsync();
 
-        Assert.True(preferences.ContainsKey(AiringNotificationState.MediaIdsKey));
-        Assert.True(preferences.ContainsKey(AiringNotificationState.NotifiedKey));
-        Assert.True(preferences.ContainsKey(AiringNotificationState.PermissionPromptedKey));
+        Assert.That(preferences.ContainsKey(AiringNotificationState.MediaIdsKey), Is.True);
+        Assert.That(preferences.ContainsKey(AiringNotificationState.NotifiedKey), Is.True);
+        Assert.That(preferences.ContainsKey(AiringNotificationState.PermissionPromptedKey), Is.True);
     }
 
     // ── Helpers ─────────────────────────────────────────────────────
@@ -199,7 +199,7 @@ public class AiringNotificationWiringTests
 
         // Guards the setup rather than the subject: if the load left the toggle off, the "turn it
         // off" below would change nothing and the assertions would pass for the wrong reason.
-        Assert.True(model.AiringNotifications, "setup: expected notifications enabled after load");
+        Assert.That(model.AiringNotifications, Is.True, "setup: expected notifications enabled after load");
 
         return new SettingsHarness(model, client);
     }

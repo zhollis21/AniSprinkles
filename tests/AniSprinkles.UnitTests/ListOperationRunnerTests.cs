@@ -9,7 +9,7 @@ public class ListOperationRunnerTests
     private static ListOperationRunner Runner(IUserFeedback feedback)
         => new(NullLogger.Instance, feedback);
 
-    [Fact]
+    [Test]
     public async Task RunAsync_Success_RunsOnCompleteAndShowsNoSnackbar()
     {
         var feedback = Substitute.For<IUserFeedback>();
@@ -21,11 +21,11 @@ public class ListOperationRunnerTests
             loadedCount: () => 25,
             onComplete: () => onCompleteCalled = true);
 
-        Assert.True(onCompleteCalled);
+        Assert.That(onCompleteCalled, Is.True);
         await feedback.DidNotReceiveWithAnyArgs().ShowSnackbarAsync(default!);
     }
 
-    [Fact]
+    [Test]
     public async Task RunAsync_GenericFailure_ShowsGenericSnackbar()
     {
         var feedback = Substitute.For<IUserFeedback>();
@@ -39,7 +39,7 @@ public class ListOperationRunnerTests
             .ShowSnackbarAsync("Couldn't update the list. Check your connection and try again.");
     }
 
-    [Fact]
+    [Test]
     public async Task RunAsync_AniListApiFailure_ShowsActionableSubtitle()
     {
         var feedback = Substitute.For<IUserFeedback>();
@@ -53,7 +53,7 @@ public class ListOperationRunnerTests
         await feedback.Received(1).ShowSnackbarAsync(apiEx.UserSubtitle);
     }
 
-    [Fact]
+    [Test]
     public async Task RunAsync_Failure_RunsOnCompleteBeforeSnackbar()
     {
         var events = new List<string>();
@@ -68,10 +68,10 @@ public class ListOperationRunnerTests
             onComplete: () => events.Add("onComplete"));
 
         // onComplete must re-sync UI (e.g. revert the sort highlight) before the error surfaces.
-        Assert.Equal(new[] { "onComplete", "snackbar" }, events);
+        Assert.That(events, Is.EqualTo(new[] { "onComplete", "snackbar" }));
     }
 
-    [Fact]
+    [Test]
     public async Task RunAsync_OperationCanceled_IsTreatedAsFailure()
     {
         // Documents current behavior: cancellation is not special-cased here. In practice

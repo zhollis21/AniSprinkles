@@ -11,44 +11,46 @@ namespace AniSprinkles.UnitTests;
 /// </summary>
 public class DiagnosticsDisclosureTests
 {
-    [Fact]
+    [Test]
     public void TheDisclosuresFiveMinutesMatchesTheRingsActualRetention()
     {
         // Change DefaultRetention without changing the copy and the app starts lying to users about
         // how far back it reaches. This is the drift that would never be caught by hand.
-        Assert.Equal(TimeSpan.FromMinutes(5), DiagnosticsLogBuffer.DefaultRetention);
-        Assert.Contains("5 minutes", DiagnosticsReportCoordinator.DisclosureSummary);
+        Assert.That(DiagnosticsLogBuffer.DefaultRetention, Is.EqualTo(TimeSpan.FromMinutes(5)));
+        Assert.That(DiagnosticsReportCoordinator.DisclosureSummary, Does.Contain("5 minutes"));
     }
 
-    [Fact]
+    [Test]
     public void TheConfirmationRepeatsTheWindowTheDisclosurePromised()
     {
         // Sentry says nothing back to the sender, so these two strings are the entire user-visible
         // account of what happened. They have to agree.
-        Assert.Contains("5 minutes", DiagnosticsReportCoordinator.SentMessage);
+        Assert.That(DiagnosticsReportCoordinator.SentMessage, Does.Contain("5 minutes"));
     }
 
-    [Theory]
-    [InlineData("app activity")]
-    [InlineData("AniList ids")]
-    [InlineData("requests")]
-    [InlineData("app version")]
-    [InlineData("device")]
+    [TestCase("app activity")]
+    [TestCase("AniList ids")]
+    [TestCase("requests")]
+    [TestCase("app version")]
+    [TestCase("device")]
     public void TheDisclosureNamesEachCategoryTheReportActuallyCarries(string claim)
     {
         // Each of these corresponds to something genuinely in the report: the ring's NAVTRACE and
         // PageState lines, the ids they carry, LoggingHandler's HTTP lines, and the header built from
         // IAppEnvironment. A category that quietly leaves the disclosure is data sent unannounced.
-        Assert.Contains(claim, DiagnosticsReportCoordinator.DisclosureSummary, StringComparison.OrdinalIgnoreCase);
+        // The constant really is the actual value here; NUnit2007 reads a const in that slot as a
+        // swapped assertion, so it goes through a local.
+        var summary = DiagnosticsReportCoordinator.DisclosureSummary;
+        Assert.That(summary, Does.Contain(claim).IgnoreCase);
     }
 
-    [Fact]
+    [Test]
     public void TheDisclosurePromisesTheLoginIsExcluded_AndTheBuilderKeepsThatPromise()
     {
         // The one hard guarantee the popup makes. It is kept by the redaction pass in the builder and
         // nowhere else — SentryScrubber runs over the SentryEvent and does not walk attachments — so
         // the claim and its enforcement are asserted together here rather than trusting either alone.
-        Assert.Contains("login is never included", DiagnosticsReportCoordinator.DisclosureSummary);
+        Assert.That(DiagnosticsReportCoordinator.DisclosureSummary, Does.Contain("login is never included"));
 
         var report = DiagnosticsReportBuilder.Build(
             new DiagnosticsContext("1.0", "Release", "Pixel", "Android 15", IsSignedIn: true),
@@ -57,14 +59,14 @@ public class DiagnosticsDisclosureTests
             currentSession: ["Invalid token: Bearer eyJfromthisone"],
             description: "and I pasted Bearer eyJbyhand too");
 
-        Assert.DoesNotContain("eyJfromtheprevioussession", report);
-        Assert.DoesNotContain("eyJfromthisone", report);
-        Assert.DoesNotContain("eyJbyhand", report);
+        Assert.That(report, Does.Not.Contain("eyJfromtheprevioussession"));
+        Assert.That(report, Does.Not.Contain("eyJfromthisone"));
+        Assert.That(report, Does.Not.Contain("eyJbyhand"));
     }
 
     // ── The Settings card must not out-promise the popup ─────────────
 
-    [Fact]
+    [Test]
     public void TheSettingsCardDoesNotPromiseAPreviewOfTheReportItself()
     {
         // It used to say "You'll see exactly what gets sent first", and that was false: the popup
@@ -74,8 +76,8 @@ public class DiagnosticsDisclosureTests
         var xaml = File.ReadAllText(Path.Combine(
             FindRepoRoot(), "src", "AniSprinkles", "Views", "DiagnosticsReportView.xaml"));
 
-        Assert.DoesNotContain("exactly what gets sent", xaml, StringComparison.OrdinalIgnoreCase);
-        Assert.Contains("You'll see what's included before anything is sent.", xaml, StringComparison.Ordinal);
+        Assert.That(xaml, Does.Not.Contain("exactly what gets sent").IgnoreCase);
+        Assert.That(xaml, Does.Contain("You'll see what's included before anything is sent."));
     }
 
     private static string FindRepoRoot()
@@ -91,11 +93,11 @@ public class DiagnosticsDisclosureTests
                 $"Could not locate repo root (AniSprinkles.slnx) walking up from {AppContext.BaseDirectory}");
     }
 
-    [Fact]
+    [Test]
     public void TheFailureMessageDoesNotClaimAnythingWasSent()
     {
         // A cheerful confirmation after a failed send is the worst outcome this flow has: the user
         // stops chasing the problem and nobody ever sees it.
-        Assert.DoesNotContain("sent", DiagnosticsReportCoordinator.FailedMessage, StringComparison.OrdinalIgnoreCase);
+        Assert.That(DiagnosticsReportCoordinator.FailedMessage, Does.Not.Contain("sent").IgnoreCase);
     }
 }

@@ -35,38 +35,37 @@ public class DiagnosticsReportBuilderTests
 
     // ── Header ───────────────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void TheHeaderCarriesEveryEnvironmentFactAReaderNeeds()
     {
         var report = Build();
 
-        Assert.Contains("1.2.3 (45)", report);
-        Assert.Contains("Release", report);
-        Assert.Contains("Google Pixel 7", report);
-        Assert.Contains("Android 15", report);
-        Assert.Contains(CapturedAt.ToString("O"), report);
+        Assert.That(report, Does.Contain("1.2.3 (45)"));
+        Assert.That(report, Does.Contain("Release"));
+        Assert.That(report, Does.Contain("Google Pixel 7"));
+        Assert.That(report, Does.Contain("Android 15"));
+        Assert.That(report, Does.Contain(CapturedAt.ToString("O")));
     }
 
-    [Fact]
+    [Test]
     public void TheBuildConfigurationIsStatedRatherThanLeftToBeInferred()
     {
         // This repo genuinely diverges between Debug and Release — log levels, CI stubs, fault
         // injection — so a report that does not say which one it came from is missing a fact the
         // reader would otherwise guess wrong.
-        Assert.Contains("Debug", Build(context: Context with { BuildConfiguration = "Debug" }));
+        Assert.That(Build(context: Context with { BuildConfiguration = "Debug" }), Does.Contain("Debug"));
     }
 
-    [Theory]
-    [InlineData(true, "yes")]
-    [InlineData(false, "no")]
+    [TestCase(true, "yes")]
+    [TestCase(false, "no")]
     public void SignedInStateIsStatedOutright(bool signedIn, string expected)
     {
         var report = Build(context: Context with { IsSignedIn = signedIn });
 
-        Assert.Contains($"signed in: {expected}", report);
+        Assert.That(report, Does.Contain($"signed in: {expected}"));
     }
 
-    [Fact]
+    [Test]
     public void TheHeaderCarriesNoSentryEventCrossReference()
     {
         // An earlier draft printed a "related event:" id linking the report to the automatic
@@ -74,112 +73,117 @@ public class DiagnosticsReportBuilderTests
         // CaptureException return value nor SentrySdk.LastEventId holds the id by report time — so
         // the field was removed rather than shipped reliably blank. The exception text and the
         // timestamps below are what correlate the two, and both are already in full.
-        Assert.DoesNotContain("related event", Build(), StringComparison.OrdinalIgnoreCase);
+        Assert.That(Build(), Does.Not.Contain("related event").IgnoreCase);
     }
 
     // ── The user's own words ─────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void TheDescriptionIsIncludedUnderItsOwnHeader()
     {
         var report = Build(description: "I kept tapping manga and they all failed");
 
-        Assert.Contains(DiagnosticsReportBuilder.DescriptionHeader, report);
-        Assert.Contains("I kept tapping manga and they all failed", report);
+        Assert.That(report, Does.Contain(DiagnosticsReportBuilder.DescriptionHeader));
+        Assert.That(report, Does.Contain("I kept tapping manga and they all failed"));
     }
 
-    [Theory]
-    [InlineData(null)]
-    [InlineData("")]
-    [InlineData("   ")]
+    [TestCase(null)]
+    [TestCase("")]
+    [TestCase("   ")]
     public void TheDescriptionSectionIsOmittedWhenNothingWasTyped(string? description)
     {
         // The box is optional. An empty section would imply the user declined to explain, when in
         // fact they may simply have wanted the log.
-        Assert.DoesNotContain(DiagnosticsReportBuilder.DescriptionHeader, Build(description: description));
+        Assert.That(Build(description: description), Does.Not.Contain(DiagnosticsReportBuilder.DescriptionHeader));
     }
 
     // ── Sessions ─────────────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void ThePreviousSessionIsIncludedUnderItsOwnHeaderWhenOneWasFlushed()
     {
         var report = Build(previous: ["crashed here"], current: ["and now this"]);
 
-        Assert.Contains(DiagnosticsSessionLog.PreviousSessionHeader, report);
-        Assert.Contains("crashed here", report);
-        Assert.Contains("and now this", report);
+        Assert.That(report, Does.Contain(DiagnosticsSessionLog.PreviousSessionHeader));
+        Assert.That(report, Does.Contain("crashed here"));
+        Assert.That(report, Does.Contain("and now this"));
     }
 
-    [Fact]
+    [Test]
     public void ThePreviousSessionSectionIsOmittedWhenThereIsNone()
     {
-        Assert.DoesNotContain(DiagnosticsSessionLog.PreviousSessionHeader, Build());
+        Assert.That(Build(), Does.Not.Contain(DiagnosticsSessionLog.PreviousSessionHeader));
     }
 
-    [Fact]
+    [Test]
     public void ThePreviousSessionComesBeforeTheCurrentOne()
     {
         // Chronological order, so the report reads as one narrative rather than two piles.
         var report = Build(previous: ["older"], current: ["newer"]);
 
-        Assert.True(report.IndexOf("older", StringComparison.Ordinal) < report.IndexOf("newer", StringComparison.Ordinal));
+        Assert.That(report.IndexOf("older", StringComparison.Ordinal) < report.IndexOf("newer", StringComparison.Ordinal), Is.True);
     }
 
-    [Fact]
+    [Test]
     public void AnEmptyRingSaysSoRatherThanLookingTruncated()
     {
         // A report ending abruptly after the header is indistinguishable from one that was cut off.
         // Saying "nothing was recorded" is a fact; silence is a puzzle.
         var report = Build(current: []);
 
-        Assert.Contains(DiagnosticsReportBuilder.NoActivityPlaceholder, report);
+        Assert.That(report, Does.Contain(DiagnosticsReportBuilder.NoActivityPlaceholder));
     }
 
-    [Fact]
+    [Test]
     public void EveryLogLineSurvivesIntact()
     {
         var lines = Enumerable.Range(0, 50).Select(i => $"line {i}").ToArray();
 
         var report = Build(current: lines);
 
-        Assert.All(lines, line => Assert.Contains(line, report));
+        Assert.Multiple(() =>
+        {
+            foreach (var line in lines)
+            {
+                Assert.That(report, Does.Contain(line));
+            }
+        });
     }
 
     // ── Redaction: the part that must not regress ────────────────────
 
-    [Fact]
+    [Test]
     public void ABearerTokenInALogLineIsRedacted()
     {
         // The real shape: AniListClient embeds up to 500 characters of a raw error body into an
         // exception message, and an auth-failure body can echo the credential back.
         var report = Build(current: ["[Error] Api call failed: {\"errors\":[{\"message\":\"Invalid token: Bearer eyJhbGciOiJIUzI1NiJ9.abc-_123\"}]}"]);
 
-        Assert.DoesNotContain("eyJhbGciOiJIUzI1NiJ9", report);
-        Assert.Contains(SensitiveText.RedactedBearer, report);
+        Assert.That(report, Does.Not.Contain("eyJhbGciOiJIUzI1NiJ9"));
+        Assert.That(report, Does.Contain(SensitiveText.RedactedBearer));
     }
 
-    [Fact]
+    [Test]
     public void ABearerTokenInThePreviousSessionIsRedactedToo()
     {
         // The flushed session takes a different route into the report — off disk rather than out of
         // memory — and an earlier design that redacted only the live ring would have missed it.
         var report = Build(previous: ["Authorization: Bearer eyJsecrettoken"], current: ["fine"]);
 
-        Assert.DoesNotContain("eyJsecrettoken", report);
+        Assert.That(report, Does.Not.Contain("eyJsecrettoken"));
     }
 
-    [Fact]
+    [Test]
     public void ABearerTokenPastedIntoTheDescriptionIsRedacted()
     {
         // Free text the user controls. They can paste anything into it, including something they
         // copied out of an error message.
         var report = Build(description: "it said Bearer eyJpastedbyhand and then failed");
 
-        Assert.DoesNotContain("eyJpastedbyhand", report);
+        Assert.That(report, Does.Not.Contain("eyJpastedbyhand"));
     }
 
-    [Fact]
+    [Test]
     public void EveryTokenIsRedactedNotJustTheFirst()
     {
         // A retry storm writes the same failing request several times over. Redacting only the first
@@ -191,13 +195,13 @@ public class DiagnosticsReportBuilderTests
             "attempt 3 Bearer eyJthirdtoken failed",
         ]);
 
-        Assert.DoesNotContain("eyJfirsttoken", report);
-        Assert.DoesNotContain("eyJsecondtoken", report);
-        Assert.DoesNotContain("eyJthirdtoken", report);
-        Assert.Equal(3, report.Split(SensitiveText.RedactedBearer).Length - 1);
+        Assert.That(report, Does.Not.Contain("eyJfirsttoken"));
+        Assert.That(report, Does.Not.Contain("eyJsecondtoken"));
+        Assert.That(report, Does.Not.Contain("eyJthirdtoken"));
+        Assert.That(report.Split(SensitiveText.RedactedBearer).Length - 1, Is.EqualTo(3));
     }
 
-    [Fact]
+    [Test]
     public void ATokenWrappedAcrossALineBreakIsStillRedacted()
     {
         // Records are not strictly one line each — an appended stack trace keeps its breaks — so the
@@ -205,10 +209,10 @@ public class DiagnosticsReportBuilderTests
         // assembled string, and `Bearer\s+…` matches `\s` including a newline.
         var report = Build(current: ["exception text ending in Bearer\n  eyJwrappedacrossabreak and more"]);
 
-        Assert.DoesNotContain("eyJwrappedacrossabreak", report);
+        Assert.That(report, Does.Not.Contain("eyJwrappedacrossabreak"));
     }
 
-    [Fact]
+    [Test]
     public void RedactionRunsOverTheWholeReportIncludingSectionsAddedLater()
     {
         // A single pass over the finished text rather than per-section, so a section someone adds
@@ -219,19 +223,19 @@ public class DiagnosticsReportBuilderTests
             current: ["Bearer eyJincurrent"],
             description: "Bearer eyJindescription");
 
-        Assert.DoesNotContain("eyJinprevious", report);
-        Assert.DoesNotContain("eyJincurrent", report);
-        Assert.DoesNotContain("eyJindescription", report);
+        Assert.That(report, Does.Not.Contain("eyJinprevious"));
+        Assert.That(report, Does.Not.Contain("eyJincurrent"));
+        Assert.That(report, Does.Not.Contain("eyJindescription"));
     }
 
     // ── Format ───────────────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void TheReportIsPlainTextWithNoTrailingSurprises()
     {
         var report = Build();
 
-        Assert.False(string.IsNullOrWhiteSpace(report));
-        Assert.StartsWith("AniSprinkles diagnostic report", report, StringComparison.Ordinal);
+        Assert.That(string.IsNullOrWhiteSpace(report), Is.False);
+        Assert.That(report, Does.StartWith("AniSprinkles diagnostic report"));
     }
 }

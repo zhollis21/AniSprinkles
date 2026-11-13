@@ -16,14 +16,14 @@ namespace AniSprinkles.UnitTests;
 /// short-circuit, which has to refetch when sign-in or the adult toggle moved but not otherwise.
 /// </para>
 /// </summary>
-[Collection(AppSettingsCollection.Name)]
+[NonParallelizable]
 public class MediaBrowsePageModelTests
 {
     public MediaBrowsePageModelTests() => TestDataBuilder.ResetAppSettings();
 
     // ── Section resolution and the error states ──────────────────────
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_WithNoSection_ShowsAnUnretryableNotFound()
     {
         // The route carries only the enum name, so an unparseable one lands here. Retry cannot help.
@@ -31,26 +31,26 @@ public class MediaBrowsePageModelTests
 
         await harness.Model.LoadAsync(null);
 
-        Assert.Equal(PageState.Error, harness.Model.CurrentState);
-        Assert.Equal("Not Found", harness.Model.ErrorTitle);
-        Assert.False(harness.Model.CanRetry);
-        Assert.Equal(0, harness.PageCalls);
+        Assert.That(harness.Model.CurrentState, Is.EqualTo(PageState.Error));
+        Assert.That(harness.Model.ErrorTitle, Is.EqualTo("Not Found"));
+        Assert.That(harness.Model.CanRetry, Is.False);
+        Assert.That(harness.PageCalls, Is.EqualTo(0));
     }
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_TakesItsTitleFromTheSectionDefinition()
     {
         var harness = new Harness();
 
         await harness.Model.LoadAsync(DiscoverSection.Top);
 
-        Assert.Equal("Top Anime", harness.Model.PageTitle);
-        Assert.True(harness.Model.HasSection);
-        Assert.Equal(PageState.Content, harness.Model.CurrentState);
-        Assert.False(harness.Model.IsBusy);
+        Assert.That(harness.Model.PageTitle, Is.EqualTo("Top Anime"));
+        Assert.That(harness.Model.HasSection, Is.True);
+        Assert.That(harness.Model.CurrentState, Is.EqualTo(PageState.Content));
+        Assert.That(harness.Model.IsBusy, Is.False);
     }
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_WhenTheFetchFails_ShowsTheApiErrorTextAndOffersRetry()
     {
         var harness = new Harness();
@@ -58,13 +58,13 @@ public class MediaBrowsePageModelTests
 
         await harness.Model.LoadAsync(DiscoverSection.Top);
 
-        Assert.Equal(PageState.Error, harness.Model.CurrentState);
-        Assert.Equal("AniList is Down", harness.Model.ErrorTitle);
-        Assert.True(harness.Model.CanRetry);
-        Assert.False(harness.Model.IsBusy);
+        Assert.That(harness.Model.CurrentState, Is.EqualTo(PageState.Error));
+        Assert.That(harness.Model.ErrorTitle, Is.EqualTo("AniList is Down"));
+        Assert.That(harness.Model.CanRetry, Is.True);
+        Assert.That(harness.Model.IsBusy, Is.False);
     }
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_WhenCancelled_StaysSilentInsteadOfShowingAnError()
     {
         // Navigating away mid-fetch is not a failure, and an error page would flash behind the
@@ -74,12 +74,12 @@ public class MediaBrowsePageModelTests
 
         await harness.Model.LoadAsync(DiscoverSection.Top);
 
-        Assert.NotEqual(PageState.Error, harness.Model.CurrentState);
-        Assert.Equal(string.Empty, harness.Model.ErrorTitle);
-        Assert.False(harness.Model.IsBusy);
+        Assert.That(harness.Model.CurrentState, Is.Not.EqualTo(PageState.Error));
+        Assert.That(harness.Model.ErrorTitle, Is.EqualTo(string.Empty));
+        Assert.That(harness.Model.IsBusy, Is.False);
     }
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_WithNoResults_ShowsTheEmptyState()
     {
         var harness = new Harness();
@@ -87,27 +87,27 @@ public class MediaBrowsePageModelTests
 
         await harness.Model.LoadAsync(DiscoverSection.Top);
 
-        Assert.Equal(PageState.Content, harness.Model.CurrentState);
-        Assert.False(harness.Model.HasItems);
-        Assert.True(harness.Model.ShowEmptyState);
+        Assert.That(harness.Model.CurrentState, Is.EqualTo(PageState.Content));
+        Assert.That(harness.Model.HasItems, Is.False);
+        Assert.That(harness.Model.ShowEmptyState, Is.True);
     }
 
-    [Fact]
+    [Test]
     public async Task RetryLoad_AfterAFailure_RefetchesTheSameSection()
     {
         var harness = new Harness();
         harness.FailNextPages(new AniListApiException(ApiErrorKind.Network, "offline"));
         await harness.Model.LoadAsync(DiscoverSection.Top);
-        Assert.Equal(PageState.Error, harness.Model.CurrentState);
+        Assert.That(harness.Model.CurrentState, Is.EqualTo(PageState.Error));
 
         harness.StopFailing();
         await harness.Model.RetryLoadCommand.ExecuteAsync(null);
 
-        Assert.Equal(PageState.Content, harness.Model.CurrentState);
-        Assert.True(harness.Model.HasItems);
+        Assert.That(harness.Model.CurrentState, Is.EqualTo(PageState.Content));
+        Assert.That(harness.Model.HasItems, Is.True);
     }
 
-    [Fact]
+    [Test]
     public async Task RetryLoad_AfterASuccessfulLoad_StillRefetches()
     {
         // Retry clears the definition precisely so it bypasses the revisit short-circuit — a user
@@ -118,12 +118,12 @@ public class MediaBrowsePageModelTests
 
         await harness.Model.RetryLoadCommand.ExecuteAsync(null);
 
-        Assert.Equal(before + 1, harness.PageCalls);
+        Assert.That(harness.PageCalls, Is.EqualTo(before + 1));
     }
 
     // ── Badges and ranks ─────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task Badges_UseTheSectionsSortRatherThanThePaginatedSectionPlaceholder()
     {
         // The section is constructed with a POPULARITY_DESC placeholder and never re-seeds it (there
@@ -134,12 +134,12 @@ public class MediaBrowsePageModelTests
         await harness.Model.LoadAsync(DiscoverSection.Trending);
 
         var badge = harness.Model.Items[0].MetricBadge;
-        Assert.NotNull(badge);
-        Assert.Equal(Glyphs.Regular.Fire24, badge.Glyph);
-        Assert.NotEqual(Glyphs.Regular.People24, badge.Glyph);
+        Assert.That(badge, Is.Not.Null);
+        Assert.That(badge.Glyph, Is.EqualTo(Glyphs.Regular.Fire24));
+        Assert.That(badge.Glyph, Is.Not.EqualTo(Glyphs.Regular.People24));
     }
 
-    [Fact]
+    [Test]
     public async Task ARankedSection_NumbersItsItemsFromOne()
     {
         var harness = new Harness();
@@ -147,10 +147,10 @@ public class MediaBrowsePageModelTests
 
         await harness.Model.LoadAsync(DiscoverSection.Top);
 
-        Assert.Equal([1, 2, 3], harness.Model.Items.Select(i => i.Rank));
+        Assert.That(harness.Model.Items.Select(i => i.Rank), Is.EqualTo([1, 2, 3]));
     }
 
-    [Fact]
+    [Test]
     public async Task AnUnrankedSection_LeavesRanksUnset()
     {
         var harness = new Harness();
@@ -158,10 +158,16 @@ public class MediaBrowsePageModelTests
 
         await harness.Model.LoadAsync(DiscoverSection.Trending);
 
-        Assert.All(harness.Model.Items, item => Assert.Equal(0, item.Rank));
+        Assert.Multiple(() =>
+        {
+            foreach (var item in harness.Model.Items)
+            {
+                Assert.That(item.Rank, Is.EqualTo(0));
+            }
+        });
     }
 
-    [Fact]
+    [Test]
     public async Task RanksContinueAcrossPages()
     {
         // Rank is stamped from the pre-append count, so page 2 has to carry on from page 1 rather
@@ -173,12 +179,12 @@ public class MediaBrowsePageModelTests
         harness.ReturnPage([Harness.Item(3), Harness.Item(4)], hasNextPage: false);
         await harness.Model.LoadMoreCommand.ExecuteAsync(null);
 
-        Assert.Equal([1, 2, 3, 4], harness.Model.Items.Select(i => i.Rank));
+        Assert.That(harness.Model.Items.Select(i => i.Rank), Is.EqualTo([1, 2, 3, 4]));
     }
 
     // ── Paging ───────────────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task LoadMore_AppendsTheNextPage()
     {
         var harness = new Harness();
@@ -188,11 +194,11 @@ public class MediaBrowsePageModelTests
         harness.ReturnPage([Harness.Item(2)], hasNextPage: false);
         await harness.Model.LoadMoreCommand.ExecuteAsync(null);
 
-        Assert.Equal([1, 2], harness.Model.Items.Select(i => i.Node!.Id));
-        Assert.Equal(2, harness.LastCall.Page);
+        Assert.That(harness.Model.Items.Select(i => i.Node!.Id), Is.EqualTo([1, 2]));
+        Assert.That(harness.LastCall.Page, Is.EqualTo(2));
     }
 
-    [Fact]
+    [Test]
     public async Task LoadMore_OnTheLastPage_IsNotOffered()
     {
         var harness = new Harness();
@@ -200,10 +206,10 @@ public class MediaBrowsePageModelTests
 
         await harness.Model.LoadAsync(DiscoverSection.Top);
 
-        Assert.False(harness.Model.LoadMoreCommand.CanExecute(null));
+        Assert.That(harness.Model.LoadMoreCommand.CanExecute(null), Is.False);
     }
 
-    [Fact]
+    [Test]
     public async Task LoadMore_WhileAReloadIsInFlight_IsRefused()
     {
         // The page load scope does not cover this: Begin() cancels the PREVIOUS token, so a Load
@@ -216,11 +222,11 @@ public class MediaBrowsePageModelTests
         var gate = harness.GateNextPage();
         var reload = harness.Model.RetryLoadCommand.ExecuteAsync(null);
         await gate.Requested;
-        Assert.True(harness.Model.IsBusy);
+        Assert.That(harness.Model.IsBusy, Is.True);
 
         var before = harness.PageCalls;
         await harness.Model.LoadMoreCommand.ExecuteAsync(null);
-        Assert.Equal(before, harness.PageCalls);
+        Assert.That(harness.PageCalls, Is.EqualTo(before));
 
         gate.Release();
         await reload;
@@ -228,7 +234,7 @@ public class MediaBrowsePageModelTests
 
     // ── The adult-content pin (#118) ─────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task ASfwSeededList_KeepsAskingForSfwOnLoadMore_EvenAfterTheToggleFlips()
     {
         // The bug this pins: DiscoverSectionFetch used to read AppSettings live per page, so a
@@ -238,16 +244,16 @@ public class MediaBrowsePageModelTests
         var harness = new Harness();
         harness.ReturnPage([Harness.Item(1)], hasNextPage: true);
         await harness.Model.LoadAsync(DiscoverSection.Top);
-        Assert.Equal(false, harness.LastCall.IsAdult);
+        Assert.That(harness.LastCall.IsAdult, Is.EqualTo(false));
 
         AppSettings.DisplayAdultContent = true;
         harness.ReturnPage([Harness.Item(2)], hasNextPage: false);
         await harness.Model.LoadMoreCommand.ExecuteAsync(null);
 
-        Assert.Equal(false, harness.LastCall.IsAdult);
+        Assert.That(harness.LastCall.IsAdult, Is.EqualTo(false));
     }
 
-    [Fact]
+    [Test]
     public async Task AnAdultPinnedSection_IgnoresTheUsersToggleEntirely()
     {
         // The 18+ pair is defined as adult-only; the toggle governs whether the row exists at all,
@@ -257,10 +263,10 @@ public class MediaBrowsePageModelTests
 
         await harness.Model.LoadAsync(DiscoverSection.PopularAdult);
 
-        Assert.Equal(true, harness.LastCall.IsAdult);
+        Assert.That(harness.LastCall.IsAdult, Is.EqualTo(true));
     }
 
-    [Fact]
+    [Test]
     public async Task WithAdultContentOn_TheFilterIsOmittedSoEverythingMixesIn()
     {
         AppSettings.DisplayAdultContent = true;
@@ -268,23 +274,23 @@ public class MediaBrowsePageModelTests
 
         await harness.Model.LoadAsync(DiscoverSection.Top);
 
-        Assert.Null(harness.LastCall.IsAdult);
+        Assert.That(harness.LastCall.IsAdult, Is.Null);
     }
 
-    [Fact]
+    [Test]
     public async Task ASectionPinsItsFormat()
     {
         var harness = new Harness();
 
         await harness.Model.LoadAsync(DiscoverSection.TopMovies);
 
-        Assert.Equal("MOVIE", harness.LastCall.Format);
-        Assert.Equal("SCORE_DESC", harness.LastCall.Sort);
+        Assert.That(harness.LastCall.Format, Is.EqualTo("MOVIE"));
+        Assert.That(harness.LastCall.Sort, Is.EqualTo("SCORE_DESC"));
     }
 
     // ── The revisit short-circuit ────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task RevisitingTheSameSection_ServesTheCachedItemsWithoutRefetching()
     {
         var harness = new Harness();
@@ -293,11 +299,11 @@ public class MediaBrowsePageModelTests
 
         await harness.Model.LoadAsync(DiscoverSection.Top);
 
-        Assert.Equal(before, harness.PageCalls);
-        Assert.Equal(PageState.Content, harness.Model.CurrentState);
+        Assert.That(harness.PageCalls, Is.EqualTo(before));
+        Assert.That(harness.Model.CurrentState, Is.EqualTo(PageState.Content));
     }
 
-    [Fact]
+    [Test]
     public async Task RevisitingAfterTheAdultToggleFlipped_Refetches()
     {
         // Showing the cached set here can leave 18+ cards on screen after the user turned them off.
@@ -309,10 +315,10 @@ public class MediaBrowsePageModelTests
         AppSettings.DisplayAdultContent = false;
         await harness.Model.LoadAsync(DiscoverSection.Top);
 
-        Assert.Equal(before + 1, harness.PageCalls);
+        Assert.That(harness.PageCalls, Is.EqualTo(before + 1));
     }
 
-    [Fact]
+    [Test]
     public async Task RevisitingAfterSigningOut_Refetches()
     {
         // The cached cards carry mediaListEntry chips that no longer belong to anyone.
@@ -323,10 +329,10 @@ public class MediaBrowsePageModelTests
         harness.SignOut();
         await harness.Model.LoadAsync(DiscoverSection.Top);
 
-        Assert.Equal(before + 1, harness.PageCalls);
+        Assert.That(harness.PageCalls, Is.EqualTo(before + 1));
     }
 
-    [Fact]
+    [Test]
     public async Task NavigatingToADifferentSection_Refetches()
     {
         var harness = new Harness();
@@ -335,13 +341,13 @@ public class MediaBrowsePageModelTests
 
         await harness.Model.LoadAsync(DiscoverSection.Trending);
 
-        Assert.Equal(before + 1, harness.PageCalls);
-        Assert.Equal("Trending Now", harness.Model.PageTitle);
+        Assert.That(harness.PageCalls, Is.EqualTo(before + 1));
+        Assert.That(harness.Model.PageTitle, Is.EqualTo("Trending Now"));
     }
 
     // ── Title re-projection (#127) ───────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task RefreshDisplaySettings_AfterTheTitleLanguageMoved_ReprojectsTheCards()
     {
         var harness = new Harness();
@@ -351,10 +357,10 @@ public class MediaBrowsePageModelTests
         AppSettings.TitleLanguage = UserTitleLanguage.English;
         harness.Model.RefreshDisplaySettings();
 
-        Assert.True(reprojected());
+        Assert.That(reprojected(), Is.True);
     }
 
-    [Fact]
+    [Test]
     public async Task RefreshDisplaySettings_WithNothingChanged_LeavesTheCardsAlone()
     {
         var harness = new Harness();
@@ -363,10 +369,10 @@ public class MediaBrowsePageModelTests
 
         harness.Model.RefreshDisplaySettings();
 
-        Assert.False(reprojected());
+        Assert.That(reprojected(), Is.False);
     }
 
-    [Fact]
+    [Test]
     public async Task ARevisitThatShortCircuits_StillReprojectsForANewTitleLanguage()
     {
         // The #127 case exactly: View All is pushed onto a tab's stack, so it gets no OnAppearing,
@@ -379,13 +385,13 @@ public class MediaBrowsePageModelTests
         AppSettings.TitleLanguage = UserTitleLanguage.Native;
         await harness.Model.LoadAsync(DiscoverSection.Top);
 
-        Assert.Equal(before, harness.PageCalls);
-        Assert.True(reprojected());
+        Assert.That(harness.PageCalls, Is.EqualTo(before));
+        Assert.That(reprojected(), Is.True);
     }
 
     // ── View mode ────────────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void TheViewMode_OpensInWhateverWasLastPickedAnywhere()
     {
         // Shared with Library through one preference key, so switching the look on either page
@@ -395,10 +401,10 @@ public class MediaBrowsePageModelTests
 
         var harness = new Harness(preferences);
 
-        Assert.Equal(ListViewMode.Compact, harness.Model.CurrentViewMode);
+        Assert.That(harness.Model.CurrentViewMode, Is.EqualTo(ListViewMode.Compact));
     }
 
-    [Fact]
+    [Test]
     public void ConstructingThePage_DoesNotWriteTheViewModeBack()
     {
         // Loading is a read; a write here would churn the shared key on every navigation.
@@ -408,13 +414,12 @@ public class MediaBrowsePageModelTests
 
         _ = new Harness(preferences);
 
-        Assert.Equal(writesAfterSeeding, preferences.SetCount);
+        Assert.That(preferences.SetCount, Is.EqualTo(writesAfterSeeding));
     }
 
-    [Theory]
-    [InlineData(ListViewMode.Standard, ListViewMode.Large)]
-    [InlineData(ListViewMode.Large, ListViewMode.Compact)]
-    [InlineData(ListViewMode.Compact, ListViewMode.Standard)]
+    [TestCase(ListViewMode.Standard, ListViewMode.Large)]
+    [TestCase(ListViewMode.Large, ListViewMode.Compact)]
+    [TestCase(ListViewMode.Compact, ListViewMode.Standard)]
     public void CycleViewMode_AdvancesAndPersists(ListViewMode from, ListViewMode expected)
     {
         var preferences = new FakePreferences();
@@ -423,11 +428,11 @@ public class MediaBrowsePageModelTests
 
         harness.Model.CycleViewModeCommand.Execute(null);
 
-        Assert.Equal(expected, harness.Model.CurrentViewMode);
-        Assert.Equal(expected, ListViewModePreference.Load(preferences));
+        Assert.That(harness.Model.CurrentViewMode, Is.EqualTo(expected));
+        Assert.That(ListViewModePreference.Load(preferences), Is.EqualTo(expected));
     }
 
-    [Fact]
+    [Test]
     public void EachViewMode_HasItsOwnSwitcherGlyph()
     {
         var harness = new Harness();
@@ -439,12 +444,12 @@ public class MediaBrowsePageModelTests
             harness.Model.CycleViewModeCommand.Execute(null);
         }
 
-        Assert.Equal(glyphs.Count, glyphs.Distinct().Count());
+        Assert.That(glyphs.Distinct().Count(), Is.EqualTo(glyphs.Count));
     }
 
     // ── Navigation and long-press ────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task TappingAnAnimeCard_NavigatesToItsDetails()
     {
         var harness = new Harness();
@@ -458,7 +463,7 @@ public class MediaBrowsePageModelTests
             Arg.Is<IDictionary<string, object>>(p => (int)p["mediaId"] == 42));
     }
 
-    [Fact]
+    [Test]
     public async Task TappingAMangaCard_NavigatesLikeAnyOtherCard()
     {
         // Toasted "not supported yet" until #12, when Media details still queried type: ANIME and a
@@ -469,14 +474,14 @@ public class MediaBrowsePageModelTests
 
         await harness.Model.NavigateToMediaCommand.ExecuteAsync(item);
 
-        Assert.Empty(harness.Feedback.Toasts);
+        Assert.That(harness.Feedback.Toasts, Is.Empty);
         await harness.Navigation.Received(1).GoToAsync(
             "media-details",
             Arg.Any<bool>(),
             Arg.Is<IDictionary<string, object>>(p => (int)p["mediaId"] == 42));
     }
 
-    [Fact]
+    [Test]
     public async Task TappingACardWithNoMedia_DoesNothing()
     {
         var harness = new Harness();
@@ -485,10 +490,10 @@ public class MediaBrowsePageModelTests
 
         await harness.Navigation.DidNotReceive().GoToAsync(
             Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<IDictionary<string, object>>());
-        Assert.Empty(harness.Feedback.Toasts);
+        Assert.That(harness.Feedback.Toasts, Is.Empty);
     }
 
-    [Fact]
+    [Test]
     public async Task LongPressingWhileSignedOut_AsksTheUserToSignIn()
     {
         var harness = new Harness();
@@ -496,17 +501,18 @@ public class MediaBrowsePageModelTests
 
         await harness.Model.ShowItemActionsCommand.ExecuteAsync(Harness.Item(42));
 
-        Assert.Contains("Sign in", Assert.Single(harness.Feedback.Toasts));
+        Assert.That(harness.Feedback.Toasts, Has.Exactly(1).Items);
+        Assert.That(harness.Feedback.Toasts.Single(), Does.Contain("Sign in"));
     }
 
-    [Fact]
+    [Test]
     public async Task LongPressingACardWithNoMedia_DoesNothing()
     {
         var harness = new Harness();
 
         await harness.Model.ShowItemActionsCommand.ExecuteAsync(new BrowseMediaItem());
 
-        Assert.Empty(harness.Feedback.Toasts);
+        Assert.That(harness.Feedback.Toasts, Is.Empty);
     }
 
     private sealed class Harness

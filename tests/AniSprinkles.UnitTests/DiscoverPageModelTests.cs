@@ -10,12 +10,12 @@ namespace AniSprinkles.UnitTests;
 /// reason as everything in <see cref="SearchPageModelTests"/>, and unreachable on device because it
 /// needs a Load More to land inside a specific suspension point of a refresh.
 /// </summary>
-[Collection(AppSettingsCollection.Name)]
+[NonParallelizable]
 public class DiscoverPageModelTests
 {
     public DiscoverPageModelTests() => TestDataBuilder.ResetAppSettings();
 
-    [Fact]
+    [Test]
     public async Task LoadMore_WhileARefreshIsStillReadingAuth_IsRefused()
     {
         // #116 round 6. LoadMoreSection's guard covered only the window after IsBusy went up, but
@@ -28,23 +28,23 @@ public class DiscoverPageModelTests
 
         await harness.Model.LoadAsync();
         var row = harness.Model.Rows.First(r => r.CanLoadMore);
-        Assert.False(harness.Model.IsBusy);
+        Assert.That(harness.Model.IsBusy, Is.False);
 
         // Second refresh, held at the auth read — before IsBusy goes up.
         var authGate = harness.GateNextAuthRead();
         var refresh = harness.Model.LoadAsync(forceReload: true);
         await authGate.Requested;
-        Assert.False(harness.Model.IsBusy);
+        Assert.That(harness.Model.IsBusy, Is.False);
 
         var pagesBefore = harness.BrowsePageCalls;
         await harness.Model.LoadMoreSectionCommand.ExecuteAsync(row.SectionKey);
-        Assert.Equal(pagesBefore, harness.BrowsePageCalls);
+        Assert.That(harness.BrowsePageCalls, Is.EqualTo(pagesBefore));
 
         authGate.Release();
         await refresh;
     }
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_WhenTheFetchFailsWithNothingCached_ShowsTheErrorState()
     {
         var harness = new Harness();
@@ -52,25 +52,26 @@ public class DiscoverPageModelTests
 
         await harness.Model.LoadAsync();
 
-        Assert.Equal(PageState.Error, harness.Model.CurrentState);
-        Assert.Equal("AniList is Down", harness.Model.ErrorTitle);
-        Assert.Empty(harness.Feedback.Snackbars);
+        Assert.That(harness.Model.CurrentState, Is.EqualTo(PageState.Error));
+        Assert.That(harness.Model.ErrorTitle, Is.EqualTo("AniList is Down"));
+        Assert.That(harness.Feedback.Snackbars, Is.Empty);
     }
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_WhenARefreshFailsOverCachedRows_KeepsContentAndSnackbars()
     {
         // Stale rows beat a blank page; the snackbar is the only failure signal.
         var harness = new Harness();
         await harness.Model.LoadAsync();
-        Assert.Equal(PageState.Content, harness.Model.CurrentState);
+        Assert.That(harness.Model.CurrentState, Is.EqualTo(PageState.Content));
 
         harness.FailSections(new AniListApiException(ApiErrorKind.Network, "offline"));
         await harness.Model.LoadAsync(forceReload: true);
 
-        Assert.Equal(PageState.Content, harness.Model.CurrentState);
-        Assert.Equal("No Internet Connection", Assert.Single(harness.Feedback.Snackbars));
-        Assert.NotEmpty(harness.Model.Rows.First(r => r.HasItems).Items);
+        Assert.That(harness.Model.CurrentState, Is.EqualTo(PageState.Content));
+        Assert.That(harness.Feedback.Snackbars, Has.Exactly(1).Items);
+        Assert.That(harness.Feedback.Snackbars.Single(), Is.EqualTo("No Internet Connection"));
+        Assert.That(harness.Model.Rows.First(r => r.HasItems).Items, Is.Not.Empty);
     }
 
     private sealed class AuthGate

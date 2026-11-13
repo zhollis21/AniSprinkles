@@ -22,35 +22,35 @@ public class AniListClientTests
 
     // ── The request envelope ─────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task EveryRequest_IsAPostToTheGraphQlEndpoint()
     {
         var harness = new Harness(SomeMedia);
 
-        await harness.Client.GetMediaAsync(1, TestContext.Current.CancellationToken);
+        await harness.Client.GetMediaAsync(1, TestContext.CurrentContext.CancellationToken);
 
-        Assert.Equal(HttpMethod.Post, harness.Handler.Last.Method);
-        Assert.Equal("https://graphql.anilist.co/", harness.Handler.Last.Uri?.ToString());
+        Assert.That(harness.Handler.Last.Method, Is.EqualTo(HttpMethod.Post));
+        Assert.That(harness.Handler.Last.Uri?.ToString(), Is.EqualTo("https://graphql.anilist.co/"));
     }
 
-    [Fact]
+    [Test]
     public async Task ARequestCarriesItsQueryVariablesAndOperationName()
     {
         var harness = new Harness(SomeMedia);
 
-        await harness.Client.GetMediaAsync(77, TestContext.Current.CancellationToken);
+        await harness.Client.GetMediaAsync(77, TestContext.CurrentContext.CancellationToken);
 
         var request = harness.Handler.Last;
-        Assert.Equal("Media", request.OperationName);
-        Assert.NotNull(request.Query);
+        Assert.That(request.OperationName, Is.EqualTo("Media"));
+        Assert.That(request.Query, Is.Not.Null);
         // The operation name has to match a named operation in the document, or AniList rejects it.
-        Assert.Contains($"query {request.OperationName}", request.Query, StringComparison.Ordinal);
-        Assert.Equal(77, request.IntVariable("id"));
+        Assert.That(request.Query, Does.Contain($"query {request.OperationName}"));
+        Assert.That(request.IntVariable("id"), Is.EqualTo(77));
     }
 
     // ── #160: AniList rejects requests that carry neither a Referer nor a token ──
 
-    [Fact]
+    [Test]
     public async Task EveryRequest_CarriesTheAniListReferer()
     {
         // AniList answers a request with no Referer and no bearer token with HTTP 403 and a body
@@ -59,12 +59,12 @@ public class AniListClientTests
         // details-page sorts fail signed in, both behind a false "AniList is Down" banner (#160).
         var harness = new Harness(SomeMedia);
 
-        await harness.Client.GetMediaAsync(1, TestContext.Current.CancellationToken);
+        await harness.Client.GetMediaAsync(1, TestContext.CurrentContext.CancellationToken);
 
-        Assert.Equal("https://anilist.co/", harness.Handler.Last.Referrer?.ToString());
+        Assert.That(harness.Handler.Last.Referrer?.ToString(), Is.EqualTo("https://anilist.co/"));
     }
 
-    [Fact]
+    [Test]
     public async Task ASignedOutRequest_StillCarriesTheReferer()
     {
         // The case that matters most: signed out there is no token to fall back on, so the Referer
@@ -72,16 +72,15 @@ public class AniListClientTests
         var harness = new Harness(SomeMedia);
         harness.SignOut();
 
-        await harness.Client.GetMediaAsync(1, TestContext.Current.CancellationToken);
+        await harness.Client.GetMediaAsync(1, TestContext.CurrentContext.CancellationToken);
 
-        Assert.Null(harness.Handler.Last.BearerToken);
-        Assert.Equal("https://anilist.co/", harness.Handler.Last.Referrer?.ToString());
+        Assert.That(harness.Handler.Last.BearerToken, Is.Null);
+        Assert.That(harness.Handler.Last.Referrer?.ToString(), Is.EqualTo("https://anilist.co/"));
     }
 
-    [Theory]
-    [InlineData("MediaCharactersPage")]
-    [InlineData("MediaStaffPage")]
-    [InlineData("StaffCharactersPage")]
+    [TestCase("MediaCharactersPage")]
+    [TestCase("MediaStaffPage")]
+    [TestCase("StaffCharactersPage")]
     public async Task PublicPagingOperations_SendTheTokenWhenThereIsOne(string operationName)
     {
         // These three used to pass token: null on the grounds that the query is public. It is, but
@@ -93,7 +92,7 @@ public class AniListClientTests
              "Staff":{"characters":{"pageInfo":{"currentPage":1,"hasNextPage":false},"edges":[]}}}
             """);
 
-        var ct = TestContext.Current.CancellationToken;
+        var ct = TestContext.CurrentContext.CancellationToken;
         switch (operationName)
         {
             case "MediaCharactersPage":
@@ -108,11 +107,11 @@ public class AniListClientTests
         }
 
         var request = harness.Handler.Last;
-        Assert.Equal(operationName, request.OperationName);
-        Assert.Equal("token-abc", request.BearerToken);
+        Assert.That(request.OperationName, Is.EqualTo(operationName));
+        Assert.That(request.BearerToken, Is.EqualTo("token-abc"));
     }
 
-    [Fact]
+    [Test]
     public async Task TheAiringSchedule_SendsTheTokenWhenThereIsOne()
     {
         // The airing worker can run with no token at all after a reboot (#149), which is why the
@@ -121,24 +120,24 @@ public class AniListClientTests
             {"Page":{"pageInfo":{"currentPage":1,"hasNextPage":false},"airingSchedules":[]}}
             """);
 
-        await harness.Client.GetAiringScheduleAsync([1], 0, 1, TestContext.Current.CancellationToken);
+        await harness.Client.GetAiringScheduleAsync([1], 0, 1, TestContext.CurrentContext.CancellationToken);
 
-        Assert.Equal("token-abc", harness.Handler.Last.BearerToken);
+        Assert.That(harness.Handler.Last.BearerToken, Is.EqualTo("token-abc"));
     }
 
-    [Fact]
+    [Test]
     public async Task AnOperationWithNoVariables_SendsNone()
     {
         // Viewer takes no arguments; sending "variables": null is fine, an empty object is not the
         // point — what matters is that nothing invents arguments for it.
         var harness = new Harness("""{"Viewer":{"id":5}}""");
 
-        await harness.Client.GetCurrentUserIdAsync(TestContext.Current.CancellationToken);
+        await harness.Client.GetCurrentUserIdAsync(TestContext.CurrentContext.CancellationToken);
 
-        Assert.Null(harness.Handler.Last.Variables);
+        Assert.That(harness.Handler.Last.Variables, Is.Null);
     }
 
-    [Fact]
+    [Test]
     public async Task NullFilters_AreOmittedRatherThanSentAsNull()
     {
         // The distinction AniList cares about: an omitted argument matches everything, a literal
@@ -146,43 +145,43 @@ public class AniListClientTests
         var harness = new Harness("""{"Page":{"pageInfo":{"currentPage":1,"hasNextPage":false},"media":[]}}""");
 
         await harness.Client.BrowseAnimePageAsync(
-            "POPULARITY_DESC", cancellationToken: TestContext.Current.CancellationToken);
+            "POPULARITY_DESC", cancellationToken: TestContext.CurrentContext.CancellationToken);
 
         var request = harness.Handler.Last;
-        Assert.True(request.HasVariable("page"));
-        Assert.False(request.HasVariable("status"));
-        Assert.False(request.HasVariable("season"));
-        Assert.False(request.HasVariable("isAdult"));
-        Assert.False(request.HasVariable("format"));
+        Assert.That(request.HasVariable("page"), Is.True);
+        Assert.That(request.HasVariable("status"), Is.False);
+        Assert.That(request.HasVariable("season"), Is.False);
+        Assert.That(request.HasVariable("isAdult"), Is.False);
+        Assert.That(request.HasVariable("format"), Is.False);
     }
 
     // ── Authentication ───────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task WhenSignedIn_TheBearerTokenIsAttached()
     {
         var harness = new Harness(SomeMedia);
 
-        await harness.Client.GetMediaAsync(1, TestContext.Current.CancellationToken);
+        await harness.Client.GetMediaAsync(1, TestContext.CurrentContext.CancellationToken);
 
-        Assert.Equal("Bearer", harness.Handler.Last.AuthScheme);
-        Assert.Equal("token-abc", harness.Handler.Last.BearerToken);
+        Assert.That(harness.Handler.Last.AuthScheme, Is.EqualTo("Bearer"));
+        Assert.That(harness.Handler.Last.BearerToken, Is.EqualTo("token-abc"));
     }
 
-    [Fact]
+    [Test]
     public async Task WhenSignedOut_APublicQueryStillGoesOutWithNoAuthHeader()
     {
         // Browse and media details are public; requiring a token would break the signed-out app.
         var harness = new Harness(SomeMedia);
         harness.SignOut();
 
-        await harness.Client.GetMediaAsync(1, TestContext.Current.CancellationToken);
+        await harness.Client.GetMediaAsync(1, TestContext.CurrentContext.CancellationToken);
 
-        Assert.Null(harness.Handler.Last.AuthScheme);
-        Assert.Equal(1, harness.Handler.CallCount);
+        Assert.That(harness.Handler.Last.AuthScheme, Is.Null);
+        Assert.That(harness.Handler.CallCount, Is.EqualTo(1));
     }
 
-    [Fact]
+    [Test]
     public async Task WhenSignedOut_AMutationFailsBeforeAnythingIsSent()
     {
         // No point spending a request (or a rate-limit slot) on a call that cannot succeed.
@@ -190,15 +189,15 @@ public class AniListClientTests
         harness.SignOut();
 
         var ex = await Assert.ThrowsAsync<AniListApiException>(
-            () => harness.Client.DeleteMediaListEntryAsync(1, TestContext.Current.CancellationToken));
+            () => harness.Client.DeleteMediaListEntryAsync(1, TestContext.CurrentContext.CancellationToken));
 
-        Assert.Equal(ApiErrorKind.Authentication, ex.Kind);
-        Assert.Equal(0, harness.Handler.CallCount);
+        Assert.That(ex.Kind, Is.EqualTo(ApiErrorKind.Authentication));
+        Assert.That(harness.Handler.CallCount, Is.EqualTo(0));
     }
 
     // ── Error surfaces ───────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task GraphQlErrorsOnASuccessfulHttpStatus_StillFail()
     {
         // AniList answers 200 with an errors array; treating that as success would hand the page
@@ -206,47 +205,47 @@ public class AniListClientTests
         var harness = new Harness(_ => ScriptedGraphQlHandler.GraphQlError("Not Found."));
 
         var ex = await Assert.ThrowsAsync<AniListApiException>(
-            () => harness.Client.GetMediaAsync(1, TestContext.Current.CancellationToken));
+            () => harness.Client.GetMediaAsync(1, TestContext.CurrentContext.CancellationToken));
 
-        Assert.Equal("Not Found.", ex.Message);
+        Assert.That(ex.Message, Is.EqualTo("Not Found."));
     }
 
-    [Fact]
+    [Test]
     public async Task AnHttpFailureCarryingAGraphQlBody_SurfacesTheApiMessage()
     {
         var harness = new Harness(_ => ScriptedGraphQlHandler.GraphQlError(
             "Too Many Requests.", HttpStatusCode.TooManyRequests));
 
         var ex = await Assert.ThrowsAsync<AniListApiException>(
-            () => harness.Client.GetMediaAsync(1, TestContext.Current.CancellationToken));
+            () => harness.Client.GetMediaAsync(1, TestContext.CurrentContext.CancellationToken));
 
-        Assert.Equal("Too Many Requests.", ex.Message);
+        Assert.That(ex.Message, Is.EqualTo("Too Many Requests."));
     }
 
-    [Fact]
+    [Test]
     public async Task AnHttpFailureWithAnUnreadableBody_StillReportsTheStatus()
     {
         var harness = new Harness(_ => ScriptedGraphQlHandler.Raw(
             HttpStatusCode.BadGateway, "<html>gateway blew up</html>"));
 
         var ex = await Assert.ThrowsAsync<AniListApiException>(
-            () => harness.Client.GetMediaAsync(1, TestContext.Current.CancellationToken));
+            () => harness.Client.GetMediaAsync(1, TestContext.CurrentContext.CancellationToken));
 
-        Assert.Contains("502", ex.Message);
+        Assert.That(ex.Message, Does.Contain("502"));
     }
 
-    [Fact]
+    [Test]
     public async Task AResponseWithNeitherDataNorErrors_IsAnError()
     {
         var harness = new Harness(_ => ScriptedGraphQlHandler.Raw(HttpStatusCode.OK, "{}"));
 
         var ex = await Assert.ThrowsAsync<AniListApiException>(
-            () => harness.Client.GetMediaAsync(1, TestContext.Current.CancellationToken));
+            () => harness.Client.GetMediaAsync(1, TestContext.CurrentContext.CancellationToken));
 
-        Assert.Equal(ApiErrorKind.Unknown, ex.Kind);
+        Assert.That(ex.Kind, Is.EqualTo(ApiErrorKind.Unknown));
     }
 
-    [Fact]
+    [Test]
     public async Task ACredentialEchoedBackInAnError_IsRedactedBeforeItIsStored()
     {
         // #124. The exception message reaches the file log, logcat and Sentry, and an auth failure
@@ -255,12 +254,12 @@ public class AniListClientTests
             "Invalid token: Bearer sk-secret-value-12345", HttpStatusCode.Unauthorized));
 
         var ex = await Assert.ThrowsAsync<AniListApiException>(
-            () => harness.Client.GetMediaAsync(1, TestContext.Current.CancellationToken));
+            () => harness.Client.GetMediaAsync(1, TestContext.CurrentContext.CancellationToken));
 
-        Assert.DoesNotContain("sk-secret-value-12345", ex.Message);
+        Assert.That(ex.Message, Does.Not.Contain("sk-secret-value-12345"));
     }
 
-    [Fact]
+    [Test]
     public async Task RedactionDoesNotCostTheErrorItsClassification()
     {
         // Classification reads the raw message and redaction rewrites it, so doing them in the
@@ -269,38 +268,38 @@ public class AniListClientTests
             "Invalid token: Bearer sk-secret-value-12345", HttpStatusCode.Unauthorized));
 
         var ex = await Assert.ThrowsAsync<AniListApiException>(
-            () => harness.Client.GetMediaAsync(1, TestContext.Current.CancellationToken));
+            () => harness.Client.GetMediaAsync(1, TestContext.CurrentContext.CancellationToken));
 
-        Assert.Equal(ApiErrorKind.Authentication, ex.Kind);
+        Assert.That(ex.Kind, Is.EqualTo(ApiErrorKind.Authentication));
     }
 
     // ── Outage reporting ─────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task ASuccessfulCall_ClearsAnyOutage()
     {
         var harness = new Harness(SomeMedia);
 
-        await harness.Client.GetMediaAsync(1, TestContext.Current.CancellationToken);
+        await harness.Client.GetMediaAsync(1, TestContext.CurrentContext.CancellationToken);
 
         harness.Outage.Received(1).ReportSuccess();
         harness.Outage.DidNotReceive().ReportFailure(Arg.Any<Exception>());
     }
 
-    [Fact]
+    [Test]
     public async Task AFailedCall_IsReportedToTheOutageTracker()
     {
         var harness = new Harness(_ => ScriptedGraphQlHandler.GraphQlError(
             "AniList is temporarily disabled.", HttpStatusCode.ServiceUnavailable));
 
         await Assert.ThrowsAsync<AniListApiException>(
-            () => harness.Client.GetMediaAsync(1, TestContext.Current.CancellationToken));
+            () => harness.Client.GetMediaAsync(1, TestContext.CurrentContext.CancellationToken));
 
         harness.Outage.Received(1).ReportFailure(Arg.Any<AniListApiException>());
         harness.Outage.DidNotReceive().ReportSuccess();
     }
 
-    [Fact]
+    [Test]
     public async Task ABlipThatSucceedsOnRetry_IsNotReportedAsAnOutage()
     {
         // Only a failed retry counts. Reporting the first attempt would flash the outage banner for
@@ -309,7 +308,7 @@ public class AniListClientTests
             () => ScriptedGraphQlHandler.Raw(HttpStatusCode.BadRequest, """{"errors":[{"message":"Invalid token"}]}"""),
             () => ScriptedGraphQlHandler.Data(SomeMedia)));
 
-        await harness.Client.GetMediaAsync(1, TestContext.Current.CancellationToken);
+        await harness.Client.GetMediaAsync(1, TestContext.CurrentContext.CancellationToken);
 
         harness.Outage.Received(1).ReportSuccess();
         harness.Outage.DidNotReceive().ReportFailure(Arg.Any<Exception>());
@@ -317,7 +316,7 @@ public class AniListClientTests
 
     // ── The single retry ─────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task ATransientFailure_IsRetriedOnceAndCanSucceed()
     {
         // AniList has been observed rejecting a valid token with 400 "Invalid token" and accepting
@@ -326,13 +325,13 @@ public class AniListClientTests
             () => ScriptedGraphQlHandler.Raw(HttpStatusCode.BadRequest, """{"errors":[{"message":"Invalid token"}]}"""),
             () => ScriptedGraphQlHandler.Data(SomeMedia)));
 
-        var (media, _) = await harness.Client.GetMediaAsync(1, TestContext.Current.CancellationToken);
+        var (media, _) = await harness.Client.GetMediaAsync(1, TestContext.CurrentContext.CancellationToken);
 
-        Assert.NotNull(media);
-        Assert.Equal(2, harness.Handler.CallCount);
+        Assert.That(media, Is.Not.Null);
+        Assert.That(harness.Handler.CallCount, Is.EqualTo(2));
     }
 
-    [Fact]
+    [Test]
     public async Task APersistentTransientFailure_GivesUpAfterExactlyOneRetry()
     {
         // The retry is a blip absorber, not a loop — a genuinely down API must surface quickly.
@@ -340,12 +339,12 @@ public class AniListClientTests
             HttpStatusCode.BadRequest, """{"errors":[{"message":"Invalid token"}]}"""));
 
         await Assert.ThrowsAsync<AniListApiException>(
-            () => harness.Client.GetMediaAsync(1, TestContext.Current.CancellationToken));
+            () => harness.Client.GetMediaAsync(1, TestContext.CurrentContext.CancellationToken));
 
-        Assert.Equal(2, harness.Handler.CallCount);
+        Assert.That(harness.Handler.CallCount, Is.EqualTo(2));
     }
 
-    [Fact]
+    [Test]
     public async Task ANonTransientFailure_IsNotRetriedAtAll()
     {
         // A rate-limit response is the one thing a retry makes strictly worse.
@@ -353,9 +352,9 @@ public class AniListClientTests
             "Too Many Requests.", HttpStatusCode.TooManyRequests));
 
         await Assert.ThrowsAsync<AniListApiException>(
-            () => harness.Client.GetMediaAsync(1, TestContext.Current.CancellationToken));
+            () => harness.Client.GetMediaAsync(1, TestContext.CurrentContext.CancellationToken));
 
-        Assert.Equal(1, harness.Handler.CallCount);
+        Assert.That(harness.Handler.CallCount, Is.EqualTo(1));
     }
 
     /// <summary>

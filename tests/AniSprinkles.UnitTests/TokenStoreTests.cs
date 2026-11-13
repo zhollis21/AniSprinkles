@@ -33,7 +33,7 @@ public class TokenStoreTests
         return storage;
     }
 
-    [Fact]
+    [Test]
     public async Task TwoConcurrentGets_OnAColdToken_PerformExactlyOneRead()
     {
         var storage = WithToken();
@@ -49,10 +49,10 @@ public class TokenStoreTests
         storage.ReleaseRead(TokenStore.TokenKey);
         await Task.WhenAll(first, second);
 
-        Assert.Equal(1, storage.ReadCountFor(TokenStore.TokenKey));
+        Assert.That(storage.ReadCountFor(TokenStore.TokenKey), Is.EqualTo(1));
     }
 
-    [Fact]
+    [Test]
     public async Task TwoSequentialGets_WhenNothingIsStored_PerformExactlyOneRead()
     {
         // The signed-out case. Nothing is stored, so the token stays null after the load — a
@@ -61,13 +61,13 @@ public class TokenStoreTests
         var storage = new FakeSecureTokenStorage();
         var store = Build(storage);
 
-        Assert.Equal(TokenState.Absent, (await store.GetAsync(TestContext.Current.CancellationToken)).State);
-        Assert.Equal(TokenState.Absent, (await store.GetAsync(TestContext.Current.CancellationToken)).State);
+        Assert.That((await store.GetAsync(TestContext.CurrentContext.CancellationToken)).State, Is.EqualTo(TokenState.Absent));
+        Assert.That((await store.GetAsync(TestContext.CurrentContext.CancellationToken)).State, Is.EqualTo(TokenState.Absent));
 
-        Assert.Equal(1, storage.ReadCountFor(TokenStore.TokenKey));
+        Assert.That(storage.ReadCountFor(TokenStore.TokenKey), Is.EqualTo(1));
     }
 
-    [Fact]
+    [Test]
     public async Task AFailingRead_CannotClearATokenPublishedByASuccessfulOne()
     {
         // The reported bug. Both callers are in flight; the first publishes a valid token, then the
@@ -86,20 +86,20 @@ public class TokenStoreTests
 
         // Let the successful caller finish and publish before the failing one is released.
         storage.ReleaseRead(TokenStore.TokenKey, 1);
-        Assert.Equal(TokenState.Valid, (await first).State);
+        Assert.That((await first).State, Is.EqualTo(TokenState.Valid));
 
         storage.ReleaseRead(TokenStore.TokenKey, 2);
 
         // The reported symptom: the concurrent caller reports a signed-in user as signed out.
-        Assert.Equal(TokenState.Valid, (await second).State);
+        Assert.That((await second).State, Is.EqualTo(TokenState.Valid));
 
         // And it wiped the shared state on its way out. Fail any further read so a transparent
         // re-load cannot mask the wipe — after the fix there is no further read to fail.
         storage.FailRead(TokenStore.TokenKey, 3);
-        Assert.Equal("tok", (await store.GetAsync(TestContext.Current.CancellationToken)).AccessToken);
+        Assert.That((await store.GetAsync(TestContext.CurrentContext.CancellationToken)).AccessToken, Is.EqualTo("tok"));
     }
 
-    [Fact]
+    [Test]
     public async Task AConcurrentCaller_NeverSeesATokenWhoseExpiryHasNotLoadedYet()
     {
         // The token is published one line before the expiry is read, so a caller arriving in between
@@ -114,15 +114,21 @@ public class TokenStoreTests
         // Unsynchronized, the second caller skips the load entirely and returns without reading, so
         // there is no read to wait on — wait for the call itself, or for the gate to hold it.
         var second = Task.Run(() => store.GetAsync());
-        await Task.WhenAny(second, Task.Delay(SettleTimeout, TestContext.Current.CancellationToken));
+        await Task.WhenAny(second, Task.Delay(SettleTimeout, TestContext.CurrentContext.CancellationToken));
 
         storage.ReleaseRead(TokenStore.TokenExpiryKey);
         var results = await Task.WhenAll(first, second);
 
-        Assert.All(results, r => Assert.Equal(TokenState.Expired, r.State));
+        Assert.Multiple(() =>
+        {
+            foreach (var r in results)
+            {
+                Assert.That(r.State, Is.EqualTo(TokenState.Expired));
+            }
+        });
     }
 
-    [Fact]
+    [Test]
     public async Task Cancellation_PropagatesToTheCallerThatOwnsTheToken()
     {
         var storage = WithToken();
@@ -137,24 +143,24 @@ public class TokenStoreTests
         var second = Task.Run(() => store.GetAsync(cts.Token));
         await cts.CancelAsync();
 
-        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => second);
+        await Assert.CatchAsync<OperationCanceledException>(() => second);
 
         // The caller that owns the load is unaffected by someone else's cancellation.
         storage.ReleaseRead(TokenStore.TokenKey);
-        Assert.Equal(TokenState.Valid, (await first).State);
+        Assert.That((await first).State, Is.EqualTo(TokenState.Valid));
     }
 
-    [Fact]
+    [Test]
     public async Task AnUnreadableToken_ReportsAbsentRatherThanThrowing()
     {
         var storage = WithToken();
         storage.FailRead(TokenStore.TokenKey);
         var store = Build(storage);
 
-        Assert.Equal(TokenState.Absent, (await store.GetAsync(TestContext.Current.CancellationToken)).State);
+        Assert.That((await store.GetAsync(TestContext.CurrentContext.CancellationToken)).State, Is.EqualTo(TokenState.Absent));
     }
 
-    [Fact]
+    [Test]
     public async Task AnUnreadableToken_IsNotRetriedOnEveryCall()
     {
         // A keystore that is broken stays broken. Re-reading it on every token check would put a
@@ -163,40 +169,40 @@ public class TokenStoreTests
         storage.FailRead(TokenStore.TokenKey);
         var store = Build(storage);
 
-        await store.GetAsync(TestContext.Current.CancellationToken);
-        await store.GetAsync(TestContext.Current.CancellationToken);
+        await store.GetAsync(TestContext.CurrentContext.CancellationToken);
+        await store.GetAsync(TestContext.CurrentContext.CancellationToken);
 
-        Assert.Equal(1, storage.ReadCountFor(TokenStore.TokenKey));
+        Assert.That(storage.ReadCountFor(TokenStore.TokenKey), Is.EqualTo(1));
     }
 
-    [Fact]
+    [Test]
     public async Task AnExpiredToken_ReportsExpired()
     {
         var store = Build(WithToken(expiresAt: Now.AddMinutes(-1)));
 
-        Assert.Equal(TokenState.Expired, (await store.GetAsync(TestContext.Current.CancellationToken)).State);
+        Assert.That((await store.GetAsync(TestContext.CurrentContext.CancellationToken)).State, Is.EqualTo(TokenState.Expired));
     }
 
-    [Fact]
+    [Test]
     public async Task AFreshToken_ReportsValid()
     {
         var store = Build(WithToken(expiresAt: Now.AddHours(1)));
 
-        var lookup = await store.GetAsync(TestContext.Current.CancellationToken);
+        var lookup = await store.GetAsync(TestContext.CurrentContext.CancellationToken);
 
-        Assert.Equal(TokenState.Valid, lookup.State);
-        Assert.Equal("tok", lookup.AccessToken);
+        Assert.That(lookup.State, Is.EqualTo(TokenState.Valid));
+        Assert.That(lookup.AccessToken, Is.EqualTo("tok"));
     }
 
-    [Fact]
+    [Test]
     public async Task ATokenWithNoStoredExpiry_ReportsValid()
     {
         var store = Build(WithToken());
 
-        Assert.Equal(TokenState.Valid, (await store.GetAsync(TestContext.Current.CancellationToken)).State);
+        Assert.That((await store.GetAsync(TestContext.CurrentContext.CancellationToken)).State, Is.EqualTo(TokenState.Valid));
     }
 
-    [Fact]
+    [Test]
     public async Task SetThenGet_ReturnsTheNewTokenWithoutReadingStorage()
     {
         var storage = new FakeSecureTokenStorage();
@@ -204,11 +210,11 @@ public class TokenStoreTests
 
         await store.SetAsync("fresh", Now.AddHours(1));
 
-        Assert.Equal("fresh", (await store.GetAsync(TestContext.Current.CancellationToken)).AccessToken);
-        Assert.Empty(storage.Reads);
+        Assert.That((await store.GetAsync(TestContext.CurrentContext.CancellationToken)).AccessToken, Is.EqualTo("fresh"));
+        Assert.That(storage.Reads, Is.Empty);
     }
 
-    [Fact]
+    [Test]
     public async Task ClearThenGet_ReportsAbsentWithoutRereadingStorage()
     {
         // Sign-out knows what it just removed. Going back to storage would re-read the keys it
@@ -219,11 +225,11 @@ public class TokenStoreTests
 
         store.Clear();
 
-        Assert.Equal(TokenState.Absent, (await store.GetAsync(TestContext.Current.CancellationToken)).State);
-        Assert.Empty(storage.Reads);
+        Assert.That((await store.GetAsync(TestContext.CurrentContext.CancellationToken)).State, Is.EqualTo(TokenState.Absent));
+        Assert.That(storage.Reads, Is.Empty);
     }
 
-    [Fact]
+    [Test]
     public async Task SigningInWhileALoadIsInFlight_KeepsTheNewToken()
     {
         // Sign-in publishes without going through the load, so the load's own publish has to yield
@@ -241,10 +247,10 @@ public class TokenStoreTests
         storage.ReleaseRead(TokenStore.TokenKey);
         await inFlight;
 
-        Assert.Equal("fresh", (await store.GetAsync(TestContext.Current.CancellationToken)).AccessToken);
+        Assert.That((await store.GetAsync(TestContext.CurrentContext.CancellationToken)).AccessToken, Is.EqualTo("fresh"));
     }
 
-    [Fact]
+    [Test]
     public async Task SigningOutWhileALoadIsInFlight_StaysSignedOut()
     {
         var storage = WithToken();
@@ -259,10 +265,10 @@ public class TokenStoreTests
         storage.ReleaseRead(TokenStore.TokenKey);
         await inFlight;
 
-        Assert.Equal(TokenState.Absent, (await store.GetAsync(TestContext.Current.CancellationToken)).State);
+        Assert.That((await store.GetAsync(TestContext.CurrentContext.CancellationToken)).State, Is.EqualTo(TokenState.Absent));
     }
 
-    [Fact]
+    [Test]
     public async Task SigningInAfterAClear_ServesTheNewToken()
     {
         // The risk of keeping the store "loaded" across a sign-out is serving the previous account's
@@ -274,6 +280,6 @@ public class TokenStoreTests
 
         await store.SetAsync("second-account", Now.AddHours(1));
 
-        Assert.Equal("second-account", (await store.GetAsync(TestContext.Current.CancellationToken)).AccessToken);
+        Assert.That((await store.GetAsync(TestContext.CurrentContext.CancellationToken)).AccessToken, Is.EqualTo("second-account"));
     }
 }

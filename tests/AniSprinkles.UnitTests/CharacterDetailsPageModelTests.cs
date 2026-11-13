@@ -11,7 +11,7 @@ namespace AniSprinkles.UnitTests;
 /// </summary>
 public class CharacterDetailsPageModelTests
 {
-    [Fact]
+    [Test]
     public async Task LoadAsync_SeedsAppearancesAndVoiceActorsFromTheSameSingleFetch()
     {
         var harness = new Harness();
@@ -22,14 +22,14 @@ public class CharacterDetailsPageModelTests
         await harness.Model.LoadAsync(42);
 
         // Both sections come off the one heavy first-page query — the point of seeding them together.
-        Assert.Equal(1, harness.Fetches);
-        Assert.Equal(2, harness.Model.DisplayedAppearances.Count);
-        Assert.Equal(2, harness.Model.VoiceActors.Count);
-        Assert.True(harness.Model.HasAppearances);
-        Assert.True(harness.Model.HasVoiceActors);
+        Assert.That(harness.Fetches, Is.EqualTo(1));
+        Assert.That(harness.Model.DisplayedAppearances.Count, Is.EqualTo(2));
+        Assert.That(harness.Model.VoiceActors.Count, Is.EqualTo(2));
+        Assert.That(harness.Model.HasAppearances, Is.True);
+        Assert.That(harness.Model.HasVoiceActors, Is.True);
     }
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_DedupesAVoiceActorAppearingAcrossSeveralAppearances()
     {
         var harness = new Harness();
@@ -39,11 +39,11 @@ public class CharacterDetailsPageModelTests
 
         await harness.Model.LoadAsync(42);
 
-        Assert.Equal(2, harness.Model.DisplayedAppearances.Count);
-        Assert.Single(harness.Model.VoiceActors);
+        Assert.That(harness.Model.DisplayedAppearances.Count, Is.EqualTo(2));
+        Assert.That(harness.Model.VoiceActors, Has.Exactly(1).Items);
     }
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_ForACharacterWithNoMedia_StillReachesTheVoiceActorEmptyState()
     {
         var harness = new Harness();
@@ -53,12 +53,12 @@ public class CharacterDetailsPageModelTests
 
         // Gated on the voice-actor section's own state, not on HasAppearances — a character with no
         // media at all should still get the friendly message rather than a blank section.
-        Assert.True(harness.Model.ShowVoiceActorsEmptyState);
-        Assert.True(harness.Model.ShowVoiceActorsSection);
-        Assert.False(harness.Model.HasVoiceActors);
+        Assert.That(harness.Model.ShowVoiceActorsEmptyState, Is.True);
+        Assert.That(harness.Model.ShowVoiceActorsSection, Is.True);
+        Assert.That(harness.Model.HasVoiceActors, Is.False);
     }
 
-    [Fact]
+    [Test]
     public async Task BioStats_MaskSpoilerValuesUntilSpoilersAreShown()
     {
         var harness = new Harness();
@@ -70,19 +70,19 @@ public class CharacterDetailsPageModelTests
 
         await harness.Model.LoadAsync(42);
 
-        Assert.True(harness.Model.HasBioStats);
-        Assert.True(harness.Model.HasSpoilers);
-        Assert.Equal("172 cm", harness.Model.BioStats[0].ValueDisplay);
-        Assert.True(harness.Model.BioStats[1].IsValueSpoilerHidden);
-        Assert.DoesNotContain("3,000,000,000", harness.Model.BioStats[1].ValueDisplay, StringComparison.Ordinal);
+        Assert.That(harness.Model.HasBioStats, Is.True);
+        Assert.That(harness.Model.HasSpoilers, Is.True);
+        Assert.That(harness.Model.BioStats[0].ValueDisplay, Is.EqualTo("172 cm"));
+        Assert.That(harness.Model.BioStats[1].IsValueSpoilerHidden, Is.True);
+        Assert.That(harness.Model.BioStats[1].ValueDisplay, Does.Not.Contain("3,000,000,000"));
 
         harness.Model.ToggleSpoilersCommand.Execute(null);
 
-        Assert.False(harness.Model.BioStats[1].IsValueSpoilerHidden);
-        Assert.Equal("3,000,000,000", harness.Model.BioStats[1].ValueDisplay);
+        Assert.That(harness.Model.BioStats[1].IsValueSpoilerHidden, Is.False);
+        Assert.That(harness.Model.BioStats[1].ValueDisplay, Is.EqualTo("3,000,000,000"));
     }
 
-    [Fact]
+    [Test]
     public async Task AlternativeNames_IncludeSpoilerNamesOnlyWhileSpoilersAreShown()
     {
         var harness = new Harness();
@@ -97,15 +97,15 @@ public class CharacterDetailsPageModelTests
 
         await harness.Model.LoadAsync(42);
 
-        Assert.Equal(["Straw Hat"], harness.Model.AlternativeNames);
-        Assert.True(harness.Model.HasSpoilers);
+        Assert.That(harness.Model.AlternativeNames, Is.EqualTo(["Straw Hat"]));
+        Assert.That(harness.Model.HasSpoilers, Is.True);
 
         harness.Model.ToggleSpoilersCommand.Execute(null);
 
-        Assert.Equal(["Straw Hat", "Nika"], harness.Model.AlternativeNames);
+        Assert.That(harness.Model.AlternativeNames, Is.EqualTo(["Straw Hat", "Nika"]));
     }
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_ForANewCharacter_ClearsSpoilerAndExpandedStateFromThePreviousOne()
     {
         var harness = new Harness();
@@ -114,15 +114,15 @@ public class CharacterDetailsPageModelTests
 
         harness.Model.ToggleSpoilersCommand.Execute(null);
         harness.Model.ToggleDescriptionCommand.Execute(null);
-        Assert.True(harness.Model.IsShowingSpoilers);
-        Assert.True(harness.Model.IsDescriptionExpanded);
+        Assert.That(harness.Model.IsShowingSpoilers, Is.True);
+        Assert.That(harness.Model.IsDescriptionExpanded, Is.True);
 
         harness.Returns(new Character { Id = 2 });
         await harness.Model.LoadAsync(2);
 
         // Carrying a revealed spoiler across to a different character would leak the previous one's.
-        Assert.False(harness.Model.IsShowingSpoilers);
-        Assert.False(harness.Model.IsDescriptionExpanded);
+        Assert.That(harness.Model.IsShowingSpoilers, Is.False);
+        Assert.That(harness.Model.IsDescriptionExpanded, Is.False);
     }
 
     // ── Spoilers meeting the paragraph markup (#138 × the spoiler pass) ──────────────
@@ -133,7 +133,7 @@ public class CharacterDetailsPageModelTests
     // 13 of those wrap a line break. Luffy — the character both issues were filed from — is in the
     // 7 whose spoilers sit only in stat rows, which is why the device pass never exercised this.
 
-    [Fact]
+    [Test]
     public async Task ASpoilerSpanningParagraphs_CollapsesToOneChipWhenHidden()
     {
         var harness = new Harness();
@@ -149,13 +149,13 @@ public class CharacterDetailsPageModelTests
 
         // The whole region, breaks included, becomes a single chip — no fragments of the hidden
         // text and no stray <br> escaping from inside it.
-        Assert.DoesNotContain("Secret", prose, StringComparison.Ordinal);
-        Assert.Equal(1, CountOccurrences(prose, "[spoiler]"));
-        Assert.StartsWith("Before.<br><br>", prose, StringComparison.Ordinal);
-        Assert.EndsWith("<br><br>After.", prose, StringComparison.Ordinal);
+        Assert.That(prose, Does.Not.Contain("Secret"));
+        Assert.That(CountOccurrences(prose, "[spoiler]"), Is.EqualTo(1));
+        Assert.That(prose, Does.StartWith("Before.<br><br>"));
+        Assert.That(prose, Does.EndWith("<br><br>After."));
     }
 
-    [Fact]
+    [Test]
     public async Task ASpoilerSpanningParagraphs_KeepsItsBreaksWhenRevealed()
     {
         var harness = new Harness();
@@ -169,12 +169,12 @@ public class CharacterDetailsPageModelTests
         harness.Model.ToggleSpoilersCommand.Execute(null);
 
         // Revealing has to give back the paragraph structure, not a run-on.
-        Assert.Equal(
-            "Before.<br><br>Secret one.<br><br>Secret two.",
-            harness.Model.BioProse);
+        Assert.That(
+            harness.Model.BioProse,
+            Is.EqualTo("Before.<br><br>Secret one.<br><br>Secret two."));
     }
 
-    [Fact]
+    [Test]
     public async Task TwoSpoilersSeparatedByAParagraphBreak_StayTwoChips()
     {
         // Character 126824's shape: one spoiler ends, a blank line, another begins. The spoiler
@@ -189,11 +189,11 @@ public class CharacterDetailsPageModelTests
 
         await harness.Model.LoadAsync(42);
 
-        Assert.Equal(2, CountOccurrences(harness.Model.BioProse, "[spoiler]"));
-        Assert.Contains("<br><br>", harness.Model.BioProse, StringComparison.Ordinal);
+        Assert.That(CountOccurrences(harness.Model.BioProse, "[spoiler]"), Is.EqualTo(2));
+        Assert.That(harness.Model.BioProse, Does.Contain("<br><br>"));
     }
 
-    [Fact]
+    [Test]
     public async Task ALinkInsideASpoiler_SurvivesRevealAndStaysHiddenOtherwise()
     {
         // Characters 35252 and 17 both link other characters from inside a spoiler, so the anchor
@@ -206,13 +206,13 @@ public class CharacterDetailsPageModelTests
         });
         await harness.Model.LoadAsync(42);
 
-        Assert.DoesNotContain("anilist.co", harness.Model.BioProse, StringComparison.Ordinal);
+        Assert.That(harness.Model.BioProse, Does.Not.Contain("anilist.co"));
 
         harness.Model.ToggleSpoilersCommand.Execute(null);
 
-        Assert.Equal(
-            "He confesses to <a href=\"https://anilist.co/character/2\">Makise Kurisu</a>",
-            harness.Model.BioProse);
+        Assert.That(
+            harness.Model.BioProse,
+            Is.EqualTo("He confesses to <a href=\"https://anilist.co/character/2\">Makise Kurisu</a>"));
     }
 
     private static int CountOccurrences(string haystack, string needle)
@@ -227,7 +227,7 @@ public class CharacterDetailsPageModelTests
         return count;
     }
 
-    [Fact]
+    [Test]
     public async Task BioStats_RenderMarkdownInTheValue_RatherThanLeakingItVerbatim()
     {
         // AniList puts links in stat rows as well as prose — staff 96881's "Favorite Mangaka" is a
@@ -242,12 +242,12 @@ public class CharacterDetailsPageModelTests
 
         await harness.Model.LoadAsync(42);
 
-        Assert.Equal(
-            "<a href=\"https://anilist.co/staff/96901\">Akira Toriyama</a>",
-            harness.Model.BioStats[0].ValueDisplay);
+        Assert.That(
+            harness.Model.BioStats[0].ValueDisplay,
+            Is.EqualTo("<a href=\"https://anilist.co/staff/96901\">Akira Toriyama</a>"));
     }
 
-    [Fact]
+    [Test]
     public async Task BioStats_LeaveTheSpoilerMaskAlone()
     {
         // The mask is a run of block characters, not markdown — processing it would be pointless at
@@ -261,12 +261,12 @@ public class CharacterDetailsPageModelTests
 
         await harness.Model.LoadAsync(42);
 
-        Assert.True(harness.Model.BioStats[0].IsValueSpoilerHidden);
-        Assert.DoesNotContain("anilist.co", harness.Model.BioStats[0].ValueDisplay, StringComparison.Ordinal);
-        Assert.DoesNotContain("Berry", harness.Model.BioStats[0].ValueDisplay, StringComparison.Ordinal);
+        Assert.That(harness.Model.BioStats[0].IsValueSpoilerHidden, Is.True);
+        Assert.That(harness.Model.BioStats[0].ValueDisplay, Does.Not.Contain("anilist.co"));
+        Assert.That(harness.Model.BioStats[0].ValueDisplay, Does.Not.Contain("Berry"));
     }
 
-    [Fact]
+    [Test]
     public async Task IsDescriptionTruncated_MeasuresTheRenderedBio_NotTheRawMarkdown()
     {
         var harness = new Harness();
@@ -282,10 +282,10 @@ public class CharacterDetailsPageModelTests
         // paragraph breaks become <br>. Measuring the raw markdown instead — which contains no
         // <br> by construction — this reads as text that fits, so no "Read more" appears while the
         // label clamps and tail-truncates anyway. That is the direction #138 rules out.
-        Assert.True(harness.Model.IsDescriptionTruncated);
+        Assert.That(harness.Model.IsDescriptionTruncated, Is.True);
     }
 
-    [Fact]
+    [Test]
     public async Task TogglingSpoilers_RenotifiesTruncation_BecauseRevealingChangesHowMuchThereIsToShow()
     {
         var harness = new Harness();
@@ -297,18 +297,18 @@ public class CharacterDetailsPageModelTests
         await harness.Model.LoadAsync(42);
 
         // Hidden, the spoiler collapses to a short "[spoiler]" chip and the bio fits.
-        Assert.False(harness.Model.IsDescriptionTruncated);
+        Assert.That(harness.Model.IsDescriptionTruncated, Is.False);
 
         var raised = new List<string?>();
         harness.Model.PropertyChanged += (_, e) => raised.Add(e.PropertyName);
 
         harness.Model.ToggleSpoilersCommand.Execute(null);
 
-        Assert.Contains(nameof(CharacterDetailsPageModel.IsDescriptionTruncated), raised);
-        Assert.True(harness.Model.IsDescriptionTruncated);
+        Assert.That(raised, Does.Contain(nameof(CharacterDetailsPageModel.IsDescriptionTruncated)));
+        Assert.That(harness.Model.IsDescriptionTruncated, Is.True);
     }
 
-    [Fact]
+    [Test]
     public async Task NavigateToStaff_NavigatesWithTheStaffId()
     {
         var harness = new Harness();
@@ -321,7 +321,7 @@ public class CharacterDetailsPageModelTests
             Arg.Is<IDictionary<string, object>>(d => (int)d["staffId"] == 7));
     }
 
-    [Fact]
+    [Test]
     public async Task NavigateToStaff_WithAnInvalidId_DoesNothing()
     {
         var harness = new Harness();

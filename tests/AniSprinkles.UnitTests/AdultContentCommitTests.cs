@@ -12,32 +12,32 @@ namespace AniSprinkles.UnitTests;
 /// straight to a browse surface saw it appear with the old policy still in force — and stay that way
 /// until a full tab cycle invalidated it.
 /// </summary>
-[Collection(AppSettingsCollection.Name)]
+[NonParallelizable]
 public class AdultContentCommitTests
 {
     private readonly FakePreferences _storage;
 
     public AdultContentCommitTests() => _storage = TestDataBuilder.ResetAppSettings();
 
-    [Fact]
+    [Test]
     public async Task TogglingAdultContentOff_CommitsToAppSettingsWithoutWaitingForTheSave()
     {
         var harness = new Harness();
         await harness.LoadSignedInAsync(displayAdultContent: true);
-        Assert.True(AppSettings.DisplayAdultContent);
+        Assert.That(AppSettings.DisplayAdultContent, Is.True);
 
         harness.Model.DisplayAdultContent = false;
 
         // No await between the toggle and the assertion on purpose: the whole point is that the
         // value is correct before the user can possibly navigate anywhere.
-        Assert.False(AppSettings.DisplayAdultContent);
+        Assert.That(AppSettings.DisplayAdultContent, Is.False);
 
         // And the commit is local, not a fast round-trip — the AniList save is still debounced.
         await harness.Client.DidNotReceive().UpdateUserAsync(
             Arg.Any<UpdateUserRequest>(), Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task TogglingAdultContentOff_PersistsImmediatelySoAColdStartAgrees()
     {
         var harness = new Harness();
@@ -47,25 +47,25 @@ public class AdultContentCommitTests
 
         // If the app is killed inside the debounce window, the stored value is what the next launch
         // reads. Committing in memory only would resurrect the old policy on restart.
-        Assert.False(_storage.Get("display_adult_content", true));
+        Assert.That(_storage.Get("display_adult_content", true), Is.False);
     }
 
-    [Fact]
+    [Test]
     public async Task TogglingAdultContentOn_CommitsJustTheSameWay()
     {
         // The dangerous direction is off, but a one-way commit would be a confusing asymmetry and
         // would leave "on" still waiting a second and a half to take effect.
         var harness = new Harness();
         await harness.LoadSignedInAsync(displayAdultContent: false);
-        Assert.False(AppSettings.DisplayAdultContent);
+        Assert.That(AppSettings.DisplayAdultContent, Is.False);
 
         harness.Model.DisplayAdultContent = true;
 
-        Assert.True(AppSettings.DisplayAdultContent);
-        Assert.True(_storage.Get("display_adult_content", false));
+        Assert.That(AppSettings.DisplayAdultContent, Is.True);
+        Assert.That(_storage.Get("display_adult_content", false), Is.True);
     }
 
-    [Fact]
+    [Test]
     public async Task LoadingTheProfile_CommitsTheServersValueWithoutSendingItBack()
     {
         // PopulateFromUser assigns DisplayAdultContent, so it runs the same changed-handler. That is
@@ -79,7 +79,7 @@ public class AdultContentCommitTests
         var harness = new Harness();
         await harness.LoadSignedInAsync(displayAdultContent: true);
 
-        Assert.True(AppSettings.DisplayAdultContent);
+        Assert.That(AppSettings.DisplayAdultContent, Is.True);
         await harness.Client.DidNotReceive().UpdateUserAsync(
             Arg.Any<UpdateUserRequest>(), Arg.Any<CancellationToken>());
     }
@@ -140,12 +140,12 @@ public class AdultContentCommitTests
 /// <c>IsBusy || _refreshEvaluating</c> guards from #116 do not cover it, because no reload is
 /// involved.
 /// </summary>
-[Collection(AppSettingsCollection.Name)]
+[NonParallelizable]
 public class DiscoverAdultFilterPinningTests
 {
     public DiscoverAdultFilterPinningTests() => TestDataBuilder.ResetAppSettings();
 
-    [Fact]
+    [Test]
     public async Task LoadMore_AfterTheSettingCommitsMidSession_KeepsTheSeededPolicy()
     {
         // Seeded with 18+ allowed, so page 1 may hold 18+ items and the query omits the filter.
@@ -164,10 +164,10 @@ public class DiscoverAdultFilterPinningTests
 
         // Page 2 must match page 1's policy. Fetching it as SFW appends a filtered page onto an
         // unfiltered one, which is the mixing the issue describes.
-        Assert.Equal([null], harness.AdultFilters);
+        Assert.That(harness.AdultFilters, Is.EqualTo(new bool?[] { null }));
     }
 
-    [Fact]
+    [Test]
     public async Task LoadMore_OnAPinned18PlusRow_StillIgnoresTheToggleEntirely()
     {
         // The 18+ sections carry their own AdultFilter, which wins over the toggle by design. That
@@ -182,10 +182,10 @@ public class DiscoverAdultFilterPinningTests
 
         await harness.Model.LoadMoreSectionCommand.ExecuteAsync(row.SectionKey);
 
-        Assert.Equal([true], harness.AdultFilters);
+        Assert.That(harness.AdultFilters, Is.EqualTo([true]));
     }
 
-    [Fact]
+    [Test]
     public async Task AReloadAfterTheSettingChanges_ReSeedsUnderTheNewPolicy()
     {
         // Pinning must not freeze the filter forever: a genuine reload re-reads the setting, which
@@ -203,7 +203,7 @@ public class DiscoverAdultFilterPinningTests
 
         await harness.Model.LoadMoreSectionCommand.ExecuteAsync(row.SectionKey);
 
-        Assert.Equal([false], harness.AdultFilters);
+        Assert.That(harness.AdultFilters, Is.EqualTo([false]));
     }
 
     private sealed class Harness

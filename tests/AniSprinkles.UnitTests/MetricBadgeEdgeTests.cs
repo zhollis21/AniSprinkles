@@ -12,7 +12,7 @@ public class MetricBadgeEdgeTests
     private static ItemMetricBadge Badge() =>
         new() { Glyph = "x", IconColor = Colors.White, Text = "1" };
 
-    [Fact]
+    [Test]
     public void CharacterMediaEdge_SettingMetricBadge_RaisesPropertyChanged()
     {
         var edge = new CharacterMediaEdge();
@@ -21,12 +21,12 @@ public class MetricBadgeEdgeTests
 
         edge.MetricBadge = Badge();
 
-        Assert.Contains(nameof(CharacterMediaEdge.MetricBadge), changed);
-        Assert.Contains(nameof(CharacterMediaEdge.HasMetricBadge), changed);
-        Assert.True(edge.HasMetricBadge);
+        Assert.That(changed, Does.Contain(nameof(CharacterMediaEdge.MetricBadge)));
+        Assert.That(changed, Does.Contain(nameof(CharacterMediaEdge.HasMetricBadge)));
+        Assert.That(edge.HasMetricBadge, Is.True);
     }
 
-    [Fact]
+    [Test]
     public void StaffMediaEdge_SettingMetricBadge_RaisesPropertyChanged()
     {
         var edge = new StaffMediaEdge();
@@ -35,8 +35,8 @@ public class MetricBadgeEdgeTests
 
         edge.MetricBadge = Badge();
 
-        Assert.Contains(nameof(StaffMediaEdge.MetricBadge), changed);
-        Assert.Contains(nameof(StaffMediaEdge.HasMetricBadge), changed);
-        Assert.True(edge.HasMetricBadge);
+        Assert.That(changed, Does.Contain(nameof(StaffMediaEdge.MetricBadge)));
+        Assert.That(changed, Does.Contain(nameof(StaffMediaEdge.HasMetricBadge)));
+        Assert.That(edge.HasMetricBadge, Is.True);
     }
 }

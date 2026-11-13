@@ -20,7 +20,7 @@ public class FavouriteToggleRunnerTests
         return (client, Substitute.For<IUserFeedback>());
     }
 
-    [Fact]
+    [Test]
     public async Task ToggleAsync_Success_FlipsHeartBumpsCountAndCallsApi()
     {
         var (client, feedback) = Deps();
@@ -28,14 +28,14 @@ public class FavouriteToggleRunnerTests
 
         var result = await Runner(client, feedback).ToggleAsync(entity, FavouriteKind.Anime, () => { }, () => { });
 
-        Assert.True(result);
-        Assert.True(entity.IsFavourite);
-        Assert.Equal(101, entity.Favourites);
+        Assert.That(result, Is.True);
+        Assert.That(entity.IsFavourite, Is.True);
+        Assert.That(entity.Favourites, Is.EqualTo(101));
         await client.Received(1).ToggleFavouriteAsync(FavouriteKind.Anime, 42, Arg.Any<CancellationToken>());
         await feedback.DidNotReceiveWithAnyArgs().ShowSnackbarAsync(default!, default!, default!);
     }
 
-    [Fact]
+    [Test]
     public async Task ToggleAsync_Unfavorite_DecrementsCount()
     {
         var (client, feedback) = Deps();
@@ -43,11 +43,11 @@ public class FavouriteToggleRunnerTests
 
         await Runner(client, feedback).ToggleAsync(entity, FavouriteKind.Character, () => { }, () => { });
 
-        Assert.False(entity.IsFavourite);
-        Assert.Equal(49, entity.Favourites);
+        Assert.That(entity.IsFavourite, Is.False);
+        Assert.That(entity.Favourites, Is.EqualTo(49));
     }
 
-    [Fact]
+    [Test]
     public async Task ToggleAsync_FavouriteFromNullCount_BecomesOne()
     {
         var (client, feedback) = Deps();
@@ -55,11 +55,11 @@ public class FavouriteToggleRunnerTests
 
         await Runner(client, feedback).ToggleAsync(entity, FavouriteKind.Staff, () => { }, () => { });
 
-        Assert.True(entity.IsFavourite);
-        Assert.Equal(1, entity.Favourites);
+        Assert.That(entity.IsFavourite, Is.True);
+        Assert.That(entity.Favourites, Is.EqualTo(1));
     }
 
-    [Fact]
+    [Test]
     public async Task ToggleAsync_Failure_RevertsHeartAndCountAndShowsRetrySnackbar()
     {
         var (client, feedback) = Deps();
@@ -69,15 +69,15 @@ public class FavouriteToggleRunnerTests
 
         var result = await Runner(client, feedback).ToggleAsync(entity, FavouriteKind.Studio, () => { }, () => { });
 
-        Assert.False(result);
+        Assert.That(result, Is.False);
         // Heart and count rolled back together.
-        Assert.False(entity.IsFavourite);
-        Assert.Equal(200, entity.Favourites);
+        Assert.That(entity.IsFavourite, Is.False);
+        Assert.That(entity.Favourites, Is.EqualTo(200));
         await feedback.Received(1).ShowSnackbarAsync(
             "Failed to update favorite. Please try again.", "Retry", Arg.Any<Action>());
     }
 
-    [Fact]
+    [Test]
     public async Task ToggleAsync_WhileInFlight_SecondCallIsNoOp()
     {
         var (client, feedback) = Deps();
@@ -88,20 +88,20 @@ public class FavouriteToggleRunnerTests
         var runner = Runner(client, feedback);
 
         var first = runner.ToggleAsync(entity, FavouriteKind.Anime, () => { }, () => { });
-        Assert.True(runner.IsBusy);
+        Assert.That(runner.IsBusy, Is.True);
 
         // Rapid second tap while the first is still in flight: skipped, no second mutation.
         var second = await runner.ToggleAsync(entity, FavouriteKind.Anime, () => { }, () => { });
-        Assert.False(second);
+        Assert.That(second, Is.False);
 
         gate.SetResult(true);
-        Assert.True(await first);
+        Assert.That(await first, Is.True);
 
         await client.Received(1).ToggleFavouriteAsync(Arg.Any<FavouriteKind>(), Arg.Any<int>(), Arg.Any<CancellationToken>());
-        Assert.False(runner.IsBusy);
+        Assert.That(runner.IsBusy, Is.False);
     }
 
-    [Fact]
+    [Test]
     public async Task ToggleAsync_InvokesOnChangedAndClearsBusyWhenDone()
     {
         var (client, feedback) = Deps();
@@ -112,7 +112,7 @@ public class FavouriteToggleRunnerTests
         await runner.ToggleAsync(entity, FavouriteKind.Anime, () => changes++, () => { });
 
         // Busy-on, optimistic-apply, and busy-off each notify.
-        Assert.True(changes >= 3);
-        Assert.False(runner.IsBusy);
+        Assert.That(changes >= 3, Is.True);
+        Assert.That(runner.IsBusy, Is.False);
     }
 }

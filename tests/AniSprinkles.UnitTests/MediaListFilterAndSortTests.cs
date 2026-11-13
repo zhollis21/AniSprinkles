@@ -17,30 +17,31 @@ namespace AniSprinkles.UnitTests;
 /// first time with the new field and the previous direction.
 /// </para>
 /// </summary>
-[Collection(AppSettingsCollection.Name)]
+[NonParallelizable]
 public class MediaListFilterAndSortTests
 {
     public MediaListFilterAndSortTests() => TestDataBuilder.ResetAppSettings();
 
     // ── The search filter ────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task Typing_NarrowsTheSectionToMatchingEntries()
     {
         var harness = new Harness();
         await harness.LoadAsync();
         var section = harness.Model.Sections[0];
-        Assert.Equal(3, section.FilteredCount);
+        Assert.That(section.FilteredCount, Is.EqualTo(3));
 
         harness.Model.SearchText = "Bocchi";
 
-        Assert.Equal(1, section.FilteredCount);
-        var only = Assert.Single(section);
-        Assert.NotNull(only.Media);
-        Assert.Equal("Bocchi the Rock", only.Media.DisplayTitle);
+        Assert.That(section.FilteredCount, Is.EqualTo(1));
+        Assert.That(section, Has.Exactly(1).Items);
+        var only = section.Single();
+        Assert.That(only.Media, Is.Not.Null);
+        Assert.That(only.Media.DisplayTitle, Is.EqualTo("Bocchi the Rock"));
     }
 
-    [Fact]
+    [Test]
     public async Task TheFilterIsCaseInsensitive()
     {
         var harness = new Harness();
@@ -48,10 +49,10 @@ public class MediaListFilterAndSortTests
 
         harness.Model.SearchText = "bOcChI";
 
-        Assert.Equal(1, harness.Model.Sections[0].FilteredCount);
+        Assert.That(harness.Model.Sections[0].FilteredCount, Is.EqualTo(1));
     }
 
-    [Fact]
+    [Test]
     public async Task TheFilterMatchesTheEnglishTitleToo()
     {
         // The card renders whichever title language the viewer picked, but a search that only
@@ -61,10 +62,10 @@ public class MediaListFilterAndSortTests
 
         harness.Model.SearchText = "Solo Leveling";
 
-        Assert.Equal(1, harness.Model.Sections[0].FilteredCount);
+        Assert.That(harness.Model.Sections[0].FilteredCount, Is.EqualTo(1));
     }
 
-    [Fact]
+    [Test]
     public async Task ClearingTheText_RestoresEveryEntry()
     {
         var harness = new Harness();
@@ -73,11 +74,11 @@ public class MediaListFilterAndSortTests
 
         harness.Model.SearchText = string.Empty;
 
-        Assert.Equal(3, harness.Model.Sections[0].FilteredCount);
-        Assert.False(harness.Model.Sections[0].IsFiltered);
+        Assert.That(harness.Model.Sections[0].FilteredCount, Is.EqualTo(3));
+        Assert.That(harness.Model.Sections[0].IsFiltered, Is.False);
     }
 
-    [Fact]
+    [Test]
     public async Task AFilteredSection_ShowsBothCountsOnItsBadge()
     {
         var harness = new Harness();
@@ -85,11 +86,11 @@ public class MediaListFilterAndSortTests
 
         harness.Model.SearchText = "Bocchi";
 
-        Assert.True(harness.Model.Sections[0].IsFiltered);
-        Assert.Equal("1/3", harness.Model.Sections[0].DisplayCount);
+        Assert.That(harness.Model.Sections[0].IsFiltered, Is.True);
+        Assert.That(harness.Model.Sections[0].DisplayCount, Is.EqualTo("1/3"));
     }
 
-    [Fact]
+    [Test]
     public async Task WithNothingMatching_TheNoResultsStateAppears()
     {
         var harness = new Harness();
@@ -98,10 +99,10 @@ public class MediaListFilterAndSortTests
 
         harness.Model.SearchText = "nothing matches this";
 
-        Assert.True(harness.Model.HasNoResults);
+        Assert.That(harness.Model.HasNoResults, Is.True);
     }
 
-    [Fact]
+    [Test]
     public async Task WithSomethingMatching_TheNoResultsStateStaysHidden()
     {
         var harness = new Harness();
@@ -110,10 +111,10 @@ public class MediaListFilterAndSortTests
 
         harness.Model.SearchText = "Bocchi";
 
-        Assert.False(harness.Model.HasNoResults);
+        Assert.That(harness.Model.HasNoResults, Is.False);
     }
 
-    [Fact]
+    [Test]
     public async Task AnEmptyQuery_IsNotNoResultsEvenWithTheSearchBarOpen()
     {
         // Opening the search bar must not immediately accuse the library of being empty.
@@ -122,11 +123,11 @@ public class MediaListFilterAndSortTests
 
         harness.Model.ToggleSearchCommand.Execute(null);
 
-        Assert.True(harness.Model.IsSearchVisible);
-        Assert.False(harness.Model.HasNoResults);
+        Assert.That(harness.Model.IsSearchVisible, Is.True);
+        Assert.That(harness.Model.HasNoResults, Is.False);
     }
 
-    [Fact]
+    [Test]
     public async Task AQueryTypedWithTheBarClosed_IsNotNoResults()
     {
         // HasNoResults drives an on-screen message that belongs to the search UI.
@@ -135,11 +136,11 @@ public class MediaListFilterAndSortTests
 
         harness.Model.SearchText = "nothing matches this";
 
-        Assert.False(harness.Model.IsSearchVisible);
-        Assert.False(harness.Model.HasNoResults);
+        Assert.That(harness.Model.IsSearchVisible, Is.False);
+        Assert.That(harness.Model.HasNoResults, Is.False);
     }
 
-    [Fact]
+    [Test]
     public async Task ChangingTheQuery_NotifiesTheNoResultsBinding()
     {
         // HasNoResults is computed, so nothing tells the view about it unless the handler says so.
@@ -156,10 +157,10 @@ public class MediaListFilterAndSortTests
 
         harness.Model.SearchText = "Bocchi";
 
-        Assert.True(notified);
+        Assert.That(notified, Is.True);
     }
 
-    [Fact]
+    [Test]
     public async Task ClosingTheSearchBar_ClearsTheQueryAndTheFilter()
     {
         var harness = new Harness();
@@ -169,14 +170,14 @@ public class MediaListFilterAndSortTests
 
         harness.Model.ToggleSearchCommand.Execute(null);
 
-        Assert.False(harness.Model.IsSearchVisible);
-        Assert.Equal(string.Empty, harness.Model.SearchText);
-        Assert.Equal(3, harness.Model.Sections[0].FilteredCount);
+        Assert.That(harness.Model.IsSearchVisible, Is.False);
+        Assert.That(harness.Model.SearchText, Is.EqualTo(string.Empty));
+        Assert.That(harness.Model.Sections[0].FilteredCount, Is.EqualTo(3));
     }
 
     // ── The sort picker ──────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task SelectingASort_AppliesBothHalvesOfTheCode()
     {
         var harness = new Harness();
@@ -184,12 +185,12 @@ public class MediaListFilterAndSortTests
 
         harness.Model.SelectSortCommand.Execute("Title:asc");
 
-        Assert.Equal(SortField.Title, harness.Model.CurrentSortField);
-        Assert.True(harness.Model.SortAscending);
-        Assert.Equal("Title:asc", harness.Model.SelectedSortCode);
+        Assert.That(harness.Model.CurrentSortField, Is.EqualTo(SortField.Title));
+        Assert.That(harness.Model.SortAscending, Is.True);
+        Assert.That(harness.Model.SelectedSortCode, Is.EqualTo("Title:asc"));
     }
 
-    [Fact]
+    [Test]
     public async Task SelectingASort_ReordersTheEntriesOnScreen()
     {
         var harness = new Harness();
@@ -197,12 +198,12 @@ public class MediaListFilterAndSortTests
 
         harness.Model.SelectSortCommand.Execute("Title:asc");
 
-        Assert.Equal(
-            ["Bocchi the Rock", "Frieren", "Ore dake Level Up na Ken"],
-            harness.Model.Sections[0].Select(e => e.Media!.DisplayTitle));
+        Assert.That(
+            harness.Model.Sections[0].Select(e => e.Media!.DisplayTitle),
+            Is.EqualTo(["Bocchi the Rock", "Frieren", "Ore dake Level Up na Ken"]));
     }
 
-    [Fact]
+    [Test]
     public async Task ReversingTheDirection_ReversesTheOrder()
     {
         var harness = new Harness();
@@ -211,12 +212,12 @@ public class MediaListFilterAndSortTests
 
         harness.Model.SelectSortCommand.Execute("Title:desc");
 
-        Assert.Equal(
-            ["Ore dake Level Up na Ken", "Frieren", "Bocchi the Rock"],
-            harness.Model.Sections[0].Select(e => e.Media!.DisplayTitle));
+        Assert.That(
+            harness.Model.Sections[0].Select(e => e.Media!.DisplayTitle),
+            Is.EqualTo(["Ore dake Level Up na Ken", "Frieren", "Bocchi the Rock"]));
     }
 
-    [Fact]
+    [Test]
     public async Task SortingComposesWithAnActiveFilter()
     {
         // The filter narrows and the sort orders what is left; neither may discard the other.
@@ -226,12 +227,12 @@ public class MediaListFilterAndSortTests
 
         harness.Model.SelectSortCommand.Execute("Title:asc");
 
-        Assert.Equal(
-            ["Bocchi the Rock", "Frieren", "Ore dake Level Up na Ken"],
-            harness.Model.Sections[0].Select(e => e.Media!.DisplayTitle));
+        Assert.That(
+            harness.Model.Sections[0].Select(e => e.Media!.DisplayTitle),
+            Is.EqualTo(["Bocchi the Rock", "Frieren", "Ore dake Level Up na Ken"]));
     }
 
-    [Fact]
+    [Test]
     public async Task SelectingTheActiveSortAgain_ChangesAndPersistsNothing()
     {
         // The picker stays open on the current row, so re-tapping it is the common gesture.
@@ -241,10 +242,10 @@ public class MediaListFilterAndSortTests
 
         harness.Model.SelectSortCommand.Execute(harness.Model.SelectedSortCode);
 
-        Assert.Equal(writesBefore, harness.Preferences.SetCount);
+        Assert.That(harness.Preferences.SetCount, Is.EqualTo(writesBefore));
     }
 
-    [Fact]
+    [Test]
     public async Task SelectingASort_PersistsBothHalves()
     {
         var harness = new Harness();
@@ -252,31 +253,30 @@ public class MediaListFilterAndSortTests
 
         harness.Model.SelectSortCommand.Execute("Score:asc");
 
-        Assert.Equal("Score", harness.Preferences.Get("anime_sort_field", string.Empty));
-        Assert.True(harness.Preferences.Get("anime_sort_ascending", false));
+        Assert.That(harness.Preferences.Get("anime_sort_field", string.Empty), Is.EqualTo("Score"));
+        Assert.That(harness.Preferences.Get("anime_sort_ascending", false), Is.True);
     }
 
-    [Fact]
+    [Test]
     public async Task ChangingOnlyTheDirection_LeavesTheFieldAlone()
     {
         var harness = new Harness();
         await harness.LoadAsync();
-        Assert.Equal("LastUpdated:desc", harness.Model.SelectedSortCode);
+        Assert.That(harness.Model.SelectedSortCode, Is.EqualTo("LastUpdated:desc"));
 
         harness.Model.SelectSortCommand.Execute("LastUpdated:asc");
 
-        Assert.Equal(SortField.LastUpdated, harness.Model.CurrentSortField);
-        Assert.True(harness.Model.SortAscending);
+        Assert.That(harness.Model.CurrentSortField, Is.EqualTo(SortField.LastUpdated));
+        Assert.That(harness.Model.SortAscending, Is.True);
     }
 
-    [Theory]
-    [InlineData("")]
-    [InlineData(null)]
-    [InlineData("garbage")]
-    [InlineData("Title")]
-    [InlineData("Title:sideways")]
-    [InlineData("NotAField:asc")]
-    [InlineData("Title:asc:extra")]
+    [TestCase("")]
+    [TestCase(null)]
+    [TestCase("garbage")]
+    [TestCase("Title")]
+    [TestCase("Title:sideways")]
+    [TestCase("NotAField:asc")]
+    [TestCase("Title:asc:extra")]
     public async Task AMalformedCode_IsIgnoredRatherThanApplied(string? code)
     {
         // The picker only ever emits valid codes, so anything else is a wiring bug — it must not
@@ -287,10 +287,10 @@ public class MediaListFilterAndSortTests
 
         harness.Model.SelectSortCommand.Execute(code);
 
-        Assert.Equal(before, harness.Model.SelectedSortCode);
+        Assert.That(harness.Model.SelectedSortCode, Is.EqualTo(before));
     }
 
-    [Fact]
+    [Test]
     public async Task APersistedAverageScoreSort_SurvivesTheRenameToWeightedScore()
     {
         // #163 renamed SortField.AverageScore to WeightedScore. The preference stores the member
@@ -300,21 +300,21 @@ public class MediaListFilterAndSortTests
 
         await harness.LoadAsync();
 
-        Assert.Equal(SortField.WeightedScore, harness.Model.CurrentSortField);
-        Assert.Equal("WeightedScore:desc", harness.Model.SelectedSortCode);
+        Assert.That(harness.Model.CurrentSortField, Is.EqualTo(SortField.WeightedScore));
+        Assert.That(harness.Model.SelectedSortCode, Is.EqualTo("WeightedScore:desc"));
     }
 
-    [Fact]
+    [Test]
     public async Task APersistedSortField_IsRestoredUnderItsCurrentName()
     {
         var harness = new Harness(savedSortField: nameof(SortField.WeightedScore));
 
         await harness.LoadAsync();
 
-        Assert.Equal(SortField.WeightedScore, harness.Model.CurrentSortField);
+        Assert.That(harness.Model.CurrentSortField, Is.EqualTo(SortField.WeightedScore));
     }
 
-    [Fact]
+    [Test]
     public async Task EveryCodeThePickerOffers_IsAccepted()
     {
         // The build-time guard in MediaListSortDefinitionsTests says the codes parse; this says the
@@ -326,11 +326,11 @@ public class MediaListFilterAndSortTests
         {
             harness.Model.SelectSortCommand.Execute(option.Code);
 
-            Assert.Equal(option.Code, harness.Model.SelectedSortCode);
+            Assert.That(harness.Model.SelectedSortCode, Is.EqualTo(option.Code));
         }
     }
 
-    [Fact]
+    [Test]
     public async Task TheActiveSort_IsTheOnlyHighlightedRow()
     {
         var harness = new Harness();
@@ -338,11 +338,13 @@ public class MediaListFilterAndSortTests
 
         harness.Model.SelectSortCommand.Execute("Score:desc");
 
-        var selected = Assert.Single(harness.Model.SortOptions, o => o.IsSelected);
-        Assert.Equal("Score:desc", selected.Code);
+        var matches = harness.Model.SortOptions.Where(o => o.IsSelected).ToList();
+        Assert.That(matches, Has.Exactly(1).Items);
+        var selected = matches[0];
+        Assert.That(selected.Code, Is.EqualTo("Score:desc"));
     }
 
-    [Fact]
+    [Test]
     public async Task TheSortGlyph_TracksTheDirection()
     {
         var harness = new Harness();
@@ -352,7 +354,7 @@ public class MediaListFilterAndSortTests
         var ascending = harness.Model.SortIconGlyph;
         harness.Model.SelectSortCommand.Execute("Title:desc");
 
-        Assert.NotEqual(ascending, harness.Model.SortIconGlyph);
+        Assert.That(harness.Model.SortIconGlyph, Is.Not.EqualTo(ascending));
     }
 
     private sealed class Harness

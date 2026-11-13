@@ -6,74 +6,74 @@ namespace AniSprinkles.UnitTests;
 
 public class SpoilerHtmlProcessorTests
 {
-    [Fact]
+    [Test]
     public void Process_NullOrEmpty_ReturnsEmpty()
     {
-        Assert.Equal(string.Empty, SpoilerHtmlProcessor.Process(null, reveal: false));
-        Assert.Equal(string.Empty, SpoilerHtmlProcessor.Process("", reveal: true));
+        Assert.That(SpoilerHtmlProcessor.Process(null, reveal: false), Is.EqualTo(string.Empty));
+        Assert.That(SpoilerHtmlProcessor.Process("", reveal: true), Is.EqualTo(string.Empty));
     }
 
-    [Fact]
+    [Test]
     public void Process_NoSpoilers_ReturnsInputUnchanged()
     {
         var html = "<p>Just a regular description.</p>";
-        Assert.Equal(html, SpoilerHtmlProcessor.Process(html, reveal: false));
-        Assert.Equal(html, SpoilerHtmlProcessor.Process(html, reveal: true));
+        Assert.That(SpoilerHtmlProcessor.Process(html, reveal: false), Is.EqualTo(html));
+        Assert.That(SpoilerHtmlProcessor.Process(html, reveal: true), Is.EqualTo(html));
     }
 
-    [Fact]
+    [Test]
     public void Process_Reveal_StripsMarkers()
     {
         var input = "Setup. ~!The villain is the butler.!~ End.";
         var revealed = SpoilerHtmlProcessor.Process(input, reveal: true);
 
-        Assert.Contains("The villain is the butler.", revealed);
-        Assert.DoesNotContain("~!", revealed);
-        Assert.DoesNotContain("!~", revealed);
+        Assert.That(revealed, Does.Contain("The villain is the butler."));
+        Assert.That(revealed, Does.Not.Contain("~!"));
+        Assert.That(revealed, Does.Not.Contain("!~"));
     }
 
-    [Fact]
+    [Test]
     public void Process_Hide_RedactsSpoilerContent()
     {
         var input = "Setup. ~!The villain is the butler.!~ End.";
         var hidden = SpoilerHtmlProcessor.Process(input, reveal: false);
 
-        Assert.DoesNotContain("villain", hidden);
-        Assert.DoesNotContain("butler", hidden);
-        Assert.DoesNotContain("~!", hidden);
-        Assert.Contains("Setup.", hidden);
-        Assert.Contains("End.", hidden);
+        Assert.That(hidden, Does.Not.Contain("villain"));
+        Assert.That(hidden, Does.Not.Contain("butler"));
+        Assert.That(hidden, Does.Not.Contain("~!"));
+        Assert.That(hidden, Does.Contain("Setup."));
+        Assert.That(hidden, Does.Contain("End."));
     }
 
-    [Fact]
+    [Test]
     public void Process_MultipleSpoilers_HandledIndependently()
     {
         var input = "A ~!secret one!~ middle ~!secret two!~ end";
         var revealed = SpoilerHtmlProcessor.Process(input, reveal: true);
 
-        Assert.Contains("secret one", revealed);
-        Assert.Contains("secret two", revealed);
-        Assert.Contains("middle", revealed);
-        Assert.DoesNotContain("~!", revealed);
+        Assert.That(revealed, Does.Contain("secret one"));
+        Assert.That(revealed, Does.Contain("secret two"));
+        Assert.That(revealed, Does.Contain("middle"));
+        Assert.That(revealed, Does.Not.Contain("~!"));
     }
 
-    [Fact]
+    [Test]
     public void Process_SpoilerSpansNewlines_HiddenCorrectly()
     {
         var input = "Start ~!line one\nline two!~ end";
         var hidden = SpoilerHtmlProcessor.Process(input, reveal: false);
 
-        Assert.DoesNotContain("line one", hidden);
-        Assert.DoesNotContain("line two", hidden);
+        Assert.That(hidden, Does.Not.Contain("line one"));
+        Assert.That(hidden, Does.Not.Contain("line two"));
     }
 
-    [Fact]
+    [Test]
     public void ContainsSpoilers_DetectsPresence()
     {
-        Assert.False(SpoilerHtmlProcessor.ContainsSpoilers(null));
-        Assert.False(SpoilerHtmlProcessor.ContainsSpoilers(""));
-        Assert.False(SpoilerHtmlProcessor.ContainsSpoilers("plain text"));
-        Assert.True(SpoilerHtmlProcessor.ContainsSpoilers("text ~!hidden!~ more"));
+        Assert.That(SpoilerHtmlProcessor.ContainsSpoilers(null), Is.False);
+        Assert.That(SpoilerHtmlProcessor.ContainsSpoilers(""), Is.False);
+        Assert.That(SpoilerHtmlProcessor.ContainsSpoilers("plain text"), Is.False);
+        Assert.That(SpoilerHtmlProcessor.ContainsSpoilers("text ~!hidden!~ more"), Is.True);
     }
 }
 
@@ -83,61 +83,60 @@ public class SpoilerHtmlProcessorTests
 
 public class FuzzyDateFormatterTests
 {
-    [Fact]
+    [Test]
     public void Format_Null_ReturnsNull()
     {
-        Assert.Null(FuzzyDateFormatter.Format(null));
+        Assert.That(FuzzyDateFormatter.Format(null), Is.Null);
     }
 
-    [Fact]
+    [Test]
     public void Format_FullDate_RendersFullForm()
     {
         var result = FuzzyDateFormatter.Format(new MediaDate { Year = 1989, Month = 7, Day = 15 });
-        Assert.Equal("Jul 15, 1989", result);
+        Assert.That(result, Is.EqualTo("Jul 15, 1989"));
     }
 
-    [Fact]
+    [Test]
     public void Format_FullDate_NoYear_RendersMonthDay()
     {
         var result = FuzzyDateFormatter.Format(new MediaDate { Year = 1989, Month = 7, Day = 15 }, includeYear: false);
-        Assert.Equal("Jul 15", result);
+        Assert.That(result, Is.EqualTo("Jul 15"));
     }
 
-    [Fact]
+    [Test]
     public void Format_MonthAndDayOnly_RendersMonthDay()
     {
         var result = FuzzyDateFormatter.Format(new MediaDate { Month = 3, Day = 15 });
-        Assert.Equal("Mar 15", result);
+        Assert.That(result, Is.EqualTo("Mar 15"));
     }
 
-    [Fact]
+    [Test]
     public void Format_YearAndMonthOnly_RendersMonthYear()
     {
         var result = FuzzyDateFormatter.Format(new MediaDate { Year = 2003, Month = 11 });
-        Assert.Equal("Nov 2003", result);
+        Assert.That(result, Is.EqualTo("Nov 2003"));
     }
 
-    [Fact]
+    [Test]
     public void Format_YearOnly_RendersYear()
     {
         var result = FuzzyDateFormatter.Format(new MediaDate { Year = 2003 });
-        Assert.Equal("2003", result);
+        Assert.That(result, Is.EqualTo("2003"));
     }
 
-    [Fact]
+    [Test]
     public void Format_AllNull_ReturnsNull()
     {
-        Assert.Null(FuzzyDateFormatter.Format(new MediaDate()));
+        Assert.That(FuzzyDateFormatter.Format(new MediaDate()), Is.Null);
     }
 
-    [Theory]
-    [InlineData(0)]
-    [InlineData(-1)]
-    [InlineData(13)]
+    [TestCase(0)]
+    [TestCase(-1)]
+    [TestCase(13)]
     public void Format_OutOfRangeMonth_IgnoresMonth(int month)
     {
         var result = FuzzyDateFormatter.Format(new MediaDate { Year = 1990, Month = month });
-        Assert.Equal("1990", result);
+        Assert.That(result, Is.EqualTo("1990"));
     }
 }
 
@@ -147,51 +146,51 @@ public class FuzzyDateFormatterTests
 
 public class YearsActiveFormatterTests
 {
-    [Fact]
+    [Test]
     public void Format_NullEverything_ReturnsNull()
     {
-        Assert.Null(YearsActiveFormatter.Format(null, null));
+        Assert.That(YearsActiveFormatter.Format(null, null), Is.Null);
     }
 
-    [Fact]
+    [Test]
     public void Format_EmptyEverything_ReturnsNull()
     {
-        Assert.Null(YearsActiveFormatter.Format([], null));
+        Assert.That(YearsActiveFormatter.Format([], null), Is.Null);
     }
 
-    [Fact]
+    [Test]
     public void Format_SingleYear_ActivePresent()
     {
-        Assert.Equal("1986–present", YearsActiveFormatter.Format([1986], null));
+        Assert.That(YearsActiveFormatter.Format([1986], null), Is.EqualTo("1986–present"));
     }
 
-    [Fact]
+    [Test]
     public void Format_TwoYears_ClosedRange()
     {
-        Assert.Equal("1986–2019", YearsActiveFormatter.Format([1986, 2019], null));
+        Assert.That(YearsActiveFormatter.Format([1986, 2019], null), Is.EqualTo("1986–2019"));
     }
 
-    [Fact]
+    [Test]
     public void Format_StartYear_PlusDateOfDeath_ClosedRange()
     {
         var dod = new MediaDate { Year = 2019 };
-        Assert.Equal("1986–2019", YearsActiveFormatter.Format([1986], dod));
+        Assert.That(YearsActiveFormatter.Format([1986], dod), Is.EqualTo("1986–2019"));
     }
 
-    [Fact]
+    [Test]
     public void Format_NoYearsActive_DateOfDeathOnly_RendersDeceased()
     {
         var dod = new MediaDate { Year = 2019 };
-        Assert.Equal("(deceased 2019)", YearsActiveFormatter.Format([], dod));
+        Assert.That(YearsActiveFormatter.Format([], dod), Is.EqualTo("(deceased 2019)"));
     }
 
-    [Fact]
+    [Test]
     public void Format_TwoYears_OverridesDateOfDeath()
     {
         // Trust yearsActive[1] over dateOfDeath when both set; AniList sometimes has a retirement
         // year before death year and we want the active range, not the lifespan.
         var dod = new MediaDate { Year = 2019 };
-        Assert.Equal("1986–2010", YearsActiveFormatter.Format([1986, 2010], dod));
+        Assert.That(YearsActiveFormatter.Format([1986, 2010], dod), Is.EqualTo("1986–2010"));
     }
 }
 
@@ -201,51 +200,51 @@ public class YearsActiveFormatterTests
 
 public class BirthdayCheckerTests
 {
-    [Fact]
+    [Test]
     public void IsBirthdayToday_Null_False()
     {
-        Assert.False(BirthdayChecker.IsBirthdayToday(null, new DateTime(2026, 4, 30)));
+        Assert.That(BirthdayChecker.IsBirthdayToday(null, new DateTime(2026, 4, 30)), Is.False);
     }
 
-    [Fact]
+    [Test]
     public void IsBirthdayToday_NoMonthOrDay_False()
     {
-        Assert.False(BirthdayChecker.IsBirthdayToday(new MediaDate { Year = 1990 }, new DateTime(2026, 4, 30)));
+        Assert.That(BirthdayChecker.IsBirthdayToday(new MediaDate { Year = 1990 }, new DateTime(2026, 4, 30)), Is.False);
     }
 
-    [Fact]
+    [Test]
     public void IsBirthdayToday_MatchingMonthDay_True()
     {
         var dob = new MediaDate { Year = 1989, Month = 4, Day = 30 };
-        Assert.True(BirthdayChecker.IsBirthdayToday(dob, new DateTime(2026, 4, 30)));
+        Assert.That(BirthdayChecker.IsBirthdayToday(dob, new DateTime(2026, 4, 30)), Is.True);
     }
 
-    [Fact]
+    [Test]
     public void IsBirthdayToday_MatchingMonthDay_NoYear_True()
     {
         var dob = new MediaDate { Month = 4, Day = 30 };
-        Assert.True(BirthdayChecker.IsBirthdayToday(dob, new DateTime(2026, 4, 30)));
+        Assert.That(BirthdayChecker.IsBirthdayToday(dob, new DateTime(2026, 4, 30)), Is.True);
     }
 
-    [Fact]
+    [Test]
     public void IsBirthdayToday_DifferentDay_False()
     {
         var dob = new MediaDate { Month = 4, Day = 29 };
-        Assert.False(BirthdayChecker.IsBirthdayToday(dob, new DateTime(2026, 4, 30)));
+        Assert.That(BirthdayChecker.IsBirthdayToday(dob, new DateTime(2026, 4, 30)), Is.False);
     }
 
-    [Fact]
+    [Test]
     public void IsBirthdayToday_Feb29_LeapYear_MatchesFeb29()
     {
         var dob = new MediaDate { Month = 2, Day = 29 };
-        Assert.True(BirthdayChecker.IsBirthdayToday(dob, new DateTime(2024, 2, 29)));
+        Assert.That(BirthdayChecker.IsBirthdayToday(dob, new DateTime(2024, 2, 29)), Is.True);
     }
 
-    [Fact]
+    [Test]
     public void IsBirthdayToday_Feb29_NonLeapYear_FallsBackToFeb28()
     {
         var dob = new MediaDate { Month = 2, Day = 29 };
-        Assert.True(BirthdayChecker.IsBirthdayToday(dob, new DateTime(2026, 2, 28)));
-        Assert.False(BirthdayChecker.IsBirthdayToday(dob, new DateTime(2026, 3, 1)));
+        Assert.That(BirthdayChecker.IsBirthdayToday(dob, new DateTime(2026, 2, 28)), Is.True);
+        Assert.That(BirthdayChecker.IsBirthdayToday(dob, new DateTime(2026, 3, 1)), Is.False);
     }
 }

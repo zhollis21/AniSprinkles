@@ -2,20 +2,20 @@ namespace AniSprinkles.UnitTests;
 
 public class StudioTests
 {
-    [Fact]
+    [Test]
     public void DisplayName_BlankName_FallsBackToStudio()
     {
-        Assert.Equal("Studio", new Studio { Name = "  " }.DisplayName);
-        Assert.Equal("Toei Animation", new Studio { Name = "Toei Animation" }.DisplayName);
+        Assert.That(new Studio { Name = "  " }.DisplayName, Is.EqualTo("Studio"));
+        Assert.That(new Studio { Name = "Toei Animation" }.DisplayName, Is.EqualTo("Toei Animation"));
     }
 
-    [Fact]
+    [Test]
     public void FavouritesDisplay_CompactsAndGuards()
     {
-        Assert.Equal("8.7k", new Studio { Favourites = 8_730 }.FavouritesDisplay);
-        Assert.True(new Studio { Favourites = 8_730 }.HasFavourites);
+        Assert.That(new Studio { Favourites = 8_730 }.FavouritesDisplay, Is.EqualTo("8.7k"));
+        Assert.That(new Studio { Favourites = 8_730 }.HasFavourites, Is.True);
 
-        Assert.Equal(string.Empty, new Studio { Favourites = 0 }.FavouritesDisplay);
-        Assert.False(new Studio { Favourites = null }.HasFavourites);
+        Assert.That(new Studio { Favourites = 0 }.FavouritesDisplay, Is.EqualTo(string.Empty));
+        Assert.That(new Studio { Favourites = null }.HasFavourites, Is.False);
     }
 }

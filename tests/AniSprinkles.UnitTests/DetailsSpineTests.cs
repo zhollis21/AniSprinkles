@@ -58,7 +58,7 @@ public abstract class DetailsSpineTests<TEntity>
 
     // ---- Load -------------------------------------------------------------------------------------
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_HappyPath_ShowsContent()
     {
         var harness = CreateHarness();
@@ -66,12 +66,12 @@ public abstract class DetailsSpineTests<TEntity>
 
         await LoadAsync(harness, 42);
 
-        Assert.Equal(PageState.Content, harness.Model.CurrentState);
-        Assert.True(HasEntity(harness));
-        Assert.False(harness.Model.IsBusy);
+        Assert.That(harness.Model.CurrentState, Is.EqualTo(PageState.Content));
+        Assert.That(HasEntity(harness), Is.True);
+        Assert.That(harness.Model.IsBusy, Is.False);
     }
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_WithANonPositiveId_ErrorsWithoutRetryAndWithoutCallingTheApi()
     {
         var harness = CreateHarness();
@@ -79,12 +79,12 @@ public abstract class DetailsSpineTests<TEntity>
 
         await LoadAsync(harness, 0);
 
-        Assert.Equal(PageState.Error, harness.Model.CurrentState);
-        Assert.False(harness.Model.CanRetry);
-        Assert.Equal(0, FetchCount(harness));
+        Assert.That(harness.Model.CurrentState, Is.EqualTo(PageState.Error));
+        Assert.That(harness.Model.CanRetry, Is.False);
+        Assert.That(FetchCount(harness), Is.EqualTo(0));
     }
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_WhenTheFetchReturnsNothing_ErrorsWithTheConfiguredRetryability()
     {
         var harness = CreateHarness();
@@ -92,12 +92,12 @@ public abstract class DetailsSpineTests<TEntity>
 
         await LoadAsync(harness, 42);
 
-        Assert.Equal(PageState.Error, harness.Model.CurrentState);
-        Assert.Equal(NullResultIsRetryable, harness.Model.CanRetry);
-        Assert.False(HasEntity(harness));
+        Assert.That(harness.Model.CurrentState, Is.EqualTo(PageState.Error));
+        Assert.That(harness.Model.CanRetry, Is.EqualTo(NullResultIsRetryable));
+        Assert.That(HasEntity(harness), Is.False);
     }
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_WhenTheEntityIsNotFound_StillOffersRetryAndAReport()
     {
         // #158. This used to assert the opposite, and the opposite was the bug: a NotFound produced
@@ -110,13 +110,13 @@ public abstract class DetailsSpineTests<TEntity>
 
         await LoadAsync(harness, 42);
 
-        Assert.Equal(PageState.Error, harness.Model.CurrentState);
-        Assert.True(harness.Model.CanRetry);
-        Assert.Contains(ErrorContext, harness.Model.ErrorDetails, StringComparison.Ordinal);
-        Assert.Contains("gone", harness.Model.ErrorDetails, StringComparison.Ordinal);
+        Assert.That(harness.Model.CurrentState, Is.EqualTo(PageState.Error));
+        Assert.That(harness.Model.CanRetry, Is.True);
+        Assert.That(harness.Model.ErrorDetails, Does.Contain(ErrorContext));
+        Assert.That(harness.Model.ErrorDetails, Does.Contain("gone"));
     }
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_WhenTheEntityIsNotFound_KeepsTheNotFoundWordingAndIcon()
     {
         // Retry and reportability are what changed; what the user reads must not. "Entry Unavailable"
@@ -126,11 +126,11 @@ public abstract class DetailsSpineTests<TEntity>
 
         await LoadAsync(harness, 42);
 
-        Assert.Equal("Entry Unavailable", harness.Model.ErrorTitle);
-        Assert.Equal(Glyphs.Regular.DismissCircle24, harness.Model.ErrorIconGlyph);
+        Assert.That(harness.Model.ErrorTitle, Is.EqualTo("Entry Unavailable"));
+        Assert.That(harness.Model.ErrorIconGlyph, Is.EqualTo(Glyphs.Regular.DismissCircle24));
     }
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_WhenTheEntityIsNotFound_RetryActuallyRefetches()
     {
         // CanRetry is only half of it — the button has to reach the fetch. Guards against the retry
@@ -143,11 +143,11 @@ public abstract class DetailsSpineTests<TEntity>
         Returns(harness, NewEntity(42));
         await harness.Model.RetryLoadCommand.ExecuteAsync(null);
 
-        Assert.True(FetchCount(harness) > afterFirstLoad);
-        Assert.Equal(PageState.Content, harness.Model.CurrentState);
+        Assert.That(FetchCount(harness) > afterFirstLoad, Is.True);
+        Assert.That(harness.Model.CurrentState, Is.EqualTo(PageState.Content));
     }
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_WhenTheFetchThrows_KeepsRetryAndRecordsAReport()
     {
         var harness = CreateHarness();
@@ -155,15 +155,15 @@ public abstract class DetailsSpineTests<TEntity>
 
         await LoadAsync(harness, 42);
 
-        Assert.Equal(PageState.Error, harness.Model.CurrentState);
-        Assert.True(harness.Model.CanRetry);
+        Assert.That(harness.Model.CurrentState, Is.EqualTo(PageState.Error));
+        Assert.That(harness.Model.CanRetry, Is.True);
         // #120 unified this: all four details pages now surface an ErrorReportService report rather
         // than three of them showing a bare exception message.
-        Assert.Contains(ErrorContext, harness.Model.ErrorDetails, StringComparison.Ordinal);
-        Assert.Contains("boom", harness.Model.ErrorDetails, StringComparison.Ordinal);
+        Assert.That(harness.Model.ErrorDetails, Does.Contain(ErrorContext));
+        Assert.That(harness.Model.ErrorDetails, Does.Contain("boom"));
     }
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_WhenCancelled_LeavesTheLoadingStateAloneRatherThanErroring()
     {
         var harness = CreateHarness();
@@ -172,11 +172,11 @@ public abstract class DetailsSpineTests<TEntity>
         await LoadAsync(harness, 42);
 
         // Navigating away mid-load is not a failure: no error UI, and OnAppearing reloads on return.
-        Assert.Equal(PageState.InitialLoading, harness.Model.CurrentState);
-        Assert.False(harness.Model.IsBusy);
+        Assert.That(harness.Model.CurrentState, Is.EqualTo(PageState.InitialLoading));
+        Assert.That(harness.Model.IsBusy, Is.False);
     }
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_ForTheSameEntity_ReusesItWithoutASecondRequest()
     {
         var harness = CreateHarness();
@@ -187,11 +187,11 @@ public abstract class DetailsSpineTests<TEntity>
 
         // The sort popup's OnAppearing re-entry depends on this: a second fetch would reset the sort
         // the user just picked.
-        Assert.Equal(1, FetchCount(harness));
-        Assert.Equal(PageState.Content, harness.Model.CurrentState);
+        Assert.That(FetchCount(harness), Is.EqualTo(1));
+        Assert.That(harness.Model.CurrentState, Is.EqualTo(PageState.Content));
     }
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_AfterAFailedLoad_DoesNotReuseTheEntityItWasDisplayingBefore()
     {
         var harness = CreateHarness();
@@ -203,16 +203,16 @@ public abstract class DetailsSpineTests<TEntity>
 
         // Before #120 the failed load left entity #1 in place with its sections already reset, so
         // navigating back to #1 hit the same-id guard and showed Content over empty sections.
-        Assert.False(HasEntity(harness));
+        Assert.That(HasEntity(harness), Is.False);
 
         Returns(harness, NewEntity(1));
         await LoadAsync(harness, 1);
 
-        Assert.Equal(PageState.Content, harness.Model.CurrentState);
-        Assert.True(HasEntity(harness));
+        Assert.That(harness.Model.CurrentState, Is.EqualTo(PageState.Content));
+        Assert.That(HasEntity(harness), Is.True);
     }
 
-    [Fact]
+    [Test]
     public async Task RetryLoad_ReInvokesWithTheLastRequestedId()
     {
         var harness = CreateHarness();
@@ -222,11 +222,11 @@ public abstract class DetailsSpineTests<TEntity>
         Returns(harness, NewEntity(42));
         await harness.Model.RetryLoadCommand.ExecuteAsync(null);
 
-        Assert.Equal(PageState.Content, harness.Model.CurrentState);
-        Assert.True(HasEntity(harness));
+        Assert.That(harness.Model.CurrentState, Is.EqualTo(PageState.Content));
+        Assert.That(HasEntity(harness), Is.True);
     }
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_WhileAnotherLoadIsStillInFlight_LeavesIsBusySetUntilTheLiveOneFinishes()
     {
         var harness = CreateHarness();
@@ -242,15 +242,15 @@ public abstract class DetailsSpineTests<TEntity>
         var (loser, winner) = SupersedesConcurrentLoads ? (first, second) : (second, first);
         await loser;
 
-        Assert.True(harness.Model.IsBusy);
+        Assert.That(harness.Model.IsBusy, Is.True);
 
         gate.SetResult();
         await winner;
 
-        Assert.False(harness.Model.IsBusy);
+        Assert.That(harness.Model.IsBusy, Is.False);
     }
 
-    [Fact]
+    [Test]
     public async Task CancelInFlight_CancelsTheTokenTheFetchWasGiven()
     {
         var harness = CreateHarness();
@@ -258,43 +258,43 @@ public abstract class DetailsSpineTests<TEntity>
         CapturesToken(harness, token => captured = token);
 
         await LoadAsync(harness, 42);
-        Assert.False(captured.IsCancellationRequested);
+        Assert.That(captured.IsCancellationRequested, Is.False);
 
         harness.Model.CancelInFlight();
 
-        Assert.True(captured.IsCancellationRequested);
+        Assert.That(captured.IsCancellationRequested, Is.True);
     }
 
     // ---- Error state ------------------------------------------------------------------------------
 
-    [Fact]
+    [Test]
     public void ShowError_PopulatesTheErrorStateForThePageToRender()
     {
         var harness = CreateHarness();
 
         harness.Model.ShowError("Title", "Subtitle", canRetry: false, details: "why", iconGlyph: "glyph");
 
-        Assert.Equal(PageState.Error, harness.Model.CurrentState);
-        Assert.Equal("Title", harness.Model.ErrorTitle);
-        Assert.Equal("Subtitle", harness.Model.ErrorSubtitle);
-        Assert.Equal("why", harness.Model.ErrorDetails);
-        Assert.Equal("glyph", harness.Model.ErrorIconGlyph);
-        Assert.False(harness.Model.CanRetry);
+        Assert.That(harness.Model.CurrentState, Is.EqualTo(PageState.Error));
+        Assert.That(harness.Model.ErrorTitle, Is.EqualTo("Title"));
+        Assert.That(harness.Model.ErrorSubtitle, Is.EqualTo("Subtitle"));
+        Assert.That(harness.Model.ErrorDetails, Is.EqualTo("why"));
+        Assert.That(harness.Model.ErrorIconGlyph, Is.EqualTo("glyph"));
+        Assert.That(harness.Model.CanRetry, Is.False);
     }
 
-    [Fact]
+    [Test]
     public void ShowError_WithoutAGlyph_FallsBackToTheGenericErrorIcon()
     {
         var harness = CreateHarness();
 
         harness.Model.ShowError("Title", "Subtitle", canRetry: true);
 
-        Assert.Equal(Glyphs.Regular.ErrorCircle24, harness.Model.ErrorIconGlyph);
+        Assert.That(harness.Model.ErrorIconGlyph, Is.EqualTo(Glyphs.Regular.ErrorCircle24));
     }
 
     // ---- Favourites -------------------------------------------------------------------------------
 
-    [Fact]
+    [Test]
     public async Task ToggleFavourite_WhenSignedOut_IsNotOffered()
     {
         var harness = CreateHarness();
@@ -303,10 +303,10 @@ public abstract class DetailsSpineTests<TEntity>
 
         await LoadAsync(harness, 42);
 
-        Assert.False(harness.Model.CanToggleFavourite);
+        Assert.That(harness.Model.CanToggleFavourite, Is.False);
     }
 
-    [Fact]
+    [Test]
     public async Task ToggleFavourite_WhenItSucceeds_FlipsTheHeartAndBumpsTheCount()
     {
         var harness = CreateHarness();
@@ -316,16 +316,16 @@ public abstract class DetailsSpineTests<TEntity>
             .Returns(Task.FromResult(true));
 
         await LoadAsync(harness, 42);
-        Assert.True(harness.Model.CanToggleFavourite);
+        Assert.That(harness.Model.CanToggleFavourite, Is.True);
 
         await harness.Model.ToggleFavouriteCommand.ExecuteAsync(null);
 
-        Assert.True(harness.Model.IsFavourite);
-        Assert.Equal("11", harness.Model.FavouritesDisplay);
-        Assert.Empty(harness.Feedback.Snackbars);
+        Assert.That(harness.Model.IsFavourite, Is.True);
+        Assert.That(harness.Model.FavouritesDisplay, Is.EqualTo("11"));
+        Assert.That(harness.Feedback.Snackbars, Is.Empty);
     }
 
-    [Fact]
+    [Test]
     public async Task ToggleFavourite_WhenItFails_RollsBackAndOffersRetry()
     {
         var harness = CreateHarness();
@@ -337,13 +337,13 @@ public abstract class DetailsSpineTests<TEntity>
         await LoadAsync(harness, 42);
         await harness.Model.ToggleFavouriteCommand.ExecuteAsync(null);
 
-        Assert.False(harness.Model.IsFavourite);
-        Assert.Equal("10", harness.Model.FavouritesDisplay);
-        Assert.Single(harness.Feedback.Snackbars);
-        Assert.NotNull(harness.Feedback.LastSnackbarAction);
+        Assert.That(harness.Model.IsFavourite, Is.False);
+        Assert.That(harness.Model.FavouritesDisplay, Is.EqualTo("10"));
+        Assert.That(harness.Feedback.Snackbars, Has.Exactly(1).Items);
+        Assert.That<Action?>(harness.Feedback.LastSnackbarAction, Is.Not.Null);
     }
 
-    [Fact]
+    [Test]
     public async Task FavouritesDisplay_UsesTheCompactFormatIncludingTheMillionsTier()
     {
         var harness = CreateHarness();
@@ -353,10 +353,10 @@ public abstract class DetailsSpineTests<TEntity>
 
         // #120 folded three separate favourites formatters into MetricFormat.Compact. Two of them had
         // no M tier, so this used to render "1200k".
-        Assert.Equal("1.2M", harness.Model.FavouritesDisplay);
+        Assert.That(harness.Model.FavouritesDisplay, Is.EqualTo("1.2M"));
     }
 
-    [Fact]
+    [Test]
     public async Task FavouritesDisplay_WithNoFavourites_IsBlank()
     {
         var harness = CreateHarness();
@@ -364,43 +364,43 @@ public abstract class DetailsSpineTests<TEntity>
 
         await LoadAsync(harness, 42);
 
-        Assert.Equal(string.Empty, harness.Model.FavouritesDisplay);
-        Assert.False(harness.Model.HasFavourites);
+        Assert.That(harness.Model.FavouritesDisplay, Is.EqualTo(string.Empty));
+        Assert.That(harness.Model.HasFavourites, Is.False);
     }
 
     // ---- External link ----------------------------------------------------------------------------
 
-    [Fact]
+    [Test]
     public async Task OpenSiteUrl_OpensTheEntityUrl()
     {
         var harness = CreateHarness();
         Returns(harness, NewEntity(42, siteUrl: "https://anilist.co/thing/42"));
 
         await LoadAsync(harness, 42);
-        Assert.True(harness.Model.HasSiteUrl);
+        Assert.That(harness.Model.HasSiteUrl, Is.True);
 
         await harness.Model.OpenSiteUrlCommand.ExecuteAsync(null);
 
-        Assert.Equal(new Uri("https://anilist.co/thing/42"), harness.Browser.LastOpened);
+        Assert.That(harness.Browser.LastOpened, Is.EqualTo(new Uri("https://anilist.co/thing/42")));
     }
 
-    [Fact]
+    [Test]
     public async Task OpenSiteUrl_WithNoUrl_DoesNothing()
     {
         var harness = CreateHarness();
         Returns(harness, NewEntity(42, siteUrl: null));
 
         await LoadAsync(harness, 42);
-        Assert.False(harness.Model.HasSiteUrl);
+        Assert.That(harness.Model.HasSiteUrl, Is.False);
 
         await harness.Model.OpenSiteUrlCommand.ExecuteAsync(null);
 
-        Assert.Empty(harness.Browser.Opened);
+        Assert.That(harness.Browser.Opened, Is.Empty);
     }
 
     // ---- Navigate to media ------------------------------------------------------------------------
 
-    [Fact]
+    [Test]
     public async Task NavigateToMedia_ForAnAnimeEntry_NavigatesWithItsId()
     {
         var harness = CreateHarness();
@@ -413,7 +413,7 @@ public abstract class DetailsSpineTests<TEntity>
             Arg.Is<IDictionary<string, object>>(d => (int)d["mediaId"] == 7));
     }
 
-    [Fact]
+    [Test]
     public async Task NavigateToMedia_ForAMangaEntry_NavigatesLikeAnyOtherEntry()
     {
         var harness = CreateHarness();
@@ -423,21 +423,21 @@ public abstract class DetailsSpineTests<TEntity>
         // Toasted "not supported yet" until #12: the details screen pinned Media(id:, type: ANIME),
         // so a manga id from a relations carousel would have 404'd. Ids are unique across both
         // types, so dropping the pin made the same navigation work for either.
-        Assert.Empty(harness.Feedback.Toasts);
+        Assert.That(harness.Feedback.Toasts, Is.Empty);
         await harness.Navigation.Received(1).GoToAsync(
             "media-details",
             false,
             Arg.Is<IDictionary<string, object>>(d => (int)d["mediaId"] == 7));
     }
 
-    [Fact]
+    [Test]
     public async Task NavigateToMedia_WithNoEntry_DoesNothing()
     {
         var harness = CreateHarness();
 
         await harness.Model.NavigateToMediaCommand.ExecuteAsync(null);
 
-        Assert.Empty(harness.Feedback.Toasts);
+        Assert.That(harness.Feedback.Toasts, Is.Empty);
         await harness.Navigation.DidNotReceive().GoToAsync(
             Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<IDictionary<string, object>>());
     }

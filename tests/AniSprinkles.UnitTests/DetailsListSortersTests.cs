@@ -44,22 +44,21 @@ public class DetailsListSortersTests
         Media(3, pop: 20, score: 80, fav: 200, year: 2020, title: "Gamma"),
     ];
 
-    [Theory]
-    [InlineData("POPULARITY_DESC", new[] { 2, 3, 1 })]
-    [InlineData("SCORE_DESC", new[] { 1, 3, 2 })]
-    [InlineData("FAVOURITES_DESC", new[] { 2, 3, 1 })]
-    [InlineData("START_DATE_DESC", new[] { 3, 1, 2 })] // newest first
-    [InlineData("START_DATE", new[] { 2, 1, 3 })]      // oldest first
-    [InlineData("TITLE_ROMAJI", new[] { 2, 1, 3 })]    // alpha, Beta, Gamma (case-insensitive)
-    [InlineData("UNRECOGNIZED", new[] { 2, 3, 1 })]    // falls back to popularity
+    [TestCase("POPULARITY_DESC", new[] { 2, 3, 1 })]
+    [TestCase("SCORE_DESC", new[] { 1, 3, 2 })]
+    [TestCase("FAVOURITES_DESC", new[] { 2, 3, 1 })]
+    [TestCase("START_DATE_DESC", new[] { 3, 1, 2 })] // newest first
+    [TestCase("START_DATE", new[] { 2, 1, 3 })]      // oldest first
+    [TestCase("TITLE_ROMAJI", new[] { 2, 1, 3 })]    // alpha, Beta, Gamma (case-insensitive)
+    [TestCase("UNRECOGNIZED", new[] { 2, 3, 1 })]    // falls back to popularity
     public void SortAppearances_ByCode_OrdersAsExpected(string sort, int[] expectedIds)
     {
         var result = DetailsListSorters.SortAppearances(sort, Sample());
 
-        Assert.Equal(expectedIds, result.Select(e => e.Node!.Id));
+        Assert.That(result.Select(e => e.Node!.Id), Is.EqualTo(expectedIds));
     }
 
-    [Fact]
+    [Test]
     public void SortAppearances_EqualKeys_TieBreaksByIdAscending_Deterministically()
     {
         // All equal popularity, supplied in descending-id order; result must be id-ascending and
@@ -69,11 +68,11 @@ public class DetailsListSortersTests
         var first = DetailsListSorters.SortAppearances("POPULARITY_DESC", items);
         var second = DetailsListSorters.SortAppearances("POPULARITY_DESC", first);
 
-        Assert.Equal(new[] { 1, 2, 3 }, first.Select(e => e.Node!.Id));
-        Assert.Equal(new[] { 1, 2, 3 }, second.Select(e => e.Node!.Id));
+        Assert.That(first.Select(e => e.Node!.Id), Is.EqualTo(new[] { 1, 2, 3 }));
+        Assert.That(second.Select(e => e.Node!.Id), Is.EqualTo(new[] { 1, 2, 3 }));
     }
 
-    [Fact]
+    [Test]
     public void SortAppearances_StartDate_FloatsUndatedFirstBothDirections()
     {
         // Mirrors AniList's server order: undated entries first in BOTH directions, then by date.
@@ -82,11 +81,11 @@ public class DetailsListSortersTests
         var oldest = DetailsListSorters.SortAppearances("START_DATE", items);
         var newest = DetailsListSorters.SortAppearances("START_DATE_DESC", items);
 
-        Assert.Equal(new[] { 2, 3, 1 }, oldest.Select(e => e.Node!.Id)); // (undated), 1990, 2005
-        Assert.Equal(new[] { 2, 1, 3 }, newest.Select(e => e.Node!.Id)); // (undated), 2005, 1990
+        Assert.That(oldest.Select(e => e.Node!.Id), Is.EqualTo(new[] { 2, 3, 1 })); // (undated), 1990, 2005
+        Assert.That(newest.Select(e => e.Node!.Id), Is.EqualTo(new[] { 2, 1, 3 })); // (undated), 2005, 1990
     }
 
-    [Fact]
+    [Test]
     public void SortAppearances_StartDate_SameYearOrdersByMonthThenDay()
     {
         var items = new List<CharacterMediaEdge>
@@ -99,34 +98,33 @@ public class DetailsListSortersTests
         var oldest = DetailsListSorters.SortAppearances("START_DATE", items);
         var newest = DetailsListSorters.SortAppearances("START_DATE_DESC", items);
 
-        Assert.Equal(new[] { 3, 2, 1 }, oldest.Select(e => e.Node!.Id)); // Jan 2, Jan 15, Jun 1
-        Assert.Equal(new[] { 1, 2, 3 }, newest.Select(e => e.Node!.Id)); // Jun 1, Jan 15, Jan 2
+        Assert.That(oldest.Select(e => e.Node!.Id), Is.EqualTo(new[] { 3, 2, 1 })); // Jan 2, Jan 15, Jun 1
+        Assert.That(newest.Select(e => e.Node!.Id), Is.EqualTo(new[] { 1, 2, 3 })); // Jun 1, Jan 15, Jan 2
     }
 
-    [Fact]
+    [Test]
     public void SortAppearances_ByTitle_UntitledSortsLast()
     {
         var items = new List<CharacterMediaEdge> { Media(1, title: "Beta"), Media(2, title: null), Media(3, title: "alpha") };
 
         var result = DetailsListSorters.SortAppearances("TITLE_ROMAJI", items);
 
-        Assert.Equal(new[] { 3, 1, 2 }, result.Select(e => e.Node!.Id)); // alpha, Beta, (untitled)
+        Assert.That(result.Select(e => e.Node!.Id), Is.EqualTo(new[] { 3, 1, 2 })); // alpha, Beta, (untitled)
     }
 
-    [Fact]
+    [Test]
     public void SortAppearances_NullNode_DoesNotThrowAndSortsLast()
     {
         var items = new List<CharacterMediaEdge> { new() { Node = null }, Media(5, pop: 50) };
 
         var result = DetailsListSorters.SortAppearances("POPULARITY_DESC", items);
 
-        Assert.Equal(5, result[0].Node!.Id);
-        Assert.Null(result[1].Node);
+        Assert.That(result[0].Node!.Id, Is.EqualTo(5));
+        Assert.That(result[1].Node, Is.Null);
     }
 
-    [Theory]
-    [InlineData("POPULARITY_DESC")]
-    [InlineData("TITLE_ROMAJI")] // null title → empty string ties with the null node's empty string
+    [TestCase("POPULARITY_DESC")]
+    [TestCase("TITLE_ROMAJI")] // null title → empty string ties with the null node's empty string
     public void SortAppearances_NullNode_SortsAfterRealItemEvenWhenKeyTies(string sort)
     {
         // Real item has a zero/empty key, so it ties the null node on the primary key; the null node
@@ -135,32 +133,32 @@ public class DetailsListSortersTests
 
         var result = DetailsListSorters.SortAppearances(sort, items);
 
-        Assert.Equal(7, result[0].Node!.Id);
-        Assert.Null(result[1].Node);
+        Assert.That(result[0].Node!.Id, Is.EqualTo(7));
+        Assert.That(result[1].Node, Is.Null);
     }
 
-    [Fact]
+    [Test]
     public void SortVoiceRoles_NullNode_SortsAfterRealItemEvenWhenFavouritesZero()
     {
         var items = new List<StaffCharacterEdge> { new() { Node = null }, VoiceRole(7, fav: 0) };
 
         var result = DetailsListSorters.SortVoiceRoles("FAVOURITES_DESC", items);
 
-        Assert.Equal(7, result[0].Node!.Id);
-        Assert.Null(result[1].Node);
+        Assert.That(result[0].Node!.Id, Is.EqualTo(7));
+        Assert.That(result[1].Node, Is.Null);
     }
 
-    [Fact]
+    [Test]
     public void SortProductionRoles_SharesMediaSortLogic()
     {
         var items = new List<StaffMediaEdge> { ProdMedia(1, pop: 10), ProdMedia(2, pop: 30), ProdMedia(3, pop: 20) };
 
         var result = DetailsListSorters.SortProductionRoles("POPULARITY_DESC", items);
 
-        Assert.Equal(new[] { 2, 3, 1 }, result.Select(e => e.Node!.Id));
+        Assert.That(result.Select(e => e.Node!.Id), Is.EqualTo(new[] { 2, 3, 1 }));
     }
 
-    [Fact]
+    [Test]
     public void SortStudioProductions_SharesMediaSortLogic()
     {
         var items = new List<StudioMediaEdge>
@@ -173,11 +171,11 @@ public class DetailsListSortersTests
         var byPopularity = DetailsListSorters.SortStudioProductions("POPULARITY_DESC", items);
         var byOldest = DetailsListSorters.SortStudioProductions("START_DATE", items);
 
-        Assert.Equal(new[] { 2, 3, 1 }, byPopularity.Select(e => e.Node!.Id));
-        Assert.Equal(new[] { 2, 3, 1 }, byOldest.Select(e => e.Node!.Id)); // (undated), 2000, 2010
+        Assert.That(byPopularity.Select(e => e.Node!.Id), Is.EqualTo(new[] { 2, 3, 1 }));
+        Assert.That(byOldest.Select(e => e.Node!.Id), Is.EqualTo(new[] { 2, 3, 1 })); // (undated), 2000, 2010
     }
 
-    [Fact]
+    [Test]
     public void SortVoiceRoles_ByRole_OrdersMainSupportingBackgroundThenOther()
     {
         var items = new List<StaffCharacterEdge>
@@ -190,10 +188,10 @@ public class DetailsListSortersTests
 
         var result = DetailsListSorters.SortVoiceRoles("ROLE", items);
 
-        Assert.Equal(new[] { 2, 1, 3, 4 }, result.Select(e => e.Node!.Id));
+        Assert.That(result.Select(e => e.Node!.Id), Is.EqualTo(new[] { 2, 1, 3, 4 }));
     }
 
-    [Fact]
+    [Test]
     public void SortVoiceRoles_SameRole_TieBreaksByFavouritesThenId()
     {
         var items = new List<StaffCharacterEdge>
@@ -205,10 +203,10 @@ public class DetailsListSortersTests
 
         var result = DetailsListSorters.SortVoiceRoles("ROLE", items);
 
-        Assert.Equal(new[] { 2, 3, 1 }, result.Select(e => e.Node!.Id)); // 500(id2), 500(id3), 50(id1)
+        Assert.That(result.Select(e => e.Node!.Id), Is.EqualTo(new[] { 2, 3, 1 })); // 500(id2), 500(id3), 50(id1)
     }
 
-    [Fact]
+    [Test]
     public void SortVoiceRoles_Default_OrdersByFavouritesDescending()
     {
         var items = new List<StaffCharacterEdge>
@@ -220,7 +218,7 @@ public class DetailsListSortersTests
 
         var result = DetailsListSorters.SortVoiceRoles("FAVOURITES_DESC", items);
 
-        Assert.Equal(new[] { 2, 3, 1 }, result.Select(e => e.Node!.Id));
+        Assert.That(result.Select(e => e.Node!.Id), Is.EqualTo(new[] { 2, 3, 1 }));
     }
 
     // ---- Relations (client-side; RelationType is the mapper's display string, e.g. "Side Story") ----
@@ -237,7 +235,7 @@ public class DetailsListSortersTests
             },
         };
 
-    [Fact]
+    [Test]
     public void SortRelations_ByRelationType_OrdersByCuratedNarrativeOrder()
     {
         var items = new List<MediaRelationEdge>
@@ -255,10 +253,10 @@ public class DetailsListSortersTests
         var result = DetailsListSorters.SortRelations("RELATION", items);
 
         // Sequel → Prequel → Side Story → Parent → Adaptation → Spin Off → Alternative → other
-        Assert.Equal(new[] { 2, 4, 5, 6, 7, 1, 8, 3 }, result.Select(e => e.Node!.Id));
+        Assert.That(result.Select(e => e.Node!.Id), Is.EqualTo(new[] { 2, 4, 5, 6, 7, 1, 8, 3 }));
     }
 
-    [Fact]
+    [Test]
     public void SortRelations_UnknownAndNullTypes_LandInTrailingBucketStableById()
     {
         var items = new List<MediaRelationEdge>
@@ -271,10 +269,10 @@ public class DetailsListSortersTests
 
         var result = DetailsListSorters.SortRelations("RELATION", items);
 
-        Assert.Equal(new[] { 5, 10, 20, 30 }, result.Select(e => e.Node!.Id));
+        Assert.That(result.Select(e => e.Node!.Id), Is.EqualTo(new[] { 5, 10, 20, 30 }));
     }
 
-    [Fact]
+    [Test]
     public void SortRelations_SameUniverse_LandsInTheTrailingBucketAlongsideOther()
     {
         // Relations version 3 added SAME_UNIVERSE (#163), which version 2 reported as OTHER. We
@@ -290,10 +288,10 @@ public class DetailsListSortersTests
 
         var result = DetailsListSorters.SortRelations("RELATION", items);
 
-        Assert.Equal(new int?[] { 5, 20, 30 }, result.Select(e => e.Node?.Id));
+        Assert.That(result.Select(e => e.Node?.Id), Is.EqualTo(new int?[] { 5, 20, 30 }));
     }
 
-    [Fact]
+    [Test]
     public void SortRelations_ByYear_FloatsUndatedFirstBothDirections()
     {
         // Same rule as the productions lists: undated first in both directions, then by date.
@@ -307,11 +305,11 @@ public class DetailsListSortersTests
         var newest = DetailsListSorters.SortRelations("YEAR_DESC", items);
         var oldest = DetailsListSorters.SortRelations("YEAR_ASC", items);
 
-        Assert.Equal(new[] { 2, 1, 3 }, newest.Select(e => e.Node!.Id)); // (undated), 2005, 1990
-        Assert.Equal(new[] { 2, 3, 1 }, oldest.Select(e => e.Node!.Id)); // (undated), 1990, 2005
+        Assert.That(newest.Select(e => e.Node!.Id), Is.EqualTo(new[] { 2, 1, 3 })); // (undated), 2005, 1990
+        Assert.That(oldest.Select(e => e.Node!.Id), Is.EqualTo(new[] { 2, 3, 1 })); // (undated), 1990, 2005
     }
 
-    [Fact]
+    [Test]
     public void SortRelations_ByTitle_CaseInsensitiveWithNullTitlesLast()
     {
         var items = new List<MediaRelationEdge>
@@ -323,21 +321,21 @@ public class DetailsListSortersTests
 
         var result = DetailsListSorters.SortRelations("TITLE", items);
 
-        Assert.Equal(new[] { 2, 1, 3 }, result.Select(e => e.Node!.Id)); // alpha, Beta, (untitled)
+        Assert.That(result.Select(e => e.Node!.Id), Is.EqualTo(new[] { 2, 1, 3 })); // alpha, Beta, (untitled)
     }
 
-    [Fact]
+    [Test]
     public void SortRelations_NullNode_SortsLast()
     {
         var items = new List<MediaRelationEdge> { new() { Node = null, RelationType = "Sequel" }, Relation(5, "Sequel") };
 
         var result = DetailsListSorters.SortRelations("RELATION", items);
 
-        Assert.Equal(5, result[0].Node!.Id);
-        Assert.Null(result[1].Node);
+        Assert.That(result[0].Node!.Id, Is.EqualTo(5));
+        Assert.That(result[1].Node, Is.Null);
     }
 
-    [Fact]
+    [Test]
     public void SortRelations_ToggleBackToRelation_IsStable()
     {
         var items = new List<MediaRelationEdge>
@@ -351,6 +349,6 @@ public class DetailsListSortersTests
         var byYear = DetailsListSorters.SortRelations("YEAR_DESC", byRelation);
         var backToRelation = DetailsListSorters.SortRelations("RELATION", byYear);
 
-        Assert.Equal(byRelation.Select(e => e.Node!.Id), backToRelation.Select(e => e.Node!.Id));
+        Assert.That(backToRelation.Select(e => e.Node!.Id), Is.EqualTo(byRelation.Select(e => e.Node!.Id)));
     }
 }

@@ -18,7 +18,7 @@ public class AiringTimeRebaserTests
     private static readonly DateTimeOffset RecordedAt = new(2026, 9, 1, 12, 0, 0, TimeSpan.Zero);
     private static readonly DateTimeOffset Now = RecordedAt.AddDays(5);
 
-    [Fact]
+    [Test]
     public void AiringAt_MovesForwardByTheAgeOfTheRecording()
     {
         // The property that matters is not the absolute value but the distance from "now": an episode
@@ -29,10 +29,10 @@ public class AiringTimeRebaserTests
         AiringTimeRebaser.Rebase(response, RecordedAt, Now);
 
         var rebased = response["data"]!["Media"]!["nextAiringEpisode"]!["airingAt"]!.GetValue<long>();
-        Assert.Equal(Now.AddHours(3).ToUnixTimeSeconds(), rebased);
+        Assert.That(rebased, Is.EqualTo(Now.AddHours(3).ToUnixTimeSeconds()));
     }
 
-    [Fact]
+    [Test]
     public void TimeUntilAiring_IsRecomputedRatherThanShifted()
     {
         // It is a duration from "now", not an instant. Adding the same offset the timestamp got would
@@ -42,10 +42,10 @@ public class AiringTimeRebaserTests
         AiringTimeRebaser.Rebase(response, RecordedAt, Now);
 
         var remaining = response["data"]!["Media"]!["nextAiringEpisode"]!["timeUntilAiring"]!.GetValue<long>();
-        Assert.Equal(3 * 60 * 60, remaining);
+        Assert.That(remaining, Is.EqualTo(3 * 60 * 60));
     }
 
-    [Fact]
+    [Test]
     public void AnEpisodeAlreadyPastAtRecordTime_StaysPast()
     {
         // Shifting is uniform, so history stays history. An episode that had already aired must not
@@ -55,11 +55,11 @@ public class AiringTimeRebaserTests
         AiringTimeRebaser.Rebase(response, RecordedAt, Now);
 
         var rebased = response["data"]!["Media"]!["nextAiringEpisode"]!["airingAt"]!.GetValue<long>();
-        Assert.True(rebased < Now.ToUnixTimeSeconds());
-        Assert.Equal(Now.AddHours(-10).ToUnixTimeSeconds(), rebased);
+        Assert.That(rebased < Now.ToUnixTimeSeconds(), Is.True);
+        Assert.That(rebased, Is.EqualTo(Now.AddHours(-10).ToUnixTimeSeconds()));
     }
 
-    [Fact]
+    [Test]
     public void AFixtureRecordedInTheFuture_IsLeftAlone()
     {
         // Clock skew rather than a real case, but shifting backwards would silently corrupt a fixture
@@ -69,10 +69,10 @@ public class AiringTimeRebaserTests
 
         AiringTimeRebaser.Rebase(response, RecordedAt, RecordedAt.AddDays(-1));
 
-        Assert.Equal(original, response["data"]!["Media"]!["nextAiringEpisode"]!["airingAt"]!.GetValue<long>());
+        Assert.That(response["data"]!["Media"]!["nextAiringEpisode"]!["airingAt"]!.GetValue<long>(), Is.EqualTo(original));
     }
 
-    [Fact]
+    [Test]
     public void EveryAiringTimeInTheResponse_IsRebased()
     {
         // AiringSchedule returns a page of them, and the notification worker reads the whole page.
@@ -93,11 +93,11 @@ public class AiringTimeRebaserTests
         AiringTimeRebaser.Rebase(response, RecordedAt, Now);
 
         var schedules = response["data"]!["Page"]!["airingSchedules"]!.AsArray();
-        Assert.Equal(Now.AddHours(1).ToUnixTimeSeconds(), schedules[0]!["airingAt"]!.GetValue<long>());
-        Assert.Equal(Now.AddHours(2).ToUnixTimeSeconds(), schedules[1]!["airingAt"]!.GetValue<long>());
+        Assert.That(schedules[0]!["airingAt"]!.GetValue<long>(), Is.EqualTo(Now.AddHours(1).ToUnixTimeSeconds()));
+        Assert.That(schedules[1]!["airingAt"]!.GetValue<long>(), Is.EqualTo(Now.AddHours(2).ToUnixTimeSeconds()));
     }
 
-    [Fact]
+    [Test]
     public void ANodeWithoutTimeUntilAiring_DoesNotGainOne()
     {
         // Only ever answer the shape AniList sent. Inventing a field the query never asked for would
@@ -106,7 +106,7 @@ public class AiringTimeRebaserTests
 
         AiringTimeRebaser.Rebase(response, RecordedAt, Now);
 
-        Assert.Null(response["data"]!["Media"]!["nextAiringEpisode"]!["timeUntilAiring"]);
+        Assert.That(response["data"]!["Media"]!["nextAiringEpisode"]!["timeUntilAiring"], Is.Null);
     }
 
     private static JsonNode AiringResponse(long airingAt, long? timeUntilAiring = null)

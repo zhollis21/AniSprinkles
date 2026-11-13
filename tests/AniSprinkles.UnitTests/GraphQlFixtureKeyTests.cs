@@ -16,7 +16,7 @@ public class GraphQlFixtureKeyTests
 {
     // ── Identity ─────────────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void PropertyOrder_DoesNotChangeTheKey()
     {
         // Variables are built from anonymous objects, so member order is a compile-time accident
@@ -25,28 +25,28 @@ public class GraphQlFixtureKeyTests
         var first = GraphQlFixtureKey.Derive("Media", Vars("""{"id":21,"page":1}"""));
         var second = GraphQlFixtureKey.Derive("Media", Vars("""{"page":1,"id":21}"""));
 
-        Assert.Equal(first, second);
+        Assert.That(second, Is.EqualTo(first));
     }
 
-    [Fact]
+    [Test]
     public void DifferentVariables_ProduceDifferentKeys()
     {
         var first = GraphQlFixtureKey.Derive("Media", Vars("""{"id":21}"""));
         var second = GraphQlFixtureKey.Derive("Media", Vars("""{"id":22}"""));
 
-        Assert.NotEqual(first, second);
+        Assert.That(second, Is.Not.EqualTo(first));
     }
 
-    [Fact]
+    [Test]
     public void DifferentOperations_ProduceDifferentKeys()
     {
         var characters = GraphQlFixtureKey.Derive("MediaCharactersPage", Vars("""{"id":21}"""));
         var staff = GraphQlFixtureKey.Derive("MediaStaffPage", Vars("""{"id":21}"""));
 
-        Assert.NotEqual(characters, staff);
+        Assert.That(staff, Is.Not.EqualTo(characters));
     }
 
-    [Fact]
+    [Test]
     public void ArrayOrder_DoesChangeTheKey()
     {
         // Unlike object members, GraphQL list arguments are ordered and meaningful — a sort of
@@ -54,22 +54,22 @@ public class GraphQlFixtureKeyTests
         var first = GraphQlFixtureKey.Derive("MediaCharactersPage", Vars("""{"sort":["ROLE","ID"]}"""));
         var second = GraphQlFixtureKey.Derive("MediaCharactersPage", Vars("""{"sort":["ID","ROLE"]}"""));
 
-        Assert.NotEqual(first, second);
+        Assert.That(second, Is.Not.EqualTo(first));
     }
 
-    [Fact]
+    [Test]
     public void NullVariables_AreStableAndDistinctFromEmpty()
     {
         var none = GraphQlFixtureKey.Derive("ViewerFull", null);
         var alsoNone = GraphQlFixtureKey.Derive("ViewerFull", null);
 
-        Assert.Equal(none, alsoNone);
-        Assert.NotEqual(none, GraphQlFixtureKey.Derive("ViewerFull", Vars("{}")));
+        Assert.That(alsoNone, Is.EqualTo(none));
+        Assert.That(GraphQlFixtureKey.Derive("ViewerFull", Vars("{}")), Is.Not.EqualTo(none));
     }
 
     // ── Clock-derived variables ──────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void DiscoverSections_IgnoresTheSeasonAndYear()
     {
         // The season comes from AniListSeason.Current(now). Keyed on, a fixture recorded in autumn
@@ -81,20 +81,20 @@ public class GraphQlFixtureKeyTests
             "DiscoverSections",
             Vars("""{"season":"WINTER","seasonYear":2027,"nextSeason":"SPRING","nextSeasonYear":2027,"perPage":20}"""));
 
-        Assert.Equal(autumn, winter);
+        Assert.That(winter, Is.EqualTo(autumn));
     }
 
-    [Fact]
+    [Test]
     public void DiscoverSections_StillDistinguishesTheAdultFilter()
     {
         // Dropping the volatile names must not flatten the axis the canary contract depends on.
         var sfw = GraphQlFixtureKey.Derive("DiscoverSections", Vars("""{"season":"FALL","isAdult":false}"""));
         var unfiltered = GraphQlFixtureKey.Derive("DiscoverSections", Vars("""{"season":"FALL"}"""));
 
-        Assert.NotEqual(sfw, unfiltered);
+        Assert.That(unfiltered, Is.Not.EqualTo(sfw));
     }
 
-    [Fact]
+    [Test]
     public void AiringSchedule_IgnoresTheWindowAndMediaIds()
     {
         var monday = GraphQlFixtureKey.Derive(
@@ -104,19 +104,19 @@ public class GraphQlFixtureKeyTests
             "AiringSchedule",
             Vars("""{"mediaIds":[1,2,3],"airingAfter":9000,"airingBefore":9999,"page":1}"""));
 
-        Assert.Equal(monday, thursday);
+        Assert.That(thursday, Is.EqualTo(monday));
     }
 
-    [Fact]
+    [Test]
     public void AiringSchedule_StillDistinguishesThePage()
     {
         var first = GraphQlFixtureKey.Derive("AiringSchedule", Vars("""{"airingAfter":1,"page":1}"""));
         var second = GraphQlFixtureKey.Derive("AiringSchedule", Vars("""{"airingAfter":1,"page":2}"""));
 
-        Assert.NotEqual(first, second);
+        Assert.That(second, Is.Not.EqualTo(first));
     }
 
-    [Fact]
+    [Test]
     public void BrowseAnime_IgnoresTheSeasonButStatusStillSeparatesAiringFromUpcoming()
     {
         // The two View All pages that pin a season differ by status as well — RELEASING for Airing,
@@ -126,16 +126,16 @@ public class GraphQlFixtureKeyTests
         var airingLater = Vars("""{"sort":"POPULARITY_DESC","status":"RELEASING","season":"WINTER","seasonYear":2027,"page":1}""");
         var upcoming = Vars("""{"sort":"POPULARITY_DESC","status":"NOT_YET_RELEASED","season":"WINTER","seasonYear":2027,"page":1}""");
 
-        Assert.Equal(
-            GraphQlFixtureKey.Derive("BrowseAnime", airingNow),
-            GraphQlFixtureKey.Derive("BrowseAnime", airingLater));
-
-        Assert.NotEqual(
+        Assert.That(
             GraphQlFixtureKey.Derive("BrowseAnime", airingLater),
-            GraphQlFixtureKey.Derive("BrowseAnime", upcoming));
+            Is.EqualTo(GraphQlFixtureKey.Derive("BrowseAnime", airingNow)));
+
+        Assert.That(
+            GraphQlFixtureKey.Derive("BrowseAnime", upcoming),
+            Is.Not.EqualTo(GraphQlFixtureKey.Derive("BrowseAnime", airingLater)));
     }
 
-    [Fact]
+    [Test]
     public void VolatileNames_AreStrippedAtTheTopLevelOnly()
     {
         // "season" nested inside another object is a field of some other thing, not the clock-derived
@@ -143,21 +143,21 @@ public class GraphQlFixtureKeyTests
         var first = GraphQlFixtureKey.Derive("DiscoverSections", Vars("""{"filter":{"season":"FALL"}}"""));
         var second = GraphQlFixtureKey.Derive("DiscoverSections", Vars("""{"filter":{"season":"WINTER"}}"""));
 
-        Assert.NotEqual(first, second);
+        Assert.That(second, Is.Not.EqualTo(first));
     }
 
-    [Fact]
+    [Test]
     public void AnOperationWithNoVolatileNames_KeysOnEverything()
     {
         var first = GraphQlFixtureKey.Derive("Media", Vars("""{"id":21,"season":"FALL"}"""));
         var second = GraphQlFixtureKey.Derive("Media", Vars("""{"id":21,"season":"WINTER"}"""));
 
-        Assert.NotEqual(first, second);
+        Assert.That(second, Is.Not.EqualTo(first));
     }
 
     // ── Query fingerprint ────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void QueryFingerprint_IgnoresReformatting()
     {
         // Replay refuses a fixture whose query fingerprint has moved. If that tripped on whitespace,
@@ -172,10 +172,10 @@ public class GraphQlFixtureKeyTests
             }
             """);
 
-        Assert.Equal(compact, sprawling);
+        Assert.That(sprawling, Is.EqualTo(compact));
     }
 
-    [Fact]
+    [Test]
     public void TwoQueriesUnderIdenticalVariables_GetDifferentFiles()
     {
         // GetDiscoverSectionsAsync is the case that forced this: it sends one document with the 18+
@@ -190,23 +190,23 @@ public class GraphQlFixtureKeyTests
         var plain = GraphQlFixtureKey.FileName("DiscoverSections", variables, withoutAdult);
         var adult = GraphQlFixtureKey.FileName("DiscoverSections", variables, withAdult);
 
-        Assert.NotEqual(plain, adult);
+        Assert.That(adult, Is.Not.EqualTo(plain));
 
         // They still share an address, which is what lets a lookup find them both and choose.
-        Assert.Equal(
+        Assert.That(
             GraphQlFixtureKey.Derive("DiscoverSections", variables),
-            GraphQlFixtureKey.Derive("DiscoverSections", variables));
-        Assert.StartsWith(GraphQlFixtureKey.Derive("DiscoverSections", variables), plain, StringComparison.Ordinal);
-        Assert.StartsWith(GraphQlFixtureKey.Derive("DiscoverSections", variables), adult, StringComparison.Ordinal);
+            Is.EqualTo(GraphQlFixtureKey.Derive("DiscoverSections", variables)));
+        Assert.That(plain, Does.StartWith(GraphQlFixtureKey.Derive("DiscoverSections", variables)));
+        Assert.That(adult, Does.StartWith(GraphQlFixtureKey.Derive("DiscoverSections", variables)));
     }
 
-    [Fact]
+    [Test]
     public void QueryFingerprint_ChangesWhenAFieldIsAdded()
     {
         var before = GraphQlFixtureKey.QueryFingerprint("query Media { Media { id } }");
         var after = GraphQlFixtureKey.QueryFingerprint("query Media { Media { id title } }");
 
-        Assert.NotEqual(before, after);
+        Assert.That(after, Is.Not.EqualTo(before));
     }
 
     private static JsonNode? Vars(string json) => JsonNode.Parse(json);

@@ -3,14 +3,14 @@ using System.Collections.Specialized;
 
 namespace AniSprinkles.UnitTests;
 
-[Collection(AppSettingsCollection.Name)]
+[NonParallelizable]
 public class MediaListSectionsMergerTests
 {
     public MediaListSectionsMergerTests() => TestDataBuilder.ResetAppSettings();
 
     // ── Empty/populated permutations ────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void Merge_EmptyToEmpty_IsNoOp()
     {
         // Arrange
@@ -27,12 +27,12 @@ public class MediaListSectionsMergerTests
             filterText: "");
 
         // Assert
-        Assert.Empty(sections);
-        Assert.Equal(0, result.SectionsAdded);
-        Assert.Equal(0, result.EntriesAdded);
+        Assert.That(sections, Is.Empty);
+        Assert.That(result.SectionsAdded, Is.EqualTo(0));
+        Assert.That(result.EntriesAdded, Is.EqualTo(0));
     }
 
-    [Fact]
+    [Test]
     public void Merge_EmptyToPopulated_AddsSectionsAndEntries()
     {
         // Arrange
@@ -46,16 +46,16 @@ public class MediaListSectionsMergerTests
             sections, groups, [], true, SortField.LastUpdated, false, "");
 
         // Assert
-        Assert.Equal(2, sections.Count);
-        Assert.Equal("Watching", sections[0].Title);
-        Assert.Equal("Completed", sections[1].Title);
-        Assert.Equal(2, sections[0].TotalCount);
-        Assert.Equal(1, sections[1].TotalCount);
-        Assert.Equal(2, result.SectionsAdded);
-        Assert.Equal(3, result.EntriesAdded);
+        Assert.That(sections.Count, Is.EqualTo(2));
+        Assert.That(sections[0].Title, Is.EqualTo("Watching"));
+        Assert.That(sections[1].Title, Is.EqualTo("Completed"));
+        Assert.That(sections[0].TotalCount, Is.EqualTo(2));
+        Assert.That(sections[1].TotalCount, Is.EqualTo(1));
+        Assert.That(result.SectionsAdded, Is.EqualTo(2));
+        Assert.That(result.EntriesAdded, Is.EqualTo(3));
     }
 
-    [Fact]
+    [Test]
     public void Merge_PopulatedToEmpty_RemovesAllSections()
     {
         // Arrange
@@ -67,12 +67,12 @@ public class MediaListSectionsMergerTests
             sections, TestDataBuilder.Groups(), [], true, SortField.LastUpdated, false, "");
 
         // Assert
-        Assert.Empty(sections);
-        Assert.Equal(1, result.SectionsRemoved);
-        Assert.Equal(1, result.EntriesRemoved);
+        Assert.That(sections, Is.Empty);
+        Assert.That(result.SectionsRemoved, Is.EqualTo(1));
+        Assert.That(result.EntriesRemoved, Is.EqualTo(1));
     }
 
-    [Fact]
+    [Test]
     public void Merge_UnchangedData_FiresNoCollectionResetOnOuterOrSections()
     {
         // The whole point of this refactor: repeated pull-to-refresh on identical data must
@@ -108,13 +108,13 @@ public class MediaListSectionsMergerTests
         MediaListSectionsMerger.Merge(sections, fresh, [], true, SortField.LastUpdated, false, "");
 
         // Assert
-        Assert.Equal(0, outerChanges);
-        Assert.Equal(0, sectionResets);
+        Assert.That(outerChanges, Is.EqualTo(0));
+        Assert.That(sectionResets, Is.EqualTo(0));
     }
 
     // ── Entry-level diffs (single section) ──────────────────────────────
 
-    [Fact]
+    [Test]
     public void Merge_AddsNewEntryToExistingSection()
     {
         // Arrange
@@ -130,12 +130,12 @@ public class MediaListSectionsMergerTests
         var result = MediaListSectionsMerger.Merge(sections, updated, [], true, SortField.LastUpdated, false, "");
 
         // Assert
-        Assert.Same(watching, sections[0]);
-        Assert.Equal(2, watching.TotalCount);
-        Assert.Equal(1, result.EntriesAdded);
+        Assert.That(sections[0], Is.SameAs(watching));
+        Assert.That(watching.TotalCount, Is.EqualTo(2));
+        Assert.That(result.EntriesAdded, Is.EqualTo(1));
     }
 
-    [Fact]
+    [Test]
     public void Merge_RemovesEntryNoLongerPresent()
     {
         // Arrange
@@ -150,12 +150,12 @@ public class MediaListSectionsMergerTests
         var result = MediaListSectionsMerger.Merge(sections, updated, [], true, SortField.LastUpdated, false, "");
 
         // Assert
-        Assert.Equal(1, sections[0].TotalCount);
-        Assert.Equal(1, sections[0].AllItems[0].MediaId);  // id 2 was the one removed
-        Assert.Equal(1, result.EntriesRemoved);
+        Assert.That(sections[0].TotalCount, Is.EqualTo(1));
+        Assert.That(sections[0].AllItems[0].MediaId, Is.EqualTo(1));  // id 2 was the one removed
+        Assert.That(result.EntriesRemoved, Is.EqualTo(1));
     }
 
-    [Fact]
+    [Test]
     public void Merge_ProgressChangeOnly_PreservesReference_FiresPropertyChanged_NoReset()
     {
         // Arrange
@@ -190,13 +190,13 @@ public class MediaListSectionsMergerTests
             [], true, SortField.LastUpdated, false, "");
 
         // Assert
-        Assert.Same(original, watching.AllItems[0]);  // reference preserved
-        Assert.Equal(4, original.Progress);
-        Assert.True(progressChanged);
-        Assert.False(sectionReset);
+        Assert.That(watching.AllItems[0], Is.SameAs(original));  // reference preserved
+        Assert.That(original.Progress, Is.EqualTo(4));
+        Assert.That(progressChanged, Is.True);
+        Assert.That(sectionReset, Is.False);
     }
 
-    [Fact]
+    [Test]
     public void Merge_ScoreChangeOnly_FiresPropertyChanged()
     {
         // Arrange
@@ -222,11 +222,11 @@ public class MediaListSectionsMergerTests
             [], true, SortField.LastUpdated, false, "");
 
         // Assert
-        Assert.Equal(9.0, original.Score);
-        Assert.True(scoreChanged);
+        Assert.That(original.Score, Is.EqualTo(9.0));
+        Assert.That(scoreChanged, Is.True);
     }
 
-    [Fact]
+    [Test]
     public void Merge_UpdatedAtChange_WithLastUpdatedSort_ReOrdersSection()
     {
         // Arrange — entry 1 updated later than entry 2; descending LastUpdated sort puts 1 first.
@@ -236,7 +236,7 @@ public class MediaListSectionsMergerTests
             TestDataBuilder.Groups(TestDataBuilder.Group("Watching", e1, e2)),
             sortField: SortField.LastUpdated,
             sortAscending: false);
-        Assert.Equal(1, sections[0][0].MediaId); // pre-condition
+        Assert.That(sections[0][0].MediaId, Is.EqualTo(1)); // pre-condition
 
         // Now entry 2 gets bumped to a newer UpdatedAt than entry 1.
         var e1Same = TestDataBuilder.Entry(1, updatedAt: DateTimeOffset.FromUnixTimeSeconds(200));
@@ -249,11 +249,11 @@ public class MediaListSectionsMergerTests
             [], true, SortField.LastUpdated, false, "");
 
         // Assert — entry 2 now sorts to the top of the visible, sorted collection.
-        Assert.Equal(2, sections[0][0].MediaId);
-        Assert.Equal(1, sections[0][1].MediaId);
+        Assert.That(sections[0][0].MediaId, Is.EqualTo(2));
+        Assert.That(sections[0][1].MediaId, Is.EqualTo(1));
     }
 
-    [Fact]
+    [Test]
     public void Merge_ScoreChange_WithScoreSort_ReOrdersSection()
     {
         // Arrange — sorted descending by Score, entry 1 (9.0) above entry 2 (5.0).
@@ -263,7 +263,7 @@ public class MediaListSectionsMergerTests
             TestDataBuilder.Groups(TestDataBuilder.Group("Watching", e1, e2)),
             sortField: SortField.Score,
             sortAscending: false);
-        Assert.Equal(1, sections[0][0].MediaId); // pre-condition
+        Assert.That(sections[0][0].MediaId, Is.EqualTo(1)); // pre-condition
 
         // Entry 2's score is raised above entry 1's.
         var e1Same = TestDataBuilder.Entry(1, score: 9.0);
@@ -276,10 +276,10 @@ public class MediaListSectionsMergerTests
             [], true, SortField.Score, false, "");
 
         // Assert
-        Assert.Equal(2, sections[0][0].MediaId);
+        Assert.That(sections[0][0].MediaId, Is.EqualTo(2));
     }
 
-    [Fact]
+    [Test]
     public void Merge_WeightedScoreChange_WithWeightedScoreSort_ReOrdersSection()
     {
         // Arrange — sorted descending by Media.WeightedScore, entry 1 (90) above entry 2 (70).
@@ -292,7 +292,7 @@ public class MediaListSectionsMergerTests
             TestDataBuilder.Groups(TestDataBuilder.Group("Watching", e1, e2)),
             sortField: SortField.WeightedScore,
             sortAscending: false);
-        Assert.Equal(1, sections[0][0].MediaId); // pre-condition
+        Assert.That(sections[0][0].MediaId, Is.EqualTo(1)); // pre-condition
 
         // Entry 2's average is raised above entry 1's.
         var e1Same = TestDataBuilder.Entry(1);
@@ -307,10 +307,10 @@ public class MediaListSectionsMergerTests
             [], true, SortField.WeightedScore, false, "");
 
         // Assert
-        Assert.Equal(2, sections[0][0].MediaId);
+        Assert.That(sections[0][0].MediaId, Is.EqualTo(2));
     }
 
-    [Fact]
+    [Test]
     public void Merge_UpdatedAtChange_WithTitleSort_DoesNotTriggerSectionReset()
     {
         // When the active sort is Title, an UpdatedAt bump must NOT force a section re-sort/Reset.
@@ -345,10 +345,10 @@ public class MediaListSectionsMergerTests
             [], true, SortField.Title, true, "");
 
         // Assert
-        Assert.Equal(0, sectionResets);
+        Assert.That(sectionResets, Is.EqualTo(0));
     }
 
-    [Fact]
+    [Test]
     public void Merge_CoverImageUrlChanged_TriggersSectionReset_ReferencePreserved()
     {
         // Arrange
@@ -374,13 +374,13 @@ public class MediaListSectionsMergerTests
             [], true, SortField.LastUpdated, false, "");
 
         // Assert
-        Assert.Same(original, sections[0].AllItems[0]);
-        Assert.Equal("https://img/new", original.Media?.CoverImage?.Medium);
-        Assert.True(sectionReset);
-        Assert.Equal(1, result.SectionsNeedingReset);
+        Assert.That(sections[0].AllItems[0], Is.SameAs(original));
+        Assert.That(original.Media?.CoverImage?.Medium, Is.EqualTo("https://img/new"));
+        Assert.That(sectionReset, Is.True);
+        Assert.That(result.SectionsNeedingReset, Is.EqualTo(1));
     }
 
-    [Fact]
+    [Test]
     public void Merge_NextAiringEpisodeChanged_TriggersReset()
     {
         // Arrange
@@ -397,12 +397,12 @@ public class MediaListSectionsMergerTests
             [], true, SortField.LastUpdated, false, "");
 
         // Assert
-        Assert.Equal(1, result.SectionsNeedingReset);
+        Assert.That(result.SectionsNeedingReset, Is.EqualTo(1));
     }
 
     // ── Section-level diffs ─────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void Merge_NewSectionAppears_InsertedAtOrderedIndex()
     {
         // Arrange
@@ -421,13 +421,13 @@ public class MediaListSectionsMergerTests
         MediaListSectionsMerger.Merge(initial, updated, sectionOrder, true, SortField.LastUpdated, false, "");
 
         // Assert
-        Assert.Equal(3, initial.Count);
-        Assert.Equal("Watching", initial[0].Title);
-        Assert.Equal("Paused", initial[1].Title);
-        Assert.Equal("Completed", initial[2].Title);
+        Assert.That(initial.Count, Is.EqualTo(3));
+        Assert.That(initial[0].Title, Is.EqualTo("Watching"));
+        Assert.That(initial[1].Title, Is.EqualTo("Paused"));
+        Assert.That(initial[2].Title, Is.EqualTo("Completed"));
     }
 
-    [Fact]
+    [Test]
     public void Merge_NewSection_IsFullyMaterializedWhenPublishedToOuterCollection()
     {
         // Regression: previously the merger added a brand-new section to the outer
@@ -479,13 +479,13 @@ public class MediaListSectionsMergerTests
             filterText: "");
 
         // Assert — section is default-expanded (first section in an empty list) and fully materialized
-        Assert.Equal(2, observedTotalCount);
-        Assert.Equal(2, observedFilteredCount);
-        Assert.Equal("2", observedDisplayCount);
-        Assert.Equal(2, observedVisibleCount);
+        Assert.That(observedTotalCount, Is.EqualTo(2));
+        Assert.That(observedFilteredCount, Is.EqualTo(2));
+        Assert.That(observedDisplayCount, Is.EqualTo("2"));
+        Assert.That(observedVisibleCount, Is.EqualTo(2));
     }
 
-    [Fact]
+    [Test]
     public void Merge_SectionBecomesEmpty_IsRemoved()
     {
         // Arrange
@@ -500,11 +500,11 @@ public class MediaListSectionsMergerTests
         MediaListSectionsMerger.Merge(initial, updated, [], true, SortField.LastUpdated, false, "");
 
         // Assert
-        Assert.Single(initial);
-        Assert.Equal("Watching", initial[0].Title);
+        Assert.That(initial, Has.Exactly(1).Items);
+        Assert.That(initial[0].Title, Is.EqualTo("Watching"));
     }
 
-    [Fact]
+    [Test]
     public void Merge_SectionOrderChanged_UsesMoveNotRemoveAdd()
     {
         // Arrange
@@ -540,13 +540,13 @@ public class MediaListSectionsMergerTests
         MediaListSectionsMerger.Merge(sections, updated, newOrder, true, SortField.LastUpdated, false, "");
 
         // Assert
-        Assert.Same(completed, sections[0]);
-        Assert.Same(watching, sections[1]);
-        Assert.True(moves >= 1);
-        Assert.Equal(0, otherStructuralChanges);
+        Assert.That(sections[0], Is.SameAs(completed));
+        Assert.That(sections[1], Is.SameAs(watching));
+        Assert.That(moves >= 1, Is.True);
+        Assert.That(otherStructuralChanges, Is.EqualTo(0));
     }
 
-    [Fact]
+    [Test]
     public void Merge_SectionIsExpandedState_PreservedAcrossMerge()
     {
         // Arrange
@@ -561,12 +561,12 @@ public class MediaListSectionsMergerTests
             [], true, SortField.LastUpdated, false, "");
 
         // Assert
-        Assert.False(sections[0].IsExpanded);
+        Assert.That(sections[0].IsExpanded, Is.False);
     }
 
     // ── Cross-section moves ─────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void Merge_EntryMovesBetweenSections_PreservesReference()
     {
         // Arrange
@@ -588,12 +588,12 @@ public class MediaListSectionsMergerTests
         // Assert
         var completed = sections.Single(s => s.Title == "Completed");
         var movedEntry = completed.AllItems.Single(e => e.MediaId == 1);
-        Assert.Same(original, movedEntry);  // entry instance preserved across sections
-        Assert.Equal(MediaListStatus.Completed, original.Status);
-        Assert.DoesNotContain(sections, s => s.Title == "Watching");
+        Assert.That(movedEntry, Is.SameAs(original));  // entry instance preserved across sections
+        Assert.That(original.Status, Is.EqualTo(MediaListStatus.Completed));
+        Assert.That(sections, Has.None.Matches<MediaListSection>(s => s is { Title: "Watching" }));
     }
 
-    [Fact]
+    [Test]
     public void Merge_MultipleSimultaneousMoves_AllHandled()
     {
         // Arrange
@@ -618,16 +618,16 @@ public class MediaListSectionsMergerTests
         // Assert
         var watching = sections.Single(s => s.Title == "Watching");
         var completed = sections.Single(s => s.Title == "Completed");
-        Assert.Single(watching.AllItems);
-        Assert.Same(c, watching.AllItems[0]);
-        Assert.Equal(2, completed.AllItems.Count);
-        Assert.Contains(a, completed.AllItems);
-        Assert.Contains(b, completed.AllItems);
+        Assert.That(watching.AllItems, Has.Exactly(1).Items);
+        Assert.That(watching.AllItems[0], Is.SameAs(c));
+        Assert.That(completed.AllItems.Count, Is.EqualTo(2));
+        Assert.That(completed.AllItems, Does.Contain(a));
+        Assert.That(completed.AllItems, Does.Contain(b));
     }
 
     // ── Filter / sort interaction ────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void Merge_WithActiveFilter_FilterReappliedToTouchedSections()
     {
         // Arrange
@@ -637,7 +637,7 @@ public class MediaListSectionsMergerTests
                 TestDataBuilder.Entry(2, title: "Banana"))),
             filterText: "ban");
 
-        Assert.Single(sections[0]);  // pre-condition: only Banana visible under active filter
+        Assert.That(sections[0], Has.Exactly(1).Items);  // pre-condition: only Banana visible under active filter
 
         // Act
         MediaListSectionsMerger.Merge(
@@ -649,11 +649,11 @@ public class MediaListSectionsMergerTests
             [], true, SortField.Title, true, "ban");
 
         // Assert
-        Assert.Equal(3, sections[0].TotalCount);
-        Assert.Equal(2, sections[0].Count);  // visible: Banana + Banshee
+        Assert.That(sections[0].TotalCount, Is.EqualTo(3));
+        Assert.That(sections[0].Count, Is.EqualTo(2));  // visible: Banana + Banshee
     }
 
-    [Fact]
+    [Test]
     public void Merge_WithActiveFilter_RefreshesMembershipWhenNonDisplayedTitleChanges()
     {
         // MatchesFilter searches English/Romaji/Native, but DisplayTitle only resolves to one of
@@ -676,7 +676,7 @@ public class MediaListSectionsMergerTests
             TestDataBuilder.Groups(TestDataBuilder.Group("Watching", entry)),
             filterText: "app");
 
-        Assert.Single(sections[0]);  // pre-condition: English title matches "app"
+        Assert.That(sections[0], Has.Exactly(1).Items);  // pre-condition: English title matches "app"
 
         // Act — refresh with the same MediaId but a new English title; Romaji (DisplayTitle) is unchanged.
         var refreshed = new MediaListEntry
@@ -697,13 +697,13 @@ public class MediaListSectionsMergerTests
             [], true, SortField.LastUpdated, false, "app");
 
         // Assert — entry is still in the backing store but filter no longer matches.
-        Assert.Equal(1, sections[0].TotalCount);
-        Assert.Empty(sections[0]);
+        Assert.That(sections[0].TotalCount, Is.EqualTo(1));
+        Assert.That(sections[0], Is.Empty);
     }
 
     // ── Adult content / reorder helpers ──────────────────────────────────
 
-    [Fact]
+    [Test]
     public void OrderAndFilterGroups_DropsAdultEntriesWhenDisabled()
     {
         // Arrange
@@ -715,12 +715,12 @@ public class MediaListSectionsMergerTests
         var filtered = MediaListSectionsMerger.OrderAndFilterGroups(groups, [], displayAdultContent: false);
 
         // Assert
-        Assert.Single(filtered);
-        Assert.Single(filtered[0].Entries);
-        Assert.Equal(2, filtered[0].Entries[0].MediaId);
+        Assert.That(filtered, Has.Exactly(1).Items);
+        Assert.That(filtered[0].Entries, Has.Exactly(1).Items);
+        Assert.That(filtered[0].Entries[0].MediaId, Is.EqualTo(2));
     }
 
-    [Fact]
+    [Test]
     public void OrderAndFilterGroups_DropsNowEmptySections_WhenAdultFilterEmptiesThem()
     {
         // Arrange
@@ -731,10 +731,10 @@ public class MediaListSectionsMergerTests
         var filtered = MediaListSectionsMerger.OrderAndFilterGroups(groups, [], displayAdultContent: false);
 
         // Assert
-        Assert.Empty(filtered);
+        Assert.That(filtered, Is.Empty);
     }
 
-    [Fact]
+    [Test]
     public void OrderAndFilterGroups_UnknownSectionsGoToEnd()
     {
         // Arrange
@@ -748,30 +748,30 @@ public class MediaListSectionsMergerTests
         var ordered = MediaListSectionsMerger.OrderAndFilterGroups(groups, order, displayAdultContent: true);
 
         // Assert
-        Assert.Equal(["Watching", "Completed", "CustomList"], ordered.Select(g => g.Name));
+        Assert.That(ordered.Select(g => g.Name), Is.EqualTo(["Watching", "Completed", "CustomList"]));
     }
 
     // ── MediaDisplayChanged primitive ────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void MediaDisplayChanged_BothNull_ReturnsFalse()
     {
         // Act
         var changed = MediaListSectionsMerger.MediaDisplayChanged(null, null);
 
         // Assert
-        Assert.False(changed);
+        Assert.That(changed, Is.False);
     }
 
-    [Fact]
+    [Test]
     public void MediaDisplayChanged_OneNull_ReturnsTrue()
     {
-        // Act & Assert (two symmetric cases; see also the [Theory] refactor opportunity)
-        Assert.True(MediaListSectionsMerger.MediaDisplayChanged(null, new Media()));
-        Assert.True(MediaListSectionsMerger.MediaDisplayChanged(new Media(), null));
+        // Act & Assert (two symmetric cases; see also the [TestCase] refactor opportunity)
+        Assert.That(MediaListSectionsMerger.MediaDisplayChanged(null, new Media()), Is.True);
+        Assert.That(MediaListSectionsMerger.MediaDisplayChanged(new Media(), null), Is.True);
     }
 
-    [Fact]
+    [Test]
     public void MediaDisplayChanged_SameCoverAndAiring_ReturnsFalse()
     {
         // Arrange
@@ -782,10 +782,10 @@ public class MediaListSectionsMergerTests
         var changed = MediaListSectionsMerger.MediaDisplayChanged(a, b);
 
         // Assert
-        Assert.False(changed);
+        Assert.That(changed, Is.False);
     }
 
-    [Fact]
+    [Test]
     public void MediaDisplayChanged_EpisodesDifferent_ReturnsTrue()
     {
         // Arrange
@@ -796,10 +796,10 @@ public class MediaListSectionsMergerTests
         var changed = MediaListSectionsMerger.MediaDisplayChanged(a, b);
 
         // Assert
-        Assert.True(changed);
+        Assert.That(changed, Is.True);
     }
 
-    [Fact]
+    [Test]
     public void MediaDisplayChanged_FormatDifferent_ReturnsTrue()
     {
         // Arrange — list cell binds Media.Format via FormatIconBadge, so a
@@ -811,10 +811,10 @@ public class MediaListSectionsMergerTests
         var changed = MediaListSectionsMerger.MediaDisplayChanged(a, b);
 
         // Assert
-        Assert.True(changed);
+        Assert.That(changed, Is.True);
     }
 
-    [Fact]
+    [Test]
     public void MediaDisplayChanged_SameFormat_ReturnsFalse()
     {
         // Arrange
@@ -825,10 +825,10 @@ public class MediaListSectionsMergerTests
         var changed = MediaListSectionsMerger.MediaDisplayChanged(a, b);
 
         // Assert
-        Assert.False(changed);
+        Assert.That(changed, Is.False);
     }
 
-    [Fact]
+    [Test]
     public void MediaDisplayChanged_DisplayTitleDifferent_ReturnsTrue()
     {
         // Arrange — MediaDisplayChanged compares DisplayTitle directly, but DisplayTitle is derived
@@ -841,10 +841,10 @@ public class MediaListSectionsMergerTests
         var changed = MediaListSectionsMerger.MediaDisplayChanged(a, b);
 
         // Assert
-        Assert.True(changed);
+        Assert.That(changed, Is.True);
     }
 
-    [Fact]
+    [Test]
     public void MediaDisplayChanged_SameDisplayTitle_ReturnsFalse()
     {
         // Arrange
@@ -855,10 +855,10 @@ public class MediaListSectionsMergerTests
         var changed = MediaListSectionsMerger.MediaDisplayChanged(a, b);
 
         // Assert
-        Assert.False(changed);
+        Assert.That(changed, Is.False);
     }
 
-    [Fact]
+    [Test]
     public void MediaDisplayChanged_CoverLargeDifferent_ReturnsTrue()
     {
         // Arrange — MediaDetails opens a larger cover; MyAnime grid layout binds .Large too.
@@ -869,10 +869,10 @@ public class MediaListSectionsMergerTests
         var changed = MediaListSectionsMerger.MediaDisplayChanged(a, b);
 
         // Assert
-        Assert.True(changed);
+        Assert.That(changed, Is.True);
     }
 
-    [Fact]
+    [Test]
     public void MediaDisplayChanged_NextAiringEpisodeChanged_ReturnsTrue()
     {
         // Arrange
@@ -883,10 +883,10 @@ public class MediaListSectionsMergerTests
         var changed = MediaListSectionsMerger.MediaDisplayChanged(a, b);
 
         // Assert
-        Assert.True(changed);
+        Assert.That(changed, Is.True);
     }
 
-    [Fact]
+    [Test]
     public void MediaDisplayChanged_SameNextAiringEpisode_ReturnsFalse()
     {
         // Arrange
@@ -897,10 +897,10 @@ public class MediaListSectionsMergerTests
         var changed = MediaListSectionsMerger.MediaDisplayChanged(a, b);
 
         // Assert
-        Assert.False(changed);
+        Assert.That(changed, Is.False);
     }
 
-    [Fact]
+    [Test]
     public void MediaDisplayChanged_SameEpisodes_ReturnsFalse()
     {
         // Arrange — negative complement to MediaDisplayChanged_EpisodesDifferent_ReturnsTrue.
@@ -911,12 +911,12 @@ public class MediaListSectionsMergerTests
         var changed = MediaListSectionsMerger.MediaDisplayChanged(a, b);
 
         // Assert
-        Assert.False(changed);
+        Assert.That(changed, Is.False);
     }
 
     // ── Reference preservation regression guard ──────────────────────────
 
-    [Fact]
+    [Test]
     public void Merge_AllSurvivingEntries_KeepOriginalReferences()
     {
         // Arrange
@@ -937,14 +937,14 @@ public class MediaListSectionsMergerTests
 
         // Assert
         var all = sections.SelectMany(s => s.AllItems).ToList();
-        Assert.Contains(e1, all);
-        Assert.Contains(e2, all);
-        Assert.Contains(e3, all);
+        Assert.That(all, Does.Contain(e1));
+        Assert.That(all, Does.Contain(e2));
+        Assert.That(all, Does.Contain(e3));
     }
 
     // ── Bulk-update batching (one Reset per touched section) ────────────
 
-    [Fact]
+    [Test]
     public void Merge_BulkRemoveManyFromOneSection_FiresSingleReset()
     {
         // Five entries removed from one section should collapse into one Reset, not five.
@@ -971,11 +971,11 @@ public class MediaListSectionsMergerTests
         MediaListSectionsMerger.Merge(sections, fresh, [], true, SortField.LastUpdated, false, "");
 
         // Assert
-        Assert.Equal(1, watching.TotalCount);
-        Assert.Equal(1, resets);
+        Assert.That(watching.TotalCount, Is.EqualTo(1));
+        Assert.That(resets, Is.EqualTo(1));
     }
 
-    [Fact]
+    [Test]
     public void Merge_CrossSectionMoves_FireOneResetPerAffectedSection()
     {
         // Move three entries from Watching → Completed. Each side should see exactly one Reset,
@@ -1020,14 +1020,14 @@ public class MediaListSectionsMergerTests
         // discarded before removal so it fires zero Resets — running a deferred sort/filter on
         // a section that's leaving the outer collection would be pure waste. Completed gained
         // three and keeps its reset coalesced to one.
-        Assert.DoesNotContain(sections, s => s.Title == "Watching");
-        Assert.Single(sections);
-        Assert.Equal(4, completed.TotalCount);
-        Assert.Equal(0, watchingResets);
-        Assert.Equal(1, completedResets);
+        Assert.That(sections, Has.None.Matches<MediaListSection>(s => s is { Title: "Watching" }));
+        Assert.That(sections, Has.Exactly(1).Items);
+        Assert.That(completed.TotalCount, Is.EqualTo(4));
+        Assert.That(watchingResets, Is.EqualTo(0));
+        Assert.That(completedResets, Is.EqualTo(1));
     }
 
-    [Fact]
+    [Test]
     public void Merge_UnchangedSectionsDuringPartialChange_FireZeroResets()
     {
         // Mutating section A must not fire any Reset on untouched section B. Regression guard
@@ -1055,10 +1055,10 @@ public class MediaListSectionsMergerTests
         MediaListSectionsMerger.Merge(sections, fresh, [], true, SortField.LastUpdated, false, "");
 
         // Assert
-        Assert.Equal(0, completedResets);
+        Assert.That(completedResets, Is.EqualTo(0));
     }
 
-    [Fact]
+    [Test]
     public void BulkUpdateScope_NestedScopes_OnlyOutermostDisposeTriggersReset()
     {
         // Arrange
@@ -1083,16 +1083,16 @@ public class MediaListSectionsMergerTests
             }
 
             // Inner Dispose must not fire — outer scope still open.
-            Assert.Equal(0, resets);
+            Assert.That(resets, Is.EqualTo(0));
             section.AddItem(TestDataBuilder.Entry(4));
         }
 
         // Assert: exactly one Reset fired when outer disposed.
-        Assert.Equal(1, resets);
-        Assert.Equal(4, section.TotalCount);
+        Assert.That(resets, Is.EqualTo(1));
+        Assert.That(section.TotalCount, Is.EqualTo(4));
     }
 
-    [Fact]
+    [Test]
     public void BulkUpdateScope_NoMutationsBetweenBeginAndEnd_FiresNoReset()
     {
         // Dirty-flag guard: opening and closing a scope with no mutations must not fire UpdateItems.
@@ -1115,10 +1115,10 @@ public class MediaListSectionsMergerTests
         }
 
         // Assert
-        Assert.Equal(0, resets);
+        Assert.That(resets, Is.EqualTo(0));
     }
 
-    [Fact]
+    [Test]
     public void DiscardBulkUpdate_SuppressesDeferredUpdateItemsOnDispose()
     {
         // DiscardBulkUpdate is the merger's Pass-2 escape hatch: when a section is leaving the
@@ -1144,29 +1144,29 @@ public class MediaListSectionsMergerTests
         scope.Dispose();
 
         // Assert: no deferred UpdateItems ran, and a fresh scope still behaves correctly.
-        Assert.Equal(0, resets);
+        Assert.That(resets, Is.EqualTo(0));
 
         using (section.BeginBulkUpdate())
         {
             section.AddItem(TestDataBuilder.Entry(3));
         }
 
-        Assert.Equal(1, resets);
+        Assert.That(resets, Is.EqualTo(1));
     }
 
     // ── Default section expanded states ─────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void BuildInitial_FirstSection_IsExpandedByDefault()
     {
         var sections = TestDataBuilder.BuildInitial(TestDataBuilder.Groups(
             TestDataBuilder.Group("Watching", TestDataBuilder.Entry(1))));
 
-        Assert.Single(sections);
-        Assert.True(sections[0].IsExpanded);
+        Assert.That(sections, Has.Exactly(1).Items);
+        Assert.That(sections[0].IsExpanded, Is.True);
     }
 
-    [Fact]
+    [Test]
     public void BuildInitial_RewatchingSection_IsExpandedByDefault_WhenNotFirst()
     {
         // Rewatching should default to expanded even when it is not the first section.
@@ -1175,9 +1175,9 @@ public class MediaListSectionsMergerTests
             TestDataBuilder.Group("Rewatching", TestDataBuilder.Entry(2)),
             TestDataBuilder.Group("Completed",  TestDataBuilder.Entry(3))));
 
-        Assert.Equal(3, sections.Count);
-        Assert.True(sections[0].IsExpanded,  "Watching should be expanded (first section)");
-        Assert.True(sections[1].IsExpanded,  "Rewatching should be expanded by default");
-        Assert.False(sections[2].IsExpanded, "Completed should be collapsed by default");
+        Assert.That(sections.Count, Is.EqualTo(3));
+        Assert.That(sections[0].IsExpanded, Is.True, "Watching should be expanded (first section)");
+        Assert.That(sections[1].IsExpanded, Is.True, "Rewatching should be expanded by default");
+        Assert.That(sections[2].IsExpanded, Is.False, "Completed should be collapsed by default");
     }
 }

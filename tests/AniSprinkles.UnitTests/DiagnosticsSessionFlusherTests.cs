@@ -49,32 +49,32 @@ public sealed class DiagnosticsSessionFlusherTests : IDisposable
 
     // ── Flushing ─────────────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void FlushingWritesTheRingToDisk()
     {
         var (flusher, buffer, log) = NewFlusher();
         buffer.CreateLogger("Nav").LogInformation("NAVTRACE load start (manga 42)");
 
-        Assert.True(flusher.Flush());
+        Assert.That(flusher.Flush(), Is.True);
 
-        Assert.Contains(log.Load(), line => line.Contains("NAVTRACE load start (manga 42)"));
+        Assert.That(log.Load(), Has.Some.Contains("NAVTRACE load start (manga 42)"));
     }
 
-    [Fact]
+    [Test]
     public void FlushingAnEmptyRingWritesNothing()
     {
         // A pause with nothing recorded is the common case on a quiet app; it must not count as a
         // flush, or the next resume would "clear" a file that belongs to an earlier process.
         var (flusher, _, log) = NewFlusher();
 
-        Assert.False(flusher.Flush());
+        Assert.That(flusher.Flush(), Is.False);
 
-        Assert.Empty(log.Load());
+        Assert.That(log.Load(), Is.Empty);
     }
 
     // ── The ownership rule ───────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void ResumingAfterOurOwnFlushClearsIt()
     {
         // We are still alive, so the file was not needed — and the ring still holds every one of
@@ -83,12 +83,12 @@ public sealed class DiagnosticsSessionFlusherTests : IDisposable
         buffer.CreateLogger("Nav").LogInformation("still in the ring");
         flusher.Flush();
 
-        Assert.True(flusher.ClearIfOwnedByThisProcess());
+        Assert.That(flusher.ClearIfOwnedByThisProcess(), Is.True);
 
-        Assert.Empty(log.Load());
+        Assert.That(log.Load(), Is.Empty);
     }
 
-    [Fact]
+    [Test]
     public void ResumingDoesNotTouchAFileLeftByAPreviousProcess()
     {
         // The crash case, and the one that matters most: the app died holding the ring, this file is
@@ -97,12 +97,12 @@ public sealed class DiagnosticsSessionFlusherTests : IDisposable
         var (flusher, _, log) = NewFlusher();
         log.Save(["the run that crashed"]);
 
-        Assert.False(flusher.ClearIfOwnedByThisProcess());
+        Assert.That(flusher.ClearIfOwnedByThisProcess(), Is.False);
 
-        Assert.Equal(["the run that crashed"], log.Load());
+        Assert.That(log.Load(), Is.EqualTo(["the run that crashed"]));
     }
 
-    [Fact]
+    [Test]
     public void ResumingTwiceOnlyClearsOnce()
     {
         // Ownership is consumed by the clear. A second resume with no intervening flush must behave
@@ -114,11 +114,11 @@ public sealed class DiagnosticsSessionFlusherTests : IDisposable
 
         log.Save(["written by someone else"]);
 
-        Assert.False(flusher.ClearIfOwnedByThisProcess());
-        Assert.Equal(["written by someone else"], log.Load());
+        Assert.That(flusher.ClearIfOwnedByThisProcess(), Is.False);
+        Assert.That(log.Load(), Is.EqualTo(["written by someone else"]));
     }
 
-    [Fact]
+    [Test]
     public void AFailedFlushDoesNotClaimOwnership()
     {
         // Otherwise an empty pause would let the following resume delete a previous process's crash
@@ -128,11 +128,11 @@ public sealed class DiagnosticsSessionFlusherTests : IDisposable
 
         flusher.Flush(); // ring is empty, so this writes nothing
 
-        Assert.False(flusher.ClearIfOwnedByThisProcess());
-        Assert.Equal(["the run that crashed"], log.Load());
+        Assert.That(flusher.ClearIfOwnedByThisProcess(), Is.False);
+        Assert.That(log.Load(), Is.EqualTo(["the run that crashed"]));
     }
 
-    [Fact]
+    [Test]
     public void PauseResumePauseKeepsTheLatestFlush()
     {
         // The realistic lifecycle. Each pause overwrites, each resume clears its own — and the file
@@ -148,6 +148,6 @@ public sealed class DiagnosticsSessionFlusherTests : IDisposable
         flusher.Flush();
 
         var lines = log.Load();
-        Assert.Contains(lines, line => line.Contains("second stretch"));
+        Assert.That(lines, Has.Some.Contains("second stretch"));
     }
 }

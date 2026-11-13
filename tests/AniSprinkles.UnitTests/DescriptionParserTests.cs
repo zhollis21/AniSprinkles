@@ -2,23 +2,23 @@ namespace AniSprinkles.UnitTests;
 
 public class DescriptionParserTests
 {
-    [Fact]
+    [Test]
     public void Parse_Null_ReturnsEmpty()
     {
         var result = DescriptionParser.Parse(null);
-        Assert.Empty(result.Stats);
-        Assert.Equal(string.Empty, result.Prose);
+        Assert.That(result.Stats, Is.Empty);
+        Assert.That(result.Prose, Is.EqualTo(string.Empty));
     }
 
-    [Fact]
+    [Test]
     public void Parse_PureProse_ReturnsAsProse()
     {
         var result = DescriptionParser.Parse("She was born in a dairy farm.\nShe became a mangaka.");
-        Assert.Empty(result.Stats);
-        Assert.Contains("dairy farm", result.Prose);
+        Assert.That(result.Stats, Is.Empty);
+        Assert.That(result.Prose, Does.Contain("dairy farm"));
     }
 
-    [Fact]
+    [Test]
     public void Parse_LuffyShape_ExtractsStatRowsAndProse()
     {
         var input = """
@@ -33,79 +33,79 @@ public class DescriptionParserTests
 
         var result = DescriptionParser.Parse(input);
 
-        Assert.Equal(5, result.Stats.Count);
+        Assert.That(result.Stats.Count, Is.EqualTo(5));
 
-        Assert.Equal("Height", result.Stats[0].Label);
-        Assert.Equal("172 cm", result.Stats[0].Value);
-        Assert.False(result.Stats[0].IsRowSpoiler);
-        Assert.False(result.Stats[0].IsValueSpoiler);
+        Assert.That(result.Stats[0].Label, Is.EqualTo("Height"));
+        Assert.That(result.Stats[0].Value, Is.EqualTo("172 cm"));
+        Assert.That(result.Stats[0].IsRowSpoiler, Is.False);
+        Assert.That(result.Stats[0].IsValueSpoiler, Is.False);
 
-        Assert.Equal("Affiliations", result.Stats[1].Label);
-        Assert.Equal("Straw Hat Pirates (Captain); Four Emperors", result.Stats[1].Value);
-        Assert.False(result.Stats[1].IsRowSpoiler);
-        Assert.True(result.Stats[1].IsValueSpoiler);
+        Assert.That(result.Stats[1].Label, Is.EqualTo("Affiliations"));
+        Assert.That(result.Stats[1].Value, Is.EqualTo("Straw Hat Pirates (Captain); Four Emperors"));
+        Assert.That(result.Stats[1].IsRowSpoiler, Is.False);
+        Assert.That(result.Stats[1].IsValueSpoiler, Is.True);
 
-        Assert.Equal("Devil Fruit", result.Stats[2].Label);
+        Assert.That(result.Stats[2].Label, Is.EqualTo("Devil Fruit"));
 
-        Assert.Equal("True Devil Fruit", result.Stats[3].Label);
-        Assert.Equal("Hito Hito no Mi Model: Nika", result.Stats[3].Value);
-        Assert.True(result.Stats[3].IsRowSpoiler);
+        Assert.That(result.Stats[3].Label, Is.EqualTo("True Devil Fruit"));
+        Assert.That(result.Stats[3].Value, Is.EqualTo("Hito Hito no Mi Model: Nika"));
+        Assert.That(result.Stats[3].IsRowSpoiler, Is.True);
 
-        Assert.Equal("Bounty", result.Stats[4].Label);
-        Assert.True(result.Stats[4].IsValueSpoiler);
+        Assert.That(result.Stats[4].Label, Is.EqualTo("Bounty"));
+        Assert.That(result.Stats[4].IsValueSpoiler, Is.True);
 
-        Assert.Contains("Luffy is the captain", result.Prose);
+        Assert.That(result.Prose, Does.Contain("Luffy is the captain"));
     }
 
-    [Fact]
+    [Test]
     public void Parse_BlankLineEndsStats_ProseAfterIsCollected()
     {
         var input = "__Height:__ 172 cm\n\nThe rest is prose.\n__This:__ is not a stat row anymore.";
         var result = DescriptionParser.Parse(input);
 
-        Assert.Single(result.Stats);
-        Assert.Equal("Height", result.Stats[0].Label);
+        Assert.That(result.Stats, Has.Exactly(1).Items);
+        Assert.That(result.Stats[0].Label, Is.EqualTo("Height"));
         // Once prose starts, subsequent stat-shaped lines stay in prose to avoid splitting context.
-        Assert.Contains("The rest is prose", result.Prose);
-        Assert.Contains("__This:__", result.Prose);
+        Assert.That(result.Prose, Does.Contain("The rest is prose"));
+        Assert.That(result.Prose, Does.Contain("__This:__"));
     }
 
-    [Fact]
+    [Test]
     public void Parse_NonStatLineFirst_AllGoesToProse()
     {
         var input = "Just some prose.\n__Trailing:__ stat that won't be extracted.";
         var result = DescriptionParser.Parse(input);
-        Assert.Empty(result.Stats);
-        Assert.Contains("Just some prose", result.Prose);
-        Assert.Contains("__Trailing:__", result.Prose);
+        Assert.That(result.Stats, Is.Empty);
+        Assert.That(result.Prose, Does.Contain("Just some prose"));
+        Assert.That(result.Prose, Does.Contain("__Trailing:__"));
     }
 
-    [Fact]
+    [Test]
     public void Parse_LabelWithSpaces_IsAccepted()
     {
         var result = DescriptionParser.Parse("__Devil Fruit Type:__ Paramecia");
-        Assert.Single(result.Stats);
-        Assert.Equal("Devil Fruit Type", result.Stats[0].Label);
+        Assert.That(result.Stats, Has.Exactly(1).Items);
+        Assert.That(result.Stats[0].Label, Is.EqualTo("Devil Fruit Type"));
     }
 
-    [Fact]
+    [Test]
     public void Parse_EmptyLabel_DropsTheLine()
     {
         var result = DescriptionParser.Parse("__:__ value");
-        Assert.Empty(result.Stats);
-        Assert.Contains("__:__ value", result.Prose);
+        Assert.That(result.Stats, Is.Empty);
+        Assert.That(result.Prose, Does.Contain("__:__ value"));
     }
 
-    [Fact]
+    [Test]
     public void Parse_BoldOnlyNoColon_IsProse()
     {
         // __Some bold text__ without a colon shouldn't be parsed as a stat.
         var result = DescriptionParser.Parse("__Some bold text__\nNot a stat row.");
-        Assert.Empty(result.Stats);
-        Assert.Contains("__Some bold text__", result.Prose);
+        Assert.That(result.Stats, Is.Empty);
+        Assert.That(result.Prose, Does.Contain("__Some bold text__"));
     }
 
-    [Fact]
+    [Test]
     public void Parse_LabelWithTheColonOutsideTheUnderscores_IsStillAStatRow()
     {
         // Character 17's real shape. AniList editors write the label both ways, and only
@@ -120,21 +120,21 @@ public class DescriptionParserTests
 
         var result = DescriptionParser.Parse(input);
 
-        Assert.Equal(2, result.Stats.Count);
-        Assert.Equal("Height", result.Stats[0].Label);
-        Assert.Equal("145-180 cm", result.Stats[0].Value);
-        Assert.Equal("Family", result.Stats[1].Label);
-        Assert.True(result.Stats[1].IsValueSpoiler);
-        Assert.Equal("Born in Konohagakure.", result.Prose);
+        Assert.That(result.Stats.Count, Is.EqualTo(2));
+        Assert.That(result.Stats[0].Label, Is.EqualTo("Height"));
+        Assert.That(result.Stats[0].Value, Is.EqualTo("145-180 cm"));
+        Assert.That(result.Stats[1].Label, Is.EqualTo("Family"));
+        Assert.That(result.Stats[1].IsValueSpoiler, Is.True);
+        Assert.That(result.Prose, Is.EqualTo("Born in Konohagakure."));
     }
 
-    [Fact]
+    [Test]
     public void Parse_BoldRunWithNoColonEitherSideOfTheUnderscores_IsStillProse()
         // The guard on the above: widening the pattern must not start treating an ordinary bold
         // run as a stat row.
-        => Assert.Empty(DescriptionParser.Parse("__Some bold text__\nNot a stat row.").Stats);
+        => Assert.That(DescriptionParser.Parse("__Some bold text__\nNot a stat row.").Stats, Is.Empty);
 
-    [Fact]
+    [Test]
     public void Parse_SpoilerBlockSpanningTwoLines_KeepsBothRowsInStats()
     {
         // Character 40's real shape: AniList wraps two consecutive stat rows in one ~!…!~ block,
@@ -150,26 +150,26 @@ public class DescriptionParserTests
 
         var result = DescriptionParser.Parse(input);
 
-        Assert.Equal(4, result.Stats.Count);
+        Assert.That(result.Stats.Count, Is.EqualTo(4));
 
-        Assert.Equal("True Devil Fruit", result.Stats[1].Label);
-        Assert.Equal("Hito Hito no Mi Model: Nika", result.Stats[1].Value);
-        Assert.True(result.Stats[1].IsRowSpoiler);
+        Assert.That(result.Stats[1].Label, Is.EqualTo("True Devil Fruit"));
+        Assert.That(result.Stats[1].Value, Is.EqualTo("Hito Hito no Mi Model: Nika"));
+        Assert.That(result.Stats[1].IsRowSpoiler, Is.True);
 
-        Assert.Equal("True Devil Fruit Type", result.Stats[2].Label);
-        Assert.Equal("Mythical Zoan", result.Stats[2].Value);
-        Assert.True(result.Stats[2].IsRowSpoiler);
+        Assert.That(result.Stats[2].Label, Is.EqualTo("True Devil Fruit Type"));
+        Assert.That(result.Stats[2].Value, Is.EqualTo("Mythical Zoan"));
+        Assert.That(result.Stats[2].IsRowSpoiler, Is.True);
 
         // The block closed, so the row after it is read normally rather than as part of it.
-        Assert.Equal("Bounty", result.Stats[3].Label);
-        Assert.False(result.Stats[3].IsRowSpoiler);
-        Assert.True(result.Stats[3].IsValueSpoiler);
+        Assert.That(result.Stats[3].Label, Is.EqualTo("Bounty"));
+        Assert.That(result.Stats[3].IsRowSpoiler, Is.False);
+        Assert.That(result.Stats[3].IsValueSpoiler, Is.True);
 
-        Assert.Equal("Luffy is the captain of the Straw Hat Pirates.", result.Prose);
-        Assert.DoesNotContain("True Devil Fruit", result.Prose);
+        Assert.That(result.Prose, Is.EqualTo("Luffy is the captain of the Straw Hat Pirates."));
+        Assert.That(result.Prose, Does.Not.Contain("True Devil Fruit"));
     }
 
-    [Fact]
+    [Test]
     public void Parse_SpoilerBlockThatNeverCloses_StillKeepsItsRowsAsSpoilers()
     {
         // Defensive: an unterminated block shouldn't spill the rest of the stats into prose either.
@@ -177,38 +177,38 @@ public class DescriptionParserTests
 
         var result = DescriptionParser.Parse(input);
 
-        Assert.Equal(3, result.Stats.Count);
-        Assert.False(result.Stats[0].IsRowSpoiler);
-        Assert.True(result.Stats[1].IsRowSpoiler);
-        Assert.True(result.Stats[2].IsRowSpoiler);
+        Assert.That(result.Stats.Count, Is.EqualTo(3));
+        Assert.That(result.Stats[0].IsRowSpoiler, Is.False);
+        Assert.That(result.Stats[1].IsRowSpoiler, Is.True);
+        Assert.That(result.Stats[2].IsRowSpoiler, Is.True);
     }
 }
 
 public class DescriptionTruncationHeuristicTests
 {
-    [Fact]
+    [Test]
     public void IsTruncated_NullOrEmpty_False()
     {
-        Assert.False(DescriptionTruncationHeuristic.IsTruncated(null));
-        Assert.False(DescriptionTruncationHeuristic.IsTruncated(""));
-        Assert.False(DescriptionTruncationHeuristic.IsTruncated("   "));
+        Assert.That(DescriptionTruncationHeuristic.IsTruncated(null), Is.False);
+        Assert.That(DescriptionTruncationHeuristic.IsTruncated(""), Is.False);
+        Assert.That(DescriptionTruncationHeuristic.IsTruncated("   "), Is.False);
     }
 
-    [Fact]
+    [Test]
     public void IsTruncated_ShortText_False()
     {
-        Assert.False(DescriptionTruncationHeuristic.IsTruncated("Just one short sentence."));
+        Assert.That(DescriptionTruncationHeuristic.IsTruncated("Just one short sentence."), Is.False);
     }
 
-    [Fact]
+    [Test]
     public void IsTruncated_VisibleCharOverflow_True()
     {
         // 8 lines * 40 chars = 320. Beyond that should trip the visible-char rule.
         var text = new string('a', 500);
-        Assert.True(DescriptionTruncationHeuristic.IsTruncated(text));
+        Assert.That(DescriptionTruncationHeuristic.IsTruncated(text), Is.True);
     }
 
-    [Fact]
+    [Test]
     public void IsTruncated_TextThatFitsAt45CharsPerLineButNotAt40_IsTruncated()
     {
         // The bio renders at Body2 (15sp), not the 14sp the old constant assumed, so fewer
@@ -216,37 +216,37 @@ public class DescriptionTruncationHeuristicTests
         // should show a redundant "Read more" rather than silently tail-truncate the text away.
         var text = new string('a', 340);
 
-        Assert.True(DescriptionTruncationHeuristic.IsTruncated(text));
+        Assert.That(DescriptionTruncationHeuristic.IsTruncated(text), Is.True);
     }
 
-    [Fact]
+    [Test]
     public void IsTruncated_ManyLineBreaks_True()
         // Once the markdown processor emits <br> for character and staff bios (#138), this is the
         // branch that catches a short-but-tall bio.
-        => Assert.True(DescriptionTruncationHeuristic.IsTruncated("One.<br>Two.<br>Three.<br>Four."));
+        => Assert.That(DescriptionTruncationHeuristic.IsTruncated("One.<br>Two.<br>Three.<br>Four."), Is.True);
 
-    [Fact]
+    [Test]
     public void IsTruncated_HtmlTagsDontCountTowardLimit()
     {
         // Lots of tag markup but few visible chars + no break tags = not truncated.
         var text = "<b>hi</b><i>there</i><u>!</u>";
-        Assert.False(DescriptionTruncationHeuristic.IsTruncated(text));
+        Assert.That(DescriptionTruncationHeuristic.IsTruncated(text), Is.False);
     }
 
-    [Fact]
+    [Test]
     public void IsTruncated_ManyParagraphBreaks_True()
     {
         // 3+ paragraph breaks even with short total chars = visually long.
         var text = "<p>One.</p><p>Two.</p><p>Three.</p>";
-        Assert.True(DescriptionTruncationHeuristic.IsTruncated(text));
+        Assert.That(DescriptionTruncationHeuristic.IsTruncated(text), Is.True);
     }
 
-    [Fact]
+    [Test]
     public void IsTruncated_EntityDecode_DoesntInflateCount()
     {
         // &amp; is 5 chars in source, 1 char visible. Make sure we count visible.
         var text = string.Concat(Enumerable.Repeat("&amp;", 100));
         // 100 visible chars after decode; well below the 360 threshold and no breaks.
-        Assert.False(DescriptionTruncationHeuristic.IsTruncated(text));
+        Assert.That(DescriptionTruncationHeuristic.IsTruncated(text), Is.False);
     }
 }

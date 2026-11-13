@@ -46,29 +46,29 @@ public sealed class DiagnosticsSessionLogTests : IDisposable
 
     // ── Round trip ───────────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void SavedLinesComeBackInOrder()
     {
         var log = NewLog(out _);
 
-        Assert.True(log.Save(["first", "second", "third"]));
+        Assert.That(log.Save(["first", "second", "third"]), Is.True);
 
-        Assert.Equal(["first", "second", "third"], log.Load());
+        Assert.That(log.Load(), Is.EqualTo(["first", "second", "third"]));
     }
 
-    [Fact]
+    [Test]
     public void TheDirectoryIsCreatedIfItDoesNotExistYet()
     {
         // First run on a fresh install, or a crash before anything else has touched the log folder.
         var log = NewLog(out var filePath);
-        Assert.False(Directory.Exists(Path.GetDirectoryName(filePath)));
+        Assert.That(Directory.Exists(Path.GetDirectoryName(filePath)), Is.False);
 
-        Assert.True(log.Save(["something"]));
+        Assert.That(log.Save(["something"]), Is.True);
 
-        Assert.True(File.Exists(filePath));
+        Assert.That(File.Exists(filePath), Is.True);
     }
 
-    [Fact]
+    [Test]
     public void SavingAgainReplacesTheFileRatherThanAppending()
     {
         // One session, not a growing history. Appending would make this file unbounded, which is the
@@ -78,22 +78,22 @@ public sealed class DiagnosticsSessionLogTests : IDisposable
 
         log.Save(["new session"]);
 
-        Assert.Equal(["new session"], log.Load());
+        Assert.That(log.Load(), Is.EqualTo(["new session"]));
     }
 
     // ── Nothing to save ──────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void SavingNothingReportsFailureRatherThanWritingAnEmptyFile()
     {
         var log = NewLog(out var filePath);
 
-        Assert.False(log.Save([]));
+        Assert.That(log.Save([]), Is.False);
 
-        Assert.False(File.Exists(filePath));
+        Assert.That(File.Exists(filePath), Is.False);
     }
 
-    [Fact]
+    [Test]
     public void SavingNothingLeavesAnEarlierFlushIntact()
     {
         // The case this protects: the app crashes and flushes, then the user reopens it and pauses it
@@ -104,33 +104,33 @@ public sealed class DiagnosticsSessionLogTests : IDisposable
 
         log.Save([]);
 
-        Assert.Equal(["the crash"], log.Load());
+        Assert.That(log.Load(), Is.EqualTo(["the crash"]));
     }
 
     // ── Nothing to load ──────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void LoadingWithNoFileReturnsNothingRatherThanThrowing()
     {
         // The normal case, every clean run: nothing crashed, so nothing was flushed.
         var log = NewLog(out _);
 
-        Assert.Empty(log.Load());
+        Assert.That(log.Load(), Is.Empty);
     }
 
-    [Fact]
+    [Test]
     public void LoadingFromAMissingDirectoryReturnsNothing()
     {
         var log = new DiagnosticsSessionLog(
             Path.Combine(NewDirectory(), "nested", "deeper", "previous-session.log"),
             NullLogger<DiagnosticsSessionLog>.Instance);
 
-        Assert.Empty(log.Load());
+        Assert.That(log.Load(), Is.Empty);
     }
 
     // ── Clearing ─────────────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void ClearRemovesTheFile()
     {
         // Called once a report has been sent, so the same session is not attached to every later
@@ -140,11 +140,11 @@ public sealed class DiagnosticsSessionLogTests : IDisposable
 
         log.Clear();
 
-        Assert.False(File.Exists(filePath));
-        Assert.Empty(log.Load());
+        Assert.That(File.Exists(filePath), Is.False);
+        Assert.That(log.Load(), Is.Empty);
     }
 
-    [Fact]
+    [Test]
     public void ClearingWhenThereIsNoFileIsHarmless()
     {
         var log = NewLog(out _);
@@ -155,7 +155,7 @@ public sealed class DiagnosticsSessionLogTests : IDisposable
 
     // ── Failure is never fatal ───────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void SaveFailingReportsFailureInsteadOfThrowing()
     {
         // Every caller is a global exception handler or an activity pause. An escaping exception
@@ -167,10 +167,10 @@ public sealed class DiagnosticsSessionLogTests : IDisposable
         Directory.CreateDirectory(filePath);
         var log = new DiagnosticsSessionLog(filePath, NullLogger<DiagnosticsSessionLog>.Instance);
 
-        Assert.False(log.Save(["anything"]));
+        Assert.That(log.Save(["anything"]), Is.False);
     }
 
-    [Fact]
+    [Test]
     public void LoadFailingReturnsNothingInsteadOfThrowing()
     {
         var directory = NewDirectory();
@@ -178,10 +178,10 @@ public sealed class DiagnosticsSessionLogTests : IDisposable
         Directory.CreateDirectory(filePath);
         var log = new DiagnosticsSessionLog(filePath, NullLogger<DiagnosticsSessionLog>.Instance);
 
-        Assert.Empty(log.Load());
+        Assert.That(log.Load(), Is.Empty);
     }
 
-    [Fact]
+    [Test]
     public void ClearFailingDoesNotThrow()
     {
         var directory = NewDirectory();

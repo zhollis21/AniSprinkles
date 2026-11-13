@@ -7,20 +7,17 @@ namespace AniSprinkles.UnitTests;
 /// </summary>
 public class ImageUrlTests
 {
-    [Theory]
-    [InlineData("https://s4.anilist.co/file/anilistcdn/character/large/b123-abc.png")]
-    [InlineData("https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1-abc.jpg")]
-    [InlineData("https://example.test/not-a-default.jpg.png")]
-    public void IsReal_ForAnActualImage_IsTrue(string url) => Assert.True(ImageUrl.IsReal(url));
+    [TestCase("https://s4.anilist.co/file/anilistcdn/character/large/b123-abc.png")]
+    [TestCase("https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1-abc.jpg")]
+    [TestCase("https://example.test/not-a-default.jpg.png")]
+    public void IsReal_ForAnActualImage_IsTrue(string url) => Assert.That(ImageUrl.IsReal(url), Is.True);
 
-    [Theory]
-    [InlineData("https://s4.anilist.co/file/anilistcdn/character/large/default.jpg")]
-    [InlineData("https://s4.anilist.co/file/anilistcdn/staff/large/DEFAULT.JPG")]
-    public void IsReal_ForAniListsPlaceholder_IsFalse(string url) => Assert.False(ImageUrl.IsReal(url));
+    [TestCase("https://s4.anilist.co/file/anilistcdn/character/large/default.jpg")]
+    [TestCase("https://s4.anilist.co/file/anilistcdn/staff/large/DEFAULT.JPG")]
+    public void IsReal_ForAniListsPlaceholder_IsFalse(string url) => Assert.That(ImageUrl.IsReal(url), Is.False);
 
-    [Theory]
-    [InlineData(null)]
-    [InlineData("")]
-    [InlineData("   ")]
-    public void IsReal_ForNothing_IsFalse(string? url) => Assert.False(ImageUrl.IsReal(url));
+    [TestCase(null)]
+    [TestCase("")]
+    [TestCase("   ")]
+    public void IsReal_ForNothing_IsFalse(string? url) => Assert.That(ImageUrl.IsReal(url), Is.False);
 }

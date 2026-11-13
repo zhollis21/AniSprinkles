@@ -47,7 +47,7 @@ public sealed class FileLoggerProviderTests : IDisposable
 
     // ── Shutdown ─────────────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void Dispose_FlushesWhateverIsStillQueued()
     {
         // The reason this matters: the lines most worth having are the ones written just before the
@@ -65,10 +65,10 @@ public sealed class FileLoggerProviderTests : IDisposable
         provider.Dispose();
 
         var lines = LinesIn(directory);
-        Assert.Equal(200, lines.Count(l => l.Contains("queued line")));
+        Assert.That(lines.Count(l => l.Contains("queued line")), Is.EqualTo(200));
     }
 
-    [Fact]
+    [Test]
     public void DisposingTwice_IsHarmless()
     {
         var provider = new FileLoggerProvider(NewDirectory());
@@ -77,7 +77,7 @@ public sealed class FileLoggerProviderTests : IDisposable
         provider.Dispose();
     }
 
-    [Fact]
+    [Test]
     public void CreatingALoggerAfterDispose_Throws()
     {
         // A caller still holding the provider past shutdown is a lifetime bug worth surfacing,
@@ -90,22 +90,22 @@ public sealed class FileLoggerProviderTests : IDisposable
 
     // ── The file itself ──────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void TheLogDirectoryIsCreatedIfItDoesNotExist()
     {
         // First run on a fresh install: nothing has made {AppDataDirectory}/logs/ yet.
         var directory = NewDirectory();
-        Assert.False(Directory.Exists(directory));
+        Assert.That(Directory.Exists(directory), Is.False);
 
         using (var provider = new FileLoggerProvider(directory))
         {
             provider.CreateLogger("Boot").LogWarning("hello");
         }
 
-        Assert.True(File.Exists(Path.Combine(directory, "anisprinkles.log")));
+        Assert.That(File.Exists(Path.Combine(directory, "anisprinkles.log")), Is.True);
     }
 
-    [Fact]
+    [Test]
     public void TheFileNameIsConfigurable()
     {
         var directory = NewDirectory();
@@ -115,10 +115,10 @@ public sealed class FileLoggerProviderTests : IDisposable
             provider.CreateLogger("Boot").LogWarning("hello");
         }
 
-        Assert.True(File.Exists(Path.Combine(directory, "custom.log")));
+        Assert.That(File.Exists(Path.Combine(directory, "custom.log")), Is.True);
     }
 
-    [Fact]
+    [Test]
     public void ALineCarriesItsLevelCategoryAndMessage()
     {
         var directory = NewDirectory();
@@ -128,12 +128,14 @@ public sealed class FileLoggerProviderTests : IDisposable
             provider.CreateLogger("AniSprinkles.Nav").LogWarning("NAVTRACE something happened");
         }
 
-        var line = Assert.Single(LinesIn(directory), l => l.Contains("NAVTRACE"));
-        Assert.Contains("[Warning]", line);
-        Assert.Contains("AniSprinkles.Nav", line);
+        var matches = LinesIn(directory).Where(l => l.Contains("NAVTRACE")).ToList();
+        Assert.That(matches, Has.Exactly(1).Items);
+        var line = matches[0];
+        Assert.That(line, Does.Contain("[Warning]"));
+        Assert.That(line, Does.Contain("AniSprinkles.Nav"));
     }
 
-    [Fact]
+    [Test]
     public void AnExceptionIsAppendedToItsLine()
     {
         var directory = NewDirectory();
@@ -143,11 +145,13 @@ public sealed class FileLoggerProviderTests : IDisposable
             provider.CreateLogger("Api").LogError(new InvalidOperationException("boom"), "call failed");
         }
 
-        var line = Assert.Single(LinesIn(directory), l => l.Contains("call failed"));
-        Assert.Contains("boom", line);
+        var matches = LinesIn(directory).Where(l => l.Contains("call failed")).ToList();
+        Assert.That(matches, Has.Exactly(1).Items);
+        var line = matches[0];
+        Assert.That(line, Does.Contain("boom"));
     }
 
-    [Fact]
+    [Test]
     public void AMultiLineMessage_IsFlattenedOntoOneLine()
     {
         // The format is one record per line. A message carrying newlines through would break every
@@ -160,12 +164,12 @@ public sealed class FileLoggerProviderTests : IDisposable
                 "first{NewLine}second", Environment.NewLine);
         }
 
-        Assert.Single(LinesIn(directory), l => l.Contains("first") && l.Contains("second"));
+        Assert.That(LinesIn(directory), Has.Exactly(1).Matches<string>(l => l is not null && l.Contains("first") && l.Contains("second")));
     }
 
     // ── Level filtering ──────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void MessagesBelowTheMinimumLevel_AreDropped()
     {
         // Release keeps only Warning and above; a Debug-level trace must not reach the file.
@@ -179,22 +183,22 @@ public sealed class FileLoggerProviderTests : IDisposable
         }
 
         var lines = LinesIn(directory);
-        Assert.DoesNotContain(lines, l => l.Contains("informational noise"));
-        Assert.Contains(lines, l => l.Contains("worth keeping"));
+        Assert.That(lines, Has.None.Contains("informational noise"));
+        Assert.That(lines, Has.Some.Contains("worth keeping"));
     }
 
-    [Fact]
+    [Test]
     public void LogLevelNone_IsNeverEnabled()
     {
         using var provider = new FileLoggerProvider(NewDirectory(), minimumLevel: LogLevel.Trace);
 
         var logger = provider.CreateLogger("Any");
 
-        Assert.True(logger.IsEnabled(LogLevel.Trace));
-        Assert.False(logger.IsEnabled(LogLevel.None));
+        Assert.That(logger.IsEnabled(LogLevel.Trace), Is.True);
+        Assert.That(logger.IsEnabled(LogLevel.None), Is.False);
     }
 
-    [Fact]
+    [Test]
     public void BeginScope_ReturnsSomethingDisposable()
     {
         // Scopes are not supported, but ILogger callers dispose the handle unconditionally.
@@ -202,12 +206,12 @@ public sealed class FileLoggerProviderTests : IDisposable
 
         using var scope = provider.CreateLogger("Any").BeginScope("state");
 
-        Assert.NotNull(scope);
+        Assert.That(scope, Is.Not.Null);
     }
 
     // ── Rotation and retention ───────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void CrossingTheSizeCap_MovesTheCurrentFileToArchiveOne()
     {
         var directory = NewDirectory();
@@ -221,11 +225,11 @@ public sealed class FileLoggerProviderTests : IDisposable
             }
         }
 
-        Assert.True(File.Exists(Path.Combine(directory, "anisprinkles.log")));
-        Assert.True(File.Exists(Path.Combine(directory, "anisprinkles.log.1")));
+        Assert.That(File.Exists(Path.Combine(directory, "anisprinkles.log")), Is.True);
+        Assert.That(File.Exists(Path.Combine(directory, "anisprinkles.log.1")), Is.True);
     }
 
-    [Fact]
+    [Test]
     public void FurtherRotations_ShiftTheOlderArchivesDown()
     {
         var directory = NewDirectory();
@@ -239,11 +243,11 @@ public sealed class FileLoggerProviderTests : IDisposable
             }
         }
 
-        Assert.True(File.Exists(Path.Combine(directory, "anisprinkles.log.1")));
-        Assert.True(File.Exists(Path.Combine(directory, "anisprinkles.log.2")));
+        Assert.That(File.Exists(Path.Combine(directory, "anisprinkles.log.1")), Is.True);
+        Assert.That(File.Exists(Path.Combine(directory, "anisprinkles.log.2")), Is.True);
     }
 
-    [Fact]
+    [Test]
     public void RetentionCapsHowManyArchivesSurvive()
     {
         // The point of the cap: a chatty session must not fill the user's storage.
@@ -258,11 +262,11 @@ public sealed class FileLoggerProviderTests : IDisposable
             }
         }
 
-        Assert.True(File.Exists(Path.Combine(directory, "anisprinkles.log.2")));
-        Assert.False(File.Exists(Path.Combine(directory, "anisprinkles.log.3")));
+        Assert.That(File.Exists(Path.Combine(directory, "anisprinkles.log.2")), Is.True);
+        Assert.That(File.Exists(Path.Combine(directory, "anisprinkles.log.3")), Is.False);
     }
 
-    [Fact]
+    [Test]
     public void ARetentionOfZero_IsClampedToKeepingOneArchive()
     {
         // Math that produced a zero-length loop would otherwise leave the current file unrotated
@@ -278,11 +282,11 @@ public sealed class FileLoggerProviderTests : IDisposable
             }
         }
 
-        Assert.True(File.Exists(Path.Combine(directory, "anisprinkles.log.1")));
-        Assert.False(File.Exists(Path.Combine(directory, "anisprinkles.log.2")));
+        Assert.That(File.Exists(Path.Combine(directory, "anisprinkles.log.1")), Is.True);
+        Assert.That(File.Exists(Path.Combine(directory, "anisprinkles.log.2")), Is.False);
     }
 
-    [Fact]
+    [Test]
     public void TheNewestLinesLiveInTheCurrentFile()
     {
         // Rotation must not leave the tail in an archive — a reader opening the log expects the
@@ -300,10 +304,10 @@ public sealed class FileLoggerProviderTests : IDisposable
             logger.LogWarning("the very last thing");
         }
 
-        Assert.Contains(LinesIn(directory), l => l.Contains("the very last thing"));
+        Assert.That(LinesIn(directory), Has.Some.Contains("the very last thing"));
     }
 
-    [Fact]
+    [Test]
     public void UnderTheSizeCap_NothingRotates()
     {
         var directory = NewDirectory();
@@ -313,6 +317,6 @@ public sealed class FileLoggerProviderTests : IDisposable
             provider.CreateLogger("Quiet").LogWarning("one small line");
         }
 
-        Assert.False(File.Exists(Path.Combine(directory, "anisprinkles.log.1")));
+        Assert.That(File.Exists(Path.Combine(directory, "anisprinkles.log.1")), Is.False);
     }
 }

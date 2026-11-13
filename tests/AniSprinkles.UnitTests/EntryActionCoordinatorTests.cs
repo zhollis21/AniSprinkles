@@ -14,14 +14,14 @@ namespace AniSprinkles.UnitTests;
 /// <c>Shell.Current</c>, which is null rather than throwing off-device — so the whole flow would
 /// silently no-op and any test of it would pass without executing a single decision.
 /// </summary>
-[Collection(AppSettingsCollection.Name)]
+[NonParallelizable]
 public class EntryActionCoordinatorTests
 {
     public EntryActionCoordinatorTests() => TestDataBuilder.ResetAppSettings();
 
     // ── Action menu routing ──────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task ShowEntryMenu_WhenDismissed_RunsNoFlow()
     {
         var harness = new Harness();
@@ -29,11 +29,11 @@ public class EntryActionCoordinatorTests
 
         await harness.Coordinator.ShowEntryMenuAsync(harness.Entry);
 
-        Assert.Equal([nameof(IDialogService.ShowEntryActionsAsync)], harness.Dialogs.Calls);
+        Assert.That(harness.Dialogs.Calls, Is.EqualTo([nameof(IDialogService.ShowEntryActionsAsync)]));
         await harness.Client.DidNotReceive().SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task ShowEntryMenu_FlushesPendingWorkBeforeOpening()
     {
         // Library hangs its debounced +1 flush off OnBeforeFlowAsync. If the menu opened first, the
@@ -44,10 +44,10 @@ public class EntryActionCoordinatorTests
 
         await harness.Coordinator.ShowEntryMenuAsync(harness.Entry);
 
-        Assert.Equal(["flush", nameof(IDialogService.ShowEntryActionsAsync)], order);
+        Assert.That(order, Is.EqualTo(["flush", nameof(IDialogService.ShowEntryActionsAsync)]));
     }
 
-    [Fact]
+    [Test]
     public async Task ShowEntryMenu_OpenDetails_DelegatesToTheHostWithoutSaving()
     {
         var harness = new Harness();
@@ -55,13 +55,13 @@ public class EntryActionCoordinatorTests
 
         await harness.Coordinator.ShowEntryMenuAsync(harness.Entry);
 
-        Assert.Equal([harness.Entry], harness.OpenedDetails);
+        Assert.That(harness.OpenedDetails, Is.EqualTo([harness.Entry]));
         await harness.Client.DidNotReceive().SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>());
     }
 
     // ── Move to list ─────────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task MoveToList_ChoosingRemove_RunsTheDeleteFlowRatherThanAMove()
     {
         // The sheet's remove row and its status rows come back through one result. Routing the
@@ -76,10 +76,10 @@ public class EntryActionCoordinatorTests
 
         await harness.Client.Received(1).DeleteMediaListEntryAsync(harness.Entry.Id, Arg.Any<CancellationToken>());
         await harness.Client.DidNotReceive().SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>());
-        Assert.Equal([harness.Entry], harness.Removed);
+        Assert.That(harness.Removed, Is.EqualTo([harness.Entry]));
     }
 
-    [Fact]
+    [Test]
     public async Task MoveToList_ChoosingAStatus_SavesUnderThatStatus()
     {
         var harness = new Harness();
@@ -89,12 +89,12 @@ public class EntryActionCoordinatorTests
 
         await harness.Coordinator.ShowEntryMenuAsync(harness.Entry);
 
-        Assert.Equal(MediaListStatus.Paused, harness.Entry.Status);
-        Assert.Equal([harness.Entry], harness.StatusChanged);
-        Assert.Contains(harness.Feedback.Toasts, t => t.Contains("moved to Paused"));
+        Assert.That(harness.Entry.Status, Is.EqualTo(MediaListStatus.Paused));
+        Assert.That(harness.StatusChanged, Is.EqualTo([harness.Entry]));
+        Assert.That(harness.Feedback.Toasts, Has.Some.Contains("moved to Paused"));
     }
 
-    [Fact]
+    [Test]
     public async Task MoveToList_WhenTheSaveFails_RollsTheEntryBackAndTellsTheHost()
     {
         // The move mutates status/progress/score/repeat before the round trip, and the host has
@@ -112,21 +112,22 @@ public class EntryActionCoordinatorTests
 
         await harness.Coordinator.ShowEntryMenuAsync(entry);
 
-        Assert.Equal(MediaListStatus.Current, entry.Status);
-        Assert.Equal(5, entry.Progress);
-        Assert.Equal(7, entry.Score);
-        Assert.Equal(2, entry.Repeat);
-        Assert.Equal(1, harness.MutationFailures);
+        Assert.That(entry.Status, Is.EqualTo(MediaListStatus.Current));
+        Assert.That(entry.Progress, Is.EqualTo(5));
+        Assert.That(entry.Score, Is.EqualTo(7));
+        Assert.That(entry.Repeat, Is.EqualTo(2));
+        Assert.That(harness.MutationFailures, Is.EqualTo(1));
 
         // A move's side effects were just reverted, so there is no coherent state to retry from —
         // the user long-presses again. Only a ServiceOutage swaps in the outage title.
-        Assert.Equal("Failed to move. Please try again.", Assert.Single(harness.Feedback.Snackbars));
-        Assert.Null(harness.Feedback.LastSnackbarAction);
+        Assert.That(harness.Feedback.Snackbars, Has.Exactly(1).Items);
+        Assert.That(harness.Feedback.Snackbars.Single(), Is.EqualTo("Failed to move. Please try again."));
+        Assert.That<Action?>(harness.Feedback.LastSnackbarAction, Is.Null);
     }
 
     // ── Remove ───────────────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task Remove_WhenTheUserCancelsTheConfirmation_DeletesNothing()
     {
         var harness = new Harness();
@@ -136,10 +137,10 @@ public class EntryActionCoordinatorTests
         await harness.Coordinator.ShowEntryMenuAsync(harness.Entry);
 
         await harness.Client.DidNotReceive().DeleteMediaListEntryAsync(Arg.Any<int>(), Arg.Any<CancellationToken>());
-        Assert.Empty(harness.OptimisticallyRemoved);
+        Assert.That(harness.OptimisticallyRemoved, Is.Empty);
     }
 
-    [Fact]
+    [Test]
     public async Task Remove_WhenTheDeleteFails_OffersRetryThatReissuesTheSameDelete()
     {
         var harness = new Harness();
@@ -150,8 +151,8 @@ public class EntryActionCoordinatorTests
 
         await harness.Coordinator.ShowEntryMenuAsync(harness.Entry);
 
-        Assert.Equal(1, harness.MutationFailures);
-        Assert.NotNull(harness.Feedback.LastSnackbarAction);
+        Assert.That(harness.MutationFailures, Is.EqualTo(1));
+        Assert.That<Action?>(harness.Feedback.LastSnackbarAction, Is.Not.Null);
 
         // The retry must target the id captured at failure time, not whatever the entry holds later.
         harness.Client.ClearReceivedCalls();
@@ -162,7 +163,7 @@ public class EntryActionCoordinatorTests
         await harness.Client.Received(1).DeleteMediaListEntryAsync(harness.Entry.Id, Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task Remove_WhenTheRetryItselfFailsIntoAnOutage_StopsOfferingRetry()
     {
         // The retry path can fail again, and it re-enters the same failure handler. Once the failure
@@ -175,7 +176,7 @@ public class EntryActionCoordinatorTests
             .Returns(Task.FromException<bool>(new AniListApiException(ApiErrorKind.Network, "offline")));
 
         await harness.Coordinator.ShowEntryMenuAsync(harness.Entry);
-        Assert.NotNull(harness.Feedback.LastSnackbarAction);
+        Assert.That<Action?>(harness.Feedback.LastSnackbarAction, Is.Not.Null);
 
         // The retry runs while AniList is down.
         harness.Client.DeleteMediaListEntryAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
@@ -183,11 +184,11 @@ public class EntryActionCoordinatorTests
         harness.Feedback.LastSnackbarAction!();
         await harness.WaitUntilAsync(() => harness.Feedback.Snackbars.Count == 2);
 
-        Assert.Equal("AniList is Down", harness.Feedback.Snackbars[1]);
-        Assert.Null(harness.Feedback.LastSnackbarAction);
+        Assert.That(harness.Feedback.Snackbars[1], Is.EqualTo("AniList is Down"));
+        Assert.That<Action?>(harness.Feedback.LastSnackbarAction, Is.Null);
     }
 
-    [Fact]
+    [Test]
     public async Task Remove_DuringAServiceOutage_OmitsTheRetryAction()
     {
         // The outage banner is already up and a retry cannot succeed for minutes; offering Retry
@@ -200,13 +201,13 @@ public class EntryActionCoordinatorTests
 
         await harness.Coordinator.ShowEntryMenuAsync(harness.Entry);
 
-        Assert.Contains("AniList is Down", harness.Feedback.Snackbars);
-        Assert.Null(harness.Feedback.LastSnackbarAction);
+        Assert.That(harness.Feedback.Snackbars, Does.Contain("AniList is Down"));
+        Assert.That<Action?>(harness.Feedback.LastSnackbarAction, Is.Null);
     }
 
     // ── Add to list ──────────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task AddToList_AdoptsTheServerAssignedEntryId()
     {
         // A candidate starts at Id 0. Without adopting the server's id, a later Remove would delete
@@ -221,11 +222,11 @@ public class EntryActionCoordinatorTests
 
         await harness.Coordinator.ShowAddToListAsync(candidate);
 
-        Assert.Equal(4242, candidate.Id);
-        Assert.Equal([candidate], harness.StatusChanged);
+        Assert.That(candidate.Id, Is.EqualTo(4242));
+        Assert.That(harness.StatusChanged, Is.EqualTo([candidate]));
     }
 
-    [Fact]
+    [Test]
     public async Task AddToList_WhenTheServerReturnsNoId_FailsLoudlyInsteadOfShowingSuccess()
     {
         // A create that yields no id did not really take. Reporting success would leave an entry the
@@ -240,14 +241,14 @@ public class EntryActionCoordinatorTests
 
         await harness.Coordinator.ShowAddToListAsync(candidate);
 
-        Assert.Empty(harness.StatusChanged);
-        Assert.Empty(harness.Feedback.Toasts);
-        Assert.Contains("Failed to add. Please try again.", harness.Feedback.Snackbars);
+        Assert.That(harness.StatusChanged, Is.Empty);
+        Assert.That(harness.Feedback.Toasts, Is.Empty);
+        Assert.That(harness.Feedback.Snackbars, Does.Contain("Failed to add. Please try again."));
     }
 
     // ── Edit progress ────────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task EditProgress_ClampsAboveTheEpisodeCap()
     {
         var harness = new Harness(episodes: 12);
@@ -261,11 +262,11 @@ public class EntryActionCoordinatorTests
 
         // Clamped to 12, which is the cap, so it routes into the completion flow — and the user
         // declined, so nothing is saved and progress is untouched.
-        Assert.Contains(nameof(IDialogService.ConfirmAsync), harness.Dialogs.Calls);
-        Assert.Equal(3, harness.Entry.Progress);
+        Assert.That(harness.Dialogs.Calls, Does.Contain(nameof(IDialogService.ConfirmAsync)));
+        Assert.That(harness.Entry.Progress, Is.EqualTo(3));
     }
 
-    [Fact]
+    [Test]
     public async Task EditProgress_ToTheSameValue_SavesNothing()
     {
         var harness = new Harness(episodes: 12);
@@ -278,7 +279,7 @@ public class EntryActionCoordinatorTests
         await harness.Client.DidNotReceive().SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task EditProgress_WhenTheSaveFails_RestoresThePreviousProgress()
     {
         var harness = new Harness(episodes: 12);
@@ -290,12 +291,12 @@ public class EntryActionCoordinatorTests
 
         await harness.Coordinator.ShowEntryMenuAsync(harness.Entry);
 
-        Assert.Equal(4, harness.Entry.Progress);
+        Assert.That(harness.Entry.Progress, Is.EqualTo(4));
     }
 
     // ── Completion flow ──────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task CompletionFlow_WhenConfirmed_CompletesAndSaves()
     {
         var harness = new Harness(episodes: 12);
@@ -306,13 +307,13 @@ public class EntryActionCoordinatorTests
 
         await harness.Coordinator.RunCompletionFlowAsync(harness.Entry);
 
-        Assert.Equal(MediaListStatus.Completed, harness.Entry.Status);
-        Assert.Equal(12, harness.Entry.Progress);
-        Assert.Equal(9, harness.Entry.Score);
-        Assert.Equal([harness.Entry], harness.StatusChanged);
+        Assert.That(harness.Entry.Status, Is.EqualTo(MediaListStatus.Completed));
+        Assert.That(harness.Entry.Progress, Is.EqualTo(12));
+        Assert.That(harness.Entry.Score, Is.EqualTo(9));
+        Assert.That(harness.StatusChanged, Is.EqualTo([harness.Entry]));
     }
 
-    [Fact]
+    [Test]
     public async Task CompletionFlow_WhenDeclined_ChangesNothing()
     {
         var harness = new Harness(episodes: 12);
@@ -321,12 +322,12 @@ public class EntryActionCoordinatorTests
 
         await harness.Coordinator.RunCompletionFlowAsync(harness.Entry);
 
-        Assert.Equal(MediaListStatus.Current, harness.Entry.Status);
-        Assert.Equal(11, harness.Entry.Progress);
+        Assert.That(harness.Entry.Status, Is.EqualTo(MediaListStatus.Current));
+        Assert.That(harness.Entry.Progress, Is.EqualTo(11));
         await harness.Client.DidNotReceive().SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task CompletionFlow_WhenAlreadyRunning_DoesNotStartASecondTime()
     {
         // A +1 tap that reaches the cap and a "Mark as completed" menu pick can both land. Without
@@ -351,16 +352,16 @@ public class EntryActionCoordinatorTests
         // confirmation and blocks on a gate this test only releases afterwards, so an unbounded
         // await would deadlock the suite instead of failing it.
         await harness.Coordinator.RunCompletionFlowAsync(harness.Entry)
-            .WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
+            .WaitAsync(TimeSpan.FromSeconds(5), TestContext.CurrentContext.CancellationToken);
 
         gate.SetResult();
-        await first.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
+        await first.WaitAsync(TimeSpan.FromSeconds(5), TestContext.CurrentContext.CancellationToken);
 
-        Assert.Equal(1, harness.Dialogs.Calls.Count(c => c == nameof(IDialogService.ConfirmAsync)));
+        Assert.That(harness.Dialogs.Calls.Count(c => c == nameof(IDialogService.ConfirmAsync)), Is.EqualTo(1));
         await harness.Client.Received(1).SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task CompletionFlow_WhenTheScorePromptIsSkipped_StillCompletes()
     {
         // Skipping the rating means "leave the score alone", not "cancel the completion".
@@ -373,8 +374,8 @@ public class EntryActionCoordinatorTests
 
         await harness.Coordinator.RunCompletionFlowAsync(harness.Entry);
 
-        Assert.Equal(MediaListStatus.Completed, harness.Entry.Status);
-        Assert.Equal(6, harness.Entry.Score);
+        Assert.That(harness.Entry.Status, Is.EqualTo(MediaListStatus.Completed));
+        Assert.That(harness.Entry.Score, Is.EqualTo(6));
     }
 
     private sealed class Harness
@@ -461,13 +462,13 @@ public class EntryActionCoordinatorTests
                 await Task.Delay(1);
             }
 
-            Assert.True(condition(), "Timed out waiting for the retry to settle.");
+            Assert.That(condition(), Is.True, "Timed out waiting for the retry to settle.");
         }
     }
 
     // ── Manga (#12) ──────────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task EditProgress_OnAMangaChapterReader_AsksForChaptersAgainstTheChapterTotal()
     {
         var harness = new Harness();
@@ -479,13 +480,13 @@ public class EntryActionCoordinatorTests
 
         await harness.Coordinator.ShowEntryMenuAsync(harness.Entry);
 
-        Assert.Equal(MediaProgressUnit.Chapter, harness.Dialogs.LastEditProgressUnit);
-        Assert.Equal(141, harness.Dialogs.LastEditProgressMax);
-        Assert.Equal(100, harness.Dialogs.LastEditProgressCurrent);
-        Assert.Equal(110, harness.Entry.Progress);
+        Assert.That(harness.Dialogs.LastEditProgressUnit, Is.EqualTo(MediaProgressUnit.Chapter));
+        Assert.That(harness.Dialogs.LastEditProgressMax, Is.EqualTo(141));
+        Assert.That(harness.Dialogs.LastEditProgressCurrent, Is.EqualTo(100));
+        Assert.That(harness.Entry.Progress, Is.EqualTo(110));
     }
 
-    [Fact]
+    [Test]
     public async Task EditProgress_OnAMangaVolumeReader_AsksForVolumesAndWritesVolumes()
     {
         // The chapter counter must come back untouched: the two are independent on AniList, and
@@ -500,14 +501,14 @@ public class EntryActionCoordinatorTests
 
         await harness.Coordinator.ShowEntryMenuAsync(harness.Entry);
 
-        Assert.Equal(MediaProgressUnit.Volume, harness.Dialogs.LastEditProgressUnit);
-        Assert.Equal(34, harness.Dialogs.LastEditProgressMax);
-        Assert.Equal(20, harness.Dialogs.LastEditProgressCurrent);
-        Assert.Equal(25, harness.Entry.ProgressVolumes);
-        Assert.Equal(0, harness.Entry.Progress);
+        Assert.That(harness.Dialogs.LastEditProgressUnit, Is.EqualTo(MediaProgressUnit.Volume));
+        Assert.That(harness.Dialogs.LastEditProgressMax, Is.EqualTo(34));
+        Assert.That(harness.Dialogs.LastEditProgressCurrent, Is.EqualTo(20));
+        Assert.That(harness.Entry.ProgressVolumes, Is.EqualTo(25));
+        Assert.That(harness.Entry.Progress, Is.EqualTo(0));
     }
 
-    [Fact]
+    [Test]
     public async Task EditProgress_OnAVolumeReader_WhenTheSaveFails_RestoresTheVolumeCount()
     {
         // The revert has to name the field it changed. ActiveProgressUnit is derived, so a revert
@@ -523,11 +524,11 @@ public class EntryActionCoordinatorTests
 
         await harness.Coordinator.ShowEntryMenuAsync(harness.Entry);
 
-        Assert.Equal(20, harness.Entry.ProgressVolumes);
-        Assert.Equal(0, harness.Entry.Progress);
+        Assert.That(harness.Entry.ProgressVolumes, Is.EqualTo(20));
+        Assert.That(harness.Entry.Progress, Is.EqualTo(0));
     }
 
-    [Fact]
+    [Test]
     public async Task MoveToList_OnAManga_LabelsTheSheetForReadingNotWatching()
     {
         var harness = new Harness();
@@ -538,7 +539,7 @@ public class EntryActionCoordinatorTests
 
         await harness.Coordinator.ShowEntryMenuAsync(harness.Entry);
 
-        Assert.Equal(MediaKind.Manga, harness.Dialogs.LastMoveToListKind);
-        Assert.Contains(harness.Feedback.Toasts, t => t.Contains("moved to Paused"));
+        Assert.That(harness.Dialogs.LastMoveToListKind, Is.EqualTo(MediaKind.Manga));
+        Assert.That(harness.Feedback.Toasts, Has.Some.Contains("moved to Paused"));
     }
 }

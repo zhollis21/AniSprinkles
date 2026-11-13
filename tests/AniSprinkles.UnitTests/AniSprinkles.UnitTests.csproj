@@ -7,15 +7,18 @@
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
     <OutputType>Exe</OutputType>
-    <!-- Runs on Microsoft.Testing.Platform, not VSTest (#168). The runner is chosen for the whole
-         repo by "test.runner" in global.json; this property is what makes the xunit v3 executable
-         speak MTP natively, and xunit.v3.mtp-v2 is the package flavour built for MTP v2. That is
-         why there is no Microsoft.NET.Test.Sdk or xunit.runner.visualstudio here any more. -->
-    <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+    <!-- NUnit on Microsoft.Testing.Platform (#168, #175). The runner is chosen for the whole repo by
+         "test.runner" in global.json; EnableNUnitRunner is what makes NUnit3TestAdapter build this
+         project into an MTP executable instead of a VSTest adapter, which is why there is no
+         Microsoft.NET.Test.Sdk here. Same packages and versions as KingdomWatch's Core.Tests, so
+         the two repos share one framework (#175). -->
+    <EnableNUnitRunner>true</EnableNUnitRunner>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="xunit.v3.mtp-v2" />
+    <PackageReference Include="NUnit" />
+    <PackageReference Include="NUnit.Analyzers" PrivateAssets="all" />
+    <PackageReference Include="NUnit3TestAdapter" />
     <PackageReference Include="NSubstitute" />
   </ItemGroup>
 

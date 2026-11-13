@@ -15,7 +15,7 @@ namespace AniSprinkles.UnitTests;
 /// </summary>
 public class AniListClientCancellationTests
 {
-    [Fact]
+    [Test]
     public async Task SendAsync_WhenTheRequestTimesOut_SurfacesAsANetworkErrorRatherThanACancellation()
     {
         // What HttpClient throws on its own timeout: a TaskCanceledException wrapping a TimeoutException.
@@ -26,13 +26,13 @@ public class AniListClientCancellationTests
         var client = NewClient(handler);
 
         var ex = await Assert.ThrowsAsync<AniListApiException>(
-            () => client.GetCharacterAsync(1, cancellationToken: TestContext.Current.CancellationToken));
+            () => client.GetCharacterAsync(1, cancellationToken: TestContext.CurrentContext.CancellationToken));
 
-        Assert.Equal(ApiErrorKind.Network, ex.Kind);
-        Assert.IsNotType<OperationCanceledException>(ex, exactMatch: false);
+        Assert.That(ex.Kind, Is.EqualTo(ApiErrorKind.Network));
+        Assert.That(ex, Is.Not.InstanceOf<OperationCanceledException>());
     }
 
-    [Fact]
+    [Test]
     public async Task SendAsync_WhenTheCallerCancels_StaysACancellation()
     {
         using var cts = new CancellationTokenSource();
@@ -44,11 +44,11 @@ public class AniListClientCancellationTests
 
         // A cancellation with no inner TimeoutException is the navigate-away case, and must keep its
         // type so the page models' catch (OperationCanceledException) can abandon quietly.
-        await Assert.ThrowsAnyAsync<OperationCanceledException>(
+        await Assert.CatchAsync<OperationCanceledException>(
             () => client.GetCharacterAsync(1, cancellationToken: cts.Token));
     }
 
-    [Fact]
+    [Test]
     public async Task SendAsync_WhenAndroidReportsTheCancellationAsAClosedSocket_StaysACancellation()
     {
         using var cts = new CancellationTokenSource();
@@ -64,11 +64,11 @@ public class AniListClientCancellationTests
         var client = NewClient(handler);
         await cts.CancelAsync();
 
-        await Assert.ThrowsAnyAsync<OperationCanceledException>(
+        await Assert.CatchAsync<OperationCanceledException>(
             () => client.GetCharacterAsync(1, cancellationToken: cts.Token));
     }
 
-    [Fact]
+    [Test]
     public async Task SendAsync_WhenTheSocketDropsWithNoCancellation_SurfacesAsANetworkError()
     {
         // Same exception type, nobody cancelled: a genuinely dropped connection, which the caller
@@ -80,12 +80,12 @@ public class AniListClientCancellationTests
         var client = NewClient(handler);
 
         var ex = await Assert.ThrowsAsync<AniListApiException>(
-            () => client.GetCharacterAsync(1, cancellationToken: TestContext.Current.CancellationToken));
+            () => client.GetCharacterAsync(1, cancellationToken: TestContext.CurrentContext.CancellationToken));
 
-        Assert.Equal(ApiErrorKind.Network, ex.Kind);
+        Assert.That(ex.Kind, Is.EqualTo(ApiErrorKind.Network));
     }
 
-    [Fact]
+    [Test]
     public async Task SendAsync_WhenTheConnectionFails_SurfacesAsANetworkError()
     {
         var handler = new QueuedHttpMessageHandler(
@@ -94,9 +94,9 @@ public class AniListClientCancellationTests
         var client = NewClient(handler);
 
         var ex = await Assert.ThrowsAsync<AniListApiException>(
-            () => client.GetCharacterAsync(1, cancellationToken: TestContext.Current.CancellationToken));
+            () => client.GetCharacterAsync(1, cancellationToken: TestContext.CurrentContext.CancellationToken));
 
-        Assert.Equal(ApiErrorKind.Network, ex.Kind);
+        Assert.That(ex.Kind, Is.EqualTo(ApiErrorKind.Network));
     }
 
     private static AniListClient NewClient(HttpMessageHandler handler)

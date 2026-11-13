@@ -29,60 +29,66 @@ public class IconGlyphReferenceTests
 
     private static readonly Lazy<string> RepoRoot = new(FindRepoRoot);
 
-    // Reading the PE metadata is cheap but not free, and MemberData runs discovery separately from
+    // Reading the PE metadata is cheap but not free, and TestCaseSource runs discovery separately from
     // execution — parse the assembly once for the whole run.
     private static readonly Lazy<IReadOnlyDictionary<string, IReadOnlyDictionary<string, string>>?> IconTable =
         new(LoadIconTable);
 
-    [Theory]
-    [MemberData(nameof(XamlIconReferences))]
+    [TestCaseSource(nameof(XamlIconReferences))]
     public void XamlIconReference_ResolvesInIconAssembly(string relativePath, string typeName, string memberName)
     {
         var table = RequireIconTable();
 
-        Assert.True(
-            table.TryGetValue(typeName, out var members),
+        Assert.That(
+            table,
+            Does.ContainKey(typeName),
             $"{relativePath}: '{typeName}' is not a type in {PackageId}.");
+        var members = table[typeName];
 
-        Assert.True(
-            members.ContainsKey(memberName),
+        Assert.That(
+            members,
+            Does.ContainKey(memberName),
             $"{relativePath}: '{typeName}.{memberName}' does not exist in {PackageId}. " +
             $"{SuggestionFor(members.Keys, memberName)}");
     }
 
-    [Theory]
-    [MemberData(nameof(MirroredGlyphConstants))]
+    [TestCaseSource(nameof(MirroredGlyphConstants))]
     public void MirroredGlyph_MatchesPackageNameAndValue(string sourceTypeName, string memberName, string mirroredValue)
     {
         var table = RequireIconTable();
 
-        Assert.True(
-            table.TryGetValue(sourceTypeName, out var members),
+        Assert.That(
+            table,
+            Does.ContainKey(sourceTypeName),
             $"Glyphs mirrors '{sourceTypeName}', which is not a type in {PackageId}.");
+        var members = table[sourceTypeName];
 
-        Assert.True(
-            members.TryGetValue(memberName, out var packageValue),
+        Assert.That(
+            members,
+            Does.ContainKey(memberName),
             $"Glyphs mirrors '{sourceTypeName}.{memberName}', which no longer exists in {PackageId}. " +
             $"{SuggestionFor(members.Keys, memberName)}");
+        var packageValue = members[memberName];
 
-        Assert.True(
+        Assert.That(
             packageValue == mirroredValue,
+            Is.True,
             $"Glyphs.{Nested(sourceTypeName)}.{memberName} is {Describe(mirroredValue)} but " +
             $"{sourceTypeName}.{memberName} is {Describe(packageValue)}. " +
             "Regenerate with: dotnet run tools/generate-glyphs.cs");
     }
 
-    // A silently-empty MemberData would make both theories above vacuously green — exactly the
-    // failure mode #117 exists to prevent.
-    [Fact]
-    public void Discovery_FindsXamlIconReferences() => Assert.NotEmpty(XamlIconReferences());
+    // A silently-empty TestCaseSource would make both parameterised tests above vacuously green —
+    // exactly the failure mode #117 exists to prevent.
+    [Test]
+    public void Discovery_FindsXamlIconReferences() => Assert.That(XamlIconReferences(), Is.Not.Empty);
 
-    [Fact]
-    public void Discovery_FindsMirroredGlyphConstants() => Assert.NotEmpty(MirroredGlyphConstants());
+    [Test]
+    public void Discovery_FindsMirroredGlyphConstants() => Assert.That(MirroredGlyphConstants(), Is.Not.Empty);
 
-    public static TheoryData<string, string, string> XamlIconReferences()
+    public static List<TestCaseData> XamlIconReferences()
     {
-        var data = new TheoryData<string, string, string>();
+        var data = new List<TestCaseData>();
         var seen = new HashSet<string>(StringComparer.Ordinal);
 
         foreach (var file in EnumerateXamlFiles())
@@ -117,7 +123,7 @@ public class IconGlyphReferenceTests
                 // The same glyph is referenced from many files; one case per (file, member) is enough.
                 if (seen.Add($"{relativePath}|{typeName}.{memberName}"))
                 {
-                    data.Add(relativePath, typeName, memberName);
+                    data.Add(new TestCaseData(relativePath, typeName, memberName));
                 }
             }
         }
@@ -125,9 +131,9 @@ public class IconGlyphReferenceTests
         return data;
     }
 
-    public static TheoryData<string, string, string> MirroredGlyphConstants()
+    public static List<TestCaseData> MirroredGlyphConstants()
     {
-        var data = new TheoryData<string, string, string>();
+        var data = new List<TestCaseData>();
 
         foreach (var nested in typeof(Glyphs).GetNestedTypes(BindingFlags.Public))
         {
@@ -138,7 +144,7 @@ public class IconGlyphReferenceTests
             {
                 if (field is { IsLiteral: true, IsInitOnly: false } && field.GetRawConstantValue() is string value)
                 {
-                    data.Add(sourceTypeName, field.Name, value);
+                    data.Add(new TestCaseData(sourceTypeName, field.Name, value));
                 }
             }
         }
@@ -150,9 +156,10 @@ public class IconGlyphReferenceTests
     {
         // A missing package cache (a fresh machine, a version bump that has not been restored) should
         // not turn into a red build for something this test cannot check.
-        Assert.SkipWhen(
-            IconTable.Value is null,
-            $"{PackageId} was not found in the NuGet package cache; skipping glyph validation.");
+        if (IconTable.Value is null)
+        {
+            Assert.Ignore($"{PackageId} was not found in the NuGet package cache; skipping glyph validation.");
+        }
 
         return IconTable.Value!;
     }

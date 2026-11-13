@@ -21,7 +21,7 @@ namespace AniSprinkles.UnitTests;
 /// </summary>
 public class LoggingHandlerTests
 {
-    [Fact]
+    [Test]
     public async Task SendAsync_WhenTheCallerCancelled_LogsTheFailureAsInformationRatherThanError()
     {
         var logger = new RecordingLogger<LoggingHandler>();
@@ -32,12 +32,14 @@ public class LoggingHandlerTests
         await Assert.ThrowsAsync<WebException>(
             () => invoker.SendAsync(NewRequest(callerCts.Token), callerCts.Token));
 
-        var failure = Assert.Single(logger.Entries, e => e.Message.Contains("cancelled", StringComparison.Ordinal));
-        Assert.Equal(LogLevel.Information, failure.Level);
-        Assert.DoesNotContain(logger.Entries, e => e.Level == LogLevel.Error);
+        var matches = logger.Entries.Where(e => e.Message.Contains("cancelled", StringComparison.Ordinal)).ToList();
+        Assert.That(matches, Has.Exactly(1).Items);
+        var failure = matches[0];
+        Assert.That(failure.Level, Is.EqualTo(LogLevel.Information));
+        Assert.That(logger.Entries, Has.None.Matches<(LogLevel Level, string Message)>(e => e.Level == LogLevel.Error));
     }
 
-    [Fact]
+    [Test]
     public async Task SendAsync_WhenOnlyTheTimeoutCancelledThePipeline_StillLogsAsError()
     {
         // What an HttpClient.Timeout looks like from inside the pipeline: the linked token is
@@ -52,11 +54,13 @@ public class LoggingHandlerTests
         await Assert.ThrowsAsync<WebException>(
             () => invoker.SendAsync(NewRequest(CancellationToken.None), timeoutCts.Token));
 
-        var failure = Assert.Single(logger.Entries, e => e.Message.Contains("failed", StringComparison.Ordinal));
-        Assert.Equal(LogLevel.Error, failure.Level);
+        var matches = logger.Entries.Where(e => e.Message.Contains("failed", StringComparison.Ordinal)).ToList();
+        Assert.That(matches, Has.Exactly(1).Items);
+        var failure = matches[0];
+        Assert.That(failure.Level, Is.EqualTo(LogLevel.Error));
     }
 
-    [Fact]
+    [Test]
     public async Task SendAsync_WhenNoCallerTokenWasRecorded_LogsAsError()
     {
         // An unknown caller gets the reporting default. Missing a cancellation costs one Sentry
@@ -69,21 +73,25 @@ public class LoggingHandlerTests
         await Assert.ThrowsAsync<WebException>(
             () => invoker.SendAsync(new HttpRequestMessage(HttpMethod.Post, Endpoint), cts.Token));
 
-        var failure = Assert.Single(logger.Entries, e => e.Message.Contains("failed", StringComparison.Ordinal));
-        Assert.Equal(LogLevel.Error, failure.Level);
+        var matches = logger.Entries.Where(e => e.Message.Contains("failed", StringComparison.Ordinal)).ToList();
+        Assert.That(matches, Has.Exactly(1).Items);
+        var failure = matches[0];
+        Assert.That(failure.Level, Is.EqualTo(LogLevel.Error));
     }
 
-    [Fact]
+    [Test]
     public async Task SendAsync_WhenNobodyCancelled_StillLogsTheFailureAsError()
     {
         var logger = new RecordingLogger<LoggingHandler>();
         using var invoker = NewInvoker(logger, SocketClosed());
 
         await Assert.ThrowsAsync<WebException>(
-            () => invoker.SendAsync(NewRequest(CancellationToken.None), TestContext.Current.CancellationToken));
+            () => invoker.SendAsync(NewRequest(CancellationToken.None), TestContext.CurrentContext.CancellationToken));
 
-        var failure = Assert.Single(logger.Entries, e => e.Message.Contains("failed", StringComparison.Ordinal));
-        Assert.Equal(LogLevel.Error, failure.Level);
+        var matches = logger.Entries.Where(e => e.Message.Contains("failed", StringComparison.Ordinal)).ToList();
+        Assert.That(matches, Has.Exactly(1).Items);
+        var failure = matches[0];
+        Assert.That(failure.Level, Is.EqualTo(LogLevel.Error));
     }
 
     private const string Endpoint = "https://graphql.anilist.co/";

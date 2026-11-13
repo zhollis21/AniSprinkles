@@ -22,42 +22,39 @@ public class SensitiveTextTests
     public const string Jwt =
         "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NSJ9.dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk";
 
-    [Fact]
+    [Test]
     public void Redact_ReplacesABearerTokenEmbeddedInFreeText()
     {
         var result = SensitiveText.Redact("Invalid token: Bearer " + Jwt);
 
-        Assert.Equal("Invalid token: " + SensitiveText.RedactedBearer, result);
-        Assert.DoesNotContain(Jwt, result);
+        Assert.That(result, Is.EqualTo("Invalid token: " + SensitiveText.RedactedBearer));
+        Assert.That(result, Does.Not.Contain(Jwt));
     }
 
-    [Fact]
+    [Test]
     public void Redact_KeepsTheSurroundingTextSoTheErrorStaysReadable()
     {
         // The message is what the user sees on the error panel and what a maintainer reads in the
         // log; blanking the whole string would trade one problem for another.
         var result = SensitiveText.Redact("AniList request failed (400). Bearer " + Jwt + " was rejected.");
 
-        Assert.StartsWith("AniList request failed (400). ", result);
-        Assert.EndsWith(" was rejected.", result);
+        Assert.That(result, Does.StartWith("AniList request failed (400). "));
+        Assert.That(result, Does.EndWith(" was rejected."));
     }
 
-    [Theory]
-    [InlineData("bearer ")]
-    [InlineData("BEARER ")]
-    [InlineData("Bearer\t")]
-    [InlineData("Bearer  ")]
+    [TestCase("bearer ")]
+    [TestCase("BEARER ")]
+    [TestCase("Bearer\t")]
+    [TestCase("Bearer  ")]
     public void Redact_IsNotFooledByCasingOrWhitespace(string prefix)
     {
-        Assert.DoesNotContain(Jwt, SensitiveText.Redact(prefix + Jwt));
+        Assert.That(SensitiveText.Redact(prefix + Jwt), Does.Not.Contain(Jwt));
     }
 
-    [Theory]
-    // base64url — what a JWT actually uses ( - and _ , no padding).
-    [InlineData("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NSJ9.dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk")]
+    [TestCase("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NSJ9.dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk")]
     // standard base64 — + and / , with = padding.
-    [InlineData("YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXo+P0AjJCVeJiooKV8rfDo8Pg==")]
-    [InlineData("a+b/c+d/e==")]
+    [TestCase("YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXo+P0AjJCVeJiooKV8rfDo8Pg==")]
+    [TestCase("a+b/c+d/e==")]
     public void Redact_CoversBothBase64Alphabets(string token)
     {
         // The character class carries -_ and +/ deliberately, so a token is scrubbed whichever
@@ -65,22 +62,22 @@ public class SensitiveTextTests
         // file and Sentry, which is the whole point of #124.
         var result = SensitiveText.Redact("Rejected: Bearer " + token);
 
-        Assert.DoesNotContain(token, result);
-        Assert.Equal("Rejected: " + SensitiveText.RedactedBearer, result);
+        Assert.That(result, Does.Not.Contain(token));
+        Assert.That(result, Is.EqualTo("Rejected: " + SensitiveText.RedactedBearer));
     }
 
-    [Fact]
+    [Test]
     public void Redact_LeavesTextWithNoTokenAlone()
     {
         const string message = "AniList is temporarily disabled for maintenance.";
 
-        Assert.Equal(message, SensitiveText.Redact(message));
+        Assert.That(SensitiveText.Redact(message), Is.EqualTo(message));
     }
 
-    [Fact]
+    [Test]
     public void Redact_PassesNullThroughSoOptionalMessagesNeedNoNullCheck()
     {
-        Assert.Null(SensitiveText.Redact(null));
+        Assert.That(SensitiveText.Redact(null), Is.Null);
     }
 }
 
@@ -91,7 +88,7 @@ public class SensitiveTextTests
 /// </summary>
 public class AniListClientRedactionTests
 {
-    [Fact]
+    [Test]
     public async Task AGraphQlErrorBodyCarryingTheToken_DoesNotPutItInTheExceptionMessage()
     {
         // The 4xx branch where the body parses as GraphQL, so apiMessage becomes the message.
@@ -100,17 +97,17 @@ public class AniListClientRedactionTests
             "{\"errors\":[{\"message\":\"Invalid token: Bearer " + SensitiveTextTests.Jwt + "\"}]}"));
 
         var ex = await Assert.ThrowsAsync<AniListApiException>(
-            () => client.GetCharacterAsync(1, cancellationToken: TestContext.Current.CancellationToken));
+            () => client.GetCharacterAsync(1, cancellationToken: TestContext.CurrentContext.CancellationToken));
 
-        Assert.DoesNotContain(SensitiveTextTests.Jwt, ex.Message);
-        Assert.Contains(SensitiveText.RedactedBearer, ex.Message);
+        Assert.That(ex.Message, Does.Not.Contain(SensitiveTextTests.Jwt));
+        Assert.That(ex.Message, Does.Contain(SensitiveText.RedactedBearer));
 
         // Classification runs on the raw text, so redaction must not cost the "Invalid token" match
         // that turns a 400 into a re-sign-in prompt rather than a generic failure.
-        Assert.Equal(ApiErrorKind.Authentication, ex.Kind);
+        Assert.That(ex.Kind, Is.EqualTo(ApiErrorKind.Authentication));
     }
 
-    [Fact]
+    [Test]
     public async Task ANonJsonErrorBodyCarryingTheToken_IsRedactedInTheFallbackToo()
     {
         // The body does not parse as GraphQL, so the message is built from the 500-character
@@ -120,13 +117,13 @@ public class AniListClientRedactionTests
             "<html><body>Rejected credential Bearer " + SensitiveTextTests.Jwt + "</body></html>"));
 
         var ex = await Assert.ThrowsAsync<AniListApiException>(
-            () => client.GetCharacterAsync(1, cancellationToken: TestContext.Current.CancellationToken));
+            () => client.GetCharacterAsync(1, cancellationToken: TestContext.CurrentContext.CancellationToken));
 
-        Assert.DoesNotContain(SensitiveTextTests.Jwt, ex.Message);
-        Assert.Contains(SensitiveText.RedactedBearer, ex.Message);
+        Assert.That(ex.Message, Does.Not.Contain(SensitiveTextTests.Jwt));
+        Assert.That(ex.Message, Does.Contain(SensitiveText.RedactedBearer));
     }
 
-    [Fact]
+    [Test]
     public async Task AGraphQlErrorReturnedOnHttp200_IsRedactedAsWell()
     {
         // AniList returns GraphQL errors with a 200 as well. This path was missed in the original
@@ -136,10 +133,10 @@ public class AniListClientRedactionTests
             "{\"errors\":[{\"message\":\"Unauthorized - Bearer " + SensitiveTextTests.Jwt + "\"}]}"));
 
         var ex = await Assert.ThrowsAsync<AniListApiException>(
-            () => client.GetCharacterAsync(1, cancellationToken: TestContext.Current.CancellationToken));
+            () => client.GetCharacterAsync(1, cancellationToken: TestContext.CurrentContext.CancellationToken));
 
-        Assert.DoesNotContain(SensitiveTextTests.Jwt, ex.Message);
-        Assert.Equal(ApiErrorKind.Authentication, ex.Kind);
+        Assert.That(ex.Message, Does.Not.Contain(SensitiveTextTests.Jwt));
+        Assert.That(ex.Kind, Is.EqualTo(ApiErrorKind.Authentication));
     }
 
     // Authentication and Unknown are both retried once (#79), so the responder has to answer every
@@ -167,7 +164,7 @@ public class AniListClientRedactionTests
 /// </summary>
 public class SentryScrubberTests
 {
-    [Fact]
+    [Test]
     public void Scrub_RedactsTheExceptionValueButLeavesTheTypeAndStackAlone()
     {
         var evt = new SentryEvent
@@ -185,16 +182,17 @@ public class SentryScrubberTests
 
         var scrubbed = SentryScrubber.Scrub(evt);
 
-        var exception = Assert.Single(scrubbed.SentryExceptions!);
-        Assert.DoesNotContain(SensitiveTextTests.Jwt, exception.Value);
+        Assert.That(scrubbed.SentryExceptions!, Has.Exactly(1).Items);
+        var exception = scrubbed.SentryExceptions!.Single();
+        Assert.That(exception.Value, Does.Not.Contain(SensitiveTextTests.Jwt));
 
         // Grouping keys off the type and the frames. Redacting those would scatter one issue across
         // as many Sentry issues as there are distinct tokens.
-        Assert.Equal("AniListApiException", exception.Type);
-        Assert.NotNull(exception.Stacktrace);
+        Assert.That(exception.Type, Is.EqualTo("AniListApiException"));
+        Assert.That(exception.Stacktrace, Is.Not.Null);
     }
 
-    [Fact]
+    [Test]
     public void Scrub_RedactsTheEventMessageWithoutLosingItsTemplate()
     {
         var evt = new SentryEvent
@@ -208,13 +206,13 @@ public class SentryScrubberTests
 
         var scrubbed = SentryScrubber.Scrub(evt);
 
-        Assert.DoesNotContain(SensitiveTextTests.Jwt, scrubbed.Message!.Formatted);
+        Assert.That(scrubbed.Message!.Formatted, Does.Not.Contain(SensitiveTextTests.Jwt));
 
         // The template carries no user data and is what Sentry groups similar messages by.
-        Assert.Equal("Auth failed: {0}", scrubbed.Message.Message);
+        Assert.That(scrubbed.Message.Message, Is.EqualTo("Auth failed: {0}"));
     }
 
-    [Fact]
+    [Test]
     public void Scrub_RedactsALazilyProjectedExceptionSequence()
     {
         // SentryExceptions is typed as IEnumerable. A deferred sequence yields fresh objects on
@@ -229,23 +227,24 @@ public class SentryScrubberTests
 
         var scrubbed = SentryScrubber.Scrub(evt);
 
-        var exception = Assert.Single(scrubbed.SentryExceptions!);
-        Assert.DoesNotContain(SensitiveTextTests.Jwt, exception.Value);
+        Assert.That(scrubbed.SentryExceptions!, Has.Exactly(1).Items);
+        var exception = scrubbed.SentryExceptions!.Single();
+        Assert.That(exception.Value, Does.Not.Contain(SensitiveTextTests.Jwt));
     }
 
-    [Fact]
+    [Test]
     public void Scrub_HandlesAnEventWithNeitherExceptionsNorAMessage()
     {
         // Sentry sends plain events too; the scrubber runs on every one of them.
         var evt = new SentryEvent();
 
-        Assert.Same(evt, SentryScrubber.Scrub(evt));
+        Assert.That(SentryScrubber.Scrub(evt), Is.SameAs(evt));
     }
 }
 
 public class ErrorReportServiceTests
 {
-    [Fact]
+    [Test]
     public void Record_ReturnsDetailsWithNoRawToken()
     {
         // Belt-and-braces: anything arriving from AniListClient is already redacted, but Record is
@@ -256,7 +255,7 @@ public class ErrorReportServiceTests
             new InvalidOperationException("Rejected Bearer " + SensitiveTextTests.Jwt),
             "Load media details");
 
-        Assert.DoesNotContain(SensitiveTextTests.Jwt, details);
-        Assert.Contains("Load media details", details);
+        Assert.That(details, Does.Not.Contain(SensitiveTextTests.Jwt));
+        Assert.That(details, Does.Contain("Load media details"));
     }
 }

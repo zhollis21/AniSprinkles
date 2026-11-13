@@ -15,14 +15,14 @@ namespace AniSprinkles.UnitTests;
 /// specific interleaving (a fetch failing at a precise moment, a superseded continuation resuming
 /// after a newer one, a debounced settings write landing between two reads).
 /// </summary>
-[Collection(AppSettingsCollection.Name)]
+[NonParallelizable]
 public class SearchPageModelTests
 {
     private static readonly TimeSpan PastTheDebounce = TimeSpan.FromMilliseconds(700);
 
     public SearchPageModelTests() => TestDataBuilder.ResetAppSettings();
 
-    [Fact]
+    [Test]
     public async Task LoadMore_AfterAPageOneFailureOnANewQuery_DoesNotPageOntoThePreviousQuerysResults()
     {
         // #116 round 2. Load More was gated only on the in-flight window. A failed page 1 clears
@@ -35,20 +35,20 @@ public class SearchPageModelTests
         harness.FailQuery("bleach", new InvalidOperationException("page 1 exploded"));
 
         await harness.SearchAsync("naruto");
-        Assert.Single(harness.Model.SearchSection.Items);
-        Assert.True(harness.Model.SearchSection.CanLoadMore);
+        Assert.That(harness.Model.SearchSection.Items, Has.Exactly(1).Items);
+        Assert.That(harness.Model.SearchSection.CanLoadMore, Is.True);
 
         await harness.SearchAsync("bleach");
 
-        Assert.Empty(harness.Model.SearchSection.Items);
-        Assert.False(harness.Model.SearchSection.CanLoadMore);
+        Assert.That(harness.Model.SearchSection.Items, Is.Empty);
+        Assert.That(harness.Model.SearchSection.CanLoadMore, Is.False);
 
         var callsBefore = harness.Calls.Count;
         await harness.Model.LoadMoreSearchResultsCommand.ExecuteAsync(null);
-        Assert.Equal(callsBefore, harness.Calls.Count);
+        Assert.That(harness.Calls.Count, Is.EqualTo(callsBefore));
     }
 
-    [Fact]
+    [Test]
     public async Task LoadMore_AfterTheAdultSettingCommits_PagesUnderTheFilterPageOneUsed()
     {
         // #116 round 5. The adult filter was read live, per page. Settings debounces 1500 ms and
@@ -62,18 +62,18 @@ public class SearchPageModelTests
         harness.RespondToQuery("one piece", Page(mediaId: 1, hasNextPage: true));
 
         await harness.SearchAsync("one piece");
-        Assert.Equal(false, harness.Calls[0].Adult);
+        Assert.That(harness.Calls[0].Adult, Is.EqualTo(false));
 
         // The debounced Settings commit lands while the results are on screen.
         AppSettings.DisplayAdultContent = true;
 
         await harness.Model.LoadMoreSearchResultsCommand.ExecuteAsync(null);
 
-        Assert.Equal(2, harness.Calls.Count);
-        Assert.Equal(false, harness.Calls[1].Adult);
+        Assert.That(harness.Calls.Count, Is.EqualTo(2));
+        Assert.That(harness.Calls[1].Adult, Is.EqualTo(false));
     }
 
-    [Fact]
+    [Test]
     public async Task OnAppearing_WhileTheFirstSearchIsStillInFlight_TreatsAnAdultFlipAsAnInvalidation()
     {
         // #116 rounds 1 and 3. The search context was recorded on fetch SUCCESS rather than at issue
@@ -88,7 +88,7 @@ public class SearchPageModelTests
 
         await harness.SearchAsync("naruto", waitForFetch: false);
         await inFlight.Requested;
-        Assert.Single(harness.Calls);
+        Assert.That(harness.Calls, Has.Exactly(1).Items);
 
         // Tab away, flip the toggle, come back.
         AppSettings.DisplayAdultContent = true;
@@ -100,11 +100,11 @@ public class SearchPageModelTests
         await harness.WaitUntilAsync(() => harness.Calls.Count == 2);
 
         // The second request must carry the new policy; the first carried the old one.
-        Assert.Equal(false, harness.Calls[0].Adult);
-        Assert.Null(harness.Calls[1].Adult);
+        Assert.That(harness.Calls[0].Adult, Is.EqualTo(false));
+        Assert.That(harness.Calls[1].Adult, Is.Null);
     }
 
-    [Fact]
+    [Test]
     public async Task SupersededSearch_ResumingAfterANewerOne_DoesNotClearTheNewerSearchsSpinner()
     {
         // #116 round 3's neighbour: a cancelled search can reach its finally BEFORE its successor's
@@ -119,14 +119,14 @@ public class SearchPageModelTests
 
         // A new keystroke supersedes it, then the old fetch finally observes its cancellation.
         harness.Model.SearchText = "bb";
-        Assert.True(harness.Model.IsSearching);
+        Assert.That(harness.Model.IsSearching, Is.True);
         first.Release();
 
         await harness.WaitUntilAsync(() => first.Completed);
-        Assert.True(harness.Model.IsSearching);
+        Assert.That(harness.Model.IsSearching, Is.True);
     }
 
-    [Fact]
+    [Test]
     public async Task SearchText_BelowTheMinimumLength_IssuesNoRequest()
     {
         // The rate-limit guard: AniList reads are expensive, so a single character never queries.
@@ -135,11 +135,11 @@ public class SearchPageModelTests
         harness.Model.SearchText = "n";
         await harness.AdvancePastDebounceAsync();
 
-        Assert.Empty(harness.Calls);
-        Assert.True(harness.Model.IsIdle);
+        Assert.That(harness.Calls, Is.Empty);
+        Assert.That(harness.Model.IsIdle, Is.True);
     }
 
-    [Fact]
+    [Test]
     public async Task SearchFailure_KeepsTheUserInformedAndRecordsTheError()
     {
         var harness = new Harness();
@@ -147,13 +147,14 @@ public class SearchPageModelTests
 
         await harness.SearchAsync("naruto");
 
-        Assert.Equal("No Internet Connection", Assert.Single(harness.Feedback.Snackbars));
-        Assert.False(harness.Model.IsSearching);
+        Assert.That(harness.Feedback.Snackbars, Has.Exactly(1).Items);
+        Assert.That(harness.Feedback.Snackbars.Single(), Is.EqualTo("No Internet Connection"));
+        Assert.That(harness.Model.IsSearching, Is.False);
     }
 
     // ── Media-type filter (#12) ──────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task ByDefault_NoTypeIsSentAtAll()
     {
         // The All pill is the default, and "both types" reaches AniList as an ABSENT argument.
@@ -165,28 +166,27 @@ public class SearchPageModelTests
 
         await harness.SearchAsync("berserk");
 
-        Assert.Equal(SearchTypeFilter.All, harness.Model.SearchFilter);
-        Assert.Null(harness.Calls[^1].Kind);
+        Assert.That(harness.Model.SearchFilter, Is.EqualTo(SearchTypeFilter.All));
+        Assert.That(harness.Calls[^1].Kind, Is.Null);
     }
 
-    [Theory]
-    [InlineData("Anime", MediaKind.Anime)]
-    [InlineData("Manga", MediaKind.Manga)]
+    [TestCase("Anime", MediaKind.Anime)]
+    [TestCase("Manga", MediaKind.Manga)]
     public async Task PickingAType_SendsIt(string pill, MediaKind expected)
     {
         var harness = new Harness();
         harness.RespondToQuery("berserk", Page(mediaId: 1, hasNextPage: false));
 
         await harness.SearchAsync("berserk");
-        Assert.Null(harness.Calls[^1].Kind);
+        Assert.That(harness.Calls[^1].Kind, Is.Null);
 
         harness.Model.SelectSearchFilterCommand.Execute(pill);
         await harness.WaitForRerunAsync();
 
-        Assert.Equal(expected, harness.Calls[^1].Kind);
+        Assert.That(harness.Calls[^1].Kind, Is.EqualTo(expected));
     }
 
-    [Fact]
+    [Test]
     public async Task GoingBackToAll_DropsTheTypeAgain()
     {
         var harness = new Harness();
@@ -194,15 +194,15 @@ public class SearchPageModelTests
         harness.Model.SelectSearchFilterCommand.Execute("Manga");
 
         await harness.SearchAsync("berserk");
-        Assert.Equal(MediaKind.Manga, harness.Calls[^1].Kind);
+        Assert.That(harness.Calls[^1].Kind, Is.EqualTo(MediaKind.Manga));
 
         harness.Model.SelectSearchFilterCommand.Execute("All");
         await harness.WaitForRerunAsync();
 
-        Assert.Null(harness.Calls[^1].Kind);
+        Assert.That(harness.Calls[^1].Kind, Is.Null);
     }
 
-    [Fact]
+    [Test]
     public async Task FlippingTheFilter_ReRunsWhateverIsAlreadyTyped()
     {
         // Otherwise the user retypes their query to see it under the other type, or worse, sits
@@ -216,22 +216,22 @@ public class SearchPageModelTests
         harness.Model.SelectSearchFilterCommand.Execute("Manga");
         await harness.WaitForRerunAsync();
 
-        Assert.True(harness.Calls.Count > before);
-        Assert.Equal("berserk", harness.Calls[^1].Query);
+        Assert.That(harness.Calls.Count > before, Is.True);
+        Assert.That(harness.Calls[^1].Query, Is.EqualTo("berserk"));
     }
 
-    [Fact]
+    [Test]
     public void FlippingToTheFilterAlreadySelected_DoesNothing()
     {
         var harness = new Harness();
 
         harness.Model.SelectSearchFilterCommand.Execute("All");
 
-        Assert.Empty(harness.Calls);
-        Assert.Equal(SearchTypeFilter.All, harness.Model.SearchFilter);
+        Assert.That(harness.Calls, Is.Empty);
+        Assert.That(harness.Model.SearchFilter, Is.EqualTo(SearchTypeFilter.All));
     }
 
-    [Fact]
+    [Test]
     public async Task LaterPages_UseTheFilterPageOneWasSeededUnder()
     {
         // The same pin the adult filter needs, for the same reason: flipping the pills while a Load
@@ -241,18 +241,18 @@ public class SearchPageModelTests
         harness.Model.SelectSearchFilterCommand.Execute("Anime");
 
         await harness.SearchAsync("berserk");
-        Assert.Equal(MediaKind.Anime, harness.Calls[^1].Kind);
+        Assert.That(harness.Calls[^1].Kind, Is.EqualTo(MediaKind.Anime));
 
         // Reach into the property directly rather than the command, which would re-run the query
         // and re-seed the pin — the race being modelled is a change that lands mid-page.
         harness.Model.SearchFilter = SearchTypeFilter.Manga;
         await harness.Model.LoadMoreSearchResultsCommand.ExecuteAsync(null);
 
-        Assert.Equal(MediaKind.Anime, harness.Calls[^1].Kind);
-        Assert.Equal(2, harness.Calls[^1].Page);
+        Assert.That(harness.Calls[^1].Kind, Is.EqualTo(MediaKind.Anime));
+        Assert.That(harness.Calls[^1].Page, Is.EqualTo(2));
     }
 
-    [Fact]
+    [Test]
     public async Task LaterPagesUnderAll_StayOnAllRatherThanReadingTheLiveValue()
     {
         // All's client-side value is null, which is also what "nothing seeded yet" looks like on a
@@ -262,16 +262,16 @@ public class SearchPageModelTests
         harness.RespondToQuery("berserk", Page(mediaId: 1, hasNextPage: true));
 
         await harness.SearchAsync("berserk");
-        Assert.Null(harness.Calls[^1].Kind);
+        Assert.That(harness.Calls[^1].Kind, Is.Null);
 
         harness.Model.SearchFilter = SearchTypeFilter.Manga;
         await harness.Model.LoadMoreSearchResultsCommand.ExecuteAsync(null);
 
-        Assert.Null(harness.Calls[^1].Kind);
-        Assert.Equal(2, harness.Calls[^1].Page);
+        Assert.That(harness.Calls[^1].Kind, Is.Null);
+        Assert.That(harness.Calls[^1].Page, Is.EqualTo(2));
     }
 
-    [Fact]
+    [Test]
     public async Task AFilterFlipMidFetch_DiscardsTheInFlightResultsForTheOtherType()
     {
         // The interleaving the query-string guard alone cannot catch: flipping All → Manga keeps
@@ -283,7 +283,7 @@ public class SearchPageModelTests
 
         await harness.SearchAsync("berserk", waitForFetch: false);
         await firstFetch.Requested;
-        Assert.Null(harness.Calls[^1].Kind);
+        Assert.That(harness.Calls[^1].Kind, Is.Null);
 
         // The flip re-runs the same text; point the responder at a distinguishable manga page.
         harness.Model.SelectSearchFilterCommand.Execute("Manga");
@@ -294,43 +294,43 @@ public class SearchPageModelTests
         firstFetch.Release();
         await harness.WaitUntilAsync(() => firstFetch.Completed);
 
-        Assert.Equal(MediaKind.Manga, harness.Calls[^1].Kind);
-        Assert.Equal(99, Assert.Single(harness.Model.SearchSection.Items).Node?.Id);
+        Assert.That(harness.Calls[^1].Kind, Is.EqualTo(MediaKind.Manga));
+        Assert.That(harness.Model.SearchSection.Items, Has.Exactly(1).Items);
+        Assert.That(harness.Model.SearchSection.Items.Single().Node?.Id, Is.EqualTo(99));
     }
 
-    [Fact]
+    [Test]
     public void TheSelectedFilter_IsPersistedAndRestored()
     {
         var harness = new Harness();
 
         harness.Model.SelectSearchFilterCommand.Execute("Manga");
-        Assert.Equal("Manga", harness.Preferences.Get("search_type_filter", string.Empty));
+        Assert.That(harness.Preferences.Get("search_type_filter", string.Empty), Is.EqualTo("Manga"));
 
         // A second page model over the same preferences — what happens on the next app launch.
         var restored = new Harness(harness.Preferences);
-        Assert.Equal(SearchTypeFilter.Manga, restored.Model.SearchFilter);
+        Assert.That(restored.Model.SearchFilter, Is.EqualTo(SearchTypeFilter.Manga));
     }
 
-    [Fact]
+    [Test]
     public void WithNothingPersisted_ItStartsOnAll()
     {
-        Assert.Equal(SearchTypeFilter.All, new Harness().Model.SearchFilter);
+        Assert.That(new Harness().Model.SearchFilter, Is.EqualTo(SearchTypeFilter.All));
     }
 
-    [Theory]
-    [InlineData(SearchTypeFilter.All, "Search anime and manga...", "Search anime and manga", "No results found")]
-    [InlineData(SearchTypeFilter.Anime, "Search all anime...", "Search all anime", "No anime found")]
-    [InlineData(SearchTypeFilter.Manga, "Search all manga...", "Search all manga", "No manga found")]
+    [TestCase(SearchTypeFilter.All, "Search anime and manga...", "Search anime and manga", "No results found")]
+    [TestCase(SearchTypeFilter.Anime, "Search all anime...", "Search all anime", "No anime found")]
+    [TestCase(SearchTypeFilter.Manga, "Search all manga...", "Search all manga", "No manga found")]
     public void TheCopy_FollowsTheSelectedFilter(
         SearchTypeFilter filter, string placeholder, string idle, string noResults)
     {
         var harness = new Harness();
         harness.Model.SearchFilter = filter;
 
-        Assert.Equal(placeholder, harness.Model.SearchPlaceholder);
-        Assert.Equal(idle, harness.Model.IdlePrompt);
-        Assert.Equal(noResults, harness.Model.NoResultsMessage);
-        Assert.Equal(filter.ToString(), harness.Model.SearchFilterKey);
+        Assert.That(harness.Model.SearchPlaceholder, Is.EqualTo(placeholder));
+        Assert.That(harness.Model.IdlePrompt, Is.EqualTo(idle));
+        Assert.That(harness.Model.NoResultsMessage, Is.EqualTo(noResults));
+        Assert.That(harness.Model.SearchFilterKey, Is.EqualTo(filter.ToString()));
     }
 
     private static (IReadOnlyList<BrowseMediaItem> Items, PageInfo? PageInfo) Page(int mediaId, bool hasNextPage)
@@ -493,7 +493,7 @@ public class SearchPageModelTests
                 await Task.Delay(1);
             }
 
-            Assert.True(condition(), "Timed out waiting for the search state to settle.");
+            Assert.That(condition(), Is.True, "Timed out waiting for the search state to settle.");
         }
 
         private static async Task YieldAsync()

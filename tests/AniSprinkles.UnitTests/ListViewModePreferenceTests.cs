@@ -10,58 +10,57 @@ namespace AniSprinkles.UnitTests;
 /// </summary>
 public class ListViewModePreferenceTests
 {
-    [Fact]
+    [Test]
     public void WithNothingStored_TheDefaultIsLarge()
     {
         // Signed-out and first-run users land here, so the default has to be a real choice rather
         // than whatever the enum's zero value happens to be — Standard is the zero value.
         var preferences = new FakePreferences();
 
-        Assert.Equal(ListViewMode.Large, ListViewModePreference.Load(preferences));
+        Assert.That(ListViewModePreference.Load(preferences), Is.EqualTo(ListViewMode.Large));
     }
 
-    [Theory]
-    [InlineData(ListViewMode.Standard)]
-    [InlineData(ListViewMode.Large)]
-    [InlineData(ListViewMode.Compact)]
+    [TestCase(ListViewMode.Standard)]
+    [TestCase(ListViewMode.Large)]
+    [TestCase(ListViewMode.Compact)]
     public void EveryMode_SurvivesTheRoundTrip(ListViewMode mode)
     {
         var preferences = new FakePreferences();
 
         ListViewModePreference.Save(preferences, mode);
 
-        Assert.Equal(mode, ListViewModePreference.Load(preferences));
+        Assert.That(ListViewModePreference.Load(preferences), Is.EqualTo(mode));
     }
 
-    [Fact]
+    [Test]
     public void AValueThatNoLongerParses_FallsBackToLargeRatherThanThrowing()
     {
         // A mode removed in a later build must not brick the list for anyone who had it selected.
         var preferences = new FakePreferences();
         preferences.Set(ListViewModePreference.Key, "Cinematic");
 
-        Assert.Equal(ListViewMode.Large, ListViewModePreference.Load(preferences));
+        Assert.That(ListViewModePreference.Load(preferences), Is.EqualTo(ListViewMode.Large));
     }
 
-    [Fact]
+    [Test]
     public void TheStoredKeyIsStable()
     {
         // Renaming this silently resets the view mode for every existing install, which looks like
         // a bug to the user and leaves no trace in the logs.
-        Assert.Equal("anime_view_mode", ListViewModePreference.Key);
+        Assert.That(ListViewModePreference.Key, Is.EqualTo("anime_view_mode"));
     }
 
-    [Fact]
+    [Test]
     public void SavingWritesTheModeNameUnderThatKey()
     {
         var preferences = new FakePreferences();
 
         ListViewModePreference.Save(preferences, ListViewMode.Compact);
 
-        Assert.Equal("Compact", preferences.Get(ListViewModePreference.Key, string.Empty));
+        Assert.That(preferences.Get(ListViewModePreference.Key, string.Empty), Is.EqualTo("Compact"));
     }
 
-    [Fact]
+    [Test]
     public void SavingTheSameModeTwice_StillPersistsBothTimes()
     {
         // Load() reads whatever is last written; there is no dirty-check here, and a page model
@@ -71,7 +70,7 @@ public class ListViewModePreferenceTests
         ListViewModePreference.Save(preferences, ListViewMode.Standard);
         ListViewModePreference.Save(preferences, ListViewMode.Standard);
 
-        Assert.Equal(2, preferences.SetCount);
-        Assert.Equal(ListViewMode.Standard, ListViewModePreference.Load(preferences));
+        Assert.That(preferences.SetCount, Is.EqualTo(2));
+        Assert.That(ListViewModePreference.Load(preferences), Is.EqualTo(ListViewMode.Standard));
     }
 }

@@ -3,16 +3,11 @@ using NSubstitute;
 
 namespace AniSprinkles.UnitTests;
 
-// NSubstitute setup/verification requires Arg.Any<CancellationToken>() matchers, which inherently
-// conflict with xUnit1051's "pass TestContext.Current.CancellationToken" recommendation. Suppress
-// it for this file; these tests are deterministic and don't depend on cancellation.
-#pragma warning disable xUnit1051
-
 public class CachingAniListClientTests
 {
     private static IAniListClient Inner() => Substitute.For<IAniListClient>();
 
-    [Fact]
+    [Test]
     public async Task GetCharacterAsync_CalledTwiceForSameKey_FetchesInnerOnce()
     {
         var inner = Inner();
@@ -23,11 +18,11 @@ public class CachingAniListClientTests
         var first = await cache.GetCharacterAsync(1);
         var second = await cache.GetCharacterAsync(1);
 
-        Assert.Same(first, second);
+        Assert.That(second, Is.SameAs(first));
         await inner.Received(1).GetCharacterAsync(1, Arg.Any<string>(), Arg.Any<int>(), Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task GetCharacterAsync_DifferentArguments_FetchEachSeparately()
     {
         var inner = Inner();
@@ -39,13 +34,13 @@ public class CachingAniListClientTests
         var b = await cache.GetCharacterAsync(2);
         var aSort = await cache.GetCharacterAsync(1, mediaSort: "SCORE_DESC");
 
-        Assert.Equal(1, a!.Id);
-        Assert.Equal(2, b!.Id);
+        Assert.That(a!.Id, Is.EqualTo(1));
+        Assert.That(b!.Id, Is.EqualTo(2));
         // id 1 default-sort, id 2 default-sort, and id 1 different-sort are three distinct keys.
         await inner.Received(3).GetCharacterAsync(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task GetCharacterAsync_ConcurrentSameKey_CoalescesToOneFetch()
     {
         var inner = Inner();
@@ -60,11 +55,17 @@ public class CachingAniListClientTests
         gate.SetResult(new Character { Id = 7 });
         var results = await Task.WhenAll(first, second);
 
-        Assert.All(results, r => Assert.Equal(7, r!.Id));
+        Assert.Multiple(() =>
+        {
+            foreach (var r in results)
+            {
+                Assert.That(r!.Id, Is.EqualTo(7));
+            }
+        });
         await inner.Received(1).GetCharacterAsync(7, Arg.Any<string>(), Arg.Any<int>(), Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task GetStaffAsync_FailedFetch_IsNotCached()
     {
         var inner = Inner();
@@ -77,11 +78,11 @@ public class CachingAniListClientTests
         await Assert.ThrowsAsync<AniListApiException>(() => cache.GetStaffAsync(5));
         var recovered = await cache.GetStaffAsync(5);
 
-        Assert.Equal(5, recovered!.Id);
+        Assert.That(recovered!.Id, Is.EqualTo(5));
         await inner.Received(2).GetStaffAsync(5, Arg.Any<string>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task GetStaffAsync_SeedsFirstPageCache_SoSortToggleBackIsServedWithoutFetch()
     {
         var inner = Inner();
@@ -97,13 +98,13 @@ public class CachingAniListClientTests
         // Default voice-roles sort + page 1 + PageSize 25 — the exact key the section requests on toggle-back.
         var (items, pageInfo) = await cache.LoadStaffCharactersPageAsync(5, 1, "FAVOURITES_DESC", 25);
 
-        Assert.Equal(2, items.Count);
-        Assert.True(pageInfo!.HasNextPage);
+        Assert.That(items.Count, Is.EqualTo(2));
+        Assert.That(pageInfo!.HasNextPage, Is.True);
         await inner.DidNotReceive().LoadStaffCharactersPageAsync(
             Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task GetStaffAsync_SeededPage_DoesNotCoverADifferentSort()
     {
         var inner = Inner();
@@ -120,7 +121,7 @@ public class CachingAniListClientTests
         await inner.Received(1).LoadStaffCharactersPageAsync(5, 1, "ROLE", 25, Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task GetCharacterAsync_SeedsFirstMediaPageCache_SoSortToggleBackIsServedWithoutFetch()
     {
         var inner = Inner();
@@ -134,12 +135,12 @@ public class CachingAniListClientTests
         await cache.GetCharacterAsync(9);
         var (items, _) = await cache.LoadCharacterMediaPageAsync(9, 1, "POPULARITY_DESC", 25);
 
-        Assert.Single(items);
+        Assert.That(items, Has.Exactly(1).Items);
         await inner.DidNotReceive().LoadCharacterMediaPageAsync(
             Arg.Any<int>(), Arg.Any<int>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task GetCharacterAsync_FailedFetch_IsNotCached()
     {
         var inner = Inner();
@@ -152,11 +153,11 @@ public class CachingAniListClientTests
         await Assert.ThrowsAsync<AniListApiException>(() => cache.GetCharacterAsync(9));
         var recovered = await cache.GetCharacterAsync(9);
 
-        Assert.Equal(9, recovered!.Id);
+        Assert.That(recovered!.Id, Is.EqualTo(9));
         await inner.Received(2).GetCharacterAsync(9, Arg.Any<string>(), Arg.Any<int>(), Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task GetStaffAsync_NullResult_DoesNotSeedAndIsNotCached()
     {
         var inner = Inner();
@@ -168,13 +169,13 @@ public class CachingAniListClientTests
 
         var result = await cache.GetStaffAsync(5);
 
-        Assert.Null(result);
+        Assert.That(result, Is.Null);
         // A null composite seeds nothing, so the page must still hit the inner client.
         await cache.LoadStaffCharactersPageAsync(5, 1, "FAVOURITES_DESC", 25);
         await inner.Received(1).LoadStaffCharactersPageAsync(5, 1, "FAVOURITES_DESC", 25, Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task GetStaffAsync_DoesNotOverwriteAPageAlreadyFetchedDirectly()
     {
         // If the per-page key was populated by a direct page fetch first, the composite query's
@@ -200,11 +201,11 @@ public class CachingAniListClientTests
         var (items, _) = await cache.LoadStaffCharactersPageAsync(5, 1, "FAVOURITES_DESC", 25);
 
         // The originally-fetched 3-item page survives; seeding didn't replace it with the 1-item one.
-        Assert.Equal(3, items.Count);
+        Assert.That(items.Count, Is.EqualTo(3));
         await inner.Received(1).LoadStaffCharactersPageAsync(5, 1, "FAVOURITES_DESC", 25, Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task SaveMediaListEntryAsync_CalledTwice_PassesThroughEachTime()
     {
         var inner = Inner();
@@ -218,7 +219,7 @@ public class CachingAniListClientTests
         await inner.Received(2).SaveMediaListEntryAsync(entry, Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task GetStudioAsync_SameKey_FetchesInnerOnce()
     {
         var inner = Inner();
@@ -232,7 +233,7 @@ public class CachingAniListClientTests
         await inner.Received(1).GetStudioAsync(18, Arg.Any<string>(), Arg.Any<int>(), 25, Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task GetStudioAsync_DifferentPerPage_FetchesInnerSeparately()
     {
         // Regression: the object cache key must include mediaPerPage; otherwise a second request with a
