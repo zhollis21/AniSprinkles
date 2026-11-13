@@ -464,8 +464,8 @@ jobs:
           # replaying real recorded data (#134): the old hand-written fixture gave ONE PIECE three
           # studios and a short page, the real one has eleven plus real tags, rankings, relations
           # and links, so the Studios section sits much further down. Swipes are cheap; a silently
-          # missing capture is not, so the budget is double what a run needs rather than exact:
-          # the Pixel 10 Pro XL at API 37 reached it after 7 (#176), so 14.
+          # missing capture is not, so the budget is double the most a run has needed: the Pixel 10
+          # Pro XL at API 37 reached it after 7 and 6 swipes in two runs (#176), so 14.
           tap_studio_chip() {
             local studio="$1" max="${2:-14}" i
             # 0..max: look before the first swipe and after every one, the last included.
@@ -500,11 +500,11 @@ jobs:
           # screen, so off-screen sections (character/voice-actor lists below the fold) can be
           # revealed and then tapped. Returns success as soon as the text is found.
           # Usage: scroll_until_text "Monkey D. Luffy" [max_swipes]
-          # Default budget: double what a run needs. Both callers (Luffy on the media details page,
-          # Mayumi Tanaka on Luffy's character page) were found after 2 swipes on the Pixel 10 Pro XL
-          # at API 37 (#176), so 4.
+          # Default budget: double the most a run has needed. On the Pixel 10 Pro XL at API 37 (#176),
+          # Luffy on the media details page took 2 and 3 swipes in two runs, Mayumi Tanaka on Luffy's
+          # character page 2 and 1 — counts move by one between runs — so 6.
           scroll_until_text() {
-            local needle="$1" max="${2:-4}" i
+            local needle="$1" max="${2:-6}" i
             # 0..max: look before the first swipe and after every one, the last included.
             for i in $(seq 0 "$max"); do
               adb shell rm -f /sdcard/ui_scroll.xml >/dev/null 2>&1 || true
