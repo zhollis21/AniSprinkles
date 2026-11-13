@@ -49,7 +49,7 @@ public class AiringScheduleFetcherTests
 
     // ── The request ─────────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void TheWindowAndMediaIds_AreSentAsVariables()
     {
         var handler = new ScriptedGraphQlHandler(_ => ScriptedGraphQlHandler.Data(Page(false)));
@@ -57,13 +57,13 @@ public class AiringScheduleFetcherTests
         Fetch(handler, UserTitleLanguage.Romaji, 21, 16498);
 
         var request = handler.Last;
-        Assert.Equal("AiringSchedule", request.OperationName);
-        Assert.Equal((int)After, request.IntVariable("airingAfter"));
-        Assert.Equal((int)Before, request.IntVariable("airingBefore"));
-        Assert.Equal([21, 16498], request.Variable("mediaIds").EnumerateArray().Select(e => e.GetInt32()));
+        Assert.That(request.OperationName, Is.EqualTo("AiringSchedule"));
+        Assert.That(request.IntVariable("airingAfter"), Is.EqualTo((int)After));
+        Assert.That(request.IntVariable("airingBefore"), Is.EqualTo((int)Before));
+        Assert.That(request.Variable("mediaIds").EnumerateArray().Select(e => e.GetInt32()), Is.EqualTo([21, 16498]));
     }
 
-    [Fact]
+    [Test]
     public void TheAniListReferer_IsSent()
     {
         // With no token by design (see below), the Referer is the *only* thing that gets this
@@ -74,10 +74,10 @@ public class AiringScheduleFetcherTests
 
         Fetch(handler);
 
-        Assert.Equal("https://anilist.co/", handler.Last.Referrer?.ToString());
+        Assert.That(handler.Last.Referrer?.ToString(), Is.EqualTo("https://anilist.co/"));
     }
 
-    [Fact]
+    [Test]
     public void NoAuthorizationHeader_IsSent()
     {
         // The AiringSchedule endpoint is public. The worker has no access to the token store, and
@@ -86,13 +86,13 @@ public class AiringScheduleFetcherTests
 
         Fetch(handler);
 
-        Assert.Null(handler.Last.AuthScheme);
-        Assert.Null(handler.Last.BearerToken);
+        Assert.That(handler.Last.AuthScheme, Is.Null);
+        Assert.That(handler.Last.BearerToken, Is.Null);
     }
 
     // ── Mapping ─────────────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void EachSchedule_BecomesAnEntry()
     {
         var handler = new ScriptedGraphQlHandler(
@@ -100,36 +100,35 @@ public class AiringScheduleFetcherTests
 
         var entries = Fetch(handler);
 
-        Assert.Equal(2, entries.Count);
-        Assert.Equal(21, entries[0].MediaId);
-        Assert.Equal(1050, entries[0].Episode);
-        Assert.Equal("https://img/cover.jpg", entries[0].CoverImageUrl);
-        Assert.Equal(16498, entries[1].MediaId);
+        Assert.That(entries.Count, Is.EqualTo(2));
+        Assert.That(entries[0].MediaId, Is.EqualTo(21));
+        Assert.That(entries[0].Episode, Is.EqualTo(1050));
+        Assert.That(entries[0].CoverImageUrl, Is.EqualTo("https://img/cover.jpg"));
+        Assert.That(entries[1].MediaId, Is.EqualTo(16498));
     }
 
-    [Theory]
-    [InlineData(UserTitleLanguage.Romaji, "Shingeki no Kyojin")]
-    [InlineData(UserTitleLanguage.English, "Attack on Titan")]
-    [InlineData(UserTitleLanguage.Native, "進撃の巨人")]
+    [TestCase(UserTitleLanguage.Romaji, "Shingeki no Kyojin")]
+    [TestCase(UserTitleLanguage.English, "Attack on Titan")]
+    [TestCase(UserTitleLanguage.Native, "進撃の巨人")]
     public void TheTitle_FollowsTheRequestedLanguage(UserTitleLanguage language, string expected)
     {
         var handler = new ScriptedGraphQlHandler(_ => ScriptedGraphQlHandler.Data(Page(false, Schedule(21, 1050))));
 
         var entries = Fetch(handler, language);
 
-        Assert.Equal(expected, entries[0].MediaTitle);
+        Assert.That(entries[0].MediaTitle, Is.EqualTo(expected));
     }
 
-    [Fact]
+    [Test]
     public void AMissingPreferredTitle_FallsBackRatherThanBlanking()
     {
         var handler = new ScriptedGraphQlHandler(
             _ => ScriptedGraphQlHandler.Data(Page(false, Schedule(21, 1050, english: null))));
 
-        Assert.Equal("Shingeki no Kyojin", Fetch(handler, UserTitleLanguage.English)[0].MediaTitle);
+        Assert.That(Fetch(handler, UserTitleLanguage.English)[0].MediaTitle, Is.EqualTo("Shingeki no Kyojin"));
     }
 
-    [Fact]
+    [Test]
     public void AScheduleWithNoMedia_StillYieldsAnEntry()
     {
         // Better a notification titled "Unknown Title" than a silently dropped episode.
@@ -138,31 +137,31 @@ public class AiringScheduleFetcherTests
 
         var entries = Fetch(handler);
 
-        Assert.Single(entries);
-        Assert.Equal(TitleSelector.UnknownTitle, entries[0].MediaTitle);
-        Assert.Null(entries[0].CoverImageUrl);
+        Assert.That(entries, Has.Exactly(1).Items);
+        Assert.That(entries[0].MediaTitle, Is.EqualTo(TitleSelector.UnknownTitle));
+        Assert.That(entries[0].CoverImageUrl, Is.Null);
     }
 
-    [Fact]
+    [Test]
     public void AnEmptySchedule_IsNotAFailure()
     {
         var handler = new ScriptedGraphQlHandler(_ => ScriptedGraphQlHandler.Data(Page(false)));
 
-        Assert.Empty(Fetch(handler));
+        Assert.That(Fetch(handler), Is.Empty);
     }
 
-    [Fact]
+    [Test]
     public void ANullSchedulesArray_IsNotAFailure()
     {
         var handler = new ScriptedGraphQlHandler(_ => ScriptedGraphQlHandler.Data(
             """{ "Page": { "pageInfo": { "hasNextPage": false }, "airingSchedules": null } }"""));
 
-        Assert.Empty(Fetch(handler));
+        Assert.That(Fetch(handler), Is.Empty);
     }
 
     // ── Paging ──────────────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void PagesAreFollowed_AndAccumulate()
     {
         var handler = new ScriptedGraphQlHandler(request => request.IntVariable("page") switch
@@ -174,21 +173,21 @@ public class AiringScheduleFetcherTests
 
         var entries = Fetch(handler);
 
-        Assert.Equal(3, handler.CallCount);
-        Assert.Equal([21, 16498, 101922], entries.Select(e => e.MediaId));
+        Assert.That(handler.CallCount, Is.EqualTo(3));
+        Assert.That(entries.Select(e => e.MediaId), Is.EqualTo([21, 16498, 101922]));
     }
 
-    [Fact]
+    [Test]
     public void OnlyOnePage_IsRequestedWhenThereIsNoNext()
     {
         var handler = new ScriptedGraphQlHandler(_ => ScriptedGraphQlHandler.Data(Page(false, Schedule(21, 1050))));
 
         Fetch(handler);
 
-        Assert.Equal(1, handler.CallCount);
+        Assert.That(handler.CallCount, Is.EqualTo(1));
     }
 
-    [Fact]
+    [Test]
     public void AMissingPageInfo_StopsRatherThanLooping()
     {
         var handler = new ScriptedGraphQlHandler(_ => ScriptedGraphQlHandler.Data(
@@ -196,10 +195,10 @@ public class AiringScheduleFetcherTests
 
         Fetch(handler);
 
-        Assert.Equal(1, handler.CallCount);
+        Assert.That(handler.CallCount, Is.EqualTo(1));
     }
 
-    [Fact]
+    [Test]
     public void AnAlwaysTruePageInfo_IsBounded_AndReportedAsTruncated()
     {
         // A server that always claims another page would otherwise spin the worker thread forever.
@@ -209,38 +208,37 @@ public class AiringScheduleFetcherTests
 
         var result = FetchResult(handler);
 
-        Assert.Equal(AiringScheduleFetcher.MaxPages, handler.CallCount);
-        Assert.True(result.Truncated);
-        Assert.NotEmpty(result.Entries);
+        Assert.That(handler.CallCount, Is.EqualTo(AiringScheduleFetcher.MaxPages));
+        Assert.That(result.Truncated, Is.True);
+        Assert.That(result.Entries, Is.Not.Empty);
     }
 
-    [Fact]
+    [Test]
     public void AFetchThatReachesTheEnd_IsNotTruncated()
     {
         var handler = new ScriptedGraphQlHandler(request => request.IntVariable("page") == 1
             ? ScriptedGraphQlHandler.Data(Page(true, Schedule(21, 1050)))
             : ScriptedGraphQlHandler.Data(Page(false, Schedule(16498, 25))));
 
-        Assert.False(FetchResult(handler).Truncated);
+        Assert.That(FetchResult(handler).Truncated, Is.False);
     }
 
-    [Fact]
+    [Test]
     public void TheAiringTime_IsMapped()
     {
         // Carried so a truncated fetch can advance the checkpoint to what it actually read.
         var handler = new ScriptedGraphQlHandler(_ => ScriptedGraphQlHandler.Data(
             Page(false, Schedule(21, 1050, airingAt: 1_700_001_234))));
 
-        Assert.Equal(1_700_001_234, Fetch(handler)[0].AiringAt);
+        Assert.That(Fetch(handler)[0].AiringAt, Is.EqualTo(1_700_001_234));
     }
 
     // ── Failure classification ──────────────────────────────────────
 
-    [Theory]
-    [InlineData(HttpStatusCode.InternalServerError)]
-    [InlineData(HttpStatusCode.ServiceUnavailable)]
-    [InlineData(HttpStatusCode.TooManyRequests)]
-    [InlineData(HttpStatusCode.BadRequest)]
+    [TestCase(HttpStatusCode.InternalServerError)]
+    [TestCase(HttpStatusCode.ServiceUnavailable)]
+    [TestCase(HttpStatusCode.TooManyRequests)]
+    [TestCase(HttpStatusCode.BadRequest)]
     public void ANonSuccessStatus_Throws(HttpStatusCode status)
     {
         var handler = new ScriptedGraphQlHandler(_ => ScriptedGraphQlHandler.Raw(status, "{}"));
@@ -248,7 +246,7 @@ public class AiringScheduleFetcherTests
         Assert.Throws<HttpRequestException>(() => Fetch(handler));
     }
 
-    [Fact]
+    [Test]
     public void GraphQlErrorsOnHttp200_Throw()
     {
         // The case that motivates all of this: AniList reports failures with a 200 and an errors
@@ -257,10 +255,10 @@ public class AiringScheduleFetcherTests
         var handler = new ScriptedGraphQlHandler(_ => ScriptedGraphQlHandler.GraphQlError("Too Many Requests"));
 
         var ex = Assert.Throws<InvalidOperationException>(() => Fetch(handler));
-        Assert.Contains("Too Many Requests", ex.Message);
+        Assert.That(ex.Message, Does.Contain("Too Many Requests"));
     }
 
-    [Fact]
+    [Test]
     public void ANullPageOnHttp200_Throws()
     {
         var handler = new ScriptedGraphQlHandler(_ => ScriptedGraphQlHandler.Data("""{ "Page": null }"""));
@@ -268,7 +266,7 @@ public class AiringScheduleFetcherTests
         Assert.Throws<InvalidOperationException>(() => Fetch(handler));
     }
 
-    [Fact]
+    [Test]
     public void AWindowPastTheInt32Limit_ThrowsRatherThanWrappingNegative()
     {
         // AniList's airingAt arguments are Int, and unix seconds pass int.MaxValue in January 2038.
@@ -280,10 +278,10 @@ public class AiringScheduleFetcherTests
         Assert.Throws<OverflowException>(() => AiringScheduleFetcher.Fetch(
             client, [21], (long)int.MaxValue + 1, (long)int.MaxValue + 3600, UserTitleLanguage.Romaji));
 
-        Assert.Equal(0, handler.CallCount);
+        Assert.That(handler.CallCount, Is.EqualTo(0));
     }
 
-    [Fact]
+    [Test]
     public void AFailureOnALaterPage_ThrowsRatherThanReturningWhatItHad()
     {
         // Returning page 1's entries would look like success to the runner, which would then advance

@@ -14,7 +14,7 @@ namespace AniSprinkles.UnitTests;
 /// </summary>
 public class StaffNameFormatTests
 {
-    [Fact]
+    [Test]
     public void PrefersUserPreferred_WhichCarriesTheViewersSetting()
     {
         var name = new CharacterName
@@ -24,18 +24,18 @@ public class StaffNameFormatTests
             Native = "川上泰樹",
         };
 
-        Assert.Equal("Kawakami Taiki", new Staff { Name = name }.DisplayName);
+        Assert.That(new Staff { Name = name }.DisplayName, Is.EqualTo("Kawakami Taiki"));
     }
 
-    [Fact]
+    [Test]
     public void CharactersFollowTheSameRuleAsStaff()
     {
         var name = new CharacterName { Full = "Monkey D. Luffy", UserPreferred = "Luffy Monkey D." };
 
-        Assert.Equal("Luffy Monkey D.", new Character { Name = name }.DisplayName);
+        Assert.That(new Character { Name = name }.DisplayName, Is.EqualTo("Luffy Monkey D."));
     }
 
-    [Fact]
+    [Test]
     public void CardLevelNamesFollowItToo()
     {
         // StaffNode and VoiceActor render on the media-details and appearance carousels. They bound
@@ -43,11 +43,11 @@ public class StaffNameFormatTests
         // ignoring the setting even once the entity-level ones honoured it.
         var name = new CharacterName { Full = "Mayumi Tanaka", UserPreferred = "Tanaka Mayumi" };
 
-        Assert.Equal("Tanaka Mayumi", new StaffNode { Name = name }.DisplayName);
-        Assert.Equal("Tanaka Mayumi", new VoiceActor { Name = name }.DisplayName);
+        Assert.That(new StaffNode { Name = name }.DisplayName, Is.EqualTo("Tanaka Mayumi"));
+        Assert.That(new VoiceActor { Name = name }.DisplayName, Is.EqualTo("Tanaka Mayumi"));
     }
 
-    [Fact]
+    [Test]
     public void LatinNamesAreLeftAloneBecauseAniListLeavesThemAlone()
     {
         // The measured case that decided the design: under ROMAJI, full is flipped but userPreferred
@@ -60,76 +60,75 @@ public class StaffNameFormatTests
             Native = null,
         };
 
-        Assert.Equal("Caitlyn Bairstow", new VoiceActor { Name = name }.DisplayName);
+        Assert.That(new VoiceActor { Name = name }.DisplayName, Is.EqualTo("Caitlyn Bairstow"));
     }
 
-    [Fact]
+    [Test]
     public void FallsBackToFullWhenUserPreferredIsMissing()
     {
         // Nine of the eleven name selections did not request userPreferred before this change, so a
         // cached or partially-populated name must not render blank.
         var name = new CharacterName { Full = "Hiroshi Kamiya", Native = "神谷浩史" };
 
-        Assert.Equal("Hiroshi Kamiya", new Staff { Name = name }.DisplayName);
+        Assert.That(new Staff { Name = name }.DisplayName, Is.EqualTo("Hiroshi Kamiya"));
     }
 
-    [Fact]
+    [Test]
     public void FallsBackToNativeWhenThatIsAllThereIs()
     {
         var name = new CharacterName { Native = "神谷浩史" };
 
-        Assert.Equal("神谷浩史", new Staff { Name = name }.DisplayName);
+        Assert.That(new Staff { Name = name }.DisplayName, Is.EqualTo("神谷浩史"));
     }
 
-    [Theory]
-    [InlineData(null)]
-    [InlineData("")]
-    [InlineData("   ")]
+    [TestCase(null)]
+    [TestCase("")]
+    [TestCase("   ")]
     public void BlankUserPreferred_DoesNotWinOverAUsableFull(string? userPreferred)
     {
         var name = new CharacterName { Full = "Hans Zimmer", UserPreferred = userPreferred };
 
-        Assert.Equal("Hans Zimmer", new Staff { Name = name }.DisplayName);
+        Assert.That(new Staff { Name = name }.DisplayName, Is.EqualTo("Hans Zimmer"));
     }
 
-    [Fact]
+    [Test]
     public void NullName_FallsBackToUnknown()
     {
-        Assert.Equal("Unknown", new Staff().DisplayName);
-        Assert.Equal("Unknown", new Character().DisplayName);
+        Assert.That(new Staff().DisplayName, Is.EqualTo("Unknown"));
+        Assert.That(new Character().DisplayName, Is.EqualTo("Unknown"));
     }
 
-    [Fact]
+    [Test]
     public void EntirelyBlankName_FallsBackToUnknown()
     {
-        Assert.Equal("Unknown", new Staff { Name = new CharacterName() }.DisplayName);
+        Assert.That(new Staff { Name = new CharacterName() }.DisplayName, Is.EqualTo("Unknown"));
     }
 
     // ── The native subtitle under the hero ────────────────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void NativeSubtitle_IsSuppressedWhenItWouldRepeatTheHero()
     {
         // With the setting on Native, userPreferred IS the native name, so the hero and the subtitle
         // beneath it would print the same thing twice.
         var name = new CharacterName { Full = "Taiki Kawakami", UserPreferred = "川上泰樹", Native = "川上泰樹" };
 
-        Assert.False(new Staff { Name = name }.ShowNativeName);
+        Assert.That(new Staff { Name = name }.ShowNativeName, Is.False);
     }
 
-    [Fact]
+    [Test]
     public void NativeSubtitle_ShowsWhenItAddsSomething()
     {
         var name = new CharacterName { Full = "Taiki Kawakami", UserPreferred = "Kawakami Taiki", Native = "川上泰樹" };
 
-        Assert.True(new Staff { Name = name }.ShowNativeName);
+        Assert.That(new Staff { Name = name }.ShowNativeName, Is.True);
     }
 
-    [Fact]
+    [Test]
     public void NativeSubtitle_HiddenWhenThereIsNoNativeName()
     {
         var name = new CharacterName { Full = "Caitlyn Bairstow", UserPreferred = "Caitlyn Bairstow" };
 
-        Assert.False(new Character { Name = name }.ShowNativeName);
+        Assert.That(new Character { Name = name }.ShowNativeName, Is.False);
     }
 }

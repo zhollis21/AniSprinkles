@@ -17,7 +17,7 @@ public class MutationStateTests
 {
     // ── Delete, and what a read shows afterwards ─────────────────────
 
-    [Fact]
+    [Test]
     public void ADeletedEntry_DisappearsFromTheNextListRead()
     {
         // The lived failure this prevents: tap "remove from list", navigate back to the Library, and
@@ -27,16 +27,16 @@ public class MutationStateTests
         var list = ListResponse();
         state.Apply("MediaListCollection", list);
 
-        Assert.True(state.TryAnswer("DeleteMediaListEntry", Vars("""{"id":1001}"""), NoFixtures, out _));
+        Assert.That(state.TryAnswer("DeleteMediaListEntry", Vars("""{"id":1001}"""), NoFixtures, out _), Is.True);
 
         var reread = ListResponse();
         state.Apply("MediaListCollection", reread);
 
-        Assert.DoesNotContain("\"mediaId\":21", reread.ToJsonString(), StringComparison.Ordinal);
-        Assert.Contains("\"mediaId\":16498", reread.ToJsonString(), StringComparison.Ordinal);
+        Assert.That(reread.ToJsonString(), Does.Not.Contain("\"mediaId\":21"));
+        Assert.That(reread.ToJsonString(), Does.Contain("\"mediaId\":16498"));
     }
 
-    [Fact]
+    [Test]
     public void SavingAfterDeleting_BringsTheEntryBack()
     {
         // Regression test. Delete names the list-entry id; save names the media id and would, on a
@@ -51,27 +51,28 @@ public class MutationStateTests
         var reread = ListResponse();
         state.Apply("MediaListCollection", reread);
 
-        Assert.Contains("\"mediaId\":21", reread.ToJsonString(), StringComparison.Ordinal);
+        Assert.That(reread.ToJsonString(), Does.Contain("\"mediaId\":21"));
     }
 
-    [Fact]
+    [Test]
     public void DeletingBeforeAnyListRead_ChangesNothing()
     {
         // Without a read there is no entry-id-to-media-id translation, and nothing rendered that the
         // delete could be inconsistent with. Guessing would be worse than doing nothing.
         var state = new MutationState();
 
-        Assert.True(state.TryAnswer("DeleteMediaListEntry", Vars("""{"id":1001}"""), NoFixtures, out var response));
-        Assert.True(response["data"]!["DeleteMediaListEntry"]!["deleted"]!.GetValue<bool>());
+        Assert.That(state.TryAnswer("DeleteMediaListEntry", Vars("""{"id":1001}"""), NoFixtures, out var response), Is.True);
+        Assert.That(response, Is.Not.Null);
+        Assert.That(response["data"]!["DeleteMediaListEntry"]!["deleted"]!.GetValue<bool>(), Is.True);
 
         var list = ListResponse();
         state.Apply("MediaListCollection", list);
-        Assert.Contains("\"mediaId\":21", list.ToJsonString(), StringComparison.Ordinal);
+        Assert.That(list.ToJsonString(), Does.Contain("\"mediaId\":21"));
     }
 
     // ── Saves, and what a read shows afterwards ──────────────────────
 
-    [Fact]
+    [Test]
     public void AStatusChange_MovesTheEntryToTheMatchingSection()
     {
         // Caught by review, not by the tests above: those only covered delete-then-save for a title
@@ -91,11 +92,11 @@ public class MutationStateTests
         state.Apply("MediaListCollection", reread);
 
         var lists = reread["data"]!["MediaListCollection"]!["lists"]!.AsArray();
-        Assert.DoesNotContain("\"mediaId\":21", lists[0]!.ToJsonString(), StringComparison.Ordinal);
-        Assert.Contains("\"mediaId\":21", lists[1]!.ToJsonString(), StringComparison.Ordinal);
+        Assert.That(lists[0]!.ToJsonString(), Does.Not.Contain("\"mediaId\":21"));
+        Assert.That(lists[1]!.ToJsonString(), Does.Contain("\"mediaId\":21"));
     }
 
-    [Fact]
+    [Test]
     public void ATitleAbsentFromTheRecording_AppearsAfterBeingSaved()
     {
         // "Add to List" on an off-list media. Without the save being remembered this reported
@@ -112,10 +113,10 @@ public class MutationStateTests
         var reread = TwoSectionList();
         state.Apply("MediaListCollection", reread);
 
-        Assert.Contains("\"mediaId\":99999", reread.ToJsonString(), StringComparison.Ordinal);
+        Assert.That(reread.ToJsonString(), Does.Contain("\"mediaId\":99999"));
     }
 
-    [Fact]
+    [Test]
     public void ASavedEntry_IsNotDuplicatedAcrossSections()
     {
         // The move is a remove-then-insert, so a bug here shows up as the same title under two
@@ -130,10 +131,10 @@ public class MutationStateTests
         state.Apply("MediaListCollection", reread);
 
         var occurrences = reread.ToJsonString().Split("\"mediaId\":21").Length - 1;
-        Assert.Equal(1, occurrences);
+        Assert.That(occurrences, Is.EqualTo(1));
     }
 
-    [Fact]
+    [Test]
     public void ASavedEntryWithNoMatchingSection_IsLeftOutRatherThanMisfiled()
     {
         // Nowhere right to put it: the recording has no Rewatching list. Filing it under an
@@ -147,12 +148,12 @@ public class MutationStateTests
         var reread = TwoSectionList();
         state.Apply("MediaListCollection", reread);
 
-        Assert.DoesNotContain("\"mediaId\":21", reread.ToJsonString(), StringComparison.Ordinal);
+        Assert.That(reread.ToJsonString(), Does.Not.Contain("\"mediaId\":21"));
     }
 
     // ── Settings round-trip ──────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void UpdateUser_SurvivesTheNextViewerRead()
     {
         // Settings reloads from ViewerFull, so a preference change that did not survive it reverted
@@ -162,15 +163,15 @@ public class MutationStateTests
         var fixtures = new StubLookup(GraphQlFixtureKey.Derive("ViewerFull", null), ViewerFixture());
 
         state.TryAnswer("UpdateUser", Vars("""{"titleLanguage":"NATIVE"}"""), fixtures, out var updated);
-        Assert.NotNull(updated);
-        Assert.Equal("NATIVE", updated["data"]!["UpdateUser"]!["options"]!["titleLanguage"]!.GetValue<string>());
+        Assert.That(updated, Is.Not.Null);
+        Assert.That(updated["data"]!["UpdateUser"]!["options"]!["titleLanguage"]!.GetValue<string>(), Is.EqualTo("NATIVE"));
 
         var reread = ViewerResponse();
         state.Apply("ViewerFull", reread);
-        Assert.Equal("NATIVE", reread["data"]!["Viewer"]!["options"]!["titleLanguage"]!.GetValue<string>());
+        Assert.That(reread["data"]!["Viewer"]!["options"]!["titleLanguage"]!.GetValue<string>(), Is.EqualTo("NATIVE"));
     }
 
-    [Fact]
+    [Test]
     public void UpdateUser_RefusesToTurnOnAdultContent()
     {
         // The canary gate depends on the viewer reporting adult content off. If the app could flip it,
@@ -180,11 +181,11 @@ public class MutationStateTests
 
         state.TryAnswer("UpdateUser", Vars("""{"displayAdultContent":true}"""), fixtures, out var updated);
 
-        Assert.NotNull(updated);
-        Assert.False(updated["data"]!["UpdateUser"]!["options"]!["displayAdultContent"]!.GetValue<bool>());
+        Assert.That(updated, Is.Not.Null);
+        Assert.That(updated["data"]!["UpdateUser"]!["options"]!["displayAdultContent"]!.GetValue<bool>(), Is.False);
     }
 
-    [Fact]
+    [Test]
     public void ScoreFormat_LandsOnMediaListOptionsNotOptions()
     {
         // The one UpdateUser argument that does not live under `options` on the viewer. Writing it to
@@ -194,31 +195,32 @@ public class MutationStateTests
 
         state.TryAnswer("UpdateUser", Vars("""{"scoreFormat":"POINT_5"}"""), fixtures, out var updated);
 
-        Assert.NotNull(updated);
+        Assert.That(updated, Is.Not.Null);
         var user = updated["data"]!["UpdateUser"]!;
-        Assert.Equal("POINT_5", user["mediaListOptions"]!["scoreFormat"]!.GetValue<string>());
-        Assert.Null(user["options"]!["scoreFormat"]);
+        Assert.That(user["mediaListOptions"]!["scoreFormat"]!.GetValue<string>(), Is.EqualTo("POINT_5"));
+        Assert.That(user["options"]!["scoreFormat"], Is.Null);
     }
 
     // ── Dispatch ─────────────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void AReadOperation_IsNotAnsweredHere()
     {
         // Reads must fall through to the recorded fixtures. Answering one here would shadow real data
         // with a synthesized reply.
         var state = new MutationState();
 
-        Assert.False(state.TryAnswer("MediaListCollection", Vars("{}"), NoFixtures, out _));
+        Assert.That(state.TryAnswer("MediaListCollection", Vars("{}"), NoFixtures, out _), Is.False);
     }
 
-    [Fact]
+    [Test]
     public void ToggleFavourite_ReportsSuccess()
     {
         var state = new MutationState();
 
-        Assert.True(state.TryAnswer("ToggleFavourite", Vars("""{"animeId":21}"""), NoFixtures, out var response));
-        Assert.NotNull(response["data"]!["ToggleFavourite"]);
+        Assert.That(state.TryAnswer("ToggleFavourite", Vars("""{"animeId":21}"""), NoFixtures, out var response), Is.True);
+        Assert.That(response, Is.Not.Null);
+        Assert.That(response["data"]!["ToggleFavourite"], Is.Not.Null);
     }
 
     private static IFixtureLookup NoFixtures => new StubLookup(key: null, fixture: null);

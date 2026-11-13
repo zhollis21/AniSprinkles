@@ -21,61 +21,61 @@ public class DeepLinkDrainTests
         return link;
     }
 
-    [Fact]
+    [Test]
     public async Task WithEverythingReady_TheLinkIsFollowed()
     {
         var link = Queued();
         var navigation = Substitute.For<INavigationService>();
 
-        Assert.True(await DeepLinkDrain.AttemptAsync(link, navigation, shellReady: true));
+        Assert.That(await DeepLinkDrain.AttemptAsync(link, navigation, shellReady: true), Is.True);
 
         await navigation.Received(1).GoToAsync(
             Route, false, Arg.Is<IDictionary<string, object>>(p => (int)p["mediaId"] == 21));
     }
 
-    [Fact]
+    [Test]
     public async Task WithNothingQueued_NavigationIsNotEvenTouched()
     {
         // The common case: a lifecycle callback firing with no link waiting should cost nothing.
         var navigation = Substitute.For<INavigationService>();
 
-        Assert.False(await DeepLinkDrain.AttemptAsync(
-            new PendingDeepLink(new FakePreferences()), navigation, shellReady: true));
+        Assert.That(await DeepLinkDrain.AttemptAsync(
+            new PendingDeepLink(new FakePreferences()), navigation, shellReady: true), Is.False);
 
         await navigation.DidNotReceiveWithAnyArgs().GoToAsync(default!, default, default);
     }
 
-    [Fact]
+    [Test]
     public async Task WithNoPendingDeepLinkService_ItIsANoOp()
     {
         // DI not wired yet. "Too early", not an error — the next hook tries again.
-        Assert.False(await DeepLinkDrain.AttemptAsync(
-            pending: null, Substitute.For<INavigationService>(), shellReady: true));
+        Assert.That(await DeepLinkDrain.AttemptAsync(
+            pending: null, Substitute.For<INavigationService>(), shellReady: true), Is.False);
     }
 
-    [Fact]
+    [Test]
     public async Task WithNoNavigationService_TheLinkIsKeptForLater()
     {
         var link = Queued();
 
-        Assert.False(await DeepLinkDrain.AttemptAsync(link, navigation: null, shellReady: true));
+        Assert.That(await DeepLinkDrain.AttemptAsync(link, navigation: null, shellReady: true), Is.False);
 
-        Assert.True(link.HasPending);
+        Assert.That(link.HasPending, Is.True);
     }
 
-    [Fact]
+    [Test]
     public async Task WhenShellIsNotReady_TheLinkIsKeptForLater()
     {
         var link = Queued();
         var navigation = Substitute.For<INavigationService>();
 
-        Assert.False(await DeepLinkDrain.AttemptAsync(link, navigation, shellReady: false));
+        Assert.That(await DeepLinkDrain.AttemptAsync(link, navigation, shellReady: false), Is.False);
 
-        Assert.True(link.HasPending);
+        Assert.That(link.HasPending, Is.True);
         await navigation.DidNotReceiveWithAnyArgs().GoToAsync(default!, default, default);
     }
 
-    [Fact]
+    [Test]
     public async Task WhenNavigationThrows_NothingEscapes_AndTheLinkStaysQueued()
     {
         // The whole reason this is not inlined at each call site: every caller is a lifecycle
@@ -85,12 +85,12 @@ public class DeepLinkDrainTests
         navigation.GoToAsync(Route, false, Arg.Any<IDictionary<string, object>>())
             .Returns(Task.FromException(new InvalidOperationException("route not registered")));
 
-        Assert.False(await DeepLinkDrain.AttemptAsync(link, navigation, shellReady: true));
+        Assert.That(await DeepLinkDrain.AttemptAsync(link, navigation, shellReady: true), Is.False);
 
-        Assert.True(link.HasPending);
+        Assert.That(link.HasPending, Is.True);
     }
 
-    [Fact]
+    [Test]
     public async Task AFailedAttempt_IsFollowedByASuccessfulOne()
     {
         var link = Queued();
@@ -100,22 +100,22 @@ public class DeepLinkDrainTests
                 _ => Task.FromException(new InvalidOperationException("transient")),
                 _ => Task.CompletedTask);
 
-        Assert.False(await DeepLinkDrain.AttemptAsync(link, navigation, shellReady: true));
-        Assert.True(await DeepLinkDrain.AttemptAsync(link, navigation, shellReady: true));
+        Assert.That(await DeepLinkDrain.AttemptAsync(link, navigation, shellReady: true), Is.False);
+        Assert.That(await DeepLinkDrain.AttemptAsync(link, navigation, shellReady: true), Is.True);
 
-        Assert.False(link.HasPending);
+        Assert.That(link.HasPending, Is.False);
     }
 
-    [Fact]
+    [Test]
     public async Task RepeatedAttemptsAfterSuccess_DoNothing()
     {
         // All three hooks fire on a normal launch, so this is the ordinary case.
         var link = Queued();
         var navigation = Substitute.For<INavigationService>();
 
-        Assert.True(await DeepLinkDrain.AttemptAsync(link, navigation, shellReady: true));
-        Assert.False(await DeepLinkDrain.AttemptAsync(link, navigation, shellReady: true));
-        Assert.False(await DeepLinkDrain.AttemptAsync(link, navigation, shellReady: true));
+        Assert.That(await DeepLinkDrain.AttemptAsync(link, navigation, shellReady: true), Is.True);
+        Assert.That(await DeepLinkDrain.AttemptAsync(link, navigation, shellReady: true), Is.False);
+        Assert.That(await DeepLinkDrain.AttemptAsync(link, navigation, shellReady: true), Is.False);
 
         await navigation.Received(1).GoToAsync(Route, false, Arg.Any<IDictionary<string, object>>());
     }

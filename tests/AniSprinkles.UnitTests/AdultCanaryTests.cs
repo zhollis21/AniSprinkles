@@ -16,7 +16,7 @@ public class AdultCanaryTests
 {
     // ── The list half: always armed ──────────────────────────────────
 
-    [Fact]
+    [Test]
     public void TheList_AlwaysCarriesTheCanary()
     {
         // MediaListCollection takes no isAdult argument — AniList cannot filter it server-side, so
@@ -26,10 +26,10 @@ public class AdultCanaryTests
 
         AdultCanary.Splice("MediaListCollection", variables: null, response);
 
-        Assert.Contains(AdultCanary.Title, response.ToJsonString(), StringComparison.Ordinal);
+        Assert.That(response.ToJsonString(), Does.Contain(AdultCanary.Title));
     }
 
-    [Fact]
+    [Test]
     public void TheListCanary_IsFlaggedAdultSoTheFilterCanSeeIt()
     {
         var response = ListResponse();
@@ -37,12 +37,12 @@ public class AdultCanaryTests
         AdultCanary.Splice("MediaListCollection", variables: null, response);
 
         var entry = response["data"]!["MediaListCollection"]!["lists"]![0]!["entries"]![0];
-        Assert.True(entry!["media"]!["isAdult"]!.GetValue<bool>());
+        Assert.That(entry!["media"]!["isAdult"]!.GetValue<bool>(), Is.True);
     }
 
     // ── The browse half: armed only when the filter is not pinned ────
 
-    [Fact]
+    [Test]
     public void BrowsePinnedToSfw_DoesNotGetTheCanary()
     {
         // A correct app always pins isAdult:false while the viewer has adult content off. Serving the
@@ -51,10 +51,10 @@ public class AdultCanaryTests
 
         AdultCanary.Splice("BrowseAnime", Vars("""{"isAdult":false}"""), response);
 
-        Assert.DoesNotContain(AdultCanary.Title, response.ToJsonString(), StringComparison.Ordinal);
+        Assert.That(response.ToJsonString(), Does.Not.Contain(AdultCanary.Title));
     }
 
-    [Fact]
+    [Test]
     public void BrowseWithTheFilterOmitted_GetsTheCanary()
     {
         // The failure this catches: an omitted argument matches everything, so a dropped isAdult is
@@ -63,20 +63,20 @@ public class AdultCanaryTests
 
         AdultCanary.Splice("BrowseAnime", Vars("{}"), response);
 
-        Assert.Contains(AdultCanary.Title, response.ToJsonString(), StringComparison.Ordinal);
+        Assert.That(response.ToJsonString(), Does.Contain(AdultCanary.Title));
     }
 
-    [Fact]
+    [Test]
     public void BrowseAskingForAdultOnly_GetsTheCanary()
     {
         var response = MediaArrayResponse();
 
         AdultCanary.Splice("BrowseAnime", Vars("""{"isAdult":true}"""), response);
 
-        Assert.Contains(AdultCanary.Title, response.ToJsonString(), StringComparison.Ordinal);
+        Assert.That(response.ToJsonString(), Does.Contain(AdultCanary.Title));
     }
 
-    [Fact]
+    [Test]
     public void EveryDiscoverSection_IsCovered()
     {
         // Discover returns several aliased pages in one response. Covering only the first would leave
@@ -94,13 +94,13 @@ public class AdultCanaryTests
         foreach (var alias in new[] { "airing", "trending", "top" })
         {
             var media = response["data"]![alias]!["media"]!.AsArray();
-            Assert.Equal(AdultCanary.Title, media[0]!["title"]!["romaji"]!.GetValue<string>());
+            Assert.That(media[0]!["title"]!["romaji"]!.GetValue<string>(), Is.EqualTo(AdultCanary.Title));
         }
     }
 
     // ── The canary itself ────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public void TheCanary_HasNoCoverImage()
     {
         // It is a marker, not content. Nothing should be fetched or rendered if the filter fails —
@@ -110,15 +110,15 @@ public class AdultCanaryTests
         AdultCanary.Splice("Search", Vars("{}"), response);
 
         var canary = response["data"]!["Page"]!["media"]!.AsArray()[0];
-        Assert.Null(canary!["coverImage"]);
+        Assert.That(canary!["coverImage"], Is.Null);
     }
 
-    [Fact]
+    [Test]
     public void TheTitle_IsTheStringTheWorkflowGrepsFor()
     {
         // ci-build-and-preview.yml greps the UI dump for this literal and asserts it still appears in
         // AdultCanary.cs. Renaming it without updating the workflow leaves the gate matching nothing.
-        Assert.Equal("18PLUS CANARY - FILTER FAILED", AdultCanary.Title);
+        Assert.That(AdultCanary.Title, Is.EqualTo("18PLUS CANARY - FILTER FAILED"));
     }
 
     private static JsonNode ListResponse() => JsonNode.Parse("""

@@ -23,20 +23,20 @@ public class PendingDeepLinkTests
         return link;
     }
 
-    [Fact]
+    [Test]
     public async Task WhenShellIsReady_TheLinkIsFollowedOnce()
     {
         var link = WithPending(21);
         var navigation = Substitute.For<INavigationService>();
 
-        Assert.True(await link.TryNavigateAsync(navigation, shellReady: true));
+        Assert.That(await link.TryNavigateAsync(navigation, shellReady: true), Is.True);
 
         await navigation.Received(1).GoToAsync(
             Route, false, Arg.Is<IDictionary<string, object>>(p => (int)p["mediaId"] == 21));
-        Assert.False(link.HasPending);
+        Assert.That(link.HasPending, Is.False);
     }
 
-    [Fact]
+    [Test]
     public async Task WhenShellIsNotReady_NothingNavigates_AndTheLinkSurvives()
     {
         // The silent-loss regression. MauiShellNavigationService returns a completed task when
@@ -45,25 +45,25 @@ public class PendingDeepLinkTests
         var link = WithPending(21);
         var navigation = Substitute.For<INavigationService>();
 
-        Assert.False(await link.TryNavigateAsync(navigation, shellReady: false));
+        Assert.That(await link.TryNavigateAsync(navigation, shellReady: false), Is.False);
 
         await navigation.DidNotReceiveWithAnyArgs().GoToAsync(default!, default, default);
-        Assert.True(link.HasPending);
+        Assert.That(link.HasPending, Is.True);
     }
 
-    [Fact]
+    [Test]
     public async Task ALinkThatWaited_IsFollowedOnTheNextAttempt()
     {
         var link = WithPending(21);
         var navigation = Substitute.For<INavigationService>();
 
         await link.TryNavigateAsync(navigation, shellReady: false);
-        Assert.True(await link.TryNavigateAsync(navigation, shellReady: true));
+        Assert.That(await link.TryNavigateAsync(navigation, shellReady: true), Is.True);
 
         await navigation.Received(1).GoToAsync(Route, false, Arg.Any<IDictionary<string, object>>());
     }
 
-    [Fact]
+    [Test]
     public async Task DrainingAgainAfterSuccess_DoesNothing()
     {
         // Three hooks ask for a drain — intent arrival, Shell's Navigated, and OnResume — so
@@ -72,22 +72,22 @@ public class PendingDeepLinkTests
         var navigation = Substitute.For<INavigationService>();
 
         await link.TryNavigateAsync(navigation, shellReady: true);
-        Assert.False(await link.TryNavigateAsync(navigation, shellReady: true));
+        Assert.That(await link.TryNavigateAsync(navigation, shellReady: true), Is.False);
 
         await navigation.Received(1).GoToAsync(Route, false, Arg.Any<IDictionary<string, object>>());
     }
 
-    [Fact]
+    [Test]
     public async Task WithNothingPending_DrainingIsANoOp()
     {
         var navigation = Substitute.For<INavigationService>();
 
-        Assert.False(await new PendingDeepLink(new FakePreferences()).TryNavigateAsync(navigation, shellReady: true));
+        Assert.That(await new PendingDeepLink(new FakePreferences()).TryNavigateAsync(navigation, shellReady: true), Is.False);
 
         await navigation.DidNotReceiveWithAnyArgs().GoToAsync(default!, default, default);
     }
 
-    [Fact]
+    [Test]
     public async Task TwoTapsBeforeEitherIsFollowed_FollowTheSecond()
     {
         var link = new PendingDeepLink(new FakePreferences());
@@ -105,7 +105,7 @@ public class PendingDeepLinkTests
 
     // ── Navigation failure ──────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task WhenNavigationThrows_TheLinkSurvivesAndIsRetried()
     {
         // The user tapped a notification and never arrived. Losing the link here would be the same
@@ -119,13 +119,13 @@ public class PendingDeepLinkTests
         await Assert.ThrowsAsync<InvalidOperationException>(
             () => link.TryNavigateAsync(navigation, shellReady: true));
 
-        Assert.True(link.HasPending);
+        Assert.That(link.HasPending, Is.True);
 
         // And the nonce was not burned, so a re-delivered intent still counts as the same live tap.
-        Assert.True(link.Set(Route, Media(21), nonce: 4242));
+        Assert.That(link.Set(Route, Media(21), nonce: 4242), Is.True);
     }
 
-    [Fact]
+    [Test]
     public async Task AfterAFailedNavigation_TheNextAttemptSucceeds()
     {
         var link = WithPending(21, nonce: 4242);
@@ -137,13 +137,13 @@ public class PendingDeepLinkTests
 
         await Assert.ThrowsAsync<InvalidOperationException>(
             () => link.TryNavigateAsync(navigation, shellReady: true));
-        Assert.True(await link.TryNavigateAsync(navigation, shellReady: true));
+        Assert.That(await link.TryNavigateAsync(navigation, shellReady: true), Is.True);
 
         // Now it is consumed, so the replayed intent is ignored.
-        Assert.False(link.Set(Route, Media(21), nonce: 4242));
+        Assert.That(link.Set(Route, Media(21), nonce: 4242), Is.False);
     }
 
-    [Fact]
+    [Test]
     public async Task WhenNavigationThrowsAfterANewerTapArrived_TheNewerTapWins()
     {
         // Restoring unconditionally would resurrect the stale link over the one the user most
@@ -175,7 +175,7 @@ public class PendingDeepLinkTests
 
     // ── Replay ──────────────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task ATapRedeliveredMidNavigation_IsNotQueuedAgain()
     {
         // The consumed nonce is only persisted once navigation succeeds, so during the await there
@@ -193,12 +193,12 @@ public class PendingDeepLinkTests
 
         await link.TryNavigateAsync(navigation, shellReady: true);
 
-        Assert.False(acceptedDuringFlight);
-        Assert.False(link.HasPending);
+        Assert.That(acceptedDuringFlight, Is.False);
+        Assert.That(link.HasPending, Is.False);
         await navigation.Received(1).GoToAsync(Route, false, Arg.Any<IDictionary<string, object>>());
     }
 
-    [Fact]
+    [Test]
     public async Task ADifferentTapArrivingMidNavigation_IsStillQueued()
     {
         // The in-flight guard is per-nonce, not a blanket lock: a genuinely different notification
@@ -218,13 +218,13 @@ public class PendingDeepLinkTests
             });
 
         await link.TryNavigateAsync(navigation, shellReady: true);
-        Assert.True(await link.TryNavigateAsync(navigation, shellReady: true));
+        Assert.That(await link.TryNavigateAsync(navigation, shellReady: true), Is.True);
 
         await navigation.Received(1).GoToAsync(
             Route, false, Arg.Is<IDictionary<string, object>>(p => (int)p["mediaId"] == 16498));
     }
 
-    [Fact]
+    [Test]
     public async Task AfterAFailedNavigation_TheSameTapIsAcceptedAgain()
     {
         // The in-flight guard must not outlive the attempt: a tap that failed is still live, and a
@@ -237,10 +237,10 @@ public class PendingDeepLinkTests
         await Assert.ThrowsAsync<InvalidOperationException>(
             () => link.TryNavigateAsync(navigation, shellReady: true));
 
-        Assert.True(link.Set(Route, Media(21), nonce: 4242));
+        Assert.That(link.Set(Route, Media(21), nonce: 4242), Is.True);
     }
 
-    [Fact]
+    [Test]
     public async Task AReplayedTap_IsIgnored()
     {
         // Android re-delivers the original intent when it recreates an activity. Without this, a
@@ -250,14 +250,14 @@ public class PendingDeepLinkTests
         var navigation = Substitute.For<INavigationService>();
         await link.TryNavigateAsync(navigation, shellReady: true);
 
-        Assert.False(link.Set(Route, Media(21), nonce: 4242));
+        Assert.That(link.Set(Route, Media(21), nonce: 4242), Is.False);
 
-        Assert.False(link.HasPending);
-        Assert.False(await link.TryNavigateAsync(navigation, shellReady: true));
+        Assert.That(link.HasPending, Is.False);
+        Assert.That(await link.TryNavigateAsync(navigation, shellReady: true), Is.False);
         await navigation.Received(1).GoToAsync(Route, false, Arg.Any<IDictionary<string, object>>());
     }
 
-    [Fact]
+    [Test]
     public async Task AGenuineSecondTapOfADifferentEpisode_IsNotTreatedAsAReplay()
     {
         // Notification ids are per (media, episode), so a new episode of the same show is a
@@ -266,26 +266,26 @@ public class PendingDeepLinkTests
         var navigation = Substitute.For<INavigationService>();
         await link.TryNavigateAsync(navigation, shellReady: true);
 
-        Assert.True(link.Set(Route, Media(21), nonce: 9999));
-        Assert.True(await link.TryNavigateAsync(navigation, shellReady: true));
+        Assert.That(link.Set(Route, Media(21), nonce: 9999), Is.True);
+        Assert.That(await link.TryNavigateAsync(navigation, shellReady: true), Is.True);
 
         await navigation.Received(2).GoToAsync(Route, false, Arg.Any<IDictionary<string, object>>());
     }
 
-    [Fact]
+    [Test]
     public async Task AReplayArrivingBeforeTheFirstDrain_StillLeavesOneNavigation()
     {
         var link = WithPending(21, nonce: 4242);
         var navigation = Substitute.For<INavigationService>();
 
         // Same intent seen twice while still pending — not yet followed, so it stays queued once.
-        Assert.True(link.Set(Route, Media(21), nonce: 4242));
+        Assert.That(link.Set(Route, Media(21), nonce: 4242), Is.True);
         await link.TryNavigateAsync(navigation, shellReady: true);
 
         await navigation.Received(1).GoToAsync(Route, false, Arg.Any<IDictionary<string, object>>());
     }
 
-    [Fact]
+    [Test]
     public async Task AReplayAfterProcessDeath_IsStillIgnored()
     {
         // Verified on device: killing the process and restoring from recents rebuilds the task from
@@ -299,14 +299,14 @@ public class PendingDeepLinkTests
         await beforeDeath.TryNavigateAsync(navigation, shellReady: true);
 
         var afterRestore = new PendingDeepLink(store);
-        Assert.False(afterRestore.Set(Route, Media(21), nonce: 4242));
+        Assert.That(afterRestore.Set(Route, Media(21), nonce: 4242), Is.False);
 
-        Assert.False(afterRestore.HasPending);
-        Assert.False(await afterRestore.TryNavigateAsync(navigation, shellReady: true));
+        Assert.That(afterRestore.HasPending, Is.False);
+        Assert.That(await afterRestore.TryNavigateAsync(navigation, shellReady: true), Is.False);
         await navigation.Received(1).GoToAsync(Route, false, Arg.Any<IDictionary<string, object>>());
     }
 
-    [Fact]
+    [Test]
     public async Task AFreshTapAfterProcessDeath_StillNavigates()
     {
         var store = new FakePreferences();
@@ -316,13 +316,13 @@ public class PendingDeepLinkTests
         await beforeDeath.TryNavigateAsync(navigation, shellReady: true);
 
         var afterRestore = new PendingDeepLink(store);
-        Assert.True(afterRestore.Set(Route, Media(16498), nonce: 9999));
-        Assert.True(await afterRestore.TryNavigateAsync(navigation, shellReady: true));
+        Assert.That(afterRestore.Set(Route, Media(16498), nonce: 9999), Is.True);
+        Assert.That(await afterRestore.TryNavigateAsync(navigation, shellReady: true), Is.True);
 
         await navigation.Received(2).GoToAsync(Route, false, Arg.Any<IDictionary<string, object>>());
     }
 
-    [Fact]
+    [Test]
     public async Task ANonceOfZero_IsARealNonce_NotAnAbsentOne()
     {
         // The nonce is a hash, so 0 is a value it can legitimately take — rare, but a notification
@@ -332,12 +332,12 @@ public class PendingDeepLinkTests
         var navigation = Substitute.For<INavigationService>();
         await link.TryNavigateAsync(navigation, shellReady: true);
 
-        Assert.False(link.Set(Route, Media(21), nonce: 0));
+        Assert.That(link.Set(Route, Media(21), nonce: 0), Is.False);
 
         await navigation.Received(1).GoToAsync(Route, false, Arg.Any<IDictionary<string, object>>());
     }
 
-    [Fact]
+    [Test]
     public async Task ANonceOfZero_SurvivesProcessDeathLikeAnyOther()
     {
         var store = new FakePreferences();
@@ -348,11 +348,11 @@ public class PendingDeepLinkTests
 
         var afterRestore = new PendingDeepLink(store);
 
-        Assert.False(afterRestore.Set(Route, Media(21), nonce: 0));
+        Assert.That(afterRestore.Set(Route, Media(21), nonce: 0), Is.False);
         await navigation.Received(1).GoToAsync(Route, false, Arg.Any<IDictionary<string, object>>());
     }
 
-    [Fact]
+    [Test]
     public async Task WithoutANonce_ReplayProtectionIsOff()
     {
         // null means "nothing to deduplicate on" — not 0, which the tests above cover as an ordinary
@@ -362,7 +362,7 @@ public class PendingDeepLinkTests
 
         link.Set(Route, Media(21), nonce: null);
         await link.TryNavigateAsync(navigation, shellReady: true);
-        Assert.True(link.Set(Route, Media(21), nonce: null));
+        Assert.That(link.Set(Route, Media(21), nonce: null), Is.True);
         await link.TryNavigateAsync(navigation, shellReady: true);
 
         await navigation.Received(2).GoToAsync(Route, false, Arg.Any<IDictionary<string, object>>());
