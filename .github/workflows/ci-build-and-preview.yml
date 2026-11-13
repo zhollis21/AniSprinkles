@@ -1191,11 +1191,17 @@ jobs:
 
       - name: Run Emulator & Capture Screenshots
         uses: reactivecircus/android-emulator-runner@v2
+        # The device and Android version the app actually runs on, and the local default AVD
+        # (pixel_10_pro_xl_-_api_37 in driver.ps1) — so a layout or OS difference shows up here
+        # rather than first on a phone (#176). "37.0", not "37": the action installs
+        # platforms;android-<api-level> and system-images;android-<api-level>;..., and from 37
+        # those package names carry the minor version. Quoted so YAML cannot read it as the
+        # number 37.
         with:
-          api-level: 34
+          api-level: '37.0'
           target: default
           arch: x86_64
-          profile: pixel_7_pro
+          profile: pixel_10_pro_xl
           force-avd-creation: false
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -prop persist.sys.locale=en-US
           disable-animations: true
