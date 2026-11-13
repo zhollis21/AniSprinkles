@@ -516,7 +516,9 @@ replacement from scratch is how a narrow correction turns into silently deleting
 everything else the issue said:
 
 ```bash
-gh api repos/zhollis21/AniSprinkles/issues/<N> --jq .body > "$SCRATCH/issue-<N>.md"
+# --template, not --jq: --jq appends a newline that the PATCH then stores, so
+# every round trip would grow the body by a blank line. --template is byte-exact.
+gh api repos/zhollis21/AniSprinkles/issues/<N> --template '{{.body}}' > "$SCRATCH/issue-<N>.md"
 cp "$SCRATCH/issue-<N>.md" "$SCRATCH/issue-<N>.orig.md"
 # edit issue-<N>.md, then:
 diff "$SCRATCH/issue-<N>.orig.md" "$SCRATCH/issue-<N>.md"

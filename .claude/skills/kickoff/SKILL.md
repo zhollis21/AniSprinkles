@@ -560,7 +560,9 @@ up in a commit:
 
 ```bash
 # 1. Fetch the current body, and keep a pristine copy to diff against.
-gh api repos/zhollis21/AniSprinkles/issues/<N> --jq .body > "$SCRATCH/issue-<N>-body.md"
+#    --template, not --jq: --jq appends a newline that step 4 would store, so
+#    every round trip would grow the body by a blank line. --template is byte-exact.
+gh api repos/zhollis21/AniSprinkles/issues/<N> --template '{{.body}}' > "$SCRATCH/issue-<N>-body.md"
 cp "$SCRATCH/issue-<N>-body.md" "$SCRATCH/issue-<N>-body.orig.md"
 
 # 2. Edit issue-<N>-body.md, changing only the claims the plan contradicts.
