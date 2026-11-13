@@ -21,7 +21,7 @@ public class AniListClientOperationsTests
 {
     // ── BrowseAnime ──────────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task BrowseAnimePage_SendsItsPagingAndFilters()
     {
         var harness = new Harness().Returns("BrowseAnime", EmptyPage);
@@ -29,19 +29,19 @@ public class AniListClientOperationsTests
         await harness.Client.BrowseAnimePageAsync(
             "SCORE_DESC", status: "RELEASING", season: "WINTER", seasonYear: 2026,
             isAdult: false, format: "MOVIE", page: 3, perPage: 25,
-            cancellationToken: TestContext.Current.CancellationToken);
+            cancellationToken: TestContext.CurrentContext.CancellationToken);
 
         var request = harness.Handler.Last;
-        Assert.Equal(3, request.IntVariable("page"));
-        Assert.Equal(25, request.IntVariable("perPage"));
-        Assert.Equal("RELEASING", request.StringVariable("status"));
-        Assert.Equal("WINTER", request.StringVariable("season"));
-        Assert.Equal(2026, request.IntVariable("seasonYear"));
-        Assert.False(request.BoolVariable("isAdult"));
-        Assert.Equal("MOVIE", request.StringVariable("format"));
+        Assert.That(request.IntVariable("page"), Is.EqualTo(3));
+        Assert.That(request.IntVariable("perPage"), Is.EqualTo(25));
+        Assert.That(request.StringVariable("status"), Is.EqualTo("RELEASING"));
+        Assert.That(request.StringVariable("season"), Is.EqualTo("WINTER"));
+        Assert.That(request.IntVariable("seasonYear"), Is.EqualTo(2026));
+        Assert.That(request.BoolVariable("isAdult"), Is.False);
+        Assert.That(request.StringVariable("format"), Is.EqualTo("MOVIE"));
     }
 
-    [Fact]
+    [Test]
     public async Task BrowseAnimePage_AppendsAnIdTiebreakerToTheSort()
     {
         // Without a stable secondary key, two media with equal popularity can swap between pages —
@@ -49,25 +49,24 @@ public class AniListClientOperationsTests
         var harness = new Harness().Returns("BrowseAnime", EmptyPage);
 
         await harness.Client.BrowseAnimePageAsync(
-            "POPULARITY_DESC", cancellationToken: TestContext.Current.CancellationToken);
+            "POPULARITY_DESC", cancellationToken: TestContext.CurrentContext.CancellationToken);
 
-        Assert.Equal(["POPULARITY_DESC", "ID"], harness.Handler.Last.StringArrayVariable("sort"));
+        Assert.That(harness.Handler.Last.StringArrayVariable("sort"), Is.EqualTo(["POPULARITY_DESC", "ID"]));
     }
 
-    [Theory]
-    [InlineData("ID")]
-    [InlineData("ID_DESC")]
+    [TestCase("ID")]
+    [TestCase("ID_DESC")]
     public async Task BrowseAnimePage_DoesNotTiebreakASortThatIsAlreadyById(string sort)
     {
         var harness = new Harness().Returns("BrowseAnime", EmptyPage);
 
         await harness.Client.BrowseAnimePageAsync(
-            sort, cancellationToken: TestContext.Current.CancellationToken);
+            sort, cancellationToken: TestContext.CurrentContext.CancellationToken);
 
-        Assert.Equal([sort], harness.Handler.Last.StringArrayVariable("sort"));
+        Assert.That(harness.Handler.Last.StringArrayVariable("sort"), Is.EqualTo([sort]));
     }
 
-    [Fact]
+    [Test]
     public async Task BrowseAnimePage_DeserializesTheItemsAndThePagingCursor()
     {
         var harness = new Harness().Returns("BrowseAnime", """
@@ -80,36 +79,36 @@ public class AniListClientOperationsTests
             """);
 
         var (items, pageInfo) = await harness.Client.BrowseAnimePageAsync(
-            "POPULARITY_DESC", cancellationToken: TestContext.Current.CancellationToken);
+            "POPULARITY_DESC", cancellationToken: TestContext.CurrentContext.CancellationToken);
 
-        Assert.Equal([5, 6], items.Select(i => i.Node!.Id));
+        Assert.That(items.Select(i => i.Node!.Id), Is.EqualTo([5, 6]));
 
         var first = items[0].Node;
-        Assert.NotNull(first);
-        Assert.NotNull(first.Title);
-        Assert.Equal("Frieren", first.Title.Romaji);
+        Assert.That(first, Is.Not.Null);
+        Assert.That(first.Title, Is.Not.Null);
+        Assert.That(first.Title.Romaji, Is.EqualTo("Frieren"));
 
-        Assert.NotNull(pageInfo);
-        Assert.Equal(2, pageInfo.CurrentPage);
-        Assert.True(pageInfo.HasNextPage);
+        Assert.That(pageInfo, Is.Not.Null);
+        Assert.That(pageInfo.CurrentPage, Is.EqualTo(2));
+        Assert.That(pageInfo.HasNextPage, Is.True);
     }
 
-    [Fact]
+    [Test]
     public async Task BrowseAnimePage_WithNoPageAtAll_ComesBackEmptyRatherThanThrowing()
     {
         // An empty final page is a normal end-of-list, not an error to surface.
         var harness = new Harness().Returns("BrowseAnime", """{"Page":null}""");
 
         var (items, pageInfo) = await harness.Client.BrowseAnimePageAsync(
-            "POPULARITY_DESC", cancellationToken: TestContext.Current.CancellationToken);
+            "POPULARITY_DESC", cancellationToken: TestContext.CurrentContext.CancellationToken);
 
-        Assert.Empty(items);
-        Assert.Null(pageInfo);
+        Assert.That(items, Is.Empty);
+        Assert.That(pageInfo, Is.Null);
     }
 
     // ── Media details ────────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task GetMedia_DeserializesTheMediaAndTheViewersOwnEntry()
     {
         var harness = new Harness().Returns("Media", """
@@ -120,46 +119,46 @@ public class AniListClientOperationsTests
             }}
             """);
 
-        var (media, entry) = await harness.Client.GetMediaAsync(9, TestContext.Current.CancellationToken);
+        var (media, entry) = await harness.Client.GetMediaAsync(9, TestContext.CurrentContext.CancellationToken);
 
-        Assert.NotNull(media);
-        Assert.NotNull(entry);
-        Assert.Equal(9, media.Id);
-        Assert.Equal(12, media.Episodes);
+        Assert.That(media, Is.Not.Null);
+        Assert.That(entry, Is.Not.Null);
+        Assert.That(media.Id, Is.EqualTo(9));
+        Assert.That(media.Episodes, Is.EqualTo(12));
         // Asserted rather than merely present in the payload: the response key moved with #163, and
         // a key that no longer binds deserializes to null without failing anything.
-        Assert.Equal(88, media.WeightedScore);
-        Assert.Equal(555, entry.Id);
-        Assert.Equal(MediaListStatus.Current, entry.Status);
-        Assert.Equal(4, entry.Progress);
+        Assert.That(media.WeightedScore, Is.EqualTo(88));
+        Assert.That(entry.Id, Is.EqualTo(555));
+        Assert.That(entry.Status, Is.EqualTo(MediaListStatus.Current));
+        Assert.That(entry.Progress, Is.EqualTo(4));
     }
 
-    [Fact]
+    [Test]
     public async Task GetMedia_WhenTheIdIsUnknown_ReturnsNothingRatherThanThrowing()
     {
         // The details page turns this into its own not-found state.
         var harness = new Harness().Returns("Media", """{"Media":null}""");
 
-        var (media, entry) = await harness.Client.GetMediaAsync(9, TestContext.Current.CancellationToken);
+        var (media, entry) = await harness.Client.GetMediaAsync(9, TestContext.CurrentContext.CancellationToken);
 
-        Assert.Null(media);
-        Assert.Null(entry);
+        Assert.That(media, Is.Null);
+        Assert.That(entry, Is.Null);
     }
 
-    [Fact]
+    [Test]
     public async Task GetMedia_ForMediaNotOnTheViewersList_HasNoEntry()
     {
         var harness = new Harness().Returns("Media", """{"Media":{"id":9,"type":"ANIME"}}""");
 
-        var (media, entry) = await harness.Client.GetMediaAsync(9, TestContext.Current.CancellationToken);
+        var (media, entry) = await harness.Client.GetMediaAsync(9, TestContext.CurrentContext.CancellationToken);
 
-        Assert.NotNull(media);
-        Assert.Null(entry);
+        Assert.That(media, Is.Not.Null);
+        Assert.That(entry, Is.Null);
     }
 
     // ── Saving a list entry ──────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task SaveMediaListEntry_SendsEveryEditableField()
     {
         // A field silently dropped here is data loss the user only notices later, on another device.
@@ -179,29 +178,28 @@ public class AniListClientOperationsTests
                 Private = true,
                 HiddenFromStatusLists = true,
             },
-            TestContext.Current.CancellationToken);
+            TestContext.CurrentContext.CancellationToken);
 
         var request = harness.Handler.Last;
-        Assert.Equal(42, request.IntVariable("mediaId"));
-        Assert.Equal("COMPLETED", request.StringVariable("status"));
-        Assert.Equal(12, request.IntVariable("progress"));
+        Assert.That(request.IntVariable("mediaId"), Is.EqualTo(42));
+        Assert.That(request.StringVariable("status"), Is.EqualTo("COMPLETED"));
+        Assert.That(request.IntVariable("progress"), Is.EqualTo(12));
         // Manga volumes are a second, independent counter (#12); omitting it silently discards
         // whatever the reader had set on AniList.
-        Assert.Equal(3, request.IntVariable("progressVolumes"));
-        Assert.Equal(8.5, request.Variable("score").GetDouble());
-        Assert.Equal(2, request.IntVariable("repeat"));
-        Assert.Equal("rewatch", request.StringVariable("notes"));
-        Assert.True(request.BoolVariable("private"));
-        Assert.True(request.BoolVariable("hiddenFromStatusLists"));
+        Assert.That(request.IntVariable("progressVolumes"), Is.EqualTo(3));
+        Assert.That(request.Variable("score").GetDouble(), Is.EqualTo(8.5));
+        Assert.That(request.IntVariable("repeat"), Is.EqualTo(2));
+        Assert.That(request.StringVariable("notes"), Is.EqualTo("rewatch"));
+        Assert.That(request.BoolVariable("private"), Is.True);
+        Assert.That(request.BoolVariable("hiddenFromStatusLists"), Is.True);
     }
 
-    [Theory]
-    [InlineData(MediaListStatus.Current, "CURRENT")]
-    [InlineData(MediaListStatus.Planning, "PLANNING")]
-    [InlineData(MediaListStatus.Completed, "COMPLETED")]
-    [InlineData(MediaListStatus.Dropped, "DROPPED")]
-    [InlineData(MediaListStatus.Paused, "PAUSED")]
-    [InlineData(MediaListStatus.Repeating, "REPEATING")]
+    [TestCase(MediaListStatus.Current, "CURRENT")]
+    [TestCase(MediaListStatus.Planning, "PLANNING")]
+    [TestCase(MediaListStatus.Completed, "COMPLETED")]
+    [TestCase(MediaListStatus.Dropped, "DROPPED")]
+    [TestCase(MediaListStatus.Paused, "PAUSED")]
+    [TestCase(MediaListStatus.Repeating, "REPEATING")]
     public async Task SaveMediaListEntry_SendsAniListsSpellingOfEachStatus(
         MediaListStatus status, string expected)
     {
@@ -209,12 +207,12 @@ public class AniListClientOperationsTests
 
         await harness.Client.SaveMediaListEntryAsync(
             new MediaListEntry { MediaId = 1, Status = status },
-            TestContext.Current.CancellationToken);
+            TestContext.CurrentContext.CancellationToken);
 
-        Assert.Equal(expected, harness.Handler.Last.StringVariable("status"));
+        Assert.That(harness.Handler.Last.StringVariable("status"), Is.EqualTo(expected));
     }
 
-    [Fact]
+    [Test]
     public async Task SaveMediaListEntry_ReturnsTheServersVersionOfTheEntry()
     {
         // Add-to-list adopts the server-assigned id here; losing it orphans every later edit.
@@ -223,90 +221,88 @@ public class AniListClientOperationsTests
             """);
 
         var saved = await harness.Client.SaveMediaListEntryAsync(
-            new MediaListEntry { MediaId = 42 }, TestContext.Current.CancellationToken);
+            new MediaListEntry { MediaId = 42 }, TestContext.CurrentContext.CancellationToken);
 
-        Assert.NotNull(saved);
-        Assert.Equal(777, saved.Id);
-        Assert.Equal(42, saved.MediaId);
-        Assert.Equal(3, saved.Progress);
-        Assert.Equal(DateTimeOffset.FromUnixTimeSeconds(86400), saved.UpdatedAt);
+        Assert.That(saved, Is.Not.Null);
+        Assert.That(saved.Id, Is.EqualTo(777));
+        Assert.That(saved.MediaId, Is.EqualTo(42));
+        Assert.That(saved.Progress, Is.EqualTo(3));
+        Assert.That(saved.UpdatedAt, Is.EqualTo(DateTimeOffset.FromUnixTimeSeconds(86400)));
     }
 
-    [Fact]
+    [Test]
     public async Task SaveMediaListEntry_WhenTheServerReturnsNoEntry_ReturnsNull()
     {
         var harness = new Harness().Returns("SaveMediaListEntry", """{"SaveMediaListEntry":null}""");
 
         var saved = await harness.Client.SaveMediaListEntryAsync(
-            new MediaListEntry { MediaId = 42 }, TestContext.Current.CancellationToken);
+            new MediaListEntry { MediaId = 42 }, TestContext.CurrentContext.CancellationToken);
 
-        Assert.Null(saved);
+        Assert.That(saved, Is.Null);
     }
 
     // ── Deleting a list entry ────────────────────────────────────────
 
-    [Theory]
-    [InlineData(true)]
-    [InlineData(false)]
+    [TestCase(true)]
+    [TestCase(false)]
     public async Task DeleteMediaListEntry_ReportsWhatTheServerSaid(bool deleted)
     {
         var harness = new Harness().Returns(
             "DeleteMediaListEntry",
             "{\"DeleteMediaListEntry\":{\"deleted\":" + (deleted ? "true" : "false") + "}}");
 
-        var result = await harness.Client.DeleteMediaListEntryAsync(9, TestContext.Current.CancellationToken);
+        var result = await harness.Client.DeleteMediaListEntryAsync(9, TestContext.CurrentContext.CancellationToken);
 
-        Assert.Equal(deleted, result);
-        Assert.Equal(9, harness.Handler.Last.IntVariable("id"));
+        Assert.That(result, Is.EqualTo(deleted));
+        Assert.That(harness.Handler.Last.IntVariable("id"), Is.EqualTo(9));
     }
 
-    [Fact]
+    [Test]
     public async Task DeleteMediaListEntry_WithNoResultAtAll_IsTreatedAsNotDeleted()
     {
         // Reporting success here would remove the row locally while it still exists upstream.
         var harness = new Harness().Returns("DeleteMediaListEntry", """{"DeleteMediaListEntry":null}""");
 
-        Assert.False(await harness.Client.DeleteMediaListEntryAsync(9, TestContext.Current.CancellationToken));
+        Assert.That(await harness.Client.DeleteMediaListEntryAsync(9, TestContext.CurrentContext.CancellationToken), Is.False);
     }
 
     // ── Favourites ───────────────────────────────────────────────────
 
-    [Theory]
-    [InlineData(FavouriteKind.Anime, "animeId")]
-    [InlineData(FavouriteKind.Manga, "mangaId")]
-    [InlineData(FavouriteKind.Character, "characterId")]
-    [InlineData(FavouriteKind.Staff, "staffId")]
-    [InlineData(FavouriteKind.Studio, "studioId")]
+    [TestCase(FavouriteKind.Anime, "animeId")]
+    [TestCase(FavouriteKind.Manga, "mangaId")]
+    [TestCase(FavouriteKind.Character, "characterId")]
+    [TestCase(FavouriteKind.Staff, "staffId")]
+    [TestCase(FavouriteKind.Studio, "studioId")]
     public async Task ToggleFavourite_SendsOnlyTheIdBelongingToItsKind(FavouriteKind kind, string expectedVariable)
     {
         // Every other id must be omitted rather than null — sending two would favourite two things.
         var harness = new Harness().Returns("ToggleFavourite", """{"ToggleFavourite":{}}""");
 
-        await harness.Client.ToggleFavouriteAsync(kind, 31, TestContext.Current.CancellationToken);
+        await harness.Client.ToggleFavouriteAsync(kind, 31, TestContext.CurrentContext.CancellationToken);
 
         var request = harness.Handler.Last;
-        Assert.Equal(31, request.IntVariable(expectedVariable));
+        Assert.That(request.IntVariable(expectedVariable), Is.EqualTo(31));
         foreach (var other in new[] { "animeId", "mangaId", "characterId", "staffId", "studioId" }
                      .Where(v => v != expectedVariable))
         {
-            Assert.False(request.HasVariable(other));
+            Assert.That(request.HasVariable(other), Is.False);
         }
     }
 
-    [Fact]
+    [Test]
     public async Task ToggleFavourite_SucceedsOnAnEmptyResponseBody()
     {
         // Success is signalled by the absence of errors; the selection set exists only to make the
         // mutation valid.
         var harness = new Harness().Returns("ToggleFavourite", """{"ToggleFavourite":null}""");
 
-        Assert.True(await harness.Client.ToggleFavouriteAsync(
-            FavouriteKind.Anime, 31, TestContext.Current.CancellationToken));
+        Assert.That(await harness.Client.ToggleFavouriteAsync(
+            FavouriteKind.Anime, 31, TestContext.CurrentContext.CancellationToken), Is.True);
     }
 
     // ── The viewer ───────────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task GetViewer_DeserializesTheProfileAndTheDisplayPreferences()
     {
         var harness = new Harness().Returns("ViewerFull", """
@@ -322,32 +318,32 @@ public class AniListClientOperationsTests
             }}
             """);
 
-        var viewer = await harness.Client.GetViewerAsync(TestContext.Current.CancellationToken);
+        var viewer = await harness.Client.GetViewerAsync(TestContext.CurrentContext.CancellationToken);
 
-        Assert.Equal(11, viewer.Id);
-        Assert.Equal("zhollis", viewer.Name);
-        Assert.Equal("https://img/large.png", viewer.AvatarLarge);
-        Assert.Equal(UserTitleLanguage.English, viewer.Options.TitleLanguage);
-        Assert.True(viewer.Options.DisplayAdultContent);
-        Assert.Equal(ScoreFormat.Point10Decimal, viewer.ScoreFormat);
-        Assert.Equal(["Watching", "Completed"], viewer.AnimeSectionOrder);
+        Assert.That(viewer.Id, Is.EqualTo(11));
+        Assert.That(viewer.Name, Is.EqualTo("zhollis"));
+        Assert.That(viewer.AvatarLarge, Is.EqualTo("https://img/large.png"));
+        Assert.That(viewer.Options.TitleLanguage, Is.EqualTo(UserTitleLanguage.English));
+        Assert.That(viewer.Options.DisplayAdultContent, Is.True);
+        Assert.That(viewer.ScoreFormat, Is.EqualTo(ScoreFormat.Point10Decimal));
+        Assert.That(viewer.AnimeSectionOrder, Is.EqualTo(["Watching", "Completed"]));
         // The manga list has its own order and its own names (#12); grouping the manga tab by the
         // anime order would put a "Watching" section it never has ahead of the ones it does.
-        Assert.Equal(["Reading", "Completed"], viewer.MangaSectionOrder);
+        Assert.That(viewer.MangaSectionOrder, Is.EqualTo(["Reading", "Completed"]));
 
-        Assert.Equal(412, viewer.AnimeStatistics.Count);
-        Assert.Equal(6031, viewer.AnimeStatistics.EpisodesWatched);
+        Assert.That(viewer.AnimeStatistics.Count, Is.EqualTo(412));
+        Assert.That(viewer.AnimeStatistics.EpisodesWatched, Is.EqualTo(6031));
 
         // AniList serves one UserStatistics type for both branches, so the manga totals arrive in
         // fields the anime branch never populates — and vice versa. Asserted together so a mapping
         // that read the wrong branch would show up as anime numbers on the manga card (#12).
-        Assert.Equal(57, viewer.MangaStatistics.Count);
-        Assert.Equal(7.9, viewer.MangaStatistics.MeanScore);
-        Assert.Equal(4218, viewer.MangaStatistics.ChaptersRead);
-        Assert.Equal(313, viewer.MangaStatistics.VolumesRead);
+        Assert.That(viewer.MangaStatistics.Count, Is.EqualTo(57));
+        Assert.That(viewer.MangaStatistics.MeanScore, Is.EqualTo(7.9));
+        Assert.That(viewer.MangaStatistics.ChaptersRead, Is.EqualTo(4218));
+        Assert.That(viewer.MangaStatistics.VolumesRead, Is.EqualTo(313));
     }
 
-    [Fact]
+    [Test]
     public async Task GetViewer_WithNoMangaStatistics_LeavesTheMangaTotalsAtZero()
     {
         // An account that has never touched manga: AniList omits the branch rather than sending
@@ -359,16 +355,16 @@ public class AniListClientOperationsTests
             }}
             """);
 
-        var viewer = await harness.Client.GetViewerAsync(TestContext.Current.CancellationToken);
+        var viewer = await harness.Client.GetViewerAsync(TestContext.CurrentContext.CancellationToken);
 
-        Assert.Equal(412, viewer.AnimeStatistics.Count);
-        Assert.Equal(0, viewer.MangaStatistics.Count);
-        Assert.Equal(0, viewer.MangaStatistics.ChaptersRead);
-        Assert.Equal(0, viewer.MangaStatistics.VolumesRead);
-        Assert.Equal(0, viewer.MangaStatistics.MeanScore);
+        Assert.That(viewer.AnimeStatistics.Count, Is.EqualTo(412));
+        Assert.That(viewer.MangaStatistics.Count, Is.EqualTo(0));
+        Assert.That(viewer.MangaStatistics.ChaptersRead, Is.EqualTo(0));
+        Assert.That(viewer.MangaStatistics.VolumesRead, Is.EqualTo(0));
+        Assert.That(viewer.MangaStatistics.MeanScore, Is.EqualTo(0));
     }
 
-    [Fact]
+    [Test]
     public async Task GetViewer_WithNoViewerInTheResponse_Throws()
     {
         // Signed in but no viewer is incoherent; silently returning an empty profile would blank
@@ -376,10 +372,10 @@ public class AniListClientOperationsTests
         var harness = new Harness().Returns("ViewerFull", """{"Viewer":null}""");
 
         await Assert.ThrowsAsync<InvalidOperationException>(
-            () => harness.Client.GetViewerAsync(TestContext.Current.CancellationToken));
+            () => harness.Client.GetViewerAsync(TestContext.CurrentContext.CancellationToken));
     }
 
-    [Fact]
+    [Test]
     public async Task GetViewer_CachesTheIdSoTheListQueryNeedsNoSecondLookup()
     {
         // MediaListCollection needs a userId, and paying a Viewer round-trip for it on every
@@ -388,16 +384,16 @@ public class AniListClientOperationsTests
             .Returns("ViewerFull", """{"Viewer":{"id":11,"name":"zhollis"}}""")
             .Returns("MediaListCollection", """{"MediaListCollection":{"lists":[]}}""");
 
-        await harness.Client.GetViewerAsync(TestContext.Current.CancellationToken);
-        await harness.Client.GetMediaListGroupedAsync(MediaKind.Anime, TestContext.Current.CancellationToken);
+        await harness.Client.GetViewerAsync(TestContext.CurrentContext.CancellationToken);
+        await harness.Client.GetMediaListGroupedAsync(MediaKind.Anime, TestContext.CurrentContext.CancellationToken);
 
-        Assert.Equal(0, harness.Handler.CallsTo("Viewer"));
-        Assert.Equal(11, harness.Handler.Last.IntVariable("userId"));
+        Assert.That(harness.Handler.CallsTo("Viewer"), Is.EqualTo(0));
+        Assert.That(harness.Handler.Last.IntVariable("userId"), Is.EqualTo(11));
     }
 
     // ── Updating settings ────────────────────────────────────────────
 
-    [Fact]
+    [Test]
     public async Task UpdateUser_SendsOnlyTheFieldsThatWereSet()
     {
         // A PATCH-shaped mutation: sending an unset field would overwrite a preference the user
@@ -406,16 +402,16 @@ public class AniListClientOperationsTests
 
         await harness.Client.UpdateUserAsync(
             new UpdateUserRequest { DisplayAdultContent = true },
-            TestContext.Current.CancellationToken);
+            TestContext.CurrentContext.CancellationToken);
 
         var request = harness.Handler.Last;
-        Assert.True(request.BoolVariable("displayAdultContent"));
-        Assert.False(request.HasVariable("titleLanguage"));
-        Assert.False(request.HasVariable("scoreFormat"));
-        Assert.False(request.HasVariable("notificationOptions"));
+        Assert.That(request.BoolVariable("displayAdultContent"), Is.True);
+        Assert.That(request.HasVariable("titleLanguage"), Is.False);
+        Assert.That(request.HasVariable("scoreFormat"), Is.False);
+        Assert.That(request.HasVariable("notificationOptions"), Is.False);
     }
 
-    [Fact]
+    [Test]
     public async Task UpdateUser_SendsAniListsSpellingOfEachEnum()
     {
         var harness = new Harness().Returns("UpdateUser", ViewerPayload);
@@ -427,15 +423,15 @@ public class AniListClientOperationsTests
                 ScoreFormat = ScoreFormat.Point100,
                 StaffNameLanguage = UserStaffNameLanguage.Native,
             },
-            TestContext.Current.CancellationToken);
+            TestContext.CurrentContext.CancellationToken);
 
         var request = harness.Handler.Last;
-        Assert.Equal("NATIVE", request.StringVariable("titleLanguage"));
-        Assert.Equal("POINT_100", request.StringVariable("scoreFormat"));
-        Assert.Equal("NATIVE", request.StringVariable("staffNameLanguage"));
+        Assert.That(request.StringVariable("titleLanguage"), Is.EqualTo("NATIVE"));
+        Assert.That(request.StringVariable("scoreFormat"), Is.EqualTo("POINT_100"));
+        Assert.That(request.StringVariable("staffNameLanguage"), Is.EqualTo("NATIVE"));
     }
 
-    [Fact]
+    [Test]
     public async Task UpdateUser_SendsNotificationOptionsAsTypeEnabledPairs()
     {
         var harness = new Harness().Returns("UpdateUser", ViewerPayload);
@@ -445,31 +441,30 @@ public class AniListClientOperationsTests
             {
                 NotificationOptions = [new NotificationOptionInput { Type = "AIRING", Enabled = true }],
             },
-            TestContext.Current.CancellationToken);
+            TestContext.CurrentContext.CancellationToken);
 
         var option = harness.Handler.Last.Variable("notificationOptions").EnumerateArray().Single();
-        Assert.Equal("AIRING", option.GetProperty("type").GetString());
-        Assert.True(option.GetProperty("enabled").GetBoolean());
+        Assert.That(option.GetProperty("type").GetString(), Is.EqualTo("AIRING"));
+        Assert.That(option.GetProperty("enabled").GetBoolean(), Is.True);
     }
 
-    [Fact]
+    [Test]
     public async Task UpdateUser_ReturnsTheUpdatedProfile()
     {
         var harness = new Harness().Returns("UpdateUser", ViewerPayload);
 
         var user = await harness.Client.UpdateUserAsync(
             new UpdateUserRequest { DisplayAdultContent = true },
-            TestContext.Current.CancellationToken);
+            TestContext.CurrentContext.CancellationToken);
 
-        Assert.Equal(11, user.Id);
-        Assert.Equal("zhollis", user.Name);
+        Assert.That(user.Id, Is.EqualTo(11));
+        Assert.That(user.Name, Is.EqualTo("zhollis"));
     }
 
     // ── The library ──────────────────────────────────────────────────
 
-    [Theory]
-    [InlineData(MediaKind.Anime, "ANIME")]
-    [InlineData(MediaKind.Manga, "MANGA")]
+    [TestCase(MediaKind.Anime, "ANIME")]
+    [TestCase(MediaKind.Manga, "MANGA")]
     public async Task GetMediaListGrouped_SendsTheTypeItWasAskedFor(MediaKind kind, string expected)
     {
         // Unlike Search, MediaListCollection REJECTS a missing type outright — verified live, it
@@ -479,26 +474,26 @@ public class AniListClientOperationsTests
             .Returns("Viewer", """{"Viewer":{"id":11}}""")
             .Returns("MediaListCollection", """{"MediaListCollection":{"lists":[]}}""");
 
-        await harness.Client.GetMediaListGroupedAsync(kind, TestContext.Current.CancellationToken);
+        await harness.Client.GetMediaListGroupedAsync(kind, TestContext.CurrentContext.CancellationToken);
 
-        Assert.Equal(expected, harness.Handler.Requests[1].StringVariable("type"));
+        Assert.That(harness.Handler.Requests[1].StringVariable("type"), Is.EqualTo(expected));
     }
 
-    [Fact]
+    [Test]
     public async Task GetMediaListGrouped_ResolvesTheViewerBeforeAskingForTheCollection()
     {
         var harness = new Harness()
             .Returns("Viewer", """{"Viewer":{"id":11}}""")
             .Returns("MediaListCollection", """{"MediaListCollection":{"lists":[]}}""");
 
-        await harness.Client.GetMediaListGroupedAsync(MediaKind.Anime, TestContext.Current.CancellationToken);
+        await harness.Client.GetMediaListGroupedAsync(MediaKind.Anime, TestContext.CurrentContext.CancellationToken);
 
-        Assert.Equal("Viewer", harness.Handler.Requests[0].OperationName);
-        Assert.Equal("MediaListCollection", harness.Handler.Requests[1].OperationName);
-        Assert.Equal(11, harness.Handler.Requests[1].IntVariable("userId"));
+        Assert.That(harness.Handler.Requests[0].OperationName, Is.EqualTo("Viewer"));
+        Assert.That(harness.Handler.Requests[1].OperationName, Is.EqualTo("MediaListCollection"));
+        Assert.That(harness.Handler.Requests[1].IntVariable("userId"), Is.EqualTo(11));
     }
 
-    [Fact]
+    [Test]
     public async Task GetMediaListGrouped_KeepsTheServersListNamesAndGrouping()
     {
         // Section order and custom list names are the user's own; regrouping them here would
@@ -514,14 +509,14 @@ public class AniListClientOperationsTests
                 ]}}
                 """);
 
-        var groups = await harness.Client.GetMediaListGroupedAsync(MediaKind.Anime, TestContext.Current.CancellationToken);
+        var groups = await harness.Client.GetMediaListGroupedAsync(MediaKind.Anime, TestContext.CurrentContext.CancellationToken);
 
-        Assert.Equal(["Watching", "Completed"], groups.Select(g => g.Name));
-        Assert.Equal([10, 11], groups[0].Entries.Select(e => e.MediaId));
-        Assert.Equal(DateTimeOffset.FromUnixTimeSeconds(86400), groups[0].Entries[0].UpdatedAt);
+        Assert.That(groups.Select(g => g.Name), Is.EqualTo(["Watching", "Completed"]));
+        Assert.That(groups[0].Entries.Select(e => e.MediaId), Is.EqualTo([10, 11]));
+        Assert.That(groups[0].Entries[0].UpdatedAt, Is.EqualTo(DateTimeOffset.FromUnixTimeSeconds(86400)));
     }
 
-    [Fact]
+    [Test]
     public async Task GetMediaListGrouped_DropsListsThatHaveNoEntries()
     {
         // An empty custom list would otherwise render as a section header with nothing under it.
@@ -534,19 +529,20 @@ public class AniListClientOperationsTests
                 ]}}
                 """);
 
-        var groups = await harness.Client.GetMediaListGroupedAsync(MediaKind.Anime, TestContext.Current.CancellationToken);
+        var groups = await harness.Client.GetMediaListGroupedAsync(MediaKind.Anime, TestContext.CurrentContext.CancellationToken);
 
-        Assert.Equal("Watching", Assert.Single(groups).Name);
+        Assert.That(groups, Has.Exactly(1).Items);
+        Assert.That(groups.Single().Name, Is.EqualTo("Watching"));
     }
 
-    [Fact]
+    [Test]
     public async Task GetMediaListGrouped_WithAnEmptyLibrary_ReturnsNoGroups()
     {
         var harness = new Harness()
             .Returns("Viewer", """{"Viewer":{"id":11}}""")
             .Returns("MediaListCollection", """{"MediaListCollection":null}""");
 
-        Assert.Empty(await harness.Client.GetMediaListGroupedAsync(MediaKind.Anime, TestContext.Current.CancellationToken));
+        Assert.That(await harness.Client.GetMediaListGroupedAsync(MediaKind.Anime, TestContext.CurrentContext.CancellationToken), Is.Empty);
     }
 
     // ── Schema migrations (#163) ─────────────────────────────────────
@@ -558,20 +554,20 @@ public class AniListClientOperationsTests
     // invisible everywhere else — the app renders, the fixtures replay, and nothing fails until
     // AniList drops the field or someone wonders why no relation ever says "Same Universe".
 
-    [Fact]
+    [Test]
     public async Task GetMedia_AsksForWeightedScoreRatherThanTheDeprecatedAverageScore()
     {
         var harness = new Harness().Returns("Media", """{"Media":{"id":9,"type":"ANIME"}}""");
 
-        await harness.Client.GetMediaAsync(9, TestContext.Current.CancellationToken);
+        await harness.Client.GetMediaAsync(9, TestContext.CurrentContext.CancellationToken);
 
         var query = harness.Handler.Last.Query;
-        Assert.NotNull(query);
-        Assert.Contains("weightedScore", query, StringComparison.Ordinal);
-        Assert.DoesNotContain("averageScore", query, StringComparison.Ordinal);
+        Assert.That(query, Is.Not.Null);
+        Assert.That(query, Does.Contain("weightedScore"));
+        Assert.That(query, Does.Not.Contain("averageScore"));
     }
 
-    [Fact]
+    [Test]
     public async Task BrowseAnimePage_AsksForWeightedScore_ViaTheSharedBrowseFragment()
     {
         // BrowseMediaFragment is appended to four operations, so one assertion covers Search,
@@ -581,27 +577,27 @@ public class AniListClientOperationsTests
         await harness.Client.BrowseAnimePageAsync(
             "SCORE_DESC", status: null, season: null, seasonYear: null,
             isAdult: false, format: null, page: 1,
-            cancellationToken: TestContext.Current.CancellationToken);
+            cancellationToken: TestContext.CurrentContext.CancellationToken);
 
         var query = harness.Handler.Last.Query;
-        Assert.NotNull(query);
-        Assert.Contains("weightedScore", query, StringComparison.Ordinal);
-        Assert.DoesNotContain("averageScore", query, StringComparison.Ordinal);
+        Assert.That(query, Is.Not.Null);
+        Assert.That(query, Does.Contain("weightedScore"));
+        Assert.That(query, Does.Not.Contain("averageScore"));
     }
 
-    [Fact]
+    [Test]
     public async Task GetMedia_AsksForRelationsVersion3_SoSameUniverseIsNotReportedAsOther()
     {
         var harness = new Harness().Returns("Media", """{"Media":{"id":9,"type":"ANIME"}}""");
 
-        await harness.Client.GetMediaAsync(9, TestContext.Current.CancellationToken);
+        await harness.Client.GetMediaAsync(9, TestContext.CurrentContext.CancellationToken);
 
         var query = harness.Handler.Last.Query;
-        Assert.NotNull(query);
-        Assert.Contains("relationType(version: 3)", query, StringComparison.Ordinal);
+        Assert.That(query, Is.Not.Null);
+        Assert.That(query, Does.Contain("relationType(version: 3)"));
     }
 
-    [Fact]
+    [Test]
     public async Task GetMedia_MapsSameUniverseRelation_ToItsDisplayName()
     {
         var harness = new Harness().Returns("Media", """
@@ -610,11 +606,12 @@ public class AniListClientOperationsTests
             ]}}}
             """);
 
-        var (media, _) = await harness.Client.GetMediaAsync(9, TestContext.Current.CancellationToken);
+        var (media, _) = await harness.Client.GetMediaAsync(9, TestContext.CurrentContext.CancellationToken);
 
-        Assert.NotNull(media);
-        var relation = Assert.Single(media.Relations);
-        Assert.Equal("Same Universe", relation.RelationType);
+        Assert.That(media, Is.Not.Null);
+        Assert.That(media.Relations, Has.Exactly(1).Items);
+        var relation = media.Relations.Single();
+        Assert.That(relation.RelationType, Is.EqualTo("Same Universe"));
     }
 
     private const string EmptyPage =

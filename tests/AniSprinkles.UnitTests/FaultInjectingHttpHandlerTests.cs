@@ -31,20 +31,20 @@ public class FaultInjectingHttpHandlerTests
         ApiErrorKind? kind, FaultScope scope, string? op = null, TimeSpan delay = default, bool graphQl = false)
         => new(op, kind, scope, delay, FaultLayer.Http, graphQl);
 
-    [Fact]
+    [Test]
     public async Task Disarmed_PassesTheRequestThrough()
     {
         var state = new FaultState();
         var inner = new QueuedHttpMessageHandler(_ => new HttpResponseMessage(HttpStatusCode.OK));
         using var client = new HttpClient(Create(state, inner));
 
-        var response = await client.SendAsync(Request(), TestContext.Current.CancellationToken);
+        var response = await client.SendAsync(Request(), TestContext.CurrentContext.CancellationToken);
 
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        Assert.Equal(1, inner.CallCount);
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+        Assert.That(inner.CallCount, Is.EqualTo(1));
     }
 
-    [Fact]
+    [Test]
     public async Task ClientLayerProfile_DoesNotFireInTheHttpPipeline()
     {
         var state = new FaultState();
@@ -52,17 +52,16 @@ public class FaultInjectingHttpHandlerTests
         var inner = new QueuedHttpMessageHandler(_ => new HttpResponseMessage(HttpStatusCode.OK));
         using var client = new HttpClient(Create(state, inner));
 
-        var response = await client.SendAsync(Request(), TestContext.Current.CancellationToken);
+        var response = await client.SendAsync(Request(), TestContext.CurrentContext.CancellationToken);
 
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        Assert.Equal(1, inner.CallCount);
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+        Assert.That(inner.CallCount, Is.EqualTo(1));
     }
 
-    [Theory]
-    [InlineData(ApiErrorKind.RateLimited, HttpStatusCode.TooManyRequests)]
-    [InlineData(ApiErrorKind.ServiceOutage, HttpStatusCode.ServiceUnavailable)]
-    [InlineData(ApiErrorKind.NotFound, HttpStatusCode.NotFound)]
-    [InlineData(ApiErrorKind.Unknown, HttpStatusCode.InternalServerError)]
+    [TestCase(ApiErrorKind.RateLimited, HttpStatusCode.TooManyRequests)]
+    [TestCase(ApiErrorKind.ServiceOutage, HttpStatusCode.ServiceUnavailable)]
+    [TestCase(ApiErrorKind.NotFound, HttpStatusCode.NotFound)]
+    [TestCase(ApiErrorKind.Unknown, HttpStatusCode.InternalServerError)]
     public async Task ArmedFault_AnswersWithTheMatchingStatusAndNeverHitsTheNetwork(
         ApiErrorKind kind, HttpStatusCode expected)
     {
@@ -71,13 +70,13 @@ public class FaultInjectingHttpHandlerTests
         var inner = new QueuedHttpMessageHandler(_ => new HttpResponseMessage(HttpStatusCode.OK));
         using var client = new HttpClient(Create(state, inner));
 
-        var response = await client.SendAsync(Request(), TestContext.Current.CancellationToken);
+        var response = await client.SendAsync(Request(), TestContext.CurrentContext.CancellationToken);
 
-        Assert.Equal(expected, response.StatusCode);
-        Assert.Equal(0, inner.CallCount);
+        Assert.That(response.StatusCode, Is.EqualTo(expected));
+        Assert.That(inner.CallCount, Is.EqualTo(0));
     }
 
-    [Fact]
+    [Test]
     public async Task AuthenticationFault_UsesAniListsActualShape()
     {
         // AniList returns 400 with "Invalid token", not 401 — AniListErrorClassifier keys off the
@@ -86,17 +85,17 @@ public class FaultInjectingHttpHandlerTests
         state.Arm(Http(ApiErrorKind.Authentication, FaultScope.Always));
         using var client = new HttpClient(Create(state, new QueuedHttpMessageHandler(_ => new HttpResponseMessage())));
 
-        var response = await client.SendAsync(Request(), TestContext.Current.CancellationToken);
-        var body = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
+        var response = await client.SendAsync(Request(), TestContext.CurrentContext.CancellationToken);
+        var body = await response.Content.ReadAsStringAsync(TestContext.CurrentContext.CancellationToken);
 
-        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-        Assert.Contains("Invalid token", body, StringComparison.Ordinal);
-        Assert.Equal(
-            ApiErrorKind.Authentication,
-            AniListErrorClassifier.ClassifyHttpError(response.StatusCode, "Invalid token"));
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+        Assert.That(body, Does.Contain("Invalid token"));
+        Assert.That(
+            AniListErrorClassifier.ClassifyHttpError(response.StatusCode, "Invalid token"),
+            Is.EqualTo(ApiErrorKind.Authentication));
     }
 
-    [Fact]
+    [Test]
     public async Task GraphQlErrorFault_AnswersHttp200WithAnErrorsArray()
     {
         // The branch that routes through ClassifyGraphQlError rather than ClassifyHttpError. Nothing
@@ -105,15 +104,15 @@ public class FaultInjectingHttpHandlerTests
         state.Arm(Http(ApiErrorKind.NotFound, FaultScope.Always, graphQl: true));
         using var client = new HttpClient(Create(state, new QueuedHttpMessageHandler(_ => new HttpResponseMessage())));
 
-        var response = await client.SendAsync(Request(), TestContext.Current.CancellationToken);
-        var body = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
+        var response = await client.SendAsync(Request(), TestContext.CurrentContext.CancellationToken);
+        var body = await response.Content.ReadAsStringAsync(TestContext.CurrentContext.CancellationToken);
 
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        Assert.Contains("\"errors\"", body, StringComparison.Ordinal);
-        Assert.Equal(ApiErrorKind.NotFound, AniListErrorClassifier.ClassifyGraphQlError("Not Found."));
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+        Assert.That(body, Does.Contain("\"errors\""));
+        Assert.That(AniListErrorClassifier.ClassifyGraphQlError("Not Found."), Is.EqualTo(ApiErrorKind.NotFound));
     }
 
-    [Fact]
+    [Test]
     public async Task NetworkFault_ThrowsSoTheClientClassifiesItAsNetwork()
     {
         var state = new FaultState();
@@ -121,10 +120,10 @@ public class FaultInjectingHttpHandlerTests
         using var client = new HttpClient(Create(state, new QueuedHttpMessageHandler(_ => new HttpResponseMessage())));
 
         await Assert.ThrowsAsync<HttpRequestException>(
-            () => client.SendAsync(Request(), TestContext.Current.CancellationToken));
+            () => client.SendAsync(Request(), TestContext.CurrentContext.CancellationToken));
     }
 
-    [Fact]
+    [Test]
     public async Task OperationPrefix_TargetsASingleQuery()
     {
         var state = new FaultState();
@@ -132,15 +131,15 @@ public class FaultInjectingHttpHandlerTests
         var inner = new QueuedHttpMessageHandler(_ => new HttpResponseMessage(HttpStatusCode.OK));
         using var client = new HttpClient(Create(state, inner));
 
-        var untargeted = await client.SendAsync(Request("Media"), TestContext.Current.CancellationToken);
-        var targeted = await client.SendAsync(Request("Staff"), TestContext.Current.CancellationToken);
+        var untargeted = await client.SendAsync(Request("Media"), TestContext.CurrentContext.CancellationToken);
+        var targeted = await client.SendAsync(Request("Staff"), TestContext.CurrentContext.CancellationToken);
 
-        Assert.Equal(HttpStatusCode.OK, untargeted.StatusCode);
-        Assert.Equal(HttpStatusCode.NotFound, targeted.StatusCode);
-        Assert.Equal(1, inner.CallCount);
+        Assert.That(untargeted.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+        Assert.That(targeted.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
+        Assert.That(inner.CallCount, Is.EqualTo(1));
     }
 
-    [Fact]
+    [Test]
     public async Task AnIAniListClientMethodName_DoesNotMatchAtTheHttpLayer()
     {
         // The layers key off different names: this seam sees the GraphQL operationName, the decorator
@@ -152,13 +151,13 @@ public class FaultInjectingHttpHandlerTests
         var inner = new QueuedHttpMessageHandler(_ => new HttpResponseMessage(HttpStatusCode.OK));
         using var client = new HttpClient(Create(state, inner));
 
-        var response = await client.SendAsync(Request("Studio"), TestContext.Current.CancellationToken);
+        var response = await client.SendAsync(Request("Studio"), TestContext.CurrentContext.CancellationToken);
 
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        Assert.Equal(1, inner.CallCount);
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+        Assert.That(inner.CallCount, Is.EqualTo(1));
     }
 
-    [Fact]
+    [Test]
     public async Task TheWireNameMatchesWhereTheMethodNameDoesNot()
     {
         // The same operation, targeted the way the http layer actually spells it.
@@ -167,13 +166,13 @@ public class FaultInjectingHttpHandlerTests
         var inner = new QueuedHttpMessageHandler(_ => new HttpResponseMessage(HttpStatusCode.OK));
         using var client = new HttpClient(Create(state, inner));
 
-        var response = await client.SendAsync(Request("Studio"), TestContext.Current.CancellationToken);
+        var response = await client.SendAsync(Request("Studio"), TestContext.CurrentContext.CancellationToken);
 
-        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-        Assert.Equal(0, inner.CallCount);
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
+        Assert.That(inner.CallCount, Is.EqualTo(0));
     }
 
-    [Fact]
+    [Test]
     public async Task InjectedRateLimit_IsAbsorbedAndRetriedByTheRealRateLimitHandler()
     {
         // The reason this seam exists. `scope next` spends the 429 on the first attempt, so the
@@ -191,7 +190,7 @@ public class FaultInjectingHttpHandlerTests
         };
         using var client = new HttpClient(rateLimit);
 
-        var pending = client.SendAsync(Request(), TestContext.Current.CancellationToken);
+        var pending = client.SendAsync(Request(), TestContext.CurrentContext.CancellationToken);
         for (var i = 0; i < 50 && !pending.IsCompleted; i++)
         {
             time.Advance(TimeSpan.FromSeconds(1));
@@ -200,8 +199,8 @@ public class FaultInjectingHttpHandlerTests
 
         var response = await pending;
 
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
         // The first attempt was answered synthetically; only the retry reached the network.
-        Assert.Equal(1, network.CallCount);
+        Assert.That(network.CallCount, Is.EqualTo(1));
     }
 }

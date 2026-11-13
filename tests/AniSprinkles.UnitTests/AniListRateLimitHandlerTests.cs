@@ -44,7 +44,7 @@ public class AniListRateLimitHandlerTests
         }
     }
 
-    [Fact]
+    [Test]
     public async Task SendAsync_CarriesRequestOptionsThroughTheRetryTemplate()
     {
         var time = new ManualTimeProvider(Start);
@@ -55,19 +55,19 @@ public class AniListRateLimitHandlerTests
         var request = Request();
         request.Options.Set(LoggingHandler.CallerCancellationToken, callerCts.Token);
 
-        await invoker.SendAsync(request, TestContext.Current.CancellationToken);
+        await invoker.SendAsync(request, TestContext.CurrentContext.CancellationToken);
 
         // Every send goes out as a rebuilt RequestTemplate, not the caller's message — that is what
         // lets a 429 be retried, since a request and its content stream can only be sent once. So
         // anything recorded on Options has to be copied across, or it silently never reaches the
         // handlers below. LoggingHandler's caller-token lookup is the first thing that depends on it.
         var sent = inner.LastRequest;
-        Assert.NotNull(sent);
-        Assert.True(sent.Options.TryGetValue(LoggingHandler.CallerCancellationToken, out var carried));
-        Assert.Equal(callerCts.Token, carried);
+        Assert.That(sent, Is.Not.Null);
+        Assert.That(sent.Options.TryGetValue(LoggingHandler.CallerCancellationToken, out var carried), Is.True);
+        Assert.That(carried, Is.EqualTo(callerCts.Token));
     }
 
-    [Fact]
+    [Test]
     public async Task SendAsync_CarriesRequestHeadersThroughTheRetryTemplate()
     {
         var time = new ManualTimeProvider(Start);
@@ -78,47 +78,47 @@ public class AniListRateLimitHandlerTests
         request.Headers.Referrer = new Uri("https://anilist.co/");
         request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", "token-abc");
 
-        await invoker.SendAsync(request, TestContext.Current.CancellationToken);
+        await invoker.SendAsync(request, TestContext.CurrentContext.CancellationToken);
 
         // Same rebuild hazard as the Options test above, but the cost of losing these is remote
         // rather than local: AniList answers a request carrying neither header with a 403 whose body
         // claims the API is down (#160). A template that dropped them would turn every retry into a
         // fake outage, and the retry path is exactly where nobody looks.
         var sent = inner.LastRequest;
-        Assert.NotNull(sent);
-        Assert.Equal("https://anilist.co/", sent.Headers.Referrer?.ToString());
-        Assert.Equal("token-abc", sent.Headers.Authorization?.Parameter);
+        Assert.That(sent, Is.Not.Null);
+        Assert.That(sent.Headers.Referrer?.ToString(), Is.EqualTo("https://anilist.co/"));
+        Assert.That(sent.Headers.Authorization?.Parameter, Is.EqualTo("token-abc"));
     }
 
-    [Fact]
+    [Test]
     public async Task SendAsync_SuccessfulResponse_PassesThroughUnchanged()
     {
         var time = new ManualTimeProvider(Start);
         var inner = new QueuedHttpMessageHandler(_ => Ok());
         using var invoker = new HttpMessageInvoker(CreateHandler(inner, time));
 
-        var response = await invoker.SendAsync(Request(), TestContext.Current.CancellationToken);
+        var response = await invoker.SendAsync(Request(), TestContext.CurrentContext.CancellationToken);
 
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        Assert.Equal(1, inner.CallCount);
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+        Assert.That(inner.CallCount, Is.EqualTo(1));
     }
 
-    [Fact]
+    [Test]
     public async Task SendAsync_TooManyRequestsThenSuccess_WaitsRetryAfterThenRetries()
     {
         var time = new ManualTimeProvider(Start);
         var inner = new QueuedHttpMessageHandler(i => i == 0 ? TooMany(1) : Ok());
         using var invoker = new HttpMessageInvoker(CreateHandler(inner, time));
 
-        var task = invoker.SendAsync(Request(), TestContext.Current.CancellationToken);
+        var task = invoker.SendAsync(Request(), TestContext.CurrentContext.CancellationToken);
         await AdvanceUntilCompleteAsync(task, time);
         var response = await task;
 
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        Assert.Equal(2, inner.CallCount);
+        Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+        Assert.That(inner.CallCount, Is.EqualTo(2));
     }
 
-    [Fact]
+    [Test]
     public async Task SendAsync_RetryAfterExceedsCap_SurfacesRateLimitedImmediately()
     {
         var time = new ManualTimeProvider(Start);
@@ -126,28 +126,28 @@ public class AniListRateLimitHandlerTests
         using var invoker = new HttpMessageInvoker(
             CreateHandler(inner, time, maxAutoRetryWait: TimeSpan.FromSeconds(5)));
 
-        var ex = await Assert.ThrowsAsync<AniListApiException>(() => invoker.SendAsync(Request(), TestContext.Current.CancellationToken));
+        var ex = await Assert.ThrowsAsync<AniListApiException>(() => invoker.SendAsync(Request(), TestContext.CurrentContext.CancellationToken));
 
-        Assert.Equal(ApiErrorKind.RateLimited, ex.Kind);
-        Assert.Equal(1, inner.CallCount); // no retry attempted
+        Assert.That(ex.Kind, Is.EqualTo(ApiErrorKind.RateLimited));
+        Assert.That(inner.CallCount, Is.EqualTo(1)); // no retry attempted
     }
 
-    [Fact]
+    [Test]
     public async Task SendAsync_PersistentTooManyRequests_ThrowsRateLimitedAfterMaxRetries()
     {
         var time = new ManualTimeProvider(Start);
         var inner = new QueuedHttpMessageHandler(_ => TooMany(1));
         using var invoker = new HttpMessageInvoker(CreateHandler(inner, time, maxRetries: 2));
 
-        var task = invoker.SendAsync(Request(), TestContext.Current.CancellationToken);
+        var task = invoker.SendAsync(Request(), TestContext.CurrentContext.CancellationToken);
         await AdvanceUntilCompleteAsync(task, time);
 
         var ex = await Assert.ThrowsAsync<AniListApiException>(() => task);
-        Assert.Equal(ApiErrorKind.RateLimited, ex.Kind);
-        Assert.Equal(3, inner.CallCount); // initial + 2 retries
+        Assert.That(ex.Kind, Is.EqualTo(ApiErrorKind.RateLimited));
+        Assert.That(inner.CallCount, Is.EqualTo(3)); // initial + 2 retries
     }
 
-    [Fact]
+    [Test]
     public async Task SendAsync_ConcurrentRequests_AreSerialized()
     {
         var time = new ManualTimeProvider(Start);
@@ -155,8 +155,8 @@ public class AniListRateLimitHandlerTests
         var inner = new QueuedHttpMessageHandler(i => i == 0 ? gate.Task : Task.FromResult(Ok()));
         using var invoker = new HttpMessageInvoker(CreateHandler(inner, time));
 
-        var first = invoker.SendAsync(Request(), TestContext.Current.CancellationToken);
-        var second = invoker.SendAsync(Request(), TestContext.Current.CancellationToken);
+        var first = invoker.SendAsync(Request(), TestContext.CurrentContext.CancellationToken);
+        var second = invoker.SendAsync(Request(), TestContext.CurrentContext.CancellationToken);
 
         // Let the second request progress as far as it can — it must block on the gate's semaphore,
         // so the inner handler is only ever entered once while the first is held open.
@@ -165,15 +165,15 @@ public class AniListRateLimitHandlerTests
             await Task.Yield();
         }
 
-        Assert.Equal(1, inner.CallCount);
+        Assert.That(inner.CallCount, Is.EqualTo(1));
 
         gate.SetResult(Ok());
         await Task.WhenAll(first, second);
 
-        Assert.Equal(2, inner.CallCount);
+        Assert.That(inner.CallCount, Is.EqualTo(2));
     }
 
-    [Fact]
+    [Test]
     public async Task SendAsync_CancelledDuringRetryDelay_ThrowsOperationCanceled()
     {
         var time = new ManualTimeProvider(Start);
@@ -186,7 +186,7 @@ public class AniListRateLimitHandlerTests
         await Task.Yield();
         cts.Cancel();
 
-        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => task);
-        Assert.Equal(1, inner.CallCount);
+        await Assert.CatchAsync<OperationCanceledException>(() => task);
+        Assert.That(inner.CallCount, Is.EqualTo(1));
     }
 }

@@ -35,77 +35,76 @@ public class MediaMetricBadgesTests
             Format = format,
         };
 
-    [Fact]
+    [Test]
     public void ANullMedia_HasNoBadge()
-        => Assert.Null(MediaMetricBadges.ForMediaSort(null, "POPULARITY_DESC"));
+        => Assert.That(MediaMetricBadges.ForMediaSort(null, "POPULARITY_DESC"), Is.Null);
 
-    [Fact]
+    [Test]
     public void AnUnrecognizedSort_HasNoBadge()
-        => Assert.Null(MediaMetricBadges.ForMediaSort(Media(popularity: 5000), "EPISODES_DESC"));
+        => Assert.That(MediaMetricBadges.ForMediaSort(Media(popularity: 5000), "EPISODES_DESC"), Is.Null);
 
     // ── The metric sorts: glyph, colour and text ─────────────────────
 
-    [Fact]
+    [Test]
     public void PopularitySort_ShowsThePeopleGlyphAndTheCompactCount()
     {
         var badge = MediaMetricBadges.ForMediaSort(Media(popularity: 90_457), "POPULARITY_DESC");
 
-        Assert.NotNull(badge);
-        Assert.Equal(Glyphs.Regular.People24, badge.Glyph);
-        Assert.Equal(Color.FromArgb("#FF9500"), badge.IconColor);
-        Assert.Equal("90.5k", badge.Text);
+        Assert.That(badge, Is.Not.Null);
+        Assert.That(badge.Glyph, Is.EqualTo(Glyphs.Regular.People24));
+        Assert.That(badge.IconColor, Is.EqualTo(Color.FromArgb("#FF9500")));
+        Assert.That(badge.Text, Is.EqualTo("90.5k"));
     }
 
-    [Fact]
+    [Test]
     public void TrendingSort_ShowsTheFlameGlyphAndTheTrendingCount()
     {
         // Trending deliberately does not reuse the popularity glyph: a Trending row sitting next to
         // popularity-sorted rows would otherwise read identically while showing a different number.
         var badge = MediaMetricBadges.ForMediaSort(Media(popularity: 90_457, trending: 120), "TRENDING_DESC");
 
-        Assert.NotNull(badge);
-        Assert.Equal(Glyphs.Regular.Fire24, badge.Glyph);
-        Assert.Equal(Color.FromArgb("#FF3B30"), badge.IconColor);
-        Assert.Equal("120", badge.Text);
+        Assert.That(badge, Is.Not.Null);
+        Assert.That(badge.Glyph, Is.EqualTo(Glyphs.Regular.Fire24));
+        Assert.That(badge.IconColor, Is.EqualTo(Color.FromArgb("#FF3B30")));
+        Assert.That(badge.Text, Is.EqualTo("120"));
     }
 
-    [Fact]
+    [Test]
     public void ScoreSort_ShowsTheStarGlyphAndTheTenPointRating()
     {
         var badge = MediaMetricBadges.ForMediaSort(Media(weightedScore: 84), "SCORE_DESC");
 
-        Assert.NotNull(badge);
-        Assert.Equal(Glyphs.Regular.Star24, badge.Glyph);
-        Assert.Equal(Color.FromArgb("#FFCC00"), badge.IconColor);
-        Assert.Equal("8.4", badge.Text);
+        Assert.That(badge, Is.Not.Null);
+        Assert.That(badge.Glyph, Is.EqualTo(Glyphs.Regular.Star24));
+        Assert.That(badge.IconColor, Is.EqualTo(Color.FromArgb("#FFCC00")));
+        Assert.That(badge.Text, Is.EqualTo("8.4"));
     }
 
-    [Fact]
+    [Test]
     public void FavouritesSort_ShowsTheHeartGlyphAndTheCompactCount()
     {
         var badge = MediaMetricBadges.ForMediaSort(Media(favourites: 1200), "FAVOURITES_DESC");
 
-        Assert.NotNull(badge);
-        Assert.Equal(Glyphs.Regular.Heart24, badge.Glyph);
-        Assert.Equal(Color.FromArgb("#FF2D95"), badge.IconColor);
-        Assert.Equal("1.2k", badge.Text);
+        Assert.That(badge, Is.Not.Null);
+        Assert.That(badge.Glyph, Is.EqualTo(Glyphs.Regular.Heart24));
+        Assert.That(badge.IconColor, Is.EqualTo(Color.FromArgb("#FF2D95")));
+        Assert.That(badge.Text, Is.EqualTo("1.2k"));
     }
 
-    [Theory]
-    [InlineData("START_DATE_DESC")]
-    [InlineData("START_DATE")]
+    [TestCase("START_DATE_DESC")]
+    [TestCase("START_DATE")]
     public void BothStartDateSorts_ShowTheCalendarGlyphAndTheYear(string sort)
     {
         // Ascending and descending share a badge: only the ordering differs, not the metric.
         var badge = MediaMetricBadges.ForMediaSort(Media(year: 2011), sort);
 
-        Assert.NotNull(badge);
-        Assert.Equal(Glyphs.Regular.Calendar24, badge.Glyph);
-        Assert.Equal(Color.FromArgb("#00C2FF"), badge.IconColor);
-        Assert.Equal("2011", badge.Text);
+        Assert.That(badge, Is.Not.Null);
+        Assert.That(badge.Glyph, Is.EqualTo(Glyphs.Regular.Calendar24));
+        Assert.That(badge.IconColor, Is.EqualTo(Color.FromArgb("#00C2FF")));
+        Assert.That(badge.Text, Is.EqualTo("2011"));
     }
 
-    [Fact]
+    [Test]
     public void EachMetricSort_UsesADistinctGlyph()
     {
         // The whole point of a per-sort badge is that the reader can tell which metric they are
@@ -117,77 +116,74 @@ public class MediaMetricBadgesTests
             .Select(sort => MediaMetricBadges.ForMediaSort(media, sort)!.Glyph)
             .ToList();
 
-        Assert.Equal(glyphs.Count, glyphs.Distinct().Count());
+        Assert.That(glyphs.Distinct().Count(), Is.EqualTo(glyphs.Count));
     }
 
     // ── The always-render fallbacks ──────────────────────────────────
 
-    [Theory]
-    [InlineData("POPULARITY_DESC")]
-    [InlineData("TRENDING_DESC")]
-    [InlineData("FAVOURITES_DESC")]
+    [TestCase("POPULARITY_DESC")]
+    [TestCase("TRENDING_DESC")]
+    [TestCase("FAVOURITES_DESC")]
     public void ACountSortWithNoData_StillRendersReadingZero(string sort)
     {
         // Blank would look like a rendering bug on a list sorted by this very metric.
         var badge = MediaMetricBadges.ForMediaSort(Media(), sort);
 
-        Assert.NotNull(badge);
-        Assert.Equal("0", badge.Text);
+        Assert.That(badge, Is.Not.Null);
+        Assert.That(badge.Text, Is.EqualTo("0"));
     }
 
-    [Theory]
-    [InlineData("SCORE_DESC")]
-    [InlineData("START_DATE_DESC")]
+    [TestCase("SCORE_DESC")]
+    [TestCase("START_DATE_DESC")]
     public void AScoreOrYearWithNoData_StillRendersReadingDash(string sort)
     {
         // A dash rather than "0": an unscored show is not a show that scored zero, and year 0
         // would be nonsense.
         var badge = MediaMetricBadges.ForMediaSort(Media(), sort);
 
-        Assert.NotNull(badge);
-        Assert.Equal("—", badge.Text);
+        Assert.That(badge, Is.Not.Null);
+        Assert.That(badge.Text, Is.EqualTo("—"));
     }
 
-    [Fact]
+    [Test]
     public void AZeroScore_CountsAsMissingRatherThanAsAScoreOfZero()
     {
         // AniList sends 0 for "not yet scored", which HasScore treats as absent.
         var badge = MediaMetricBadges.ForMediaSort(Media(weightedScore: 0), "SCORE_DESC");
 
-        Assert.NotNull(badge);
-        Assert.Equal("—", badge.Text);
+        Assert.That(badge, Is.Not.Null);
+        Assert.That(badge.Text, Is.EqualTo("—"));
     }
 
     // ── Title sort falls back to the media format ────────────────────
 
-    [Fact]
+    [Test]
     public void TitleSort_HasNoNumericMetric_SoItShowsTheFormatInstead()
     {
         var badge = MediaMetricBadges.ForMediaSort(Media(format: "TV_SHORT"), "TITLE_ROMAJI");
 
-        Assert.NotNull(badge);
-        Assert.Equal(MediaFormatIcons.GlyphFor("TV_SHORT"), badge.Glyph);
-        Assert.Equal(Color.FromArgb("#AF52DE"), badge.IconColor);
-        Assert.Equal("TV SHORT", badge.Text);
+        Assert.That(badge, Is.Not.Null);
+        Assert.That(badge.Glyph, Is.EqualTo(MediaFormatIcons.GlyphFor("TV_SHORT")));
+        Assert.That(badge.IconColor, Is.EqualTo(Color.FromArgb("#AF52DE")));
+        Assert.That(badge.Text, Is.EqualTo("TV SHORT"));
     }
 
-    [Fact]
+    [Test]
     public void TitleSort_WithAFormatTheIconMapDoesNotKnow_FallsBackToTheGenericGlyph()
     {
         // A new AniList format should still render its name rather than dropping the badge.
         var badge = MediaMetricBadges.ForMediaSort(Media(format: "AUDIO_DRAMA"), "TITLE_ROMAJI");
 
-        Assert.NotNull(badge);
-        Assert.Equal(Glyphs.Regular.MoviesAndTv24, badge.Glyph);
-        Assert.Equal("AUDIO DRAMA", badge.Text);
+        Assert.That(badge, Is.Not.Null);
+        Assert.That(badge.Glyph, Is.EqualTo(Glyphs.Regular.MoviesAndTv24));
+        Assert.That(badge.Text, Is.EqualTo("AUDIO DRAMA"));
     }
 
-    [Theory]
-    [InlineData(null)]
-    [InlineData("")]
+    [TestCase(null)]
+    [TestCase("")]
     public void TitleSort_WithNoFormatAtAll_ShowsNoBadge(string? format)
     {
         // The one case that is genuinely empty: there is no metric and nothing to fall back to.
-        Assert.Null(MediaMetricBadges.ForMediaSort(Media(format: format), "TITLE_ROMAJI"));
+        Assert.That(MediaMetricBadges.ForMediaSort(Media(format: format), "TITLE_ROMAJI"), Is.Null);
     }
 }

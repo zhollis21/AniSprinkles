@@ -11,14 +11,14 @@ namespace AniSprinkles.UnitTests;
 /// revert-to-before-the-first-tap on failure, and the hand-off to the completion flow are all
 /// decisions with no visible artifact until they go wrong.
 /// </summary>
-[Collection(AppSettingsCollection.Name)]
+[NonParallelizable]
 public class MediaListPageModelTests
 {
     private static readonly TimeSpan PastTheDebounce = TimeSpan.FromMilliseconds(1600);
 
     public MediaListPageModelTests() => TestDataBuilder.ResetAppSettings();
 
-    [Fact]
+    [Test]
     public async Task IncrementProgress_UpdatesTheUiBeforeTheSaveLands()
     {
         // The pill has to feel instant; the write is what waits.
@@ -27,14 +27,14 @@ public class MediaListPageModelTests
 
         var increment = harness.Model.IncrementProgressCommand.ExecuteAsync(entry);
 
-        Assert.Equal(4, entry.Progress);
+        Assert.That(entry.Progress, Is.EqualTo(4));
         await harness.Client.DidNotReceive().SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>());
 
         await harness.AdvancePastDebounceAsync();
         await increment;
     }
 
-    [Fact]
+    [Test]
     public async Task IncrementProgress_RapidTaps_CollapseIntoASingleSaveAtTheFinalValue()
     {
         // Six taps must not be six writes — this is the app's largest single rate-limit saving.
@@ -48,7 +48,7 @@ public class MediaListPageModelTests
             taps.Add(harness.Model.IncrementProgressCommand.ExecuteAsync(entry));
         }
 
-        Assert.Equal(6, entry.Progress);
+        Assert.That(entry.Progress, Is.EqualTo(6));
 
         await harness.AdvancePastDebounceAsync();
         await Task.WhenAll(taps);
@@ -57,7 +57,7 @@ public class MediaListPageModelTests
             Arg.Is<MediaListEntry>(e => e.Progress == 6), Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task IncrementProgress_WhenTheSaveFails_RevertsToBeforeTheFirstTapOfTheSeries()
     {
         // Reverting one step would strand the other five. The pre-increment snapshot is taken once
@@ -73,16 +73,16 @@ public class MediaListPageModelTests
             taps.Add(harness.Model.IncrementProgressCommand.ExecuteAsync(entry));
         }
 
-        Assert.Equal(5, entry.Progress);
+        Assert.That(entry.Progress, Is.EqualTo(5));
 
         await harness.AdvancePastDebounceAsync();
         await Task.WhenAll(taps);
 
-        Assert.Equal(2, entry.Progress);
-        Assert.NotEmpty(harness.Feedback.Snackbars);
+        Assert.That(entry.Progress, Is.EqualTo(2));
+        Assert.That(harness.Feedback.Snackbars, Is.Not.Empty);
     }
 
-    [Fact]
+    [Test]
     public async Task IncrementProgress_SwitchingEntriesMidDebounce_FlushesThePreviousEntryFirst()
     {
         // Only one pending increment is tracked. Without the flush, tapping +1 on a second card
@@ -106,7 +106,7 @@ public class MediaListPageModelTests
             Arg.Is<MediaListEntry>(e => e.MediaId == 2 && e.Progress == 9), Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task IncrementProgress_ReachingTheKnownTotal_RoutesToTheCompletionFlowNotTheDebounce()
     {
         // Finishing a show should offer the completion confirm and rating, and save immediately —
@@ -122,15 +122,15 @@ public class MediaListPageModelTests
         // await would hang the suite rather than failing it.
         await harness.Model.IncrementProgressCommand
             .ExecuteAsync(entry)
-            .WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
+            .WaitAsync(TimeSpan.FromSeconds(5), TestContext.CurrentContext.CancellationToken);
 
-        Assert.Contains(nameof(IDialogService.ConfirmAsync), harness.Dialogs.Calls);
-        Assert.Equal(MediaListStatus.Completed, entry.Status);
-        Assert.Equal(12, entry.Progress);
+        Assert.That(harness.Dialogs.Calls, Does.Contain(nameof(IDialogService.ConfirmAsync)));
+        Assert.That(entry.Status, Is.EqualTo(MediaListStatus.Completed));
+        Assert.That(entry.Progress, Is.EqualTo(12));
         await harness.Client.Received(1).SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task IncrementProgress_WhenAlreadyCaughtUp_SaysSoAndSavesNothing()
     {
         // The pill is dimmed but still takes taps; silence would read as a broken button.
@@ -139,8 +139,8 @@ public class MediaListPageModelTests
 
         await harness.Model.IncrementProgressCommand.ExecuteAsync(entry);
 
-        Assert.Contains("You're caught up", harness.Feedback.Toasts);
-        Assert.Equal(5, entry.Progress);
+        Assert.That(harness.Feedback.Toasts, Does.Contain("You're caught up"));
+        Assert.That(entry.Progress, Is.EqualTo(5));
         await harness.Client.DidNotReceive().SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>());
     }
 

@@ -19,34 +19,34 @@ public class BrowseMediaItemTests
         },
     };
 
-    [Fact]
+    [Test]
     public void ToListEntry_MapsListSnapshotAndMedia()
     {
         var entry = OnListItem().ToListEntry();
 
-        Assert.Equal(555, entry.Id);
-        Assert.Equal(21, entry.MediaId);
-        Assert.Equal(MediaListStatus.Current, entry.Status);
-        Assert.Equal(800, entry.Progress);
-        Assert.Equal(8.5, entry.Score);
+        Assert.That(entry.Id, Is.EqualTo(555));
+        Assert.That(entry.MediaId, Is.EqualTo(21));
+        Assert.That(entry.Status, Is.EqualTo(MediaListStatus.Current));
+        Assert.That(entry.Progress, Is.EqualTo(800));
+        Assert.That(entry.Score, Is.EqualTo(8.5));
         // Media carries what the popups need: title for headers, episodes for the progress cap.
-        Assert.Equal(21, entry.Media!.Id);
-        Assert.Equal(1100, entry.Media.Episodes);
-        Assert.Equal("ONE PIECE", entry.Media.DisplayTitle);
+        Assert.That(entry.Media!.Id, Is.EqualTo(21));
+        Assert.That(entry.Media.Episodes, Is.EqualTo(1100));
+        Assert.That(entry.Media.DisplayTitle, Is.EqualTo("ONE PIECE"));
     }
 
-    [Fact]
+    [Test]
     public void ToListEntry_NotOnList_HasZeroIdForCreatingSave()
     {
         var item = new BrowseMediaItem { Node = new RelatedMedia { Id = 99, Type = "ANIME" } };
 
         var entry = item.ToListEntry();
 
-        Assert.Equal(0, entry.Id);
-        Assert.Null(entry.Status);
+        Assert.That(entry.Id, Is.EqualTo(0));
+        Assert.That(entry.Status, Is.Null);
     }
 
-    [Fact]
+    [Test]
     public void ApplyListEntry_CopiesSavedStateAndKeepsKnownIdWhenServerOmitsIt()
     {
         var item = OnListItem();
@@ -54,39 +54,39 @@ public class BrowseMediaItemTests
 
         item.ApplyListEntry(saved);
 
-        Assert.Equal(MediaListStatus.Paused, item.Node!.ListStatus);
-        Assert.Equal(810, item.Node.ListProgress);
-        Assert.Equal(9, item.Node.ListScore);
-        Assert.Equal(555, item.Node.ListEntryId); // Id 0 must not clobber the known entry id
-        Assert.True(item.HasListStatus);
+        Assert.That(item.Node!.ListStatus, Is.EqualTo(MediaListStatus.Paused));
+        Assert.That(item.Node.ListProgress, Is.EqualTo(810));
+        Assert.That(item.Node.ListScore, Is.EqualTo(9));
+        Assert.That(item.Node.ListEntryId, Is.EqualTo(555)); // Id 0 must not clobber the known entry id
+        Assert.That(item.HasListStatus, Is.True);
     }
 
-    [Fact]
+    [Test]
     public void ApplyListEntry_AdoptsServerAssignedIdAfterCreate()
     {
         var item = new BrowseMediaItem { Node = new RelatedMedia { Id = 99, Type = "ANIME" } };
 
         item.ApplyListEntry(new MediaListEntry { Id = 777, MediaId = 99, Status = MediaListStatus.Planning });
 
-        Assert.Equal(777, item.Node!.ListEntryId);
-        Assert.Equal(MediaListStatus.Planning, item.Node.ListStatus);
+        Assert.That(item.Node!.ListEntryId, Is.EqualTo(777));
+        Assert.That(item.Node.ListStatus, Is.EqualTo(MediaListStatus.Planning));
     }
 
-    [Fact]
+    [Test]
     public void ClearListEntry_RemovesSnapshotAndHidesChip()
     {
         var item = OnListItem();
 
         item.ClearListEntry();
 
-        Assert.Null(item.Node!.ListEntryId);
-        Assert.Null(item.Node.ListStatus);
-        Assert.Null(item.Node.ListProgress);
-        Assert.Null(item.Node.ListScore);
-        Assert.False(item.HasListStatus);
+        Assert.That(item.Node!.ListEntryId, Is.Null);
+        Assert.That(item.Node.ListStatus, Is.Null);
+        Assert.That(item.Node.ListProgress, Is.Null);
+        Assert.That(item.Node.ListScore, Is.Null);
+        Assert.That(item.HasListStatus, Is.False);
     }
 
-    [Fact]
+    [Test]
     public void ListEntryChanges_RaiseChipPropertyNotifications()
     {
         var item = OnListItem();
@@ -95,20 +95,19 @@ public class BrowseMediaItemTests
 
         item.ClearListEntry();
 
-        Assert.Contains(nameof(BrowseMediaItem.HasListStatus), changed);
-        Assert.Contains(nameof(BrowseMediaItem.ListStatusDisplay), changed);
-        Assert.Contains(nameof(BrowseMediaItem.ListStatusColor), changed);
+        Assert.That(changed, Does.Contain(nameof(BrowseMediaItem.HasListStatus)));
+        Assert.That(changed, Does.Contain(nameof(BrowseMediaItem.ListStatusDisplay)));
+        Assert.That(changed, Does.Contain(nameof(BrowseMediaItem.ListStatusColor)));
     }
 
-    [Theory]
-    [InlineData(0, false, "")]
-    [InlineData(1, true, "#1")]
-    [InlineData(42, true, "#42")]
+    [TestCase(0, false, "")]
+    [TestCase(1, true, "#1")]
+    [TestCase(42, true, "#42")]
     public void Rank_ZeroMeansHidden(int rank, bool expectedHasRank, string expectedDisplay)
     {
         var item = new BrowseMediaItem { Rank = rank };
 
-        Assert.Equal(expectedHasRank, item.HasRank);
-        Assert.Equal(expectedDisplay, item.RankDisplay);
+        Assert.That(item.HasRank, Is.EqualTo(expectedHasRank));
+        Assert.That(item.RankDisplay, Is.EqualTo(expectedDisplay));
     }
 }

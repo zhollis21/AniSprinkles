@@ -6,36 +6,33 @@ namespace AniSprinkles.UnitTests;
 /// matched the app UI with nothing checking that. These pin the one shared chain, and that the two
 /// model properties now route through it.
 /// </summary>
-[Collection(AppSettingsCollection.Name)]
+[NonParallelizable]
 public class TitleSelectorTests
 {
-    [Theory]
-    [InlineData(UserTitleLanguage.Romaji, "Shingeki no Kyojin")]
-    [InlineData(UserTitleLanguage.English, "Attack on Titan")]
-    [InlineData(UserTitleLanguage.Native, "進撃の巨人")]
+    [TestCase(UserTitleLanguage.Romaji, "Shingeki no Kyojin")]
+    [TestCase(UserTitleLanguage.English, "Attack on Titan")]
+    [TestCase(UserTitleLanguage.Native, "進撃の巨人")]
     public void EachLanguage_PicksItsOwnTitle(UserTitleLanguage language, string expected)
     {
         var selected = TitleSelector.Select(language, "Shingeki no Kyojin", "Attack on Titan", "進撃の巨人");
 
-        Assert.Equal(expected, selected);
+        Assert.That(selected, Is.EqualTo(expected));
     }
 
-    [Theory]
-    // Preferred missing → romaji leads the remainder, except when romaji is the missing one.
-    [InlineData(UserTitleLanguage.English, null, "Attack on Titan", "進撃の巨人", "Attack on Titan")]
-    [InlineData(UserTitleLanguage.English, "Shingeki no Kyojin", null, "進撃の巨人", "Shingeki no Kyojin")]
-    [InlineData(UserTitleLanguage.Native, "Shingeki no Kyojin", "Attack on Titan", null, "Shingeki no Kyojin")]
-    [InlineData(UserTitleLanguage.Romaji, null, "Attack on Titan", "進撃の巨人", "Attack on Titan")]
-    [InlineData(UserTitleLanguage.Romaji, null, null, "進撃の巨人", "進撃の巨人")]
-    [InlineData(UserTitleLanguage.English, null, null, "進撃の巨人", "進撃の巨人")]
-    [InlineData(UserTitleLanguage.Native, null, null, null, TitleSelector.UnknownTitle)]
+    [TestCase(UserTitleLanguage.English, null, "Attack on Titan", "進撃の巨人", "Attack on Titan")]
+    [TestCase(UserTitleLanguage.English, "Shingeki no Kyojin", null, "進撃の巨人", "Shingeki no Kyojin")]
+    [TestCase(UserTitleLanguage.Native, "Shingeki no Kyojin", "Attack on Titan", null, "Shingeki no Kyojin")]
+    [TestCase(UserTitleLanguage.Romaji, null, "Attack on Titan", "進撃の巨人", "Attack on Titan")]
+    [TestCase(UserTitleLanguage.Romaji, null, null, "進撃の巨人", "進撃の巨人")]
+    [TestCase(UserTitleLanguage.English, null, null, "進撃の巨人", "進撃の巨人")]
+    [TestCase(UserTitleLanguage.Native, null, null, null, TitleSelector.UnknownTitle)]
     public void AMissingTitle_FallsThroughTheChain(
         UserTitleLanguage language, string? romaji, string? english, string? native, string expected)
     {
-        Assert.Equal(expected, TitleSelector.Select(language, romaji, english, native));
+        Assert.That(TitleSelector.Select(language, romaji, english, native), Is.EqualTo(expected));
     }
 
-    [Fact]
+    [Test]
     public void AMediaWithNoTitlesAtAll_ReadsTheSameEverywhere()
     {
         // RelatedMedia used to say "Unknown" while Media said "Unknown Title" — the drift this
@@ -45,13 +42,12 @@ public class TitleSelectorTests
         var media = new Media { Id = 1, Title = new MediaTitle() };
         var related = new RelatedMedia { Id = 1, Title = new MediaTitle() };
 
-        Assert.Equal(TitleSelector.UnknownTitle, media.DisplayTitle);
-        Assert.Equal(TitleSelector.UnknownTitle, related.DisplayTitle);
+        Assert.That(media.DisplayTitle, Is.EqualTo(TitleSelector.UnknownTitle));
+        Assert.That(related.DisplayTitle, Is.EqualTo(TitleSelector.UnknownTitle));
     }
 
-    [Theory]
-    [InlineData(UserTitleLanguage.Romaji, "Shingeki no Kyojin")]
-    [InlineData(UserTitleLanguage.English, "Attack on Titan")]
+    [TestCase(UserTitleLanguage.Romaji, "Shingeki no Kyojin")]
+    [TestCase(UserTitleLanguage.English, "Attack on Titan")]
     public void BothModels_AgreeWithTheSharedChain(UserTitleLanguage language, string expected)
     {
         using var _ = new AppSettingsScope(language);
@@ -60,9 +56,9 @@ public class TitleSelectorTests
         var media = new Media { Id = 1, Title = title };
         var related = new RelatedMedia { Id = 1, Title = title };
 
-        Assert.Equal(expected, media.DisplayTitle);
-        Assert.Equal(expected, related.DisplayTitle);
-        Assert.Equal(expected, TitleSelector.Select(language, title.Romaji, title.English, title.Native));
+        Assert.That(media.DisplayTitle, Is.EqualTo(expected));
+        Assert.That(related.DisplayTitle, Is.EqualTo(expected));
+        Assert.That(TitleSelector.Select(language, title.Romaji, title.English, title.Native), Is.EqualTo(expected));
     }
 
     /// <summary>Sets the process-wide title language and puts it back, so ordering can't leak.</summary>

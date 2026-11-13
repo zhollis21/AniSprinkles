@@ -16,14 +16,14 @@ namespace AniSprinkles.UnitTests;
 /// the load path now runs end to end.
 /// </para>
 /// </summary>
-[Collection(AppSettingsCollection.Name)]
+[NonParallelizable]
 public class SettingsPageModelTests
 {
     private readonly FakePreferences _appSettingsStorage;
 
     public SettingsPageModelTests() => _appSettingsStorage = TestDataBuilder.ResetAppSettings();
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_WhenSignedOut_ShowsTheUnauthenticatedStateWithoutCallingTheApi()
     {
         var harness = new Harness();
@@ -31,12 +31,12 @@ public class SettingsPageModelTests
 
         await harness.Model.LoadAsync();
 
-        Assert.Equal(PageState.Unauthenticated, harness.Model.CurrentState);
-        Assert.False(harness.Model.IsAuthenticated);
+        Assert.That(harness.Model.CurrentState, Is.EqualTo(PageState.Unauthenticated));
+        Assert.That(harness.Model.IsAuthenticated, Is.False);
         await harness.Client.DidNotReceive().GetViewerAsync(Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_WhenTheTokenReadThrows_FallsBackToUnauthenticatedRatherThanTheErrorPage()
     {
         // A SecureStorage failure must leave the user somewhere they can retry sign-in from, not on
@@ -46,11 +46,12 @@ public class SettingsPageModelTests
 
         await harness.Model.LoadAsync();
 
-        Assert.Equal(PageState.Unauthenticated, harness.Model.CurrentState);
-        Assert.Equal("Failed to load profile.", Assert.Single(harness.Feedback.Snackbars));
+        Assert.That(harness.Model.CurrentState, Is.EqualTo(PageState.Unauthenticated));
+        Assert.That(harness.Feedback.Snackbars, Has.Exactly(1).Items);
+        Assert.That(harness.Feedback.Snackbars.Single(), Is.EqualTo("Failed to load profile."));
     }
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_WhenTheViewerFetchFailsWithNothingCached_ShowsTheFullPageError()
     {
         var harness = new Harness();
@@ -60,12 +61,12 @@ public class SettingsPageModelTests
 
         await harness.Model.LoadAsync();
 
-        Assert.Equal(PageState.Error, harness.Model.CurrentState);
-        Assert.Equal("AniList is Down", harness.Model.ErrorTitle);
-        Assert.NotEmpty(harness.Model.ErrorDetails);
+        Assert.That(harness.Model.CurrentState, Is.EqualTo(PageState.Error));
+        Assert.That(harness.Model.ErrorTitle, Is.EqualTo("AniList is Down"));
+        Assert.That(harness.Model.ErrorDetails, Is.Not.Empty);
     }
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_WhileAlreadyInFlight_IsSkipped()
     {
         // OnAppearing and pull-to-refresh can both fire, as can rapid Retry taps. IsBusy is set
@@ -83,7 +84,7 @@ public class SettingsPageModelTests
         await harness.Auth.Received(1).GetAccessTokenAsync(Arg.Any<CancellationToken>());
     }
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_WhenAuthenticated_PopulatesTheProfileAndShowsContent()
     {
         // Unreachable before #121: PopulateFromUser ends in AppSettings.SyncFromViewer, so this
@@ -94,26 +95,26 @@ public class SettingsPageModelTests
 
         await harness.Model.LoadAsync();
 
-        Assert.Equal(PageState.Content, harness.Model.CurrentState);
-        Assert.True(harness.Model.IsAuthenticated);
-        Assert.Equal("zhollis", harness.Model.UserName);
-        Assert.Equal("412", harness.Model.TotalAnime);
-        Assert.Equal("8.4", harness.Model.MeanScore);
-        Assert.Empty(harness.Model.ErrorDetails);
+        Assert.That(harness.Model.CurrentState, Is.EqualTo(PageState.Content));
+        Assert.That(harness.Model.IsAuthenticated, Is.True);
+        Assert.That(harness.Model.UserName, Is.EqualTo("zhollis"));
+        Assert.That(harness.Model.TotalAnime, Is.EqualTo("412"));
+        Assert.That(harness.Model.MeanScore, Is.EqualTo("8.4"));
+        Assert.That(harness.Model.ErrorDetails, Is.Empty);
 
         // Manga totals are their own counters, not a reprojection of the anime ones (#12).
-        Assert.Equal("57", harness.Model.TotalManga);
-        Assert.Equal("4,218", harness.Model.ChaptersRead);
-        Assert.Equal("313", harness.Model.VolumesRead);
-        Assert.Equal("7.9", harness.Model.MangaMeanScore);
+        Assert.That(harness.Model.TotalManga, Is.EqualTo("57"));
+        Assert.That(harness.Model.ChaptersRead, Is.EqualTo("4,218"));
+        Assert.That(harness.Model.VolumesRead, Is.EqualTo("313"));
+        Assert.That(harness.Model.MangaMeanScore, Is.EqualTo("7.9"));
 
         // The display preferences the rest of the app reads off the statics.
-        Assert.Equal(UserTitleLanguage.English, AppSettings.TitleLanguage);
-        Assert.Equal(ScoreFormat.Point10Decimal, AppSettings.ScoreFormat);
-        Assert.False(AppSettings.DisplayAdultContent);
+        Assert.That(AppSettings.TitleLanguage, Is.EqualTo(UserTitleLanguage.English));
+        Assert.That(AppSettings.ScoreFormat, Is.EqualTo(ScoreFormat.Point10Decimal));
+        Assert.That(AppSettings.DisplayAdultContent, Is.False);
     }
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_WhenAuthenticated_PersistsTheViewerPreferences()
     {
         // SyncFromViewer ends in Save(). Without that write the settings survive only until the
@@ -124,12 +125,12 @@ public class SettingsPageModelTests
 
         await harness.Model.LoadAsync();
 
-        Assert.Equal("English", _appSettingsStorage.Get("title_language", string.Empty));
-        Assert.Equal("Point10Decimal", _appSettingsStorage.Get("score_format", string.Empty));
-        Assert.False(_appSettingsStorage.Get("display_adult_content", true));
+        Assert.That(_appSettingsStorage.Get("title_language", string.Empty), Is.EqualTo("English"));
+        Assert.That(_appSettingsStorage.Get("score_format", string.Empty), Is.EqualTo("Point10Decimal"));
+        Assert.That(_appSettingsStorage.Get("display_adult_content", true), Is.False);
     }
 
-    [Fact]
+    [Test]
     public async Task LoadAsync_WhenARefreshFailsAfterASuccessfulLoad_KeepsShowingTheCachedProfile()
     {
         // The #52 case that needed the happy path to be reachable first: a pull-to-refresh that
@@ -143,9 +144,10 @@ public class SettingsPageModelTests
             .Returns(Task.FromException<AniListUser>(new AniListApiException(ApiErrorKind.Network, "offline")));
         await harness.Model.LoadAsync();
 
-        Assert.Equal(PageState.Content, harness.Model.CurrentState);
-        Assert.Equal("zhollis", harness.Model.UserName);
-        Assert.Equal("No Internet Connection", Assert.Single(harness.Feedback.Snackbars));
+        Assert.That(harness.Model.CurrentState, Is.EqualTo(PageState.Content));
+        Assert.That(harness.Model.UserName, Is.EqualTo("zhollis"));
+        Assert.That(harness.Feedback.Snackbars, Has.Exactly(1).Items);
+        Assert.That(harness.Feedback.Snackbars.Single(), Is.EqualTo("No Internet Connection"));
     }
 
     private static AniListUser Viewer() => new()

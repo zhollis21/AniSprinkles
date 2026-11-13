@@ -35,8 +35,8 @@ public static partial class AppSettings
     /// <c>AppSettings</c> is already process-wide static because <c>Media.DisplayTitle</c> and
     /// <c>MediaListEntry.ScoreDisplay</c> consult it and DI never constructs those POCOs, so this
     /// does not make the design worse. Full <c>IAppSettings</c> injection stays available later
-    /// (#52). Cross-test pollution is handled by <c>AppSettingsCollection</c>, which serialises
-    /// every test class that writes to these statics.
+    /// (#52). Cross-test pollution is handled by marking every test class that writes to these
+    /// statics <c>[NonParallelizable]</c>, which runs them one at a time.
     /// </para>
     /// </summary>
     internal static IPreferences Storage { get; set; } = Preferences.Default;
