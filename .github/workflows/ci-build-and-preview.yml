@@ -311,7 +311,8 @@ jobs:
     # path already degrades to ::warning:: and carries on. Every exit 1 in the script is a real
     # gate: the Release launch gate (#155: its marker missing from the page source, no Release
     # APK, launcher activity unresolvable, or the Release build failing to render), canary marker
-    # missing from AdultCanary.cs, a FIXTURE MISS in logcat, no signed APK, install failed,
+    # missing from AdultCanary.cs, the screen size unreadable (every swipe is a fraction of it,
+    # #176), a FIXTURE MISS in logcat, no signed APK, install failed,
     # launcher activity unresolvable, app window never appeared, and the canary itself.
 
     steps:
@@ -390,6 +391,59 @@ jobs:
             adb shell input tap "$cx" "$cy"
           }
 
+          # ---- Screen-relative swipes (#176) ----------------------------------------------------
+          #
+          # Swipes are expressed as fractions of the screen, not pixels, so changing the emulator
+          # profile below does not mean re-deriving coordinates here. Fractions are in basis points
+          # (1/10000) because bash only does integer arithmetic. They are the pixel swipes this
+          # script used to hard-code, divided by the 1440x3120 pixel_7_pro they were tuned on, so
+          # that profile still gets 2200→800 for the content swipe and 700→1900 for the scroll
+          # back to the top. Every swipe is at mid-width; the scroll back used to run at x=540.
+          SCREEN_W=""
+          SCREEN_H=""
+
+          # Read the screen size once. `wm size` prints "Physical size: WxH" and, when something
+          # has overridden it, an "Override size: WxH" line too — the override is what the app is
+          # actually laid out at, so it wins.
+          read_screen_size() {
+            local out size
+            out=$(adb shell wm size 2>/dev/null | tr -d '\r' || true)
+            size=$(echo "$out" | grep -F "Override size:" | grep -oE '[0-9]+x[0-9]+' | head -1 || true)
+            if [ -z "$size" ]; then
+              size=$(echo "$out" | grep -F "Physical size:" | grep -oE '[0-9]+x[0-9]+' | head -1 || true)
+            fi
+            if [ -z "$size" ]; then
+              return 1
+            fi
+            SCREEN_W="${size%x*}"
+            SCREEN_H="${size#*x}"
+          }
+
+          # Usage: swipe_frac <x1> <y1> <x2> <y2> <duration_ms>, coordinates in basis points of
+          # the screen width/height. Rounds to the nearest pixel.
+          swipe_frac() {
+            local x1 y1 x2 y2
+            x1=$(( (SCREEN_W * $1 + 5000) / 10000 ))
+            y1=$(( (SCREEN_H * $2 + 5000) / 10000 ))
+            x2=$(( (SCREEN_W * $3 + 5000) / 10000 ))
+            y2=$(( (SCREEN_H * $4 + 5000) / 10000 ))
+            adb shell input swipe "$x1" "$y1" "$x2" "$y2" "$5"
+          }
+
+          # Scroll the page down by one swipe within the content area, clear of the toolbar above
+          # and the tab bar below.
+          swipe_content_up() { swipe_frac 5000 7051 5000 2564 300; }
+
+          # A fast swipe the other way, used repeatedly to get back to the top of a page.
+          swipe_content_down() { swipe_frac 5000 2244 5000 6090 120; }
+
+          if ! read_screen_size; then
+            echo "::error::Could not read the emulator's screen size from 'adb shell wm size' — every swipe in this script is a fraction of it, so the captures cannot run."
+            adb shell wm size || true
+            exit 1
+          fi
+          echo "Screen size: ${SCREEN_W}x${SCREEN_H}"
+
           # Tap a UI element by its visible text label.
           # Usage: tap_element_by_text "Settings"
           tap_element_by_text()         { _tap_by_attribute "text"         "$1"; }
@@ -418,15 +472,18 @@ jobs:
                 local ui_dump
                 ui_dump=$(adb shell cat /sdcard/ui_studio_chip.xml 2>/dev/null || echo "")
                 if echo "$ui_dump" | grep -qF "content-desc=\"Open studio ${studio}\""; then
+                  # Logged so the budget can be tuned from what a run actually needed (#176).
+                  echo "Found studio chip '${studio}' after $((i - 1)) swipe(s)"
                   tap_element_by_content_desc "Open studio ${studio}"
                   return $?
                 fi
                 if echo "$ui_dump" | grep -qF "text=\"${studio}\""; then
+                  echo "Found studio chip '${studio}' after $((i - 1)) swipe(s)"
                   tap_element_by_text "$studio"
                   return $?
                 fi
               fi
-              adb shell input swipe 720 2200 720 800 300
+              swipe_content_up
               sleep 1
             done
             echo "::warning::Could not find studio chip '${studio}' after ${max} swipe(s)"
@@ -446,8 +503,7 @@ jobs:
                 echo "Found '${needle}' after $((i - 1)) swipe(s)"
                 return 0
               fi
-              # Pixel 7 Pro is 1440x3120; swipe within the content area, leaving the toolbar alone.
-              adb shell input swipe 720 2200 720 800 300
+              swipe_content_up
               sleep 1
             done
             echo "::warning::'${needle}' not found after ${max} swipe(s)"
@@ -828,7 +884,7 @@ jobs:
           # character search could never succeed once the studio capture had run, whatever name it
           # looked for. That is why fixing the name alone did not bring the screenshot back.
           for _ in 1 2 3 4 5 6 7 8 9 10; do
-            adb shell input swipe 540 700 540 1900 120 >/dev/null 2>&1 || true
+            swipe_content_down >/dev/null 2>&1 || true
           done
           sleep 1
 
