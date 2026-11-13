@@ -328,7 +328,8 @@ jobs:
     # path already degrades to ::warning:: and carries on. Every exit 1 in the script is a real
     # gate: the Release launch gate (#155: its marker missing from the page source, no Release
     # APK, launcher activity unresolvable, or the Release build failing to render), canary marker
-    # missing from AdultCanary.cs, a FIXTURE MISS in logcat, no signed APK, install failed,
+    # missing from AdultCanary.cs, the screen size unreadable (every swipe is a fraction of it,
+    # #176), a FIXTURE MISS in logcat, no signed APK, install failed,
     # launcher activity unresolvable, app window never appeared, and the canary itself.
 
     steps:
@@ -407,6 +408,59 @@ jobs:
             adb shell input tap "$cx" "$cy"
           }
 
+          # ---- Screen-relative swipes (#176) ----------------------------------------------------
+          #
+          # Swipes are expressed as fractions of the screen, not pixels, so changing the emulator
+          # profile below does not mean re-deriving coordinates here. Fractions are in basis points
+          # (1/10000) because bash only does integer arithmetic. They are the pixel swipes this
+          # script used to hard-code, divided by the 1440x3120 pixel_7_pro they were tuned on, so
+          # that profile still gets 2200→800 for the content swipe and 700→1900 for the scroll
+          # back to the top. Every swipe is at mid-width; the scroll back used to run at x=540.
+          SCREEN_W=""
+          SCREEN_H=""
+
+          # Read the screen size once. `wm size` prints "Physical size: WxH" and, when something
+          # has overridden it, an "Override size: WxH" line too — the override is what the app is
+          # actually laid out at, so it wins.
+          read_screen_size() {
+            local out size
+            out=$(adb shell wm size 2>/dev/null | tr -d '\r' || true)
+            size=$(echo "$out" | grep -F "Override size:" | grep -oE '[0-9]+x[0-9]+' | head -1 || true)
+            if [ -z "$size" ]; then
+              size=$(echo "$out" | grep -F "Physical size:" | grep -oE '[0-9]+x[0-9]+' | head -1 || true)
+            fi
+            if [ -z "$size" ]; then
+              return 1
+            fi
+            SCREEN_W="${size%x*}"
+            SCREEN_H="${size#*x}"
+          }
+
+          # Usage: swipe_frac <x1> <y1> <x2> <y2> <duration_ms>, coordinates in basis points of
+          # the screen width/height. Rounds to the nearest pixel.
+          swipe_frac() {
+            local x1 y1 x2 y2
+            x1=$(( (SCREEN_W * $1 + 5000) / 10000 ))
+            y1=$(( (SCREEN_H * $2 + 5000) / 10000 ))
+            x2=$(( (SCREEN_W * $3 + 5000) / 10000 ))
+            y2=$(( (SCREEN_H * $4 + 5000) / 10000 ))
+            adb shell input swipe "$x1" "$y1" "$x2" "$y2" "$5"
+          }
+
+          # Scroll the page down by one swipe within the content area, clear of the toolbar above
+          # and the tab bar below.
+          swipe_content_up() { swipe_frac 5000 7051 5000 2564 300; }
+
+          # A fast swipe the other way, used repeatedly to get back to the top of a page.
+          swipe_content_down() { swipe_frac 5000 2244 5000 6090 120; }
+
+          if ! read_screen_size; then
+            echo "::error::Could not read the emulator's screen size from 'adb shell wm size' — every swipe in this script is a fraction of it, so the captures cannot run."
+            adb shell wm size || true
+            exit 1
+          fi
+          echo "Screen size: ${SCREEN_W}x${SCREEN_H}"
+
           # Tap a UI element by its visible text label.
           # Usage: tap_element_by_text "Settings"
           tap_element_by_text()         { _tap_by_attribute "text"         "$1"; }
@@ -422,29 +476,34 @@ jobs:
           # The default was 6 and the studio chip fell just past it once the CI build started
           # replaying real recorded data (#134): the old hand-written fixture gave ONE PIECE three
           # studios and a short page, the real one has eleven plus real tags, rankings, relations
-          # and links, so the Studios section sits much further down. Five swipes reach it on a
-          # Pixel 9, but this job runs a pixel_7_pro at a different density, where six was marginal
-          # enough to lose the screenshot entirely. Swipes are cheap; a silently missing capture is
-          # not, so the budget is generous rather than exact.
+          # and links, so the Studios section sits much further down. Swipes are cheap; a silently
+          # missing capture is not, so the budget is double the most a run has needed: the Pixel 10
+          # Pro XL at API 37 reached it after 7, 6 and 5 swipes in three runs (#176), so 14.
           tap_studio_chip() {
             local studio="$1" max="${2:-14}" i
-            for i in $(seq 1 "$max"); do
+            # 0..max: look before the first swipe and after every one, the last included.
+            for i in $(seq 0 "$max"); do
               adb shell rm -f /sdcard/ui_studio_chip.xml >/dev/null 2>&1 || true
               if adb shell uiautomator dump /sdcard/ui_studio_chip.xml >/dev/null 2>&1 \
                  && adb shell test -s /sdcard/ui_studio_chip.xml >/dev/null 2>&1; then
                 local ui_dump
                 ui_dump=$(adb shell cat /sdcard/ui_studio_chip.xml 2>/dev/null || echo "")
                 if echo "$ui_dump" | grep -qF "content-desc=\"Open studio ${studio}\""; then
+                  # Logged so the budget can be tuned from what a run actually needed (#176).
+                  echo "Found studio chip '${studio}' after ${i} swipe(s)"
                   tap_element_by_content_desc "Open studio ${studio}"
                   return $?
                 fi
                 if echo "$ui_dump" | grep -qF "text=\"${studio}\""; then
+                  echo "Found studio chip '${studio}' after ${i} swipe(s)"
                   tap_element_by_text "$studio"
                   return $?
                 fi
               fi
-              adb shell input swipe 720 2200 720 800 300
-              sleep 1
+              if [ "$i" -lt "$max" ]; then
+                swipe_content_up
+                sleep 1
+              fi
             done
             echo "::warning::Could not find studio chip '${studio}' after ${max} swipe(s)"
             return 1
@@ -454,18 +513,23 @@ jobs:
           # screen, so off-screen sections (character/voice-actor lists below the fold) can be
           # revealed and then tapped. Returns success as soon as the text is found.
           # Usage: scroll_until_text "Monkey D. Luffy" [max_swipes]
+          # Default budget: double the most a run has needed. On the Pixel 10 Pro XL at API 37 (#176),
+          # Luffy on the media details page took 2, 3 and 2 swipes in three runs, Mayumi Tanaka on
+          # Luffy's character page 2, 1 and 1 — counts move by one between runs — so 6.
           scroll_until_text() {
-            local needle="$1" max="${2:-10}" i
-            for i in $(seq 1 "$max"); do
+            local needle="$1" max="${2:-6}" i
+            # 0..max: look before the first swipe and after every one, the last included.
+            for i in $(seq 0 "$max"); do
               adb shell rm -f /sdcard/ui_scroll.xml >/dev/null 2>&1 || true
               if adb shell uiautomator dump /sdcard/ui_scroll.xml >/dev/null 2>&1 \
                  && adb shell cat /sdcard/ui_scroll.xml 2>/dev/null | grep -qF "text=\"${needle}\""; then
-                echo "Found '${needle}' after $((i - 1)) swipe(s)"
+                echo "Found '${needle}' after ${i} swipe(s)"
                 return 0
               fi
-              # Pixel 7 Pro is 1440x3120; swipe within the content area, leaving the toolbar alone.
-              adb shell input swipe 720 2200 720 800 300
-              sleep 1
+              if [ "$i" -lt "$max" ]; then
+                swipe_content_up
+                sleep 1
+              fi
             done
             echo "::warning::'${needle}' not found after ${max} swipe(s)"
             return 1
@@ -639,6 +703,14 @@ jobs:
           adb logcat -d -v threadtime > logs/logcat-release.txt 2>&1 || echo "::warning::Failed to dump Release logcat"
 
           if [ "$RELEASE_RENDERED" -ne 1 ]; then
+            # What the gate actually looked at. Logcat says whether the app crashed, but not what
+            # was on screen — a lock screen or system dialog over a healthy app looks identical
+            # to a blank shell in logcat (#176).
+            adb pull /sdcard/ui_release.xml logs/ui-release.xml >/dev/null 2>&1 || true
+            adb shell screencap -p /sdcard/release_gate.png >/dev/null 2>&1 \
+              && adb pull /sdcard/release_gate.png logs/release-gate.png >/dev/null 2>&1 || true
+            adb shell dumpsys window 2>/dev/null | grep -E "mCurrentFocus|isKeyguardShowing" \
+              | tee logs/release-gate-window.txt || true
             echo "::error::Release gate FAILED — the Release build did not render '$RELEASE_MARKER' within ${RELEASE_LAUNCH_WAIT}s of launch. It either crashed or drew an empty shell; see logs/logcat-release.txt in the device-logcat artifact."
             grep -E "FATAL|AndroidRuntime|DOTNET|com\.RainbowSprinkles" logs/logcat-release.txt | tail -40 || true
             exit 1
@@ -845,7 +917,7 @@ jobs:
           # character search could never succeed once the studio capture had run, whatever name it
           # looked for. That is why fixing the name alone did not bring the screenshot back.
           for _ in 1 2 3 4 5 6 7 8 9 10; do
-            adb shell input swipe 540 700 540 1900 120 >/dev/null 2>&1 || true
+            swipe_content_down >/dev/null 2>&1 || true
           done
           sleep 1
 
@@ -1146,13 +1218,40 @@ jobs:
           SCRIPT
           chmod +x /tmp/capture_screenshots.sh
 
+      # The runner image ships Android Command Line Tools 12.0 (2023), whose avdmanager predates
+      # the Pixel 10, so `profile: pixel_10_pro_xl` below failed with "No device found" (#176).
+      # The emulator action uses whatever is in cmdline-tools/latest (it only installs its own
+      # when the folder is missing), so update that folder in place.
+      - name: Update Android Command Line Tools
+        run: |
+          TOOLS="$ANDROID_HOME/cmdline-tools"
+          yes | "$TOOLS/latest/bin/sdkmanager" --licenses > /dev/null || true
+          "$TOOLS/latest/bin/sdkmanager" --install "cmdline-tools;latest" > /dev/null
+          # sdkmanager cannot overwrite the folder it is running from on every version; when it
+          # cannot, it installs alongside as latest-2. Move that into place.
+          if [ -d "$TOOLS/latest-2" ]; then
+            rm -rf "$TOOLS/latest"
+            mv "$TOOLS/latest-2" "$TOOLS/latest"
+          fi
+          grep -h "Pkg.Revision" "$TOOLS/latest/source.properties"
+          if ! "$TOOLS/latest/bin/avdmanager" list device -c 2>/dev/null | grep -qx "pixel_10_pro_xl"; then
+            echo "::error::The updated avdmanager still has no pixel_10_pro_xl device profile."
+            exit 1
+          fi
+
       - name: Run Emulator & Capture Screenshots
         uses: reactivecircus/android-emulator-runner@v2
+        # The device and Android version the app actually runs on, and the local default AVD
+        # (pixel_10_pro_xl_-_api_37 in driver.ps1) — so a layout or OS difference shows up here
+        # rather than first on a phone (#176). "37.0", not "37": the action installs
+        # platforms;android-<api-level> and system-images;android-<api-level>;..., and from 37
+        # those package names carry the minor version. Quoted so YAML cannot read it as the
+        # number 37.
         with:
-          api-level: 34
+          api-level: '37.0'
           target: default
           arch: x86_64
-          profile: pixel_7_pro
+          profile: pixel_10_pro_xl
           force-avd-creation: false
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -prop persist.sys.locale=en-US
           disable-animations: true

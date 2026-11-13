@@ -32,8 +32,9 @@ Already present on this machine; listed so you can check them if something break
 
 - .NET 11 SDK (`11.0.100` or any later 11.0 SDK — `global.json` sets that as a floor and rolls forward to the newest installed 11.0 feature band) with the `maui-android` workload
 - Android SDK at `C:\Program Files (x86)\Android\android-sdk`
-  (platform-tools 37.0.1, emulator 37.2.13, API 36 `google_apis_playstore` x86_64 image)
-- An AVD — the driver defaults to `pixel_10_pro_xl_-_api_36`
+  (platform-tools 37.0.1, emulator 37.2.13, API 37.0 `google_apis_playstore` x86_64 image — CI runs the same
+  device and API level, #176)
+- An AVD — the driver defaults to `pixel_10_pro_xl_-_api_37`
 - The `maui` CLI as a global tool, on the same version as the `Microsoft.Maui.DevFlow.Agent`
   package in `Directory.Packages.props` (both preview, both from `dotnet/maui-labs`):
   `dotnet tool install -g Microsoft.Maui.Cli --version <that version>`
