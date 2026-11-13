@@ -709,7 +709,8 @@ jobs:
             adb pull /sdcard/ui_release.xml logs/ui-release.xml >/dev/null 2>&1 || true
             adb shell screencap -p /sdcard/release_gate.png >/dev/null 2>&1 \
               && adb pull /sdcard/release_gate.png logs/release-gate.png >/dev/null 2>&1 || true
-            adb shell dumpsys window 2>/dev/null | grep -E "mCurrentFocus|isKeyguardShowing" || true
+            adb shell dumpsys window 2>/dev/null | grep -E "mCurrentFocus|isKeyguardShowing" \
+              | tee logs/release-gate-window.txt || true
             echo "::error::Release gate FAILED — the Release build did not render '$RELEASE_MARKER' within ${RELEASE_LAUNCH_WAIT}s of launch. It either crashed or drew an empty shell; see logs/logcat-release.txt in the device-logcat artifact."
             grep -E "FATAL|AndroidRuntime|DOTNET|com\.RainbowSprinkles" logs/logcat-release.txt | tail -40 || true
             exit 1
