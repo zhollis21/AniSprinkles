@@ -11,10 +11,6 @@
 name: CI Build & UI Preview
 
 on:
-  # TEMP (#176): run on pushes to this branch so the emulator change can be checked without a PR.
-  # Revert before opening the PR.
-  push:
-    branches: [feature/176-ci-emulator-pixel10-api37]
   pull_request:
     branches: [main]
     # This workflow costs a full MAUI build plus an emulator boot (~20-30 min), so
@@ -1294,7 +1290,6 @@ jobs:
           echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
 
       - name: Comment on PR
-        if: github.event_name == 'pull_request' # TEMP (#176), revert with the push trigger
         uses: actions/github-script@v8
         env:
           SCREENSHOT_SHA: ${{ steps.commit-screenshots.outputs.sha }}
