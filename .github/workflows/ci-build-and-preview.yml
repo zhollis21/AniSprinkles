@@ -463,13 +463,13 @@ jobs:
           # The default was 6 and the studio chip fell just past it once the CI build started
           # replaying real recorded data (#134): the old hand-written fixture gave ONE PIECE three
           # studios and a short page, the real one has eleven plus real tags, rankings, relations
-          # and links, so the Studios section sits much further down. Five swipes reach it on a
-          # Pixel 9, but this job runs a pixel_7_pro at a different density, where six was marginal
-          # enough to lose the screenshot entirely. Swipes are cheap; a silently missing capture is
-          # not, so the budget is generous rather than exact.
+          # and links, so the Studios section sits much further down. Swipes are cheap; a silently
+          # missing capture is not, so the budget is double what a run needs rather than exact:
+          # the Pixel 10 Pro XL at API 37 reached it after 7 (#176), so 14.
           tap_studio_chip() {
             local studio="$1" max="${2:-14}" i
-            for i in $(seq 1 "$max"); do
+            # 0..max: look before the first swipe and after every one, the last included.
+            for i in $(seq 0 "$max"); do
               adb shell rm -f /sdcard/ui_studio_chip.xml >/dev/null 2>&1 || true
               if adb shell uiautomator dump /sdcard/ui_studio_chip.xml >/dev/null 2>&1 \
                  && adb shell test -s /sdcard/ui_studio_chip.xml >/dev/null 2>&1; then
@@ -477,18 +477,20 @@ jobs:
                 ui_dump=$(adb shell cat /sdcard/ui_studio_chip.xml 2>/dev/null || echo "")
                 if echo "$ui_dump" | grep -qF "content-desc=\"Open studio ${studio}\""; then
                   # Logged so the budget can be tuned from what a run actually needed (#176).
-                  echo "Found studio chip '${studio}' after $((i - 1)) swipe(s)"
+                  echo "Found studio chip '${studio}' after ${i} swipe(s)"
                   tap_element_by_content_desc "Open studio ${studio}"
                   return $?
                 fi
                 if echo "$ui_dump" | grep -qF "text=\"${studio}\""; then
-                  echo "Found studio chip '${studio}' after $((i - 1)) swipe(s)"
+                  echo "Found studio chip '${studio}' after ${i} swipe(s)"
                   tap_element_by_text "$studio"
                   return $?
                 fi
               fi
-              swipe_content_up
-              sleep 1
+              if [ "$i" -lt "$max" ]; then
+                swipe_content_up
+                sleep 1
+              fi
             done
             echo "::warning::Could not find studio chip '${studio}' after ${max} swipe(s)"
             return 1
@@ -498,17 +500,23 @@ jobs:
           # screen, so off-screen sections (character/voice-actor lists below the fold) can be
           # revealed and then tapped. Returns success as soon as the text is found.
           # Usage: scroll_until_text "Monkey D. Luffy" [max_swipes]
+          # Default budget: double what a run needs. Both callers (Luffy on the media details page,
+          # Mayumi Tanaka on Luffy's character page) were found after 2 swipes on the Pixel 10 Pro XL
+          # at API 37 (#176), so 4.
           scroll_until_text() {
-            local needle="$1" max="${2:-10}" i
-            for i in $(seq 1 "$max"); do
+            local needle="$1" max="${2:-4}" i
+            # 0..max: look before the first swipe and after every one, the last included.
+            for i in $(seq 0 "$max"); do
               adb shell rm -f /sdcard/ui_scroll.xml >/dev/null 2>&1 || true
               if adb shell uiautomator dump /sdcard/ui_scroll.xml >/dev/null 2>&1 \
                  && adb shell cat /sdcard/ui_scroll.xml 2>/dev/null | grep -qF "text=\"${needle}\""; then
-                echo "Found '${needle}' after $((i - 1)) swipe(s)"
+                echo "Found '${needle}' after ${i} swipe(s)"
                 return 0
               fi
-              swipe_content_up
-              sleep 1
+              if [ "$i" -lt "$max" ]; then
+                swipe_content_up
+                sleep 1
+              fi
             done
             echo "::warning::'${needle}' not found after ${max} swipe(s)"
             return 1
