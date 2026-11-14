@@ -111,7 +111,9 @@ if (-not $Format) {
     # -Depth is load-bearing: ConvertTo-Json flattens past two levels by default,
     # which would turn a nested object - an issue's labels, a pull request's head -
     # into a type name and lose exactly the fields a caller filters on.
-    $items | ConvertTo-Json -Depth 24 -AsArray
+    # -InputObject, not the pipeline: an empty pipeline prints nothing at all,
+    # and a filter that matched nothing must still print a parseable [].
+    ConvertTo-Json -InputObject $items -Depth 24
     return
 }
 
