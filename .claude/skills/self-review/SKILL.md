@@ -1,7 +1,7 @@
 ---
 name: self-review
 description: "Run automatically after any code changes in this session. Iterate: fix issues found, then re-run this review, until the review passes clean. Present the summary only when the review is clean. After 5 passes without a clean result, stop and ask the user. Ask the user immediately at any genuine decision point or unexpected discovery before proceeding."
-allowed-tools: Read Glob Grep
+allowed-tools: Read Glob Grep Skill Bash(dotnet *)
 ---
 
 # Review
