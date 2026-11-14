@@ -55,16 +55,9 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 fonts.AddFont("SegoeUI-Semibold.ttf", "SegoeSemibold");
             })
-#if ANDROID
-            // Android Shell stays on the legacy ShellRenderer for now (#177). MAUI 11 switched Android
-            // to handler-based Shell classes, and on 11.0.10 those redraw the Library tab's ANIME / MANGA
-            // strip over a pushed details page once you switch bottom tabs and come back — and the strip
-            // is live, so tapping it changes which list Back returns to. This registration is the opt-out
-            // the upstream change documents (dotnet/maui#34758); a later AddHandler wins over the default.
-            // Remove it once the handler is fixed, re-running the four steps in #177 on device first.
-            .ConfigureMauiHandlers(handlers =>
-                handlers.AddHandler<Shell, Microsoft.Maui.Controls.Handlers.Compatibility.ShellRenderer>())
-#endif
+            // Experiment for #172, not for merging: the legacy ShellRenderer pin (#177) is removed so the
+            // CI screenshots show Material 3 on MAUI 11's handler-based Shell. That path carries the
+            // #177 strip bug, which is why this branch never ships.
             ;
 
         var logDirectory = Path.Combine(FileSystem.Current.AppDataDirectory, "logs");
