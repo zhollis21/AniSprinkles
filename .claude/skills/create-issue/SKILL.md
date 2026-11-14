@@ -1,17 +1,17 @@
 ---
-name: ani-issue
+name: create-issue
 description: "File a GitHub issue that survives contact with the future: interrogate the user for what only they know, verify every claim against the actual code before writing it down, state the problem rather than decree a fix, label it, and create it. Also audits existing issues against the same bar (`audit <N>` / `audit all`). Use whenever the user wants to file, open, raise, log, or write up an issue, ticket, bug report or piece of tech debt — and whenever a session turns up a problem that isn't going to get fixed right now, even if they didn't use the word 'issue'. Prefer this over calling `gh issue create` directly, always."
 argument-hint: "<what's wrong> | audit <issue number|all>"
-allowed-tools: Bash(gh *) Bash(git *) Bash(grep *) Bash(sed *) Bash(cp *) Bash(diff *) Bash(cat *) Bash(od *) Bash(head *) Read Grep Glob AskUserQuestion
+allowed-tools: Bash(gh *) Bash(pwsh tools/*) Bash(git *) Bash(grep *) Bash(sed *) Bash(cp *) Bash(diff *) Bash(cat *) Bash(od *) Bash(head *) Read Grep Glob AskUserQuestion
 ---
 
-# Ani-issue
+# Create Issue
 
 Request: $ARGUMENTS
 
 An issue in this repo is not a reminder. It is a message to someone — usually the
 same person, months later — who has lost all the context that made the problem
-obvious. `/ani-kickoff` will pick it up cold and has to be able to trust it.
+obvious. `/kickoff` will pick it up cold and has to be able to trust it.
 
 That sets the bar: **every factual claim in the body must be one a reader can
 check**, and every claim you write must be one *you* checked first. A cited
@@ -20,7 +20,7 @@ it costs the next reader time before it costs them trust.
 
 Two things this deliberately does *not* do:
 
-- **It doesn't decide the fix.** Design happens in `/ani-kickoff`, against the
+- **It doesn't decide the fix.** Design happens in `/kickoff`, against the
   code, with the user present. An issue that arrives as a spec quietly skips that
   step. Options with tradeoffs, yes — a decree, no. See *Stating the problem*.
 - **It doesn't file on a hunch.** If the dig contradicts the premise, it stops and
@@ -46,10 +46,10 @@ enormously in how much is already known:
   conversation is full of evidence. Mine the transcript first: the file you were
   reading, the failing test output, the thing the user said was wrong. Most of the
   body is already sitting in the session. Expect one round of questions.
-- **Cold one-liner** — `/ani-issue the sort popup resets when you pick a sort`.
+- **Cold one-liner** — `/create-issue the sort popup resets when you pick a sort`.
   Nothing but a sentence. The repo dig in Step 2 does the heavy lifting, and
   expect two or three rounds.
-- **After `/ani-debug` or `/run-anisprinkles`** — logcat, `PageState` transitions,
+- **After `/device-debug` or `/run-app`** — logcat, `PageState` transitions,
   `NAVTRACE`, screenshots. This is the strongest evidence the repo gets, because
   it's observed rather than inferred. Pull the excerpts in verbatim (see *Device
   evidence*).
@@ -64,7 +64,7 @@ Step 5 asks about, and nothing else.
 
 The user reports a symptom. The issue needs a mechanism, and the mechanism lives
 in the code. This step is what makes the difference between "Enable Diagnostic
-Logging" (#112 — two sentences, and `/ani-kickoff` had to discover on its own that
+Logging" (#112 — two sentences, and `/kickoff` had to discover on its own that
 Release logging drops everything that makes a report useful) and #125, which names
 the file, the line, and the `#if` that causes the problem.
 
@@ -105,10 +105,15 @@ git log --format='%h %ad %s' --date=short -S "<code snippet>" -- <path>
 git log --oneline -n 5 -- <path>
 
 # Prior art — open AND closed, because "we tried that" lives in closed issues.
-gh issue list --state all --search "<topic>" --limit 8 --json number,title,state \
-  --template '{{range .}}#{{.number}} [{{.state}}] {{.title}}{{"\n"}}{{end}}'
-gh pr list --state all --search "<keyword>" --limit 5 --json number,title,state \
-  --template '{{range .}}#{{.number}} [{{.state}}] {{.title}}{{"\n"}}{{end}}'
+# REST through Get-GhPages, not `gh issue list`/`gh pr list`: those are
+# GraphQL-backed, and GraphQL, `gh --paginate` and the search/ endpoints are all
+# refused from a Claude Code cloud session (AGENTS.md, "Calling the GitHub API
+# from a Claude Code cloud session"). -Contains is a literal, case-insensitive
+# match on title + body, not a regex.
+pwsh tools/Get-GhPages.ps1 'repos/zhollis21/AniSprinkles/issues?state=all' \
+  -IssuesOnly -Contains '<topic>' -Format '#{number} [{state}] {title}' -First 8
+pwsh tools/Get-GhPages.ps1 'repos/zhollis21/AniSprinkles/pulls?state=all' \
+  -Contains '<keyword>' -Format '#{number} [{state}] {title}' -First 5
 ```
 
 Then, before any line number goes in the body, **open the file and confirm the
@@ -298,7 +303,7 @@ This is the part most worth getting right, and the line is finer than
 
 Thinking you had at filing time is genuinely valuable — throwing it away means
 paying for it twice. What's harmful is thinking that arrives looking like a
-decision, because `/ani-kickoff`'s entire job is to design against the real code,
+decision, because `/kickoff`'s entire job is to design against the real code,
 and an issue phrased as a spec makes skipping that step the path of least
 resistance.
 
@@ -395,14 +400,14 @@ description, colour, and why the existing 18 don't cover it. Wait for an explici
 yes; a label set grows once and gets pruned never, so the bar is high.
 
 ```bash
-gh label create "<name>" --description "<description>" --color "<hex>"
+gh api repos/zhollis21/AniSprinkles/labels -f name="<name>" -f description="<description>" -f color="<hex>"
 ```
 
 ---
 
 ## Step 8 — File it
 
-Compose the body in a scratch file and pass it with `--body-file`. This is not
+Compose the body in a scratch file and pass it with `-F body=@<file>`. This is not
 style: `#68`'s body is visibly corrupted — every backtick in it became `\`,
 because the body went through PowerShell inline quoting. A file round-trip has no
 such failure mode.
@@ -420,22 +425,25 @@ Keep the file outside the repo (`$SCRATCH` — the session scratchpad or any tem
 dir), so a stray issue body can never end up in a commit:
 
 ```bash
-# Write the body to "$SCRATCH/issue-body.md" first, then:
-gh issue create \
-  --title "<title>" \
-  --body-file "$SCRATCH/issue-body.md" \
-  --label "<type>" --label "<priority>"
+# Write the body to "$SCRATCH/issue-body.md" first, then (REST: `gh issue create`
+# is GraphQL-backed and refused from a cloud session):
+gh api repos/zhollis21/AniSprinkles/issues \
+  -f title="<title>" \
+  -F body=@"$SCRATCH/issue-body.md" \
+  -f "labels[]=<type>" -f "labels[]=<priority>" \
+  --jq '"\(.html_url)  [\([.labels[].name] | join(", "))]"'
 ```
 
 Then read it back and look at it, because a rendering problem is invisible in the
 source and permanent in the issue:
 
 ```bash
-gh issue view <N> | head -40
+gh api repos/zhollis21/AniSprinkles/issues/<N> --jq '"#\(.number) \(.title) [\(.state)]", .body' | head -40
 ```
 
 Report the URL and the labels set. If the body came out wrong, fix it with
-`gh issue edit <N> --body-file` immediately — before the user has to notice.
+`gh api repos/zhollis21/AniSprinkles/issues/<N> -X PATCH -F body=@<file>`
+immediately — before the user has to notice.
 
 For a split from Step 4, file all of them, then edit the `## Related` sections to
 cross-link the real numbers once they exist.
@@ -453,7 +461,7 @@ editing a real one destroys history that nobody kept a copy of. Report findings,
 per issue, and let the user decide each — including doing nothing, which is very
 often right for an old issue that's thin but still true.
 
-Load the issue with its comments (the template in `/ani-kickoff` Step 1 renders
+Load the issue with its comments (the template in `/kickoff` Step 1 renders
 comment bodies, which matters — decisions in this repo routinely live only in a
 comment and were never folded into the body). Then check:
 
@@ -488,7 +496,7 @@ comment and were never folded into the body). Then check:
    that went stale. #52 held three items back on blockers that had all closed
    (#119, #120, #121); #112 named #124 as a hard dependency, also closed. Any
    sentence containing "blocked", "needs X first", or "once #N lands" is a
-   `gh issue view` away from being checked, and clearing one can unblock real work.
+   `gh api repos/zhollis21/AniSprinkles/issues/<N> --jq .state` away from being checked, and clearing one can unblock real work.
 6. **Title.** Does it state the problem or just name a topic? Does it carry a
    redundant `bug:`/`feat:` prefix?
 7. **Is a fix presented as settled?** `## Proposal` and `**Fix:**` sections written
@@ -502,17 +510,19 @@ Present per issue: what you verified, what's wrong, and a specific recommended
 action — *edit the body*, *add labels*, *close as fixed by `<sha>`*, *merge into
 #N*, *leave it*. Then act only on what the user approves.
 
-When editing an approved body, `gh issue edit --body-file` **replaces the whole
+When editing an approved body, `gh api … -X PATCH -F body=@<file>` **replaces the whole
 body** — so fetch, edit in place, diff, and only then write back. Composing a
 replacement from scratch is how a narrow correction turns into silently deleting
 everything else the issue said:
 
 ```bash
-gh issue view <N> --json body --jq .body > "$SCRATCH/issue-<N>.md"
+# --template, not --jq: --jq appends a newline that the PATCH then stores, so
+# every round trip would grow the body by a blank line. --template is byte-exact.
+gh api repos/zhollis21/AniSprinkles/issues/<N> --template '{{.body}}' > "$SCRATCH/issue-<N>.md"
 cp "$SCRATCH/issue-<N>.md" "$SCRATCH/issue-<N>.orig.md"
 # edit issue-<N>.md, then:
 diff "$SCRATCH/issue-<N>.orig.md" "$SCRATCH/issue-<N>.md"
-gh issue edit <N> --body-file "$SCRATCH/issue-<N>.md"
+gh api repos/zhollis21/AniSprinkles/issues/<N> -X PATCH -F body=@"$SCRATCH/issue-<N>.md"
 ```
 
 If the diff shows anything you didn't deliberately change, don't write it back.

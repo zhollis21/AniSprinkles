@@ -49,7 +49,7 @@
 #                         root .editorconfig reaches every file in every
 #                         project - so this one is deliberately conservative.
 #
-# Tests are not run here - that is /ani-review's job. This hook answers one
+# Tests are not run here - that is /self-review's job. This hook answers one
 # question: does it still build clean?
 #
 # A failed build blocks the stop once, with the diagnostics, so Claude fixes

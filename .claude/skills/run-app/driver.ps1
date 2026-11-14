@@ -6,7 +6,7 @@
 .DESCRIPTION
   Agent-facing harness for the MAUI Android app. Every command is a subcommand:
 
-      pwsh .claude/skills/run-anisprinkles/driver.ps1 <command> [args]
+      pwsh .claude/skills/run-app/driver.ps1 <command> [args]
 
   Run `driver.ps1 help` for the full command list.
 
@@ -177,7 +177,7 @@ function Start-DevFlowBroker {
 
 function Cmd-Help {
 @"
-AniSprinkles driver — pwsh .claude/skills/run-anisprinkles/driver.ps1 <command>
+AniSprinkles driver — pwsh .claude/skills/run-app/driver.ps1 <command>
 
   env                       Show resolved SDK / adb / device state
   boot [avd]                Start the emulator and block until boot completes
@@ -200,7 +200,7 @@ AniSprinkles driver — pwsh .claude/skills/run-anisprinkles/driver.ps1 <command
   Reading, tapping, typing, scrolling and waiting are MAUI DevFlow's (#170):
     maui devflow ui tree | query | tap | fill | scroll | gesture | hit-test | screenshot
   The old dump / xml / tap / tap-desc / tap-prefix / longpress / type / clear / swipe /
-  scroll-to / wait-for / goto / search verbs are gone — /run-anisprinkles has the mapping.
+  scroll-to / wait-for / goto / search verbs are gone — /run-app has the mapping.
 
   logcat [lines]            App-PID logcat tail (default 200)
   applog                    Pull the on-device rotating file log
@@ -689,7 +689,7 @@ switch ($cmd) {
         Write-Host "'$Command' was removed (#170): reading and driving the UI is MAUI DevFlow's now."
         Write-Host '  maui devflow ui tree | query --text/--automationId [--wait-until exists] | tap | fill'
         Write-Host '  maui devflow ui scroll | gesture longpress | hit-test | screenshot'
-        Write-Host 'The old-verb mapping is in .claude/skills/run-anisprinkles/SKILL.md.'
+        Write-Host 'The old-verb mapping is in .claude/skills/run-app/SKILL.md.'
         exit 1
     }
     default      { Write-Host "Unknown command '$Command'`n"; Cmd-Help; exit 1 }

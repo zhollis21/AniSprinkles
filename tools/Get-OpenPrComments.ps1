@@ -12,7 +12,11 @@
     - GitHub CLI: https://cli.github.com/ (authenticated via `gh auth login`)
 
 .NOTES
-    - GraphQL is used to resolve review thread status (resolved/outdated)
+    - Thread resolution (resolved/outdated) has no REST endpoint on github.com.
+      Get-ReviewThreads (GitHubApi.psm1) reads it from the proxy's ccr/ route
+      in a Claude Code cloud session, where GraphQL is refused, and from
+      GraphQL everywhere else, where the ccr/ route does not exist. See
+      AGENTS.md, "Calling the GitHub API from a Claude Code cloud session".
     - Output file is UTF-8 encoded
 #>
 
@@ -20,17 +24,24 @@
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
+Import-Module (Join-Path $PSScriptRoot 'GitHubApi.psm1') -Force
+
 $OWNER = "zhollis21"
 $REPO_NAME = "AniSprinkles"
 $REPO = "$OWNER/$REPO_NAME"
+$REPO_PATH = "repos/$REPO"
 $OUT = Join-Path $PSScriptRoot "pr-comments.md"
 
 $lines = [System.Collections.Generic.List[string]]::new()
 
 # ---------------------------------------------------------------------------
 # Fetch all open PRs
+#
+# REST throughout. `gh pr list|view --json` and `gh api graphql` are all
+# GraphQL-backed and are refused outright from a Claude Code session, which
+# used to kill this script on its very first call.
 # ---------------------------------------------------------------------------
-$openPRs = gh pr list --repo $REPO --state open --json 'number,title' | ConvertFrom-Json
+$openPRs = @(Get-Paged "$REPO_PATH/pulls?state=open")
 
 if (-not $openPRs.Count) {
     Write-Host "No open pull requests found."
@@ -41,9 +52,6 @@ $generated = Get-Date -Format "yyyy-MM-dd h:mm tt"
 $lines.Add("# Open PR Comments")
 $lines.Add("*$($openPRs.Count) open pull request(s) — generated $generated*`n")
 
-# GraphQL query for thread resolution (reused per PR)
-$gql = 'query($owner:String!,$repo:String!,$pr:Int!){repository(owner:$owner,name:$repo){pullRequest(number:$pr){reviewThreads(first:100){nodes{isResolved isOutdated comments(first:1){nodes{databaseId}}}}}}}'
-
 # ---------------------------------------------------------------------------
 # Process each open PR
 # ---------------------------------------------------------------------------
@@ -51,23 +59,23 @@ foreach ($prItem in $openPRs) {
     $PRNum = $prItem.number
 
     # ---- Thread resolution map ----
-    $threadResult = gh api graphql `
-        -f query=$gql `
-        -f owner=$OWNER `
-        -f repo=$REPO_NAME `
-        -F pr=$PRNum | ConvertFrom-Json
+    # Keyed by the thread's opening comment id, whichever transport answered
+    # (the proxy's ccr/ route in a cloud session, GraphQL on a normal machine -
+    # see Get-ReviewThreads).
+    $threads = @(Get-ReviewThreads -Owner $OWNER -Repo $REPO_NAME -PullNumber $PRNum)
 
     $threadMap = @{}
-    foreach ($thread in $threadResult.data.repository.pullRequest.reviewThreads.nodes) {
-        $firstId = $thread.comments.nodes[0].databaseId
-        $threadMap[$firstId] = @{
-            isResolved = $thread.isResolved
-            isOutdated = $thread.isOutdated
+    foreach ($thread in $threads) {
+        $firstId = @($thread.comment_ids)[0]
+        if ($null -eq $firstId) { continue }
+        $threadMap[[long]$firstId] = @{
+            isResolved = $thread.resolved
+            isOutdated = $thread.outdated
         }
     }
 
     # ---- PR Overview ----
-    $prData = gh pr view $PRNum --repo $REPO --json 'number,title,state,author,url,additions,deletions,labels,assignees,reviewRequests,autoMergeRequest' | ConvertFrom-Json
+    $prData = Invoke-GhJson "$REPO_PATH/pulls/$PRNum"
 
     $lines.Add("---`n")
     $lines.Add("<details open>")
@@ -76,9 +84,12 @@ foreach ($prItem in $openPRs) {
     $lines.Add("### Overview`n")
     $lines.Add("| | |")
     $lines.Add("|---|---|")
-    $lines.Add("| **State** | $($prData.state) |")
-    $lines.Add("| **Author** | $($prData.author.login) |")
-    $lines.Add("| **URL** | $($prData.url) |")
+    # REST spells these differently from the `gh pr view --json` names this used
+    # to read: user/html_url/requested_reviewers/auto_merge, and a lower-case
+    # state. Upper-casing keeps the report's wording unchanged.
+    $lines.Add("| **State** | $($prData.state.ToUpper()) |")
+    $lines.Add("| **Author** | $($prData.user.login) |")
+    $lines.Add("| **URL** | $($prData.html_url) |")
     $lines.Add("| **Changes** | +$($prData.additions) / -$($prData.deletions) |")
 
     if ($prData.labels.Count) {
@@ -87,17 +98,17 @@ foreach ($prItem in $openPRs) {
     if ($prData.assignees.Count) {
         $lines.Add("| **Assignees** | $($prData.assignees.login -join ', ') |")
     }
-    if ($prData.reviewRequests.Count) {
-        $lines.Add("| **Reviewers** | $($prData.reviewRequests.login -join ', ') |")
+    if ($prData.requested_reviewers.Count) {
+        $lines.Add("| **Reviewers** | $($prData.requested_reviewers.login -join ', ') |")
     }
-    if ($prData.autoMergeRequest) {
+    if ($prData.auto_merge) {
         $lines.Add("| **Auto-merge** | enabled |")
     }
 
     $lines.Add("")
 
     # ---- Review Summaries ----
-    $reviews = gh api "repos/$REPO/pulls/$PRNum/reviews" | ConvertFrom-Json
+    $reviews = @(Get-Paged "$REPO_PATH/pulls/$PRNum/reviews")
     $reviewLines = [System.Collections.Generic.List[string]]::new()
     foreach ($r in $reviews) {
         $body = $r.body.Trim()
@@ -105,11 +116,12 @@ foreach ($prItem in $openPRs) {
 
         # Unwrap <details> rather than skipping bodies that contain it.
         #
-        # This used to `continue` on any body matching <details>|<summary>|<a href, which threw away
-        # every Copilot review in full — and Copilot puts two useful things there: the headline
-        # finding above the fold, and a "Suppressed comments" list inside it. Those are findings the
-        # reviewer generated but chose NOT to post as inline threads, so they appear nowhere else in
-        # this report and nowhere in the PR's comment list. They are frequently the sharpest ones.
+        # A body-wide skip on any <details>|<summary>|<a href match throws away the whole
+        # review — and some reviewers (e.g. Copilot) put two useful things there: the
+        # headline finding above the fold, and a "Suppressed comments" list inside it.
+        # Those are findings the reviewer generated but chose NOT to post as inline
+        # threads, so they appear nowhere else in this report and nowhere in the PR's
+        # comment list. They are frequently the sharpest ones.
         #
         # <summary> becomes a bold lead-in so the section keeps its label once the tags are gone.
         $body = $body -replace '(?s)<summary>\s*(.*?)\s*</summary>', "**`$1**`n"
@@ -128,13 +140,13 @@ foreach ($prItem in $openPRs) {
     }
 
     # ---- Inline Code Comments ----
-    $allComments = gh api "repos/$REPO/pulls/$PRNum/comments" | ConvertFrom-Json
+    $allComments = @(Get-Paged "$REPO_PATH/pulls/$PRNum/comments")
     $topLevel = $allComments | Where-Object { -not $_.in_reply_to_id }
     $replies = $allComments | Where-Object { $_.in_reply_to_id }
 
     $replyMap = @{}
     foreach ($r in $replies) {
-        $parentId = $r.in_reply_to_id
+        $parentId = [long]$r.in_reply_to_id
         if (-not $replyMap.ContainsKey($parentId)) { $replyMap[$parentId] = [System.Collections.Generic.List[object]]::new() }
         $replyMap[$parentId].Add($r)
     }
@@ -148,7 +160,7 @@ foreach ($prItem in $openPRs) {
             $dt = ([datetime]$c.created_at).ToLocalTime().ToString("yyyy-MM-dd h:mm tt")
 
             $tags = [System.Collections.Generic.List[string]]::new()
-            $threadInfo = $threadMap[$c.id]
+            $threadInfo = $threadMap[[long]$c.id]
             if ($threadInfo) {
                 if ($threadInfo.isResolved) { $tags.Add("✅ Resolved") }
                 if ($threadInfo.isOutdated) { $tags.Add("⚠️ Outdated") }
@@ -156,7 +168,7 @@ foreach ($prItem in $openPRs) {
             elseif (-not $c.position) {
                 $tags.Add("⚠️ Outdated")
             }
-            $replyList = $replyMap[$c.id]
+            $replyList = $replyMap[[long]$c.id]
             if ($replyList) {
                 $word = if ($replyList.Count -eq 1) { "reply" } else { "replies" }
                 $tags.Add("💬 $($replyList.Count) $word")
@@ -164,7 +176,8 @@ foreach ($prItem in $openPRs) {
 
             $tagStr = if ($tags.Count) { " | " + ($tags -join " | ") } else { "" }
 
-            $lines.Add("#### $($c.user.login) on ``$file`` line $line")
+            # The opening comment's id is what both the reply and Resolve-PrThread.ps1 take.
+            $lines.Add("#### $($c.user.login) on ``$file`` line $line (comment $($c.id))")
             $lines.Add("*$dt$tagStr*")
             $lines.Add("")
             $lines.Add($c.body.Trim())
@@ -183,11 +196,21 @@ foreach ($prItem in $openPRs) {
     }
 
     # ---- General PR Comments ----
-    $issueComments = gh api "repos/$REPO/issues/$PRNum/comments" | ConvertFrom-Json
+    $issueComments = @(Get-Paged "$REPO_PATH/issues/$PRNum/comments")
     $generalLines = [System.Collections.Generic.List[string]]::new()
     foreach ($c in $issueComments) {
         $body = $c.body.Trim()
-        if (-not $body -or $body -match '<details>|<summary>|<a href') { continue }
+        if (-not $body) { continue }
+
+        # Unwrap <details> rather than skipping bodies that contain it — same
+        # reasoning as Review Summaries above. A body-wide skip throws away
+        # legitimate comments containing a plain link (`<a href`) or a
+        # collapsed section, not just bot-generated ones.
+        $body = $body -replace '(?s)<summary>\s*(.*?)\s*</summary>', "**`$1**`n"
+        $body = $body -replace '</?details[^>]*>', ''
+        $body = ($body -replace '(?m)^\s*$\n{2,}', "`n").Trim()
+        if (-not $body) { continue }
+
         $dt = ([datetime]$c.created_at).ToLocalTime().ToString("yyyy-MM-dd h:mm tt")
         $generalLines.Add("#### $($c.user.login) — $dt")
         $generalLines.Add($body)

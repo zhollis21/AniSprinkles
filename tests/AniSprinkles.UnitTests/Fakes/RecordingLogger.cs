@@ -4,7 +4,7 @@ namespace AniSprinkles.UnitTests.Fakes;
 
 /// <summary>
 /// Captures rendered log messages so tests can assert on the app's trace contract. The NAVTRACE /
-/// DATATRACE / <c>load#N</c> lines are a documented diagnostic surface (see the <c>/ani-debug</c>
+/// DATATRACE / <c>load#N</c> lines are a documented diagnostic surface (see the <c>/device-debug</c>
 /// skill), so "does this still correlate correctly?" is a behaviour worth pinning, not incidental
 /// output.
 /// </summary>

@@ -307,7 +307,7 @@ public static class MauiProgram
 
 #if DEBUG
         // MAUI DevFlow agent (#170): the visual tree, taps, logs and storage that `maui devflow` and its
-        // MCP server drive — /run-anisprinkles is built on it. Debug only, and the package reference
+        // MCP server drive — /run-app is built on it. Debug only, and the package reference
         // carries the same condition, so a Release APK does not contain the agent at all.
         builder.AddMauiDevFlowAgent();
 #endif

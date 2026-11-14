@@ -1,11 +1,11 @@
 ---
-name: ani-kickoff
+name: kickoff
 description: "Start work on a GitHub issue the right way: pull the issue, verify it isn't stale or already fixed, analyze solutions independently of whatever the issue proposes, brief the user on the issue and the decisions it needs, ask clarifying questions, agree a plan, then build it. Use whenever the user names issue numbers to work on — \"let's do #112\", \"start issue 63\", \"pick up 52 and 62\" — or asks to take something off the backlog. Prefer this over jumping straight into implementation, even when the issue looks obvious."
 argument-hint: "<issue number> [more issue numbers]"
 allowed-tools: Bash(gh *) Bash(git *) Bash(cp *) Bash(diff *) Bash(dotnet *) Bash(pwsh *) Read Grep Glob Edit Write AskUserQuestion ExitPlanMode Skill
 ---
 
-# Ani-kickoff
+# Kickoff
 
 Kicking off: $ARGUMENTS
 
@@ -35,11 +35,21 @@ stay in the conversation where they can be argued with.
 ## Step 1 — Load the issues
 
 ```bash
-gh issue view <N> --json number,title,state,body,labels,createdAt,updatedAt,closedAt,comments \
-  --template '#{{.number}} {{.title}} [{{.state}}] created={{.createdAt}} updated={{.updatedAt}} closed={{.closedAt}}{{"\n"}}labels:{{range .labels}} {{.name}}{{end}}{{"\n"}}--- body ---{{"\n"}}{{.body}}{{range .comments}}{{"\n"}}--- comment by {{.author.login}} @ {{.createdAt}} ---{{"\n"}}{{.body}}{{end}}'
+# REST, not `gh issue view`: every `gh issue`/`gh pr` subcommand is GraphQL-backed
+# and is refused from a Claude Code cloud session, so this is two calls rather than
+# one. See AGENTS.md, "Calling the GitHub API from a Claude Code cloud session".
+gh api repos/zhollis21/AniSprinkles/issues/<N> --jq '
+  "#\(.number) \(.title) [\(.state)] created=\(.created_at) updated=\(.updated_at) closed=\(.closed_at)",
+  "labels: \([.labels[].name] | join(" "))",
+  "--- body ---", .body'
+
+# Every page, not the first 30: Get-GhPages walks them by hand, because
+# `gh --paginate` follows a Link header the cloud proxy rejects.
+pwsh tools/Get-GhPages.ps1 'repos/zhollis21/AniSprinkles/issues/<N>/comments' \
+  -Format '--- comment by {user.login} @ {created_at} ---\n{body}'
 ```
 
-That template deliberately renders every comment body, not just a count. Comments
+That second call deliberately renders every comment body, not just a count. Comments
 are where the decision that nobody folded back into the body tends to live, and
 they are disproportionately likely to be the thing that settles an issue: #56's
 entire status is a one-line comment saying it was filed by mistake, and #52's
@@ -115,9 +125,9 @@ burn you, so internalize it before the specific checks below: an empty search
 result is not evidence of absence, it is usually evidence you guessed the wrong
 word. Real examples from this repo — grepping `IsExpanded` found nothing and
 nearly got shipped work reported as unbuilt, because the code says
-`IsDescriptionExpanded` and `IsStatusExpanded`; `gh issue list --search "unit test PageModel
-Services Converters"` returned one issue while `--search "unit test"` returned
-three, including the one that mattered.
+`IsDescriptionExpanded` and `IsStatusExpanded`; an issue search for "unit test PageModel
+Services Converters" returned one issue while "unit test" returned three,
+including the one that mattered.
 
 So: start with the shortest query that could plausibly match, then narrow. Try at
 least two phrasings before believing a negative. When you do report something as
@@ -129,8 +139,11 @@ the issue names, and check history since it was filed:
 ```bash
 git log --oneline --since=<issue createdAt> --grep=<keyword> -i
 git log --format='%h %ad %s' --date=short -S "<code snippet>" -- <path>
-gh pr list --state all --search "<keyword>" --limit 5 --json number,title,state \
-  --template '{{range .}}#{{.number}} [{{.state}}] {{.title}}{{"\n"}}{{end}}'
+# Repo-scoped and filtered by the script: the search/ endpoints are refused from a
+# cloud session ("sessions are bound to their configured repositories").
+# -Contains is a literal, case-insensitive match on title + body, not a regex.
+pwsh tools/Get-GhPages.ps1 'repos/zhollis21/AniSprinkles/pulls?state=all' \
+  -Contains '<keyword>' -Format '#{number} [{state}] {title}' -First 5
 ```
 
 `git log -S` is the more reliable of the two log commands — it finds the commit
@@ -170,8 +183,8 @@ you are looking at.
 open ones:
 
 ```bash
-gh issue list --state all --search "<topic>" --limit 8 --json number,title,state \
-  --template '{{range .}}#{{.number}} [{{.state}}] {{.title}}{{"\n"}}{{end}}'
+pwsh tools/Get-GhPages.ps1 'repos/zhollis21/AniSprinkles/issues?state=all' \
+  -IssuesOnly -Contains '<topic>' -Format '#{number} [{state}] {title}' -First 8
 ```
 
 What you are looking for is not only exact duplicates but **dependency order**,
@@ -254,18 +267,19 @@ pattern `ci-build-and-preview.yml` uses for screenshots:
 
 ```bash
 # Find a previous findings comment (numeric id, or empty if this is the first).
-# --paginate is load-bearing: the endpoint returns 30 comments per page by
-# default, so on a busy issue an unpaginated lookup misses the marker and
-# silently posts a duplicate instead of updating.
-gh api --paginate 'repos/<owner>/<repo>/issues/<N>/comments?per_page=100' \
-  --jq '.[] | select(.body | contains("<!-- ani-kickoff-findings -->")) | .id'
+# Reading every page is load-bearing: the endpoint returns 30 comments per page
+# by default, so on a busy issue a one-page lookup misses the marker and silently
+# posts a duplicate instead of updating. The marker keeps its old `ani-` name on
+# purpose: issues already carry comments with it.
+pwsh tools/Get-GhPages.ps1 'repos/zhollis21/AniSprinkles/issues/<N>/comments' \
+  -Contains '<!-- ani-kickoff-findings -->' -Format '{id}'
 
 # Update it in place
-gh api repos/<owner>/<repo>/issues/comments/<id> -X PATCH -f body='<!-- ani-kickoff-findings -->
+gh api repos/zhollis21/AniSprinkles/issues/comments/<id> -X PATCH -f body='<!-- ani-kickoff-findings -->
 ...'
 
 # Or, if none exists, create it
-gh issue comment <N> --body '<!-- ani-kickoff-findings -->
+gh api repos/zhollis21/AniSprinkles/issues/<N>/comments -f body='<!-- ani-kickoff-findings -->
 ...'
 ```
 
@@ -509,7 +523,7 @@ Present the plan in the conversation and end at an explicit approval gate
 - **Steps** — ordered, each concrete enough to act on, naming the files involved
 - **Tradeoffs and risks** — what could go wrong, what is hard to undo
 - **Verification** — how we'll confirm it works. For anything user-visible this
-  means the real app via `/run-anisprinkles`, since unit tests here cover pure
+  means the real app via `/run-app`, since unit tests here cover pure
   algorithms and can't tell you a screen renders correctly
 - **Out of scope** — what we're deliberately not doing
 
@@ -535,7 +549,7 @@ Where the issue states a spec (checkboxes, acceptance criteria, an options list)
 edit the body so future readers see current intent rather than a stale spec they
 have to mentally patch.
 
-`gh issue edit --body-file` **replaces the entire body**, so never compose a
+`gh api … -X PATCH -F body=@<file>` **replaces the entire body**, so never compose a
 replacement from scratch — fetch what is there, change the contradicted claims in
 place, and write the whole thing back. Composing it fresh is how a narrow
 correction turns into silently deleting everything else the issue said.
@@ -546,7 +560,9 @@ up in a commit:
 
 ```bash
 # 1. Fetch the current body, and keep a pristine copy to diff against.
-gh issue view <N> --json body --jq .body > "$SCRATCH/issue-<N>-body.md"
+#    --template, not --jq: --jq appends a newline that step 4 would store, so
+#    every round trip would grow the body by a blank line. --template is byte-exact.
+gh api repos/zhollis21/AniSprinkles/issues/<N> --template '{{.body}}' > "$SCRATCH/issue-<N>-body.md"
 cp "$SCRATCH/issue-<N>-body.md" "$SCRATCH/issue-<N>-body.orig.md"
 
 # 2. Edit issue-<N>-body.md, changing only the claims the plan contradicts.
@@ -556,7 +572,7 @@ cp "$SCRATCH/issue-<N>-body.md" "$SCRATCH/issue-<N>-body.orig.md"
 diff "$SCRATCH/issue-<N>-body.orig.md" "$SCRATCH/issue-<N>-body.md"
 
 # 4. Write the complete, modified body back.
-gh issue edit <N> --body-file "$SCRATCH/issue-<N>-body.md"
+gh api repos/zhollis21/AniSprinkles/issues/<N> -X PATCH -F body=@"$SCRATCH/issue-<N>-body.md"
 ```
 
 If step 3 shows anything you did not deliberately change, do not run step 4.
@@ -589,7 +605,7 @@ Confirm the branch name before creating it; it is annoying to rename later.
 
 Create the branch and carry on: the approved plan is the instruction to
 implement, so start building without asking again. Don't commit and don't push —
-per `AGENTS.md`, those stay separate explicit asks. Run `/ani-review` before
+per `AGENTS.md`, those stay separate explicit asks. Run `/self-review` before
 presenting the result.
 
 ---
@@ -618,6 +634,6 @@ batch is exactly where a closed or superseded one hides.
 ## Related skills
 
 - `/project-architecture` — DI table, page patterns, navigation, performance defaults
-- `/ani-debug` — on-device diagnostics, when the issue is a bug observed on a device
-- `/run-anisprinkles` — build, launch, and drive the app to reproduce a bug or verify a fix
-- `/ani-review` — the review pass to run after the implementation lands
+- `/device-debug` — on-device diagnostics, when the issue is a bug observed on a device
+- `/run-app` — build, launch, and drive the app to reproduce a bug or verify a fix
+- `/self-review` — the review pass to run after the implementation lands

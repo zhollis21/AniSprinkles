@@ -76,12 +76,12 @@ dotnet build src/AniSprinkles/AniSprinkles.csproj -c Release -f net11.0-android 
 - **Version scheme**: `ApplicationDisplayVersion` from release tag semver (`vX.Y.Z` → `X.Y.Z`); `ApplicationVersion` (versionCode) from `YYMMDDNNN` (date + run_number mod 1000).
 - **Unit tests** — `tests/AniSprinkles.UnitTests/` (NUnit 5 on Microsoft.Testing.Platform via `NUnit3TestAdapter` with `EnableNUnitRunner`, plus `NUnit.Analyzers`, `net11.0`, NSubstitute). Same framework and versions as KingdomWatch, so the two repos share one (#175). Project-references `src/AniSprinkles.Core/`; there are no link-compile globs any more (#62). Covers pure algorithms, PageModel state machines, and repo-level file validation (`.xaml` well-formedness, icon-glyph resolution). Test doubles live in `Fakes/`. There is no device-test project yet — #169 tracks adding one.
   - **Watch what throws vs. what returns null off-device.** On the plain `net11.0` TFM, `Shell.Current` and `Application.Current` are `null` (a quiet no-op that reads as a passing test), while `Preferences`, `SecureStorage`, `MainThread`, `AppInfo` and `Browser` throw `NotImplementedInReferenceAssemblyException`. Anything a test needs to reach must be injected — `SecureStorage` behind `ISecureTokenStorage` (#119) is the most recent example.
-  - **Fixing a bug starts with a failing test.** Write the test that reproduces the reported behaviour, run it, and watch it fail *for the reason you expect*, before touching the fix. A test written after the fix proves the code passes its own description — it does not prove it would have caught the bug, and a test that never failed is indistinguishable from one asserting the wrong thing. If the bug genuinely cannot be reached from `tests/` (see what throws off-device, above), say so explicitly and verify on device via `/run-anisprinkles` instead — don't quietly skip the step.
+  - **Fixing a bug starts with a failing test.** Write the test that reproduces the reported behaviour, run it, and watch it fail *for the reason you expect*, before touching the fix. A test written after the fix proves the code passes its own description — it does not prove it would have caught the bug, and a test that never failed is indistinguishable from one asserting the wrong thing. If the bug genuinely cannot be reached from `tests/` (see what throws off-device, above), say so explicitly and verify on device via `/run-app` instead — don't quietly skip the step.
   - `AppSettings.Load/Save/Clear/SyncFromViewer` go through the injectable `AppSettings.Storage` seam (#121), so paths ending in them — a successful `SettingsPageModel.LoadAsync`, for instance — are testable. `TestDataBuilder.ResetAppSettings()` installs a `FakePreferences` and returns it.
   - **The execution model is xunit's, kept on purpose** (`NUnitConfiguration.cs`). `FixtureLifeCycle(InstancePerTestCase)` builds a fresh test-class instance per test, so constructors and fields are per-test setup and `IDisposable` classes clean up after every test; `Parallelizable(ParallelScope.Fixtures)` runs classes in parallel and the tests inside one class in sequence. Write constructors, not `[SetUp]`.
   - Test classes that write to the process-wide `AppSettings` statics must be marked `[NonParallelizable]` so they do not run alongside anything else. That includes `AppSettings.Storage`.
   - **Assertions use the constraint model**, `Assert.That(actual, Is.EqualTo(expected))` — actual first, the reverse of xunit's argument order. `NUnit2007` flags a constant in the actual slot, which is usually that swap. Three traps: `Assert.ThrowsAsync`/`CatchAsync` return a `Task` in NUnit 5 and must be awaited, or the assertion never runs (`NUnit2059`); `Assert.That(someDelegate, Is.Null)` binds to the overload that *invokes* the delegate, so pin the value overload with `Assert.That<Action?>(…)`; and `Does.Contain` on strings compares culture-sensitively, not ordinally.
-  - **Full coverage is not the same as tested.** Coverage measures which lines *ran*, not which inputs were *considered*, so a page model or converter can sit at 100% line and branch coverage and still accept values nobody thought about. Write tests against the input space rather than the line count: for each public entry point, ask what a caller can actually pass instead of what the docs say they should. Enums are the classic trap — an enum parameter looks pinned by the type system, but it is an `int` with names and `(MediaKind)999` casts in silently. Sentinels and boundaries want their own cases (zero, negative, `MaxValue`, `null`, the empty collection, the default struct), as does any state where two "is this empty/none/valid?" predicates could disagree with each other. A collection handed out through a read-only interface can still be downcast and mutated unless it is genuinely read-only. `/ani-review` carries the full procedure — build the matrix of entry points against input classes, then name the empty cells deliberately.
+  - **Full coverage is not the same as tested.** Coverage measures which lines *ran*, not which inputs were *considered*, so a page model or converter can sit at 100% line and branch coverage and still accept values nobody thought about. Write tests against the input space rather than the line count: for each public entry point, ask what a caller can actually pass instead of what the docs say they should. Enums are the classic trap — an enum parameter looks pinned by the type system, but it is an `int` with names and `(MediaKind)999` casts in silently. Sentinels and boundaries want their own cases (zero, negative, `MaxValue`, `null`, the empty collection, the default struct), as does any state where two "is this empty/none/valid?" predicates could disagree with each other. A collection handed out through a read-only interface can still be downcast and mutated unless it is genuinely read-only. `/self-review` carries the full procedure — build the matrix of entry points against input classes, then name the empty cells deliberately.
 
 ## CI Stubs (`-p:CiBuild=true`)
 
@@ -113,10 +113,10 @@ running app, so changing what fails costs a broadcast rather than a ~3 minute re
 replaced the `-p:ErrorSim=true` flag, which no longer exists.
 
 ```powershell
-pwsh .claude/skills/run-anisprinkles/driver.ps1 fault GetStudio NotFound next          # client layer
-pwsh .claude/skills/run-anisprinkles/driver.ps1 fault Studio NotFound next -layer http # same op, wire name
-pwsh .claude/skills/run-anisprinkles/driver.ps1 fault any delay next -delay 4000
-pwsh .claude/skills/run-anisprinkles/driver.ps1 fault clear
+pwsh .claude/skills/run-app/driver.ps1 fault GetStudio NotFound next          # client layer
+pwsh .claude/skills/run-app/driver.ps1 fault Studio NotFound next -layer http # same op, wire name
+pwsh .claude/skills/run-app/driver.ps1 fault any delay next -delay 4000
+pwsh .claude/skills/run-app/driver.ps1 fault clear
 ```
 
 - **It decorates `IAniListClient` rather than replacing it**, so it *composes with the CI stubs*: a
@@ -142,7 +142,7 @@ pwsh .claude/skills/run-anisprinkles/driver.ps1 fault clear
 - Everything is behind `#if DEBUG`, including the exported `BroadcastReceiver`, so none of it can
   reach a Release build — hence no Release guard target, unlike `-p:CiBuild=true`.
 
-See `DEVELOPER_NOTES.md` for the scenario recipes and `/run-anisprinkles` for the driver verbs.
+See `DEVELOPER_NOTES.md` for the scenario recipes and `/run-app` for the driver verbs.
 
 ## Build Quality
 
@@ -178,13 +178,13 @@ Two standing exceptions, both documented above rather than inferred: **testabili
 - **Logging**: `ILogger<T>` injected via DI is the canonical path for all app code. Use structured messages. Bearer tokens are always redacted — with one deliberate, Debug-only exception: MAUI DevFlow (#170) records the `Authorization` header verbatim in its network capture, and its storage tools can read the token out of secure storage, the same exposure as `driver.ps1 dump-token`. Both are reachable from this PC only (the agent and its forward listen on loopback, the broker refuses non-loopback clients, browser origins are refused), and none of it exists in Release.
   - Provider wiring lives in `MauiProgram.cs`. `FileLoggerProvider` runs in both Debug (1 MB × 3 at `LogLevel.Debug`) and Release (256 KB × 3 at `LogLevel.Warning`). `AndroidLogcatLoggerProvider` bridges ILogger output into `adb logcat` on Android in all build configs (`AddDebug()` does not reach logcat on .NET MAUI Android). `AddDebug()` stays Debug-only.
   - Exception: `Platforms/Android/MainActivity.cs` and `Platforms/Android/AiringCheckWorker.cs` call `Android.Util.Log` directly because they run before the MAUI DI container is guaranteed to be built (activity lifecycle callbacks; post-reboot WorkManager). Inline comments document this at the call sites. Do not introduce new direct-`Android.Util.Log` callers elsewhere — use ILogger.
-  - On-device log file: `{AppDataDirectory}/logs/anisprinkles.log` (+ `.1`, `.2` archives). Pull via `adb shell run-as com.RainbowSprinkles.AniSprinkles cat files/logs/anisprinkles.log` or use `/ani-debug`.
+  - On-device log file: `{AppDataDirectory}/logs/anisprinkles.log` (+ `.1`, `.2` archives). Pull via `adb shell run-as com.RainbowSprinkles.AniSprinkles cat files/logs/anisprinkles.log` or use `/device-debug`.
   - **`DiagnosticsLogBuffer` is a third provider, in memory, at `LogLevel.Information` in every config (#112).** It exists because the file log drops `Information` in Release, which is every trace worth sending — no `NAVTRACE`, no `PageState`, no `HTTP`. It keeps roughly the last five minutes, bounded by age *and* entry count, and touches no disk. `DiagnosticsSessionFlusher` writes a snapshot to `{AppDataDirectory}/logs/previous-session.log` from the three global exception handlers and `MainActivity.OnPause`, and clears it again on resume — but only when this process wrote it, since a file left by a process that actually died is the thing worth sending. If you change `DiagnosticsLogBuffer.DefaultRetention`, the popup's "5 minutes" copy is a lie; `DiagnosticsDisclosureTests` fails on purpose when they drift. Neither the ring nor `previous-session.log` is cleared on sign-out — a crash spanning sign-out/sign-in is worth reporting, and this is a single-user install. Revisit before first public release.
 - **Telemetry**: Sentry crash reporting only (`SendDefaultPii = false`, `TracesSampleRate = 0.0`, plus a `BeforeSend` redaction pass — `SendDefaultPii` governs IP/username, not message content). Use `ErrorReportService.Record()` for handled exceptions.
   - **The Sentry event comes from `Record`'s `LogError`, not its `CaptureException`** — confirmed by the `mechanism: SentryLogger` tag on the events. `MinimumEventLevel` defaults to `Error`, so the `ILogger` integration captures first and gets the real id; the explicit `CaptureException` on the next line is then dropped by `DuplicateEventDetectionEventProcessor` (`DeduplicateMode` defaults to `All ^ InnerException`, which still includes `SameExceptionInstance`) and returns `SentryId.Empty`. Worse, `Hub.CaptureEvent` assigns `scope.LastEventId = id` unguarded, so that empty id **overwrites** the good one — which is why `SentrySdk.LastEventId` is also empty. Don't build anything on either value; correlate on exception text and timestamp. Do not "fix" it by swapping the two lines either: the logger-created event is the richer one (it carries the `Context` tag, the logger name and a readable message), and a bare `CaptureException` event has none of that. Cost this out before touching it — #112 tried twice and removed the feature instead.
 - **User prefs**: `AppSettings` (static, `Utilities/`) persists title language, score format, adult content toggle, and section order through the injectable `AppSettings.Storage` seam, which defaults to `Preferences.Default` (#121). `DisplayAdultContent` commits the instant the Settings toggle flips via `SetDisplayAdultContent`, ahead of the debounced AniList save (#118) — every browse surface filters on it and only re-checks when it appears, so a late commit left 18+ results on screen. Paging must be pinned to the value its page 1 was seeded under (`_seededDisplayAdult` in `SearchPageModel`, `DiscoverPageModel` and `MediaBrowsePageModel`; passed into `DiscoverSectionFetch.PageAsync`) rather than re-reading the static per page, or one result set can hold two policies. All four surfaces — Library included — compare it against the value their current data was built with. Title language and score format commit the same way, via `SetTitleLanguage` / `SetScoreFormat` (#128); before that they reached `AppSettings` only once a save had succeeded. A locally committed change outranks the server's copy until the server reports that same value back — for all three now, not just the adult toggle — so neither a refresh elsewhere in the app nor a return to Settings can sync the pre-change value over it; `SettingsPage.OnDisappearing` flushes any pending save so the server catches up promptly. The settings the Settings page holds on its own (staff name language, restrict-messages, activity merge time, airing notifications, and the per-type notification toggles) carry the same markers there — the per-type ones as a set of unconfirmed types, so a change made on another device still arrives for every type the user did not touch. `AnimeSectionOrder` deliberately has none — there is no control for it, so it can only come from the server.
 - **The airing job follows the toggle both ways.** `PopulateFromUser` schedules the WorkManager check when airing notifications land on, and cancels it when they land off. Only the enabling half was wired originally, so turning the setting off anywhere else — the AniList website, another device — left this device still scheduled, and the switch read off while notifications kept arriving. Cancelling an unscheduled job is a no-op, so the else-branch is safe on every load.
-- **Pushed detail pages get no lifecycle on a tab return.** `OnAppearing` / `OnDisappearing` fire on tab-*root* pages (Library, Discover, Search, Settings) when you switch tabs, but **not** on a page pushed onto a backgrounded tab's navigation stack — the four detail pages and View All (`AppShell.xaml.cs:23-27`). Verified on device: `MediaDetailsPage.OnAppearing` logged exactly once, at the initial navigation, and tabbing away and back produced nothing. **Use `OnNavigatedTo` instead** — it fires on every tab return, and pairs with `OnNavigatedFrom` on the way out; all five pushed pages call `ViewModel.RefreshDisplaySettings()` from it. Confirmed in the same device run: `OnAppearing` 1, `OnDisappearing` 0, `OnNavigatedTo` 3 across two tab round-trips. No unit test will tell you which to use — the page model behaves correctly when called, and the bug is that nothing calls it, so a test driving the page model directly passes while the feature is dead on device. Verify on device via `/run-anisprinkles`, and see #131.
+- **Pushed detail pages get no lifecycle on a tab return.** `OnAppearing` / `OnDisappearing` fire on tab-*root* pages (Library, Discover, Search, Settings) when you switch tabs, but **not** on a page pushed onto a backgrounded tab's navigation stack — the four detail pages and View All (`AppShell.xaml.cs:23-27`). Verified on device: `MediaDetailsPage.OnAppearing` logged exactly once, at the initial navigation, and tabbing away and back produced nothing. **Use `OnNavigatedTo` instead** — it fires on every tab return, and pairs with `OnNavigatedFrom` on the way out; all five pushed pages call `ViewModel.RefreshDisplaySettings()` from it. Confirmed in the same device run: `OnAppearing` 1, `OnDisappearing` 0, `OnNavigatedTo` 3 across two tab round-trips. No unit test will tell you which to use — the page model behaves correctly when called, and the bug is that nothing calls it, so a test driving the page model directly passes while the feature is dead on device. Verify on device via `/run-app`, and see #131.
 - **`ConfigureAwait(true)` in page models is deliberate.** It is the default, so it changes nothing at runtime — it states that the continuation writes bound state and must stay on the UI thread. `DetailsPageModelBase`, `PaginatedSection`, `MediaBrowsePageModel`, `ListOperationRunner` and `SettingsPageModel` all mark their data-fetch awaits this way. A `ConfigureAwait(false)` inside `AniListClient` governs continuations *inside that method* and does not propagate to the caller, so a page-model await resumes wherever its caller was — which is the UI thread for every lifecycle and command entry point. Don't add `ConfigureAwait(false)` to a page-model await whose continuation touches an `[ObservableProperty]` or a bound `ObservableCollection`.
 - **Failed settings saves**: dirty-tracking is baselined against what the *server* reported, not the resolved local value, so a change that never landed leaves the page dirty and the next flush re-sends it (#128). A successful `UpdateUser` clears the markers for the values it actually carried — compared field by field, since the user can change a setting while a save is in flight, and clearing that one would discard a change the server never saw. A save arriving while another is in flight is coalesced into a second pass rather than dropped, and the failure snackbar goes through `ShowFailureSnackbarAsync` so a `ServiceOutage` offers no Retry.
 - **Display settings and already-rendered pages**: title language and score format feed computed properties (`Media.DisplayTitle`, `MediaListEntry.ScoreDisplay`, the details rating control), so a change has to re-render what is already on screen. Each surface snapshots a `DisplaySettingsSnapshot` and re-projects in its appearing path when it moved — **never a refetch**, which would spend an AniList request on a formatting change (#127). `Media` and `RelatedMedia` are plain classes and cannot raise `PropertyChanged`, so the observable containers implement `IDisplayProjection` and re-raise the property carrying them (`Media` / `Node`), which makes MAUI re-resolve the nested binding path. A new carousel item type that shows a media title must implement it, or its cards render stale titles forever with nothing to catch it. Title language also moves the Title **sort order**, since `MediaListSection` sorts by `DisplayTitle`.
@@ -193,9 +193,9 @@ See `/project-architecture` for page patterns and performance defaults.
 
 ## Debugging Workflow
 
-See `.claude/skills/ani-debug/SKILL.md` (`/ani-debug`) for the full adb log workflow, crash/jank/NAVTRACE scan commands, and analysis guidelines.
+See `.claude/skills/device-debug/SKILL.md` (`/device-debug`) for the full adb log workflow, crash/jank/NAVTRACE scan commands, and analysis guidelines.
 
-**Reading and driving the UI goes through MAUI DevFlow (#170).** Every Debug build — CI builds included, never Release — carries the `Microsoft.Maui.DevFlow.Agent`, which the `maui devflow` CLI and the `maui-devflow` MCP server (`.mcp.json`) talk to: the MAUI visual tree, taps by `AutomationId`, logs, captured network traffic and app storage. `driver.ps1` keeps the device lifecycle and the broadcasts. See `/run-anisprinkles`.
+**Reading and driving the UI goes through MAUI DevFlow (#170).** Every Debug build — CI builds included, never Release — carries the `Microsoft.Maui.DevFlow.Agent`, which the `maui devflow` CLI and the `maui-devflow` MCP server (`.mcp.json`) talk to: the MAUI visual tree, taps by `AutomationId`, logs, captured network traffic and app storage. `driver.ps1` keeps the device lifecycle and the broadcasts. See `/run-app`.
 
 - **Give an element a stable `AutomationId` when a script or agent needs to drive it**, rather than letting the script match its visible text. PascalCase, named for what it is, not where it sits — `MediaCard`, `FavoriteToggle`, `RetryButton` — and the same id on every template or page that shows the same thing. It reaches DevFlow and also uiautomator's `resource-id`, so the CI capture script can use the same ids (#162).
 
@@ -209,9 +209,60 @@ pwsh tools/Get-OpenPrComments.ps1
 # Output: tools/pr-comments.md
 ```
 
-Requires `gh` CLI authenticated (or `GH_TOKEN` env var). See `.claude/skills/ani-pr-feedback/SKILL.md` (`/ani-pr-feedback`) for the full evaluation workflow.
+```powershell
+# Resolve (or -Unresolve) a PR review thread by its opening comment id
+pwsh tools/Resolve-PrThread.ps1 -PullNumber <pr> -CommentId <id>
 
-Project slash commands (`/ani-kickoff`, `/run-anisprinkles`, `/ani-debug`, `/ani-review`, `/ani-pr-feedback`, `/project-architecture`, `/airing-notifications`) live in `.claude/skills/`.
+# Every page of a REST collection, as one JSON array — or one line per item with
+# -Format, filtered with -IssuesOnly / -Contains / -First, so no jq is needed
+pwsh tools/Get-GhPages.ps1 'repos/zhollis21/AniSprinkles/issues?state=all' -IssuesOnly -Contains 'airing' -Format '#{number} [{state}] {title}'
+```
+
+`tools/GitHubApi.psm1` is not a script but the shared GitHub REST helpers the
+above import; see [below](#calling-the-github-api-from-a-claude-code-cloud-session) for why they exist.
+
+Requires `gh` CLI authenticated (or `GH_TOKEN` env var). See `.claude/skills/pr-feedback/SKILL.md` (`/pr-feedback`) for the full evaluation workflow.
+
+Project slash commands (`/kickoff`, `/create-issue`, `/run-app`, `/device-debug`, `/self-review`, `/pr-feedback`, `/project-architecture`, `/airing-notifications`) live in `.claude/skills/`.
+
+### Calling the GitHub API from a Claude Code cloud session
+
+Cloud sessions (claude.ai/code, the mobile app) reach GitHub through a proxy that
+holds the real credentials outside the container. Its restrictions change how
+tooling here has to be written, and none of them is configurable — setting
+`GH_TOKEN` to a personal token lifts none of them. Ported from KingdomWatch,
+which hit each of these first.
+
+**The short version: `gh api repos/{owner}/{repo}/...` is the only GitHub surface
+that works everywhere.** Every `gh issue`, `gh pr` and `gh label` subcommand is
+GraphQL-backed and returns `403` — reads and writes alike. `gh workflow run`
+resolves the default branch over GraphQL too; dispatch with
+`gh api -X POST repos/{owner}/{repo}/actions/workflows/{file}/dispatches -f ref=main`.
+
+**GraphQL is refused**, except a pinned set of pull-request operations. Review
+threads have no REST equivalent on github.com, so the proxy adds its own routes
+(`GET .../pulls/{n}/ccr/review_threads`, `POST .../pulls/{n}/ccr/comments/{id}/resolve`
+and `/unresolve`) keyed by comment id. github.com answers those with `404`, so
+`Get-ReviewThreads` and `Resolve-ReviewThread` in `tools/GitHubApi.psm1` try the
+`ccr/` route and fall back to GraphQL on that `404` — go through them (or
+`Resolve-PrThread.ps1`) rather than calling either transport directly.
+
+**`gh --paginate` breaks past the first page.** It follows GitHub's
+`Link: rel="next"`, which points at the numeric-id form (`/repositories/{id}/...`),
+and the proxy rejects that. It only fails once a collection outgrows one page,
+so tooling looks healthy until it suddenly isn't. `Get-Paged` (and
+`Get-GhPages.ps1` for the skills) walk `&per_page=100&page=N` by hand and throw
+rather than truncate. **Cross-repository endpoints** (`search/issues` and
+friends) are refused as well: use a repo-scoped endpoint and filter client-side.
+
+**A skill cannot page in a shell loop.** The command-prefix allow rules match the
+first word, so `for … do gh api … done` starts with `for` and gets bounced to the
+permission classifier. `Get-GhPages.ps1` starts with `pwsh`, and its `-Format` /
+`-Contains` filters stand in for `jq`, which is not installed on the Windows dev
+machine.
+
+`tools/` and `.claude/skills/` are clear of all of the above; keep them that way.
+A `gh issue`/`gh pr` one-liner from memory is the likely way it creeps back in.
 
 ## Working with AI Agents
 
@@ -221,11 +272,11 @@ Do not commit or push unless explicitly asked (e.g. "commit this", "push it"). T
 
 ### Self-review
 
-After writing code, run through the review checklist in `.claude/skills/ani-review/SKILL.md` (`/ani-review`). Fix all issues found before presenting. The review loop is internal — do not surface bugs as a list of things found.
+After writing code, run through the review checklist in `.claude/skills/self-review/SKILL.md` (`/self-review`). Fix all issues found before presenting. The review loop is internal — do not surface bugs as a list of things found.
 
 ### PR feedback review
 
-When asked to pull PR feedback, use `.claude/skills/ani-pr-feedback/SKILL.md` (`/ani-pr-feedback`).
+When asked to pull PR feedback, use `.claude/skills/pr-feedback/SKILL.md` (`/pr-feedback`).
 
 ### Presenting options
 
