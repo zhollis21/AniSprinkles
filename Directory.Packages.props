@@ -17,8 +17,8 @@
     <PackageVersion Include="Syncfusion.Maui.Toolkit" Version="1.0.11" />
     <!-- Sentry and Sentry.Maui are one release train: the app references Sentry.Maui, Core references
          the plain Sentry package it is built on. Move them together. -->
-    <PackageVersion Include="Sentry" Version="6.12.1" />
-    <PackageVersion Include="Sentry.Maui" Version="6.12.1" />
+    <PackageVersion Include="Sentry" Version="7.0.0" />
+    <PackageVersion Include="Sentry.Maui" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup Label="Debug-only tooling">
