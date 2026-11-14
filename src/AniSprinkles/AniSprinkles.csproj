@@ -105,7 +105,7 @@
 	<!-- There is no ErrorSim flag any more (#125). Fault injection is a decorator that ships
 	     disarmed in every Debug build, gated on plain #if DEBUG, so simulating a failure no longer
 	     needs its own build configuration — and no longer needs a Release guard, because the code
-	     cannot be compiled into one. Arm it at runtime; see /run-anisprinkles. -->
+	     cannot be compiled into one. Arm it at runtime; see /run-app. -->
 
 	<ItemGroup>
 	  <MauiXaml Update="Views\ErrorStateView.xaml">

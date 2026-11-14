@@ -1,5 +1,5 @@
 ---
-name: run-anisprinkles
+name: run-app
 description: "Build, install, launch, and drive the AniSprinkles MAUI Android app on an emulator — read the MAUI visual tree, tap, type, scroll, screenshot, and inspect logs and network through MAUI DevFlow. Use when asked to run or start the app, take a screenshot, reproduce a UI bug, or confirm a change actually works on device rather than only in tests."
 allowed-tools: Bash(pwsh *) PowerShell Bash(adb *) Bash(dotnet *) Bash(maui *) Read Grep Glob
 ---
@@ -11,7 +11,7 @@ only way to see a change is on an emulator or device.
 
 Two tools, split by what each is for (#170):
 
-- **`.claude/skills/run-anisprinkles/driver.ps1`** — the device and APK lifecycle (SDK
+- **`.claude/skills/run-app/driver.ps1`** — the device and APK lifecycle (SDK
   resolution, boot, build, install, launch), Android key events, whole-screen screenshots,
   and the app-specific broadcasts: fault injection, token seeding, notifications, the airing
   worker, deep links.
@@ -42,7 +42,7 @@ Already present on this machine; listed so you can check them if something break
 Check all of it at once:
 
 ```bash
-pwsh -NoProfile -File .claude/skills/run-anisprinkles/driver.ps1 env
+pwsh -NoProfile -File .claude/skills/run-app/driver.ps1 env
 ```
 
 ```bash
@@ -67,7 +67,7 @@ past that without tapping through `WebAuthenticator` (#160) when you need *real*
 data rather than fixtures.
 
 ```bash
-pwsh -NoProfile -File .claude/skills/run-anisprinkles/driver.ps1 build
+pwsh -NoProfile -File .claude/skills/run-app/driver.ps1 build
 ```
 
 Takes **about a minute and a half** (78 s measured from a wiped `bin`/`obj` on .NET 11, and much the
@@ -97,7 +97,7 @@ you have other work), then drive in a second.
 One-shot — boots the emulator if needed, installs, starts DevFlow's broker, launches:
 
 ```bash
-pwsh -NoProfile -File .claude/skills/run-anisprinkles/driver.ps1 up
+pwsh -NoProfile -File .claude/skills/run-app/driver.ps1 up
 ```
 
 `launch` (and so `up`) runs `adb reverse tcp:19223 tcp:19223` and starts the broker before the
@@ -227,7 +227,7 @@ Run against the emulator on a `driver.ps1 build` (fixtures) on 2026-11-12, outpu
 per-line results. One `batch`, so the two taps share a session:
 
 ```bash
-pwsh -NoProfile -File .claude/skills/run-anisprinkles/driver.ps1 up
+pwsh -NoProfile -File .claude/skills/run-app/driver.ps1 up
 ```
 
 ```bash
@@ -455,7 +455,7 @@ works — that is what the driver and DevFlow above are for.
   choose:
 
   ```bash
-  ANDROID_SERIAL=emulator-5554 pwsh -NoProfile -File .claude/skills/run-anisprinkles/driver.ps1 shot home
+  ANDROID_SERIAL=emulator-5554 pwsh -NoProfile -File .claude/skills/run-app/driver.ps1 shot home
   ```
 
   `driver.ps1 env` lists every attached device with its AVD name and shows which
@@ -493,5 +493,5 @@ works — that is what the driver and DevFlow above are for.
 | App dies instantly, `SIGABRT`, no .NET stack | APK is ~22 MB not ~150 MB — a plain `dotnet build` overwrote it. `driver.ps1 build`. |
 
 For deeper on-device diagnostics (ANR / jank / Glide cascades / NAVTRACE timings),
-switch to **`/ani-debug`** — it has the full log-collection and interpretation
+switch to **`/device-debug`** — it has the full log-collection and interpretation
 workflow. `driver.ps1 logcat` and `driver.ps1 applog` are the quick versions.

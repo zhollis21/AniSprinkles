@@ -58,7 +58,7 @@ if (!options.DryRun && string.IsNullOrWhiteSpace(targetToken))
         The easy way is to let the app do the OAuth flow: sign in on the emulator as the test
         account, then
 
-            pwsh -NoProfile -File .claude/skills/run-anisprinkles/driver.ps1 dump-token
+            pwsh -NoProfile -File .claude/skills/run-app/driver.ps1 dump-token
 
         Or set it yourself:
 

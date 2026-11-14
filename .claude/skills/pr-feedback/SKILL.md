@@ -1,7 +1,7 @@
 ---
-name: ani-pr-feedback
+name: pr-feedback
 description: "Pull and evaluate open PR review comments for this repository. Use when asked to address PR feedback, review open comments, or work through reviewer notes."
-allowed-tools: Bash(pwsh tools/Get-OpenPrComments.ps1) Bash(gh pr edit:*) Bash(gh pr view:*) Bash(gh pr comment:*) Bash(gh api graphql:*) Bash(gh api repos/:*) Bash(git *) Bash(dotnet *) Read Glob Grep Edit Write AskUserQuestion
+allowed-tools: Bash(pwsh tools/Get-OpenPrComments.ps1) Bash(pwsh tools/Resolve-PrThread.ps1:*) Bash(gh api repos/:*) Bash(git *) Bash(dotnet *) Read Glob Grep Edit Write AskUserQuestion
 ---
 
 # PR Feedback
@@ -19,7 +19,11 @@ describing is real and simply isn't on your disk.
 
 ```bash
 git fetch origin --quiet
-gh pr view <pr> --json headRefName,headRefOid,baseRefName
+# REST, not `gh pr view`: every `gh pr`/`gh issue` subcommand is GraphQL-backed and
+# is refused from a Claude Code cloud session. See AGENTS.md, "Calling the GitHub
+# API from a Claude Code cloud session".
+gh api repos/zhollis21/AniSprinkles/pulls/<pr> \
+  --jq '{headRefName: .head.ref, headRefOid: .head.sha, baseRefName: .base.ref}'
 git log --oneline -1 HEAD                  # compare against headRefOid above
 git rev-list --count HEAD..origin/<headRefName>   # 0 = you have every pushed commit
 ```
@@ -141,25 +145,30 @@ Don't leave handled comments open — the open-comment list should only ever sho
 - **Fixed:** once the fix is pushed, changing the line usually makes the bot auto-mark the thread Outdated/Resolved; if a thread is still open, resolve it explicitly.
 
 > **Run each `gh` write as its own standalone command.** The permission system matches on the
-> command prefix, so a single `gh api graphql …` / `gh pr comment …` call is auto-approved by the
+> command prefix, so a single `gh api repos/…` / `pwsh tools/Resolve-PrThread.ps1 …` call is auto-approved by the
 > repo's allow rules. Wrapping calls in a `for … do … gh api … done` loop (or piping/`&&`-chaining
 > them) makes the command start with `for`/another binary instead of `gh`, so it no longer matches
 > the rule and gets bounced to the interactive classifier. Resolve threads one call at a time.
 
-- **List unresolved threads** (get the thread ids and the comment id to reply to):
-  ```
-  gh api graphql -f query='query($o:String!,$r:String!,$n:Int!){repository(owner:$o,name:$r){pullRequest(number:$n){reviewThreads(first:100){nodes{id isResolved isOutdated comments(first:1){nodes{databaseId path body}}}}}}}' -F o=<owner> -F r=<repo> -F n=<pr>
-  ```
-- **Reply to a review comment** (one standalone call; `<commentId>` is the `databaseId` above):
-  ```
-  gh api repos/<owner>/<repo>/pulls/<pr>/comments/<commentId>/replies -f body='<reply text>'
-  ```
-- **Resolve a thread** (one standalone call per thread id — `gh` has no direct command, so use the GraphQL mutation):
-  ```
-  gh api graphql -f query='mutation($id:ID!){resolveReviewThread(input:{threadId:$id}){thread{isResolved}}}' -F id=<threadId>
-  ```
+Threads are addressed by **comment id**, not by a GraphQL thread id: the report
+above prints each thread's opening comment as `(comment <id>)`, and that id is
+what both the reply and the resolve call take. Thread state has no REST endpoint
+on github.com — the report and the resolve script get it from the proxy's `ccr/`
+route in a cloud session and from GraphQL everywhere else (`Get-ReviewThreads`
+and `Resolve-ReviewThread` in `tools/GitHubApi.psm1`), so the commands below are
+the same on either.
 
-**Keep the PR description up to date as you go.** Whenever the branch changes meaningfully (a fix lands, scope shifts, a new behavior is added), edit the PR body with `gh pr edit <num> --body ...` so it always reflects what's actually in the PR. Reviewers and the squash-merge record should never read a stale description.
+- **Reply to a review comment** (one standalone call):
+  ```
+  gh api repos/zhollis21/AniSprinkles/pulls/<pr>/comments/<commentId>/replies -f body='<reply text>'
+  ```
+- **Resolve a thread** (one standalone call per thread, keyed by that same comment id):
+  ```
+  pwsh tools/Resolve-PrThread.ps1 -PullNumber <pr> -CommentId <commentId>
+  ```
+  `-Unresolve` reopens one.
+
+**Keep the PR description up to date as you go.** Whenever the branch changes meaningfully (a fix lands, scope shifts, a new behavior is added), write the new body to a scratch file and update it with `gh api repos/zhollis21/AniSprinkles/pulls/<num> -X PATCH -F body=@<file>` so it always reflects what's actually in the PR. Reviewers and the squash-merge record should never read a stale description.
 
 ## Rules
 

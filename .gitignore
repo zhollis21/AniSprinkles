@@ -91,6 +91,9 @@ Thumbs.db
 # `tools/*`, not `tools/`.)
 tools/*
 !tools/Get-OpenPrComments.ps1
+!tools/Get-GhPages.ps1
+!tools/GitHubApi.psm1
+!tools/Resolve-PrThread.ps1
 !tools/generate-glyphs.cs
 !tools/record-anilist-fixtures.cs
 !tools/clone-anilist-list.cs

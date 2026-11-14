@@ -1,11 +1,11 @@
 ---
-name: ani-debug
+name: device-debug
 description: "Collect and interpret AniSprinkles on-device diagnostics in one shot (crash/ANR/jank scans, Glide destroyed-activity detection, PageState transitions, NAVTRACE). Use when investigating any issue observed on device or emulator — not for code-logic questions or GitHub issue triage."
 argument-hint: "[describe the observed issue]"
 allowed-tools: Bash(adb *) Bash(bash *collect.sh) Bash(grep *) Bash(unzip *) Read Grep
 ---
 
-# Ani-debug
+# Device Debug
 
 Investigating: $ARGUMENTS
 
@@ -75,7 +75,7 @@ receiver logs through `Android.Util.Log` because a broadcast can precede DI), th
 failure looks identical to a real one in every downstream trace (`PageState`, `LISTTRACE`, the outage
 banner), because that is precisely the point. A `FAULT cleared` line, or an app restart, disarms.
 
-Absence of `FAULT` lines in a Debug build is normal: injection ships disarmed. See `/run-anisprinkles`
+Absence of `FAULT` lines in a Debug build is normal: injection ships disarmed. See `/run-app`
 for the `driver.ps1 fault` verbs.
 
 ## Drill-in
