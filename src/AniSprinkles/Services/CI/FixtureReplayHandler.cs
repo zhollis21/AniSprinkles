@@ -78,6 +78,13 @@ internal sealed class FixtureReplayHandler : HttpMessageHandler
             return Ok(synthesized);
         }
 
+        // The made-up 18+ titles have no recordings. Their details are synthesized, or tapping one
+        // would be a fixture miss.
+        if (AdultCanary.TryAnswer(operationName, variables, out var madeUp))
+        {
+            return Ok(madeUp);
+        }
+
         var query = parsed?["query"]?.GetValue<string>();
         var fingerprint = query is null ? null : GraphQlFixtureKey.QueryFingerprint(query);
         var key = GraphQlFixtureKey.Derive(operationName, variables);

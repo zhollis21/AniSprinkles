@@ -43,15 +43,18 @@
             </HorizontalStackLayout>
 
             <!-- Stepper: [-]  [numeric entry]  [+] -->
-            <Grid ColumnDefinitions="48,*,48" ColumnSpacing="8" VerticalOptions="Center">
+            <!-- The buttons fill the row, so they stand as tall as the Material 3 entry box between them.
+                 Their 5dp top margin matches the strip the outlined field keeps above its box for a
+                 floating label (it keeps it even with no placeholder), so the tops line up too. -->
+            <Grid ColumnDefinitions="56,*,56" ColumnSpacing="8" VerticalOptions="Center">
                 <Button Grid.Column="0" x:Name="DecrementButton"
                         BackgroundColor="Transparent"
                         TextColor="{StaticResource RainbowCyan}"
                         BorderColor="{StaticResource RainbowCyan}"
                         BorderWidth="1"
                         CornerRadius="8"
-                        HeightRequest="44"
-                        WidthRequest="44"
+                        VerticalOptions="Fill"
+                        Margin="0,5,0,0"
                         Padding="0"
                         Clicked="OnDecrementClicked">
                     <Button.ImageSource>
@@ -75,8 +78,8 @@
                         BorderColor="{StaticResource RainbowCyan}"
                         BorderWidth="1"
                         CornerRadius="8"
-                        HeightRequest="44"
-                        WidthRequest="44"
+                        VerticalOptions="Fill"
+                        Margin="0,5,0,0"
                         Padding="0"
                         Clicked="OnIncrementClicked">
                     <Button.ImageSource>

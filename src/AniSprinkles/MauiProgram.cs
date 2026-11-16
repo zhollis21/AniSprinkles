@@ -61,9 +61,19 @@ public static class MauiProgram
             // strip over a pushed details page once you switch bottom tabs and come back — and the strip
             // is live, so tapping it changes which list Back returns to. This registration is the opt-out
             // the upstream change documents (dotnet/maui#34758); a later AddHandler wins over the default.
-            // Remove it once the handler is fixed, re-running the four steps in #177 on device first.
+            // Remove it once the handler is fixed (reported as dotnet/maui#40303), re-running the four
+            // steps in #177 on device first.
+            //
+            // ActivityIndicator stays on the classic handler too, although the rest of the app is
+            // Material 3 (#172). UseMaterial3 swaps in Material's CircularProgressIndicator, which
+            // animates on the UI thread. Our spinners show while a page is being built, which is
+            // exactly when that thread is busy, so it sat frozen as a dot. The classic ProgressBar
+            // animates on the render thread and keeps turning. Reported as dotnet/maui#40315.
             .ConfigureMauiHandlers(handlers =>
-                handlers.AddHandler<Shell, Microsoft.Maui.Controls.Handlers.Compatibility.ShellRenderer>())
+            {
+                handlers.AddHandler<Shell, Microsoft.Maui.Controls.Handlers.Compatibility.ShellRenderer>();
+                handlers.AddHandler<ActivityIndicator, Microsoft.Maui.Handlers.ActivityIndicatorHandler>();
+            })
 #endif
             ;
 
