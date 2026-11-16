@@ -391,7 +391,9 @@ internal sealed class FixtureWriter(string outputDirectory, bool force)
             .Where(f => f.Fixture?.Response is not null)
             .ToList();
 
-        var mentioned = fixtures.SelectMany(f => MatureContentFilter.MediaIdsIn(f.Fixture!.Response)).ToHashSet();
+        var mentioned = fixtures
+            .SelectMany(f => MatureContentFilter.IdsToLookUp(f.Fixture!.Response, f.Fixture.Variables))
+            .ToHashSet();
         var excluded = await lookup.ExcludedAmongAsync(mentioned);
         Console.WriteLine($"  {excluded.Count} Ecchi/18+ title(s) among {mentioned.Count} mentioned");
 
@@ -449,6 +451,8 @@ internal sealed class MatureLookup(HttpClient http, string token)
 
     private static readonly Uri Endpoint = new("https://graphql.anilist.co");
 
+    private static readonly Uri Referer = new("https://anilist.co/");
+
     private readonly Dictionary<int, bool> _excluded = [];
 
     public async Task<IReadOnlySet<int>> ExcludedAmongAsync(IEnumerable<int> ids)
@@ -472,6 +476,11 @@ internal sealed class MatureLookup(HttpClient http, string token)
             };
             request.Headers.Authorization = new("Bearer", token);
             request.Headers.Accept.Add(new("application/json"));
+
+            // Every direct path to AniList sends this (#160), as AniListClient does. AniList refuses
+            // a request with neither a Referer nor a token. This one has a token today, but the scrub
+            // should not depend on that staying enough.
+            request.Headers.Referrer = Referer;
 
             using var response = await http.SendAsync(request);
             response.EnsureSuccessStatusCode();

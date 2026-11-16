@@ -42,6 +42,26 @@ public static class MatureContentFilter
     }
 
     /// <summary>
+    /// Every media id the recorder has to look up for one fixture: those in the response, plus the
+    /// title the fixture is about (see <see cref="IsAbout"/>).
+    /// <para>
+    /// The subject has to be added separately. A cast or recommendations page names its title only
+    /// in the request's variables, and an empty page mentions no media at all. Without the subject,
+    /// such a title would never be looked up, so <see cref="IsAbout"/> could never delete its pages.
+    /// </para>
+    /// </summary>
+    public static IReadOnlySet<int> IdsToLookUp(JsonNode? response, JsonNode? variables)
+    {
+        var ids = new HashSet<int>(MediaIdsIn(response));
+        if (SubjectMediaId(response, variables) is { } subject)
+        {
+            ids.Add(subject);
+        }
+
+        return ids;
+    }
+
+    /// <summary>
     /// Removes every array element that is an excluded media, wraps one directly (a list entry's
     /// <c>media</c>, a relation's <c>node</c>, a recommendation's <c>mediaRecommendation</c>), or
     /// names one by <c>mediaId</c>. Returns how many were removed.
@@ -69,15 +89,13 @@ public static class MatureContentFilter
     /// </para>
     /// </summary>
     public static bool IsAbout(JsonNode? response, JsonNode? variables, IReadOnlySet<int> excluded)
-    {
-        if (response?["data"]?["Media"] is not JsonObject media)
-        {
-            return false;
-        }
+        => SubjectMediaId(response, variables) is { } id && excluded.Contains(id);
 
-        var id = IntOf(media["id"]) ?? IntOf(variables?["id"]);
-        return id is { } value && excluded.Contains(value);
-    }
+    /// <summary>The title a <c>data.Media</c> fixture is about, or null for any other fixture.</summary>
+    private static int? SubjectMediaId(JsonNode? response, JsonNode? variables)
+        => response?["data"]?["Media"] is JsonObject media
+            ? IntOf(media["id"]) ?? IntOf(variables?["id"])
+            : null;
 
     /// <summary>
     /// A media object, as opposed to a character, staff member or studio: those have a

@@ -66,6 +66,28 @@ public class MatureContentFilterTests
         Assert.That(MatureContentFilter.MediaIdsIn(response), Is.EquivalentTo(new[] { 1 }));
     }
 
+    [Test]
+    public void IdsToLookUp_IncludeTheTitleASectionPageIsAbout_EvenWhenThePageIsEmpty()
+    {
+        // A cast or recommendations page names its title only in the request. With nothing in the
+        // connection, the response mentions no media at all, so unless the request's id is looked up
+        // the title is never checked and IsAbout can never delete the page (PR #192 review).
+        var response = JsonNode.Parse("""{"data":{"Media":{"recommendations":{"nodes":[]}}}}""");
+
+        var ids = MatureContentFilter.IdsToLookUp(response, JsonNode.Parse("""{"id":10073,"page":2}"""));
+
+        Assert.That(ids, Is.EquivalentTo(new[] { 10073 }));
+    }
+
+    [Test]
+    public void IdsToLookUp_LeaveOutTheCharacterAPageIsAbout()
+        // A Character page's request id is a character's, from a range that overlaps media ids.
+        => Assert.That(
+            MatureContentFilter.IdsToLookUp(
+                JsonNode.Parse("""{"data":{"Character":{"id":10073,"name":{"full":"Someone"}}}}"""),
+                JsonNode.Parse("""{"id":10073}""")),
+            Is.Empty);
+
     // ── Taking them out ──────────────────────────────────────────────
 
     [Test]
