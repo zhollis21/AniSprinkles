@@ -18,32 +18,19 @@
     <Grid RowDefinitions="Auto,Auto,Auto,*" Padding="{StaticResource LayoutPadding}">
         <views:OutageBanner Grid.Row="0" />
 
-        <!-- Row 1: always-visible search bar. On a dedicated tab there is nothing to toggle. -->
-        <Border Grid.Row="1"
-                Style="{StaticResource CardStyle}"
-                Padding="4,0"
-                Margin="0,0,0,8">
-            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
-                <Label Grid.Column="0"
-                       Text="{x:Static icons:FluentIconsRegular.Search24}"
-                       FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                       TextColor="{StaticResource Gray400}"
-                       FontSize="18"
-                       WidthRequest="18" HeightRequest="18"
-                       HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
-                       VerticalOptions="Center" Margin="8,0,0,0"
-                       AutomationProperties.IsInAccessibleTree="False" />
-                <Entry Grid.Column="1"
-                       x:Name="SearchEntry"
-                       AutomationId="SearchEntry"
-                       Placeholder="{Binding SearchPlaceholder}"
-                       Text="{Binding SearchText}"
-                       ClearButtonVisibility="WhileEditing"
-                       FontSize="15"
-                       BackgroundColor="Transparent"
-                       VerticalOptions="Center" />
-            </Grid>
-        </Border>
+        <!--
+            Row 1: always-visible search bar. On a dedicated tab there is nothing to toggle.
+            Under Material 3 (#172) the Entry is its own outlined text field, with the placeholder as
+            its floating label, so it carries no card or icon of ours around it.
+        -->
+        <Entry Grid.Row="1"
+               x:Name="SearchEntry"
+               AutomationId="SearchEntry"
+               Placeholder="{Binding SearchPlaceholder}"
+               Text="{Binding SearchText}"
+               ClearButtonVisibility="WhileEditing"
+               FontSize="15"
+               Margin="0,0,0,8" />
 
         <!--
             Row 2: media-type filter (#12). AniList's search takes one type at a time OR none at

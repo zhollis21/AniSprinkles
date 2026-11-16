@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!--
+	  Material 3 colour roles for AniSprinkles (#172).
+
+	  With UseMaterial3 on, MAUI themes two things from Maui.Material3.Theme.Base: the activity,
+	  through Maui.Material3.Theme.NoActionBar (which inherits Base), and the Material 3 controls
+	  and dialogs it creates, through MauiMaterialContextThemeWrapper, which wraps Base directly.
+	  Base inherits Theme.Material3.DayNight, so every role it doesn't set falls back to Material
+	  3's default lavender; colors.xml's colorPrimary feeds only the Material 2 theme. An app
+	  resource with the same name as a library style replaces it, so redefining Base is the one
+	  place that reaches the dialogs, switches, text fields and tab bar together. Overriding only
+	  NoActionBar was tried first: the text fields turned cyan and the native dialogs stayed
+	  lavender.
+
+	  The four items above the colours are copied from MAUI 11.0.10's own definition
+	  (styles-material3.xml in Microsoft.Maui.aar), along with the parent. Replacing the style
+	  drops them otherwise, and a MAUI update that changes them will not reach us: re-check them
+	  when Microsoft.Maui.Controls is bumped.
+	-->
+	<style name="Maui.Material3.Theme.Base" parent="Theme.Material3.DayNight">
+		<item name="maui_edgetoedge_optout">true</item>
+		<item name="maui_splash">false</item>
+		<item name="bottomNavigationViewStyle">@style/Widget.Material3.BottomNavigationView</item>
+		<item name="materialButtonStyle">@style/MauiMaterialButton</item>
+
+		<!-- Primary (Colors.xaml): dialog buttons, text cursor, switch track, focused field outline. -->
+		<item name="colorPrimary">#00C2FF</item>
+		<!-- Background (Colors.xaml): text and icons drawn on the cyan. -->
+		<item name="colorOnPrimary">#17171A</item>
+		<!-- The pill behind the selected bottom tab: neutral, so selection adds no hue. -->
+		<item name="colorSecondaryContainer">#2E2E33</item>
+		<!-- Gray900 (Colors.xaml): native dialog background, matching the app's cards. -->
+		<item name="colorSurfaceContainerHigh">#212121</item>
+	</style>
+</resources>

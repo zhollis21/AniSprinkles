@@ -588,15 +588,17 @@ jobs:
 
           # ---- Adult-content filter gate --------------------------------------------------------
           #
-          # AdultCanary splices one synthetic entry flagged isAdult, titled ADULT_CANARY, into the
-          # replayed fixtures (#134) — always into the list, and into browse/search/Discover whenever
-          # the request does not pin isAdult:false. The stub viewer leaves DisplayAdultContent off
+          # AdultCanary splices synthetic entries flagged isAdult into the replayed fixtures (#134):
+          # the canary itself plus a couple of made-up 18+ titles, every one of them titled with the
+          # ADULT_CANARY prefix. They go into the list always, and into browse/search/Discover
+          # whenever the request does not pin isAdult:false. The recorder keeps every real Ecchi and
+          # 18+ title out of the fixtures, so these are the only adult content in the build. The stub viewer leaves DisplayAdultContent off
           # and nothing in this job turns it on, so every surface must filter it out. If it renders,
           # the adult filter is broken — and the same defect on a real account would be putting real
           # 18+ content in front of a user who asked not to see it. That is worth a red build, not a
           # screenshot somebody might scroll past.
           #
-          # The canary carries no adult content itself: the title is a marker and it has no cover
+          # None of them carries adult content itself: each title is a marker and none has a cover
           # image, so a failure shows the app's own placeholder next to a shouted label.
           #
           # Deliberately a warning when the dump cannot be read: an unreadable dump is a flaky
@@ -818,12 +820,12 @@ jobs:
 
           # Screenshot 2: Library tab, Manga sub-tab.
           #
-          # The sub-tab strip renders its labels uppercase, so the dump text is "MANGA" even
-          # though AppShell.xaml says Title="Manga". Tapping the XAML casing matches nothing,
-          # and because a failed tap only warns, the capture below would silently re-shoot the
-          # anime page and publish it as the manga one. Verified against a uiautomator dump on
-          # the API 36 emulator.
-          if tap_element_by_text "MANGA"; then
+          # The sub-tab strip's casing comes from the Android theme, not from AppShell.xaml: the
+          # Material 2 TabLayout uppercased it ("MANGA"), the Material 3 one keeps the XAML Title
+          # ("Manga", #172). The match is exact, so a theme change breaks it — and because a failed
+          # tap only warns, the capture below would silently re-shoot the anime page and publish
+          # it as the manga one. The missing-screenshot check further down is what catches that.
+          if tap_element_by_text "Manga"; then
             # The manga list is not fetched until the tab is first shown — the Android pager
             # does not pre-warm the adjacent page — so this genuinely loads here rather than
             # being ready already.
@@ -849,10 +851,10 @@ jobs:
             echo "Captured: manga_library.png (Manga Library — $AUTH_MODE)"
 
             # Return to the anime half — every step below navigates from the anime list.
-            tap_element_by_text "ANIME" || echo "::warning::Could not return to the Anime sub-tab"
+            tap_element_by_text "Anime" || echo "::warning::Could not return to the Anime sub-tab"
             sleep 2
           else
-            echo "::warning::Could not find the MANGA sub-tab — skipping the Manga Library screenshot"
+            echo "::warning::Could not find the Manga sub-tab — skipping the Manga Library screenshot"
           fi
 
           # Tap One Piece to open its details page

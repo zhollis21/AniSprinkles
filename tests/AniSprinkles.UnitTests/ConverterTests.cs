@@ -189,3 +189,23 @@ public class StringNotNullOrEmptyConverterTests
     public void Convert_ForANonString_IsFalse()
         => Assert.That(Converter.Convert(42, typeof(bool), null, CultureInfo.InvariantCulture), Is.EqualTo(false));
 }
+
+public class OpaqueColorConverterTests
+{
+    private static readonly OpaqueColorConverter Converter = new();
+
+    [Test]
+    public void Convert_KeepsTheHueAndDropsTheTint()
+    {
+        // A tonal switch track is the rainbow colour at 28%; its thumb is the same colour, opaque.
+        var tint = Color.FromArgb("#FF2D95").WithAlpha(0.28f);
+
+        var result = Converter.Convert(tint, typeof(Color), null, CultureInfo.InvariantCulture);
+
+        Assert.That(result, Is.EqualTo(Color.FromArgb("#FF2D95")));
+    }
+
+    [Test]
+    public void Convert_ForANonColour_IsNullSoTheControlKeepsItsDefault()
+        => Assert.That(Converter.Convert(null, typeof(Color), null, CultureInfo.InvariantCulture), Is.Null);
+}

@@ -360,31 +360,17 @@
         <pullToRefresh:SfPullToRefresh.PullableContent>
             <Grid RowDefinitions="Auto,*">
 
-                <!-- Row 0: Expandable search bar -->
-                <Border Grid.Row="0"
-                        Style="{StaticResource CardStyle}"
-                        Padding="4,0"
-                        Margin="0,0,0,8"
-                        IsVisible="{Binding IsSearchVisible}">
-                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
-                        <Label Grid.Column="0"
-                               Text="{x:Static icons:FluentIconsRegular.Search24}"
-                               FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
-                               TextColor="{StaticResource Gray400}"
-                               FontSize="18"
-                               WidthRequest="18" HeightRequest="18"
-                               HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
-                               VerticalOptions="Center" Margin="8,0,0,0"
-                               AutomationProperties.IsInAccessibleTree="False" />
-                        <Entry Grid.Column="1"
-                               Placeholder="Search anime..."
-                               Text="{Binding SearchText}"
-                               ClearButtonVisibility="WhileEditing"
-                               FontSize="15"
-                               BackgroundColor="Transparent"
-                               VerticalOptions="Center" />
-                    </Grid>
-                </Border>
+                <!--
+                    Row 0: Expandable search bar. A Material 3 outlined text field on its own
+                    (#172): the placeholder is its floating label, so no card or icon of ours.
+                -->
+                <Entry Grid.Row="0"
+                       Placeholder="Search anime..."
+                       Text="{Binding SearchText}"
+                       ClearButtonVisibility="WhileEditing"
+                       FontSize="15"
+                       Margin="0,0,0,8"
+                       IsVisible="{Binding IsSearchVisible}" />
 
                 <!-- Row 1: Grouped CollectionView -->
                 <CollectionView Grid.Row="1"
