@@ -103,6 +103,11 @@ using var rateLimit = new AniListRateLimitHandler(
 using var recording = new RecordingHandler(writer) { InnerHandler = rateLimit };
 using var http = new HttpClient(recording) { Timeout = TimeSpan.FromSeconds(60) };
 
+// The Ecchi/18+ lookup shares the throttle but not the recorder. It is the recorder's own question,
+// not one the app asks, so it has no business being written down as a fixture.
+using var lookupHttp = new HttpClient(rateLimit, disposeHandler: false) { Timeout = TimeSpan.FromSeconds(60) };
+var mature = new MatureLookup(lookupHttp, token);
+
 var client = new AniListClient(
     http,
     new StaticTokenAuthService(token),
@@ -111,7 +116,7 @@ var client = new AniListClient(
 
 try
 {
-    await new RecordingPlan(client, writer, options, logger).RunAsync();
+    await new RecordingPlan(client, writer, options, logger, mature).RunAsync();
 }
 catch (Exception ex)
 {
@@ -364,6 +369,140 @@ internal sealed class FixtureWriter(string outputDirectory, bool force)
             Console.WriteLine($"  ~ trimmed {removed} unrecorded entrie(s) from {Path.GetFileNameWithoutExtension(path)}");
         }
     }
+
+    /// <summary>
+    /// Takes every Ecchi and 18+ title out of every fixture on disk.
+    /// <para>
+    /// A pass over the files rather than a filter on the way in, because a resumed run answers most
+    /// requests from disk and never writes them. Only a pass over everything on disk also cleans
+    /// fixtures recorded before this rule existed. A fixture that is about an excluded title (its
+    /// details, or a page of its cast) is deleted outright.
+    /// </para>
+    /// <para>
+    /// Then it checks its own work. A response shape <see cref="MatureContentFilter"/> does not know
+    /// would leave an excluded title in place without complaint, so anything that survives stops the
+    /// run, naming the file.
+    /// </para>
+    /// </summary>
+    public async Task ScrubMatureContentAsync(MatureLookup lookup)
+    {
+        var fixtures = Directory.GetFiles(outputDirectory, "*.json")
+            .Select(path => (Path: path, Fixture: JsonSerializer.Deserialize<GraphQlFixture>(File.ReadAllText(path), WriteOptions)))
+            .Where(f => f.Fixture?.Response is not null)
+            .ToList();
+
+        var mentioned = fixtures.SelectMany(f => MatureContentFilter.MediaIdsIn(f.Fixture!.Response)).ToHashSet();
+        var excluded = await lookup.ExcludedAmongAsync(mentioned);
+        Console.WriteLine($"  {excluded.Count} Ecchi/18+ title(s) among {mentioned.Count} mentioned");
+
+        var deleted = 0;
+        var removed = 0;
+        foreach (var (path, fixture) in fixtures)
+        {
+            if (MatureContentFilter.IsAbout(fixture!.Response, fixture.Variables, excluded))
+            {
+                File.Delete(path);
+                deleted++;
+                continue;
+            }
+
+            var count = MatureContentFilter.Remove(fixture.Response, excluded);
+            var left = MatureContentFilter.MediaIdsIn(fixture.Response).Intersect(excluded).ToList();
+            if (left.Count > 0)
+            {
+                throw new InvalidOperationException(
+                    $"{Path.GetFileName(path)} still mentions Ecchi/18+ media {string.Join(", ", left)} in a shape "
+                    + "MatureContentFilter does not know. Teach it the shape before recording again.");
+            }
+
+            if (count > 0)
+            {
+                File.WriteAllText(path, JsonSerializer.Serialize(fixture, WriteOptions), Encoding.UTF8);
+                removed += count;
+            }
+        }
+
+        Console.WriteLine($"  ~ removed {removed} Ecchi/18+ result(s), deleted {deleted} fixture(s) about one");
+    }
+}
+
+/// <summary>
+/// Asks AniList which media are Ecchi or 18+, by id, fifty to a request, and remembers the answers.
+/// <para>
+/// A lookup because the responses themselves cannot say: relations, recommendations and the list
+/// carry neither <c>genres</c> nor, mostly, <c>isAdult</c>. A title the lookup does not return is
+/// treated as excluded. A deleted media costs one fixture that way, while guessing "fine" could put
+/// something that is not fine into a public repository.
+/// </para>
+/// </summary>
+internal sealed class MatureLookup(HttpClient http, string token)
+{
+    private const int BatchSize = 50;
+
+    private const string Query = """
+        query MatureContentCheck($ids: [Int], $perPage: Int) {
+          Page(page: 1, perPage: $perPage) {
+            media(id_in: $ids) { id isAdult genres }
+          }
+        }
+        """;
+
+    private static readonly Uri Endpoint = new("https://graphql.anilist.co");
+
+    private readonly Dictionary<int, bool> _excluded = [];
+
+    public async Task<IReadOnlySet<int>> ExcludedAmongAsync(IEnumerable<int> ids)
+    {
+        var all = ids.ToHashSet();
+        foreach (var batch in all.Where(id => !_excluded.ContainsKey(id)).Chunk(BatchSize))
+        {
+            var body = new JsonObject
+            {
+                ["query"] = Query,
+                ["variables"] = new JsonObject
+                {
+                    ["ids"] = new JsonArray([.. batch.Select(id => (JsonNode)id)]),
+                    ["perPage"] = BatchSize,
+                },
+            };
+
+            using var request = new HttpRequestMessage(HttpMethod.Post, Endpoint)
+            {
+                Content = new StringContent(body.ToJsonString(), Encoding.UTF8, "application/json"),
+            };
+            request.Headers.Authorization = new("Bearer", token);
+            request.Headers.Accept.Add(new("application/json"));
+
+            using var response = await http.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+            var json = JsonNode.Parse(await response.Content.ReadAsStringAsync());
+            if (json?["errors"] is JsonArray { Count: > 0 } errors)
+            {
+                throw new InvalidOperationException($"The Ecchi/18+ lookup failed: {errors.ToJsonString()}");
+            }
+
+            var found = new HashSet<int>();
+            foreach (var media in json?["data"]?["Page"]?["media"] as JsonArray ?? [])
+            {
+                if (media?["id"]?.GetValue<int>() is not { } id)
+                {
+                    continue;
+                }
+
+                var genres = (media["genres"] as JsonArray ?? []).Select(g => g?.GetValue<string>()).OfType<string>();
+                _excluded[id] = MatureContentFilter.IsExcluded(media["isAdult"]?.GetValue<bool>(), genres);
+                found.Add(id);
+            }
+
+            foreach (var id in batch.Where(id => !found.Contains(id)))
+            {
+                _excluded[id] = true;
+                Console.WriteLine($"  ~ media {id} did not come back from the Ecchi/18+ lookup, so it is left out");
+            }
+        }
+
+        return all.Where(id => _excluded[id]).ToHashSet();
+    }
 }
 
 /// <summary>
@@ -438,9 +577,10 @@ internal sealed class RecordingHandler(FixtureWriter writer) : DelegatingHandler
 /// <summary>
 /// Strips the artwork off 18+ results before they are written to disk.
 /// <para>
-/// These fixtures are committed to a public repository, so the metadata is kept — the adult sections
-/// still render populated cards with real titles in CI, which is the point of recording them — but
-/// no 18+ cover or banner URL is stored, and so none is ever fetched or screenshotted.
+/// These fixtures are committed to a public repository. This once kept 18+ titles with their covers
+/// swapped out. Now <c>ScrubMatureContentAsync</c> removes those titles entirely at the end of every
+/// run, and this stays as the second line: if that pass ever stops early, no 18+ cover URL has been
+/// written in the meantime.
 /// </para>
 /// <para>
 /// The replacement deliberately ends in <c>default.jpg</c>, which <c>ImageUrl.IsReal</c> already
@@ -600,7 +740,8 @@ internal sealed class RecordingPlan(
     AniListClient client,
     FixtureWriter writer,
     RecorderOptions options,
-    ConsoleLogger logger)
+    ConsoleLogger logger,
+    MatureLookup mature)
 {
     // These mirror the SortOption lists on the four details page models. They are duplicated rather
     // than shared because those lists are instance properties on DI-constructed page models, which a
@@ -631,8 +772,25 @@ internal sealed class RecordingPlan(
         var animeGroups = await client.GetMediaListGroupedAsync(MediaKind.Anime);
         var mangaGroups = await client.GetMediaListGroupedAsync(MediaKind.Manga);
 
-        var animeIds = SelectMediaIds(animeGroups, options.MaxMedia);
-        var mangaIds = SelectMediaIds(mangaGroups, options.MaxMedia);
+        // Before selection, so an Ecchi or 18+ title on the account never takes one of the
+        // --max-media or deep slots, and never has its details or cast recorded at all. The pass at
+        // the end would delete those anyway, but only after spending requests on them.
+        var onList = animeGroups.Concat(mangaGroups).SelectMany(g => g.Entries).Select(MediaIdOf).Where(id => id > 0);
+        var excluded = await mature.ExcludedAmongAsync(onList);
+        if (excluded.Count > 0)
+        {
+            Console.WriteLine($"  leaving out {excluded.Count} Ecchi/18+ title(s) on the account: {string.Join(", ", excluded)}");
+        }
+
+        if (options.DeepMediaIds.FirstOrDefault(excluded.Contains) is var pinnedExcluded and > 0)
+        {
+            throw new InvalidOperationException(
+                $"Pinned deep media {pinnedExcluded} is Ecchi/18+. Pin a different title with --deep-media-ids, "
+                + "and point the CI capture script at it.");
+        }
+
+        var animeIds = SelectMediaIds(animeGroups, options.MaxMedia, excluded);
+        var mangaIds = SelectMediaIds(mangaGroups, options.MaxMedia, excluded);
 
         // Pinned titles go to the front, so "deep" means them rather than whichever titles the
         // round-robin happened to reach first. Also added if the cap left them out entirely — a
@@ -667,6 +825,11 @@ internal sealed class RecordingPlan(
         // real library while CI carries a bounded slice of it; this is what stops the recorded
         // Library from advertising titles whose details were never captured.
         writer.TrimListFixtures(new HashSet<int>(animeIds.Concat(mangaIds)));
+
+        // After everything, over everything on disk: Search, Browse, Discover, relations,
+        // recommendations and cast pages all bring in titles the list check never saw.
+        logger.Step("Ecchi/18+ scrub");
+        await writer.ScrubMatureContentAsync(mature);
     }
 
     private async Task RecordDiscoverAsync()
@@ -991,12 +1154,12 @@ internal sealed class RecordingPlan(
     /// </para>
     /// </summary>
     private static List<int> SelectMediaIds(
-        IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)> groups, int max)
+        IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)> groups, int max, IReadOnlySet<int> excluded)
     {
         var seen = new HashSet<int>();
         var all = new List<int>();
 
-        foreach (var id in groups.SelectMany(g => g.Entries).Select(MediaIdOf).Where(id => id > 0))
+        foreach (var id in groups.SelectMany(g => g.Entries).Select(MediaIdOf).Where(id => id > 0 && !excluded.Contains(id)))
         {
             if (seen.Add(id))
             {
@@ -1010,7 +1173,7 @@ internal sealed class RecordingPlan(
         }
 
         var queues = groups
-            .Select(g => new Queue<int>(g.Entries.Select(MediaIdOf).Where(id => id > 0)))
+            .Select(g => new Queue<int>(g.Entries.Select(MediaIdOf).Where(id => id > 0 && !excluded.Contains(id))))
             .ToList();
 
         var taken = new List<int>(max);

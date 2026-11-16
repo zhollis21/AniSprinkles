@@ -374,7 +374,8 @@
                                         <Label Text="Display Adult Content" Style="{StaticResource Body1Strong}" />
                                         <Label Text="Show 18+ content in search and lists" Style="{StaticResource Caption1}" TextColor="{StaticResource Gray400}" />
                                     </VerticalStackLayout>
-                                    <Switch Grid.Column="1" IsToggled="{Binding DisplayAdultContent}" VerticalOptions="Center" />
+                                    <Switch Grid.Column="1" IsToggled="{Binding DisplayAdultContent}" VerticalOptions="Center"
+                                            OnColor="{Binding Source='Display Adult Content', x:DataType=x:String, Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}" />
                                 </Grid>
                                 <BoxView HeightRequest="1" Color="{StaticResource Gray600}" />
                                 <Grid ColumnDefinitions="*,Auto" Padding="0,8">
@@ -382,7 +383,8 @@
                                         <Label Text="Airing Notifications" Style="{StaticResource Body1Strong}" />
                                         <Label Text="Get notified when watched anime airs" Style="{StaticResource Caption1}" TextColor="{StaticResource Gray400}" />
                                     </VerticalStackLayout>
-                                    <Switch Grid.Column="1" IsToggled="{Binding AiringNotifications}" VerticalOptions="Center" />
+                                    <Switch Grid.Column="1" IsToggled="{Binding AiringNotifications}" VerticalOptions="Center"
+                                            OnColor="{Binding Source='Airing Notifications', x:DataType=x:String, Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}" />
                                 </Grid>
                                 <BoxView HeightRequest="1" Color="{StaticResource Gray600}" />
                                 <Grid ColumnDefinitions="*,Auto" Padding="0,8">
@@ -390,7 +392,8 @@
                                         <Label Text="Restrict Messages" Style="{StaticResource Body1Strong}" />
                                         <Label Text="Only receive messages from users you follow" Style="{StaticResource Caption1}" TextColor="{StaticResource Gray400}" />
                                     </VerticalStackLayout>
-                                    <Switch Grid.Column="1" IsToggled="{Binding RestrictMessagesToFollowing}" VerticalOptions="Center" />
+                                    <Switch Grid.Column="1" IsToggled="{Binding RestrictMessagesToFollowing}" VerticalOptions="Center"
+                                            OnColor="{Binding Source='Restrict Messages', x:DataType=x:String, Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}" />
                                 </Grid>
                             </VerticalStackLayout>
                         </Border>
@@ -443,7 +446,9 @@
                                        TextColor="{Binding Category, Converter={StaticResource RainbowAccentConverter}}"
                                        WidthRequest="50" VerticalTextAlignment="Center" />
                                             <Label Grid.Column="1" Text="{Binding DisplayName}" Style="{StaticResource Body2}" VerticalTextAlignment="Center" />
-                                            <Switch Grid.Column="2" IsToggled="{Binding IsEnabled}" VerticalOptions="Center" />
+                                            <!-- Keyed on Category, so the switch matches the label at the start of its row. -->
+                                            <Switch Grid.Column="2" IsToggled="{Binding IsEnabled}" VerticalOptions="Center"
+                                                    OnColor="{Binding Category, Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}" />
                                         </Grid>
                                     </DataTemplate>
                                 </BindableLayout.ItemTemplate>

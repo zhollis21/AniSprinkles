@@ -2,7 +2,8 @@
 <ResourceDictionary 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:shimmer="clr-namespace:Syncfusion.Maui.Toolkit.Shimmer;assembly=Syncfusion.Maui.Toolkit">
+    xmlns:shimmer="clr-namespace:Syncfusion.Maui.Toolkit.Shimmer;assembly=Syncfusion.Maui.Toolkit"
+    xmlns:converters="clr-namespace:AniSprinkles.Converters;assembly=AniSprinkles.Core">
 
     <!-- ============================= -->
     <!-- Activity / Indicators -->
@@ -385,10 +386,15 @@
                 Value="{StaticResource Black}" />
     </Style>
 
+    <!--
+        Tonal switches (#172): when on, the track is the switch's colour at 28% and the thumb is the
+        same colour, opaque. A switch declares its colour once, as OnColor (Settings passes each one a
+        rainbow accent with the converter's tint flag); the On state derives the thumb from it, so the
+        two cannot drift apart. The default is Primary, tinted. Off stays neutral grey: Material 3's
+        outlined track with a grey thumb.
+    -->
     <Style TargetType="Switch">
-        <Setter Property="OnColor"
-                Value="{StaticResource Primary}" />
-        <Setter Property="ThumbColor" Value="{StaticResource White}" />
+        <Setter Property="OnColor" Value="#4700C2FF" />
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
                 <VisualStateGroup x:Name="CommonStates">
@@ -403,10 +409,15 @@
                     </VisualState>
                     <VisualState x:Name="On">
                         <VisualState.Setters>
-                            <Setter Property="OnColor"
-                                    Value="{StaticResource Gray200}" />
-                            <Setter Property="ThumbColor"
-                                    Value="{StaticResource Primary}" />
+                            <Setter Property="ThumbColor">
+                                <Setter.Value>
+                                    <Binding Path="OnColor" Source="{RelativeSource Self}" x:DataType="Switch">
+                                        <Binding.Converter>
+                                            <converters:OpaqueColorConverter />
+                                        </Binding.Converter>
+                                    </Binding>
+                                </Setter.Value>
+                            </Setter>
                         </VisualState.Setters>
                     </VisualState>
                     <VisualState x:Name="Off">

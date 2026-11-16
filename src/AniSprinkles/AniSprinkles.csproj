@@ -14,6 +14,9 @@
 		     (2) ContentView/Popup roots where the binding context is set at runtime and cannot be
 		         declared statically (e.g. AuthActionsView, RatingPopup). -->
 		<NoWarn>$(NoWarn);XC0023</NoWarn>
+		<!-- Material 3 control styling on Android (#172). Its colour roles come from the theme
+		     override in Platforms/Android/Resources/values/styles.xml, not from colors.xml. -->
+		<UseMaterial3>true</UseMaterial3>
 
 		<!-- Display name -->
 		<ApplicationTitle>AniSprinkles</ApplicationTitle>

@@ -301,10 +301,13 @@ the screen rather than trusting this list, and check
 `src/AniSprinkles/Fixtures/AniList/MediaListCollection__*.json` for what the Library actually holds.
 Prefer the `AutomationId`s above where one exists: they survive a re-recording, and titles do not.
 
-- **Library › Anime** (nav title reads "Library"; sub-tabs are `ANIME` / `MANGA`) — `Watching`
-  (5, as of 2026-11-12): `That Time I Got Reincarnated as a Slime Season 4`,
-  `The Qwaser of Stigmata II`, `Sword Art Online`, `ONE PIECE`, `Gintama Season 4`. `Completed`,
-  `Planning`, `Dropped` and `Paused` are populated too — every status has entries, deliberately.
+- **Library › Anime** (nav title reads "Library"; sub-tabs are `Anime` / `Manga` — Material 3 keeps the XAML casing, #172) — `Watching`
+  (4, as of 2026-11-16): `That Time I Got Reincarnated as a Slime Season 4`, `Sword Art Online`,
+  `ONE PIECE`, `Gintama Season 4`. `Completed`, `Planning`, `Dropped` and `Paused` are populated
+  too — every status has entries, deliberately. The recorder leaves out Ecchi and 18+ titles even
+  when the account has them, so the Library can be shorter than the account itself. The CI build's
+  only adult titles are made up and start with `18PLUS CANARY`; with adult content off, which is
+  the default, none of them should ever render.
 - **Library › Manga**: `Reading` has `Shingeki no Kyojin` and `ONE PIECE`; `Completed` has
   `Chainsaw Man`.
 - **Media details** (ONE PIECE): `Luffy D. Monkey`, `Zoro Roronoa` — family-name-first, because
