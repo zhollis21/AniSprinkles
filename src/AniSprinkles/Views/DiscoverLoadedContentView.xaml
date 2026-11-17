@@ -12,7 +12,7 @@
     <pullToRefresh:SfPullToRefresh IsRefreshing="{Binding IsBusy}"
                                    RefreshCommand="{Binding RefreshCommand}">
         <pullToRefresh:SfPullToRefresh.PullableContent>
-            <ScrollView>
+            <ScrollView x:Name="ContentScrollView">
                 <!-- One DiscoverSectionView per row, in DiscoverSectionDefinitions order. Only ~8
                      items, so a non-virtualizing BindableLayout is fine (the carousels inside
                      virtualize themselves). Empty rows (e.g. 18+ with the toggle off) self-hide. -->
