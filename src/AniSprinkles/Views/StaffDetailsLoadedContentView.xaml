@@ -7,8 +7,7 @@
              xmlns:views="clr-namespace:AniSprinkles.Views"
              xmlns:behaviors="clr-namespace:AniSprinkles.Behaviors"
              x:Class="AniSprinkles.Views.StaffDetailsLoadedContentView"
-             x:DataType="pageModels:StaffDetailsPageModel"
-             x:Name="RootView">
+             x:DataType="pageModels:StaffDetailsPageModel">
 
     <ScrollView>
         <VerticalStackLayout Padding="{StaticResource LayoutPadding}" Spacing="16">
@@ -315,8 +314,7 @@
                             <DataTemplate x:DataType="models:StaffCharacterEdge">
                                 <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130">
                                     <Border.GestureRecognizers>
-                                        <TapGestureRecognizer x:DataType="{x:Null}"
-                                                              Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToCharacterCommand}"
+                                        <TapGestureRecognizer Command="{Binding NavigateToCharacterCommand, Source={RelativeSource AncestorType={x:Type pageModels:StaffDetailsPageModel}}}"
                                                               CommandParameter="{Binding Node.Id}" />
                                     </Border.GestureRecognizers>
                                     <VerticalStackLayout>
@@ -333,8 +331,7 @@
                                                     Padding="0"
                                                     IsVisible="{!string.IsNullOrWhiteSpace(Media?.CoverImage?.Medium)}">
                                                 <Border.GestureRecognizers>
-                                                    <TapGestureRecognizer x:DataType="{x:Null}"
-                                                                          Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToMediaCommand}"
+                                                    <TapGestureRecognizer Command="{Binding NavigateToMediaCommand, Source={RelativeSource AncestorType={x:Type pageModels:StaffDetailsPageModel}}}"
                                                                           CommandParameter="{Binding Media}" />
                                                 </Border.GestureRecognizers>
                                                 <Image Source="{Binding Media.CoverImage.Medium}" Aspect="AspectFill" />
@@ -421,8 +418,7 @@
                             <DataTemplate x:DataType="models:StaffMediaEdge">
                                 <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130">
                                     <Border.GestureRecognizers>
-                                        <TapGestureRecognizer x:DataType="{x:Null}"
-                                                              Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToMediaCommand}"
+                                        <TapGestureRecognizer Command="{Binding NavigateToMediaCommand, Source={RelativeSource AncestorType={x:Type pageModels:StaffDetailsPageModel}}}"
                                                               CommandParameter="{Binding Node}" />
                                     </Border.GestureRecognizers>
                                     <VerticalStackLayout>

@@ -10,7 +10,7 @@ public class XamlFileValidationTests
 {
     // Cached once per test run — FindRepoRoot walks parent directories and would otherwise
     // be called once per file during discovery and once per file during validation.
-    private static readonly Lazy<string> RepoRoot = new(FindRepoRoot);
+    internal static readonly Lazy<string> RepoRoot = new(FindRepoRoot);
 
     [TestCaseSource(nameof(AllXamlFiles))]
     public void XamlFile_IsWellFormedXml(string relativePath)
