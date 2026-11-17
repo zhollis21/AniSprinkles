@@ -7,7 +7,7 @@ using AniSprinkles.Utilities;
 
 namespace AniSprinkles.PageModels;
 
-public partial class MediaListPageModel : ObservableObject
+public partial class MediaListPageModel : ObservableObject, IAuthActions
 {
     /// <summary>Which half of the Library tab this instance serves (#12).</summary>
     public MediaKind Kind { get; }

@@ -7,8 +7,7 @@
              xmlns:views="clr-namespace:AniSprinkles.Views"
              xmlns:behaviors="clr-namespace:AniSprinkles.Behaviors"
              x:Class="AniSprinkles.Views.StudioDetailsLoadedContentView"
-             x:DataType="pageModels:StudioDetailsPageModel"
-             x:Name="RootView">
+             x:DataType="pageModels:StudioDetailsPageModel">
 
     <ScrollView>
         <VerticalStackLayout Padding="{StaticResource LayoutPadding}" Spacing="16">
@@ -131,8 +130,7 @@
                             <DataTemplate x:DataType="models:StudioMediaEdge">
                                 <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130">
                                     <Border.GestureRecognizers>
-                                        <TapGestureRecognizer x:DataType="{x:Null}"
-                                                              Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToMediaCommand}"
+                                        <TapGestureRecognizer Command="{Binding NavigateToMediaCommand, Source={RelativeSource AncestorType={x:Type pageModels:StudioDetailsPageModel}}}"
                                                               CommandParameter="{Binding Node}" />
                                     </Border.GestureRecognizers>
                                     <VerticalStackLayout>

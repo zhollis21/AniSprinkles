@@ -66,8 +66,7 @@
                 <DataTemplate x:DataType="models:BrowseMediaItem">
                     <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130">
                         <Border.GestureRecognizers>
-                            <TapGestureRecognizer x:DataType="{x:Null}"
-                                                  Command="{Binding Source={x:Reference SectionRoot}, Path=NavigateCommand}"
+                            <TapGestureRecognizer Command="{Binding Source={x:Reference SectionRoot}, Path=NavigateCommand}"
                                                   CommandParameter="{Binding}" />
                         </Border.GestureRecognizers>
                         <VerticalStackLayout>
