@@ -68,6 +68,9 @@
                         <Border.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding Source={x:Reference SectionRoot}, Path=NavigateCommand}"
                                                   CommandParameter="{Binding}" />
+                            <!-- Same element as the tap, so they share one GestureDetector and no tap follows the long press (#171). -->
+                            <LongPressGestureRecognizer Command="{Binding Source={x:Reference SectionRoot}, Path=LongPressCommand}"
+                                                        CommandParameter="{Binding}" />
                         </Border.GestureRecognizers>
                         <VerticalStackLayout>
                             <!-- On-list status pill lives inside CoverImage (top-left), shared with the

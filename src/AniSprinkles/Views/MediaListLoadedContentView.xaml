@@ -16,9 +16,15 @@
             <!-- STANDARD ITEM TEMPLATE (list rows)           -->
             <!-- ============================================ -->
             <DataTemplate x:Key="StandardItemTemplate" x:DataType="models:MediaListEntry">
+                <!-- Long press sits on the same element as the tap in all three templates, so they share one
+                     GestureDetector and no tap follows a long press (#171). The nested +1 pill has its own
+                     detector, so it carries its own long press too: without one, its detector reports a tap on
+                     release after any hold, and holding +1 would increment progress. -->
                 <Border Style="{StaticResource ListRowStyle}" Margin="0,0,0,6" AutomationId="MediaCard">
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnItemTapped" />
+                        <LongPressGestureRecognizer Command="{Binding ShowActionMenuCommand, Source={RelativeSource AncestorType={x:Type pageModels:MediaListPageModel}}}"
+                                                    CommandParameter="{Binding .}" />
                     </Border.GestureRecognizers>
                     <Grid ColumnDefinitions="70,*,Auto" ColumnSpacing="0" Padding="0">
                         <!-- Cover image -->
@@ -88,6 +94,8 @@
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding IncrementProgressCommand, Source={RelativeSource AncestorType={x:Type pageModels:MediaListPageModel}}}"
                                     CommandParameter="{Binding .}" />
+                                <LongPressGestureRecognizer Command="{Binding ShowActionMenuCommand, Source={RelativeSource AncestorType={x:Type pageModels:MediaListPageModel}}}"
+                                                            CommandParameter="{Binding .}" />
                             </Border.GestureRecognizers>
                             <Label Text="{Binding IncrementLabel}"
                                    Style="{StaticResource Caption1Strong}"
@@ -106,6 +114,8 @@
                 <Border Style="{StaticResource CardStyle}" Padding="0" Margin="4" AutomationId="MediaCard">
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnItemTapped" />
+                        <LongPressGestureRecognizer Command="{Binding ShowActionMenuCommand, Source={RelativeSource AncestorType={x:Type pageModels:MediaListPageModel}}}"
+                                                    CommandParameter="{Binding .}" />
                     </Border.GestureRecognizers>
                     <!-- Row 1 uses * so the info area fills the card to the bottom even
                          when the CollectionView stretches this card to match a taller neighbor.
@@ -209,6 +219,8 @@
                                     <Border.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding IncrementProgressCommand, Source={RelativeSource AncestorType={x:Type pageModels:MediaListPageModel}}}"
                                             CommandParameter="{Binding .}" />
+                                        <LongPressGestureRecognizer Command="{Binding ShowActionMenuCommand, Source={RelativeSource AncestorType={x:Type pageModels:MediaListPageModel}}}"
+                                                                    CommandParameter="{Binding .}" />
                                     </Border.GestureRecognizers>
                                     <Label Text="{Binding IncrementLabel}"
                                            Style="{StaticResource Caption1Strong}"
@@ -232,6 +244,8 @@
                       MinimumHeightRequest="36">
                     <Grid.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnItemTapped" />
+                        <LongPressGestureRecognizer Command="{Binding ShowActionMenuCommand, Source={RelativeSource AncestorType={x:Type pageModels:MediaListPageModel}}}"
+                                                    CommandParameter="{Binding .}" />
                     </Grid.GestureRecognizers>
                     <Label Grid.Column="0"
                            Text="{Binding Media.DisplayTitle}"
@@ -284,6 +298,8 @@
                         <Border.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding IncrementProgressCommand, Source={RelativeSource AncestorType={x:Type pageModels:MediaListPageModel}}}"
                                 CommandParameter="{Binding .}" />
+                            <LongPressGestureRecognizer Command="{Binding ShowActionMenuCommand, Source={RelativeSource AncestorType={x:Type pageModels:MediaListPageModel}}}"
+                                                        CommandParameter="{Binding .}" />
                         </Border.GestureRecognizers>
                         <Label Text="{x:Static icons:FluentIconsRegular.Add24}"
                                FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"

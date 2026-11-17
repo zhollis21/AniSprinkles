@@ -12,7 +12,7 @@ namespace AniSprinkles.PageModels;
 /// rank numbers) derives from <see cref="DiscoverSectionDefinitions"/> — only the section enum name
 /// travels through the route. Transient, like the other detail page models.
 /// </summary>
-public partial class MediaBrowsePageModel : ObservableObject, IBrowseMediaNavigator
+public partial class MediaBrowsePageModel : ObservableObject, IBrowseMediaItemActions
 {
     private const int PageSize = 25;
 
@@ -319,13 +319,6 @@ public partial class MediaBrowsePageModel : ObservableObject, IBrowseMediaNaviga
     [RelayCommand]
     private async Task NavigateToMedia(BrowseMediaItem? item)
     {
-        // A long-press release still triggers the row's tap recognizer — swallow it so the
-        // action sheet doesn't get a navigation underneath.
-        if (LongPressTapSuppressor.ShouldSuppressTap())
-        {
-            return;
-        }
-
         var mediaId = item?.Node?.Id ?? 0;
         _logger.LogInformation("NAVTRACE MediaBrowse→Media with id={MediaId}", mediaId);
         if (mediaId <= 0)

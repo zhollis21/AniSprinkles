@@ -1,6 +1,5 @@
 ﻿using AniSprinkles.PageModels;
 using AniSprinkles.Utilities;
-using AniSprinkles.Views;
 
 namespace AniSprinkles.Pages;
 
@@ -16,15 +15,6 @@ public partial class SearchPage : ContentPage, IScrollsToTop
     public SearchPage()
     {
         InitializeComponent();
-
-        // Same long-press hook the Discover rows and search results used.
-        CollectionViewLongPress.Attach(SearchResultsList, item =>
-        {
-            if (BindingContext is SearchPageModel vm && vm.ShowItemActionsCommand.CanExecute(item))
-            {
-                vm.ShowItemActionsCommand.Execute(item);
-            }
-        });
     }
 
     public SearchPage(SearchPageModel viewModel)
