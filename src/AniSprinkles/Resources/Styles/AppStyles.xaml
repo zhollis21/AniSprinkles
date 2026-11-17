@@ -2,6 +2,7 @@
 <?xaml-comp compile="true" ?>
 <ResourceDictionary 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:converters="clr-namespace:AniSprinkles.Converters;assembly=AniSprinkles.Core"
     xmlns:icons="clr-namespace:IconFont.Maui.FluentIcons;assembly=IconFont.Maui.FluentIcons"
     xmlns:pullToRefresh="clr-namespace:Syncfusion.Maui.Toolkit.PullToRefresh;assembly=Syncfusion.Maui.Toolkit"
     xmlns:sf="clr-namespace:Syncfusion.Maui.Toolkit.TextInputLayout;assembly=Syncfusion.Maui.Toolkit"
@@ -334,6 +335,13 @@
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Stroke" Value="{StaticResource Gray600}" />
     </Style>
+
+    <!-- Text colour for a selectable chip (Search's filters, Settings' display choices): the chip's
+         rainbow accent when selected, Gray300 otherwise. Unselected chips used to keep their accent
+         text and be dimmed to 60% instead, which left dark accents like Manga's blue nearly
+         unreadable and made the choices look disabled (#195). Gray300 is about 8:1 on the page
+         background. Declared here rather than in App.xaml because it needs Colors.xaml loaded. -->
+    <converters:SortFieldStrokeConverter x:Key="ChipSelectionTextConverter" UnselectedColor="{StaticResource Gray300}" />
 
     <Style x:Key="ChipLabelStyle" TargetType="Label">
         <Setter Property="FontSize" Value="12" />
