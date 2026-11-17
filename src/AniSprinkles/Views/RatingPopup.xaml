@@ -6,7 +6,6 @@
                xmlns:converters="clr-namespace:AniSprinkles.Converters;assembly=AniSprinkles.Core"
                x:Class="AniSprinkles.Views.RatingPopup"
                x:TypeArguments="x:Object"
-               x:DataType="{x:Null}"
                BackgroundColor="Transparent">
 
     <toolkit:Popup.Resources>
@@ -131,11 +130,11 @@
                 <Label x:Name="SliderLabel"
                        Text="Not rated"
                        Style="{StaticResource Title2}" HorizontalTextAlignment="Center"
-                       TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='MyScore'}" />
+                       TextColor="{Binding Source='MyScore', x:DataType=x:String, Converter={StaticResource RainbowAccentConverter}}" />
                 <Slider x:Name="ScoreSlider" Minimum="0" Maximum="10" Value="0"
                         ValueChanged="OnSliderValueChanged"
-                        MinimumTrackColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='MyScore'}"
-                        ThumbColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='MyScore'}" />
+                        MinimumTrackColor="{Binding Source='MyScore', x:DataType=x:String, Converter={StaticResource RainbowAccentConverter}}"
+                        ThumbColor="{Binding Source='MyScore', x:DataType=x:String, Converter={StaticResource RainbowAccentConverter}}" />
             </VerticalStackLayout>
 
             <!-- Action buttons -->

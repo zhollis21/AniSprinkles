@@ -15,7 +15,7 @@ namespace AniSprinkles.PageModels;
 /// looking at, not a cleared box. An auth or adult-toggle flip does clear it, because both
 /// change what the results should contain.
 /// </summary>
-public partial class SearchPageModel : ObservableObject
+public partial class SearchPageModel : ObservableObject, IBrowseMediaNavigator
 {
     private static readonly TimeSpan SearchDebounceDelay = TimeSpan.FromMilliseconds(600);
     private const int SearchPerPage = 20;

@@ -6,7 +6,7 @@ using AniSprinkles.Utilities;
 
 namespace AniSprinkles.PageModels;
 
-public partial class SettingsPageModel : ObservableObject
+public partial class SettingsPageModel : ObservableObject, IAuthActions
 {
     private readonly IAuthService _authService;
     private readonly IAniListClient _aniListClient;

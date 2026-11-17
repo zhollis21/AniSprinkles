@@ -5,8 +5,7 @@
              xmlns:views="clr-namespace:AniSprinkles.Views"
              xmlns:pullToRefresh="clr-namespace:Syncfusion.Maui.Toolkit.PullToRefresh;assembly=Syncfusion.Maui.Toolkit"
              x:Class="AniSprinkles.Views.DiscoverLoadedContentView"
-             x:DataType="pageModels:DiscoverPageModel"
-             x:Name="RootView">
+             x:DataType="pageModels:DiscoverPageModel">
 
     <!-- Discover section rows. Search moved to its own tab in #43, so the rows are all this
          view holds now and are always visible. -->
@@ -27,10 +26,10 @@
                                                        SectionKey="{Binding SectionKey}"
                                                        ItemsSource="{Binding Items}"
                                                        IsLoadingMore="{Binding IsLoadingMore}"
-                                                       NavigateCommand="{Binding BindingContext.NavigateToMediaCommand, Source={x:Reference RootView}}"
-                                                       LongPressCommand="{Binding BindingContext.ShowItemActionsCommand, Source={x:Reference RootView}}"
-                                                       ViewAllCommand="{Binding BindingContext.ViewAllCommand, Source={x:Reference RootView}}"
-                                                       LoadMoreCommand="{Binding BindingContext.LoadMoreSectionCommand, Source={x:Reference RootView}}" />
+                                                       NavigateCommand="{Binding NavigateToMediaCommand, Source={RelativeSource AncestorType={x:Type pageModels:DiscoverPageModel}}}"
+                                                       LongPressCommand="{Binding ShowItemActionsCommand, Source={RelativeSource AncestorType={x:Type pageModels:DiscoverPageModel}}}"
+                                                       ViewAllCommand="{Binding ViewAllCommand, Source={RelativeSource AncestorType={x:Type pageModels:DiscoverPageModel}}}"
+                                                       LoadMoreCommand="{Binding LoadMoreSectionCommand, Source={RelativeSource AncestorType={x:Type pageModels:DiscoverPageModel}}}" />
                         </DataTemplate>
                     </BindableLayout.ItemTemplate>
                 </VerticalStackLayout>
