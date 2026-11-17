@@ -209,3 +209,49 @@ public class OpaqueColorConverterTests
     public void Convert_ForANonColour_IsNullSoTheControlKeepsItsDefault()
         => Assert.That(Converter.Convert(null, typeof(Color), null, CultureInfo.InvariantCulture), Is.Null);
 }
+
+public class SortFieldStrokeConverterTests
+{
+    [Test]
+    public void Convert_WhenSelected_IsTheRainbowAccentForTheParameter()
+    {
+        // Search and Settings colour a selected chip's text with this too (#195), so it has to land
+        // on the same accent as the label's own RainbowAccentConverter binding did before.
+        var converter = new SortFieldStrokeConverter { UnselectedColor = Colors.Red };
+        var expected = new RainbowAccentConverter().Convert("Manga", typeof(Color), null, CultureInfo.InvariantCulture);
+
+        var result = converter.Convert("Manga", typeof(Color), "Manga", CultureInfo.InvariantCulture);
+
+        Assert.That(result, Is.EqualTo(expected));
+    }
+
+    [Test]
+    public void Convert_WhenNotSelected_UsesTheConfiguredUnselectedColor()
+    {
+        var converter = new SortFieldStrokeConverter { UnselectedColor = Colors.Red };
+
+        var result = converter.Convert("All", typeof(Color), "Manga", CultureInfo.InvariantCulture);
+
+        Assert.That(result, Is.EqualTo(Colors.Red));
+    }
+
+    [TestCase(null, "Manga")]
+    [TestCase("Manga", null)]
+    [TestCase("manga", "Manga")]
+    public void Convert_WithoutAnOrdinalMatch_IsUnselected(string? value, string? parameter)
+    {
+        // A selection that has not loaded yet (null), a chip with no parameter, and a case-only
+        // difference all read as "not this chip", never as a crash or a false highlight.
+        var converter = new SortFieldStrokeConverter { UnselectedColor = Colors.Red };
+
+        Assert.That(converter.Convert(value, typeof(Color), parameter, CultureInfo.InvariantCulture), Is.EqualTo(Colors.Red));
+    }
+
+    [Test]
+    public void Convert_WhenNotSelectedAndNothingConfigured_FallsBackToGray()
+        // Off-device Application.Current is null, so the Gray400 resource lookup misses and the
+        // hard-coded fallback is what answers — the branch the stroke binding has always used.
+        => Assert.That(
+            new SortFieldStrokeConverter().Convert("All", typeof(Color), "Manga", CultureInfo.InvariantCulture),
+            Is.EqualTo(Colors.Gray));
+}

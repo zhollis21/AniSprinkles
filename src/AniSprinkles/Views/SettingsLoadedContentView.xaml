@@ -226,28 +226,25 @@
                                     <Label Text="Title Language" Style="{StaticResource Body1Strong}" />
                                     <FlexLayout Wrap="Wrap" JustifyContent="Start" AlignItems="Center">
                                         <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
-                                    Stroke="{Binding SelectedTitleLanguage, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Romaji}"
-                                    Opacity="{SelectedTitleLanguage == UserTitleLanguage.Romaji ? 1.0 : 0.6}">
+                                    Stroke="{Binding SelectedTitleLanguage, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Romaji}">
                                             <Border.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding SetTitleLanguageCommand}" CommandParameter="Romaji" />
                                             </Border.GestureRecognizers>
-                                            <Label Text="Romaji" Style="{StaticResource ChipLabelStyle}" TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Romaji'}" />
+                                            <Label Text="Romaji" Style="{StaticResource ChipLabelStyle}" TextColor="{Binding SelectedTitleLanguage, Converter={StaticResource ChipSelectionTextConverter}, ConverterParameter=Romaji}" />
                                         </Border>
                                         <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
-                                    Stroke="{Binding SelectedTitleLanguage, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=English}"
-                                    Opacity="{SelectedTitleLanguage == UserTitleLanguage.English ? 1.0 : 0.6}">
+                                    Stroke="{Binding SelectedTitleLanguage, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=English}">
                                             <Border.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding SetTitleLanguageCommand}" CommandParameter="English" />
                                             </Border.GestureRecognizers>
-                                            <Label Text="English" Style="{StaticResource ChipLabelStyle}" TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='English'}" />
+                                            <Label Text="English" Style="{StaticResource ChipLabelStyle}" TextColor="{Binding SelectedTitleLanguage, Converter={StaticResource ChipSelectionTextConverter}, ConverterParameter=English}" />
                                         </Border>
                                         <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
-                                    Stroke="{Binding SelectedTitleLanguage, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Native}"
-                                    Opacity="{SelectedTitleLanguage == UserTitleLanguage.Native ? 1.0 : 0.6}">
+                                    Stroke="{Binding SelectedTitleLanguage, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Native}">
                                             <Border.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding SetTitleLanguageCommand}" CommandParameter="Native" />
                                             </Border.GestureRecognizers>
-                                            <Label Text="Native" Style="{StaticResource ChipLabelStyle}" TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Native'}" />
+                                            <Label Text="Native" Style="{StaticResource ChipLabelStyle}" TextColor="{Binding SelectedTitleLanguage, Converter={StaticResource ChipSelectionTextConverter}, ConverterParameter=Native}" />
                                         </Border>
                                     </FlexLayout>
                                 </VerticalStackLayout>
@@ -255,28 +252,25 @@
                                     <Label Text="Staff Name Language" Style="{StaticResource Body1Strong}" />
                                     <HorizontalStackLayout Spacing="6">
                                         <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6"
-                                    Stroke="{Binding SelectedStaffNameLanguage, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=RomajiWestern}"
-                                    Opacity="{SelectedStaffNameLanguage == UserStaffNameLanguage.RomajiWestern ? 1.0 : 0.6}">
+                                    Stroke="{Binding SelectedStaffNameLanguage, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=RomajiWestern}">
                                             <Border.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding SetStaffNameLanguageCommand}" CommandParameter="RomajiWestern" />
                                             </Border.GestureRecognizers>
-                                            <Label Text="Western" Style="{StaticResource ChipLabelStyle}" TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='RomajiWestern'}" />
+                                            <Label Text="Western" Style="{StaticResource ChipLabelStyle}" TextColor="{Binding SelectedStaffNameLanguage, Converter={StaticResource ChipSelectionTextConverter}, ConverterParameter=RomajiWestern}" />
                                         </Border>
                                         <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6"
-                                    Stroke="{Binding SelectedStaffNameLanguage, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Romaji}"
-                                    Opacity="{SelectedStaffNameLanguage == UserStaffNameLanguage.Romaji ? 1.0 : 0.6}">
+                                    Stroke="{Binding SelectedStaffNameLanguage, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Romaji}">
                                             <Border.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding SetStaffNameLanguageCommand}" CommandParameter="Romaji" />
                                             </Border.GestureRecognizers>
-                                            <Label Text="Romaji" Style="{StaticResource ChipLabelStyle}" TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Romaji'}" />
+                                            <Label Text="Romaji" Style="{StaticResource ChipLabelStyle}" TextColor="{Binding SelectedStaffNameLanguage, Converter={StaticResource ChipSelectionTextConverter}, ConverterParameter=Romaji}" />
                                         </Border>
                                         <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6"
-                                    Stroke="{Binding SelectedStaffNameLanguage, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Native}"
-                                    Opacity="{SelectedStaffNameLanguage == UserStaffNameLanguage.Native ? 1.0 : 0.6}">
+                                    Stroke="{Binding SelectedStaffNameLanguage, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Native}">
                                             <Border.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding SetStaffNameLanguageCommand}" CommandParameter="Native" />
                                             </Border.GestureRecognizers>
-                                            <Label Text="Native" Style="{StaticResource ChipLabelStyle}" TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Native'}" />
+                                            <Label Text="Native" Style="{StaticResource ChipLabelStyle}" TextColor="{Binding SelectedStaffNameLanguage, Converter={StaticResource ChipSelectionTextConverter}, ConverterParameter=Native}" />
                                         </Border>
                                     </HorizontalStackLayout>
                                 </VerticalStackLayout>
@@ -284,44 +278,39 @@
                                     <Label Text="Score Format" Style="{StaticResource Body1Strong}" />
                                     <FlexLayout Wrap="Wrap" JustifyContent="Start" AlignItems="Center">
                                         <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
-                                    Stroke="{Binding SelectedScoreFormat, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Point100}"
-                                    Opacity="{SelectedScoreFormat == ScoreFormat.Point100 ? 1.0 : 0.6}">
+                                    Stroke="{Binding SelectedScoreFormat, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Point100}">
                                             <Border.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding SetScoreFormatCommand}" CommandParameter="Point100" />
                                             </Border.GestureRecognizers>
-                                            <Label Text="100 Point" Style="{StaticResource ChipLabelStyle}" TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Point100'}" />
+                                            <Label Text="100 Point" Style="{StaticResource ChipLabelStyle}" TextColor="{Binding SelectedScoreFormat, Converter={StaticResource ChipSelectionTextConverter}, ConverterParameter=Point100}" />
                                         </Border>
                                         <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
-                                    Stroke="{Binding SelectedScoreFormat, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Point10Decimal}"
-                                    Opacity="{SelectedScoreFormat == ScoreFormat.Point10Decimal ? 1.0 : 0.6}">
+                                    Stroke="{Binding SelectedScoreFormat, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Point10Decimal}">
                                             <Border.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding SetScoreFormatCommand}" CommandParameter="Point10Decimal" />
                                             </Border.GestureRecognizers>
-                                            <Label Text="10 Decimal" Style="{StaticResource ChipLabelStyle}" TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Point10Decimal'}" />
+                                            <Label Text="10 Decimal" Style="{StaticResource ChipLabelStyle}" TextColor="{Binding SelectedScoreFormat, Converter={StaticResource ChipSelectionTextConverter}, ConverterParameter=Point10Decimal}" />
                                         </Border>
                                         <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
-                                    Stroke="{Binding SelectedScoreFormat, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Point10}"
-                                    Opacity="{SelectedScoreFormat == ScoreFormat.Point10 ? 1.0 : 0.6}">
+                                    Stroke="{Binding SelectedScoreFormat, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Point10}">
                                             <Border.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding SetScoreFormatCommand}" CommandParameter="Point10" />
                                             </Border.GestureRecognizers>
-                                            <Label Text="10 Point" Style="{StaticResource ChipLabelStyle}" TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Point10'}" />
+                                            <Label Text="10 Point" Style="{StaticResource ChipLabelStyle}" TextColor="{Binding SelectedScoreFormat, Converter={StaticResource ChipSelectionTextConverter}, ConverterParameter=Point10}" />
                                         </Border>
                                         <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
-                                    Stroke="{Binding SelectedScoreFormat, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Point5}"
-                                    Opacity="{SelectedScoreFormat == ScoreFormat.Point5 ? 1.0 : 0.6}">
+                                    Stroke="{Binding SelectedScoreFormat, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Point5}">
                                             <Border.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding SetScoreFormatCommand}" CommandParameter="Point5" />
                                             </Border.GestureRecognizers>
-                                            <Label Text="5 Star" Style="{StaticResource ChipLabelStyle}" TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Point5'}" />
+                                            <Label Text="5 Star" Style="{StaticResource ChipLabelStyle}" TextColor="{Binding SelectedScoreFormat, Converter={StaticResource ChipSelectionTextConverter}, ConverterParameter=Point5}" />
                                         </Border>
                                         <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
-                                    Stroke="{Binding SelectedScoreFormat, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Point3}"
-                                    Opacity="{SelectedScoreFormat == ScoreFormat.Point3 ? 1.0 : 0.6}">
+                                    Stroke="{Binding SelectedScoreFormat, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Point3}">
                                             <Border.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding SetScoreFormatCommand}" CommandParameter="Point3" />
                                             </Border.GestureRecognizers>
-                                            <Label Text="3 Smiley" Style="{StaticResource ChipLabelStyle}" TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Point3'}" />
+                                            <Label Text="3 Smiley" Style="{StaticResource ChipLabelStyle}" TextColor="{Binding SelectedScoreFormat, Converter={StaticResource ChipSelectionTextConverter}, ConverterParameter=Point3}" />
                                         </Border>
                                     </FlexLayout>
                                 </VerticalStackLayout>

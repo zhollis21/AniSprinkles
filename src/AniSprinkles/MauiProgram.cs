@@ -77,6 +77,10 @@ public static class MauiProgram
 #endif
             ;
 
+#if ANDROID
+        NoWrapLabelMapping.Register();
+#endif
+
         var logDirectory = Path.Combine(FileSystem.Current.AppDataDirectory, "logs");
 #if DEBUG
         // Debug builds keep full verbosity for the solo-dev install. Re-evaluate the
