@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AniSprinkles.Views;
 
-public partial class MediaListLoadedContentView : ContentView
+public partial class MediaListLoadedContentView : ContentView, IScrollsToTop
 {
     private readonly DataTemplate? _standardTemplate;
     private readonly DataTemplate? _largeTemplate;
@@ -118,6 +118,24 @@ public partial class MediaListLoadedContentView : ContentView
             _viewId,
             ctx?.GetType().Name ?? "null",
             ctx is null ? 0 : ctx.GetHashCode());
+#endif
+    }
+
+    /// <summary>
+    /// Jumps the list to its first section header (#200). Instant rather than smooth: a smooth scroll
+    /// steps through every row on the way, which from a few hundred entries down is a visible wait.
+    /// </summary>
+    public void ScrollToTop()
+    {
+#if ANDROID
+        // The native position, not CollectionView.ScrollTo: the list is grouped, and ScrollTo targets an
+        // item, which would leave the first group's header just above the viewport. Adapter position 0 is
+        // that header in every view mode.
+        if (AnimeCollectionView.Handler?.PlatformView is AndroidX.RecyclerView.Widget.RecyclerView recyclerView
+            && recyclerView.GetAdapter()?.ItemCount > 0)
+        {
+            recyclerView.ScrollToPosition(0);
+        }
 #endif
     }
 

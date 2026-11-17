@@ -11,7 +11,7 @@
                                    RefreshCommand="{Binding RefreshCommand}">
         <pullToRefresh:SfPullToRefresh.PullableContent>
             <Grid>
-                <ScrollView>
+                <ScrollView x:Name="ContentScrollView">
                     <VerticalStackLayout Padding="{StaticResource LayoutPadding}" Spacing="16">
 
                         <!-- 1. PROFILE HERO -->
