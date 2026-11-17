@@ -17,7 +17,8 @@ namespace AniSprinkles.UnitTests;
 //    (dotnet/maui#40180).
 //
 // So every GestureRecognizers collection holding a long press must hold a tap too. Parsed as XML
-// rather than grepped, so a comment that mentions a recognizer does not count.
+// rather than grepped, so a comment that mentions a recognizer does not count. XAML only: a recognizer
+// added in C# (the popups build their taps that way) is not checked here, so keep long presses in XAML.
 public class LongPressPlacementGuardTests
 {
     [TestCaseSource(typeof(XamlFileValidationTests), nameof(XamlFileValidationTests.AllXamlFiles))]
@@ -32,15 +33,18 @@ public class LongPressPlacementGuardTests
             + string.Join(Environment.NewLine, offenders));
     }
 
-    [Test]
-    public void TheAppHasLongPressesToGuard()
+    // Without these, deleting a surface's long press would leave the per-file test green: a file with no
+    // long press has nothing unpaired. One per card template, plus one per Library +1 pill.
+    [TestCase("src/AniSprinkles/Views/BrowseTemplates.xaml", 3, TestName = "Search and View All: row, large and compact cards")]
+    [TestCase("src/AniSprinkles/Views/DiscoverSectionView.xaml", 1, TestName = "Discover: carousel card")]
+    [TestCase("src/AniSprinkles/Views/MediaListLoadedContentView.xaml", 6, TestName = "Library: three card templates and their +1 pills")]
+    public void EachListSurface_KeepsItsLongPresses(string relativePath, int expected)
     {
-        // Without this, deleting every long press would leave the per-file test green and guarding nothing.
-        var count = XamlFileValidationTests.AllXamlFiles()
-            .Select(args => XDocument.Load(Path.Combine(XamlFileValidationTests.RepoRoot.Value, (string)args[0])))
-            .Sum(document => document.Descendants().Count(e => e.Name.LocalName == "LongPressGestureRecognizer"));
+        var document = XDocument.Load(Path.Combine(XamlFileValidationTests.RepoRoot.Value, relativePath));
 
-        Assert.That(count, Is.GreaterThan(0));
+        Assert.That(
+            document.Descendants().Count(e => e.Name.LocalName == "LongPressGestureRecognizer"),
+            Is.EqualTo(expected));
     }
 
     // The detector itself, against each shape it must catch and each it must leave alone.
