@@ -12,12 +12,7 @@ public partial class MediaListLoadedContentView : ContentView
     private readonly DataTemplate? _compactTemplate;
     private readonly ILogger<MediaListLoadedContentView>? _logger;
     private readonly int _viewId;
-    private bool _longPressFired;
     private MediaListPageModel? _subscribedViewModel;
-#if ANDROID
-    private AndroidX.RecyclerView.Widget.RecyclerView? _attachedRecyclerView;
-    private RecyclerTouchListener? _attachedTouchListener;
-#endif
 
     public MediaListLoadedContentView()
     {
@@ -50,14 +45,10 @@ public partial class MediaListLoadedContentView : ContentView
             _viewId, Handler is not null);
 
         // When the view is detached, release the PropertyChanged subscription so the singleton
-        // MediaListPageModel stops pinning this (now-orphan) view. Also detach the Android touch
-        // listener so its GestureDetector references don't outlive the view.
+        // MediaListPageModel stops pinning this (now-orphan) view.
         if (Handler is null)
         {
             UnsubscribeFromViewModel();
-#if ANDROID
-            DetachAndroidLongPress();
-#endif
         }
     }
 
@@ -72,12 +63,6 @@ public partial class MediaListLoadedContentView : ContentView
 
     private void OnItemTapped(object? sender, TappedEventArgs e)
     {
-        if (_longPressFired)
-        {
-            _longPressFired = false;
-            return;
-        }
-
         var entry = (sender as VisualElement)?.BindingContext as MediaListEntry;
         if (entry is null || BindingContext is not MediaListPageModel vm)
         {
@@ -115,30 +100,14 @@ public partial class MediaListLoadedContentView : ContentView
     private void OnCollectionViewHandlerChanged(object? sender, EventArgs e)
     {
 #if ANDROID
-        SetupAndroidLongPress();
-#endif
-    }
-
-#if ANDROID
-    private void SetupAndroidLongPress()
-    {
-        var platformView = AnimeCollectionView.Handler?.PlatformView;
-
-        // MauiRecyclerView extends RecyclerView, so this cast should work.
-        var recyclerView = platformView as AndroidX.RecyclerView.Widget.RecyclerView;
-        if (recyclerView is null)
+        // MauiRecyclerView extends RecyclerView.
+        if (AnimeCollectionView.Handler?.PlatformView is not AndroidX.RecyclerView.Widget.RecyclerView recyclerView)
         {
             _logger?.LogInformation(
                 "LOADEDVIEW MediaList[#{ViewId:X}] RecyclerView handler change (platformView=null).",
                 _viewId);
-            DetachAndroidLongPress();
             return;
         }
-
-        // Drop any previously-attached listener before adding a new one. Without this,
-        // handler reattachments would stack listeners on the same RecyclerView, causing
-        // long-press to fire multiple times and keeping old view references alive.
-        DetachAndroidLongPress();
 
         // Capture the RecyclerView's Context identity. This is the Android FragmentActivity
         // that Glide captures when binding images in each cell. If the hash ever differs from
@@ -149,136 +118,8 @@ public partial class MediaListLoadedContentView : ContentView
             _viewId,
             ctx?.GetType().Name ?? "null",
             ctx is null ? 0 : ctx.GetHashCode());
-
-        var gestureDetector = new Android.Views.GestureDetector(
-            recyclerView.Context,
-            new LongPressGestureListener(recyclerView, this));
-
-        var listener = new RecyclerTouchListener(gestureDetector);
-        recyclerView.AddOnItemTouchListener(listener);
-        _attachedRecyclerView = recyclerView;
-        _attachedTouchListener = listener;
-    }
-
-    private void DetachAndroidLongPress()
-    {
-        if (_attachedRecyclerView is not null && _attachedTouchListener is not null)
-        {
-            _attachedRecyclerView.RemoveOnItemTouchListener(_attachedTouchListener);
-        }
-
-        _attachedTouchListener?.Dispose();
-        _attachedTouchListener = null;
-        _attachedRecyclerView = null;
-    }
-
-    private MediaListEntry? GetEntryAtAdapterPosition(int adapterPosition)
-    {
-        if (BindingContext is not MediaListPageModel vm)
-        {
-            return null;
-        }
-
-        // Grouped CollectionView layout: [Header0, Item0_0, Item0_1, ..., Header1, Item1_0, ...]
-        var pos = 0;
-        foreach (var section in vm.Sections)
-        {
-            if (pos == adapterPosition)
-            {
-                return null; // Section header
-            }
-
-            pos++;
-
-            foreach (var entry in section)
-            {
-                if (pos == adapterPosition)
-                {
-                    return entry;
-                }
-
-                pos++;
-            }
-        }
-
-        return null;
-    }
-
-    /// <summary>
-    /// Intercepts touch events on the RecyclerView and forwards them to the GestureDetector.
-    /// </summary>
-    private sealed class RecyclerTouchListener : Java.Lang.Object,
-        AndroidX.RecyclerView.Widget.RecyclerView.IOnItemTouchListener
-    {
-        private readonly Android.Views.GestureDetector _gestureDetector;
-
-        public RecyclerTouchListener(Android.Views.GestureDetector gestureDetector)
-        {
-            _gestureDetector = gestureDetector;
-        }
-
-        public bool OnInterceptTouchEvent(AndroidX.RecyclerView.Widget.RecyclerView rv, Android.Views.MotionEvent e)
-        {
-            _gestureDetector.OnTouchEvent(e);
-            return false; // Don't intercept — let normal touch handling continue.
-        }
-
-        public void OnTouchEvent(AndroidX.RecyclerView.Widget.RecyclerView rv, Android.Views.MotionEvent e)
-        {
-        }
-
-        public void OnRequestDisallowInterceptTouchEvent(bool disallowIntercept)
-        {
-        }
-    }
-
-    /// <summary>
-    /// GestureDetector listener that detects long press gestures and resolves
-    /// which item was pressed via the RecyclerView's adapter position.
-    /// </summary>
-    private sealed class LongPressGestureListener : Android.Views.GestureDetector.SimpleOnGestureListener
-    {
-        private readonly AndroidX.RecyclerView.Widget.RecyclerView _recyclerView;
-        private readonly MediaListLoadedContentView _owner;
-
-        public LongPressGestureListener(
-            AndroidX.RecyclerView.Widget.RecyclerView recyclerView,
-            MediaListLoadedContentView owner)
-        {
-            _recyclerView = recyclerView;
-            _owner = owner;
-        }
-
-        public override void OnLongPress(Android.Views.MotionEvent? e)
-        {
-            if (e is null)
-            {
-                return;
-            }
-
-            var childView = _recyclerView.FindChildViewUnder(e.GetX(), e.GetY());
-            if (childView is null)
-            {
-                return;
-            }
-
-            var adapterPosition = _recyclerView.GetChildAdapterPosition(childView);
-            if (adapterPosition < 0)
-            {
-                return;
-            }
-
-            var entry = _owner.GetEntryAtAdapterPosition(adapterPosition);
-            if (entry is null || _owner.BindingContext is not MediaListPageModel vm)
-            {
-                return;
-            }
-
-            _owner._longPressFired = true;
-            _ = vm.ShowActionMenuCommand.ExecuteAsync(entry);
-        }
-    }
 #endif
+    }
 
     private void ApplyViewMode(ListViewMode mode)
     {

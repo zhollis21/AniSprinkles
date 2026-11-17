@@ -15,7 +15,7 @@ namespace AniSprinkles.PageModels;
 /// looking at, not a cleared box. An auth or adult-toggle flip does clear it, because both
 /// change what the results should contain.
 /// </summary>
-public partial class SearchPageModel : ObservableObject, IBrowseMediaNavigator
+public partial class SearchPageModel : ObservableObject, IBrowseMediaItemActions
 {
     private static readonly TimeSpan SearchDebounceDelay = TimeSpan.FromMilliseconds(600);
     private const int SearchPerPage = 20;
@@ -461,13 +461,6 @@ public partial class SearchPageModel : ObservableObject, IBrowseMediaNavigator
     [RelayCommand]
     private async Task NavigateToMedia(BrowseMediaItem? item)
     {
-        // A long-press release still triggers the card's tap recognizer — swallow it so the
-        // action sheet doesn't get a navigation underneath.
-        if (LongPressTapSuppressor.ShouldSuppressTap())
-        {
-            return;
-        }
-
         var mediaId = item?.Node?.Id ?? 0;
         _logger.LogInformation("NAVTRACE Search NavigateToMedia called with mediaId={MediaId}", mediaId);
         if (mediaId <= 0)

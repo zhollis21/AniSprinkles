@@ -329,13 +329,6 @@ public partial class DiscoverPageModel : ObservableObject
     [RelayCommand]
     private async Task NavigateToMedia(BrowseMediaItem? item)
     {
-        // A long-press release still triggers the card's tap recognizer — swallow it so the
-        // action sheet doesn't get a navigation underneath.
-        if (LongPressTapSuppressor.ShouldSuppressTap())
-        {
-            return;
-        }
-
         var mediaId = item?.Node?.Id ?? 0;
         _logger.LogInformation("NAVTRACE Discover NavigateToMedia called with mediaId={MediaId}", mediaId);
         if (mediaId <= 0)

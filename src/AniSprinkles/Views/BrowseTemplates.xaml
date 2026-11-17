@@ -18,10 +18,12 @@
     </Style>
 
     <!--
-        Shared list templates for browse surfaces: Discover search results and the
-        media-browse (View All) page. The tap command is resolved from the hosting
-        CollectionView's BindingContext, so any page model exposing NavigateToMediaCommand
-        (DiscoverPageModel, MediaBrowsePageModel) can host these templates.
+        Shared list templates for browse surfaces: Search results and the media-browse (View All)
+        page. Tap and long press resolve their commands through IBrowseMediaItemActions, which
+        SearchPageModel and MediaBrowsePageModel implement. The long press sits on the same element
+        as the tap on purpose: they then share one Android GestureDetector, which never reports a
+        tap at finger-up after a long press (#171). A long press alone on a view also misfires
+        after a plain tap on MAUI 11.0.10 (dotnet/maui#40180).
 
         Standard/Large/Compact mirror the Library list’s three view modes (MediaListLoadedContentView);
         media-browse switches between them with the shared view-mode preference.
@@ -29,8 +31,10 @@
     <DataTemplate x:Key="BrowseMediaRowTemplate" x:DataType="models:BrowseMediaItem">
         <Border Style="{StaticResource ListRowStyle}" Margin="0,0,0,6">
             <Border.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding NavigateToMediaCommand, Source={RelativeSource AncestorType={x:Type pageModels:IBrowseMediaNavigator}}}"
+                <TapGestureRecognizer Command="{Binding NavigateToMediaCommand, Source={RelativeSource AncestorType={x:Type pageModels:IBrowseMediaItemActions}}}"
                                       CommandParameter="{Binding .}" />
+                <LongPressGestureRecognizer Command="{Binding ShowItemActionsCommand, Source={RelativeSource AncestorType={x:Type pageModels:IBrowseMediaItemActions}}}"
+                                            CommandParameter="{Binding .}" />
             </Border.GestureRecognizers>
             <Grid ColumnDefinitions="Auto,70,*" ColumnSpacing="0" Padding="0">
                 <!-- Rank (Top Anime View All only) -->
@@ -94,8 +98,10 @@
     <DataTemplate x:Key="BrowseMediaLargeTemplate" x:DataType="models:BrowseMediaItem">
         <Border Style="{StaticResource CardStyle}" Padding="0" Margin="4">
             <Border.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding NavigateToMediaCommand, Source={RelativeSource AncestorType={x:Type pageModels:IBrowseMediaNavigator}}}"
+                <TapGestureRecognizer Command="{Binding NavigateToMediaCommand, Source={RelativeSource AncestorType={x:Type pageModels:IBrowseMediaItemActions}}}"
                                       CommandParameter="{Binding .}" />
+                <LongPressGestureRecognizer Command="{Binding ShowItemActionsCommand, Source={RelativeSource AncestorType={x:Type pageModels:IBrowseMediaItemActions}}}"
+                                            CommandParameter="{Binding .}" />
             </Border.GestureRecognizers>
             <Grid RowDefinitions="180,*">
                 <!-- MaximumWidthRequest caps Glide's bitmap allocation when the Image has no
@@ -176,8 +182,10 @@
               Padding="12,7"
               MinimumHeightRequest="36">
             <Grid.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding NavigateToMediaCommand, Source={RelativeSource AncestorType={x:Type pageModels:IBrowseMediaNavigator}}}"
+                <TapGestureRecognizer Command="{Binding NavigateToMediaCommand, Source={RelativeSource AncestorType={x:Type pageModels:IBrowseMediaItemActions}}}"
                                       CommandParameter="{Binding .}" />
+                <LongPressGestureRecognizer Command="{Binding ShowItemActionsCommand, Source={RelativeSource AncestorType={x:Type pageModels:IBrowseMediaItemActions}}}"
+                                            CommandParameter="{Binding .}" />
             </Grid.GestureRecognizers>
             <Label Grid.Column="0"
                    Text="{Binding RankDisplay}"

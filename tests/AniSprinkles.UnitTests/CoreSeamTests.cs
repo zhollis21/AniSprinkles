@@ -81,64 +81,6 @@ public class MoveToListChoiceTests
     }
 }
 
-public class LongPressTapSuppressorTests
-{
-    // The window comparison is exercised through IsWithinWindow rather than by stamping: the stamp
-    // is process-wide and lives for 800ms, so setting it here suppressed navigate commands in any
-    // test class that happened to run alongside this one — DetailsSpineTests and
-    // MediaBrowsePageModelTests both drive those commands, and neither is serialised against this.
-
-    [Test]
-    public void ATapAtTheInstantOfTheLongPress_IsSuppressed()
-    {
-        // MAUI's TapGestureRecognizer fires on finger-up after a long press, so the card's navigate
-        // command would otherwise run underneath the action sheet the long press just opened.
-        Assert.That(LongPressTapSuppressor.IsWithinWindow(10_000, 10_000), Is.True);
-    }
-
-    [Test]
-    public void ATapJustInsideTheWindow_IsSuppressed()
-        => Assert.That(LongPressTapSuppressor.IsWithinWindow(10_799, 10_000), Is.True);
-
-    [Test]
-    public void ATapOnceTheWindowHasElapsed_IsLetThrough()
-        // The other half of the contract: suppression has to end, or a real tap on the same card
-        // never navigates.
-        => Assert.That(LongPressTapSuppressor.IsWithinWindow(10_800, 10_000), Is.False);
-
-    [Test]
-    public void WithNoLongPressEverRecorded_NothingIsSuppressed()
-    {
-        LongPressTapSuppressor.Reset();
-
-        Assert.That(LongPressTapSuppressor.ShouldSuppressTap(), Is.False);
-    }
-
-    [Test]
-    public void Stamp_RecordsThePressSoTheFollowUpTapIsSuppressed()
-    {
-        // The one test that writes the shared static, so it clears it again immediately.
-        try
-        {
-            LongPressTapSuppressor.Stamp();
-
-            Assert.That(LongPressTapSuppressor.ShouldSuppressTap(), Is.True);
-        }
-        finally
-        {
-            LongPressTapSuppressor.Reset();
-        }
-    }
-
-    [Test]
-    public void SuppressionWindow_IsLongEnoughToCoverASlowRelease()
-    {
-        // Stamped at detection AND again at finger-up; the window only has to outlive the gap
-        // between the second stamp and the synthetic tap.
-        Assert.That(LongPressTapSuppressor.SuppressionWindow >= TimeSpan.FromMilliseconds(500), Is.True);
-    }
-}
-
 public class OutageStateServiceTests
 {
     [Test]

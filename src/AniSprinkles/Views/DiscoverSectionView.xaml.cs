@@ -40,13 +40,6 @@ public partial class DiscoverSectionView : ContentView
     public DiscoverSectionView()
     {
         InitializeComponent();
-        CollectionViewLongPress.Attach(Carousel, item =>
-        {
-            if (LongPressCommand?.CanExecute(item) == true)
-            {
-                LongPressCommand.Execute(item);
-            }
-        });
     }
 
     public string HeaderText
