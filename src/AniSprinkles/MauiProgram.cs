@@ -62,7 +62,9 @@ public static class MauiProgram
             // is live, so tapping it changes which list Back returns to. This registration is the opt-out
             // the upstream change documents (dotnet/maui#34758); a later AddHandler wins over the default.
             // Remove it once the handler is fixed (reported as dotnet/maui#40303), re-running the four
-            // steps in #177 on device first.
+            // steps in #177 on device first. The registration is our subclass of it, which adds the
+            // tab-reselect hook (#200); lifting the pin means moving that override to a ShellItemHandler
+            // subclass (see TabReselectShellRenderer).
             //
             // ActivityIndicator stays on the classic handler too, although the rest of the app is
             // Material 3 (#172). UseMaterial3 swaps in Material's CircularProgressIndicator, which
@@ -71,7 +73,7 @@ public static class MauiProgram
             // animates on the render thread and keeps turning. Reported as dotnet/maui#40315.
             .ConfigureMauiHandlers(handlers =>
             {
-                handlers.AddHandler<Shell, Microsoft.Maui.Controls.Handlers.Compatibility.ShellRenderer>();
+                handlers.AddHandler<Shell, TabReselectShellRenderer>();
                 handlers.AddHandler<ActivityIndicator, Microsoft.Maui.Handlers.ActivityIndicatorHandler>();
             })
 #endif

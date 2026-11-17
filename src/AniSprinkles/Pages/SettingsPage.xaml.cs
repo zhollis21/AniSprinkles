@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AniSprinkles.Pages;
 
-public partial class SettingsPage : ContentPage
+public partial class SettingsPage : ContentPage, IScrollsToTop
 {
     private static readonly TimeSpan DeferredLoadDelay = TimeSpan.FromMilliseconds(120);
 
@@ -115,6 +115,9 @@ public partial class SettingsPage : ContentPage
         // from syncing the server's stale copy back while this is in flight.
         _ = _viewModel?.FlushPendingSaveAsync();
     }
+
+    // Re-tapping the Settings tab at its root (#200). Signed out there is no content view, so nothing scrolls.
+    public void ScrollToTop() => (LoadedContentHost.Content as IScrollsToTop)?.ScrollToTop();
 
     protected override void OnHandlerChanged()
     {

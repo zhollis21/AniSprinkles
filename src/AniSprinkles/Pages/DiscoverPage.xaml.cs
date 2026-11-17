@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AniSprinkles.Pages;
 
-public partial class DiscoverPage : ContentPage
+public partial class DiscoverPage : ContentPage, IScrollsToTop
 {
     private static readonly TimeSpan DeferredLoadDelay = TimeSpan.FromMilliseconds(120);
 
@@ -105,6 +105,9 @@ public partial class DiscoverPage : ContentPage
         _hasAppeared = false;
         _loadVersion++;
     }
+
+    // Re-tapping the Discover tab at its root (#200). No content view yet (error, still deferring) is a no-op.
+    public void ScrollToTop() => (LoadedContentHost.Content as IScrollsToTop)?.ScrollToTop();
 
     protected override void OnHandlerChanged()
     {
