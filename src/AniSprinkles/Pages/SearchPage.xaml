@@ -37,39 +37,37 @@
             all, so All is a real option rather than a client-side merge — flipping any pill re-runs
             whatever is typed.
 
-            Same shape as the Settings display chips: ChipBorderStyle for the pill, the stroke and
-            opacity converters keyed on SearchFilterKey to mark the selection, and the label's own
-            rainbow accent so Manga picks up the colour its Library sub-tab already uses. The
+            Same shape as the Settings display chips: ChipBorderStyle for the pill, and the stroke
+            and text converters keyed on SearchFilterKey to mark the selection. The selected pill
+            takes its rainbow accent (so Manga picks up the colour its Library sub-tab already uses)
+            and the others read in neutral gray rather than dimmed accents (#195). The
             explicit Style is load-bearing — the implicit Border style would otherwise fill each
             pill with the card background.
         -->
         <HorizontalStackLayout Grid.Row="2" Spacing="8" Margin="0,0,0,8">
             <Border Style="{StaticResource ChipBorderStyle}" Padding="14,6"
-                    Stroke="{Binding SearchFilterKey, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=All}"
-                    Opacity="{SearchFilterKey == 'All' ? 1.0 : 0.6}">
+                    Stroke="{Binding SearchFilterKey, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=All}">
                 <Border.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding SelectSearchFilterCommand}" CommandParameter="All" />
                 </Border.GestureRecognizers>
                 <Label Text="All" Style="{StaticResource ChipLabelStyle}"
-                       TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='All'}" />
+                       TextColor="{Binding SearchFilterKey, Converter={StaticResource ChipSelectionTextConverter}, ConverterParameter=All}" />
             </Border>
             <Border Style="{StaticResource ChipBorderStyle}" Padding="14,6"
-                    Stroke="{Binding SearchFilterKey, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Anime}"
-                    Opacity="{SearchFilterKey == 'Anime' ? 1.0 : 0.6}">
+                    Stroke="{Binding SearchFilterKey, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Anime}">
                 <Border.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding SelectSearchFilterCommand}" CommandParameter="Anime" />
                 </Border.GestureRecognizers>
                 <Label Text="Anime" Style="{StaticResource ChipLabelStyle}"
-                       TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Anime'}" />
+                       TextColor="{Binding SearchFilterKey, Converter={StaticResource ChipSelectionTextConverter}, ConverterParameter=Anime}" />
             </Border>
             <Border Style="{StaticResource ChipBorderStyle}" Padding="14,6"
-                    Stroke="{Binding SearchFilterKey, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Manga}"
-                    Opacity="{SearchFilterKey == 'Manga' ? 1.0 : 0.6}">
+                    Stroke="{Binding SearchFilterKey, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Manga}">
                 <Border.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding SelectSearchFilterCommand}" CommandParameter="Manga" />
                 </Border.GestureRecognizers>
                 <Label Text="Manga" Style="{StaticResource ChipLabelStyle}"
-                       TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Manga'}" />
+                       TextColor="{Binding SearchFilterKey, Converter={StaticResource ChipSelectionTextConverter}, ConverterParameter=Manga}" />
             </Border>
         </HorizontalStackLayout>
 
