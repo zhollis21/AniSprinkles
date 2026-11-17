@@ -4,7 +4,7 @@
              xmlns:icons="clr-namespace:IconFont.Maui.FluentIcons;assembly=IconFont.Maui.FluentIcons"
              x:Class="AniSprinkles.Pages.FeedPage"
              Title="Feed"
-             Shell.TitleColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='Feed'}">
+             Shell.TitleColor="{Binding Source='Feed', x:DataType=x:String, Converter={StaticResource RainbowAccentConverter}}">
 
     <!-- Placeholder until the social features in #14 land. -->
     <VerticalStackLayout Padding="{StaticResource LayoutPadding}"

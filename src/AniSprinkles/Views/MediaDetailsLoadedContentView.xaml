@@ -7,8 +7,7 @@
              xmlns:views="clr-namespace:AniSprinkles.Views"
              xmlns:behaviors="clr-namespace:AniSprinkles.Behaviors"
              x:Class="AniSprinkles.Views.MediaDetailsLoadedContentView"
-             x:DataType="pageModels:MediaDetailsPageModel"
-             x:Name="RootView">
+             x:DataType="pageModels:MediaDetailsPageModel">
 
     <ScrollView>
         <VerticalStackLayout Padding="{StaticResource LayoutPadding}" Spacing="16">
@@ -824,8 +823,7 @@
                         <DataTemplate x:DataType="models:MediaRelationEdge">
                             <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130">
                                 <Border.GestureRecognizers>
-                                    <TapGestureRecognizer x:DataType="{x:Null}"
-                                                          Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToMediaCommand}"
+                                    <TapGestureRecognizer Command="{Binding NavigateToMediaCommand, Source={RelativeSource AncestorType={x:Type pageModels:MediaDetailsPageModel}}}"
                                                           CommandParameter="{Binding Node}" />
                                 </Border.GestureRecognizers>
                                 <VerticalStackLayout>
@@ -905,8 +903,7 @@
                             <DataTemplate x:DataType="models:CharacterEdge">
                                 <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130">
                                     <Border.GestureRecognizers>
-                                        <TapGestureRecognizer x:DataType="{x:Null}"
-                                                              Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToCharacterCommand}"
+                                        <TapGestureRecognizer Command="{Binding NavigateToCharacterCommand, Source={RelativeSource AncestorType={x:Type pageModels:MediaDetailsPageModel}}}"
                                                               CommandParameter="{Binding Node.Id}" />
                                     </Border.GestureRecognizers>
                                     <VerticalStackLayout>
@@ -1090,8 +1087,7 @@
                             <DataTemplate x:DataType="models:MediaRecommendationNode">
                                 <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130">
                                     <Border.GestureRecognizers>
-                                        <TapGestureRecognizer x:DataType="{x:Null}"
-                                                              Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToMediaCommand}"
+                                        <TapGestureRecognizer Command="{Binding NavigateToMediaCommand, Source={RelativeSource AncestorType={x:Type pageModels:MediaDetailsPageModel}}}"
                                                               CommandParameter="{Binding MediaRecommendation}" />
                                     </Border.GestureRecognizers>
                                     <VerticalStackLayout>
@@ -1168,8 +1164,7 @@
                             <DataTemplate x:DataType="models:StaffEdge">
                                 <Border Style="{StaticResource CardStyle}" Padding="0" WidthRequest="130">
                                     <Border.GestureRecognizers>
-                                        <TapGestureRecognizer x:DataType="{x:Null}"
-                                                              Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToStaffCommand}"
+                                        <TapGestureRecognizer Command="{Binding NavigateToStaffCommand, Source={RelativeSource AncestorType={x:Type pageModels:MediaDetailsPageModel}}}"
                                                               CommandParameter="{Binding Node.Id}" />
                                     </Border.GestureRecognizers>
                                     <VerticalStackLayout>
@@ -1230,8 +1225,7 @@
                                           Padding="14,12"
                                           SemanticProperties.Description="{Binding Name, StringFormat='Open studio {0}'}">
                                         <Grid.GestureRecognizers>
-                                            <TapGestureRecognizer x:DataType="{x:Null}"
-                                                                  Command="{Binding Source={x:Reference RootView}, Path=BindingContext.NavigateToStudioCommand}"
+                                            <TapGestureRecognizer Command="{Binding NavigateToStudioCommand, Source={RelativeSource AncestorType={x:Type pageModels:MediaDetailsPageModel}}}"
                                                                   CommandParameter="{Binding Id}" />
                                         </Grid.GestureRecognizers>
                                         <Image Grid.Column="0" WidthRequest="22" HeightRequest="22" VerticalOptions="Center">
@@ -1309,8 +1303,7 @@
                         <DataTemplate x:DataType="models:MediaExternalLink">
                             <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6">
                                 <Border.GestureRecognizers>
-                                    <TapGestureRecognizer x:DataType="{x:Null}"
-                                                          Command="{Binding Source={x:Reference RootView}, Path=BindingContext.OpenUrlCommand}"
+                                    <TapGestureRecognizer Command="{Binding OpenUrlCommand, Source={RelativeSource AncestorType={x:Type pageModels:MediaDetailsPageModel}}}"
                                                           CommandParameter="{Binding Url}" />
                                 </Border.GestureRecognizers>
                                 <Label Text="{Binding Site}" Style="{StaticResource ChipLabelStyle}"

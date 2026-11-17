@@ -12,7 +12,7 @@ namespace AniSprinkles.PageModels;
 /// rank numbers) derives from <see cref="DiscoverSectionDefinitions"/> — only the section enum name
 /// travels through the route. Transient, like the other detail page models.
 /// </summary>
-public partial class MediaBrowsePageModel : ObservableObject
+public partial class MediaBrowsePageModel : ObservableObject, IBrowseMediaNavigator
 {
     private const int PageSize = 25;
 
