@@ -15,7 +15,7 @@ namespace AniSprinkles.Pages;
 /// copies would have nothing watching it.
 /// </para>
 /// </summary>
-public abstract partial class MediaListPageBase : ContentPage
+public abstract partial class MediaListPageBase : ContentPage, IScrollsToTop
 {
     private static readonly TimeSpan DeferredLoadDelay = TimeSpan.FromMilliseconds(120);
 
@@ -157,6 +157,10 @@ public abstract partial class MediaListPageBase : ContentPage
         _hasAppeared = false;
         _loadVersion++;
     }
+
+    // Re-tapping the Library tab at its root (#200). Only the selected sub-tab's page is asked, so the
+    // other half keeps its position. No content view yet (signed out, error, still deferring) is a no-op.
+    public void ScrollToTop() => (_loadedContentHost?.Content as IScrollsToTop)?.ScrollToTop();
 
     protected override void OnHandlerChanged()
     {

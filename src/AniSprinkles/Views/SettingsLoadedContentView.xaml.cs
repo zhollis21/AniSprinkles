@@ -4,10 +4,13 @@ using Microsoft.Extensions.Logging;
 
 namespace AniSprinkles.Views;
 
-public partial class SettingsLoadedContentView : ContentView
+public partial class SettingsLoadedContentView : ContentView, IScrollsToTop
 {
     private readonly ILogger<SettingsLoadedContentView>? _logger;
     private readonly int _viewId;
+
+    // Re-tapping the Settings tab at its root (#200). Animated: one page of toggles, so the scroll is short.
+    public void ScrollToTop() => _ = ContentScrollView.ScrollToAsync(0, 0, animated: true);
 
     public SettingsLoadedContentView()
     {
