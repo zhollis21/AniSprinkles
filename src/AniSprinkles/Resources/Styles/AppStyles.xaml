@@ -347,6 +347,10 @@
         <Setter Property="FontSize" Value="12" />
         <Setter Property="FontAttributes" Value="Bold" />
         <Setter Property="LineHeight" Value="1.2" />
+        <!-- A chip is one line by design. Some strings are measured a pixel or two short, and wrapping
+             then hid the last word on the clipped second line ("Blood type F" read "Blood type",
+             #193). NoWrapLabelMapping makes this really stop the wrap on Android. -->
+        <Setter Property="LineBreakMode" Value="NoWrap" />
         <Setter Property="HorizontalTextAlignment" Value="Center" />
         <Setter Property="VerticalTextAlignment" Value="Center" />
     </Style>
