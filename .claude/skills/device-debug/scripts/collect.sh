@@ -35,7 +35,8 @@ if [ -z "$DEVICES" ]; then
 fi
 for d in $DEVICES; do echo "- $d"; done
 # With >1 device, unqualified adb commands fail. Respect a caller-supplied
-# ANDROID_SERIAL when present; otherwise pin to the first detected device.
+# ANDROID_SERIAL when present; otherwise ask the run-app driver, and when it names no
+# device for this worktree, stop rather than guess — even with a single device.
 DEVICE_COUNT=$(printf '%s\n' "$DEVICES" | wc -l | tr -d ' ')
 if [ -n "${ANDROID_SERIAL:-}" ]; then
   if ! printf '%s\n' "$DEVICES" | grep -Fxq "$ANDROID_SERIAL"; then
@@ -46,9 +47,32 @@ if [ -n "${ANDROID_SERIAL:-}" ]; then
     echo "(multiple devices; using caller-supplied ANDROID_SERIAL=$ANDROID_SERIAL)"
   fi
 else
-  export ANDROID_SERIAL="$(printf '%s\n' "$DEVICES" | head -n1)"
-  if [ "$DEVICE_COUNT" -gt 1 ]; then
-    echo "(multiple devices; pinned to $ANDROID_SERIAL — override with ANDROID_SERIAL=...)"
+  # Other worktrees' sessions may be running their own emulators (#203), so "the first
+  # device" — or even the only one — can be someone else's app. Ask the run-app driver which
+  # device this worktree holds. Only a machine without the driver falls back to guessing.
+  DRIVER="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)/skills/run-app/driver.ps1"
+  if command -v pwsh >/dev/null 2>&1 && [ -f "$DRIVER" ]; then
+    # Git Bash's /c/... form only reaches Windows pwsh as C:\... through MSYS path conversion,
+    # and MSYS_NO_PATHCONV=1 (which the run-app skill recommends for adb) turns that off.
+    command -v cygpath >/dev/null 2>&1 && DRIVER="$(cygpath -w "$DRIVER")"
+    CLAIMED=$(pwsh -NoProfile -File "$DRIVER" serial 2>/dev/null | tr -d '\r' | tail -n1)
+    if [ -n "$CLAIMED" ] && printf '%s\n' "$DEVICES" | grep -Fxq "$CLAIMED"; then
+      export ANDROID_SERIAL="$CLAIMED"
+      [ "$DEVICE_COUNT" -gt 1 ] && echo "(multiple devices; using this worktree's claimed $ANDROID_SERIAL)"
+    else
+      # The driver is here and named no device for this worktree: the devices are all
+      # someone else's, or several are free. Stop rather than collect another session's
+      # logs, which would then read as this app's — even when only one device is attached.
+      echo "driver.ps1 named no device for this worktree (every attached device is claimed by another worktree, or several are free)."
+      echo "Run: pwsh -NoProfile -File .claude/skills/run-app/driver.ps1 up   (claims or boots this worktree's device)"
+      echo "or re-run with ANDROID_SERIAL=<serial> set.  driver.ps1 claims shows who holds what."
+      clear_stale_and_exit 1
+    fi
+  elif [ "$DEVICE_COUNT" -gt 1 ]; then
+    echo "Multiple devices attached and no run-app driver to say which is this worktree's — re-run with ANDROID_SERIAL=<serial>."
+    clear_stale_and_exit 1
+  else
+    export ANDROID_SERIAL="$DEVICES"
   fi
 fi
 
