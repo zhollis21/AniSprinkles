@@ -167,6 +167,7 @@ public sealed class DiagnosticsReportCoordinator
             _environment.BuildConfiguration,
             _environment.Device,
             _environment.OsVersion,
-            isSignedIn);
+            isSignedIn,
+            _environment.Build.SourceLine);
     }
 }

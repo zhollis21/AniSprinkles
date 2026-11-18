@@ -91,7 +91,7 @@ dotnet build src/AniSprinkles/AniSprinkles.csproj -c Debug -f net11.0-android -p
 - **`ci-build-and-preview.yml`** — runs on every PR: builds and unit-tests, builds a Release APK and launches it on the emulator, then builds with `-p:CiBuild=true` and captures and commits UI screenshots
 - **`android-release.yml`** — triggers on GitHub Release publication: builds a signed AAB, uploads artifact and ProGuard mapping
 - **`promote-release.yml`** — promotes between Play Console tracks (internal → alpha → beta → production)
-- Version scheme: `ApplicationDisplayVersion` from release tag (`v1.2.3` → `1.2.3`); `ApplicationVersion` (versionCode) from `YYMMDDNNN`
+- Version scheme: `ApplicationDisplayVersion` from release tag (`v1.2.3` → `1.2.3`); `ApplicationVersion` (versionCode) from `YYMMDDNNN`. Other builds show the nearest tag, branch and commit in Settings instead (e.g. `v0.15.0+12 · my-branch @ 6f69547`)
 
 ---
 

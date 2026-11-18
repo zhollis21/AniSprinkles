@@ -99,6 +99,63 @@
 		<Error Text="CiBuild=true is only supported with Debug configuration. Do not use it for Release builds." />
 	</Target>
 
+	<!-- Which source a build came from (#207), stamped as AssemblyMetadata and read back by
+	     MauiAppEnvironment for the Settings version label and the diagnostics report header.
+	     ApplicationDisplayVersion is only ever set by android-release.yml, so without this every
+	     local and CI build reads "v1.0" and cannot say which branch or commit is installed.
+
+	     The commit reuses SourceLink's SourceRevisionId. CI passes SourceBranch and SourceCommit
+	     explicitly, because a pull_request checkout is GitHub's synthetic merge commit: its SHA does
+	     not exist on the branch, and its HEAD is detached. android-release.yml passes StoreBuild=true,
+	     which is what switches the label to the store format.
+
+	     No Inputs/Outputs, so it runs on every build: the dirty flag has to reflect the tree as it is
+	     now, and the SDK only regenerates AssemblyInfo when an attribute value actually changed.
+	     Every git call is allowed to fail; a build outside a repository just stamps empty values. -->
+	<Target Name="_StampBuildSource" BeforeTargets="GetAssemblyAttributes" DependsOnTargets="InitializeSourceControlInformation">
+		<PropertyGroup>
+			<_BuildSourceCommit>$(SourceCommit)</_BuildSourceCommit>
+			<_BuildSourceCommit Condition="'$(_BuildSourceCommit)' == ''">$(SourceRevisionId)</_BuildSourceCommit>
+			<_BuildSourceDescribeTarget>$(_BuildSourceCommit)</_BuildSourceDescribeTarget>
+			<_BuildSourceDescribeTarget Condition="'$(_BuildSourceDescribeTarget)' == ''">HEAD</_BuildSourceDescribeTarget>
+		</PropertyGroup>
+
+		<Exec Condition="'$(SourceBranch)' == ''" Command="git rev-parse --abbrev-ref HEAD" ConsoleToMSBuild="true" IgnoreExitCode="true" EchoOff="true" StandardOutputImportance="low" StandardErrorImportance="low">
+			<Output TaskParameter="ConsoleOutput" PropertyName="_BuildSourceBranchRaw" />
+			<Output TaskParameter="ExitCode" PropertyName="_BuildSourceBranchExit" />
+		</Exec>
+		<Exec Command="git describe --tags --long --match &quot;v[0-9]*&quot; $(_BuildSourceDescribeTarget)" ConsoleToMSBuild="true" IgnoreExitCode="true" EchoOff="true" StandardOutputImportance="low" StandardErrorImportance="low">
+			<Output TaskParameter="ConsoleOutput" PropertyName="_BuildSourceDescribeRaw" />
+			<Output TaskParameter="ExitCode" PropertyName="_BuildSourceDescribeExit" />
+		</Exec>
+		<!-- Only for a local build: CI's checkout is clean by construction, and the commit it was
+		     told to stamp is not even the one checked out. -->
+		<Exec Condition="'$(SourceCommit)' == ''" Command="git status --porcelain" ConsoleToMSBuild="true" IgnoreExitCode="true" EchoOff="true" StandardOutputImportance="low" StandardErrorImportance="low">
+			<Output TaskParameter="ConsoleOutput" PropertyName="_BuildSourceStatusRaw" />
+			<Output TaskParameter="ExitCode" PropertyName="_BuildSourceStatusExit" />
+		</Exec>
+
+		<PropertyGroup>
+			<_BuildSourceBranch>$(SourceBranch)</_BuildSourceBranch>
+			<_BuildSourceBranch Condition="'$(_BuildSourceBranch)' == '' AND '$(_BuildSourceBranchExit)' == '0'">$(_BuildSourceBranchRaw.Trim())</_BuildSourceBranch>
+			<!-- A detached checkout (a release tag, a bisect) has no branch to name. -->
+			<_BuildSourceBranch Condition="'$(_BuildSourceBranch)' == 'HEAD'"></_BuildSourceBranch>
+			<_BuildSourceDescribe Condition="'$(_BuildSourceDescribeExit)' == '0'">$(_BuildSourceDescribeRaw.Trim())</_BuildSourceDescribe>
+			<_BuildSourceDirty>false</_BuildSourceDirty>
+			<_BuildSourceDirty Condition="'$(_BuildSourceStatusExit)' == '0' AND '$(_BuildSourceStatusRaw.Trim())' != ''">true</_BuildSourceDirty>
+			<_BuildSourceStore>false</_BuildSourceStore>
+			<_BuildSourceStore Condition="'$(StoreBuild)' == 'true'">true</_BuildSourceStore>
+		</PropertyGroup>
+
+		<ItemGroup>
+			<AssemblyMetadata Include="SourceBranch" Value="$(_BuildSourceBranch)" />
+			<AssemblyMetadata Include="SourceCommit" Value="$(_BuildSourceCommit)" />
+			<AssemblyMetadata Include="SourceDescribe" Value="$(_BuildSourceDescribe)" />
+			<AssemblyMetadata Include="SourceDirty" Value="$(_BuildSourceDirty)" />
+			<AssemblyMetadata Include="StoreBuild" Value="$(_BuildSourceStore)" />
+		</ItemGroup>
+	</Target>
+
 	<!-- There is no ErrorSim flag any more (#125). Fault injection is a decorator that ships
 	     disarmed in every Debug build, gated on plain #if DEBUG, so simulating a failure no longer
 	     needs its own build configuration — and no longer needs a Release guard, because the code

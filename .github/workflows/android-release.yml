@@ -145,6 +145,7 @@ jobs:
             -p:AndroidPackageFormat=aab \
             -p:ApplicationDisplayVersion=${{ env.VERSION_NAME }} \
             -p:ApplicationVersion=${{ env.VERSION_CODE }} \
+            -p:StoreBuild=true \
             -p:AndroidKeyStore=true \
             -p:AndroidSigningKeyStore=${{ github.workspace }}/keystore.jks \
             -p:AndroidSigningKeyAlias=${{ vars.ANDROID_KEYSTORE_ALIAS }} \
