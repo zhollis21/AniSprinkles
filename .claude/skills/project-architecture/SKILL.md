@@ -88,6 +88,7 @@ Shell bottom tab bar (`library`, `discover`, `search`, `feed`, `settings`). The 
 - Compiled XAML bindings enabled (`MauiEnableXamlCBindingWithSourceCompilation`).
 - Details page: keep above-the-fold small; lazy-load extended sections below; one primary spinner per screen state.
 - Library selection clear deferred until after navigation begins.
+- Long card lists keep 24 spare cards for reuse (`SpareCardPoolBehavior`, #205): Library and View All. Android's default of 5 made fast flings drop cards and rebuild them. Attach it to any new vertical list long enough to fling; short carousels don't need it.
 
 ## Loading UX
 
