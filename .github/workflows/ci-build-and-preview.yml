@@ -590,8 +590,8 @@ jobs:
           #
           # AdultCanary splices synthetic entries flagged isAdult into the replayed fixtures (#134):
           # the canary itself plus a couple of made-up 18+ titles, every one of them titled with the
-          # ADULT_CANARY prefix. They go into the list always, and into browse/search/Discover
-          # whenever the request does not pin isAdult:false. The recorder keeps every real Ecchi and
+          # ADULT_CANARY prefix. They go into the list and every details-page section always (#199),
+          # and into browse/search/Discover whenever the request does not pin isAdult:false. The recorder keeps every real Ecchi and
           # 18+ title out of the fixtures, so these are the only adult content in the build. The stub viewer leaves DisplayAdultContent off
           # and nothing in this job turns it on, so every surface must filter it out. If it renders,
           # the adult filter is broken — and the same defect on a real account would be putting real
@@ -638,6 +638,50 @@ jobs:
               echo "::error::Adult-content filter FAILED on $where — the 18+ canary fixture rendered while DisplayAdultContent is off. Check DiscoverSectionFetch's pinned filter, the isAdult query argument, and MediaListSectionsMerger.OrderAndFilterGroups (#118)."
               ADULT_CANARY_HITS=$((ADULT_CANARY_HITS + 1))
             fi
+          }
+
+          # The details pages (#199). Their 18+ titles sit in sections below the fold, and a
+          # uiautomator dump only holds realised nodes, so one check at the top of the page sees
+          # nothing. This walks the page down one swipe at a time and checks at every step, then
+          # swipes back to the top so the next step finds the page where it expects it.
+          #
+          # Stops early once two dumps in a row are identical: the page has reached its bottom. Counts
+          # at most one hit per page, so a single broken filter reads as one failure, not twelve.
+          # The canary leads each section (AdultCanary.DetailsSplices), so its first card is the one
+          # on screen when the section is. Usage: sweep_for_adult_canary "Staff details" [max_swipes]
+          sweep_for_adult_canary() {
+            local where="$1" max="${2:-12}" i swiped=0 previous="" current
+            for i in $(seq 0 "$max"); do
+              adb shell rm -f /sdcard/ui_sweep.xml >/dev/null 2>&1 || true
+              if ! adb shell uiautomator dump /sdcard/ui_sweep.xml >/dev/null 2>&1; then
+                echo "::warning::Could not dump UI to check the adult-content filter on $where"
+                break
+              fi
+
+              current=$(adb shell cat /sdcard/ui_sweep.xml 2>/dev/null || echo "")
+              if echo "$current" | grep -qF "$ADULT_CANARY"; then
+                echo "::error::Adult-content filter FAILED on $where after ${i} swipe(s) — an 18+ canary title rendered while DisplayAdultContent is off. Check AdultMediaFilter and the section's visible: projection, and that the query still asks for isAdult (#199)."
+                ADULT_CANARY_HITS=$((ADULT_CANARY_HITS + 1))
+                break
+              fi
+
+              if [ -n "$previous" ] && [ "$current" = "$previous" ]; then
+                echo "Swept $where to the bottom in ${i} swipe(s)"
+                break
+              fi
+              previous="$current"
+
+              if [ "$i" -lt "$max" ]; then
+                swipe_content_up
+                swiped=$((swiped + 1))
+                sleep 1
+              fi
+            done
+
+            for _ in $(seq 0 "$swiped"); do
+              swipe_content_down >/dev/null 2>&1 || true
+            done
+            sleep 1
           }
 
           PACKAGE="com.RainbowSprinkles.AniSprinkles"
@@ -878,6 +922,10 @@ jobs:
           adb pull /sdcard/one_piece_details.png screenshots/one_piece_details.png || echo "::warning::Failed to pull details screenshot"
           echo "Captured: one_piece_details.png (One Piece Details — $AUTH_MODE)"
 
+          # Relations, characters, staff and recommendations all sit below the fold, and AniList
+          # returns 18+ titles in two of them (#199). The longest page in the run: 20 swipes.
+          sweep_for_adult_canary "One Piece details" 20
+
           # Screenshot 3: Studio details (Toei Animation). Tap the studio chip in the One Piece
           # quick-info row, capture the Studio Details page, then return to One Piece details.
           # No explicit swipe count — the default in tap_studio_chip is the single place that
@@ -902,6 +950,7 @@ jobs:
               adb shell screencap -p /sdcard/studio_details.png || echo "::warning::Failed to capture studio screenshot"
               adb pull /sdcard/studio_details.png screenshots/studio_details.png || echo "::warning::Failed to pull studio screenshot"
               echo "Captured: studio_details.png (Toei Animation — $AUTH_MODE)"
+              sweep_for_adult_canary "Studio details" 4
             else
               echo "::warning::Studio details page did not finish loading — skipping studio screenshot"
             fi
@@ -968,6 +1017,8 @@ jobs:
             adb shell screencap -p /sdcard/character_details.png || echo "::warning::Failed to capture character screenshot"
             adb pull /sdcard/character_details.png screenshots/character_details.png || echo "::warning::Failed to pull character screenshot"
             echo "Captured: character_details.png (Luffy — $AUTH_MODE)"
+            # Appears In. Swept before the Voice Actors search below, which starts from the top.
+            sweep_for_adult_canary "Character details" 8
           else
             echo "::warning::Character page never opened — skipping rather than capturing the wrong screen"
           fi
@@ -1016,6 +1067,8 @@ jobs:
             adb shell screencap -p /sdcard/staff_details.png || echo "::warning::Failed to capture staff screenshot"
             adb pull /sdcard/staff_details.png screenshots/staff_details.png || echo "::warning::Failed to pull staff screenshot"
             echo "Captured: staff_details.png (Mayumi Tanaka — $AUTH_MODE)"
+            # Voice Roles is where #199 was found: every role led with the canary.
+            sweep_for_adult_canary "Staff details" 10
           else
             echo "::warning::Staff page never opened — skipping rather than capturing the wrong screen"
           fi

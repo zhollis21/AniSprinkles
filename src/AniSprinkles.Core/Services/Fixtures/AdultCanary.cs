@@ -20,7 +20,7 @@ namespace AniSprinkles.Services.Fixtures;
 /// guaranteed filtered — which no live data can promise.
 /// </para>
 /// <para>
-/// The two halves work differently, deliberately:
+/// The three parts work differently, deliberately:
 /// <list type="bullet">
 ///   <item><description>
 ///     <b>The list</b> has no <c>isAdult</c> argument, so the canary always comes back and the
@@ -31,6 +31,12 @@ namespace AniSprinkles.Services.Fixtures;
 ///     request does <em>not</em> pin <c>isAdult: false</c>. The stub viewer leaves adult content off
 ///     and nothing in CI turns it on, so a correct app never sees it — and an app that drops or
 ///     inverts the argument gets it immediately.
+///   </description></item>
+///   <item><description>
+///     <b>The details pages</b> (#199) have no <c>isAdult</c> argument on any nested connection,
+///     and AniList returns 18+ titles in them signed in or out, so like the list they are always
+///     armed. Each connection is targeted by shape (<see cref="DetailsSplices"/>), and the
+///     client-side <c>AdultMediaFilter</c> must drop what is spliced in.
 ///   </description></item>
 /// </list>
 /// </para>
@@ -87,6 +93,12 @@ public static class AdultCanary
         if (string.Equals(operationName, "MediaListCollection", StringComparison.Ordinal))
         {
             SpliceIntoList(data, type);
+            return;
+        }
+
+        if (DetailsSplices.TryGetValue(operationName, out var spliceDetails))
+        {
+            spliceDetails(data, ForType(type: null));
             return;
         }
 
@@ -149,6 +161,97 @@ public static class AdultCanary
             }
         }
     }
+
+    /// <summary>
+    /// The details pages (#199), always armed like the list. Every nested media connection on them
+    /// comes back with 18+ titles whether or not the viewer is signed in, and none takes an
+    /// <c>isAdult</c> argument, so the client-side filter (<c>AdultMediaFilter</c>) is all there is.
+    /// <para>
+    /// Targeted per operation rather than walked for, because the shapes differ: a relation wraps its
+    /// media in <c>node</c>, a recommendation in <c>mediaRecommendation</c>, a studio lists bare
+    /// <c>nodes</c>, and a voice role carries a whole array. A new details section has to be added
+    /// here, and <c>AdultCanaryTests.DetailsSections</c> lists the ones that are.
+    /// </para>
+    /// </summary>
+    private static readonly Dictionary<string, Action<JsonNode, List<MadeUpTitle>>> DetailsSplices = new(StringComparer.Ordinal)
+    {
+        ["Media"] = (data, titles) =>
+        {
+            IntoConnection(data["Media"]?["relations"], "edges", titles, t => new JsonObject { ["relationType"] = "SEQUEL", ["node"] = Summary(t) });
+            IntoConnection(data["Media"]?["recommendations"], "nodes", titles, Recommendation);
+        },
+        ["MediaRecommendationsPage"] = (data, titles) => IntoConnection(data["Media"]?["recommendations"], "nodes", titles, Recommendation),
+        ["Staff"] = (data, titles) =>
+        {
+            IntoVoiceRoles(data["Staff"]?["characters"], titles);
+            IntoConnection(data["Staff"]?["staffMedia"], "edges", titles, StaffMediaEdge);
+        },
+        ["StaffCharactersPage"] = (data, titles) => IntoVoiceRoles(data["Staff"]?["characters"], titles),
+        ["StaffMediaPage"] = (data, titles) => IntoConnection(data["Staff"]?["staffMedia"], "edges", titles, StaffMediaEdge),
+        ["Character"] = (data, titles) => IntoConnection(data["Character"]?["media"], "edges", titles, CharacterMediaEdge),
+        ["CharacterMediaPage"] = (data, titles) => IntoConnection(data["Character"]?["media"], "edges", titles, CharacterMediaEdge),
+        ["Studio"] = (data, titles) => IntoConnection(data["Studio"]?["media"], "nodes", titles, Summary),
+        ["StudioMediaPage"] = (data, titles) => IntoConnection(data["Studio"]?["media"], "nodes", titles, Summary),
+    };
+
+    /// <summary>The id of the made-up character who voices only made-up titles. Outside any real AniList id.</summary>
+    private const int MadeUpCharacterId = 999_000_031;
+
+    /// <summary>
+    /// Puts the made-up titles at the front of a connection's items, each wrapped the way that
+    /// connection wraps a media. A connection the query did not ask for stays absent.
+    /// </summary>
+    private static void IntoConnection(JsonNode? connection, string items, List<MadeUpTitle> titles, Func<MadeUpTitle, JsonObject> wrap)
+    {
+        if (connection?[items] is not JsonArray array)
+        {
+            return;
+        }
+
+        for (var i = titles.Count - 1; i >= 0; i--)
+        {
+            array.Insert(0, wrap(titles[i]));
+        }
+    }
+
+    /// <summary>
+    /// Arms both halves of the voice-role filter. Every real role gets the made-up titles ahead of its
+    /// own, so a correct app shows the role's first real title; and one made-up role has nothing but
+    /// made-up titles, so a correct app drops it. Its character's name carries the marker too, so a
+    /// role kept with its media line blanked still fails the gate.
+    /// </summary>
+    private static void IntoVoiceRoles(JsonNode? characters, List<MadeUpTitle> titles)
+    {
+        if (characters?["edges"] is not JsonArray edges)
+        {
+            return;
+        }
+
+        SpliceIntoMediaArrays(edges, titles);
+
+        var name = Marker + " - Made-up Role";
+        edges.Insert(0, new JsonObject
+        {
+            ["node"] = new JsonObject
+            {
+                ["id"] = MadeUpCharacterId,
+                ["name"] = new JsonObject { ["full"] = name, ["native"] = name, ["userPreferred"] = name },
+                ["image"] = null,
+                ["favourites"] = 0,
+            },
+            ["role"] = "MAIN",
+            ["media"] = new JsonArray([.. titles.Select(t => (JsonNode)Summary(t))]),
+        });
+    }
+
+    private static JsonObject Recommendation(MadeUpTitle title)
+        => new() { ["rating"] = 0, ["mediaRecommendation"] = Summary(title) };
+
+    private static JsonObject StaffMediaEdge(MadeUpTitle title)
+        => new() { ["node"] = Summary(title), ["staffRole"] = "Original Creator" };
+
+    private static JsonObject CharacterMediaEdge(MadeUpTitle title)
+        => new() { ["node"] = Summary(title), ["characterRole"] = "MAIN", ["voiceActors"] = new JsonArray() };
 
     /// <summary>
     /// Walks for any <c>media</c> array. Search, BrowseAnime and every DiscoverSections alias share

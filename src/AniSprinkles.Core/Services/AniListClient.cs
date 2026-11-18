@@ -1120,6 +1120,7 @@ public class AniListClient : IAniListClient
         Chapters = dto.Chapters,
         Volumes = dto.Volumes,
         Trending = dto.Trending,
+        IsAdult = dto.IsAdult,
         ListEntryId = dto.MediaListEntry?.Id,
         ListStatus = ParseStatus(dto.MediaListEntry?.Status),
         ListProgress = dto.MediaListEntry?.Progress,
@@ -1233,6 +1234,7 @@ public class AniListClient : IAniListClient
 
     private static StaffCharacterEdge MapStaffCharacterEdge(StaffCharacterEdgeDto edge)
     {
+        List<RelatedMedia> media = [.. edge.Media?.Where(m => m is not null).Select(MapRelatedMedia) ?? []];
         return new StaffCharacterEdge
         {
             Node = edge.Node is null ? null : new Character
@@ -1243,9 +1245,8 @@ public class AniListClient : IAniListClient
                 Favourites = edge.Node.Favourites,
             },
             Role = edge.Role,
-            Media = edge.Media?.FirstOrDefault() is { } firstMedia
-                ? MapRelatedMedia(firstMedia)
-                : null,
+            AllMedia = media,
+            Media = media.FirstOrDefault(),
         };
     }
 
@@ -1802,6 +1803,7 @@ public class AniListClient : IAniListClient
         public int? Chapters { get; set; }
         public int? Volumes { get; set; }
         public int? Trending { get; set; }
+        public bool? IsAdult { get; set; }
         public MediaListEntryDto? MediaListEntry { get; set; }
     }
 
@@ -2167,6 +2169,7 @@ query Media($id: Int!) {
         node {
           id
           title { romaji english native }
+          isAdult
           format
           type
           status
@@ -2201,6 +2204,7 @@ query Media($id: Int!) {
         mediaRecommendation {
           id
           title { romaji english native }
+          isAdult
           format
           type
           coverImage { medium large }
@@ -2382,6 +2386,7 @@ query Staff($id: Int!, $charactersPage: Int = 1, $mediaPage: Int = 1, $character
         media {
           id
           title { romaji english native }
+          isAdult
           coverImage { medium large }
           format
           type
@@ -2396,6 +2401,7 @@ query Staff($id: Int!, $charactersPage: Int = 1, $mediaPage: Int = 1, $character
         node {
           id
           title { romaji english native }
+          isAdult
           coverImage { medium large }
           format
           type
@@ -2423,6 +2429,7 @@ query StaffCharactersPage($id: Int!, $page: Int!, $sort: [CharacterSort], $perPa
         media {
           id
           title { romaji english native }
+          isAdult
           coverImage { medium large }
           format
           type
@@ -2443,6 +2450,7 @@ query StaffMediaPage($id: Int!, $page: Int!, $sort: [MediaSort], $perPage: Int =
         node {
           id
           title { romaji english native }
+          isAdult
           coverImage { medium large }
           format
           type
@@ -2468,6 +2476,7 @@ query CharacterMediaPage($id: Int!, $page: Int!, $sort: [MediaSort], $perPage: I
         node {
           id
           title { romaji english native }
+          isAdult
           coverImage { medium large }
           format
           type
@@ -2541,6 +2550,7 @@ query MediaRecommendationsPage($id: Int!, $page: Int!, $sort: [RecommendationSor
         mediaRecommendation {
           id
           title { romaji english native }
+          isAdult
           format
           type
           coverImage { medium large }
@@ -2566,6 +2576,7 @@ query Studio($id: Int!, $mediaPage: Int = 1, $mediaPerPage: Int = 25, $mediaSort
       nodes {
         id
         title { romaji english native }
+        isAdult
         coverImage { medium large }
         format
         type
@@ -2588,6 +2599,7 @@ query StudioMediaPage($id: Int!, $page: Int!, $sort: [MediaSort], $perPage: Int 
       nodes {
         id
         title { romaji english native }
+        isAdult
         coverImage { medium large }
         format
         type
@@ -2622,6 +2634,7 @@ query Character($id: Int!, $mediaPage: Int = 1, $mediaSort: [MediaSort] = [POPUL
         node {
           id
           title { romaji english native }
+          isAdult
           coverImage { medium large }
           format
           type

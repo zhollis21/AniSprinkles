@@ -614,6 +614,44 @@ public class AniListClientOperationsTests
         Assert.That(relation.RelationType, Is.EqualTo("Same Universe"));
     }
 
+    // ── Nested adult flags (#199) ────────────────────────────────────
+
+    [Test]
+    public async Task GetStaff_KeepsEveryTitleOfAVoiceRole_WithItsAdultFlag()
+    {
+        // The card shows one title, but the filter has to see them all: a role's first title can
+        // be 18+ while its second is not.
+        var harness = new Harness().Returns("Staff", """
+            {"Staff":{"id":5,"characters":{"pageInfo":{"currentPage":1,"hasNextPage":false},"edges":[
+                {"node":{"id":40},"role":"MAIN","media":[{"id":1,"isAdult":true},{"id":2,"isAdult":false}]}
+            ]},"staffMedia":{"pageInfo":{"currentPage":1,"hasNextPage":false},"edges":[
+                {"node":{"id":3,"isAdult":true},"staffRole":"Director"}
+            ]}}}
+            """);
+
+        var staff = await harness.Client.GetStaffAsync(5, cancellationToken: TestContext.CurrentContext.CancellationToken);
+
+        var role = staff?.Characters.Single();
+        Assert.That(role?.AllMedia.Select(m => (m.Id, m.IsAdult)), Is.EqualTo([(1, (bool?)true), (2, (bool?)false)]));
+        Assert.That(role?.Media?.Id, Is.EqualTo(1));
+        Assert.That(staff?.StaffMedia.Single().Node?.IsAdult, Is.True);
+    }
+
+    [Test]
+    public async Task GetMedia_MapsTheAdultFlagOfRelationsAndRecommendations()
+    {
+        var harness = new Harness().Returns("Media", """
+            {"Media":{"id":9,"type":"ANIME",
+              "relations":{"edges":[{"relationType":"SEQUEL","node":{"id":40,"type":"ANIME","isAdult":true}}]},
+              "recommendations":{"pageInfo":{"currentPage":1,"hasNextPage":false},"nodes":[{"rating":3,"mediaRecommendation":{"id":41,"isAdult":true}}]}}}
+            """);
+
+        var (media, _) = await harness.Client.GetMediaAsync(9, TestContext.CurrentContext.CancellationToken);
+
+        Assert.That(media?.Relations.Single().Node?.IsAdult, Is.True);
+        Assert.That(media?.Recommendations.Single().MediaRecommendation?.IsAdult, Is.True);
+    }
+
     private const string EmptyPage =
         """{"Page":{"pageInfo":{"currentPage":1,"hasNextPage":false},"media":[]}}""";
 

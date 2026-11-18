@@ -1,0 +1,457 @@
+﻿{
+  "operationName": "MediaRecommendationsPage",
+  "variables": {
+    "id": 154587,
+    "page": 1,
+    "sort": [
+      "RATING_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "7fdbadd78a22",
+  "recordedAt": "2026-11-18T14:38:44.5756774+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "recommendations": {
+          "pageInfo": {
+            "hasNextPage": true,
+            "currentPage": 1
+          },
+          "nodes": [
+            {
+              "rating": 1218,
+              "mediaRecommendation": {
+                "id": 21827,
+                "title": {
+                  "romaji": "Violet Evergarden",
+                  "english": "Violet Evergarden",
+                  "native": "\u30F4\u30A1\u30A4\u30AA\u30EC\u30C3\u30C8\u30FB\u30A8\u30F4\u30A1\u30FC\u30AC\u30FC\u30C7\u30F3"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21827-ubzq619ZA2E9.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21827-ubzq619ZA2E9.png"
+                },
+                "weightedScore": 85,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 779,
+              "mediaRecommendation": {
+                "id": 153518,
+                "title": {
+                  "romaji": "Dungeon Meshi",
+                  "english": "Delicious in Dungeon",
+                  "native": "\u30C0\u30F3\u30B8\u30E7\u30F3\u98EF"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx153518-IVXPDY5ph3kO.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx153518-IVXPDY5ph3kO.jpg"
+                },
+                "weightedScore": 85,
+                "mediaListEntry": {
+                  "id": 593364470,
+                  "status": "COMPLETED",
+                  "progress": 24,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 510,
+              "mediaRecommendation": {
+                "id": 112609,
+                "title": {
+                  "romaji": "Majo no Tabitabi",
+                  "english": "Wandering Witch: The Journey of Elaina",
+                  "native": "\u9B54\u5973\u306E\u65C5\u3005"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx112609-hBCbnYlEHluz.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx112609-hBCbnYlEHluz.jpg"
+                },
+                "weightedScore": 74,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 427,
+              "mediaRecommendation": {
+                "id": 114535,
+                "title": {
+                  "romaji": "Fumetsu no Anata e",
+                  "english": "To Your Eternity",
+                  "native": "\u4E0D\u6EC5\u306E\u3042\u306A\u305F\u3078"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx114535-y3NnjexcqKG1.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx114535-y3NnjexcqKG1.jpg"
+                },
+                "weightedScore": 81,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 423,
+              "mediaRecommendation": {
+                "id": 147105,
+                "title": {
+                  "romaji": "Tongari Boushi no Atelier",
+                  "english": "Witch Hat Atelier",
+                  "native": "\u3068\u3093\u304C\u308A\u5E3D\u5B50\u306E\u30A2\u30C8\u30EA\u30A8"
+                },
+                "isAdult": false,
+                "format": "ONA",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx147105-rwOX8qyUy8gV.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx147105-rwOX8qyUy8gV.jpg"
+                },
+                "weightedScore": 85,
+                "mediaListEntry": {
+                  "id": 593365663,
+                  "status": "COMPLETED",
+                  "progress": 13,
+                  "score": 7
+                }
+              }
+            },
+            {
+              "rating": 300,
+              "mediaRecommendation": {
+                "id": 457,
+                "title": {
+                  "romaji": "Mushishi",
+                  "english": "MUSHI-SHI",
+                  "native": "\u87F2\u5E2B"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx457-l6cTtNgI9Bi6.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx457-l6cTtNgI9Bi6.png"
+                },
+                "weightedScore": 85,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 282,
+              "mediaRecommendation": {
+                "id": 161645,
+                "title": {
+                  "romaji": "Kusuriya no Hitorigoto",
+                  "english": "The Apothecary Diaries",
+                  "native": "\u85AC\u5C4B\u306E\u3072\u3068\u308A\u3054\u3068"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx161645-QLbzHXiYRgV2.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx161645-QLbzHXiYRgV2.jpg"
+                },
+                "weightedScore": 88,
+                "mediaListEntry": {
+                  "id": 548900515,
+                  "status": "COMPLETED",
+                  "progress": 24,
+                  "score": 10
+                }
+              }
+            },
+            {
+              "rating": 263,
+              "mediaRecommendation": {
+                "id": 99420,
+                "title": {
+                  "romaji": "Shoujo Shuumatsu Ryokou",
+                  "english": "Girls\u0027 Last Tour",
+                  "native": "\u5C11\u5973\u7D42\u672B\u65C5\u884C"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx99420-k5Tel6yRMwA8.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx99420-k5Tel6yRMwA8.png"
+                },
+                "weightedScore": 82,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 259,
+              "mediaRecommendation": {
+                "id": 486,
+                "title": {
+                  "romaji": "Kino no Tabi: the Beautiful World",
+                  "english": "Kino\u0027s Journey",
+                  "native": "\u30AD\u30CE\u306E\u65C5 -the Beautiful World-"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx486-xXUgNOEBuxGs.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx486-xXUgNOEBuxGs.jpg"
+                },
+                "weightedScore": 81,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 237,
+              "mediaRecommendation": {
+                "id": 99457,
+                "title": {
+                  "romaji": "Sayonara no Asa ni Yakusoku no Hana wo Kazarou",
+                  "english": "Maquia: When the Promised Flower Blooms",
+                  "native": "\u3055\u3088\u306A\u3089\u306E\u671D\u306B\u7D04\u675F\u306E\u82B1\u3092\u304B\u3056\u308D\u3046"
+                },
+                "isAdult": false,
+                "format": "MOVIE",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx99457-OD0xtM8NlHNQ.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx99457-OD0xtM8NlHNQ.png"
+                },
+                "weightedScore": 82,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 196,
+              "mediaRecommendation": {
+                "id": 145728,
+                "title": {
+                  "romaji": "Ookami to Koushinryou: MERCHANT MEETS THE WISE WOLF",
+                  "english": "Spice and Wolf: MERCHANT MEETS THE WISE WOLF",
+                  "native": "\u72FC\u3068\u9999\u8F9B\u6599 MERCHANT MEETS THE WISE WOLF"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx145728-YUKXjN2E81Pq.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx145728-YUKXjN2E81Pq.jpg"
+                },
+                "weightedScore": 79,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 187,
+              "mediaRecommendation": {
+                "id": 179966,
+                "title": {
+                  "romaji": "Silent Witch: Chinmoku no Majo no Kakushigoto",
+                  "english": "Secrets of the Silent Witch",
+                  "native": "\u30B5\u30A4\u30EC\u30F3\u30C8\u30FB\u30A6\u30A3\u30C3\u30C1 \u6C88\u9ED9\u306E\u9B54\u5973\u306E\u96A0\u3057\u3054\u3068"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx179966-g0EU7rVe2Og7.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx179966-g0EU7rVe2Og7.jpg"
+                },
+                "weightedScore": 81,
+                "mediaListEntry": {
+                  "id": 593365425,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "score": 0
+                }
+              }
+            },
+            {
+              "rating": 124,
+              "mediaRecommendation": {
+                "id": 2966,
+                "title": {
+                  "romaji": "Ookami to Koushinryou",
+                  "english": "Spice and Wolf",
+                  "native": "\u72FC\u3068\u9999\u8F9B\u6599"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx2966-AEULMyYA9WKb.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2966-AEULMyYA9WKb.png"
+                },
+                "weightedScore": 80,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 73,
+              "mediaRecommendation": {
+                "id": 477,
+                "title": {
+                  "romaji": "ARIA The ANIMATION",
+                  "english": "ARIA The ANIMATION",
+                  "native": "ARIA The ANIMATION"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx477-CdKPHW7rGbUP.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx477-CdKPHW7rGbUP.png"
+                },
+                "weightedScore": 76,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 73,
+              "mediaRecommendation": null
+            },
+            {
+              "rating": 62,
+              "mediaRecommendation": {
+                "id": 975,
+                "title": {
+                  "romaji": "Yokohama Kaidashi Kikou",
+                  "english": "Yokohama Shopping Log",
+                  "native": "\u30E8\u30B3\u30CF\u30DE\u8CB7\u3044\u51FA\u3057\u7D00\u884C"
+                },
+                "isAdult": false,
+                "format": "OVA",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/975-EDNYnBJCctSD.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/975-EDNYnBJCctSD.jpg"
+                },
+                "weightedScore": 74,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 58,
+              "mediaRecommendation": {
+                "id": 98436,
+                "title": {
+                  "romaji": "Mahoutsukai no Yome",
+                  "english": "The Ancient Magus\u0027 Bride",
+                  "native": "\u9B54\u6CD5\u4F7F\u3044\u306E\u5AC1"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx98436-n7sK6POCd0XV.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx98436-n7sK6POCd0XV.png"
+                },
+                "weightedScore": 78,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 56,
+              "mediaRecommendation": {
+                "id": 97986,
+                "title": {
+                  "romaji": "Made in Abyss",
+                  "english": "Made in Abyss",
+                  "native": "\u30E1\u30A4\u30C9\u30A4\u30F3\u30A2\u30D3\u30B9"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx97986-TQ7dCgbS3y5s.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx97986-TQ7dCgbS3y5s.jpg"
+                },
+                "weightedScore": 84,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 50,
+              "mediaRecommendation": {
+                "id": 156891,
+                "title": {
+                  "romaji": "Saijaku Tamer wa Gomi Hiroi no Tabi wo Hajimemashita.",
+                  "english": "The Weakest Tamer Began a Journey to Pick Up Trash",
+                  "native": "\u6700\u5F31\u30C6\u30A4\u30DE\u30FC\u306F\u30B4\u30DF\u62FE\u3044\u306E\u65C5\u3092\u59CB\u3081\u307E\u3057\u305F\u3002"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx156891-bw91QNdptQEG.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx156891-bw91QNdptQEG.jpg"
+                },
+                "weightedScore": 74,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 50,
+              "mediaRecommendation": {
+                "id": 186052,
+                "title": {
+                  "romaji": "Mizu Zokusei no Mahou Tsukai",
+                  "english": "The Water Magician",
+                  "native": "\u6C34\u5C5E\u6027\u306E\u9B54\u6CD5\u4F7F\u3044"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx186052-zq8h0Qo0O0sP.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx186052-zq8h0Qo0O0sP.jpg"
+                },
+                "weightedScore": 70,
+                "mediaListEntry": {
+                  "id": 593364569,
+                  "status": "COMPLETED",
+                  "progress": 12,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 47,
+              "mediaRecommendation": {
+                "id": 108617,
+                "title": {
+                  "romaji": "Somali to Mori no Kamisama",
+                  "english": "Somali and the Forest Spirit",
+                  "native": "\u30BD\u30DE\u30EA\u3068\u68EE\u306E\u795E\u69D8"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx108617-PgoYLgWzzm0c.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx108617-PgoYLgWzzm0c.png"
+                },
+                "weightedScore": 76,
+                "mediaListEntry": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}
