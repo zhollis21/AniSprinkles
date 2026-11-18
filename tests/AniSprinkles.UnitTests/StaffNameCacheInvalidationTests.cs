@@ -143,6 +143,7 @@ public class StaffNameCacheInvalidationTests
                 Substitute.For<IPreferences>(),
                 new ImmediateDispatcher(),
                 Substitute.For<IAppInfo>(),
+                new StubAppEnvironment(),
                 new ScriptedDialogService(),
                 new RecordingUserFeedback(),
                 Substitute.For<IExternalBrowser>(),

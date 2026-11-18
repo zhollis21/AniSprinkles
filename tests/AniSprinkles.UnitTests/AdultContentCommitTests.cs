@@ -104,6 +104,7 @@ public class AdultContentCommitTests
                 Substitute.For<IPreferences>(),
                 new ImmediateDispatcher(),
                 Substitute.For<IAppInfo>(),
+                new StubAppEnvironment(),
                 dialogs,
                 Feedback,
                 Substitute.For<IExternalBrowser>(),

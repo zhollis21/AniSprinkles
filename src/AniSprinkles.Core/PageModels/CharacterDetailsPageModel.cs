@@ -85,7 +85,8 @@ public partial class CharacterDetailsPageModel : DetailsPageModelBase<Character>
             FetchAppearancesPageAsync,
             edge => edge.Node?.Id ?? 0,
             StampAppearanceBadges,
-            DetailsListSorters.SortAppearances);
+            DetailsListSorters.SortAppearances,
+            edge => AdultMediaFilter.Keep(edge, edge.Node, DisplaysAdultContent));
         _appearances.Changed += OnAppearancesChanged;
 
         _voiceActors = new VoiceActorAggregator(FetchVoiceActorMediaPageAsync);

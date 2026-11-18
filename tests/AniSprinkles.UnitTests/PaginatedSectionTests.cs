@@ -366,4 +366,45 @@ public class PaginatedSectionTests
 
         Assert.That(section.CanLoadMore, Is.True);
     }
+
+    // ── Visibility projection (#199) ─────────────────────────────────
+
+    private static PaginatedSection<Item> FilteredSection(
+        PaginatedSection<Item>.FetchPageDelegate fetch, Func<Item, Item?> visible)
+        => new("POPULARITY_DESC", fetch, item => item.Id, visible: visible);
+
+    [Test]
+    public async Task Visible_AppliesToSeedLoadMoreAndSortRefetch()
+    {
+        // Every way items enter the section, so a details page cannot filter its first page and
+        // then let page two, or a re-sort, put the same titles back.
+        var section = FilteredSection(
+            (page, _, _) => Task.FromResult(page == 1
+                ? Result(Page(1, hasNext: false), 7, 8)
+                : Result(Page(2, hasNext: true), 3, 4)),
+            item => item.Id % 2 == 0 ? item : null);
+
+        section.Seed([new Item(1), new Item(2)], Page(1, hasNext: true));
+        Assert.That(section.Items.Select(i => i.Id), Is.EqualTo([2]));
+
+        await section.LoadMoreAsync(TestContext.CurrentContext.CancellationToken);
+        Assert.That(section.Items.Select(i => i.Id), Is.EqualTo([2, 4]));
+
+        await section.ChangeSortAsync("SCORE_DESC", TestContext.CurrentContext.CancellationToken);
+        Assert.That(section.Items.Select(i => i.Id), Is.EqualTo([8]));
+    }
+
+    [Test]
+    public void Visible_CanReplaceAnItem()
+    {
+        // A voice role keeps its place but swaps which title it shows.
+        var section = FilteredSection(
+            (_, _, _) => throw new InvalidOperationException("should not fetch"),
+            item => item.Id == 1 ? new Item(1) : item);
+        var original = new Item(1);
+
+        section.Seed([original], Page(1, hasNext: false));
+
+        Assert.That(section.Items.Single(), Is.Not.SameAs(original));
+    }
 }

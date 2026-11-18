@@ -105,7 +105,8 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
             RecommendationsDefaultSort,
             FetchRecommendationsPageAsync,
             node => node.MediaRecommendation?.Id ?? 0,
-            StampRecommendationBadges);
+            StampRecommendationBadges,
+            visible: node => AdultMediaFilter.Keep(node, node.MediaRecommendation, DisplaysAdultContent));
         _recommendations.Changed += OnRecommendationsChanged;
     }
 
@@ -725,7 +726,8 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
         SyncStaffSortSelection(StaffDefaultSort);
 
         // Relations sorts entirely client-side over a fixed set; capture it and apply the default order.
-        _allRelations = value?.Relations ?? [];
+        // Filtered once here: Relations is never paged, so this is the only way a title enters it (#199).
+        _allRelations = [.. (value?.Relations ?? []).Where(r => !AdultMediaFilter.Hides(r.Node, DisplaysAdultContent))];
         RelationsSort = RelationsDefaultSort;
         SyncRelationsSortSelection(RelationsDefaultSort);
         ApplyRelationsSort();
@@ -832,6 +834,7 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
     // sort, and once it settles re-sync the dropdown highlight to the sort that actually took effect
     // (a failed change leaves the old sort, so the highlight reverts).
     private Task SelectSectionSortAsync<T>(string? code, PaginatedSection<T> section, IReadOnlyList<SortOption> options, string label)
+        where T : class
     {
         if (string.IsNullOrEmpty(code) || string.Equals(code, section.Sort, StringComparison.Ordinal))
         {

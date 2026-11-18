@@ -22,6 +22,12 @@ public class RelatedMedia
     public int? Chapters { get; set; }
     public int? Volumes { get; set; }
 
+    // AniList's 18+ flag. Requested on every nested media selection in a details query (#199), because
+    // none of those connections can be filtered server-side. Null where a query did not ask for it
+    // (the browse fragment, which is filtered by the isAdult argument instead), and null reads as
+    // not adult.
+    public bool? IsAdult { get; set; }
+
     // Viewer's list-entry snapshot (Discover/browse/search queries request mediaListEntry when
     // authenticated). Null in every other query, which keeps existing carousels untouched.
     public int? ListEntryId { get; set; }
