@@ -438,6 +438,13 @@ works — that is what the driver and DevFlow above are for.
 
 ## Gotchas
 
+- **A Java GC does not free MAUI views.** `am dumpheap` and Android Studio's "force GC" collect
+  only the Java heap, and every MAUI view's native peer is held by a global reference from .NET,
+  so a discarded list cell stays in `dumpsys meminfo`'s `Views` count until a .NET collection has
+  run as well. Before reading `Views` or PSS for a leak, call the app's `force-full-gc` DevFlow
+  action (`maui_invoke_action`; `maui_list_actions` lists it): a .NET full GC then a Java GC, twice.
+  #205 read 1,183 views after `am dumpheap` and 543 after this, from the same state.
+
 - **One Android SDK, and everything points at it.** The build and the driver use
   `C:\Program Files (x86)\Android\android-sdk`. `ANDROID_HOME`, PATH's
   `platform-tools` and `JAVA_HOME` (`C:\Program Files\Android\openjdk\jdk-21.0.8`)
