@@ -73,8 +73,9 @@ $Emu = Join-Path $Sdk 'emulator\emulator.exe'
 # Every adb call routes through Adb/AdbOut so a single `-s <serial>` is applied
 # consistently. Without it a second attached device (a phone plugged in, a
 # leftover AVD) makes every command die with "more than one device/emulator",
-# which reads like a driver bug rather than an ambiguity.
-$script:Serial = $env:ANDROID_SERIAL
+# which reads like a driver bug rather than an ambiguity. Resolve-Target fills it in — from
+# ANDROID_SERIAL, this worktree's claim, or a free device — so it starts empty here.
+$script:Serial = $null
 
 function Adb {
     if ($script:Serial) { & $Adb -s $script:Serial @args } else { & $Adb @args }
@@ -97,11 +98,22 @@ function FreeDataKb {
     return $null
 }
 
-function Say($msg) { Write-Host "[driver] $msg" }
+# `serial` prints just the serial on stdout, for `ANDROID_SERIAL=$(driver.ps1 serial)`. Write-Host
+# lands on stdout under `pwsh -File`, so while it runs the narration goes to stderr instead.
+$script:SayToStderr = $false
+function Say($msg) {
+    if ($script:SayToStderr) { [Console]::Error.WriteLine("[driver] $msg") } else { Write-Host "[driver] $msg" }
+}
 
 function Get-AttachedDevices {
     # Only devices in `device` state — `offline` and `unauthorized` cannot be driven.
     @(& $Adb devices | ForEach-Object { if ($_ -match '^(\S+)\s+device\s*$') { $Matches[1] } })
+}
+
+function Get-ListedDevices {
+    # Every serial adb lists, in any state. Claim liveness uses this rather than
+    # Get-AttachedDevices: an emulator that blips to `offline` is still somebody's device.
+    @(& $Adb devices | ForEach-Object { if ($_ -match '^(\S+)\s+(device|offline|unauthorized|authorizing|connecting|recovery|sideload|bootloader)\s*$') { $Matches[1] } })
 }
 
 function Get-AvdName {
@@ -113,21 +125,281 @@ function Get-AvdName {
     ($out | Where-Object { $_ -and $_.Trim() -and $_.Trim() -ne 'OK' } | Select-Object -First 1).Trim()
 }
 
-function Resolve-Target {
-    # Pick the device every later command will talk to. Explicit ANDROID_SERIAL wins;
-    # otherwise a lone device is unambiguous, and anything else needs the user to say.
-    param([switch]$Required)
-    if ($script:Serial) { return $script:Serial }
-    # @() is required at the CALL site, not just inside the function: PowerShell
-    # unrolls a one-element array on return, so without it $devices is a bare
-    # string and $devices[0] silently yields its first character.
-    $devices = @(Get-AttachedDevices)
-    if ($devices.Count -eq 1) { $script:Serial = $devices[0]; return $script:Serial }
-    if ($devices.Count -gt 1) {
-        $detail = ($devices | ForEach-Object { "  $_  (avd: $(Get-AvdName $_))" }) -join "`n"
-        throw "More than one device attached — set ANDROID_SERIAL to choose:`n$detail"
+# ---------------------------------------------------------------- device claims (#203)
+# Several worktrees, each with its own Claude Code session, share one machine's emulators.
+# Without coordination the second session's `up` attached to the first session's emulator and
+# force-stopped its app mid-verification. A claim is one file per serial, host-wide, recording
+# which worktree owns the device. Plain lock files, not a heartbeated lease: whether a claim is
+# stale can be read directly from the worktree folder and `adb devices`, so nothing has to keep
+# it fresh, and an idle session keeps its device until it says `release`.
+
+$DefaultAvd       = 'pixel_10_pro_xl_-_api_37'
+$ClaimDir         = Join-Path $env:LOCALAPPDATA 'AniSprinkles\device-claims'
+# This worktree's DevFlow binding: which serial its agent runs on, and on which broker port.
+# Worktree-local rather than in the claim, because ANDROID_SERIAL can target a device this
+# worktree does not hold, and the binding is still this worktree's.
+$BindingFile      = Join-Path $RepoRoot 'tmp\driver-binding.json'
+# Before auto-booting another instance. The AVD is hw.ramSize=6144, and one in use measured a
+# 4.3 GB working set on this 32 GB machine, so 6 GB leaves room for it without paging the rest.
+$MinFreeRamGb     = 6
+# Cold launch is ~19 s and the agent registers with the broker at startup; 60 s is ~3x that.
+$AgentWaitSeconds = 60
+# Even console ports the driver hands to the emulators it boots: emulator-5554 … emulator-5584,
+# the range adb scans for emulators by default.
+$ConsolePorts     = 5554..5584 | Where-Object { $_ % 2 -eq 0 }
+
+function Normalize-Path([string]$Path) {
+    if (-not $Path) { return '' }
+    [IO.Path]::GetFullPath($Path).TrimEnd('\', '/')
+}
+
+$script:Worktree = Normalize-Path $RepoRoot
+
+function Get-ClaimPath([string]$DeviceSerial) {
+    # Serials are filename-safe for emulators (emulator-5554); a network device is host:port.
+    Join-Path $ClaimDir (($DeviceSerial -replace '[^\w.-]', '_') + '.json')
+}
+
+function Read-ClaimFile([string]$Path) {
+    try { Get-Content $Path -Raw -ErrorAction Stop | ConvertFrom-Json -ErrorAction Stop } catch { $null }
+}
+
+function Test-ProcessAlive($ProcessId) {
+    if (-not $ProcessId) { return $false }
+    [bool](Get-Process -Id ([int]$ProcessId) -ErrorAction SilentlyContinue)
+}
+
+function Get-LivenessContext {
+    # What Test-ClaimLive checks against, read once per pass rather than once per claim.
+    [pscustomobject]@{ Listed = @(Get-ListedDevices); Qemu = @(Get-QemuInstances) }
+}
+
+function Test-ClaimLive {
+    # A claim counts while its worktree folder exists and its device is still there. "Still there"
+    # is deliberately generous, because a wrongly-dropped claim hands a device in use to the next
+    # session: adb listing it in any state, or — for an emulator — its qemu process still running
+    # on that console port, which covers an adb server restart that briefly lists nothing. A claim
+    # taken ahead of a boot has no device yet, so it counts while its emulator process is alive, or,
+    # before the process has even been started, for a minute after it was written.
+    param($Claim, $Context)
+    if (-not $Claim -or -not $Claim.serial -or -not $Claim.worktree) { return $false }
+    if (-not (Test-Path -LiteralPath $Claim.worktree)) { return $false }
+    if ($Context.Listed -contains $Claim.serial) { return $true }
+    if ($Claim.serial -match '^emulator-(\d+)$') {
+        $port = [int]$Matches[1]
+        if ($Context.Qemu | Where-Object Port -eq $port) { return $true }
     }
-    if ($Required) { throw 'No device attached. Run: driver.ps1 boot' }
+    if ($Claim.state -eq 'booting') {
+        if ($Claim.emulatorPid) { return (Test-ProcessAlive $Claim.emulatorPid) }
+        # ToUniversalTime on both sides: claimedAt can come back from ConvertFrom-Json as a
+        # DateTime or a string depending on the PowerShell version, and a [datetime] cast of
+        # the string yields local time. Pinning both to UTC keeps the window independent of that.
+        try { return ((Get-Date).ToUniversalTime() - ([datetime]$Claim.claimedAt).ToUniversalTime()).TotalSeconds -lt 60 } catch { return $false }
+    }
+    return $false
+}
+
+function Test-FreshFile([string]$Path) {
+    # New-Claim creates the file and then writes it, so for an instant another process can read
+    # it empty. Such a file is a claim being made, not a corrupt one to clear away.
+    try { ((Get-Date) - (Get-Item -LiteralPath $Path -ErrorAction Stop).LastWriteTime).TotalSeconds -lt 10 } catch { $false }
+}
+
+function Get-Claims {
+    # Every live claim, with Mine worked out. Stale files are deleted on the way past, so a dead
+    # worktree or a shut-down emulator never blocks anyone.
+    if (-not (Test-Path $ClaimDir)) { return @() }
+    $context = Get-LivenessContext
+    $claims = foreach ($f in Get-ChildItem $ClaimDir -Filter *.json -File) {
+        $c = Read-ClaimFile $f.FullName
+        if (-not $c -and (Test-FreshFile $f.FullName)) { continue }
+        $live = Test-ClaimLive $c $context
+        if (-not $live) { Remove-Item -LiteralPath $f.FullName -Force -ErrorAction SilentlyContinue; continue }
+        [pscustomobject]@{
+            Serial   = $c.serial
+            Worktree = $c.worktree
+            Avd      = $c.avd
+            State    = $c.state
+            Claimed  = $c.claimedAt
+            Mine     = ((Normalize-Path $c.worktree) -eq $script:Worktree)
+        }
+    }
+    @($claims)
+}
+
+function Write-Claim([string]$DeviceSerial, [hashtable]$Fields) {
+    $data = [ordered]@{
+        serial    = $DeviceSerial
+        worktree  = $script:Worktree
+        avd       = $null
+        state     = 'ready'
+        claimedAt = (Get-Date).ToUniversalTime().ToString('o')
+    }
+    foreach ($k in $Fields.Keys) { $data[$k] = $Fields[$k] }
+    ($data | ConvertTo-Json)
+}
+
+function New-Claim {
+    # Atomically take $DeviceSerial for this worktree. FileMode.CreateNew is the lock: when two
+    # sessions race for the same free device, exactly one create succeeds. Returns $true when this
+    # worktree now holds the claim (including when it already did).
+    param([string]$DeviceSerial, [hashtable]$Fields = @{})
+    New-Item -ItemType Directory -Force -Path $ClaimDir | Out-Null
+    $path = Get-ClaimPath $DeviceSerial
+    for ($attempt = 0; $attempt -lt 2; $attempt++) {
+        try {
+            $fs = [IO.File]::Open($path, [IO.FileMode]::CreateNew, [IO.FileAccess]::Write, [IO.FileShare]::None)
+            try {
+                $bytes = [Text.Encoding]::UTF8.GetBytes((Write-Claim $DeviceSerial $Fields))
+                $fs.Write($bytes, 0, $bytes.Length)
+            } finally { $fs.Dispose() }
+            # One device per worktree: taking a new one gives the old one back, so "this
+            # worktree's device" never has two answers.
+            foreach ($old in Get-Claims | Where-Object { $_.Mine -and $_.Serial -ne $DeviceSerial }) {
+                Remove-Item -LiteralPath (Get-ClaimPath $old.Serial) -Force -ErrorAction SilentlyContinue
+                Say "released previous claim on $($old.Serial)"
+            }
+            return $true
+        } catch [IO.IOException] {
+            $existing = Read-ClaimFile $path
+            if ($existing -and (Normalize-Path $existing.worktree) -eq $script:Worktree) {
+                Update-Claim $DeviceSerial $Fields
+                return $true
+            }
+            if (-not $existing -and (Test-FreshFile $path)) { return $false }
+            if (Test-ClaimLive $existing (Get-LivenessContext)) { return $false }
+            # Stale: its worktree is gone or its device left adb. Clear it and try once more.
+            Remove-Item -LiteralPath $path -Force -ErrorAction SilentlyContinue
+        }
+    }
+    return $false
+}
+
+function Update-Claim([string]$DeviceSerial, [hashtable]$Fields) {
+    $path = Get-ClaimPath $DeviceSerial
+    $c = Read-ClaimFile $path
+    if (-not $c -or (Normalize-Path $c.worktree) -ne $script:Worktree) { return }
+    $merged = @{}
+    foreach ($p in $c.PSObject.Properties) { $merged[$p.Name] = $p.Value }
+    foreach ($k in $Fields.Keys) { $merged[$k] = $Fields[$k] }
+    Set-Content -LiteralPath $path -Value (Write-Claim $DeviceSerial $merged) -Encoding utf8
+}
+
+function Remove-OwnClaims {
+    $removed = @()
+    foreach ($c in Get-Claims | Where-Object Mine) {
+        Remove-Item -LiteralPath (Get-ClaimPath $c.Serial) -Force -ErrorAction SilentlyContinue
+        $removed += $c.Serial
+    }
+    Remove-Item -LiteralPath $BindingFile -Force -ErrorAction SilentlyContinue
+    @($removed)
+}
+
+function Get-QemuInstances {
+    # The emulator's qemu processes, parsed from their command lines. This is the only place the
+    # read-only flag is visible: a writable instance of an AVD makes the emulator refuse every
+    # -read-only boot of it ("run all emulators with -read-only flag"), so `boot` checks first
+    # rather than waiting out the attach timeout.
+    @(Get-Process qemu-system-x86_64 -ErrorAction SilentlyContinue | ForEach-Object {
+        $line = $_.CommandLine
+        if (-not $line) { return }
+        [pscustomobject]@{
+            ProcessId = $_.Id
+            Avd       = if ($line -match '-avd\s+(\S+)') { $Matches[1].Trim('"') } else { $null }
+            Port      = if ($line -match '-port\s+(\d+)') { [int]$Matches[1] } else { $null }
+            ReadOnly  = $line -match '(^|\s)-read-only(\s|$)'
+        }
+    })
+}
+
+function Test-ReadOnlySerial([string]$DeviceSerial, $Qemu = (Get-QemuInstances)) {
+    if ($DeviceSerial -notmatch '^emulator-(\d+)$') { return $false }
+    $port = [int]$Matches[1]
+    [bool]($Qemu | Where-Object { $_.ReadOnly -and $_.Port -eq $port })
+}
+
+function Format-Devices([string[]]$Devices, $Claims) {
+    $lines = foreach ($d in $Devices) {
+        $c = $Claims | Where-Object Serial -eq $d | Select-Object -First 1
+        $owner = if (-not $c) { 'free' } elseif ($c.Mine) { 'claimed by this worktree' } else { "claimed by $($c.Worktree)" }
+        "  $d  (avd: $(Get-AvdName $d); $owner)"
+    }
+    $lines -join "`n"
+}
+
+function Resolve-Target {
+    # Pick the device every later command will talk to, in this order:
+    #   1. ANDROID_SERIAL — the explicit override CI and humans already use. Always honoured, and
+    #      it leaves claims alone: a one-off `ANDROID_SERIAL=<phone> driver.ps1 shot` must not cost
+    #      this worktree the emulator it holds. A warning names the owner when another live
+    #      worktree holds the device.
+    #   2. This worktree's live claim.
+    #   3. A free device, which this worktree then claims. For `boot`/`up` that means an instance
+    #      of the requested AVD (default: $DefaultAvd, plus physical devices — a plugged-in phone
+    #      is used, not booted around). For every other command, a lone free device of any kind,
+    #      which keeps the zero-setup single-emulator flow working as it always has.
+    # Returns $null when nothing fits and -Required is off; `boot` then starts a new instance.
+    param([switch]$Required, [switch]$ForBoot, [string]$Avd, [switch]$NoClaim)
+
+    if ($script:Serial) { return $script:Serial }
+    $attached = @(Get-AttachedDevices)
+    $claims = @(Get-Claims)
+
+    if ($env:ANDROID_SERIAL) {
+        $script:Serial = $env:ANDROID_SERIAL
+        $other = $claims | Where-Object { $_.Serial -eq $script:Serial -and -not $_.Mine } | Select-Object -First 1
+        if ($other) {
+            Say "WARNING: $($script:Serial) is claimed by $($other.Worktree) — ANDROID_SERIAL overrides that, so this session may disturb it"
+        }
+        return $script:Serial
+    }
+
+    $qemu = Get-QemuInstances
+    # A live claim whose device is not in `device` state right now (offline blip, still booting
+    # in another call) is still this worktree's. Falling through would claim some other device,
+    # which releases this one; stop and say so instead.
+    $waiting = $claims | Where-Object { $_.Mine -and $attached -notcontains $_.Serial } | Select-Object -First 1
+    if ($waiting -and -not $NoClaim) {
+        throw "This worktree's device $($waiting.Serial) is claimed but not online (state: $($waiting.State)). Wait for it, or driver.ps1 release."
+    }
+    $mine = $claims | Where-Object { $_.Mine -and $attached -contains $_.Serial } | Select-Object -First 1
+    # `boot`/`up` hold their own claim to the same rule as a free device: a writable emulator
+    # this worktree picked up through a plain command is still not one `up` builds on.
+    $mineFits = $mine -and (-not $Avd -or $mine.Avd -eq $Avd) -and
+                (-not $ForBoot -or -not $mine.Avd -or (Test-ReadOnlySerial $mine.Serial $qemu))
+    if ($mineFits) { $script:Serial = $mine.Serial; return $script:Serial }
+
+    $taken = @($claims | Where-Object { -not $_.Mine } | ForEach-Object Serial)
+    $free = @($attached | Where-Object { $taken -notcontains $_ })
+
+    if ($ForBoot) {
+        $want = if ($Avd) { $Avd } else { $DefaultAvd }
+        # A writable emulator is never picked up implicitly: it may be one somebody started by
+        # hand, and it is the reuse that let two sessions collide in the first place. Only an
+        # instance this driver booted read-only, or a physical device, is fair game.
+        $candidates = @($free | Where-Object {
+            $name = Get-AvdName $_
+            ($name -eq $want -and (Test-ReadOnlySerial $_ $qemu)) -or (-not $Avd -and -not $name)
+        })
+    } else {
+        $candidates = if ($free.Count -eq 1) { @($free) } else { @() }
+    }
+
+    foreach ($c in $candidates) {
+        if ($NoClaim) { $script:Serial = $c; return $script:Serial }
+        if (New-Claim $c @{ avd = (Get-AvdName $c) }) {
+            Say "claimed $c for this worktree"
+            $script:Serial = $c
+            return $script:Serial
+        }
+    }
+
+    if ($Required) {
+        if (-not $attached) { throw 'No device attached. Run: driver.ps1 up' }
+        $detail = Format-Devices $attached $claims
+        if ($free.Count -gt 1) { throw "More than one free device — set ANDROID_SERIAL to choose, or run driver.ps1 up to claim one:`n$detail" }
+        throw "Every attached device is claimed by another worktree. Run driver.ps1 up to boot your own, or set ANDROID_SERIAL:`n$detail"
+    }
     return $null
 }
 
@@ -173,24 +445,152 @@ function Start-DevFlowBroker {
     Say "DevFlow: broker $(if ($running) { 'running on 19223' } else { 'did not start — the agent will fall back to port 9223' })"
 }
 
+function Read-Binding {
+    if (-not (Test-Path $BindingFile)) { return $null }
+    Read-ClaimFile $BindingFile
+}
+
+function Set-AgentForward([int]$AgentPort) {
+    # The broker hands every agent a unique port, but the host side of that port is an
+    # `adb forward`, and a host port forwards to exactly one device. Nothing in DevFlow ties it to
+    # the agent's own device: on 2026-11-17 port 10243 forwarded to emulator-5556 while its agent
+    # ran on emulator-5554, so even an explicit --agent-port reached nothing. Re-pointing it at
+    # this worktree's device is cheap, so it is done on every bind and every passthrough call.
+    Adb forward "tcp:$AgentPort" "tcp:$AgentPort" *> $null
+}
+
+function Get-AgentStatus([int]$AgentPort) {
+    try { maui devflow agent status --agent-port $AgentPort --json 2>$null | ConvertFrom-Json } catch { $null }
+}
+
+function Bind-DevFlowAgent {
+    # Tie this worktree to the agent inside the app it just launched. No DevFlow field names the
+    # device (agent status reports platform, idiom and window size, not a serial), so the link is
+    # the app's process id: `pidof` on this serial, matched to `processId` in `maui devflow list`.
+    param([string]$AppPid, [datetime]$SinceUtc)
+    if (-not (Get-Command maui -ErrorAction SilentlyContinue)) { return }
+
+    $agent = $null
+    for ($i = 0; $i -lt $AgentWaitSeconds -and -not $agent; $i++) {
+        $agents = @(try { maui devflow list --json 2>$null | ConvertFrom-Json } catch { @() })
+        # connectedAt filters out an agent left registered by an earlier run that happened to
+        # have the same pid; the 5 s slack absorbs clock skew between the device and the host.
+        $agent = $agents | Where-Object {
+            "$($_.processId)" -eq $AppPid -and
+            (-not $_.connectedAt -or ([datetime]$_.connectedAt).ToUniversalTime() -ge $SinceUtc.AddSeconds(-5))
+        } | Sort-Object { [datetime]$_.connectedAt } -Descending | Select-Object -First 1
+        if (-not $agent) { Start-Sleep -Seconds 1 }
+    }
+    if (-not $agent) {
+        Say "DevFlow: no agent with pid $AppPid registered within ${AgentWaitSeconds}s — driver.ps1 devflow will not work until the next launch"
+        Remove-Item -LiteralPath $BindingFile -Force -ErrorAction SilentlyContinue
+        return
+    }
+
+    $port = [int]$agent.port
+    Set-AgentForward $port
+    # Pids are per device, so two emulators can each run the app under the same one. Confirm
+    # through the forward just set that the agent answering is the one in THIS device's app.
+    $status = Get-AgentStatus $port
+    if (-not $status -or "$($status.app.processId)" -ne $AppPid) {
+        Say "DevFlow: port $port did not answer as pid $AppPid through $($script:Serial) — not bound"
+        Remove-Item -LiteralPath $BindingFile -Force -ErrorAction SilentlyContinue
+        return
+    }
+
+    New-Item -ItemType Directory -Force -Path (Split-Path $BindingFile) | Out-Null
+    [ordered]@{ serial = $script:Serial; agentPort = $port; appPid = $AppPid; boundAt = (Get-Date).ToUniversalTime().ToString('o') } |
+        ConvertTo-Json | Set-Content -LiteralPath $BindingFile -Encoding utf8
+    Say "DevFlow: agent on port $port bound to $($script:Serial)"
+    Say "  CLI: driver.ps1 devflow <args>    MCP: call maui_select_agent with agentPort $port first"
+}
+
+function Get-BoundAgentPort {
+    $b = Read-Binding
+    if (-not $b -or -not $b.agentPort) { throw 'No DevFlow agent is bound to this worktree. Run: driver.ps1 launch' }
+    if ($b.serial -ne $script:Serial) {
+        throw "This worktree's DevFlow agent is bound to $($b.serial), not $($script:Serial). Run: driver.ps1 launch"
+    }
+    [int]$b.agentPort
+}
+
+function Cmd-DevFlow {
+    # `maui devflow <args>` against this worktree's own app. The CLI's auto-discovery picks any
+    # agent the broker knows, and the broker is host-wide, so a session whose app is not up yet
+    # silently drives another worktree's. Passing --agent-port, through a forward pointed at the
+    # claimed device, is what keeps it on its own.
+    param([string[]]$Argv)
+    $port = Get-BoundAgentPort
+    Set-AgentForward $port
+    $flowArgs = @($Argv) + @('--agent-port', "$port")
+    # Only `batch` reads stdin. An agent harness often runs commands with stdin redirected but
+    # never closed, so reading it for every verb could block forever on `ui tree`.
+    if ($Argv.Count -ge 1 -and $Argv[0] -eq 'batch' -and [Console]::IsInputRedirected) {
+        # `printf ... | driver.ps1 devflow batch`: hand stdin to maui unchanged.
+        $stdin = [Console]::In.ReadToEnd()
+        $stdin | & maui devflow @flowArgs
+    } else {
+        & maui devflow @flowArgs
+    }
+    exit $LASTEXITCODE
+}
+
+function Cmd-AdbPassthrough {
+    # Raw adb against this worktree's device. A bare `adb` only follows ANDROID_SERIAL, which does
+    # not survive from one agent tool call to the next, so it would hit whichever device adb
+    # defaults to — or fail outright with two attached.
+    param([string[]]$Argv)
+    if (-not $Argv) { throw 'adb needs arguments, e.g. driver.ps1 adb shell pm list packages' }
+    Adb @Argv
+    exit $LASTEXITCODE
+}
+
+function Cmd-Claims {
+    $attached = @(Get-AttachedDevices)
+    $claims = @(Get-Claims)
+    Say "claims in $ClaimDir"
+    if (-not $claims) { Say '  (none)' }
+    foreach ($c in $claims) {
+        Say "  $($c.Serial)  avd=$($c.Avd)  state=$($c.State)  $(if ($c.Mine) { '<- this worktree' } else { $c.Worktree })"
+    }
+    $unclaimed = @($attached | Where-Object { ($claims | ForEach-Object Serial) -notcontains $_ })
+    foreach ($d in $unclaimed) { Say "  $d  avd=$(Get-AvdName $d)  unclaimed" }
+}
+
+function Cmd-Release {
+    $removed = Remove-OwnClaims
+    if ($removed) { Say "released $($removed -join ', ') (the emulator keeps running; kill-emu shuts it down)" }
+    else { Say 'this worktree holds no claim' }
+}
+
 # ---------------------------------------------------------------- commands
 
 function Cmd-Help {
 @"
 AniSprinkles driver — pwsh .claude/skills/run-app/driver.ps1 <command>
 
-  env                       Show resolved SDK / adb / device state
-  boot [avd]                Start the emulator and block until boot completes
-                            (default AVD: pixel_10_pro_xl_-_api_37)
+  env                       Show resolved SDK / adb / device / claim / DevFlow state
+  boot [avd]                Claim a device for this worktree, booting a new -read-only
+                            instance if none is free (default AVD: pixel_10_pro_xl_-_api_37;
+                            with no avd a free phone counts too). Blocks until boot completes.
   build                     dotnet build -p:CiBuild=true (stub auth + stub API data)
   install                   adb install -r -d the signed debug APK
   launch                    Start DevFlow's broker + adb reverse, force-restart the app
-                            (cold, ~20s) and wait for its process
+                            (cold, ~20s), wait for its process, and bind its DevFlow agent
   resume                    Bring the app back to the foreground without restarting
                             (use after a stray back press drops you to the launcher)
   up [avd]                  boot + install + launch
   stop                      Force-stop the app
-  kill-emu                  Shut the emulator down
+  kill-emu                  Shut this worktree's emulator down and release its claim
+
+  Parallel sessions (#203) — each worktree claims its own device:
+  claims                    List every device claim on this machine, and unclaimed devices
+  release                   Give this worktree's claim back (the emulator keeps running)
+  serial                    Print this worktree's serial, for tools that read ANDROID_SERIAL
+  adb <args>                adb -s <this worktree's serial> <args>
+  devflow <args>            maui devflow <args> --agent-port <this worktree's agent>;
+                            stdin passes through, so `... | driver.ps1 devflow batch` works
+  ANDROID_SERIAL still overrides everything, with a warning if another worktree holds it.
 
   shot <name>               Screenshot -> tmp/driver-screens/<name>.png (whole screen,
                             system UI included; maui devflow ui screenshot is the app only)
@@ -260,43 +660,114 @@ function Cmd-Env {
     Say "emulator : $Emu"
     Say "repo     : $RepoRoot"
     Say "apk      : $Apk  (exists: $(Test-Path $Apk))"
+    Say "worktree : $($script:Worktree)"
+    $attached = @(Get-AttachedDevices)
+    $claims = @(Get-Claims)
     Say 'devices  :'
-    foreach ($d in Get-AttachedDevices) { Say "  $d  (avd: $(Get-AvdName $d))" }
-    # Deliberately non-fatal: `env` is what you run to diagnose "no device", so it
-    # must report the situation rather than throw on it.
-    $t = try { Resolve-Target } catch { $null }
+    foreach ($line in (Format-Devices $attached $claims) -split "`n") { if ($line) { Say $line } }
+    # Deliberately non-fatal, and -NoClaim: `env` is what you run to diagnose "no device", so it
+    # reports what would be picked rather than throwing on it or claiming anything.
+    $t = try { Resolve-Target -NoClaim } catch { $null }
     Say "target   : $(if ($t) { $t } else { '(none resolved)' })"
+    $b = Read-Binding
+    Say "devflow  : $(if ($b) { "agent port $($b.agentPort) on $($b.serial) (app pid $($b.appPid))" } else { '(no agent bound — driver.ps1 launch)' })"
+}
+
+function Get-FreeConsolePorts {
+    # Even console ports no emulator, claim or listener is using, lowest first. Choosing the port
+    # here, rather than letting the emulator pick, is what lets the claim be taken BEFORE the boot:
+    # the serial is known up front, so two sessions booting at once can never adopt each other's
+    # new instance. The caller claims the first one it can; another session may take one between
+    # this check and that claim, which New-Claim's CreateNew settles.
+    param([string[]]$Attached, $Qemu)
+    $listening = @([Net.NetworkInformation.IPGlobalProperties]::GetIPGlobalProperties().GetActiveTcpListeners() |
+                   ForEach-Object Port)
+    $claimed = @(Get-Claims | ForEach-Object Serial)
+    @(foreach ($p in $ConsolePorts) {
+        $s = "emulator-$p"
+        if ($Attached -contains $s -or $claimed -contains $s) { continue }
+        if ($Qemu | Where-Object Port -eq $p) { continue }
+        if ($listening -contains $p -or $listening -contains ($p + 1)) { continue }
+        $p
+    })
+}
+
+function Stop-BootedEmulator([int]$Port, $Launcher) {
+    # A boot that never attached leaves emulator.exe and its qemu child behind, and each retry
+    # would add another pair. Take down exactly the ones this boot started.
+    if ($Launcher -and -not $Launcher.HasExited) { Stop-Process -Id $Launcher.Id -Force -ErrorAction SilentlyContinue }
+    Get-QemuInstances | Where-Object Port -eq $Port |
+        ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
 }
 
 function Cmd-Boot {
-    param([string]$Avd = 'pixel_10_pro_xl_-_api_37')
+    # $Avd is $null when none was named: that reuses this worktree's device whatever it is, and
+    # lets a free phone count. Naming an AVD asks for exactly that AVD.
+    param([string]$Avd)
 
-    # Reuse an emulator only if it is the AVD that was actually asked for. Matching
-    # on "any emulator is online" meant `boot <other-avd>` silently did nothing and
-    # every subsequent command drove the wrong device.
-    $existing = Get-AttachedDevices | Where-Object { (Get-AvdName $_) -eq $Avd } | Select-Object -First 1
+    $existing = Resolve-Target -ForBoot -Avd $Avd
+    $want = if ($Avd) { $Avd } else { $DefaultAvd }
     if ($existing) {
-        $script:Serial = $existing
-        Say "AVD $Avd already online at $existing"
+        # ANDROID_SERIAL is returned whether or not that device is up; without this a typo'd
+        # serial would sit through the whole boot-completed timeout before failing.
+        if (@(Get-AttachedDevices) -notcontains $existing) { throw "ANDROID_SERIAL=$existing is not attached. Unset it to let boot pick or start a device." }
+        Say "using $existing (avd: $(Get-AvdName $existing))"
     } else {
-        $others = @(Get-AttachedDevices)
-        if ($others) { Say "note: $($others.Count) other device(s) attached; targeting $Avd once it boots" }
+        $attached = @(Get-AttachedDevices)
+        $qemu = Get-QemuInstances
 
-        Say "starting AVD $Avd"
+        # Every driver boot is -read-only, so N instances of one AVD can run side by side. The
+        # emulator refuses any -read-only boot while a WRITABLE instance of the same AVD is up,
+        # after hanging for ~2 minutes, so say which one is in the way instead.
+        $writable = $qemu | Where-Object { $_.Avd -eq $want -and -not $_.ReadOnly } | Select-Object -First 1
+        if ($writable) {
+            $roPorts = @($qemu | Where-Object ReadOnly | ForEach-Object Port)
+            $serial = $attached | Where-Object {
+                (Get-AvdName $_) -eq $want -and ($_ -notmatch '^emulator-(\d+)$' -or $roPorts -notcontains [int]$Matches[1])
+            } | Select-Object -First 1
+            throw ("A writable instance of $want is running (qemu pid $($writable.ProcessId)$(if ($serial) { ", $serial" })). " +
+                   "It blocks every -read-only boot of that AVD. Shut it down (driver.ps1 kill-emu with " +
+                   "ANDROID_SERIAL=$(if ($serial) { $serial } else { '<serial>' })), or use it directly with ANDROID_SERIAL.")
+        }
+
+        $freeGb = [math]::Round((Get-CimInstance Win32_OperatingSystem).FreePhysicalMemory / 1MB, 1)
+        if ($freeGb -lt $MinFreeRamGb) {
+            throw "Only $freeGb GB of RAM free; booting another emulator needs $MinFreeRamGb GB. Free some memory, or run driver.ps1 claims to see who holds what."
+        }
+
+        $port = $null
+        foreach ($p in Get-FreeConsolePorts -Attached $attached -Qemu $qemu) {
+            if (New-Claim "emulator-$p" @{ avd = $want; state = 'booting' }) { $port = $p; break }
+        }
+        if (-not $port) { throw "No free emulator console port in $($ConsolePorts[0])-$($ConsolePorts[-1])" }
+        $serial = "emulator-$port"
+
+        $others = @($attached)
+        if ($others) { Say "note: $($others.Count) other device(s) attached; this worktree gets its own" }
+        Say "starting AVD $want read-only at $serial ($freeGb GB RAM free)"
         # ANDROID_SDK_ROOT must match the emulator we picked, or it re-searches PATH's SDK.
         $env:ANDROID_SDK_ROOT = $Sdk
         $env:ANDROID_HOME = $Sdk
-        Start-Process -FilePath $Emu `
-            -ArgumentList @('-avd', $Avd, '-no-boot-anim', '-no-snapshot-save') `
+        # -read-only: nothing is written back to the AVD, so the installed APK and any seed-token
+        # sign-in are gone at shutdown. `up` reinstalls anyway; -no-snapshot-save already meant
+        # nothing was kept from one boot to the next.
+        $launcher = Start-Process -FilePath $Emu -PassThru `
+            -ArgumentList @('-avd', $want, '-no-boot-anim', '-no-snapshot-save', '-read-only', '-port', "$port") `
             -WindowStyle Minimized
+        Update-Claim $serial @{ emulatorPid = $launcher.Id }
 
         Say 'waiting for the new emulator to attach'
         for ($i = 0; $i -lt 180; $i++) {
-            $match = Get-AttachedDevices | Where-Object { (Get-AvdName $_) -eq $Avd } | Select-Object -First 1
-            if ($match) { $script:Serial = $match; Say "attached at $match after ${i}s"; break }
+            if (@(Get-AttachedDevices) -contains $serial) { $script:Serial = $serial; Say "attached at $serial after ${i}s"; break }
+            if ($launcher.HasExited) { break }
             Start-Sleep -Seconds 1
         }
-        if (-not $script:Serial) { throw "AVD $Avd never attached to adb" }
+        if (-not $script:Serial) {
+            Stop-BootedEmulator $port $launcher
+            Remove-Item -LiteralPath (Get-ClaimPath $serial) -Force -ErrorAction SilentlyContinue
+            throw "AVD $want never attached to adb at $serial$(if ($launcher.HasExited) { " (emulator exited with $($launcher.ExitCode))" })"
+        }
+        Update-Claim $serial @{ state = 'ready' }
     }
 
     # Run this even when reusing a device: `device` state only means adb can talk
@@ -380,11 +851,25 @@ function Cmd-Launch {
     if (-not $activity) { throw "could not resolve launcher activity for $Package" }
     # Before the process starts: the agent looks for the broker once, at startup.
     if (-not $Resume) { Start-DevFlowBroker }
+    $startedUtc = (Get-Date).ToUniversalTime()
     Say "am start $activity$(if ($Resume) { ' (warm)' })"
     if ($Resume) { Adb shell am start -W -n $activity }
     else         { Adb shell am start -W -S -n $activity }
     for ($i = 0; $i -lt 40; $i++) {
-        if ((AdbOut pidof $Package) -join '' -match '\d') { Say "app up after ${i}s"; return }
+        # First token: pidof lists every match, and a dying process can briefly overlap its successor.
+        $appPid = (((AdbOut pidof $Package) -join ' ').Trim() -split '\s+')[0]
+        if ($appPid -match '^\d+$') {
+            Say "app up after ${i}s"
+            # A warm resume keeps the same process and so the same agent; re-point its forward,
+            # which an adb restart or another session may have moved.
+            if ($Resume) {
+                $b = Read-Binding
+                if ($b -and $b.serial -eq $script:Serial -and "$($b.appPid)" -eq $appPid) { Set-AgentForward ([int]$b.agentPort) }
+            } else {
+                Bind-DevFlowAgent -AppPid $appPid -SinceUtc $startedUtc
+            }
+            return
+        }
         Start-Sleep -Seconds 1
     }
     throw 'app process never appeared — check: driver.ps1 logcat'
@@ -650,28 +1135,45 @@ function Cmd-DeepLink {
 
 # --------------------------------------------------------------- dispatch
 
-$a = @($Args)
+# No arguments arrives as an array holding one $null, not an empty one (see Cmd-SeedToken).
+$a = @($Args | Where-Object { $null -ne $_ })
 $cmd = $Command.ToLowerInvariant()
+if ($cmd -eq 'serial') { $script:SayToStderr = $true }
 
 # Anything that talks to a device needs an unambiguous target resolved up front,
 # so ambiguity surfaces as "set ANDROID_SERIAL to choose" rather than adb's bare
 # "more than one device/emulator" halfway through a flow. `boot` and `up` pick
 # their own target from the requested AVD; the rest need one already attached.
-if ($cmd -notin @('help', 'env', 'build', 'boot', 'up')) {
+if ($cmd -notin @('help', 'env', 'build', 'boot', 'up', 'claims', 'release')) {
     Resolve-Target -Required | Out-Null
 }
 
 switch ($cmd) {
     'help'       { Cmd-Help }
     'env'        { Cmd-Env }
-    'boot'       { if ($a[0]) { Cmd-Boot $a[0] } else { Cmd-Boot } }
+    'boot'       { Cmd-Boot $a[0] }
     'build'      { Cmd-Build }
     'install'    { Cmd-Install }
     'launch'     { Cmd-Launch }
     'resume'     { Cmd-Launch -Resume }
-    'up'         { if ($a[0]) { Cmd-Boot $a[0] } else { Cmd-Boot }; Cmd-Install; Cmd-Launch }
+    'up'         { Cmd-Boot $a[0]; Cmd-Install; Cmd-Launch }
     'stop'       { Adb shell am force-stop $Package; Say 'stopped' }
-    'kill-emu'   { Adb emu kill; Say 'emulator killed' }
+    'kill-emu'   {
+        # Release only this worktree's claim, and only on the device being killed: with
+        # ANDROID_SERIAL pointing elsewhere, this worktree's own device is still in use, and
+        # another worktree's claim is that worktree's to give back.
+        $ownsIt = [bool](Get-Claims | Where-Object { $_.Mine -and $_.Serial -eq $script:Serial })
+        Adb emu kill
+        if ($ownsIt) { Remove-Item -LiteralPath (Get-ClaimPath $script:Serial) -Force -ErrorAction SilentlyContinue }
+        $b = Read-Binding
+        if ($b -and $b.serial -eq $script:Serial) { Remove-Item -LiteralPath $BindingFile -Force -ErrorAction SilentlyContinue }
+        Say "emulator $($script:Serial) killed"
+    }
+    'claims'     { Cmd-Claims }
+    'release'    { Cmd-Release }
+    'serial'     { Write-Output $script:Serial }
+    'adb'        { Cmd-AdbPassthrough $a }
+    'devflow'    { Cmd-DevFlow $a }
     'shot'       { if ($a[0]) { Cmd-Shot $a[0] } else { Cmd-Shot } }
     'key'        { if (-not $a[0]) { throw 'key needs a keycode, e.g. driver.ps1 key ENTER' }
                    Adb shell input keyevent "KEYCODE_$($a[0].ToUpperInvariant())"; Start-Sleep -Milliseconds 800 }

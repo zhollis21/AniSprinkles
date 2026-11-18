@@ -89,6 +89,11 @@ When the summary flags something, go deeper without re-running the collector:
   adb bugreport /tmp/br.zip && unzip -o /tmp/br.zip -d /tmp/br && grep -l "com.RainbowSprinkles.AniSprinkles" /tmp/br/FS/data/anr/*
   ```
 - Live tail: `adb logcat --pid $(adb shell pidof com.RainbowSprinkles.AniSprinkles)`.
+- **With more than one device attached, add `-s <serial>` to every bare `adb` above.** Other
+  worktrees' sessions may be running their own emulators (#203). `collect.sh` already asks the
+  run-app driver which device this worktree claimed. For your own calls,
+  `pwsh -NoProfile -File .claude/skills/run-app/driver.ps1 serial` prints that serial, and
+  `driver.ps1 adb <args>` runs adb against it.
 
 ## Analysis guidelines
 

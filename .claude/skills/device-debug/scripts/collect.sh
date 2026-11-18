@@ -46,9 +46,25 @@ if [ -n "${ANDROID_SERIAL:-}" ]; then
     echo "(multiple devices; using caller-supplied ANDROID_SERIAL=$ANDROID_SERIAL)"
   fi
 else
-  export ANDROID_SERIAL="$(printf '%s\n' "$DEVICES" | head -n1)"
-  if [ "$DEVICE_COUNT" -gt 1 ]; then
-    echo "(multiple devices; pinned to $ANDROID_SERIAL — override with ANDROID_SERIAL=...)"
+  # Other worktrees' sessions may be running their own emulators (#203), so "the first
+  # device" can be someone else's app. Ask the run-app driver which device this worktree
+  # holds; only when it has no answer fall back to the first one.
+  DRIVER="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)/skills/run-app/driver.ps1"
+  CLAIMED=""
+  if command -v pwsh >/dev/null 2>&1 && [ -f "$DRIVER" ]; then
+    # Git Bash's /c/... form only reaches Windows pwsh as C:\... through MSYS path conversion,
+    # and MSYS_NO_PATHCONV=1 (which the run-app skill recommends for adb) turns that off.
+    command -v cygpath >/dev/null 2>&1 && DRIVER="$(cygpath -w "$DRIVER")"
+    CLAIMED=$(pwsh -NoProfile -File "$DRIVER" serial 2>/dev/null | tr -d '\r' | tail -n1)
+  fi
+  if [ -n "$CLAIMED" ] && printf '%s\n' "$DEVICES" | grep -Fxq "$CLAIMED"; then
+    export ANDROID_SERIAL="$CLAIMED"
+    [ "$DEVICE_COUNT" -gt 1 ] && echo "(multiple devices; using this worktree's claimed $ANDROID_SERIAL)"
+  else
+    export ANDROID_SERIAL="$(printf '%s\n' "$DEVICES" | head -n1)"
+    if [ "$DEVICE_COUNT" -gt 1 ]; then
+      echo "(multiple devices and no claim from driver.ps1; pinned to $ANDROID_SERIAL, which may belong to another worktree — override with ANDROID_SERIAL=...)"
+    fi
   fi
 fi
 

@@ -94,28 +94,84 @@ you have other work), then drive in a second.
 
 ## Run (agent path)
 
-One-shot — boots the emulator if needed, installs, starts DevFlow's broker, launches:
+One-shot — claims a device for this worktree (booting one if none is free), installs, starts
+DevFlow's broker, launches, and binds the app's DevFlow agent:
 
 ```bash
 pwsh -NoProfile -File .claude/skills/run-app/driver.ps1 up
 ```
 
 `launch` (and so `up`) runs `adb reverse tcp:19223 tcp:19223` and starts the broker before the
-app starts, because the agent looks for the broker once, at startup. Confirm it registered:
+app starts, because the agent looks for the broker once, at startup. It then finds this app's
+agent and prints its port. Confirm it bound:
 
 ```bash
-maui devflow list
+pwsh -NoProfile -File .claude/skills/run-app/driver.ps1 env
 ```
+
+### One device per worktree (#203)
+
+Other worktrees' sessions may be driving emulators on this machine at the same time. The
+driver keeps them apart; your part is to **send every device call through it**:
+
+- **Device:** `driver.ps1 adb <args>` instead of a bare `adb`. A bare `adb` follows only
+  `ANDROID_SERIAL`, which does not survive between tool calls, so it hits whatever adb defaults
+  to, or fails with two devices attached.
+- **UI:** `driver.ps1 devflow <args>` instead of a bare `maui devflow`. It adds
+  `--agent-port` for this worktree's agent and points that port's `adb forward` at this
+  worktree's device. stdin passes through, so `… | driver.ps1 devflow batch` works.
+- **MCP:** call `maui_select_agent` with the port `launch` printed, before any other
+  `maui_*` tool. Without it the MCP server has no way to know which app is yours.
+- **Anything else that reads `ANDROID_SERIAL`** (`/device-debug`'s `collect.sh`):
+  `ANDROID_SERIAL=$(pwsh -NoProfile -File .claude/skills/run-app/driver.ps1 serial) bash …`.
+
+How the device is chosen:
+
+1. `ANDROID_SERIAL` always wins, and the driver prints a warning if another worktree holds that
+   device. It never claims or releases anything, so a one-off `ANDROID_SERIAL=<phone> … shot`
+   leaves this worktree's emulator claimed.
+2. Then this worktree's claim.
+3. Then a free device, which the worktree claims:
+   - `boot`/`up` take a free instance of the requested AVD that the driver booted read-only, or,
+     with no AVD named, a free physical device.
+   - Every other command takes a lone free device of any kind, as before.
+4. If `boot`/`up` find nothing free, they start a new instance of the AVD with `-read-only`, on a
+   console port chosen and claimed before the boot.
+
+A claim is a file per serial in `%LOCALAPPDATA%\AniSprinkles\device-claims\`. It lasts until the
+worktree folder is gone, or the device is gone (missing from `adb devices` in every state and,
+for an emulator, its qemu process exited), or `release` / `kill-emu` gives it back. The device
+test is deliberately loose, so an adb restart or an `offline` blip doesn't hand a device in use
+to someone else.
+There is no idle timer. A worktree holds one device at a time, so claiming a new one releases the
+old. `claims` lists them all.
+
+**Every driver boot is `-read-only`.** That is what lets several instances of one AVD run at
+once: two cold-booted side by side in about 20 s each on 2026-11-17. The cost is that nothing is
+written back to the AVD, so the installed APK and any `seed-token` sign-in are gone at shutdown.
+`up` reinstalls anyway.
+
+**A writable instance blocks all of that.** The emulator refuses every `-read-only` boot of an
+AVD while a writable instance of it is running: an emulator started from Device Manager, Visual
+Studio, or a driver from before #203. `boot` checks for one and names it rather than hanging,
+and never claims one implicitly. Shut it down, or use it on purpose with `ANDROID_SERIAL`.
+
+`boot` also refuses to start another instance with less than **6 GB** of RAM free. The AVD is
+`hw.ramSize=6144`, and one in use runs a 4.3 GB working set.
 
 ### The device — `driver.ps1 <command> [args]`
 
 | | |
 |---|---|
-| `env` | resolved SDK / adb / APK / device state |
-| `boot [avd]` | start emulator, block until `sys.boot_completed`, kill animations |
-| `build` / `install` / `launch` | individually |
+| `env` | resolved SDK / adb / APK / device / claim / bound DevFlow agent |
+| `boot [avd]` | claim a device (booting a read-only instance if none is free), block until `sys.boot_completed`, kill animations |
+| `build` / `install` / `launch` | individually; `launch` also binds the app's DevFlow agent |
 | `resume` | re-foreground the app **without** restarting it (warm, ~3s) |
-| `stop` / `kill-emu` | force-stop the app / shut the AVD down |
+| `stop` / `kill-emu` | force-stop the app / shut this worktree's emulator down and release it |
+| `claims` / `release` | every device claim on the machine / give this worktree's back |
+| `serial` | this worktree's serial, for `ANDROID_SERIAL=$(…)` |
+| `adb <args>` | `adb -s <this worktree's serial> <args>` |
+| `devflow <args>` | `maui devflow <args>` against this worktree's own app |
 | `shot <name>` | whole-screen PNG → `tmp/driver-screens/<name>.png`, system UI included (notification shade, permission dialogs) |
 | `key <KEYCODE>` / `back` | any Android key event; `KEYCODE_` is prefixed for you |
 | `logcat [n]` / `applog` | app-PID logcat tail / the on-device rotating file log |
@@ -128,7 +184,10 @@ maui devflow list
 
 `driver.ps1 help` prints the same list.
 
-### The UI — `maui devflow …`
+### The UI — `driver.ps1 devflow …`
+
+Each verb below is a `maui devflow` subcommand. Run it as `driver.ps1 devflow <verb>` so it
+reaches this worktree's app; a bare `maui devflow` reaches whichever app the broker offers.
 
 | | |
 |---|---|
@@ -149,7 +208,9 @@ maui devflow list
 
 From an agent session the same operations are MCP tools (`maui_tree`, `maui_query`, `maui_tap`,
 `maui_back`, `maui_secure_storage_set`, … — 86 in all), served by `maui devflow mcp` through
-`.mcp.json`. The MCP server holds one session, so it has none of the CLI's lease problem.
+`.mcp.json`. The MCP server holds one session, so it has none of the CLI's lease problem. It is
+also host-wide: call `maui_select_agent` with the port `launch` printed before anything else,
+or it may answer from another worktree's app.
 
 **Ids to drive by** (`AutomationId`, so `ui … --automationId`; also the uiautomator
 `resource-id`, so #162's CI script can use the same ones):
@@ -238,7 +299,7 @@ printf '%s\n' \
   'ui screenshot --output tmp/driver-screens/before.png' \
   'ui tap --automationId FavoriteToggle' \
   'ui screenshot --output tmp/driver-screens/after.png' \
-  | maui devflow batch
+  | pwsh -NoProfile -File .claude/skills/run-app/driver.ps1 devflow batch
 ```
 
 ```
@@ -275,23 +336,23 @@ never granted and `NotificationManagerCompat.Notify` no-ops — the app logs `NO
 notification appears:
 
 ```bash
-adb shell pm grant com.RainbowSprinkles.AniSprinkles android.permission.POST_NOTIFICATIONS
+pwsh -NoProfile -File .claude/skills/run-app/driver.ps1 adb shell pm grant com.RainbowSprinkles.AniSprinkles android.permission.POST_NOTIFICATIONS
 ```
 
 **DevFlow cannot see the notification shade** — it is not the app's window. Expand it with
-`adb shell cmd statusbar expand-notifications`, `driver.ps1 shot` it, and tap by coordinate off the
-image with `adb shell input tap <x> <y>`.
+`driver.ps1 adb shell cmd statusbar expand-notifications`, `driver.ps1 shot` it, and tap by coordinate off the
+image with `driver.ps1 adb shell input tap <x> <y>`.
 
 To force the four arrival states, and the replay case that needs a task restore rather than a plain
 relaunch:
 
 | State | Setup |
 |---|---|
-| Process dead | `adb shell am force-stop <pkg>` first |
-| Process alive, activity destroyed | `adb shell settings put global always_finish_activities 1`, HOME, then fire — **set it back to 0 afterwards** |
+| Process dead | `driver.ps1 stop` first |
+| Process alive, activity destroyed | `driver.ps1 adb shell settings put global always_finish_activities 1`, HOME, then fire — **set it back to 0 afterwards** |
 | Backgrounded | `driver.ps1 key HOME`, then fire |
 | Foreground | fire while it is on screen |
-| Task restore replay | `adb shell am kill <pkg>` — **not** `force-stop`, which drops the task — then reopen from recents |
+| Task restore replay | `driver.ps1 adb shell am kill <pkg>` — **not** `force-stop`, which drops the task — then reopen from recents |
 
 ### Fixture data you can drive against
 
@@ -451,24 +512,28 @@ works — that is what the driver and DevFlow above are for.
   prints `Failure [...]` and can still exit 0 — the driver parses the output text,
   so don't trust a bare `adb install`'s exit code.
 
-- **With two devices attached, pick one explicitly.** Every driver command targets
-  a single device via `adb -s`. With one device it resolves automatically; with
-  more than one it stops and lists them rather than letting `adb` fail with a bare
-  "more than one device/emulator" partway through a flow. Set `ANDROID_SERIAL` to
-  choose:
+- **Every driver command targets one device via `adb -s`**: `ANDROID_SERIAL`, else
+  this worktree's claim, else a free device (see *One device per worktree*). With
+  several free devices and no claim, it stops and lists them rather than letting
+  `adb` fail with a bare "more than one device/emulator" partway through a flow.
+  `driver.ps1 env` shows every device, who holds it, and which one this worktree
+  resolves to. To pick one by hand:
 
   ```bash
   ANDROID_SERIAL=emulator-5554 pwsh -NoProfile -File .claude/skills/run-app/driver.ps1 shot home
   ```
 
-  `driver.ps1 env` lists every attached device with its AVD name and shows which
-  one is currently resolved.
+- **`boot` reuses a device only if it is the AVD you asked for.** A different
+  AVD does not count, so `boot tablet_h-dpi_13_5in_-_api_36_0` starts that tablet
+  even with a Pixel online. A worktree holds one device, so that also releases the
+  Pixel. It waits for `sys.boot_completed` on reuse too, because `device` state only
+  means adb can talk to the emulator, not that Android finished booting.
 
-- **`boot` reuses an emulator only if it is the AVD you asked for.** A different
-  AVD already running does not count, so `boot tablet_h-dpi_13_5in_-_api_36_0`
-  starts that tablet even with a Pixel online. It also waits for
-  `sys.boot_completed` on reuse, because `device` state only means adb can talk to
-  the emulator — not that Android finished booting.
+- **DevFlow's port forwards are host-wide, and nothing ties one to its agent's device.**
+  On 2026-11-17 agent port 10243 forwarded to `emulator-5556` while its app ran on
+  `emulator-5554`, so `--agent-port 10243` alone failed with `Cannot connect to
+  agent`. `launch` and `driver.ps1 devflow` re-point the forward at this worktree's
+  device every time. A bare `maui devflow --agent-port` call gets no such guarantee.
 
 - **Cold launch is ~19s** (`TotalTime: 18697`) — Debug MAUI with embedded
   assemblies. `driver.ps1 launch` polls for the process, so it returns before the
@@ -485,10 +550,15 @@ works — that is what the driver and DevFlow above are for.
 | `INSUFFICIENT_STORAGE: Failed to override installation location` | `driver.ps1 install` handles it; if it still fails, wipe the AVD from Device Manager. |
 | `Another DevFlow session is driving this app (MAUI CLI)` | Two mutating CLI calls inside the lease window. Put them in one `maui devflow batch`, or wait ~10 s. |
 | `… not tappable` (HTTP 400) on a `ui tap` | You tapped a child of the element with the gesture. `ui hit-test x y` and tap the owner. |
-| `maui devflow list` shows no agent | The broker was not up when the app started. `driver.ps1 launch` (it starts the broker and the `adb reverse` first); without a broker the agent still answers on `--agent-port 9223` after `adb forward tcp:9223 tcp:9223`. |
+| `maui devflow list` shows no agent, or `launch` says `no agent with pid … registered` | The broker was not up when the app started. `driver.ps1 launch` (it starts the broker and the `adb reverse` first); without a broker the agent still answers on `--agent-port 9223` after `adb forward tcp:9223 tcp:9223`. |
 | `No elements found matching automationId=…` right after it worked | You probably backed out to the launcher, or are on another page. `ui tree --depth 3` to see where you are, then `driver.ps1 resume`. |
 | `maui android sdk …` / `maui doctor --fix` fail with `exit code 255` | The cmdline-tools 23.0 `sdkmanager.bat` shim breaks on the `(x86)` in the SDK path. It was patched locally on 2026-11-12, and a cmdline-tools update reverts the patch. Re-check with `maui android sdk list`. DevFlow itself does not use it. |
-| `More than one device attached — set ANDROID_SERIAL to choose` | Two emulators/devices online. Pick one with `ANDROID_SERIAL=<serial>`, or shut the other down. `driver.ps1 env` lists them. |
+| `More than one free device — set ANDROID_SERIAL to choose` | Several unclaimed devices and none is this worktree's. `driver.ps1 up` claims one (or boots its own), or pick with `ANDROID_SERIAL=<serial>`. `driver.ps1 env` lists them. |
+| `Every attached device is claimed by another worktree` | Other sessions hold them all. `driver.ps1 up` boots this worktree its own read-only instance. `driver.ps1 claims` shows who holds what. |
+| `A writable instance of <avd> is running` | An emulator started outside the driver (Device Manager, Visual Studio, or a pre-#203 driver) blocks every `-read-only` boot of that AVD. Shut it down (`ANDROID_SERIAL=<serial> driver.ps1 kill-emu`), or use it deliberately with `ANDROID_SERIAL`. |
+| `Only N GB of RAM free; booting another emulator needs 6 GB` | Too many emulators, or a build is running. Wait for the build, or `driver.ps1 claims` and shut down one nobody needs. |
+| `Cannot connect to agent at localhost:<port>`, or the UI you see belongs to another build | The agent port's `adb forward` points at another device, or a bare `maui devflow` found another worktree's app. Use `driver.ps1 devflow …`; `driver.ps1 launch` re-binds. |
+| `No DevFlow agent is bound to this worktree` | `driver.ps1 launch` (or `up`) has not run since the app started, or the agent never registered. Run `launch`. |
 | `sys.boot_completed never reached 1 after 180s` | The emulator attached to adb but never finished booting. Check the emulator window; a wipe-data from Device Manager usually clears it. |
 | `AVD <name> never attached to adb`, and `emulator`/`qemu-system-x86_64` are running but idle (well under 1s CPU, no port in the 5554-5600 range listening) | A stale AVD lock. qemu starts, finds the AVD claimed, and hangs instead of exiting — so each retry silently adds another hung pair. Kill every `emulator`/`qemu*` process, then delete `~/.android/avd/<name>.avd/*.lock` (`hardware-qemu.ini.lock`, `multiinstance.lock`) and boot again. Run `emulator -verbose` to confirm: it prints `Running multiple emulators with the same AVD`. Check acceleration first with `emulator -accel-check` to rule out WHPX. |
 | `df 'C:/Program Files/Git/data': No such file` | Git Bash path mangling — `MSYS_NO_PATHCONV=1`. |
