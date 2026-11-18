@@ -157,6 +157,7 @@ public class SettingsFlushTests
                 Substitute.For<IPreferences>(),
                 new ImmediateDispatcher(),
                 Substitute.For<IAppInfo>(),
+                new StubAppEnvironment(),
                 dialogs,
                 new RecordingUserFeedback(),
                 Substitute.For<IExternalBrowser>(),

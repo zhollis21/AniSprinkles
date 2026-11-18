@@ -13,7 +13,8 @@ public readonly record struct DiagnosticsContext(
     string BuildConfiguration,
     string Device,
     string OsVersion,
-    bool IsSignedIn);
+    bool IsSignedIn,
+    string? Source = null);
 
 /// <summary>
 /// Assembles the text a user sends when they report a problem (#112): a short header, whatever they
@@ -52,6 +53,13 @@ public static class DiagnosticsReportBuilder
         builder.AppendLine("AniSprinkles diagnostic report");
         builder.AppendLine($"captured: {capturedAt:O}");
         builder.AppendLine($"version:  {context.AppVersion} ({context.BuildConfiguration})");
+        // Branch and commit (#207). Every build but a store release is version "1.0 (1)", so without
+        // this line a report cannot say which of them sent it.
+        if (!string.IsNullOrWhiteSpace(context.Source))
+        {
+            builder.AppendLine($"source:   {context.Source}");
+        }
+
         builder.AppendLine($"device:   {context.Device} — {context.OsVersion}");
         // Whether they were signed in changes which code paths could even have run, and it is the one
         // account fact worth stating outright rather than leaving to be inferred from AUTH traces.
