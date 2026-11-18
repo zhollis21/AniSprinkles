@@ -112,8 +112,10 @@ function Get-AttachedDevices {
 
 function Get-ListedDevices {
     # Every serial adb lists, in any state. Claim liveness uses this rather than
-    # Get-AttachedDevices: an emulator that blips to `offline` is still somebody's device.
-    @(& $Adb devices | ForEach-Object { if ($_ -match '^(\S+)\s+(device|offline|unauthorized|authorizing|connecting|recovery|sideload|bootloader)\s*$') { $Matches[1] } })
+    # Get-AttachedDevices: a device that blips to `offline`, `no permissions` or a state adb adds
+    # later is still somebody's. Any "<serial><TAB><state>" row counts, whatever the state says;
+    # the header and the "* daemon …" lines have no tab, so they never match.
+    @(& $Adb devices | ForEach-Object { if ($_ -match '^(\S+)\t') { $Matches[1] } })
 }
 
 function Get-AvdName {
@@ -144,6 +146,9 @@ $BindingFile      = Join-Path $RepoRoot 'tmp\driver-binding.json'
 $MinFreeRamGb     = 6
 # Cold launch is ~19 s and the agent registers with the broker at startup; 60 s is ~3x that.
 $AgentWaitSeconds = 60
+# How long kill-emu waits for the emulator to be gone before releasing its claim. A clean
+# shutdown took ~5 s on this machine; past this the claim is kept rather than guessed away.
+$KillWaitSeconds  = 30
 # Even console ports the driver hands to the emulators it boots: emulator-5554 … emulator-5584,
 # the range adb scans for emulators by default.
 $ConsolePorts     = 5554..5584 | Where-Object { $_ % 2 -eq 0 }
@@ -456,7 +461,29 @@ function Set-AgentForward([int]$AgentPort) {
     # the agent's own device: on 2026-11-17 port 10243 forwarded to emulator-5556 while its agent
     # ran on emulator-5554, so even an explicit --agent-port reached nothing. Re-pointing it at
     # this worktree's device is cheap, so it is done on every bind and every passthrough call.
-    Adb forward "tcp:$AgentPort" "tcp:$AgentPort" *> $null
+    #
+    # A failure throws rather than being shrugged off: the forward the port had before stays in
+    # place, and it may lead to another worktree's emulator, so carrying on would drive their app.
+    $out = @(Adb forward "tcp:$AgentPort" "tcp:$AgentPort" 2>&1) -join ' '
+    if ($LASTEXITCODE -ne 0) {
+        throw "adb forward tcp:$AgentPort to $($script:Serial) failed ($out) — refusing to use a forward that may lead to another device"
+    }
+}
+
+function Get-ForwardOwner([int]$AgentPort) {
+    # The serial host port $AgentPort forwards to right now, or $null. `adb forward --list` is
+    # host-wide: one "<serial> tcp:<host> tcp:<device>" line per forward, whichever device.
+    foreach ($line in @(& $Adb forward --list 2>$null)) {
+        if ($line -match "^(\S+)\s+tcp:$AgentPort\s") { return $Matches[1] }
+    }
+    return $null
+}
+
+function Restore-Forward([int]$AgentPort, [string]$Owner) {
+    # Put a borrowed port back the way Bind found it, so a wrong guess does not leave another
+    # session's agent unreachable (its MCP session has nothing that would re-point it).
+    if ($Owner -and $Owner -ne $script:Serial) { & $Adb -s $Owner forward "tcp:$AgentPort" "tcp:$AgentPort" *> $null }
+    elseif (-not $Owner) { Adb forward --remove "tcp:$AgentPort" *> $null }
 }
 
 function Get-AgentStatus([int]$AgentPort) {
@@ -467,33 +494,48 @@ function Bind-DevFlowAgent {
     # Tie this worktree to the agent inside the app it just launched. No DevFlow field names the
     # device (agent status reports platform, idiom and window size, not a serial), so the link is
     # the app's process id: `pidof` on this serial, matched to `processId` in `maui devflow list`.
+    #
+    # Pids are only unique per device, so two emulators can run the app under the same one, and
+    # more than one agent can match. The check that settles it is device-unique: forward the
+    # candidate's port to THIS serial and ask who answers. Agents on other devices listen on other
+    # ports (the broker assigns each its own), so only this device's agent can answer as $AppPid
+    # through a forward to this device. Candidates are tried until one answers, each borrowed port
+    # is put back as found, and the wait runs on in case this app's agent registers after another.
     param([string]$AppPid, [datetime]$SinceUtc)
     if (-not (Get-Command maui -ErrorAction SilentlyContinue)) { return }
 
-    $agent = $null
-    for ($i = 0; $i -lt $AgentWaitSeconds -and -not $agent; $i++) {
+    $port = $null
+    $tried = @{}
+    $seen = $false
+    for ($i = 0; $i -lt $AgentWaitSeconds -and -not $port; $i++) {
         $agents = @(try { maui devflow list --json 2>$null | ConvertFrom-Json } catch { @() })
         # connectedAt filters out an agent left registered by an earlier run that happened to
         # have the same pid; the 5 s slack absorbs clock skew between the device and the host.
-        $agent = $agents | Where-Object {
-            "$($_.processId)" -eq $AppPid -and
+        $candidates = @($agents | Where-Object {
+            "$($_.processId)" -eq $AppPid -and $_.port -and -not $tried.ContainsKey([int]$_.port) -and
             (-not $_.connectedAt -or ([datetime]$_.connectedAt).ToUniversalTime() -ge $SinceUtc.AddSeconds(-5))
-        } | Sort-Object { [datetime]$_.connectedAt } -Descending | Select-Object -First 1
-        if (-not $agent) { Start-Sleep -Seconds 1 }
+        })
+        if ($candidates) { $seen = $true }
+        # Ports already forwarded to some other device most likely belong to it; try those last.
+        $ordered = @($candidates | Sort-Object {
+            $owner = Get-ForwardOwner ([int]$_.port)
+            if ($owner -and $owner -ne $script:Serial) { 1 } else { 0 }
+        })
+        foreach ($agent in $ordered) {
+            $p = [int]$agent.port
+            $tried[$p] = $true
+            $owner = Get-ForwardOwner $p
+            try { Set-AgentForward $p } catch { Say "DevFlow: $($_.Exception.Message)"; continue }
+            $status = Get-AgentStatus $p
+            if ($status -and "$($status.app.processId)" -eq $AppPid) { $port = $p; break }
+            Restore-Forward $p $owner
+            Say "DevFlow: port $p (pid $($agent.processId)) is not this device's agent — skipped, forward restored$(if ($owner) { " to $owner" })"
+        }
+        if (-not $port) { Start-Sleep -Seconds 1 }
     }
-    if (-not $agent) {
-        Say "DevFlow: no agent with pid $AppPid registered within ${AgentWaitSeconds}s — driver.ps1 devflow will not work until the next launch"
-        Remove-Item -LiteralPath $BindingFile -Force -ErrorAction SilentlyContinue
-        return
-    }
-
-    $port = [int]$agent.port
-    Set-AgentForward $port
-    # Pids are per device, so two emulators can each run the app under the same one. Confirm
-    # through the forward just set that the agent answering is the one in THIS device's app.
-    $status = Get-AgentStatus $port
-    if (-not $status -or "$($status.app.processId)" -ne $AppPid) {
-        Say "DevFlow: port $port did not answer as pid $AppPid through $($script:Serial) — not bound"
+    if (-not $port) {
+        $why = if ($seen) { "no agent with pid $AppPid answered through $($script:Serial)" } else { "no agent with pid $AppPid registered" }
+        Say "DevFlow: $why within ${AgentWaitSeconds}s — driver.ps1 devflow will not work until the next launch"
         Remove-Item -LiteralPath $BindingFile -Force -ErrorAction SilentlyContinue
         return
     }
@@ -864,7 +906,11 @@ function Cmd-Launch {
             # which an adb restart or another session may have moved.
             if ($Resume) {
                 $b = Read-Binding
-                if ($b -and $b.serial -eq $script:Serial -and "$($b.appPid)" -eq $appPid) { Set-AgentForward ([int]$b.agentPort) }
+                if ($b -and $b.serial -eq $script:Serial -and "$($b.appPid)" -eq $appPid) {
+                    # The app is back either way; a forward that will not re-point only costs
+                    # DevFlow, and `devflow` checks again (and refuses) on its next call.
+                    try { Set-AgentForward ([int]$b.agentPort) } catch { Say "DevFlow: $($_.Exception.Message)" }
+                }
             } else {
                 Bind-DevFlowAgent -AppPid $appPid -SinceUtc $startedUtc
             }
@@ -1162,8 +1208,25 @@ switch ($cmd) {
         # Release only this worktree's claim, and only on the device being killed: with
         # ANDROID_SERIAL pointing elsewhere, this worktree's own device is still in use, and
         # another worktree's claim is that worktree's to give back.
+        #
+        # The claim goes only once the emulator is really gone. A kill that fails, or a qemu that
+        # lingers, would otherwise hand a still-running device to the next worktree.
         $ownsIt = [bool](Get-Claims | Where-Object { $_.Mine -and $_.Serial -eq $script:Serial })
-        Adb emu kill
+        $out = @(Adb emu kill 2>&1) -join ' '
+        if ($LASTEXITCODE -ne 0) {
+            throw "adb emu kill on $($script:Serial) failed ($out). The claim is kept; once it is really down, driver.ps1 release."
+        }
+        if ($script:Serial -match '^emulator-(\d+)$') {
+            $port = [int]$Matches[1]
+            $gone = $false
+            for ($i = 0; $i -lt $KillWaitSeconds; $i++) {
+                if (-not (Get-QemuInstances | Where-Object Port -eq $port) -and @(Get-ListedDevices) -notcontains $script:Serial) { $gone = $true; break }
+                Start-Sleep -Seconds 1
+            }
+            if (-not $gone) {
+                throw "$($script:Serial) still running ${KillWaitSeconds}s after the kill. The claim is kept; once it is really down, driver.ps1 release."
+            }
+        }
         if ($ownsIt) { Remove-Item -LiteralPath (Get-ClaimPath $script:Serial) -Force -ErrorAction SilentlyContinue }
         $b = Read-Binding
         if ($b -and $b.serial -eq $script:Serial) { Remove-Item -LiteralPath $BindingFile -Force -ErrorAction SilentlyContinue }

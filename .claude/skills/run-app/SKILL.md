@@ -167,7 +167,7 @@ and never claims one implicitly. Shut it down, or use it on purpose with `ANDROI
 | `boot [avd]` | claim a device (booting a read-only instance if none is free), block until `sys.boot_completed`, kill animations |
 | `build` / `install` / `launch` | individually; `launch` also binds the app's DevFlow agent |
 | `resume` | re-foreground the app **without** restarting it (warm, ~3s) |
-| `stop` / `kill-emu` | force-stop the app / shut this worktree's emulator down and release it |
+| `stop` / `kill-emu` | force-stop the app / shut this worktree's emulator down, and release it once it has actually exited (up to 30 s) |
 | `claims` / `release` | every device claim on the machine / give this worktree's back |
 | `serial` | this worktree's serial, for `ANDROID_SERIAL=$(…)` |
 | `adb <args>` | `adb -s <this worktree's serial> <args>` |
@@ -559,6 +559,9 @@ works — that is what the driver and DevFlow above are for.
 | `Only N GB of RAM free; booting another emulator needs 6 GB` | Too many emulators, or a build is running. Wait for the build, or `driver.ps1 claims` and shut down one nobody needs. |
 | `Cannot connect to agent at localhost:<port>`, or the UI you see belongs to another build | The agent port's `adb forward` points at another device, or a bare `maui devflow` found another worktree's app. Use `driver.ps1 devflow …`; `driver.ps1 launch` re-binds. |
 | `No DevFlow agent is bound to this worktree` | `driver.ps1 launch` (or `up`) has not run since the app started, or the agent never registered. Run `launch`. |
+| `adb forward tcp:<port> to <serial> failed … refusing to use a forward that may lead to another device` | The forward could not be re-pointed at this worktree's device (device offline, port unbindable), so `devflow` stops rather than drive whatever the old forward reaches. Check `driver.ps1 env`, then `launch` again. |
+| `launch` logs `port <n> (pid <p>) is not this device's agent — skipped, forward restored` | Another emulator's app has the same pid. Expected and harmless: `launch` checks each match through this device's forward, binds the one that answers, and puts the borrowed forward back. |
+| `<serial> still running 30s after the kill`, or `adb emu kill on <serial> failed` | `kill-emu` keeps the claim until the emulator is really gone, so a hung one is not handed to another worktree. Close it from its window (or end its `qemu-system-x86_64`), then `driver.ps1 release`. |
 | `sys.boot_completed never reached 1 after 180s` | The emulator attached to adb but never finished booting. Check the emulator window; a wipe-data from Device Manager usually clears it. |
 | `AVD <name> never attached to adb`, and `emulator`/`qemu-system-x86_64` are running but idle (well under 1s CPU, no port in the 5554-5600 range listening) | A stale AVD lock. qemu starts, finds the AVD claimed, and hangs instead of exiting — so each retry silently adds another hung pair. Kill every `emulator`/`qemu*` process, then delete `~/.android/avd/<name>.avd/*.lock` (`hardware-qemu.ini.lock`, `multiinstance.lock`) and boot again. Run `emulator -verbose` to confirm: it prints `Running multiple emulators with the same AVD`. Check acceleration first with `emulator -accel-check` to rule out WHPX. |
 | `df 'C:/Program Files/Git/data': No such file` | Git Bash path mangling — `MSYS_NO_PATHCONV=1`. |
