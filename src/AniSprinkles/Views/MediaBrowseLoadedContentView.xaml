@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:pageModels="clr-namespace:AniSprinkles.PageModels;assembly=AniSprinkles.Core"
              xmlns:icons="clr-namespace:IconFont.Maui.FluentIcons;assembly=IconFont.Maui.FluentIcons"
+             xmlns:behaviors="clr-namespace:AniSprinkles.Behaviors"
              x:Class="AniSprinkles.Views.MediaBrowseLoadedContentView"
              x:DataType="pageModels:MediaBrowsePageModel">
 
@@ -13,6 +14,9 @@
                         ItemSizingStrategy="MeasureFirstItem"
                         RemainingItemsThreshold="5"
                         RemainingItemsThresholdReachedCommand="{Binding LoadMoreCommand}">
+            <CollectionView.Behaviors>
+                <behaviors:SpareCardPoolBehavior />
+            </CollectionView.Behaviors>
             <CollectionView.Footer>
                 <ActivityIndicator IsRunning="{Binding IsLoadingMore}"
                                    IsVisible="{Binding IsLoadingMore}"
