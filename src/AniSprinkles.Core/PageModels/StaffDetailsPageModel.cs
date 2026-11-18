@@ -82,7 +82,8 @@ public partial class StaffDetailsPageModel : DetailsPageModelBase<Staff>
             VoiceRolesDefaultSort,
             FetchVoiceRolesPageAsync,
             edge => edge.Node?.Id ?? 0,
-            localSort: DetailsListSorters.SortVoiceRoles);
+            localSort: DetailsListSorters.SortVoiceRoles,
+            visible: edge => AdultMediaFilter.VoiceRole(edge, DisplaysAdultContent));
         _voiceRoles.Changed += OnVoiceRolesChanged;
 
         _productionRoles = new PaginatedSection<StaffMediaEdge>(
@@ -90,7 +91,8 @@ public partial class StaffDetailsPageModel : DetailsPageModelBase<Staff>
             FetchProductionRolesPageAsync,
             edge => (edge.Node?.Id ?? 0, edge.StaffRole ?? string.Empty),
             StampProductionBadges,
-            DetailsListSorters.SortProductionRoles);
+            DetailsListSorters.SortProductionRoles,
+            edge => AdultMediaFilter.Keep(edge, edge.Node, DisplaysAdultContent));
         _productionRoles.Changed += OnProductionRolesChanged;
     }
 

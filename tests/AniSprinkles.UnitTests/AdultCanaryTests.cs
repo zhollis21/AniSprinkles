@@ -223,6 +223,101 @@ public class AdultCanaryTests
     public void AMediaRequestWithNoId_IsLeftToTheFixtures()
         => Assert.That(AdultCanary.TryAnswer("Media", Vars("{}"), out _), Is.False);
 
+    // ── The details pages (#199): always armed ───────────────────────
+
+    // Every nested media section on a details page, as the operation that fills it and the path to
+    // the media object of its first item. AniList returns 18+ titles in all of these whether or not
+    // the viewer is signed in, and none of them take an isAdult argument, so the client-side filter
+    // is the only thing in the way. Like the list, they are always armed.
+    private static readonly object[] DetailsSections =
+    [
+        new object[] { "Media", """{"data":{"Media":{"id":1,"relations":{"edges":[]},"recommendations":{"nodes":[]}}}}""", "Media.relations.edges.0.node" },
+        new object[] { "Media", """{"data":{"Media":{"id":1,"relations":{"edges":[]},"recommendations":{"nodes":[]}}}}""", "Media.recommendations.nodes.0.mediaRecommendation" },
+        new object[] { "MediaRecommendationsPage", """{"data":{"Media":{"recommendations":{"nodes":[]}}}}""", "Media.recommendations.nodes.0.mediaRecommendation" },
+        new object[] { "Staff", """{"data":{"Staff":{"id":1,"characters":{"edges":[]},"staffMedia":{"edges":[]}}}}""", "Staff.staffMedia.edges.0.node" },
+        new object[] { "StaffMediaPage", """{"data":{"Staff":{"staffMedia":{"edges":[]}}}}""", "Staff.staffMedia.edges.0.node" },
+        new object[] { "Staff", """{"data":{"Staff":{"id":1,"characters":{"edges":[]},"staffMedia":{"edges":[]}}}}""", "Staff.characters.edges.0.media.0" },
+        new object[] { "StaffCharactersPage", """{"data":{"Staff":{"characters":{"edges":[]}}}}""", "Staff.characters.edges.0.media.0" },
+        new object[] { "Character", """{"data":{"Character":{"id":1,"media":{"edges":[]}}}}""", "Character.media.edges.0.node" },
+        new object[] { "CharacterMediaPage", """{"data":{"Character":{"media":{"edges":[]}}}}""", "Character.media.edges.0.node" },
+        new object[] { "Studio", """{"data":{"Studio":{"id":1,"media":{"nodes":[]}}}}""", "Studio.media.nodes.0" },
+        new object[] { "StudioMediaPage", """{"data":{"Studio":{"media":{"nodes":[]}}}}""", "Studio.media.nodes.0" },
+    ];
+
+    [TestCaseSource(nameof(DetailsSections))]
+    public void EveryDetailsSection_LeadsWithTheCanary(string operationName, string response, string path)
+    {
+        var node = JsonNode.Parse(response);
+
+        AdultCanary.Splice(operationName, Vars("""{"id":1}"""), node);
+
+        var media = At(node, "data." + path);
+        Assert.That(media?["title"]?["romaji"]?.GetValue<string>(), Is.EqualTo(AdultCanary.Title));
+        Assert.That(media?["isAdult"]?.GetValue<bool>(), Is.True);
+    }
+
+    [Test]
+    public void AVoiceRole_GetsTheCanaryAheadOfItsRealTitle()
+    {
+        // Exercises the filter's "show the first non-adult title" path: the real title is still
+        // there, behind the made-up ones, and a correct app shows it.
+        var response = JsonNode.Parse("""
+            {"data":{"Staff":{"characters":{"edges":[{"node":{"id":40},"role":"MAIN","media":[{"id":21,"title":{"romaji":"ONE PIECE"}}]}]}}}}
+            """);
+
+        AdultCanary.Splice("StaffCharactersPage", Vars("""{"id":1}"""), response);
+
+        var real = (At(response, "data.Staff.characters.edges") as JsonArray)?
+            .FirstOrDefault(e => At(e, "node.id")?.GetValue<int>() == 40);
+        var titles = (At(real, "media") as JsonArray)?
+            .Select(m => At(m, "title.romaji")?.GetValue<string>())
+            .ToList() ?? [];
+        Assert.That(titles, Has.Count.GreaterThan(1));
+        Assert.That(titles[0], Is.EqualTo(AdultCanary.Title));
+        Assert.That(titles[^1], Is.EqualTo("ONE PIECE"));
+    }
+
+    [Test]
+    public void TheVoiceRoles_GetARoleWhoseTitlesAreAllMadeUp()
+    {
+        // Exercises the "drop the role" path: a role with nothing but 18+ titles. Its character's
+        // name carries the marker too, so a role kept with its media line blanked still fails the gate.
+        var response = JsonNode.Parse("""{"data":{"Staff":{"characters":{"edges":[]}}}}""");
+
+        AdultCanary.Splice("StaffCharactersPage", Vars("""{"id":1}"""), response);
+
+        var edge = At(response, "data.Staff.characters.edges.0");
+        var media = At(edge, "media") as JsonArray;
+        Assert.That(media?.Count, Is.GreaterThan(0));
+        Assert.That(media?.All(m => At(m, "isAdult")?.GetValue<bool>() == true), Is.True);
+        Assert.That(At(edge, "node.name.userPreferred")?.GetValue<string>(), Does.StartWith(AdultCanary.Marker));
+    }
+
+    [Test]
+    public void ADetailsSectionTheQueryDidNotAskFor_IsLeftAbsent()
+    {
+        // A missing connection is a different shape from an empty one. Inventing it would answer a
+        // question the app never asked.
+        var response = JsonNode.Parse("""{"data":{"Media":{"id":1,"relations":{"edges":[]}}}}""");
+
+        AdultCanary.Splice("Media", Vars("""{"id":1}"""), response);
+
+        Assert.That(At(response, "data.Media.recommendations"), Is.Null);
+    }
+
+    private static JsonNode? At(JsonNode? node, string path)
+    {
+        var current = node;
+        foreach (var part in path.Split('.'))
+        {
+            current = int.TryParse(part, out var index)
+                ? current is JsonArray array && index < array.Count ? array[index] : null
+                : current is JsonObject obj ? obj[part] : null;
+        }
+
+        return current;
+    }
+
     private static List<string?> TypesInPage(string operationName, string variables)
         => PageMedia(operationName, variables).Select(m => m?["type"]?.GetValue<string>()).ToList();
 

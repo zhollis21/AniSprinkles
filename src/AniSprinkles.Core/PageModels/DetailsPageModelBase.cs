@@ -197,6 +197,21 @@ public abstract partial class DetailsPageModelBase<TEntity> : ObservableObject
         _renderedDisplaySettings = current;
     }
 
+    /// <summary>
+    /// The Display Adult Content value this page's sections are filtered under (#199). Captured when a
+    /// load starts and held for the entity's life, so Load More and sort changes judge every page by
+    /// the value page 1 was, the same pinning Search and Discover do. Pass it to
+    /// <see cref="AdultMediaFilter"/> rather than reading <c>AppSettings</c>.
+    /// <para>
+    /// Tracked apart from <see cref="_renderedDisplaySettings"/> on purpose. That snapshot is
+    /// re-recorded by <see cref="RefreshDisplaySettings"/>, which the page calls from
+    /// <c>OnNavigatedTo</c> before its load runs, so a title-language change made alongside this
+    /// one would mark the page current and the load would find nothing to do. Unlike those
+    /// settings this one cannot be re-projected: a filtered section no longer holds what it dropped.
+    /// </para>
+    /// </summary>
+    protected bool DisplaysAdultContent { get; private set; } = AppSettings.DisplayAdultContent;
+
     /// <summary>Records that the content on screen matches the settings as they stand now.</summary>
     private protected void MarkDisplaySettingsRendered()
         => _renderedDisplaySettings = DisplaySettingsSnapshot.Current;
@@ -277,7 +292,12 @@ public abstract partial class DetailsPageModelBase<TEntity> : ObservableObject
         // when returning from a pushed sub-page and — importantly — when a CommunityToolkit sort popup
         // closes (it fires the host page's OnNavigatedTo → reload). Without this guard the popup would reset
         // the sort the user just picked.
-        if (Entity is not null && Entity.Id == id)
+        // Except when Display Adult Content moved under it (#199): the sections were filtered under
+        // the old value and dropped what they hid, so they are rebuilt rather than re-projected.
+        // Staff, character and studio reads are cached for the session, so for those this costs no
+        // request; media details refetches.
+        var adultContentChanged = DisplaysAdultContent != AppSettings.DisplayAdultContent;
+        if (Entity is not null && Entity.Id == id && !adultContentChanged)
         {
             // This is the #127 path for all four details pages. They are registered transient but
             // stay alive in their tab's navigation stack, so tabbing to Settings, changing a display
@@ -289,7 +309,15 @@ public abstract partial class DetailsPageModelBase<TEntity> : ObservableObject
             return;
         }
 
+        if (Entity is not null && Entity.Id == id)
+        {
+            Logger.LogInformation(
+                "NAVTRACE {TracePrefix} rebuilding {EntityNoun} {Id} — Display Adult Content changed since it was shown",
+                TracePrefix, EntityNoun, id);
+        }
+
         LoadedId = id;
+        DisplaysAdultContent = AppSettings.DisplayAdultContent;
         var generation = ++_loadGeneration;
         var token = Scope.Begin(); // fresh page scope; OnNavigatedFrom cancels it on navigate-away
 

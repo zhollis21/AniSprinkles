@@ -1,0 +1,148 @@
+﻿{
+  "operationName": "MediaRecommendationsPage",
+  "variables": {
+    "id": 182255,
+    "page": 2,
+    "sort": [
+      "RATING_DESC",
+      "ID"
+    ],
+    "perPage": 25
+  },
+  "queryFingerprint": "7fdbadd78a22",
+  "recordedAt": "2026-11-18T14:38:39.8466138+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "recommendations": {
+          "pageInfo": {
+            "hasNextPage": false,
+            "currentPage": 2
+          },
+          "nodes": [
+            {
+              "rating": 1,
+              "mediaRecommendation": {
+                "id": 97940,
+                "title": {
+                  "romaji": "Black Clover",
+                  "english": "Black Clover",
+                  "native": "\u30D6\u30E9\u30C3\u30AF\u30AF\u30ED\u30FC\u30D0\u30FC"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx97940-fyh8o7gNbha0.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx97940-fyh8o7gNbha0.png"
+                },
+                "weightedScore": 79,
+                "mediaListEntry": {
+                  "id": 593364452,
+                  "status": "COMPLETED",
+                  "progress": 170,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 1,
+              "mediaRecommendation": {
+                "id": 113717,
+                "title": {
+                  "romaji": "Ousama Ranking",
+                  "english": "Ranking of Kings",
+                  "native": "\u738B\u69D8\u30E9\u30F3\u30AD\u30F3\u30B0"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx113717-9sNnN8WRgK15.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx113717-9sNnN8WRgK15.jpg"
+                },
+                "weightedScore": 83,
+                "mediaListEntry": {
+                  "id": 593364435,
+                  "status": "COMPLETED",
+                  "progress": 23,
+                  "score": 8
+                }
+              }
+            },
+            {
+              "rating": 1,
+              "mediaRecommendation": {
+                "id": 186333,
+                "title": {
+                  "romaji": "Majutsushi Kunon wa Mieteiru",
+                  "english": "Kunon the Sorcerer Can See",
+                  "native": "\u9B54\u8853\u5E2B\u30AF\u30CE\u30F3\u306F\u898B\u3048\u3066\u3044\u308B"
+                },
+                "isAdult": false,
+                "format": "ONA",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx186333-32qDHxLkndpg.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx186333-32qDHxLkndpg.png"
+                },
+                "weightedScore": 65,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 0,
+              "mediaRecommendation": {
+                "id": 21355,
+                "title": {
+                  "romaji": "Re:Zero kara Hajimeru Isekai Seikatsu",
+                  "english": "Re:ZERO -Starting Life in Another World-",
+                  "native": "Re:\u30BC\u30ED\u304B\u3089\u59CB\u3081\u308B\u7570\u4E16\u754C\u751F\u6D3B"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21355-wRVUrGxpvIQQ.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21355-wRVUrGxpvIQQ.jpg"
+                },
+                "weightedScore": 81,
+                "mediaListEntry": {
+                  "id": 593363865,
+                  "status": "COMPLETED",
+                  "progress": 25,
+                  "score": 10
+                }
+              }
+            },
+            {
+              "rating": 0,
+              "mediaRecommendation": {
+                "id": 174576,
+                "title": {
+                  "romaji": "Tsue to Tsurugi no Wistoria",
+                  "english": "Wistoria: Wand and Sword",
+                  "native": "\u6756\u3068\u5263\u306E\u30A6\u30A3\u30B9\u30C8\u30EA\u30A2"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx174576-tpKcHG0eO6CS.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx174576-tpKcHG0eO6CS.jpg"
+                },
+                "weightedScore": 79,
+                "mediaListEntry": {
+                  "id": 593364901,
+                  "status": "COMPLETED",
+                  "progress": 12,
+                  "score": 8
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}
