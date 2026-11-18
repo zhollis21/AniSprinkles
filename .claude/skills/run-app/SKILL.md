@@ -139,12 +139,23 @@ How the device is chosen:
    console port chosen and claimed before the boot.
 
 A claim is a file per serial in `%LOCALAPPDATA%\AniSprinkles\device-claims\`. It lasts until the
-worktree folder is gone, or the device is gone (missing from `adb devices` in every state and,
-for an emulator, its qemu process exited), or `release` / `kill-emu` gives it back. The device
-test is deliberately loose, so an adb restart or an `offline` blip doesn't hand a device in use
-to someone else. Every read-decide-write on the claim files runs under one host-wide lock (the
+worktree folder is gone, the device is gone, or `release` / `kill-emu` gives it back. "Gone" is
+deliberately hard to reach, so an adb restart or an `offline` blip doesn't hand a device in use
+to someone else:
+
+- adb lists it in no state at all;
+- for an emulator, its qemu process has exited too;
+- for a phone, it has been unlisted for **60 s** (a replug or someone else's adb restart);
+- and no claim is cleared while the adb server is under 60 s old, whoever restarted it.
+
+That last rule only ever delays freeing a stale claim.
+
+Every read-decide-write on the claim files runs under one host-wide lock (the
 `Global\AniSprinkles-device-claims` mutex, waited on for up to 30 s), so a stale claim can't be
-cleared by one session after another has already replaced it.
+cleared by one session after another has already replaced it. A second lock,
+`Global\AniSprinkles-adb-forwards`, covers re-pointing an agent port, so `launch`'s probe of a
+port can't be interleaved with another worktree re-pointing it. `launch` never borrows a port
+another worktree's `tmp/driver-binding.json` has bound.
 There is no idle timer. A worktree holds one device at a time, so claiming a new one releases the
 old. `claims` lists them all.
 
@@ -158,8 +169,16 @@ AVD while a writable instance of it is running: an emulator started from Device 
 Studio, or a driver from before #203. `boot` checks for one and names it rather than hanging,
 and never claims one implicitly. Shut it down, or use it on purpose with `ANDROID_SERIAL`.
 
-`boot` also refuses to start another instance with less than **6 GB** of RAM free. The AVD is
-`hw.ramSize=6144`, and one in use runs a 4.3 GB working set.
+`boot` also refuses to start another instance with less than **6 GB** of RAM free, plus 6 GB for
+every other boot still in progress, since a booting emulator hasn't taken its memory yet. The
+check and the booting claim happen together under the claim lock, so two simultaneous boots
+can't both spend the same headroom. The AVD is `hw.ramSize=6144`, and one in use runs a 4.3 GB
+working set. A failed boot keeps its claim until its emulator has really exited, as `kill-emu`
+does.
+
+**The driver starts a missing adb server itself, detached.** An adb call that has to start the
+server leaves the daemon holding that call's stdout open, so anything capturing the output —
+`$(driver.ps1 serial)`, a pipe — would wait until adb exits.
 
 ### The device — `driver.ps1 <command> [args]`
 
@@ -558,7 +577,7 @@ works — that is what the driver and DevFlow above are for.
 | `More than one free device — set ANDROID_SERIAL to choose` | Several unclaimed devices and none is this worktree's. `driver.ps1 up` claims one (or boots its own), or pick with `ANDROID_SERIAL=<serial>`. `driver.ps1 env` lists them. |
 | `Every attached device is claimed by another worktree` | Other sessions hold them all. `driver.ps1 up` boots this worktree its own read-only instance. `driver.ps1 claims` shows who holds what. |
 | `A writable instance of <avd> is running` | An emulator started outside the driver (Device Manager, Visual Studio, or a pre-#203 driver) blocks every `-read-only` boot of that AVD. Shut it down (`ANDROID_SERIAL=<serial> driver.ps1 kill-emu`), or use it deliberately with `ANDROID_SERIAL`. |
-| `Only N GB of RAM free; booting another emulator needs 6 GB` | Too many emulators, or a build is running. Wait for the build, or `driver.ps1 claims` and shut down one nobody needs. |
+| `Only N GB of RAM free; booting another emulator needs M GB` | Too many emulators, a build running, or other boots in progress (each counts as 6 GB until it finishes). Wait for the build, or `driver.ps1 claims` and shut down one nobody needs. |
 | `Cannot connect to agent at localhost:<port>`, or the UI you see belongs to another build | The agent port's `adb forward` points at another device, or a bare `maui devflow` found another worktree's app. Use `driver.ps1 devflow …`; `driver.ps1 launch` re-binds. |
 | `No DevFlow agent is bound to this worktree` | `driver.ps1 launch` (or `up`) has not run since the app started, or the agent never registered. Run `launch`. |
 | `Timed out after 30s waiting for the device-claim lock` | Another driver command has held the claim lock for 30 s, usually one stuck on a cold `adb` start. Retry; if it keeps happening, look for a hung `pwsh` running `driver.ps1`. |

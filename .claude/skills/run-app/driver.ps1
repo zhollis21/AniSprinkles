@@ -69,6 +69,21 @@ $Sdk = Resolve-Sdk
 $Adb = Join-Path $Sdk 'platform-tools\adb.exe'
 $Emu = Join-Path $Sdk 'emulator\emulator.exe'
 
+function Get-AdbServerProcesses {
+    # The adb server daemon, as opposed to the short-lived `adb` clients every command runs.
+    @(Get-Process adb -ErrorAction SilentlyContinue | Where-Object { $_.CommandLine -match 'fork-server' })
+}
+
+function Start-AdbServerDetached {
+    # When an adb call has to start the server, the daemon it forks inherits that call's stdout
+    # and keeps it open for as long as the server runs. Anything capturing the driver's output —
+    # `$(driver.ps1 serial)`, `driver.ps1 … | Select-String` — then waits until adb itself exits,
+    # which in practice is forever. Starting a missing server here, through Start-Process with no
+    # redirected handles, means no later adb call in this run ever forks one.
+    if (Get-AdbServerProcesses) { return }
+    Start-Process -FilePath $Adb -ArgumentList 'start-server' -WindowStyle Hidden -Wait
+}
+
 # ---------------------------------------------------------------- device target
 # Every adb call routes through Adb/AdbOut so a single `-s <serial>` is applied
 # consistently. Without it a second attached device (a phone plugged in, a
@@ -174,68 +189,119 @@ function Test-ProcessAlive($ProcessId) {
     [bool](Get-Process -Id ([int]$ProcessId) -ErrorAction SilentlyContinue)
 }
 
+# How long a claimed PHYSICAL device that adb no longer lists keeps its claim. Emulators have a
+# second witness, their qemu process, so this is only for phones: it covers a listing taken just
+# after someone else restarted adb, and a USB replug. A phone unplugged on purpose stays claimed
+# this long unless its worktree runs `release`.
+$PhysicalGraceSeconds = 60
+
 function Get-LivenessContext {
     # What Test-ClaimLive checks against, read once per pass rather than once per claim.
-    [pscustomobject]@{ Listed = @(Get-ListedDevices); Qemu = @(Get-QemuInstances) }
+    # Reliable is false when adb failed, or had to start its server during this very call: a
+    # freshly started server lists nothing until devices reconnect, and believing that would
+    # clear every phone's claim at once.
+    #
+    # "Had to start" is judged by the server's age, not by this call's output: an earlier adb call
+    # in the same command, or another session entirely, may have done the restart a moment ago,
+    # and the server lists nothing until devices reconnect. Within $PhysicalGraceSeconds of a
+    # (re)start no claim is cleared; that only delays freeing stale claims, never frees a live one.
+    $out = @(& $Adb devices 2>&1 | ForEach-Object { "$_" })
+    $serverAge = @(Get-AdbServerProcesses | ForEach-Object {
+        try { ((Get-Date) - $_.StartTime).TotalSeconds } catch { 0 }
+    }) | Sort-Object | Select-Object -First 1
+    $reliable = ($LASTEXITCODE -eq 0) -and -not ($out -match 'daemon not running|daemon started|starting now') -and
+                ($null -ne $serverAge) -and ($serverAge -ge $PhysicalGraceSeconds)
+    [pscustomobject]@{
+        Listed   = @($out | ForEach-Object { if ($_ -match '^(\S+)\t') { $Matches[1] } })
+        Qemu     = @(Get-QemuInstances)
+        Reliable = $reliable
+    }
+}
+
+function Get-UtcAge($When) {
+    # Seconds since $When, or $null when it is missing or unparseable. ToUniversalTime on both
+    # sides: ConvertFrom-Json can hand a timestamp back as a DateTime or a string depending on the
+    # PowerShell version, and a [datetime] cast of the string yields local time.
+    if (-not $When) { return $null }
+    try { ((Get-Date).ToUniversalTime() - ([datetime]$When).ToUniversalTime()).TotalSeconds } catch { $null }
 }
 
 function Test-ClaimLive {
     # A claim counts while its worktree folder exists and its device is still there. "Still there"
     # is deliberately generous, because a wrongly-dropped claim hands a device in use to the next
-    # session: adb listing it in any state, or — for an emulator — its qemu process still running
-    # on that console port, which covers an adb server restart that briefly lists nothing. A claim
-    # taken ahead of a boot has no device yet, so it counts while its emulator process is alive, or,
-    # before the process has even been started, for a minute after it was written.
+    # session:
+    #   - adb listing it in any state;
+    #   - for an emulator, its qemu process still running on that console port;
+    #   - for a physical device, having been listed within the last $PhysicalGraceSeconds;
+    #   - anything at all, when this pass's adb listing is not trustworthy.
+    # A claim taken ahead of a boot has no device yet, so it counts while its emulator process is
+    # alive, or, before the process has even been started, for a minute after it was written.
     param($Claim, $Context)
     if (-not $Claim -or -not $Claim.serial -or -not $Claim.worktree) { return $false }
     if (-not (Test-Path -LiteralPath $Claim.worktree)) { return $false }
+    if (-not $Context.Reliable) { return $true }
     if ($Context.Listed -contains $Claim.serial) { return $true }
     if ($Claim.serial -match '^emulator-(\d+)$') {
         $port = [int]$Matches[1]
         if ($Context.Qemu | Where-Object Port -eq $port) { return $true }
+    } elseif ($Claim.state -ne 'booting') {
+        $age = Get-UtcAge $(if ($Claim.lastSeen) { $Claim.lastSeen } else { $Claim.claimedAt })
+        if ($null -ne $age -and $age -lt $PhysicalGraceSeconds) { return $true }
     }
     if ($Claim.state -eq 'booting') {
         if ($Claim.emulatorPid) { return (Test-ProcessAlive $Claim.emulatorPid) }
-        # ToUniversalTime on both sides: claimedAt can come back from ConvertFrom-Json as a
-        # DateTime or a string depending on the PowerShell version, and a [datetime] cast of
-        # the string yields local time. Pinning both to UTC keeps the window independent of that.
-        try { return ((Get-Date).ToUniversalTime() - ([datetime]$Claim.claimedAt).ToUniversalTime()).TotalSeconds -lt 60 } catch { return $false }
+        $age = Get-UtcAge $Claim.claimedAt
+        return ($null -ne $age -and $age -lt 60)
     }
     return $false
 }
 
-# Every read-decide-write on the claim files runs under this one host-wide lock. CreateNew alone
-# settles a race between two creates, but not a delete: a process that has read a claim as stale
-# could otherwise delete a fresh claim another worktree wrote in its place a moment later, and
-# both would then use the same device. Holding the lock across the read and the delete closes
-# that. A Windows mutex is re-entrant for its owning thread, so a locked function can call
+# Host-wide locks. Every read-decide-write on the claim files runs under the claim lock:
+# CreateNew alone settles a race between two creates, but not a delete — a process that has read
+# a claim as stale could otherwise delete a fresh claim another worktree wrote in its place a
+# moment later, and both would then use the same device. The forward lock covers re-pointing an
+# agent port: binding borrows a port, probes it and puts it back, and nobody else may re-point it
+# in between. A Windows mutex is re-entrant for its owning thread, so a locked function can call
 # another one; if a holder dies mid-operation, the next caller is handed it as "abandoned".
 $ClaimLockName    = 'Global\AniSprinkles-device-claims'
-# Work under the lock is sub-second, except when `adb devices` has to start the adb server
-# (a few seconds). Past this the command fails rather than waiting on a stuck holder forever.
+$ForwardLockName  = 'Global\AniSprinkles-adb-forwards'
+# Work under either lock is a few seconds at most (a cold adb-server start, or one DevFlow status
+# probe). Past this the command fails rather than waiting on a stuck holder forever.
 $ClaimLockSeconds = 30
-$script:ClaimMutex = $null
+$script:Mutexes   = @{}
 
-function Invoke-WithClaimLock([scriptblock]$Body) {
-    if (-not $script:ClaimMutex) { $script:ClaimMutex = [Threading.Mutex]::new($false, $ClaimLockName) }
+function Invoke-WithLock([string]$Name, [scriptblock]$Body) {
+    if (-not $script:Mutexes[$Name]) { $script:Mutexes[$Name] = [Threading.Mutex]::new($false, $Name) }
+    $m = $script:Mutexes[$Name]
     $acquired = $false
-    try { $acquired = $script:ClaimMutex.WaitOne([TimeSpan]::FromSeconds($ClaimLockSeconds)) }
+    try { $acquired = $m.WaitOne([TimeSpan]::FromSeconds($ClaimLockSeconds)) }
     catch [Threading.AbandonedMutexException] { $acquired = $true }
     if (-not $acquired) {
-        throw "Timed out after ${ClaimLockSeconds}s waiting for the device-claim lock ($ClaimLockName); another driver command is holding it."
+        throw "Timed out after ${ClaimLockSeconds}s waiting for the lock $Name; another driver command is holding it."
     }
-    try { & $Body } finally { $script:ClaimMutex.ReleaseMutex() }
+    try { & $Body } finally { $m.ReleaseMutex() }
 }
+
+function Invoke-WithClaimLock([scriptblock]$Body) { Invoke-WithLock $ClaimLockName $Body }
+function Invoke-WithForwardLock([scriptblock]$Body) { Invoke-WithLock $ForwardLockName $Body }
 
 function Get-Claims {
     # Every live claim, with Mine worked out. Stale files are deleted on the way past, so a dead
-    # worktree or a shut-down emulator never blocks anyone.
+    # worktree or a shut-down emulator never blocks anyone. A listed physical device has its
+    # lastSeen refreshed here (at most every 10 s), which is what its grace period counts from.
     Invoke-WithClaimLock {
         if (-not (Test-Path $ClaimDir)) { return @() }
         $context = Get-LivenessContext
         $claims = foreach ($f in Get-ChildItem $ClaimDir -Filter *.json -File) {
             $c = Read-ClaimFile $f.FullName
             if (-not (Test-ClaimLive $c $context)) { Remove-Item -LiteralPath $f.FullName -Force -ErrorAction SilentlyContinue; continue }
+            if ($context.Reliable -and $c.serial -notmatch '^emulator-' -and $context.Listed -contains $c.serial) {
+                $age = Get-UtcAge $c.lastSeen
+                if ($null -eq $age -or $age -gt 10) {
+                    $c | Add-Member -NotePropertyName lastSeen -NotePropertyValue ((Get-Date).ToUniversalTime().ToString('o')) -Force
+                    Set-Content -LiteralPath $f.FullName -Value ($c | ConvertTo-Json) -Encoding utf8
+                }
+            }
             [pscustomobject]@{
                 Serial   = $c.serial
                 Worktree = $c.worktree
@@ -491,10 +557,25 @@ function Set-AgentForward([int]$AgentPort) {
     #
     # A failure throws rather than being shrugged off: the forward the port had before stays in
     # place, and it may lead to another worktree's emulator, so carrying on would drive their app.
-    $out = @(Adb forward "tcp:$AgentPort" "tcp:$AgentPort" 2>&1) -join ' '
-    if ($LASTEXITCODE -ne 0) {
-        throw "adb forward tcp:$AgentPort to $($script:Serial) failed ($out) — refusing to use a forward that may lead to another device"
+    # Under the forward lock, so it cannot land in the middle of another worktree's bind probe.
+    Invoke-WithForwardLock {
+        $out = @(Adb forward "tcp:$AgentPort" "tcp:$AgentPort" 2>&1) -join ' '
+        if ($LASTEXITCODE -ne 0) {
+            throw "adb forward tcp:$AgentPort to $($script:Serial) failed ($out) — refusing to use a forward that may lead to another device"
+        }
     }
+}
+
+function Get-OtherBoundPorts {
+    # Agent ports other worktrees have already bound, read from their own binding files: a claim
+    # records its worktree, and that worktree's tmp/driver-binding.json names its port. Binding
+    # never borrows one of these, so another session's working forward is not re-pointed at all.
+    $ports = @{}
+    foreach ($c in Get-Claims | Where-Object { -not $_.Mine }) {
+        $b = Read-ClaimFile (Join-Path $c.Worktree 'tmp\driver-binding.json')
+        if ($b -and $b.agentPort -and $b.serial -eq $c.Serial) { $ports[[int]$b.agentPort] = $c.Serial }
+    }
+    $ports
 }
 
 function Get-ForwardOwner([int]$AgentPort) {
@@ -548,15 +629,26 @@ function Bind-DevFlowAgent {
             $owner = Get-ForwardOwner ([int]$_.port)
             if ($owner -and $owner -ne $script:Serial) { 1 } else { 0 }
         })
+        $boundElsewhere = Get-OtherBoundPorts
         foreach ($agent in $ordered) {
             $p = [int]$agent.port
             $tried[$p] = $true
-            $owner = Get-ForwardOwner $p
-            try { Set-AgentForward $p } catch { Say "DevFlow: $($_.Exception.Message)"; continue }
-            $status = Get-AgentStatus $p
-            if ($status -and "$($status.app.processId)" -eq $AppPid) { $port = $p; break }
-            Restore-Forward $p $owner
-            Say "DevFlow: port $p (pid $($agent.processId)) is not this device's agent — skipped, forward restored$(if ($owner) { " to $owner" })"
+            if ($boundElsewhere.ContainsKey($p)) {
+                Say "DevFlow: port $p (pid $($agent.processId)) is bound by the worktree holding $($boundElsewhere[$p]) — skipped"
+                continue
+            }
+            # Set, probe and restore as one step under the forward lock, so no other worktree can
+            # re-point this port between the forward and the probe and make another app answer.
+            $result = Invoke-WithForwardLock {
+                $owner = Get-ForwardOwner $p
+                try { Set-AgentForward $p } catch { return [pscustomobject]@{ Ok = $false; Note = $_.Exception.Message } }
+                $status = Get-AgentStatus $p
+                if ($status -and "$($status.app.processId)" -eq $AppPid) { return [pscustomobject]@{ Ok = $true; Note = $null } }
+                Restore-Forward $p $owner
+                [pscustomobject]@{ Ok = $false; Note = "port $p (pid $($agent.processId)) is not this device's agent — skipped, forward restored$(if ($owner) { " to $owner" })" }
+            }
+            if ($result.Ok) { $port = $p; break }
+            Say "DevFlow: $($result.Note)"
         }
         if (-not $port) { Start-Sleep -Seconds 1 }
     }
@@ -769,11 +861,25 @@ function Stop-BootedEmulator([int]$Port, $Launcher) {
         ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
 }
 
+function Wait-EmulatorGone([string]$DeviceSerial) {
+    # Whether the emulator at $DeviceSerial has really gone — its qemu process has exited and adb
+    # no longer lists it in any state — within $KillWaitSeconds. A physical serial has no process
+    # to wait for, so it reports gone at once.
+    if ($DeviceSerial -notmatch '^emulator-(\d+)$') { return $true }
+    $port = [int]$Matches[1]
+    for ($i = 0; $i -lt $KillWaitSeconds; $i++) {
+        if (-not (Get-QemuInstances | Where-Object Port -eq $port) -and @(Get-ListedDevices) -notcontains $DeviceSerial) { return $true }
+        Start-Sleep -Seconds 1
+    }
+    return $false
+}
+
 function Cmd-Boot {
     # $Avd is $null when none was named: that reuses this worktree's device whatever it is, and
     # lets a free phone count. Naming an AVD asks for exactly that AVD.
     param([string]$Avd)
 
+    $bootedHere = $false
     $existing = Resolve-Target -ForBoot -Avd $Avd
     $want = if ($Avd) { $Avd } else { $DefaultAvd }
     if ($existing) {
@@ -799,17 +905,27 @@ function Cmd-Boot {
                    "ANDROID_SERIAL=$(if ($serial) { $serial } else { '<serial>' })), or use it directly with ANDROID_SERIAL.")
         }
 
-        $freeGb = [math]::Round((Get-CimInstance Win32_OperatingSystem).FreePhysicalMemory / 1MB, 1)
-        if ($freeGb -lt $MinFreeRamGb) {
-            throw "Only $freeGb GB of RAM free; booting another emulator needs $MinFreeRamGb GB. Free some memory, or run driver.ps1 claims to see who holds what."
+        # The RAM check and the booting claim are one step under the claim lock, and every boot
+        # still in progress counts as already using $MinFreeRamGb: free RAM is only a snapshot, and
+        # an emulator that has just started has not taken its memory yet, so two boots checking at
+        # once would otherwise both pass on the same headroom.
+        $reservation = Invoke-WithClaimLock {
+            $freeGb = [math]::Round((Get-CimInstance Win32_OperatingSystem).FreePhysicalMemory / 1MB, 1)
+            $booting = @(Get-Claims | Where-Object State -eq 'booting').Count
+            $needGb = $MinFreeRamGb * (1 + $booting)
+            if ($freeGb -lt $needGb) {
+                $inFlight = if ($booting) { " ($MinFreeRamGb GB for this one plus $MinFreeRamGb GB for each of the $booting boot(s) already in progress)" } else { '' }
+                throw "Only $freeGb GB of RAM free; booting another emulator needs $needGb GB$inFlight. Free some memory, or run driver.ps1 claims to see who holds what."
+            }
+            foreach ($p in Get-FreeConsolePorts -Attached $attached -Qemu $qemu) {
+                if (New-Claim "emulator-$p" @{ avd = $want; state = 'booting' }) { return [pscustomobject]@{ Port = $p; FreeGb = $freeGb } }
+            }
+            throw "No free emulator console port in $($ConsolePorts[0])-$($ConsolePorts[-1])"
         }
-
-        $port = $null
-        foreach ($p in Get-FreeConsolePorts -Attached $attached -Qemu $qemu) {
-            if (New-Claim "emulator-$p" @{ avd = $want; state = 'booting' }) { $port = $p; break }
-        }
-        if (-not $port) { throw "No free emulator console port in $($ConsolePorts[0])-$($ConsolePorts[-1])" }
+        $port = $reservation.Port
+        $freeGb = $reservation.FreeGb
         $serial = "emulator-$port"
+        $bootedHere = $true
 
         $others = @($attached)
         if ($others) { Say "note: $($others.Count) other device(s) attached; this worktree gets its own" }
@@ -832,16 +948,24 @@ function Cmd-Boot {
             Start-Sleep -Seconds 1
         }
         if (-not $script:Serial) {
+            $why = "AVD $want never attached to adb at $serial$(if ($launcher.HasExited) { " (emulator exited with $($launcher.ExitCode))" })"
             Stop-BootedEmulator $port $launcher
+            # Same rule as kill-emu: the claim goes only once the emulator is really gone, or a
+            # boot that attaches just as this gives up would be handed to the next worktree.
+            if (-not (Wait-EmulatorGone $serial)) {
+                throw "$why, and it was still running ${KillWaitSeconds}s after being stopped. The claim on $serial is kept; once it is down, driver.ps1 release."
+            }
             Remove-OwnClaim $serial | Out-Null
-            throw "AVD $want never attached to adb at $serial$(if ($launcher.HasExited) { " (emulator exited with $($launcher.ExitCode))" })"
+            throw $why
         }
-        Update-Claim $serial @{ state = 'ready' }
     }
 
     # Run this even when reusing a device: `device` state only means adb can talk
     # to it, not that Android has finished booting.
     Wait-BootCompleted
+    # Only now does a new boot stop counting against the RAM reservation: an emulator takes most
+    # of its memory while Android boots, not when adb first sees it.
+    if ($bootedHere) { Update-Claim $script:Serial @{ state = 'ready' } }
     Adb shell wm dismiss-keyguard *> $null
     Adb shell settings put global window_animation_scale 0 *> $null
     Adb shell settings put global transition_animation_scale 0 *> $null
@@ -1212,6 +1336,8 @@ function Cmd-DeepLink {
 $a = @($Args | Where-Object { $null -ne $_ })
 $cmd = $Command.ToLowerInvariant()
 if ($cmd -eq 'serial') { $script:SayToStderr = $true }
+# Before any adb call: `help` and `build` never touch adb, so they need no server.
+if ($cmd -notin @('help', 'build')) { Start-AdbServerDetached }
 
 # Anything that talks to a device needs an unambiguous target resolved up front,
 # so ambiguity surfaces as "set ANDROID_SERIAL to choose" rather than adb's bare
@@ -1243,16 +1369,8 @@ switch ($cmd) {
         if ($LASTEXITCODE -ne 0) {
             throw "adb emu kill on $($script:Serial) failed ($out). The claim is kept; once it is really down, driver.ps1 release."
         }
-        if ($script:Serial -match '^emulator-(\d+)$') {
-            $port = [int]$Matches[1]
-            $gone = $false
-            for ($i = 0; $i -lt $KillWaitSeconds; $i++) {
-                if (-not (Get-QemuInstances | Where-Object Port -eq $port) -and @(Get-ListedDevices) -notcontains $script:Serial) { $gone = $true; break }
-                Start-Sleep -Seconds 1
-            }
-            if (-not $gone) {
-                throw "$($script:Serial) still running ${KillWaitSeconds}s after the kill. The claim is kept; once it is really down, driver.ps1 release."
-            }
+        if (-not (Wait-EmulatorGone $script:Serial)) {
+            throw "$($script:Serial) still running ${KillWaitSeconds}s after the kill. The claim is kept; once it is really down, driver.ps1 release."
         }
         Remove-OwnClaim $script:Serial | Out-Null
         $b = Read-Binding
