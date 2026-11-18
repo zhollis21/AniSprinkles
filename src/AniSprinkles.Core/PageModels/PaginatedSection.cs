@@ -15,6 +15,7 @@ namespace AniSprinkles.PageModels;
 /// shell that binds to <see cref="Items"/> and reacts to <see cref="Changed"/>.
 /// </summary>
 public sealed class PaginatedSection<T>
+    where T : class
 {
     public delegate Task<(IReadOnlyList<T> Items, PageInfo? PageInfo)> FetchPageDelegate(
         int page, string sort, CancellationToken cancellationToken);
@@ -26,18 +27,27 @@ public sealed class PaginatedSection<T>
     private readonly Func<T, object> _keySelector;
     private readonly Action<IReadOnlyList<T>, string>? _onItemsAdded;
     private readonly LocalSortDelegate? _localSort;
+    private readonly Func<T, T?>? _visible;
     private readonly string _initialSort;
 
     private readonly HashSet<object> _seenKeys = [];
     private int _currentPage;
     private int _generation;
 
+    /// <param name="visible">
+    /// What each fetched item looks like on screen, or null to leave it out. Applied wherever items
+    /// enter the section (seed, Load More, a sort refetch), so a filter set here cannot be bypassed by
+    /// paging. The details pages use it to drop 18+ titles (#199), which AniList returns in every
+    /// nested connection and cannot filter server-side. A page that filters down to nothing still
+    /// advances the cursor, so a section can briefly show fewer items than a page holds.
+    /// </param>
     public PaginatedSection(
         string initialSort,
         FetchPageDelegate fetchPage,
         Func<T, object> keySelector,
         Action<IReadOnlyList<T>, string>? onItemsAdded = null,
-        LocalSortDelegate? localSort = null)
+        LocalSortDelegate? localSort = null,
+        Func<T, T?>? visible = null)
     {
         _initialSort = initialSort;
         Sort = initialSort;
@@ -45,6 +55,7 @@ public sealed class PaginatedSection<T>
         _keySelector = keySelector;
         _onItemsAdded = onItemsAdded;
         _localSort = localSort;
+        _visible = visible;
     }
 
     /// <summary>The items loaded so far. Bind XAML to this; the instance is stable for the section's life.</summary>
@@ -230,9 +241,11 @@ public sealed class PaginatedSection<T>
     private void AppendDeduped(IReadOnlyList<T> items)
     {
         var added = new List<T>();
-        foreach (var item in items)
+        foreach (var fetched in items)
         {
-            if (_seenKeys.Add(_keySelector(item)))
+            // Projected before dedup, so a dropped item never claims its key: dedup is about what is
+            // on screen, and a dropped item is not.
+            if ((_visible is null ? fetched : _visible(fetched)) is { } item && _seenKeys.Add(_keySelector(item)))
             {
                 added.Add(item);
             }

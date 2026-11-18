@@ -46,7 +46,8 @@ public partial class StudioDetailsPageModel : DetailsPageModelBase<Studio>
             FetchProductionsPageAsync,
             edge => edge.Node?.Id ?? 0,
             StampProductionBadges,
-            DetailsListSorters.SortStudioProductions);
+            DetailsListSorters.SortStudioProductions,
+            edge => AdultMediaFilter.Keep(edge, edge.Node, DisplaysAdultContent));
         _productions.Changed += OnProductionsChanged;
     }
 
