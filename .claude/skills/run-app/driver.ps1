@@ -589,9 +589,22 @@ function Get-ForwardOwner([int]$AgentPort) {
 
 function Restore-Forward([int]$AgentPort, [string]$Owner) {
     # Put a borrowed port back the way Bind found it, so a wrong guess does not leave another
-    # session's agent unreachable (its MCP session has nothing that would re-point it).
-    if ($Owner -and $Owner -ne $script:Serial) { & $Adb -s $Owner forward "tcp:$AgentPort" "tcp:$AgentPort" *> $null }
-    elseif (-not $Owner) { Adb forward --remove "tcp:$AgentPort" *> $null }
+    # session's agent unreachable (its MCP session has nothing that would re-point it). Returns
+    # what was actually done, for the log line.
+    #
+    # Fails closed: if the owner cannot be re-pointed to (it dropped off adb mid-probe), the
+    # forward is removed rather than left aimed at this device, and the note says so instead of
+    # claiming a restore.
+    if ($Owner -eq $script:Serial) { return 'forward left on this device, where it already was' }
+    if ($Owner) {
+        & $Adb -s $Owner forward "tcp:$AgentPort" "tcp:$AgentPort" *> $null
+        if ($LASTEXITCODE -eq 0) { return "forward restored to $Owner" }
+    }
+    Adb forward --remove "tcp:$AgentPort" *> $null
+    $removed = ($LASTEXITCODE -eq 0)
+    if (-not $Owner) { return $(if ($removed) { 'borrowed forward removed' } else { 'WARNING: borrowed forward could not be removed and still points at this device' }) }
+    if ($removed) { return "could not restore the forward to $Owner, so it was removed" }
+    return "WARNING: could not restore the forward to $Owner or remove it; it still points at this device"
 }
 
 function Get-AgentStatus([int]$AgentPort) {
@@ -629,23 +642,30 @@ function Bind-DevFlowAgent {
             $owner = Get-ForwardOwner ([int]$_.port)
             if ($owner -and $owner -ne $script:Serial) { 1 } else { 0 }
         })
-        $boundElsewhere = Get-OtherBoundPorts
         foreach ($agent in $ordered) {
             $p = [int]$agent.port
             $tried[$p] = $true
-            if ($boundElsewhere.ContainsKey($p)) {
-                Say "DevFlow: port $p (pid $($agent.processId)) is bound by the worktree holding $($boundElsewhere[$p]) — skipped"
-                continue
-            }
-            # Set, probe and restore as one step under the forward lock, so no other worktree can
-            # re-point this port between the forward and the probe and make another app answer.
+            # Everything about this port happens as one step under the forward lock: checking that
+            # no other worktree has bound it, borrowing it, probing, putting it back, and — on a
+            # match — publishing this worktree's binding. Another launch publishes its binding under
+            # the same lock, so the check here can never read a list a moment out of date, and no
+            # other worktree can re-point the port between the forward and the probe.
             $result = Invoke-WithForwardLock {
+                $boundElsewhere = Get-OtherBoundPorts
+                if ($boundElsewhere.ContainsKey($p)) {
+                    return [pscustomobject]@{ Ok = $false; Note = "port $p (pid $($agent.processId)) is bound by the worktree holding $($boundElsewhere[$p]) — skipped" }
+                }
                 $owner = Get-ForwardOwner $p
                 try { Set-AgentForward $p } catch { return [pscustomobject]@{ Ok = $false; Note = $_.Exception.Message } }
                 $status = Get-AgentStatus $p
-                if ($status -and "$($status.app.processId)" -eq $AppPid) { return [pscustomobject]@{ Ok = $true; Note = $null } }
-                Restore-Forward $p $owner
-                [pscustomobject]@{ Ok = $false; Note = "port $p (pid $($agent.processId)) is not this device's agent — skipped, forward restored$(if ($owner) { " to $owner" })" }
+                if ($status -and "$($status.app.processId)" -eq $AppPid) {
+                    New-Item -ItemType Directory -Force -Path (Split-Path $BindingFile) | Out-Null
+                    [ordered]@{ serial = $script:Serial; agentPort = $p; appPid = $AppPid; boundAt = (Get-Date).ToUniversalTime().ToString('o') } |
+                        ConvertTo-Json | Set-Content -LiteralPath $BindingFile -Encoding utf8
+                    return [pscustomobject]@{ Ok = $true; Note = $null }
+                }
+                $restored = Restore-Forward $p $owner
+                [pscustomobject]@{ Ok = $false; Note = "port $p (pid $($agent.processId)) is not this device's agent — skipped, $restored" }
             }
             if ($result.Ok) { $port = $p; break }
             Say "DevFlow: $($result.Note)"
@@ -659,9 +679,7 @@ function Bind-DevFlowAgent {
         return
     }
 
-    New-Item -ItemType Directory -Force -Path (Split-Path $BindingFile) | Out-Null
-    [ordered]@{ serial = $script:Serial; agentPort = $port; appPid = $AppPid; boundAt = (Get-Date).ToUniversalTime().ToString('o') } |
-        ConvertTo-Json | Set-Content -LiteralPath $BindingFile -Encoding utf8
+    # The binding file was written under the forward lock, at the moment of the match.
     Say "DevFlow: agent on port $port bound to $($script:Serial)"
     Say "  CLI: driver.ps1 devflow <args>    MCP: call maui_select_agent with agentPort $port first"
 }

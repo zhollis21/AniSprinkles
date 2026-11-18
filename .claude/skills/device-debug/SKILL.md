@@ -91,8 +91,9 @@ When the summary flags something, go deeper without re-running the collector:
 - Live tail: `adb logcat --pid $(adb shell pidof com.RainbowSprinkles.AniSprinkles)`.
 - **With more than one device attached, add `-s <serial>` to every bare `adb` above.** Other
   worktrees' sessions may be running their own emulators (#203). `collect.sh` already asks the
-  run-app driver which device this worktree claimed. With several devices and no claim, it stops
-  rather than guess: run `driver.ps1 up`, or set `ANDROID_SERIAL`. For your own calls,
+  run-app driver which device this worktree claimed. When the driver names none, it stops rather
+  than guess, even with only one device attached: run `driver.ps1 up`, or set `ANDROID_SERIAL`.
+  For your own calls,
   `pwsh -NoProfile -File .claude/skills/run-app/driver.ps1 serial` prints that serial, and
   `driver.ps1 adb <args>` runs adb against it.
 
