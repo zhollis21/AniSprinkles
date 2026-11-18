@@ -47,6 +47,10 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v6
+        with:
+          # Full history and tags, for the build's `git describe` (#207): the Settings label shows
+          # the nearest release tag plus the distance from it. A shallow clone has neither.
+          fetch-depth: 0
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
@@ -67,13 +71,21 @@ jobs:
       - name: Restore Dependencies
         run: dotnet restore AniSprinkles.slnx
 
+      # SourceBranch/SourceCommit (#207): the checkout is GitHub's merge commit, whose SHA does not
+      # exist on the branch, so the build is told the PR head instead. Passed through env rather
+      # than interpolated into the script, since a branch name is user-controlled text.
       - name: Build
+        env:
+          SOURCE_BRANCH: ${{ github.head_ref }}
+          SOURCE_COMMIT: ${{ github.event.pull_request.head.sha }}
         run: |
           dotnet build src/AniSprinkles/AniSprinkles.csproj \
             -c Debug \
             -f net11.0-android \
             -p:EmbedAssembliesIntoApk=true \
             -p:CiBuild=true \
+            "-p:SourceBranch=$SOURCE_BRANCH" \
+            "-p:SourceCommit=$SOURCE_COMMIT" \
             --no-restore
 
       - name: Run Tests
@@ -279,6 +291,9 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v6
+        with:
+          # Tags and history for `git describe` (#207); see the Build & Test checkout.
+          fetch-depth: 0
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
@@ -300,12 +315,18 @@ jobs:
       # An APK rather than the AAB the release workflow publishes: an emulator cannot install a
       # bundle. Trimming, r8 and ReadyToRun are identical either way — only the container differs.
       # Unsigned by us, so the SDK signs it with a throwaway debug key, which is all a launch needs.
+      # SourceBranch/SourceCommit: the PR head rather than the merge commit (#207); see Build & Test.
       - name: Build Release APK
+        env:
+          SOURCE_BRANCH: ${{ github.head_ref }}
+          SOURCE_COMMIT: ${{ github.event.pull_request.head.sha }}
         run: |
           dotnet build src/AniSprinkles/AniSprinkles.csproj \
             -c Release \
             -f net11.0-android \
-            -p:AndroidPackageFormat=apk
+            -p:AndroidPackageFormat=apk \
+            "-p:SourceBranch=$SOURCE_BRANCH" \
+            "-p:SourceCommit=$SOURCE_COMMIT"
 
       - name: Upload Release APK
         uses: actions/upload-artifact@v7

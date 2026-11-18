@@ -217,6 +217,19 @@ public class DiagnosticsReportCoordinatorTests
     }
 
     [Test]
+    public async Task TheReportCarriesTheBuildSource()
+    {
+        using var harness = new Harness();
+        harness.Environment.Build = harness.Environment.Build with { Branch = "claude/foo", Commit = "abcdef0123456789", IsDirty = true };
+        harness.UserSends();
+
+        await harness.Coordinator.ReportAsync(TestContext.CurrentContext.CancellationToken);
+
+        Assert.That(harness.Sink.Reports, Has.Exactly(1).Items);
+        Assert.That(harness.Sink.Reports.Single(), Does.Contain("claude/foo @ abcdef0*"));
+    }
+
+    [Test]
     public async Task TheReportSaysWhetherTheUserWasSignedIn()
     {
         using var harness = new Harness();

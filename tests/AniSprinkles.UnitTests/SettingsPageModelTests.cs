@@ -24,6 +24,26 @@ public class SettingsPageModelTests
     public SettingsPageModelTests() => _appSettingsStorage = TestDataBuilder.ResetAppSettings();
 
     [Test]
+    public void AppVersion_OnANonStoreBuild_IdentifiesTheSource()
+    {
+        // #207: AppInfo's version is the csproj's "1.0" on every build but a store release, so the
+        // label has to come from the stamped build identity rather than IAppInfo.VersionString.
+        var harness = new Harness(new BuildIdentity(
+            "1.0", "1", "claude/foo", "6f69547a1b2c3d4e5f60718293a4b5c6d7e8f901", "v0.15.0-12-g6f69547", IsDirty: true, IsStoreBuild: false));
+
+        Assert.That(harness.Model.AppVersion, Is.EqualTo("v0.15.0+12 · claude/foo @ 6f69547*"));
+    }
+
+    [Test]
+    public void AppVersion_OnAStoreBuild_ShowsVersionAndBuildCode()
+    {
+        var harness = new Harness(new BuildIdentity(
+            "1.2.3", "261117042", Branch: null, "6f69547a1b2c3d4e5f60718293a4b5c6d7e8f901", Describe: null, IsDirty: false, IsStoreBuild: true));
+
+        Assert.That(harness.Model.AppVersion, Is.EqualTo("v1.2.3 (261117042)"));
+    }
+
+    [Test]
     public async Task LoadAsync_WhenSignedOut_ShowsTheUnauthenticatedStateWithoutCallingTheApi()
     {
         var harness = new Harness();
@@ -180,8 +200,13 @@ public class SettingsPageModelTests
 
     private sealed class Harness
     {
-        public Harness()
+        public Harness(BuildIdentity? build = null)
         {
+            if (build is not null)
+            {
+                AppEnvironment.Build = build;
+            }
+
             var dialogs = new ScriptedDialogService();
             Model = new SettingsPageModel(
                 Auth,
@@ -191,6 +216,7 @@ public class SettingsPageModelTests
                 Substitute.For<IPreferences>(),
                 new ImmediateDispatcher(),
                 Substitute.For<IAppInfo>(),
+                AppEnvironment,
                 dialogs,
                 Feedback,
                 Substitute.For<IExternalBrowser>(),
@@ -200,6 +226,8 @@ public class SettingsPageModelTests
         public IAuthService Auth { get; } = Substitute.For<IAuthService>();
 
         public IAniListClient Client { get; } = Substitute.For<IAniListClient>();
+
+        public StubAppEnvironment AppEnvironment { get; } = new();
 
         public RecordingUserFeedback Feedback { get; } = new();
 

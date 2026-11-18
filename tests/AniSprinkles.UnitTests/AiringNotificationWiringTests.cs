@@ -189,6 +189,7 @@ public class AiringNotificationWiringTests
             preferences,
             new ImmediateDispatcher(),
             Substitute.For<IAppInfo>(),
+            new StubAppEnvironment(),
             new ScriptedDialogService(),
             new RecordingUserFeedback(),
             Substitute.For<IExternalBrowser>(),
