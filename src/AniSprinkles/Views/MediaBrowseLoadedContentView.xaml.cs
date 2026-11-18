@@ -9,13 +9,6 @@ public partial class MediaBrowseLoadedContentView : ContentView
     public MediaBrowseLoadedContentView()
     {
         InitializeComponent();
-        CollectionViewLongPress.Attach(BrowseList, item =>
-        {
-            if (BindingContext is MediaBrowsePageModel vm && vm.ShowItemActionsCommand.CanExecute(item))
-            {
-                vm.ShowItemActionsCommand.Execute(item);
-            }
-        });
     }
 
     protected override void OnBindingContextChanged()
