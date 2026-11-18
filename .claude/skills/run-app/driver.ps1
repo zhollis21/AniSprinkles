@@ -204,32 +204,49 @@ function Test-ClaimLive {
     return $false
 }
 
-function Test-FreshFile([string]$Path) {
-    # New-Claim creates the file and then writes it, so for an instant another process can read
-    # it empty. Such a file is a claim being made, not a corrupt one to clear away.
-    try { ((Get-Date) - (Get-Item -LiteralPath $Path -ErrorAction Stop).LastWriteTime).TotalSeconds -lt 10 } catch { $false }
+# Every read-decide-write on the claim files runs under this one host-wide lock. CreateNew alone
+# settles a race between two creates, but not a delete: a process that has read a claim as stale
+# could otherwise delete a fresh claim another worktree wrote in its place a moment later, and
+# both would then use the same device. Holding the lock across the read and the delete closes
+# that. A Windows mutex is re-entrant for its owning thread, so a locked function can call
+# another one; if a holder dies mid-operation, the next caller is handed it as "abandoned".
+$ClaimLockName    = 'Global\AniSprinkles-device-claims'
+# Work under the lock is sub-second, except when `adb devices` has to start the adb server
+# (a few seconds). Past this the command fails rather than waiting on a stuck holder forever.
+$ClaimLockSeconds = 30
+$script:ClaimMutex = $null
+
+function Invoke-WithClaimLock([scriptblock]$Body) {
+    if (-not $script:ClaimMutex) { $script:ClaimMutex = [Threading.Mutex]::new($false, $ClaimLockName) }
+    $acquired = $false
+    try { $acquired = $script:ClaimMutex.WaitOne([TimeSpan]::FromSeconds($ClaimLockSeconds)) }
+    catch [Threading.AbandonedMutexException] { $acquired = $true }
+    if (-not $acquired) {
+        throw "Timed out after ${ClaimLockSeconds}s waiting for the device-claim lock ($ClaimLockName); another driver command is holding it."
+    }
+    try { & $Body } finally { $script:ClaimMutex.ReleaseMutex() }
 }
 
 function Get-Claims {
     # Every live claim, with Mine worked out. Stale files are deleted on the way past, so a dead
     # worktree or a shut-down emulator never blocks anyone.
-    if (-not (Test-Path $ClaimDir)) { return @() }
-    $context = Get-LivenessContext
-    $claims = foreach ($f in Get-ChildItem $ClaimDir -Filter *.json -File) {
-        $c = Read-ClaimFile $f.FullName
-        if (-not $c -and (Test-FreshFile $f.FullName)) { continue }
-        $live = Test-ClaimLive $c $context
-        if (-not $live) { Remove-Item -LiteralPath $f.FullName -Force -ErrorAction SilentlyContinue; continue }
-        [pscustomobject]@{
-            Serial   = $c.serial
-            Worktree = $c.worktree
-            Avd      = $c.avd
-            State    = $c.state
-            Claimed  = $c.claimedAt
-            Mine     = ((Normalize-Path $c.worktree) -eq $script:Worktree)
+    Invoke-WithClaimLock {
+        if (-not (Test-Path $ClaimDir)) { return @() }
+        $context = Get-LivenessContext
+        $claims = foreach ($f in Get-ChildItem $ClaimDir -Filter *.json -File) {
+            $c = Read-ClaimFile $f.FullName
+            if (-not (Test-ClaimLive $c $context)) { Remove-Item -LiteralPath $f.FullName -Force -ErrorAction SilentlyContinue; continue }
+            [pscustomobject]@{
+                Serial   = $c.serial
+                Worktree = $c.worktree
+                Avd      = $c.avd
+                State    = $c.state
+                Claimed  = $c.claimedAt
+                Mine     = ((Normalize-Path $c.worktree) -eq $script:Worktree)
+            }
         }
+        @($claims)
     }
-    @($claims)
 }
 
 function Write-Claim([string]$DeviceSerial, [hashtable]$Fields) {
@@ -245,57 +262,67 @@ function Write-Claim([string]$DeviceSerial, [hashtable]$Fields) {
 }
 
 function New-Claim {
-    # Atomically take $DeviceSerial for this worktree. FileMode.CreateNew is the lock: when two
-    # sessions race for the same free device, exactly one create succeeds. Returns $true when this
-    # worktree now holds the claim (including when it already did).
+    # Take $DeviceSerial for this worktree. Returns $true when this worktree now holds the claim
+    # (including when it already did), $false when another live worktree does.
     param([string]$DeviceSerial, [hashtable]$Fields = @{})
-    New-Item -ItemType Directory -Force -Path $ClaimDir | Out-Null
-    $path = Get-ClaimPath $DeviceSerial
-    for ($attempt = 0; $attempt -lt 2; $attempt++) {
+    Invoke-WithClaimLock {
+        New-Item -ItemType Directory -Force -Path $ClaimDir | Out-Null
+        $path = Get-ClaimPath $DeviceSerial
+        $existing = Read-ClaimFile $path
+        if ($existing) {
+            if ((Normalize-Path $existing.worktree) -eq $script:Worktree) { Update-Claim $DeviceSerial $Fields; return $true }
+            if (Test-ClaimLive $existing (Get-LivenessContext)) { return $false }
+        }
+        # Missing, unreadable, or stale: under the lock nobody else can be mid-way through
+        # writing it, so it is safe to replace. CreateNew stays as a second line of defence.
+        Remove-Item -LiteralPath $path -Force -ErrorAction SilentlyContinue
         try {
             $fs = [IO.File]::Open($path, [IO.FileMode]::CreateNew, [IO.FileAccess]::Write, [IO.FileShare]::None)
-            try {
-                $bytes = [Text.Encoding]::UTF8.GetBytes((Write-Claim $DeviceSerial $Fields))
-                $fs.Write($bytes, 0, $bytes.Length)
-            } finally { $fs.Dispose() }
-            # One device per worktree: taking a new one gives the old one back, so "this
-            # worktree's device" never has two answers.
-            foreach ($old in Get-Claims | Where-Object { $_.Mine -and $_.Serial -ne $DeviceSerial }) {
-                Remove-Item -LiteralPath (Get-ClaimPath $old.Serial) -Force -ErrorAction SilentlyContinue
-                Say "released previous claim on $($old.Serial)"
-            }
-            return $true
-        } catch [IO.IOException] {
-            $existing = Read-ClaimFile $path
-            if ($existing -and (Normalize-Path $existing.worktree) -eq $script:Worktree) {
-                Update-Claim $DeviceSerial $Fields
-                return $true
-            }
-            if (-not $existing -and (Test-FreshFile $path)) { return $false }
-            if (Test-ClaimLive $existing (Get-LivenessContext)) { return $false }
-            # Stale: its worktree is gone or its device left adb. Clear it and try once more.
-            Remove-Item -LiteralPath $path -Force -ErrorAction SilentlyContinue
+        } catch [IO.IOException] { return $false }
+        try {
+            $bytes = [Text.Encoding]::UTF8.GetBytes((Write-Claim $DeviceSerial $Fields))
+            $fs.Write($bytes, 0, $bytes.Length)
+        } finally { $fs.Dispose() }
+        # One device per worktree: taking a new one gives the old one back, so "this worktree's
+        # device" never has two answers.
+        foreach ($old in Get-Claims | Where-Object { $_.Mine -and $_.Serial -ne $DeviceSerial }) {
+            if (Remove-OwnClaim $old.Serial) { Say "released previous claim on $($old.Serial)" }
         }
+        return $true
     }
-    return $false
 }
 
 function Update-Claim([string]$DeviceSerial, [hashtable]$Fields) {
-    $path = Get-ClaimPath $DeviceSerial
-    $c = Read-ClaimFile $path
-    if (-not $c -or (Normalize-Path $c.worktree) -ne $script:Worktree) { return }
-    $merged = @{}
-    foreach ($p in $c.PSObject.Properties) { $merged[$p.Name] = $p.Value }
-    foreach ($k in $Fields.Keys) { $merged[$k] = $Fields[$k] }
-    Set-Content -LiteralPath $path -Value (Write-Claim $DeviceSerial $merged) -Encoding utf8
+    Invoke-WithClaimLock {
+        $path = Get-ClaimPath $DeviceSerial
+        $c = Read-ClaimFile $path
+        if (-not $c -or (Normalize-Path $c.worktree) -ne $script:Worktree) { return }
+        $merged = @{}
+        foreach ($p in $c.PSObject.Properties) { $merged[$p.Name] = $p.Value }
+        foreach ($k in $Fields.Keys) { $merged[$k] = $Fields[$k] }
+        Set-Content -LiteralPath $path -Value (Write-Claim $DeviceSerial $merged) -Encoding utf8
+    }
+}
+
+function Remove-OwnClaim([string]$DeviceSerial) {
+    # Delete this worktree's claim on $DeviceSerial — and only if the file there is still this
+    # worktree's. Re-reading under the lock is what stops a release from deleting a claim another
+    # worktree has since written for the same serial. Returns whether anything was removed.
+    Invoke-WithClaimLock {
+        $path = Get-ClaimPath $DeviceSerial
+        $c = Read-ClaimFile $path
+        if (-not $c -or (Normalize-Path $c.worktree) -ne $script:Worktree) { return $false }
+        Remove-Item -LiteralPath $path -Force -ErrorAction SilentlyContinue
+        return $true
+    }
 }
 
 function Remove-OwnClaims {
-    $removed = @()
-    foreach ($c in Get-Claims | Where-Object Mine) {
-        Remove-Item -LiteralPath (Get-ClaimPath $c.Serial) -Force -ErrorAction SilentlyContinue
-        $removed += $c.Serial
-    }
+    $removed = @(Invoke-WithClaimLock {
+        foreach ($c in Get-Claims | Where-Object Mine) {
+            if (Remove-OwnClaim $c.Serial) { $c.Serial }
+        }
+    })
     Remove-Item -LiteralPath $BindingFile -Force -ErrorAction SilentlyContinue
     @($removed)
 }
@@ -806,7 +833,7 @@ function Cmd-Boot {
         }
         if (-not $script:Serial) {
             Stop-BootedEmulator $port $launcher
-            Remove-Item -LiteralPath (Get-ClaimPath $serial) -Force -ErrorAction SilentlyContinue
+            Remove-OwnClaim $serial | Out-Null
             throw "AVD $want never attached to adb at $serial$(if ($launcher.HasExited) { " (emulator exited with $($launcher.ExitCode))" })"
         }
         Update-Claim $serial @{ state = 'ready' }
@@ -1207,11 +1234,11 @@ switch ($cmd) {
     'kill-emu'   {
         # Release only this worktree's claim, and only on the device being killed: with
         # ANDROID_SERIAL pointing elsewhere, this worktree's own device is still in use, and
-        # another worktree's claim is that worktree's to give back.
+        # another worktree's claim is that worktree's to give back. Remove-OwnClaim checks that
+        # under the claim lock, at the moment of deleting.
         #
         # The claim goes only once the emulator is really gone. A kill that fails, or a qemu that
         # lingers, would otherwise hand a still-running device to the next worktree.
-        $ownsIt = [bool](Get-Claims | Where-Object { $_.Mine -and $_.Serial -eq $script:Serial })
         $out = @(Adb emu kill 2>&1) -join ' '
         if ($LASTEXITCODE -ne 0) {
             throw "adb emu kill on $($script:Serial) failed ($out). The claim is kept; once it is really down, driver.ps1 release."
@@ -1227,7 +1254,7 @@ switch ($cmd) {
                 throw "$($script:Serial) still running ${KillWaitSeconds}s after the kill. The claim is kept; once it is really down, driver.ps1 release."
             }
         }
-        if ($ownsIt) { Remove-Item -LiteralPath (Get-ClaimPath $script:Serial) -Force -ErrorAction SilentlyContinue }
+        Remove-OwnClaim $script:Serial | Out-Null
         $b = Read-Binding
         if ($b -and $b.serial -eq $script:Serial) { Remove-Item -LiteralPath $BindingFile -Force -ErrorAction SilentlyContinue }
         Say "emulator $($script:Serial) killed"

@@ -35,7 +35,8 @@ if [ -z "$DEVICES" ]; then
 fi
 for d in $DEVICES; do echo "- $d"; done
 # With >1 device, unqualified adb commands fail. Respect a caller-supplied
-# ANDROID_SERIAL when present; otherwise pin to the first detected device.
+# ANDROID_SERIAL when present; otherwise ask the run-app driver, and with several
+# devices and no answer from it, stop rather than guess.
 DEVICE_COUNT=$(printf '%s\n' "$DEVICES" | wc -l | tr -d ' ')
 if [ -n "${ANDROID_SERIAL:-}" ]; then
   if ! printf '%s\n' "$DEVICES" | grep -Fxq "$ANDROID_SERIAL"; then
@@ -48,7 +49,7 @@ if [ -n "${ANDROID_SERIAL:-}" ]; then
 else
   # Other worktrees' sessions may be running their own emulators (#203), so "the first
   # device" can be someone else's app. Ask the run-app driver which device this worktree
-  # holds; only when it has no answer fall back to the first one.
+  # holds. A lone device needs no answer: there is nothing to confuse it with.
   DRIVER="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)/skills/run-app/driver.ps1"
   CLAIMED=""
   if command -v pwsh >/dev/null 2>&1 && [ -f "$DRIVER" ]; then
@@ -60,11 +61,15 @@ else
   if [ -n "$CLAIMED" ] && printf '%s\n' "$DEVICES" | grep -Fxq "$CLAIMED"; then
     export ANDROID_SERIAL="$CLAIMED"
     [ "$DEVICE_COUNT" -gt 1 ] && echo "(multiple devices; using this worktree's claimed $ANDROID_SERIAL)"
+  elif [ "$DEVICE_COUNT" -gt 1 ]; then
+    # Several devices and nothing says which is this worktree's. Picking one would quietly
+    # collect another session's logs, which then read as this app's — so stop instead.
+    echo "Multiple devices attached and driver.ps1 has no claim for this worktree, so the target is ambiguous."
+    echo "Run: pwsh -NoProfile -File .claude/skills/run-app/driver.ps1 up   (claims or boots this worktree's device)"
+    echo "or re-run with ANDROID_SERIAL=<serial> set."
+    clear_stale_and_exit 1
   else
-    export ANDROID_SERIAL="$(printf '%s\n' "$DEVICES" | head -n1)"
-    if [ "$DEVICE_COUNT" -gt 1 ]; then
-      echo "(multiple devices and no claim from driver.ps1; pinned to $ANDROID_SERIAL, which may belong to another worktree — override with ANDROID_SERIAL=...)"
-    fi
+    export ANDROID_SERIAL="$DEVICES"
   fi
 fi
 

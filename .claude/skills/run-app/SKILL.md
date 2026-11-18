@@ -142,7 +142,9 @@ A claim is a file per serial in `%LOCALAPPDATA%\AniSprinkles\device-claims\`. It
 worktree folder is gone, or the device is gone (missing from `adb devices` in every state and,
 for an emulator, its qemu process exited), or `release` / `kill-emu` gives it back. The device
 test is deliberately loose, so an adb restart or an `offline` blip doesn't hand a device in use
-to someone else.
+to someone else. Every read-decide-write on the claim files runs under one host-wide lock (the
+`Global\AniSprinkles-device-claims` mutex, waited on for up to 30 s), so a stale claim can't be
+cleared by one session after another has already replaced it.
 There is no idle timer. A worktree holds one device at a time, so claiming a new one releases the
 old. `claims` lists them all.
 
@@ -559,6 +561,7 @@ works — that is what the driver and DevFlow above are for.
 | `Only N GB of RAM free; booting another emulator needs 6 GB` | Too many emulators, or a build is running. Wait for the build, or `driver.ps1 claims` and shut down one nobody needs. |
 | `Cannot connect to agent at localhost:<port>`, or the UI you see belongs to another build | The agent port's `adb forward` points at another device, or a bare `maui devflow` found another worktree's app. Use `driver.ps1 devflow …`; `driver.ps1 launch` re-binds. |
 | `No DevFlow agent is bound to this worktree` | `driver.ps1 launch` (or `up`) has not run since the app started, or the agent never registered. Run `launch`. |
+| `Timed out after 30s waiting for the device-claim lock` | Another driver command has held the claim lock for 30 s, usually one stuck on a cold `adb` start. Retry; if it keeps happening, look for a hung `pwsh` running `driver.ps1`. |
 | `adb forward tcp:<port> to <serial> failed … refusing to use a forward that may lead to another device` | The forward could not be re-pointed at this worktree's device (device offline, port unbindable), so `devflow` stops rather than drive whatever the old forward reaches. Check `driver.ps1 env`, then `launch` again. |
 | `launch` logs `port <n> (pid <p>) is not this device's agent — skipped, forward restored` | Another emulator's app has the same pid. Expected and harmless: `launch` checks each match through this device's forward, binds the one that answers, and puts the borrowed forward back. |
 | `<serial> still running 30s after the kill`, or `adb emu kill on <serial> failed` | `kill-emu` keeps the claim until the emulator is really gone, so a hung one is not handed to another worktree. Close it from its window (or end its `qemu-system-x86_64`), then `driver.ps1 release`. |
