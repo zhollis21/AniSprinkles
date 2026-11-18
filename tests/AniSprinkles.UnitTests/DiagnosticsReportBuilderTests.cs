@@ -48,6 +48,21 @@ public class DiagnosticsReportBuilderTests
     }
 
     [Test]
+    public void TheHeaderNamesTheSourceTheBuildCameFrom()
+    {
+        // #207: "1.0 (1)" is every non-store build, so the version alone cannot say which one sent this.
+        var report = Build(context: Context with { Source = "claude/foo @ 6f69547*" });
+
+        Assert.That(report, Does.Contain("source:   claude/foo @ 6f69547*"));
+    }
+
+    [Test]
+    public void TheSourceLineIsLeftOutWhenTheBuildHasNone()
+    {
+        Assert.That(Build(context: Context with { Source = null }), Does.Not.Contain("source:"));
+    }
+
+    [Test]
     public void TheBuildConfigurationIsStatedRatherThanLeftToBeInferred()
     {
         // This repo genuinely diverges between Debug and Release — log levels, CI stubs, fault

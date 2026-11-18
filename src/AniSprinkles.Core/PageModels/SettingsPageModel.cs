@@ -227,10 +227,11 @@ public partial class SettingsPageModel : ObservableObject, IAuthActions
     private void ToggleAccount() => IsAccountExpanded = !IsAccountExpanded;
 
     // --- App info ---
-    // Injected rather than read from the AppInfo.Current static: that throws
+    // From the injected IAppEnvironment rather than the AppInfo.Current static: that throws
     // NotImplementedInReferenceAssemblyException off-device, and in a field initializer it took the
-    // whole page model with it — this type could not even be constructed in a test. Registered
-    // alongside IPreferences in MauiProgram, same as the seams PR #61 added.
+    // whole page model with it — this type could not even be constructed in a test. AppInfo's version
+    // alone was also "1.0" on every build but a store release (#207); BuildIdentity adds the tag,
+    // branch and commit those builds need to be told apart.
     public string AppVersion { get; }
 
     public bool HasUnsavedChanges =>
@@ -244,7 +245,7 @@ public partial class SettingsPageModel : ObservableObject, IAuthActions
             ActivityMergeTime != _loadedActivityMergeTime ||
             HasNotificationChanges());
 
-    public SettingsPageModel(IAuthService authService, IAniListClient aniListClient, IAiringNotificationService airingNotificationService, ErrorReportService errorReportService, IPreferences preferences, IDispatcher dispatcher, IAppInfo appInfo, IDialogService dialogs, IUserFeedback feedback, IExternalBrowser browser, ILogger<SettingsPageModel> logger)
+    public SettingsPageModel(IAuthService authService, IAniListClient aniListClient, IAiringNotificationService airingNotificationService, ErrorReportService errorReportService, IPreferences preferences, IDispatcher dispatcher, IAppInfo appInfo, IAppEnvironment environment, IDialogService dialogs, IUserFeedback feedback, IExternalBrowser browser, ILogger<SettingsPageModel> logger)
     {
         _authService = authService;
         _aniListClient = aniListClient;
@@ -254,7 +255,7 @@ public partial class SettingsPageModel : ObservableObject, IAuthActions
         _dispatcher = dispatcher;
         _dialogs = dialogs;
         _appInfo = appInfo;
-        AppVersion = $"v{appInfo.VersionString}";
+        AppVersion = environment.Build.SettingsLabel;
         _feedback = feedback;
         _browser = browser;
         _logger = logger;
