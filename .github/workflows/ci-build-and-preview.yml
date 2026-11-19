@@ -1,7 +1,11 @@
 # CI workflow: Builds the app, runs unit tests, and captures UI screenshots
 # Triggers on pull request creation/update targeting main
-# Screenshots are committed to the screenshots/ folder on the branch and
-# embedded in PR comments using commit-SHA-based URLs for reliable rendering
+# Screenshots are published to their own orphan branch, ci-screenshots/pr-<N>, force-pushed as a
+# single commit each run, and embedded in the PR comment by that commit's SHA. They are never
+# committed to the PR branch: when they were, every PR carried a bot commit rewriting the same
+# binary PNGs, so merging main into any other open branch conflicted on all of them, and each
+# squash merge added ~14 MiB to main's history (#212). ci-screenshots-on-close.yml promotes a
+# merged PR's set to ci-screenshots/main (README images and a 10-set history) and deletes the PR's.
 #
 # Auth note: The CI build stubs auth (CIAuthService) and answers AniList from responses recorded
 # against a dedicated test account, replayed at the HTTP layer (#134). Both are activated by
@@ -25,7 +29,6 @@ on:
       - ".claude/**"
       - "**/*.md"
       - "StoreImages/**"
-      - "screenshots/**"
       - ".gitignore"
       - ".gitattributes"
 
@@ -352,6 +355,23 @@ jobs:
     # missing from AdultCanary.cs, the screen size unreadable (every swipe is a fraction of it,
     # #176), a FIXTURE MISS in logcat, no signed APK, install failed,
     # launcher activity unresolvable, app window never appeared, and the canary itself.
+
+    env:
+      # The screenshots a complete run produces, one "file|label" per line, in PR-comment order.
+      # The single list the publish, comment and summary steps all read, so adding a capture
+      # means adding it here once. ci-screenshots-on-close.yml relies on the publish step's
+      # complete=true in manifest.txt rather than reading this list.
+      SCREENSHOTS: |
+        anime_library.png|Anime Library
+        manga_library.png|Manga Library
+        discover.png|Discover
+        browse.png|View All (Browse)
+        search.png|Search
+        one_piece_details.png|One Piece Details
+        studio_details.png|Toei Animation (Studio)
+        character_details.png|Luffy (Character)
+        staff_details.png|Mayumi Tanaka (Staff)
+        settings.png|Settings
 
     steps:
       - name: Checkout Code
@@ -870,10 +890,11 @@ jobs:
             echo "::warning::Timed out waiting for page to load after ${MAX_WAIT}s — capturing anyway"
           fi
 
-          # Start from empty. The checkout carries the PREVIOUS run's screenshots (they are
-          # committed to the branch), so without this any capture that fails silently leaves last
-          # run's PNG on disk — and the publish step then commits and embeds it as if it were
-          # current. A missing screenshot is obvious; a stale one that looks plausible is not.
+          # Start from empty. screenshots/ is gitignored now (#212), so a checkout no longer carries
+          # the previous run's PNGs, but a branch cut before that change still does. Without this,
+          # any capture that fails silently leaves a stale PNG on disk, and the publish step then
+          # embeds it as if it were current. A missing screenshot is obvious; a stale one that
+          # looks plausible is not.
           rm -rf screenshots
           mkdir -p screenshots
 
@@ -1351,45 +1372,94 @@ jobs:
           retention-days: 5
           if-no-files-found: warn
 
-      - name: Commit Screenshots
-        id: commit-screenshots
-        # Cannot push to fork PRs — GITHUB_TOKEN lacks write access to the source repo
+      # Publishes the set to ci-screenshots/pr-<N> as one parentless commit, replacing whatever the
+      # previous run left there, so the branch never grows and the PR branch is never written to
+      # (#212). The commit is built with git plumbing against a throwaway index, so the checkout's
+      # own index and working tree are untouched and its persisted credentials do the push.
+      - name: Publish Screenshots
+        id: publish-screenshots
+        # Cannot push from fork PRs — their GITHUB_TOKEN is read-only
         if: github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
-          if [ ! -d "screenshots" ] || [ -z "$(find screenshots -name '*.png' -type f 2>/dev/null)" ]; then
-            echo "No screenshots to commit"
+          if [ -z "$(find screenshots -name '*.png' -type f 2>/dev/null)" ]; then
+            echo "No screenshots to publish"
             echo "has_screenshots=false" >> $GITHUB_OUTPUT
             echo "screenshots_published=false" >> $GITHUB_OUTPUT
             exit 0
           fi
           echo "has_screenshots=true" >> $GITHUB_OUTPUT
 
-          # If the PR branch has already been deleted (merged before CI finished),
-          # pushing would fail with a non-fatal error. Skip the commit gracefully.
-          if ! git ls-remote --exit-code --heads origin "$GITHUB_HEAD_REF" > /dev/null 2>&1; then
-            echo "::warning::Branch '$GITHUB_HEAD_REF' no longer exists — PR was likely merged before CI finished. Skipping screenshot commit."
+          # A PR closed while this run was capturing has already had its screenshot branch
+          # cleaned up by ci-screenshots-on-close.yml; publishing now would leave an orphan
+          # branch nothing ever deletes.
+          PR_STATE=$(gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" --jq .state)
+          if [ "$PR_STATE" != "open" ]; then
+            echo "::warning::PR #$PR_NUMBER is $PR_STATE — skipping screenshot publish."
             echo "screenshots_published=false" >> $GITHUB_OUTPUT
             exit 0
           fi
 
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add screenshots/
-          if git diff --cached --quiet; then
-            echo "Screenshots unchanged — nothing to commit"
-          else
-            git commit -m "CI: Update UI screenshots [skip ci]"
-            git push
+          PUB="$RUNNER_TEMP/screenshots-publish"
+          rm -rf "$PUB"
+          mkdir -p "$PUB"
+          cp screenshots/*.png "$PUB/"
+
+          # Quantize to a 256-colour palette at full resolution. Lossy but visually identical for
+          # UI captures, and roughly a quarter of the size. The ui-screenshots artifact above keeps
+          # the raw captures. A file pngquant cannot shrink, or any pngquant failure, keeps the
+          # original rather than failing the run: the size is a nicety, the screenshot is not.
+          if ! command -v pngquant > /dev/null; then
+            sudo apt-get install -y -qq pngquant > /dev/null 2>&1 \
+              || { sudo apt-get update -qq > /dev/null && sudo apt-get install -y -qq pngquant > /dev/null; } \
+              || echo "::warning::Could not install pngquant — publishing unquantized screenshots."
           fi
+          BEFORE=$(du -cb "$PUB"/*.png | tail -1 | cut -f1)
+          if command -v pngquant > /dev/null; then
+            for f in "$PUB"/*.png; do
+              pngquant --force --ext .png --skip-if-larger --strip "$f" || echo "Kept original: $(basename "$f")"
+            done
+          fi
+          AFTER=$(du -cb "$PUB"/*.png | tail -1 | cut -f1)
+          echo "Screenshot set: $((BEFORE / 1024)) KiB raw, $((AFTER / 1024)) KiB published"
+
+          # The manifest is what lets the close workflow promote only a set that is complete and
+          # was captured from the PR's final head, never a partial set or one from an older push.
+          MISSING=""
+          while IFS='|' read -r file label; do
+            [ -z "$file" ] && continue
+            [ -f "$PUB/$file" ] || MISSING="$MISSING $file"
+          done <<< "$SCREENSHOTS"
+          COMPLETE=true
+          [ -n "$MISSING" ] && COMPLETE=false
+          {
+            echo "pr=$PR_NUMBER"
+            echo "head_sha=$HEAD_SHA"
+            echo "complete=$COMPLETE"
+            echo "missing=${MISSING# }"
+            echo "run_url=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          } > "$PUB/manifest.txt"
+
+          export GIT_INDEX_FILE="$RUNNER_TEMP/screenshots-publish.index"
+          rm -f "$GIT_INDEX_FILE"
+          git --work-tree="$PUB" add -A
+          TREE=$(git write-tree)
+          COMMIT=$(git -c user.name="github-actions[bot]" -c user.email="github-actions[bot]@users.noreply.github.com" \
+            commit-tree "$TREE" -m "UI screenshots for PR #$PR_NUMBER at $HEAD_SHA")
+          git push --force --quiet origin "$COMMIT:refs/heads/ci-screenshots/pr-$PR_NUMBER"
+
           echo "screenshots_published=true" >> $GITHUB_OUTPUT
-          echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+          echo "sha=$COMMIT" >> $GITHUB_OUTPUT
 
       - name: Comment on PR
         uses: actions/github-script@v8
         env:
-          SCREENSHOT_SHA: ${{ steps.commit-screenshots.outputs.sha }}
-          HAS_SCREENSHOTS: ${{ steps.commit-screenshots.outputs.has_screenshots }}
-          SCREENSHOTS_PUBLISHED: ${{ steps.commit-screenshots.outputs.screenshots_published }}
+          SCREENSHOT_SHA: ${{ steps.publish-screenshots.outputs.sha }}
+          HAS_SCREENSHOTS: ${{ steps.publish-screenshots.outputs.has_screenshots }}
+          SCREENSHOTS_PUBLISHED: ${{ steps.publish-screenshots.outputs.screenshots_published }}
         with:
           script: |
             const fs = require('fs');
@@ -1402,25 +1472,23 @@ jobs:
             const hasScreenshots = process.env.HAS_SCREENSHOTS === 'true';
             const screenshotsPublished = process.env.SCREENSHOTS_PUBLISHED === 'true';
 
-            const screenshots = [
-              { file: 'screenshots/anime_library.png', label: 'Anime Library' },
-              { file: 'screenshots/manga_library.png', label: 'Manga Library' },
-              { file: 'screenshots/discover.png', label: 'Discover' },
-              { file: 'screenshots/browse.png', label: 'View All (Browse)' },
-              { file: 'screenshots/search.png', label: 'Search' },
-              { file: 'screenshots/one_piece_details.png', label: 'One Piece Details' },
-              { file: 'screenshots/studio_details.png', label: 'Toei Animation (Studio)' },
-              { file: 'screenshots/character_details.png', label: 'Luffy (Character)' },
-              { file: 'screenshots/staff_details.png', label: 'Mayumi Tanaka (Staff)' },
-              { file: 'screenshots/settings.png', label: 'Settings' },
-            ];
+            // The job-level SCREENSHOTS list, one "file|label" per line.
+            const screenshots = process.env.SCREENSHOTS
+              .split('\n')
+              .map(line => line.trim())
+              .filter(line => line.length > 0)
+              .map(line => {
+                const [file, label] = line.split('|');
+                return { file, label };
+              });
 
-            // Build image URLs using the commit SHA for reliable, cache-proof links
+            // Image URLs pin the publish commit's SHA, so they are cache-proof, and the files sit
+            // at that commit's root on ci-screenshots/pr-<N> (#212).
             const imageMarkdowns = [];
             if (hasScreenshots && screenshotsPublished && sha) {
               for (const shot of screenshots) {
-                if (!fs.existsSync(shot.file)) {
-                  core.warning(`Screenshot not found: ${shot.file}`);
+                if (!fs.existsSync(`screenshots/${shot.file}`)) {
+                  core.warning(`Screenshot not found: screenshots/${shot.file}`);
                   continue;
                 }
                 const rawUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${sha}/${shot.file}`;
@@ -1451,7 +1519,7 @@ jobs:
               );
             } else if (hasScreenshots) {
               bodyParts.push(
-                '⚠️ Screenshots were captured for this run, but they were not published to the PR branch.',
+                '⚠️ Screenshots were captured for this run, but they were not published (fork PR, PR already closed, or the publish step failed).',
                 '',
                 '> Download the **ui-screenshots** artifact from the Artifacts section at the bottom of the workflow run page.',
               );
@@ -1501,26 +1569,15 @@ jobs:
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "| Screenshot | Page |" >> $GITHUB_STEP_SUMMARY
             echo "|---|---|" >> $GITHUB_STEP_SUMMARY
-            for shot in \
-              "anime_library.png|Anime Library" \
-              "manga_library.png|Manga Library" \
-              "discover.png|Discover" \
-              "browse.png|View All (Browse)" \
-              "search.png|Search" \
-              "one_piece_details.png|One Piece Details" \
-              "studio_details.png|Toei Animation (Studio)" \
-              "character_details.png|Luffy (Character)" \
-              "staff_details.png|Mayumi Tanaka (Staff)" \
-              "settings.png|Settings"; do
-              file="${shot%%|*}"
-              label="${shot#*|}"
+            while IFS='|' read -r file label; do
+              [ -z "$file" ] && continue
               if [ -f "screenshots/$file" ]; then
                 echo "| \`$file\` | $label |" >> $GITHUB_STEP_SUMMARY
               else
                 echo "::error::Expected screenshot missing: $file"
                 MISSING_SHOTS="${MISSING_SHOTS}${file} "
               fi
-            done
+            done <<< "$SCREENSHOTS"
           else
             echo "⚠️ No screenshots were captured. Check the emulator step logs." >> $GITHUB_STEP_SUMMARY
             MISSING_SHOTS="<all>"
