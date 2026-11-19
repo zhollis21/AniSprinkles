@@ -188,6 +188,11 @@
 		<AndroidGenerateNativeDebugSymbols>true</AndroidGenerateNativeDebugSymbols>
 	</PropertyGroup>
 
+	<!-- Our R8 keep rules. R8 only runs in Release, so this is the one place a missing rule shows. -->
+	<ItemGroup Condition="'$(Configuration)' == 'Release' AND $([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
+		<ProguardConfiguration Include="Platforms\Android\proguard.cfg" />
+	</ItemGroup>
+
 	<!-- Upload native debug symbols + ProGuard mapping to Sentry on release builds. Gated on BOTH a
 	     token AND an explicit org (CI provides SENTRY_AUTH_TOKEN + SENTRY_ORG). sentry-cli needs the
 	     org to be set explicitly — a token alone isn't reliable for org selection — so we require it
