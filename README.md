@@ -18,9 +18,9 @@ A colourful .NET MAUI Android app for tracking your anime and manga with [AniLis
 
 | Anime Library | Manga Library | Media Details | Character | Staff | Settings |
 | :---: | :---: | :---: | :---: | :---: | :---: |
-| ![Anime Library](screenshots/anime_library.png) | ![Manga Library](screenshots/manga_library.png) | ![One Piece Details](screenshots/one_piece_details.png) | ![Luffy](screenshots/character_details.png) | ![Mayumi Tanaka](screenshots/staff_details.png) | ![Settings](screenshots/settings.png) |
+| ![Anime Library](https://raw.githubusercontent.com/zhollis21/AniSprinkles/ci-screenshots/main/latest/anime_library.png) | ![Manga Library](https://raw.githubusercontent.com/zhollis21/AniSprinkles/ci-screenshots/main/latest/manga_library.png) | ![One Piece Details](https://raw.githubusercontent.com/zhollis21/AniSprinkles/ci-screenshots/main/latest/one_piece_details.png) | ![Luffy](https://raw.githubusercontent.com/zhollis21/AniSprinkles/ci-screenshots/main/latest/character_details.png) | ![Mayumi Tanaka](https://raw.githubusercontent.com/zhollis21/AniSprinkles/ci-screenshots/main/latest/staff_details.png) | ![Settings](https://raw.githubusercontent.com/zhollis21/AniSprinkles/ci-screenshots/main/latest/settings.png) |
 
-> Screenshots generated automatically by CI using compile-time stub services — no OAuth token required.
+> Screenshots generated automatically by CI from the most recently merged PR, using compile-time stub services — no OAuth token required. Earlier sets are kept in [`ci-screenshots/main` → `history/`](https://github.com/zhollis21/AniSprinkles/tree/ci-screenshots/main/history).
 
 ---
 

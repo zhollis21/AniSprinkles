@@ -1,0 +1,120 @@
+# When a PR to main closes: promote its CI screenshots to ci-screenshots/main if it merged, then
+# delete its ci-screenshots/pr-<N> branch either way (#212).
+#
+# ci-build-and-preview.yml publishes each run's set to ci-screenshots/pr-<N> as a single
+# parentless commit. This workflow is the other half:
+#
+#   ci-screenshots/main  (one parentless commit, force-pushed on every promotion)
+#     latest/                          README.md links here, by branch name
+#     history/<YYYYMMDD-HHMMSS>-pr<N>/ one folder per merge, newest HISTORY_KEEP kept
+#
+# Force-pushing a single commit keeps the branch from ever growing: pruned history folders are
+# garbage once the old commit is unreachable. A ruleset ("CI Screenshots Main") blocks deleting
+# ci-screenshots/main; it deliberately does not block force pushes, because this job needs them.
+#
+# Promotion only takes a set whose manifest says it is complete AND was captured from the PR's
+# final head. Anything else (capture failed, the last run was still going at merge, or an older
+# push's set) is skipped with a warning, so the README never shows a partial or stale table.
+name: CI Screenshots on Close
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+    # No paths filter: a PR that skipped CI simply has no screenshot branch, and the job no-ops.
+
+permissions:
+  contents: write
+
+# One promotion at a time, and never cancelled: two PRs merging close together must both land in
+# history, in order, and a cancelled run would leave its pr-<N> branch behind.
+concurrency:
+  group: ci-screenshots-main
+  cancel-in-progress: false
+
+jobs:
+  promote-and-clean:
+    name: Promote & Clean Up Screenshots
+    # Fork PRs never published a branch, and their token cannot push.
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      PR_NUMBER: ${{ github.event.pull_request.number }}
+      MERGED: ${{ github.event.pull_request.merged }}
+      MERGED_AT: ${{ github.event.pull_request.merged_at }}
+      HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+      PR_BRANCH: ci-screenshots/pr-${{ github.event.pull_request.number }}
+      MAIN_BRANCH: ci-screenshots/main
+      # How many merged sets history/ keeps. At ~3-5 MB per quantized set, 10 is ~30-50 MB.
+      HISTORY_KEEP: 10
+
+    steps:
+      # Only for the remote and its persisted credentials; nothing in the working tree is used.
+      # Not a sparse checkout: `git rm --cached` refuses paths outside a sparse-checkout
+      # definition, and the throwaway index below is all paths outside one. The default branch
+      # rather than the event's refs/pull/<N>/merge, which a closed PR may no longer have.
+      - name: Checkout (credentials only)
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          fetch-depth: 1
+
+      - name: Promote and delete the PR's screenshot branch
+        run: |
+          set -euo pipefail
+
+          if ! git ls-remote --exit-code --heads origin "$PR_BRANCH" > /dev/null; then
+            echo "No $PR_BRANCH — the PR never published screenshots. Nothing to do."
+            exit 0
+          fi
+          git fetch --quiet --depth=1 origin "+refs/heads/$PR_BRANCH:refs/remotes/origin/$PR_BRANCH"
+
+          if [ "$MERGED" = "true" ]; then
+            MANIFEST=$(git show "origin/$PR_BRANCH:manifest.txt" 2> /dev/null || true)
+            SET_SHA=$(sed -n 's/^head_sha=//p' <<< "$MANIFEST")
+            SET_COMPLETE=$(sed -n 's/^complete=//p' <<< "$MANIFEST")
+
+            if [ "$SET_COMPLETE" != "true" ] || [ "$SET_SHA" != "$HEAD_SHA" ]; then
+              REASON="set incomplete (missing: $(sed -n 's/^missing=//p' <<< "$MANIFEST"))"
+              [ "$SET_SHA" != "$HEAD_SHA" ] && REASON="set was captured at ${SET_SHA:-<unknown>}, not the merged head $HEAD_SHA"
+              echo "::warning::Not promoting PR #$PR_NUMBER's screenshots: $REASON. ci-screenshots/main keeps its previous set."
+              echo "⚠️ Screenshots for PR #$PR_NUMBER were not promoted: $REASON." >> "$GITHUB_STEP_SUMMARY"
+            else
+              STAMP=$(date -u -d "$MERGED_AT" +%Y%m%d-%H%M%S)
+              ENTRY="history/$STAMP-pr$PR_NUMBER"
+              SET_TREE=$(git rev-parse "origin/$PR_BRANCH^{tree}")
+
+              # Build the new tree in a throwaway index, starting from the current branch.
+              export GIT_INDEX_FILE="$RUNNER_TEMP/promote.index"
+              rm -f "$GIT_INDEX_FILE"
+              if git ls-remote --exit-code --heads origin "$MAIN_BRANCH" > /dev/null; then
+                git fetch --quiet --depth=1 origin "+refs/heads/$MAIN_BRANCH:refs/remotes/origin/$MAIN_BRANCH"
+                git read-tree "origin/$MAIN_BRANCH"
+              else
+                git read-tree --empty
+              fi
+
+              git rm -r --cached --quiet --ignore-unmatch latest "$ENTRY"
+              git read-tree --prefix=latest/ "$SET_TREE"
+              git read-tree --prefix="$ENTRY/" "$SET_TREE"
+
+              # Entry names start with a UTC timestamp, so a plain sort is oldest-first.
+              git ls-files history | cut -d/ -f2 | sort -u | head -n "-$HISTORY_KEEP" | while read -r old; do
+                echo "Pruning history/$old"
+                git rm -r --cached --quiet "history/$old"
+              done
+
+              TREE=$(git write-tree)
+              COMMIT=$(git -c user.name="github-actions[bot]" -c user.email="github-actions[bot]@users.noreply.github.com" \
+                commit-tree "$TREE" -m "Screenshots from PR #$PR_NUMBER ($HEAD_SHA)")
+              git push --force --quiet origin "$COMMIT:refs/heads/$MAIN_BRANCH"
+              unset GIT_INDEX_FILE
+
+              echo "Promoted PR #$PR_NUMBER's screenshots to $MAIN_BRANCH as latest/ and $ENTRY/."
+              echo "✅ Promoted PR #$PR_NUMBER's screenshots to \`$MAIN_BRANCH\` (\`latest/\`, \`$ENTRY/\`)." >> "$GITHUB_STEP_SUMMARY"
+            fi
+          fi
+
+          git push --quiet origin --delete "$PR_BRANCH"
+          echo "Deleted $PR_BRANCH."

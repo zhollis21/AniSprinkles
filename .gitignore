@@ -97,6 +97,7 @@ tools/*
 !tools/generate-glyphs.cs
 !tools/record-anilist-fixtures.cs
 !tools/clone-anilist-list.cs
+!tools/Seed-ScreenshotHistory.ps1
 
 # Tmp and Testing Files
 /tmp
@@ -109,3 +110,6 @@ tools/*
 
 # `maui ai` (#170) takes this lock while it edits .maui/ai-assets.json; the json is tracked, the lock is not
 /.maui/*.lock
+
+# CI screenshots (published to the ci-screenshots/* branches, never committed here; #212)
+screenshots/
