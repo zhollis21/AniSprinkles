@@ -445,9 +445,10 @@ function Test-WorktreeBusy([string]$Worktree) {
     # be read while the pid in its file name is alive. Only a marker whose process is provably gone,
     # or provably a different process, is ignored.
     $dir = Join-Path $Worktree $BusyDirName
-    if (-not (Test-Path -LiteralPath $dir)) { return $false }
     # .NET rather than Get-ChildItem, which lists a folder it may not read as empty, without an error.
+    # Only a folder that is not there means "not busy"; no separate existence probe to fail open.
     try { $files = @([IO.Directory]::GetFiles($dir, '*.json') | ForEach-Object { [IO.FileInfo]::new($_) }) }
+    catch [IO.DirectoryNotFoundException] { return $false }
     catch { return $true }
     foreach ($f in $files) {
         $m = Read-ClaimFile $f.FullName
