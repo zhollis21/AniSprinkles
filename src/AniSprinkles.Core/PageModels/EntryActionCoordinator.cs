@@ -95,7 +95,9 @@ public sealed class EntryActionCoordinator(
                 await HandleEditProgressAsync(entry);
                 break;
             case MediaListEntryAction.MarkCompleted:
-                await RunCompletionFlowAsync(entry);
+                // The menu pick is the user's answer; "you've watched them all, complete it?" would
+                // be asking again, and is untrue when they're not at the last episode yet.
+                await RunCompletionFlowAsync(entry, confirmFirst: false);
                 break;
             case MediaListEntryAction.Rate:
                 await HandleRateAsync(entry);
@@ -159,8 +161,10 @@ public sealed class EntryActionCoordinator(
     /// <summary>
     /// Shared completion flow (confirm + rating popups, save on confirm). Public because Library’s
     /// +1-reaches-total path routes through it directly; guarded so overlapping triggers don't double-run.
+    /// <paramref name="confirmFirst"/> is for paths where reaching the cap was a side effect (+1, edit
+    /// progress); an explicit "Mark as completed" pick passes <c>false</c> and goes straight to the rating.
     /// </summary>
-    public async Task RunCompletionFlowAsync(MediaListEntry entry)
+    public async Task RunCompletionFlowAsync(MediaListEntry entry, bool confirmFirst = true)
     {
         if (_isCompletionFlowActive)
         {
@@ -176,7 +180,20 @@ public sealed class EntryActionCoordinator(
                 await host.OnBeforeFlowAsync();
             }
 
-            var shouldSave = await statusFlow.ApplyCompletionAsync(entry);
+            bool shouldSave;
+            if (confirmFirst)
+            {
+                shouldSave = await statusFlow.ApplyCompletionAsync(entry);
+            }
+            else
+            {
+                // Same mutations as the confirmed path: progress to the total, Completed, rating prompt.
+                // The menu pick is this path's confirmation, so it gets the breadcrumb the confirm would.
+                SentrySdk.AddBreadcrumb($"Mark as completed picked (entry {entry.Id})", "list", "user");
+                await statusFlow.ApplyStatusChangeAsync(entry, MediaListStatus.Completed);
+                shouldSave = true;
+            }
+
             if (shouldSave)
             {
                 await SaveCompletedEntryAsync(entry);
