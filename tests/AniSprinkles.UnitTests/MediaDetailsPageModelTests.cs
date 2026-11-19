@@ -247,7 +247,6 @@ public class MediaDetailsPageModelTests
     {
         public Harness()
         {
-            var dialogs = new ScriptedDialogService();
             Model = new MediaDetailsPageModel(
                 Client,
                 Substitute.For<IAuthService>(),
@@ -255,12 +254,14 @@ public class MediaDetailsPageModelTests
                 Substitute.For<INavigationService>(),
                 new RecordingUserFeedback(),
                 new RecordingExternalBrowser(),
-                dialogs,
-                new ListEntryStatusFlow(dialogs),
+                Dialogs,
+                new ListEntryStatusFlow(Dialogs),
                 Logger);
         }
 
         public IAniListClient Client { get; } = Substitute.For<IAniListClient>();
+
+        public ScriptedDialogService Dialogs { get; } = new();
 
         public RecordingLogger<MediaDetailsPageModel> Logger { get; } = new();
 
@@ -273,6 +274,149 @@ public class MediaDetailsPageModelTests
         public void Throws(Exception exception)
             => Client.GetMediaAsync(Arg.Any<int>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromException<(Media?, MediaListEntry?)>(exception));
+    }
+
+    // ── Status dropdown (#194) ───────────────────────────────────────
+
+    private static async Task<Harness> ListedAs(MediaListStatus status)
+    {
+        var harness = new Harness();
+        var entry = new MediaListEntry { Id = 7, MediaId = 42, Status = status };
+        harness.ReturnsMedia(new Media { Id = 42, Type = "ANIME" }, entry);
+        harness.Client.SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>())
+            .Returns(call => call.Arg<MediaListEntry>());
+        harness.Client.DeleteMediaListEntryAsync(7, Arg.Any<CancellationToken>()).Returns(true);
+        await harness.Model.LoadAsync(42, entry);
+        return harness;
+    }
+
+    private static async Task AssertNothingChanged(Harness harness, MediaListStatus expected)
+    {
+        await harness.Client.DidNotReceive().SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>());
+        await harness.Client.DidNotReceive().DeleteMediaListEntryAsync(Arg.Any<int>(), Arg.Any<CancellationToken>());
+        Assert.That(harness.Dialogs.Calls, Is.Empty);
+        Assert.That(harness.Model.ListEntry?.Status, Is.EqualTo(expected));
+    }
+
+    // Every row the dropdown can show, picked from an entry with a different status.
+    [TestCase(MediaListStatus.Current, MediaListStatus.Planning)]
+    [TestCase(MediaListStatus.Current, MediaListStatus.Completed)]
+    [TestCase(MediaListStatus.Current, MediaListStatus.Dropped)]
+    [TestCase(MediaListStatus.Current, MediaListStatus.Paused)]
+    [TestCase(MediaListStatus.Current, MediaListStatus.Repeating)]
+    [TestCase(MediaListStatus.Planning, MediaListStatus.Current)]
+    public async Task ApplyStatusPick_ADifferentStatus_SavesItThroughTheQuickSetPath(MediaListStatus from, MediaListStatus to)
+    {
+        var harness = await ListedAs(from);
+
+        await harness.Model.ApplyStatusPickCommand.ExecuteAsync(to.ToString());
+
+        await harness.Client.Received(1).SaveMediaListEntryAsync(
+            Arg.Is<MediaListEntry>(e => e.Status == to), Arg.Any<CancellationToken>());
+        Assert.That(harness.Model.ListEntry?.Status, Is.EqualTo(to));
+    }
+
+    [Test]
+    public async Task ApplyStatusPick_ForMediaNotOnTheList_AddsItWithThatStatus()
+    {
+        var harness = new Harness();
+        harness.ReturnsMedia(new Media { Id = 42, Type = "ANIME" });
+        harness.Client.SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>())
+            .Returns(call => call.Arg<MediaListEntry>());
+        await harness.Model.LoadAsync(42, listEntry: null);
+
+        await harness.Model.ApplyStatusPickCommand.ExecuteAsync(nameof(MediaListStatus.Planning));
+
+        await harness.Client.Received(1).SaveMediaListEntryAsync(
+            Arg.Is<MediaListEntry>(e => e.MediaId == 42 && e.Status == MediaListStatus.Planning), Arg.Any<CancellationToken>());
+    }
+
+    [Test]
+    public async Task ApplyStatusPick_TheStatusItAlreadyHas_ChangesNothing()
+    {
+        var harness = await ListedAs(MediaListStatus.Current);
+
+        await harness.Model.ApplyStatusPickCommand.ExecuteAsync(nameof(MediaListStatus.Current));
+
+        await AssertNothingChanged(harness, MediaListStatus.Current);
+    }
+
+    [Test]
+    public async Task ApplyStatusPick_WhenDismissed_ChangesNothing()
+    {
+        var harness = await ListedAs(MediaListStatus.Current);
+
+        await harness.Model.ApplyStatusPickCommand.ExecuteAsync(null);
+
+        await AssertNothingChanged(harness, MediaListStatus.Current);
+    }
+
+    // Enum.TryParse accepts the last four (a number, a combination, stray whitespace), so without an
+    // exact-name check a key the dropdown never offers could save a status nobody picked.
+    [TestCase("NotAStatus")]
+    [TestCase("paused")]
+    [TestCase("")]
+    [TestCase("999")]
+    [TestCase("4")]
+    [TestCase("Current, Planning")]
+    [TestCase(" Paused")]
+    public async Task ApplyStatusPick_AKeyThatIsNotAStatusName_ChangesNothing(string key)
+    {
+        var harness = await ListedAs(MediaListStatus.Current);
+
+        await harness.Model.ApplyStatusPickCommand.ExecuteAsync(key);
+
+        await AssertNothingChanged(harness, MediaListStatus.Current);
+    }
+
+    [Test]
+    public async Task ApplyStatusPick_Remove_AsksForConfirmationBeforeDeleting()
+    {
+        var harness = await ListedAs(MediaListStatus.Current);
+        harness.Dialogs.ConfirmAnswer = true;
+
+        await harness.Model.ApplyStatusPickCommand.ExecuteAsync(MediaDetailsPageModel.RemoveStatusKey);
+
+        Assert.That(harness.Dialogs.Calls, Is.EqualTo(new[] { nameof(IDialogService.ConfirmAsync) }));
+        await harness.Client.Received(1).DeleteMediaListEntryAsync(7, Arg.Any<CancellationToken>());
+        Assert.That(harness.Model.ListEntry, Is.Null);
+    }
+
+    [Test]
+    public async Task ApplyStatusPick_RemoveThenCancel_KeepsTheEntry()
+    {
+        var harness = await ListedAs(MediaListStatus.Current);
+        harness.Dialogs.ConfirmAnswer = false;
+
+        await harness.Model.ApplyStatusPickCommand.ExecuteAsync(MediaDetailsPageModel.RemoveStatusKey);
+
+        await harness.Client.DidNotReceive().DeleteMediaListEntryAsync(Arg.Any<int>(), Arg.Any<CancellationToken>());
+        Assert.That(harness.Model.ListEntry?.Status, Is.EqualTo(MediaListStatus.Current));
+    }
+
+    [Test]
+    public async Task ApplyStatusPick_RemoveForMediaNotOnTheList_ChangesNothing()
+    {
+        var harness = new Harness();
+        harness.ReturnsMedia(new Media { Id = 42, Type = "ANIME" });
+        await harness.Model.LoadAsync(42, listEntry: null);
+
+        await harness.Model.ApplyStatusPickCommand.ExecuteAsync(MediaDetailsPageModel.RemoveStatusKey);
+
+        await harness.Client.DidNotReceive().DeleteMediaListEntryAsync(Arg.Any<int>(), Arg.Any<CancellationToken>());
+        Assert.That(harness.Dialogs.Calls, Is.Empty);
+    }
+
+    [Test]
+    public async Task ApplyStatusPick_BeforeTheMediaHasLoaded_ChangesNothing()
+    {
+        var harness = new Harness();
+
+        await harness.Model.ApplyStatusPickCommand.ExecuteAsync(nameof(MediaListStatus.Planning));
+        await harness.Model.ApplyStatusPickCommand.ExecuteAsync(MediaDetailsPageModel.RemoveStatusKey);
+
+        await harness.Client.DidNotReceive().SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>());
+        Assert.That(harness.Dialogs.Calls, Is.Empty);
     }
 
     // ── Manga (#12) ──────────────────────────────────────────────────
