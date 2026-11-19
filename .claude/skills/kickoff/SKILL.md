@@ -86,8 +86,8 @@ check in this step, because every `git log`, `git cat-file` and "does this file
 exist yet" below reads from local refs, and a stale `main` makes all of them lie
 in the same direction: work that has already merged looks unbuilt.
 
-This is not hypothetical. Kicking off #141 and #111, local `main` sat at `925d79f`
-while `origin/main` was at `377f9f9` — one merge ahead. The whole `AniListLinkTarget`
+This is not hypothetical. Kicking off #141 and #111, local `main` sat at `3707476`
+while `origin/main` was at `18d252a` — one merge ahead. The whole `AniListLinkTarget`
 / `BioLinkFollower` layer from #137 was on `origin/main` and invisible locally, so
 an implementation option that reuses it was presented to the user as carrying a
 "depends on an unmerged branch" cost it did not have. The user caught it. They
@@ -170,7 +170,7 @@ the issue is already telling you.
 #63 is the cautionary case. It asks to move `AiringCheckWorker` off
 `Android.Util.Log`, and AGENTS.md explains that call site as an intentional
 exception, which reads like the issue was overruled. It wasn't: the AGENTS.md
-paragraph and the worker's inline comment both landed in `b96e96c` — PR #61, the
+paragraph and the worker's inline comment both landed in `30ff33c` — PR #61, the
 same PR whose unfinished scope #63 was filed to track, merged one day *after*
 it. The doc is saying "here's why we haven't done this yet," not "we decided not
 to." #63 is entirely live.

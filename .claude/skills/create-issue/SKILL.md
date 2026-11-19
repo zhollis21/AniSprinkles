@@ -126,7 +126,7 @@ Three things drift, and only the first is obvious:
 
 - **Line numbers**, constantly.
 - **Paths.** #62 moved everything under `src/AniSprinkles/` and `src/AniSprinkles.Core/` in
-  `490fdd5`. Any citation starting `src/` with neither of those next is from before that
+  `3fb0aa3`. Any citation starting `src/` with neither of those next is from before that
   and is wrong — it broke #64, #68 and #111 simultaneously, and none of them
   looked wrong on the page. Treat a bare `src/Views/…` or `src/Platforms/…` as a
   red flag on sight.
