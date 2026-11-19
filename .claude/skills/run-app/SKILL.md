@@ -156,8 +156,48 @@ cleared by one session after another has already replaced it. A second lock,
 `Global\AniSprinkles-adb-forwards`, covers re-pointing an agent port, so `launch`'s probe of a
 port can't be interleaved with another worktree re-pointing it. `launch` never borrows a port
 another worktree's `tmp/driver-binding.json` has bound.
-There is no idle timer. A worktree holds one device at a time, so claiming a new one releases the
-old. `claims` lists them all.
+A worktree holds one device at a time, so claiming a new one releases the old. `claims` lists
+them all.
+
+**A finished session's claim is freed by the next worktree that needs a device** (#209).
+Worktrees outlive their PRs, and a session that is done doesn't run `release`, so without this
+two finished sessions held both emulators the host can fit. When this worktree needs a device it
+doesn't hold and nothing free fits, one other worktree's claim is freed, the first for which all
+three hold:
+
+- its tree is clean (`git status --porcelain` is empty);
+- its newest Claude Code transcript (`~/.claude/projects/<mangled path>/**/*.jsonl`) is at least
+  **15 min** old. A turn writes to it after every tool call, so this only means no turn is running
+  there right now. A lunch break counts as finished;
+- its branch has a merged PR whose head contains the worktree's `HEAD`, checked through `gh api`
+  (10 s timeout). A commit made there after the merge keeps the claim, and so does one never
+  pushed.
+
+A fourth rule covers what the transcript can't see, such as a long silent operation, a background
+run or a command typed by hand: no driver command may be running in that worktree. Every command
+writes `tmp/driver-busy/<pid>.json` while it runs and deletes it on the way out, `exit` and errors
+included. The marker is written under the claim lock, so a command that starts while a free is
+being decided is either seen by it or finds its claim already gone, never freed mid-command. A
+marker whose process is gone is ignored, so a crashed run never pins a claim; one that can't be
+read counts while the pid in its file name is alive. The local checks run again under the claim
+lock just before the delete, at the `HEAD` the merged-PR check approved, so a worktree that
+changes in between keeps its claim.
+
+Anything unreadable (no transcript folder or a listing error, no `gh`, a timeout, a detached HEAD)
+keeps the claim.
+`boot`/`up` only free a device they can then take: online, and a read-only instance of the AVD
+asked for (or a phone, with none named). Its emulator then counts as free, so `boot` reuses it
+rather than starting another. `claims` marks finished claims without freeing them, and says when
+it finds no Claude session activity for a worktree at all: that worktree is never freed, and on
+every worktree it means the transcript folder naming has changed. A session that wanted its
+device after all gets a loud "claimed by another worktree" on its next driver command, and `up`
+gives it a new one.
+
+Freeing also deletes that worktree's `tmp/driver-binding.json` and its agent port's forward, so
+a port the old session still has selected in MCP leads nowhere. One gap is left open: if the
+broker hands the new owner's agent that same port, the old session's direct `maui_*` calls reach
+the new app. Only DevFlow could close that, and it needs a merged, idle session to come back and
+drive by MCP without relaunching.
 
 **Every driver boot is `-read-only`.** That is what lets several instances of one AVD run at
 once: two cold-booted side by side in about 20 s each on 2026-11-17. The cost is that nothing is
@@ -582,9 +622,10 @@ works — that is what the driver and DevFlow above are for.
 | `No elements found matching automationId=…` right after it worked | You probably backed out to the launcher, or are on another page. `ui tree --depth 3` to see where you are, then `driver.ps1 resume`. |
 | `maui android sdk …` / `maui doctor --fix` fail with `exit code 255` | The cmdline-tools 23.0 `sdkmanager.bat` shim breaks on the `(x86)` in the SDK path. It was patched locally on 2026-11-12, and a cmdline-tools update reverts the patch. Re-check with `maui android sdk list`. DevFlow itself does not use it. |
 | `More than one free device — set ANDROID_SERIAL to choose` | Several unclaimed devices and none is this worktree's. `driver.ps1 up` claims one (or boots its own), or pick with `ANDROID_SERIAL=<serial>`. `driver.ps1 env` lists them. |
-| `Every attached device is claimed by another worktree` | Other sessions hold them all. `driver.ps1 up` boots this worktree its own read-only instance. `driver.ps1 claims` shows who holds what. |
+| `Every attached device is claimed by another worktree` | Other sessions hold them all, and none counts as finished yet (see *A finished session's claim is freed*). `driver.ps1 up` boots this worktree its own read-only instance. `driver.ps1 claims` shows who holds what, and marks finished claims with the reason. |
+| `freed <serial> from finished worktree …`, and that worktree still wanted it | Its PR had merged, its tree was clean and it had gone 15 min without a turn. Run `driver.ps1 up` there to get a device back. If this keeps happening, the rule needs adjusting. |
 | `A writable instance of <avd> is running` | An emulator started outside the driver (Device Manager, Visual Studio, or a pre-#203 driver) blocks every `-read-only` boot of that AVD. Shut it down (`ANDROID_SERIAL=<serial> driver.ps1 kill-emu`), or use it deliberately with `ANDROID_SERIAL`. |
-| `Only N GB of RAM free; booting another emulator needs M GB` | Too many emulators, a build running, or other boots in progress (each counts as 6 GB until it finishes). Wait for the build, or `driver.ps1 claims` and shut down one nobody needs. |
+| `Only N GB of RAM free; booting another emulator needs M GB` | Too many emulators, a build running, or other boots in progress (each counts as 6 GB until it finishes). Wait for the build, or `driver.ps1 claims` and shut down one nobody needs. A finished session's emulator of the AVD asked for is freed and reused before this check, so those left are live or on another AVD. |
 | `Cannot connect to agent at localhost:<port>`, or the UI you see belongs to another build | The agent port's `adb forward` points at another device, or a bare `maui devflow` found another worktree's app. Use `driver.ps1 devflow …`; `driver.ps1 launch` re-binds. |
 | `No DevFlow agent is bound to this worktree` | `driver.ps1 launch` (or `up`) has not run since the app started, or the agent never registered. Run `launch`. |
 | `Timed out after 30s waiting for the device-claim lock` | Another driver command has held the claim lock for 30 s, usually one stuck on a cold `adb` start. Retry; if it keeps happening, look for a hung `pwsh` running `driver.ps1`. |
