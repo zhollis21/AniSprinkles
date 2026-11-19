@@ -412,6 +412,54 @@ $FinishedIdleMinutes = 15
 # The merged-PR lookup is one REST call; past this the claim is kept rather than waited on.
 $GhTimeoutSeconds    = 10
 $script:FinishedCache = @{}
+# The HEAD each finished verdict was reached at, so the recheck under the claim lock can confirm it.
+$script:FinishedHead  = @{}
+
+# Every driver command marks its worktree as in use while it runs: one file per process, so two
+# commands in one worktree (a background `up` and a `shot`) never wait on each other. A transcript
+# can sit idle through a long silent operation, a background run or a command typed by hand, and
+# none of those may lose their device mid-way. A marker whose process is gone is ignored, so a
+# crashed run never pins a claim.
+$BusyDirName = 'tmp\driver-busy'
+
+function Enter-WorktreeBusy {
+    $dir = Join-Path $RepoRoot $BusyDirName
+    New-Item -ItemType Directory -Force -Path $dir | Out-Null
+    $me = Get-Process -Id $PID
+    $script:BusyFile = Join-Path $dir "$PID.json"
+    # Start time alongside the pid, so a later process that reuses the pid is not mistaken for it.
+    [ordered]@{ pid = $PID; startedUtcTicks = $me.StartTime.ToUniversalTime().Ticks; command = $Command } |
+        ConvertTo-Json | Set-Content -LiteralPath $script:BusyFile -Encoding utf8
+}
+
+function Exit-WorktreeBusy {
+    if ($script:BusyFile) { Remove-Item -LiteralPath $script:BusyFile -Force -ErrorAction SilentlyContinue }
+}
+
+function Test-WorktreeBusy([string]$Worktree) {
+    $dir = Join-Path $Worktree $BusyDirName
+    if (-not (Test-Path -LiteralPath $dir)) { return $false }
+    foreach ($f in Get-ChildItem -LiteralPath $dir -Filter *.json -File -ErrorAction SilentlyContinue) {
+        $m = Read-ClaimFile $f.FullName
+        if (-not $m -or -not $m.pid) { continue }
+        $p = Get-Process -Id ([int]$m.pid) -ErrorAction SilentlyContinue
+        if ($p -and "$($p.StartTime.ToUniversalTime().Ticks)" -eq "$($m.startedUtcTicks)") { return $true }
+    }
+    return $false
+}
+
+function Test-StillFinishedLocally([string]$Worktree, [string]$Head) {
+    # The local half of the finished checks, run again under the claim lock just before the delete:
+    # tree still clean, HEAD still the one the merged-PR check approved, transcript still idle. The
+    # GitHub half needs no repeat: whether a given HEAD is in a merged PR does not change.
+    if (-not $Head -or (Test-WorktreeBusy $Worktree)) { return $false }
+    $dirty = @(& git -C $Worktree status --porcelain 2>$null)
+    if ($LASTEXITCODE -ne 0 -or $dirty) { return $false }
+    $now = "$(& git -C $Worktree rev-parse HEAD 2>$null)".Trim()
+    if ($LASTEXITCODE -ne 0 -or $now -ne $Head) { return $false }
+    $idle = Get-TranscriptIdleMinutes $Worktree
+    ($null -ne $idle -and $idle -ge $FinishedIdleMinutes)
+}
 
 function Get-TranscriptIdleMinutes([string]$Worktree) {
     # Claude Code keeps a session's transcript in ~/.claude/projects/<cwd with every
@@ -460,6 +508,7 @@ function Get-ClaimFinishedReason($Claim) {
     if ($script:FinishedCache.ContainsKey($key)) { return $script:FinishedCache[$key] }
     $script:FinishedCache[$key] = $null
 
+    if (Test-WorktreeBusy $wt) { return $null }
     $dirty = @(& git -C $wt status --porcelain 2>$null)
     if ($LASTEXITCODE -ne 0 -or $dirty) { return $null }
     $idle = Get-TranscriptIdleMinutes $wt
@@ -480,6 +529,7 @@ function Get-ClaimFinishedReason($Claim) {
         $merged = ([datetime]$pr.merged_at).ToUniversalTime().ToString('yyyy-MM-dd HH:mm')
         $why = "PR #$($pr.number) merged ${merged}Z, tree clean, idle $([math]::Floor($idle)) min"
         $script:FinishedCache[$key] = $why
+        $script:FinishedHead[$key] = $head
         return $why
     }
     return $null
@@ -492,8 +542,8 @@ function Remove-FinishedClaim {
     # somebody needs them. Each claim it passes over is only checked, never touched.
     #
     # The checks run outside the claim lock (the GitHub call can take seconds), then the delete is
-    # re-decided under it: the file must still be the same claim, and its transcript still idle,
-    # or it is left alone.
+    # re-decided under it: the file must still be the same claim, and the worktree must still pass
+    # the local checks at the same HEAD (Test-StillFinishedLocally), or it is left alone.
     #
     # -Fits is asked of each claim's serial first, so `boot` only frees a device it can then take:
     # one on the AVD it was asked for, booted read-only. Freeing one it cannot use would cost that
@@ -502,37 +552,47 @@ function Remove-FinishedClaim {
     foreach ($c in Get-Claims | Where-Object { -not $_.Mine -and (& $Fits $_.Serial) }) {
         $why = Get-ClaimFinishedReason $c
         if (-not $why) { continue }
-        $removed = Invoke-WithClaimLock {
+        $head = $script:FinishedHead["$(Normalize-Path $c.Worktree)|$($c.Serial)"]
+        $freed = Invoke-WithClaimLock {
             $path = Get-ClaimPath $c.Serial
             $now = Read-ClaimFile $path
             if (-not $now -or (Normalize-Path $now.worktree) -ne (Normalize-Path $c.Worktree) -or
-                "$($now.claimedAt)" -ne "$($c.Claimed)") { return $false }
-            $idle = Get-TranscriptIdleMinutes $c.Worktree
-            if ($null -eq $idle -or $idle -lt $FinishedIdleMinutes) { return $false }
+                "$($now.claimedAt)" -ne "$($c.Claimed)") { return $null }
+            if (-not (Test-StillFinishedLocally $c.Worktree $head)) { return $null }
+            # The binding as it stands at the moment of the free, for Remove-FinishedBinding.
+            $binding = Read-ClaimFile (Join-Path $c.Worktree 'tmp\driver-binding.json')
             Remove-Item -LiteralPath $path -Force -ErrorAction SilentlyContinue
-            return $true
+            [pscustomobject]@{ Binding = $binding }
         }
-        if (-not $removed) { continue }
+        if (-not $freed) { continue }
         Say "freed $($c.Serial) from finished worktree $($c.Worktree) ($why)"
-        Remove-FinishedBinding $c
+        Remove-FinishedBinding $c $freed.Binding
         return $c.Serial
     }
     return $null
 }
 
-function Remove-FinishedBinding($Claim) {
+function Remove-FinishedBinding {
     # The freed worktree's DevFlow binding goes too, and with it the forward its agent port had to
     # this device, so a port the old session still has selected leads nowhere rather than to the
     # next owner's app. Unless the broker hands the next agent that same port, which only DevFlow
     # could prevent. Under the forward lock alone: Bind-DevFlowAgent takes the forward lock and
     # then the claim lock, so taking them the other way round here could deadlock against it.
+    #
+    # $Snapshot is the binding as it was when the claim was deleted, read under the claim lock. It is
+    # read again here under the forward lock, which is where `launch` publishes one, and nothing is
+    # removed unless the two are the same binding: if the freed session reclaimed the device and
+    # relaunched in between, its fresh binding and forward are left alone.
+    param($Claim, $Snapshot)
+    if (-not $Snapshot -or $Snapshot.serial -ne $Claim.Serial -or -not $Snapshot.agentPort) { return }
     $file = Join-Path $Claim.Worktree 'tmp\driver-binding.json'
-    $b = Read-ClaimFile $file
-    if (-not $b -or $b.serial -ne $Claim.Serial) { return }
     Invoke-WithForwardLock {
+        $b = Read-ClaimFile $file
+        if (-not $b -or $b.serial -ne $Snapshot.serial -or "$($b.agentPort)" -ne "$($Snapshot.agentPort)" -or
+            "$($b.appPid)" -ne "$($Snapshot.appPid)" -or "$($b.boundAt)" -ne "$($Snapshot.boundAt)") { return }
         $p = [int]$b.agentPort
         # A worktree that has bound this port since the free keeps its forward.
-        if ($p -and -not (Get-OtherBoundPorts).ContainsKey($p) -and (Get-ForwardOwner $p) -eq $Claim.Serial) {
+        if (-not (Get-OtherBoundPorts).ContainsKey($p) -and (Get-ForwardOwner $p) -eq $Claim.Serial) {
             & $Adb -s $Claim.Serial forward --remove "tcp:$p" *> $null
         }
         Remove-Item -LiteralPath $file -Force -ErrorAction SilentlyContinue
@@ -1542,71 +1602,78 @@ function Cmd-DeepLink {
 $a = @($Args | Where-Object { $null -ne $_ })
 $cmd = $Command.ToLowerInvariant()
 if ($cmd -eq 'serial') { $script:SayToStderr = $true }
-# Before any adb call: `help` and `build` never touch adb, so they need no server.
-if ($cmd -notin @('help', 'build')) { Start-AdbServerDetached }
+# Mark this worktree in use for the whole command, so a long or background run is never mistaken
+# for a finished session and its device freed under it (#209). finally runs on `exit` too.
+if ($cmd -ne 'help') { Enter-WorktreeBusy }
+try {
+    # Before any adb call: `help` and `build` never touch adb, so they need no server.
+    if ($cmd -notin @('help', 'build')) { Start-AdbServerDetached }
 
-# Anything that talks to a device needs an unambiguous target resolved up front,
-# so ambiguity surfaces as "set ANDROID_SERIAL to choose" rather than adb's bare
-# "more than one device/emulator" halfway through a flow. `boot` and `up` pick
-# their own target from the requested AVD; the rest need one already attached.
-if ($cmd -notin @('help', 'env', 'build', 'boot', 'up', 'claims', 'release')) {
-    Resolve-Target -Required | Out-Null
-}
+    # Anything that talks to a device needs an unambiguous target resolved up front,
+    # so ambiguity surfaces as "set ANDROID_SERIAL to choose" rather than adb's bare
+    # "more than one device/emulator" halfway through a flow. `boot` and `up` pick
+    # their own target from the requested AVD; the rest need one already attached.
+    if ($cmd -notin @('help', 'env', 'build', 'boot', 'up', 'claims', 'release')) {
+        Resolve-Target -Required | Out-Null
+    }
 
-switch ($cmd) {
-    'help'       { Cmd-Help }
-    'env'        { Cmd-Env }
-    'boot'       { Cmd-Boot $a[0] }
-    'build'      { Cmd-Build }
-    'install'    { Cmd-Install }
-    'launch'     { Cmd-Launch }
-    'resume'     { Cmd-Launch -Resume }
-    'up'         { Cmd-Boot $a[0]; Cmd-Install; Cmd-Launch }
-    'stop'       { Adb shell am force-stop $Package; Say 'stopped' }
-    'kill-emu'   {
-        # Release only this worktree's claim, and only on the device being killed: with
-        # ANDROID_SERIAL pointing elsewhere, this worktree's own device is still in use, and
-        # another worktree's claim is that worktree's to give back. Remove-OwnClaim checks that
-        # under the claim lock, at the moment of deleting.
-        #
-        # The claim goes only once the emulator is really gone. A kill that fails, or a qemu that
-        # lingers, would otherwise hand a still-running device to the next worktree.
-        $out = @(Adb emu kill 2>&1) -join ' '
-        if ($LASTEXITCODE -ne 0) {
-            throw "adb emu kill on $($script:Serial) failed ($out). The claim is kept; once it is really down, driver.ps1 release."
+    switch ($cmd) {
+        'help'       { Cmd-Help }
+        'env'        { Cmd-Env }
+        'boot'       { Cmd-Boot $a[0] }
+        'build'      { Cmd-Build }
+        'install'    { Cmd-Install }
+        'launch'     { Cmd-Launch }
+        'resume'     { Cmd-Launch -Resume }
+        'up'         { Cmd-Boot $a[0]; Cmd-Install; Cmd-Launch }
+        'stop'       { Adb shell am force-stop $Package; Say 'stopped' }
+        'kill-emu'   {
+            # Release only this worktree's claim, and only on the device being killed: with
+            # ANDROID_SERIAL pointing elsewhere, this worktree's own device is still in use, and
+            # another worktree's claim is that worktree's to give back. Remove-OwnClaim checks that
+            # under the claim lock, at the moment of deleting.
+            #
+            # The claim goes only once the emulator is really gone. A kill that fails, or a qemu that
+            # lingers, would otherwise hand a still-running device to the next worktree.
+            $out = @(Adb emu kill 2>&1) -join ' '
+            if ($LASTEXITCODE -ne 0) {
+                throw "adb emu kill on $($script:Serial) failed ($out). The claim is kept; once it is really down, driver.ps1 release."
+            }
+            if (-not (Wait-EmulatorGone $script:Serial)) {
+                throw "$($script:Serial) still running ${KillWaitSeconds}s after the kill. The claim is kept; once it is really down, driver.ps1 release."
+            }
+            Remove-OwnClaim $script:Serial | Out-Null
+            $b = Read-Binding
+            if ($b -and $b.serial -eq $script:Serial) { Remove-Item -LiteralPath $BindingFile -Force -ErrorAction SilentlyContinue }
+            Say "emulator $($script:Serial) killed"
         }
-        if (-not (Wait-EmulatorGone $script:Serial)) {
-            throw "$($script:Serial) still running ${KillWaitSeconds}s after the kill. The claim is kept; once it is really down, driver.ps1 release."
+        'claims'     { Cmd-Claims }
+        'release'    { Cmd-Release }
+        'serial'     { Write-Output $script:Serial }
+        'adb'        { Cmd-AdbPassthrough $a }
+        'devflow'    { Cmd-DevFlow $a }
+        'shot'       { if ($a[0]) { Cmd-Shot $a[0] } else { Cmd-Shot } }
+        'key'        { if (-not $a[0]) { throw 'key needs a keycode, e.g. driver.ps1 key ENTER' }
+                       Adb shell input keyevent "KEYCODE_$($a[0].ToUpperInvariant())"; Start-Sleep -Milliseconds 800 }
+        'back'       { Adb shell input keyevent KEYCODE_BACK; Start-Sleep -Milliseconds 1000 }
+        'logcat'     { if ($a[0]) { Cmd-Logcat ([int]$a[0]) } else { Cmd-Logcat } }
+        'applog'     { Cmd-AppLog }
+        'fault'      { Cmd-Fault $a }
+        'seed-token' { Cmd-SeedToken $a }
+        'dump-token' { Cmd-DumpToken }
+        'notify'     { Cmd-Notify $a }
+        'worker-run' { Cmd-WorkerRun $a }
+        'deeplink'   { Cmd-DeepLink $a }
+        { $_ -in @('dump', 'xml', 'tap', 'tap-prefix', 'tap-desc', 'longpress', 'type', 'clear',
+                   'swipe', 'scroll-to', 'wait-for', 'goto', 'search') } {
+            Write-Host "'$Command' was removed (#170): reading and driving the UI is MAUI DevFlow's now."
+            Write-Host '  maui devflow ui tree | query --text/--automationId [--wait-until exists] | tap | fill'
+            Write-Host '  maui devflow ui scroll | gesture longpress | hit-test | screenshot'
+            Write-Host 'The old-verb mapping is in .claude/skills/run-app/SKILL.md.'
+            exit 1
         }
-        Remove-OwnClaim $script:Serial | Out-Null
-        $b = Read-Binding
-        if ($b -and $b.serial -eq $script:Serial) { Remove-Item -LiteralPath $BindingFile -Force -ErrorAction SilentlyContinue }
-        Say "emulator $($script:Serial) killed"
+        default      { Write-Host "Unknown command '$Command'`n"; Cmd-Help; exit 1 }
     }
-    'claims'     { Cmd-Claims }
-    'release'    { Cmd-Release }
-    'serial'     { Write-Output $script:Serial }
-    'adb'        { Cmd-AdbPassthrough $a }
-    'devflow'    { Cmd-DevFlow $a }
-    'shot'       { if ($a[0]) { Cmd-Shot $a[0] } else { Cmd-Shot } }
-    'key'        { if (-not $a[0]) { throw 'key needs a keycode, e.g. driver.ps1 key ENTER' }
-                   Adb shell input keyevent "KEYCODE_$($a[0].ToUpperInvariant())"; Start-Sleep -Milliseconds 800 }
-    'back'       { Adb shell input keyevent KEYCODE_BACK; Start-Sleep -Milliseconds 1000 }
-    'logcat'     { if ($a[0]) { Cmd-Logcat ([int]$a[0]) } else { Cmd-Logcat } }
-    'applog'     { Cmd-AppLog }
-    'fault'      { Cmd-Fault $a }
-    'seed-token' { Cmd-SeedToken $a }
-    'dump-token' { Cmd-DumpToken }
-    'notify'     { Cmd-Notify $a }
-    'worker-run' { Cmd-WorkerRun $a }
-    'deeplink'   { Cmd-DeepLink $a }
-    { $_ -in @('dump', 'xml', 'tap', 'tap-prefix', 'tap-desc', 'longpress', 'type', 'clear',
-               'swipe', 'scroll-to', 'wait-for', 'goto', 'search') } {
-        Write-Host "'$Command' was removed (#170): reading and driving the UI is MAUI DevFlow's now."
-        Write-Host '  maui devflow ui tree | query --text/--automationId [--wait-until exists] | tap | fill'
-        Write-Host '  maui devflow ui scroll | gesture longpress | hit-test | screenshot'
-        Write-Host 'The old-verb mapping is in .claude/skills/run-app/SKILL.md.'
-        exit 1
-    }
-    default      { Write-Host "Unknown command '$Command'`n"; Cmd-Help; exit 1 }
+} finally {
+    Exit-WorktreeBusy
 }
