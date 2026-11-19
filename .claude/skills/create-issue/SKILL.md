@@ -89,7 +89,7 @@ into the issue.
 
 **An empty search result is not evidence of absence.** It is usually evidence you
 guessed the wrong word — grepping `IsExpanded` in this repo finds nothing, because
-the code says `IsDescriptionExpanded` and `IsStatusExpanded`. Try at least two phrasings before
+the code says `IsDescriptionExpanded`. Try at least two phrasings before
 believing a negative, and if you end up writing "there is no X" in the body, say
 what you searched for so a wrong guess is visible.
 

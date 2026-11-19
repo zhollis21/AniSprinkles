@@ -62,9 +62,6 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
     private bool _isDescriptionExpanded;
 
     [ObservableProperty]
-    private bool _isStatusExpanded;
-
-    [ObservableProperty]
     private double _sliderScore;
 
     [ObservableProperty]
@@ -1091,7 +1088,6 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
             {
                 saved.Media = Media;
                 ListEntry = saved;
-                IsStatusExpanded = false;
                 OnPropertyChanged(nameof(CanAddToList));
                 await Feedback.ShowToastAsync("Status updated");
             }
@@ -1103,6 +1099,31 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
                 ex,
                 "Failed to update status. Please try again.",
                 retryAction: () => _ = QuickSetStatus(value));
+        }
+    }
+
+    /// <summary>The key the status dropdown hands back for its "Remove from List" row.</summary>
+    public const string RemoveStatusKey = "Remove";
+
+    // What a row of the status dropdown (#194) does: null (dismissed) and the status the entry already
+    // has change nothing; RemoveStatusKey goes through RemoveFromList, so it still confirms; anything
+    // else must be a status name, exactly. QuickSetStatus parses with Enum.TryParse, which also takes
+    // numbers ("999"), combinations ("Current, Planning") and padded names, none of which is a row.
+    [RelayCommand]
+    private async Task ApplyStatusPick(string? key)
+    {
+        if (key is null || key == CurrentStatusKey)
+        {
+            return;
+        }
+
+        if (key == RemoveStatusKey)
+        {
+            await RemoveFromList();
+        }
+        else if (Enum.GetNames<MediaListStatus>().Contains(key, StringComparer.Ordinal))
+        {
+            await QuickSetStatus(key);
         }
     }
 
@@ -1146,7 +1167,6 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
             if (deleted)
             {
                 ListEntry = null;
-                IsStatusExpanded = false;
                 OnPropertyChanged(nameof(CanAddToList));
                 OnPropertyChanged(nameof(HasListEntry));
                 NotifyListEntryDisplayChanged();
@@ -1302,7 +1322,6 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
                 if (shouldSave)
                 {
                     NotifyListEntryDisplayChanged();
-                    IsStatusExpanded = false;
                     await SaveCurrentEntryAsync();
                 }
                 else
@@ -1414,12 +1433,6 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
         }
 
         _ = ApplyProgressChangeAsync(rounded);
-    }
-
-    [RelayCommand]
-    private void ToggleStatusExpanded()
-    {
-        IsStatusExpanded = !IsStatusExpanded;
     }
 
     private void NotifyListEntryDisplayChanged()
