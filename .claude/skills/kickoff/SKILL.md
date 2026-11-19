@@ -124,8 +124,8 @@ Two things this protects beyond the obvious:
 burn you, so internalize it before the specific checks below: an empty search
 result is not evidence of absence, it is usually evidence you guessed the wrong
 word. Real examples from this repo — grepping `IsExpanded` found nothing and
-nearly got shipped work reported as unbuilt, because the code said
-`IsDescriptionExpanded` and `IsStatusExpanded`; an issue search for "unit test PageModel
+nearly got shipped work reported as unbuilt, because the code says
+`IsDescriptionExpanded`; an issue search for "unit test PageModel
 Services Converters" returned one issue while "unit test" returned three,
 including the one that mattered.
 
