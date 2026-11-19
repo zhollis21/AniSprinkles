@@ -148,7 +148,8 @@ function Get-AvdName {
 # force-stopped its app mid-verification. A claim is one file per serial, host-wide, recording
 # which worktree owns the device. Plain lock files, not a heartbeated lease: whether a claim is
 # stale can be read directly from the worktree folder and `adb devices`, so nothing has to keep
-# it fresh, and an idle session keeps its device until it says `release`.
+# it fresh. A session keeps its device until it says `release`, or until its work has visibly
+# finished and another worktree needs a device (see Remove-FinishedClaim, #209).
 
 $DefaultAvd       = 'pixel_10_pro_xl_-_api_37'
 $ClaimDir         = Join-Path $env:LOCALAPPDATA 'AniSprinkles\device-claims'
@@ -393,6 +394,229 @@ function Remove-OwnClaims {
     @($removed)
 }
 
+# ---------------------------------------------------------------- finished claims (#209)
+# A claim outlives the session that took it: worktrees are not removed when their PR merges, and a
+# session that is done does not run `release`. So when this worktree needs a device and nothing
+# free fits, one other worktree's claim is freed, provided that worktree's work has visibly
+# finished — all three of:
+#   - its tree is clean (`git status --porcelain` is empty);
+#   - its newest Claude Code transcript is at least $FinishedIdleMinutes old, so no turn is running
+#     there (a turn writes after every tool call; the longest silent stretch is one long build);
+#   - its branch has a merged PR whose head contains the worktree's HEAD, so nothing has been
+#     committed there since the merge.
+# Anything that cannot be read — no transcript folder, no `gh`, a timeout, a detached HEAD — counts
+# as not finished. A wrong free is loud rather than silent (the old owner's next driver command
+# says its device is claimed by another worktree), but this only ever errs towards keeping it.
+
+$FinishedIdleMinutes = 15
+# The merged-PR lookup is one REST call; past this the claim is kept rather than waited on.
+$GhTimeoutSeconds    = 10
+$script:FinishedCache = @{}
+# The HEAD each finished verdict was reached at, so the recheck under the claim lock can confirm it.
+$script:FinishedHead  = @{}
+
+# Every driver command marks its worktree as in use while it runs: one file per process, so two
+# commands in one worktree (a background `up` and a `shot`) never wait on each other. A transcript
+# can sit idle through a long silent operation, a background run or a command typed by hand, and
+# none of those may lose their device mid-way. A marker whose process is gone is ignored, so a
+# crashed run never pins a claim.
+$BusyDirName = 'tmp\driver-busy'
+
+function Enter-WorktreeBusy {
+    # Written under the claim lock, which is where Remove-FinishedClaim makes its final check: a
+    # command then either starts before that check, and is seen, or after the delete, and finds its
+    # claim gone. Never in between, with its device taken from under it.
+    $dir = Join-Path $RepoRoot $BusyDirName
+    New-Item -ItemType Directory -Force -Path $dir | Out-Null
+    $me = Get-Process -Id $PID
+    $script:BusyFile = Join-Path $dir "$PID.json"
+    # Start time alongside the pid, so a later process that reuses the pid is not mistaken for it.
+    $json = [ordered]@{ pid = $PID; startedUtcTicks = $me.StartTime.ToUniversalTime().Ticks; command = $Command } |
+        ConvertTo-Json
+    Invoke-WithClaimLock { Set-Content -LiteralPath $script:BusyFile -Value $json -Encoding utf8 }
+}
+
+function Exit-WorktreeBusy {
+    if ($script:BusyFile) { Remove-Item -LiteralPath $script:BusyFile -Force -ErrorAction SilentlyContinue }
+}
+
+function Test-WorktreeBusy([string]$Worktree) {
+    # Fails closed: a folder that cannot be listed counts as busy, and so does a marker that cannot
+    # be read while the pid in its file name is alive. Only a marker whose process is provably gone,
+    # or provably a different process, is ignored.
+    $dir = Join-Path $Worktree $BusyDirName
+    # .NET rather than Get-ChildItem, which lists a folder it may not read as empty, without an error.
+    # Only a folder that is not there means "not busy"; no separate existence probe to fail open.
+    try { $files = @([IO.Directory]::GetFiles($dir, '*.json') | ForEach-Object { [IO.FileInfo]::new($_) }) }
+    catch [IO.DirectoryNotFoundException] { return $false }
+    catch { return $true }
+    foreach ($f in $files) {
+        $m = Read-ClaimFile $f.FullName
+        $markerPid = if ($m -and $m.pid) { $m.pid } elseif ($f.BaseName -match '^\d+$') { $f.BaseName } else { $null }
+        if (-not $markerPid) { continue }
+        $p = Get-Process -Id ([int]$markerPid) -ErrorAction SilentlyContinue
+        if (-not $p) { continue }
+        if (-not $m -or -not $m.startedUtcTicks) { return $true }
+        if ("$($p.StartTime.ToUniversalTime().Ticks)" -eq "$($m.startedUtcTicks)") { return $true }
+    }
+    return $false
+}
+
+function Test-StillFinishedLocally([string]$Worktree, [string]$Head) {
+    # The local half of the finished checks, run again under the claim lock just before the delete:
+    # tree still clean, HEAD still the one the merged-PR check approved, transcript still idle. The
+    # GitHub half needs no repeat: whether a given HEAD is in a merged PR does not change.
+    if (-not $Head -or (Test-WorktreeBusy $Worktree)) { return $false }
+    $dirty = @(& git -C $Worktree status --porcelain 2>$null)
+    if ($LASTEXITCODE -ne 0 -or $dirty) { return $false }
+    $now = "$(& git -C $Worktree rev-parse HEAD 2>$null)".Trim()
+    if ($LASTEXITCODE -ne 0 -or $now -ne $Head) { return $false }
+    $idle = Get-TranscriptIdleMinutes $Worktree
+    ($null -ne $idle -and $idle -ge $FinishedIdleMinutes)
+}
+
+function Get-TranscriptIdleMinutes([string]$Worktree) {
+    # Claude Code keeps a session's transcript in ~/.claude/projects/<cwd with every
+    # non-alphanumeric character replaced by '->/<session>.jsonl (subagents in a subfolder). The
+    # newest write across them is when a session in that worktree last did anything.
+    $root = if ($env:CLAUDE_CONFIG_DIR) { $env:CLAUDE_CONFIG_DIR } else { Join-Path $HOME '.claude' }
+    $dir = Join-Path $root (Join-Path 'projects' ((Normalize-Path $Worktree) -replace '[^A-Za-z0-9]', '-'))
+    if (-not (Test-Path -LiteralPath $dir)) { return $null }
+    # A listing that fails part-way could miss the newest transcript and overstate the idle time,
+    # so any error means "unknown", which keeps the claim.
+    try {
+        $newest = Get-ChildItem -LiteralPath $dir -Filter *.jsonl -File -Recurse -ErrorAction Stop |
+                  Sort-Object LastWriteTimeUtc -Descending | Select-Object -First 1
+    } catch { return $null }
+    if (-not $newest) { return $null }
+    ((Get-Date).ToUniversalTime() - $newest.LastWriteTimeUtc).TotalMinutes
+}
+
+function Invoke-GhApi([string]$Endpoint) {
+    # `gh api` with a hard timeout, parsed JSON, or $null on any failure. Run from the repo so gh
+    # fills in {owner}/{repo}.
+    $gh = Get-Command gh -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1
+    if (-not $gh) { return $null }
+    $psi = [Diagnostics.ProcessStartInfo]::new($gh.Source)
+    $psi.ArgumentList.Add('api')
+    $psi.ArgumentList.Add($Endpoint)
+    $psi.WorkingDirectory = $RepoRoot
+    $psi.UseShellExecute = $false
+    $psi.RedirectStandardOutput = $true
+    $psi.RedirectStandardError = $true
+    $p = [Diagnostics.Process]::Start($psi)
+    try {
+        $out = $p.StandardOutput.ReadToEndAsync()
+        $null = $p.StandardError.ReadToEndAsync()
+        if (-not $p.WaitForExit($GhTimeoutSeconds * 1000)) {
+            try { $p.Kill($true) } catch { }
+            return $null
+        }
+        if ($p.ExitCode -ne 0) { return $null }
+        try { $out.Result | ConvertFrom-Json } catch { $null }
+    } finally { $p.Dispose() }
+}
+
+function Get-ClaimFinishedReason($Claim) {
+    # Why $Claim's worktree counts as finished, or $null if it does not. Cheapest check first, so
+    # the GitHub call is only made for a clean worktree that has been idle long enough. Cached per
+    # run: Get-Claims and Resolve-Target can ask more than once.
+    $wt = Normalize-Path $Claim.Worktree
+    $key = "$wt|$($Claim.Serial)"
+    if ($script:FinishedCache.ContainsKey($key)) { return $script:FinishedCache[$key] }
+    $script:FinishedCache[$key] = $null
+
+    if (Test-WorktreeBusy $wt) { return $null }
+    $dirty = @(& git -C $wt status --porcelain 2>$null)
+    if ($LASTEXITCODE -ne 0 -or $dirty) { return $null }
+    $idle = Get-TranscriptIdleMinutes $wt
+    if ($null -eq $idle -or $idle -lt $FinishedIdleMinutes) { return $null }
+    $branch = "$(& git -C $wt symbolic-ref --short -q HEAD 2>$null)".Trim()
+    if ($LASTEXITCODE -ne 0 -or -not $branch) { return $null }
+    $head = "$(& git -C $wt rev-parse HEAD 2>$null)".Trim()
+    if ($LASTEXITCODE -ne 0 -or -not $head) { return $null }
+
+    $pulls = Invoke-GhApi "repos/{owner}/{repo}/pulls?state=closed&head={owner}:$([uri]::EscapeDataString($branch))"
+    foreach ($pr in @($pulls | Where-Object { $_.merged_at -and $_.head.sha })) {
+        # HEAD at or behind the merged head: nothing was committed after the merge. Asked of GitHub
+        # rather than local git, because the PR's head is often not here at all: commits pushed
+        # from another session, and the branch deleted on merge. A HEAD that was never pushed is
+        # unknown to GitHub, the call fails, and the claim is kept.
+        $cmp = Invoke-GhApi "repos/{owner}/{repo}/compare/$head...$($pr.head.sha)"
+        if (-not $cmp -or $cmp.status -notin @('identical', 'ahead')) { continue }
+        $merged = ([datetime]$pr.merged_at).ToUniversalTime().ToString('yyyy-MM-dd HH:mm')
+        $why = "PR #$($pr.number) merged ${merged}Z, tree clean, idle $([math]::Floor($idle)) min"
+        $script:FinishedCache[$key] = $why
+        $script:FinishedHead[$key] = $head
+        return $why
+    }
+    return $null
+}
+
+function Remove-FinishedClaim {
+    # Free one other worktree's claim whose work has finished, and return its serial ($null if
+    # none). One, because the caller needs one device: freeing every finished claim at once would
+    # leave a plain command facing "more than one free device", and the rest can wait until
+    # somebody needs them. Each claim it passes over is only checked, never touched.
+    #
+    # The checks run outside the claim lock (the GitHub call can take seconds), then the delete is
+    # re-decided under it: the file must still be the same claim, and the worktree must still pass
+    # the local checks at the same HEAD (Test-StillFinishedLocally), or it is left alone.
+    #
+    # -Fits is asked of each claim's serial first, so `boot` only frees a device it can then take:
+    # one on the AVD it was asked for, booted read-only. Freeing one it cannot use would cost that
+    # worktree its claim for nothing.
+    param([scriptblock]$Fits = { $true })
+    foreach ($c in Get-Claims | Where-Object { -not $_.Mine -and (& $Fits $_.Serial) }) {
+        $why = Get-ClaimFinishedReason $c
+        if (-not $why) { continue }
+        $head = $script:FinishedHead["$(Normalize-Path $c.Worktree)|$($c.Serial)"]
+        $freed = Invoke-WithClaimLock {
+            $path = Get-ClaimPath $c.Serial
+            $now = Read-ClaimFile $path
+            if (-not $now -or (Normalize-Path $now.worktree) -ne (Normalize-Path $c.Worktree) -or
+                "$($now.claimedAt)" -ne "$($c.Claimed)") { return $null }
+            if (-not (Test-StillFinishedLocally $c.Worktree $head)) { return $null }
+            # The binding as it stands at the moment of the free, for Remove-FinishedBinding.
+            $binding = Read-ClaimFile (Join-Path $c.Worktree 'tmp\driver-binding.json')
+            Remove-Item -LiteralPath $path -Force -ErrorAction SilentlyContinue
+            [pscustomobject]@{ Binding = $binding }
+        }
+        if (-not $freed) { continue }
+        Say "freed $($c.Serial) from finished worktree $($c.Worktree) ($why)"
+        Remove-FinishedBinding $c $freed.Binding
+        return $c.Serial
+    }
+    return $null
+}
+
+function Remove-FinishedBinding {
+    # The freed worktree's DevFlow binding goes too, and with it the forward its agent port had to
+    # this device, so a port the old session still has selected leads nowhere rather than to the
+    # next owner's app. Unless the broker hands the next agent that same port, which only DevFlow
+    # could prevent. Under the forward lock alone: Bind-DevFlowAgent takes the forward lock and
+    # then the claim lock, so taking them the other way round here could deadlock against it.
+    #
+    # $Snapshot is the binding as it was when the claim was deleted, read under the claim lock. It is
+    # read again here under the forward lock, which is where `launch` publishes one, and nothing is
+    # removed unless the two are the same binding: if the freed session reclaimed the device and
+    # relaunched in between, its fresh binding and forward are left alone.
+    param($Claim, $Snapshot)
+    if (-not $Snapshot -or $Snapshot.serial -ne $Claim.Serial -or -not $Snapshot.agentPort) { return }
+    $file = Join-Path $Claim.Worktree 'tmp\driver-binding.json'
+    Invoke-WithForwardLock {
+        $b = Read-ClaimFile $file
+        if (-not $b -or $b.serial -ne $Snapshot.serial -or "$($b.agentPort)" -ne "$($Snapshot.agentPort)" -or
+            "$($b.appPid)" -ne "$($Snapshot.appPid)" -or "$($b.boundAt)" -ne "$($Snapshot.boundAt)") { return }
+        $p = [int]$b.agentPort
+        # A worktree that has bound this port since the free keeps its forward.
+        if (-not (Get-OtherBoundPorts).ContainsKey($p) -and (Get-ForwardOwner $p) -eq $Claim.Serial) {
+            & $Adb -s $Claim.Serial forward --remove "tcp:$p" *> $null
+        }
+        Remove-Item -LiteralPath $file -Force -ErrorAction SilentlyContinue
+    }
+}
+
 function Get-QemuInstances {
     # The emulator's qemu processes, parsed from their command lines. This is the only place the
     # read-only flag is visible: a writable instance of an AVD makes the emulator refuse every
@@ -467,21 +691,52 @@ function Resolve-Target {
                 (-not $ForBoot -or -not $mine.Avd -or (Test-ReadOnlySerial $mine.Serial $qemu))
     if ($mineFits) { $script:Serial = $mine.Serial; return $script:Serial }
 
-    $taken = @($claims | Where-Object { -not $_.Mine } | ForEach-Object Serial)
-    $free = @($attached | Where-Object { $taken -notcontains $_ })
-
-    if ($ForBoot) {
-        $want = if ($Avd) { $Avd } else { $DefaultAvd }
-        # A writable emulator is never picked up implicitly: it may be one somebody started by
-        # hand, and it is the reuse that let two sessions collide in the first place. Only an
-        # instance this driver booted read-only, or a physical device, is fair game.
-        $candidates = @($free | Where-Object {
-            $name = Get-AvdName $_
-            ($name -eq $want -and (Test-ReadOnlySerial $_ $qemu)) -or (-not $Avd -and -not $name)
-        })
-    } else {
-        $candidates = if ($free.Count -eq 1) { @($free) } else { @() }
+    $want = if ($Avd) { $Avd } else { $DefaultAvd }
+    # Whether `boot`/`up` may take the device $args[0]. A writable emulator is never picked up
+    # implicitly: it may be one somebody started by hand, and it is the reuse that let two sessions
+    # collide in the first place. Only an instance this driver booted read-only, or a physical
+    # device, is fair game. Online first: an unreachable device has no AVD name, and would pass as
+    # a phone. A closure, because Remove-FinishedClaim calls it too and must see these values, not
+    # whatever its own scope holds under the same names. Built by dot-sourcing $makeBootFits, so the
+    # closure captures this scope, and can be rebuilt once $attached and $qemu are re-read.
+    $makeBootFits = {
+        {
+            if ($attached -notcontains $args[0]) { return $false }
+            $name = Get-AvdName $args[0]
+            ($name -eq $want -and (Test-ReadOnlySerial $args[0] $qemu)) -or (-not $Avd -and -not $name)
+        }.GetNewClosure()
     }
+    $bootFits = . $makeBootFits
+    $pick = {
+        param($Claims)
+        $taken = @($Claims | Where-Object { -not $_.Mine } | ForEach-Object Serial)
+        $free = @($attached | Where-Object { $taken -notcontains $_ })
+        if ($ForBoot) {
+            $candidates = @($free | Where-Object { & $bootFits $_ })
+        } else {
+            $candidates = if ($free.Count -eq 1) { @($free) } else { @() }
+        }
+        [pscustomobject]@{ Free = $free; Candidates = $candidates }
+    }
+    $picked = & $pick $claims
+    # Nothing free fits. A claim left behind by a finished session is freed, so its emulator can be
+    # picked up rather than a new one booted (#209). Only now, not up front: freeing a device when
+    # one was already free would turn "a lone free device" into "more than one". For the same
+    # reason a plain command that already faces several free devices frees nothing.
+    $reapCanHelp = $ForBoot -or $picked.Free.Count -eq 0
+    if (-not $picked.Candidates -and $reapCanHelp -and -not $NoClaim -and
+        ($claims | Where-Object { -not $_.Mine }) -and
+        (Remove-FinishedClaim -Fits $(if ($ForBoot) { $bootFits } else { { $true } }))) {
+        # The free took seconds (the GitHub calls), so the devices are read again before picking:
+        # an emulator that went away or changed meanwhile is not claimed on the old reading.
+        $attached = @(Get-AttachedDevices)
+        $qemu = Get-QemuInstances
+        $bootFits = . $makeBootFits
+        $claims = @(Get-Claims)
+        $picked = & $pick $claims
+    }
+    $free = @($picked.Free)
+    $candidates = @($picked.Candidates)
 
     foreach ($c in $candidates) {
         if ($NoClaim) { $script:Serial = $c; return $script:Serial }
@@ -731,6 +986,15 @@ function Cmd-Claims {
     if (-not $claims) { Say '  (none)' }
     foreach ($c in $claims) {
         Say "  $($c.Serial)  avd=$($c.Avd)  state=$($c.State)  $(if ($c.Mine) { '<- this worktree' } else { $c.Worktree })"
+        if (-not $c.Mine) {
+            $why = Get-ClaimFinishedReason $c
+            if ($why) { Say "      finished ($why) — the next worktree that needs a device frees it" }
+            # Freeing reads Claude Code's transcript folder, whose naming is not documented. Say
+            # when it is missing, so a rename shows up here rather than as claims that never free.
+            elseif ($null -eq (Get-TranscriptIdleMinutes $c.Worktree)) {
+                Say "      no Claude session activity found for this worktree, so it is never freed as finished"
+            }
+        }
     }
     $unclaimed = @($attached | Where-Object { ($claims | ForEach-Object Serial) -notcontains $_ })
     foreach ($d in $unclaimed) { Say "  $d  avd=$(Get-AvdName $d)  unclaimed" }
@@ -763,7 +1027,9 @@ AniSprinkles driver — pwsh .claude/skills/run-app/driver.ps1 <command>
   kill-emu                  Shut this worktree's emulator down and release its claim
 
   Parallel sessions (#203) — each worktree claims its own device:
-  claims                    List every device claim on this machine, and unclaimed devices
+  claims                    List every device claim on this machine, and unclaimed devices;
+                            marks claims of finished sessions, which the next worktree
+                            needing a device frees (merged PR, clean tree, 15 min idle)
   release                   Give this worktree's claim back (the emulator keeps running)
   serial                    Print this worktree's serial, for tools that read ANDROID_SERIAL
   adb <args>                adb -s <this worktree's serial> <args>
@@ -998,11 +1264,20 @@ function Cmd-Build {
     # no rate-limit budget spent. EmbedAssembliesIntoApk makes the APK self-contained.
     Say 'dotnet build (Debug, CI stubs)'
     Push-Location $RepoRoot
+    # No resident MSBuild nodes afterwards (#209). With the C# compiler server they measured 1.2 GB
+    # right after a build, held for 10-15 minutes, and `build` is usually followed straight away by
+    # `up`, whose RAM check counts it. The compiler server still stays resident: stopping it too
+    # would make every compile cold.
+    $nodeReuse = $env:MSBUILDDISABLENODEREUSE
+    $env:MSBUILDDISABLENODEREUSE = '1'
     try {
         & dotnet build src/AniSprinkles/AniSprinkles.csproj -c Debug -f net11.0-android `
             -p:EmbedAssembliesIntoApk=true -p:CiBuild=true
         if ($LASTEXITCODE -ne 0) { throw "build failed ($LASTEXITCODE)" }
-    } finally { Pop-Location }
+    } finally {
+        $env:MSBUILDDISABLENODEREUSE = $nodeReuse
+        Pop-Location
+    }
     Say "apk: $Apk"
 }
 
@@ -1354,71 +1629,78 @@ function Cmd-DeepLink {
 $a = @($Args | Where-Object { $null -ne $_ })
 $cmd = $Command.ToLowerInvariant()
 if ($cmd -eq 'serial') { $script:SayToStderr = $true }
-# Before any adb call: `help` and `build` never touch adb, so they need no server.
-if ($cmd -notin @('help', 'build')) { Start-AdbServerDetached }
+# Mark this worktree in use for the whole command, so a long or background run is never mistaken
+# for a finished session and its device freed under it (#209). finally runs on `exit` too.
+if ($cmd -ne 'help') { Enter-WorktreeBusy }
+try {
+    # Before any adb call: `help` and `build` never touch adb, so they need no server.
+    if ($cmd -notin @('help', 'build')) { Start-AdbServerDetached }
 
-# Anything that talks to a device needs an unambiguous target resolved up front,
-# so ambiguity surfaces as "set ANDROID_SERIAL to choose" rather than adb's bare
-# "more than one device/emulator" halfway through a flow. `boot` and `up` pick
-# their own target from the requested AVD; the rest need one already attached.
-if ($cmd -notin @('help', 'env', 'build', 'boot', 'up', 'claims', 'release')) {
-    Resolve-Target -Required | Out-Null
-}
+    # Anything that talks to a device needs an unambiguous target resolved up front,
+    # so ambiguity surfaces as "set ANDROID_SERIAL to choose" rather than adb's bare
+    # "more than one device/emulator" halfway through a flow. `boot` and `up` pick
+    # their own target from the requested AVD; the rest need one already attached.
+    if ($cmd -notin @('help', 'env', 'build', 'boot', 'up', 'claims', 'release')) {
+        Resolve-Target -Required | Out-Null
+    }
 
-switch ($cmd) {
-    'help'       { Cmd-Help }
-    'env'        { Cmd-Env }
-    'boot'       { Cmd-Boot $a[0] }
-    'build'      { Cmd-Build }
-    'install'    { Cmd-Install }
-    'launch'     { Cmd-Launch }
-    'resume'     { Cmd-Launch -Resume }
-    'up'         { Cmd-Boot $a[0]; Cmd-Install; Cmd-Launch }
-    'stop'       { Adb shell am force-stop $Package; Say 'stopped' }
-    'kill-emu'   {
-        # Release only this worktree's claim, and only on the device being killed: with
-        # ANDROID_SERIAL pointing elsewhere, this worktree's own device is still in use, and
-        # another worktree's claim is that worktree's to give back. Remove-OwnClaim checks that
-        # under the claim lock, at the moment of deleting.
-        #
-        # The claim goes only once the emulator is really gone. A kill that fails, or a qemu that
-        # lingers, would otherwise hand a still-running device to the next worktree.
-        $out = @(Adb emu kill 2>&1) -join ' '
-        if ($LASTEXITCODE -ne 0) {
-            throw "adb emu kill on $($script:Serial) failed ($out). The claim is kept; once it is really down, driver.ps1 release."
+    switch ($cmd) {
+        'help'       { Cmd-Help }
+        'env'        { Cmd-Env }
+        'boot'       { Cmd-Boot $a[0] }
+        'build'      { Cmd-Build }
+        'install'    { Cmd-Install }
+        'launch'     { Cmd-Launch }
+        'resume'     { Cmd-Launch -Resume }
+        'up'         { Cmd-Boot $a[0]; Cmd-Install; Cmd-Launch }
+        'stop'       { Adb shell am force-stop $Package; Say 'stopped' }
+        'kill-emu'   {
+            # Release only this worktree's claim, and only on the device being killed: with
+            # ANDROID_SERIAL pointing elsewhere, this worktree's own device is still in use, and
+            # another worktree's claim is that worktree's to give back. Remove-OwnClaim checks that
+            # under the claim lock, at the moment of deleting.
+            #
+            # The claim goes only once the emulator is really gone. A kill that fails, or a qemu that
+            # lingers, would otherwise hand a still-running device to the next worktree.
+            $out = @(Adb emu kill 2>&1) -join ' '
+            if ($LASTEXITCODE -ne 0) {
+                throw "adb emu kill on $($script:Serial) failed ($out). The claim is kept; once it is really down, driver.ps1 release."
+            }
+            if (-not (Wait-EmulatorGone $script:Serial)) {
+                throw "$($script:Serial) still running ${KillWaitSeconds}s after the kill. The claim is kept; once it is really down, driver.ps1 release."
+            }
+            Remove-OwnClaim $script:Serial | Out-Null
+            $b = Read-Binding
+            if ($b -and $b.serial -eq $script:Serial) { Remove-Item -LiteralPath $BindingFile -Force -ErrorAction SilentlyContinue }
+            Say "emulator $($script:Serial) killed"
         }
-        if (-not (Wait-EmulatorGone $script:Serial)) {
-            throw "$($script:Serial) still running ${KillWaitSeconds}s after the kill. The claim is kept; once it is really down, driver.ps1 release."
+        'claims'     { Cmd-Claims }
+        'release'    { Cmd-Release }
+        'serial'     { Write-Output $script:Serial }
+        'adb'        { Cmd-AdbPassthrough $a }
+        'devflow'    { Cmd-DevFlow $a }
+        'shot'       { if ($a[0]) { Cmd-Shot $a[0] } else { Cmd-Shot } }
+        'key'        { if (-not $a[0]) { throw 'key needs a keycode, e.g. driver.ps1 key ENTER' }
+                       Adb shell input keyevent "KEYCODE_$($a[0].ToUpperInvariant())"; Start-Sleep -Milliseconds 800 }
+        'back'       { Adb shell input keyevent KEYCODE_BACK; Start-Sleep -Milliseconds 1000 }
+        'logcat'     { if ($a[0]) { Cmd-Logcat ([int]$a[0]) } else { Cmd-Logcat } }
+        'applog'     { Cmd-AppLog }
+        'fault'      { Cmd-Fault $a }
+        'seed-token' { Cmd-SeedToken $a }
+        'dump-token' { Cmd-DumpToken }
+        'notify'     { Cmd-Notify $a }
+        'worker-run' { Cmd-WorkerRun $a }
+        'deeplink'   { Cmd-DeepLink $a }
+        { $_ -in @('dump', 'xml', 'tap', 'tap-prefix', 'tap-desc', 'longpress', 'type', 'clear',
+                   'swipe', 'scroll-to', 'wait-for', 'goto', 'search') } {
+            Write-Host "'$Command' was removed (#170): reading and driving the UI is MAUI DevFlow's now."
+            Write-Host '  maui devflow ui tree | query --text/--automationId [--wait-until exists] | tap | fill'
+            Write-Host '  maui devflow ui scroll | gesture longpress | hit-test | screenshot'
+            Write-Host 'The old-verb mapping is in .claude/skills/run-app/SKILL.md.'
+            exit 1
         }
-        Remove-OwnClaim $script:Serial | Out-Null
-        $b = Read-Binding
-        if ($b -and $b.serial -eq $script:Serial) { Remove-Item -LiteralPath $BindingFile -Force -ErrorAction SilentlyContinue }
-        Say "emulator $($script:Serial) killed"
+        default      { Write-Host "Unknown command '$Command'`n"; Cmd-Help; exit 1 }
     }
-    'claims'     { Cmd-Claims }
-    'release'    { Cmd-Release }
-    'serial'     { Write-Output $script:Serial }
-    'adb'        { Cmd-AdbPassthrough $a }
-    'devflow'    { Cmd-DevFlow $a }
-    'shot'       { if ($a[0]) { Cmd-Shot $a[0] } else { Cmd-Shot } }
-    'key'        { if (-not $a[0]) { throw 'key needs a keycode, e.g. driver.ps1 key ENTER' }
-                   Adb shell input keyevent "KEYCODE_$($a[0].ToUpperInvariant())"; Start-Sleep -Milliseconds 800 }
-    'back'       { Adb shell input keyevent KEYCODE_BACK; Start-Sleep -Milliseconds 1000 }
-    'logcat'     { if ($a[0]) { Cmd-Logcat ([int]$a[0]) } else { Cmd-Logcat } }
-    'applog'     { Cmd-AppLog }
-    'fault'      { Cmd-Fault $a }
-    'seed-token' { Cmd-SeedToken $a }
-    'dump-token' { Cmd-DumpToken }
-    'notify'     { Cmd-Notify $a }
-    'worker-run' { Cmd-WorkerRun $a }
-    'deeplink'   { Cmd-DeepLink $a }
-    { $_ -in @('dump', 'xml', 'tap', 'tap-prefix', 'tap-desc', 'longpress', 'type', 'clear',
-               'swipe', 'scroll-to', 'wait-for', 'goto', 'search') } {
-        Write-Host "'$Command' was removed (#170): reading and driving the UI is MAUI DevFlow's now."
-        Write-Host '  maui devflow ui tree | query --text/--automationId [--wait-until exists] | tap | fill'
-        Write-Host '  maui devflow ui scroll | gesture longpress | hit-test | screenshot'
-        Write-Host 'The old-verb mapping is in .claude/skills/run-app/SKILL.md.'
-        exit 1
-    }
-    default      { Write-Host "Unknown command '$Command'`n"; Cmd-Help; exit 1 }
+} finally {
+    Exit-WorktreeBusy
 }
