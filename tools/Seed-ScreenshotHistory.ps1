@@ -139,7 +139,8 @@ try {
     finally {
         Remove-Item Env:GIT_INDEX_FILE
     }
-    $commit = Invoke-Git commit-tree $treeSha -m "Seed screenshot history from $Ref ($($sets.Count) sets, #212)"
+    # Explicit identity, as the workflows pass: a clean machine or runner has none configured.
+    $commit = Invoke-Git -c user.name=github-actions[bot] -c user.email=github-actions[bot]@users.noreply.github.com commit-tree $treeSha -m "Seed screenshot history from $Ref ($($sets.Count) sets, #212)"
     Write-Host "Built $commit"
 
     if (-not $Push) {

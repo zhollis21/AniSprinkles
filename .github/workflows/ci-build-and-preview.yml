@@ -1387,15 +1387,14 @@ jobs:
         run: |
           if [ -z "$(find screenshots -name '*.png' -type f 2>/dev/null)" ]; then
             echo "No screenshots to publish"
-            echo "has_screenshots=false" >> $GITHUB_OUTPUT
             echo "screenshots_published=false" >> $GITHUB_OUTPUT
             exit 0
           fi
-          echo "has_screenshots=true" >> $GITHUB_OUTPUT
 
           # A PR closed while this run was capturing has already had its screenshot branch
           # cleaned up by ci-screenshots-on-close.yml; publishing now would leave an orphan
-          # branch nothing ever deletes.
+          # branch nothing ever deletes. This early check saves the work; the re-check after the
+          # push below is what actually closes the race.
           PR_STATE=$(gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" --jq .state)
           if [ "$PR_STATE" != "open" ]; then
             echo "::warning::PR #$PR_NUMBER is $PR_STATE — skipping screenshot publish."
@@ -1451,6 +1450,19 @@ jobs:
             commit-tree "$TREE" -m "UI screenshots for PR #$PR_NUMBER at $HEAD_SHA")
           git push --force --quiet origin "$COMMIT:refs/heads/ci-screenshots/pr-$PR_NUMBER"
 
+          # The PR may have closed between the check above and the push, and the close workflow
+          # may already have deleted the branch this push just recreated. The close workflow only
+          # starts after the PR's state changes, so any close run that could have missed this push
+          # leaves the PR not-open by now: re-check, and clean up after ourselves if so. A delete
+          # that loses to the close workflow's own is harmless.
+          PR_STATE=$(gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" --jq .state)
+          if [ "$PR_STATE" != "open" ]; then
+            echo "::warning::PR #$PR_NUMBER closed while publishing — deleting ci-screenshots/pr-$PR_NUMBER."
+            git push --quiet origin --delete "ci-screenshots/pr-$PR_NUMBER" || true
+            echo "screenshots_published=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
           echo "screenshots_published=true" >> $GITHUB_OUTPUT
           echo "sha=$COMMIT" >> $GITHUB_OUTPUT
 
@@ -1458,7 +1470,6 @@ jobs:
         uses: actions/github-script@v8
         env:
           SCREENSHOT_SHA: ${{ steps.publish-screenshots.outputs.sha }}
-          HAS_SCREENSHOTS: ${{ steps.publish-screenshots.outputs.has_screenshots }}
           SCREENSHOTS_PUBLISHED: ${{ steps.publish-screenshots.outputs.screenshots_published }}
         with:
           script: |
@@ -1469,7 +1480,10 @@ jobs:
             const repo = context.repo.repo;
             const prNumber = context.issue.number;
             const sha = process.env.SCREENSHOT_SHA;
-            const hasScreenshots = process.env.HAS_SCREENSHOTS === 'true';
+            // Read from disk, not from the publish step: that step is skipped for fork PRs, so
+            // its outputs are unset even when the capture succeeded.
+            const hasScreenshots = fs.existsSync('screenshots')
+              && fs.readdirSync('screenshots').some(name => name.endsWith('.png'));
             const screenshotsPublished = process.env.SCREENSHOTS_PUBLISHED === 'true';
 
             // The job-level SCREENSHOTS list, one "file|label" per line.
