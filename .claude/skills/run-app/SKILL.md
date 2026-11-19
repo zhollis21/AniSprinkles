@@ -176,11 +176,15 @@ three hold:
 A fourth rule covers what the transcript can't see, such as a long silent operation, a background
 run or a command typed by hand: no driver command may be running in that worktree. Every command
 writes `tmp/driver-busy/<pid>.json` while it runs and deletes it on the way out, `exit` and errors
-included. A marker whose process is gone is ignored, so a crashed run never pins a claim. The
-local checks run again under the claim lock just before the delete, at the `HEAD` the merged-PR
-check approved, so a worktree that changes in between keeps its claim.
+included. The marker is written under the claim lock, so a command that starts while a free is
+being decided is either seen by it or finds its claim already gone, never freed mid-command. A
+marker whose process is gone is ignored, so a crashed run never pins a claim; one that can't be
+read counts while the pid in its file name is alive. The local checks run again under the claim
+lock just before the delete, at the `HEAD` the merged-PR check approved, so a worktree that
+changes in between keeps its claim.
 
-Anything unreadable (no transcript folder, no `gh`, a timeout, a detached HEAD) keeps the claim.
+Anything unreadable (no transcript folder or a listing error, no `gh`, a timeout, a detached HEAD)
+keeps the claim.
 `boot`/`up` only free a device they can then take: online, and a read-only instance of the AVD
 asked for (or a phone, with none named). Its emulator then counts as free, so `boot` reuses it
 rather than starting another. `claims` marks finished claims without freeing them, and says when

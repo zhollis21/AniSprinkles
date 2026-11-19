@@ -423,13 +423,17 @@ $script:FinishedHead  = @{}
 $BusyDirName = 'tmp\driver-busy'
 
 function Enter-WorktreeBusy {
+    # Written under the claim lock, which is where Remove-FinishedClaim makes its final check: a
+    # command then either starts before that check, and is seen, or after the delete, and finds its
+    # claim gone. Never in between, with its device taken from under it.
     $dir = Join-Path $RepoRoot $BusyDirName
     New-Item -ItemType Directory -Force -Path $dir | Out-Null
     $me = Get-Process -Id $PID
     $script:BusyFile = Join-Path $dir "$PID.json"
     # Start time alongside the pid, so a later process that reuses the pid is not mistaken for it.
-    [ordered]@{ pid = $PID; startedUtcTicks = $me.StartTime.ToUniversalTime().Ticks; command = $Command } |
-        ConvertTo-Json | Set-Content -LiteralPath $script:BusyFile -Encoding utf8
+    $json = [ordered]@{ pid = $PID; startedUtcTicks = $me.StartTime.ToUniversalTime().Ticks; command = $Command } |
+        ConvertTo-Json
+    Invoke-WithClaimLock { Set-Content -LiteralPath $script:BusyFile -Value $json -Encoding utf8 }
 }
 
 function Exit-WorktreeBusy {
@@ -437,13 +441,22 @@ function Exit-WorktreeBusy {
 }
 
 function Test-WorktreeBusy([string]$Worktree) {
+    # Fails closed: a folder that cannot be listed counts as busy, and so does a marker that cannot
+    # be read while the pid in its file name is alive. Only a marker whose process is provably gone,
+    # or provably a different process, is ignored.
     $dir = Join-Path $Worktree $BusyDirName
     if (-not (Test-Path -LiteralPath $dir)) { return $false }
-    foreach ($f in Get-ChildItem -LiteralPath $dir -Filter *.json -File -ErrorAction SilentlyContinue) {
+    # .NET rather than Get-ChildItem, which lists a folder it may not read as empty, without an error.
+    try { $files = @([IO.Directory]::GetFiles($dir, '*.json') | ForEach-Object { [IO.FileInfo]::new($_) }) }
+    catch { return $true }
+    foreach ($f in $files) {
         $m = Read-ClaimFile $f.FullName
-        if (-not $m -or -not $m.pid) { continue }
-        $p = Get-Process -Id ([int]$m.pid) -ErrorAction SilentlyContinue
-        if ($p -and "$($p.StartTime.ToUniversalTime().Ticks)" -eq "$($m.startedUtcTicks)") { return $true }
+        $markerPid = if ($m -and $m.pid) { $m.pid } elseif ($f.BaseName -match '^\d+$') { $f.BaseName } else { $null }
+        if (-not $markerPid) { continue }
+        $p = Get-Process -Id ([int]$markerPid) -ErrorAction SilentlyContinue
+        if (-not $p) { continue }
+        if (-not $m -or -not $m.startedUtcTicks) { return $true }
+        if ("$($p.StartTime.ToUniversalTime().Ticks)" -eq "$($m.startedUtcTicks)") { return $true }
     }
     return $false
 }
@@ -468,8 +481,12 @@ function Get-TranscriptIdleMinutes([string]$Worktree) {
     $root = if ($env:CLAUDE_CONFIG_DIR) { $env:CLAUDE_CONFIG_DIR } else { Join-Path $HOME '.claude' }
     $dir = Join-Path $root (Join-Path 'projects' ((Normalize-Path $Worktree) -replace '[^A-Za-z0-9]', '-'))
     if (-not (Test-Path -LiteralPath $dir)) { return $null }
-    $newest = Get-ChildItem -LiteralPath $dir -Filter *.jsonl -File -Recurse -ErrorAction SilentlyContinue |
-              Sort-Object LastWriteTimeUtc -Descending | Select-Object -First 1
+    # A listing that fails part-way could miss the newest transcript and overstate the idle time,
+    # so any error means "unknown", which keeps the claim.
+    try {
+        $newest = Get-ChildItem -LiteralPath $dir -Filter *.jsonl -File -Recurse -ErrorAction Stop |
+                  Sort-Object LastWriteTimeUtc -Descending | Select-Object -First 1
+    } catch { return $null }
     if (-not $newest) { return $null }
     ((Get-Date).ToUniversalTime() - $newest.LastWriteTimeUtc).TotalMinutes
 }
@@ -679,12 +696,16 @@ function Resolve-Target {
     # collide in the first place. Only an instance this driver booted read-only, or a physical
     # device, is fair game. Online first: an unreachable device has no AVD name, and would pass as
     # a phone. A closure, because Remove-FinishedClaim calls it too and must see these values, not
-    # whatever its own scope holds under the same names.
-    $bootFits = {
-        if ($attached -notcontains $args[0]) { return $false }
-        $name = Get-AvdName $args[0]
-        ($name -eq $want -and (Test-ReadOnlySerial $args[0] $qemu)) -or (-not $Avd -and -not $name)
-    }.GetNewClosure()
+    # whatever its own scope holds under the same names. Built by dot-sourcing $makeBootFits, so the
+    # closure captures this scope, and can be rebuilt once $attached and $qemu are re-read.
+    $makeBootFits = {
+        {
+            if ($attached -notcontains $args[0]) { return $false }
+            $name = Get-AvdName $args[0]
+            ($name -eq $want -and (Test-ReadOnlySerial $args[0] $qemu)) -or (-not $Avd -and -not $name)
+        }.GetNewClosure()
+    }
+    $bootFits = . $makeBootFits
     $pick = {
         param($Claims)
         $taken = @($Claims | Where-Object { -not $_.Mine } | ForEach-Object Serial)
@@ -705,6 +726,11 @@ function Resolve-Target {
     if (-not $picked.Candidates -and $reapCanHelp -and -not $NoClaim -and
         ($claims | Where-Object { -not $_.Mine }) -and
         (Remove-FinishedClaim -Fits $(if ($ForBoot) { $bootFits } else { { $true } }))) {
+        # The free took seconds (the GitHub calls), so the devices are read again before picking:
+        # an emulator that went away or changed meanwhile is not claimed on the old reading.
+        $attached = @(Get-AttachedDevices)
+        $qemu = Get-QemuInstances
+        $bootFits = . $makeBootFits
         $claims = @(Get-Claims)
         $picked = & $pick $claims
     }
