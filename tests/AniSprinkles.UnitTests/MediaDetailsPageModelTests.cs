@@ -630,6 +630,48 @@ public class MediaDetailsPageModelTests
         Assert.That(harness.Feedback.Toasts, Is.Empty, "the sheet stands in for Changes saved (#103)");
     }
 
+    // PR #224 review: a completion whose save failed lost its offer, so a Retry that went through
+    // completed the title silently. Both of the page's completion paths.
+    [TestCase(true)]
+    [TestCase(false)]
+    public async Task ARetriedCompletionThatSaves_StillOffers(bool viaPlusOne)
+    {
+        var harness = new Harness(h => new UpNextOffer(
+            h.Client, h.Dialogs, new RecordingUserFeedback(), new FakePreferences(), NullLogger<UpNextOffer>.Instance));
+        var entry = new MediaListEntry
+        {
+            Id = 1, MediaId = 53390, Progress = 0, ProgressVolumes = 33, Status = MediaListStatus.Current,
+        };
+        harness.ReturnsMedia(MangaMedia(chapters: 141, volumes: 34), entry);
+        harness.Client.GetMediaRelationsAsync(53390, Arg.Any<CancellationToken>()).Returns(
+            [new MediaRelationEdge { Kind = MediaRelationKind.Sequel, Node = new RelatedMedia { Id = 85199, Type = "MANGA" } }]);
+        harness.Client.SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>()).Returns(
+            _ => Task.FromException<MediaListEntry?>(new AniListApiException(ApiErrorKind.Network, "offline")),
+            call => Task.FromResult<MediaListEntry?>(call.Arg<MediaListEntry>()));
+        harness.Dialogs.ConfirmAnswer = true;
+        await harness.Model.LoadAsync(53390, entry);
+
+        if (viaPlusOne)
+        {
+            await harness.Model.IncrementProgressCommand.ExecuteAsync(null);
+        }
+        else
+        {
+            await harness.Model.ApplyStatusPickCommand.ExecuteAsync(nameof(MediaListStatus.Completed));
+        }
+
+        Assert.That(harness.Dialogs.Calls, Has.None.EqualTo(nameof(IDialogService.ShowUpNextAsync)));
+        if (harness.Feedback.LastSnackbarAction is not { } retry)
+        {
+            throw new AssertionException("The failed save offered no Retry.");
+        }
+
+        retry();
+
+        Assert.That(harness.Dialogs.Calls, Has.One.EqualTo(nameof(IDialogService.ShowUpNextAsync)));
+        Assert.That(harness.Model.ListEntry?.Status, Is.EqualTo(MediaListStatus.Completed));
+    }
+
     [Test]
     public async Task IncrementingToTheTotal_WithNothingToOffer_StillSaysChangesSaved()
     {

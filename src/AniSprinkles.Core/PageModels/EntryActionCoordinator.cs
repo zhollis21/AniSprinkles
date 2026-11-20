@@ -436,9 +436,14 @@ public sealed class EntryActionCoordinator(
 
     private async Task RetrySaveCompletedEntryAsync(MediaListEntry entry)
     {
+        // The first attempt's offer ended with its flow, so a retry that saves makes its own; without
+        // it the title was completed with no offer and no toast (PR #224 review).
+        using var upNextScope = upNext.Begin(entry);
+        upNextScope?.Start();
         try
         {
             await SaveAndAdoptIdAsync(entry);
+            await ConfirmSavedThenOfferAsync(upNextScope, "Saved");
             await InvokeAsync(host.OnEntryStatusChangedAsync, entry);
         }
         catch (Exception ex)

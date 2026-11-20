@@ -684,6 +684,28 @@ public class UpNextTests
     }
 
     [Test]
+    public async Task Coordinator_ARetriedCompletionThatSaves_StillOffers()
+    {
+        // PR #224 review: the first attempt's offer died with the failed save, so a Retry that went
+        // through completed the title silently.
+        var harness = new OfferHarness(Edge(MediaRelationKind.Sequel, 2));
+        harness.FailNextSaveFor(1);
+        harness.Dialogs.EntryActionAnswer = MediaListEntryAction.MarkCompleted;
+        await harness.Coordinator().ShowEntryMenuAsync(harness.Completed);
+        Assert.That(harness.Dialogs.Calls, Has.None.EqualTo(nameof(IDialogService.ShowUpNextAsync)));
+
+        if (harness.Feedback.LastSnackbarAction is not { } retry)
+        {
+            throw new AssertionException("The failed save offered no Retry.");
+        }
+
+        retry();
+
+        Assert.That(harness.Dialogs.Calls, Has.One.EqualTo(nameof(IDialogService.ShowUpNextAsync)));
+        Assert.That(harness.Feedback.Toasts, Is.EqualTo(["Saved"]), "Not now after the retry: the save's own toast");
+    }
+
+    [Test]
     public async Task Coordinator_MovingToAnotherList_IsNoOffer()
     {
         var harness = new OfferHarness(Edge(MediaRelationKind.Sequel, 2));
@@ -863,6 +885,7 @@ public class UpNextTests
     private sealed class OfferHarness
     {
         private readonly HashSet<int> _failingSaves = [];
+        private readonly HashSet<int> _failingOnce = [];
 
         public OfferHarness(params MediaRelationEdge[] relations)
         {
@@ -871,7 +894,7 @@ public class UpNextTests
             {
                 var entry = call.Arg<MediaListEntry>();
                 Saved.Add(new MediaListEntry { MediaId = entry.MediaId, Status = entry.Status });
-                return _failingSaves.Contains(entry.MediaId)
+                return _failingSaves.Contains(entry.MediaId) || _failingOnce.Remove(entry.MediaId)
                     ? Task.FromException<MediaListEntry?>(new AniListApiException(ApiErrorKind.Network, "offline"))
                     : Task.FromResult<MediaListEntry?>(new MediaListEntry { Id = 1000 + entry.MediaId, MediaId = entry.MediaId, Status = entry.Status });
             });
@@ -900,6 +923,9 @@ public class UpNextTests
             => Offer.Begin(completing ?? Completed) ?? throw new AssertionException("Begin returned no offer; is the setting off?");
 
         public void FailSaveFor(int mediaId) => _failingSaves.Add(mediaId);
+
+        /// <summary>The next save of this media fails; the one after it (a Retry) goes through.</summary>
+        public void FailNextSaveFor(int mediaId) => _failingOnce.Add(mediaId);
 
         public EntryActionCoordinator Coordinator(Action? onStatusChanged = null) => new(
             Client,

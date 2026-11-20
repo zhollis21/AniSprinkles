@@ -1083,10 +1083,16 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
         entry.Media ??= Media;
 
         // The dropdown never re-applies the current status, but this command is also reachable on its
-        // own, so check: only a move into Completed is a completion (#103).
-        using var upNextScope = status == MediaListStatus.Completed && entry.Status != MediaListStatus.Completed
-            ? _upNext.Begin(entry)
-            : null;
+        // own, so check: only a move into Completed is a completion (#103). Decided here, once: by the
+        // time a failed save is retried the entry already reads Completed, and re-deciding then lost
+        // the offer (PR #224 review).
+        var completing = status == MediaListStatus.Completed && entry.Status != MediaListStatus.Completed;
+        await SetStatusAsync(entry, status, completing);
+    }
+
+    private async Task SetStatusAsync(MediaListEntry entry, MediaListStatus status, bool completing)
+    {
+        using var upNextScope = completing ? _upNext.Begin(entry) : null;
         await _statusFlow.ApplyStatusChangeAsync(entry, status, upNextScope);
 
         try
@@ -1102,11 +1108,11 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, "Failed to set status for media {MediaId}.", Media.Id);
+            Logger.LogError(ex, "Failed to set status for media {MediaId}.", entry.MediaId);
             await Feedback.ShowFailureSnackbarAsync(
                 ex,
                 "Failed to update status. Please try again.",
-                retryAction: () => _ = QuickSetStatus(value));
+                retryAction: () => _ = SetStatusAsync(entry, status, completing));
         }
     }
 
@@ -1331,7 +1337,7 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
                 if (shouldSave)
                 {
                     NotifyListEntryDisplayChanged();
-                    if (await SaveCurrentEntryAsync(showSavedToast: false))
+                    if (await SaveCurrentEntryAsync(completion: true))
                     {
                         await ConfirmSavedThenOfferUpNextAsync(upNextScope, SavedToast);
                     }
@@ -1481,10 +1487,11 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
     private const string SavedToast = "Changes saved";
 
     /// <summary>
-    /// Saves the entry; <c>true</c> when the server took it. A completion passes
-    /// <paramref name="showSavedToast"/> false and confirms through the up-next offer instead.
+    /// Saves the entry; <c>true</c> when the server took it. A <paramref name="completion"/> shows no
+    /// toast (the caller confirms through the up-next offer instead), and its Retry is a completion
+    /// too, with an offer of its own.
     /// </summary>
-    private async Task<bool> SaveCurrentEntryAsync(bool showSavedToast = true)
+    private async Task<bool> SaveCurrentEntryAsync(bool completion = false)
     {
         if (Media is null || ListEntry is null)
         {
@@ -1498,7 +1505,7 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
             {
                 saved.Media = Media;
                 ListEntry = saved;
-                if (showSavedToast)
+                if (!completion)
                 {
                     await Feedback.ShowToastAsync(SavedToast);
                 }
@@ -1514,8 +1521,27 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
             await Feedback.ShowFailureSnackbarAsync(
                 ex,
                 "Failed to save changes. Please try again.",
-                retryAction: () => _ = SaveCurrentEntryAsync());
+                retryAction: completion ? () => _ = RetryCompletionSaveAsync() : () => _ = SaveCurrentEntryAsync());
             return false;
+        }
+    }
+
+    /// <summary>
+    /// Retry for a +1 completion whose save failed. The first attempt's offer ended with its flow, so
+    /// this one makes its own; a plain re-save completed the title with no offer (PR #224 review).
+    /// </summary>
+    private async Task RetryCompletionSaveAsync()
+    {
+        if (ListEntry is not { } entry)
+        {
+            return;
+        }
+
+        using var upNextScope = _upNext.Begin(entry);
+        upNextScope?.Start();
+        if (await SaveCurrentEntryAsync(completion: true))
+        {
+            await ConfirmSavedThenOfferUpNextAsync(upNextScope, SavedToast);
         }
     }
 
