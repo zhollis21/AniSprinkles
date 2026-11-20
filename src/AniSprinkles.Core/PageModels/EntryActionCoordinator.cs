@@ -53,6 +53,7 @@ public sealed class EntryActionCoordinator(
     IDialogService dialogs,
     IUserFeedback feedback,
     ListEntryStatusFlow statusFlow,
+    IUpNextOffer upNext,
     ILogger logger,
     EntryActionHost host)
 {
@@ -137,7 +138,9 @@ public sealed class EntryActionCoordinator(
             return;
         }
 
-        await statusFlow.ApplyStatusChangeAsync(candidate, targetStatus);
+        // Adding straight to Completed is a completion too (#103).
+        using var upNextScope = targetStatus == MediaListStatus.Completed ? upNext.Begin(candidate) : null;
+        await statusFlow.ApplyStatusChangeAsync(candidate, targetStatus, upNextScope);
 
         SentrySdk.AddBreadcrumb($"Add to list confirmed (media {candidate.MediaId} → {targetStatus})", "list", "user");
 
@@ -147,7 +150,7 @@ public sealed class EntryActionCoordinator(
         try
         {
             await SaveAndAdoptIdAsync(candidate);
-            await feedback.ShowToastAsync($"{title} added to {targetName}");
+            await ConfirmSavedThenOfferAsync(upNextScope, $"{title} added to {targetName}");
             await InvokeAsync(host.OnEntryStatusChangedAsync, candidate);
         }
         catch (Exception ex)
@@ -180,23 +183,25 @@ public sealed class EntryActionCoordinator(
                 await host.OnBeforeFlowAsync();
             }
 
+            using var upNextScope = upNext.Begin(entry);
+
             bool shouldSave;
             if (confirmFirst)
             {
-                shouldSave = await statusFlow.ApplyCompletionAsync(entry);
+                shouldSave = await statusFlow.ApplyCompletionAsync(entry, upNextScope);
             }
             else
             {
                 // Same mutations as the confirmed path: progress to the total, Completed, rating prompt.
                 // The menu pick is this path's confirmation, so it gets the breadcrumb the confirm would.
                 SentrySdk.AddBreadcrumb($"Mark as completed picked (entry {entry.Id})", "list", "user");
-                await statusFlow.ApplyStatusChangeAsync(entry, MediaListStatus.Completed);
+                await statusFlow.ApplyStatusChangeAsync(entry, MediaListStatus.Completed, upNextScope);
                 shouldSave = true;
             }
 
             if (shouldSave)
             {
-                await SaveCompletedEntryAsync(entry);
+                await SaveCompletedEntryAsync(entry, upNextScope);
             }
         }
         finally
@@ -351,7 +356,9 @@ public sealed class EntryActionCoordinator(
         var originalScore = entry.Score;
         var originalRepeat = entry.Repeat;
 
-        await statusFlow.ApplyStatusChangeAsync(entry, targetStatus);
+        // The status sheet never lists the entry's current status, so Completed here is a transition.
+        using var upNextScope = targetStatus == MediaListStatus.Completed ? upNext.Begin(entry) : null;
+        await statusFlow.ApplyStatusChangeAsync(entry, targetStatus, upNextScope);
 
         // Optimistic removal from source section.
         host.OnOptimisticRemove?.Invoke(entry);
@@ -361,7 +368,7 @@ public sealed class EntryActionCoordinator(
         try
         {
             await SaveAndAdoptIdAsync(entry);
-            await feedback.ShowToastAsync($"{title} moved to {targetName}");
+            await ConfirmSavedThenOfferAsync(upNextScope, $"{title} moved to {targetName}");
             await InvokeAsync(host.OnEntryStatusChangedAsync, entry);
         }
         catch (Exception ex)
@@ -384,12 +391,12 @@ public sealed class EntryActionCoordinator(
     }
 
     /// <summary>Saves a just-completed entry; status changed, so the host may need to re-section.</summary>
-    private async Task SaveCompletedEntryAsync(MediaListEntry entry)
+    private async Task SaveCompletedEntryAsync(MediaListEntry entry, UpNextScope? upNextScope)
     {
         try
         {
             await SaveAndAdoptIdAsync(entry);
-            await feedback.ShowToastAsync("Saved");
+            await ConfirmSavedThenOfferAsync(upNextScope, "Saved");
             await InvokeAsync(host.OnEntryStatusChangedAsync, entry);
         }
         catch (Exception ex)
@@ -485,6 +492,16 @@ public sealed class EntryActionCoordinator(
                 "SaveMediaListEntry returned no entry id when creating a list entry.");
         }
     }
+
+    /// <summary>
+    /// The save's toast, or the up-next sheet in its place (#103) when there is one to show, after a
+    /// save and before the host re-sections, so a Library that reloads on a status change reloads once
+    /// with the added titles in it. Never throws (neither the offer nor the toast does), which matters:
+    /// it runs inside the callers' save try blocks, and a throw there would be reported as the save
+    /// failing.
+    /// </summary>
+    private Task ConfirmSavedThenOfferAsync(UpNextScope? upNextScope, string savedToast)
+        => UpNextScope.ConfirmSavedThenOfferAsync(upNextScope, () => feedback.ShowToastAsync(savedToast));
 
     private static Task InvokeAsync(Func<MediaListEntry, Task>? callback, MediaListEntry entry)
         => callback?.Invoke(entry) ?? Task.CompletedTask;

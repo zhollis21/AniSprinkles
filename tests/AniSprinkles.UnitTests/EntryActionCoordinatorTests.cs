@@ -543,7 +543,7 @@ public class EntryActionCoordinatorTests
                 new ErrorReportService(NullLogger<ErrorReportService>.Instance),
                 Dialogs,
                 Feedback,
-                new ListEntryStatusFlow(Dialogs),
+                new ListEntryStatusFlow(Dialogs), Substitute.For<IUpNextOffer>(),
                 NullLogger.Instance,
                 Host);
         }

@@ -245,23 +245,26 @@ public class MediaDetailsPageModelTests
 
     private sealed class Harness
     {
-        public Harness()
+        public Harness(Func<Harness, IUpNextOffer>? upNext = null)
         {
             Model = new MediaDetailsPageModel(
                 Client,
                 Substitute.For<IAuthService>(),
                 new ErrorReportService(NullLogger<ErrorReportService>.Instance),
                 Substitute.For<INavigationService>(),
-                new RecordingUserFeedback(),
+                Feedback,
                 new RecordingExternalBrowser(),
                 Dialogs,
-                new ListEntryStatusFlow(Dialogs),
+                new ListEntryStatusFlow(Dialogs), upNext?.Invoke(this) ?? Substitute.For<IUpNextOffer>(),
                 Logger);
         }
 
         public IAniListClient Client { get; } = Substitute.For<IAniListClient>();
 
         public ScriptedDialogService Dialogs { get; } = new();
+
+        /// <summary>The page's own toasts and snackbars (an up-next offer under test may get its own).</summary>
+        public RecordingUserFeedback Feedback { get; } = new();
 
         public RecordingLogger<MediaDetailsPageModel> Logger { get; } = new();
 
@@ -314,6 +317,59 @@ public class MediaDetailsPageModelTests
         await harness.Client.Received(1).SaveMediaListEntryAsync(
             Arg.Is<MediaListEntry>(e => e.Status == to), Arg.Any<CancellationToken>());
         Assert.That(harness.Model.ListEntry?.Status, Is.EqualTo(to));
+    }
+
+    [Test]
+    public async Task ApplyStatusPick_Completed_OffersTheSequel_AndMarksItsRelationsCard()
+    {
+        // #103: the details page is the one completion path that bypasses EntryActionCoordinator, and
+        // the title it adds is a card on this very page, so the card's on-list pill must follow.
+        var relation = new MediaRelationEdge
+        {
+            Kind = MediaRelationKind.Sequel,
+            Node = new RelatedMedia { Id = 43, Type = "ANIME", Title = new MediaTitle { Romaji = "Season 2" } },
+        };
+        var harness = new Harness(h => new UpNextOffer(
+            h.Client, h.Dialogs, new RecordingUserFeedback(), new FakePreferences(), NullLogger<UpNextOffer>.Instance));
+        var entry = new MediaListEntry { Id = 7, MediaId = 42, Status = MediaListStatus.Current };
+        harness.ReturnsMedia(new Media { Id = 42, Type = "ANIME", Relations = [relation] }, entry);
+        harness.Client.GetMediaRelationsAsync(42, Arg.Any<CancellationToken>()).Returns(
+            [new MediaRelationEdge { Kind = MediaRelationKind.Sequel, Node = new RelatedMedia { Id = 43, Type = "ANIME" } }]);
+        harness.Client.SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>())
+            .Returns(call => new MediaListEntry
+            {
+                Id = call.Arg<MediaListEntry>().MediaId == 43 ? 900 : 7,
+                MediaId = call.Arg<MediaListEntry>().MediaId,
+                Status = call.Arg<MediaListEntry>().Status,
+            });
+        harness.Dialogs.UpNextAnswer = candidates => new UpNextChoice(candidates);
+        await harness.Model.LoadAsync(42, entry);
+
+        await harness.Model.ApplyStatusPickCommand.ExecuteAsync(nameof(MediaListStatus.Completed));
+
+        var card = harness.Model.DisplayedRelations.Single().Node;
+        Assert.That(card?.ListEntryId, Is.EqualTo(900));
+        Assert.That(card?.ListStatus, Is.EqualTo(MediaListStatus.Current));
+        // A toast draws over the sheet's buttons; the sheet opening is the confirmation (#103).
+        Assert.That(harness.Feedback.Toasts, Is.Empty);
+    }
+
+    [Test]
+    public async Task ApplyStatusPick_Completed_WithNothingToOffer_StillSaysStatusUpdated()
+    {
+        var harness = new Harness(h => new UpNextOffer(
+            h.Client, h.Dialogs, new RecordingUserFeedback(), new FakePreferences(), NullLogger<UpNextOffer>.Instance));
+        var entry = new MediaListEntry { Id = 7, MediaId = 42, Status = MediaListStatus.Current };
+        harness.ReturnsMedia(new Media { Id = 42, Type = "ANIME" }, entry);
+        harness.Client.GetMediaRelationsAsync(42, Arg.Any<CancellationToken>()).Returns([]);
+        harness.Client.SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>())
+            .Returns(call => call.Arg<MediaListEntry>());
+        await harness.Model.LoadAsync(42, entry);
+
+        await harness.Model.ApplyStatusPickCommand.ExecuteAsync(nameof(MediaListStatus.Completed));
+
+        Assert.That(harness.Dialogs.Calls, Has.None.EqualTo(nameof(IDialogService.ShowUpNextAsync)));
+        Assert.That(harness.Feedback.Toasts, Is.EqualTo(["Status updated"]));
     }
 
     [Test]
@@ -541,6 +597,59 @@ public class MediaDetailsPageModelTests
 
         Assert.That(entry.ProgressVolumes, Is.EqualTo(21));
         Assert.That(entry.Progress, Is.EqualTo(0));
+    }
+
+    [Test]
+    public async Task IncrementingToTheTotal_OffersSameTypeRelations_InReadingTerms()
+    {
+        // #103 on the details page's second completion path (+1 reaching the total), for manga: only
+        // the manga side story is offered, and the toast speaks of Reading, not Watching.
+        var feedback = new RecordingUserFeedback();
+        var harness = new Harness(h => new UpNextOffer(
+            h.Client, h.Dialogs, feedback, new FakePreferences(), NullLogger<UpNextOffer>.Instance));
+        var entry = new MediaListEntry
+        {
+            Id = 1, MediaId = 53390, Progress = 0, ProgressVolumes = 33, Status = MediaListStatus.Current,
+        };
+        harness.ReturnsMedia(MangaMedia(chapters: 141, volumes: 34), entry);
+        harness.Client.GetMediaRelationsAsync(53390, Arg.Any<CancellationToken>()).Returns(
+        [
+            new MediaRelationEdge { Kind = MediaRelationKind.SideStory, Node = new RelatedMedia { Id = 85199, Type = "MANGA", Title = new MediaTitle { Romaji = "No Regrets" } } },
+            new MediaRelationEdge { Kind = MediaRelationKind.Sequel, Node = new RelatedMedia { Id = 16498, Type = "ANIME" } },
+        ]);
+        harness.Client.SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>())
+            .Returns(call => new MediaListEntry { Id = 5, MediaId = call.Arg<MediaListEntry>().MediaId, Status = call.Arg<MediaListEntry>().Status });
+        harness.Dialogs.ConfirmAnswer = true;
+        harness.Dialogs.UpNextAnswer = candidates => new UpNextChoice(candidates);
+        await harness.Model.LoadAsync(53390, entry);
+
+        await harness.Model.IncrementProgressCommand.ExecuteAsync(null);
+
+        Assert.That(harness.Dialogs.LastUpNextCandidates?.Select(c => c.Media.Id), Is.EqualTo([85199]));
+        Assert.That(feedback.Toasts, Is.EqualTo(["No Regrets added to Reading"]));
+        Assert.That(harness.Feedback.Toasts, Is.Empty, "the sheet stands in for Changes saved (#103)");
+    }
+
+    [Test]
+    public async Task IncrementingToTheTotal_WithNothingToOffer_StillSaysChangesSaved()
+    {
+        var harness = new Harness(h => new UpNextOffer(
+            h.Client, h.Dialogs, new RecordingUserFeedback(), new FakePreferences(), NullLogger<UpNextOffer>.Instance));
+        var entry = new MediaListEntry
+        {
+            Id = 1, MediaId = 53390, Progress = 0, ProgressVolumes = 33, Status = MediaListStatus.Current,
+        };
+        harness.ReturnsMedia(MangaMedia(chapters: 141, volumes: 34), entry);
+        harness.Client.GetMediaRelationsAsync(53390, Arg.Any<CancellationToken>()).Returns([]);
+        harness.Client.SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>())
+            .Returns(call => call.Arg<MediaListEntry>());
+        harness.Dialogs.ConfirmAnswer = true;
+        await harness.Model.LoadAsync(53390, entry);
+
+        await harness.Model.IncrementProgressCommand.ExecuteAsync(null);
+
+        Assert.That(harness.Dialogs.Calls, Has.None.EqualTo(nameof(IDialogService.ShowUpNextAsync)));
+        Assert.That(harness.Feedback.Toasts, Is.EqualTo(["Changes saved"]));
     }
 
     private static Media MangaMedia(int? chapters, int? volumes) => new()

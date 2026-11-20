@@ -1,0 +1,269 @@
+﻿{
+  "operationName": "MediaRelations",
+  "variables": {
+    "id": 11757
+  },
+  "queryFingerprint": "96e3e757da32",
+  "recordedAt": "2026-11-20T02:49:07.1225109+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "id": 11757,
+        "relations": {
+          "edges": [
+            {
+              "relationType": "SOURCE",
+              "node": {
+                "id": 51479,
+                "title": {
+                  "romaji": "Sword Art Online",
+                  "english": "Sword Art Online",
+                  "native": "\u30BD\u30FC\u30C9\u30A2\u30FC\u30C8\u30FB\u30AA\u30F3\u30E9\u30A4\u30F3"
+                },
+                "isAdult": false,
+                "format": "NOVEL",
+                "type": "MANGA",
+                "status": "RELEASING",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx51479-ufMREP6e1UkT.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx51479-ufMREP6e1UkT.jpg"
+                },
+                "startDate": {
+                  "year": 2009,
+                  "month": 4,
+                  "day": 10
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SEQUEL",
+              "node": {
+                "id": 20021,
+                "title": {
+                  "romaji": "Sword Art Online: Extra Edition",
+                  "english": "Sword Art Online EXTRA EDITION",
+                  "native": "\u30BD\u30FC\u30C9\u30A2\u30FC\u30C8\u30FB\u30AA\u30F3\u30E9\u30A4\u30F3 Extra Edition"
+                },
+                "isAdult": false,
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx20021-BZA5XTwahXPj.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx20021-BZA5XTwahXPj.png"
+                },
+                "startDate": {
+                  "year": 2013,
+                  "month": 12,
+                  "day": 31
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SEQUEL",
+              "node": {
+                "id": 20594,
+                "title": {
+                  "romaji": "Sword Art Online II",
+                  "english": "Sword Art Online II",
+                  "native": "\u30BD\u30FC\u30C9\u30A2\u30FC\u30C8\u30FB\u30AA\u30F3\u30E9\u30A4\u30F3 II"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx20594-FhRgZ1H9Istt.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx20594-FhRgZ1H9Istt.jpg"
+                },
+                "startDate": {
+                  "year": 2014,
+                  "month": 7,
+                  "day": 5
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ALTERNATIVE",
+              "node": {
+                "id": 124140,
+                "title": {
+                  "romaji": "Sword Art Online: Progressive - Hoshinaki Yoru no Aria",
+                  "english": "Sword Art Online the Movie -Progressive- Aria of a Starless Night",
+                  "native": "\u5287\u5834\u7248 \u30BD\u30FC\u30C9\u30A2\u30FC\u30C8\u30FB\u30AA\u30F3\u30E9\u30A4\u30F3 \u30D7\u30ED\u30B0\u30EC\u30C3\u30B7\u30D6 \u661F\u306A\u304D\u591C\u306E\u30A2\u30EA\u30A2"
+                },
+                "isAdult": false,
+                "format": "MOVIE",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx124140-HNL0CpH6ig6y.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx124140-HNL0CpH6ig6y.png"
+                },
+                "startDate": {
+                  "year": 2021,
+                  "month": 10,
+                  "day": 30
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "OTHER",
+              "node": {
+                "id": 16099,
+                "title": {
+                  "romaji": "Sword Art Offline",
+                  "english": "Sword Art OFFline",
+                  "native": "\u305D\u30FC\u3069\u3042\u30FC\u3068\u30FB\u304A\u3075\u3089\u3044\u3093"
+                },
+                "isAdult": false,
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/16099.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/16099.jpg"
+                },
+                "startDate": {
+                  "year": 2012,
+                  "month": 10,
+                  "day": 24
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ALTERNATIVE",
+              "node": {
+                "id": 53718,
+                "title": {
+                  "romaji": "Sword Art Online: Aincrad",
+                  "english": "Sword Art Online: Aincrad",
+                  "native": "\u30BD\u30FC\u30C9\u30A2\u30FC\u30C8\u30FB\u30AA\u30F3\u30E9\u30A4\u30F3 \u30A2\u30A4\u30F3\u30AF\u30E9\u30C3\u30C9"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx53718-vP0MCWbNEfwW.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx53718-vP0MCWbNEfwW.jpg"
+                },
+                "startDate": {
+                  "year": 2010,
+                  "month": 8,
+                  "day": 10
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ALTERNATIVE",
+              "node": {
+                "id": 74733,
+                "title": {
+                  "romaji": "Sword Art Online: Fairy Dance",
+                  "english": "Sword Art Online: Fairy Dance",
+                  "native": "\u30BD\u30FC\u30C9\u30A2\u30FC\u30C8\u30FB\u30AA\u30F3\u30E9\u30A4\u30F3 \u30D5\u30A7\u30A2\u30EA\u30A3\u30FB\u30C0\u30F3\u30B9"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx74733-tt46k1Jp3kC4.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx74733-tt46k1Jp3kC4.jpg"
+                },
+                "startDate": {
+                  "year": 2012,
+                  "month": 4,
+                  "day": 10
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ALTERNATIVE",
+              "node": {
+                "id": 141165,
+                "title": {
+                  "romaji": "Sword Art Online: Re:Aincrad",
+                  "english": "Sword Art Online Re:Aincrad",
+                  "native": "\u30BD\u30FC\u30C9\u30A2\u30FC\u30C8\u30FB\u30AA\u30F3\u30E9\u30A4\u30F3 Re:Aincrad"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "RELEASING",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx141165-XizR7xI0zIrX.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx141165-XizR7xI0zIrX.png"
+                },
+                "startDate": {
+                  "year": 2021,
+                  "month": 10,
+                  "day": 27
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "CHARACTER",
+              "node": {
+                "id": 157058,
+                "title": {
+                  "romaji": "Sword Art Online: FULLDIVE - Opening Eizou",
+                  "english": null,
+                  "native": "\u30BD\u30FC\u30C9\u30A2\u30FC\u30C8\u30FB\u30AA\u30F3\u30E9\u30A4\u30F3 -\u30D5\u30EB\u30C0\u30A4\u30D6- \u30AA\u30FC\u30D7\u30CB\u30F3\u30B0\u6620\u50CF"
+                },
+                "isAdult": false,
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b157058-JCWy3wQ7tg27.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b157058-JCWy3wQ7tg27.png"
+                },
+                "startDate": {
+                  "year": 2022,
+                  "month": 11,
+                  "day": 6
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ALTERNATIVE",
+              "node": {
+                "id": 208754,
+                "title": {
+                  "romaji": "Unanswered//butterfly: Sword Art Online",
+                  "english": null,
+                  "native": "Unanswered//butterfly: Sword Art Online"
+                },
+                "isAdult": false,
+                "format": "MOVIE",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx208754-333Nyh5abrqS.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx208754-333Nyh5abrqS.png"
+                },
+                "startDate": {
+                  "year": 2026,
+                  "month": 7,
+                  "day": 10
+                },
+                "mediaListEntry": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

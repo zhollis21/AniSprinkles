@@ -1,0 +1,79 @@
+﻿{
+  "operationName": "MediaRelations",
+  "variables": {
+    "id": 189323
+  },
+  "queryFingerprint": "96e3e757da32",
+  "recordedAt": "2026-11-20T02:48:53.4091447+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "id": 189323,
+        "relations": {
+          "edges": [
+            {
+              "relationType": "SOURCE",
+              "node": {
+                "id": 122063,
+                "title": {
+                  "romaji": "Shangri-La Frontier: Kusoge Hunter, Kami ge ni Idoman to su",
+                  "english": "Shangri-La Frontier",
+                  "native": "\u30B7\u30E3\u30F3\u30B0\u30EA\u30E9\u30FB\u30D5\u30ED\u30F3\u30C6\u30A3\u30A2\u301C\u30AF\u30BD\u30B2\u30FC\u30CF\u30F3\u30BF\u30FC, \u795E\u30B2\u30FC\u306B\u6311\u307E\u3093\u3068\u3059\u301C"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "RELEASING",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx122063-j2wIvwb6yzPM.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx122063-j2wIvwb6yzPM.jpg"
+                },
+                "startDate": {
+                  "year": 2020,
+                  "month": 7,
+                  "day": 15
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "PREQUEL",
+              "node": {
+                "id": 176508,
+                "title": {
+                  "romaji": "Shangri-La Frontier 2nd Season",
+                  "english": "Shangri-La Frontier Season 2",
+                  "native": "\u30B7\u30E3\u30F3\u30B0\u30EA\u30E9\u30FB\u30D5\u30ED\u30F3\u30C6\u30A3\u30A2 2nd season"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx176508-eFad4szofm8d.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx176508-eFad4szofm8d.png"
+                },
+                "startDate": {
+                  "year": 2024,
+                  "month": 10,
+                  "day": 13
+                },
+                "mediaListEntry": {
+                  "id": 593351114,
+                  "status": "COMPLETED",
+                  "progress": 25,
+                  "progressVolumes": null,
+                  "score": 8,
+                  "repeat": 0,
+                  "notes": null,
+                  "private": false,
+                  "hiddenFromStatusLists": false
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

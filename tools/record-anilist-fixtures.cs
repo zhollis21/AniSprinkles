@@ -1003,6 +1003,10 @@ internal sealed class RecordingPlan(
             var pages = deep < options.DeepMediaCount ? options.MaxPages : 1;
             deep++;
 
+            // What completing this title asks for (#103): the up-next offer's relations read. Every
+            // list title, because any of them can be the one completed on device.
+            await SafelyAsync($"media {id} relations", () => client.GetMediaRelationsAsync(id));
+
             await SafelyAsync($"media {id} sections", async () =>
             {
                 foreach (var sort in MediaCharacterSorts)

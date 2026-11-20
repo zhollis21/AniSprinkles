@@ -1,0 +1,119 @@
+﻿{
+  "operationName": "MediaRelations",
+  "variables": {
+    "id": 21127
+  },
+  "queryFingerprint": "96e3e757da32",
+  "recordedAt": "2026-11-20T02:48:57.9896231+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "id": 21127,
+        "relations": {
+          "edges": [
+            {
+              "relationType": "PREQUEL",
+              "node": {
+                "id": 21624,
+                "title": {
+                  "romaji": "Steins;Gate: Kyoukaimenjou no Missing Link - Divide By Zero",
+                  "english": "Steins;Gate 0: 23\u03B2 -Divide by Zero-",
+                  "native": "\u30B7\u30E5\u30BF\u30A4\u30F3\u30BA\u30FB\u30B2\u30FC\u30C8 \u5883\u754C\u9762\u4E0A\u306E\u30DF\u30C3\u30B7\u30F3\u30B0\u30EA\u30F3\u30AF -Divide By Zero-"
+                },
+                "isAdult": false,
+                "format": "OVA",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21624-szbmwyC3sJos.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21624-szbmwyC3sJos.jpg"
+                },
+                "startDate": {
+                  "year": 2015,
+                  "month": 12,
+                  "day": 3
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SIDE_STORY",
+              "node": {
+                "id": 104174,
+                "title": {
+                  "romaji": "Steins;Gate 0: Kesshou Takei no Valentine - Bittersweet Day",
+                  "english": "Steins;Gate 0: Valentine\u0027s of Crystal Polymorphism -Bittersweet Intermedio-",
+                  "native": "\u30B7\u30E5\u30BF\u30A4\u30F3\u30BA\u30FB\u30B2\u30FC\u30C8 \u30BC\u30ED \u7D50\u6676\u591A\u5F62\u306E\u30D0\u30EC\u30F3\u30BF\u30A4\u30F3"
+                },
+                "isAdult": false,
+                "format": "OVA",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx104174-aoNLSSN6bT4L.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx104174-aoNLSSN6bT4L.png"
+                },
+                "startDate": {
+                  "year": 2018,
+                  "month": 12,
+                  "day": 21
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ALTERNATIVE",
+              "node": {
+                "id": 102247,
+                "title": {
+                  "romaji": "Steins;Gate 0",
+                  "english": "Steins;Gate 0",
+                  "native": "\u30B7\u30E5\u30BF\u30A4\u30F3\u30BA\u30FB\u30B2\u30FC\u30C8\u30FB\u30BC\u30ED"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx102247-CeoKtIauzYpB.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx102247-CeoKtIauzYpB.jpg"
+                },
+                "startDate": {
+                  "year": 2017,
+                  "month": 8,
+                  "day": 4
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "CHARACTER",
+              "node": {
+                "id": 91997,
+                "title": {
+                  "romaji": "Steins;Gate: Hoshikuzu no Duplet",
+                  "english": null,
+                  "native": "STEINS;GATE \u661F\u5C51\u306E\u30C7\u30E5\u30D7\u30EC\u30C3\u30C8"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx91997-ceQx220bSx25.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx91997-ceQx220bSx25.png"
+                },
+                "startDate": {
+                  "year": 2011,
+                  "month": 8,
+                  "day": 26
+                },
+                "mediaListEntry": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

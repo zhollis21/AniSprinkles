@@ -64,6 +64,7 @@ public partial class MediaBrowsePageModel : ObservableObject, IBrowseMediaItemAc
         IUserFeedback feedback,
         IDialogService dialogs,
         ListEntryStatusFlow statusFlow,
+        IUpNextOffer upNext,
         ErrorReportService errorReportService,
         TimeProvider timeProvider,
         IPreferences preferences,
@@ -83,7 +84,7 @@ public partial class MediaBrowsePageModel : ObservableObject, IBrowseMediaItemAc
 
         // Shared long-press flows; successful mutations are written back onto every row showing
         // that media so the chips stay consistent without a refetch.
-        _entryActions = new EntryActionCoordinator(aniListClient, errorReportService, dialogs, feedback, statusFlow, logger, new EntryActionHost
+        _entryActions = new EntryActionCoordinator(aniListClient, errorReportService, dialogs, feedback, statusFlow, upNext, logger, new EntryActionHost
         {
             OpenDetailsAsync = entry => NavigateToMediaByIdAsync(entry.MediaId),
             OnEntrySavedInPlaceAsync = entry => { ApplyEntryToItems(entry); return Task.CompletedTask; },

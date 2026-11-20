@@ -77,6 +77,11 @@ public sealed class RainbowAccentConverter : IValueConverter
         ["StatsChapters"]    = "RainbowOrange",
         ["StatsVolumes"]     = "RainbowCyan",
         ["StatsMangaScore"]  = "RainbowBlue",
+
+        // Settings' Up Next section (#103). Hashed, it came out the same orange as Content &
+        // Privacy directly beneath it, so the two headers read as one. Green is free among the
+        // section headers (Display blue, Privacy orange, Notifications pink, Account cyan).
+        ["UpNext"]           = "RainbowGreen",
     };
 
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)

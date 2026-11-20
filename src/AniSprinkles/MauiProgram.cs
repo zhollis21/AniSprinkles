@@ -179,6 +179,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<IExternalBrowser, MauiExternalBrowser>();
         builder.Services.AddSingleton<IOutageStateService, OutageStateService>();
         builder.Services.AddSingleton<ListEntryStatusFlow>();
+        builder.Services.AddSingleton<IUpNextOffer, UpNextOffer>();
         builder.Services.AddSingleton<ErrorReportService>();
         builder.Services.AddTransient<LoggingHandler>();
         builder.Services.AddTransient<AniListRateLimitHandler>();

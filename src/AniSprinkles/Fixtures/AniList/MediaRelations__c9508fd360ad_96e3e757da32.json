@@ -1,0 +1,44 @@
+﻿{
+  "operationName": "MediaRelations",
+  "variables": {
+    "id": 144092
+  },
+  "queryFingerprint": "96e3e757da32",
+  "recordedAt": "2026-11-20T02:48:44.2582649+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "id": 144092,
+        "relations": {
+          "edges": [
+            {
+              "relationType": "SOURCE",
+              "node": {
+                "id": 104730,
+                "title": {
+                  "romaji": "Benriya Saitou-san, Isekai ni Iku",
+                  "english": "Handyman Saitou in Another World",
+                  "native": "\u4FBF\u5229\u5C4B\u658E\u85E4\u3055\u3093\u3001\u7570\u4E16\u754C\u306B\u884C\u304F"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "RELEASING",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx104730-89vH0896A01d.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx104730-89vH0896A01d.jpg"
+                },
+                "startDate": {
+                  "year": 2018,
+                  "month": 10,
+                  "day": 12
+                },
+                "mediaListEntry": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

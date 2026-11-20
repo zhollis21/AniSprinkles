@@ -193,6 +193,9 @@ public sealed class FaultInjectingAniListClient(
     public Task<(Media? Media, MediaListEntry? ListEntry)> GetMediaAsync(int id, CancellationToken cancellationToken = default)
         => GateAsync(nameof(GetMediaAsync), ct => inner.GetMediaAsync(id, ct), cancellationToken);
 
+    public Task<IReadOnlyList<MediaRelationEdge>> GetMediaRelationsAsync(int id, CancellationToken cancellationToken = default)
+        => GateAsync(nameof(GetMediaRelationsAsync), ct => inner.GetMediaRelationsAsync(id, ct), cancellationToken);
+
     public Task<MediaListEntry?> SaveMediaListEntryAsync(MediaListEntry entry, CancellationToken cancellationToken = default)
         => GateAsync(nameof(SaveMediaListEntryAsync), ct => inner.SaveMediaListEntryAsync(entry, ct), cancellationToken);
 

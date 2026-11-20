@@ -1,0 +1,94 @@
+﻿{
+  "operationName": "MediaRelations",
+  "variables": {
+    "id": 180367
+  },
+  "queryFingerprint": "96e3e757da32",
+  "recordedAt": "2026-11-20T02:48:55.7097422+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "id": 180367,
+        "relations": {
+          "edges": [
+            {
+              "relationType": "SOURCE",
+              "node": {
+                "id": 128896,
+                "title": {
+                  "romaji": "Witch Watch",
+                  "english": "WITCH WATCH",
+                  "native": "\u30A6\u30A3\u30C3\u30C1\u30A6\u30A9\u30C3\u30C1"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx128896-VJfCBLFkm4Lb.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx128896-VJfCBLFkm4Lb.jpg"
+                },
+                "startDate": {
+                  "year": 2021,
+                  "month": 2,
+                  "day": 8
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "OTHER",
+              "node": {
+                "id": 9863,
+                "title": {
+                  "romaji": "SKET DANCE",
+                  "english": "SKET Dance",
+                  "native": "SKET DANCE"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx9863-G6dAvTVsfLRO.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx9863-G6dAvTVsfLRO.png"
+                },
+                "startDate": {
+                  "year": 2011,
+                  "month": 4,
+                  "day": 7
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SEQUEL",
+              "node": {
+                "id": 199793,
+                "title": {
+                  "romaji": "Witch Watch 2nd Season",
+                  "english": null,
+                  "native": "\u30A6\u30A3\u30C3\u30C1\u30A6\u30A9\u30C3\u30C1(\u7B2C2\u671F)"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "status": "NOT_YET_RELEASED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx199793-iud36DyT5X1K.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx199793-iud36DyT5X1K.png"
+                },
+                "startDate": {
+                  "year": 2027,
+                  "month": null,
+                  "day": null
+                },
+                "mediaListEntry": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

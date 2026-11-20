@@ -1,0 +1,104 @@
+﻿{
+  "operationName": "MediaRelations",
+  "variables": {
+    "id": 156067
+  },
+  "queryFingerprint": "96e3e757da32",
+  "recordedAt": "2026-11-20T02:48:39.6880795+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "id": 156067,
+        "relations": {
+          "edges": [
+            {
+              "relationType": "SOURCE",
+              "node": {
+                "id": 99049,
+                "title": {
+                  "romaji": "Tondemo Skill de Isekai Hourou Meshi",
+                  "english": "Campfire Cooking in Another World with My Absurd Skill",
+                  "native": "\u3068\u3093\u3067\u3082\u30B9\u30AD\u30EB\u3067\u7570\u4E16\u754C\u653E\u6D6A\u30E1\u30B7"
+                },
+                "isAdult": false,
+                "format": "NOVEL",
+                "type": "MANGA",
+                "status": "RELEASING",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx99049-qzACezDyCucJ.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx99049-qzACezDyCucJ.jpg"
+                },
+                "startDate": {
+                  "year": 2016,
+                  "month": 11,
+                  "day": 25
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ALTERNATIVE",
+              "node": {
+                "id": 98608,
+                "title": {
+                  "romaji": "Tondemo Skill de Isekai Hourou Meshi",
+                  "english": "Campfire Cooking in Another World with My Absurd Skill",
+                  "native": "\u3068\u3093\u3067\u3082\u30B9\u30AD\u30EB\u3067\u7570\u4E16\u754C\u653E\u6D6A\u30E1\u30B7"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "RELEASING",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx98608-n6PySBSH67H0.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx98608-n6PySBSH67H0.jpg"
+                },
+                "startDate": {
+                  "year": 2017,
+                  "month": 3,
+                  "day": 24
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SEQUEL",
+              "node": {
+                "id": 170577,
+                "title": {
+                  "romaji": "Tondemo Skill de Isekai Hourou Meshi 2",
+                  "english": "Campfire Cooking in Another World with my Absurd Skill Season 2",
+                  "native": "\u3068\u3093\u3067\u3082\u30B9\u30AD\u30EB\u3067\u7570\u4E16\u754C\u653E\u6D6A\u30E1\u30B72"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx170577-ocYSFAcry7ty.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx170577-ocYSFAcry7ty.jpg"
+                },
+                "startDate": {
+                  "year": 2025,
+                  "month": 10,
+                  "day": 8
+                },
+                "mediaListEntry": {
+                  "id": 541004445,
+                  "status": "COMPLETED",
+                  "progress": 12,
+                  "progressVolumes": null,
+                  "score": 9,
+                  "repeat": 0,
+                  "notes": null,
+                  "private": false,
+                  "hiddenFromStatusLists": false
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

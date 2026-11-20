@@ -116,7 +116,7 @@ public class MediaListAdultFilterReloadTests
                 Substitute.For<INavigationService>(),
                 dialogs,
                 new RecordingUserFeedback(),
-                new ListEntryStatusFlow(dialogs),
+                new ListEntryStatusFlow(dialogs), Substitute.For<IUpNextOffer>(),
                 new ManualTimeProvider(DateTimeOffset.UnixEpoch),
                 NullLogger<AnimeLibraryPageModel>.Instance);
         }

@@ -147,6 +147,7 @@ public class AiringNotificationWiringTests
             new ScriptedDialogService(),
             new RecordingUserFeedback(),
             new ListEntryStatusFlow(new ScriptedDialogService()),
+            Substitute.For<IUpNextOffer>(),
             new ManualTimeProvider(DateTimeOffset.UnixEpoch),
             NullLogger<AnimeLibraryPageModel>.Instance);
     }

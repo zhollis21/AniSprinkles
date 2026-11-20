@@ -39,7 +39,9 @@ public static class ListEntryStatusMutations
                 // full volume count (#12).
                 entry.Progress = 0;
                 entry.ProgressVolumes = 0;
-                entry.Repeat = (entry.Repeat ?? 0) + 1;
+                // The repeat count is left alone: AniList adds the rewatch itself when a Rewatching
+                // entry is saved as Completed. Adding one here as well counted every rewatch twice
+                // (confirmed on the test account 2026-11-20, #103).
                 return false;
 
             case MediaListStatus.Current:

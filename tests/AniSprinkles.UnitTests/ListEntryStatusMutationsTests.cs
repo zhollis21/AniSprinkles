@@ -11,8 +11,11 @@ public class ListEntryStatusMutationsTests
     public ListEntryStatusMutationsTests() => TestDataBuilder.ResetAppSettings();
 
     [Test]
-    public void ApplyStatusChange_Repeating_ResetsProgress_And_IncrementsRepeat()
+    public void ApplyStatusChange_Repeating_ResetsProgress_AndLeavesTheRepeatCountAlone()
     {
+        // AniList counts a rewatch itself, when a Rewatching entry is saved as Completed. Counting it
+        // here too, on the way in, recorded every rewatch twice (seen on the test account 2026-11-20:
+        // repeat 1 saved as Completed came back as 2, and Frieren went 3 → 5 over one rewatch).
         var entry = TestDataBuilder.Entry(1, progress: 12, status: MediaListStatus.Completed, episodes: 12);
         entry.Repeat = 3;
 
@@ -21,18 +24,18 @@ public class ListEntryStatusMutationsTests
         Assert.That(needsScorePrompt, Is.False);
         Assert.That(entry.Status, Is.EqualTo(MediaListStatus.Repeating));
         Assert.That(entry.Progress, Is.EqualTo(0));
-        Assert.That(entry.Repeat, Is.EqualTo(4));
+        Assert.That(entry.Repeat, Is.EqualTo(3));
     }
 
     [Test]
-    public void ApplyStatusChange_Repeating_FromNullRepeat_StartsAtOne()
+    public void ApplyStatusChange_Repeating_FromNullRepeat_StaysNull()
     {
+        // Null is "never rewatched"; the save leaves it out and AniList keeps its own count.
         var entry = TestDataBuilder.Entry(1, progress: 3, status: MediaListStatus.Current);
-        // Repeat defaults to null.
 
         ListEntryStatusMutations.ApplyStatusChange(entry, MediaListStatus.Repeating);
 
-        Assert.That(entry.Repeat, Is.EqualTo(1));
+        Assert.That(entry.Repeat, Is.Null);
     }
 
     [Test]
@@ -173,7 +176,7 @@ public class ListEntryStatusMutationsTests
         Assert.That(entry.Progress, Is.EqualTo(0));
         Assert.That(entry.ProgressVolumes, Is.EqualTo(0));
         Assert.That(entry.UsesVolumeProgress, Is.False);
-        Assert.That(entry.Repeat, Is.EqualTo(1));
+        Assert.That(entry.Repeat, Is.Null, "AniList counts the rewatch on completion");
     }
 
     [Test]

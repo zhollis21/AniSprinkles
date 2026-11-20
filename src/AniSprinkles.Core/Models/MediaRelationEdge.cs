@@ -5,6 +5,9 @@ namespace AniSprinkles.Models;
 public class MediaRelationEdge : ObservableObject, IDisplayProjection
 {
     public string? RelationType { get; set; }
+
+    /// <summary>The same relation as <see cref="RelationType"/>, typed, for code that branches on it (#103).</summary>
+    public MediaRelationKind Kind { get; set; }
     public RelatedMedia? Node { get; set; }
 
     // The card's metric badge (year), stamped by the PageModel; always shown (— when no year).

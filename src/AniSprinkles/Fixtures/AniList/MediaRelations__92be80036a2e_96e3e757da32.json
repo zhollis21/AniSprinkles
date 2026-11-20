@@ -1,0 +1,1214 @@
+﻿{
+  "operationName": "MediaRelations",
+  "variables": {
+    "id": 30013
+  },
+  "queryFingerprint": "96e3e757da32",
+  "recordedAt": "2026-11-20T02:49:14.0244321+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "id": 30013,
+        "relations": {
+          "edges": [
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 15323,
+                "title": {
+                  "romaji": "ONE PIECE: Episode of Nami - Koukaishi no Namida to Nakama no Kizuna",
+                  "english": null,
+                  "native": "ONE PIECE \u30A8\u30D4\u30BD\u30FC\u30C9\u30AA\u30D6\u30CA\u30DF \u301C\u822A\u6D77\u58EB\u306E\u6D99\u3068\u4EF2\u9593\u306E\u7D46\u301C"
+                },
+                "isAdult": false,
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/15323.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/15323.jpg"
+                },
+                "startDate": {
+                  "year": 2012,
+                  "month": 8,
+                  "day": 25
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 2107,
+                "title": {
+                  "romaji": "ONE PIECE: Episode of Alabasta - Sabaku no Oujo to Kaizoku-tachi",
+                  "english": "One Piece: The Desert Princess and the Pirates, Adventures in Alabasta",
+                  "native": "ONE PIECE \u30A8\u30D4\u30BD\u30FC\u30C9\u30AA\u30D6\u30A2\u30E9\u30D0\u30B9\u30BF \u7802\u6F20\u306E\u738B\u5973\u3068\u6D77\u8CCA\u305F\u3061"
+                },
+                "isAdult": false,
+                "format": "MOVIE",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx2107-H8bRuRRbhCIJ.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx2107-H8bRuRRbhCIJ.jpg"
+                },
+                "startDate": {
+                  "year": 2007,
+                  "month": 3,
+                  "day": 3
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 19123,
+                "title": {
+                  "romaji": "ONE PIECE: Episode of Merry - Mou Hitori no Nakama no Monogatari",
+                  "english": "One Piece: Episode of Merry - The Tale of One More Friend",
+                  "native": "ONE PIECE \u30A8\u30D4\u30BD\u30FC\u30C9\u30AA\u30D6\u30E1\u30EA\u30FC \u301C\u3082\u3046\u3072\u3068\u308A\u306E\u4EF2\u9593\u306E\u7269\u8A9E\u301C"
+                },
+                "isAdult": false,
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx19123-leET1CrSJknT.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx19123-leET1CrSJknT.jpg"
+                },
+                "startDate": {
+                  "year": 2013,
+                  "month": 8,
+                  "day": 24
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 21,
+                "title": {
+                  "romaji": "ONE PIECE",
+                  "english": "ONE PIECE",
+                  "native": "ONE PIECE"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "status": "RELEASING",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21-ELSYx3yMPcKM.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21-ELSYx3yMPcKM.jpg"
+                },
+                "startDate": {
+                  "year": 1999,
+                  "month": 10,
+                  "day": 20
+                },
+                "mediaListEntry": {
+                  "id": 593351146,
+                  "status": "CURRENT",
+                  "progress": 1163,
+                  "progressVolumes": null,
+                  "score": 8,
+                  "repeat": 0,
+                  "notes": null,
+                  "private": false,
+                  "hiddenFromStatusLists": false
+                }
+              }
+            },
+            {
+              "relationType": "ALTERNATIVE",
+              "node": {
+                "id": 35114,
+                "title": {
+                  "romaji": "Romance Dawn",
+                  "english": null,
+                  "native": "\u30ED\u30DE\u30F3\u30B9\u30C9\u30FC\u30F3"
+                },
+                "isAdult": false,
+                "format": "ONE_SHOT",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx35114-FIOTu1pOTIuC.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx35114-FIOTu1pOTIuC.png"
+                },
+                "startDate": {
+                  "year": 1996,
+                  "month": 8,
+                  "day": 4
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 101918,
+                "title": {
+                  "romaji": "ONE PIECE: Episode of Sorajima",
+                  "english": "One Piece: Episode of Skypiea",
+                  "native": "ONE PIECE \u30A8\u30D4\u30BD\u30FC\u30C9\u30AA\u30D6\u7A7A\u5CF6"
+                },
+                "isAdult": false,
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx101918-3uyCYHw1syki.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101918-3uyCYHw1syki.png"
+                },
+                "startDate": {
+                  "year": 2018,
+                  "month": 8,
+                  "day": 25
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 102533,
+                "title": {
+                  "romaji": "One Piece Party",
+                  "english": null,
+                  "native": "\u30EF\u30F3\u30D4\u30FC\u30B9 \u30D1\u30FC\u30C6\u30A3\u30FC"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx102533-YLT9eI1BH2a1.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx102533-YLT9eI1BH2a1.jpg"
+                },
+                "startDate": {
+                  "year": 2014,
+                  "month": 12,
+                  "day": 5
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 103252,
+                "title": {
+                  "romaji": "Shokugeki no Sanji",
+                  "english": "One Piece: Shokugeki no Sanji",
+                  "native": "\u98DF\u621F\u306E\u30B5\u30F3\u30B8"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx103252-58RbwHibqsJY.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx103252-58RbwHibqsJY.jpg"
+                },
+                "startDate": {
+                  "year": 2018,
+                  "month": 7,
+                  "day": 23
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 3848,
+                "title": {
+                  "romaji": "ONE PIECE THE MOVIE: Episode of Chopper Plus - Fuyu ni Saku, Kiseki no Sakura",
+                  "english": "One Piece: Episode Of Chopper \u002B: The Miracle Winter Cherry Blossom",
+                  "native": "ONE PIECE THE MOVIE \u30A8\u30D4\u30BD\u30FC\u30C9\u30AA\u30D6\u30C1\u30E7\u30C3\u30D1\u30FC\u002B \u51AC\u306B\u54B2\u304F\u3001\u5947\u8DE1\u306E\u685C"
+                },
+                "isAdult": false,
+                "format": "MOVIE",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx3848-SCnYGTn34Llt.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx3848-SCnYGTn34Llt.jpg"
+                },
+                "startDate": {
+                  "year": 2008,
+                  "month": 3,
+                  "day": 1
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SIDE_STORY",
+              "node": {
+                "id": 96427,
+                "title": {
+                  "romaji": "ONE PIECE: Loguetown-hen",
+                  "english": null,
+                  "native": "ONE PIECE \u30ED\u30FC\u30B0\u30BF\u30A6\u30F3\u7DE8"
+                },
+                "isAdult": false,
+                "format": "NOVEL",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx96427-XiDc44cTlf29.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx96427-XiDc44cTlf29.png"
+                },
+                "startDate": {
+                  "year": 2000,
+                  "month": 7,
+                  "day": 17
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SIDE_STORY",
+              "node": {
+                "id": 44414,
+                "title": {
+                  "romaji": "ONE PIECE Log Book Omake",
+                  "english": null,
+                  "native": null
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx44414-5q51CV5hp2Yh.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx44414-5q51CV5hp2Yh.jpg"
+                },
+                "startDate": {
+                  "year": 2005,
+                  "month": 4,
+                  "day": 1
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "CHARACTER",
+              "node": {
+                "id": 41926,
+                "title": {
+                  "romaji": "Jump Super Stars",
+                  "english": null,
+                  "native": "\u30B8\u30E3\u30F3\u30D7\u30B9\u30FC\u30D1\u30FC\u30B9\u30BF\u30FC\u30BA"
+                },
+                "isAdult": false,
+                "format": "ONE_SHOT",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx41926-mygJvKgWqyvr.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx41926-mygJvKgWqyvr.jpg"
+                },
+                "startDate": {
+                  "year": 2005,
+                  "month": 6,
+                  "day": 30
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SIDE_STORY",
+              "node": {
+                "id": 47152,
+                "title": {
+                  "romaji": "ONE PIECE: STRONG WORLD",
+                  "english": null,
+                  "native": "ONE PIECE STRONG WORLD"
+                },
+                "isAdult": false,
+                "format": "ONE_SHOT",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/n47152-v3AqgrZH9BsU.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/n47152-v3AqgrZH9BsU.jpg"
+                },
+                "startDate": {
+                  "year": 2009,
+                  "month": 11,
+                  "day": 30
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SIDE_STORY",
+              "node": {
+                "id": 105234,
+                "title": {
+                  "romaji": "ONE PIECE: Taose! Kaizoku Ganzack",
+                  "english": null,
+                  "native": "ONE PIECE \u5012\u305B!\u6D77\u8CCA\u30AE\u30E3\u30F3\u30B6\u30C3\u30AF"
+                },
+                "isAdult": false,
+                "format": "NOVEL",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/n105234-JtcI0SF33JYj.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/n105234-JtcI0SF33JYj.jpg"
+                },
+                "startDate": {
+                  "year": 1999,
+                  "month": 6,
+                  "day": 3
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 82353,
+                "title": {
+                  "romaji": "Chopperman",
+                  "english": "Chopperman",
+                  "native": "\u30C1\u30E7\u30C3\u30D1\u30FC\u30DE\u30F3"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/52353.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/52353.jpg"
+                },
+                "startDate": {
+                  "year": 2012,
+                  "month": 2,
+                  "day": 5
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 53251,
+                "title": {
+                  "romaji": "Chopperman: Yuke Yuke! Minna no Chopper-sensei",
+                  "english": null,
+                  "native": "\u30C1\u30E7\u30C3\u30D1\u30FC\u30DE\u30F3 \u3086\u3051\u3086\u3051!\u307F\u3093\u306A\u306E\u30C1\u30E7\u30C3\u30D1\u30FC\u5148\u751F"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/23251.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/23251.jpg"
+                },
+                "startDate": {
+                  "year": 2010,
+                  "month": 12,
+                  "day": 1
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "CHARACTER",
+              "node": {
+                "id": 30881,
+                "title": {
+                  "romaji": "CROSS EPOCH",
+                  "english": "Cross Epoch",
+                  "native": "CROSS EPOCH"
+                },
+                "isAdult": false,
+                "format": "ONE_SHOT",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx30881-Zsx7tzEFxjta.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx30881-Zsx7tzEFxjta.jpg"
+                },
+                "startDate": {
+                  "year": 2006,
+                  "month": 12,
+                  "day": 25
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 99302,
+                "title": {
+                  "romaji": "ONE PIECE: Episode of East Blue - Luffy to 4-nin no Nakama no Daibouken",
+                  "english": "One Piece: Episode of East Blue",
+                  "native": "ONE PIECE \u30A8\u30D4\u30BD\u30FC\u30C9\u30AA\u30D6\u6771\u306E\u6D77\u301C\u30EB\u30D5\u30A3\u30684\u4EBA\u306E\u4EF2\u9593\u306E\u5927\u5192\u967A!!\u301C"
+                },
+                "isAdult": false,
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx99302-b40WIhc5dylo.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx99302-b40WIhc5dylo.jpg"
+                },
+                "startDate": {
+                  "year": 2017,
+                  "month": 8,
+                  "day": 26
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ALTERNATIVE",
+              "node": {
+                "id": 30793,
+                "title": {
+                  "romaji": "WANTED! Oda Eiichiro Tanpenshuu",
+                  "english": "Wanted! Eiichiro Oda Before One Piece",
+                  "native": "WANTED\uFF01 \u5C3E\u7530\u6804\u4E00\u90CE\u77ED\u7DE8\u96C6"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30793-Zca4SIWG5j8e.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30793-Zca4SIWG5j8e.png"
+                },
+                "startDate": {
+                  "year": 1998,
+                  "month": 11,
+                  "day": 4
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 106572,
+                "title": {
+                  "romaji": "ONE PIECE: Episode of Alabasta - Sabaku no Oujo to Kaizoku-tachi",
+                  "english": null,
+                  "native": "ONE PIECE \u30A8\u30D4\u30BD\u30FC\u30C9\u30AA\u30D6\u30A2\u30E9\u30D0\u30B9\u30BF \u7802\u6F20\u306E\u738B\u5973\u3068\u6D77\u8CCA\u305F\u3061"
+                },
+                "isAdult": false,
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/n106572-k1gqIsDcqGaV.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/n106572-k1gqIsDcqGaV.jpg"
+                },
+                "startDate": {
+                  "year": 2011,
+                  "month": 8,
+                  "day": 20
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "CHARACTER",
+              "node": {
+                "id": 55146,
+                "title": {
+                  "romaji": "ONE PIECE x Toriko",
+                  "english": "One Piece x Toriko: Taste of the Devil Fruit",
+                  "native": "ONE PIECE x \u30C8\u30EA\u30B3"
+                },
+                "isAdult": false,
+                "format": "ONE_SHOT",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/25146.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/25146.jpg"
+                },
+                "startDate": {
+                  "year": 2011,
+                  "month": 4,
+                  "day": 4
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 110232,
+                "title": {
+                  "romaji": "ONE PIECE: Koby ni no Kobiyama Urifutatsu Nagi no Oohihou",
+                  "english": "ONE PIECE: Kobiyama, Coby\u2019s Look-Alike \u2014 The Great Treasure of Identical Doubles",
+                  "native": "ONE PIECE \u30B3\u30D3\u30FC\u4F3C\u306E\u5C0F\u65E5\u5C71\u30A6\u30EA\u3075\u305F\u3064\u306A\u304E\u306E\u5927\u79D8\u5B9D"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx110232-Ez6jnlZ7Pp9w.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx110232-Ez6jnlZ7Pp9w.jpg"
+                },
+                "startDate": {
+                  "year": 2018,
+                  "month": 6,
+                  "day": 18
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 110233,
+                "title": {
+                  "romaji": "Koisuru ONE PIECE",
+                  "english": "ONE PIECE in Love",
+                  "native": "\u604B\u3059\u308B\u30EF\u30F3\u30D4\u30FC\u30B9"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx110233-7Z79ZksUA043.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx110233-7Z79ZksUA043.jpg"
+                },
+                "startDate": {
+                  "year": 2018,
+                  "month": 6,
+                  "day": 18
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 110258,
+                "title": {
+                  "romaji": "CHIN PIECE",
+                  "english": null,
+                  "native": "CHIN PIECE"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx110258-w41GRxfZ1EvY.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx110258-w41GRxfZ1EvY.jpg"
+                },
+                "startDate": {
+                  "year": 2018,
+                  "month": 6,
+                  "day": 1
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 110259,
+                "title": {
+                  "romaji": "CHIN PIECE",
+                  "english": null,
+                  "native": "CHIN PIECE"
+                },
+                "isAdult": false,
+                "format": "ONE_SHOT",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/b110259-JPnbZnsNN3ZI.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/b110259-JPnbZnsNN3ZI.jpg"
+                },
+                "startDate": {
+                  "year": 2017,
+                  "month": 9,
+                  "day": 16
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 104664,
+                "title": {
+                  "romaji": "ONE PIECE novel A",
+                  "english": "One Piece: Ace\u0027s Story",
+                  "native": "ONE PIECE novel A"
+                },
+                "isAdult": false,
+                "format": "NOVEL",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx104664-SzR4e85Xjrk9.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx104664-SzR4e85Xjrk9.jpg"
+                },
+                "startDate": {
+                  "year": 2018,
+                  "month": 4,
+                  "day": 4
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 110409,
+                "title": {
+                  "romaji": "Fischer\u0027s x ONE PIECE: 7-tsunagi no Daihihou",
+                  "english": null,
+                  "native": "Fischer\u2019s\u00D7ONE PIECE 7\u3064\u306A\u304E\u306E\u5927\u79D8\u5B9D"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "RELEASING",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx110409-eOKIUyDomby6.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx110409-eOKIUyDomby6.jpg"
+                },
+                "startDate": {
+                  "year": 2018,
+                  "month": 8,
+                  "day": 3
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 110715,
+                "title": {
+                  "romaji": "ONE PIECE Gakuen!!",
+                  "english": "ONE PIECE ACADEMY",
+                  "native": "ONE PIECE\u5B66\u5712!!"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "RELEASING",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx110715-IqObMH5zGdOM.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx110715-IqObMH5zGdOM.jpg"
+                },
+                "startDate": {
+                  "year": 2019,
+                  "month": 8,
+                  "day": 2
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 113686,
+                "title": {
+                  "romaji": "ONE PIECE novel HEROINES",
+                  "english": "One Piece: Heroines",
+                  "native": "ONE PIECE novel HEROINES"
+                },
+                "isAdult": false,
+                "format": "NOVEL",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx113686-DyVNjetsbnQh.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx113686-DyVNjetsbnQh.jpg"
+                },
+                "startDate": {
+                  "year": 2019,
+                  "month": 12,
+                  "day": 13
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 117802,
+                "title": {
+                  "romaji": "ONE PIECE episode A",
+                  "english": "One Piece: Ace\u2019s Story\u2014The Manga",
+                  "native": "ONE PIECE episode A"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx117802-CsCjUyuG4lSB.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx117802-CsCjUyuG4lSB.jpg"
+                },
+                "startDate": {
+                  "year": 2020,
+                  "month": 9,
+                  "day": 16
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 119425,
+                "title": {
+                  "romaji": "ONE PIECE novel LAW",
+                  "english": "One Piece: Law\u2019s Story",
+                  "native": "ONE PIECE novel LAW"
+                },
+                "isAdult": false,
+                "format": "NOVEL",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx119425-meONVY52FtVp.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx119425-meONVY52FtVp.png"
+                },
+                "startDate": {
+                  "year": 2020,
+                  "month": 4,
+                  "day": 3
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "PREQUEL",
+              "node": {
+                "id": 125826,
+                "title": {
+                  "romaji": "Monsters",
+                  "english": "Monsters",
+                  "native": "\u30E2\u30F3\u30B9\u30BF\u30FC\u30BA"
+                },
+                "isAdult": false,
+                "format": "ONE_SHOT",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx125826-4gX5jL7LtaFi.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx125826-4gX5jL7LtaFi.png"
+                },
+                "startDate": {
+                  "year": 1994,
+                  "month": 10,
+                  "day": 30
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SIDE_STORY",
+              "node": {
+                "id": 128291,
+                "title": {
+                  "romaji": "ONE PIECE novel Mugiwara Stories",
+                  "english": null,
+                  "native": "ONE PIECE novel \u9EA6\u308F\u3089\u30B9\u30C8\u30FC\u30EA\u30FC\u30BA"
+                },
+                "isAdult": false,
+                "format": "NOVEL",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx128291-O2AEatR4HU2d.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx128291-O2AEatR4HU2d.png"
+                },
+                "startDate": {
+                  "year": 2017,
+                  "month": 7,
+                  "day": 7
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SIDE_STORY",
+              "node": {
+                "id": 128292,
+                "title": {
+                  "romaji": "Gekijouban ONE PIECE: STAMPEDE",
+                  "english": null,
+                  "native": "\u5287\u5834\u7248 ONE PIECE STAMPEDE"
+                },
+                "isAdult": false,
+                "format": "NOVEL",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx128292-q4XFNK3q4dXx.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx128292-q4XFNK3q4dXx.jpg"
+                },
+                "startDate": {
+                  "year": 2019,
+                  "month": 8,
+                  "day": 9
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ALTERNATIVE",
+              "node": {
+                "id": 134184,
+                "title": {
+                  "romaji": "Romance Dawn",
+                  "english": "Romance Dawn",
+                  "native": "\u30ED\u30DE\u30F3\u30B9\u30C9\u30FC\u30F3"
+                },
+                "isAdult": false,
+                "format": "ONE_SHOT",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx134184-25CEkbRJEzXB.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx134184-25CEkbRJEzXB.png"
+                },
+                "startDate": {
+                  "year": 1996,
+                  "month": 9,
+                  "day": 23
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ALTERNATIVE",
+              "node": {
+                "id": 138283,
+                "title": {
+                  "romaji": "ONE PIECE: Vivi no Bouken",
+                  "english": "One Piece: Naoshi Komi Covers Vivi\u0027s Adventure",
+                  "native": "ONE PIECE \u30D3\u30D3\u306E\u5192\u967A"
+                },
+                "isAdult": false,
+                "format": "ONE_SHOT",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx138283-VF4CLmoFCITJ.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx138283-VF4CLmoFCITJ.jpg"
+                },
+                "startDate": {
+                  "year": 2021,
+                  "month": 8,
+                  "day": 30
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ALTERNATIVE",
+              "node": {
+                "id": 110450,
+                "title": {
+                  "romaji": "ONE PIECE: Roronoa Zoro, Umi ni Chiru",
+                  "english": "One Piece: Boichi Covers Zolo vs. Mihawk",
+                  "native": "ONE PIECE \u30ED\u30ED\u30CE\u30A2\u30FB\u30BE\u30ED, \u6D77\u306B\u6563\u308B"
+                },
+                "isAdult": false,
+                "format": "ONE_SHOT",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx110450-qZbXzWBHysTk.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx110450-qZbXzWBHysTk.jpg"
+                },
+                "startDate": {
+                  "year": 2019,
+                  "month": 7,
+                  "day": 22
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ALTERNATIVE",
+              "node": {
+                "id": 146516,
+                "title": {
+                  "romaji": "Nami vs Kalifa",
+                  "english": null,
+                  "native": "\u30CA\u30DF vs \u30AB\u30EA\u30D5\u30A1"
+                },
+                "isAdult": false,
+                "format": "ONE_SHOT",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx146516-TkrUTWqxqWci.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx146516-TkrUTWqxqWci.jpg"
+                },
+                "startDate": {
+                  "year": 2022,
+                  "month": 4,
+                  "day": 5
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "CHARACTER",
+              "node": {
+                "id": 154266,
+                "title": {
+                  "romaji": "One Piece 1000-wa Kinen! Tokubetsu Bangai-hen",
+                  "english": null,
+                  "native": "ONE PIECE 1000\u8A71\u8A18\u5FF5! \u7279\u5225\u756A\u5916\u7DE8"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx154266-V6HV8ReEygYZ.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx154266-V6HV8ReEygYZ.png"
+                },
+                "startDate": {
+                  "year": 2021,
+                  "month": 1,
+                  "day": 4
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 466,
+                "title": {
+                  "romaji": "ONE PIECE: Taose! Kaizoku Ganzack",
+                  "english": "One Piece: Defeat the Pirate Ganzack!",
+                  "native": "ONE PIECE \u5012\u305B!\u6D77\u8CCA\u30AE\u30E3\u30F3\u30B6\u30C3\u30AF"
+                },
+                "isAdult": false,
+                "format": "OVA",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx466-bVP54I7dCB2F.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx466-bVP54I7dCB2F.jpg"
+                },
+                "startDate": {
+                  "year": 1998,
+                  "month": 7,
+                  "day": 26
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 171630,
+                "title": {
+                  "romaji": "THE ONE PIECE",
+                  "english": "THE ONE PIECE",
+                  "native": "THE ONE PIECE"
+                },
+                "isAdult": false,
+                "format": null,
+                "type": "ANIME",
+                "status": "NOT_YET_RELEASED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx171630-2U7Y5OIWwXJJ.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx171630-2U7Y5OIWwXJJ.jpg"
+                },
+                "startDate": {
+                  "year": 2027,
+                  "month": 2,
+                  "day": null
+                },
+                "mediaListEntry": {
+                  "id": 593365692,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "progressVolumes": null,
+                  "score": 0,
+                  "repeat": 0,
+                  "notes": null,
+                  "private": false,
+                  "hiddenFromStatusLists": false
+                }
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 177475,
+                "title": {
+                  "romaji": "ONE PIECE\u00D7KAWAISOUNI! Kono Boushi wo Omae ni Azukeru",
+                  "english": null,
+                  "native": "ONE PIECE\u00D7\u53EF\u54C0\u60F3\u306B\uFF01\uFF5E\u3053\u306E\u5E3D\u5B50\u3092 \u304A\u524D\u306B\u9810\u3051\u308B\uFF5E"
+                },
+                "isAdult": false,
+                "format": "ONA",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx177475-8HlvUgopoH0S.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx177475-8HlvUgopoH0S.png"
+                },
+                "startDate": {
+                  "year": 2024,
+                  "month": 3,
+                  "day": 3
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 183423,
+                "title": {
+                  "romaji": "ONE PIECE: Gyojin Tou-hen",
+                  "english": "One Piece Log: Fish-Man Island Saga",
+                  "native": "SPECIAL EDITED VERSION\u300EONE PIECE\u300F\u9B5A\u4EBA\u5CF6\u7DE8"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx183423-6Iiu194UDxD0.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx183423-6Iiu194UDxD0.jpg"
+                },
+                "startDate": {
+                  "year": 2024,
+                  "month": 11,
+                  "day": 3
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "PARENT",
+              "node": {
+                "id": 183727,
+                "title": {
+                  "romaji": "Ore no Keikaku wa Zettai ni Kuruwanai!!",
+                  "english": null,
+                  "native": "\u304A\u308C\u306E\u8A08\u753B\u306F\u7D76\u5BFE\u306B\u72C2\u308F\u306A\u3044!!"
+                },
+                "isAdult": false,
+                "format": "ONE_SHOT",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx183727-vEnORLXAeKrQ.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx183727-vEnORLXAeKrQ.jpg"
+                },
+                "startDate": {
+                  "year": 2019,
+                  "month": 8,
+                  "day": 9
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 184804,
+                "title": {
+                  "romaji": "Heya Sagashi",
+                  "english": null,
+                  "native": "\u90E8\u5C4B\u63A2\u3057"
+                },
+                "isAdult": false,
+                "format": "ONE_SHOT",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx184804-WFzessiEJliJ.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx184804-WFzessiEJliJ.jpg"
+                },
+                "startDate": {
+                  "year": 2017,
+                  "month": 12,
+                  "day": 25
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 188120,
+                "title": {
+                  "romaji": "ONE PIECE novel LAW: Kikoku no Toki",
+                  "english": null,
+                  "native": "ONE PIECE novel LAW \u9B3C\u54ED\u306E\u523B"
+                },
+                "isAdult": false,
+                "format": "NOVEL",
+                "type": "MANGA",
+                "status": "RELEASING",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx188120-9LzPyE6jXOSc.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx188120-9LzPyE6jXOSc.png"
+                },
+                "startDate": {
+                  "year": 2024,
+                  "month": 12,
+                  "day": 24
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 216503,
+                "title": {
+                  "romaji": "ONE PIECE novel ZORO",
+                  "english": null,
+                  "native": "ONE PIECE novel ZORO"
+                },
+                "isAdult": false,
+                "format": "NOVEL",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx216503-jvpjbmY5dv7b.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx216503-jvpjbmY5dv7b.jpg"
+                },
+                "startDate": {
+                  "year": 2024,
+                  "month": 6,
+                  "day": 4
+                },
+                "mediaListEntry": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

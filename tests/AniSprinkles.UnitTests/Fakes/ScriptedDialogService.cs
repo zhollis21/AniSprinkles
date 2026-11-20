@@ -86,6 +86,19 @@ public sealed class ScriptedDialogService : IDialogService
         return Task.FromResult(RatingAnswer);
     }
 
+    /// <summary>What the up-next sheet returns; null is Not now.</summary>
+    public Func<IReadOnlyList<UpNextCandidate>, UpNextChoice?>? UpNextAnswer { get; set; }
+
+    /// <summary>The candidates the last up-next sheet was shown.</summary>
+    public IReadOnlyList<UpNextCandidate>? LastUpNextCandidates { get; private set; }
+
+    public Task<UpNextChoice?> ShowUpNextAsync(string completedTitle, IReadOnlyList<UpNextCandidate> candidates)
+    {
+        Record(nameof(ShowUpNextAsync));
+        LastUpNextCandidates = candidates;
+        return Task.FromResult(UpNextAnswer?.Invoke(candidates));
+    }
+
     /// <summary>Copy from the last ConfirmAsync call, so tests can assert user-visible wording.</summary>
     public string? LastConfirmTitle { get; private set; }
 

@@ -402,7 +402,7 @@ public class SearchPageModelTests
                 Substitute.For<INavigationService>(),
                 Feedback,
                 Dialogs,
-                new ListEntryStatusFlow(Dialogs),
+                new ListEntryStatusFlow(Dialogs), Substitute.For<IUpNextOffer>(),
                 new ErrorReportService(NullLogger<ErrorReportService>.Instance),
                 Preferences,
                 _time,

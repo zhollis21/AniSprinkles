@@ -156,6 +156,55 @@ public class AniListClientOperationsTests
         Assert.That(entry, Is.Null);
     }
 
+    // ── Media relations (#103) ───────────────────────────────────────
+
+    [Test]
+    public async Task GetMediaRelations_TypesTheRelationAndCarriesTheViewersEntryPerNode()
+    {
+        // The typed Kind is what the up-next filter branches on, and the per-node entry is what stops
+        // it offering (and then overwriting) something already on the list.
+        var harness = new Harness().Returns("MediaRelations", """
+            {"Media":{"id":9,"relations":{"edges":[
+                {"relationType":"SEQUEL","node":{"id":10,"type":"ANIME","status":"FINISHED",
+                    "title":{"romaji":"Season 2"},"mediaListEntry":null}},
+                {"relationType":"SIDE_STORY","node":{"id":11,"type":"ANIME","isAdult":false,
+                    "mediaListEntry":{"id":77,"status":"COMPLETED","progress":1,"score":8,"repeat":2,"notes":"n","private":true}}},
+                {"relationType":"SOMETHING_NEW","node":{"id":12,"type":"ANIME"}},
+                {"relationType":"SEQUEL","node":null}
+            ]}}}
+            """);
+
+        var edges = await harness.Client.GetMediaRelationsAsync(9, TestContext.CurrentContext.CancellationToken);
+
+        Assert.That(harness.Handler.Last.IntVariable("id"), Is.EqualTo(9));
+        Assert.That(edges.Select(e => e.Node?.Id), Is.EqualTo([10, 11, 12]));
+        Assert.That(edges.Select(e => e.Kind), Is.EqualTo(
+            [MediaRelationKind.Sequel, MediaRelationKind.SideStory, MediaRelationKind.Unknown]));
+        Assert.That(edges[1].RelationType, Is.EqualTo("Side Story"));
+        Assert.That(edges[0].Node?.ListStatus, Is.Null);
+        Assert.That(edges[1].Node?.ListStatus, Is.EqualTo(MediaListStatus.Completed));
+        Assert.That(edges[1].Node?.ListEntryId, Is.EqualTo(77));
+        // The whole entry, for moving it (#103): a move saves every field back, so it must have read them.
+        var whole = edges[1].Node?.ViewerEntry;
+        Assert.That(whole?.Id, Is.EqualTo(77));
+        Assert.That(whole?.MediaId, Is.EqualTo(11), "the node is the media; the entry selection has no mediaId");
+        Assert.That(whole?.Score, Is.EqualTo(8));
+        Assert.That(whole?.Repeat, Is.EqualTo(2));
+        Assert.That(whole?.Notes, Is.EqualTo("n"));
+        Assert.That(whole?.Private, Is.True);
+        Assert.That(edges[0].Node?.ViewerEntry, Is.Null);
+    }
+
+    [Test]
+    public async Task GetMediaRelations_ForAnUnknownId_IsEmpty()
+    {
+        var harness = new Harness().Returns("MediaRelations", """{"Media":null}""");
+
+        var edges = await harness.Client.GetMediaRelationsAsync(9, TestContext.CurrentContext.CancellationToken);
+
+        Assert.That(edges, Is.Empty);
+    }
+
     // ── Saving a list entry ──────────────────────────────────────────
 
     [Test]

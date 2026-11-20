@@ -259,6 +259,7 @@ public partial class SettingsPageModel : ObservableObject, IAuthActions
         _feedback = feedback;
         _browser = browser;
         _logger = logger;
+        LoadUpNextPreferences();
     }
 
     public async Task LoadAsync()

@@ -211,6 +211,10 @@ public sealed class CachingAniListClient : IAniListClient
         return result;
     }
 
+    // Not cached: the per-node list-entry snapshot has to be fresh (see the interface).
+    public Task<IReadOnlyList<MediaRelationEdge>> GetMediaRelationsAsync(int id, CancellationToken cancellationToken = default)
+        => _inner.GetMediaRelationsAsync(id, cancellationToken);
+
     public Task<MediaListEntry?> SaveMediaListEntryAsync(MediaListEntry entry, CancellationToken cancellationToken = default)
         => _inner.SaveMediaListEntryAsync(entry, cancellationToken);
 

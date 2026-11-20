@@ -80,6 +80,12 @@ public sealed class MauiDialogService(ILogger<MauiDialogService> logger) : IDial
         return result as double?;
     }
 
+    public async Task<UpNextChoice?> ShowUpNextAsync(string completedTitle, IReadOnlyList<UpNextCandidate> candidates)
+    {
+        var result = await ShowAsync(new UpNextPopup(completedTitle, candidates), BottomSheetPopupOptions);
+        return result as UpNextChoice;
+    }
+
     public Task<bool> ConfirmAsync(
         string title,
         string message,

@@ -1,0 +1,104 @@
+﻿{
+  "operationName": "MediaRelations",
+  "variables": {
+    "id": 101165
+  },
+  "queryFingerprint": "96e3e757da32",
+  "recordedAt": "2026-11-20T02:48:46.5443404+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "id": 101165,
+        "relations": {
+          "edges": [
+            {
+              "relationType": "SOURCE",
+              "node": {
+                "id": 87320,
+                "title": {
+                  "romaji": "Goblin Slayer",
+                  "english": "Goblin Slayer!",
+                  "native": "\u30B4\u30D6\u30EA\u30F3\u30B9\u30EC\u30A4\u30E4\u30FC"
+                },
+                "isAdult": false,
+                "format": "NOVEL",
+                "type": "MANGA",
+                "status": "RELEASING",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx87320-Q7A3KfMPykcm.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx87320-Q7A3KfMPykcm.jpg"
+                },
+                "startDate": {
+                  "year": 2016,
+                  "month": 2,
+                  "day": 15
+                },
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SEQUEL",
+              "node": {
+                "id": 108623,
+                "title": {
+                  "romaji": "Goblin Slayer: GOBLIN\u0027S CROWN",
+                  "english": "GOBLIN SLAYER -GOBLIN\u2019S CROWN-",
+                  "native": "\u30B4\u30D6\u30EA\u30F3\u30B9\u30EC\u30A4\u30E4\u30FC -GOBLIN\u0027S CROWN-"
+                },
+                "isAdult": false,
+                "format": "MOVIE",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx108623-pREPeutedpc2.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx108623-pREPeutedpc2.jpg"
+                },
+                "startDate": {
+                  "year": 2020,
+                  "month": 2,
+                  "day": 1
+                },
+                "mediaListEntry": {
+                  "id": 609538671,
+                  "status": "COMPLETED",
+                  "progress": 1,
+                  "progressVolumes": null,
+                  "score": 6,
+                  "repeat": 0,
+                  "notes": null,
+                  "private": false,
+                  "hiddenFromStatusLists": false
+                }
+              }
+            },
+            {
+              "relationType": "ALTERNATIVE",
+              "node": {
+                "id": 87321,
+                "title": {
+                  "romaji": "Goblin Slayer",
+                  "english": "Goblin Slayer",
+                  "native": "\u30B4\u30D6\u30EA\u30F3\u30B9\u30EC\u30A4\u30E4\u30FC"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "RELEASING",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx87321-ijdB0SNr1JSs.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx87321-ijdB0SNr1JSs.jpg"
+                },
+                "startDate": {
+                  "year": 2016,
+                  "month": 5,
+                  "day": 25
+                },
+                "mediaListEntry": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

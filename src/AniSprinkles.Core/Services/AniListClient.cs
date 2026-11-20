@@ -270,6 +270,21 @@ public class AniListClient : IAniListClient
         return (media, listEntry);
     }
 
+    public async Task<IReadOnlyList<MediaRelationEdge>> GetMediaRelationsAsync(int id, CancellationToken cancellationToken = default)
+    {
+        // Token when present: the per-node mediaListEntry is the viewer's, and it is the whole reason
+        // this query exists (#103). Anonymous still answers, just with every entry null.
+        var token = await _authService.GetAccessTokenAsync(cancellationToken).ConfigureAwait(false);
+        var data = await SendAsync<MediaData>(
+            "MediaRelations",
+            MediaRelationsQuery,
+            new { id },
+            token,
+            cancellationToken).ConfigureAwait(false);
+
+        return MapRelationEdges(data.Media?.Relations);
+    }
+
     public async Task<MediaListEntry?> SaveMediaListEntryAsync(MediaListEntry entry, CancellationToken cancellationToken = default)
     {
         var token = await RequireAccessTokenAsync(cancellationToken).ConfigureAwait(false);
@@ -1041,14 +1056,7 @@ public class AniListClient : IAniListClient
                 .Where(link => link.IsDisabled is not true)
                 .Take(12)
                 .ToList() ?? [],
-            Relations = dto.Relations?.Edges?
-                .Where(e => e.Node is not null)
-                .Select(e => new MediaRelationEdge
-                {
-                    RelationType = FormatRelationType(e.RelationType),
-                    Node = MapRelatedMedia(e.Node!),
-                })
-                .ToList() ?? [],
+            Relations = MapRelationEdges(dto.Relations),
             Characters = dto.Characters?.Edges?
                 .Where(e => e.Node is not null)
                 .Select(e => new CharacterEdge
@@ -1101,6 +1109,31 @@ public class AniListClient : IAniListClient
             StaffPageInfo = MapPageInfo(dto.Staff?.PageInfo),
             RecommendationsPageInfo = MapPageInfo(dto.Recommendations?.PageInfo),
         };
+    }
+
+    private static List<MediaRelationEdge> MapRelationEdges(MediaRelationConnectionDto? relations) =>
+        relations?.Edges?
+            .Select(e => e.Node is { } node
+                ? new MediaRelationEdge
+                {
+                    RelationType = FormatRelationType(e.RelationType),
+                    Kind = MediaRelationKindExtensions.ParseMediaRelationKind(e.RelationType),
+                    Node = WithViewerEntry(MapRelatedMedia(node), node),
+                }
+                : null)
+            .OfType<MediaRelationEdge>()
+            .ToList() ?? [];
+
+    private static RelatedMedia WithViewerEntry(RelatedMedia mapped, RelatedMediaDto dto)
+    {
+        if (MapEntry(dto.MediaListEntry) is { } entry)
+        {
+            // The relation's mediaListEntry selection has no mediaId; the node is the media.
+            entry.MediaId = dto.Id;
+            mapped.ViewerEntry = entry;
+        }
+
+        return mapped;
     }
 
     private static RelatedMedia MapRelatedMedia(RelatedMediaDto dto) => new()
@@ -2117,6 +2150,33 @@ query BrowseAnime($page: Int!, $perPage: Int!, $sort: [MediaSort], $status: Medi
     media(type: ANIME, sort: $sort, status: $status, season: $season, seasonYear: $seasonYear, isAdult: $isAdult, format: $format) { ...browseMedia }
   }
 }" + BrowseMediaFragment;
+
+    // The relations section of MediaQuery, plus the viewer's whole list entry per node (#103): the
+    // up-next offer moves entries that are already on the list, and a save sends every field back,
+    // so every field it sends has to be read first. MediaQuery keeps its four-field entry; widening
+    // it would re-record every Media fixture for a section the details page only pills.
+    private const string MediaRelationsQuery = @"
+query MediaRelations($id: Int!) {
+  Media(id: $id) {
+    id
+    relations {
+      edges {
+        relationType(version: 3)
+        node {
+          id
+          title { romaji english native }
+          isAdult
+          format
+          type
+          status
+          coverImage { medium large }
+          startDate { year month day }
+          mediaListEntry { id status progress progressVolumes score repeat notes private hiddenFromStatusLists }
+        }
+      }
+    }
+  }
+}";
 
     private const string MediaQuery = @"
 query Media($id: Int!) {

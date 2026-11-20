@@ -136,7 +136,7 @@ public class DiscoverPageModelTests
                 Substitute.For<INavigationService>(),
                 Feedback,
                 dialogs,
-                new ListEntryStatusFlow(dialogs),
+                new ListEntryStatusFlow(dialogs), Substitute.For<IUpNextOffer>(),
                 new ErrorReportService(NullLogger<ErrorReportService>.Instance),
                 new ManualTimeProvider(DateTimeOffset.UnixEpoch),
                 NullLogger<DiscoverPageModel>.Instance);
