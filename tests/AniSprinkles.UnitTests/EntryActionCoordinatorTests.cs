@@ -362,6 +362,133 @@ public class EntryActionCoordinatorTests
     }
 
     [Test]
+    public async Task MarkCompletedMenuPick_CompletesWithoutAskingAgain()
+    {
+        // "You've watched all 12 episodes. Mark as Completed?" is a question for the +1 / edit-progress
+        // paths, where reaching the cap is a side effect. Picking "Mark as completed" from the menu
+        // already answered it, and the user may be nowhere near the last episode.
+        var harness = new Harness(episodes: 12);
+        harness.Entry.Progress = 3;
+        harness.Dialogs.EntryActionAnswer = MediaListEntryAction.MarkCompleted;
+        harness.Dialogs.ConfirmAnswer = false; // were the confirm shown, this would cancel the flow
+        harness.Dialogs.RatingAnswer = 8;
+        harness.SaveEchoesBack();
+
+        await harness.Coordinator.ShowEntryMenuAsync(harness.Entry);
+
+        Assert.That(harness.Dialogs.Calls, Does.Not.Contain(nameof(IDialogService.ConfirmAsync)));
+        Assert.That(harness.Dialogs.Calls, Does.Contain(nameof(IDialogService.ShowRatingAsync)));
+        Assert.That(harness.Entry.Status, Is.EqualTo(MediaListStatus.Completed));
+        Assert.That(harness.Entry.Progress, Is.EqualTo(12));
+        Assert.That(harness.Entry.Score, Is.EqualTo(8));
+        Assert.That(harness.StatusChanged, Is.EqualTo([harness.Entry]));
+    }
+
+    [Test]
+    public async Task MarkCompletedMenuPick_WhenTheScorePromptIsSkipped_StillCompletesAndKeepsTheScore()
+    {
+        // With the confirm gone, the rating popup is the only popup left on this path. Dismissing it
+        // must not read as cancelling, or the menu pick would do nothing at all.
+        var harness = new Harness(episodes: 12);
+        harness.Entry.Progress = 3;
+        harness.Entry.Score = 6;
+        harness.Dialogs.EntryActionAnswer = MediaListEntryAction.MarkCompleted;
+        harness.Dialogs.RatingAnswer = null;
+        harness.SaveEchoesBack();
+
+        await harness.Coordinator.ShowEntryMenuAsync(harness.Entry);
+
+        Assert.That(harness.Entry.Status, Is.EqualTo(MediaListStatus.Completed));
+        Assert.That(harness.Entry.Progress, Is.EqualTo(12));
+        Assert.That(harness.Entry.Score, Is.EqualTo(6));
+        await harness.Client.Received(1).SaveMediaListEntryAsync(harness.Entry, Arg.Any<CancellationToken>());
+        Assert.That(harness.Feedback.Toasts, Does.Contain("Saved"));
+    }
+
+    [Test]
+    public async Task MarkCompletedMenuPick_OnAMangaVolumeReader_FillsVolumesAndLeavesChapters()
+    {
+        // The menu path goes through the status-change mutation rather than ApplyCompletionAsync, so
+        // it needs its own proof that it writes the counter the reader actually uses (#12).
+        var harness = new Harness();
+        harness.MakeManga(chapters: 141, volumes: 34);
+        harness.Entry.Progress = 0;
+        harness.Entry.ProgressVolumes = 20;
+        harness.Dialogs.EntryActionAnswer = MediaListEntryAction.MarkCompleted;
+        harness.SaveEchoesBack();
+
+        await harness.Coordinator.ShowEntryMenuAsync(harness.Entry);
+
+        Assert.That(harness.Dialogs.Calls, Does.Not.Contain(nameof(IDialogService.ConfirmAsync)));
+        Assert.That(harness.Entry.Status, Is.EqualTo(MediaListStatus.Completed));
+        Assert.That(harness.Entry.ProgressVolumes, Is.EqualTo(34));
+        Assert.That(harness.Entry.Progress, Is.EqualTo(0));
+    }
+
+    [Test]
+    public async Task MarkCompletedMenuPick_WhileACompletionIsAlreadyOpen_DoesNotRunASecondTime()
+    {
+        // A +1 that reaches the cap holds its confirm open; a menu pick landing meanwhile must not
+        // complete and save underneath it. Skipping the confirm must not skip the guard too.
+        var harness = new Harness(episodes: 12);
+        harness.Entry.Progress = 11;
+        harness.SaveEchoesBack();
+
+        var gate = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var opened = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        harness.Dialogs.ConfirmAnswer = false;
+        harness.Dialogs.BeforeConfirmAsync = async () =>
+        {
+            opened.TrySetResult();
+            await gate.Task;
+        };
+
+        var plusOneCompletion = harness.Coordinator.RunCompletionFlowAsync(harness.Entry);
+        await opened.Task;
+
+        harness.Dialogs.EntryActionAnswer = MediaListEntryAction.MarkCompleted;
+        await harness.Coordinator.ShowEntryMenuAsync(harness.Entry)
+            .WaitAsync(TimeSpan.FromSeconds(5), TestContext.CurrentContext.CancellationToken);
+
+        gate.SetResult();
+        await plusOneCompletion.WaitAsync(TimeSpan.FromSeconds(5), TestContext.CurrentContext.CancellationToken);
+
+        // The +1 confirm was declined and the menu pick was dropped, so nothing changed.
+        Assert.That(harness.Entry.Status, Is.EqualTo(MediaListStatus.Current));
+        Assert.That(harness.Entry.Progress, Is.EqualTo(11));
+        Assert.That(harness.Dialogs.Calls, Does.Not.Contain(nameof(IDialogService.ShowRatingAsync)));
+        await harness.Client.DidNotReceive().SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>());
+    }
+
+    [Test]
+    public async Task MarkCompletedMenuPick_WhenTheSaveFails_OffersARetryOfTheCompletedEntry()
+    {
+        var harness = new Harness(episodes: 12);
+        harness.Entry.Progress = 3;
+        harness.Dialogs.EntryActionAnswer = MediaListEntryAction.MarkCompleted;
+        harness.Client.SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromException<MediaListEntry?>(new InvalidOperationException("boom")));
+
+        await harness.Coordinator.ShowEntryMenuAsync(harness.Entry);
+
+        Assert.That(harness.Feedback.Snackbars, Does.Contain("Failed to save. Please try again."));
+        Assert.That(harness.StatusChanged, Is.Empty);
+        if (harness.Feedback.LastSnackbarAction is not { } retry)
+        {
+            Assert.Fail("The save-failure snackbar offered no Retry.");
+            return;
+        }
+
+        harness.SaveEchoesBack();
+        retry();
+        await harness.WaitUntilAsync(() => harness.StatusChanged.Count == 1);
+
+        await harness.Client.Received(2).SaveMediaListEntryAsync(
+            Arg.Is<MediaListEntry>(e => e.Status == MediaListStatus.Completed && e.Progress == 12),
+            Arg.Any<CancellationToken>());
+    }
+
+    [Test]
     public async Task CompletionFlow_WhenTheScorePromptIsSkipped_StillCompletes()
     {
         // Skipping the rating means "leave the score alone", not "cancel the completion".
