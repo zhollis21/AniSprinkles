@@ -1,0 +1,113 @@
+﻿{
+  "operationName": "MediaRelations",
+  "variables": {
+    "id": 182896
+  },
+  "queryFingerprint": "add8ea99711b",
+  "recordedAt": "2026-11-20T23:03:03.1069725+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "id": 182896,
+        "relations": {
+          "edges": [
+            {
+              "relationType": "SOURCE",
+              "node": {
+                "id": 85486,
+                "title": {
+                  "romaji": "Boku no Hero Academia",
+                  "english": "My Hero Academia",
+                  "native": "\u50D5\u306E\u30D2\u30FC\u30ED\u30FC\u30A2\u30AB\u30C7\u30DF\u30A2"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx85486-INqnYx8gL3eX.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx85486-INqnYx8gL3eX.jpg"
+                },
+                "startDate": {
+                  "year": 2014,
+                  "month": 7,
+                  "day": 7
+                },
+                "episodes": null,
+                "chapters": 432,
+                "volumes": 42,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "PREQUEL",
+              "node": {
+                "id": 163139,
+                "title": {
+                  "romaji": "Boku no Hero Academia 7",
+                  "english": "My Hero Academia Season 7",
+                  "native": "\u50D5\u306E\u30D2\u30FC\u30ED\u30FC\u30A2\u30AB\u30C7\u30DF\u30A2 7"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx163139-JchZhUFlNTWU.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx163139-JchZhUFlNTWU.jpg"
+                },
+                "startDate": {
+                  "year": 2024,
+                  "month": 5,
+                  "day": 4
+                },
+                "episodes": 21,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": {
+                  "id": 593364222,
+                  "status": "COMPLETED",
+                  "progress": 21,
+                  "progressVolumes": null,
+                  "score": 8,
+                  "repeat": 0,
+                  "notes": null,
+                  "private": false,
+                  "hiddenFromStatusLists": false
+                }
+              }
+            },
+            {
+              "relationType": "SEQUEL",
+              "node": {
+                "id": 204356,
+                "title": {
+                  "romaji": "Boku no Hero Academia No. 170\u002B1: More",
+                  "english": "My Hero Academia More",
+                  "native": "\u50D5\u306E\u30D2\u30FC\u30ED\u30FC\u30A2\u30AB\u30C7\u30DF\u30A2 No. 170\u002B1 \u300CMore\u300D"
+                },
+                "isAdult": false,
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx204356-RNYmxUVVz3Z2.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx204356-RNYmxUVVz3Z2.png"
+                },
+                "startDate": {
+                  "year": 2026,
+                  "month": 5,
+                  "day": 2
+                },
+                "episodes": 1,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

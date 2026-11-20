@@ -1,0 +1,57 @@
+﻿{
+  "operationName": "MediaRelations",
+  "variables": {
+    "id": 103180
+  },
+  "queryFingerprint": "add8ea99711b",
+  "recordedAt": "2026-11-20T23:06:09.4501523+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "id": 103180,
+        "relations": {
+          "edges": [
+            {
+              "relationType": "PARENT",
+              "node": {
+                "id": 85189,
+                "title": {
+                  "romaji": "Mob Psycho 100",
+                  "english": "Mob Psycho 100",
+                  "native": "\u30E2\u30D6\u30B5\u30A4\u30B3100"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx85189-06aXUBq5jwce.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx85189-06aXUBq5jwce.jpg"
+                },
+                "startDate": {
+                  "year": 2012,
+                  "month": 4,
+                  "day": 18
+                },
+                "episodes": null,
+                "chapters": 201,
+                "volumes": 16,
+                "mediaListEntry": {
+                  "id": 611937645,
+                  "status": "COMPLETED",
+                  "progress": 201,
+                  "progressVolumes": 16,
+                  "score": 0,
+                  "repeat": 0,
+                  "notes": null,
+                  "private": false,
+                  "hiddenFromStatusLists": false
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

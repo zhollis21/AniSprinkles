@@ -1,0 +1,85 @@
+﻿{
+  "operationName": "MediaRelations",
+  "variables": {
+    "id": 198946
+  },
+  "queryFingerprint": "add8ea99711b",
+  "recordedAt": "2026-11-20T23:03:44.6152617+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "id": 198946,
+        "relations": {
+          "edges": [
+            {
+              "relationType": "SOURCE",
+              "node": {
+                "id": 122693,
+                "title": {
+                  "romaji": "Clevatess: Majuu no Ou to Akago to Kabane no Yuusha",
+                  "english": "Clevatess",
+                  "native": "\u30AF\u30EC\u30D0\u30C6\u30B9-\u9B54\u7363\u306E\u738B\u3068\u8D64\u5B50\u3068\u5C4D\u306E\u52C7\u8005-"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "RELEASING",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx122693-hWjxoiHSpY1j.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx122693-hWjxoiHSpY1j.jpg"
+                },
+                "startDate": {
+                  "year": 2020,
+                  "month": 8,
+                  "day": 12
+                },
+                "episodes": null,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "PREQUEL",
+              "node": {
+                "id": 178869,
+                "title": {
+                  "romaji": "Clevatess: Majuu no Ou to Akago to Kabane no Yuusha",
+                  "english": "Clevatess",
+                  "native": "\u30AF\u30EC\u30D0\u30C6\u30B9-\u9B54\u7363\u306E\u738B\u3068\u8D64\u5B50\u3068\u5C4D\u306E\u52C7\u8005-"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx178869-qiEz0gQD8H5N.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx178869-qiEz0gQD8H5N.png"
+                },
+                "startDate": {
+                  "year": 2025,
+                  "month": 7,
+                  "day": 2
+                },
+                "episodes": 12,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": {
+                  "id": 593364574,
+                  "status": "COMPLETED",
+                  "progress": 12,
+                  "progressVolumes": null,
+                  "score": 8,
+                  "repeat": 0,
+                  "notes": null,
+                  "private": false,
+                  "hiddenFromStatusLists": false
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -196,6 +196,47 @@ public class AniListClientOperationsTests
     }
 
     [Test]
+    public async Task GetMediaRelations_AsksForTheTotals_ThatAMoveToWatchingNeeds()
+    {
+        // A related title moved to Watching at its total steps back one so +1 still works, and that
+        // needs the totals (PR #224 review).
+        var harness = new Harness().Returns("MediaRelations", """
+            {"Media":{"id":9,"relations":{"edges":[
+                {"relationType":"SEQUEL","node":{"id":10,"type":"ANIME","episodes":12}},
+                {"relationType":"SEQUEL","node":{"id":11,"type":"MANGA","chapters":40,"volumes":5}}
+            ]}}}
+            """);
+
+        var edges = await harness.Client.GetMediaRelationsAsync(9, TestContext.CurrentContext.CancellationToken);
+
+        Assert.That(harness.Handler.Last.Query, Does.Contain("episodes").And.Contain("chapters").And.Contain("volumes"));
+        Assert.That(edges[0].Node?.Episodes, Is.EqualTo(12));
+        Assert.That(edges[1].Node?.Chapters, Is.EqualTo(40));
+        Assert.That(edges[1].Node?.Volumes, Is.EqualTo(5));
+    }
+
+    [Test]
+    public async Task GetMedia_RelationsCarryNoViewerEntry_BecauseTheirsIsPartial()
+    {
+        // The details query's per-relation entry is four fields. Exposing it as the whole entry would
+        // let a consumer move it and save notes, repeat and the private flag back as nulls (PR #224
+        // review). The pill fields still come from it.
+        var harness = new Harness().Returns("Media", """
+            {"Media":{"id":9,"type":"ANIME","relations":{"edges":[
+                {"relationType":"SEQUEL","node":{"id":10,"type":"ANIME",
+                    "mediaListEntry":{"id":77,"status":"PLANNING","progress":0,"score":0}}}
+            ]}}}
+            """);
+
+        var (media, _) = await harness.Client.GetMediaAsync(9, TestContext.CurrentContext.CancellationToken);
+
+        var node = media?.Relations?.Single().Node;
+        Assert.That(node?.ListEntryId, Is.EqualTo(77));
+        Assert.That(node?.ListStatus, Is.EqualTo(MediaListStatus.Planning));
+        Assert.That(node?.ViewerEntry, Is.Null);
+    }
+
+    [Test]
     public async Task GetMediaRelations_ForAnUnknownId_IsEmpty()
     {
         var harness = new Harness().Returns("MediaRelations", """{"Media":null}""");

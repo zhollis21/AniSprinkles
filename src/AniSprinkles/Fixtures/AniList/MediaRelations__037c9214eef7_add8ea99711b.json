@@ -1,0 +1,159 @@
+﻿{
+  "operationName": "MediaRelations",
+  "variables": {
+    "id": 1
+  },
+  "queryFingerprint": "add8ea99711b",
+  "recordedAt": "2026-11-20T23:04:26.0882124+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "id": 1,
+        "relations": {
+          "edges": [
+            {
+              "relationType": "SIDE_STORY",
+              "node": {
+                "id": 5,
+                "title": {
+                  "romaji": "Cowboy Bebop: Tengoku no Tobira",
+                  "english": "Cowboy Bebop: The Movie - Knockin\u0027 on Heaven\u0027s Door",
+                  "native": "\u30AB\u30A6\u30DC\u30FC\u30A4\u30D3\u30D0\u30C3\u30D7\u5929\u56FD\u306E\u6249"
+                },
+                "isAdult": false,
+                "format": "MOVIE",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx5-NozHwXWdNLCz.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx5-NozHwXWdNLCz.jpg"
+                },
+                "startDate": {
+                  "year": 2001,
+                  "month": 9,
+                  "day": 1
+                },
+                "episodes": 1,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SIDE_STORY",
+              "node": {
+                "id": 17205,
+                "title": {
+                  "romaji": "Cowboy Bebop: Ein no Natsuyasumi",
+                  "english": "Ein\u0027s Summer Vacation",
+                  "native": "\u30A2\u30A4\u30F3\u306E\u306A\u3064\u3084\u3059\u307F"
+                },
+                "isAdult": false,
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx17205-Dk5nmaKD7hPM.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx17205-Dk5nmaKD7hPM.jpg"
+                },
+                "startDate": {
+                  "year": 2012,
+                  "month": 12,
+                  "day": 21
+                },
+                "episodes": 1,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 30173,
+                "title": {
+                  "romaji": "Cowboy Bebop",
+                  "english": "Cowboy Bebop",
+                  "native": "\u30AB\u30A6\u30DC\u30FC\u30A4\u30D3\u30D0\u30C3\u30D7"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx30173-SU7cu3H9jLXT.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx30173-SU7cu3H9jLXT.jpg"
+                },
+                "startDate": {
+                  "year": 1999,
+                  "month": 4,
+                  "day": 1
+                },
+                "episodes": null,
+                "chapters": 11,
+                "volumes": 3,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 30174,
+                "title": {
+                  "romaji": "Shooting Star Bebop: Cowboy Bebop",
+                  "english": "Cowboy Bebop Shooting Star",
+                  "native": "\u30B7\u30E5\u30FC\u30C6\u30A3\u30F3\u30B0\u30B9\u30BF\u30FC\u30D3\u30D0\u30C3\u30D7 \u30AB\u30A6\u30DC\u30FC\u30A4\u30D3\u30D0\u30C3\u30D7"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/b30174-RTbUXsQNPNwd.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/b30174-RTbUXsQNPNwd.jpg"
+                },
+                "startDate": {
+                  "year": 1998,
+                  "month": 5,
+                  "day": 1
+                },
+                "episodes": null,
+                "chapters": 10,
+                "volumes": 2,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SUMMARY",
+              "node": {
+                "id": 4037,
+                "title": {
+                  "romaji": "Cowboy Bebop: Yoseatsume Blues",
+                  "english": null,
+                  "native": "\u30AB\u30A6\u30DC\u30FC\u30A4\u30D3\u30D0\u30C3\u30D7 \u3088\u305B\u3042\u3064\u3081\u30D6\u30EB\u30FC\u30B9"
+                },
+                "isAdult": false,
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx4037-zpDbjycoZhNI.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx4037-zpDbjycoZhNI.png"
+                },
+                "startDate": {
+                  "year": 1998,
+                  "month": 6,
+                  "day": 26
+                },
+                "episodes": 1,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,169 @@
+﻿{
+  "operationName": "MediaRelations",
+  "variables": {
+    "id": 161645
+  },
+  "queryFingerprint": "add8ea99711b",
+  "recordedAt": "2026-11-20T23:05:28.1287631+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "id": 161645,
+        "relations": {
+          "edges": [
+            {
+              "relationType": "SOURCE",
+              "node": {
+                "id": 99026,
+                "title": {
+                  "romaji": "Kusuriya no Hitorigoto",
+                  "english": "The Apothecary Diaries",
+                  "native": "\u85AC\u5C4B\u306E\u3072\u3068\u308A\u3054\u3068"
+                },
+                "isAdult": false,
+                "format": "NOVEL",
+                "type": "MANGA",
+                "status": "RELEASING",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx99026-5Eg650WAd9Rj.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx99026-5Eg650WAd9Rj.jpg"
+                },
+                "startDate": {
+                  "year": 2014,
+                  "month": 8,
+                  "day": 29
+                },
+                "episodes": null,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ALTERNATIVE",
+              "node": {
+                "id": 99022,
+                "title": {
+                  "romaji": "Kusuriya no Hitorigoto",
+                  "english": "The Apothecary Diaries",
+                  "native": "\u85AC\u5C4B\u306E\u3072\u3068\u308A\u3054\u3068"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "RELEASING",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx99022-Hh2WdyNgR8HM.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx99022-Hh2WdyNgR8HM.jpg"
+                },
+                "startDate": {
+                  "year": 2017,
+                  "month": 5,
+                  "day": 25
+                },
+                "episodes": null,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ALTERNATIVE",
+              "node": {
+                "id": 113322,
+                "title": {
+                  "romaji": "Kusuriya no Hitorigoto: Maomao no Koukyuu Nazotoki Techou",
+                  "english": "The Apothecary Diaries: Maomao\u0027s Notes from the Inner Palace",
+                  "native": "\u85AC\u5C4B\u306E\u3072\u3068\u308A\u3054\u3068 \u732B\u732B\u306E\u5F8C\u5BAE\u8B0E\u89E3\u304D\u624B\u5E33"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "RELEASING",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx113322-gwV3eakaVqZQ.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx113322-gwV3eakaVqZQ.png"
+                },
+                "startDate": {
+                  "year": 2017,
+                  "month": 8,
+                  "day": 19
+                },
+                "episodes": null,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SIDE_STORY",
+              "node": {
+                "id": 170508,
+                "title": {
+                  "romaji": "Maomao no Hitorigoto",
+                  "english": null,
+                  "native": "\u732B\u732B\u306E\u3072\u3068\u308A\u3054\u3068"
+                },
+                "isAdult": false,
+                "format": "ONA",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx170508-72GLTka7NHeF.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx170508-72GLTka7NHeF.jpg"
+                },
+                "startDate": {
+                  "year": 2023,
+                  "month": 10,
+                  "day": 23
+                },
+                "episodes": 24,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SEQUEL",
+              "node": {
+                "id": 176301,
+                "title": {
+                  "romaji": "Kusuriya no Hitorigoto 2nd Season",
+                  "english": "The Apothecary Diaries Season 2",
+                  "native": "\u85AC\u5C4B\u306E\u3072\u3068\u308A\u3054\u3068 \u7B2C2\u671F"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx176301-TIGmldLffQGX.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx176301-TIGmldLffQGX.jpg"
+                },
+                "startDate": {
+                  "year": 2025,
+                  "month": 1,
+                  "day": 10
+                },
+                "episodes": 24,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": {
+                  "id": 593363981,
+                  "status": "COMPLETED",
+                  "progress": 24,
+                  "progressVolumes": null,
+                  "score": 10,
+                  "repeat": 0,
+                  "notes": null,
+                  "private": false,
+                  "hiddenFromStatusLists": false
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

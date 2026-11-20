@@ -282,7 +282,7 @@ public class AniListClient : IAniListClient
             token,
             cancellationToken).ConfigureAwait(false);
 
-        return MapRelationEdges(data.Media?.Relations);
+        return MapRelationEdges(data.Media?.Relations, withViewerEntry: true);
     }
 
     public async Task<MediaListEntry?> SaveMediaListEntryAsync(MediaListEntry entry, CancellationToken cancellationToken = default)
@@ -1056,7 +1056,7 @@ public class AniListClient : IAniListClient
                 .Where(link => link.IsDisabled is not true)
                 .Take(12)
                 .ToList() ?? [],
-            Relations = MapRelationEdges(dto.Relations),
+            Relations = MapRelationEdges(dto.Relations, withViewerEntry: false),
             Characters = dto.Characters?.Edges?
                 .Where(e => e.Node is not null)
                 .Select(e => new CharacterEdge
@@ -1111,14 +1111,19 @@ public class AniListClient : IAniListClient
         };
     }
 
-    private static List<MediaRelationEdge> MapRelationEdges(MediaRelationConnectionDto? relations) =>
+    /// <param name="withViewerEntry">
+    /// Only for <see cref="GetMediaRelationsAsync"/>, whose per-node <c>mediaListEntry</c> selects the
+    /// whole entry. The details query selects four fields; exposing that as
+    /// <see cref="RelatedMedia.ViewerEntry"/> would let a move save the rest back as nulls (PR #224).
+    /// </param>
+    private static List<MediaRelationEdge> MapRelationEdges(MediaRelationConnectionDto? relations, bool withViewerEntry) =>
         relations?.Edges?
             .Select(e => e.Node is { } node
                 ? new MediaRelationEdge
                 {
                     RelationType = FormatRelationType(e.RelationType),
                     Kind = MediaRelationKindExtensions.ParseMediaRelationKind(e.RelationType),
-                    Node = WithViewerEntry(MapRelatedMedia(node), node),
+                    Node = withViewerEntry ? WithViewerEntry(MapRelatedMedia(node), node) : MapRelatedMedia(node),
                 }
                 : null)
             .OfType<MediaRelationEdge>()
@@ -1148,7 +1153,8 @@ public class AniListClient : IAniListClient
         Favourites = dto.Favourites,
         Popularity = dto.Popularity,
         StartDate = dto.StartDate,
-        // Only the browseMedia fragment (Discover/browse/search) requests these; null elsewhere.
+        // Only the browseMedia fragment (Discover/browse/search) and the up-next relations read
+        // (MediaRelations, #103) request these; null elsewhere.
         Episodes = dto.Episodes,
         Chapters = dto.Chapters,
         Volumes = dto.Volumes,
@@ -2171,6 +2177,9 @@ query MediaRelations($id: Int!) {
           status
           coverImage { medium large }
           startDate { year month day }
+          episodes
+          chapters
+          volumes
           mediaListEntry { id status progress progressVolumes score repeat notes private hiddenFromStatusLists }
         }
       }

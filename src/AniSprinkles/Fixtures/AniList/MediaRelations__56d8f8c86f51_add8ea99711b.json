@@ -1,0 +1,283 @@
+﻿{
+  "operationName": "MediaRelations",
+  "variables": {
+    "id": 85189
+  },
+  "queryFingerprint": "add8ea99711b",
+  "recordedAt": "2026-11-20T23:07:53.0178418+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "id": 85189,
+        "relations": {
+          "edges": [
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 21507,
+                "title": {
+                  "romaji": "Mob Psycho 100",
+                  "english": "Mob Psycho 100",
+                  "native": "\u30E2\u30D6\u30B5\u30A4\u30B3100"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx21507-6YUSbh2m0N1p.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx21507-6YUSbh2m0N1p.jpg"
+                },
+                "startDate": {
+                  "year": 2016,
+                  "month": 7,
+                  "day": 12
+                },
+                "episodes": 12,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": {
+                  "id": 593364016,
+                  "status": "COMPLETED",
+                  "progress": 12,
+                  "progressVolumes": null,
+                  "score": 10,
+                  "repeat": 0,
+                  "notes": null,
+                  "private": false,
+                  "hiddenFromStatusLists": false
+                }
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 100353,
+                "title": {
+                  "romaji": "Mob Psycho 100 REIGEN: Shirarezaru Kiseki Reinouryokusha",
+                  "english": "Mob Psycho 100 REIGEN The Miraculous Unknown Psychic",
+                  "native": "\u30E2\u30D6\u30B5\u30A4\u30B3100 REIGEN \uFF5E\u77E5\u3089\u308C\u3056\u308B\u5947\u8DE1\u306E\u970A\u80FD\u529B\u8005\uFF5E"
+                },
+                "isAdult": false,
+                "format": "OVA",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx100353-6dM62JCho2Yg.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx100353-6dM62JCho2Yg.png"
+                },
+                "startDate": {
+                  "year": 2018,
+                  "month": 3,
+                  "day": 18
+                },
+                "episodes": 1,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 101338,
+                "title": {
+                  "romaji": "Mob Psycho 100 II",
+                  "english": "Mob Psycho 100 II",
+                  "native": "\u30E2\u30D6\u30B5\u30A4\u30B3100 II"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx101338-rokVscjRYzdP.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx101338-rokVscjRYzdP.jpg"
+                },
+                "startDate": {
+                  "year": 2019,
+                  "month": 1,
+                  "day": 7
+                },
+                "episodes": 13,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": {
+                  "id": 593364017,
+                  "status": "COMPLETED",
+                  "progress": 13,
+                  "progressVolumes": null,
+                  "score": 9,
+                  "repeat": 0,
+                  "notes": null,
+                  "private": false,
+                  "hiddenFromStatusLists": false
+                }
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 103180,
+                "title": {
+                  "romaji": "REIGEN: Reikyuuchi MAX 131 no Otoko",
+                  "english": "Mob Psycho 100: Reigen",
+                  "native": "REIGEN \uFF5E\u970A\u7D1A\u5024MAX131\u306E\u7537\uFF5E"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx103180-aTMoIJks2To5.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx103180-aTMoIJks2To5.jpg"
+                },
+                "startDate": {
+                  "year": 2018,
+                  "month": 3,
+                  "day": 19
+                },
+                "episodes": null,
+                "chapters": 7,
+                "volumes": 1,
+                "mediaListEntry": {
+                  "id": 611937673,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "progressVolumes": 0,
+                  "score": 0,
+                  "repeat": 0,
+                  "notes": null,
+                  "private": false,
+                  "hiddenFromStatusLists": false
+                }
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 107357,
+                "title": {
+                  "romaji": "Mob Psycho Koushiki Anthology",
+                  "english": null,
+                  "native": "\u30E2\u30D6\u30B5\u30A4\u30B3\u516C\u5F0F\u30A2\u30F3\u30BD\u30ED\u30B8\u30FC"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "RELEASING",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/n107357-By5FqGzDLqvZ.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/n107357-By5FqGzDLqvZ.jpg"
+                },
+                "startDate": {
+                  "year": 2016,
+                  "month": 3,
+                  "day": 6
+                },
+                "episodes": null,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 140439,
+                "title": {
+                  "romaji": "Mob Psycho 100 III",
+                  "english": "Mob Psycho 100 III",
+                  "native": "\u30E2\u30D6\u30B5\u30A4\u30B3100 \u2162"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx140439-bPKmhe1wNxc9.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx140439-bPKmhe1wNxc9.jpg"
+                },
+                "startDate": {
+                  "year": 2022,
+                  "month": 10,
+                  "day": 6
+                },
+                "episodes": 12,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": {
+                  "id": 593364020,
+                  "status": "COMPLETED",
+                  "progress": 12,
+                  "progressVolumes": null,
+                  "score": 10,
+                  "repeat": 0,
+                  "notes": null,
+                  "private": false,
+                  "hiddenFromStatusLists": false
+                }
+              }
+            },
+            {
+              "relationType": "CHARACTER",
+              "node": {
+                "id": 137777,
+                "title": {
+                  "romaji": "Sekai Oni\u00D7Mob Psycho 100",
+                  "english": null,
+                  "native": "\u4E16\u754C\u9B3C\u00D7\u30E2\u30D6\u30B5\u30A4\u30B3100"
+                },
+                "isAdult": false,
+                "format": "ONE_SHOT",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/b137777-wtBc2D8MWaci.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/b137777-wtBc2D8MWaci.jpg"
+                },
+                "startDate": {
+                  "year": 2014,
+                  "month": 5,
+                  "day": 16
+                },
+                "episodes": null,
+                "chapters": 1,
+                "volumes": null,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "CHARACTER",
+              "node": {
+                "id": 155509,
+                "title": {
+                  "romaji": "Mob Psycho 100\u00D7Hito Kui",
+                  "english": null,
+                  "native": "\u30E2\u30D6\u30B5\u30A4\u30B3100\u00D7\u30D2\u30C8\u55B0\u30A4"
+                },
+                "isAdult": false,
+                "format": "ONE_SHOT",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx155509-JRy4EnYfAeDb.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx155509-JRy4EnYfAeDb.png"
+                },
+                "startDate": {
+                  "year": 2014,
+                  "month": 5,
+                  "day": 16
+                },
+                "episodes": null,
+                "chapters": 1,
+                "volumes": null,
+                "mediaListEntry": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

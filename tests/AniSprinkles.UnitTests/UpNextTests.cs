@@ -303,6 +303,34 @@ public class UpNextTests
         Assert.That(sent?.Repeat, Is.EqualTo(2));
     }
 
+    // PR #224 review: the relations entry carried no media, so the shared "Watching never sits at its
+    // total" step-back could not see the total and +1 was left dead.
+    [TestCase(MediaListStatus.Paused, "ANIME")]
+    [TestCase(MediaListStatus.Dropped, "ANIME")]
+    [TestCase(MediaListStatus.Planning, "ANIME")]
+    [TestCase(MediaListStatus.Paused, "MANGA")]
+    public async Task AMoveToWatching_AtTheTotal_StepsBackOne(MediaListStatus from, string type)
+    {
+        var entry = OnList(2, from);
+        entry.Progress = 12;
+        var harness = new OfferHarness(Edge(MediaRelationKind.Sequel, 2, type: type, status: "FINISHED", configure: n =>
+        {
+            n.ViewerEntry = entry;
+            n.Episodes = 12;
+            n.Chapters = 12;
+        }));
+        harness.Dialogs.UpNextAnswer = candidates => new UpNextChoice(candidates);
+        MediaListEntry? sent = null;
+        harness.Client.When(c => c.SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>()))
+            .Do(call => sent = Snapshot(call.Arg<MediaListEntry>()));
+
+        using var scope = harness.BeginOffer(type == "MANGA" ? MangaCompleted() : null);
+        await scope.OfferAsync();
+
+        Assert.That(sent?.Status, Is.EqualTo(MediaListStatus.Current));
+        Assert.That(sent?.Progress, Is.EqualTo(11));
+    }
+
     [TestCase(MediaListStatus.Paused)]
     [TestCase(MediaListStatus.Dropped)]
     public async Task APausedOrDroppedTitleMovedToPlanning_KeepsItsProgress(MediaListStatus from)
@@ -859,6 +887,9 @@ public class UpNextTests
         => Pick([edge], kind, setting: setting) is [var only]
             ? only
             : throw new AssertionException($"Expected media {edge.Node?.Id} to be offered.");
+
+    /// <summary>A finished manga to complete, so only manga relations are offered.</summary>
+    private static MediaListEntry MangaCompleted() => TestDataBuilder.Entry(mediaId: 1, mediaType: "MANGA", chapters: 30);
 
     private static MediaRelationEdge Planned(int id)
         => Edge(MediaRelationKind.Sequel, id, status: "FINISHED", configure: n => n.ViewerEntry = OnList(id, MediaListStatus.Planning));

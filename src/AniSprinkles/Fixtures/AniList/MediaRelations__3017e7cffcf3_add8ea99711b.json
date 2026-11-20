@@ -3,8 +3,8 @@
   "variables": {
     "id": 209939
   },
-  "queryFingerprint": "96e3e757da32",
-  "recordedAt": "2026-11-20T02:48:48.8300418+00:00",
+  "queryFingerprint": "add8ea99711b",
+  "recordedAt": "2026-11-20T22:59:56.6122964+00:00",
   "response": {
     "data": {
       "Media": {
@@ -33,13 +33,16 @@
                   "month": 1,
                   "day": 16
                 },
+                "episodes": 10,
+                "chapters": null,
+                "volumes": null,
                 "mediaListEntry": {
                   "id": 540973986,
-                  "status": "COMPLETED",
-                  "progress": 10,
+                  "status": "REPEATING",
+                  "progress": 0,
                   "progressVolumes": null,
                   "score": 9,
-                  "repeat": 0,
+                  "repeat": 2,
                   "notes": null,
                   "private": false,
                   "hiddenFromStatusLists": false
@@ -68,6 +71,9 @@
                   "month": 4,
                   "day": 28
                 },
+                "episodes": null,
+                "chapters": null,
+                "volumes": null,
                 "mediaListEntry": null
               }
             }

@@ -96,6 +96,17 @@ public sealed class UpNextOffer(
             // rewrites the candidate's own entry, which is why the candidate keeps its From and Target
             // apart from it (reading the entry once made a toast say "moved to Watching" for a rewatch).
             var entry = candidate.Existing ?? new MediaListEntry { MediaId = candidate.Media.Id };
+
+            // The relations query's entry has no media, so give the shared mutation the totals it reads:
+            // without them a title moved to Watching at its total stays there and +1 is dead (PR #224).
+            entry.Media ??= new Media
+            {
+                Id = candidate.Media.Id,
+                Type = candidate.Media.Type,
+                Episodes = candidate.Media.Episodes,
+                Chapters = candidate.Media.Chapters,
+                Volumes = candidate.Media.Volumes,
+            };
             ListEntryStatusMutations.ApplyStatusChange(entry, target);
 
             // A finished title queued again is a plan to rewatch, so it starts from zero rather than

@@ -3,8 +3,8 @@
   "variables": {
     "id": 154587
   },
-  "queryFingerprint": "96e3e757da32",
-  "recordedAt": "2026-11-20T02:48:37.400711+00:00",
+  "queryFingerprint": "add8ea99711b",
+  "recordedAt": "2026-11-20T22:59:03.7323825+00:00",
   "response": {
     "data": {
       "Media": {
@@ -33,6 +33,9 @@
                   "month": 4,
                   "day": 28
                 },
+                "episodes": null,
+                "chapters": null,
+                "volumes": null,
                 "mediaListEntry": null
               }
             },
@@ -58,6 +61,9 @@
                   "month": 9,
                   "day": 29
                 },
+                "episodes": 1,
+                "chapters": null,
+                "volumes": null,
                 "mediaListEntry": null
               }
             },
@@ -83,7 +89,20 @@
                   "month": 10,
                   "day": 11
                 },
-                "mediaListEntry": null
+                "episodes": 12,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": {
+                  "id": 611936709,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "progressVolumes": null,
+                  "score": 7,
+                  "repeat": 4,
+                  "notes": null,
+                  "private": false,
+                  "hiddenFromStatusLists": false
+                }
               }
             },
             {
@@ -108,6 +127,9 @@
                   "month": 3,
                   "day": 5
                 },
+                "episodes": 1,
+                "chapters": null,
+                "volumes": null,
                 "mediaListEntry": null
               }
             },
@@ -133,13 +155,16 @@
                   "month": 1,
                   "day": 16
                 },
+                "episodes": 10,
+                "chapters": null,
+                "volumes": null,
                 "mediaListEntry": {
                   "id": 540973986,
-                  "status": "COMPLETED",
-                  "progress": 10,
+                  "status": "REPEATING",
+                  "progress": 0,
                   "progressVolumes": null,
                   "score": 9,
-                  "repeat": 0,
+                  "repeat": 2,
                   "notes": null,
                   "private": false,
                   "hiddenFromStatusLists": false
@@ -168,7 +193,20 @@
                   "month": 4,
                   "day": 2
                 },
-                "mediaListEntry": null
+                "episodes": 6,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": {
+                  "id": 611936804,
+                  "status": "COMPLETED",
+                  "progress": 6,
+                  "progressVolumes": null,
+                  "score": 0,
+                  "repeat": 0,
+                  "notes": null,
+                  "private": false,
+                  "hiddenFromStatusLists": false
+                }
               }
             }
           ]

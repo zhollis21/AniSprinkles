@@ -3,8 +3,8 @@
   "variables": {
     "id": 11757
   },
-  "queryFingerprint": "96e3e757da32",
-  "recordedAt": "2026-11-20T02:49:07.1225109+00:00",
+  "queryFingerprint": "add8ea99711b",
+  "recordedAt": "2026-11-20T23:19:54.9358262+00:00",
   "response": {
     "data": {
       "Media": {
@@ -33,6 +33,9 @@
                   "month": 4,
                   "day": 10
                 },
+                "episodes": null,
+                "chapters": null,
+                "volumes": null,
                 "mediaListEntry": null
               }
             },
@@ -58,6 +61,9 @@
                   "month": 12,
                   "day": 31
                 },
+                "episodes": 1,
+                "chapters": null,
+                "volumes": null,
                 "mediaListEntry": null
               }
             },
@@ -83,7 +89,20 @@
                   "month": 7,
                   "day": 5
                 },
-                "mediaListEntry": null
+                "episodes": 24,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": {
+                  "id": 611937531,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "progressVolumes": null,
+                  "score": 0,
+                  "repeat": 0,
+                  "notes": null,
+                  "private": false,
+                  "hiddenFromStatusLists": false
+                }
               }
             },
             {
@@ -108,6 +127,9 @@
                   "month": 10,
                   "day": 30
                 },
+                "episodes": 1,
+                "chapters": null,
+                "volumes": null,
                 "mediaListEntry": null
               }
             },
@@ -133,6 +155,9 @@
                   "month": 10,
                   "day": 24
                 },
+                "episodes": 9,
+                "chapters": null,
+                "volumes": null,
                 "mediaListEntry": null
               }
             },
@@ -158,6 +183,9 @@
                   "month": 8,
                   "day": 10
                 },
+                "episodes": null,
+                "chapters": 12,
+                "volumes": 2,
                 "mediaListEntry": null
               }
             },
@@ -183,6 +211,9 @@
                   "month": 4,
                   "day": 10
                 },
+                "episodes": null,
+                "chapters": 14,
+                "volumes": 3,
                 "mediaListEntry": null
               }
             },
@@ -208,6 +239,9 @@
                   "month": 10,
                   "day": 27
                 },
+                "episodes": null,
+                "chapters": null,
+                "volumes": null,
                 "mediaListEntry": null
               }
             },
@@ -233,6 +267,9 @@
                   "month": 11,
                   "day": 6
                 },
+                "episodes": 1,
+                "chapters": null,
+                "volumes": null,
                 "mediaListEntry": null
               }
             },
@@ -258,6 +295,9 @@
                   "month": 7,
                   "day": 10
                 },
+                "episodes": 1,
+                "chapters": null,
+                "volumes": null,
                 "mediaListEntry": null
               }
             }
