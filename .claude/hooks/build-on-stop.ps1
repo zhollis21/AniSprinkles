@@ -43,7 +43,9 @@
 #   the Android TFM       when anything under src/AniSprinkles/ changed.
 #   the CiBuild variant   when a fixture or a `#if CI` file changed, since that
 #                         is the only build that compiles those blocks.
-#   all three             when a build input changed. Which projects a .csproj
+#   the UI journeys       when tests/AniSprinkles.UITests/ changed (#131). It
+#                         references no project, so nothing else compiles it.
+#   all of them           when a build input changed. Which projects a .csproj
 #                         or .editorconfig change reaches is not worth
 #                         modelling - Core is referenced by everything, and a
 #                         root .editorconfig reaches every file in every
@@ -216,6 +218,14 @@ $builds.Add(@{
         Name = 'tests + Core'
         Args = @('build', (Join-Path $root 'tests/AniSprinkles.UnitTests/AniSprinkles.UnitTests.csproj'), '-c', 'Debug')
     })
+# The UI journeys (#131) reference no project, so nothing above compiles them. Seconds, like the
+# unit tests, but only worth it when they or a build input changed.
+if ($touchesBuildInput -or [bool]($changed | Where-Object { $_ -match '[\\/]tests[\\/]AniSprinkles\.UITests[\\/]' })) {
+    $builds.Add(@{
+            Name = 'UI journeys'
+            Args = @('build', (Join-Path $root 'tests/AniSprinkles.UITests/AniSprinkles.UITests.csproj'), '-c', 'Debug')
+        })
+}
 if ($touchesApp) {
     $builds.Add(@{
             Name = 'Android (Debug)'

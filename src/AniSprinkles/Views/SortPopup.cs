@@ -196,6 +196,8 @@ public sealed class SortPopup : Popup<string?>
             // Background and a Brush wins over a Color).
             Background = Brush.Transparent,
             Content = grid,
+            // The row is what takes the tap, not its label, so this is where a script finds it (#131).
+            AutomationId = $"SortOption_{option.Code}",
         };
 
         var code = option.Code;

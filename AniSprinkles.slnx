@@ -12,5 +12,14 @@
   <Project Path="src/AniSprinkles/AniSprinkles.csproj">
     <Deploy Solution="Debug|*" />
   </Project>
-  <Project Path="tests/AniSprinkles.UnitTests/AniSprinkles.UnitTests.csproj" />
+  <Project Path="tests/AniSprinkles.UITests/AniSprinkles.UITests.csproj">
+    <!-- Skipped by a Release solution build: its DevFlow client reference is Debug-only, so the
+         project cannot compile there. -->
+    <Build Solution="Release|*" Project="false" />
+  </Project>
+  <Project Path="tests/AniSprinkles.UnitTests/AniSprinkles.UnitTests.csproj">
+    <!-- Skipped by a Release solution build: it tests Core's #if DEBUG code (fault injection, the
+         fixture logic), which Release compiles out on purpose (AGENTS.md). -->
+    <Build Solution="Release|*" Project="false" />
+  </Project>
 </Solution>
