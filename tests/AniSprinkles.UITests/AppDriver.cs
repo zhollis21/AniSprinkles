@@ -110,10 +110,24 @@ internal sealed class AppDriver : IDisposable
             return;
         }
 
+        await ClaimLeaseAsync(what);
         var density = await Device.GetDensityAsync();
         var x = (int)Math.Round((bounds.X + (bounds.Width / 2)) * density);
         var y = (int)Math.Round((bounds.Y + (bounds.Height / 2)) * density);
         await Device.RunAsync($"shell input tap {x} {y}");
+    }
+
+    /// <summary>
+    /// Claims (or renews) the run's mutation lease before a touch the agent never sees. The agent's
+    /// own taps claim it themselves; a touch through adb bypasses the agent, so without this the
+    /// account guard's first tab switch, and every later one, would touch the app while another
+    /// session holds it. Fails without touching when another session does.
+    /// </summary>
+    private async Task ClaimLeaseAsync(string what)
+    {
+        var status = await Client.ControlMutationLeaseAsync("claim", leaseId: RunLeaseId);
+        Assert.That(status.YouHold, Is.True,
+            $"Did not touch {what}: another DevFlow session is driving this app ({status.Label ?? status.Error ?? "unknown holder"}).");
     }
 
     public void Dispose() => Client.Dispose();

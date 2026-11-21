@@ -77,48 +77,25 @@ public sealed class TabReturnJourneys : IDisposable
     /// The case that already worked, kept from regressing: a tab-root page does get
     /// <c>OnAppearing</c>, and the Library re-renders its cards in the new language.
     /// <para>
-    /// The same card is compared before and after, found by where it sits on screen: any card's
-    /// title differs from the first one's, so "a title changed" would pass with nothing re-rendered.
+    /// The same title label is compared before and after, by the agent's element id, which a tab
+    /// return keeps (checked 2026-11-21). Not "any title changed": every other card's title differs
+    /// from the first one's, so that would pass with nothing re-rendered. Not its position either: the
+    /// Standard card centres its text, so a title that wraps differently in Native moves the label.
+    /// The id names the label, not the media, which is enough here: nothing scrolls, and a Title sort
+    /// only reorders the cards inside the same re-render this journey is checking for.
     /// </para>
     /// </summary>
     [Test]
     public async Task Library_ShowsTheNewTitleLanguage_AfterATabReturn()
     {
-        await _driver.WaitForAsync("a Library card title", automationId: "MediaCardTitle",
-            predicate: e => !string.IsNullOrEmpty(e.Text) && e.WindowBounds is not null);
-        if (await TopLeftCardTitleAsync() is not { } before)
-        {
-            Assert.Fail("No Library card title was visible with window bounds.");
-            return;
-        }
+        var before = await _driver.WaitForAsync("a Library card title", automationId: "MediaCardTitle",
+            predicate: e => !string.IsNullOrEmpty(e.Text));
 
         await _app.SetTitleLanguageAsync("Native");
         await _app.GoToTabAsync("Library");
 
-        await _driver.WaitForAsync($"the first Library card's title to change from '{before.Text}'",
-            automationId: "MediaCardTitle",
-            predicate: e => before.IsAt(e) && !string.IsNullOrEmpty(e.Text) && e.Text != before.Text);
-    }
-
-    /// <summary>The title of the card nearest the top-left of the screen, with where it sits.</summary>
-    private async Task<CardTitle?> TopLeftCardTitleAsync()
-    {
-        var titles = await _driver.Client.QueryAsync(automationId: "MediaCardTitle");
-        return titles
-            .Where(t => t.IsVisible && !string.IsNullOrEmpty(t.Text))
-            .Select(t => t.WindowBounds is { } b ? new CardTitle(t.Text, b.X, b.Y) : null)
-            .OfType<CardTitle>()
-            .OrderBy(t => t.Y)
-            .ThenBy(t => t.X)
-            .FirstOrDefault();
-    }
-
-    /// <summary>A card title and where it sat on screen, in window units.</summary>
-    private sealed record CardTitle(string? Text, double X, double Y)
-    {
-        /// <summary>Whether <paramref name="element"/> sits where this title did, within a unit.</summary>
-        public bool IsAt(ElementInfo element) =>
-            element.WindowBounds is { } b && Math.Abs(b.X - X) < 1 && Math.Abs(b.Y - Y) < 1;
+        await _driver.WaitForAsync($"the title that read '{before.Text}' to change", automationId: "MediaCardTitle",
+            predicate: e => e.Id == before.Id && !string.IsNullOrEmpty(e.Text) && e.Text != before.Text);
     }
 
     /// <summary>
