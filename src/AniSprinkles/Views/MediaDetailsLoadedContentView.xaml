@@ -259,6 +259,7 @@
                          there is no room below; the inline list it replaced opened off-screen near the
                          bottom of the page. -->
                     <Border x:Name="StatusButton"
+                            AutomationId="ListStatusButton"
                             StrokeShape="RoundRectangle 10" StrokeThickness="1"
                             Stroke="{Binding ListStatusDisplay, Converter={StaticResource RainbowAccentConverter}}"
                             Background="Transparent" Padding="12,10">
@@ -275,6 +276,7 @@
                                 </Image.Source>
                             </Image>
                             <Label Grid.Column="1" Text="{Binding ListStatusDisplay}"
+                                   AutomationId="ListStatusLabel"
                                    Style="{StaticResource Body1Strong}"
                                    TextColor="{Binding ListStatusDisplay, Converter={StaticResource RainbowAccentConverter}}"
                                    VerticalTextAlignment="Center" />

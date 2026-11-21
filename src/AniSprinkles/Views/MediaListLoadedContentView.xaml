@@ -338,12 +338,14 @@
                         <!-- Section title -->
                         <Label Grid.Column="1"
                                Text="{Binding Title}"
+                               AutomationId="LibrarySectionTitle"
                                Style="{StaticResource Title3}"
                                TextColor="{Binding Title, Converter={StaticResource RainbowAccentConverter}}"
                                VerticalTextAlignment="Center" />
                         <!-- Count badge -->
                         <Border Grid.Column="2" Style="{StaticResource CountBadgeStyle}">
                             <Label Text="{Binding DisplayCount}"
+                                   AutomationId="LibrarySectionCount"
                                    Style="{StaticResource Caption1Strong}"
                                    TextColor="{Binding Title, Converter={StaticResource RainbowAccentConverter}}" />
                         </Border>
@@ -390,6 +392,7 @@
                 <!-- Row 1: Grouped CollectionView -->
                 <CollectionView Grid.Row="1"
                                 x:Name="AnimeCollectionView"
+                                AutomationId="LibraryList"
                                 ItemsSource="{Binding Sections}"
                                 IsGrouped="True"
                                 SelectionMode="None"

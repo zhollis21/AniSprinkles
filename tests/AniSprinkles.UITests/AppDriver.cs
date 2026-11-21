@@ -16,6 +16,9 @@ internal sealed class AppDriver : IDisposable
 
     private const int DefaultAgentPort = 9223;
 
+    /// <summary>Well past Android's long-press timeout (500 ms by default), so a slow device still sees one.</summary>
+    private static readonly TimeSpan LongPressDuration = TimeSpan.FromMilliseconds(1000);
+
     /// <summary>
     /// One mutation lease for the whole run. The agent lets a single holder tap and fill at a time
     /// and keeps the lease for about 10 s after its last use; each <see cref="AgentClient"/> mints
@@ -85,6 +88,29 @@ internal sealed class AppDriver : IDisposable
         }
     }
 
+    /// <summary>Waits until no visible element matches the query and <paramref name="predicate"/>.</summary>
+    public async Task WaitForGoneAsync(
+        string what,
+        string? automationId = null,
+        string? text = null,
+        string? type = null,
+        Func<ElementInfo, bool>? predicate = null)
+    {
+        var deadline = Stopwatch.StartNew();
+        while (await AnyVisibleAsync(automationId, text, type, predicate))
+        {
+            if (deadline.Elapsed >= DefaultTimeout)
+            {
+                Assert.Fail($"Timed out after {DefaultTimeout.TotalSeconds:0} s waiting for {what} to go.");
+            }
+
+            await Task.Delay(PollInterval);
+        }
+    }
+
+    private async Task<bool> AnyVisibleAsync(string? automationId, string? text, string? type, Func<ElementInfo, bool>? predicate)
+        => (await Client.QueryAsync(type, automationId, text)).Any(e => e.IsVisible && (predicate?.Invoke(e) ?? true));
+
     /// <summary>Waits for an element and taps it.</summary>
     public async Task TapAsync(string what, string? automationId = null, string? text = null, string? type = null)
     {
@@ -104,17 +130,69 @@ internal sealed class AppDriver : IDisposable
     /// </summary>
     public async Task TouchAsync(ElementInfo element, string what)
     {
-        if (element.WindowBounds is not { } bounds)
+        var (x, y) = await CentreInPixelsAsync(element, what);
+        await Device.RunAsync($"shell input tap {x} {y}");
+    }
+
+    /// <summary>A real touch at a point in window coordinates (device-independent units).</summary>
+    public async Task TouchAtAsync(double x, double y, string what)
+    {
+        await ClaimLeaseAsync(what);
+        var density = await Device.GetDensityAsync();
+        await Device.RunAsync($"shell input tap {(int)Math.Round(x * density)} {(int)Math.Round(y * density)}");
+    }
+
+    /// <summary>
+    /// A real long press at the centre of <paramref name="element"/>: a swipe that starts and ends at
+    /// the same point, held for <see cref="LongPressDuration"/>. Through the device for the same reason
+    /// as <see cref="TouchAsync"/>: MAUI 11 turns on Android's long-press detection per view, and a
+    /// synthesized gesture does not go through it (#206).
+    /// </summary>
+    public async Task LongPressAsync(ElementInfo element, string what)
+    {
+        var (x, y) = await CentreInPixelsAsync(element, what);
+        await Device.RunAsync($"shell input swipe {x} {y} {x} {y} {(int)LongPressDuration.TotalMilliseconds}");
+    }
+
+    /// <summary>The device's Back key, through adb, under the run's lease like a touch.</summary>
+    public async Task PressBackAsync()
+    {
+        await ClaimLeaseAsync("the Back key");
+        await Device.RunAsync("shell input keyevent KEYCODE_BACK");
+    }
+
+    /// <summary>
+    /// A real finger drag up the middle of <paramref name="area"/>, from three quarters of its height
+    /// to a quarter, which scrolls its content down by about half its height.
+    /// </summary>
+    public async Task ScrollDownAsync(ElementInfo area, string what)
+    {
+        if (area.WindowBounds is not { } bounds)
         {
-            Assert.Fail($"{what} has no window bounds to touch.");
+            Assert.Fail($"{what} has no window bounds to drag.");
             return;
         }
 
         await ClaimLeaseAsync(what);
         var density = await Device.GetDensityAsync();
         var x = (int)Math.Round((bounds.X + (bounds.Width / 2)) * density);
-        var y = (int)Math.Round((bounds.Y + (bounds.Height / 2)) * density);
-        await Device.RunAsync($"shell input tap {x} {y}");
+        var from = (int)Math.Round((bounds.Y + (bounds.Height * 0.75)) * density);
+        var to = (int)Math.Round((bounds.Y + (bounds.Height * 0.25)) * density);
+        await Device.RunAsync($"shell input swipe {x} {from} {x} {to} 300");
+    }
+
+    private async Task<(int X, int Y)> CentreInPixelsAsync(ElementInfo element, string what)
+    {
+        if (element.WindowBounds is not { } bounds)
+        {
+            Assert.Fail($"{what} has no window bounds to touch.");
+            return default;
+        }
+
+        await ClaimLeaseAsync(what);
+        var density = await Device.GetDensityAsync();
+        return ((int)Math.Round((bounds.X + (bounds.Width / 2)) * density),
+            (int)Math.Round((bounds.Y + (bounds.Height / 2)) * density));
     }
 
     /// <summary>

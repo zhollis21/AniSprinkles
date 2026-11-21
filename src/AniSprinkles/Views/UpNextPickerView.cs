@@ -80,6 +80,7 @@ public sealed class UpNextPickerView : ContentView
         text.Children.Add(new Label
         {
             Text = candidate.Media.DisplayTitle,
+            AutomationId = "UpNextTitle",
             Style = Resource<Style>("Body2Strong"),
             MaxLines = 2,
             LineBreakMode = LineBreakMode.TailTruncation,
@@ -131,6 +132,7 @@ public sealed class UpNextPickerView : ContentView
             StrokeShape = new RoundRectangle { CornerRadius = 10 },
             Padding = new Thickness(8, 8),
             Content = grid,
+            AutomationId = "UpNextOption",
         };
 
         var row = new Row(candidate, container, check, checkMark, destination);

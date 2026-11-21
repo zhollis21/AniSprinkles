@@ -140,6 +140,7 @@
             <!-- Action buttons -->
             <Grid ColumnDefinitions="*,10,*">
                 <Button Grid.Column="0" Text="Skip"
+                        AutomationId="RatingSkip"
                         BackgroundColor="Transparent"
                         TextColor="{StaticResource RainbowRed}"
                         BorderColor="{StaticResource RainbowRed}"

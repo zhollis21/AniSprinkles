@@ -168,7 +168,8 @@ public partial class MoveToListPopup : Popup<object>
                 StrokeThickness = 0,
                 Padding = new Thickness(14, 12),
                 BackgroundColor = Colors.Transparent,
-                Content = grid
+                Content = grid,
+                AutomationId = $"ListStatusOption_{status}",
             };
 
             var capturedStatus = status;

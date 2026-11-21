@@ -53,7 +53,7 @@
             <BoxView x:Name="DeleteDivider" HeightRequest="1" Color="{StaticResource Gray600}" Opacity="0.3" />
 
             <!-- Remove from list -->
-            <Border x:Name="DeleteRow" StrokeShape="RoundRectangle 8" StrokeThickness="0" Padding="14,12"
+            <Border x:Name="DeleteRow" AutomationId="RemoveFromList" StrokeShape="RoundRectangle 8" StrokeThickness="0" Padding="14,12"
                     Background="Transparent" Margin="8,4,8,8">
                 <Border.GestureRecognizers>
                     <TapGestureRecognizer Tapped="OnDeleteTapped" />
