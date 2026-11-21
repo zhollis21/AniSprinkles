@@ -28,6 +28,35 @@ public class ListEntryStatusMutationsTests
     }
 
     [Test]
+    public void ApplyStatusChange_CompletingARewatch_LeavesTheCountToAniList()
+    {
+        // AniList adds the rewatch itself when a Rewatching entry is saved as Completed. Sending the
+        // old count as well lets a retried save (AniList committed it, the response was lost) set it
+        // back: 3 → AniList's 4 → the retry's 3 (PR #224 review). A null count is left out of the
+        // mutation, so every attempt, automatic or Retry, leaves AniList's count alone.
+        var entry = TestDataBuilder.Entry(mediaId: 1, progress: 11, episodes: 12, status: MediaListStatus.Repeating);
+        entry.Repeat = 3;
+
+        ListEntryStatusMutations.ApplyStatusChange(entry, MediaListStatus.Completed);
+
+        Assert.That(entry.Status, Is.EqualTo(MediaListStatus.Completed));
+        Assert.That(entry.Repeat, Is.Null);
+    }
+
+    [TestCase(MediaListStatus.Current)]
+    [TestCase(MediaListStatus.Paused)]
+    [TestCase(MediaListStatus.Planning)]
+    public void ApplyStatusChange_CompletingAFirstWatch_KeepsTheCount(MediaListStatus from)
+    {
+        var entry = TestDataBuilder.Entry(mediaId: 1, progress: 11, episodes: 12, status: from);
+        entry.Repeat = 2;
+
+        ListEntryStatusMutations.ApplyStatusChange(entry, MediaListStatus.Completed);
+
+        Assert.That(entry.Repeat, Is.EqualTo(2));
+    }
+
+    [Test]
     public void ApplyStatusChange_Repeating_FromNullRepeat_StaysNull()
     {
         // Null is "never rewatched"; the save leaves it out and AniList keeps its own count.

@@ -1092,6 +1092,10 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
 
     private async Task SetStatusAsync(MediaListEntry entry, MediaListStatus status, bool completing)
     {
+        // A score or progress edit still waiting on its debounce is on this same entry, so this save
+        // carries it. Left queued it saved again mid-flow, toasting over the Up Next sheet (PR #224).
+        _saveDebounceCts?.Cancel();
+
         using var upNextScope = completing ? _upNext.Begin(entry) : null;
         await _statusFlow.ApplyStatusChangeAsync(entry, status, upNextScope);
 

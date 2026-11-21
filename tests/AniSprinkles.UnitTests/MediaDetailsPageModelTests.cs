@@ -600,6 +600,35 @@ public class MediaDetailsPageModelTests
     }
 
     [Test]
+    public async Task ApplyStatusPick_CancelsAQueuedEditSave_AndCarriesTheEdit()
+    {
+        // PR #224 review: a score change queued just before picking Completed saved again 1.5 s later,
+        // while the Up Next sheet was up, and its "Changes saved" toast sat on the sheet's buttons. The
+        // status save is of the same entry, so it already carries the edit.
+        var harness = new Harness();
+        var entry = new MediaListEntry { Id = 7, MediaId = 42, Status = MediaListStatus.Current, Score = 0 };
+        harness.ReturnsMedia(new Media { Id = 42, Type = "ANIME" }, entry);
+        var saves = new List<(MediaListStatus? Status, double? Score)>();
+        harness.Client.SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>())
+            .Returns(call =>
+            {
+                var sent = call.Arg<MediaListEntry>();
+                saves.Add((sent.Status, sent.Score));
+                return sent;
+            });
+        await harness.Model.LoadAsync(42, entry);
+
+        harness.Model.SetStarRatingCommand.Execute("4");
+        await harness.Model.ApplyStatusPickCommand.ExecuteAsync(nameof(MediaListStatus.Paused));
+        await Task.Delay(TimeSpan.FromSeconds(2));
+
+        Assert.That(saves, Has.Count.EqualTo(1), "the queued edit save must not fire after the status save");
+        Assert.That(saves[0].Status, Is.EqualTo(MediaListStatus.Paused));
+        Assert.That(saves[0].Score, Is.Not.Zero, "the status save carries the edit");
+        Assert.That(harness.Feedback.Toasts, Has.None.EqualTo("Changes saved"));
+    }
+
+    [Test]
     public async Task IncrementingToTheTotal_OffersSameTypeRelations_InReadingTerms()
     {
         // #103 on the details page's second completion path (+1 reaching the total), for manga: only

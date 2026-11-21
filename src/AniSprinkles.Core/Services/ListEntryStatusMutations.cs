@@ -22,6 +22,14 @@ public static class ListEntryStatusMutations
         switch (target)
         {
             case MediaListStatus.Completed:
+                // AniList adds the rewatch itself when a Rewatching entry is saved as Completed, so the
+                // count is left to it: a null is left out of the mutation. Sending the old count let a
+                // retried save (committed, response lost) set AniList's 4 back to 3 (PR #224 review).
+                if (entry.Status == MediaListStatus.Repeating)
+                {
+                    entry.Repeat = null;
+                }
+
                 entry.Status = MediaListStatus.Completed;
                 if (entry.HasKnownProgressTotal && entry.ActiveProgressTotal is { } max)
                 {
