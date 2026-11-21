@@ -10,7 +10,9 @@ internal sealed class App(AppDriver driver)
     /// The AniList account the CI fixtures were recorded against (<c>ViewerFull</c> fixture). A journey
     /// changes settings, and the app saves them to whoever is signed in, so the suite only ever runs
     /// signed in as this account: a CI build (fixture replay, nothing leaves the device) or a Debug
-    /// build signed in to the test account on purpose.
+    /// build signed in to the test account on purpose. A Debug run against the real account leaves
+    /// its title language on Romaji, whatever it started on: the journeys reset to that and do not
+    /// restore the original, since this account exists for them and CI saves nothing at all.
     /// </summary>
     public const string TestAccountName = "AniSprinkles";
 

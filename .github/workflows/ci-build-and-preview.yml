@@ -1282,7 +1282,8 @@ jobs:
           # falls back to its default port, 9223, on the device; the forward makes that the runner's
           # 9223 too, which is the tests' default. A failure is recorded here and fails the job last,
           # after the canary and the logs, like every other gate in this script.
-          # MIN_UI_JOURNEYS: a floor on how many ran, so journeys that vanish fail as well.
+          # MIN_UI_JOURNEYS: a floor on how many passed, so journeys that vanish or are skipped
+          # fail as well. MTP's "total" counts skipped tests, so the floor reads "succeeded".
           MIN_UI_JOURNEYS=3
           UI_JOURNEYS_FAILED=0
           is_count() { case "$1" in '' | *[!0-9]*) return 1 ;; *) return 0 ;; esac; }
@@ -1295,22 +1296,29 @@ jobs:
           UI_JOURNEYS_EXIT=$?
           set -e
           cat logs/ui-journeys.txt
-          UI_JOURNEYS_TOTAL=$(grep -E '^\s+total:' logs/ui-journeys.txt | tail -1 | grep -oE '[0-9]+' || true)
-          UI_JOURNEYS_FAILS=$(grep -E '^\s+failed:' logs/ui-journeys.txt | tail -1 | grep -oE '[0-9]+' || true)
-          UI_JOURNEYS_PASSED=$(grep -E '^\s+succeeded:' logs/ui-journeys.txt | tail -1 | grep -oE '[0-9]+' || true)
+          # Parse a copy with the colour codes stripped: MTP colours its summary on a runner even
+          # when redirected ("ESC[m  total: 3"), so line-anchored patterns on the raw file match
+          # nothing — the first CI run of these journeys passed all three and failed on "Only '?'".
+          # Same strip as the unit-test step's, for the same reason.
+          UI_JOURNEYS_PLAIN=$(sed -E 's/\x1B\[[0-9;]*[A-Za-z]//g' logs/ui-journeys.txt)
+          ui_count() { printf '%s\n' "$UI_JOURNEYS_PLAIN" | grep -oP "^\s+$1:\s*\K\d+" | tail -1 || true; }
+          UI_JOURNEYS_TOTAL=$(ui_count total)
+          UI_JOURNEYS_FAILS=$(ui_count failed)
+          UI_JOURNEYS_PASSED=$(ui_count succeeded)
+          UI_JOURNEYS_SKIPPED=$(ui_count skipped)
           if [ "$UI_JOURNEYS_EXIT" -ne 0 ]; then
             echo "::error::UI journeys failed (exit $UI_JOURNEYS_EXIT). The failing assertions are in the step log above and in the device-logcat artifact's ui-journeys.txt."
             UI_JOURNEYS_FAILED=1
-          elif ! is_count "$UI_JOURNEYS_TOTAL" || [ "$UI_JOURNEYS_TOTAL" -lt "$MIN_UI_JOURNEYS" ]; then
-            echo "::error::Only '${UI_JOURNEYS_TOTAL:-?}' UI journeys ran; expected at least $MIN_UI_JOURNEYS."
+          elif ! is_count "$UI_JOURNEYS_PASSED" || [ "$UI_JOURNEYS_PASSED" -lt "$MIN_UI_JOURNEYS" ]; then
+            echo "::error::Only '${UI_JOURNEYS_PASSED:-?}' UI journeys passed (${UI_JOURNEYS_SKIPPED:-?} skipped, ${UI_JOURNEYS_TOTAL:-?} total); expected at least $MIN_UI_JOURNEYS."
             UI_JOURNEYS_FAILED=1
           fi
           {
             echo "## 🧭 UI Journeys"
             echo ""
-            echo "| Result | Passed | Failed | Total |"
-            echo "| :---: | ---: | ---: | ---: |"
-            echo "| $([ "$UI_JOURNEYS_FAILED" -eq 0 ] && echo ✅ || echo ❌) | ${UI_JOURNEYS_PASSED:-?} | ${UI_JOURNEYS_FAILS:-?} | ${UI_JOURNEYS_TOTAL:-?} |"
+            echo "| Result | Passed | Failed | Skipped | Total |"
+            echo "| :---: | ---: | ---: | ---: | ---: |"
+            echo "| $([ "$UI_JOURNEYS_FAILED" -eq 0 ] && echo ✅ || echo ❌) | ${UI_JOURNEYS_PASSED:-?} | ${UI_JOURNEYS_FAILS:-?} | ${UI_JOURNEYS_SKIPPED:-?} | ${UI_JOURNEYS_TOTAL:-?} |"
             echo ""
           } >> "$GITHUB_STEP_SUMMARY"
 
