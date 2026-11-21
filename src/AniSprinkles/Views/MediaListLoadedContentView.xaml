@@ -38,7 +38,7 @@
 
                         <!-- Info stack -->
                         <VerticalStackLayout Grid.Column="1" Spacing="3" VerticalOptions="Center" Padding="10,6">
-                            <Label Text="{Binding Media.DisplayTitle}"
+                            <Label Text="{Binding Media.DisplayTitle}" AutomationId="MediaCardTitle"
                                    Style="{StaticResource Body2Strong}"
                                    MaxLines="2"
                                    LineBreakMode="TailTruncation" />
@@ -179,6 +179,7 @@
                         <Grid Grid.Row="1" Padding="8,6,8,8" RowDefinitions="Auto,*" RowSpacing="4">
                             <Label Grid.Row="0"
                                    Text="{Binding Media.DisplayTitle}"
+                                   AutomationId="MediaCardTitle"
                                    Style="{StaticResource Caption1Strong}"
                                    MaxLines="2"
                                    LineBreakMode="TailTruncation" />
@@ -250,6 +251,7 @@
                     </Grid.GestureRecognizers>
                     <Label Grid.Column="0"
                            Text="{Binding Media.DisplayTitle}"
+                           AutomationId="MediaCardTitle"
                            Style="{StaticResource Body2}"
                            MaxLines="1"
                            LineBreakMode="TailTruncation"

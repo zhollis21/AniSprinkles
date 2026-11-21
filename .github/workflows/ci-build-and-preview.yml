@@ -111,8 +111,10 @@ jobs:
           # below), so everything numeric is guarded through here before a -gt / -lt comparison.
           is_count() { case "$1" in '' | *[!0-9]*) return 1 ;; *) return 0 ;; esac; }
 
-          # Auto-detect test projects so future additions are picked up
-          TEST_PROJECTS=$(find . -name "*.csproj" \( -path "*/tests/*" -o -path "*/test/*" -o -name "*Test*.csproj" -o -name "*Tests*.csproj" \) | grep -v node_modules || true)
+          # Auto-detect test projects so future additions are picked up. Except the UI journeys
+          # (#131): they drive the app on an emulator, which this job does not have, so here every
+          # one would fail. The UI Screenshots job runs them against its emulator instead.
+          TEST_PROJECTS=$(find . -name "*.csproj" \( -path "*/tests/*" -o -path "*/test/*" -o -name "*Test*.csproj" -o -name "*Tests*.csproj" \) | grep -v node_modules | grep -v '/AniSprinkles.UITests/' || true)
           if [ -n "$TEST_PROJECTS" ]; then
             echo "Found test projects:"
             echo "$TEST_PROJECTS"
@@ -343,7 +345,8 @@ jobs:
     name: UI Screenshots
     runs-on: ubuntu-latest
     needs: [build-and-test, build-release]
-    timeout-minutes: 30
+    # 40, from 30, for the UI journeys (#131): .NET setup plus the journeys add about 3-5 minutes.
+    timeout-minutes: 40
     # Deliberately NOT continue-on-error. This job carries the adult-content canary, and a job that
     # cannot fail cannot gate: with continue-on-error the canary's exit 1 failed the job while the
     # run still concluded success, so a filter regression would have merged clean.
@@ -390,6 +393,16 @@ jobs:
         with:
           name: release-apk
           path: /tmp/release-apk
+
+      # The UI journeys (#131) run on this runner, not the device: plain net11.0, so no MAUI workload.
+      # Built here, before the emulator boots, so the capture script only has to run them.
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: "11.0.x"
+
+      - name: Build UI Journeys
+        run: dotnet build tests/AniSprinkles.UITests/AniSprinkles.UITests.csproj -c Debug
 
       - name: Enable KVM
         run: |
@@ -1261,6 +1274,54 @@ jobs:
           echo "Screenshots captured:"
           ls -la screenshots/
 
+          # UI journeys (#131): NUnit tests on this runner that drive the app through its DevFlow
+          # agent and assert what the screen shows after a tab return — the page-lifecycle bugs no
+          # unit test can see. After the screenshots, so the settings they change cannot reach a
+          # capture; before the logcat dump, so the FIXTURE MISS gate below covers their requests.
+          # A fresh start gives them a known screen. With no DevFlow broker on this runner the agent
+          # falls back to its default port, 9223, on the device; the forward makes that the runner's
+          # 9223 too, which is the tests' default. A failure is recorded here and fails the job last,
+          # after the canary and the logs, like every other gate in this script.
+          # MIN_UI_JOURNEYS: a floor on how many passed, so journeys that vanish or are skipped
+          # fail as well. MTP's "total" counts skipped tests, so the floor reads "succeeded".
+          MIN_UI_JOURNEYS=3
+          UI_JOURNEYS_FAILED=0
+          is_count() { case "$1" in '' | *[!0-9]*) return 1 ;; *) return 0 ;; esac; }
+          mkdir -p logs
+          adb shell am start -W -S -n "$MAIN_ACTIVITY" > /dev/null
+          adb forward tcp:9223 tcp:9223
+          set +e
+          dotnet test tests/AniSprinkles.UITests/AniSprinkles.UITests.csproj --no-build -c Debug \
+            --results-directory "$PWD/logs/ui-journeys" > logs/ui-journeys.txt 2>&1
+          UI_JOURNEYS_EXIT=$?
+          set -e
+          cat logs/ui-journeys.txt
+          # Parse a copy with the colour codes stripped: MTP colours its summary on a runner even
+          # when redirected ("ESC[m  total: 3"), so line-anchored patterns on the raw file match
+          # nothing — the first CI run of these journeys passed all three and failed on "Only '?'".
+          # Same strip as the unit-test step's, for the same reason.
+          UI_JOURNEYS_PLAIN=$(sed -E 's/\x1B\[[0-9;]*[A-Za-z]//g' logs/ui-journeys.txt)
+          ui_count() { printf '%s\n' "$UI_JOURNEYS_PLAIN" | grep -oP "^\s+$1:\s*\K\d+" | tail -1 || true; }
+          UI_JOURNEYS_TOTAL=$(ui_count total)
+          UI_JOURNEYS_FAILS=$(ui_count failed)
+          UI_JOURNEYS_PASSED=$(ui_count succeeded)
+          UI_JOURNEYS_SKIPPED=$(ui_count skipped)
+          if [ "$UI_JOURNEYS_EXIT" -ne 0 ]; then
+            echo "::error::UI journeys failed (exit $UI_JOURNEYS_EXIT). The failing assertions are in the step log above and in the device-logcat artifact's ui-journeys.txt."
+            UI_JOURNEYS_FAILED=1
+          elif ! is_count "$UI_JOURNEYS_PASSED" || [ "$UI_JOURNEYS_PASSED" -lt "$MIN_UI_JOURNEYS" ]; then
+            echo "::error::Only '${UI_JOURNEYS_PASSED:-?}' UI journeys passed (${UI_JOURNEYS_SKIPPED:-?} skipped, ${UI_JOURNEYS_TOTAL:-?} total); expected at least $MIN_UI_JOURNEYS."
+            UI_JOURNEYS_FAILED=1
+          fi
+          {
+            echo "## 🧭 UI Journeys"
+            echo ""
+            echo "| Result | Passed | Failed | Skipped | Total |"
+            echo "| :---: | ---: | ---: | ---: | ---: |"
+            echo "| $([ "$UI_JOURNEYS_FAILED" -eq 0 ] && echo ✅ || echo ❌) | ${UI_JOURNEYS_PASSED:-?} | ${UI_JOURNEYS_FAILS:-?} | ${UI_JOURNEYS_SKIPPED:-?} | ${UI_JOURNEYS_TOTAL:-?} |"
+            echo ""
+          } >> "$GITHUB_STEP_SUMMARY"
+
           # Dump device logcat for diagnostics. The 2MB ring buffer covers the
           # whole test run (boot → final screenshot). Filter to the app's PID
           # plus image/network/MAUI tags so the artifact is useful without us
@@ -1310,6 +1371,11 @@ jobs:
           if [ -n "$MISS_LOG" ]; then
             echo "::error::The app requested data the fixtures do not contain. Re-record with tools/record-anilist-fixtures.cs."
             echo "$MISS_LOG"
+            exit 1
+          fi
+
+          if [ "$UI_JOURNEYS_FAILED" -ne 0 ]; then
+            echo "::error::UI journeys failed; see the errors above."
             exit 1
           fi
           SCRIPT

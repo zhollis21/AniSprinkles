@@ -474,6 +474,18 @@ Pure-algorithm + XAML-well-formedness tests only; no device needed. They do **no
 cover PageModels or any UI, so a green run says nothing about whether the app
 works — that is what the driver and DevFlow above are for.
 
+The UI journeys (#131) run against the app this skill launches: after `up`, pass the agent port
+`launch` printed and this worktree's device.
+
+```powershell
+dotnet test tests/AniSprinkles.UITests/AniSprinkles.UITests.csproj -c Debug --test-parameter AgentPort=<port> --test-parameter Device=<serial>
+```
+
+They need adb, found through `ANDROID_HOME`, `ANDROID_SDK_ROOT` or the PATH — locally, set
+`ANDROID_HOME` to the SDK `driver.ps1 env` reports. They switch tabs with a real `adb shell input tap`,
+because DevFlow's tap on a tab skips a pushed page's `OnNavigatedTo` (AGENTS.md, UI journeys). Use a
+`-p:CiBuild=true` build: they refuse to run unless signed in as the test account.
+
 ---
 
 ## Gotchas

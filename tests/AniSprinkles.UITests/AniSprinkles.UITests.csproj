@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net11.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>AniSprinkles.UITests</RootNamespace>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <OutputType>Exe</OutputType>
+    <!-- Runs on the host, not the device (#131): these tests drive the real app on an emulator
+         through its MAUI DevFlow agent, the way dotnet/maui's own UI tests drive theirs through
+         Appium. That is why NUnit works here when it cannot run on the device itself (#169). Same
+         framework and runner as the unit tests. -->
+    <EnableNUnitRunner>true</EnableNUnitRunner>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NUnit" />
+    <PackageReference Include="NUnit.Analyzers" PrivateAssets="all" />
+    <PackageReference Include="NUnit3TestAdapter" />
+  </ItemGroup>
+
+  <!-- Debug only, like every DevFlow reference in the repo (DevFlowDebugOnlyTests pins it). This one
+       never ships — it is the host side, and this project is never packaged — but the guard is kept
+       exact rather than taught exceptions, and these tests only ever run against a Debug app, which
+       is the only kind with an agent to talk to. A Release build of this project does not compile. -->
+  <ItemGroup Condition="'$(Configuration)' == 'Debug'">
+    <PackageReference Include="Microsoft.Maui.DevFlow.Client" />
+  </ItemGroup>
+
+</Project>
