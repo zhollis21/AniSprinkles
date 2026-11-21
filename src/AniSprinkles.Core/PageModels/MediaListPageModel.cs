@@ -192,7 +192,7 @@ public partial class MediaListPageModel : ObservableObject, IAuthActions
         _ => Glyphs.Regular.List24,
     };
 
-    protected MediaListPageModel(MediaKind kind, IAniListClient aniListClient, IAuthService authService, IAiringNotificationService airingNotificationService, ErrorReportService errorReportService, IPreferences preferences, INavigationService navigationService, IDialogService dialogs, IUserFeedback feedback, ListEntryStatusFlow statusFlow, TimeProvider timeProvider, ILogger<MediaListPageModel> logger)
+    protected MediaListPageModel(MediaKind kind, IAniListClient aniListClient, IAuthService authService, IAiringNotificationService airingNotificationService, ErrorReportService errorReportService, IPreferences preferences, INavigationService navigationService, IDialogService dialogs, IUserFeedback feedback, ListEntryStatusFlow statusFlow, IUpNextOffer upNext, TimeProvider timeProvider, ILogger<MediaListPageModel> logger)
     {
         Kind = kind;
         _aniListClient = aniListClient;
@@ -207,7 +207,7 @@ public partial class MediaListPageModel : ObservableObject, IAuthActions
 
         // Long-press flows live in the shared coordinator (also used by Discover/browse);
         // the hooks keep this page's section bookkeeping and +1-debounce semantics intact.
-        _entryActions = new EntryActionCoordinator(aniListClient, errorReportService, dialogs, feedback, statusFlow, logger, new EntryActionHost
+        _entryActions = new EntryActionCoordinator(aniListClient, errorReportService, dialogs, feedback, statusFlow, upNext, logger, new EntryActionHost
         {
             OpenDetailsAsync = entry => OpenDetails(entry),
             OnBeforeFlowAsync = FlushPendingIncrementAsync,

@@ -1,0 +1,113 @@
+﻿{
+  "operationName": "MediaRelations",
+  "variables": {
+    "id": 178467
+  },
+  "queryFingerprint": "add8ea99711b",
+  "recordedAt": "2026-11-20T23:05:07.4910429+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "id": 178467,
+        "relations": {
+          "edges": [
+            {
+              "relationType": "ALTERNATIVE",
+              "node": {
+                "id": 87225,
+                "title": {
+                  "romaji": "Tsuki ga Michibiku Isekai Douchuu",
+                  "english": "Tsukimichi: Moonlit Fantasy",
+                  "native": "\u6708\u304C\u5C0E\u304F\u7570\u4E16\u754C\u9053\u4E2D"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "RELEASING",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx87225-EYFJq2QMzHkk.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx87225-EYFJq2QMzHkk.jpg"
+                },
+                "startDate": {
+                  "year": 2015,
+                  "month": 6,
+                  "day": 10
+                },
+                "episodes": null,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "PREQUEL",
+              "node": {
+                "id": 139518,
+                "title": {
+                  "romaji": "Tsuki ga Michibiku Isekai Douchuu 2nd Season",
+                  "english": "TSUKIMICHI -Moonlit Fantasy- Season 2",
+                  "native": "\u6708\u304C\u5C0E\u304F\u7570\u4E16\u754C\u9053\u4E2D \u7B2C\u4E8C\u5E55"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx139518-GZWYKM8Kg1S2.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx139518-GZWYKM8Kg1S2.png"
+                },
+                "startDate": {
+                  "year": 2024,
+                  "month": 1,
+                  "day": 8
+                },
+                "episodes": 25,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": {
+                  "id": 593364366,
+                  "status": "COMPLETED",
+                  "progress": 25,
+                  "progressVolumes": null,
+                  "score": 8,
+                  "repeat": 0,
+                  "notes": null,
+                  "private": false,
+                  "hiddenFromStatusLists": false
+                }
+              }
+            },
+            {
+              "relationType": "SOURCE",
+              "node": {
+                "id": 87224,
+                "title": {
+                  "romaji": "Tsuki ga Michibiku Isekai Douchuu",
+                  "english": "Tsukimichi: Moonlit Fantasy",
+                  "native": "\u6708\u304C\u5C0E\u304F\u7570\u4E16\u754C\u9053\u4E2D"
+                },
+                "isAdult": false,
+                "format": "NOVEL",
+                "type": "MANGA",
+                "status": "RELEASING",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx87224-cXzygUtaRK8s.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx87224-cXzygUtaRK8s.jpg"
+                },
+                "startDate": {
+                  "year": 2013,
+                  "month": 5,
+                  "day": 28
+                },
+                "episodes": null,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

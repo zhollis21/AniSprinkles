@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               x:Class="AniSprinkles.Views.UpNextPopup"
+               x:TypeArguments="x:Object"
+               BackgroundColor="{StaticResource SecondaryBackground}">
+
+    <!-- The "Up next" sheet (#103). Anchoring and edge-to-edge are set in code-behind, for the same
+         CommunityToolkit Popup V2 reasons as MoveToListPopup. -->
+    <Border x:Name="SheetBorder"
+            StrokeShape="RoundRectangle 20,20,0,0"
+            StrokeThickness="0"
+            Padding="0"
+            HorizontalOptions="Fill"
+            Background="{StaticResource SecondaryBackground}">
+        <VerticalStackLayout x:Name="SheetContent" Spacing="0" Padding="0">
+
+            <BoxView HeightRequest="4" WidthRequest="36"
+                     CornerRadius="2"
+                     Color="{StaticResource Gray500}"
+                     HorizontalOptions="Center"
+                     Margin="0,10,0,6" />
+
+            <Label Text="Up Next"
+                   Style="{StaticResource Title3}"
+                   HorizontalTextAlignment="Center"
+                   Margin="20,4,20,2" />
+
+            <Label x:Name="SubtitleLabel"
+                   Style="{StaticResource Caption1}"
+                   TextColor="{StaticResource Gray400}"
+                   HorizontalTextAlignment="Center"
+                   MaxLines="2"
+                   LineBreakMode="TailTruncation"
+                   Margin="20,0,20,8" />
+
+            <BoxView HeightRequest="1" Color="{StaticResource Gray600}" Opacity="0.3" />
+
+            <!-- A long relation list scrolls rather than pushing the buttons off-screen. -->
+            <ScrollView x:Name="PickerScroll" Padding="8,6,8,0" />
+
+            <!-- Not now is an outlined secondary button: plain grey text read as a label, and next to the
+                 disabled primary the whole footer looked inactive. The filled primary says what it will do
+                 ("Add 2 · Move 1") and is disabled, reading "Select titles", while nothing is ticked. Its
+                 colours are set in code-behind per state, since the implicit Button style only greys the
+                 text when disabled. -->
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12" Padding="16,12,16,16">
+                <Button Grid.Column="0" Text="Not now"
+                        Background="Transparent"
+                        TextColor="{StaticResource Gray100}"
+                        BorderColor="{StaticResource Gray500}"
+                        BorderWidth="1"
+                        CornerRadius="12"
+                        Padding="20,0"
+                        Clicked="OnNotNowClicked" />
+                <Button Grid.Column="1" x:Name="AddButton"
+                        CornerRadius="12"
+                        BorderWidth="0"
+                        FontAttributes="Bold"
+                        Clicked="OnAddClicked" />
+            </Grid>
+
+        </VerticalStackLayout>
+    </Border>
+
+</toolkit:Popup>

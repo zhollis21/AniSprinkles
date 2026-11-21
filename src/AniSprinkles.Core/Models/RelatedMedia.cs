@@ -35,6 +35,15 @@ public class RelatedMedia
     public int? ListProgress { get; set; }
     public double? ListScore { get; set; }
 
+    /// <summary>
+    /// The viewer's whole list entry for this title, on relation nodes only (#103), so the up-next
+    /// offer can move an entry that is already on the list. Complete only when it came from
+    /// <c>IAniListClient.GetMediaRelationsAsync</c>, which selects every field a save sends back
+    /// (score, repeat count, notes, private). The details query selects four, so a save built
+    /// from that copy would write nulls over the rest.
+    /// </summary>
+    public MediaListEntry? ViewerEntry { get; set; }
+
     // Was its own copy of the chain, falling back to "Unknown" where Media said "Unknown Title" —
     // the drift that motivated consolidating this (#141).
     public string DisplayTitle

@@ -241,7 +241,7 @@ public class DiscoverAdultFilterPinningTests
                 Substitute.For<INavigationService>(),
                 new RecordingUserFeedback(),
                 dialogs,
-                new ListEntryStatusFlow(dialogs),
+                new ListEntryStatusFlow(dialogs), Substitute.For<IUpNextOffer>(),
                 new ErrorReportService(NullLogger<ErrorReportService>.Instance),
                 new ManualTimeProvider(DateTimeOffset.UnixEpoch),
                 NullLogger<DiscoverPageModel>.Instance);

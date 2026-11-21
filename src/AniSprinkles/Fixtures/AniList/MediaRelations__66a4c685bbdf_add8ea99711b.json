@@ -1,0 +1,85 @@
+﻿{
+  "operationName": "MediaRelations",
+  "variables": {
+    "id": 170577
+  },
+  "queryFingerprint": "add8ea99711b",
+  "recordedAt": "2026-11-20T23:02:42.3869998+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "id": 170577,
+        "relations": {
+          "edges": [
+            {
+              "relationType": "PREQUEL",
+              "node": {
+                "id": 156067,
+                "title": {
+                  "romaji": "Tondemo Skill de Isekai Hourou Meshi",
+                  "english": "Campfire Cooking in Another World with my Absurd Skill",
+                  "native": "\u3068\u3093\u3067\u3082\u30B9\u30AD\u30EB\u3067\u7570\u4E16\u754C\u653E\u6D6A\u30E1\u30B7"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx156067-Jovklss4VWIx.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx156067-Jovklss4VWIx.jpg"
+                },
+                "startDate": {
+                  "year": 2023,
+                  "month": 1,
+                  "day": 10
+                },
+                "episodes": 12,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": {
+                  "id": 541004332,
+                  "status": "COMPLETED",
+                  "progress": 12,
+                  "progressVolumes": null,
+                  "score": 9,
+                  "repeat": 0,
+                  "notes": null,
+                  "private": false,
+                  "hiddenFromStatusLists": false
+                }
+              }
+            },
+            {
+              "relationType": "SOURCE",
+              "node": {
+                "id": 99049,
+                "title": {
+                  "romaji": "Tondemo Skill de Isekai Hourou Meshi",
+                  "english": "Campfire Cooking in Another World with My Absurd Skill",
+                  "native": "\u3068\u3093\u3067\u3082\u30B9\u30AD\u30EB\u3067\u7570\u4E16\u754C\u653E\u6D6A\u30E1\u30B7"
+                },
+                "isAdult": false,
+                "format": "NOVEL",
+                "type": "MANGA",
+                "status": "RELEASING",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx99049-qzACezDyCucJ.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx99049-qzACezDyCucJ.jpg"
+                },
+                "startDate": {
+                  "year": 2016,
+                  "month": 11,
+                  "day": 25
+                },
+                "episodes": null,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

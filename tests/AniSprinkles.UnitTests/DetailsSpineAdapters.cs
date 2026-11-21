@@ -198,7 +198,7 @@ public class MediaDetailsSpineTests : DetailsSpineTests<Media>
             var dialogs = new ScriptedDialogService();
             return new MediaDetailsPageModel(
                 h.Client, h.Auth, h.ErrorReports, h.Navigation, h.Feedback, h.Browser,
-                dialogs, new ListEntryStatusFlow(dialogs),
+                dialogs, new ListEntryStatusFlow(dialogs), Substitute.For<IUpNextOffer>(),
                 NullLogger<MediaDetailsPageModel>.Instance);
         });
 

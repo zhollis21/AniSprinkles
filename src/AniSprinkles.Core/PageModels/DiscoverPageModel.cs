@@ -55,6 +55,7 @@ public partial class DiscoverPageModel : ObservableObject
         IUserFeedback feedback,
         IDialogService dialogs,
         ListEntryStatusFlow statusFlow,
+        IUpNextOffer upNext,
         ErrorReportService errorReportService,
         TimeProvider timeProvider,
         ILogger<DiscoverPageModel> logger)
@@ -85,7 +86,7 @@ public partial class DiscoverPageModel : ObservableObject
         // Shared long-press flows. A successful mutation is written back onto EVERY item showing
         // that media (the same anime can sit in several rows), keeping the chips and the
         // TTL-cached sections consistent without a refetch.
-        _entryActions = new EntryActionCoordinator(aniListClient, errorReportService, dialogs, feedback, statusFlow, logger, new EntryActionHost
+        _entryActions = new EntryActionCoordinator(aniListClient, errorReportService, dialogs, feedback, statusFlow, upNext, logger, new EntryActionHost
         {
             OpenDetailsAsync = entry => NavigateToMediaByIdAsync(entry.MediaId),
             OnEntrySavedInPlaceAsync = entry => { ApplyEntryToItems(entry); return Task.CompletedTask; },

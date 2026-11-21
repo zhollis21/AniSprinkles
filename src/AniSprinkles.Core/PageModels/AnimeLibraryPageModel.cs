@@ -17,6 +17,7 @@ public partial class AnimeLibraryPageModel(
     IDialogService dialogs,
     IUserFeedback feedback,
     ListEntryStatusFlow statusFlow,
+    IUpNextOffer upNext,
     TimeProvider timeProvider,
     ILogger<MediaListPageModel> logger)
     : MediaListPageModel(
@@ -30,6 +31,7 @@ public partial class AnimeLibraryPageModel(
         dialogs,
         feedback,
         statusFlow,
+        upNext,
         timeProvider,
         logger)
 {

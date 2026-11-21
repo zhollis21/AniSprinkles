@@ -317,6 +317,79 @@
                             </VerticalStackLayout>
                         </Border>
 
+                        <!-- 3b. UP NEXT (#103): named after the sheet it controls. Device-local, saved on tap rather
+                             than with the AniList settings above, which is why it is not part of Display. -->
+                        <Border Style="{StaticResource SectionHeaderStyle}"
+                    Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}"
+                    SemanticProperties.Description="Up Next"
+                    SemanticProperties.Hint="Toggle Up Next section">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ToggleUpNextCommand}" />
+                            </Border.GestureRecognizers>
+                            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+                                <Image Grid.Column="0" WidthRequest="20" HeightRequest="20" VerticalOptions="Center"
+                           AutomationProperties.IsInAccessibleTree="False">
+                                    <Image.Source>
+                                        <FontImageSource Glyph="{x:Static icons:FluentIconsRegular.Next24}"
+                                             FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                                             Color="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='UpNext'}"
+                                             Size="20" />
+                                    </Image.Source>
+                                </Image>
+                                <Label Grid.Column="1" Text="Up Next" Style="{StaticResource Title3}"
+                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='UpNext'}"
+                           VerticalTextAlignment="Center"
+                           AutomationProperties.IsInAccessibleTree="False" />
+                                <Label Grid.Column="2"
+                           Text="{x:Static icons:FluentIconsRegular.ChevronDown24}"
+                           FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
+                           TextColor="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter='UpNext'}"
+                           FontSize="16" WidthRequest="16" HeightRequest="16"
+                           HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                           VerticalOptions="Center"
+                           AutomationProperties.IsInAccessibleTree="False">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label" Binding="{Binding IsUpNextExpanded}" Value="True">
+                                            <Setter Property="Rotation" Value="180" />
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                            </Grid>
+                        </Border>
+                        <Border Style="{StaticResource SectionContentStyle}" Padding="16"
+                    IsVisible="{Binding IsUpNextExpanded}">
+                            <VerticalStackLayout Spacing="16">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <VerticalStackLayout VerticalOptions="Center">
+                                        <Label Text="Suggest Related Entries" Style="{StaticResource Body1Strong}" />
+                                        <Label Text="Offer sequels and side stories when you complete something" Style="{StaticResource Caption1}" TextColor="{StaticResource Gray400}" />
+                                    </VerticalStackLayout>
+                                    <Switch Grid.Column="1" IsToggled="{Binding UpNextEnabled}" VerticalOptions="Center"
+                                            OnColor="{Binding Source='UpNext', x:DataType=x:String, Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}" />
+                                </Grid>
+                                <VerticalStackLayout Spacing="8" IsVisible="{Binding UpNextEnabled}">
+                                    <Label Text="Suggestions Go To" Style="{StaticResource Body1Strong}" />
+                                    <FlexLayout Wrap="Wrap" JustifyContent="Start" AlignItems="Center">
+                                        <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
+                                    Stroke="{Binding UpNextStatus, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Current}">
+                                            <Border.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding SetUpNextStatusCommand}" CommandParameter="Current" />
+                                            </Border.GestureRecognizers>
+                                            <Label Text="Watching / Reading" Style="{StaticResource ChipLabelStyle}" TextColor="{Binding UpNextStatus, Converter={StaticResource ChipSelectionTextConverter}, ConverterParameter=Current}" />
+                                        </Border>
+                                        <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
+                                    Stroke="{Binding UpNextStatus, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Planning}">
+                                            <Border.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding SetUpNextStatusCommand}" CommandParameter="Planning" />
+                                            </Border.GestureRecognizers>
+                                            <Label Text="Plan to Watch / Read" Style="{StaticResource ChipLabelStyle}" TextColor="{Binding UpNextStatus, Converter={StaticResource ChipSelectionTextConverter}, ConverterParameter=Planning}" />
+                                        </Border>
+                                    </FlexLayout>
+                                    <Label Text="Unreleased titles always go to Plan to Watch / Read." Style="{StaticResource Caption1}" TextColor="{StaticResource Gray400}" />
+                                </VerticalStackLayout>
+                            </VerticalStackLayout>
+                        </Border>
+
                         <!-- 4. CONTENT & PRIVACY -->
                         <Border Style="{StaticResource SectionHeaderStyle}"
                     Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}"

@@ -73,6 +73,17 @@ public class RainbowAccentConverterTests
     }
 
     [Test]
+    public void ResourceKeyFor_SettingsSectionHeaders_AreAllDistinct()
+    {
+        // Stacked headers that share a colour read as one section. Up Next (#103) hashed to the
+        // same orange as Content & Privacy directly beneath it, seen on device 2026-11-20.
+        var headers = new[] { "Display", "UpNext", "Privacy", "Notifications", "Account" }
+            .Select(RainbowAccentConverter.ResourceKeyFor);
+
+        Assert.That(headers, Is.Unique);
+    }
+
+    [Test]
     public void ResourceKeyFor_LeavesTheSharedKeysTheStatCardsUsedToBorrowAlone()
     {
         // The stat tiles are keyed StatsTotalManga etc. rather than the obvious Manga/Chapters/

@@ -10,8 +10,8 @@ namespace AniSprinkles.Services;
 ///
 /// All methods mutate the passed <see cref="MediaListEntry"/> in place. Callers
 /// should always persist the entry via the AniList client after
-/// <see cref="ApplyStatusChangeAsync(MediaListEntry, MediaListStatus)"/>, and persist
-/// after <see cref="ApplyCompletionAsync(MediaListEntry)"/> only when that method
+/// <see cref="ApplyStatusChangeAsync(MediaListEntry, MediaListStatus, UpNextScope?)"/>, and persist
+/// after <see cref="ApplyCompletionAsync(MediaListEntry, UpNextScope?)"/> only when that method
 /// returns <c>true</c> (it returns <c>false</c> when the user cancels). Callers are
 /// responsible for reverting their own optimistic UI on failure.
 ///
@@ -26,12 +26,15 @@ public sealed class ListEntryStatusFlow(IDialogService dialogs)
     /// status-specific side effects (progress, repeat, score prompt). The score
     /// prompt is optional (skipping it preserves the existing score but does not
     /// cancel the status change), so the caller should always proceed to save.
+    /// <paramref name="upNext"/> (#103) is the completing flow's up-next offer: its relations fetch
+    /// starts here, so it runs while the score prompt is open.
     /// </summary>
-    public async Task ApplyStatusChangeAsync(MediaListEntry entry, MediaListStatus target)
+    public async Task ApplyStatusChangeAsync(MediaListEntry entry, MediaListStatus target, UpNextScope? upNext = null)
     {
         var needsScorePrompt = ListEntryStatusMutations.ApplyStatusChange(entry, target);
         if (needsScorePrompt)
         {
+            upNext?.Start();
             var score = await dialogs.ShowRatingAsync(entry.Media?.DisplayTitle, entry.Score);
             if (score.HasValue)
             {
@@ -51,7 +54,7 @@ public sealed class ListEntryStatusFlow(IDialogService dialogs)
     /// Long-running airing shows and still-publishing manga have no finite total and should not
     /// route through here.
     /// </summary>
-    public async Task<bool> ApplyCompletionAsync(MediaListEntry entry)
+    public async Task<bool> ApplyCompletionAsync(MediaListEntry entry, UpNextScope? upNext = null)
     {
         ArgumentNullException.ThrowIfNull(entry);
 
@@ -79,6 +82,9 @@ public sealed class ListEntryStatusFlow(IDialogService dialogs)
         }
 
         SentrySdk.AddBreadcrumb($"Completion confirmed (entry {entry.Id})", "list", "user");
+
+        // Only now: a declined confirm must not spend a request on relations nobody will see (#103).
+        upNext?.Start();
 
         entry.SetActiveProgress(total);
         entry.Status = MediaListStatus.Completed;

@@ -1,0 +1,85 @@
+﻿{
+  "operationName": "MediaRelations",
+  "variables": {
+    "id": 209939
+  },
+  "queryFingerprint": "add8ea99711b",
+  "recordedAt": "2026-11-20T22:59:56.6122964+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "id": 209939,
+        "relations": {
+          "edges": [
+            {
+              "relationType": "PREQUEL",
+              "node": {
+                "id": 182255,
+                "title": {
+                  "romaji": "Sousou no Frieren 2nd Season",
+                  "english": "Frieren: Beyond Journey\u2019s End Season 2",
+                  "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3 \u7B2C2\u671F"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx182255-butzrqd4I0aC.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx182255-butzrqd4I0aC.jpg"
+                },
+                "startDate": {
+                  "year": 2026,
+                  "month": 1,
+                  "day": 16
+                },
+                "episodes": 10,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": {
+                  "id": 540973986,
+                  "status": "REPEATING",
+                  "progress": 0,
+                  "progressVolumes": null,
+                  "score": 9,
+                  "repeat": 2,
+                  "notes": null,
+                  "private": false,
+                  "hiddenFromStatusLists": false
+                }
+              }
+            },
+            {
+              "relationType": "SOURCE",
+              "node": {
+                "id": 118586,
+                "title": {
+                  "romaji": "Sousou no Frieren",
+                  "english": "Frieren: Beyond Journey\u2019s End",
+                  "native": "\u846C\u9001\u306E\u30D5\u30EA\u30FC\u30EC\u30F3"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "RELEASING",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx118586-CXKgWikBFQgS.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx118586-CXKgWikBFQgS.jpg"
+                },
+                "startDate": {
+                  "year": 2020,
+                  "month": 4,
+                  "day": 28
+                },
+                "episodes": null,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

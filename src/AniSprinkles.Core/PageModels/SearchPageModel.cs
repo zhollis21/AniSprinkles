@@ -72,6 +72,7 @@ public partial class SearchPageModel : ObservableObject, IBrowseMediaItemActions
         IUserFeedback feedback,
         IDialogService dialogs,
         ListEntryStatusFlow statusFlow,
+        IUpNextOffer upNext,
         ErrorReportService errorReportService,
         IPreferences preferences,
         TimeProvider timeProvider,
@@ -89,7 +90,7 @@ public partial class SearchPageModel : ObservableObject, IBrowseMediaItemActions
 
         // Long-press flows, as on Discover. A successful mutation is written back onto every
         // matching result so the status chips stay right without refetching the query.
-        _entryActions = new EntryActionCoordinator(aniListClient, errorReportService, dialogs, feedback, statusFlow, logger, new EntryActionHost
+        _entryActions = new EntryActionCoordinator(aniListClient, errorReportService, dialogs, feedback, statusFlow, upNext, logger, new EntryActionHost
         {
             OpenDetailsAsync = entry => NavigateToMediaByIdAsync(entry.MediaId),
             OnEntrySavedInPlaceAsync = entry => { ApplyEntryToItems(entry); return Task.CompletedTask; },

@@ -1,0 +1,47 @@
+﻿{
+  "operationName": "MediaRelations",
+  "variables": {
+    "id": 85476
+  },
+  "queryFingerprint": "add8ea99711b",
+  "recordedAt": "2026-11-20T23:07:32.3535927+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "id": 85476,
+        "relations": {
+          "edges": [
+            {
+              "relationType": "SEQUEL",
+              "node": {
+                "id": 85199,
+                "title": {
+                  "romaji": "Shingeki no Kyojin Gaiden: Kuinaki Sentaku",
+                  "english": "Attack on Titan: No Regrets",
+                  "native": "\u9032\u6483\u306E\u5DE8\u4EBA \u5916\u4F1D \u6094\u3044\u306A\u304D\u9078\u629E"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx85199-IzuYa59zXTBN.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx85199-IzuYa59zXTBN.jpg"
+                },
+                "startDate": {
+                  "year": 2013,
+                  "month": 9,
+                  "day": 28
+                },
+                "episodes": null,
+                "chapters": 11,
+                "volumes": 2,
+                "mediaListEntry": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

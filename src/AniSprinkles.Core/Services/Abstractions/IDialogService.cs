@@ -74,6 +74,14 @@ public interface IDialogService
     /// </summary>
     Task<double?> ShowRatingAsync(string? mediaTitle, double? initialScore);
 
+    /// <summary>
+    /// The "Up next" sheet (#103): <paramref name="candidates"/> with a check each, all unticked, each
+    /// row naming where it goes (<see cref="UpNextCandidate.DestinationLabel"/>); there is no list
+    /// switch on the sheet. Returns <c>null</c> for Not now or a dismissal, and never a choice with
+    /// nothing selected.
+    /// </summary>
+    Task<UpNextChoice?> ShowUpNextAsync(string completedTitle, IReadOnlyList<UpNextCandidate> candidates);
+
     /// <summary>Two-button confirmation. Returns <c>false</c> on cancel or dismissal.</summary>
     Task<bool> ConfirmAsync(
         string title,

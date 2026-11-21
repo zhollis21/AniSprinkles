@@ -70,6 +70,14 @@ public interface IAniListClient
         int perPage = 25,
         CancellationToken cancellationToken = default);
     Task<(Media? Media, MediaListEntry? ListEntry)> GetMediaAsync(int id, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Just the direct relations of one media, each with the viewer's list entry for it (#103). The
+    /// light counterpart of <see cref="GetMediaAsync"/>'s relations section, for the moment an entry
+    /// is completed: never cached, because the list-entry snapshot is what keeps an "add the sequel"
+    /// from overwriting an entry that is already on the list.
+    /// </summary>
+    Task<IReadOnlyList<MediaRelationEdge>> GetMediaRelationsAsync(int id, CancellationToken cancellationToken = default);
     Task<MediaListEntry?> SaveMediaListEntryAsync(MediaListEntry entry, CancellationToken cancellationToken = default);
     Task<bool> DeleteMediaListEntryAsync(int entryId, CancellationToken cancellationToken = default);
     Task<int> GetCurrentUserIdAsync(CancellationToken cancellationToken = default);

@@ -1,0 +1,687 @@
+﻿{
+  "operationName": "MediaRelations",
+  "variables": {
+    "id": 53390
+  },
+  "queryFingerprint": "add8ea99711b",
+  "recordedAt": "2026-11-20T23:06:30.1727617+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "id": 53390,
+        "relations": {
+          "edges": [
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 16498,
+                "title": {
+                  "romaji": "Shingeki no Kyojin",
+                  "english": "Attack on Titan",
+                  "native": "\u9032\u6483\u306E\u5DE8\u4EBA"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx16498-buvcRTBx4NSm.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx16498-buvcRTBx4NSm.jpg"
+                },
+                "startDate": {
+                  "year": 2013,
+                  "month": 4,
+                  "day": 7
+                },
+                "episodes": 25,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": {
+                  "id": 593364161,
+                  "status": "COMPLETED",
+                  "progress": 25,
+                  "progressVolumes": null,
+                  "score": 10,
+                  "repeat": 0,
+                  "notes": null,
+                  "private": false,
+                  "hiddenFromStatusLists": false
+                }
+              }
+            },
+            {
+              "relationType": "SIDE_STORY",
+              "node": {
+                "id": 85199,
+                "title": {
+                  "romaji": "Shingeki no Kyojin Gaiden: Kuinaki Sentaku",
+                  "english": "Attack on Titan: No Regrets",
+                  "native": "\u9032\u6483\u306E\u5DE8\u4EBA \u5916\u4F1D \u6094\u3044\u306A\u304D\u9078\u629E"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx85199-IzuYa59zXTBN.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx85199-IzuYa59zXTBN.jpg"
+                },
+                "startDate": {
+                  "year": 2013,
+                  "month": 9,
+                  "day": 28
+                },
+                "episodes": null,
+                "chapters": 11,
+                "volumes": 2,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 20691,
+                "title": {
+                  "romaji": "Shingeki no Kyojin Zenpen: Guren no Yumiya",
+                  "english": "Attack on Titan Part I: Crimson Bow and Arrow",
+                  "native": "\u5287\u5834\u7248\u300C\u9032\u6483\u306E\u5DE8\u4EBA\u300D\u524D\u7DE8\uFF5E\u7D05\u84EE\u306E\u5F13\u77E2\uFF5E"
+                },
+                "isAdult": false,
+                "format": "MOVIE",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20691-dnv0rkpbgBDJ.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20691-dnv0rkpbgBDJ.png"
+                },
+                "startDate": {
+                  "year": 2014,
+                  "month": 11,
+                  "day": 22
+                },
+                "episodes": 1,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 20692,
+                "title": {
+                  "romaji": "Shingeki no Kyojin Kouhen: Jiyuu no Tsubasa",
+                  "english": "Attack on Titan Part II: Wings of Freedom",
+                  "native": "\u5287\u5834\u7248\u300C\u9032\u6483\u306E\u5DE8\u4EBA\u300D\u5F8C\u7DE8\uFF5E\u81EA\u7531\u306E\u7FFC\uFF5E"
+                },
+                "isAdult": false,
+                "format": "MOVIE",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20692-fSDEpfDtDg9u.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20692-fSDEpfDtDg9u.png"
+                },
+                "startDate": {
+                  "year": 2015,
+                  "month": 6,
+                  "day": 27
+                },
+                "episodes": 1,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 66535,
+                "title": {
+                  "romaji": "Shingeki! Kyojin Chuugakkou",
+                  "english": "Attack on Titan: Junior High",
+                  "native": "\u9032\u6483\uFF01\u5DE8\u4EBA\u4E2D\u5B66\u6821"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx66535-ui0I2mb9mi92.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx66535-ui0I2mb9mi92.jpg"
+                },
+                "startDate": {
+                  "year": 2012,
+                  "month": 4,
+                  "day": 9
+                },
+                "episodes": null,
+                "chapters": 96,
+                "volumes": 11,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 93313,
+                "title": {
+                  "romaji": "Shingeki no Kyojin: LOST GIRLS",
+                  "english": "Attack on Titan: Lost Girls",
+                  "native": "\u5C0F\u8AAC \u9032\u6483\u306E\u5DE8\u4EBA LOST GIRLS"
+                },
+                "isAdult": false,
+                "format": "NOVEL",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx93313-qkYHfA2ZeHMp.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx93313-qkYHfA2ZeHMp.jpg"
+                },
+                "startDate": {
+                  "year": 2014,
+                  "month": 12,
+                  "day": 9
+                },
+                "episodes": null,
+                "chapters": 3,
+                "volumes": 1,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 100465,
+                "title": {
+                  "romaji": "Shingeki no Kyojin Season 2: Kakusei no Houkou",
+                  "english": "Attack on Titan: The Roar of Awakening",
+                  "native": "\u5287\u5834\u7248\u300C\u9032\u6483\u306E\u5DE8\u4EBA\u300DSeason 2\uFF5E\u899A\u9192\u306E\u5486\u54EE\uFF5E"
+                },
+                "isAdult": false,
+                "format": "MOVIE",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/nx100465-ivKS0RqXg5dI.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/nx100465-ivKS0RqXg5dI.png"
+                },
+                "startDate": {
+                  "year": 2018,
+                  "month": 1,
+                  "day": 13
+                },
+                "episodes": 1,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 20958,
+                "title": {
+                  "romaji": "Shingeki no Kyojin Season 2",
+                  "english": "Attack on Titan Season 2",
+                  "native": "\u9032\u6483\u306E\u5DE8\u4EBA Season\uFF12"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20958-HuFJyr54Mmir.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20958-HuFJyr54Mmir.jpg"
+                },
+                "startDate": {
+                  "year": 2017,
+                  "month": 4,
+                  "day": 1
+                },
+                "episodes": 12,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": {
+                  "id": 593364164,
+                  "status": "COMPLETED",
+                  "progress": 12,
+                  "progressVolumes": null,
+                  "score": 10,
+                  "repeat": 0,
+                  "notes": null,
+                  "private": false,
+                  "hiddenFromStatusLists": false
+                }
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 99147,
+                "title": {
+                  "romaji": "Shingeki no Kyojin Season 3",
+                  "english": "Attack on Titan Season 3",
+                  "native": "\u9032\u6483\u306E\u5DE8\u4EBA Season\uFF13"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx99147-AiPDD8cwlCfi.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx99147-AiPDD8cwlCfi.jpg"
+                },
+                "startDate": {
+                  "year": 2018,
+                  "month": 7,
+                  "day": 23
+                },
+                "episodes": 12,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": {
+                  "id": 593364169,
+                  "status": "COMPLETED",
+                  "progress": 12,
+                  "progressVolumes": null,
+                  "score": 10,
+                  "repeat": 0,
+                  "notes": null,
+                  "private": false,
+                  "hiddenFromStatusLists": false
+                }
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 100232,
+                "title": {
+                  "romaji": "Shingeki no Kyojin: Kakuzetsu Toshi no Joou",
+                  "english": "Attack on Titan: The Harsh Mistress of the City",
+                  "native": "\u9032\u6483\u306E\u5DE8\u4EBA \u9694\u7D76\u90FD\u5E02\u306E\u5973\u738B"
+                },
+                "isAdult": false,
+                "format": "NOVEL",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx100232-CVuESAZNmF5s.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx100232-CVuESAZNmF5s.jpg"
+                },
+                "startDate": {
+                  "year": 2014,
+                  "month": 8,
+                  "day": 1
+                },
+                "episodes": null,
+                "chapters": 7,
+                "volumes": 2,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ALTERNATIVE",
+              "node": {
+                "id": 85420,
+                "title": {
+                  "romaji": "Shingeki no Kyojin Volume 0",
+                  "english": "Attack on Titan Volume 0\r\n",
+                  "native": "\u9032\u6483\u306E\u5DE8\u4EBA 0\u5DFB"
+                },
+                "isAdult": false,
+                "format": "ONE_SHOT",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx85420-4Icwbgm9fq3R.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx85420-4Icwbgm9fq3R.jpg"
+                },
+                "startDate": {
+                  "year": 2013,
+                  "month": 7,
+                  "day": 17
+                },
+                "episodes": null,
+                "chapters": 1,
+                "volumes": null,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 89879,
+                "title": {
+                  "romaji": "Sungeki no Kyojin",
+                  "english": "Spoof on Titan",
+                  "native": "\u5BF8\u5287\u306E\u5DE8\u4EBA"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx89879-IQcKMRW5tWwK.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx89879-IQcKMRW5tWwK.jpg"
+                },
+                "startDate": {
+                  "year": 2013,
+                  "month": 12,
+                  "day": 4
+                },
+                "episodes": null,
+                "chapters": 55,
+                "volumes": 2,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 104578,
+                "title": {
+                  "romaji": "Shingeki no Kyojin Season 3 Part 2",
+                  "english": "Attack on Titan Season 3 Part 2",
+                  "native": "\u9032\u6483\u306E\u5DE8\u4EBA Season\uFF13 Part.2"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx104578-k61nx3LPjvgd.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx104578-k61nx3LPjvgd.jpg"
+                },
+                "startDate": {
+                  "year": 2019,
+                  "month": 4,
+                  "day": 29
+                },
+                "episodes": 10,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": {
+                  "id": 593364173,
+                  "status": "COMPLETED",
+                  "progress": 10,
+                  "progressVolumes": null,
+                  "score": 10,
+                  "repeat": 0,
+                  "notes": null,
+                  "private": false,
+                  "hiddenFromStatusLists": false
+                }
+              }
+            },
+            {
+              "relationType": "SPIN_OFF",
+              "node": {
+                "id": 106489,
+                "title": {
+                  "romaji": "Shingeki! Kyojin Chuugakkou: Seishun! Tonari no Marley Gakuen",
+                  "english": null,
+                  "native": "\u9032\u6483!\u5DE8\u4EBA\u9AD8\u6821 ~\u9752\u6625! \u3068\u306A\u308A\u306E\u30DE\u30FC\u30EC\u5B66\u5712~"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx106489-FVSfl430bRTW.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx106489-FVSfl430bRTW.jpg"
+                },
+                "startDate": {
+                  "year": 2018,
+                  "month": 6,
+                  "day": 9
+                },
+                "episodes": null,
+                "chapters": 6,
+                "volumes": 1,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 18397,
+                "title": {
+                  "romaji": "Shingeki no Kyojin OVA",
+                  "english": "Attack on Titan OVA",
+                  "native": "\u9032\u6483\u306E\u5DE8\u4EBA OVA"
+                },
+                "isAdult": false,
+                "format": "OVA",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx18397-AnpwhLkSjYL1.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx18397-AnpwhLkSjYL1.jpg"
+                },
+                "startDate": {
+                  "year": 2013,
+                  "month": 12,
+                  "day": 9
+                },
+                "episodes": 3,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 110277,
+                "title": {
+                  "romaji": "Shingeki no Kyojin: The Final Season",
+                  "english": "Attack on Titan Final Season",
+                  "native": "\u9032\u6483\u306E\u5DE8\u4EBA The Final Season"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx110277-sKUNXAsWMNFw.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx110277-sKUNXAsWMNFw.jpg"
+                },
+                "startDate": {
+                  "year": 2020,
+                  "month": 12,
+                  "day": 7
+                },
+                "episodes": 16,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": {
+                  "id": 593364175,
+                  "status": "COMPLETED",
+                  "progress": 16,
+                  "progressVolumes": null,
+                  "score": 8,
+                  "repeat": 0,
+                  "notes": null,
+                  "private": false,
+                  "hiddenFromStatusLists": false
+                }
+              }
+            },
+            {
+              "relationType": "PREQUEL",
+              "node": {
+                "id": 73999,
+                "title": {
+                  "romaji": "Shingeki no Kyojin: Before the fall",
+                  "english": "Attack on Titan: Before the Fall",
+                  "native": "\u9032\u6483\u306E\u5DE8\u4EBA Before the fall"
+                },
+                "isAdult": false,
+                "format": "NOVEL",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx73999-YpiZ2B2lBqYL.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx73999-YpiZ2B2lBqYL.jpg"
+                },
+                "startDate": {
+                  "year": 2011,
+                  "month": 12,
+                  "day": 2
+                },
+                "episodes": null,
+                "chapters": 15,
+                "volumes": 3,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 131681,
+                "title": {
+                  "romaji": "Shingeki no Kyojin: The Final Season Part 2",
+                  "english": "Attack on Titan Final Season Part 2",
+                  "native": "\u9032\u6483\u306E\u5DE8\u4EBA The Final Season Part 2"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx131681-5ooUqvqNtee1.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx131681-5ooUqvqNtee1.jpg"
+                },
+                "startDate": {
+                  "year": 2022,
+                  "month": 1,
+                  "day": 10
+                },
+                "episodes": 12,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": {
+                  "id": 593364179,
+                  "status": "COMPLETED",
+                  "progress": 12,
+                  "progressVolumes": null,
+                  "score": 8,
+                  "repeat": 0,
+                  "notes": null,
+                  "private": false,
+                  "hiddenFromStatusLists": false
+                }
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 119113,
+                "title": {
+                  "romaji": "Shingeki no Kyojin: Chronicle",
+                  "english": "Attack on Titan ~Chronicle~",
+                  "native": "\u9032\u6483\u306E\u5DE8\u4EBA \u301C\u30AF\u30ED\u30CB\u30AF\u30EB\u301C"
+                },
+                "isAdult": false,
+                "format": "MOVIE",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx119113-IzVI5oZ0og8O.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx119113-IzVI5oZ0og8O.jpg"
+                },
+                "startDate": {
+                  "year": 2020,
+                  "month": 7,
+                  "day": 17
+                },
+                "episodes": 1,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 146984,
+                "title": {
+                  "romaji": "Shingeki no Kyojin: The Final Season - Kanketsu-hen Zenpen",
+                  "english": "Attack on Titan Final Season THE FINAL CHAPTERS Special 1",
+                  "native": "\u9032\u6483\u306E\u5DE8\u4EBA The Final Season\u5B8C\u7D50\u7DE8 \u524D\u7DE8"
+                },
+                "isAdult": false,
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx146984-GXrLeT6vQqyP.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx146984-GXrLeT6vQqyP.jpg"
+                },
+                "startDate": {
+                  "year": 2023,
+                  "month": 3,
+                  "day": 4
+                },
+                "episodes": 1,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": {
+                  "id": 593364189,
+                  "status": "COMPLETED",
+                  "progress": 1,
+                  "progressVolumes": null,
+                  "score": 9,
+                  "repeat": 0,
+                  "notes": null,
+                  "private": false,
+                  "hiddenFromStatusLists": false
+                }
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 162314,
+                "title": {
+                  "romaji": "Shingeki no Kyojin: The Final Season - Kanketsu-hen Kouhen",
+                  "english": "Attack on Titan Final Season THE FINAL CHAPTERS Special 2",
+                  "native": "\u9032\u6483\u306E\u5DE8\u4EBA The Final Season\u5B8C\u7D50\u7DE8 \u5F8C\u7DE8"
+                },
+                "isAdult": false,
+                "format": "SPECIAL",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx162314-qIWdAAFtvY8J.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx162314-qIWdAAFtvY8J.jpg"
+                },
+                "startDate": {
+                  "year": 2023,
+                  "month": 11,
+                  "day": 5
+                },
+                "episodes": 1,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": {
+                  "id": 593364193,
+                  "status": "COMPLETED",
+                  "progress": 1,
+                  "progressVolumes": null,
+                  "score": 9,
+                  "repeat": 0,
+                  "notes": null,
+                  "private": false,
+                  "hiddenFromStatusLists": false
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,113 @@
+﻿{
+  "operationName": "MediaRelations",
+  "variables": {
+    "id": 97889
+  },
+  "queryFingerprint": "add8ea99711b",
+  "recordedAt": "2026-11-20T23:21:29.027498+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "id": 97889,
+        "relations": {
+          "edges": [
+            {
+              "relationType": "PREQUEL",
+              "node": {
+                "id": 20996,
+                "title": {
+                  "romaji": "Gintama\u00B0",
+                  "english": "Gintama Season 3",
+                  "native": "\u9280\u9B42\u309C"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx20996-kBEGEGdeK1r7.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx20996-kBEGEGdeK1r7.jpg"
+                },
+                "startDate": {
+                  "year": 2015,
+                  "month": 4,
+                  "day": 8
+                },
+                "episodes": 51,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": {
+                  "id": 593364854,
+                  "status": "COMPLETED",
+                  "progress": 51,
+                  "progressVolumes": null,
+                  "score": 10,
+                  "repeat": 0,
+                  "notes": null,
+                  "private": false,
+                  "hiddenFromStatusLists": false
+                }
+              }
+            },
+            {
+              "relationType": "SEQUEL",
+              "node": {
+                "id": 99714,
+                "title": {
+                  "romaji": "Gintama.: Porori-hen",
+                  "english": "Gintama.: Slip Arc",
+                  "native": "\u9280\u9B42. \u30DD\u30ED\u30EA\u7DE8"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx99714-0pCKHe4XYIz7.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx99714-0pCKHe4XYIz7.jpg"
+                },
+                "startDate": {
+                  "year": 2017,
+                  "month": 10,
+                  "day": 2
+                },
+                "episodes": 13,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SOURCE",
+              "node": {
+                "id": 30044,
+                "title": {
+                  "romaji": "Gintama",
+                  "english": "Gin Tama",
+                  "native": "\u9280\u9B42"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx30044-vPmoz3vTPvZs.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx30044-vPmoz3vTPvZs.jpg"
+                },
+                "startDate": {
+                  "year": 2003,
+                  "month": 12,
+                  "day": 8
+                },
+                "episodes": null,
+                "chapters": 709,
+                "volumes": 77,
+                "mediaListEntry": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

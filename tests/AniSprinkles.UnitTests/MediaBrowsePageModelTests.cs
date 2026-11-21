@@ -567,7 +567,7 @@ public class MediaBrowsePageModelTests
                 Navigation,
                 Feedback,
                 dialogs,
-                new ListEntryStatusFlow(dialogs),
+                new ListEntryStatusFlow(dialogs), Substitute.For<IUpNextOffer>(),
                 new ErrorReportService(NullLogger<ErrorReportService>.Instance),
                 new ManualTimeProvider(DateTimeOffset.UnixEpoch),
                 preferences ?? new FakePreferences(),

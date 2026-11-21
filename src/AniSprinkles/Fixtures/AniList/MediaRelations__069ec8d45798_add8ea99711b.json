@@ -1,0 +1,189 @@
+﻿{
+  "operationName": "MediaRelations",
+  "variables": {
+    "id": 105778
+  },
+  "queryFingerprint": "add8ea99711b",
+  "recordedAt": "2026-11-20T23:07:11.68061+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "id": 105778,
+        "relations": {
+          "edges": [
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 127230,
+                "title": {
+                  "romaji": "Chainsaw Man",
+                  "english": "Chainsaw Man",
+                  "native": "\u30C1\u30A7\u30F3\u30BD\u30FC\u30DE\u30F3"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx127230-DdP4vAdssLoz.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx127230-DdP4vAdssLoz.png"
+                },
+                "startDate": {
+                  "year": 2022,
+                  "month": 10,
+                  "day": 12
+                },
+                "episodes": 12,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": {
+                  "id": 593364126,
+                  "status": "COMPLETED",
+                  "progress": 12,
+                  "progressVolumes": null,
+                  "score": 10,
+                  "repeat": 2,
+                  "notes": null,
+                  "private": false,
+                  "hiddenFromStatusLists": false
+                }
+              }
+            },
+            {
+              "relationType": "SIDE_STORY",
+              "node": {
+                "id": 138829,
+                "title": {
+                  "romaji": "Chainsaw Man: Buddy Stories",
+                  "english": "Chainsaw Man: Buddy Stories",
+                  "native": "\u30C1\u30A7\u30F3\u30BD\u30FC\u30DE\u30F3 \u30D0\u30C7\u30A3\u30FB\u30B9\u30C8\u30FC\u30EA\u30FC\u30BA"
+                },
+                "isAdult": false,
+                "format": "NOVEL",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx138829-NthKwJR53d9O.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx138829-NthKwJR53d9O.jpg"
+                },
+                "startDate": {
+                  "year": 2021,
+                  "month": 11,
+                  "day": 4
+                },
+                "episodes": null,
+                "chapters": 4,
+                "volumes": 1,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 171627,
+                "title": {
+                  "romaji": "Chainsaw Man: Reze-hen",
+                  "english": "Chainsaw Man \u2013 The Movie: Reze Arc",
+                  "native": "\u30C1\u30A7\u30F3\u30BD\u30FC\u30DE\u30F3 \u30EC\u30BC\u7BC7"
+                },
+                "isAdult": false,
+                "format": "MOVIE",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx171627-ZN9D7P46yHnw.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx171627-ZN9D7P46yHnw.png"
+                },
+                "startDate": {
+                  "year": 2025,
+                  "month": 9,
+                  "day": 19
+                },
+                "episodes": 1,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": {
+                  "id": 593364127,
+                  "status": "COMPLETED",
+                  "progress": 1,
+                  "progressVolumes": null,
+                  "score": 9,
+                  "repeat": 0,
+                  "notes": null,
+                  "private": false,
+                  "hiddenFromStatusLists": false
+                }
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 198726,
+                "title": {
+                  "romaji": "Chainsaw Biyori",
+                  "english": "Chainsaw Days",
+                  "native": "\u30C1\u30A7\u30F3\u30BD\u30FC \u3073\u3088\u308A"
+                },
+                "isAdult": false,
+                "format": "ONA",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx198726-ys3lfvQfwBTM.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx198726-ys3lfvQfwBTM.png"
+                },
+                "startDate": {
+                  "year": 2025,
+                  "month": 9,
+                  "day": 5
+                },
+                "episodes": 5,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "ADAPTATION",
+              "node": {
+                "id": 204429,
+                "title": {
+                  "romaji": "Chainsaw Man: Shikaku-hen",
+                  "english": null,
+                  "native": "\u30C1\u30A7\u30F3\u30BD\u30FC\u30DE\u30F3 \u523A\u5BA2\u7BC7"
+                },
+                "isAdult": false,
+                "format": null,
+                "type": "ANIME",
+                "status": "NOT_YET_RELEASED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx204429-9scYA2ab3Zz3.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx204429-9scYA2ab3Zz3.jpg"
+                },
+                "startDate": {
+                  "year": null,
+                  "month": null,
+                  "day": null
+                },
+                "episodes": null,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": {
+                  "id": 593365704,
+                  "status": "PLANNING",
+                  "progress": 0,
+                  "progressVolumes": null,
+                  "score": 0,
+                  "repeat": 0,
+                  "notes": null,
+                  "private": false,
+                  "hiddenFromStatusLists": false
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

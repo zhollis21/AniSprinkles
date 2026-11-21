@@ -1,0 +1,141 @@
+﻿{
+  "operationName": "MediaRelations",
+  "variables": {
+    "id": 182205
+  },
+  "queryFingerprint": "add8ea99711b",
+  "recordedAt": "2026-11-20T23:03:23.8743315+00:00",
+  "response": {
+    "data": {
+      "Media": {
+        "id": 182205,
+        "relations": {
+          "edges": [
+            {
+              "relationType": "SOURCE",
+              "node": {
+                "id": 86355,
+                "title": {
+                  "romaji": "Tensei Shitara Slime Datta Ken",
+                  "english": "That Time I Got Reincarnated as a Slime",
+                  "native": "\u8EE2\u751F\u3057\u305F\u3089\u30B9\u30E9\u30A4\u30E0\u3060\u3063\u305F\u4EF6"
+                },
+                "isAdult": false,
+                "format": "NOVEL",
+                "type": "MANGA",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/bx86355-pGwmLqVTwwE4.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/bx86355-pGwmLqVTwwE4.jpg"
+                },
+                "startDate": {
+                  "year": 2014,
+                  "month": 5,
+                  "day": 30
+                },
+                "episodes": null,
+                "chapters": 168,
+                "volumes": 23,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "SOURCE",
+              "node": {
+                "id": 86399,
+                "title": {
+                  "romaji": "Tensei Shitara Slime datta Ken",
+                  "english": "That Time I Got Reincarnated as a Slime",
+                  "native": "\u8EE2\u751F\u3057\u305F\u3089\u30B9\u30E9\u30A4\u30E0\u3060\u3063\u305F\u4EF6"
+                },
+                "isAdult": false,
+                "format": "MANGA",
+                "type": "MANGA",
+                "status": "RELEASING",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/small/nx86399-NwbRFVh5koqc.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/manga/cover/medium/nx86399-NwbRFVh5koqc.jpg"
+                },
+                "startDate": {
+                  "year": 2015,
+                  "month": 3,
+                  "day": 26
+                },
+                "episodes": null,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "relationType": "PREQUEL",
+              "node": {
+                "id": 156822,
+                "title": {
+                  "romaji": "Tensei Shitara Slime Datta Ken 3rd Season",
+                  "english": "That Time I Got Reincarnated as a Slime Season 3",
+                  "native": "\u8EE2\u751F\u3057\u305F\u3089\u30B9\u30E9\u30A4\u30E0\u3060\u3063\u305F\u4EF6 \u7B2C3\u671F"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "status": "FINISHED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx156822-Jzo2ITWgm4kM.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx156822-Jzo2ITWgm4kM.jpg"
+                },
+                "startDate": {
+                  "year": 2024,
+                  "month": 4,
+                  "day": 5
+                },
+                "episodes": 24,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": {
+                  "id": 593364359,
+                  "status": "COMPLETED",
+                  "progress": 24,
+                  "progressVolumes": null,
+                  "score": 8,
+                  "repeat": 0,
+                  "notes": null,
+                  "private": false,
+                  "hiddenFromStatusLists": false
+                }
+              }
+            },
+            {
+              "relationType": "SEQUEL",
+              "node": {
+                "id": 217331,
+                "title": {
+                  "romaji": "Tensei Shitara Slime Datta Ken 4th Season Part 3",
+                  "english": null,
+                  "native": "\u8EE2\u751F\u3057\u305F\u3089\u30B9\u30E9\u30A4\u30E0\u3060\u3063\u305F\u4EF6 \u7B2C4\u671F \u7B2C3\u30AF\u30FC\u30EB"
+                },
+                "isAdult": false,
+                "format": "TV",
+                "type": "ANIME",
+                "status": "NOT_YET_RELEASED",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/bx217331-iennFNPU2f7K.png",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx217331-iennFNPU2f7K.png"
+                },
+                "startDate": {
+                  "year": 2027,
+                  "month": 7,
+                  "day": null
+                },
+                "episodes": null,
+                "chapters": null,
+                "volumes": null,
+                "mediaListEntry": null
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

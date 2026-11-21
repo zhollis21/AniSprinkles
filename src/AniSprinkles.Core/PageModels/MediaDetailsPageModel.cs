@@ -13,6 +13,7 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
 {
     private readonly IDialogService _dialogs;
     private readonly ListEntryStatusFlow _statusFlow;
+    private readonly IUpNextOffer _upNext;
 
     // Correlates this page's own trace lines within one load. The in-flight guard in LoadAsync means
     // loads cannot interleave, so the base's NAVTRACE lines correlate to the current load by time.
@@ -76,11 +77,13 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
         IExternalBrowser browser,
         IDialogService dialogs,
         ListEntryStatusFlow statusFlow,
+        IUpNextOffer upNext,
         ILogger<MediaDetailsPageModel> logger)
         : base(aniListClient, authService, navigationService, feedback, browser, errorReportService, logger)
     {
         _dialogs = dialogs;
         _statusFlow = statusFlow;
+        _upNext = upNext;
 
         _characters = new PaginatedSection<CharacterEdge>(
             CharactersDefaultSort,
@@ -1079,7 +1082,22 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
         // Ensure Media is attached so the helper can read ActiveProgressTotal / HasKnownProgressTotal.
         entry.Media ??= Media;
 
-        await _statusFlow.ApplyStatusChangeAsync(entry, status);
+        // The dropdown never re-applies the current status, but this command is also reachable on its
+        // own, so check: only a move into Completed is a completion (#103). Decided here, once: by the
+        // time a failed save is retried the entry already reads Completed, and re-deciding then lost
+        // the offer (PR #224 review).
+        var completing = status == MediaListStatus.Completed && entry.Status != MediaListStatus.Completed;
+        await SetStatusAsync(entry, status, completing);
+    }
+
+    private async Task SetStatusAsync(MediaListEntry entry, MediaListStatus status, bool completing)
+    {
+        // A score or progress edit still waiting on its debounce is on this same entry, so this save
+        // carries it. Left queued it saved again mid-flow, toasting over the Up Next sheet (PR #224).
+        _saveDebounceCts?.Cancel();
+
+        using var upNextScope = completing ? _upNext.Begin(entry) : null;
+        await _statusFlow.ApplyStatusChangeAsync(entry, status, upNextScope);
 
         try
         {
@@ -1089,16 +1107,16 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
                 saved.Media = Media;
                 ListEntry = saved;
                 OnPropertyChanged(nameof(CanAddToList));
-                await Feedback.ShowToastAsync("Status updated");
+                await ConfirmSavedThenOfferUpNextAsync(upNextScope, "Status updated");
             }
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, "Failed to set status for media {MediaId}.", Media.Id);
+            Logger.LogError(ex, "Failed to set status for media {MediaId}.", entry.MediaId);
             await Feedback.ShowFailureSnackbarAsync(
                 ex,
                 "Failed to update status. Please try again.",
-                retryAction: () => _ = QuickSetStatus(value));
+                retryAction: () => _ = SetStatusAsync(entry, status, completing));
         }
     }
 
@@ -1318,11 +1336,15 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
 
             try
             {
-                var shouldSave = await _statusFlow.ApplyCompletionAsync(ListEntry);
+                using var upNextScope = _upNext.Begin(ListEntry);
+                var shouldSave = await _statusFlow.ApplyCompletionAsync(ListEntry, upNextScope);
                 if (shouldSave)
                 {
                     NotifyListEntryDisplayChanged();
-                    await SaveCurrentEntryAsync();
+                    if (await SaveCurrentEntryAsync(completion: true))
+                    {
+                        await ConfirmSavedThenOfferUpNextAsync(upNextScope, SavedToast);
+                    }
                 }
                 else
                 {
@@ -1466,11 +1488,18 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
         catch (TaskCanceledException) { }
     }
 
-    private async Task SaveCurrentEntryAsync()
+    private const string SavedToast = "Changes saved";
+
+    /// <summary>
+    /// Saves the entry; <c>true</c> when the server took it. A <paramref name="completion"/> shows no
+    /// toast (the caller confirms through the up-next offer instead), and its Retry is a completion
+    /// too, with an offer of its own.
+    /// </summary>
+    private async Task<bool> SaveCurrentEntryAsync(bool completion = false)
     {
         if (Media is null || ListEntry is null)
         {
-            return;
+            return false;
         }
 
         try
@@ -1480,8 +1509,15 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
             {
                 saved.Media = Media;
                 ListEntry = saved;
-                await Feedback.ShowToastAsync("Changes saved");
+                if (!completion)
+                {
+                    await Feedback.ShowToastAsync(SavedToast);
+                }
+
+                return true;
             }
+
+            return false;
         }
         catch (Exception ex)
         {
@@ -1489,7 +1525,51 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
             await Feedback.ShowFailureSnackbarAsync(
                 ex,
                 "Failed to save changes. Please try again.",
-                retryAction: () => _ = SaveCurrentEntryAsync());
+                retryAction: completion ? () => _ = RetryCompletionSaveAsync() : () => _ = SaveCurrentEntryAsync());
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Retry for a +1 completion whose save failed. The first attempt's offer ended with its flow, so
+    /// this one makes its own; a plain re-save completed the title with no offer (PR #224 review).
+    /// </summary>
+    private async Task RetryCompletionSaveAsync()
+    {
+        if (ListEntry is not { } entry)
+        {
+            return;
+        }
+
+        using var upNextScope = _upNext.Begin(entry);
+        upNextScope?.Start();
+        if (await SaveCurrentEntryAsync(completion: true))
+        {
+            await ConfirmSavedThenOfferUpNextAsync(upNextScope, SavedToast);
+        }
+    }
+
+    /// <summary>
+    /// The save's toast, or the up-next sheet in its place when there is one to show, after a completion
+    /// saved here (#103). Titles the sheet adds are this page's own Relations cards, so their on-list
+    /// pills are brought up to date rather than waiting for a reload.
+    /// </summary>
+    private async Task ConfirmSavedThenOfferUpNextAsync(UpNextScope? upNextScope, string savedToast)
+        => MarkRelationsAdded(await UpNextScope.ConfirmSavedThenOfferAsync(upNextScope, () => Feedback.ShowToastAsync(savedToast)));
+
+    private void MarkRelationsAdded(IReadOnlyList<MediaListEntry> added)
+    {
+        foreach (var entry in added)
+        {
+            foreach (var edge in _allRelations)
+            {
+                if (edge.Node is { } node && node.Id == entry.MediaId)
+                {
+                    node.ListEntryId = entry.Id;
+                    node.ListStatus = entry.Status;
+                    edge.RefreshDisplayProjections();
+                }
+            }
         }
     }
 
