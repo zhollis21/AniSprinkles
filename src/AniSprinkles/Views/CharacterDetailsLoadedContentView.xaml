@@ -415,6 +415,7 @@
                      busy (sort refetch or Load More) the list dims and a spinner overlays it. -->
                 <Grid>
                     <CollectionView ItemsSource="{Binding DisplayedAppearances}"
+                                    AutomationId="AppearancesList"
                                     HeightRequest="280"
                                     ItemSizingStrategy="MeasureFirstItem"
                                     RemainingItemsThreshold="3"
@@ -451,7 +452,7 @@
                                                    FontAttributes="Bold"
                                                    MaxLines="2"
                                                    LineBreakMode="TailTruncation" />
-                                            <Label Text="{Binding Node.DisplayTitle}"
+                                            <Label Text="{Binding Node.DisplayTitle}" AutomationId="AppearanceTitle"
                                                    Style="{StaticResource Caption1Strong}"
                                                    MaxLines="2"
                                                    LineBreakMode="TailTruncation" />

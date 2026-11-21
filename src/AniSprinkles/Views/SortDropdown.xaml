@@ -9,6 +9,7 @@
     <!-- Background="Transparent" (a Brush) overrides the implicit Border style's card Background, which a
          plain BackgroundColor would not — so the chip never paints a solid blob over the header. -->
     <Border x:Name="Pill"
+            AutomationId="SortDropdown"
             StrokeThickness="0"
             Padding="8,4"
             Background="Transparent"
@@ -19,6 +20,7 @@
         </Border.GestureRecognizers>
         <HorizontalStackLayout Spacing="4">
             <Label x:Name="SelectedLabel"
+                   AutomationId="SortDropdownLabel"
                    Style="{StaticResource Caption2}"
                    FontAttributes="Bold"
                    TextColor="White"

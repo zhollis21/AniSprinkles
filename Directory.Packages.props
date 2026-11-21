@@ -26,6 +26,9 @@
          only — dotnet/maui-labs has no stable release. Keep it in step with the global `maui` CLI
          (`dotnet tool list -g`); the agent and CLI ship from one repo on one version. -->
     <PackageVersion Include="Microsoft.Maui.DevFlow.Agent" Version="0.1.0-preview.14.26555.2" />
+    <!-- The host side of the same wire protocol, for tests/AniSprinkles.UITests (#131). Same version
+         as the agent, for the same reason the CLI is kept in step: one repo, one protocol. -->
+    <PackageVersion Include="Microsoft.Maui.DevFlow.Client" Version="0.1.0-preview.14.26555.2" />
   </ItemGroup>
 
   <ItemGroup Label="AndroidX">

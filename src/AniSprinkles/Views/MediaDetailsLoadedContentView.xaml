@@ -59,7 +59,7 @@
                         </Border>
                         <!-- Title stack -->
                         <VerticalStackLayout Grid.Column="1" Spacing="6" VerticalOptions="End">
-                            <Label Text="{Binding Media.DisplayTitle}"
+                            <Label Text="{Binding Media.DisplayTitle}" AutomationId="DetailsTitle"
                                    Style="{StaticResource Title1}"
                                    FontSize="24"
                                    TextColor="{Binding PageTitle, Converter={StaticResource RainbowAccentConverter}}"

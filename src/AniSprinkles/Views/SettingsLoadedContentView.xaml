@@ -43,7 +43,7 @@
                                    WidthRequest="80"
                                    HeightRequest="80" />
                                     </Border>
-                                    <Label Text="{Binding UserName}"
+                                    <Label Text="{Binding UserName}" AutomationId="ProfileName"
                                Style="{StaticResource Title1}"
                                HorizontalTextAlignment="Center"
                                TextColor="{Binding UserName, Converter={StaticResource RainbowAccentConverter}}" />
@@ -185,7 +185,8 @@
                         <Border Style="{StaticResource SectionHeaderStyle}"
                     Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}"
                     SemanticProperties.Description="Display Preferences"
-                    SemanticProperties.Hint="Toggle Display Preferences section">
+                    SemanticProperties.Hint="Toggle Display Preferences section"
+                    AutomationId="DisplayPreferencesHeader">
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ToggleDisplayPreferencesCommand}" />
                             </Border.GestureRecognizers>
@@ -225,21 +226,21 @@
                                 <VerticalStackLayout Spacing="8">
                                     <Label Text="Title Language" Style="{StaticResource Body1Strong}" />
                                     <FlexLayout Wrap="Wrap" JustifyContent="Start" AlignItems="Center">
-                                        <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
+                                        <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6" AutomationId="TitleLanguageRomaji"
                                     Stroke="{Binding SelectedTitleLanguage, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Romaji}">
                                             <Border.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding SetTitleLanguageCommand}" CommandParameter="Romaji" />
                                             </Border.GestureRecognizers>
                                             <Label Text="Romaji" Style="{StaticResource ChipLabelStyle}" TextColor="{Binding SelectedTitleLanguage, Converter={StaticResource ChipSelectionTextConverter}, ConverterParameter=Romaji}" />
                                         </Border>
-                                        <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
+                                        <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6" AutomationId="TitleLanguageEnglish"
                                     Stroke="{Binding SelectedTitleLanguage, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=English}">
                                             <Border.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding SetTitleLanguageCommand}" CommandParameter="English" />
                                             </Border.GestureRecognizers>
                                             <Label Text="English" Style="{StaticResource ChipLabelStyle}" TextColor="{Binding SelectedTitleLanguage, Converter={StaticResource ChipSelectionTextConverter}, ConverterParameter=English}" />
                                         </Border>
-                                        <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
+                                        <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6" AutomationId="TitleLanguageNative"
                                     Stroke="{Binding SelectedTitleLanguage, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Native}">
                                             <Border.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding SetTitleLanguageCommand}" CommandParameter="Native" />

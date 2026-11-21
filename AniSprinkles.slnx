@@ -12,5 +12,6 @@
   <Project Path="src/AniSprinkles/AniSprinkles.csproj">
     <Deploy Solution="Debug|*" />
   </Project>
+  <Project Path="tests/AniSprinkles.UITests/AniSprinkles.UITests.csproj" />
   <Project Path="tests/AniSprinkles.UnitTests/AniSprinkles.UnitTests.csproj" />
 </Solution>
