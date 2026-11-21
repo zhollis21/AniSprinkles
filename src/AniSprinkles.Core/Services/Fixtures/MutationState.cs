@@ -56,6 +56,14 @@ public sealed class MutationState
     /// </summary>
     private readonly Dictionary<int, JsonObject> _savedEntriesByMediaId = [];
 
+    /// <summary>
+    /// Every related title a replayed <c>MediaRelations</c> read showed, by media id: the fallback
+    /// media block for a save when no <c>Media</c> was recorded for it (#221). Up Next adds titles
+    /// from exactly that read, and most of them were never opened while recording, so without this
+    /// the Library drew the added title as a blank card.
+    /// </summary>
+    private readonly Dictionary<int, JsonObject> _relatedMediaById = [];
+
     private readonly JsonObject _viewerOverrides = [];
     private readonly Lock _gate = new();
 
@@ -119,6 +127,29 @@ public sealed class MutationState
             case "Viewer":
                 ApplyViewerOverrides(data["Viewer"]);
                 break;
+
+            case "MediaRelations":
+                RememberRelatedMedia(data);
+                break;
+        }
+    }
+
+    private void RememberRelatedMedia(JsonNode data)
+    {
+        if (data["Media"]?["relations"]?["edges"] is not JsonArray edges)
+        {
+            return;
+        }
+
+        lock (_gate)
+        {
+            foreach (var edge in edges)
+            {
+                if (edge?["node"] is JsonObject node && node["id"]?.GetValue<int>() is { } id)
+                {
+                    _relatedMediaById[id] = (JsonObject)node.DeepClone();
+                }
+            }
         }
     }
 
@@ -126,10 +157,11 @@ public sealed class MutationState
     {
         var mediaId = variables?["mediaId"]?.GetValue<int>() ?? 0;
 
+        // AniList would allocate one; anything stable and non-colliding does here.
+        var entryId = 900_000_000 + mediaId;
         var entry = new JsonObject
         {
-            // AniList would allocate one; anything stable and non-colliding does here.
-            ["id"] = 900_000_000 + mediaId,
+            ["id"] = entryId,
             ["mediaId"] = mediaId,
             ["status"] = variables?["status"]?.DeepClone(),
             ["progress"] = variables?["progress"]?.DeepClone(),
@@ -152,19 +184,29 @@ public sealed class MutationState
         {
             _deletedMediaIds.Remove(mediaId);
             _savedEntriesByMediaId[mediaId] = (JsonObject)entry.DeepClone();
+
+            // A list read learns entry ids from the recording, before saved entries go back in, so it
+            // never sees this one. Without it a title added during replay could not be removed.
+            _mediaIdByEntryId[entryId] = mediaId;
         }
 
         return Data("SaveMediaListEntry", entry);
     }
 
-    private static JsonNode? MediaBlockFor(int mediaId, IFixtureLookup fixtures)
+    private JsonNode? MediaBlockFor(int mediaId, IFixtureLookup fixtures)
     {
         var key = GraphQlFixtureKey.Derive("Media", new JsonObject { ["id"] = mediaId });
         // Null fingerprint: this knows which media it wants but not the query text that recorded
         // it. Media has one query, so the address is unambiguous and this resolves.
-        return fixtures.TryGet(key, null, out var fixture)
-            ? fixture.Response?["data"]?["Media"]?.DeepClone()
-            : null;
+        if (fixtures.TryGet(key, null, out var fixture))
+        {
+            return fixture.Response?["data"]?["Media"]?.DeepClone();
+        }
+
+        lock (_gate)
+        {
+            return _relatedMediaById.TryGetValue(mediaId, out var related) ? related.DeepClone() : null;
+        }
     }
 
     private JsonNode DeleteEntry(JsonNode? variables)

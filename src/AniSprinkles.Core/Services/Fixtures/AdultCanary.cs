@@ -154,10 +154,18 @@ public static class AdultCanary
         if (data["MediaListCollection"]?["lists"] is JsonArray { Count: > 0 } lists
             && lists[0]?["entries"] is JsonArray entries)
         {
+            // In that list's status, not a fixed one (#221). Replay reads a list's status off its
+            // entries (MutationState.ReinsertSavedEntries), so a CURRENT canary under Completed made
+            // Completed read as Watching: a completed title vanished, and a title moved to Watching
+            // was filed under Completed.
+            var status = entries
+                .Select(e => e?["status"]?.GetValue<string>())
+                .FirstOrDefault(s => s is not null) ?? "CURRENT";
+
             var titles = ForType(type);
             for (var i = titles.Count - 1; i >= 0; i--)
             {
-                entries.Insert(0, ListEntry(titles[i]));
+                entries.Insert(0, ListEntry(titles[i], status));
             }
         }
     }
@@ -296,11 +304,11 @@ public static class AdultCanary
         }
     }
 
-    private static JsonObject ListEntry(MadeUpTitle title) => new()
+    private static JsonObject ListEntry(MadeUpTitle title, string status) => new()
     {
         ["id"] = title.EntryId,
         ["mediaId"] = title.MediaId,
-        ["status"] = "CURRENT",
+        ["status"] = status,
         ["progress"] = 0,
         ["score"] = 0,
         ["media"] = Summary(title),

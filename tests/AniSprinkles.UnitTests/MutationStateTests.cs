@@ -117,6 +117,27 @@ public class MutationStateTests
     }
 
     [Test]
+    public void ATitleAddedDuringReplay_CanBeRemovedAgain()
+    {
+        // An added title gets an entry id replay makes up, and that id reaches the app through the
+        // next list read. Removing the title names it, so replay has to know which media it is, or
+        // the title stays on the list after "Remove from list".
+        var state = new MutationState();
+        state.Apply("MediaListCollection", TwoSectionList());
+        state.TryAnswer(
+            "SaveMediaListEntry", Vars("""{"mediaId":99999,"status":"CURRENT"}"""), NoFixtures, out var saved);
+        state.Apply("MediaListCollection", TwoSectionList());
+
+        var entryId = saved?["data"]?["SaveMediaListEntry"]?["id"]?.GetValue<int>();
+        Assert.That(entryId, Is.Not.Null, "The save returned no entry id.");
+        state.TryAnswer("DeleteMediaListEntry", Vars($$"""{"id":{{entryId}}}"""), NoFixtures, out _);
+
+        var reread = TwoSectionList();
+        state.Apply("MediaListCollection", reread);
+        Assert.That(reread.ToJsonString(), Does.Not.Contain("\"mediaId\":99999"));
+    }
+
+    [Test]
     public void ASavedEntry_IsNotDuplicatedAcrossSections()
     {
         // The move is a remove-then-insert, so a bug here shows up as the same title under two
@@ -150,6 +171,78 @@ public class MutationStateTests
 
         Assert.That(reread.ToJsonString(), Does.Not.Contain("\"mediaId\":21"));
     }
+
+    // ── Saves, with the adult canary spliced in (#221) ───────────────
+
+    [TestCase(21, "COMPLETED", 0, TestName = "AMoveToCompleted_LandsUnderCompleted_WhenTheCanaryRidesIt")]
+    [TestCase(5114, "CURRENT", 1, TestName = "AMoveToWatching_LandsUnderWatching_WhenTheCanaryRidesCompleted")]
+    public void AMove_LandsInItsSection_WithTheCanarySplicedFirst(int mediaId, string status, int expectedList)
+    {
+        // The test account's first list is Completed, and the canary rides the first list. It used to
+        // ride it as CURRENT, so replay read Completed as the Watching list: a completed title matched
+        // no list and vanished, and a title moved to Watching was filed under Completed. Replay order
+        // is the handler's: splice, then apply.
+        var state = new MutationState();
+        state.Apply("MediaListCollection", ReplayRead(CompletedFirstList()));
+
+        state.TryAnswer(
+            "SaveMediaListEntry", Vars($$"""{"mediaId":{{mediaId}},"status":"{{status}}"}"""), NoFixtures, out _);
+
+        var reread = CompletedFirstList();
+        state.Apply("MediaListCollection", ReplayRead(reread));
+
+        var lists = reread["data"]?["MediaListCollection"]?["lists"]?.AsArray() ?? [];
+        Assert.That(lists[expectedList]?.ToJsonString(), Does.Contain($"\"mediaId\":{mediaId}"),
+            $"The title moved to {status} is not under that section.");
+        Assert.That(lists[1 - expectedList]?.ToJsonString(), Does.Not.Contain($"\"mediaId\":{mediaId}"));
+    }
+
+    [Test]
+    public void ATitleAddedFromItsRelations_CarriesTheMediaTheRelationsShowed()
+    {
+        // #221's second gap: Up Next adds a related title, and with no recorded Media for it the
+        // saved entry had no media block, so the Library drew a blank card. The relations read that
+        // offered it already carried its title, cover and format.
+        var state = new MutationState();
+        state.Apply("MediaRelations", Json("""
+            {"data":{"Media":{"id":11757,"relations":{"edges":[
+              {"relationType":"SEQUEL","node":{"id":20021,"title":{"romaji":"Sword Art Online: Extra Edition"},"format":"SPECIAL","type":"ANIME","episodes":1}}
+            ]}}}}
+            """));
+        state.Apply("MediaListCollection", TwoSectionList());
+
+        state.TryAnswer(
+            "SaveMediaListEntry", Vars("""{"mediaId":20021,"status":"CURRENT"}"""), NoFixtures, out _);
+
+        var reread = TwoSectionList();
+        state.Apply("MediaListCollection", reread);
+
+        var added = (reread["data"]?["MediaListCollection"]?["lists"]?[0]?["entries"]?.AsArray() ?? [])
+            .SingleOrDefault(e => e?["mediaId"]?.GetValue<int>() == 20021);
+        Assert.That(added?["media"]?["title"]?["romaji"]?.GetValue<string>(), Is.EqualTo("Sword Art Online: Extra Edition"));
+    }
+
+    private static JsonNode ReplayRead(JsonNode list)
+    {
+        AdultCanary.Splice("MediaListCollection", Vars("""{"type":"ANIME"}"""), list);
+        return list;
+    }
+
+    /// <summary>The test account's order: Completed comes first, so the canary rides it.</summary>
+    private static JsonNode Json(string json)
+        => JsonNode.Parse(json) ?? throw new ArgumentException("Not a JSON value.", nameof(json));
+
+    private static JsonNode CompletedFirstList() => Json("""
+        {"data":{"MediaListCollection":{"lists":[
+          {"name":"Completed","entries":[
+            {"id":1003,"mediaId":5114,"status":"COMPLETED"}
+          ]},
+          {"name":"Watching","entries":[
+            {"id":1001,"mediaId":21,"status":"CURRENT"},
+            {"id":1002,"mediaId":16498,"status":"CURRENT"}
+          ]}
+        ]}}}
+        """);
 
     // ── Settings round-trip ──────────────────────────────────────────
 
