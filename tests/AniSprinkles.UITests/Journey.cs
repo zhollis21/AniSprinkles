@@ -18,6 +18,9 @@ public abstract class Journey : IDisposable
     /// <summary>Each Library section a journey opened or closed, with the state it was found in.</summary>
     private readonly Dictionary<string, bool> _restoreSections = [];
 
+    /// <summary>The Library search box and the text setup cleared from it, to put back.</summary>
+    private (string Id, string Text)? _restoreFilter;
+
     private protected Journey()
     {
         Driver = AppDriver.Connect();
@@ -29,8 +32,9 @@ public abstract class Journey : IDisposable
     private protected App App { get; }
 
     /// <summary>
-    /// Watching is opened here because most journeys need its cards, and a collapsed section has
-    /// none: sections keep whatever state they were left in for the whole launch.
+    /// The Library's search text and its sections keep whatever state they were left in for the
+    /// whole launch, so setup clears a filter, which hides titles and turns a section's count into
+    /// "1/4", and opens Watching, whose cards most journeys need.
     /// </summary>
     [SetUp]
     public async Task StartFromLibraryAsync()
@@ -38,6 +42,7 @@ public abstract class Journey : IDisposable
         await App.DismissPopupsAsync();
         await App.SetTitleLanguageAsync("Romaji");
         await App.ResetToLibraryAsync();
+        await ClearLibraryFilterAsync();
         await SetSectionAsync("Watching", expanded: true);
     }
 
@@ -55,6 +60,32 @@ public abstract class Journey : IDisposable
         {
             await App.SetSectionExpandedAsync(section, expanded);
         }
+
+        // Last, so the section counts above were read unfiltered.
+        if (_restoreFilter is { } filter)
+        {
+            await Driver.Client.FillAsync(filter.Id, filter.Text);
+        }
+    }
+
+    /// <summary>
+    /// Empties the Anime Library's search box if it holds text, remembering it for
+    /// <see cref="RestoreAsync"/>. The laid-out box only: the Manga tab's sits at zero bounds once
+    /// that tab has been opened. A hidden box holds no text, since closing the search clears it.
+    /// </summary>
+    private async Task ClearLibraryFilterAsync()
+    {
+        var box = (await Driver.Client.QueryAsync(automationId: "LibrarySearchEntry"))
+            .FirstOrDefault(e => e.IsVisible && e.WindowBounds is { Y: > 0, Height: > 0 } && !string.IsNullOrEmpty(e.Text));
+        if (box is not { Text: { } text })
+        {
+            return;
+        }
+
+        _restoreFilter = (box.Id, text);
+        await Driver.Client.ClearAsync(box.Id);
+        await Driver.WaitForAsync("the Library search box to empty", automationId: "LibrarySearchEntry",
+            predicate: e => e.Id == box.Id && string.IsNullOrEmpty(e.Text));
     }
 
     /// <summary>

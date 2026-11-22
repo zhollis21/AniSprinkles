@@ -61,23 +61,66 @@ public sealed class NavigationJourneys : Journey
     [Test]
     public async Task RetappingTheCurrentTab_PopsToTheRoot_ThenScrollsToTheTop()
     {
+        // Enough to scroll in any view mode: Compact rows are short, and Watching's four cards with
+        // every other section shut can fit on one screen. Setup's teardown shuts them again.
+        foreach (var section in new[] { "Completed", "Planning", "Dropped", "Paused" })
+        {
+            await SetSectionAsync(section, expanded: true);
+        }
+
+        await App.ResetToLibraryAsync();
         var list = await App.LibraryListAsync();
         var top = await TopCardTitleAsync(list);
 
         await Driver.ScrollDownAsync(list, "the Library list");
         await WaitForScrolledAsync(top);
 
+        // Where the list sits now, to find it in the same place after the pop.
+        var here = await SettledTitleOnScreenAsync(list);
         await App.OpenLibraryCardAsync();
 
         await App.GoToTabAsync("Library");
         await Driver.WaitForGoneAsync("the details page", automationId: "DetailsTitle");
-        await Driver.WaitForAsync("the Library cards", automationId: "MediaCard");
-        Assert.That(IsAtTop(await FindTitleAsync(top.Text), top), Is.False,
-            "Popping to the root also scrolled the Library to the top; it should stay where it was.");
+        await Driver.WaitForAsync($"'{here.Text}' where it was before the details page", automationId: "MediaCardTitle",
+            predicate: e => e.Text == here.Text && e.WindowBounds is { } b && Math.Abs(b.Y - here.Y) < 1);
 
         await App.GoToTabAsync("Library");
         await Driver.WaitForAsync($"'{top.Text}' back at the top", automationId: "MediaCardTitle",
             predicate: e => e.Text == top.Text && IsAtTop(e, top));
+    }
+
+    /// <summary>The highest card title inside the list once the list has stopped moving.</summary>
+    private async Task<(string Text, double Y)> SettledTitleOnScreenAsync(ElementInfo list)
+    {
+        (string Text, double Y)? previous = null;
+        for (var look = 0; look < 20; look++)
+        {
+            var now = await HighestTitleAsync(list);
+            if (now == previous && now is { } settled)
+            {
+                return settled;
+            }
+
+            previous = now;
+            await Task.Delay(AppDriver.PollInterval);
+        }
+
+        Assert.Fail("The Library list never stopped moving, or showed no card on screen.");
+        return default;
+    }
+
+    private async Task<(string Text, double Y)?> HighestTitleAsync(ElementInfo list)
+    {
+        if (list.WindowBounds is not { } area)
+        {
+            return null;
+        }
+
+        var highest = (await Driver.Client.QueryAsync(automationId: "MediaCardTitle"))
+            .Where(e => e.IsVisible && !string.IsNullOrEmpty(e.Text)
+                && e.WindowBounds is { } b && b.Y > area.Y && b.Y + b.Height < area.Y + area.Height)
+            .MinBy(e => e.WindowBounds?.Y ?? double.MaxValue);
+        return highest is { Text: { } text, WindowBounds: { } bounds } ? (text, bounds.Y) : null;
     }
 
     /// <summary>The highest card title inside the list (an off-screen tab's report zero bounds).</summary>

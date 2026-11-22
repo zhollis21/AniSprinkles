@@ -384,6 +384,7 @@
                     (#172): the placeholder is its floating label, so no card or icon of ours.
                 -->
                 <Entry Grid.Row="0"
+                       AutomationId="LibrarySearchEntry"
                        Placeholder="Search anime..."
                        Text="{Binding SearchText}"
                        ClearButtonVisibility="WhileEditing"
