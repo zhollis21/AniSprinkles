@@ -131,6 +131,39 @@ public sealed class MutationState
             case "MediaRelations":
                 RememberRelatedMedia(data);
                 break;
+
+            // The details page. Without this, a title saved or removed during replay read back as
+            // recorded the next time its page opened, while the Library had it in its new section.
+            case "Media":
+                ApplyToMediaListEntry(data["Media"]);
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Puts the entry a save answered with onto a <c>Media</c> read of the same title, or clears it
+    /// for a removed one. The saved entry's own media block stays behind: a details read's entry is
+    /// nested inside the media it belongs to, and carries none.
+    /// </summary>
+    private void ApplyToMediaListEntry(JsonNode? media)
+    {
+        if (media is not JsonObject mediaObject || mediaObject["id"]?.GetValue<int>() is not { } mediaId)
+        {
+            return;
+        }
+
+        lock (_gate)
+        {
+            if (_deletedMediaIds.Contains(mediaId))
+            {
+                mediaObject["mediaListEntry"] = null;
+            }
+            else if (_savedEntriesByMediaId.TryGetValue(mediaId, out var saved))
+            {
+                var entry = (JsonObject)saved.DeepClone();
+                entry.Remove("media");
+                mediaObject["mediaListEntry"] = entry;
+            }
         }
     }
 

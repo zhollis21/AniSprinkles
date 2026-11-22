@@ -38,8 +38,18 @@ public partial class MediaListPageModel : ObservableObject, IAuthActions
     private readonly TimeProvider _timeProvider;
     private readonly ILogger<MediaListPageModel> _logger;
     private readonly EntryActionCoordinator _entryActions;
+    private readonly ListChangeTracker _listChanges;
     private bool _hasLoaded;
     private DateTimeOffset _lastSuccessfulLoadUtc;
+
+    /// <summary>
+    /// The <see cref="ListChangeTracker.Version"/> the current <see cref="Sections"/> reflect (#225).
+    /// The freshness window holds only while it is unchanged: a list save made anywhere else — the
+    /// details page, Discover, Search, Up Next — moves it, and the next appearance reloads. The
+    /// Library's own in-place saves move it too, and take it up again (<see cref="AbsorbOwnListChange"/>),
+    /// since their cards already show the change.
+    /// </summary>
+    private long _reflectedListVersion;
 
     /// <summary>
     /// The DisplayAdultContent value the current <see cref="Sections"/> were built under (#118).
@@ -192,7 +202,7 @@ public partial class MediaListPageModel : ObservableObject, IAuthActions
         _ => Glyphs.Regular.List24,
     };
 
-    protected MediaListPageModel(MediaKind kind, IAniListClient aniListClient, IAuthService authService, IAiringNotificationService airingNotificationService, ErrorReportService errorReportService, IPreferences preferences, INavigationService navigationService, IDialogService dialogs, IUserFeedback feedback, ListEntryStatusFlow statusFlow, IUpNextOffer upNext, TimeProvider timeProvider, ILogger<MediaListPageModel> logger)
+    protected MediaListPageModel(MediaKind kind, IAniListClient aniListClient, IAuthService authService, IAiringNotificationService airingNotificationService, ErrorReportService errorReportService, IPreferences preferences, INavigationService navigationService, IDialogService dialogs, IUserFeedback feedback, ListEntryStatusFlow statusFlow, IUpNextOffer upNext, ListChangeTracker listChanges, TimeProvider timeProvider, ILogger<MediaListPageModel> logger)
     {
         Kind = kind;
         _aniListClient = aniListClient;
@@ -202,6 +212,7 @@ public partial class MediaListPageModel : ObservableObject, IAuthActions
         _preferences = preferences;
         _navigationService = navigationService;
         _feedback = feedback;
+        _listChanges = listChanges;
         _timeProvider = timeProvider;
         _logger = logger;
 
@@ -213,7 +224,12 @@ public partial class MediaListPageModel : ObservableObject, IAuthActions
             OnBeforeFlowAsync = FlushPendingIncrementAsync,
             OnOptimisticRemove = RemoveEntryFromCurrentSection,
             // In-place saves (rate, progress edit) need no reload — the entry's observable
-            // properties refresh the card.
+            // properties refresh the card — so the change they made is already on screen.
+            OnEntrySavedInPlaceAsync = _ =>
+            {
+                AbsorbOwnListChange();
+                return Task.CompletedTask;
+            },
             OnEntryStatusChangedAsync = _ => LoadAsync(forceReload: true),
             OnEntryRemovedAsync = _ => LoadAsync(forceReload: true),
             OnMutationFailedAsync = () => LoadAsync(forceReload: true),
@@ -282,12 +298,23 @@ public partial class MediaListPageModel : ObservableObject, IAuthActions
             // is time-based, so tabbing away and back would not clear it either.
             var adultChanged = _loadedWithAdultContent != AppSettings.DisplayAdultContent;
 
+            // A list save made outside the Library has to defeat it too (#225), or the title sits in
+            // its old section — and an edit from that stale card saves the old status back.
+            var listChanged = _reflectedListVersion != _listChanges.Version;
+
             if (_hasLoaded && !forceReload && isAuthenticated == IsAuthenticated)
             {
                 // Signed out has no sections to filter, so that branch returns either way.
-                if (!isAuthenticated || (isFresh && !adultChanged))
+                if (!isAuthenticated || (isFresh && !adultChanged && !listChanged))
                 {
                     return;
+                }
+
+                if (isFresh && listChanged && !adultChanged)
+                {
+                    _logger.LogInformation(
+                        "MediaList[{Kind}] reloading inside the freshness window: list changed elsewhere (version {Reflected} -> {Current})",
+                        Kind, _reflectedListVersion, _listChanges.Version);
                 }
             }
 
@@ -336,6 +363,9 @@ public partial class MediaListPageModel : ObservableObject, IAuthActions
             }
 
             SentrySdk.AddBreadcrumb("Fetching AniList list", "http", "state");
+            // Read before the fetch, not after: a save landing while it is in flight may be missing
+            // from what comes back, and must still count as unseen.
+            var listVersion = _listChanges.Version;
             var groups = await _aniListClient.GetMediaListGroupedAsync(Kind);
             // Capture current sort/filter state for section building.
             var sortField = CurrentSortField;
@@ -382,6 +412,7 @@ public partial class MediaListPageModel : ObservableObject, IAuthActions
             OnPropertyChanged(nameof(HasNoResults));
             _hasLoaded = true;
             _lastSuccessfulLoadUtc = DateTimeOffset.UtcNow;
+            _reflectedListVersion = listVersion;
 
             // Read here rather than from the value captured at entry: SyncFromViewer above may have
             // moved it, and this has to describe the sections that were actually just built.
@@ -721,6 +752,7 @@ public partial class MediaListPageModel : ObservableObject, IAuthActions
         {
             _logger.LogInformation("+1 saving: media {MediaId} progress {Progress}", entry.MediaId, entry.Progress);
             await _aniListClient.SaveMediaListEntryAsync(entry);
+            AbsorbOwnListChange();
             _logger.LogInformation("+1 saved: media {MediaId} progress {Progress}", entry.MediaId, entry.Progress);
             await _feedback.ShowToastAsync("Saved");
         }
@@ -753,6 +785,20 @@ public partial class MediaListPageModel : ObservableObject, IAuthActions
         }
 
         await _entryActions.ShowEntryMenuAsync(entry);
+    }
+
+    /// <summary>
+    /// Takes up the one <see cref="ListChangeTracker"/> bump a save made from this page caused, when
+    /// its card already shows the change (+1, a rating or progress edit), so it costs no reload on the
+    /// next appearance. Exactly one: if the version is further ahead, a change made elsewhere is still
+    /// unseen, and absorbing would hide it.
+    /// </summary>
+    private void AbsorbOwnListChange()
+    {
+        if (_listChanges.Version == _reflectedListVersion + 1)
+        {
+            _reflectedListVersion++;
+        }
     }
 
     private void RemoveEntryFromCurrentSection(MediaListEntry entry)

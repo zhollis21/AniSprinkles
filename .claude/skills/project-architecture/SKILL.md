@@ -85,7 +85,7 @@ Shell bottom tab bar (`library`, `discover`, `search`, `feed`, `settings`). The 
 
 ## Performance Defaults
 
-- 5-minute stale refresh window for tab pages.
+- 5-minute stale refresh window for tab pages. The Library's also ends when a list entry is saved or removed anywhere else (#225): `CachingAniListClient` bumps `ListChangeTracker` on every successful save or removal, and each Library half reloads on its next appearance if the version moved since its last load. Its own +1, rating and progress saves take up their own bump (`AbsorbOwnListChange`), since their cards already show the change.
 - Compiled XAML bindings enabled (`MauiEnableXamlCBindingWithSourceCompilation`).
 - Details page: keep above-the-fold small; lazy-load extended sections below; one primary spinner per screen state.
 - Library selection clear deferred until after navigation begins.

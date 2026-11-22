@@ -15,7 +15,9 @@ namespace AniSprinkles.Services;
 /// </list>
 /// Only the detail-page reads are cached here. Everything else (lists, search, media, mutations)
 /// passes straight through — caching those needs proper invalidation and is tracked as a separate
-/// follow-up. Concurrent calls for the same key are coalesced (one in-flight fetch), and failures
+/// follow-up. List saves and removals that succeed are counted on <see cref="ListChangeTracker"/>
+/// on the way through (#225), which couples this decorator to the Library's freshness on purpose:
+/// it is the one place every save passes. Concurrent calls for the same key are coalesced (one in-flight fetch), and failures
 /// are never cached.
 /// </summary>
 public sealed class CachingAniListClient : IAniListClient
@@ -24,6 +26,7 @@ public sealed class CachingAniListClient : IAniListClient
     public void InvalidateEntityCache() => _cache.Clear();
 
     private readonly IAniListClient _inner;
+    private readonly ListChangeTracker _listChanges;
     private readonly ILogger<CachingAniListClient>? _logger;
     private readonly ConcurrentDictionary<string, Lazy<Task<object?>>> _cache = new();
 
@@ -36,9 +39,10 @@ public sealed class CachingAniListClient : IAniListClient
     /// </remarks>
     private const int SeededPerPage = 25;
 
-    public CachingAniListClient(IAniListClient inner, ILogger<CachingAniListClient>? logger = null)
+    public CachingAniListClient(IAniListClient inner, ListChangeTracker listChanges, ILogger<CachingAniListClient>? logger = null)
     {
         _inner = inner;
+        _listChanges = listChanges;
         _logger = logger;
     }
 
@@ -215,11 +219,28 @@ public sealed class CachingAniListClient : IAniListClient
     public Task<IReadOnlyList<MediaRelationEdge>> GetMediaRelationsAsync(int id, CancellationToken cancellationToken = default)
         => _inner.GetMediaRelationsAsync(id, cancellationToken);
 
-    public Task<MediaListEntry?> SaveMediaListEntryAsync(MediaListEntry entry, CancellationToken cancellationToken = default)
-        => _inner.SaveMediaListEntryAsync(entry, cancellationToken);
+    // Not cached, but counted: every list save and removal in the app comes through here, so this is
+    // the one place that cannot miss one when telling the Library its copy is stale (#225). Counted
+    // only once AniList has answered: a save that throws changed nothing, and a removal that reports
+    // false removed nothing. A save answered with no entry still counts; a needless reload is cheaper
+    // than a missed one.
+    public async Task<MediaListEntry?> SaveMediaListEntryAsync(MediaListEntry entry, CancellationToken cancellationToken = default)
+    {
+        var saved = await _inner.SaveMediaListEntryAsync(entry, cancellationToken);
+        _listChanges.NotifyChanged();
+        return saved;
+    }
 
-    public Task<bool> DeleteMediaListEntryAsync(int entryId, CancellationToken cancellationToken = default)
-        => _inner.DeleteMediaListEntryAsync(entryId, cancellationToken);
+    public async Task<bool> DeleteMediaListEntryAsync(int entryId, CancellationToken cancellationToken = default)
+    {
+        var deleted = await _inner.DeleteMediaListEntryAsync(entryId, cancellationToken);
+        if (deleted)
+        {
+            _listChanges.NotifyChanged();
+        }
+
+        return deleted;
+    }
 
     public Task<bool> ToggleFavouriteAsync(FavouriteKind kind, int id, CancellationToken cancellationToken = default)
         => _inner.ToggleFavouriteAsync(kind, id, cancellationToken);

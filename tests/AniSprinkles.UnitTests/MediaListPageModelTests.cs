@@ -164,7 +164,7 @@ public class MediaListPageModelTests
                 Substitute.For<INavigationService>(),
                 Dialogs,
                 Feedback,
-                new ListEntryStatusFlow(Dialogs), Substitute.For<IUpNextOffer>(),
+                new ListEntryStatusFlow(Dialogs), Substitute.For<IUpNextOffer>(), new ListChangeTracker(),
                 _time,
                 NullLogger<AnimeLibraryPageModel>.Instance);
         }

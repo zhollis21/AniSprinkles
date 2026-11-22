@@ -29,7 +29,7 @@ public class StaffNameCacheInvalidationTests
         var inner = Substitute.For<IAniListClient>();
         inner.GetCharacterAsync(1, Arg.Any<string>(), Arg.Any<int>(), Arg.Any<CancellationToken>())
              .Returns(_ => new Character { Id = 1 });
-        var cache = new CachingAniListClient(inner);
+        var cache = new CachingAniListClient(inner, new ListChangeTracker());
 
         await cache.GetCharacterAsync(1);
         await cache.GetCharacterAsync(1);
@@ -52,7 +52,7 @@ public class StaffNameCacheInvalidationTests
              .Returns(_ => new Staff { Id = 2 });
         inner.GetStudioAsync(3, Arg.Any<string>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<CancellationToken>())
              .Returns(_ => new Studio { Id = 3 });
-        var cache = new CachingAniListClient(inner);
+        var cache = new CachingAniListClient(inner, new ListChangeTracker());
 
         await cache.GetStaffAsync(2);
         await cache.GetStudioAsync(3);
@@ -67,7 +67,7 @@ public class StaffNameCacheInvalidationTests
     [Test]
     public void InvalidateEntityCache_OnAnEmptyCache_IsHarmless()
     {
-        var cache = new CachingAniListClient(Substitute.For<IAniListClient>());
+        var cache = new CachingAniListClient(Substitute.For<IAniListClient>(), new ListChangeTracker());
 
         cache.InvalidateEntityCache();
         cache.InvalidateEntityCache();

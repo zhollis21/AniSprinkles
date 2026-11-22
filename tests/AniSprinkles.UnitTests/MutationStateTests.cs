@@ -222,6 +222,89 @@ public class MutationStateTests
         Assert.That(added?["media"]?["title"]?["romaji"]?.GetValue<string>(), Is.EqualTo("Sword Art Online: Extra Edition"));
     }
 
+    // ── What a details read shows afterwards ─────────────────────────
+
+    [Test]
+    public void AStatusChange_ShowsOnTheNextDetailsRead()
+    {
+        // Found by the #225 journey: pause a title on its details page, go back, open it again, and
+        // the page said Watching, because the recorded Media read carries the entry as recorded. The
+        // Library showed it under Paused, so the two pages disagreed about one title.
+        var state = new MutationState();
+        state.TryAnswer(
+            "SaveMediaListEntry", Vars("""{"mediaId":21,"status":"PAUSED","progress":1163}"""), NoFixtures, out _);
+
+        var media = MediaResponse(mediaId: 21);
+        state.Apply("Media", media);
+
+        var entry = media["data"]?["Media"]?["mediaListEntry"];
+        Assert.That(entry?["status"]?.GetValue<string>(), Is.EqualTo("PAUSED"));
+        Assert.That(entry?["progress"]?.GetValue<int>(), Is.EqualTo(1163));
+        Assert.That(entry?["id"]?.GetValue<int>(), Is.EqualTo(900_000_021), "the id the save answered with");
+        Assert.That(entry?["media"], Is.Null, "a details read's entry carries no media block of its own");
+    }
+
+    [Test]
+    public void ATitleAddedDuringReplay_ShowsItsEntryOnTheNextDetailsRead()
+    {
+        // The recording has no entry at all for a title the account never listed.
+        var state = new MutationState();
+        state.TryAnswer(
+            "SaveMediaListEntry", Vars("""{"mediaId":21,"status":"PLANNING"}"""), NoFixtures, out _);
+
+        var media = MediaResponse(mediaId: 21, listed: false);
+        state.Apply("Media", media);
+
+        Assert.That(media["data"]?["Media"]?["mediaListEntry"]?["status"]?.GetValue<string>(), Is.EqualTo("PLANNING"));
+    }
+
+    [Test]
+    public void ARemovedEntry_IsGoneFromTheNextDetailsRead()
+    {
+        var state = new MutationState();
+        state.Apply("MediaListCollection", ListResponse());
+        state.TryAnswer("DeleteMediaListEntry", Vars("""{"id":1001}"""), NoFixtures, out _);
+
+        var media = MediaResponse(mediaId: 21);
+        state.Apply("Media", media);
+
+        Assert.That(media["data"]?["Media"]?["mediaListEntry"], Is.Null);
+    }
+
+    [Test]
+    public void AnotherTitlesDetailsRead_IsLeftAsRecorded()
+    {
+        var state = new MutationState();
+        state.TryAnswer(
+            "SaveMediaListEntry", Vars("""{"mediaId":21,"status":"PAUSED"}"""), NoFixtures, out _);
+
+        var media = MediaResponse(mediaId: 16498);
+        state.Apply("Media", media);
+
+        Assert.That(media["data"]?["Media"]?["mediaListEntry"]?["status"]?.GetValue<string>(), Is.EqualTo("CURRENT"));
+        Assert.That(media["data"]?["Media"]?["mediaListEntry"]?["id"]?.GetValue<int>(), Is.EqualTo(1002));
+    }
+
+    /// <summary>A recorded <c>Media</c> read, the title on Watching as the recording found it.</summary>
+    private static JsonNode MediaResponse(int mediaId, bool listed = true) => new JsonObject
+    {
+        ["data"] = new JsonObject
+        {
+            ["Media"] = new JsonObject
+            {
+                ["id"] = mediaId,
+                ["title"] = new JsonObject { ["romaji"] = $"Title {mediaId}" },
+                ["mediaListEntry"] = !listed ? null : new JsonObject
+                {
+                    ["id"] = mediaId == 21 ? 1001 : 1002,
+                    ["status"] = "CURRENT",
+                    ["progress"] = 3,
+                    ["score"] = 8,
+                },
+            },
+        },
+    };
+
     private static JsonNode ReplayRead(JsonNode list)
     {
         AdultCanary.Splice("MediaListCollection", Vars("""{"type":"ANIME"}"""), list);
