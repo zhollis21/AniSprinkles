@@ -12,18 +12,48 @@ public sealed class ListEditJourneys : Journey
     /// <summary>The Up Next destination a journey changed, to put back; null when untouched.</summary>
     private string? _restoreUpNextTo;
 
+    /// <summary>Each Library section a journey opened or closed, with the state it was found in.</summary>
+    private readonly Dictionary<string, bool> _restoreSections = [];
+
     [SetUp]
     public Task RequireFixtureReplayAsync() => App.RequireFixtureReplayAsync();
 
-    /// <summary>Runs before <see cref="Journey.RestoreAsync"/>, which then returns to the Library.</summary>
+    /// <summary>
+    /// Puts back the sections and the Up Next destination a journey changed, passing or not. Runs
+    /// before <see cref="Journey.RestoreAsync"/>, which then returns to the Library.
+    /// </summary>
     [TearDown]
-    public async Task RestoreUpNextDestinationAsync()
+    public async Task RestoreDeviceStateAsync()
     {
+        await App.DismissPopupsAsync();
+        if (_restoreSections.Count > 0)
+        {
+            await App.ResetToLibraryAsync();
+            foreach (var (section, expanded) in _restoreSections)
+            {
+                await App.SetSectionExpandedAsync(section, expanded);
+            }
+        }
+
         if (_restoreUpNextTo is { } previous && previous != "Current")
         {
-            await App.DismissPopupsAsync();
             await App.SetUpNextDestinationAsync(previous);
         }
+    }
+
+    /// <summary>
+    /// Opens or closes a Library section for this journey. A section's state lasts the launch, so a
+    /// journey sets the states it relies on rather than assuming the defaults, and the first change
+    /// records the state it found for <see cref="RestoreDeviceStateAsync"/>.
+    /// </summary>
+    private async Task SetSectionAsync(string section, bool expanded)
+    {
+        if (!_restoreSections.ContainsKey(section))
+        {
+            _restoreSections[section] = await App.IsSectionExpandedAsync(section);
+        }
+
+        await App.SetSectionExpandedAsync(section, expanded);
     }
 
     /// <summary>
@@ -36,6 +66,11 @@ public sealed class ListEditJourneys : Journey
     {
         // Romaji, as Journey's setup leaves it; "Gintama Season 4" is its English title.
         const string title = "Gintama.";
+
+        // Watching open to reach the card; Paused shut, so the moved card is laid out nowhere and
+        // leaving Watching can be seen as leaving the screen.
+        await SetSectionAsync("Watching", expanded: true);
+        await SetSectionAsync("Paused", expanded: false);
         var watching = await App.ReadSectionCountAsync("Watching");
         var paused = await App.ReadSectionCountAsync("Paused");
 
@@ -46,10 +81,9 @@ public sealed class ListEditJourneys : Journey
         await App.WaitForSectionCountAsync("Watching", watching - 1);
         await App.WaitForSectionCountAsync("Paused", paused + 1);
 
-        await App.ToggleSectionAsync("Paused");
+        await SetSectionAsync("Paused", expanded: true);
         await App.MoveToListAsync(title, "Current");
         await App.WaitForSectionCountAsync("Paused", paused);
-        await App.ToggleSectionAsync("Paused");
         await App.WaitForSectionCountAsync("Watching", watching);
         await App.ResetToLibraryAsync();
         await App.ScrollLibraryToAsync($"'{title}' back under Watching", "MediaCardTitle", e => e.Text == title);
@@ -70,8 +104,10 @@ public sealed class ListEditJourneys : Journey
     public async Task MarkAsCompleted_OffersUpNext_AndAddsThePickToWatching()
     {
         const string title = "Sword Art Online";
+        await App.RequireUpNextEnabledAsync();
         _restoreUpNextTo = await App.SetUpNextDestinationAsync("Current");
         await App.ResetToLibraryAsync();
+        await SetSectionAsync("Watching", expanded: true);
         var watching = await App.ReadSectionCountAsync("Watching");
         var completed = await App.ReadSectionCountAsync("Completed");
 
@@ -99,10 +135,9 @@ public sealed class ListEditJourneys : Journey
         await Driver.TapAsync("Remove", automationId: "EntryAction_Remove");
         await Driver.TapAsync("the removal confirm", automationId: "ConfirmAccept");
         await App.WaitForSectionCountAsync("Watching", watching - 1);
-        await App.ToggleSectionAsync("Completed");
+        await SetSectionAsync("Completed", expanded: true);
         await App.MoveToListAsync(title, "Current");
         await App.WaitForSectionCountAsync("Completed", completed);
-        await App.ToggleSectionAsync("Completed");
         await App.WaitForSectionCountAsync("Watching", watching);
     }
 
@@ -114,6 +149,7 @@ public sealed class ListEditJourneys : Journey
     public async Task DetailsDropdown_Completed_OffersUpNext_AndNotNowKeepsTheCompletion()
     {
         // ONE PIECE (media 21): on the test account's Watching list, relations recorded.
+        await App.RequireUpNextEnabledAsync();
         await App.NavigateAsync("media-details?mediaId=21");
         await Driver.WaitForAsync("the list status to read Watching", automationId: "ListStatusLabel",
             predicate: e => e.Text == "Watching");

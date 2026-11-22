@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace AniSprinkles.UITests;
 
 /// <summary>
@@ -44,19 +46,29 @@ internal sealed class App(AppDriver driver)
     }
 
     /// <summary>
-    /// Points Up Next at a list (<c>Current</c> or <c>Planning</c>) through its Settings chips, and
-    /// returns where it pointed before, so the journey can put it back. Device-local, not an AniList
-    /// setting (<c>UpNextPreferences</c>), so it is read straight from the app's preferences: the
-    /// chips expose no selected state to read (#226). Skips the journey if Up Next is turned off.
+    /// Skips the journey if Up Next is turned off on this device (Settings, Up Next, Suggest Related
+    /// Entries; <c>UpNextPreferences</c>, on by default). Off, completing a title correctly offers
+    /// nothing, so a journey waiting for the sheet would time out with the title left completed.
+    /// Call it before the journey changes anything.
     /// </summary>
-    public async Task<string> SetUpNextDestinationAsync(string status)
+    public async Task RequireUpNextEnabledAsync()
     {
         var enabled = await Driver.Client.GetPreferenceAsync("up_next_enabled", "bool", null);
         if (enabled.TryGetProperty("value", out var on) && on.ValueKind == JsonValueKind.False)
         {
             Assert.Ignore("Up Next is turned off in Settings on this device.");
         }
+    }
 
+    /// <summary>
+    /// Points Up Next at a list (<c>Current</c> or <c>Planning</c>) through its Settings chips, and
+    /// returns where it pointed before, so the journey can put it back. Device-local, not an AniList
+    /// setting (<c>UpNextPreferences</c>), so it is read straight from the app's preferences: the
+    /// chips expose no selected state to read (#226). Up Next must be on; see
+    /// <see cref="RequireUpNextEnabledAsync"/>.
+    /// </summary>
+    public async Task<string> SetUpNextDestinationAsync(string status)
+    {
         var stored = await Driver.Client.GetPreferenceAsync("up_next_status", "string", null);
         var previous = stored.TryGetProperty("value", out var value) && value.ValueKind == JsonValueKind.String
             && value.GetString() is { Length: > 0 } named
@@ -64,24 +76,66 @@ internal sealed class App(AppDriver driver)
                 : "Current";
 
         await GoToTabAsync("Settings");
+        await OpenSettingsSectionAsync("UpNext", "Up Next");
         await Driver.TapAsync($"the Up Next {status} chip", automationId: $"UpNextDestination_{status}");
         return previous;
     }
 
     /// <summary>
     /// The count on a Library section's header (<c>Watching</c>, <c>Completed</c>, …), scrolling the
-    /// header on screen first. The count label carries no section name, so it is the one on the same
-    /// row as the section's title.
+    /// header on screen first.
     /// </summary>
     public async Task<int> ReadSectionCountAsync(string section)
     {
+        var count = await OnSectionRowAsync(section, "LibrarySectionCount", "count", e => int.TryParse(e.Text, out _));
+        return int.TryParse(count.Text, out var value) ? value : -1;
+    }
+
+    /// <summary>
+    /// Whether a Library section is open, read from its header's chevron, which a section's
+    /// <c>IsExpanded</c> turns to 180°. Sections keep their state across reloads for the whole
+    /// launch, so a journey cannot assume the defaults.
+    /// </summary>
+    public async Task<bool> IsSectionExpandedAsync(string section)
+    {
+        var chevron = await OnSectionRowAsync(section, "LibrarySectionChevron", "chevron", _ => true);
+        var rotation = await Driver.Client.GetPropertyAsync(chevron.Id, "Rotation");
+        return double.TryParse(rotation, NumberStyles.Float, CultureInfo.InvariantCulture, out var degrees)
+            && Math.Abs(degrees - 180) < 1;
+    }
+
+    /// <summary>Opens or closes a Library section, touching its header only if it is the other way.</summary>
+    public async Task SetSectionExpandedAsync(string section, bool expanded)
+    {
+        if (await IsSectionExpandedAsync(section) == expanded)
+        {
+            return;
+        }
+
+        var header = await ScrollLibraryToAsync($"the {section} header", "LibrarySectionTitle", e => e.Text == section);
+        await Driver.TouchAsync(header, $"the {section} header");
+
+        var deadline = DateTime.UtcNow + AppDriver.DefaultTimeout;
+        while (await IsSectionExpandedAsync(section) != expanded)
+        {
+            Assert.That(DateTime.UtcNow, Is.LessThan(deadline),
+                $"The {section} section did not {(expanded ? "open" : "close")}.");
+            await Task.Delay(AppDriver.PollInterval);
+        }
+    }
+
+    /// <summary>
+    /// A label on a section's header row. The count and the chevron carry no section name, so the
+    /// one on the same row as the section's title, scrolled on screen first, is the section's.
+    /// </summary>
+    private async Task<ElementInfo> OnSectionRowAsync(string section, string automationId, string what, Func<ElementInfo, bool> predicate)
+    {
         var title = await ScrollLibraryToAsync($"the {section} section header", "LibrarySectionTitle", e => e.Text == section);
         var row = title.WindowBounds;
-        var count = await Driver.WaitForAsync($"the {section} section count", automationId: "LibrarySectionCount",
+        return await Driver.WaitForAsync($"the {section} section {what}", automationId: automationId,
             predicate: e => row is not null && e.WindowBounds is { } b
                 && Math.Abs((b.Y + (b.Height / 2)) - (row.Y + (row.Height / 2))) < row.Height
-                && int.TryParse(e.Text, out _));
-        return int.TryParse(count.Text, out var value) ? value : -1;
+                && predicate(e));
     }
 
     /// <summary>Waits until a Library section's header reads <paramref name="expected"/>.</summary>
@@ -197,12 +251,6 @@ internal sealed class App(AppDriver driver)
         return null;
     }
 
-    /// <summary>Opens or closes a Library section by touching its header.</summary>
-    public async Task ToggleSectionAsync(string section)
-    {
-        var header = await ScrollLibraryToAsync($"the {section} header", "LibrarySectionTitle", e => e.Text == section);
-        await Driver.TouchAsync(header, $"the {section} header");
-    }
 
     /// <summary>Long-press menu → Move to → <paramref name="status"/> (a <c>MediaListStatus</c> name).</summary>
     public async Task MoveToListAsync(string title, string status)
@@ -337,15 +385,37 @@ internal sealed class App(AppDriver driver)
     public async Task SetTitleLanguageAsync(string language)
     {
         await GoToTabAsync("Settings");
-        var chipId = $"TitleLanguage{language}";
+        await OpenSettingsSectionAsync("DisplayPreferences", "Display Preferences");
+        await Driver.TapAsync($"the {language} title-language chip", automationId: $"TitleLanguage{language}");
+    }
 
-        // Display Preferences is a collapsible section; open it if this run starts with it shut.
-        var chips = await Driver.Client.QueryAsync(automationId: chipId);
-        if (!chips.Any(c => c.IsVisible))
+    /// <summary>
+    /// Opens a collapsible Settings section (<c>&lt;section&gt;Header</c> over
+    /// <c>&lt;section&gt;Content</c>) if it is shut; a collapse lasts for the launch.
+    /// <para>
+    /// Judged by the content border, whose own <c>IsVisible</c> is what the section binds. The
+    /// controls inside keep theirs true, and their last bounds, while the section is shut, so asking
+    /// whether a chip is visible cannot tell (checked on device 2026-11-21).
+    /// </para>
+    /// </summary>
+    private async Task OpenSettingsSectionAsync(string section, string what)
+    {
+        var header = $"{section}Header";
+        await Driver.WaitForAsync($"the {what} header", automationId: header);
+        if (await IsSettingsSectionOpenAsync(section))
         {
-            await Driver.TapAsync("the Display Preferences header", automationId: "DisplayPreferencesHeader");
+            return;
         }
 
-        await Driver.TapAsync($"the {language} title-language chip", automationId: chipId);
+        await Driver.TapAsync($"the {what} header", automationId: header);
+        var deadline = DateTime.UtcNow + AppDriver.DefaultTimeout;
+        while (!await IsSettingsSectionOpenAsync(section))
+        {
+            Assert.That(DateTime.UtcNow, Is.LessThan(deadline), $"The {what} section did not open.");
+            await Task.Delay(AppDriver.PollInterval);
+        }
     }
+
+    private async Task<bool> IsSettingsSectionOpenAsync(string section)
+        => (await Driver.Client.QueryAsync(automationId: $"{section}Content")).Any(e => e.IsVisible);
 }

@@ -349,8 +349,10 @@
                                    Style="{StaticResource Caption1Strong}"
                                    TextColor="{Binding Title, Converter={StaticResource RainbowAccentConverter}}" />
                         </Border>
-                        <!-- Chevron (down when collapsed, up when expanded) -->
+                        <!-- Chevron (down when collapsed, up when expanded). Its rotation is how the UI
+                             journeys read a section's state. -->
                         <Label Grid.Column="3"
+                               AutomationId="LibrarySectionChevron"
                                Text="{x:Static icons:FluentIconsRegular.ChevronDown24}"
                                FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                TextColor="{Binding Title, Converter={StaticResource RainbowAccentConverter}}"

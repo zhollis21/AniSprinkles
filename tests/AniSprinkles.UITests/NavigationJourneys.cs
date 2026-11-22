@@ -109,9 +109,13 @@ public sealed class NavigationJourneys : Journey
         }
     }
 
+    /// <summary>
+    /// The laid-out card with this title. Not any visible one: the Manga tab's cards stay in the
+    /// tree, reported visible at zero bounds, and its ONE PIECE would answer for the Anime one.
+    /// </summary>
     private async Task<ElementInfo?> FindTitleAsync(string text)
         => (await Driver.Client.QueryAsync(automationId: "MediaCardTitle", text: text))
-            .FirstOrDefault(e => e.IsVisible && e.Text == text);
+            .FirstOrDefault(e => e.IsVisible && e.Text == text && e.WindowBounds?.Y > 0);
 
     /// <summary>
     /// Where it was before any scrolling, within a pixel. A recycled card that scrolled off counts as
