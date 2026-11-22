@@ -21,7 +21,7 @@ public static class SentryLogNoise
     /// logs the <see cref="InvalidOperationException"/> at Error. Nothing is wrong: the icon belongs to
     /// a view that no longer exists. Matched by its loader frame as well as its message, because the
     /// same message comes from any handler used after disconnect, and those can be real bugs.
-    /// Remove once MAUI stops logging it; the blocked follow-up to #230 tracks that.
+    /// Remove once MAUI stops logging it (dotnet/maui#40511, tracked in #234).
     /// </summary>
     public static bool IsImageSourceLoadAfterDisconnect(
         string categoryName, Type? exceptionType, string? message, string? stackTrace) =>

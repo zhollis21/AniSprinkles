@@ -12,8 +12,8 @@ namespace AniSprinkles.UnitTests;
 // thread, can race a background Error log and take the app down. The Up Next sheet's constructor did
 // exactly that right after the rating prompt's Skip. Screen size comes from ScreenMetrics instead.
 //
-// Remove this guard once MAUI no longer disposes the shared peer; the blocked follow-up to #230
-// tracks that.
+// Remove this guard once MAUI no longer disposes the shared peer (dotnet/maui#40510, tracked in
+// #234).
 public class DeviceDisplayGuardTests
 {
     private static readonly Regex DeviceDisplayReference = new(@"\bDeviceDisplay\b", RegexOptions.Compiled);
