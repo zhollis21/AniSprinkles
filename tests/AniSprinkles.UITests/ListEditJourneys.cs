@@ -5,55 +5,31 @@ namespace AniSprinkles.UITests;
 /// so each runs only on fixture replay (<see cref="App.RequireFixtureReplayAsync"/>), where the
 /// writes live in the app's memory (<c>MutationState</c>) and are gone at the next launch. Each that
 /// passes puts back what it moved, so a second run against the same launch starts from the same
-/// Library; after a failure, relaunch the app.
+/// Library; after a failure, relaunch the app. One exception, by design for now: Sword Art Online
+/// comes back to Watching at 24/25, not 0/25, because a completed title returning to Watching is
+/// walked back off its cap by one episode (<c>ListEntryStatusMutations</c>, the <c>Current</c>
+/// case). Whether it should reset to 0 is recorded on #222.
 /// </summary>
 public sealed class ListEditJourneys : Journey
 {
     /// <summary>The Up Next destination a journey changed, to put back; null when untouched.</summary>
     private string? _restoreUpNextTo;
 
-    /// <summary>Each Library section a journey opened or closed, with the state it was found in.</summary>
-    private readonly Dictionary<string, bool> _restoreSections = [];
-
     [SetUp]
     public Task RequireFixtureReplayAsync() => App.RequireFixtureReplayAsync();
 
     /// <summary>
-    /// Puts back the sections and the Up Next destination a journey changed, passing or not. Runs
-    /// before <see cref="Journey.RestoreAsync"/>, which then returns to the Library.
+    /// Puts back the Up Next destination a journey changed, passing or not. Runs before
+    /// <see cref="Journey.RestoreAsync"/>, which then puts back the Library sections.
     /// </summary>
     [TearDown]
-    public async Task RestoreDeviceStateAsync()
+    public async Task RestoreUpNextDestinationAsync()
     {
-        await App.DismissPopupsAsync();
-        if (_restoreSections.Count > 0)
-        {
-            await App.ResetToLibraryAsync();
-            foreach (var (section, expanded) in _restoreSections)
-            {
-                await App.SetSectionExpandedAsync(section, expanded);
-            }
-        }
-
         if (_restoreUpNextTo is { } previous && previous != "Current")
         {
+            await App.DismissPopupsAsync();
             await App.SetUpNextDestinationAsync(previous);
         }
-    }
-
-    /// <summary>
-    /// Opens or closes a Library section for this journey. A section's state lasts the launch, so a
-    /// journey sets the states it relies on rather than assuming the defaults, and the first change
-    /// records the state it found for <see cref="RestoreDeviceStateAsync"/>.
-    /// </summary>
-    private async Task SetSectionAsync(string section, bool expanded)
-    {
-        if (!_restoreSections.ContainsKey(section))
-        {
-            _restoreSections[section] = await App.IsSectionExpandedAsync(section);
-        }
-
-        await App.SetSectionExpandedAsync(section, expanded);
     }
 
     /// <summary>
@@ -67,9 +43,8 @@ public sealed class ListEditJourneys : Journey
         // Romaji, as Journey's setup leaves it; "Gintama Season 4" is its English title.
         const string title = "Gintama.";
 
-        // Watching open to reach the card; Paused shut, so the moved card is laid out nowhere and
+        // Watching is open from setup; Paused shut, so the moved card is laid out nowhere and
         // leaving Watching can be seen as leaving the screen.
-        await SetSectionAsync("Watching", expanded: true);
         await SetSectionAsync("Paused", expanded: false);
         var watching = await App.ReadSectionCountAsync("Watching");
         var paused = await App.ReadSectionCountAsync("Paused");
@@ -107,7 +82,6 @@ public sealed class ListEditJourneys : Journey
         await App.RequireUpNextEnabledAsync();
         _restoreUpNextTo = await App.SetUpNextDestinationAsync("Current");
         await App.ResetToLibraryAsync();
-        await SetSectionAsync("Watching", expanded: true);
         var watching = await App.ReadSectionCountAsync("Watching");
         var completed = await App.ReadSectionCountAsync("Completed");
 

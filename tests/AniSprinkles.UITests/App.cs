@@ -53,8 +53,11 @@ internal sealed class App(AppDriver driver)
     /// </summary>
     public async Task RequireUpNextEnabledAsync()
     {
+        // Unset means on. The agent reports an unset bool as {"exists":false,"value":false}, so the
+        // value alone would read a fresh install as turned off.
         var enabled = await Driver.Client.GetPreferenceAsync("up_next_enabled", "bool", null);
-        if (enabled.TryGetProperty("value", out var on) && on.ValueKind == JsonValueKind.False)
+        if (enabled.TryGetProperty("exists", out var exists) && exists.ValueKind == JsonValueKind.True
+            && enabled.TryGetProperty("value", out var on) && on.ValueKind == JsonValueKind.False)
         {
             Assert.Ignore("Up Next is turned off in Settings on this device.");
         }
@@ -328,14 +331,41 @@ internal sealed class App(AppDriver driver)
     public async Task ResetToLibraryAsync()
     {
         await ResetToTabAsync("Library");
-        await Driver.WaitForAsync("the Library cards", automationId: "MediaCard");
+
+        // The list, not a card: with every section collapsed there are no cards to wait for.
+        await LibraryListAsync();
+
+        // After the pop's animation, because a re-tap during one is dropped (TabReselect).
+        await Task.Delay(PopAnimation);
+        await SelectAnimeAsync();
 
         // A third touch at the root scrolls it to the top (#200), which the second does not do when it
         // pops a page: journeys read section headers and the top card, which a scrolled list may have
-        // recycled. After the pop's animation, because a re-tap during one is dropped (TabReselect).
-        await Task.Delay(PopAnimation);
+        // recycled.
         await GoToTabAsync("Library");
-        await Driver.WaitForAsync("the Library's first section header", automationId: "LibrarySectionTitle");
+        await Driver.WaitForAsync("the Library's first section header", automationId: "LibrarySectionTitle",
+            predicate: e => e.WindowBounds?.Y > 0);
+    }
+
+    /// <summary>
+    /// Selects the Library's Anime sub-tab with a real touch. Re-tapping the bottom tab pops and
+    /// scrolls but never changes the sub-tab, so a run that starts on Manga would otherwise test
+    /// the Manga list. The ANIME / MANGA strip is a native <c>TabLayout</c> whose tabs the agent
+    /// lists as <c>TabView</c>s without text; Anime is the leftmost one on screen. MAUI 11's Shell
+    /// handlers show the agent no native views (#177), so there the step is skipped.
+    /// </summary>
+    private async Task SelectAnimeAsync()
+    {
+        var anime = (await Driver.Client.QueryAsync(type: "TabView"))
+            .Where(e => e.IsVisible && e.WindowBounds is { Y: > 0, Width: > 0 })
+            .MinBy(e => e.WindowBounds?.X ?? double.MaxValue);
+        if (anime is null)
+        {
+            return;
+        }
+
+        await Driver.TouchAsync(anime, "the Anime tab");
+        await Task.Delay(PopAnimation);
     }
 
     /// <summary>Longer than Shell's pop-to-root animation on the emulator.</summary>
