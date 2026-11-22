@@ -285,6 +285,159 @@ public class MutationStateTests
         Assert.That(media["data"]?["Media"]?["mediaListEntry"]?["id"]?.GetValue<int>(), Is.EqualTo(1002));
     }
 
+    [Test]
+    public void ADetailsRead_TeachesTheEntryId_SoARemovalMadeFromItSticks()
+    {
+        // Copilot on #233: opened from Search before any list read, the entry id was unknown, so the
+        // removal changed nothing and the next details read showed the title still listed.
+        var state = new MutationState();
+        state.Apply("Media", MediaResponse(mediaId: 21));
+
+        state.TryAnswer("DeleteMediaListEntry", Vars("""{"id":1001}"""), NoFixtures, out _);
+
+        var reread = MediaResponse(mediaId: 21);
+        state.Apply("Media", reread);
+        Assert.That(reread["data"]?["Media"]?["mediaListEntry"], Is.Null);
+    }
+
+    [Test]
+    public void ABrowseRead_TeachesTheEntryId_AndShowsTheRemoval()
+    {
+        // Search, Discover, View All, relations and the people pages all carry the viewer's entry on
+        // each card; the same gap was in every one of them.
+        var state = new MutationState();
+        state.Apply("Search", SearchResponse());
+
+        state.TryAnswer("DeleteMediaListEntry", Vars("""{"id":1001}"""), NoFixtures, out _);
+
+        var reread = SearchResponse();
+        state.Apply("Search", reread);
+        Assert.That(CardEntry(reread, 21), Is.Null);
+        Assert.That(CardEntry(reread, 16498)?["status"]?.GetValue<string>(), Is.EqualTo("CURRENT"));
+    }
+
+    [Test]
+    public void ABrowseRead_ShowsASave_InTheShapeThatQuerySelects()
+    {
+        var state = new MutationState();
+        state.TryAnswer(
+            "SaveMediaListEntry",
+            Vars("""{"mediaId":21,"status":"PAUSED","progress":9,"progressVolumes":2,"notes":"later"}"""),
+            NoFixtures,
+            out _);
+
+        var reread = SearchResponse();
+        state.Apply("Search", reread);
+
+        var entry = CardEntry(reread, 21) as JsonObject;
+        Assert.That(entry?["status"]?.GetValue<string>(), Is.EqualTo("PAUSED"));
+        Assert.That(entry?["progress"]?.GetValue<int>(), Is.EqualTo(9));
+        Assert.That(entry?.Select(p => p.Key), Is.EquivalentTo(new[] { "id", "status", "progress", "score" }));
+    }
+
+    [Test]
+    public void ABrowseRead_OfATitleTheRecordingHadOffTheList_ShowsTheSaveInTheCardShape()
+    {
+        var state = new MutationState();
+        state.TryAnswer(
+            "SaveMediaListEntry", Vars("""{"mediaId":5114,"status":"PLANNING","notes":"x"}"""), NoFixtures, out _);
+
+        var reread = SearchResponse();
+        state.Apply("Search", reread);
+
+        var entry = CardEntry(reread, 5114) as JsonObject;
+        Assert.That(entry?["status"]?.GetValue<string>(), Is.EqualTo("PLANNING"));
+        Assert.That(entry?.Select(p => p.Key), Is.EquivalentTo(new[] { "id", "status", "progress", "score" }));
+    }
+
+    [Test]
+    public void ADetailsRead_OfATitleTheRecordingHadOffTheList_SelectsWhatMediaQuerySelects()
+    {
+        // Copilot on #233: the saved entry carries progressVolumes, which the details query does not
+        // select, so replay showed a field a live read cannot return.
+        var state = new MutationState();
+        state.TryAnswer(
+            "SaveMediaListEntry", Vars("""{"mediaId":21,"status":"PAUSED","progressVolumes":2}"""), NoFixtures, out _);
+
+        var media = MediaResponse(mediaId: 21, listed: false);
+        state.Apply("Media", media);
+
+        var entry = media["data"]?["Media"]?["mediaListEntry"] as JsonObject;
+        Assert.That(entry?.Select(p => p.Key), Is.EquivalentTo(new[]
+        {
+            "id", "mediaId", "status", "progress", "score", "repeat", "notes", "private", "hiddenFromStatusLists", "updatedAt",
+        }));
+    }
+
+    [Test]
+    public void ASaveThatLeavesAFieldNull_KeepsWhatTheRecordingHad()
+    {
+        // Copilot on #233: AniList keeps a field the save sends as null; replay blanked it.
+        var state = new MutationState();
+        state.TryAnswer("SaveMediaListEntry", Vars("""{"mediaId":21,"status":"PAUSED"}"""), NoFixtures, out _);
+
+        var media = MediaResponse(mediaId: 21);
+        state.Apply("Media", media);
+
+        var entry = media["data"]?["Media"]?["mediaListEntry"];
+        Assert.That(entry?["status"]?.GetValue<string>(), Is.EqualTo("PAUSED"));
+        Assert.That(entry?["progress"]?.GetValue<int>(), Is.EqualTo(3));
+        Assert.That(entry?["score"]?.GetValue<int>(), Is.EqualTo(8));
+    }
+
+    [Test]
+    public void ASaveThatLeavesAFieldNull_KeepsItInTheSaveAnswerAndTheNextListReadToo()
+    {
+        // The app adopts the save's answer as its entry, so a blank there is as wrong as one on the
+        // next read. The id stays the one AniList already had: it mints a new one only for a new entry.
+        var state = new MutationState();
+        state.Apply("MediaListCollection", Json("""
+            {"data":{"MediaListCollection":{"lists":[{"name":"Watching","entries":[
+              {"id":1001,"mediaId":21,"status":"CURRENT","progress":3,"notes":"with friends","media":{"id":21}}
+            ]},{"name":"Paused","entries":[
+              {"id":1004,"mediaId":30,"status":"PAUSED","progress":1,"notes":null,"media":{"id":30}}
+            ]}]}}}
+            """));
+
+        state.TryAnswer("SaveMediaListEntry", Vars("""{"mediaId":21,"status":"PAUSED"}"""), NoFixtures, out var answer);
+
+        var saved = answer?["data"]?["SaveMediaListEntry"];
+        Assert.That(saved?["id"]?.GetValue<int>(), Is.EqualTo(1001));
+        Assert.That(saved?["notes"]?.GetValue<string>(), Is.EqualTo("with friends"));
+        Assert.That(saved?["progress"]?.GetValue<int>(), Is.EqualTo(3));
+
+        var reread = Json("""
+            {"data":{"MediaListCollection":{"lists":[{"name":"Watching","entries":[
+              {"id":1001,"mediaId":21,"status":"CURRENT","progress":3,"notes":"with friends","media":{"id":21}}
+            ]},{"name":"Paused","entries":[
+              {"id":1004,"mediaId":30,"status":"PAUSED","progress":1,"notes":null,"media":{"id":30}}
+            ]}]}}}
+            """);
+        state.Apply("MediaListCollection", reread);
+        var moved = (reread["data"]?["MediaListCollection"]?["lists"]?[1]?["entries"]?.AsArray() ?? [])
+            .SingleOrDefault(e => e?["mediaId"]?.GetValue<int>() == 21);
+        Assert.That(moved?["notes"]?.GetValue<string>(), Is.EqualTo("with friends"));
+        Assert.That(moved?["id"]?.GetValue<int>(), Is.EqualTo(1001));
+
+        // In the list query's shape, with the list's own media block: nothing that query does not
+        // select, and not a Media read's block, which is shaped differently.
+        Assert.That((moved as JsonObject)?.ContainsKey("hiddenFromStatusLists"), Is.False);
+        Assert.That(moved?["media"]?["id"]?.GetValue<int>(), Is.EqualTo(21));
+    }
+
+    /// <summary>A recorded <c>Search</c> page: title 21 on Watching, 16498 on Watching, 5114 off the list.</summary>
+    private static JsonNode SearchResponse() => Json("""
+        {"data":{"Page":{"pageInfo":{"hasNextPage":false},"media":[
+          {"id":21,"title":{"romaji":"ONE PIECE"},"mediaListEntry":{"id":1001,"status":"CURRENT","progress":3,"score":8}},
+          {"id":16498,"title":{"romaji":"Shingeki no Kyojin"},"mediaListEntry":{"id":1002,"status":"CURRENT","progress":1,"score":0}},
+          {"id":5114,"title":{"romaji":"Hagane"},"mediaListEntry":null}
+        ]}}}
+        """);
+
+    private static JsonNode? CardEntry(JsonNode search, int mediaId)
+        => (search["data"]?["Page"]?["media"]?.AsArray() ?? [])
+            .Single(m => m?["id"]?.GetValue<int>() == mediaId)?["mediaListEntry"];
+
     /// <summary>A recorded <c>Media</c> read, the title on Watching as the recording found it.</summary>
     private static JsonNode MediaResponse(int mediaId, bool listed = true) => new JsonObject
     {

@@ -15,8 +15,9 @@ namespace AniSprinkles.Services;
 /// </list>
 /// Only the detail-page reads are cached here. Everything else (lists, search, media, mutations)
 /// passes straight through — caching those needs proper invalidation and is tracked as a separate
-/// follow-up. List saves and removals that succeed are counted on <see cref="ListChangeTracker"/>
-/// on the way through (#225), which couples this decorator to the Library's freshness on purpose:
+/// follow-up. List saves and removals are tracked on <see cref="ListChangeTracker"/> on the way
+/// through (#225) — in flight while they run, and counted unless AniList said nothing changed —
+/// which couples this decorator to the Library's freshness on purpose:
 /// it is the one place every save passes. Concurrent calls for the same key are coalesced (one in-flight fetch), and failures
 /// are never cached.
 /// </summary>
@@ -220,26 +221,37 @@ public sealed class CachingAniListClient : IAniListClient
         => _inner.GetMediaRelationsAsync(id, cancellationToken);
 
     // Not cached, but counted: every list save and removal in the app comes through here, so this is
-    // the one place that cannot miss one when telling the Library its copy is stale (#225). Counted
-    // only once AniList has answered: a save that throws changed nothing, and a removal that reports
-    // false removed nothing. A save answered with no entry still counts; a needless reload is cheaper
-    // than a missed one.
+    // the one place that cannot miss one when telling the Library its copy is stale (#225). Each is
+    // marked in flight while it runs, so a Library appearing mid-save can wait for it. Counted as a
+    // change unless AniList said nothing changed — a removal answering false. A save that throws
+    // still counts: a timeout or a lost response can follow a write that landed, and a needless
+    // reload is cheaper than a missed one. So does a save answered with no entry.
     public async Task<MediaListEntry?> SaveMediaListEntryAsync(MediaListEntry entry, CancellationToken cancellationToken = default)
     {
-        var saved = await _inner.SaveMediaListEntryAsync(entry, cancellationToken);
-        _listChanges.NotifyChanged();
-        return saved;
+        _listChanges.BeginChange();
+        try
+        {
+            return await _inner.SaveMediaListEntryAsync(entry, cancellationToken);
+        }
+        finally
+        {
+            _listChanges.EndChange(changed: true);
+        }
     }
 
     public async Task<bool> DeleteMediaListEntryAsync(int entryId, CancellationToken cancellationToken = default)
     {
-        var deleted = await _inner.DeleteMediaListEntryAsync(entryId, cancellationToken);
-        if (deleted)
+        var deleted = true;
+        _listChanges.BeginChange();
+        try
         {
-            _listChanges.NotifyChanged();
+            deleted = await _inner.DeleteMediaListEntryAsync(entryId, cancellationToken);
+            return deleted;
         }
-
-        return deleted;
+        finally
+        {
+            _listChanges.EndChange(changed: deleted);
+        }
     }
 
     public Task<bool> ToggleFavouriteAsync(FavouriteKind kind, int id, CancellationToken cancellationToken = default)

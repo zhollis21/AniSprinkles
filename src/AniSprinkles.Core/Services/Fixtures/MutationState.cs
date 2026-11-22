@@ -57,6 +57,24 @@ public sealed class MutationState
     private readonly Dictionary<int, JsonObject> _savedEntriesByMediaId = [];
 
     /// <summary>
+    /// Media id → the entry the most recent read showed, field by field across every shape a read
+    /// selects. A save names only what the app sent, and AniList keeps a field sent as null; this is
+    /// what the save's answer, and every read after it, fills those fields from.
+    /// </summary>
+    private readonly Dictionary<int, JsonObject> _lastSeenEntryByMediaId = [];
+
+    /// <summary>What <c>MediaQuery</c> selects for the details page's own entry.</summary>
+    private static readonly string[] DetailsEntryFields =
+        ["id", "mediaId", "status", "progress", "score", "repeat", "notes", "private", "hiddenFromStatusLists", "updatedAt"];
+
+    /// <summary>What <c>MediaRelationsQuery</c> selects for each related title's entry.</summary>
+    private static readonly string[] RelationEntryFields =
+        ["id", "status", "progress", "progressVolumes", "score", "repeat", "notes", "private", "hiddenFromStatusLists"];
+
+    /// <summary>What every other card query selects: Search, Discover, View All, the people and studio pages.</summary>
+    private static readonly string[] CardEntryFields = ["id", "status", "progress", "score"];
+
+    /// <summary>
     /// Every related title a replayed <c>MediaRelations</c> read showed, by media id: the fallback
     /// media block for a save when no <c>Media</c> was recorded for it (#221). Up Next adds titles
     /// from exactly that read, and most of them were never opened while recording, so without this
@@ -131,38 +149,118 @@ public sealed class MutationState
             case "MediaRelations":
                 RememberRelatedMedia(data);
                 break;
+        }
 
-            // The details page. Without this, a title saved or removed during replay read back as
-            // recorded the next time its page opened, while the Library had it in its new section.
-            case "Media":
-                ApplyToMediaListEntry(data["Media"]);
+        // Every card and page that shows the viewer's entry: the details page, Search, Discover,
+        // View All, relations, the people and studio pages (#225). Without it a title saved or
+        // removed during replay read back as recorded everywhere but the Library, and a removal made
+        // from one of them, before any list read, could not even be matched to its title.
+        ApplyToMediaListEntries(data, operationName);
+    }
+
+    /// <summary>
+    /// Finds every media node carrying a <c>mediaListEntry</c>, learns its entry id, and puts the
+    /// accumulated writes onto it: null for a removed title, the saved entry for a saved one.
+    /// </summary>
+    private void ApplyToMediaListEntries(JsonNode data, string operationName)
+    {
+        lock (_gate)
+        {
+            Visit(data, data, operationName);
+        }
+    }
+
+    private void Visit(JsonNode? node, JsonNode data, string operationName)
+    {
+        switch (node)
+        {
+            case JsonArray array:
+                foreach (var child in array)
+                {
+                    Visit(child, data, operationName);
+                }
+
+                break;
+
+            case JsonObject obj:
+                if (obj.ContainsKey("mediaListEntry") && obj["id"] is JsonValue idValue
+                    && idValue.TryGetValue<int>(out var mediaId))
+                {
+                    Reconcile(obj, mediaId, FieldsFor(obj, data, operationName));
+                }
+
+                foreach (var (key, child) in obj.ToList())
+                {
+                    if (key != "mediaListEntry")
+                    {
+                        Visit(child, data, operationName);
+                    }
+                }
+
                 break;
         }
     }
 
-    /// <summary>
-    /// Puts the entry a save answered with onto a <c>Media</c> read of the same title, or clears it
-    /// for a removed one. The saved entry's own media block stays behind: a details read's entry is
-    /// nested inside the media it belongs to, and carries none.
-    /// </summary>
-    private void ApplyToMediaListEntry(JsonNode? media)
-    {
-        if (media is not JsonObject mediaObject || mediaObject["id"]?.GetValue<int>() is not { } mediaId)
+    /// <summary>The fields the query that produced <paramref name="mediaNode"/> selects for its entry.</summary>
+    private static string[] FieldsFor(JsonObject mediaNode, JsonNode data, string operationName)
+        => operationName switch
         {
-            return;
+            "Media" when ReferenceEquals(mediaNode, data["Media"]) => DetailsEntryFields,
+            "MediaRelations" when !ReferenceEquals(mediaNode, data["Media"]) => RelationEntryFields,
+            _ => CardEntryFields,
+        };
+
+    private void Reconcile(JsonObject mediaNode, int mediaId, string[] fields)
+    {
+        var recorded = mediaNode["mediaListEntry"] as JsonObject;
+        if (recorded?["id"] is JsonValue entryIdValue && entryIdValue.TryGetValue<int>(out var entryId))
+        {
+            _mediaIdByEntryId[entryId] = mediaId;
         }
 
-        lock (_gate)
+        if (_deletedMediaIds.Contains(mediaId))
         {
-            if (_deletedMediaIds.Contains(mediaId))
+            mediaNode["mediaListEntry"] = null;
+        }
+        else if (_savedEntriesByMediaId.TryGetValue(mediaId, out var saved))
+        {
+            mediaNode["mediaListEntry"] = Project(saved, recorded, recorded is null ? fields : recorded.Select(p => p.Key));
+        }
+        else if (recorded is not null)
+        {
+            RememberSeen(mediaId, recorded);
+        }
+    }
+
+    /// <summary>
+    /// The saved entry in the shape a read selects — the recorded entry's own fields where it has
+    /// one — with any field the save left null taken from the recording, as AniList keeps it.
+    /// </summary>
+    private static JsonObject Project(JsonObject saved, JsonObject? recorded, IEnumerable<string> fields)
+    {
+        var projected = new JsonObject();
+        foreach (var field in fields)
+        {
+            projected[field] = (saved[field] ?? recorded?[field])?.DeepClone();
+        }
+
+        return projected;
+    }
+
+    /// <summary>Folds what a read showed into <see cref="_lastSeenEntryByMediaId"/>, field by field.</summary>
+    private void RememberSeen(int mediaId, JsonObject entry)
+    {
+        if (!_lastSeenEntryByMediaId.TryGetValue(mediaId, out var seen))
+        {
+            seen = [];
+            _lastSeenEntryByMediaId[mediaId] = seen;
+        }
+
+        foreach (var (key, value) in entry)
+        {
+            if (key != "media")
             {
-                mediaObject["mediaListEntry"] = null;
-            }
-            else if (_savedEntriesByMediaId.TryGetValue(mediaId, out var saved))
-            {
-                var entry = (JsonObject)saved.DeepClone();
-                entry.Remove("media");
-                mediaObject["mediaListEntry"] = entry;
+                seen[key] = value?.DeepClone();
             }
         }
     }
@@ -190,41 +288,55 @@ public sealed class MutationState
     {
         var mediaId = variables?["mediaId"]?.GetValue<int>() ?? 0;
 
-        // AniList would allocate one; anything stable and non-colliding does here.
-        var entryId = 900_000_000 + mediaId;
-        var entry = new JsonObject
+        lock (_gate)
         {
-            ["id"] = entryId,
-            ["mediaId"] = mediaId,
-            ["status"] = variables?["status"]?.DeepClone(),
-            ["progress"] = variables?["progress"]?.DeepClone(),
-            ["progressVolumes"] = variables?["progressVolumes"]?.DeepClone(),
-            ["score"] = variables?["score"]?.DeepClone(),
-            ["repeat"] = variables?["repeat"]?.DeepClone(),
-            ["notes"] = variables?["notes"]?.DeepClone(),
-            ["private"] = variables?["private"]?.DeepClone(),
-            ["hiddenFromStatusLists"] = variables?["hiddenFromStatusLists"]?.DeepClone(),
-            ["updatedAt"] = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+            // What AniList already holds for this title: the last save, else the last read. A field
+            // the save sends as null keeps its value there, and an existing entry keeps its id.
+            var known = _savedEntriesByMediaId.TryGetValue(mediaId, out var previous)
+                ? previous
+                : _lastSeenEntryByMediaId.GetValueOrDefault(mediaId);
+            var entry = (JsonObject?)known?.DeepClone() ?? [];
+
+            // AniList would allocate one for a new entry; anything stable and non-colliding does here.
+            entry["id"] ??= 900_000_000 + mediaId;
+            entry["mediaId"] = mediaId;
+            foreach (var field in SavedFields)
+            {
+                if (variables?[field] is { } value)
+                {
+                    entry[field] = value.DeepClone();
+                }
+                else if (!entry.ContainsKey(field))
+                {
+                    entry[field] = null;
+                }
+            }
+
+            entry["updatedAt"] = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
             // Borrow the media block from the recording for this id rather than inventing one. The
             // real mutation returns it, and a null here would blank the card the caller re-renders.
-            ["media"] = MediaBlockFor(mediaId, fixtures),
-        };
+            entry["media"] = MediaBlockFor(mediaId, fixtures);
 
-        // Saving un-deletes, which is what the app's undo path expects. Keyed on media id so it
-        // actually cancels the matching delete — see _deletedMediaIds.
-        lock (_gate)
-        {
+            // Saving un-deletes, which is what the app's undo path expects. Keyed on media id so it
+            // actually cancels the matching delete — see _deletedMediaIds.
             _deletedMediaIds.Remove(mediaId);
             _savedEntriesByMediaId[mediaId] = (JsonObject)entry.DeepClone();
 
             // A list read learns entry ids from the recording, before saved entries go back in, so it
-            // never sees this one. Without it a title added during replay could not be removed.
-            _mediaIdByEntryId[entryId] = mediaId;
-        }
+            // never sees a made-up one. Without it a title added during replay could not be removed.
+            if (entry["id"]?.GetValue<int>() is { } entryId)
+            {
+                _mediaIdByEntryId[entryId] = mediaId;
+            }
 
-        return Data("SaveMediaListEntry", entry);
+            return Data("SaveMediaListEntry", entry);
+        }
     }
+
+    /// <summary>The mutation's variables that are entry fields, as <c>SaveEntryMutation</c> declares them.</summary>
+    private static readonly string[] SavedFields =
+        ["status", "progress", "progressVolumes", "score", "repeat", "notes", "private", "hiddenFromStatusLists"];
 
     private JsonNode? MediaBlockFor(int mediaId, IFixtureLookup fixtures)
     {
@@ -303,6 +415,8 @@ public sealed class MutationState
     /// </summary>
     private void RemoveDeletedEntries(JsonNode data)
     {
+        // The recorded entries a saved one replaces, for the fields the save left null.
+        var recorded = new Dictionary<int, JsonObject>();
         lock (_gate)
         {
             foreach (var list in data["MediaListCollection"]?["lists"]?.AsArray() ?? [])
@@ -330,12 +444,21 @@ public sealed class MutationState
                     // rather than a duplicate in two sections.
                     if (_deletedMediaIds.Contains(mediaId) || _savedEntriesByMediaId.ContainsKey(mediaId))
                     {
+                        if (entry is JsonObject recordedEntry)
+                        {
+                            recorded[mediaId] = recordedEntry;
+                        }
+
                         entries.RemoveAt(i);
+                    }
+                    else if (entry is JsonObject seen)
+                    {
+                        RememberSeen(mediaId, seen);
                     }
                 }
             }
 
-            ReinsertSavedEntries(data);
+            ReinsertSavedEntries(data, recorded);
         }
     }
 
@@ -354,7 +477,7 @@ public sealed class MutationState
     /// right answer, and inventing one would put it under a heading it does not belong to.
     /// </para>
     /// </summary>
-    private void ReinsertSavedEntries(JsonNode data)
+    private void ReinsertSavedEntries(JsonNode data, IReadOnlyDictionary<int, JsonObject> recorded)
     {
         if (_savedEntriesByMediaId.Count == 0)
         {
@@ -402,7 +525,19 @@ public sealed class MutationState
                 // Front of the list: the entry was just touched, and a freshly changed title
                 // appearing at the top is both easier to see in a screenshot and closer to what
                 // AniList's own default ordering does with recently updated entries.
-                entries.Insert(0, saved.DeepClone());
+                // In the list query's own shape, as the recorded entries in it are, with the
+                // recording's media block where it had one: a Media read's block is a different shape.
+                var original = recorded.GetValueOrDefault(mediaId);
+                var template = original ?? entries.OfType<JsonObject>().FirstOrDefault();
+                var projected = template is null
+                    ? (JsonObject)saved.DeepClone()
+                    : Project(saved, original, template.Select(p => p.Key).Append("media").Distinct());
+                if (original?["media"] is { } recordedMedia)
+                {
+                    projected["media"] = recordedMedia.DeepClone();
+                }
+
+                entries.Insert(0, projected);
                 break;
             }
         }

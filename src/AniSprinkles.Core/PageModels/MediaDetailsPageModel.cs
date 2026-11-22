@@ -1477,15 +1477,43 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
     private async Task DebouncedSaveAsync()
     {
         _saveDebounceCts?.Cancel();
-        _saveDebounceCts = new CancellationTokenSource();
-        var token = _saveDebounceCts.Token;
+        var debounce = new CancellationTokenSource();
+        _saveDebounceCts = debounce;
 
         try
         {
-            await Task.Delay(1500, token);
-            await SaveCurrentEntryAsync();
+            await Task.Delay(1500, debounce.Token);
         }
-        catch (TaskCanceledException) { }
+        catch (TaskCanceledException)
+        {
+            return;
+        }
+
+        // No longer pending: a leave from here on finds nothing to flush.
+        if (ReferenceEquals(_saveDebounceCts, debounce))
+        {
+            _saveDebounceCts = null;
+        }
+
+        await SaveCurrentEntryAsync();
+    }
+
+    /// <summary>
+    /// Saves now a score or progress edit still waiting on its debounce. The page calls it on the
+    /// way out (#225): left to its timer, the save lands just after the Library has appeared and
+    /// checked for changes, and the Library keeps the old values. Nothing pending — never edited,
+    /// already saved, or carried by a status pick that cancelled the debounce — saves nothing.
+    /// </summary>
+    public Task FlushPendingSaveAsync()
+    {
+        if (_saveDebounceCts is not { IsCancellationRequested: false } pending)
+        {
+            return Task.CompletedTask;
+        }
+
+        pending.Cancel();
+        _saveDebounceCts = null;
+        return SaveCurrentEntryAsync();
     }
 
     private const string SavedToast = "Changes saved";

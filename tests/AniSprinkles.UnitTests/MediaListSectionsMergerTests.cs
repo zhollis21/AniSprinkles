@@ -197,6 +197,29 @@ public class MediaListSectionsMergerTests
     }
 
     [Test]
+    public void Merge_VolumeProgressChangeOnly_ReachesTheCard()
+    {
+        // Copilot on #233: a warm reload copied every list field but this one, so a manga whose
+        // volumes moved elsewhere (Up Next resets them on a reread) kept the old count, and the next
+        // edit from that card saved it back.
+        var original = TestDataBuilder.Entry(1, progress: 0);
+        original.ProgressVolumes = 4;
+        var sections = TestDataBuilder.BuildInitial(TestDataBuilder.Groups(
+            TestDataBuilder.Group("Reading", original)));
+
+        var fetched = TestDataBuilder.Entry(1, progress: 0);
+        fetched.ProgressVolumes = 0;
+
+        MediaListSectionsMerger.Merge(
+            sections,
+            TestDataBuilder.Groups(TestDataBuilder.Group("Reading", fetched)),
+            [], true, SortField.LastUpdated, false, "");
+
+        Assert.That(sections[0].AllItems[0], Is.SameAs(original));
+        Assert.That(original.ProgressVolumes, Is.EqualTo(0));
+    }
+
+    [Test]
     public void Merge_ScoreChangeOnly_FiresPropertyChanged()
     {
         // Arrange

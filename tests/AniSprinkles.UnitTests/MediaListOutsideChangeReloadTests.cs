@@ -61,8 +61,10 @@ public class MediaListOutsideChangeReloadTests
     }
 
     [Test]
-    public async Task ReturningToLibrary_AfterAFailedSaveElsewhere_StillShortCircuits()
+    public async Task ReturningToLibrary_AfterASaveElsewhereThatThrew_StillReloads()
     {
+        // A timeout or a lost response can follow a write that landed (Copilot on #233), so a save
+        // that throws is not proof nothing changed.
         var harness = new Harness();
         harness.Inner.SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>())
             .Returns<MediaListEntry?>(_ => throw new HttpRequestException("offline"));
@@ -73,7 +75,7 @@ public class MediaListOutsideChangeReloadTests
             Throws.TypeOf<HttpRequestException>());
         await harness.Model.LoadAsync();
 
-        await harness.AssertListFetchesAsync(1);
+        await harness.AssertListFetchesAsync(2);
     }
 
     [Test]
@@ -108,21 +110,198 @@ public class MediaListOutsideChangeReloadTests
     }
 
     [Test]
-    public async Task ReturningToLibrary_AfterItsOwnPlusOne_StillReloadsForAChangeMadeElsewhere()
+    public async Task ReturningToLibrary_AfterItsOwnPlusOne_StillReloadsForAChangeMadeDuringIt()
     {
-        // Absorbing its own save must not swallow one made elsewhere that it has not shown yet.
+        // Absorbing its own save must not swallow a change that landed while that save was out:
+        // the version moved by two, and only one of them is on screen.
         var harness = new Harness();
         await harness.Model.LoadAsync();
-        await harness.Client.SaveMediaListEntryAsync(TestDataBuilder.Entry(2, status: MediaListStatus.Paused));
+        var ownSave = new TaskCompletionSource<MediaListEntry?>(TaskCreationOptions.RunContinuationsAsynchronously);
+        harness.Inner.SaveMediaListEntryAsync(Arg.Is<MediaListEntry>(e => e.MediaId == 1), Arg.Any<CancellationToken>())
+            .Returns(ownSave.Task);
 
         var increment = harness.Model.IncrementProgressCommand.ExecuteAsync(harness.FirstEntry());
         await harness.AdvancePastDebounceAsync();
+        await harness.Client.SaveMediaListEntryAsync(TestDataBuilder.Entry(2, status: MediaListStatus.Paused));
+        ownSave.SetResult(new MediaListEntry { Id = 101 });
         await increment;
         await harness.Model.LoadAsync();
 
         await harness.AssertListFetchesAsync(2);
     }
 
+    [Test]
+    public async Task ReturningToLibrary_AfterItsOwnPlusOne_StillReloadsWhenALoadFinishedDuringTheSave()
+    {
+        // Copilot on #233: a load that finishes while the +1 is out has merged what AniList held
+        // before it, so the card may no longer show the +1. The save's bump is not this card's to
+        // absorb then.
+        var harness = new Harness();
+        await harness.Model.LoadAsync();
+        var save = harness.HoldNextSave();
+
+        var increment = harness.Model.IncrementProgressCommand.ExecuteAsync(harness.FirstEntry());
+        await harness.AdvancePastDebounceAsync();
+        await harness.Model.LoadAsync(forceReload: true).WaitAsync(TimeSpan.FromSeconds(5));
+        Assert.That(harness.FirstEntry().Progress, Is.EqualTo(3), "the load put the card back to what AniList held");
+
+        save.SetResult(new MediaListEntry { Id = 101 });
+        await increment;
+        await harness.Model.LoadAsync();
+
+        await harness.AssertListFetchesAsync(3);
+    }
+
+    // ── Saves still in flight when the Library appears ───────────────
+
+    [Test]
+    public async Task AppearingWhileASaveIsInFlight_WaitsForIt_ThenReloads()
+    {
+        // Back pressed as the details page sent its edit: the save lands just after the Library has
+        // appeared. Checking at once would find nothing changed and keep the old values on screen.
+        var harness = new Harness();
+        await harness.Model.LoadAsync();
+        var save = harness.HoldNextSave();
+
+        var pending = harness.Client.SaveMediaListEntryAsync(TestDataBuilder.Entry(1, status: MediaListStatus.Paused));
+        var appearing = harness.Model.LoadAsync();
+        await harness.YieldAsync();
+        Assert.That(appearing.IsCompleted, Is.False, "the appearance went ahead with the save still out");
+
+        save.SetResult(new MediaListEntry { Id = 101 });
+        await pending;
+        await appearing.WaitAsync(TimeSpan.FromSeconds(5));
+
+        await harness.AssertListFetchesAsync(2);
+    }
+
+    [Test]
+    public async Task AppearingWhileASaveIsInFlight_StillEndsTheWait_WhenTheSaveFails()
+    {
+        var harness = new Harness();
+        await harness.Model.LoadAsync();
+        var save = harness.HoldNextSave();
+
+        var pending = harness.Client.SaveMediaListEntryAsync(TestDataBuilder.Entry(1, status: MediaListStatus.Paused));
+        var appearing = harness.Model.LoadAsync();
+        save.SetException(new HttpRequestException("offline"));
+        Assert.That(async () => await pending, Throws.TypeOf<HttpRequestException>());
+        await appearing.WaitAsync(TimeSpan.FromSeconds(5));
+
+        // Counted as a change too: a failure does not prove the write missed.
+        await harness.AssertListFetchesAsync(2);
+    }
+
+    [Test]
+    public async Task AppearingWhileASaveStalls_GivesUpAfterFiveSeconds_AndReloadsNextTime()
+    {
+        var harness = new Harness();
+        await harness.Model.LoadAsync();
+        var save = harness.HoldNextSave();
+
+        var pending = harness.Client.SaveMediaListEntryAsync(TestDataBuilder.Entry(1, status: MediaListStatus.Paused));
+        var appearing = harness.Model.LoadAsync();
+        await harness.YieldAsync();
+        harness.Time.Advance(TimeSpan.FromMilliseconds(4900));
+        await harness.YieldAsync();
+        Assert.That(appearing.IsCompleted, Is.False, "gave up before the cap");
+
+        harness.Time.Advance(TimeSpan.FromMilliseconds(200));
+        await appearing;
+        await harness.AssertListFetchesAsync(1);
+
+        save.SetResult(new MediaListEntry { Id = 101 });
+        await pending;
+        await harness.Model.LoadAsync();
+        await harness.AssertListFetchesAsync(2);
+    }
+
+    [Test]
+    public async Task PullToRefresh_DoesNotWaitForASaveInFlight()
+    {
+        var harness = new Harness();
+        await harness.Model.LoadAsync();
+        var save = harness.HoldNextSave();
+        var pending = harness.Client.SaveMediaListEntryAsync(TestDataBuilder.Entry(1, status: MediaListStatus.Paused));
+
+        // Bounded, so a regression fails here rather than hanging the run on the held save.
+        await harness.Model.LoadAsync(forceReload: true).WaitAsync(TimeSpan.FromSeconds(5));
+
+        await harness.AssertListFetchesAsync(2);
+        save.SetResult(new MediaListEntry { Id = 101 });
+        await pending;
+    }
+
+    // ── Edits from a card that has not caught up yet ─────────────────
+
+    [Test]
+    public async Task PlusOne_OnACardChangedElsewhere_RefreshesFirst_AndCountsFromTheNewProgress()
+    {
+        // Progress went 3 → 7 on the details page. A +1 from the old card would save 4 over it.
+        var harness = new Harness();
+        await harness.Model.LoadAsync();
+        harness.TitleOneProgress = 7;
+        await harness.Client.SaveMediaListEntryAsync(TestDataBuilder.Entry(1, progress: 7));
+        harness.Inner.ClearReceivedCalls();
+
+        var card = harness.FirstEntry();
+        var increment = harness.Model.IncrementProgressCommand.ExecuteAsync(card);
+        await harness.AdvancePastDebounceAsync();
+        await increment;
+
+        await harness.Inner.Received(1).GetMediaListGroupedAsync(Arg.Any<MediaKind>(), Arg.Any<CancellationToken>());
+        await harness.Inner.Received(1).SaveMediaListEntryAsync(
+            Arg.Is<MediaListEntry>(e => e.MediaId == 1 && e.Progress == 8), Arg.Any<CancellationToken>());
+    }
+
+    [Test]
+    public async Task TheLongPressMenu_OnACardChangedElsewhere_RefreshesBeforeItOpens()
+    {
+        var harness = new Harness();
+        await harness.Model.LoadAsync();
+        await harness.Client.SaveMediaListEntryAsync(TestDataBuilder.Entry(1, status: MediaListStatus.Paused));
+
+        await harness.Model.ShowActionMenuCommand.ExecuteAsync(harness.FirstEntry());
+
+        await harness.AssertListFetchesAsync(2);
+        Assert.That(harness.Dialogs.Calls, Is.Not.Empty, "the menu opened once the list was current");
+    }
+
+    [Test]
+    public async Task AnEdit_WhenTheRefreshFails_IsRefused_AndSaysWhy()
+    {
+        var harness = new Harness();
+        await harness.Model.LoadAsync();
+        await harness.Client.SaveMediaListEntryAsync(TestDataBuilder.Entry(1, status: MediaListStatus.Paused));
+        harness.Inner.GetMediaListGroupedAsync(Arg.Any<MediaKind>(), Arg.Any<CancellationToken>())
+            .Returns<IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)>>(_ => throw new HttpRequestException("offline"));
+        harness.Inner.ClearReceivedCalls();
+
+        await harness.Model.ShowActionMenuCommand.ExecuteAsync(harness.FirstEntry());
+        // Started, then the clock moved, then awaited: a +1 that wrongly went ahead waits on its debounce.
+        var increment = harness.Model.IncrementProgressCommand.ExecuteAsync(harness.FirstEntry());
+        await harness.AdvancePastDebounceAsync();
+        await increment;
+
+        Assert.That(harness.Dialogs.Calls, Is.Empty, "the menu opened on a stale card");
+        await harness.Inner.DidNotReceive().SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>());
+        Assert.That(harness.Feedback.Snackbars, Has.Some.Contains("Couldn't refresh your list"));
+    }
+
+    [Test]
+    public async Task AnEdit_OnACardRemovedElsewhere_DoesNothing()
+    {
+        var harness = new Harness();
+        harness.Inner.DeleteMediaListEntryAsync(Arg.Any<int>(), Arg.Any<CancellationToken>()).Returns(true);
+        await harness.Model.LoadAsync();
+        var card = harness.FirstEntry();
+        harness.TitleOneListed = false;
+        await harness.Client.DeleteMediaListEntryAsync(card.Id);
+
+        await harness.Model.ShowActionMenuCommand.ExecuteAsync(card);
+
+        Assert.That(harness.Dialogs.Calls, Is.Empty);
+    }
     [Test]
     public async Task ReturningToLibrary_AfterItsOwnProgressEdit_StillShortCircuits()
     {
@@ -139,6 +318,46 @@ public class MediaListOutsideChangeReloadTests
         await harness.Model.LoadAsync();
 
         await harness.AssertListFetchesAsync(1);
+    }
+
+    [Test]
+    public async Task APopupClosingDuringItsOwnProgressEdit_CostsNoReload()
+    {
+        // The long-press popups re-fire the Library's appearance as they close, mid-flow, with the
+        // flow's own save still out.
+        var harness = new Harness();
+        await harness.Model.LoadAsync();
+        var save = harness.HoldNextSave();
+        harness.Dialogs.EntryActionAnswer = MediaListEntryAction.EditProgress;
+        harness.Dialogs.EditProgressAnswer = 7;
+
+        var flow = harness.Model.ShowActionMenuCommand.ExecuteAsync(harness.FirstEntry());
+        await harness.YieldAsync();
+        await harness.Model.LoadAsync().WaitAsync(TimeSpan.FromSeconds(5));
+        save.SetResult(new MediaListEntry { Id = 101 });
+        await flow;
+        await harness.Model.LoadAsync();
+
+        await harness.AssertListFetchesAsync(1);
+    }
+    [Test]
+    public async Task APopupClosingAfterItsOwnSaveLanded_CostsNoReload()
+    {
+        // The other half: the save has landed and the flow is still showing its toast when the
+        // closing popup re-fires the appearance, before the flow takes up its own bump.
+        var harness = new Harness();
+        var toastAppears = new ToastHookFeedback();
+        var model = harness.CreateModel(MediaKind.Anime, harness.Dialogs, toastAppears);
+        toastAppears.OnToast = () => model.LoadAsync();
+        await model.LoadAsync();
+        harness.Dialogs.EntryActionAnswer = MediaListEntryAction.EditProgress;
+        harness.Dialogs.EditProgressAnswer = 7;
+
+        var entry = model.Sections.SelectMany(s => s.AllItems).First(e => e.MediaId == 1);
+        await model.ShowActionMenuCommand.ExecuteAsync(entry).WaitAsync(TimeSpan.FromSeconds(5));
+        await model.LoadAsync();
+
+        await harness.Inner.Received(1).GetMediaListGroupedAsync(MediaKind.Anime, Arg.Any<CancellationToken>());
     }
 
     [Test]
@@ -171,7 +390,7 @@ public class MediaListOutsideChangeReloadTests
         var refresh = harness.Model.LoadAsync(forceReload: true);
 
         await harness.Client.SaveMediaListEntryAsync(TestDataBuilder.Entry(1, status: MediaListStatus.Paused));
-        gate.SetResult(Harness.Groups());
+        gate.SetResult(harness.Groups());
         await refresh;
         await harness.Model.LoadAsync();
 
@@ -215,18 +434,33 @@ public class MediaListOutsideChangeReloadTests
                 .Returns(call => Task.FromResult<MediaListEntry?>(new MediaListEntry { Id = call.Arg<MediaListEntry>().Id }));
 
             Client = new CachingAniListClient(Inner, Tracker);
-            Model = CreateModel(MediaKind.Anime, Dialogs);
+            Model = CreateModel(MediaKind.Anime, Dialogs, Feedback);
         }
 
+        /// <summary>What AniList holds for title 1's progress; a change elsewhere moves it.</summary>
+        public int TitleOneProgress { get; set; } = 3;
+
+        /// <summary>Whether title 1 is still listed; a removal elsewhere clears it.</summary>
+        public bool TitleOneListed { get; set; } = true;
+
         /// <summary>A fresh copy each read, as AniList gives one.</summary>
-        public static IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)> Groups() =>
-        [
-            ("Watching", new List<MediaListEntry>
+        public IReadOnlyList<(string Name, IReadOnlyList<MediaListEntry> Entries)> Groups()
+        {
+            var watching = new List<MediaListEntry>
             {
-                TestDataBuilder.Entry(1, progress: 3, status: MediaListStatus.Current, episodes: 12),
                 TestDataBuilder.Entry(2, progress: 1, status: MediaListStatus.Current, episodes: 12),
-            })
-        ];
+            };
+            if (TitleOneListed)
+            {
+                watching.Insert(0, TestDataBuilder.Entry(1, progress: TitleOneProgress, status: MediaListStatus.Current, episodes: 12));
+            }
+
+            return [("Watching", watching)];
+        }
+
+        public RecordingUserFeedback Feedback { get; } = new();
+
+        public ManualTimeProvider Time => _time;
 
         /// <summary>The Anime model's dialogs, scripted per test.</summary>
         public ScriptedDialogService Dialogs { get; } = new();
@@ -240,11 +474,12 @@ public class MediaListOutsideChangeReloadTests
 
         public MediaListPageModel Model { get; }
 
-        public MediaListPageModel CreateModel(MediaKind kind, ScriptedDialogService? dialogs = null)
+        public MediaListPageModel CreateModel(
+            MediaKind kind, ScriptedDialogService? dialogs = null, IUserFeedback? feedback = null)
         {
             dialogs ??= new ScriptedDialogService();
+            feedback ??= new RecordingUserFeedback();
             var flow = new ListEntryStatusFlow(dialogs);
-            var feedback = new RecordingUserFeedback();
             var errors = new ErrorReportService(NullLogger<ErrorReportService>.Instance);
             var navigation = Substitute.For<INavigationService>();
             var upNext = Substitute.For<IUpNextOffer>();
@@ -254,6 +489,22 @@ public class MediaListOutsideChangeReloadTests
                 : new AnimeLibraryPageModel(Client, _auth, Substitute.For<IAiringNotificationService>(), errors,
                     _preferences, navigation, dialogs, feedback, flow, upNext, Tracker, _time,
                     NullLogger<AnimeLibraryPageModel>.Instance);
+        }
+
+        /// <summary>Holds the next save open until the test answers it.</summary>
+        public TaskCompletionSource<MediaListEntry?> HoldNextSave()
+        {
+            var save = new TaskCompletionSource<MediaListEntry?>(TaskCreationOptions.RunContinuationsAsynchronously);
+            Inner.SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>()).Returns(save.Task);
+            return save;
+        }
+
+        public async Task YieldAsync()
+        {
+            for (var i = 0; i < 8; i++)
+            {
+                await Task.Yield();
+            }
         }
 
         public MediaListEntry FirstEntry() => Model.Sections.SelectMany(s => s.AllItems).First(e => e.MediaId == 1);
@@ -276,5 +527,18 @@ public class MediaListOutsideChangeReloadTests
                 await Task.Yield();
             }
         }
+    }
+
+    /// <summary>Feedback whose toast runs a callback, standing in for a popup closing as it shows.</summary>
+    private sealed class ToastHookFeedback : IUserFeedback
+    {
+        public Func<Task>? OnToast { get; set; }
+
+        public Task ShowSnackbarAsync(string message) => Task.CompletedTask;
+
+        public Task ShowSnackbarAsync(string message, string actionText, Action action, TimeSpan? duration = null)
+            => Task.CompletedTask;
+
+        public Task ShowToastAsync(string message) => OnToast?.Invoke() ?? Task.CompletedTask;
     }
 }

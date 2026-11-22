@@ -379,6 +379,7 @@ public static class MediaListSectionsMerger
     {
         existing.Status = updated.Status;
         existing.Progress = updated.Progress;
+        existing.ProgressVolumes = updated.ProgressVolumes;
         existing.Score = updated.Score;
 
         existing.Id = updated.Id;
