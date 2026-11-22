@@ -56,7 +56,7 @@
 
                 <!-- Info stack -->
                 <VerticalStackLayout Grid.Column="2" Spacing="3" VerticalOptions="Center" Padding="10,6">
-                    <Label Text="{Binding Node.DisplayTitle}"
+                    <Label Text="{Binding Node.DisplayTitle}" AutomationId="MediaCardTitle"
                            Style="{StaticResource Body2Strong}"
                            MaxLines="2"
                            LineBreakMode="TailTruncation" />
@@ -147,7 +147,7 @@
                 </Border>
 
                 <VerticalStackLayout Grid.Row="1" Padding="8,6,8,8" Spacing="3">
-                    <Label Text="{Binding Node.DisplayTitle}"
+                    <Label Text="{Binding Node.DisplayTitle}" AutomationId="MediaCardTitle"
                            Style="{StaticResource Caption1Strong}"
                            MaxLines="2"
                            LineBreakMode="TailTruncation" />
@@ -194,7 +194,7 @@
                    VerticalTextAlignment="Center"
                    IsVisible="{Binding HasRank}" />
             <Label Grid.Column="1"
-                   Text="{Binding Node.DisplayTitle}"
+                   Text="{Binding Node.DisplayTitle}" AutomationId="MediaCardTitle"
                    Style="{StaticResource Body2}"
                    MaxLines="1"
                    LineBreakMode="TailTruncation"

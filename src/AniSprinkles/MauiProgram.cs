@@ -18,6 +18,11 @@ namespace AniSprinkles;
 
 public static class MauiProgram
 {
+#if DEBUG
+    /// <summary>The preference the UI journeys read to tell a fixture-replay build from a live one.</summary>
+    private const string UITestsFixtureReplayKey = "uitests_fixture_replay";
+#endif
+
     public static MauiApp CreateMauiApp()
     {
         var builder = MauiApp.CreateBuilder();
@@ -327,6 +332,16 @@ public static class MauiProgram
         // MCP server drive — /run-app is built on it. Debug only, and the package reference
         // carries the same condition, so a Release APK does not contain the agent at all.
         builder.AddMauiDevFlowAgent();
+
+        // Tells the UI journeys (tests/AniSprinkles.UITests) whether list writes reach AniList, read
+        // through the agent's preferences. Journeys that move or complete titles run only on fixture
+        // replay, so they never write to the account the fixtures are recorded from. Written on every
+        // launch, so a Debug build installed over a CI one cannot inherit a stale true.
+#if CI
+        Preferences.Default.Set(UITestsFixtureReplayKey, true);
+#else
+        Preferences.Default.Set(UITestsFixtureReplayKey, false);
+#endif
 #endif
 
         var app = builder.Build();

@@ -47,6 +47,7 @@
                  text when disabled. -->
             <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12" Padding="16,12,16,16">
                 <Button Grid.Column="0" Text="Not now"
+                        AutomationId="UpNextNotNow"
                         Background="Transparent"
                         TextColor="{StaticResource Gray100}"
                         BorderColor="{StaticResource Gray500}"
@@ -55,6 +56,7 @@
                         Padding="20,0"
                         Clicked="OnNotNowClicked" />
                 <Button Grid.Column="1" x:Name="AddButton"
+                        AutomationId="UpNextConfirm"
                         CornerRadius="12"
                         BorderWidth="0"
                         FontAttributes="Bold"

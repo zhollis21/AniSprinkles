@@ -283,6 +283,16 @@ or it may answer from another worktree's app.
 | `FavoriteToggle` | the heart on the media, character, staff and studio details pages |
 | `RetryButton` | Try Again in `ErrorStateView`, on every page that shows one |
 | `SearchEntry` | the Search tab's text field |
+| `EntryAction_<action>` | a row of the long-press menu (`MediaListEntryAction`: `MoveToList`, `MarkCompleted`, `Remove`, …) |
+| `ListStatusOption_<status>` | a list in the Move to sheet and the details page's status dropdown (`MediaListStatus`: `Current`, `Paused`, …); `RemoveFromList` below them |
+| `ListStatusButton` | the details page's status button that opens that dropdown |
+| `RatingSkip` | Skip on the rating prompt |
+| `UpNextOption`, `UpNextConfirm`, `UpNextNotNow` | an Up Next row, its add button, Not now |
+| `ConfirmAccept`, `ConfirmCancel` | the two buttons of a confirm dialog (Remove's, for one) |
+| `UpNextDestination_<status>` | Settings' Suggestions Go To chips (`Current`, `Planning`) |
+
+From `EntryAction_` to `ConfirmAccept`, tapping one usually writes list data, which on a live build
+changes the signed-in account; `UpNextDestination_` is a device setting only.
 
 Shell tabs need no `AutomationId`: DevFlow names them from their routes — `Tab_library`,
 `Tab_discover`, `Tab_search`, `Tab_feed`, `Tab_settings`. Those are **element ids**, so it is
@@ -484,7 +494,8 @@ dotnet test tests/AniSprinkles.UITests/AniSprinkles.UITests.csproj -c Debug --te
 They need adb, found through `ANDROID_HOME`, `ANDROID_SDK_ROOT` or the PATH — locally, set
 `ANDROID_HOME` to the SDK `driver.ps1 env` reports. They switch tabs with a real `adb shell input tap`,
 because DevFlow's tap on a tab skips a pushed page's `OnNavigatedTo` (AGENTS.md, UI journeys). Use a
-`-p:CiBuild=true` build: they refuse to run unless signed in as the test account.
+`-p:CiBuild=true` build: they refuse to run unless signed in as the test account, and the ones
+that move or complete titles skip on any build that does not replay fixtures. About 2 minutes for all 12.
 
 ---
 

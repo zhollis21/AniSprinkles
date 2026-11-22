@@ -202,6 +202,9 @@ public sealed class StatusDropdownPopup : Popup<string?>
             Padding = new Thickness(10, 10),
             Background = background,
             Content = grid,
+
+            // The same ids as the Move to sheet's rows: both are a list status to pick.
+            AutomationId = key == RemoveKey ? "RemoveFromList" : $"ListStatusOption_{key}",
         };
 
         var tap = new TapGestureRecognizer();

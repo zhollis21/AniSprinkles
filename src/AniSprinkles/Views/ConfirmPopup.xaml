@@ -39,7 +39,7 @@
 
             <!-- Action buttons -->
             <Grid ColumnDefinitions="*,10,*">
-                <Button x:Name="CancelButton" Grid.Column="0"
+                <Button x:Name="CancelButton" Grid.Column="0" AutomationId="ConfirmCancel"
                         BackgroundColor="Transparent"
                         TextColor="{StaticResource Gray400}"
                         BorderColor="{StaticResource Gray500}"
@@ -52,7 +52,7 @@
                         Margin="10,20,10,10"
                         ContentLayout="Left,4"
                         Clicked="OnCancelClicked" />
-                <Button x:Name="ConfirmButton" Grid.Column="2"
+                <Button x:Name="ConfirmButton" Grid.Column="2" AutomationId="ConfirmAccept"
                         BackgroundColor="Transparent"
                         CornerRadius="8"
                         HeightRequest="24"

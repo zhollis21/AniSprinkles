@@ -140,7 +140,8 @@ public partial class ActionMenuPopup : Popup<object>
                 StrokeThickness = 0,
                 Padding = new Thickness(14, 12),
                 BackgroundColor = Colors.Transparent,
-                Content = grid
+                Content = grid,
+                AutomationId = $"EntryAction_{action}",
             };
 
             var capturedAction = action;

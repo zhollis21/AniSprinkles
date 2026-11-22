@@ -338,17 +338,21 @@
                         <!-- Section title -->
                         <Label Grid.Column="1"
                                Text="{Binding Title}"
+                               AutomationId="LibrarySectionTitle"
                                Style="{StaticResource Title3}"
                                TextColor="{Binding Title, Converter={StaticResource RainbowAccentConverter}}"
                                VerticalTextAlignment="Center" />
                         <!-- Count badge -->
                         <Border Grid.Column="2" Style="{StaticResource CountBadgeStyle}">
                             <Label Text="{Binding DisplayCount}"
+                                   AutomationId="LibrarySectionCount"
                                    Style="{StaticResource Caption1Strong}"
                                    TextColor="{Binding Title, Converter={StaticResource RainbowAccentConverter}}" />
                         </Border>
-                        <!-- Chevron (down when collapsed, up when expanded) -->
+                        <!-- Chevron (down when collapsed, up when expanded). Its rotation is how the UI
+                             journeys read a section's state. -->
                         <Label Grid.Column="3"
+                               AutomationId="LibrarySectionChevron"
                                Text="{x:Static icons:FluentIconsRegular.ChevronDown24}"
                                FontFamily="{x:Static icons:FluentIconsRegular.FontFamily}"
                                TextColor="{Binding Title, Converter={StaticResource RainbowAccentConverter}}"
@@ -380,6 +384,7 @@
                     (#172): the placeholder is its floating label, so no card or icon of ours.
                 -->
                 <Entry Grid.Row="0"
+                       AutomationId="LibrarySearchEntry"
                        Placeholder="Search anime..."
                        Text="{Binding SearchText}"
                        ClearButtonVisibility="WhileEditing"
@@ -390,6 +395,7 @@
                 <!-- Row 1: Grouped CollectionView -->
                 <CollectionView Grid.Row="1"
                                 x:Name="AnimeCollectionView"
+                                AutomationId="LibraryList"
                                 ItemsSource="{Binding Sections}"
                                 IsGrouped="True"
                                 SelectionMode="None"

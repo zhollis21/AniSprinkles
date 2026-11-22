@@ -346,7 +346,7 @@
                                                    Style="{StaticResource Caption2}"
                                                    TextColor="{Binding Role, Converter={StaticResource RainbowAccentConverter}}"
                                                    FontAttributes="Bold" />
-                                            <Label Text="{Binding Media.DisplayTitle}"
+                                            <Label Text="{Binding Media.DisplayTitle}" AutomationId="VoiceRoleMediaTitle"
                                                    Style="{StaticResource Caption2}"
                                                    TextColor="{StaticResource Gray400}"
                                                    MaxLines="2"

@@ -140,7 +140,7 @@
                                                           ListStatusText="{Binding Node.ListStatusDisplay}"
                                                           PlaceholderGlyph="{x:Static icons:FluentIconsRegular.MoviesAndTv24}" />
                                         <VerticalStackLayout Padding="8,6,8,8" Spacing="2">
-                                            <Label Text="{Binding Node.DisplayTitle}"
+                                            <Label Text="{Binding Node.DisplayTitle}" AutomationId="StudioMediaTitle"
                                                    Style="{StaticResource Caption1Strong}"
                                                    MaxLines="2"
                                                    LineBreakMode="TailTruncation" />

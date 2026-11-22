@@ -221,7 +221,8 @@
                             </Grid>
                         </Border>
                         <Border Style="{StaticResource SectionContentStyle}" Padding="16"
-                    IsVisible="{Binding IsDisplayPreferencesExpanded}">
+                    IsVisible="{Binding IsDisplayPreferencesExpanded}"
+                    AutomationId="DisplayPreferencesContent">
                             <VerticalStackLayout Spacing="16">
                                 <VerticalStackLayout Spacing="8">
                                     <Label Text="Title Language" Style="{StaticResource Body1Strong}" />
@@ -323,7 +324,8 @@
                         <Border Style="{StaticResource SectionHeaderStyle}"
                     Background="{Binding Converter={StaticResource RainbowAccentConverter}, ConverterParameter=true}"
                     SemanticProperties.Description="Up Next"
-                    SemanticProperties.Hint="Toggle Up Next section">
+                    SemanticProperties.Hint="Toggle Up Next section"
+                    AutomationId="UpNextHeader">
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding ToggleUpNextCommand}" />
                             </Border.GestureRecognizers>
@@ -358,7 +360,8 @@
                             </Grid>
                         </Border>
                         <Border Style="{StaticResource SectionContentStyle}" Padding="16"
-                    IsVisible="{Binding IsUpNextExpanded}">
+                    IsVisible="{Binding IsUpNextExpanded}"
+                    AutomationId="UpNextContent">
                             <VerticalStackLayout Spacing="16">
                                 <Grid ColumnDefinitions="*,Auto">
                                     <VerticalStackLayout VerticalOptions="Center">
@@ -371,14 +374,14 @@
                                 <VerticalStackLayout Spacing="8" IsVisible="{Binding UpNextEnabled}">
                                     <Label Text="Suggestions Go To" Style="{StaticResource Body1Strong}" />
                                     <FlexLayout Wrap="Wrap" JustifyContent="Start" AlignItems="Center">
-                                        <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
+                                        <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6" AutomationId="UpNextDestination_Current"
                                     Stroke="{Binding UpNextStatus, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Current}">
                                             <Border.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding SetUpNextStatusCommand}" CommandParameter="Current" />
                                             </Border.GestureRecognizers>
                                             <Label Text="Watching / Reading" Style="{StaticResource ChipLabelStyle}" TextColor="{Binding UpNextStatus, Converter={StaticResource ChipSelectionTextConverter}, ConverterParameter=Current}" />
                                         </Border>
-                                        <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6"
+                                        <Border Style="{StaticResource ChipBorderStyle}" Padding="10,6" Margin="0,0,6,6" AutomationId="UpNextDestination_Planning"
                                     Stroke="{Binding UpNextStatus, Converter={StaticResource SortFieldStrokeConverter}, ConverterParameter=Planning}">
                                             <Border.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding SetUpNextStatusCommand}" CommandParameter="Planning" />
