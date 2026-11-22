@@ -338,15 +338,15 @@ public abstract partial class MediaListPageBase : ContentPage, IScrollsToTop
         _sortPopupOpen = true;
         try
         {
-            var info = DeviceDisplay.Current.MainDisplayInfo;
-            var density = info.Density > 0 ? info.Density : 1;
+            var screen = ScreenMetrics.Read();
+            var density = screen.Density;
 
             // SortPopup positions the card in popup-PAGE coordinates, which exclude the left/right system-bar
             // insets (matching SortDropdown.ComputeAnchor). Subtract those insets so the right-aligned card
             // lands correctly even with side insets (landscape / multi-window / cutouts); both are 0 on a
             // standard portrait phone, so this is a no-op under the current SensorPortrait lock.
             var (leftInsetPx, rightInsetPx) = GetHorizontalSystemBarInsetsPx();
-            var pageWidthDip = (info.Width - leftInsetPx - rightInsetPx) / density;
+            var pageWidthDip = screen.WidthDip - (leftInsetPx + rightInsetPx) / density;
 
             // Right-align the card under the right edge, clamped clear of the screen edge (10dip inset).
             var cardLeft = Math.Max(10, pageWidthDip - Views.SortPopup.CardWidth - 10);

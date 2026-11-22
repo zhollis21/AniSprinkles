@@ -1,3 +1,4 @@
+using AniSprinkles.Utilities;
 using CommunityToolkit.Maui.Views;
 using Microsoft.Maui.Controls.Shapes;
 
@@ -38,8 +39,7 @@ public partial class ActionMenuPopup : Popup<object>
         // the default Thickness(30). The 1dp top is invisible for a bottom-anchored sheet.
         Margin = new Thickness(0, 1, 0, 0);
 
-        var display = DeviceDisplay.MainDisplayInfo;
-        SheetBorder.WidthRequest = display.Width / display.Density;
+        SheetBorder.WidthRequest = ScreenMetrics.Read().WidthDip;
 
         // Reach the physical bottom edge behind the gesture bar; finish once attached (see MoveToListPopup).
         Opened += OnOpenedGoEdgeToEdge;

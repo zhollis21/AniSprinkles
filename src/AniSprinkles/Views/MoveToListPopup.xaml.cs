@@ -58,8 +58,7 @@ public partial class MoveToListPopup : Popup<object>
         // default Thickness(30). The 1dp top is invisible for a bottom-anchored sheet; sides/bottom stay flush.
         Margin = new Thickness(0, 1, 0, 0);
 
-        var display = DeviceDisplay.MainDisplayInfo;
-        SheetBorder.WidthRequest = display.Width / display.Density;
+        SheetBorder.WidthRequest = ScreenMetrics.Read().WidthDip;
 
         // The sheet should reach the physical bottom edge, behind the gesture bar. The toolkit hosts the popup
         // in a Grid (PopupPageLayout) which, since .NET 10, defaults to SafeAreaEdges=Container and so reserves
