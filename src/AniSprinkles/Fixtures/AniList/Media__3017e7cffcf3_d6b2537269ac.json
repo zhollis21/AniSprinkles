@@ -3,8 +3,8 @@
   "variables": {
     "id": 209939
   },
-  "queryFingerprint": "0dd7befc664c",
-  "recordedAt": "2026-11-18T14:39:10.4273434+00:00",
+  "queryFingerprint": "d6b2537269ac",
+  "recordedAt": "2026-11-23T00:49:50.2830479+00:00",
   "response": {
     "data": {
       "Media": {
@@ -62,10 +62,10 @@
         ],
         "weightedScore": null,
         "meanScore": null,
-        "popularity": 49546,
-        "favourites": 564,
+        "popularity": 49842,
+        "favourites": 569,
         "isFavourite": false,
-        "trending": 0,
+        "trending": 6,
         "tags": [
           {
             "id": 1310,
@@ -206,7 +206,7 @@
                 "id": 245,
                 "name": "Toho",
                 "isAnimationStudio": false,
-                "favourites": 493
+                "favourites": 496
               }
             },
             {
@@ -215,7 +215,7 @@
                 "id": 11,
                 "name": "MADHOUSE",
                 "isAnimationStudio": true,
-                "favourites": 20046
+                "favourites": 20053
               }
             }
           ]
@@ -295,8 +295,8 @@
                 },
                 "mediaListEntry": {
                   "id": 540973986,
-                  "status": "COMPLETED",
-                  "progress": 10,
+                  "status": "REPEATING",
+                  "progress": 0,
                   "score": 9
                 }
               }
@@ -396,29 +396,29 @@
             },
             {
               "score": 90,
-              "amount": 120
+              "amount": 121
             },
             {
               "score": 100,
-              "amount": 195
+              "amount": 200
             }
           ],
           "statusDistribution": [
             {
               "status": "CURRENT",
-              "amount": 1561
+              "amount": 1571
             },
             {
               "status": "PLANNING",
-              "amount": 47366
+              "amount": 47647
             },
             {
               "status": "COMPLETED",
-              "amount": 199
+              "amount": 203
             },
             {
               "status": "DROPPED",
-              "amount": 53
+              "amount": 54
             },
             {
               "status": "PAUSED",
@@ -443,7 +443,7 @@
                 "image": {
                   "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n122202-lxoDudr9vaul.jpg"
                 },
-                "favourites": 320
+                "favourites": 324
               },
               "role": "Original Story"
             },
@@ -458,7 +458,7 @@
                 "image": {
                   "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n170189-HOqnSDEYpFKZ.jpg"
                 },
-                "favourites": 165
+                "favourites": 167
               },
               "role": "Original Character Design"
             }
@@ -469,6 +469,7 @@
           "mediaId": 209939,
           "status": "PLANNING",
           "progress": 0,
+          "progressVolumes": null,
           "score": 0,
           "repeat": 0,
           "notes": null,

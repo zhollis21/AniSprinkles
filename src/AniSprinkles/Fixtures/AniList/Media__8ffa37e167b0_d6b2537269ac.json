@@ -3,8 +3,8 @@
   "variables": {
     "id": 180367
   },
-  "queryFingerprint": "0dd7befc664c",
-  "recordedAt": "2026-11-18T14:39:24.4667378+00:00",
+  "queryFingerprint": "d6b2537269ac",
+  "recordedAt": "2026-11-23T00:49:57.4405979+00:00",
   "response": {
     "data": {
       "Media": {
@@ -64,10 +64,10 @@
         ],
         "weightedScore": 72,
         "meanScore": 72,
-        "popularity": 103766,
-        "favourites": 1816,
+        "popularity": 103993,
+        "favourites": 1826,
         "isFavourite": false,
-        "trending": 6,
+        "trending": 8,
         "tags": [
           {
             "id": 179,
@@ -672,7 +672,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b207345-iXoH3SVekrw6.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b207345-iXoH3SVekrw6.png"
                 },
-                "favourites": 505
+                "favourites": 506
               },
               "role": "MAIN",
               "voiceActors": [
@@ -1458,7 +1458,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b265162-BkRabXvjfzWj.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b265162-BkRabXvjfzWj.png"
                 },
-                "favourites": 234
+                "favourites": 233
               },
               "role": "MAIN",
               "voiceActors": [
@@ -2136,7 +2136,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b266623-rCPO0BRR1G2H.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b266623-rCPO0BRR1G2H.png"
                 },
-                "favourites": 43
+                "favourites": 44
               },
               "role": "SUPPORTING",
               "voiceActors": [
@@ -2315,7 +2315,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b266624-VlAYFU9Q3DP8.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b266624-VlAYFU9Q3DP8.png"
                 },
-                "favourites": 31
+                "favourites": 32
               },
               "role": "SUPPORTING",
               "voiceActors": [
@@ -4049,26 +4049,6 @@
             {
               "rating": 12,
               "mediaRecommendation": {
-                "id": 98251,
-                "title": {
-                  "romaji": "Aho-Girl",
-                  "english": "AHO-GIRL",
-                  "native": "\u30A2\u30DB\u30AC\u30FC\u30EB"
-                },
-                "isAdult": false,
-                "format": "TV_SHORT",
-                "type": "ANIME",
-                "coverImage": {
-                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b98251-6miVBNYEXzaF.jpg",
-                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b98251-6miVBNYEXzaF.jpg"
-                },
-                "weightedScore": 64,
-                "mediaListEntry": null
-              }
-            },
-            {
-              "rating": 11,
-              "mediaRecommendation": {
                 "id": 107693,
                 "title": {
                   "romaji": "Mairimashita! Iruma-kun",
@@ -4087,7 +4067,27 @@
               }
             },
             {
-              "rating": 11,
+              "rating": 12,
+              "mediaRecommendation": {
+                "id": 98251,
+                "title": {
+                  "romaji": "Aho-Girl",
+                  "english": "AHO-GIRL",
+                  "native": "\u30A2\u30DB\u30AC\u30FC\u30EB"
+                },
+                "isAdult": false,
+                "format": "TV_SHORT",
+                "type": "ANIME",
+                "coverImage": {
+                  "medium": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/small/b98251-6miVBNYEXzaF.jpg",
+                  "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b98251-6miVBNYEXzaF.jpg"
+                },
+                "weightedScore": 64,
+                "mediaListEntry": null
+              }
+            },
+            {
+              "rating": 12,
               "mediaRecommendation": {
                 "id": 200294,
                 "title": {
@@ -4444,23 +4444,23 @@
           "statusDistribution": [
             {
               "status": "CURRENT",
-              "amount": 23577
+              "amount": 23584
             },
             {
               "status": "PLANNING",
-              "amount": 35253
+              "amount": 35342
             },
             {
               "status": "COMPLETED",
-              "amount": 29031
+              "amount": 29114
             },
             {
               "status": "DROPPED",
-              "amount": 9497
+              "amount": 9525
             },
             {
               "status": "PAUSED",
-              "amount": 6408
+              "amount": 6428
             }
           ]
         },
@@ -4661,7 +4661,7 @@
                 "image": {
                   "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n194287-qQjdXaBhaIOA.png"
                 },
-                "favourites": 3543
+                "favourites": 3547
               },
               "role": "Theme Song Performance (OP1)"
             },
@@ -4852,6 +4852,7 @@
           "mediaId": 180367,
           "status": "DROPPED",
           "progress": 0,
+          "progressVolumes": null,
           "score": 6,
           "repeat": 0,
           "notes": null,

@@ -3,8 +3,8 @@
   "variables": {
     "id": 101165
   },
-  "queryFingerprint": "0dd7befc664c",
-  "recordedAt": "2026-11-18T14:39:05.8293681+00:00",
+  "queryFingerprint": "d6b2537269ac",
+  "recordedAt": "2026-11-23T00:49:48.0650826+00:00",
   "response": {
     "data": {
       "Media": {
@@ -63,10 +63,10 @@
         ],
         "weightedScore": 71,
         "meanScore": 71,
-        "popularity": 309433,
-        "favourites": 6910,
+        "popularity": 309802,
+        "favourites": 6920,
         "isFavourite": false,
-        "trending": 5,
+        "trending": 8,
         "tags": [
           {
             "id": 480,
@@ -287,7 +287,7 @@
                 "id": 314,
                 "name": "WHITE FOX",
                 "isAnimationStudio": true,
-                "favourites": 4620
+                "favourites": 4622
               }
             },
             {
@@ -578,7 +578,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b126458-wCulCEFEPZSK.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b126458-wCulCEFEPZSK.png"
                 },
-                "favourites": 3447
+                "favourites": 3446
               },
               "role": "MAIN",
               "voiceActors": [
@@ -668,7 +668,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b126483-NQuBqaXHUJO2.jpg",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b126483-NQuBqaXHUJO2.jpg"
                 },
-                "favourites": 1039
+                "favourites": 1042
               },
               "role": "MAIN",
               "voiceActors": [
@@ -758,7 +758,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b126457-leHoOLIOZy2a.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b126457-leHoOLIOZy2a.png"
                 },
-                "favourites": 1226
+                "favourites": 1229
               },
               "role": "SUPPORTING",
               "voiceActors": [
@@ -848,7 +848,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/126484-izE4ON548jnn.jpg",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/126484-izE4ON548jnn.jpg"
                 },
-                "favourites": 1686
+                "favourites": 1690
               },
               "role": "SUPPORTING",
               "voiceActors": [
@@ -938,7 +938,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/126485-2zo57ux4EMeC.jpg",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/126485-2zo57ux4EMeC.jpg"
                 },
-                "favourites": 521
+                "favourites": 523
               },
               "role": "SUPPORTING",
               "voiceActors": [
@@ -1106,7 +1106,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/n126487-TErPQ7ADCryW.jpg",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/n126487-TErPQ7ADCryW.jpg"
                 },
-                "favourites": 201
+                "favourites": 200
               },
               "role": "SUPPORTING",
               "voiceActors": [
@@ -1376,7 +1376,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b129080-zTT3T3jUnBya.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b129080-zTT3T3jUnBya.png"
                 },
-                "favourites": 514
+                "favourites": 517
               },
               "role": "SUPPORTING",
               "voiceActors": [
@@ -2428,8 +2428,8 @@
                 "weightedScore": 71,
                 "mediaListEntry": {
                   "id": 609538686,
-                  "status": "CURRENT",
-                  "progress": 2,
+                  "status": "COMPLETED",
+                  "progress": 12,
                   "score": 0
                 }
               }
@@ -2832,23 +2832,23 @@
           "statusDistribution": [
             {
               "status": "CURRENT",
-              "amount": 17483
+              "amount": 17523
             },
             {
               "status": "PLANNING",
-              "amount": 46429
+              "amount": 46491
             },
             {
               "status": "COMPLETED",
-              "amount": 221606
+              "amount": 221845
             },
             {
               "status": "DROPPED",
-              "amount": 17018
+              "amount": 17035
             },
             {
               "status": "PAUSED",
-              "amount": 6897
+              "amount": 6908
             }
           ]
         },
@@ -3019,7 +3019,7 @@
                 "image": {
                   "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n129398-4g9QgTobxBZS.jpg"
                 },
-                "favourites": 703
+                "favourites": 707
               },
               "role": "Theme Song Performance (OP)"
             },
@@ -3240,6 +3240,7 @@
           "mediaId": 101165,
           "status": "COMPLETED",
           "progress": 12,
+          "progressVolumes": null,
           "score": 8,
           "repeat": 0,
           "notes": null,

@@ -3,8 +3,8 @@
   "variables": {
     "id": 156067
   },
-  "queryFingerprint": "0dd7befc664c",
-  "recordedAt": "2026-11-18T14:38:51.712793+00:00",
+  "queryFingerprint": "d6b2537269ac",
+  "recordedAt": "2026-11-23T00:49:40.9099775+00:00",
   "response": {
     "data": {
       "Media": {
@@ -69,10 +69,10 @@
         ],
         "weightedScore": 75,
         "meanScore": 76,
-        "popularity": 124698,
-        "favourites": 3717,
+        "popularity": 124990,
+        "favourites": 3719,
         "isFavourite": false,
-        "trending": 5,
+        "trending": 7,
         "tags": [
           {
             "id": 142,
@@ -263,7 +263,7 @@
                 "id": 569,
                 "name": "MAPPA",
                 "isAnimationStudio": true,
-                "favourites": 18675
+                "favourites": 18686
               }
             }
           ]
@@ -482,7 +482,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b157881-uLcY9D0sFskw.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b157881-uLcY9D0sFskw.png"
                 },
-                "favourites": 281
+                "favourites": 282
               },
               "role": "MAIN",
               "voiceActors": [
@@ -560,7 +560,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b157882-gDh9ovbpFFuM.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b157882-gDh9ovbpFFuM.png"
                 },
-                "favourites": 463
+                "favourites": 467
               },
               "role": "MAIN",
               "voiceActors": [
@@ -638,7 +638,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b157879-m91XQAfn39Dx.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b157879-m91XQAfn39Dx.png"
                 },
-                "favourites": 682
+                "favourites": 685
               },
               "role": "MAIN",
               "voiceActors": [
@@ -716,7 +716,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b157880-WCkYC4LCLKd4.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b157880-WCkYC4LCLKd4.png"
                 },
-                "favourites": 119
+                "favourites": 120
               },
               "role": "SUPPORTING",
               "voiceActors": [
@@ -962,7 +962,7 @@
                     "userPreferred": "Saho Shirasu"
                   },
                   "image": {
-                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n205010-6xmikjNcH3BP.png"
+                    "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n205010-aKqMPkF9Aj3f.jpg"
                   },
                   "languageV2": "Japanese"
                 },
@@ -1028,7 +1028,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b267476-HIWWzHkWTjAB.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b267476-HIWWzHkWTjAB.png"
                 },
-                "favourites": 22
+                "favourites": 21
               },
               "role": "SUPPORTING",
               "voiceActors": [
@@ -2141,7 +2141,7 @@
           },
           "nodes": [
             {
-              "rating": 275,
+              "rating": 277,
               "mediaRecommendation": {
                 "id": 153518,
                 "title": {
@@ -2166,7 +2166,7 @@
               }
             },
             {
-              "rating": 194,
+              "rating": 195,
               "mediaRecommendation": {
                 "id": 146850,
                 "title": {
@@ -2331,7 +2331,7 @@
               }
             },
             {
-              "rating": 30,
+              "rating": 31,
               "mediaRecommendation": {
                 "id": 171031,
                 "title": {
@@ -2658,23 +2658,23 @@
           "statusDistribution": [
             {
               "status": "CURRENT",
-              "amount": 11767
+              "amount": 11808
             },
             {
               "status": "PLANNING",
-              "amount": 21345
+              "amount": 21388
             },
             {
               "status": "COMPLETED",
-              "amount": 85977
+              "amount": 86174
             },
             {
               "status": "DROPPED",
-              "amount": 3595
+              "amount": 3603
             },
             {
               "status": "PAUSED",
-              "amount": 2014
+              "amount": 2017
             }
           ]
         },
@@ -3066,6 +3066,7 @@
           "mediaId": 156067,
           "status": "COMPLETED",
           "progress": 12,
+          "progressVolumes": null,
           "score": 9,
           "repeat": 0,
           "notes": null,

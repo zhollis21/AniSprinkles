@@ -65,7 +65,7 @@ public sealed class MutationState
 
     /// <summary>What <c>MediaQuery</c> selects for the details page's own entry.</summary>
     private static readonly string[] DetailsEntryFields =
-        ["id", "mediaId", "status", "progress", "score", "repeat", "notes", "private", "hiddenFromStatusLists", "updatedAt"];
+        ["id", "mediaId", "status", "progress", "progressVolumes", "score", "repeat", "notes", "private", "hiddenFromStatusLists", "updatedAt"];
 
     /// <summary>What <c>MediaRelationsQuery</c> selects for each related title's entry.</summary>
     private static readonly string[] RelationEntryFields =

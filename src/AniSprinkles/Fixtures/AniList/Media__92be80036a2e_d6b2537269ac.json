@@ -3,8 +3,8 @@
   "variables": {
     "id": 30013
   },
-  "queryFingerprint": "0dd7befc664c",
-  "recordedAt": "2026-11-18T14:40:01.7670055+00:00",
+  "queryFingerprint": "d6b2537269ac",
+  "recordedAt": "2026-11-23T00:50:16.4414042+00:00",
   "response": {
     "data": {
       "Media": {
@@ -69,10 +69,10 @@
         ],
         "weightedScore": 91,
         "meanScore": 91,
-        "popularity": 237341,
-        "favourites": 48082,
+        "popularity": 237603,
+        "favourites": 48134,
         "isFavourite": false,
-        "trending": 28,
+        "trending": 101,
         "tags": [
           {
             "id": 201,
@@ -295,16 +295,6 @@
             "category": "Theme-Other"
           },
           {
-            "id": 93,
-            "name": "Post-Apocalyptic",
-            "rank": 70,
-            "isMediaSpoiler": true,
-            "isGeneralSpoiler": false,
-            "isAdult": false,
-            "description": "Partly or completely set in a world or civilization after a global disaster.",
-            "category": "Setting-Universe"
-          },
-          {
             "id": 247,
             "name": "Slavery",
             "rank": 69,
@@ -313,6 +303,16 @@
             "isAdult": false,
             "description": "Prominently features slaves, slavery, or slave trade.",
             "category": "Theme-Other"
+          },
+          {
+            "id": 93,
+            "name": "Post-Apocalyptic",
+            "rank": 69,
+            "isMediaSpoiler": true,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Partly or completely set in a world or civilization after a global disaster.",
+            "category": "Setting-Universe"
           },
           {
             "id": 109,
@@ -677,7 +677,7 @@
           {
             "id": 1165,
             "name": "Transgender",
-            "rank": 46,
+            "rank": 45,
             "isMediaSpoiler": true,
             "isGeneralSpoiler": false,
             "isAdult": false,
@@ -735,13 +735,33 @@
             "category": "Cast-Traits"
           },
           {
-            "id": 1342,
-            "name": "Clone",
+            "id": 161,
+            "name": "Bar",
             "rank": 40,
-            "isMediaSpoiler": true,
+            "isMediaSpoiler": false,
             "isGeneralSpoiler": false,
             "isAdult": false,
-            "description": "Prominently features a character who is an artificial exact copy of another organism.",
+            "description": "Partly or completely set in a bar.",
+            "category": "Setting-Scene"
+          },
+          {
+            "id": 1539,
+            "name": "Unrequited Love",
+            "rank": 40,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "One or more characters are experiencing an unrequited love that may or may not be reciprocated.",
+            "category": "Theme-Romance"
+          },
+          {
+            "id": 632,
+            "name": "Centaur",
+            "rank": 40,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features a character with a human upper body and the lower body of a horse.",
             "category": "Cast-Traits"
           },
           {
@@ -755,33 +775,13 @@
             "category": "Cast-Traits"
           },
           {
-            "id": 1539,
-            "name": "Unrequited Love",
+            "id": 1342,
+            "name": "Clone",
             "rank": 40,
-            "isMediaSpoiler": false,
+            "isMediaSpoiler": true,
             "isGeneralSpoiler": false,
             "isAdult": false,
-            "description": "One or more characters are experiencing an unrequited love that may or may not be reciprocated.",
-            "category": "Theme-Romance"
-          },
-          {
-            "id": 161,
-            "name": "Bar",
-            "rank": 40,
-            "isMediaSpoiler": false,
-            "isGeneralSpoiler": false,
-            "isAdult": false,
-            "description": "Partly or completely set in a bar.",
-            "category": "Setting-Scene"
-          },
-          {
-            "id": 632,
-            "name": "Centaur",
-            "rank": 40,
-            "isMediaSpoiler": false,
-            "isGeneralSpoiler": false,
-            "isAdult": false,
-            "description": "Prominently features a character with a human upper body and the lower body of a horse.",
+            "description": "Prominently features a character who is an artificial exact copy of another organism.",
             "category": "Cast-Traits"
           },
           {
@@ -795,16 +795,6 @@
             "category": "Theme-Other"
           },
           {
-            "id": 1068,
-            "name": "Angels",
-            "rank": 36,
-            "isMediaSpoiler": false,
-            "isGeneralSpoiler": false,
-            "isAdult": false,
-            "description": "Prominently features spiritual beings usually represented with wings and halos and believed to be attendants of God.",
-            "category": "Cast-Traits"
-          },
-          {
             "id": 517,
             "name": "Artificial Intelligence",
             "rank": 36,
@@ -815,13 +805,23 @@
             "category": "Cast-Traits"
           },
           {
-            "id": 191,
-            "name": "Aliens",
+            "id": 1068,
+            "name": "Angels",
             "rank": 36,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features spiritual beings usually represented with wings and halos and believed to be attendants of God.",
+            "category": "Cast-Traits"
+          },
+          {
+            "id": 1578,
+            "name": "Arranged Marriage",
+            "rank": 35,
             "isMediaSpoiler": true,
             "isGeneralSpoiler": false,
             "isAdult": false,
-            "description": "Prominently features extraterrestrial lifeforms.",
+            "description": "Features two characters made to marry each other, usually by their family.",
             "category": "Cast-Traits"
           },
           {
@@ -835,13 +835,13 @@
             "category": "Theme-Fantasy"
           },
           {
-            "id": 1578,
-            "name": "Arranged Marriage",
+            "id": 191,
+            "name": "Aliens",
             "rank": 35,
             "isMediaSpoiler": true,
             "isGeneralSpoiler": false,
             "isAdult": false,
-            "description": "Features two characters made to marry each other, usually by their family.",
+            "description": "Prominently features extraterrestrial lifeforms.",
             "category": "Cast-Traits"
           },
           {
@@ -877,7 +877,7 @@
           {
             "id": 1526,
             "name": "Matriarchy",
-            "rank": 28,
+            "rank": 26,
             "isMediaSpoiler": false,
             "isGeneralSpoiler": false,
             "isAdult": false,
@@ -2288,7 +2288,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b40-MNypXsxSRb1R.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b40-MNypXsxSRb1R.png"
                 },
-                "favourites": 36077
+                "favourites": 36099
               },
               "role": "MAIN",
               "voiceActors": []
@@ -2305,7 +2305,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b62-S7oAeA9WInjV.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b62-S7oAeA9WInjV.png"
                 },
-                "favourites": 28882
+                "favourites": 28899
               },
               "role": "MAIN",
               "voiceActors": []
@@ -2322,7 +2322,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b723-vp5hPptgnNEC.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b723-vp5hPptgnNEC.png"
                 },
-                "favourites": 10230
+                "favourites": 10242
               },
               "role": "MAIN",
               "voiceActors": []
@@ -2339,7 +2339,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b724-GFGgI9AJQkfy.jpg",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b724-GFGgI9AJQkfy.jpg"
                 },
-                "favourites": 6702
+                "favourites": 6708
               },
               "role": "MAIN",
               "voiceActors": []
@@ -2356,7 +2356,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b305-6lisPmHtCnLT.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b305-6lisPmHtCnLT.png"
                 },
-                "favourites": 15339
+                "favourites": 15361
               },
               "role": "MAIN",
               "voiceActors": []
@@ -2373,7 +2373,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b61-ywXUyyocEEqt.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b61-ywXUyyocEEqt.png"
                 },
-                "favourites": 14890
+                "favourites": 14903
               },
               "role": "MAIN",
               "voiceActors": []
@@ -2390,7 +2390,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b309-H64NhbJ2ywIQ.jpg",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b309-H64NhbJ2ywIQ.jpg"
                 },
-                "favourites": 8770
+                "favourites": 8777
               },
               "role": "MAIN",
               "voiceActors": []
@@ -2407,7 +2407,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/n64-ChX6ZzHHjXqA.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/n64-ChX6ZzHHjXqA.png"
                 },
-                "favourites": 4059
+                "favourites": 4063
               },
               "role": "MAIN",
               "voiceActors": []
@@ -2424,7 +2424,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b5627-av8oD3zhKvDl.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b5627-av8oD3zhKvDl.png"
                 },
-                "favourites": 5087
+                "favourites": 5093
               },
               "role": "MAIN",
               "voiceActors": []
@@ -2441,7 +2441,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b18938-yZANEfjsVhW4.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b18938-yZANEfjsVhW4.png"
                 },
-                "favourites": 2888
+                "favourites": 2891
               },
               "role": "MAIN",
               "voiceActors": []
@@ -2458,7 +2458,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/n725-g04AaiaK5f9B.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/n725-g04AaiaK5f9B.png"
                 },
-                "favourites": 2129
+                "favourites": 2131
               },
               "role": "SUPPORTING",
               "voiceActors": []
@@ -2475,7 +2475,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b726-DqAIpscMuYYx.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b726-DqAIpscMuYYx.png"
                 },
-                "favourites": 2005
+                "favourites": 2009
               },
               "role": "SUPPORTING",
               "voiceActors": []
@@ -2492,7 +2492,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b727-wUJx7M1z5xON.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b727-wUJx7M1z5xON.png"
                 },
-                "favourites": 5857
+                "favourites": 5860
               },
               "role": "SUPPORTING",
               "voiceActors": []
@@ -2509,7 +2509,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b1541-6c8RouunoL88.jpg",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b1541-6c8RouunoL88.jpg"
                 },
-                "favourites": 854
+                "favourites": 855
               },
               "role": "SUPPORTING",
               "voiceActors": []
@@ -2526,7 +2526,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/n2064-OpnF4nLi6bvL.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/n2064-OpnF4nLi6bvL.png"
                 },
-                "favourites": 2396
+                "favourites": 2399
               },
               "role": "SUPPORTING",
               "voiceActors": []
@@ -2543,7 +2543,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b2072-Lc6jEdsueJUK.jpg",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b2072-Lc6jEdsueJUK.jpg"
                 },
-                "favourites": 9026
+                "favourites": 9035
               },
               "role": "SUPPORTING",
               "voiceActors": []
@@ -2560,7 +2560,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b2519-OfgRt6mP6Ae8.jpg",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b2519-OfgRt6mP6Ae8.jpg"
                 },
-                "favourites": 89
+                "favourites": 90
               },
               "role": "SUPPORTING",
               "voiceActors": []
@@ -2594,7 +2594,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b2749-e8ebEBN1SlS2.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b2749-e8ebEBN1SlS2.png"
                 },
-                "favourites": 1994
+                "favourites": 1998
               },
               "role": "SUPPORTING",
               "voiceActors": []
@@ -2611,7 +2611,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b2750-j3Rf9SC37ehT.jpg",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b2750-j3Rf9SC37ehT.jpg"
                 },
-                "favourites": 435
+                "favourites": 434
               },
               "role": "SUPPORTING",
               "voiceActors": []
@@ -2628,7 +2628,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b2751-NnzW0N2vCTjX.jpg",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b2751-NnzW0N2vCTjX.jpg"
                 },
-                "favourites": 4135
+                "favourites": 4142
               },
               "role": "SUPPORTING",
               "voiceActors": []
@@ -2645,7 +2645,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b2752-0ENS2a39muDz.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b2752-0ENS2a39muDz.png"
                 },
-                "favourites": 1814
+                "favourites": 1816
               },
               "role": "SUPPORTING",
               "voiceActors": []
@@ -2662,7 +2662,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b2753-Y2ja8Pl6PRs0.jpg",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b2753-Y2ja8Pl6PRs0.jpg"
                 },
-                "favourites": 1386
+                "favourites": 1388
               },
               "role": "SUPPORTING",
               "voiceActors": []
@@ -2679,7 +2679,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b2754-B4gGSlNYgsyh.jpg",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b2754-B4gGSlNYgsyh.jpg"
                 },
-                "favourites": 4328
+                "favourites": 4333
               },
               "role": "SUPPORTING",
               "voiceActors": []
@@ -2696,7 +2696,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b3331-7ZJDc4BNv9Yp.jpg",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b3331-7ZJDc4BNv9Yp.jpg"
                 },
-                "favourites": 1031
+                "favourites": 1036
               },
               "role": "SUPPORTING",
               "voiceActors": []
@@ -2710,7 +2710,7 @@
           },
           "nodes": [
             {
-              "rating": 701,
+              "rating": 700,
               "mediaRecommendation": {
                 "id": 30026,
                 "title": {
@@ -2770,7 +2770,7 @@
               }
             },
             {
-              "rating": 169,
+              "rating": 170,
               "mediaRecommendation": {
                 "id": 30012,
                 "title": {
@@ -2790,7 +2790,7 @@
               }
             },
             {
-              "rating": 133,
+              "rating": 132,
               "mediaRecommendation": {
                 "id": 86123,
                 "title": {
@@ -2870,7 +2870,7 @@
               }
             },
             {
-              "rating": 62,
+              "rating": 61,
               "mediaRecommendation": {
                 "id": 30025,
                 "title": {
@@ -3217,23 +3217,23 @@
           "statusDistribution": [
             {
               "status": "CURRENT",
-              "amount": 171898
+              "amount": 172102
             },
             {
               "status": "PLANNING",
-              "amount": 29208
+              "amount": 29222
             },
             {
               "status": "COMPLETED",
-              "amount": 9710
+              "amount": 9725
             },
             {
               "status": "DROPPED",
-              "amount": 7092
+              "amount": 7106
             },
             {
               "status": "PAUSED",
-              "amount": 19433
+              "amount": 19448
             }
           ]
         },
@@ -3254,7 +3254,7 @@
                 "image": {
                   "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n96881-Cyv6wFJxpDw7.png"
                 },
-                "favourites": 12997
+                "favourites": 13005
               },
               "role": "Story \u0026 Art"
             },
@@ -3404,7 +3404,7 @@
                 "image": {
                   "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n121264-cacjsqWN1rvQ.png"
                 },
-                "favourites": 24
+                "favourites": 25
               },
               "role": "Assistant (former)"
             },
@@ -3625,6 +3625,7 @@
           "mediaId": 30013,
           "status": "CURRENT",
           "progress": 1100,
+          "progressVolumes": 105,
           "score": 9,
           "repeat": 1,
           "notes": null,

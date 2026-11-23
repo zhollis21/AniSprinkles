@@ -3,8 +3,8 @@
   "variables": {
     "id": 21
   },
-  "queryFingerprint": "0dd7befc664c",
-  "recordedAt": "2026-11-18T14:38:25.976289+00:00",
+  "queryFingerprint": "d6b2537269ac",
+  "recordedAt": "2026-11-23T00:49:33.7369102+00:00",
   "response": {
     "data": {
       "Media": {
@@ -50,7 +50,7 @@
         },
         "nextAiringEpisode": {
           "airingAt": 1798985760,
-          "timeUntilAiring": 3973055,
+          "timeUntilAiring": 3590787,
           "episode": 1181
         },
         "trailer": null,
@@ -76,10 +76,10 @@
         ],
         "weightedScore": 87,
         "meanScore": 87,
-        "popularity": 771107,
-        "favourites": 110997,
+        "popularity": 772217,
+        "favourites": 111164,
         "isFavourite": false,
-        "trending": 207,
+        "trending": 285,
         "tags": [
           {
             "id": 201,
@@ -102,16 +102,6 @@
             "category": "Theme-Other"
           },
           {
-            "id": 105,
-            "name": "Ensemble Cast",
-            "rank": 93,
-            "isMediaSpoiler": false,
-            "isGeneralSpoiler": false,
-            "isAdult": false,
-            "description": "Features a large cast of characters with (almost) equal screen time and importance to the plot.",
-            "category": "Cast-Main Cast"
-          },
-          {
             "id": 56,
             "name": "Shounen",
             "rank": 93,
@@ -120,6 +110,16 @@
             "isAdult": false,
             "description": "Target demographic is teenage and young adult males.",
             "category": "Demographic"
+          },
+          {
+            "id": 105,
+            "name": "Ensemble Cast",
+            "rank": 93,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Features a large cast of characters with (almost) equal screen time and importance to the plot.",
+            "category": "Cast-Main Cast"
           },
           {
             "id": 66,
@@ -202,13 +202,13 @@
             "category": "Theme-Other"
           },
           {
-            "id": 103,
-            "name": "Politics",
+            "id": 1327,
+            "name": "Royal Affairs",
             "rank": 79,
             "isMediaSpoiler": false,
             "isGeneralSpoiler": false,
             "isAdult": false,
-            "description": "Centers around politics, politicians, or government activities.",
+            "description": "Features nobility, alliances, arranged marriage, succession disputes, religious orders and other elements of royal politics.",
             "category": "Theme-Other"
           },
           {
@@ -222,13 +222,13 @@
             "category": "Setting-Time"
           },
           {
-            "id": 1327,
-            "name": "Royal Affairs",
+            "id": 103,
+            "name": "Politics",
             "rank": 79,
             "isMediaSpoiler": false,
             "isGeneralSpoiler": false,
             "isAdult": false,
-            "description": "Features nobility, alliances, arranged marriage, succession disputes, religious orders and other elements of royal politics.",
+            "description": "Centers around politics, politicians, or government activities.",
             "category": "Theme-Other"
           },
           {
@@ -242,16 +242,6 @@
             "category": "Theme-Other"
           },
           {
-            "id": 217,
-            "name": "Dystopian",
-            "rank": 76,
-            "isMediaSpoiler": false,
-            "isGeneralSpoiler": false,
-            "isAdult": false,
-            "description": "Partly or completely set in a society characterized by poverty, squalor or oppression.",
-            "category": "Setting-Time"
-          },
-          {
             "id": 247,
             "name": "Slavery",
             "rank": 76,
@@ -260,6 +250,16 @@
             "isAdult": false,
             "description": "Prominently features slaves, slavery, or slave trade.",
             "category": "Theme-Other"
+          },
+          {
+            "id": 217,
+            "name": "Dystopian",
+            "rank": 76,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Partly or completely set in a society characterized by poverty, squalor or oppression.",
+            "category": "Setting-Time"
           },
           {
             "id": 226,
@@ -272,16 +272,6 @@
             "category": "Theme-Action"
           },
           {
-            "id": 253,
-            "name": "Gods",
-            "rank": 73,
-            "isMediaSpoiler": true,
-            "isGeneralSpoiler": false,
-            "isAdult": false,
-            "description": "Prominently features a character of divine or religious nature.",
-            "category": "Cast-Traits"
-          },
-          {
             "id": 648,
             "name": "Crime",
             "rank": 73,
@@ -290,6 +280,16 @@
             "isAdult": false,
             "description": "Centers around unlawful activities punishable by the state or other authority.",
             "category": "Theme-Other"
+          },
+          {
+            "id": 253,
+            "name": "Gods",
+            "rank": 73,
+            "isMediaSpoiler": true,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features a character of divine or religious nature.",
+            "category": "Cast-Traits"
           },
           {
             "id": 43,
@@ -342,26 +342,6 @@
             "category": "Cast-Traits"
           },
           {
-            "id": 104,
-            "name": "Anti-Hero",
-            "rank": 65,
-            "isMediaSpoiler": false,
-            "isGeneralSpoiler": false,
-            "isAdult": false,
-            "description": "Features a protagonist who lacks conventional heroic attributes and may be considered a borderline villain.",
-            "category": "Cast-Main Cast"
-          },
-          {
-            "id": 391,
-            "name": "Philosophy",
-            "rank": 65,
-            "isMediaSpoiler": true,
-            "isGeneralSpoiler": false,
-            "isAdult": false,
-            "description": "Relating or devoted to the study of the fundamental nature of knowledge, reality, and existence.",
-            "category": "Theme-Other"
-          },
-          {
             "id": 109,
             "name": "Primarily Adult Cast",
             "rank": 65,
@@ -382,6 +362,26 @@
             "category": "Theme-Arts"
           },
           {
+            "id": 104,
+            "name": "Anti-Hero",
+            "rank": 65,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Features a protagonist who lacks conventional heroic attributes and may be considered a borderline villain.",
+            "category": "Cast-Main Cast"
+          },
+          {
+            "id": 391,
+            "name": "Philosophy",
+            "rank": 65,
+            "isMediaSpoiler": true,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Relating or devoted to the study of the fundamental nature of knowledge, reality, and existence.",
+            "category": "Theme-Other"
+          },
+          {
             "id": 772,
             "name": "Shapeshifting",
             "rank": 65,
@@ -390,6 +390,16 @@
             "isAdult": false,
             "description": "Features character(s) who changes one\u0027s appearance or form.",
             "category": "Theme-Fantasy"
+          },
+          {
+            "id": 175,
+            "name": "Robots",
+            "rank": 64,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features humanoid machines.",
+            "category": "Cast-Traits"
           },
           {
             "id": 1304,
@@ -412,16 +422,6 @@
             "category": "Theme-Other"
           },
           {
-            "id": 175,
-            "name": "Robots",
-            "rank": 64,
-            "isMediaSpoiler": false,
-            "isGeneralSpoiler": false,
-            "isAdult": false,
-            "description": "Prominently features humanoid machines.",
-            "category": "Cast-Traits"
-          },
-          {
             "id": 499,
             "name": "Skeleton",
             "rank": 63,
@@ -432,24 +432,14 @@
             "category": "Cast-Traits"
           },
           {
-            "id": 157,
-            "name": "Guns",
+            "id": 291,
+            "name": "Samurai",
             "rank": 62,
             "isMediaSpoiler": false,
             "isGeneralSpoiler": false,
             "isAdult": false,
-            "description": "Prominently features the use of guns in combat.",
-            "category": "Theme-Action"
-          },
-          {
-            "id": 490,
-            "name": "Anachronism",
-            "rank": 62,
-            "isMediaSpoiler": false,
-            "isGeneralSpoiler": false,
-            "isAdult": false,
-            "description": "Prominently features elements that are out of place in the historical period the work takes place in, particularly modern elements in a historical setting.",
-            "category": "Setting-Time"
+            "description": "Prominently features warriors of medieval Japanese nobility bound by a code of honor.",
+            "category": "Cast-Traits"
           },
           {
             "id": 1453,
@@ -462,6 +452,26 @@
             "category": "Setting-Scene"
           },
           {
+            "id": 490,
+            "name": "Anachronism",
+            "rank": 62,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features elements that are out of place in the historical period the work takes place in, particularly modern elements in a historical setting.",
+            "category": "Setting-Time"
+          },
+          {
+            "id": 157,
+            "name": "Guns",
+            "rank": 62,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features the use of guns in combat.",
+            "category": "Theme-Action"
+          },
+          {
             "id": 659,
             "name": "Medicine",
             "rank": 61,
@@ -470,26 +480,6 @@
             "isAdult": false,
             "description": "Centered around the activities of people working in the field of medicine.",
             "category": "Theme-Other"
-          },
-          {
-            "id": 1427,
-            "name": "Prison",
-            "rank": 61,
-            "isMediaSpoiler": true,
-            "isGeneralSpoiler": false,
-            "isAdult": false,
-            "description": "Partly or completely set in a prison.",
-            "category": "Setting-Scene"
-          },
-          {
-            "id": 291,
-            "name": "Samurai",
-            "rank": 61,
-            "isMediaSpoiler": false,
-            "isGeneralSpoiler": false,
-            "isAdult": false,
-            "description": "Prominently features warriors of medieval Japanese nobility bound by a code of honor.",
-            "category": "Cast-Traits"
           },
           {
             "id": 93,
@@ -502,6 +492,16 @@
             "category": "Setting-Universe"
           },
           {
+            "id": 1427,
+            "name": "Prison",
+            "rank": 61,
+            "isMediaSpoiler": true,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Partly or completely set in a prison.",
+            "category": "Setting-Scene"
+          },
+          {
             "id": 309,
             "name": "Blackmail",
             "rank": 60,
@@ -510,6 +510,16 @@
             "isAdult": false,
             "description": "Features a character blackmailing another.",
             "category": "Theme-Other"
+          },
+          {
+            "id": 1657,
+            "name": "Fake Relationship",
+            "rank": 60,
+            "isMediaSpoiler": true,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "When two characters enter a fake relationship that mutually benefits one or both involved.",
+            "category": "Theme-Drama"
           },
           {
             "id": 1788,
@@ -522,14 +532,14 @@
             "category": "Theme-Other"
           },
           {
-            "id": 1165,
-            "name": "Transgender",
+            "id": 1899,
+            "name": "Brainwashing",
             "rank": 60,
-            "isMediaSpoiler": false,
+            "isMediaSpoiler": true,
             "isGeneralSpoiler": false,
             "isAdult": false,
-            "description": "Features a character whose gender identity differs from the sex they were assigned at birth.",
-            "category": "Cast-Traits"
+            "description": "Centers on one or more characters who are mentally manipulated by others to behave abnormally or act against their own will.",
+            "category": "Theme-Other"
           },
           {
             "id": 310,
@@ -544,7 +554,7 @@
           {
             "id": 489,
             "name": "Drugs",
-            "rank": 58,
+            "rank": 59,
             "isMediaSpoiler": false,
             "isGeneralSpoiler": false,
             "isAdult": false,
@@ -562,6 +572,26 @@
             "category": "Cast-Traits"
           },
           {
+            "id": 101,
+            "name": "Battle Royale",
+            "rank": 58,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Centers around a fierce group competition, often violent and with only one winner.",
+            "category": "Theme-Action"
+          },
+          {
+            "id": 1455,
+            "name": "Fairy",
+            "rank": 57,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features a character who is a fairy.",
+            "category": "Cast-Traits"
+          },
+          {
             "id": 259,
             "name": "Monster Girl",
             "rank": 57,
@@ -569,16 +599,6 @@
             "isGeneralSpoiler": false,
             "isAdult": false,
             "description": "Prominently features a female character who is part-monster.",
-            "category": "Cast-Traits"
-          },
-          {
-            "id": 779,
-            "name": "Kuudere",
-            "rank": 57,
-            "isMediaSpoiler": false,
-            "isGeneralSpoiler": false,
-            "isAdult": false,
-            "description": "Prominently features a character who generally retains a cold, blunt and cynical exterior, but once one gets to know them, they have a very warm and loving interior.",
             "category": "Cast-Traits"
           },
           {
@@ -592,6 +612,16 @@
             "category": "Cast-Traits"
           },
           {
+            "id": 779,
+            "name": "Kuudere",
+            "rank": 57,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features a character who generally retains a cold, blunt and cynical exterior, but once one gets to know them, they have a very warm and loving interior.",
+            "category": "Cast-Traits"
+          },
+          {
             "id": 252,
             "name": "Revenge",
             "rank": 57,
@@ -600,16 +630,6 @@
             "isAdult": false,
             "description": "Prominently features a character who aims to exact punishment in a resentful or vindictive manner.",
             "category": "Theme-Drama"
-          },
-          {
-            "id": 1455,
-            "name": "Fairy",
-            "rank": 57,
-            "isMediaSpoiler": false,
-            "isGeneralSpoiler": false,
-            "isAdult": false,
-            "description": "Prominently features a character who is a fairy.",
-            "category": "Cast-Traits"
           },
           {
             "id": 1433,
@@ -642,16 +662,6 @@
             "category": "Theme-Other-Organisations"
           },
           {
-            "id": 101,
-            "name": "Battle Royale",
-            "rank": 54,
-            "isMediaSpoiler": false,
-            "isGeneralSpoiler": false,
-            "isAdult": false,
-            "description": "Centers around a fierce group competition, often violent and with only one winner.",
-            "category": "Theme-Action"
-          },
-          {
             "id": 15,
             "name": "Demons",
             "rank": 54,
@@ -672,19 +682,9 @@
             "category": "Theme-Other"
           },
           {
-            "id": 558,
-            "name": "Mermaid",
-            "rank": 51,
-            "isMediaSpoiler": false,
-            "isGeneralSpoiler": false,
-            "isAdult": false,
-            "description": "A mythological creature with the body of a human and the tail of a fish.",
-            "category": "Cast-Traits"
-          },
-          {
             "id": 255,
             "name": "Ninja",
-            "rank": 51,
+            "rank": 52,
             "isMediaSpoiler": false,
             "isGeneralSpoiler": false,
             "isAdult": false,
@@ -692,13 +692,13 @@
             "category": "Cast-Traits"
           },
           {
-            "id": 1068,
-            "name": "Angels",
-            "rank": 50,
+            "id": 558,
+            "name": "Mermaid",
+            "rank": 51,
             "isMediaSpoiler": false,
             "isGeneralSpoiler": false,
             "isAdult": false,
-            "description": "Prominently features spiritual beings usually represented with wings and halos and believed to be attendants of God.",
+            "description": "A mythological creature with the body of a human and the tail of a fish.",
             "category": "Cast-Traits"
           },
           {
@@ -712,6 +712,16 @@
             "category": "Theme-Fantasy"
           },
           {
+            "id": 1068,
+            "name": "Angels",
+            "rank": 50,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features spiritual beings usually represented with wings and halos and believed to be attendants of God.",
+            "category": "Cast-Traits"
+          },
+          {
             "id": 1866,
             "name": "Kabuki",
             "rank": 50,
@@ -720,6 +730,16 @@
             "isAdult": false,
             "description": "Prominently features the traditional Japanese theater art of kabuki.",
             "category": "Theme-Arts"
+          },
+          {
+            "id": 704,
+            "name": "Dinosaurs",
+            "rank": 50,
+            "isMediaSpoiler": true,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features Dinosaurs, prehistoric reptiles that went extinct millions of years ago.",
+            "category": "Cast-Traits"
           },
           {
             "id": 96,
@@ -754,7 +774,7 @@
           {
             "id": 77,
             "name": "Gender Bending",
-            "rank": 48,
+            "rank": 47,
             "isMediaSpoiler": false,
             "isGeneralSpoiler": false,
             "isAdult": false,
@@ -772,6 +792,16 @@
             "category": "Cast-Traits"
           },
           {
+            "id": 1165,
+            "name": "Transgender",
+            "rank": 46,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Features a character whose gender identity differs from the sex they were assigned at birth.",
+            "category": "Cast-Traits"
+          },
+          {
             "id": 1539,
             "name": "Unrequited Love",
             "rank": 42,
@@ -780,16 +810,6 @@
             "isAdult": false,
             "description": "One or more characters are experiencing an unrequited love that may or may not be reciprocated.",
             "category": "Theme-Romance"
-          },
-          {
-            "id": 122,
-            "name": "Trains",
-            "rank": 42,
-            "isMediaSpoiler": false,
-            "isGeneralSpoiler": false,
-            "isAdult": false,
-            "description": "Prominently features trains.",
-            "category": "Theme-Other-Vehicle"
           },
           {
             "id": 1923,
@@ -802,44 +822,24 @@
             "category": "Theme-Other"
           },
           {
-            "id": 704,
-            "name": "Dinosaurs",
-            "rank": 33,
-            "isMediaSpoiler": true,
+            "id": 122,
+            "name": "Trains",
+            "rank": 40,
+            "isMediaSpoiler": false,
             "isGeneralSpoiler": false,
             "isAdult": false,
-            "description": "Prominently features Dinosaurs, prehistoric reptiles that went extinct millions of years ago.",
-            "category": "Cast-Traits"
+            "description": "Prominently features trains.",
+            "category": "Theme-Other-Vehicle"
           },
           {
             "id": 1937,
             "name": "Interspecies",
-            "rank": 33,
+            "rank": 35,
             "isMediaSpoiler": false,
             "isGeneralSpoiler": false,
             "isAdult": false,
             "description": "Romance between characters of different species.",
             "category": "Theme-Romance"
-          },
-          {
-            "id": 1657,
-            "name": "Fake Relationship",
-            "rank": 20,
-            "isMediaSpoiler": true,
-            "isGeneralSpoiler": false,
-            "isAdult": false,
-            "description": "When two characters enter a fake relationship that mutually benefits one or both involved.",
-            "category": "Theme-Drama"
-          },
-          {
-            "id": 1899,
-            "name": "Brainwashing",
-            "rank": 20,
-            "isMediaSpoiler": true,
-            "isGeneralSpoiler": false,
-            "isAdult": false,
-            "description": "Centers on one or more characters who are mentally manipulated by others to behave abnormally or act against their own will.",
-            "category": "Theme-Other"
           }
         ],
         "studios": {
@@ -859,7 +859,7 @@
                 "id": 102,
                 "name": "Funimation",
                 "isAnimationStudio": false,
-                "favourites": 1088
+                "favourites": 1092
               }
             },
             {
@@ -2768,7 +2768,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b40-MNypXsxSRb1R.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b40-MNypXsxSRb1R.png"
                 },
-                "favourites": 36077
+                "favourites": 36099
               },
               "role": "MAIN",
               "voiceActors": [
@@ -3014,7 +3014,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b61-ywXUyyocEEqt.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b61-ywXUyyocEEqt.png"
                 },
-                "favourites": 14890
+                "favourites": 14903
               },
               "role": "MAIN",
               "voiceActors": [
@@ -3260,7 +3260,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b62-S7oAeA9WInjV.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b62-S7oAeA9WInjV.png"
                 },
-                "favourites": 28882
+                "favourites": 28899
               },
               "role": "MAIN",
               "voiceActors": [
@@ -3602,7 +3602,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/n64-ChX6ZzHHjXqA.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/n64-ChX6ZzHHjXqA.png"
                 },
-                "favourites": 4059
+                "favourites": 4063
               },
               "role": "MAIN",
               "voiceActors": [
@@ -3788,7 +3788,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b305-6lisPmHtCnLT.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b305-6lisPmHtCnLT.png"
                 },
-                "favourites": 15339
+                "favourites": 15361
               },
               "role": "MAIN",
               "voiceActors": [
@@ -4070,7 +4070,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b309-H64NhbJ2ywIQ.jpg",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b309-H64NhbJ2ywIQ.jpg"
                 },
-                "favourites": 8770
+                "favourites": 8777
               },
               "role": "MAIN",
               "voiceActors": [
@@ -4244,7 +4244,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b723-vp5hPptgnNEC.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b723-vp5hPptgnNEC.png"
                 },
-                "favourites": 10230
+                "favourites": 10242
               },
               "role": "MAIN",
               "voiceActors": [
@@ -4490,7 +4490,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b724-GFGgI9AJQkfy.jpg",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b724-GFGgI9AJQkfy.jpg"
                 },
-                "favourites": 6702
+                "favourites": 6708
               },
               "role": "MAIN",
               "voiceActors": [
@@ -4700,7 +4700,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b5627-av8oD3zhKvDl.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b5627-av8oD3zhKvDl.png"
                 },
-                "favourites": 5087
+                "favourites": 5093
               },
               "role": "MAIN",
               "voiceActors": [
@@ -4826,7 +4826,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b18938-yZANEfjsVhW4.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b18938-yZANEfjsVhW4.png"
                 },
-                "favourites": 2888
+                "favourites": 2891
               },
               "role": "MAIN",
               "voiceActors": [
@@ -4952,7 +4952,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/n725-g04AaiaK5f9B.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/n725-g04AaiaK5f9B.png"
                 },
-                "favourites": 2129
+                "favourites": 2131
               },
               "role": "SUPPORTING",
               "voiceActors": [
@@ -5174,7 +5174,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b726-DqAIpscMuYYx.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b726-DqAIpscMuYYx.png"
                 },
-                "favourites": 2005
+                "favourites": 2009
               },
               "role": "SUPPORTING",
               "voiceActors": [
@@ -5336,7 +5336,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b727-wUJx7M1z5xON.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b727-wUJx7M1z5xON.png"
                 },
-                "favourites": 5857
+                "favourites": 5860
               },
               "role": "SUPPORTING",
               "voiceActors": [
@@ -5558,7 +5558,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b1541-6c8RouunoL88.jpg",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b1541-6c8RouunoL88.jpg"
                 },
-                "favourites": 854
+                "favourites": 855
               },
               "role": "SUPPORTING",
               "voiceActors": [
@@ -5660,7 +5660,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/n2064-OpnF4nLi6bvL.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/n2064-OpnF4nLi6bvL.png"
                 },
-                "favourites": 2396
+                "favourites": 2399
               },
               "role": "SUPPORTING",
               "voiceActors": [
@@ -5834,7 +5834,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b2072-Lc6jEdsueJUK.jpg",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b2072-Lc6jEdsueJUK.jpg"
                 },
-                "favourites": 9026
+                "favourites": 9035
               },
               "role": "SUPPORTING",
               "voiceActors": [
@@ -6056,7 +6056,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b2519-OfgRt6mP6Ae8.jpg",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b2519-OfgRt6mP6Ae8.jpg"
                 },
-                "favourites": 89
+                "favourites": 90
               },
               "role": "SUPPORTING",
               "voiceActors": [
@@ -6332,7 +6332,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b2749-e8ebEBN1SlS2.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b2749-e8ebEBN1SlS2.png"
                 },
-                "favourites": 1994
+                "favourites": 1998
               },
               "role": "SUPPORTING",
               "voiceActors": [
@@ -6530,7 +6530,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b2750-j3Rf9SC37ehT.jpg",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b2750-j3Rf9SC37ehT.jpg"
                 },
-                "favourites": 435
+                "favourites": 434
               },
               "role": "SUPPORTING",
               "voiceActors": [
@@ -6728,7 +6728,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b2751-NnzW0N2vCTjX.jpg",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b2751-NnzW0N2vCTjX.jpg"
                 },
-                "favourites": 4135
+                "favourites": 4142
               },
               "role": "SUPPORTING",
               "voiceActors": [
@@ -6890,7 +6890,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b2752-0ENS2a39muDz.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b2752-0ENS2a39muDz.png"
                 },
-                "favourites": 1814
+                "favourites": 1816
               },
               "role": "SUPPORTING",
               "voiceActors": [
@@ -7004,7 +7004,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b2753-Y2ja8Pl6PRs0.jpg",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b2753-Y2ja8Pl6PRs0.jpg"
                 },
-                "favourites": 1386
+                "favourites": 1388
               },
               "role": "SUPPORTING",
               "voiceActors": [
@@ -7238,7 +7238,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b2754-B4gGSlNYgsyh.jpg",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b2754-B4gGSlNYgsyh.jpg"
                 },
-                "favourites": 4328
+                "favourites": 4333
               },
               "role": "SUPPORTING",
               "voiceActors": [
@@ -7424,7 +7424,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b3331-7ZJDc4BNv9Yp.jpg",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b3331-7ZJDc4BNv9Yp.jpg"
                 },
-                "favourites": 1031
+                "favourites": 1036
               },
               "role": "SUPPORTING",
               "voiceActors": [
@@ -7571,7 +7571,7 @@
           },
           "nodes": [
             {
-              "rating": 2215,
+              "rating": 2219,
               "mediaRecommendation": {
                 "id": 11061,
                 "title": {
@@ -7596,7 +7596,7 @@
               }
             },
             {
-              "rating": 1031,
+              "rating": 1032,
               "mediaRecommendation": {
                 "id": 20,
                 "title": {
@@ -7621,7 +7621,7 @@
               }
             },
             {
-              "rating": 682,
+              "rating": 683,
               "mediaRecommendation": {
                 "id": 1735,
                 "title": {
@@ -7671,7 +7671,7 @@
               }
             },
             {
-              "rating": 402,
+              "rating": 403,
               "mediaRecommendation": {
                 "id": 223,
                 "title": {
@@ -8006,7 +8006,7 @@
               }
             },
             {
-              "rating": 31,
+              "rating": 30,
               "mediaRecommendation": {
                 "id": 392,
                 "title": {
@@ -8133,23 +8133,23 @@
           "statusDistribution": [
             {
               "status": "CURRENT",
-              "amount": 489850
+              "amount": 490601
             },
             {
               "status": "PLANNING",
-              "amount": 93605
+              "amount": 93681
             },
             {
               "status": "COMPLETED",
-              "amount": 44725
+              "amount": 44834
             },
             {
               "status": "DROPPED",
-              "amount": 49755
+              "amount": 49839
             },
             {
               "status": "PAUSED",
-              "amount": 93172
+              "amount": 93262
             }
           ]
         },
@@ -8170,7 +8170,7 @@
                 "image": {
                   "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n96881-Cyv6wFJxpDw7.png"
                 },
-                "favourites": 12997
+                "favourites": 13005
               },
               "role": "Original Creator"
             },
@@ -8245,7 +8245,7 @@
                 "image": {
                   "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n101055-3QNbr0raaApy.jpg"
                 },
-                "favourites": 203
+                "favourites": 204
               },
               "role": "Music"
             },
@@ -8541,6 +8541,7 @@
           "mediaId": 21,
           "status": "CURRENT",
           "progress": 1163,
+          "progressVolumes": null,
           "score": 8,
           "repeat": 0,
           "notes": null,

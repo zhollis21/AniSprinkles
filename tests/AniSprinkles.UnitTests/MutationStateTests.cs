@@ -353,8 +353,8 @@ public class MutationStateTests
     [Test]
     public void ADetailsRead_OfATitleTheRecordingHadOffTheList_SelectsWhatMediaQuerySelects()
     {
-        // Copilot on #233: the saved entry carries progressVolumes, which the details query does not
-        // select, so replay showed a field a live read cannot return.
+        // Copilot on #233: replay showed whatever the save carried rather than what the details query
+        // selects, so a field a live read could not return looked present.
         var state = new MutationState();
         state.TryAnswer(
             "SaveMediaListEntry", Vars("""{"mediaId":21,"status":"PAUSED","progressVolumes":2}"""), NoFixtures, out _);
@@ -365,7 +365,7 @@ public class MutationStateTests
         var entry = media["data"]?["Media"]?["mediaListEntry"] as JsonObject;
         Assert.That(entry?.Select(p => p.Key), Is.EquivalentTo(new[]
         {
-            "id", "mediaId", "status", "progress", "score", "repeat", "notes", "private", "hiddenFromStatusLists", "updatedAt",
+            "id", "mediaId", "status", "progress", "progressVolumes", "score", "repeat", "notes", "private", "hiddenFromStatusLists", "updatedAt",
         }));
     }
 
