@@ -16,7 +16,7 @@ namespace AniSprinkles.UnitTests;
 // #234).
 public class DeviceDisplayGuardTests
 {
-    private static readonly Regex DeviceDisplayReference = new(@"\bDeviceDisplay\b", RegexOptions.Compiled);
+    private static readonly Regex DeviceDisplayReference = new(@"\bI?DeviceDisplay\b", RegexOptions.Compiled);
 
     [Test]
     public void AppSourceFiles_AreFound()
@@ -41,41 +41,51 @@ public class DeviceDisplayGuardTests
             + string.Join(Environment.NewLine, offenders));
     }
 
+    [Test]
+    public void SourceFiles_IncludeCore()
+    {
+        // Core ships inside the app and references MAUI Essentials, so a read there races just the same.
+        Assert.That(AppSourceFiles(), Does.Contain("src/AniSprinkles.Core/Services/SentryLogNoise.cs"));
+    }
+
     [TestCase("var d = DeviceDisplay.MainDisplayInfo;", 1, TestName = "Flags a static read")]
     [TestCase("var d = DeviceDisplay.Current.MainDisplayInfo;", 1, TestName = "Flags a Current read")]
     [TestCase("using static Microsoft.Maui.Devices.DeviceDisplay;", 1, TestName = "Flags a using static")]
-    [TestCase("// DeviceDisplay is not safe here", 0, TestName = "Ignores a line comment")]
-    [TestCase("var w = ScreenMetrics.Read().WidthDip; // not DeviceDisplay", 0, TestName = "Ignores a trailing comment")]
+    [TestCase("public Popup(IDeviceDisplay display) { }", 1, TestName = "Flags the injected interface")]
+    [TestCase("var u = \"https://anilist.co/\"; var d = DeviceDisplay.MainDisplayInfo;", 1, TestName = "Flags a read after a URL")]
+    [TestCase("var s = $\"{DeviceDisplay.MainDisplayInfo.Width}\";", 1, TestName = "Flags a read inside an interpolated string")]
+    [TestCase("// DeviceDisplay is not safe here", 1, TestName = "Flags a comment too, so nothing can hide behind one")]
     [TestCase("var MyDeviceDisplayHelper = 1;", 0, TestName = "Ignores a longer identifier")]
+    [TestCase("var w = ScreenMetrics.Read().WidthDip; // MAUI's display API", 0, TestName = "Ignores a comment that avoids the name")]
     public void FindReferences_DetectsEachShape(string line, int expected)
     {
         Assert.That(FindReferences([line], "fragment.cs"), Has.Count.EqualTo(expected));
     }
 
+    // Every line counts, comments included. Telling code from comments needs a C# lexer (a "//" can sit
+    // in a string, a read can sit in an interpolation), and a guard that guesses wrong lets a read
+    // through. Comments in src/ call it "MAUI's display API" instead.
     internal static List<string> FindReferences(IReadOnlyList<string> lines, string relativePath)
     {
         var offenders = new List<string>();
         for (var i = 0; i < lines.Count; i++)
         {
-            // Comments may explain the rule; only code counts. Naive about "//" inside strings, which is
-            // fine for this name.
-            var line = lines[i];
-            var comment = line.IndexOf("//", StringComparison.Ordinal);
-            var code = comment >= 0 ? line[..comment] : line;
-            if (DeviceDisplayReference.IsMatch(code))
+            if (DeviceDisplayReference.IsMatch(lines[i]))
             {
-                offenders.Add($"{relativePath}:{i + 1}: {line.Trim()}");
+                offenders.Add($"{relativePath}:{i + 1}: {lines[i].Trim()}");
             }
         }
 
         return offenders;
     }
 
+    // Both projects that ship in the app: Core references MAUI Essentials too.
     private static List<string> AppSourceFiles()
     {
         var root = XamlFileValidationTests.RepoRoot.Value;
-        var appDir = Path.Combine(root, "src", "AniSprinkles");
-        return Directory.EnumerateFiles(appDir, "*.*", SearchOption.AllDirectories)
+        return new[] { "AniSprinkles", "AniSprinkles.Core" }
+            .SelectMany(project => Directory.EnumerateFiles(
+                Path.Combine(root, "src", project), "*.*", SearchOption.AllDirectories))
             .Where(f => Path.GetExtension(f) is ".cs" or ".xaml")
             .Select(f => Path.GetRelativePath(root, f).Replace('\\', '/'))
             .Where(rel => !rel.Contains("/bin/") && !rel.Contains("/obj/"))

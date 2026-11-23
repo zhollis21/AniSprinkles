@@ -2,7 +2,8 @@ namespace AniSprinkles.Utilities;
 
 /// <summary>
 /// The app window's size, for layouts that size themselves to the screen. Use this instead of MAUI's
-/// <c>DeviceDisplay</c>, which the app must not read (#230, pinned by <c>DeviceDisplayGuardTests</c>).
+/// display API, which the app must not read (#230, pinned by <c>DeviceDisplayGuardTests</c>, which is
+/// also why this comment doesn't name it).
 /// </summary>
 /// <remarks>
 /// On Android, MAUI 11.0.10 reads the display through the window-manager service and disposes the
@@ -30,7 +31,7 @@ internal static class ScreenMetrics
             return new Size(metrics.WidthPixels / metrics.Density, metrics.HeightPixels / metrics.Density, metrics.Density);
         }
 #endif
-        // What DeviceDisplay reported when it could not read the display either.
+        // What MAUI's display API reported when it could not read the display either.
         return new Size(0, 0, 1);
     }
 }
