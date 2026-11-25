@@ -286,6 +286,115 @@ public class StaffDetailsPageModelTests
             Is.EqualTo("Before.<br><br>Secret one.<br><br>Secret two."));
     }
 
+    // ---- Height (#238) --------------------------------------------------------------------------
+
+    [Test]
+    public async Task BioStats_HeightFromTheField_IsACardOfItsOwn()
+    {
+        // Most migrated bios have no other stat line, so the card has to appear for height alone.
+        var harness = new Harness();
+        harness.Returns(new Staff { Id = 42, Description = "Prose.", Height = HeightOf(172, "5'8\"") });
+
+        await harness.Model.LoadAsync(42);
+
+        Assert.That(harness.Model.HasBioStats, Is.True);
+        Assert.That(harness.Model.BioStats.Count, Is.EqualTo(1));
+        Assert.That(harness.Model.BioStats[0].LabelDisplay, Is.EqualTo("Height"));
+        Assert.That(harness.Model.BioStats[0].ValueDisplay, Is.EqualTo("172 cm (5'8\")"));
+        Assert.That(harness.Model.BioProse, Is.EqualTo("Prose."));
+    }
+
+    [Test]
+    public async Task BioStats_HeightFromTheField_ComesFirst()
+    {
+        var harness = new Harness();
+        harness.Returns(new Staff
+        {
+            Id = 42,
+            Description = "__Agency:__ Aoni\n__Hobby:__ Go",
+            Height = HeightOf(172, "5'8\""),
+        });
+
+        await harness.Model.LoadAsync(42);
+
+        Assert.That(
+            harness.Model.BioStats.Select(s => s.LabelDisplay),
+            Is.EqualTo(["Height", "Agency", "Hobby"]));
+    }
+
+    [TestCase("__Height:__ 180 cm")]
+    [TestCase("**height:** 180 cm")]
+    [TestCase("__Initial Height:__ 180 cm")]
+    [TestCase("~!__Height:__ 180 cm!~")]
+    public async Task BioStats_HeightInBothPlaces_IsOneRowFromTheField(string bioLine)
+    {
+        var harness = new Harness();
+        harness.Returns(new Staff
+        {
+            Id = 42,
+            Description = $"__Agency:__ Aoni\n{bioLine}",
+            Height = HeightOf(172, "5'8\""),
+        });
+
+        await harness.Model.LoadAsync(42);
+
+        Assert.That(
+            harness.Model.BioStats.Select(s => (s.LabelDisplay, s.ValueDisplay)),
+            Is.EqualTo([("Height", "172 cm (5'8\")"), ("Agency", "Aoni")]));
+        Assert.That(harness.Model.HasSpoilers, Is.False);
+    }
+
+    [Test]
+    public async Task BioStats_EmptyHeightField_LeavesTheBioLineAlone()
+    {
+        var harness = new Harness();
+        harness.Returns(new Staff
+        {
+            Id = 42,
+            Description = "__Agency:__ Aoni\n__Height:__ 173 cm, Devil Form - 180 cm",
+            Height = new Height(),
+        });
+
+        await harness.Model.LoadAsync(42);
+
+        Assert.That(
+            harness.Model.BioStats.Select(s => s.ValueDisplay),
+            Is.EqualTo(["Aoni", "173 cm, Devil Form - 180 cm"]));
+    }
+
+    // ---- Partly spoilered values ------------------------------------------------------------------
+
+    [TestCase("__Combat Style:__ Water Breathing & ~!Sun Breathing!~", "Water Breathing", "Sun Breathing")]
+    [TestCase("**Hardness**: 3.5 ~!(legs: 7; head: 5)!~", "3.5", "legs")]
+    public async Task BioStats_ValueThatIsOnlyPartlyASpoiler_HidesThatPart(string line, string shown, string hidden)
+    {
+        // Tanjirou's and Phosphophyllite's real shapes. Only a value that was a spoiler end to end
+        // used to be masked, so these printed the spoiler, markers and all.
+        var harness = new Harness();
+        harness.Returns(new Staff { Id = 42, Description = line });
+
+        await harness.Model.LoadAsync(42);
+
+        Assert.That(harness.Model.HasSpoilers, Is.True);
+        Assert.That(harness.Model.BioStats.Count, Is.EqualTo(1));
+        Assert.That(harness.Model.BioStats[0].ValueDisplay, Does.Contain(shown));
+        Assert.That(harness.Model.BioStats[0].ValueDisplay, Does.Contain("[spoiler]"));
+        Assert.That(harness.Model.BioStats[0].ValueDisplay, Does.Not.Contain(hidden));
+
+        harness.Model.ToggleSpoilersCommand.Execute(null);
+
+        Assert.That(harness.Model.BioStats[0].ValueDisplay, Does.Contain(shown));
+        Assert.That(harness.Model.BioStats[0].ValueDisplay, Does.Contain(hidden));
+        Assert.That(harness.Model.BioStats[0].ValueDisplay, Does.Not.Contain("~!"));
+        Assert.That(harness.Model.BioStats[0].ValueDisplay, Does.Not.Contain("!~"));
+    }
+
+    private static Height HeightOf(double metric, string imperial) => new()
+    {
+        Min = new HeightValue { Metric = metric, Imperial = imperial },
+        Max = new HeightValue { Metric = metric, Imperial = imperial },
+    };
+
     private sealed class Harness
     {
         public Harness()

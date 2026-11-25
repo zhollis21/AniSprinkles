@@ -134,6 +134,36 @@ public class DescriptionParserTests
         // run as a stat row.
         => Assert.That(DescriptionParser.Parse("__Some bold text__\nNot a stat row.").Stats, Is.Empty);
 
+    [TestCase("**Height:** 157 cm")]
+    [TestCase("**Height**: 157 cm")]
+    public void Parse_LabelBoldedWithAsterisks_IsAStatRow(string line)
+    {
+        // Markdown's other bold. 15 of the 300 most-favourited characters and staff open their bio
+        // this way (#238), Yuuji Itadori and Aoi Yuuki among them.
+        var result = DescriptionParser.Parse(line + "\n\nProse.");
+
+        Assert.That(result.Stats.Count, Is.EqualTo(1));
+        Assert.That(result.Stats[0].Label, Is.EqualTo("Height"));
+        Assert.That(result.Stats[0].Value, Is.EqualTo("157 cm"));
+        Assert.That(result.Prose, Is.EqualTo("Prose."));
+    }
+
+    [Test]
+    public void Parse_BothBoldSpellingsInOneBio_AreBothStatRows()
+    {
+        // Aoi Yuuki's real shape: the first line used to miss and take the second down with it.
+        var result = DescriptionParser.Parse("**Height:** 145 cm (4'9\")\n__Agency:__ Aoni Production\n\nProse.");
+
+        Assert.That(result.Stats.Select(s => s.Label), Is.EqualTo(["Height", "Agency"]));
+    }
+
+    [TestCase("**Some bold text**\nNot a stat row.")]
+    [TestCase("**Bold** opens this sentence: it is prose.")]
+    [TestCase("**Mismatched:__ markers")]
+    [TestCase("__Mismatched:** markers")]
+    public void Parse_AsteriskBoldThatIsNotALabel_IsStillProse(string input)
+        => Assert.That(DescriptionParser.Parse(input).Stats, Is.Empty);
+
     [Test]
     public void Parse_SpoilerBlockSpanningTwoLines_KeepsBothRowsInStats()
     {

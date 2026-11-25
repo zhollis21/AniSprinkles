@@ -12,6 +12,7 @@ public class Character : IFavouritable
     public string? Gender { get; set; }
     public string? Age { get; set; }
     public string? BloodType { get; set; }
+    public Height? Height { get; set; }
     public MediaDate? DateOfBirth { get; set; }
     public int? Favourites { get; set; }
     /// <summary>Whether the signed-in viewer has favorited this entity (from <c>isFavourite</c>).</summary>
