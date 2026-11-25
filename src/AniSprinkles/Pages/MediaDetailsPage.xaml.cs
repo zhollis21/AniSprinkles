@@ -119,8 +119,8 @@ public partial class MediaDetailsPage : ContentPage, IQueryAttributable
         // away. List ops recreate the scope via EnsurePageScope, so the sort popup — which fires this
         // too — stays harmless.
         ViewModel.CancelInFlight();
-        // A score or progress edit still in its debounce goes now, so it lands before the Library it
-        // returns to stops waiting for saves in flight (#225). The save reports its own failure.
+        // A score or progress edit still in its debounce goes now. A Library being returned to has
+        // already appeared by this point and is waiting for it (#225). The save reports its own failure.
         _ = ViewModel.FlushPendingSaveAsync();
     }
 

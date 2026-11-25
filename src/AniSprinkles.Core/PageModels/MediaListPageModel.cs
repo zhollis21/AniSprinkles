@@ -81,6 +81,12 @@ public partial class MediaListPageModel : ObservableObject, IAuthActions
     private int _ownFlows;
 
     /// <summary>
+    /// +1 saves from this page still on their way. Their cards already show the change, so a tap on
+    /// another card does not wait for them (<see cref="EnsureFreshBeforeEditAsync"/>).
+    /// </summary>
+    private int _ownSaves;
+
+    /// <summary>
     /// The DisplayAdultContent value the current <see cref="Sections"/> were built under (#118).
     /// The adult filter is applied while building, so a change only takes effect when a load
     /// actually runs — which the freshness window below would otherwise suppress for five minutes.
@@ -294,8 +300,8 @@ public partial class MediaListPageModel : ObservableObject, IAuthActions
 
     public async Task LoadAsync(bool forceReload = false)
     {
-        // A details-page edit sent as the user pressed Back is still in flight when this page
-        // appears; checking now would find nothing changed and keep the old values (#225). Forced
+        // A details-page edit made just before Back is unsent or in flight when this page appears;
+        // checking now would find nothing changed and keep the old values (#225). Forced
         // loads skip it: pull-to-refresh and the Library's own status changes want the list now.
         if (!forceReload && _ownFlows == 0)
         {
@@ -801,8 +807,17 @@ public partial class MediaListPageModel : ObservableObject, IAuthActions
         {
             _logger.LogInformation("+1 saving: media {MediaId} progress {Progress}", entry.MediaId, entry.Progress);
             var generationBeforeSave = _loadGeneration;
-            await _aniListClient.SaveMediaListEntryAsync(entry);
-            AbsorbOwnListChange(generationBeforeSave);
+            _ownSaves++;
+            try
+            {
+                await _aniListClient.SaveMediaListEntryAsync(entry);
+                AbsorbOwnListChange(generationBeforeSave);
+            }
+            finally
+            {
+                _ownSaves--;
+            }
+
             _logger.LogInformation("+1 saved: media {MediaId} progress {Progress}", entry.MediaId, entry.Progress);
             await _feedback.ShowToastAsync("Saved");
         }
@@ -865,12 +880,19 @@ public partial class MediaListPageModel : ObservableObject, IAuthActions
     /// <summary>
     /// Before an edit from a card, makes sure the card reflects every list change made elsewhere
     /// (#225): an edit saves the whole entry, so one made from a stale card writes the old status,
-    /// progress or score back over the change. Reloads first if needed — waiting for a load already
-    /// running — and refuses the edit if the list still cannot be brought up to date, or if the
-    /// entry is no longer listed once it is.
+    /// progress or score back over the change. Waits for one still on its way, reloads first if
+    /// needed — waiting for a load already running — and refuses the edit if the list still cannot be
+    /// brought up to date, or if the entry is no longer listed once it is.
     /// </summary>
     private async Task<bool> EnsureFreshBeforeEditAsync(MediaListEntry entry)
     {
+        // An edit the details page has not sent yet, or is still sending: the version cannot show it
+        // until it lands, and this card's copy would be saved over it.
+        if (_ownSaves == 0 && _ownFlows == 0)
+        {
+            await _listChanges.WaitForIdleAsync(InFlightSaveWait, _timeProvider);
+        }
+
         var refreshed = false;
         for (var attempt = 0; attempt < 2 && _reflectedListVersion != _listChanges.Version; attempt++)
         {

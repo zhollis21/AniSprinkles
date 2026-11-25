@@ -377,7 +377,7 @@ public class DetailsAdultFilterTests
                 new RecordingUserFeedback(),
                 new RecordingExternalBrowser(),
                 dialogs,
-                new ListEntryStatusFlow(dialogs), Substitute.For<IUpNextOffer>(),
+                new ListEntryStatusFlow(dialogs), Substitute.For<IUpNextOffer>(), new ListChangeTracker(),
                 NullLogger<MediaDetailsPageModel>.Instance);
         }
 

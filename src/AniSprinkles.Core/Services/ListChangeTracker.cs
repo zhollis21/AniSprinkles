@@ -13,9 +13,10 @@ namespace AniSprinkles.Services;
 /// notice the same change.
 /// </para>
 /// <para>
-/// It also knows which saves are still on their way (<see cref="WaitForIdleAsync"/>): a details-page
-/// edit sent as the user presses Back lands just after the Library has appeared and checked, and
-/// waiting for it is what lets that return show the change rather than the old values.
+/// It also knows which saves are still on their way (<see cref="WaitForIdleAsync"/>), including an
+/// edit not yet sent (<see cref="HoldForEdit"/>): a details-page edit made just before Back lands
+/// after the Library has appeared and checked, and waiting for it is what lets that return show the
+/// change rather than the old values.
 /// </para>
 /// </summary>
 public sealed class ListChangeTracker
@@ -66,7 +67,33 @@ public sealed class ListChangeTracker
     }
 
     /// <summary>
-    /// Completes when no save or removal is in flight, or once <paramref name="timeout"/> has passed,
+    /// An edit the user has made that is still waiting to be sent (the details page batches taps for
+    /// 1.5 s). Until the returned hold is disposed it counts as in flight, because a Library that
+    /// appears first would otherwise find nothing to wait for: going Back, it appears before the
+    /// details page is told it has been left. Dispose it once the save has been handed to the client,
+    /// which counts it from there, or once the edit is dropped. Never moves <see cref="Version"/>.
+    /// </summary>
+    public IDisposable HoldForEdit()
+    {
+        BeginChange();
+        return new EditHold(this);
+    }
+
+    private sealed class EditHold(ListChangeTracker owner) : IDisposable
+    {
+        private int _released;
+
+        public void Dispose()
+        {
+            if (Interlocked.Exchange(ref _released, 1) == 0)
+            {
+                owner.EndChange(changed: false);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Completes when no save, removal or unsent edit is in flight, or once <paramref name="timeout"/> has passed,
     /// whichever is first. Never throws on the timeout: a stalled save is the caller's cue to carry on.
     /// </summary>
     public async Task WaitForIdleAsync(TimeSpan timeout, TimeProvider timeProvider)

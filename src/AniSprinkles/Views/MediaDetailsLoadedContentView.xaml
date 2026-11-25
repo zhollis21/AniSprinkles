@@ -307,7 +307,7 @@
                                     Padding="8,4" VerticalOptions="Center">
                                 <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding EditProgressCommand}" /></Border.GestureRecognizers>
                                 <HorizontalStackLayout Spacing="6">
-                                    <Label Text="{Binding ProgressLabel}"
+                                    <Label Text="{Binding ProgressLabel}" AutomationId="DetailsProgress"
                                            Style="{StaticResource Body2Strong}" VerticalTextAlignment="Center" />
                                     <Image WidthRequest="14" HeightRequest="14" VerticalOptions="Center">
                                         <Image.Source>
@@ -319,7 +319,7 @@
                                 </HorizontalStackLayout>
                             </Border>
                             <!-- Minus button -->
-                            <Border Grid.Column="3" StrokeShape="RoundRectangle 18" StrokeThickness="1"
+                            <Border Grid.Column="3" AutomationId="ProgressMinus" StrokeShape="RoundRectangle 18" StrokeThickness="1"
                                     Stroke="{StaticResource Gray600}" Background="Transparent"
                                     Padding="0" HeightRequest="36" WidthRequest="36">
                                 <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding DecrementProgressCommand}" /></Border.GestureRecognizers>
@@ -332,7 +332,7 @@
                                 </Image>
                             </Border>
                             <!-- Plus button -->
-                            <Border Grid.Column="4" StrokeShape="RoundRectangle 18" StrokeThickness="1"
+                            <Border Grid.Column="4" AutomationId="ProgressPlus" StrokeShape="RoundRectangle 18" StrokeThickness="1"
                                     Stroke="{StaticResource Gray600}" Background="Transparent"
                                     Padding="0" HeightRequest="36" WidthRequest="36">
                                 <Border.GestureRecognizers><TapGestureRecognizer Command="{Binding IncrementProgressCommand}" /></Border.GestureRecognizers>
