@@ -149,7 +149,9 @@ public class AniListClientOperationsTests
         var (_, entry) = await harness.Client.GetMediaAsync(9, TestContext.CurrentContext.CancellationToken);
 
         // The viewer's own entry is the one block that selects mediaId; the cards' entries do not.
-        var ownEntry = System.Text.RegularExpressions.Regex.Matches(harness.Handler.Last.Query ?? "", @"mediaListEntry\s*\{([^}]*)\}")
+        var query = harness.Handler.Last.Query;
+        Assert.That(query, Is.Not.Null);
+        var ownEntry = System.Text.RegularExpressions.Regex.Matches(query, @"mediaListEntry\s*\{([^}]*)\}")
             .Select(m => m.Groups[1].Value)
             .Single(block => block.Contains("mediaId", StringComparison.Ordinal));
         Assert.That(ownEntry, Does.Contain("progressVolumes"));
@@ -763,6 +765,52 @@ public class AniListClientOperationsTests
         Assert.That(media?.Relations.Single().Node?.IsAdult, Is.True);
         Assert.That(media?.Recommendations.Single().MediaRecommendation?.IsAdult, Is.True);
     }
+
+    // ── Height (#238) ────────────────────────────────────────────────
+
+    [Test]
+    public async Task GetCharacter_AsksForAndMapsHeight()
+    {
+        var harness = new Harness().Returns("Character", """
+            {"Character":{"id":40882,"height":{
+                "initial":null,
+                "min":{"metric":170.5,"imperial":"5'7\""},
+                "max":{"metric":183,"imperial":"6'0\""}}}}
+            """);
+
+        var character = await harness.Client.GetCharacterAsync(
+            40882, cancellationToken: TestContext.CurrentContext.CancellationToken);
+
+        Assert.That(harness.Handler.Last.Query, Does.Contain(HeightSelection));
+        Assert.That(character?.Height?.Initial, Is.Null);
+        Assert.That(character?.Height?.Min?.Metric, Is.EqualTo(170.5));
+        Assert.That(character?.Height?.Min?.Imperial, Is.EqualTo("5'7\""));
+        Assert.That(character?.Height?.Max?.Metric, Is.EqualTo(183));
+        Assert.That(character?.Height?.Max?.Imperial, Is.EqualTo("6'0\""));
+    }
+
+    [Test]
+    public async Task GetStaff_AsksForAndMapsHeight()
+    {
+        var harness = new Harness().Returns("Staff", """
+            {"Staff":{"id":5,"height":{
+                "initial":{"metric":167,"imperial":"5'6\""},
+                "min":null,
+                "max":null}}}
+            """);
+
+        var staff = await harness.Client.GetStaffAsync(
+            5, cancellationToken: TestContext.CurrentContext.CancellationToken);
+
+        Assert.That(harness.Handler.Last.Query, Does.Contain(HeightSelection));
+        Assert.That(staff?.Height?.Initial?.Metric, Is.EqualTo(167));
+        Assert.That(staff?.Height?.Initial?.Imperial, Is.EqualTo("5'6\""));
+        Assert.That(staff?.Height?.Min, Is.Null);
+        Assert.That(staff?.Height?.Max, Is.Null);
+    }
+
+    private const string HeightSelection =
+        "height { initial { metric imperial } min { metric imperial } max { metric imperial } }";
 
     private const string EmptyPage =
         """{"Page":{"pageInfo":{"currentPage":1,"hasNextPage":false},"media":[]}}""";

@@ -145,7 +145,7 @@ public partial class StaffDetailsPageModel : DetailsPageModelBase<Staff>
         : DescriptionTruncationHeuristic.CollapsedMaxLines;
 
     public bool HasSpoilers =>
-        _parsedDescription.Stats.Any(s => s.IsRowSpoiler || s.IsValueSpoiler)
+        _parsedDescription.Stats.Any(s => s.HasSpoiler)
         || SpoilerHtmlProcessor.ContainsSpoilers(_parsedDescription.Prose);
 
     public string BornStatDisplay
@@ -160,7 +160,7 @@ public partial class StaffDetailsPageModel : DetailsPageModelBase<Staff>
 
     partial void OnStaffChanged(Staff? value)
     {
-        _parsedDescription = DescriptionParser.Parse(value?.Description);
+        _parsedDescription = DescriptionParser.Parse(value?.Description).WithHeight(value?.Height);
         ToggleFavouriteCommand.NotifyCanExecuteChanged();
     }
 
@@ -348,8 +348,11 @@ public partial class StaffDetailsPageModel : DetailsPageModelBase<Staff>
             LabelDisplay = labelHidden ? Bar(row.Label.Length, max: 12) : row.Label,
             // The value is Markdown like the prose is — AniList puts links in stat rows too, and
             // Oda's "Favorite Mangaka" was rendering as a literal [name](url). The bar is the
-            // spoiler mask, which is plain text and must not be processed.
-            ValueDisplay = valueHidden ? Bar(row.Value.Length, max: 24) : AniListMarkdownProcessor.Process(row.Value),
+            // spoiler mask, which is plain text and must not be processed. A value that is only
+            // partly a spoiler keeps its markers, so it gets the prose's inline [spoiler] chip.
+            ValueDisplay = valueHidden
+                ? Bar(row.Value.Length, max: 24)
+                : SpoilerHtmlProcessor.Process(AniListMarkdownProcessor.Process(row.Value), IsShowingSpoilers),
             IsLabelSpoilerHidden = labelHidden,
             IsValueSpoilerHidden = valueHidden,
         };

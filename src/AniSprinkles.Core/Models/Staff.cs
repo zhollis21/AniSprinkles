@@ -18,6 +18,7 @@ public class Staff : IFavouritable
     public List<int> YearsActive { get; set; } = [];
     public string? HomeTown { get; set; }
     public string? BloodType { get; set; }
+    public Height? Height { get; set; }
     public int? Favourites { get; set; }
     /// <summary>Whether the signed-in viewer has favorited this entity (from <c>isFavourite</c>).</summary>
     public bool IsFavourite { get; set; }

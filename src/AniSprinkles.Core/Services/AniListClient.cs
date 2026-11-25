@@ -1241,6 +1241,7 @@ public class AniListClient : IAniListClient
             YearsActive = dto.YearsActive ?? [],
             HomeTown = dto.HomeTown,
             BloodType = dto.BloodType,
+            Height = dto.Height,
             Favourites = dto.Favourites,
             IsFavourite = dto.IsFavourite ?? false,
             SiteUrl = dto.SiteUrl,
@@ -1300,6 +1301,7 @@ public class AniListClient : IAniListClient
             Gender = dto.Gender,
             Age = dto.Age,
             BloodType = dto.BloodType,
+            Height = dto.Height,
             DateOfBirth = dto.DateOfBirth,
             Favourites = dto.Favourites,
             IsFavourite = dto.IsFavourite ?? false,
@@ -1940,6 +1942,7 @@ public class AniListClient : IAniListClient
         public List<int>? YearsActive { get; set; }
         public string? HomeTown { get; set; }
         public string? BloodType { get; set; }
+        public Height? Height { get; set; }
         public int? Favourites { get; set; }
         public bool? IsFavourite { get; set; }
         public string? SiteUrl { get; set; }
@@ -2008,6 +2011,7 @@ public class AniListClient : IAniListClient
         public string? Gender { get; set; }
         public string? Age { get; set; }
         public string? BloodType { get; set; }
+        public Height? Height { get; set; }
         public MediaDate? DateOfBirth { get; set; }
         public int? Favourites { get; set; }
         public bool? IsFavourite { get; set; }
@@ -2440,6 +2444,7 @@ query Staff($id: Int!, $charactersPage: Int = 1, $mediaPage: Int = 1, $character
     yearsActive
     homeTown
     bloodType
+    height { initial { metric imperial } min { metric imperial } max { metric imperial } }
     favourites
     isFavourite
     siteUrl
@@ -2694,6 +2699,7 @@ query Character($id: Int!, $mediaPage: Int = 1, $mediaSort: [MediaSort] = [POPUL
     gender
     age
     bloodType
+    height { initial { metric imperial } min { metric imperial } max { metric imperial } }
     dateOfBirth { year month day }
     favourites
     isFavourite
