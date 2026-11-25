@@ -1,3 +1,4 @@
+using AniSprinkles.Utilities;
 using CommunityToolkit.Maui.Views;
 
 namespace AniSprinkles.Views;
@@ -29,9 +30,9 @@ public partial class UpNextPopup : Popup<object>
         HorizontalOptions = LayoutOptions.Center;
         Margin = new Thickness(0, 1, 0, 0);
 
-        var display = DeviceDisplay.MainDisplayInfo;
-        SheetBorder.WidthRequest = display.Width / display.Density;
-        PickerScroll.MaximumHeightRequest = display.Height / display.Density * MaxListHeightFraction;
+        var screen = ScreenMetrics.Read();
+        SheetBorder.WidthRequest = screen.WidthDip;
+        PickerScroll.MaximumHeightRequest = screen.HeightDip * MaxListHeightFraction;
 
         Opened += OnOpenedGoEdgeToEdge;
     }

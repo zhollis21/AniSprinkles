@@ -9,6 +9,7 @@ using Microsoft.Maui.DevFlow.Agent.Core.Network;
 #endif
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
+using Sentry.Extensions.Logging;
 using Syncfusion.Maui.Toolkit.Hosting;
 #if ANDROID
 using AniSprinkles.Platforms.Android;
@@ -45,6 +46,11 @@ public static class MauiProgram
                 // Then a crash is marked fatal, so it is not filed at the same level as a handled
                 // error (#180).
                 options.SetBeforeSend((evt, _) => SentryCrashSeverity.Apply(SentryScrubber.Scrub(evt)));
+
+                // MAUI logs a harmless Error when a button's icon finishes loading after the button is
+                // gone (#230). Dropped from Sentry only, before the event is built; logcat and the file
+                // log still get it.
+                options.AddLogEntryFilter(SentryLogNoise.Filter);
 #if DEBUG
                 options.Environment = "Development";
 #else
