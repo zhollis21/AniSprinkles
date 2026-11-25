@@ -99,6 +99,35 @@ public sealed class ListEditJourneys : Journey
     }
 
     /// <summary>
+    /// +1 on the details page and Back before its 1.5 s batching sends it: the Library appears before
+    /// the details page is told it has been left, so it has to wait for an edit that is not in flight
+    /// yet. The page models' halves of this passed alone while a phone showed the old number.
+    /// Put back with -1 the same way.
+    /// </summary>
+    [Test]
+    public async Task DetailsPlusOne_ThenBackAtOnce_ShowsOnTheLibraryCard()
+    {
+        const string title = "ONE PIECE";
+
+        await App.OpenLibraryCardAsync(text => text == title);
+        var shown = await Driver.WaitForAsync("the details progress", automationId: "DetailsProgress",
+            predicate: e => int.TryParse(e.Text?.Split('/')[0], out _));
+        var before = int.Parse(shown.Text?.Split('/')[0] ?? "0", System.Globalization.CultureInfo.InvariantCulture);
+
+        await ChangeProgressThenLeaveAsync("ProgressPlus", before + 1);
+        await App.OpenLibraryCardAsync(text => text == title);
+        await ChangeProgressThenLeaveAsync("ProgressMinus", before);
+    }
+
+    private async Task ChangeProgressThenLeaveAsync(string button, int expected)
+    {
+        await Driver.TapAsync(button, automationId: button);
+        await Driver.PressBackAsync();
+        await Driver.WaitForAsync($"the Library card to read {expected}", automationId: "MediaCardProgress",
+            predicate: e => e.WindowBounds?.Y > 0 && e.Text?.StartsWith($"{expected}/", StringComparison.Ordinal) == true);
+    }
+
+    /// <summary>
     /// The details page's status dropdown, from <paramref name="from"/> to <paramref name="status"/>
     /// (a <c>MediaListStatus</c> name), waiting for the label to read <paramref name="label"/>.
     /// </summary>
@@ -165,14 +194,20 @@ public sealed class ListEditJourneys : Journey
 
     /// <summary>
     /// The details page's status dropdown completes too, and offers Up Next the same way; Not now
-    /// closes it with the status saved. Put back to Watching through the same dropdown.
+    /// closes it with the status saved, and going back shows the title moved. Put back to Watching
+    /// through the same dropdown.
     /// </summary>
     [Test]
     public async Task DetailsDropdown_Completed_OffersUpNext_AndNotNowKeepsTheCompletion()
     {
-        // ONE PIECE (media 21): on the test account's Watching list, relations recorded.
+        // On the test account's Watching list, relations recorded.
+        const string title = "ONE PIECE";
         await App.RequireUpNextEnabledAsync();
-        await App.NavigateAsync("media-details?mediaId=21");
+        await SetSectionAsync("Completed", expanded: false);
+        var watching = await App.ReadSectionCountAsync("Watching");
+        var completed = await App.ReadSectionCountAsync("Completed");
+
+        await App.OpenLibraryCardAsync(text => text == title);
         await Driver.WaitForAsync("the list status to read Watching", automationId: "ListStatusLabel",
             predicate: e => e.Text == "Watching");
 
@@ -185,9 +220,17 @@ public sealed class ListEditJourneys : Journey
         await Driver.WaitForAsync("the list status to read Completed", automationId: "ListStatusLabel",
             predicate: e => e.Text == "Completed");
 
-        await Driver.TapAsync("the list status button", automationId: "ListStatusButton");
-        await Driver.TapAsync("Watching", automationId: "ListStatusOption_Current");
-        await Driver.WaitForAsync("the list status to read Watching again", automationId: "ListStatusLabel",
-            predicate: e => e.Text == "Watching");
+        await Driver.PressBackAsync();
+        await Driver.WaitForGoneAsync($"'{title}' to leave Watching", automationId: "MediaCardTitle",
+            predicate: e => e.Text == title && e.WindowBounds?.Y > 0);
+        await App.WaitForSectionCountAsync("Watching", watching - 1);
+        await App.WaitForSectionCountAsync("Completed", completed + 1);
+
+        await SetSectionAsync("Completed", expanded: true);
+        await App.OpenLibraryCardAsync(text => text == title);
+        await SetDetailsStatusAsync("Completed", "Current", "Watching");
+        await Driver.PressBackAsync();
+        await App.WaitForSectionCountAsync("Completed", completed);
+        await App.WaitForSectionCountAsync("Watching", watching);
     }
 }

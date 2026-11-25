@@ -149,7 +149,7 @@ public class AniListClientOperationsTests
         var (_, entry) = await harness.Client.GetMediaAsync(9, TestContext.CurrentContext.CancellationToken);
 
         // The viewer's own entry is the one block that selects mediaId; the cards' entries do not.
-        var ownEntry = System.Text.RegularExpressions.Regex.Matches(harness.Handler.Last.Query, @"mediaListEntry\s*\{([^}]*)\}")
+        var ownEntry = System.Text.RegularExpressions.Regex.Matches(harness.Handler.Last.Query ?? "", @"mediaListEntry\s*\{([^}]*)\}")
             .Select(m => m.Groups[1].Value)
             .Single(block => block.Contains("mediaId", StringComparison.Ordinal));
         Assert.That(ownEntry, Does.Contain("progressVolumes"));

@@ -1284,7 +1284,7 @@ jobs:
           # after the canary and the logs, like every other gate in this script.
           # MIN_UI_JOURNEYS: a floor on how many passed, so journeys that vanish or are skipped
           # fail as well. MTP's "total" counts skipped tests, so the floor reads "succeeded".
-          MIN_UI_JOURNEYS=13
+          MIN_UI_JOURNEYS=14
           UI_JOURNEYS_FAILED=0
           is_count() { case "$1" in '' | *[!0-9]*) return 1 ;; *) return 0 ;; esac; }
           mkdir -p logs

@@ -232,6 +232,154 @@ public class MediaListOutsideChangeReloadTests
         await pending;
     }
 
+    // ── A details edit still waiting on its debounce ─────────────────
+
+    [Test]
+    public async Task AppearingBeforeTheDetailsPageIsTold_WaitsForItsUnsentEdit_ThenReloads()
+    {
+        // The order a device runs it in: going Back, the Library appears and checks before the
+        // details page's OnNavigatedFrom sends the edit. Each half was tested alone and passed.
+        var harness = new Harness();
+        await harness.Model.LoadAsync();
+        var details = await harness.OpenDetailsAsync();
+        await details.IncrementProgressCommand.ExecuteAsync(null);
+
+        var appearing = harness.Model.LoadAsync();
+        await harness.YieldAsync();
+        Assert.That(appearing.IsCompleted, Is.False, "the appearance went ahead with the edit unsent");
+
+        await details.FlushPendingSaveAsync();
+        await appearing.WaitAsync(TimeSpan.FromSeconds(5));
+
+        await harness.AssertListFetchesAsync(2);
+        await harness.AssertSavesAsync(1);
+    }
+
+    [Test]
+    public async Task LeavingWhileAppearing_StillWaits_ForTheSaveTheFlushSent()
+    {
+        // The flush cancels the debounce, which lets go of the edit; the wait carries over to the
+        // save it sends.
+        var harness = new Harness();
+        await harness.Model.LoadAsync();
+        var details = await harness.OpenDetailsAsync();
+        await details.IncrementProgressCommand.ExecuteAsync(null);
+        var save = harness.HoldNextSave();
+
+        var appearing = harness.Model.LoadAsync();
+        var flush = details.FlushPendingSaveAsync();
+        await harness.YieldAsync();
+        Assert.That(appearing.IsCompleted, Is.False, "the appearance went ahead with the save still out");
+
+        save.SetResult(new MediaListEntry { Id = 101 });
+        await flush;
+        await appearing.WaitAsync(TimeSpan.FromSeconds(5));
+        await harness.AssertListFetchesAsync(2);
+    }
+
+    [Test]
+    public async Task AppearingWithAnUnsentEdit_ThatNobodyFlushes_WaitsForItsOwnTimer()
+    {
+        var harness = new Harness();
+        await harness.Model.LoadAsync();
+        var details = await harness.OpenDetailsAsync();
+        await details.IncrementProgressCommand.ExecuteAsync(null);
+
+        await harness.Model.LoadAsync().WaitAsync(TimeSpan.FromSeconds(10));
+
+        await harness.AssertListFetchesAsync(2);
+        await harness.AssertSavesAsync(1);
+    }
+
+    [Test]
+    public async Task TwoQuickDetailsEdits_AreStillWaitedFor_AndSavedOnce()
+    {
+        var harness = new Harness();
+        await harness.Model.LoadAsync();
+        var details = await harness.OpenDetailsAsync();
+        await details.IncrementProgressCommand.ExecuteAsync(null);
+        await details.IncrementProgressCommand.ExecuteAsync(null);
+
+        var appearing = harness.Model.LoadAsync();
+        await harness.YieldAsync();
+        Assert.That(appearing.IsCompleted, Is.False, "the appearance went ahead with the edit unsent");
+        await details.FlushPendingSaveAsync();
+        await appearing.WaitAsync(TimeSpan.FromSeconds(5));
+
+        await harness.AssertSavesAsync(1);
+        await harness.AssertNothingHeldAsync();
+    }
+
+    [Test]
+    public async Task AStatusPickThatCarriesTheEdit_LetsItGo()
+    {
+        // Nothing left held, or every Library appearance afterwards would wait out the 5 s cap.
+        var harness = new Harness();
+        var details = await harness.OpenDetailsAsync();
+        await details.IncrementProgressCommand.ExecuteAsync(null);
+
+        await details.ApplyStatusPickCommand.ExecuteAsync(nameof(MediaListStatus.Paused));
+
+        await harness.AssertNothingHeldAsync();
+        await harness.AssertSavesAsync(1);
+    }
+
+    [Test]
+    public async Task AnEditWhoseSaveFails_IsLetGo()
+    {
+        var harness = new Harness();
+        var details = await harness.OpenDetailsAsync();
+        harness.Inner.SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>())
+            .Returns<MediaListEntry?>(_ => throw new HttpRequestException("offline"));
+        await details.IncrementProgressCommand.ExecuteAsync(null);
+
+        await details.FlushPendingSaveAsync();
+
+        await harness.AssertNothingHeldAsync();
+    }
+
+    [Test]
+    public async Task PlusOne_WhileADetailsEditIsUnsent_CountsFromThatEdit()
+    {
+        // Back, then +1 on the same card before the details edit has landed: the card still reads 3,
+        // and saving 4 from it would lose one of the two.
+        var harness = new Harness();
+        await harness.Model.LoadAsync();
+        var details = await harness.OpenDetailsAsync();
+        await details.IncrementProgressCommand.ExecuteAsync(null);
+
+        var increment = harness.Model.IncrementProgressCommand.ExecuteAsync(harness.FirstEntry());
+        harness.TitleOneProgress = 4;
+        await details.FlushPendingSaveAsync();
+        Assert.That(() => harness.FirstEntry().Progress, Is.EqualTo(5).After(5000, 20));
+        await harness.AdvancePastDebounceAsync();
+        await increment.WaitAsync(TimeSpan.FromSeconds(5));
+
+        await harness.Inner.Received(1).SaveMediaListEntryAsync(
+            Arg.Is<MediaListEntry>(e => e.MediaId == 1 && e.Progress == 5), Arg.Any<CancellationToken>());
+    }
+
+    [Test]
+    public async Task PlusOne_WhileAnotherCardsPlusOneIsSaving_DoesNotWaitForIt()
+    {
+        // The Library's own save is no reason to hold a tap: its card already shows the change.
+        var harness = new Harness();
+        await harness.Model.LoadAsync();
+        var save = harness.HoldNextSave();
+        var first = harness.Model.IncrementProgressCommand.ExecuteAsync(harness.FirstEntry());
+        await harness.AdvancePastDebounceAsync();
+        var other = harness.Model.Sections.SelectMany(s => s.AllItems).First(e => e.MediaId == 2);
+
+        var second = harness.Model.IncrementProgressCommand.ExecuteAsync(other);
+        await harness.YieldAsync();
+
+        Assert.That(other.Progress, Is.EqualTo(2), "the tap waited for the other card's save");
+        save.SetResult(new MediaListEntry { Id = 101 });
+        await first;
+        await harness.AdvancePastDebounceAsync();
+        await second.WaitAsync(TimeSpan.FromSeconds(5));
+    }
+
     // ── Edits from a card that has not caught up yet ─────────────────
 
     [Test]
@@ -490,6 +638,29 @@ public class MediaListOutsideChangeReloadTests
                     _preferences, navigation, dialogs, feedback, flow, upNext, Tracker, _time,
                     NullLogger<AnimeLibraryPageModel>.Instance);
         }
+
+        /// <summary>Title 1's details page, on the same client and tracker as the Library.</summary>
+        public async Task<MediaDetailsPageModel> OpenDetailsAsync()
+        {
+            var media = new Media { Id = 1, Type = "ANIME", Episodes = 12 };
+            var entry = TestDataBuilder.Entry(1, progress: TitleOneProgress, status: MediaListStatus.Current, episodes: 12);
+            Inner.GetMediaAsync(1, Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult<(Media?, MediaListEntry?)>((media, entry)));
+            var dialogs = new ScriptedDialogService();
+            var details = new MediaDetailsPageModel(
+                Client, _auth, new ErrorReportService(NullLogger<ErrorReportService>.Instance),
+                Substitute.For<INavigationService>(), new RecordingUserFeedback(), new RecordingExternalBrowser(),
+                dialogs, new ListEntryStatusFlow(dialogs), Substitute.For<IUpNextOffer>(), Tracker,
+                NullLogger<MediaDetailsPageModel>.Instance);
+            await details.LoadAsync(1, entry);
+            return details;
+        }
+
+        public Task AssertSavesAsync(int expected)
+            => Inner.Received(expected).SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>());
+
+        public Task AssertNothingHeldAsync()
+            => Tracker.WaitForIdleAsync(TimeSpan.FromSeconds(5), Time).WaitAsync(TimeSpan.FromSeconds(2));
 
         /// <summary>Holds the next save open until the test answers it.</summary>
         public TaskCompletionSource<MediaListEntry?> HoldNextSave()

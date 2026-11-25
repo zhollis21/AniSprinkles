@@ -54,4 +54,22 @@ public class ListChangeTrackerTests
         Assert.That(tracker.WaitForIdleAsync(TimeSpan.FromSeconds(5), new ManualTimeProvider(DateTimeOffset.UnixEpoch)).IsCompleted, Is.False);
         tracker.EndChange(changed: false);
     }
+
+    [Test]
+    public async Task AnEditHold_IsWaitedFor_AndMovesNoVersion_AndLetsGoOnlyOnce()
+    {
+        var tracker = new ListChangeTracker();
+        var first = tracker.HoldForEdit();
+        var second = tracker.HoldForEdit();
+        var wait = tracker.WaitForIdleAsync(TimeSpan.FromSeconds(5), new ManualTimeProvider(DateTimeOffset.UnixEpoch));
+
+        first.Dispose();
+        first.Dispose();
+        await Task.Yield();
+        Assert.That(wait.IsCompleted, Is.False, "a second Dispose let go of the other edit");
+
+        second.Dispose();
+        await wait.WaitAsync(TimeSpan.FromSeconds(5));
+        Assert.That(tracker.Version, Is.Zero);
+    }
 }

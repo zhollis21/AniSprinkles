@@ -14,6 +14,7 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
     private readonly IDialogService _dialogs;
     private readonly ListEntryStatusFlow _statusFlow;
     private readonly IUpNextOffer _upNext;
+    private readonly ListChangeTracker _listChanges;
 
     // Correlates this page's own trace lines within one load. The in-flight guard in LoadAsync means
     // loads cannot interleave, so the base's NAVTRACE lines correlate to the current load by time.
@@ -78,12 +79,14 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
         IDialogService dialogs,
         ListEntryStatusFlow statusFlow,
         IUpNextOffer upNext,
+        ListChangeTracker listChanges,
         ILogger<MediaDetailsPageModel> logger)
         : base(aniListClient, authService, navigationService, feedback, browser, errorReportService, logger)
     {
         _dialogs = dialogs;
         _statusFlow = statusFlow;
         _upNext = upNext;
+        _listChanges = listChanges;
 
         _characters = new PaginatedSection<CharacterEdge>(
             CharactersDefaultSort,
@@ -1476,33 +1479,47 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
 
     private async Task DebouncedSaveAsync()
     {
-        _saveDebounceCts?.Cancel();
-        var debounce = new CancellationTokenSource();
-        _saveDebounceCts = debounce;
+        // Held from the tap, not from the save (#225): going Back, the Library appears before this
+        // page is told it has been left, and would find nothing in flight to wait for. Let go once
+        // the save is in the client's hands, which counts it from there, so a slow toast or an open
+        // Retry snackbar holds nothing.
+        Task<bool> save;
+        using (_listChanges.HoldForEdit())
+        {
+            _saveDebounceCts?.Cancel();
+            var debounce = new CancellationTokenSource();
+            _saveDebounceCts = debounce;
 
-        try
-        {
-            await Task.Delay(1500, debounce.Token);
-        }
-        catch (TaskCanceledException)
-        {
-            return;
-        }
+            try
+            {
+                await Task.Delay(1500, debounce.Token);
+            }
+            catch (TaskCanceledException)
+            {
+                return;
+            }
 
-        // No longer pending: a leave from here on finds nothing to flush.
-        if (ReferenceEquals(_saveDebounceCts, debounce))
-        {
+            // Cancelled after the timer fired but before this ran: a flush or a status pick got there
+            // first and its save carries this edit, so saving here would send it twice.
+            if (debounce.IsCancellationRequested)
+            {
+                return;
+            }
+
+            // No longer pending: a leave from here on finds nothing to flush.
             _saveDebounceCts = null;
+
+            save = SaveCurrentEntryAsync();
         }
 
-        await SaveCurrentEntryAsync();
+        await save;
     }
 
     /// <summary>
     /// Saves now a score or progress edit still waiting on its debounce. The page calls it on the
-    /// way out (#225): left to its timer, the save lands just after the Library has appeared and
-    /// checked for changes, and the Library keeps the old values. Nothing pending — never edited,
-    /// already saved, or carried by a status pick that cancelled the debounce — saves nothing.
+    /// way out (#225), so a Library that is already waiting for the edit does not sit out the rest
+    /// of the timer. Nothing pending — never edited, already saved, or carried by a status pick that
+    /// cancelled the debounce — saves nothing.
     /// </summary>
     public Task FlushPendingSaveAsync()
     {
@@ -1511,6 +1528,8 @@ public partial class MediaDetailsPageModel : DetailsPageModelBase<Media>
             return Task.CompletedTask;
         }
 
+        // The cancelled debounce lets go of the edit when it next runs on this thread, by which time
+        // this save is already counted, so a Library waiting for the edit carries on to the save.
         pending.Cancel();
         _saveDebounceCts = null;
         return SaveCurrentEntryAsync();

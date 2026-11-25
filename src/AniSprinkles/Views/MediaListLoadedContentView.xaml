@@ -43,7 +43,7 @@
                                    MaxLines="2"
                                    LineBreakMode="TailTruncation" />
                             <HorizontalStackLayout Spacing="8">
-                                <Label Text="{Binding ProgressDisplay}"
+                                <Label Text="{Binding ProgressDisplay}" AutomationId="MediaCardProgress"
                                        Style="{StaticResource Caption1}"
                                        TextColor="{StaticResource Gray400}" />
                                 <HorizontalStackLayout Spacing="3" IsVisible="{Binding HasScore}">
@@ -186,7 +186,7 @@
 
                             <Grid Grid.Row="1" ColumnDefinitions="*,Auto" ColumnSpacing="6" VerticalOptions="End">
                                 <VerticalStackLayout Grid.Column="0" Spacing="2" VerticalOptions="End">
-                                    <Label Text="{Binding ProgressDisplay}"
+                                    <Label Text="{Binding ProgressDisplay}" AutomationId="MediaCardProgress"
                                            Style="{StaticResource Caption2}"
                                            TextColor="{StaticResource Gray400}" />
                                     <Label Text="{Binding EpisodesBehindDisplay}"
@@ -257,7 +257,7 @@
                            LineBreakMode="TailTruncation"
                            VerticalTextAlignment="Center" />
                     <Label Grid.Column="1"
-                           Text="{Binding ProgressDisplay}"
+                           Text="{Binding ProgressDisplay}" AutomationId="MediaCardProgress"
                            Style="{StaticResource Caption1}"
                            TextColor="{StaticResource Gray400}"
                            VerticalTextAlignment="Center" />

@@ -255,11 +255,13 @@ public class MediaDetailsPageModelTests
                 Feedback,
                 new RecordingExternalBrowser(),
                 Dialogs,
-                new ListEntryStatusFlow(Dialogs), upNext?.Invoke(this) ?? Substitute.For<IUpNextOffer>(),
+                new ListEntryStatusFlow(Dialogs), upNext?.Invoke(this) ?? Substitute.For<IUpNextOffer>(), Tracker,
                 Logger);
         }
 
         public IAniListClient Client { get; } = Substitute.For<IAniListClient>();
+
+        public ListChangeTracker Tracker { get; } = new();
 
         public ScriptedDialogService Dialogs { get; } = new();
 
@@ -318,6 +320,52 @@ public class MediaDetailsPageModelTests
 
         await harness.Client.Received(1).SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>());
     }
+
+    [Test]
+    public async Task Leaving_WhenTheTimerHasFiredButNotYetSaved_SavesTheEditOnce()
+    {
+        // The timer fires while the UI thread is busy with the page change, so the flush runs before
+        // the timer's own continuation does, and cancelling a delay that has already finished stops
+        // nothing: the edit went to AniList twice (seen on device, 2 of 3 runs).
+        var harness = await ListedAs(MediaListStatus.Current);
+        var uiThread = new HeldSynchronizationContext();
+        var original = SynchronizationContext.Current;
+        SynchronizationContext.SetSynchronizationContext(uiThread);
+        try
+        {
+            harness.Model.SetStarRatingCommand.Execute("4");
+            Thread.Sleep(TimeSpan.FromMilliseconds(1800));
+            Assert.That(uiThread.HeldCount, Is.EqualTo(1), "The timer should have fired and be waiting for the UI thread.");
+
+            _ = harness.Model.FlushPendingSaveAsync();
+            uiThread.RunHeld();
+        }
+        finally
+        {
+            SynchronizationContext.SetSynchronizationContext(original);
+        }
+
+        await harness.Client.Received(1).SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>());
+    }
+
+    /// <summary>A UI thread too busy to run anything posted to it until <see cref="RunHeld"/>.</summary>
+    private sealed class HeldSynchronizationContext : SynchronizationContext
+    {
+        private readonly System.Collections.Concurrent.ConcurrentQueue<(SendOrPostCallback Callback, object? State)> _held = new();
+
+        public int HeldCount => _held.Count;
+
+        public override void Post(SendOrPostCallback d, object? state) => _held.Enqueue((d, state));
+
+        public void RunHeld()
+        {
+            while (_held.TryDequeue(out var work))
+            {
+                work.Callback(work.State);
+            }
+        }
+    }
+
     [Test]
     public async Task Leaving_WithNothingEdited_SavesNothing()
     {
