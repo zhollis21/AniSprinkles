@@ -279,6 +279,68 @@ public class MediaDetailsPageModelTests
                 .Returns(Task.FromException<(Media?, MediaListEntry?)>(exception));
     }
 
+    // ── Leaving with an edit still in its debounce (#225) ────────────
+
+    [Test]
+    public async Task Leaving_WithARatingStillInItsDebounce_SavesItNow()
+    {
+        // Left to its 1.5 s timer, the save lands after the Library has appeared and checked.
+        var harness = await ListedAs(MediaListStatus.Current);
+        harness.Model.SetStarRatingCommand.Execute("4");
+
+        await harness.Model.FlushPendingSaveAsync();
+
+        await harness.Client.Received(1).SaveMediaListEntryAsync(
+            Arg.Is<MediaListEntry>(e => e.Score == 4), Arg.Any<CancellationToken>());
+    }
+
+    [Test]
+    public async Task Leaving_AfterAFlush_DoesNotSaveTheSameEditAgainWhenTheTimerWouldHaveFired()
+    {
+        var harness = await ListedAs(MediaListStatus.Current);
+        harness.Model.SetStarRatingCommand.Execute("4");
+
+        await harness.Model.FlushPendingSaveAsync();
+        await Task.Delay(TimeSpan.FromMilliseconds(1700));
+        await harness.Model.FlushPendingSaveAsync();
+
+        await harness.Client.Received(1).SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>());
+    }
+
+    [Test]
+    public async Task Leaving_AfterTheTimerAlreadySaved_SavesNothingMore()
+    {
+        var harness = await ListedAs(MediaListStatus.Current);
+        harness.Model.SetStarRatingCommand.Execute("4");
+        await Task.Delay(TimeSpan.FromMilliseconds(1700));
+
+        await harness.Model.FlushPendingSaveAsync();
+
+        await harness.Client.Received(1).SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>());
+    }
+    [Test]
+    public async Task Leaving_WithNothingEdited_SavesNothing()
+    {
+        var harness = await ListedAs(MediaListStatus.Current);
+
+        await harness.Model.FlushPendingSaveAsync();
+
+        await harness.Client.DidNotReceive().SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>());
+    }
+
+    [Test]
+    public async Task Leaving_AfterAStatusPickCarriedTheEdit_SavesNothingMore()
+    {
+        // The status save cancels the debounce and carries the rating with it (PR #224).
+        var harness = await ListedAs(MediaListStatus.Current);
+        harness.Model.SetStarRatingCommand.Execute("4");
+        await harness.Model.ApplyStatusPickCommand.ExecuteAsync(nameof(MediaListStatus.Paused));
+
+        await harness.Model.FlushPendingSaveAsync();
+
+        await harness.Client.Received(1).SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>());
+    }
+
     // ── Status dropdown (#194) ───────────────────────────────────────
 
     private static async Task<Harness> ListedAs(MediaListStatus status)

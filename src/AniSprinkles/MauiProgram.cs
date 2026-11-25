@@ -274,12 +274,15 @@ public static class MauiProgram
         // Wrapping rather than replacing is the whole point: the CI fixtures still serve every call
         // the profile does not target, so a real screen loads and then the next call breaks — which
         // is what ErrorSim's all-methods-throw stub made impossible.
+        // Counts list saves that reached AniList, so the Library knows when its copy is stale (#225).
+        builder.Services.AddSingleton<ListChangeTracker>();
         builder.Services.AddSingleton<IAniListClient>(sp =>
         {
             // One shape for every configuration now (#134): CI differs only in what answers the
             // HTTP request, which means the caching decorator is exercised in CI rather than skipped.
             IAniListClient client = new CachingAniListClient(
                 sp.GetRequiredService<AniListClient>(),
+                sp.GetRequiredService<ListChangeTracker>(),
                 sp.GetRequiredService<ILogger<CachingAniListClient>>());
 #if DEBUG
             client = new FaultInjectingAniListClient(

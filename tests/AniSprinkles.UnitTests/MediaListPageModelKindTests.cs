@@ -200,12 +200,12 @@ public class MediaListPageModelKindTests
                 ? new MangaLibraryPageModel(
                     Client, auth, Airing, new ErrorReportService(NullLogger<ErrorReportService>.Instance),
                     Preferences, Substitute.For<INavigationService>(), dialogs, new RecordingUserFeedback(),
-                    new ListEntryStatusFlow(dialogs), Substitute.For<IUpNextOffer>(), TimeProvider.System,
+                    new ListEntryStatusFlow(dialogs), Substitute.For<IUpNextOffer>(), new ListChangeTracker(), TimeProvider.System,
                     NullLogger<MediaListPageModel>.Instance)
                 : new AnimeLibraryPageModel(
                     Client, auth, Airing, new ErrorReportService(NullLogger<ErrorReportService>.Instance),
                     Preferences, Substitute.For<INavigationService>(), dialogs, new RecordingUserFeedback(),
-                    new ListEntryStatusFlow(dialogs), Substitute.For<IUpNextOffer>(), TimeProvider.System,
+                    new ListEntryStatusFlow(dialogs), Substitute.For<IUpNextOffer>(), new ListChangeTracker(), TimeProvider.System,
                     NullLogger<MediaListPageModel>.Instance);
         }
 

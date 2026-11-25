@@ -3,8 +3,8 @@
   "variables": {
     "id": 189323
   },
-  "queryFingerprint": "0dd7befc664c",
-  "recordedAt": "2026-11-18T14:39:19.7358511+00:00",
+  "queryFingerprint": "d6b2537269ac",
+  "recordedAt": "2026-11-23T00:49:55.0023284+00:00",
   "response": {
     "data": {
       "Media": {
@@ -50,7 +50,7 @@
         },
         "nextAiringEpisode": {
           "airingAt": 1800172800,
-          "timeUntilAiring": 5160041,
+          "timeUntilAiring": 4777806,
           "episode": 1
         },
         "trailer": {
@@ -72,10 +72,10 @@
         ],
         "weightedScore": null,
         "meanScore": null,
-        "popularity": 41078,
-        "favourites": 684,
+        "popularity": 41426,
+        "favourites": 702,
         "isFavourite": false,
-        "trending": 2,
+        "trending": 8,
         "tags": [
           {
             "id": 112,
@@ -166,7 +166,7 @@
                 "id": 6052,
                 "name": "C2C",
                 "isAnimationStudio": true,
-                "favourites": 312
+                "favourites": 313
               }
             }
           ]
@@ -315,7 +315,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b271367-RM6DwXf1D0gu.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b271367-RM6DwXf1D0gu.png"
                 },
-                "favourites": 1369
+                "favourites": 1375
               },
               "role": "MAIN",
               "voiceActors": []
@@ -332,7 +332,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b281519-reQ83dGVLifA.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b281519-reQ83dGVLifA.png"
                 },
-                "favourites": 257
+                "favourites": 259
               },
               "role": "SUPPORTING",
               "voiceActors": []
@@ -349,7 +349,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b281520-2l1wxzAuz9zM.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b281520-2l1wxzAuz9zM.png"
                 },
-                "favourites": 685
+                "favourites": 688
               },
               "role": "SUPPORTING",
               "voiceActors": []
@@ -366,7 +366,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b281521-3ozszEEc9Y8s.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b281521-3ozszEEc9Y8s.png"
                 },
-                "favourites": 266
+                "favourites": 268
               },
               "role": "SUPPORTING",
               "voiceActors": []
@@ -383,7 +383,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b281522-AuvXcHPoq0tX.jpg",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b281522-AuvXcHPoq0tX.jpg"
                 },
-                "favourites": 646
+                "favourites": 649
               },
               "role": "SUPPORTING",
               "voiceActors": []
@@ -400,7 +400,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b313426-oHFcRxxSrpwD.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b313426-oHFcRxxSrpwD.png"
                 },
-                "favourites": 116
+                "favourites": 117
               },
               "role": "SUPPORTING",
               "voiceActors": []
@@ -451,7 +451,7 @@
                   "medium": "https://s4.anilist.co/file/anilistcdn/character/medium/b313441-CvMz7KGOUs0U.png",
                   "large": "https://s4.anilist.co/file/anilistcdn/character/large/b313441-CvMz7KGOUs0U.png"
                 },
-                "favourites": 60
+                "favourites": 61
               },
               "role": "SUPPORTING",
               "voiceActors": []
@@ -497,33 +497,33 @@
             },
             {
               "score": 80,
-              "amount": 77
+              "amount": 76
             },
             {
               "score": 90,
-              "amount": 144
+              "amount": 146
             },
             {
               "score": 100,
-              "amount": 140
+              "amount": 141
             }
           ],
           "statusDistribution": [
             {
               "status": "CURRENT",
-              "amount": 2340
+              "amount": 2388
             },
             {
               "status": "PLANNING",
-              "amount": 37855
+              "amount": 38149
             },
             {
               "status": "COMPLETED",
-              "amount": 397
+              "amount": 401
             },
             {
               "status": "DROPPED",
-              "amount": 76
+              "amount": 78
             },
             {
               "status": "PAUSED",
@@ -578,7 +578,7 @@
                 "image": {
                   "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n107701-R92Wfc1in7fw.png"
                 },
-                "favourites": 25
+                "favourites": 26
               },
               "role": "Chief Director"
             },
@@ -919,6 +919,7 @@
           "mediaId": 189323,
           "status": "PLANNING",
           "progress": 0,
+          "progressVolumes": null,
           "score": 0,
           "repeat": 0,
           "notes": null,

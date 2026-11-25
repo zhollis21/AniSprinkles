@@ -3,8 +3,8 @@
   "variables": {
     "id": 144092
   },
-  "queryFingerprint": "0dd7befc664c",
-  "recordedAt": "2026-11-18T14:39:01.0686714+00:00",
+  "queryFingerprint": "d6b2537269ac",
+  "recordedAt": "2026-11-23T00:49:45.63043+00:00",
   "response": {
     "data": {
       "Media": {
@@ -62,8 +62,8 @@
         ],
         "weightedScore": 72,
         "meanScore": 72,
-        "popularity": 77996,
-        "favourites": 1600,
+        "popularity": 78131,
+        "favourites": 1590,
         "isFavourite": false,
         "trending": 3,
         "tags": [
@@ -306,6 +306,16 @@
             "isAdult": false,
             "description": "A goblin is a monstrous creature from European folklore. They are almost always small and grotesque, mischievous or outright malicious, and greedy. Sometimes with magical abilities.",
             "category": "Cast-Traits"
+          },
+          {
+            "id": 483,
+            "name": "LGBTQ\u002B Themes",
+            "rank": 20,
+            "isMediaSpoiler": false,
+            "isGeneralSpoiler": false,
+            "isAdult": false,
+            "description": "Prominently features characters or themes associated with the LGBTQ\u002B community, such as sexuality or gender identity.",
+            "category": "Theme-Other"
           }
         ],
         "studios": {
@@ -316,7 +326,7 @@
                 "id": 6698,
                 "name": "KADOKAWA",
                 "isAnimationStudio": false,
-                "favourites": 985
+                "favourites": 987
               }
             },
             {
@@ -325,7 +335,7 @@
                 "id": 6052,
                 "name": "C2C",
                 "isAnimationStudio": true,
-                "favourites": 312
+                "favourites": 313
               }
             },
             {
@@ -368,7 +378,7 @@
             "context": "highest rated"
           },
           {
-            "rank": 63,
+            "rank": 64,
             "type": "POPULAR",
             "format": "TV",
             "year": 2023,
@@ -2088,23 +2098,23 @@
           "statusDistribution": [
             {
               "status": "CURRENT",
-              "amount": 9523
+              "amount": 9540
             },
             {
               "status": "PLANNING",
-              "amount": 18688
+              "amount": 18724
             },
             {
               "status": "COMPLETED",
-              "amount": 42163
+              "amount": 42228
             },
             {
               "status": "DROPPED",
-              "amount": 5309
+              "amount": 5319
             },
             {
               "status": "PAUSED",
-              "amount": 2313
+              "amount": 2320
             }
           ]
         },
@@ -2140,7 +2150,7 @@
                 "image": {
                   "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/n107701-R92Wfc1in7fw.png"
                 },
-                "favourites": 25
+                "favourites": 26
               },
               "role": "Director"
             },
@@ -2275,7 +2285,7 @@
                 "image": {
                   "medium": "https://s4.anilist.co/file/anilistcdn/staff/medium/202.jpg"
                 },
-                "favourites": 101
+                "favourites": 102
               },
               "role": "ADR Director (English)"
             },
@@ -2496,6 +2506,7 @@
           "mediaId": 144092,
           "status": "COMPLETED",
           "progress": 12,
+          "progressVolumes": null,
           "score": 8,
           "repeat": 0,
           "notes": null,

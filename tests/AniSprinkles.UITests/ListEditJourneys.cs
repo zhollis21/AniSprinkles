@@ -65,6 +65,54 @@ public sealed class ListEditJourneys : Journey
     }
 
     /// <summary>
+    /// A status changed on the details page reaches the Library it was opened from: back from the
+    /// page, the title has left Watching for Paused, and the same way back. The Library skips
+    /// reloading for five minutes after a load, and before #225 nothing told it about a change made
+    /// anywhere else, so both counts stayed put. Paused rather than Completed keeps the rating prompt
+    /// and Up Next out of it; the journey below covers those from the details page.
+    /// </summary>
+    [Test]
+    public async Task DetailsDropdown_Paused_MovesTheTitleBetweenLibrarySections_AndBack()
+    {
+        // On the test account's Watching list, and the same title in every language.
+        const string title = "ONE PIECE";
+
+        // As in the Move journey: Paused shut, so leaving Watching can be seen as leaving the screen.
+        await SetSectionAsync("Paused", expanded: false);
+        var watching = await App.ReadSectionCountAsync("Watching");
+        var paused = await App.ReadSectionCountAsync("Paused");
+
+        await App.OpenLibraryCardAsync(text => text == title);
+        await SetDetailsStatusAsync("Watching", "Paused", "Paused");
+        await Driver.PressBackAsync();
+        await Driver.WaitForGoneAsync($"'{title}' to leave Watching", automationId: "MediaCardTitle",
+            predicate: e => e.Text == title && e.WindowBounds?.Y > 0);
+        await App.WaitForSectionCountAsync("Watching", watching - 1);
+        await App.WaitForSectionCountAsync("Paused", paused + 1);
+
+        await SetSectionAsync("Paused", expanded: true);
+        await App.OpenLibraryCardAsync(text => text == title);
+        await SetDetailsStatusAsync("Paused", "Current", "Watching");
+        await Driver.PressBackAsync();
+        await App.WaitForSectionCountAsync("Paused", paused);
+        await App.WaitForSectionCountAsync("Watching", watching);
+    }
+
+    /// <summary>
+    /// The details page's status dropdown, from <paramref name="from"/> to <paramref name="status"/>
+    /// (a <c>MediaListStatus</c> name), waiting for the label to read <paramref name="label"/>.
+    /// </summary>
+    private async Task SetDetailsStatusAsync(string from, string status, string label)
+    {
+        await Driver.WaitForAsync($"the list status to read {from}", automationId: "ListStatusLabel",
+            predicate: e => e.Text == from);
+        await Driver.TapAsync("the list status button", automationId: "ListStatusButton");
+        await Driver.TapAsync(label, automationId: $"ListStatusOption_{status}");
+        await Driver.WaitForAsync($"the list status to read {label}", automationId: "ListStatusLabel",
+            predicate: e => e.Text == label);
+    }
+
+    /// <summary>
     /// #103's Up Next sheet, from the Library: Mark as completed, skip the rating, tick one related
     /// title and add it. The completed title moves to Completed and the picked one joins Watching,
     /// under the title the sheet showed. Which titles are offered, and where each goes, is

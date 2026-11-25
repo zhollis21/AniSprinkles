@@ -13,7 +13,7 @@ public class CachingAniListClientTests
         var inner = Inner();
         inner.GetCharacterAsync(1, Arg.Any<string>(), Arg.Any<int>(), Arg.Any<CancellationToken>())
              .Returns(new Character { Id = 1 });
-        var cache = new CachingAniListClient(inner);
+        var cache = new CachingAniListClient(inner, new ListChangeTracker());
 
         var first = await cache.GetCharacterAsync(1);
         var second = await cache.GetCharacterAsync(1);
@@ -28,7 +28,7 @@ public class CachingAniListClientTests
         var inner = Inner();
         inner.GetCharacterAsync(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<CancellationToken>())
              .Returns(ci => new Character { Id = ci.ArgAt<int>(0) });
-        var cache = new CachingAniListClient(inner);
+        var cache = new CachingAniListClient(inner, new ListChangeTracker());
 
         var a = await cache.GetCharacterAsync(1);
         var b = await cache.GetCharacterAsync(2);
@@ -47,7 +47,7 @@ public class CachingAniListClientTests
         var gate = new TaskCompletionSource<Character?>(TaskCreationOptions.RunContinuationsAsynchronously);
         inner.GetCharacterAsync(7, Arg.Any<string>(), Arg.Any<int>(), Arg.Any<CancellationToken>())
              .Returns(gate.Task);
-        var cache = new CachingAniListClient(inner);
+        var cache = new CachingAniListClient(inner, new ListChangeTracker());
 
         var first = cache.GetCharacterAsync(7);
         var second = cache.GetCharacterAsync(7);
@@ -73,7 +73,7 @@ public class CachingAniListClientTests
              .Returns(
                  _ => Task.FromException<Staff?>(new AniListApiException(ApiErrorKind.Network, "boom")),
                  _ => Task.FromResult<Staff?>(new Staff { Id = 5 }));
-        var cache = new CachingAniListClient(inner);
+        var cache = new CachingAniListClient(inner, new ListChangeTracker());
 
         await Assert.ThrowsAsync<AniListApiException>(() => cache.GetStaffAsync(5));
         var recovered = await cache.GetStaffAsync(5);
@@ -92,7 +92,7 @@ public class CachingAniListClientTests
         staff.CharactersPageInfo = new PageInfo { CurrentPage = 1, HasNextPage = true };
         inner.GetStaffAsync(5, Arg.Any<string>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<CancellationToken>())
              .Returns(staff);
-        var cache = new CachingAniListClient(inner);
+        var cache = new CachingAniListClient(inner, new ListChangeTracker());
 
         await cache.GetStaffAsync(5);
         // Default voice-roles sort + page 1 + PageSize 25 — the exact key the section requests on toggle-back.
@@ -112,7 +112,7 @@ public class CachingAniListClientTests
              .Returns(new Staff { Id = 5 });
         inner.LoadStaffCharactersPageAsync(5, 1, "ROLE", 25, Arg.Any<CancellationToken>())
              .Returns(((IReadOnlyList<StaffCharacterEdge>)new List<StaffCharacterEdge>(), (PageInfo?)null));
-        var cache = new CachingAniListClient(inner);
+        var cache = new CachingAniListClient(inner, new ListChangeTracker());
 
         await cache.GetStaffAsync(5);
         await cache.LoadStaffCharactersPageAsync(5, 1, "ROLE", 25);
@@ -130,7 +130,7 @@ public class CachingAniListClientTests
         character.MediaPageInfo = new PageInfo { CurrentPage = 1, HasNextPage = true };
         inner.GetCharacterAsync(9, Arg.Any<string>(), Arg.Any<int>(), Arg.Any<CancellationToken>())
              .Returns(character);
-        var cache = new CachingAniListClient(inner);
+        var cache = new CachingAniListClient(inner, new ListChangeTracker());
 
         await cache.GetCharacterAsync(9);
         var (items, _) = await cache.LoadCharacterMediaPageAsync(9, 1, "POPULARITY_DESC", 25);
@@ -148,7 +148,7 @@ public class CachingAniListClientTests
              .Returns(
                  _ => Task.FromException<Character?>(new AniListApiException(ApiErrorKind.Network, "boom")),
                  _ => Task.FromResult<Character?>(new Character { Id = 9 }));
-        var cache = new CachingAniListClient(inner);
+        var cache = new CachingAniListClient(inner, new ListChangeTracker());
 
         await Assert.ThrowsAsync<AniListApiException>(() => cache.GetCharacterAsync(9));
         var recovered = await cache.GetCharacterAsync(9);
@@ -165,7 +165,7 @@ public class CachingAniListClientTests
              .Returns((Staff?)null);
         inner.LoadStaffCharactersPageAsync(5, 1, "FAVOURITES_DESC", 25, Arg.Any<CancellationToken>())
              .Returns(((IReadOnlyList<StaffCharacterEdge>)new List<StaffCharacterEdge>(), (PageInfo?)null));
-        var cache = new CachingAniListClient(inner);
+        var cache = new CachingAniListClient(inner, new ListChangeTracker());
 
         var result = await cache.GetStaffAsync(5);
 
@@ -193,7 +193,7 @@ public class CachingAniListClientTests
         staff.CharactersPageInfo = new PageInfo { CurrentPage = 1, HasNextPage = true };
         inner.GetStaffAsync(5, Arg.Any<string>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<CancellationToken>())
              .Returns(staff);
-        var cache = new CachingAniListClient(inner);
+        var cache = new CachingAniListClient(inner, new ListChangeTracker());
 
         await cache.LoadStaffCharactersPageAsync(5, 1, "FAVOURITES_DESC", 25);   // populate the per-page key
         await cache.GetStaffAsync(5);                                            // composite tries to seed it
@@ -211,7 +211,7 @@ public class CachingAniListClientTests
         var inner = Inner();
         var entry = new MediaListEntry { Id = 1 };
         inner.SaveMediaListEntryAsync(Arg.Any<MediaListEntry>(), Arg.Any<CancellationToken>()).Returns(entry);
-        var cache = new CachingAniListClient(inner);
+        var cache = new CachingAniListClient(inner, new ListChangeTracker());
 
         await cache.SaveMediaListEntryAsync(entry);
         await cache.SaveMediaListEntryAsync(entry);
@@ -225,7 +225,7 @@ public class CachingAniListClientTests
         var inner = Inner();
         inner.GetStudioAsync(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<CancellationToken>())
              .Returns(new Studio { Id = 18 });
-        var cache = new CachingAniListClient(inner);
+        var cache = new CachingAniListClient(inner, new ListChangeTracker());
 
         await cache.GetStudioAsync(18, mediaPerPage: 25);
         await cache.GetStudioAsync(18, mediaPerPage: 25);
@@ -241,7 +241,7 @@ public class CachingAniListClientTests
         var inner = Inner();
         inner.GetStudioAsync(Arg.Any<int>(), Arg.Any<string>(), Arg.Any<int>(), Arg.Any<int>(), Arg.Any<CancellationToken>())
              .Returns(ci => new Studio { Id = ci.ArgAt<int>(0) });
-        var cache = new CachingAniListClient(inner);
+        var cache = new CachingAniListClient(inner, new ListChangeTracker());
 
         await cache.GetStudioAsync(18, mediaPerPage: 25);
         await cache.GetStudioAsync(18, mediaPerPage: 50);

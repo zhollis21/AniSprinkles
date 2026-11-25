@@ -85,7 +85,7 @@ Shell bottom tab bar (`library`, `discover`, `search`, `feed`, `settings`). The 
 
 ## Performance Defaults
 
-- 5-minute stale refresh window for tab pages.
+- 5-minute stale refresh window for tab pages. The Library's also ends when a list entry is saved or removed anywhere else (#225). `CachingAniListClient` reports every save and removal to `ListChangeTracker`: in flight while it runs, then counted unless AniList said nothing changed (a removal answering `false`; a save that throws still counts). Each Library half reloads on its next appearance if the version moved since its last load, and a normal appearance first waits up to 5 s (`InFlightSaveWait`) for a save still in flight, which is what a quick Back from a details-page edit produces; the details page also sends a debounced edit as it is left (`FlushPendingSaveAsync`). Before any edit from a card (+1, the long-press menu) the Library refreshes if it is behind, and refuses the edit if it cannot catch up, since an edit saves the whole entry. Its own +1, rating and progress saves take up their own bump (`AbsorbOwnListChange`) when no load finished meanwhile; its long-press flows count as its own while their popups re-fire the appearance.
 - Compiled XAML bindings enabled (`MauiEnableXamlCBindingWithSourceCompilation`).
 - Details page: keep above-the-fold small; lazy-load extended sections below; one primary spinner per screen state.
 - Library selection clear deferred until after navigation begins.

@@ -14,6 +14,14 @@ public partial class MediaListPageModel : ObservableObject, IAuthActions
 
     private static readonly TimeSpan ListRefreshInterval = TimeSpan.FromMinutes(5);
     private static readonly TimeSpan IncrementDebounceDelay = TimeSpan.FromMilliseconds(1500);
+
+    /// <summary>
+    /// How long an appearance waits for a list save still in flight before checking for changes
+    /// (#225): long enough for one rate-limit retry (<c>AniListRateLimitHandler</c> waits up to 5 s),
+    /// short enough that a stalled save holds an edit for seconds, not minutes. Past it the load
+    /// carries on, and the late save makes the next appearance reload.
+    /// </summary>
+    private static readonly TimeSpan InFlightSaveWait = TimeSpan.FromSeconds(5);
     private const string DetailsRoute = "media-details";
 
     // ── Persisted UI preferences (device-scoped, not cleared on sign-out) ──
@@ -38,8 +46,39 @@ public partial class MediaListPageModel : ObservableObject, IAuthActions
     private readonly TimeProvider _timeProvider;
     private readonly ILogger<MediaListPageModel> _logger;
     private readonly EntryActionCoordinator _entryActions;
+    private readonly ListChangeTracker _listChanges;
     private bool _hasLoaded;
     private DateTimeOffset _lastSuccessfulLoadUtc;
+
+    /// <summary>
+    /// The <see cref="ListChangeTracker.Version"/> the current <see cref="Sections"/> reflect (#225).
+    /// The freshness window holds only while it is unchanged: a list save made anywhere else — the
+    /// details page, Discover, Search, Up Next — moves it, and the next appearance reloads. The
+    /// Library's own in-place saves move it too, and take it up again (<see cref="AbsorbOwnListChange"/>),
+    /// since their cards already show the change.
+    /// </summary>
+    private long _reflectedListVersion;
+
+    /// <summary>The load running now, for an edit that has to wait for it (<see cref="EnsureFreshBeforeEditAsync"/>).</summary>
+    private Task? _activeLoad;
+
+    /// <summary>
+    /// Counts loads that rebuilt or merged <see cref="Sections"/>. A save made from a card can absorb
+    /// its own change only if none finished meanwhile: one that did merged what AniList held before
+    /// the save, and may have put the card back (<see cref="AbsorbOwnListChange"/>).
+    /// </summary>
+    private long _loadGeneration;
+
+    /// <summary>The <see cref="_loadGeneration"/> a long-press flow started from, for its in-place saves.</summary>
+    private long _flowLoadGeneration;
+
+    /// <summary>
+    /// Long-press flows running from this page. Their popups re-fire this page's appearance as they
+    /// close, and the save they make is this page's own, still waiting to be absorbed; treating it
+    /// as a change made elsewhere would spend a reload on every edit. Nothing elsewhere can save
+    /// while one is open, since this page is in front.
+    /// </summary>
+    private int _ownFlows;
 
     /// <summary>
     /// The DisplayAdultContent value the current <see cref="Sections"/> were built under (#118).
@@ -192,7 +231,7 @@ public partial class MediaListPageModel : ObservableObject, IAuthActions
         _ => Glyphs.Regular.List24,
     };
 
-    protected MediaListPageModel(MediaKind kind, IAniListClient aniListClient, IAuthService authService, IAiringNotificationService airingNotificationService, ErrorReportService errorReportService, IPreferences preferences, INavigationService navigationService, IDialogService dialogs, IUserFeedback feedback, ListEntryStatusFlow statusFlow, IUpNextOffer upNext, TimeProvider timeProvider, ILogger<MediaListPageModel> logger)
+    protected MediaListPageModel(MediaKind kind, IAniListClient aniListClient, IAuthService authService, IAiringNotificationService airingNotificationService, ErrorReportService errorReportService, IPreferences preferences, INavigationService navigationService, IDialogService dialogs, IUserFeedback feedback, ListEntryStatusFlow statusFlow, IUpNextOffer upNext, ListChangeTracker listChanges, TimeProvider timeProvider, ILogger<MediaListPageModel> logger)
     {
         Kind = kind;
         _aniListClient = aniListClient;
@@ -202,6 +241,7 @@ public partial class MediaListPageModel : ObservableObject, IAuthActions
         _preferences = preferences;
         _navigationService = navigationService;
         _feedback = feedback;
+        _listChanges = listChanges;
         _timeProvider = timeProvider;
         _logger = logger;
 
@@ -213,7 +253,12 @@ public partial class MediaListPageModel : ObservableObject, IAuthActions
             OnBeforeFlowAsync = FlushPendingIncrementAsync,
             OnOptimisticRemove = RemoveEntryFromCurrentSection,
             // In-place saves (rate, progress edit) need no reload — the entry's observable
-            // properties refresh the card.
+            // properties refresh the card — so the change they made is already on screen.
+            OnEntrySavedInPlaceAsync = _ =>
+            {
+                AbsorbOwnListChange(_flowLoadGeneration);
+                return Task.CompletedTask;
+            },
             OnEntryStatusChangedAsync = _ => LoadAsync(forceReload: true),
             OnEntryRemovedAsync = _ => LoadAsync(forceReload: true),
             OnMutationFailedAsync = () => LoadAsync(forceReload: true),
@@ -249,6 +294,25 @@ public partial class MediaListPageModel : ObservableObject, IAuthActions
 
     public async Task LoadAsync(bool forceReload = false)
     {
+        // A details-page edit sent as the user pressed Back is still in flight when this page
+        // appears; checking now would find nothing changed and keep the old values (#225). Forced
+        // loads skip it: pull-to-refresh and the Library's own status changes want the list now.
+        if (!forceReload && _ownFlows == 0)
+        {
+            await _listChanges.WaitForIdleAsync(InFlightSaveWait, _timeProvider);
+        }
+
+        var load = LoadCoreAsync(forceReload);
+        if (!load.IsCompleted)
+        {
+            _activeLoad = load;
+        }
+
+        await load;
+    }
+
+    private async Task LoadCoreAsync(bool forceReload)
+    {
         _logger.LogInformation(
             "MediaList[{Kind}] LoadAsync enter (forceReload={ForceReload}, isBusy={IsBusy}, hasLoaded={HasLoaded}, currentState={CurrentState}, hadSections={HadSections})",
             Kind, forceReload, IsBusy, _hasLoaded, CurrentState, Sections.Count);
@@ -282,12 +346,23 @@ public partial class MediaListPageModel : ObservableObject, IAuthActions
             // is time-based, so tabbing away and back would not clear it either.
             var adultChanged = _loadedWithAdultContent != AppSettings.DisplayAdultContent;
 
+            // A list save made outside the Library has to defeat it too (#225), or the title sits in
+            // its old section — and an edit from that stale card saves the old status back.
+            var listChanged = _reflectedListVersion != _listChanges.Version && _ownFlows == 0;
+
             if (_hasLoaded && !forceReload && isAuthenticated == IsAuthenticated)
             {
                 // Signed out has no sections to filter, so that branch returns either way.
-                if (!isAuthenticated || (isFresh && !adultChanged))
+                if (!isAuthenticated || (isFresh && !adultChanged && !listChanged))
                 {
                     return;
+                }
+
+                if (isFresh && listChanged && !adultChanged)
+                {
+                    _logger.LogInformation(
+                        "MediaList[{Kind}] reloading inside the freshness window: list changed elsewhere (version {Reflected} -> {Current})",
+                        Kind, _reflectedListVersion, _listChanges.Version);
                 }
             }
 
@@ -336,6 +411,9 @@ public partial class MediaListPageModel : ObservableObject, IAuthActions
             }
 
             SentrySdk.AddBreadcrumb("Fetching AniList list", "http", "state");
+            // Read before the fetch, not after: a save landing while it is in flight may be missing
+            // from what comes back, and must still count as unseen.
+            var listVersion = _listChanges.Version;
             var groups = await _aniListClient.GetMediaListGroupedAsync(Kind);
             // Capture current sort/filter state for section building.
             var sortField = CurrentSortField;
@@ -382,6 +460,8 @@ public partial class MediaListPageModel : ObservableObject, IAuthActions
             OnPropertyChanged(nameof(HasNoResults));
             _hasLoaded = true;
             _lastSuccessfulLoadUtc = DateTimeOffset.UtcNow;
+            _reflectedListVersion = listVersion;
+            _loadGeneration++;
 
             // Read here rather than from the value captured at entry: SyncFromViewer above may have
             // moved it, and this has to describe the sections that were actually just built.
@@ -608,7 +688,7 @@ public partial class MediaListPageModel : ObservableObject, IAuthActions
     [RelayCommand(AllowConcurrentExecutions = true)]
     private async Task IncrementProgress(MediaListEntry? entry)
     {
-        if (entry?.Media is null)
+        if (entry?.Media is null || !await EnsureFreshBeforeEditAsync(entry))
         {
             return;
         }
@@ -720,7 +800,9 @@ public partial class MediaListPageModel : ObservableObject, IAuthActions
         try
         {
             _logger.LogInformation("+1 saving: media {MediaId} progress {Progress}", entry.MediaId, entry.Progress);
+            var generationBeforeSave = _loadGeneration;
             await _aniListClient.SaveMediaListEntryAsync(entry);
+            AbsorbOwnListChange(generationBeforeSave);
             _logger.LogInformation("+1 saved: media {MediaId} progress {Progress}", entry.MediaId, entry.Progress);
             await _feedback.ShowToastAsync("Saved");
         }
@@ -747,12 +829,82 @@ public partial class MediaListPageModel : ObservableObject, IAuthActions
     [RelayCommand]
     private async Task ShowActionMenu(MediaListEntry? entry)
     {
-        if (entry?.Media is null || entry.Status is null)
+        if (entry?.Media is null || entry.Status is null || !await EnsureFreshBeforeEditAsync(entry))
         {
             return;
         }
 
-        await _entryActions.ShowEntryMenuAsync(entry);
+        _flowLoadGeneration = _loadGeneration;
+        _ownFlows++;
+        try
+        {
+            await _entryActions.ShowEntryMenuAsync(entry);
+        }
+        finally
+        {
+            _ownFlows--;
+        }
+    }
+
+    /// <summary>
+    /// Takes up the one <see cref="ListChangeTracker"/> bump a save made from this page caused, when
+    /// its card still shows the change (+1, a rating or progress edit), so it costs no reload on the
+    /// next appearance. Exactly one bump: if the version is further ahead, a change made elsewhere is
+    /// still unseen, and absorbing would hide it. And only if no load finished since the save's flow
+    /// began (<paramref name="loadGenerationAtStart"/>): that load merged what AniList held before
+    /// the save, so the card may show the old value again.
+    /// </summary>
+    private void AbsorbOwnListChange(long loadGenerationAtStart)
+    {
+        if (_loadGeneration == loadGenerationAtStart && _listChanges.Version == _reflectedListVersion + 1)
+        {
+            _reflectedListVersion++;
+        }
+    }
+
+    /// <summary>
+    /// Before an edit from a card, makes sure the card reflects every list change made elsewhere
+    /// (#225): an edit saves the whole entry, so one made from a stale card writes the old status,
+    /// progress or score back over the change. Reloads first if needed — waiting for a load already
+    /// running — and refuses the edit if the list still cannot be brought up to date, or if the
+    /// entry is no longer listed once it is.
+    /// </summary>
+    private async Task<bool> EnsureFreshBeforeEditAsync(MediaListEntry entry)
+    {
+        var refreshed = false;
+        for (var attempt = 0; attempt < 2 && _reflectedListVersion != _listChanges.Version; attempt++)
+        {
+            refreshed = true;
+            if (_activeLoad is { IsCompleted: false } running)
+            {
+                await running;
+            }
+            else
+            {
+                await LoadAsync();
+            }
+        }
+
+        if (_reflectedListVersion != _listChanges.Version)
+        {
+            _logger.LogWarning(
+                "MediaList[{Kind}] edit refused: list still stale (version {Reflected} -> {Current})",
+                Kind, _reflectedListVersion, _listChanges.Version);
+            SentrySdk.AddBreadcrumb($"Edit refused: list stale (media {entry.MediaId})", "list", "state");
+            await _feedback.ShowSnackbarAsync("Couldn't refresh your list. Pull to refresh, then try again.");
+            return false;
+        }
+
+        // Only after a refresh: that is what can take a card away under the user's finger.
+        if (refreshed && !Sections.Any(section => section.ContainsEntry(entry)))
+        {
+            _logger.LogInformation(
+                "MediaList[{Kind}] edit dropped: media {MediaId} changed elsewhere and is no longer this card",
+                Kind, entry.MediaId);
+            return false;
+        }
+
+        return true;
     }
 
     private void RemoveEntryFromCurrentSection(MediaListEntry entry)

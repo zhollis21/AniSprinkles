@@ -134,6 +134,28 @@ public class AniListClientOperationsTests
     }
 
     [Test]
+    public async Task GetMedia_AsksForVolumeProgress_SoAVolumeTrackedMangaOpensInVolumes()
+    {
+        // Found reviewing #233: the details query left progressVolumes out, so a manga tracked in
+        // volumes alone opened as "Chapters read: 0", and an edit there switched it to chapters.
+        var harness = new Harness().Returns("Media", """
+            {"Media":{
+                "id":9,"type":"MANGA","volumes":20,
+                "title":{"romaji":"Yotsuba"},
+                "mediaListEntry":{"id":555,"mediaId":9,"status":"CURRENT","progress":0,"progressVolumes":5}
+            }}
+            """);
+
+        var (_, entry) = await harness.Client.GetMediaAsync(9, TestContext.CurrentContext.CancellationToken);
+
+        // The viewer's own entry is the one block that selects mediaId; the cards' entries do not.
+        var ownEntry = System.Text.RegularExpressions.Regex.Matches(harness.Handler.Last.Query, @"mediaListEntry\s*\{([^}]*)\}")
+            .Select(m => m.Groups[1].Value)
+            .Single(block => block.Contains("mediaId", StringComparison.Ordinal));
+        Assert.That(ownEntry, Does.Contain("progressVolumes"));
+        Assert.That(entry?.ProgressVolumes, Is.EqualTo(5));
+    }
+    [Test]
     public async Task GetMedia_WhenTheIdIsUnknown_ReturnsNothingRatherThanThrowing()
     {
         // The details page turns this into its own not-found state.

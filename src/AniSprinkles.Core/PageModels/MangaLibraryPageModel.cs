@@ -23,6 +23,7 @@ public partial class MangaLibraryPageModel(
     IUserFeedback feedback,
     ListEntryStatusFlow statusFlow,
     IUpNextOffer upNext,
+    ListChangeTracker listChanges,
     TimeProvider timeProvider,
     ILogger<MediaListPageModel> logger)
     : MediaListPageModel(
@@ -37,5 +38,6 @@ public partial class MangaLibraryPageModel(
         feedback,
         statusFlow,
         upNext,
+        listChanges,
         timeProvider,
         logger);

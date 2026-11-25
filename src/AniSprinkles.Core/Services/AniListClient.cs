@@ -2303,6 +2303,7 @@ query Media($id: Int!) {
       mediaId
       status
       progress
+      progressVolumes
       score
       repeat
       notes
